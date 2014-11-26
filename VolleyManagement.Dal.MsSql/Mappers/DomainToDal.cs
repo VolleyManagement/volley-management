@@ -9,19 +9,25 @@
 
 namespace SoftServe.VolleyManagement.Dal.MsSql.Mappers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using Domain = VolleyManagement.Domain.Tournaments;
     using Dal = VolleyManagement.Dal.MsSql;
+    using Domain = VolleyManagement.Domain.Tournaments;
    
+    /// <summary>
+    /// Maps Domain models to Dal.
+    /// </summary>
     public static class DomainToDal
     {
+        /// <summary>
+        /// Maps Tournament model.
+        /// </summary>
+        /// <param name="_tournament">Tournament Domain model</param>
+        /// <returns>Tournament Dal model</returns>
         public static Dal.Tournament GetTourament(Domain.Tournament _tournament)
         {
-            Dal.Tournament tournament = new Dal.Tournament();     
-            tournament.Id = to
+            Dal.Tournament tournament = new Dal.Tournament();
+            tournament.Id = _tournament.Id;
+            tournament.Name = _tournament.Name;
+            tournament.Season = _tournament.Season;
             return tournament;
         }
     }

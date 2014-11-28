@@ -47,9 +47,9 @@ namespace SoftServe.VolleyManagement.Domain.Tournaments
         public string Season { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating where GroupCount.
+        /// Gets or sets a value indicating where Scheme.
         /// </summary>
-        /// <value>GroupCount of tournament.</value>
+        /// <value>Scheme of tournament.</value>
         [Required(ErrorMessageResourceName = "SchemeRequired",
             ErrorMessageResourceType = typeof(Resources))]
         public string Scheme { get; set; }

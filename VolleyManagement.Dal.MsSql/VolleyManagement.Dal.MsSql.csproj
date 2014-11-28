@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mappers\DalToDomain.cs" />
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tournament.cs" />
@@ -68,9 +69,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sql\CreateDatabase.sql" />
+    <Content Include="Sql\InsertValues.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

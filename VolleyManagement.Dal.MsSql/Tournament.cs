@@ -17,6 +17,17 @@ namespace SoftServe.VolleyManagement.Dal.MsSql
 
         [Required]
         [StringLength(40)]
+        public string Scheme { get; set; }
+
+        [Required]
+        [StringLength(40)]
         public string Season { get; set; }
+
+        [Required]
+        [StringLength(1024)]
+        public string Description { get; set; }
+
+        [StringLength(1024)]
+        public string LinkToReglament { get; set; }
     }
 }

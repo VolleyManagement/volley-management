@@ -16,26 +16,13 @@ GO
   Creating tables
 *************************************************/
 
-
 CREATE TABLE dbo.Tournament(
   Id int identity(1, 1) NOT NULL
     CONSTRAINT PK_Tournament_Id PRIMARY KEY CLUSTERED,
   Name nvarchar(80) NOT NULL,
-  Season nvarchar(40) NOT NULL
+  Scheme nvarchar(40) NOT NULL,
+  Season nvarchar(40) NOT NULL,
+  [Description] nvarchar(1024) NOT NULL,
+  LinkToReglament nvarchar(1024) NULL
 );
-GO
-
-/*************************************************
-  Inserting data
-*************************************************/
-
-INSERT INTO dbo.Tournament(
-  [Name],
-  [Season]
-)VALUES
-  ('Первый чемпионат любительской лиги', '2012/2013'),
-  ('Второй чемпионат любительской лиги', '2013/2014'),
-  ('Третий чемпионат любительской лиги', '2014/2015'),
-  ('Четвертый чемпионат любительской лиги', '2014/2015'),
-  ('Пятый чемпионат любительской лиги', '2014/2015');
 GO

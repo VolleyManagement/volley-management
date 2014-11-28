@@ -20,14 +20,17 @@ namespace SoftServe.VolleyManagement.Dal.MsSql.Mappers
         /// <summary>
         /// Maps Tournament model.
         /// </summary>
-        /// <param name="_tournament">Tournament Domain model</param>
+        /// <param name="domainTournament">Tournament Domain model</param>
         /// <returns>Tournament Dal model</returns>
-        public static Dal.Tournament GetTourament(Domain.Tournament _tournament)
+        public static Dal.Tournament Map(Domain.Tournament domainTournament)
         {
             Dal.Tournament tournament = new Dal.Tournament();
-            tournament.Id = _tournament.Id;
-            tournament.Name = _tournament.Name;
-            tournament.Season = _tournament.Season;
+            tournament.Id = domainTournament.Id;
+            tournament.Name = domainTournament.Name;
+            tournament.Season = domainTournament.Season;
+            tournament.Description = domainTournament.Description;
+            tournament.Scheme = domainTournament.Scheme;
+            tournament.LinkToReglament = domainTournament.LinkToReglament;
             return tournament;
         }
     }

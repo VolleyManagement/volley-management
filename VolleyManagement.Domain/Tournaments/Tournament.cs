@@ -3,7 +3,7 @@
 //   Copyright (c) SoftServe. All rights reserved.
 // </copyright>
 // <summary>
-//   Defines the TournamentDto type.
+//   Defines the domain Tournament type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,11 +14,10 @@ namespace SoftServe.VolleyManagement.Domain.Tournaments
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// TournamentDto class.
+    /// Tournament domain class.
     /// </summary>
     public class Tournament
     {
-
         /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
@@ -29,14 +28,36 @@ namespace SoftServe.VolleyManagement.Domain.Tournaments
         /// Gets or sets a value indicating where Name.
         /// </summary>
         /// <value>Name of tournament.</value>
-        [Required(ErrorMessage = "Введите название турнира")]
+        [Required(ErrorMessageResourceName = "NameRequired",
+            ErrorMessageResourceType = typeof(Resources))]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where Description.
+        /// </summary>
+        /// <value>Description of tournament.</value>
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>
-        [Required(ErrorMessage = "Введите название сезона")]
+        [Required(ErrorMessageResourceName = "SeasonRequired",
+            ErrorMessageResourceType = typeof(Resources))]
         public string Season { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where GroupCount.
+        /// </summary>
+        /// <value>GroupCount of tournament.</value>
+        [Required(ErrorMessageResourceName = "SchemeRequired",
+            ErrorMessageResourceType = typeof(Resources))]
+        public string Scheme { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where LinkToReglament.
+        /// </summary>
+        /// <value>LinkToReglament of tournament.</value>
+        public string LinkToReglament { get; set; }
     }
 }

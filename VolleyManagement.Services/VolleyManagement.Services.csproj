@@ -41,8 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TournamentService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">
+      <Project>{285d93e6-1ad5-4f78-aef6-72b81d81465d}</Project>
+      <Name>VolleyManagement.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Dal\VolleyManagement.Dal.csproj">
       <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
       <Name>VolleyManagement.Dal</Name>

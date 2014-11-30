@@ -1,16 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Tournament.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Defines the domain Tournament type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace SoftServe.VolleyManagement.Domain.Tournaments
+﻿namespace VolleyManagement.Domain.Tournaments
 {
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>

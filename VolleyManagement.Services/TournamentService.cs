@@ -1,19 +1,10 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TournamentService.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Defines the implementation of ITournamentService.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace SoftServe.VolleyManagement.Services
+﻿namespace VolleyManagement.Services
 {
     using System.Linq;
 
-    using SoftServe.VolleyManagement.Contracts;
-    using SoftServe.VolleyManagement.Dal.Contracts;
-    using SoftServe.VolleyManagement.Domain.Tournaments;
+    using global::VolleyManagement.Contracts;
+    using global::VolleyManagement.Dal.Contracts;
+    using global::VolleyManagement.Domain.Tournaments;
 
     /// <summary>
     /// Defines TournamentService
@@ -23,7 +14,7 @@ namespace SoftServe.VolleyManagement.Services
         /// <summary>
         /// Holds UnitOfWork instance to access to repository
         /// </summary>
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentService"/> class
@@ -31,7 +22,7 @@ namespace SoftServe.VolleyManagement.Services
         /// <param name="unitOfWork">The unit of work</param>
         public TournamentService(IUnitOfWork unitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            this._unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -40,7 +31,7 @@ namespace SoftServe.VolleyManagement.Services
         /// <returns>IQueryable of all tournaments</returns>
         public IQueryable<Tournament> GetAllTournaments()
         {
-            return this.unitOfWork.Tournaments.FindAll();
+            return this._unitOfWork.Tournaments.FindAll();
         }
     }
 }

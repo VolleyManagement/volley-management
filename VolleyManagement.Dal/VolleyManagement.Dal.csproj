@@ -7,7 +7,7 @@
     <ProjectGuid>{7A32AA11-6E95-4896-9E7A-FC3DF24524EA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SoftServe.VolleyManagement.Dal</RootNamespace>
+    <RootNamespace>VolleyManagement.Dal</RootNamespace>
     <AssemblyName>VolleyManagement.Dal</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

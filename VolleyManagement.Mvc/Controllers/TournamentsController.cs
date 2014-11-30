@@ -1,18 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TournamentsController.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Controller for Tournaments
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace SoftServe.VolleyManagement.Mvc.Controllers
+﻿namespace VolleyManagement.Mvc.Controllers
 {
     using System.Linq;
     using System.Web.Mvc;
 
-    using SoftServe.VolleyManagement.Contracts;
+    using global::VolleyManagement.Contracts;
 
     /// <summary>
     /// Defines TournamentsController
@@ -22,7 +13,7 @@ namespace SoftServe.VolleyManagement.Mvc.Controllers
         /// <summary>
         /// Holds TournamentService instance
         /// </summary>
-        private readonly ITournamentService tournamentService;
+        private readonly ITournamentService _tournamentService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class
@@ -30,7 +21,7 @@ namespace SoftServe.VolleyManagement.Mvc.Controllers
         /// <param name="tournamentService">The tournament service</param>
         public TournamentsController(ITournamentService tournamentService)
         {
-            this.tournamentService = tournamentService;
+            this._tournamentService = tournamentService;
         }
 
         /// <summary>
@@ -39,7 +30,7 @@ namespace SoftServe.VolleyManagement.Mvc.Controllers
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            var tournaments = tournamentService.GetAllTournaments().ToList();
+            var tournaments = this._tournamentService.GetAllTournaments().ToList();
             return View(tournaments);
         }
 

@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRepository.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Defines IRepository contract.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace SoftServe.VolleyManagement.Dal.Contracts
+﻿namespace VolleyManagement.Dal.Contracts
 {
     using System;
     using System.Linq;

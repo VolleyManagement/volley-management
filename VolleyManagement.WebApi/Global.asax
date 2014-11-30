@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="SoftServe.VolleyManagement.WebApi.MvcApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="VolleyManagement.WebApi.MvcApplication" Language="C#" %>

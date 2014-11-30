@@ -7,7 +7,7 @@
     <ProjectGuid>{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SoftServe.VolleyManagement.Services</RootNamespace>
+    <RootNamespace>VolleyManagement.Services</RootNamespace>
     <AssemblyName>VolleyManagement.Services</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

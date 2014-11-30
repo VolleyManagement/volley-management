@@ -7,7 +7,7 @@
     <ProjectGuid>{F82FF279-9D06-4494-BC61-1B7AC88A737D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SoftServe.VolleyManagement.Dal.MsSql</RootNamespace>
+    <RootNamespace>VolleyManagement.Dal.MsSql</RootNamespace>
     <AssemblyName>VolleyManagement.Dal.MsSql</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

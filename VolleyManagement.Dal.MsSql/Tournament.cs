@@ -1,4 +1,4 @@
-namespace SoftServe.VolleyManagement.Dal.MsSql
+namespace VolleyManagement.Dal.MsSql
 {
     using System;
     using System.Collections.Generic;

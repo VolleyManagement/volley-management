@@ -33,6 +33,5 @@
             var tournaments = this._tournamentService.GetAllTournaments().ToList();
             return View(tournaments);
         }
-
     }
 }

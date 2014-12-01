@@ -28,7 +28,7 @@
         /// <summary>
         /// Method to get all tournaments
         /// </summary>
-        /// <returns>IQueryable of all tournaments</returns>
+        /// <returns>all tournaments</returns>
         public IQueryable<Tournament> GetAllTournaments()
         {
             return this._unitOfWork.Tournaments.FindAll();

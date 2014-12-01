@@ -13,40 +13,40 @@ namespace VolleyManagement.Dal.MsSql
     public partial class Tournament
     {
         /// <summary>
-        /// tournament id
+        /// Gets or sets the tournament id
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// tournament name
+        /// Gets or sets the tournament name
         /// </summary>
         [Required]
         [StringLength(80)]
         public string Name { get; set; }
 
         /// <summary>
-        /// tournament scheme
+        /// Gets or sets the tournament scheme
         /// </summary>
         [Required]
         [StringLength(40)]
         public string Scheme { get; set; }
 
         /// <summary>
-        /// tournament season
+        /// Gets or sets the tournament season
         /// </summary>
         [Required]
         [StringLength(40)]
         public string Season { get; set; }
 
         /// <summary>
-        /// tournament description
+        /// Gets or sets the tournament description
         /// </summary>
         [Required]
         [StringLength(1024)]
         public string Description { get; set; }
 
         /// <summary>
-        /// regulations of the tournament
+        /// Gets or sets regulations of the tournament
         /// </summary>
         [StringLength(1024)]
         public string LinkToReglament { get; set; }

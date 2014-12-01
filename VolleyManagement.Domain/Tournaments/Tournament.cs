@@ -44,9 +44,9 @@
         public string Scheme { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating where LinkToReglament.
+        /// Gets or sets a value indicating regulations of tournament.
         /// </summary>
-        /// <value>LinkToReglament of tournament.</value>
+        /// <value>regulations of tournament.</value>
         public string LinkToReglament { get; set; }
     }
 }

@@ -33,7 +33,7 @@
         /// <summary>
         /// Update the T type element to the DB.
         /// </summary>
-        /// <param name="newEntity">Element to add.</param>
+        /// <param name="oldEntity">Element to update.</param>
         void Update(T oldEntity);
 
         /// <summary>

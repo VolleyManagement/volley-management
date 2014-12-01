@@ -10,9 +10,9 @@
         /// <summary>
         /// Maps Tournament model.
         /// </summary>
-        /// <param name="_tournament">Tournament dal model</param>
+        /// <param name="dalTournament">Tournament dal model</param>
         /// <returns>Tournament domain model</returns>
-        public static Tournament MapTourament(Dal.Tournament dalTournament)
+        public static Tournament MapTournament(Dal.Tournament dalTournament)
         {
             Tournament tournament = new Tournament();
             tournament.Id = dalTournament.Id;
@@ -23,6 +23,5 @@
             tournament.LinkToReglament = dalTournament.LinkToReglament;
             return tournament;
         }
-
     }
 }

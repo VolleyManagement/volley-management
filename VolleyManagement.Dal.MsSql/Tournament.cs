@@ -5,7 +5,10 @@ namespace VolleyManagement.Dal.MsSql
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-
+    
+    /// <summary>
+    /// DAL tournament model
+    /// </summary>
     [Table("Tournament")]
     public partial class Tournament
     {

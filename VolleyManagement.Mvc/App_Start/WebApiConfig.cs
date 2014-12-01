@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-
-namespace SoftServe.VolleyManagement.Mvc
+﻿namespace SoftServe.VolleyManagement.Mvc
 {
+    using System.Web.Http;
+
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)

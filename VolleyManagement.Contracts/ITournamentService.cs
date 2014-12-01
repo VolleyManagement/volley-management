@@ -20,9 +20,7 @@ namespace SoftServe.VolleyManagement.Contracts
         /// <summary>
         /// Gets list of all tournaments
         /// </summary>
-        /// <returns>
-        /// Return list of all tournaments.
-        /// </returns>
+        /// <returns>Return list of all tournaments.</returns>
         IQueryable<Tournament> GetAllTournaments();
     }
 }

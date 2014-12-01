@@ -1,15 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Routing;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MvcApplication.cs" company="SoftServe">
+//   Copyright (c) SoftServe. All rights reserved.
+// </copyright>
+// <summary>
+//   Defines entry point for Application.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace SoftServe.VolleyManagement.WebApi
+namespace VolleyManagement.WebApi
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
+    using System.Web.Http;
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
+    /// <summary>
+    /// Defines MVCApplication
+    /// </summary>
     public class MvcApplication : System.Web.HttpApplication
     {
         protected void Application_Start()

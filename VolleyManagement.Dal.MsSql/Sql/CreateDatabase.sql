@@ -23,6 +23,6 @@ CREATE TABLE dbo.Tournament(
   Scheme nvarchar(40) NOT NULL,
   Season nvarchar(40) NOT NULL,
   [Description] nvarchar(1024) NOT NULL,
-  LinkToReglament nvarchar(1024) NULL
+  RegulationsLink nvarchar(1024) NULL
 );
 GO

@@ -17,7 +17,7 @@
         /// Gets or sets a value indicating where Name.
         /// </summary>
         /// <value>Name of tournament.</value>
-        [Required(ErrorMessageResourceName = "NameRequired",
+        [Required(ErrorMessageResourceName = "TournamentNameRequired",
             ErrorMessageResourceType = typeof(Resources))]
         public string Name { get; set; }
 
@@ -31,7 +31,7 @@
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>
-        [Required(ErrorMessageResourceName = "SeasonRequired",
+        [Required(ErrorMessageResourceName = "TournamentSeasonRequired",
             ErrorMessageResourceType = typeof(Resources))]
         public string Season { get; set; }
 
@@ -39,7 +39,7 @@
         /// Gets or sets a value indicating where Scheme.
         /// </summary>
         /// <value>Scheme of tournament.</value>
-        [Required(ErrorMessageResourceName = "SchemeRequired",
+        [Required(ErrorMessageResourceName = "TournamentSchemeRequired",
             ErrorMessageResourceType = typeof(Resources))]
         public string Scheme { get; set; }
 
@@ -47,6 +47,6 @@
         /// Gets or sets a value indicating regulations of tournament.
         /// </summary>
         /// <value>regulations of tournament.</value>
-        public string LinkToReglament { get; set; }
+        public string RegulationsLink { get; set; }
     }
 }

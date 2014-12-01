@@ -1,13 +1,16 @@
-﻿namespace VolleyManagement.Mvc.Controllers
+﻿namespace VolleyManagement.WebApi.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
-    using System.Web.Mvc;
-    using global::VolleyManagement.Contracts;
+    using System.Web.Http;
+
+    using Contracts;
+    using Domain.Tournaments;
 
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
-    public class TournamentsController : Controller
+    public class TournamentsController : ApiController
     {
         /// <summary>
         /// Holds TournamentService instance
@@ -20,17 +23,16 @@
         /// <param name="tournamentService">The tournament service</param>
         public TournamentsController(ITournamentService tournamentService)
         {
-            _tournamentService = tournamentService;
+            this._tournamentService = tournamentService;
         }
 
         /// <summary>
         /// Gets all tournaments from TournamentService
         /// </summary>
-        /// <returns>View with collection of tournaments</returns>
-        public ActionResult Index()
+        /// <returns>All tournaments</returns>
+        public IQueryable<Tournament> Get()
         {
-            var tournaments = _tournamentService.GetAllTournaments().ToList();
-            return View(tournaments);
+            return this._tournamentService.GetAllTournaments();
         }
     }
 }

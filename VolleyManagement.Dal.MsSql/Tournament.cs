@@ -49,6 +49,6 @@ namespace VolleyManagement.Dal.MsSql
         /// Gets or sets regulations of the tournament
         /// </summary>
         [StringLength(1024)]
-        public string LinkToReglament { get; set; }
+        public string RegulationsLink { get; set; }
     }
 }

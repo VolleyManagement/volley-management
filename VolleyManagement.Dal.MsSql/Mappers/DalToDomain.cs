@@ -1,9 +1,9 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Mappers
 {
-    using Dal = VolleyManagement.Dal.MsSql;
+    using Domain;
 
     /// <summary>
-    /// maps DAL models to domain
+    /// Maps DAL models to domain
     /// </summary>
     public static class DalToDomain
     {
@@ -12,15 +12,15 @@
         /// </summary>
         /// <param name="dalTournament">Tournament dal model</param>
         /// <returns>Tournament domain model</returns>
-        public static Tournament MapTournament(Dal.Tournament dalTournament)
+        public static Domain.Tournaments.Tournament Map(Tournament dalTournament)
         {
-            Tournament tournament = new Tournament();
+            Domain.Tournaments.Tournament tournament = new Domain.Tournaments.Tournament();
             tournament.Id = dalTournament.Id;
             tournament.Name = dalTournament.Name;
             tournament.Description = dalTournament.Description;
             tournament.Season = dalTournament.Season;
             tournament.Scheme = dalTournament.Scheme;
-            tournament.LinkToReglament = dalTournament.LinkToReglament;
+            tournament.RegulationsLink = dalTournament.RegulationsLink;
             return tournament;
         }
     }

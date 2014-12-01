@@ -117,13 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="NameRequired" xml:space="preserve">
+  <data name="TournamentNameRequired" xml:space="preserve">
     <value>Введите название турнира</value>
   </data>
-  <data name="SchemeRequired" xml:space="preserve">
+  <data name="TournamentSchemeRequired" xml:space="preserve">
     <value>Выберите схему турнира</value>
   </data>
-  <data name="SeasonRequired" xml:space="preserve">
+  <data name="TournamentSeasonRequired" xml:space="preserve">
     <value>Введите название сезона</value>
   </data>
 </root>

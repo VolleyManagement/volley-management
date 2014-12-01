@@ -1,21 +1,17 @@
-﻿namespace SoftServe.VolleyManagement.WebApi
+﻿namespace VolleyManagement.WebApi
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
 
     /// <summary>
-    /// routes configuration class
+    /// Defines RouteConfig
     /// </summary>
     public class RouteConfig
     {
         /// <summary>
-        /// register routes
+        /// Register routes
         /// </summary>
-        /// <param name="routes">route collection</param>
+        /// <param name="routes">Route collection</param>
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

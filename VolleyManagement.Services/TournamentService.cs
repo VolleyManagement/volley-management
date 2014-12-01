@@ -22,7 +22,7 @@
         /// <param name="unitOfWork">The unit of work</param>
         public TournamentService(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -31,7 +31,7 @@
         /// <returns>all tournaments</returns>
         public IQueryable<Tournament> GetAllTournaments()
         {
-            return this._unitOfWork.Tournaments.FindAll();
+            return _unitOfWork.Tournaments.FindAll();
         }
     }
 }

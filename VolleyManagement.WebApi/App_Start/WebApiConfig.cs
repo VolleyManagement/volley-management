@@ -1,19 +1,16 @@
-﻿namespace SoftServe.VolleyManagement.WebApi
+﻿namespace VolleyManagement.WebApi
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Http;
 
     /// <summary>
-    /// Web application programming interface configuration class
+    /// Defines WebAPIConfig
     /// </summary>
     public static class WebApiConfig
     {
         /// <summary>
-        /// register configuration
+        /// Register configuration
         /// </summary>
-        /// <param name="config">http configuration</param>
+        /// <param name="config">Http configuration</param>
         public static void Register(HttpConfiguration config)
         {
             config.Routes.MapHttpRoute(

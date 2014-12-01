@@ -4,14 +4,14 @@
     using System.Web.Mvc;
 
     /// <summary>
-    /// filter configuration class
+    /// Defines FilterConfig
     /// </summary>
     public class FilterConfig
     {
         /// <summary>
-        /// register global filters
+        /// Register global filters
         /// </summary>
-        /// <param name="filters">global filter collection</param>
+        /// <param name="filters">Global filter collection</param>
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());

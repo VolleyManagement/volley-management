@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITournamentService.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Defines interface for TournamentService.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace VolleyManagement.Contracts
+﻿namespace VolleyManagement.Contracts
 {
     using System.Linq;
     using Domain.Tournaments;

@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WebApiConfig.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Defines RouteConfig.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace VolleyManagement.WebApi
+﻿namespace VolleyManagement.WebApi
 {
     using System.Web.Http;
 

@@ -1,11 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TournamentsController.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Defines controller for Tournaments.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using System.Linq;
 
 namespace VolleyManagement.WebApi.Controllers
 {
@@ -37,7 +30,7 @@ namespace VolleyManagement.WebApi.Controllers
         /// Gets all tournaments from TournamentService
         /// </summary>
         /// <returns>All tournaments</returns>
-        public IEnumerable<Tournament> Get()
+        public IQueryable<Tournament> Get()
         {
             return this._tournamentService.GetAllTournaments();
         }

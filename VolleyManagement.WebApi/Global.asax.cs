@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MvcApplication.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Defines entry point for Application.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace VolleyManagement.WebApi
+﻿namespace VolleyManagement.WebApi
 {
     using System.Web.Http;
     using System.Web.Mvc;

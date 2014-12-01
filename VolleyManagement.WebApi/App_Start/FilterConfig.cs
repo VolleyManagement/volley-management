@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FilterConfig.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Defines FilterConfig.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace VolleyManagement.WebApi
+﻿namespace VolleyManagement.WebApi
 {
     using System.Web.Mvc;
 

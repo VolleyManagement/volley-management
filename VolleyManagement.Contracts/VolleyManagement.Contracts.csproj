@@ -47,10 +47,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VolleyManagement.Dal.MsSql\VolleyManagement.Dal.MsSql.csproj">
-      <Project>{f82ff279-9d06-4494-bc61-1b7ac88a737d}</Project>
-      <Name>VolleyManagement.Dal.MsSql</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
       <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>
       <Name>VolleyManagement.Domain</Name>

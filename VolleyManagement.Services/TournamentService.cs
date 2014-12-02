@@ -35,7 +35,7 @@
         }
 
         /// <summary>
-        /// Create new tournament
+        /// Create tournament
         /// </summary>
         /// <param name="tournament">New tournament</param>
         public void Create(Tournament tournament)
@@ -46,9 +46,8 @@
         /// <summary>
         /// Edit tournament
         /// </summary>
-        /// <param name="tournament">New tournament data</param>
-        /// <param name="dalTournament">New data to database</param>
-        public void Edit(Tournament tournament, VolleyManagement.Dal.MsSql.Tournament dalTournament)
+        /// <param name="tournament">New data</param>
+        public void Edit(Tournament tournament)
         {
             throw new System.NotImplementedException();
         }

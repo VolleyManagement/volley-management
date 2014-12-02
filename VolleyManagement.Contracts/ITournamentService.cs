@@ -24,7 +24,6 @@
         /// Edit tournament
         /// </summary>
         /// <param name="tournament">New tournament data</param>
-        /// <param name="dalTournament">Tournament to database</param>
-        void Edit(Tournament tournament, VolleyManagement.Dal.MsSql.Tournament dalTournament);
+        void Edit(Tournament tournament);
     }
 }

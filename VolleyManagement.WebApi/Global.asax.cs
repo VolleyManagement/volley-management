@@ -4,6 +4,7 @@
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using VolleyManagement.WebApi.Infrastructure;
 
     /// <summary>
     /// Defines MVCApplication
@@ -21,6 +22,8 @@
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            DependencyResolver.SetResolver(new NinjectDependncyResolver());
+
         }
     }
 }

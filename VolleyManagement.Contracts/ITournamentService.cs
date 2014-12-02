@@ -12,6 +12,19 @@
         /// Gets list of all tournaments
         /// </summary>
         /// <returns>Return list of all tournaments.</returns>
-        IQueryable<Tournament> GetAllTournaments();
+        IQueryable<Tournament> GetAll();
+
+        /// <summary>
+        /// Create new tournament.
+        /// </summary>
+        /// <param name="tournament">New tournament</param>
+        void Create(Tournament tournament);
+
+        /// <summary>
+        /// Edit tournament
+        /// </summary>
+        /// <param name="tournament">New tournament data</param>
+        /// <param name="dalTournament">Tournament to database</param>
+        void Edit(Tournament tournament, VolleyManagement.Dal.MsSql.Tournament dalTournament);
     }
 }

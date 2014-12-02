@@ -29,9 +29,28 @@
         /// Method to get all tournaments
         /// </summary>
         /// <returns>all tournaments</returns>
-        public IQueryable<Tournament> GetAllTournaments()
+        public IQueryable<Tournament> GetAll()
         {
             return _unitOfWork.Tournaments.FindAll();
+        }
+
+        /// <summary>
+        /// Create new tournament
+        /// </summary>
+        /// <param name="tournament">New tournament</param>
+        public void Create(Tournament tournament)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Edit tournament
+        /// </summary>
+        /// <param name="tournament">New tournament data</param>
+        /// <param name="dalTournament">New data to database</param>
+        public void Edit(Tournament tournament, VolleyManagement.Dal.MsSql.Tournament dalTournament)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

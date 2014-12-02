@@ -32,7 +32,7 @@
         /// <returns>All tournaments</returns>
         public IQueryable<Tournament> Get()
         {
-            return this._tournamentService.GetAllTournaments();
+            return this._tournamentService.GetAll();
         }
     }
 }

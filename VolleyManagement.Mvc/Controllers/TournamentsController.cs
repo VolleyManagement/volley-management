@@ -29,7 +29,7 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            var tournaments = _tournamentService.GetAllTournaments().ToList();
+            var tournaments = _tournamentService.GetAll().ToList();
             return View(tournaments);
         }
     }

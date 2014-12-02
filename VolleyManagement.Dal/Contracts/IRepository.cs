@@ -5,17 +5,16 @@
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Describe methods to work with data from store.
+    /// Define methods to work with data from store.
     /// </summary>
     /// <typeparam name="T">The type from the store.</typeparam>
     public interface IRepository<T>
          where T : class
     {
         /// <summary>
-        /// Gets all elements of T type.
+        /// Gets unit of work for data store.
         /// </summary>
-        /// <returns>Collection of T type objects from the store.</returns>
-        IQueryable<T> FindAll();
+        IUnitOfWork UnitOfWork { get; }
 
         /// <summary>
         /// Gets specified elements of T type.

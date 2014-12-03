@@ -1,9 +1,12 @@
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(VolleyManagement.Mvc.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(VolleyManagement.Mvc.App_Start.NinjectWebCommon), "Stop")]
+[module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCopPlus.StyleCopPlusRules",
+    "SP0100:AdvancedNamingRules", Justification = "Ninject.")]
 
 namespace VolleyManagement.Mvc.App_Start
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -11,28 +14,36 @@ namespace VolleyManagement.Mvc.App_Start
     using Ninject;
     using Ninject.Web.Common;
 
-    public static class NinjectWebCommon 
+    /// <summary>
+    /// Registers HttpModules
+    /// </summary>
+    /// using System.Diagnostics.CodeAnalysis;
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Ninject")]
+    public static class NinjectWebCommon
     {
-        private static readonly Bootstrapper bootstrapper = new Bootstrapper();
+        /// <summary>
+        /// Bootstrapper bootstrapper
+        /// </summary>
+        private static readonly Bootstrapper _bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
-            bootstrapper.Initialize(CreateKernel);
+            _bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
         public static void Stop()
         {
-            bootstrapper.ShutDown();
+            _bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -61,6 +72,6 @@ namespace VolleyManagement.Mvc.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-        }        
+        }
     }
 }

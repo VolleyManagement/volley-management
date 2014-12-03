@@ -1,32 +1,28 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NinjectDependencyResolver.cs" company="SoftServe">
-//   Copyright (c) SoftServe. All rights reserved.
-// </copyright>
-// <summary>
-//   Defines the Dependency Resolver.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace VolleyManagement.Mvc.Infrastructure
+﻿namespace VolleyManagement.Mvc.Infrastructure
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
+    using System.Web.Mvc;
+
     using Ninject;
-    using System.Web.Http.Dependencies;
-    using VolleyManagement.Services;
 
     /// <summary>
-    /// Repserents the DI container
+    /// Represents the DI container
     /// </summary>
-    public class NinjectDependncyResolver : IDependencyResolver
+    public class NinjectDependencyResolver : IDependencyResolver
     {
-        private readonly IKernel kernel;
+        /// <summary>
+        /// IKernel kernel
+        /// </summary>
+        private readonly IKernel _kernel;
 
-        public NinjectDependncyResolver()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NinjectDependencyResolver"/> class.
+        /// </summary>
+        /// <param name="kernel">Kernel interface</param>
+        public NinjectDependencyResolver(IKernel kernel)
         {
-            this.kernel = CreateKernel();
+            _kernel = kernel;
         }
 
         /// <summary>
@@ -36,7 +32,7 @@ namespace VolleyManagement.Mvc.Infrastructure
         /// <returns>Return service.</returns>
         public object GetService(Type serviceType)
         {
-            return this.kernel.TryGet(serviceType);
+            return this._kernel.TryGet(serviceType);
         }
 
         /// <summary>
@@ -46,28 +42,7 @@ namespace VolleyManagement.Mvc.Infrastructure
         /// <returns>Return services.</returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {
-            return this.kernel.GetAll(serviceType);
-        }
-
-        /// <summary>
-        /// Registers Ninject modules and creates a StandartKernel
-        /// </summary>
-        /// <returns>The created kernel.</returns>
-        private static IKernel CreateKernel()
-        {
-            var kernel = new StandardKernel();
-
-            return kernel;
-        }
-
-        public IDependencyScope BeginScope()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
+            return this._kernel.GetAll(serviceType);
         }
     }
 }

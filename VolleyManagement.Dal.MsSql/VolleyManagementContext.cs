@@ -11,7 +11,7 @@ namespace VolleyManagement.Dal.MsSql
         /// Initializes a new instance of the <see cref="VolleyManagementContext" /> class.
         /// </summary>
         public VolleyManagementContext()
-            : base("name=VolleyManagementContext")
+            : base("VolleyManagementContext")
         {
         }
 

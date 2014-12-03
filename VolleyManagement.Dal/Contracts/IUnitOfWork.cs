@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Dal.Contracts
 {
     using System;
-    using System.Data.Objects;
+    using System.Data.Entity.Core.Objects;
 
     using VolleyManagement.Domain.Tournaments;
 

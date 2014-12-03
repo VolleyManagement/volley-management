@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Dal.Contracts
 {
     using System;
+    using System.Data.Objects;
 
     using VolleyManagement.Domain.Tournaments;
 
@@ -10,9 +11,9 @@
     public interface IUnitOfWork : IDisposable
     {
         /// <summary>
-        /// Gets the Tournament repository.
+        /// Gets database context
         /// </summary>
-        IRepository<Tournament> Tournaments { get; }
+        ObjectContext Context { get; }
 
         /// <summary>
         /// Commits all the changes the store.

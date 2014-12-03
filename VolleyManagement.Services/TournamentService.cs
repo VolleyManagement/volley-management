@@ -2,9 +2,9 @@
 {
     using System.Linq;
 
-    using global::VolleyManagement.Contracts;
-    using global::VolleyManagement.Dal.Contracts;
-    using global::VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
     /// Defines TournamentService
@@ -12,26 +12,26 @@
     public class TournamentService : ITournamentService
     {
         /// <summary>
-        /// Holds UnitOfWork instance to access to repository
+        /// Holds TournamentRepository instance
         /// </summary>
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ITournamentRepository _tournamentRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentService"/> class
         /// </summary>
-        /// <param name="unitOfWork">The unit of work</param>
-        public TournamentService(IUnitOfWork unitOfWork)
+        /// <param name="tournamentRepository">The tournament repository</param>
+        public TournamentService(ITournamentRepository tournamentRepository)
         {
-            _unitOfWork = unitOfWork;
+            _tournamentRepository = tournamentRepository;
         }
 
         /// <summary>
         /// Method to get all tournaments
         /// </summary>
-        /// <returns>all tournaments</returns>
+        /// <returns>All tournaments</returns>
         public IQueryable<Tournament> GetAll()
         {
-            return _unitOfWork.Tournaments.FindAll();
+            return _tournamentRepository.FindAll();
         }
 
         /// <summary>

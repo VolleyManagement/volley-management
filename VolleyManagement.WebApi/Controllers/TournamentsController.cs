@@ -3,14 +3,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Http;
-
+    using System.Web.Http.OData;
     using Contracts;
     using Domain.Tournaments;
 
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
-    public class TournamentsController : ApiController
+    public class TournamentsController : ODataController
     {
         /// <summary>
         /// Holds TournamentService instance

@@ -53,13 +53,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject.Web.Common">
-      <HintPath>..\packages\Ninject.Web.Common.3.0.0.7\lib\net40-full\Ninject.Web.Common.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net40-full\Ninject.Web.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -141,9 +141,8 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="WebActivator">
-      <HintPath>..\packages\WebActivator.1.5.3\lib\net40\WebActivator.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +180,10 @@
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">
       <Project>{285d93e6-1ad5-4f78-aef6-72b81d81465d}</Project>
       <Name>VolleyManagement.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Dal.MsSql\VolleyManagement.Dal.MsSql.csproj">
+      <Project>{f82ff279-9d06-4494-bc61-1b7ac88a737d}</Project>
+      <Name>VolleyManagement.Dal.MsSql</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
       <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>

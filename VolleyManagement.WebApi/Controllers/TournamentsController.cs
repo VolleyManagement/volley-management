@@ -23,7 +23,7 @@
         /// <param name="tournamentService">The tournament service</param>
         public TournamentsController(ITournamentService tournamentService)
         {
-            this._tournamentService = tournamentService;
+            _tournamentService = tournamentService;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@
         /// <returns>All tournaments</returns>
         public IQueryable<Tournament> Get()
         {
-            return this._tournamentService.GetAll();
+            return _tournamentService.GetAll();
         }
     }
 }

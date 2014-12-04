@@ -1,7 +1,9 @@
 ﻿namespace VolleyManagement.WebApi
 {
     using System.Web.Http;
-
+    using System.Web.Http.OData.Builder;
+    using VolleyManagement.Domain.Tournaments;
+    
     /// <summary>
     /// Defines WebAPIConfig
     /// </summary>
@@ -17,6 +19,10 @@
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional });
+
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Tournament>("Tournaments");
+            config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
         }
     }
 }

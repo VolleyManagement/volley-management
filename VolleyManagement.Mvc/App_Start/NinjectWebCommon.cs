@@ -1,10 +1,13 @@
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(VolleyManagement.Mvc.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(VolleyManagement.Mvc.App_Start.NinjectWebCommon), "Stop")]
+[module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCopPlus.StyleCopPlusRules",
+    "SP0100:AdvancedNamingRules", Justification = "Ninject.")]
 
 namespace VolleyManagement.Mvc.App_Start
 {
     using System;
     using System.Web;
+    using System.Diagnostics.CodeAnalysis;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
@@ -13,6 +16,7 @@ namespace VolleyManagement.Mvc.App_Start
     using VolleyManagement.Services.Infrastructure;
     using VolleyManagement.Dal.MsSql.Infrastructure;
 
+    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "Ninject")]
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();

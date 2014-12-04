@@ -1,5 +1,5 @@
-[assembly: WebActivator.PreApplicationStartMethod(typeof(VolleyManagement.WebApi.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(VolleyManagement.WebApi.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(VolleyManagement.WebApi.App_Start.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(VolleyManagement.WebApi.App_Start.NinjectWebCommon), "Stop")]
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCopPlus.StyleCopPlusRules",
     "SP0100:AdvancedNamingRules", Justification = "Ninject.")]
 
@@ -12,6 +12,11 @@ namespace VolleyManagement.WebApi.App_Start
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using Ninject;
     using Ninject.Web.Common;
+    using VolleyManagement.WebApi.Infrastructure;
+    using System.Web.Http;
+
+    using VolleyManagement.Services.Infrastructure;
+    using VolleyManagement.Dal.MsSql.Infrastructure;
 
     /// <summary>
     /// Registers HttpModules
@@ -48,11 +53,16 @@ namespace VolleyManagement.WebApi.App_Start
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
-            var kernel = new StandardKernel();
+            var kernel = new StandardKernel(
+                new NinjectDataAccessModule(),
+                new NinjectServiceBindModule()
+                );
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
             RegisterServices(kernel);
+            GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
+
             return kernel;
         }
 

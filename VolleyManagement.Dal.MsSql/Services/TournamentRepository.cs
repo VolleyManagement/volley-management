@@ -4,7 +4,6 @@
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     using System.Linq.Expressions;
-
     using VolleyManagement.Dal.Contracts;
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Tournaments;
@@ -17,7 +16,7 @@
         /// <summary>
         /// Holds object set of DAL tournaments.
         /// </summary>
-        private readonly ObjectSet<Dal.Tournament> dalTournaments;
+        private readonly ObjectSet<Dal.Tournament> _dalTournaments;
 
         /// <summary>
         /// Holds UnitOfWork instance.
@@ -31,7 +30,7 @@
         public TournamentRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            dalTournaments = unitOfWork.Context.CreateObjectSet<Dal.Tournament>();
+            _dalTournaments = unitOfWork.Context.CreateObjectSet<Dal.Tournament>();
         }
 
         /// <summary>
@@ -48,7 +47,7 @@
         /// <returns>Collection of domain tournaments.</returns>
         public IQueryable<Domain.Tournament> FindAll()
         {
-            return dalTournaments.Select(t => new Domain.Tournament
+            return _dalTournaments.Select(t => new Domain.Tournament
             {
                 Id = t.Id,
                 Name = t.Name,

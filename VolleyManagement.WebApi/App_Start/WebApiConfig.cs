@@ -3,7 +3,7 @@
     using System.Web.Http;
     using System.Web.Http.OData.Builder;
     using VolleyManagement.Domain.Tournaments;
-    
+
     /// <summary>
     /// Defines WebAPIConfig
     /// </summary>

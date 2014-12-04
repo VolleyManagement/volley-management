@@ -8,20 +8,20 @@
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
     /// </summary>
-    internal class EFVolleyUnitOfWork : IUnitOfWork
+    internal class VolleyUnitOfWork : IUnitOfWork
     {
         /// <summary>
         /// Context of the data source.
         /// </summary>
-        private readonly ObjectContext context;
+        private readonly ObjectContext _context;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EFVolleyUnitOfWork"/> class.
+        /// Initializes a new instance of the <see cref="VolleyUnitOfWork"/> class.
         /// </summary>
-        public EFVolleyUnitOfWork()
+        public VolleyUnitOfWork()
         {
-            context = ((IObjectContextAdapter)new VolleyManagementContext()).ObjectContext;
-            context.ContextOptions.LazyLoadingEnabled = true;
+            _context = ((IObjectContextAdapter)new VolleyManagementContext()).ObjectContext;
+            _context.ContextOptions.LazyLoadingEnabled = true;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@
         /// </summary>
         public ObjectContext Context
         {
-            get { return context; }
+            get { return _context; }
         }
 
         /// <summary>
@@ -37,7 +37,7 @@
         /// </summary>
         public void Commit()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@
         /// </summary>
         public void Dispose()
         {
-            context.Dispose();
+            _context.Dispose();
         }
     }
 }

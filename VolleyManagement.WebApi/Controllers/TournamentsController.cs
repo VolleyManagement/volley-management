@@ -3,14 +3,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Http;
-
+    using System.Web.Http.OData;
     using Contracts;
     using Domain.Tournaments;
 
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
-    public class TournamentsController : ApiController
+    public class TournamentsController : ODataController
     {
         /// <summary>
         /// Holds TournamentService instance
@@ -23,7 +23,7 @@
         /// <param name="tournamentService">The tournament service</param>
         public TournamentsController(ITournamentService tournamentService)
         {
-            this._tournamentService = tournamentService;
+            _tournamentService = tournamentService;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@
         /// <returns>All tournaments</returns>
         public IQueryable<Tournament> Get()
         {
-            return this._tournamentService.GetAll();
+            return _tournamentService.GetAll();
         }
     }
 }

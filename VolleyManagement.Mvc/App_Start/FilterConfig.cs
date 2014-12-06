@@ -1,4 +1,4 @@
-﻿namespace SoftServe.VolleyManagement.Mvc
+﻿namespace VolleyManagement.Mvc
 {
     using System.Web;
     using System.Web.Mvc;

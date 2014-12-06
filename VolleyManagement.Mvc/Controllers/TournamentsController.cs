@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Web.Mvc;
-    using global::VolleyManagement.Contracts;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Domain.Tournaments;
 
     /// <summary>

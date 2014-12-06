@@ -51,5 +51,24 @@
         {
             throw new System.NotImplementedException();
         }
+
+        /// <summary>
+        /// Delete specific tournament
+        /// </summary>
+        /// <param name="id">Tournament id</param>
+        public void Delete(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Find tournament by id
+        /// </summary>
+        /// <param name="id">Tournament id</param>
+        /// <returns>Specific tournament</returns>
+        public Tournament FindById(int id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace VolleyManagement.Dal.MsSql
         public VolleyManagementContext()
             : base("VolleyManagementContext")
         {
+            var instance = System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
 
         /// <summary>

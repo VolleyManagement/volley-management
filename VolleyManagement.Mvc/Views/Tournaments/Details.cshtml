@@ -1,0 +1,32 @@
+@model VolleyManagement.Domain.Tournaments.Tournament
+
+@{
+    ViewBag.Title = "Tournament details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Tournament</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">@Model.Name</div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">@Model.Description</div>
+
+    <div class="display-label">Season</div>
+    <div class="display-field">@Model.Season</div>
+
+    <div class="display-label">Scheme</div>
+    <div class="display-field">@Model.Scheme</div>
+
+    <div class="display-label">RegulationsLink</div>
+    <div class="display-field">@Model.RegulationsLink</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

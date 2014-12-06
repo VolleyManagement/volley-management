@@ -6,6 +6,9 @@
 
 <h2>@ViewBag.Title</h2>
 
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table>
     <tr>
         <th>
@@ -14,15 +17,20 @@
         <th>
             @Html.DisplayNameFor(model => model.Season)
         </th>
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
+        <td>           
+            @Html.ActionLink("Details", item.Name, new { id=item.Id })   
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Season)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })  
         </td>
     </tr>
 }

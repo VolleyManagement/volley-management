@@ -24,7 +24,16 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentService"/> class
         /// </summary>
-        /// <param name="modelState">The state of model</param>
+        /// <param name="tournamentRepository">The tournament repository</param>
+        public TournamentService(ITournamentRepository tournamentRepository)
+        {
+            _tournamentRepository = tournamentRepository;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modelState"></param>
         /// <param name="tournamentRepository">The tournament repository</param>
         public TournamentService(ModelStateDictionary modelState, ITournamentRepository tournamentRepository)
         {
@@ -105,6 +114,7 @@
             {
                 _modelState.AddModelError("RegulationsLink", "Regulations link is required.");
             }
+
             return _modelState.IsValid;
         }
     }

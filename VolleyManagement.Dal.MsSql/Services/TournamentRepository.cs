@@ -71,10 +71,20 @@
         /// <summary>
         /// Adds new tournament.
         /// </summary>
-        /// <param name="newEntity">The tournament to add.</param>
+        /// <param name="newEntity">The tournament for adding.</param>
         public void Add(Domain.Tournament newEntity)
         {
-            throw new NotImplementedException();
+            Dal.Tournament newTournament = new Dal.Tournament()
+            {
+                Id = newEntity.Id,
+                Name = newEntity.Name,
+                Description = newEntity.Description,
+                RegulationsLink = newEntity.RegulationsLink,
+                Scheme = newEntity.Scheme,
+                Season = newEntity.Season
+            };
+            _dalTournaments.AddObject(newTournament);
+            _unitOfWork.Commit();
         }
 
         /// <summary>

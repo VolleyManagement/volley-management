@@ -38,5 +38,12 @@
         /// </summary>
         /// <param name="tournament">New tournament data</param>
         void Edit(Tournament tournament);
+
+        /// <summary>
+        /// Find a Tournament by id
+        /// </summary>
+        /// <param name="id">id of Tournament to find</param>
+        /// <returns>Found Tournament</returns>
+        Tournament FindById(int id);
     }
 }

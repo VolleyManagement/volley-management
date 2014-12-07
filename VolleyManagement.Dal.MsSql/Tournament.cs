@@ -40,7 +40,6 @@ namespace VolleyManagement.Dal.MsSql
         /// <summary>
         /// Gets or sets the tournament description
         /// </summary>
-        [Required]
         [StringLength(1024)]
         public string Description { get; set; }
 

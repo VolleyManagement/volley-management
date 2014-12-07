@@ -19,11 +19,12 @@
             SchemeList = new List<string> { "1", "2", "2.5" };
             SeasonsList = new List<string>();
             int currentYear = DateTime.Now.Year;
-
-            for (int i = 0; i < 9; i++)
+            const int yearsRange = 16;
+            const int yearsBefore = -5;
+            for (int i = 0; i < yearsRange; i++)
             {
-                this.SeasonsList.Add((currentYear - 3 + i).ToString() + "/"
-                    + (currentYear - 2 + i).ToString());
+                SeasonsList.Add((currentYear + yearsBefore + i).ToString() + "/"
+                    + (currentYear + yearsBefore + 1 + i).ToString());
             }
         }
 

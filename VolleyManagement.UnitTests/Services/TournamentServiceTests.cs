@@ -8,8 +8,8 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Builders.Tournaments;
     using VolleyManagement.UnitTests.Comparers.Tournaments;
-    using VolleyManagement.UnitTests.ObjectMothers.Tournaments;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -26,17 +26,30 @@
             Justification = "The names of the tests have their own naming conventions.")]
         public void GetAll_TournamentsExist_TournamentsReturned()
         {
-            var tournamentRepositoryMock = new Mock<ITournamentRepository>();
-            tournamentRepositoryMock.Setup(r => r.FindAll())
-                .Returns(TournamentObjectMother.CreateTournaments().AsQueryable());
-            ITournamentRepository tournamentRepository = tournamentRepositoryMock.Object;
-            var tournamentService = new TournamentService(tournamentRepository);
+            var tournamentService = new TournamentService(CreateMockTournamentRepository());
 
-            var expectedTournaments = new List<Tournament>(
-                TournamentObjectMother.CreateTournaments());
-            var actualTournaments = tournamentService.GetAll().ToList();
+            var expectedTournaments = new TournamentsAppServiceFixture()
+                                            .TestTournaments()
+                                            .Build();
 
-            CollectionAssert.AreEqual(expectedTournaments, actualTournaments, new TournamentComparer());
+            var actualTournaments = tournamentService.GetAll().OrderBy(t => t.Id).ToList();
+
+            Assert.IsTrue(expectedTournaments.SequenceEqual(actualTournaments, new TournamentComparer()));
+        }
+
+        /// <summary>
+        /// Creates mock of ITournamentRepository
+        /// </summary>
+        /// <returns>Tournament repository mock</returns>
+        private ITournamentRepository CreateMockTournamentRepository()
+        {
+            var mockTournamentRepository = new Mock<ITournamentRepository>();
+            mockTournamentRepository.Setup(r => r.FindAll())
+                .Returns(new TournamentsAppServiceFixture()
+                                .TestTournaments()
+                                .Build()
+                                .AsQueryable());
+            return mockTournamentRepository.Object;
         }
     }
 }

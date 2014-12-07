@@ -60,8 +60,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Builders\Tournaments\TournamentsAppServiceFixture.cs" />
     <Compile Include="Comparers\Tournaments\TournamentComparer.cs" />
-    <Compile Include="ObjectMothers\Tournaments\TournamentObjectMother.cs" />
     <Compile Include="Services\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -86,6 +86,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

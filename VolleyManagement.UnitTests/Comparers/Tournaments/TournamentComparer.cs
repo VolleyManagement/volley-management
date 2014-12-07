@@ -7,48 +7,54 @@
     /// <summary>
     /// Comparer for tournament objects.
     /// </summary>
-    internal class TournamentComparer : IComparer<Tournament>, IComparer
+    internal class TournamentComparer : IEqualityComparer<Tournament>
     {
         /// <summary>
-        /// Compares two tournament objects.
+        /// Finds out whether two tournament objects are equal.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of tournaments.</returns>
-        public int Compare(Tournament x, Tournament y)
+        /// <returns>True if given tournaments are equal.</returns>
+        public bool Equals(Tournament x, Tournament y)
         {
-            if (x.Id == y.Id)
+            if (object.ReferenceEquals(x, y))
             {
-                return 0;
+                return true;
             }
 
-            if (x.Id < y.Id)
-            {
-                return -1;
-            }
-            else
-            {
-                return 1;
-            }
+            return x != null && y != null && IsEqual(x, y);
         }
 
         /// <summary>
-        /// Compares two tournament objects (non-generic implementation).
+        /// Calculates tournament HashCode.
+        /// </summary>
+        /// <param name="obj">Tournament object.</param>
+        /// <returns>Returns hash code for this instance.</returns>
+        public int GetHashCode(Tournament obj)
+        {
+            int hashName = obj.Name.GetHashCode();
+            int hashId = obj.Id.GetHashCode();
+            return hashName ^ hashId;
+        }
+
+        /// <summary>
+        /// Finds out whether two tournament objects have the same properties.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of tournaments.</returns>
-        public int Compare(object x, object y)
+        /// <returns>True if given tournaments have the same properties.</returns>
+        private bool IsEqual(Tournament x, Tournament y)
         {
-            Tournament firstTournament = x as Tournament;
-            Tournament secondTournament = y as Tournament;
-
-            if (firstTournament == null || secondTournament == null)
+            if (x.Description.Equals(y.Description) && x.Name.Equals(y.Name)
+                && x.Id.Equals(y.Id) && x.RegulationsLink.Equals(y.RegulationsLink)
+                && x.Scheme.Equals(y.Scheme) && x.Season.Equals(y.Season))
             {
-                return -1;
+                return true;
             }
-
-            return Compare(firstTournament, secondTournament);
+            else
+            {
+                return false;
+            }
         }
     }
 }

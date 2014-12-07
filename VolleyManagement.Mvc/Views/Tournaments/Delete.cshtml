@@ -10,19 +10,19 @@
 <fieldset>
     <legend>@VolleyManagement.Mvc.Views.ViewResources.TournamentLegend</legend>
 
-    <div class="display-label">Name</div>
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
     <div class="display-field">@Model.Name</div>
 
-    <div class="display-label">Description</div>
+    <div class="display-label">@Html.LabelFor(model => model.Description)</div>
     <div class="display-field">@Model.Description</div>
 
-    <div class="display-label">Season</div>
+    <div class="display-label">@Html.LabelFor(model => model.Season)</div>
     <div class="display-field">@Model.Season</div>
 
-    <div class="display-label">Scheme</div>
+    <div class="display-label">@Html.LabelFor(model => model.Scheme)</div>
     <div class="display-field">@Model.Scheme</div>
 
-    <div class="display-label">RegulationsLink</div>
+    <div class="display-label">@Html.LabelFor(model => model.RegulationsLink)</div>
     <div class="display-field">@Model.RegulationsLink</div>
 </fieldset>
 @using (Html.BeginForm()) {

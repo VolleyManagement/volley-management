@@ -16,10 +16,6 @@
         public TournamentViewModel()
         {
             Tournament = new Tournament();
-            //           List<SelectListItem> items = new List<SelectListItem>();
-             //items.Add(new SelectListItem { Text = "Action", Value = "0"});
-             //items.Add(new SelectListItem { Text = "Drama", Value = "1" });
-             //items.Add(new SelectListItem { Text = "Comedy", Value = "2", Selected = true });
             SchemeList = new List<string> { "1", "2", "2.5" };
             SeasonsList = new List<string>();
             int currentYear = DateTime.Now.Year;

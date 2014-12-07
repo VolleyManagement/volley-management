@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Linq.Expressions;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Tournaments;
 
@@ -65,7 +66,15 @@
         /// <returns>Collection of domain tournaments.</returns>
         public IQueryable<Domain.Tournament> FindWhere(Expression<Func<Domain.Tournament, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _dalTournaments.Select(t => new Domain.Tournament
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Description = t.Description,
+                RegulationsLink = t.RegulationsLink,
+                Scheme = t.Scheme,
+                Season = t.Season
+            }).Where(predicate);
         }
 
         /// <summary>

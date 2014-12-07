@@ -25,7 +25,6 @@
             _tournamentRepository = tournamentRepository;
         }
 
-
         /// <summary>
         /// Method to get all tournaments
         /// </summary>
@@ -41,11 +40,8 @@
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
-            if (ValidateTournament(tournamentToCreate))
-            {
-                _tournamentRepository.Add(tournamentToCreate);
-                _tournamentRepository.UnitOfWork.Commit();
-            }
+            _tournamentRepository.Add(tournamentToCreate);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -55,7 +51,7 @@
         /// <returns>A found Tournament</returns>
         public Tournament FindById(int id)
         {
-            var tournament = _tournamentRepository.FindWhere(t => t.Id == id).First();
+            var tournament = _tournamentRepository.FindWhere(t => t.Id == id).Single();
             return tournament;
         }
 
@@ -66,5 +62,15 @@
         public void Edit(Tournament tournament)
         {
             throw new System.NotImplementedException();
-        }    }
+        }
+
+        /// <summary>
+        /// Delete tournament
+        /// </summary>
+        /// <param name="id">Tournament id</param>
+        public void Delete(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

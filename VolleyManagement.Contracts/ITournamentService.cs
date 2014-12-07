@@ -15,13 +15,6 @@
         IQueryable<Tournament> GetAll();
 
         /// <summary>
-        /// Find tournament by id
-        /// </summary>
-        /// <param name="id">Tournament id</param>
-        /// <returns>Specific tournament</returns>
-        Tournament FindById(int id);
-
-        /// <summary>
         /// Delete specific tournament
         /// </summary>
         /// <param name="id">Tournament id</param>

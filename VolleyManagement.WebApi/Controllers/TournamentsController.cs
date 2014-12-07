@@ -9,7 +9,7 @@
     using System.Web.Http.OData.Routing;
     using Contracts;
     using Domain.Tournaments;
-    
+
     /// <summary>
     /// Defines TournamentsController
     /// </summary>

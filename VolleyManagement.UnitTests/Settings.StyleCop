@@ -1,0 +1,15 @@
+<StyleCopSettings Version="105">
+  <Analyzers>
+    <Analyzer AnalyzerId="StyleCopPlus.StyleCopPlusRules">
+      <AnalyzerSettings>
+        <StringProperty Name="AdvancedNaming_MethodGeneral">
+        </StringProperty>
+        <StringProperty Name="AdvancedNaming_MethodPrivateEventHandler">
+        </StringProperty>
+        <StringProperty Name="AdvancedNaming_MethodProtectedEventHandler">
+        </StringProperty>
+        <StringProperty Name="AdvancedNaming_MethodTest">$(AaBb):$(Aa_Bb):$(AaBb)_$(AaBb)_$(AaBb)</StringProperty>
+      </AnalyzerSettings>
+    </Analyzer>
+  </Analyzers>
+</StyleCopSettings>

@@ -4,6 +4,7 @@
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Defines TournamentsController
@@ -51,24 +52,25 @@
         /// <returns>View to create a tournament</returns>
         public ActionResult Create()
         {
-            return View();
+            TournamentViewModel tournamentViewModel = new TournamentViewModel();
+            return View(tournamentViewModel);
         }
 
         /// <summary>
         /// Create tournament action (POST)
         /// </summary>
-        /// <param name="tournament">Tournament, which the user wants to create</param>
+        /// <param name="tournamentViewModel">Tournament, which the user wants to create</param>
         /// <returns>Index view if tournament was valid, else - create view</returns>
         [HttpPost]
-        public ActionResult Create(Tournament tournament)
+        public ActionResult Create(TournamentViewModel tournamentViewModel)
         {
             if (ModelState.IsValid)
             {
-                _tournamentService.Create(tournament);
+                _tournamentService.Create(tournamentViewModel.Tournament);
                 return RedirectToAction("Index");
             }
 
-            return View(tournament);
+            return View(tournamentViewModel);
         }
 
         /// <summary>
@@ -78,25 +80,26 @@
         /// <returns>View to edit specific tournament</returns>
         public ActionResult Edit(int id)
         {
-            Tournament tournament = _tournamentService.FindById(id);
-            return View(tournament);
+            TournamentViewModel tournamentViewModel = new TournamentViewModel();
+            tournamentViewModel.Tournament = _tournamentService.FindById(id);
+            return View(tournamentViewModel);
         }
 
         /// <summary>
         /// Edit tournament action (POST)
         /// </summary>
-        /// <param name="tournament">Tournament after editing</param>
+        /// <param name="tournamentViewModel">Tournament after editing</param>
         /// <returns>Index view if tournament was valid, else - edit view</returns>
         [HttpPost]
-        public ActionResult Edit(Tournament tournament)
+        public ActionResult Edit(TournamentViewModel tournamentViewModel)
         {
             if (ModelState.IsValid)
             {
-                _tournamentService.Edit(tournament);
+                _tournamentService.Edit(tournamentViewModel.Tournament);
                 return RedirectToAction("Index");
             }
 
-            return View(tournament);
+            return View(tournamentViewModel);
         }
 
         /// <summary>

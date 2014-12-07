@@ -1,44 +1,44 @@
-@model VolleyManagement.Domain.Tournaments.Tournament
+@model VolleyManagement.Mvc.ViewModels.Tournaments.TournamentViewModel
 
 @* This partial view defines form fields that will appear when creating and editing entities *@
 
 <div class="editor-label">
-    @Html.LabelFor(model => model.Name)
+    @Html.LabelFor(model => model.Tournament.Name)
 </div>
 <div class="editor-field">
-    @Html.EditorFor(model => model.Name)
-    @Html.ValidationMessageFor(model => model.Name)
+    @Html.EditorFor(model => model.Tournament.Name)
+    @Html.ValidationMessageFor(model => model.Tournament.Name)
 </div>
 
 <div class="editor-label">
-    @Html.LabelFor(model => model.Description)
+    @Html.LabelFor(model => model.Tournament.Description)
 </div>
 <div class="editor-field">
-    @Html.EditorFor(model => model.Description)
-    @Html.ValidationMessageFor(model => model.Description)
+    @Html.EditorFor(model => model.Tournament.Description)
+    @Html.ValidationMessageFor(model => model.Tournament.Description)
 </div>
 
 <div class="editor-label">
-    @Html.LabelFor(model => model.Season)
+    @Html.LabelFor(model => model.Tournament.Season)
 </div>
 <div class="editor-field">
-    @Html.EditorFor(model => model.Season)
-    @Html.ValidationMessageFor(model => model.Season)
+    @Html.DropDownListFor(model => model.Tournament.Season, new SelectList(Model.SeasonsList))
+    @Html.ValidationMessageFor(model => model.Tournament.Season)
 </div>
 
 <div class="editor-label">
-    @Html.LabelFor(model => model.Scheme)
+    @Html.LabelFor(model => model.Tournament.Scheme)
 </div>
 <div class="editor-field">
-    @Html.EditorFor(model => model.Scheme)
-    @Html.ValidationMessageFor(model => model.Scheme)
+    @Html.DropDownListFor(model => model.Tournament.Scheme, new SelectList(Model.SchemeList))
+    @Html.ValidationMessageFor(model => model.Tournament.Scheme)
 </div>
 
 <div class="editor-label">
-    @Html.LabelFor(model => model.RegulationsLink)
+    @Html.LabelFor(model => model.Tournament.RegulationsLink)
 </div>
 <div class="editor-field">
-    @Html.EditorFor(model => model.RegulationsLink)
-    @Html.ValidationMessageFor(model => model.RegulationsLink)
+    @Html.EditorFor(model => model.Tournament.RegulationsLink)
+    @Html.ValidationMessageFor(model => model.Tournament.RegulationsLink)
 </div>
 

@@ -1,13 +1,13 @@
 @model VolleyManagement.Domain.Tournaments.Tournament
 
 @{
-    ViewBag.Title = "Tournament details";
+    ViewBag.Title = VolleyManagement.Mvc.Views.ViewResources.TournamentDetailsTitle;
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 
 <fieldset>
-    <legend>Tournament</legend>
+    <legend>@VolleyManagement.Mvc.Views.ViewResources.TournamentLegend</legend>
 
     <div class="display-label">Name</div>
     <div class="display-field">@Model.Name</div>
@@ -25,8 +25,8 @@
     <div class="display-field">@Model.RegulationsLink</div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(VolleyManagement.Mvc.Views.ViewResources.Edit, "Edit", new { id=Model.Id }) |
+    @Html.ActionLink(VolleyManagement.Mvc.Views.ViewResources.BackToList, "Index")
 </p>
 
 

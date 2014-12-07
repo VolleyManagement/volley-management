@@ -19,12 +19,14 @@
         /// <value>Name of tournament.</value>
         [Required(ErrorMessageResourceName = "TournamentNameRequired",
             ErrorMessageResourceType = typeof(Resources))]
+        [Display(Name = "TournamentName", ResourceType = typeof(Resources))]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Description.
         /// </summary>
         /// <value>Description of tournament.</value>
+        [Display(Name = "TournamentDescription", ResourceType = typeof(Resources))]
         public string Description { get; set; }
 
         /// <summary>
@@ -33,6 +35,7 @@
         /// <value>Season of tournament.</value>
         [Required(ErrorMessageResourceName = "TournamentSeasonRequired",
             ErrorMessageResourceType = typeof(Resources))]
+        [Display(Name = "TournamentSeason", ResourceType = typeof(Resources))]
         public string Season { get; set; }
 
         /// <summary>
@@ -41,12 +44,14 @@
         /// <value>Scheme of tournament.</value>
         [Required(ErrorMessageResourceName = "TournamentSchemeRequired",
             ErrorMessageResourceType = typeof(Resources))]
+        [Display(Name = "TournamentScheme", ResourceType = typeof(Resources))]
         public string Scheme { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating regulations of tournament.
         /// </summary>
         /// <value>regulations of tournament.</value>
+        [Display(Name = "TournamentRegulationsLink", ResourceType = typeof(Resources))]
         public string RegulationsLink { get; set; }
     }
 }

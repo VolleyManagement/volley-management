@@ -1,25 +1,25 @@
-@model VolleyManagement.Domain.Tournaments.Tournament
+@model VolleyManagement.Mvc.ViewModels.Tournaments.TournamentViewModel
 
 @{
-    ViewBag.Title = "Edit tournament";
+    ViewBag.Title = VolleyManagement.Mvc.Views.ViewResources.EditTournamentTitle;
 }
 
-<h2>Edit</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>Tournament</legend>
+        <legend>@VolleyManagement.Mvc.Views.ViewResources.TournamentLegend</legend>
 
-        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Tournament.Id)
 		@Html.Partial("_CreateOrEdit", Model)
 
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value=@VolleyManagement.Mvc.Views.ViewResources.Save />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(VolleyManagement.Mvc.Views.ViewResources.BackToList, "Index")
 </div>

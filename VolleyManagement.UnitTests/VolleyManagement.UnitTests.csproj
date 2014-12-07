@@ -46,6 +46,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -61,6 +62,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Comparers\Tournaments\TournamentComparer.cs" />
+    <Compile Include="Mvc\TournamentsControllerTests.cs" />
     <Compile Include="ObjectMothers\Tournaments\TournamentObjectMother.cs" />
     <Compile Include="Services\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +80,10 @@
       <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>
       <Name>VolleyManagement.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Mvc\VolleyManagement.Mvc.csproj">
+      <Project>{66b942c2-63e9-448e-8d08-f9dac7aed79c}</Project>
+      <Name>VolleyManagement.Mvc</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Services\VolleyManagement.Services.csproj">
       <Project>{4d6c885f-9e5d-4f09-b81b-cd14ed6a527f}</Project>
       <Name>VolleyManagement.Services</Name>
@@ -85,6 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

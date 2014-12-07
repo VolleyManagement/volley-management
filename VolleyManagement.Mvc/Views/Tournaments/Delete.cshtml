@@ -1,14 +1,14 @@
 @model VolleyManagement.Domain.Tournaments.Tournament
 
 @{
-    ViewBag.Title = "Delete tournament";
+    ViewBag.Title = VolleyManagement.Mvc.Views.ViewResources.DeleteTournamentTitle;
 }
 
-<h2>Delete</h2>
+<h2>@ViewBag.Title</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>@VolleyManagement.Mvc.Views.ViewResources.DeleteConfirm</h3>
 <fieldset>
-    <legend>Tournament</legend>
+    <legend>@VolleyManagement.Mvc.Views.ViewResources.TournamentLegend</legend>
 
     <div class="display-label">Name</div>
     <div class="display-field">@Model.Name</div>
@@ -27,8 +27,8 @@
 </fieldset>
 @using (Html.BeginForm()) {
     <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        <input type="submit" value=@VolleyManagement.Mvc.Views.ViewResources.Delete /> |
+        @Html.ActionLink(VolleyManagement.Mvc.Views.ViewResources.BackToList, "Index")
     </p>
 }
 

@@ -22,7 +22,7 @@ namespace VolleyManagement.Domain {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace VolleyManagement.Domain {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VolleyManagement.Domain.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace VolleyManagement.Domain {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,27 +61,72 @@ namespace VolleyManagement.Domain {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Описание.
+        /// </summary>
+        public static string TournamentDescription {
+            get {
+                return ResourceManager.GetString("TournamentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Название турнира.
+        /// </summary>
+        public static string TournamentName {
+            get {
+                return ResourceManager.GetString("TournamentName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Введите название турнира.
         /// </summary>
-        internal static string TournamentNameRequired {
+        public static string TournamentNameRequired {
             get {
                 return ResourceManager.GetString("TournamentNameRequired", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Регламент.
+        /// </summary>
+        public static string TournamentRegulationsLink {
+            get {
+                return ResourceManager.GetString("TournamentRegulationsLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Схема.
+        /// </summary>
+        public static string TournamentScheme {
+            get {
+                return ResourceManager.GetString("TournamentScheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Выберите схему турнира.
         /// </summary>
-        internal static string TournamentSchemeRequired {
+        public static string TournamentSchemeRequired {
             get {
                 return ResourceManager.GetString("TournamentSchemeRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Введите название сезона.
+        ///   Looks up a localized string similar to Сезон.
         /// </summary>
-        internal static string TournamentSeasonRequired {
+        public static string TournamentSeason {
+            get {
+                return ResourceManager.GetString("TournamentSeason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выберите сезон турнира.
+        /// </summary>
+        public static string TournamentSeasonRequired {
             get {
                 return ResourceManager.GetString("TournamentSeasonRequired", resourceCulture);
             }

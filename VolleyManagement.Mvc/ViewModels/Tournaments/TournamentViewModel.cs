@@ -20,11 +20,11 @@
             SeasonsList = new List<string>();
             int currentYear = DateTime.Now.Year;
             const int yearsRange = 16;
-            const int yearsBefore = -5;
+            const int yearsBeforeToday = 5;
             for (int i = 0; i < yearsRange; i++)
             {
-                SeasonsList.Add((currentYear + yearsBefore + i).ToString() + "/"
-                    + (currentYear + yearsBefore + 1 + i).ToString());
+                int year = currentYear - yearsBeforeToday + i;
+                SeasonsList.Add(year.ToString() + "/" + (year + 1).ToString());
             }
         }
 

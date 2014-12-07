@@ -28,8 +28,7 @@ namespace VolleyManagement.Dal.MsSql
         /// Gets or sets the tournament scheme
         /// </summary>
         [Required]
-        [StringLength(40)]
-        public string Scheme { get; set; }
+        public int Scheme { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament season

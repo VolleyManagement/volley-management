@@ -48,15 +48,15 @@
         /// <returns>Collection of domain tournaments.</returns>
         public IQueryable<Domain.Tournament> FindAll()
         {
-            return _dalTournaments.Select(t => new Domain.Tournament
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Description = t.Description,
-                RegulationsLink = t.RegulationsLink,
-                Scheme = t.Scheme,
-                Season = t.Season
-            });
+            return _dalTournaments.Select((t) => new Domain.Tournament
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Description = t.Description,
+                    RegulationsLink = t.RegulationsLink,
+                    Scheme = (Domain.Tournament.TournamentSchemeEnum)t.Scheme,
+                    Season = t.Season
+                });
         }
 
         /// <summary>
@@ -72,7 +72,7 @@
                 Name = t.Name,
                 Description = t.Description,
                 RegulationsLink = t.RegulationsLink,
-                Scheme = t.Scheme,
+                Scheme = (Domain.Tournament.TournamentSchemeEnum)t.Scheme,
                 Season = t.Season
             }).Where(predicate);
         }
@@ -89,7 +89,7 @@
                 Name = newEntity.Name,
                 Description = newEntity.Description,
                 RegulationsLink = newEntity.RegulationsLink,
-                Scheme = newEntity.Scheme,
+                Scheme = (int)newEntity.Scheme,
                 Season = newEntity.Season
             };
             _dalTournaments.AddObject(newTournament);

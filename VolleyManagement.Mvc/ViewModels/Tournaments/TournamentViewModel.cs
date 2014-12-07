@@ -16,7 +16,6 @@
         public TournamentViewModel()
         {
             Tournament = new Tournament();
-            SchemeList = new List<string> { "1", "2", "2.5" };
             SeasonsList = new List<string>();
             int currentYear = DateTime.Now.Year;
             const int yearsRange = 16;
@@ -33,12 +32,6 @@
         /// </summary>
         /// <value>The list of seasons.</value>
         public List<string> SeasonsList { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of schemes.
-        /// </summary>
-        /// <value>The list of schemes.</value>
-        public List<string> SchemeList { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament.

@@ -1,3 +1,4 @@
+@using EnumHelper
 @model VolleyManagement.Mvc.ViewModels.Tournaments.TournamentViewModel
 
 @* This partial view defines form fields that will appear when creating and editing entities *@
@@ -30,7 +31,7 @@
     @Html.LabelFor(model => model.Tournament.Scheme)
 </div>
 <div class="editor-field">
-    @Html.DropDownListFor(model => model.Tournament.Scheme, new SelectList(Model.SchemeList))
+    @Html.DropDownListFor(model => model.Tournament.Scheme)
     @Html.ValidationMessageFor(model => model.Tournament.Scheme)
 </div>
 

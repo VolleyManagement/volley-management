@@ -22,8 +22,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Mvc", "Vol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Contracts", "VolleyManagement.Contracts\VolleyManagement.Contracts.csproj", "{285D93E6-1AD5-4F78-AEF6-72B81D81465D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.UnitTests", "VolleyManagement.UnitTests\VolleyManagement.UnitTests.csproj", "{96908ED1-5E16-4771-AD88-5C9820823F28}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,10 +56,6 @@ Global
 		{285D93E6-1AD5-4F78-AEF6-72B81D81465D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{285D93E6-1AD5-4F78-AEF6-72B81D81465D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{285D93E6-1AD5-4F78-AEF6-72B81D81465D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96908ED1-5E16-4771-AD88-5C9820823F28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96908ED1-5E16-4771-AD88-5C9820823F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96908ED1-5E16-4771-AD88-5C9820823F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96908ED1-5E16-4771-AD88-5C9820823F28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

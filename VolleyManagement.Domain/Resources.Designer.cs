@@ -61,7 +61,16 @@ namespace VolleyManagement.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Описание.
+        ///   Looks up a localized string similar to Поле &quot;{0}&quot; является обязательным..
+        /// </summary>
+        public static string FieldRequired {
+            get {
+                return ResourceManager.GetString("FieldRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Описание турнира.
         /// </summary>
         public static string TournamentDescription {
             get {
@@ -75,15 +84,6 @@ namespace VolleyManagement.Domain {
         public static string TournamentName {
             get {
                 return ResourceManager.GetString("TournamentName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Введите название турнира.
-        /// </summary>
-        public static string TournamentNameRequired {
-            get {
-                return ResourceManager.GetString("TournamentNameRequired", resourceCulture);
             }
         }
         
@@ -106,29 +106,11 @@ namespace VolleyManagement.Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Выберите схему турнира.
-        /// </summary>
-        public static string TournamentSchemeRequired {
-            get {
-                return ResourceManager.GetString("TournamentSchemeRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Сезон.
         /// </summary>
         public static string TournamentSeason {
             get {
                 return ResourceManager.GetString("TournamentSeason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Выберите сезон турнира.
-        /// </summary>
-        public static string TournamentSeasonRequired {
-            get {
-                return ResourceManager.GetString("TournamentSeasonRequired", resourceCulture);
             }
         }
     }

@@ -11,8 +11,33 @@
     /// <summary>
     /// Html helper for dropdown list with enumeration
     /// </summary>
-    public static class EnumEditorHtmlHelper
+    public static class EnumHtmlHelper
     {
+        /// <summary>
+        /// Generic method to get any type of attribute.
+        /// </summary>
+        /// <typeparam name="T">Type of attribute.</typeparam>
+        /// <param name="value">Enumeration value.</param>
+        /// <returns>Specific attribute</returns>
+        public static T GetAttribute<T>(this Enum value) where T : Attribute
+        {
+            var type = value.GetType();
+            var memberInfo = type.GetMember(value.ToString());
+            var attributes = memberInfo[0].GetCustomAttributes(typeof(T), false);
+            return (T)attributes.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Method to get description for specific enumeration value.
+        /// </summary>
+        /// <param name="value">Enumeration value</param>
+        /// <returns>Description string</returns>
+        public static string ToDescription(this Enum value)
+        {
+            var attribute = value.GetAttribute<DescriptionAttribute>();
+            return attribute == null ? value.ToString() : attribute.Description;
+        }
+
         /// <summary>
         /// Creates the DropDown List (HTML Select Element) from LINQ
         /// Expression where the expression returns an Enumeration.
@@ -47,11 +72,11 @@
                     let attribute = fi.GetCustomAttributes(typeof(DescriptionAttribute), true).FirstOrDefault()
                     let title = attribute == null ? item.ToString() : ((DescriptionAttribute)attribute).Description
                     select new SelectListItem
-                      {
-                          Value = item.ToString(),
-                          Text = title,
-                          Selected = selectedItem == item.ToString()
-                      }).ToList();
+                    {
+                        Value = item.ToString(),
+                        Text = title,
+                        Selected = selectedItem == item.ToString()
+                    }).ToList();
         }
     }
 }

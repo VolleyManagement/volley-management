@@ -10,6 +10,8 @@
     using Contracts;
     using Domain.Tournaments;
 
+    using VolleyManagement.WebApi.ViewModels.Tournaments;
+
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
@@ -41,15 +43,15 @@
         /// <summary>
         /// Creates new Tournament.
         /// </summary>
-        /// <param name="tournament">Tournament to create.</param>
+        /// <param name="tournamentViewModel">Tournament to create.</param>
         /// <returns>HttpResponse with created tournament.</returns>
-        public HttpResponseMessage Post(Tournament tournament)
+        public HttpResponseMessage Post(TournamentViewModel tournamentViewModel)
         {
             HttpResponseMessage response;
             try
             {
-                _tournamentService.Create(tournament);
-                response = Request.CreateResponse(HttpStatusCode.Created, tournament);
+                _tournamentService.Create(tournamentViewModel.Tournament);
+                response = Request.CreateResponse(HttpStatusCode.Created, tournamentViewModel.Tournament);
                 response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
                 return response;
             }

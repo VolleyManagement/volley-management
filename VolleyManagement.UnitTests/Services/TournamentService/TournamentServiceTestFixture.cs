@@ -25,7 +25,7 @@
                     Name = "Tournament 1",
                     Description = "Tournament 1 description",
                     Season = "2014/2015",
-                    Scheme = "1",
+                    Scheme = Domain.Tournaments.Tournament.TournamentSchemeEnum.One,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')"
                 });
             _tournaments.Add(new Tournament()
@@ -34,7 +34,7 @@
                     Name = "Tournament 2",
                     Description = "Tournament 2 description",
                     Season = "2014/2015",
-                    Scheme = "2",
+                    Scheme = Domain.Tournaments.Tournament.TournamentSchemeEnum.Two,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')"
                 });
             _tournaments.Add(new Tournament()
@@ -43,7 +43,7 @@
                     Name = "Tournament 3",
                     Description = "Tournament 3 description",
                     Season = "2013/2014",
-                    Scheme = "2.5",
+                    Scheme = Domain.Tournaments.Tournament.TournamentSchemeEnum.TwoAndHalf,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')"
                 });
             return this;

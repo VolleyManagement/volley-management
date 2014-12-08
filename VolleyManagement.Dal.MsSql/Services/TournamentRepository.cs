@@ -89,7 +89,7 @@
                 Name = newEntity.Name,
                 Description = newEntity.Description,
                 RegulationsLink = newEntity.RegulationsLink,
-                Scheme = (int)newEntity.Scheme,
+                Scheme = (byte)newEntity.Scheme,
                 Season = newEntity.Season
             };
             _dalTournaments.AddObject(newTournament);

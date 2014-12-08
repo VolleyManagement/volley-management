@@ -142,7 +142,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\TournamentsController.cs" />
-    <Compile Include="EnumEditorHtmlHelper.cs" />
+    <Compile Include="EnumHtmlHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

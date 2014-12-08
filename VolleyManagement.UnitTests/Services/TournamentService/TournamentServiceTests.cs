@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests
+﻿namespace VolleyManagement.UnitTests.Services.TournamentsService
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -22,7 +22,7 @@
         /// <summary>
         /// Test Fixture
         /// </summary>
-        private readonly TournamentsServiceTestFixture _testFixture = new TournamentsServiceTestFixture();
+        private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
 
         /// <summary>
         /// Tournaments Repo Mock
@@ -59,17 +59,16 @@
             var tournamentService = this._kernel.Get<TournamentService>();
 
             // sut - stands for System Under Test
-            var sut = new TournamentsServiceTestFixture()
+            var sut = new TournamentServiceTestFixture()
                                             .TestTournaments()
-                                            .Build();
+                                            .Build()
+                                            .ToList();
 
             // Act
-            var actual = tournamentService.GetAll()
-                                          .OrderBy(t => t.Id)
-                                          .ToList();
+            var actual = tournamentService.GetAll().ToList();
 
             // Assert
-            Assert.IsTrue(sut.SequenceEqual(actual, new TournamentComparer()));
+            CollectionAssert.AreEqual(sut, actual, new TournamentComparer());
         }
 
         /// <summary>

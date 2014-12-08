@@ -63,9 +63,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Services\TournamentsService\TournamentsServiceTestFixture.cs" />
-    <Compile Include="Services\TournamentsService\TournamentComparer.cs" />
-    <Compile Include="Services\TournamentsService\TournamentServiceTests.cs" />
+    <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
+    <Compile Include="Services\TournamentService\TournamentComparer.cs" />
+    <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

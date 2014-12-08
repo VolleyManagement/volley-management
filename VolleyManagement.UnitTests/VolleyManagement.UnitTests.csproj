@@ -67,6 +67,7 @@
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebApi\TournamentsControllerTests\TournamentsControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">

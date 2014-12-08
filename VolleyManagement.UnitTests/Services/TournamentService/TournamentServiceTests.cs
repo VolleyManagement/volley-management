@@ -25,7 +25,7 @@
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
 
         /// <summary>
-        /// Tournaments Repo Mock
+        /// Tournaments Repository Mock
         /// </summary>
         private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
 
@@ -56,19 +56,21 @@
             var testData = this._testFixture.TestTournaments()
                                        .Build();
             this.MockTournaments(testData);
-            var tournamentService = this._kernel.Get<TournamentService>();
 
             // sut - stands for System Under Test
-            var sut = new TournamentServiceTestFixture()
+            var sut = this._kernel.Get<TournamentService>();
+
+            // Expected result
+            var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
                                             .Build()
                                             .ToList();
 
-            // Act
-            var actual = tournamentService.GetAll().ToList();
+            // Actual result
+            var actual = sut.GetAll().ToList();
 
             // Assert
-            CollectionAssert.AreEqual(sut, actual, new TournamentComparer());
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>

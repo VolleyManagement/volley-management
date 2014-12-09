@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentsService
+﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System.Collections.Generic;
     using VolleyManagement.Domain.Tournaments;

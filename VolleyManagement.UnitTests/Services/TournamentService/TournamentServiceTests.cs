@@ -1,7 +1,9 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentsService
+﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -86,13 +88,22 @@
         public void Edit_TournamentAsParam_TournamentEdited()
         {
             // Arrange
+            var testTournament = new TournamentBuilder()
+                                        .WithId(1)
+                                        .WithName("Test Tournament")
+                                        .Build();
             this.MockUnitOfWork();
+            Func<Tournament, bool> tournamentsMatch = delegate(Tournament t)
+            {
+                return t.Id.Equals(testTournament.Id)
+                    && t.Name.Equals(testTournament.Name);
+            };
 
             // System Under Test
             var sut = this._kernel.Get<TournamentService>();
-            sut.Edit(new Tournament());
+            sut.Edit(testTournament);
 
-            this._tournamentRepositoryMock.Verify(tr => tr.Update(It.IsAny<Tournament>()), Times.Once());
+            this._tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => tournamentsMatch(t))), Times.Once());
             this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
 

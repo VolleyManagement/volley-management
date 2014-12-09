@@ -7,7 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using Services.TournamentsService;
+    using Services.TournamentService;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.WebApi.Controllers;
 

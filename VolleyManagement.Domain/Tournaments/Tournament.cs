@@ -3,30 +3,6 @@
     using System.ComponentModel;
 
     /// <summary>
-    /// Enumeration for tournament scheme
-    /// </summary>
-    public enum TournamentSchemeEnum
-    {
-        /// <summary>
-        /// Scheme 1
-        /// </summary>
-        [Description("1")]
-        One = 1,
-
-        /// <summary>
-        /// Scheme 2
-        /// </summary>
-        [Description("2")]
-        Two,
-
-        /// <summary>
-        /// Scheme 2.5
-        /// </summary>
-        [Description("2.5")]
-        TwoAndHalf
-    }
-
-    /// <summary>
     /// Tournament domain class.
     /// </summary>
     public class Tournament

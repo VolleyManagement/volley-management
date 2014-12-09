@@ -2,7 +2,6 @@
 {
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-
     using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
@@ -10,24 +9,6 @@
     /// </summary>
     public class TournamentViewModel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentViewModel"/> class.
-        /// </summary>
-        public TournamentViewModel()
-        {
-            this.Tournament = new Tournament();
-            this.Tournament.Name = Name;
-            this.Tournament.Description = Description;
-            this.Tournament.Season = Season;
-            this.Tournament.Scheme = Scheme;
-            this.Tournament.RegulationsLink = RegulationsLink;
-        }
-
-        /// <summary>
-        /// Gets or sets Domain tournament
-        /// </summary>
-        public Tournament Tournament { get; set; }
-
         /// <summary>
         /// Gets or sets a value indicating where Name.
         /// </summary>
@@ -55,8 +36,8 @@
         /// Gets or sets a value indicating where Scheme.
         /// </summary>
         /// <value>Scheme of tournament.</value>
-        [Required]
-        public TournamentSchemeEnum Scheme { get; set; }
+        ////[Required]
+        ////public TournamentSchemeEnum Scheme { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating regulations of tournament.

@@ -32,7 +32,7 @@
         /// <summary>
         /// Unit of work mock.
         /// </summary>
-        private readonly Mock<IUnitOfWork> unitOfWorkMock = new Mock<IUnitOfWork>();
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         /// <summary>
         /// IoC for tests.
@@ -93,7 +93,7 @@
             sut.Edit(new Tournament());
 
             this._tournamentRepositoryMock.Verify(tr => tr.Update(It.IsAny<Tournament>()), Times.Once());
-            this.unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
 
         /// <summary>
@@ -110,7 +110,7 @@
         /// </summary>
         private void MockUnitOfWork()
         {
-            this._tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(unitOfWorkMock.Object);
+            this._tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
     }
 }

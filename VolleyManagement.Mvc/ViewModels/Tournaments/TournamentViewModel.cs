@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Mvc.App_GlobalResources;
 
     /// <summary>
     /// TournamentViewModel for Create and Edit actions
@@ -15,7 +17,6 @@
         /// </summary>
         public TournamentViewModel()
         {
-            Tournament = new Tournament();
             SeasonsList = new List<string>();
             int currentYear = DateTime.Now.Year;
             const int yearsRange = 16;
@@ -34,9 +35,54 @@
         public List<string> SeasonsList { get; set; }
 
         /// <summary>
-        /// Gets or sets the tournament.
+        /// Gets or sets a value indicating where Id.
         /// </summary>
-        /// <value>The tournament.</value>
-        public Tournament Tournament { get; set; }
+        /// <value>Id of tournament.</value>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where Name.
+        /// </summary>
+        /// <value>Name of tournament.</value>
+        [Display(Name = "TournamentName", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(80)]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where Description.
+        /// </summary>
+        /// <value>Description of tournament.</value>
+        [Display(Name = "TournamentDescription", ResourceType = typeof(ViewModelResources))]
+        [StringLength(1024)]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where Season.
+        /// </summary>
+        /// <value>Season of tournament.</value>
+        [Display(Name = "TournamentSeason", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(9)]
+        public string Season { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where Scheme.
+        /// </summary>
+        /// <value>Scheme of tournament.</value>
+        [Display(Name = "TournamentScheme", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        public TournamentSchemeEnum Scheme { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating regulations of tournament.
+        /// </summary>
+        /// <value>regulations of tournament.</value>
+        [Display(Name = "TournamentRegulationsLink", ResourceType = typeof(ViewModelResources))]
+        [StringLength(1024)]
+        public string RegulationsLink { get; set; }
     }
 }

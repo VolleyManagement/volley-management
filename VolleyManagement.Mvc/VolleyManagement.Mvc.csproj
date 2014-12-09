@@ -140,19 +140,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\ViewModelResources.Designer.cs">
+      <DependentUpon>ViewModelResources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Controllers\TournamentsController.cs" />
     <Compile Include="EnumHtmlHelper.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappers\DomainToViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Tournaments\TournamentViewModel.cs" />
-    <Compile Include="Views\ViewResources.Designer.cs">
+    <Compile Include="App_GlobalResources\TournamentViews.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ViewResources.resx</DependentUpon>
+      <DependentUpon>TournamentViews.resx</DependentUpon>
     </Compile>
+    <Compile Include="Mappers\ViewModelToDomain.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -206,9 +213,13 @@
     <Content Include="Views\Tournaments\_CreateOrEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\ViewResources.resx">
+    <EmbeddedResource Include="App_GlobalResources\ViewModelResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ViewResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>ViewModelResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TournamentViews.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

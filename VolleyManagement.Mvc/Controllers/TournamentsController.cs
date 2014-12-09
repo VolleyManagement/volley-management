@@ -4,6 +4,7 @@
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
 
     /// <summary>
@@ -66,7 +67,7 @@
         {
             if (ModelState.IsValid)
             {
-                _tournamentService.Create(tournamentViewModel.Tournament);
+                _tournamentService.Create(ViewModelToDomain.Map(tournamentViewModel));
                 return RedirectToAction("Index");
             }
 
@@ -80,8 +81,8 @@
         /// <returns>View to edit specific tournament</returns>
         public ActionResult Edit(int id)
         {
-            TournamentViewModel tournamentViewModel = new TournamentViewModel();
-            tournamentViewModel.Tournament = _tournamentService.FindById(id);
+            var tournament = _tournamentService.FindById(id);
+            TournamentViewModel tournamentViewModel = DomainToViewModel.Map(tournament);
             return View(tournamentViewModel);
         }
 
@@ -95,7 +96,7 @@
         {
             if (ModelState.IsValid)
             {
-                _tournamentService.Edit(tournamentViewModel.Tournament);
+                _tournamentService.Edit(ViewModelToDomain.Map(tournamentViewModel));
                 return RedirectToAction("Index");
             }
 

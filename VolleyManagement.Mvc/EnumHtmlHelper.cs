@@ -14,20 +14,6 @@
     public static class EnumHtmlHelper
     {
         /// <summary>
-        /// Generic method to get any type of attribute.
-        /// </summary>
-        /// <typeparam name="T">Type of attribute.</typeparam>
-        /// <param name="value">Enumeration value.</param>
-        /// <returns>Specific attribute</returns>
-        public static T GetAttribute<T>(this Enum value) where T : Attribute
-        {
-            var type = value.GetType();
-            var memberInfo = type.GetMember(value.ToString());
-            var attributes = memberInfo[0].GetCustomAttributes(typeof(T), false);
-            return (T)attributes.FirstOrDefault();
-        }
-
-        /// <summary>
         /// Method to get description for specific enumeration value.
         /// </summary>
         /// <param name="value">Enumeration value</param>
@@ -77,6 +63,20 @@
                         Text = title,
                         Selected = selectedItem == item.ToString()
                     }).ToList();
+        }
+
+        /// <summary>
+        /// Generic method to get any type of attribute.
+        /// </summary>
+        /// <typeparam name="T">Type of attribute.</typeparam>
+        /// <param name="value">Enumeration value.</param>
+        /// <returns>Specific attribute</returns>
+        private static T GetAttribute<T>(this Enum value) where T : Attribute
+        {
+            var type = value.GetType();
+            var memberInfo = type.GetMember(value.ToString());
+            var attributes = memberInfo[0].GetCustomAttributes(typeof(T), false);
+            return (T)attributes.FirstOrDefault();
         }
     }
 }

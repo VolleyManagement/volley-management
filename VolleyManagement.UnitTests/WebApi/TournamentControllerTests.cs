@@ -8,8 +8,8 @@
     using Moq;
     using Ninject;
     using Services.TournamentsService;
-    using VolleyManagement.WebApi.Controllers;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.WebApi.Controllers;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -91,8 +91,7 @@
                         {
                             tournaments.Add(tourn);
                         });
-                }
-                );
+                });
 
             ITournamentService service = _tournamentServiceMock.Object;
             ITournamentRepository repository = _tournamentRepositoryMock.Object;

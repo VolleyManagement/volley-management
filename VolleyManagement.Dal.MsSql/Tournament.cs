@@ -34,7 +34,7 @@ namespace VolleyManagement.Dal.MsSql
         /// Gets or sets the tournament season
         /// </summary>
         [Required]
-        [StringLength(40)]
+        [StringLength(9)]
         public string Season { get; set; }
 
         /// <summary>

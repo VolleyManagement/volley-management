@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<VolleyManagement.Domain.Tournaments.Tournament>
 
 @{
-    ViewBag.Title = VolleyManagement.Mvc.Views.ViewResources.TournamentsIndexTitle;
+    ViewBag.Title = Resources.TournamentViews.TournamentsIndexTitle;
 }
 
 <h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink(VolleyManagement.Mvc.Views.ViewResources.CreateNewTournament, "Create")
+    @Html.ActionLink(Resources.TournamentViews.CreateNewTournament, "Create")
 </p>
 <table>
     <tr>
@@ -29,8 +29,8 @@
             @Html.DisplayFor(modelItem => item.Season)
         </td>
         <td>
-            @Html.ActionLink(VolleyManagement.Mvc.Views.ViewResources.Edit, "Edit", new { id=item.Id }) |
-            @Html.ActionLink(VolleyManagement.Mvc.Views.ViewResources.Delete, "Delete", new { id=item.Id })  
+            @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id=item.Id }) |
+            @Html.ActionLink(Resources.TournamentViews.Delete, "Delete", new { id=item.Id })  
         </td>
     </tr>
 }

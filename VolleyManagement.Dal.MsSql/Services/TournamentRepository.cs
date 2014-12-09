@@ -48,13 +48,13 @@
         /// <returns>Collection of domain tournaments.</returns>
         public IQueryable<Domain.Tournament> FindAll()
         {
-            return _dalTournaments.Select((t) => new Domain.Tournament
+            return _dalTournaments.Select(t => new Domain.Tournament
                 {
                     Id = t.Id,
                     Name = t.Name,
                     Description = t.Description,
                     RegulationsLink = t.RegulationsLink,
-                    Scheme = (Domain.Tournament.TournamentSchemeEnum)t.Scheme,
+                    Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
                     Season = t.Season
                 });
         }
@@ -72,7 +72,7 @@
                 Name = t.Name,
                 Description = t.Description,
                 RegulationsLink = t.RegulationsLink,
-                Scheme = (Domain.Tournament.TournamentSchemeEnum)t.Scheme,
+                Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
                 Season = t.Season
             }).Where(predicate);
         }

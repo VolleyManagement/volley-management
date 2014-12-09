@@ -21,7 +21,7 @@ CREATE TABLE dbo.Tournament(
     CONSTRAINT PK_Tournament_Id PRIMARY KEY CLUSTERED,
   Name nvarchar(80) NOT NULL,
   Scheme tinyint NOT NULL,
-  Season nvarchar(40) NOT NULL,
+  Season nvarchar(9) NOT NULL,
   [Description] nvarchar(1024) NULL,
   RegulationsLink nvarchar(1024) NULL
 );

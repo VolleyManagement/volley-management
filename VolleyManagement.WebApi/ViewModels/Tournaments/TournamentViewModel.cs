@@ -10,6 +10,9 @@
     /// </summary>
     public class TournamentViewModel
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TournamentViewModel"/> class.
+        /// </summary>
         public TournamentViewModel()
         {
             this.Tournament = new Tournament();
@@ -19,31 +22,11 @@
             this.Tournament.Scheme = Scheme;
             this.Tournament.RegulationsLink = RegulationsLink;
         }
-        public Tournament Tournament { get; set; }
-        
+
         /// <summary>
-        /// Enumeration for tournament scheme
+        /// Gets or sets Domain tournament
         /// </summary>
-        public enum TournamentSchemeEnum
-        {
-            /// <summary>
-            /// Scheme 1
-            /// </summary>
-            [Description("1")]
-            One = 1,
-
-            /// <summary>
-            /// Scheme 2
-            /// </summary>
-            [Description("2")]
-            Two,
-
-            /// <summary>
-            /// Scheme 2.5
-            /// </summary>
-            [Description("2.5")]
-            TwoAndHalf
-        }
+        public Tournament Tournament { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Name.
@@ -73,7 +56,7 @@
         /// </summary>
         /// <value>Scheme of tournament.</value>
         [Required]
-        public Tournament.TournamentSchemeEnum Scheme { get; set; }
+        public TournamentSchemeEnum Scheme { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating regulations of tournament.

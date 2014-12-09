@@ -1,14 +1,14 @@
-@using EnumHelper
 @model VolleyManagement.Domain.Tournaments.Tournament
+@using EnumHelper
 
 @{
-    ViewBag.Title = VolleyManagement.Mvc.Views.ViewResources.TournamentDetailsTitle;
+    ViewBag.Title = Resources.TournamentViews.TournamentDetailsTitle;
 }
 
 <h2>@ViewBag.Title</h2>
 
 <fieldset>
-    <legend>@VolleyManagement.Mvc.Views.ViewResources.TournamentLegend</legend>
+    <legend>@Resources.TournamentViews.TournamentLegend</legend>
 
     <div class="display-label">@Html.LabelFor(model => model.Name)</div>
     <div class="display-field">@Model.Name</div>
@@ -26,8 +26,8 @@
     <div class="display-field">@Html.DisplayFor(model => model.RegulationsLink)</div>
 </fieldset>
 <p>
-    @Html.ActionLink(VolleyManagement.Mvc.Views.ViewResources.Edit, "Edit", new { id=Model.Id }) |
-    @Html.ActionLink(VolleyManagement.Mvc.Views.ViewResources.BackToList, "Index")
+    @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id=Model.Id }) |
+    @Html.ActionLink(Resources.TournamentViews.BackToList, "Index")
 </p>
 
 

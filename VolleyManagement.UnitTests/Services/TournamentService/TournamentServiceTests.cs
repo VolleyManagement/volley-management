@@ -20,22 +20,27 @@
     public class TournamentServiceTests
     {
         /// <summary>
-        /// Test Fixture
+        /// Test Fixture.
         /// </summary>
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
 
         /// <summary>
-        /// Tournaments Repository Mock
+        /// Tournaments Repository Mock.
         /// </summary>
         private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
 
         /// <summary>
-        /// IoC for tests
+        /// Unit of work mock.
+        /// </summary>
+        private readonly Mock<IUnitOfWork> unitOfWorkMock = new Mock<IUnitOfWork>();
+
+        /// <summary>
+        /// IoC for tests.
         /// </summary>
         private IKernel _kernel;
 
         /// <summary>
-        /// Initializes test data
+        /// Initializes test data.
         /// </summary>
         [TestInitialize]
         public void TestInit()
@@ -74,12 +79,38 @@
         }
 
         /// <summary>
+        /// Test for Edit() method. The method should invoke Update() method of ITournamentRepository
+        /// and Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        public void Edit_TournamentAsParam_TournamentEdited()
+        {
+            // Arrange
+            this.MockUnitOfWork();
+
+            // System Under Test
+            var sut = this._kernel.Get<TournamentService>();
+            sut.Edit(new Tournament());
+
+            this._tournamentRepositoryMock.Verify(tr => tr.Update(It.IsAny<Tournament>()), Times.Once());
+            this.unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+        }
+
+        /// <summary>
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>
         private void MockTournaments(IEnumerable<Tournament> testData)
         {
             this._tournamentRepositoryMock.Setup(tr => tr.FindAll()).Returns(testData.AsQueryable());
+        }
+
+        /// <summary>
+        /// Mocks unit of work
+        /// </summary>
+        private void MockUnitOfWork()
+        {
+            this._tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(unitOfWorkMock.Object);
         }
     }
 }

@@ -58,10 +58,11 @@
         /// <summary>
         /// Edit tournament
         /// </summary>
-        /// <param name="tournament">New data</param>
-        public void Edit(Tournament tournament)
+        /// <param name="tournamentToEdit">Tournament to edit</param>
+        public void Edit(Tournament tournamentToEdit)
         {
-            throw new System.NotImplementedException();
+            _tournamentRepository.Update(tournamentToEdit);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

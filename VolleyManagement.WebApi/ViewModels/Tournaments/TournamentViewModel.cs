@@ -10,40 +10,29 @@
     /// </summary>
     public class TournamentViewModel
     {
-        public TournamentViewModel()
-        {
-            this.Tournament = new Tournament();
-            this.Tournament.Name = Name;
-            this.Tournament.Description = Description;
-            this.Tournament.Season = Season;
-            this.Tournament.Scheme = Scheme;
-            this.Tournament.RegulationsLink = RegulationsLink;
-        }
-        public Tournament Tournament { get; set; }
-        
         /// <summary>
-        /// Enumeration for tournament scheme
+        /// Tournament field.
         /// </summary>
-        public enum TournamentSchemeEnum
+        private Tournament _tournament;
+
+        public Tournament Tournament
         {
-            /// <summary>
-            /// Scheme 1
-            /// </summary>
-            [Description("1")]
-            One = 1,
-
-            /// <summary>
-            /// Scheme 2
-            /// </summary>
-            [Description("2")]
-            Two,
-
-            /// <summary>
-            /// Scheme 2.5
-            /// </summary>
-            [Description("2.5")]
-            TwoAndHalf
-        }
+            get 
+            { 
+     
+            _tournament = new Tournament();
+            _tournament.Name = Name;
+            _tournament.Description = Description;
+            _tournament.Season = Season;
+            _tournament.Scheme = Scheme;
+            _tournament.RegulationsLink = RegulationsLink;
+            return _tournament;
+            }
+            set
+            {
+                _tournament = value;
+            }
+        }     
 
         /// <summary>
         /// Gets or sets a value indicating where Name.

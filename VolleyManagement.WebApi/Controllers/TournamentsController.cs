@@ -45,8 +45,21 @@
         /// </summary>
         /// <param name="tournamentViewModel">Tournament to create.</param>
         /// <returns>HttpResponse with created tournament.</returns>
-        public HttpResponseMessage Post(TournamentViewModel tournamentViewModel)
+        [HttpPost]
+        public HttpResponseMessage Post([FromODataUri]ODataActionParameters parameters)
         {
+            if(!ModelState.IsValid)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            TournamentViewModel tournamentViewModel = new TournamentViewModel();
+            tournamentViewModel.Name = (string)parameters["Name"];
+            tournamentViewModel.Description = (string)parameters["Description"];
+            tournamentViewModel.Season = (string)parameters["Season"];
+            tournamentViewModel.Scheme = Tournament.TournamentSchemeEnum.One;//(TournamentViewModel.TournamentSchemeEnum)parameters["Scheme"];
+            tournamentViewModel.RegulationsLink = (string)parameters["RegulationsLink"];
+            Tournament t = tournamentViewModel.Tournament;
             HttpResponseMessage response;
             try
             {

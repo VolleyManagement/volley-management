@@ -74,6 +74,22 @@
         }
 
         /// <summary>
+        /// Test for Create() method. The method should return a created tournament.
+        /// </summary>
+        [TestMethod]
+        public void Create_TournamentNotExist_TournamentCreated()
+        {
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(unitOfWorkMock.Object);
+
+            var sut = this._kernel.Get<TournamentService>();
+            sut.Create(new Tournament());
+
+            _tournamentRepositoryMock.Verify(tr => tr.Add(It.IsAny<Tournament>()), Times.Once());
+            unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+        }
+
+        /// <summary>
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>

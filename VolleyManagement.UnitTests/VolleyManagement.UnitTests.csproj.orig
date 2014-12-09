@@ -97,7 +97,11 @@
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+<<<<<<< HEAD
+    <Compile Include="WebApi\TournamentsControllerTests\TournamentsControllerTests.cs" />
+=======
     <Compile Include="WebApi\TournamentControllerTests.cs" />
+>>>>>>> master
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">

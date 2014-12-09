@@ -50,6 +50,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Tournaments\TournamentSchemeEnum.cs" />
     <Compile Include="Tournaments\Tournament.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -54,7 +54,7 @@
                     Name = t.Name,
                     Description = t.Description,
                     RegulationsLink = t.RegulationsLink,
-                    Scheme = (Domain.Tournament.TournamentSchemeEnum)t.Scheme,
+                    Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
                     Season = t.Season
                 });
         }
@@ -72,7 +72,7 @@
                 Name = t.Name,
                 Description = t.Description,
                 RegulationsLink = t.RegulationsLink,
-                Scheme = (Domain.Tournament.TournamentSchemeEnum)t.Scheme,
+                Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
                 Season = t.Season
             }).Where(predicate);
         }

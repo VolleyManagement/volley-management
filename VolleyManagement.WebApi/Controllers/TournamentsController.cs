@@ -43,36 +43,31 @@
         /// <summary>
         /// Creates new Tournament.
         /// </summary>
-        /// <param name="tournamentViewModel">Tournament to create.</param>
+        /// <param name="vm">Tournament to create.</param>
         /// <returns>HttpResponse with created tournament.</returns>
         [HttpPost]
-        public HttpResponseMessage Post([FromODataUri]ODataActionParameters parameters)
+        public HttpResponseMessage Post(TournamentViewModel vm)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-            TournamentViewModel tournamentViewModel = new TournamentViewModel();
-            tournamentViewModel.Name = (string)parameters["Name"];
-            tournamentViewModel.Description = (string)parameters["Description"];
-            tournamentViewModel.Season = (string)parameters["Season"];
-            tournamentViewModel.Scheme = Tournament.TournamentSchemeEnum.One;//(TournamentViewModel.TournamentSchemeEnum)parameters["Scheme"];
-            tournamentViewModel.RegulationsLink = (string)parameters["RegulationsLink"];
-            Tournament t = tournamentViewModel.Tournament;
-            HttpResponseMessage response;
-            try
-            {
-                _tournamentService.Create(tournamentViewModel.Tournament);
-                response = Request.CreateResponse(HttpStatusCode.Created, tournamentViewModel.Tournament);
-                response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
-                return response;
-            }
-            catch (Exception)
-            {
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                return response;
-            }
+            return new HttpResponseMessage(HttpStatusCode.OK);
+
+            //HttpResponseMessage response;
+            //try
+            //{
+            //    //_tournamentService.Create(tournamentViewModel.Tournament);
+            //   // response = Request.CreateResponse(HttpStatusCode.Created, tournamentViewModel.Tournament);
+            //    response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
+            //    return response;
+            //}
+            //catch (Exception)
+            //{
+            //    response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+            //    return response;
+            //}
         }
     }
 }

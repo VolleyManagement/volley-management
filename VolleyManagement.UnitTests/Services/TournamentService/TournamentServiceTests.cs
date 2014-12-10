@@ -108,6 +108,26 @@
         }
 
         /// <summary>
+        /// Test for Edit() method with null as input parameter. The method should throw InvalidOperationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Edit_TournamentNullAsParam_ExceptionThrown()
+        {
+            // Arrange
+            Tournament testTournament = null;
+            this.MockUnitOfWork();
+            this.MockUpdateNullTournament();
+
+            // System Under Test
+            var sut = this._kernel.Get<TournamentService>();
+            sut.Edit(testTournament);
+
+            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
         /// Test for Create() method. The method should return a created tournament.
         /// </summary>
         [TestMethod]
@@ -138,6 +158,14 @@
         private void MockUnitOfWork()
         {
             this._tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
+        }
+
+        /// <summary>
+        /// Mocks unit of work
+        /// </summary>
+        private void MockUpdateNullTournament()
+        {
+            this._tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<InvalidOperationException>();
         }
     }
 }

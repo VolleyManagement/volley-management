@@ -10,6 +10,7 @@
     using Contracts;
     using Domain.Tournaments;
 
+    using VolleyManagement.WebApi.Mappers;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
 
     /// <summary>
@@ -35,24 +36,24 @@
         /// Gets all tournaments from TournamentService
         /// </summary>
         /// <returns>All tournaments</returns>
-        public IQueryable<Tournament> Get()
-        {
-            return _tournamentService.GetAll();
-        }
+        //public IQueryable<Tournament> Get()
+        //{
+        //    return _tournamentService.GetAll();
+        //}
 
         /// <summary>
         /// Creates new Tournament.
         /// </summary>
-        /// <param name="vm">Tournament to create.</param>
+        /// <param name="viewModel">Tournament to create.</param>
         /// <returns>HttpResponse with created tournament.</returns>
         [HttpPost]
-        public HttpResponseMessage Post(TournamentViewModel vm)
+        public HttpResponseMessage Post(TournamentViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
-
+            _tournamentService.Create(ViewModelToDomain.Map(viewModel));
             return new HttpResponseMessage(HttpStatusCode.OK);
 
             ////HttpResponseMessage response;

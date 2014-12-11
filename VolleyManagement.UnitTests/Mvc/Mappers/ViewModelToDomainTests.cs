@@ -3,6 +3,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Tests for ViewModelToDomain class.
@@ -18,11 +19,11 @@
         public void Map_TournamentViewModelAsParam_MappedToDomainModel()
         {
             // Arrange
-            var testViewModel = new TournamentViewModel
-            {
-                Id = 2,
-                Name = "testViewModel"
-            };
+            var testViewModel = new TournamentMvcViewModelBuilder()
+                                        .WithId(2)
+                                        .WithName("testViewModel")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
 
             // Act
             var tournament = ViewModelToDomain.Map(testViewModel);

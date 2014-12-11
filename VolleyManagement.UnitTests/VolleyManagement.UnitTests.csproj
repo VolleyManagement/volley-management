@@ -93,6 +93,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
@@ -112,6 +113,10 @@
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
       <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>
       <Name>VolleyManagement.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Mvc\VolleyManagement.Mvc.csproj">
+      <Project>{66b942c2-63e9-448e-8d08-f9dac7aed79c}</Project>
+      <Name>VolleyManagement.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Services\VolleyManagement.Services.csproj">
       <Project>{4d6c885f-9e5d-4f09-b81b-cd14ed6a527f}</Project>

@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Services
 {
     using System;
+    using System.Data.Entity;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     using System.Linq.Expressions;
@@ -83,17 +84,8 @@
         /// <param name="newEntity">The tournament for adding.</param>
         public void Add(Domain.Tournament newEntity)
         {
-            Dal.Tournament newTournament = new Dal.Tournament()
-            {
-                Id = newEntity.Id,
-                Name = newEntity.Name,
-                Description = newEntity.Description,
-                RegulationsLink = newEntity.RegulationsLink,
-                Scheme = (byte)newEntity.Scheme,
-                Season = newEntity.Season
-            };
+            Dal.Tournament newTournament = DomainToDal.Map(newEntity);
             _dalTournaments.AddObject(newTournament);
-            _unitOfWork.Commit();
         }
 
         /// <summary>
@@ -102,7 +94,13 @@
         /// <param name="oldEntity">The tournament to update.</param>
         public void Update(Domain.Tournament oldEntity)
         {
-            throw new NotImplementedException();
+            var tournamentToUpdate = _dalTournaments.Where(t => t.Id == oldEntity.Id).Single();
+            tournamentToUpdate.Name = oldEntity.Name;
+            tournamentToUpdate.Description = oldEntity.Description;
+            tournamentToUpdate.RegulationsLink = oldEntity.RegulationsLink;
+            tournamentToUpdate.Scheme = (byte)oldEntity.Scheme;
+            tournamentToUpdate.Season = oldEntity.Season;
+            _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 
         /// <summary>

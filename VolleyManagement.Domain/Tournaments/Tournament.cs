@@ -71,7 +71,7 @@
                 errors.Add(new ValidationResult(Resources.ValidationResultSeason));
             }
 
-            if (Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
+            if (!Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
             {
                 errors.Add(new ValidationResult(Resources.ValidationResultScheme));
             }

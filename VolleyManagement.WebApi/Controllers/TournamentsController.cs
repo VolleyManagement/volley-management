@@ -75,7 +75,7 @@
         /// Removes tournament from TournamentService
         /// </summary>
         /// <returns>All tournaments</returns>
-        public void Remove(int id)
+        public void Delete(int id)
         {
             Tournament tournamentToDelete = _tournamentService.FindById(id);
             if (tournamentToDelete == null)

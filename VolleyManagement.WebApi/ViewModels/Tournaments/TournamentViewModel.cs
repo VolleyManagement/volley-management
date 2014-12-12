@@ -36,8 +36,8 @@
         /// Gets or sets a value indicating where Scheme.
         /// </summary>
         /// <value>Scheme of tournament.</value>
-        //[Required]
-        //public TournamentSchemeEnum Scheme { get; set; }
+        [Required]
+        public string Scheme { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating regulations of tournament.

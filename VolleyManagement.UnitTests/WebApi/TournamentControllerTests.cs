@@ -10,6 +10,12 @@
     using Services.TournamentService;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.WebApi.Controllers;
+    using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Http.Routing;
+    using VolleyManagement.Mvc.Mappers;
+    using VolleyManagement.WebApi.ViewModels.Tournaments;
+    using System.Net;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -79,7 +85,7 @@
         /// Test Post method.
         /// </summary>
         [TestMethod]
-        public void Post_NewTournament_TournamentAdded()
+        public void Post_NewTournament_CreateMethodInvoked()
         {
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>())).Verifiable();
 
@@ -88,6 +94,19 @@
             tournamentService.Create(tournament);
             
             _tournamentServiceMock.Verify();
+        }
+
+        /// <summary>
+        /// Post method test, response is not null.
+        /// </summary>
+        [TestMethod]
+        public void Post_CorrectResponse_ResponseCreated()
+        {
+            var controller = this._kernel.Get<TournamentsController>();
+
+            var response = controller.Post(new TournamentViewModel { Name = "Tournament" });
+
+            Assert.IsNotNull(response);
         }
 
         /// <summary>

@@ -1,15 +1,12 @@
 ﻿namespace VolleyManagement.Domain.Tournaments
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
     using VolleyManagement.Domain.Properties;
 
     /// <summary>
     /// Tournament domain class.
     /// </summary>
-    public class Tournament : IValidatableObject
+    public class Tournament
     {
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -18,69 +15,128 @@
         public int Id { get; set; }
 
         /// <summary>
+        /// Name of tournament
+        /// </summary>
+        private string _name;
+
+        /// <summary>
         /// Gets or sets a value indicating where Name.
         /// </summary>
         /// <value>Name of tournament.</value>
-        public string Name { get; set; }
+        public string Name 
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value) && value.Length >= 80)
+                {
+                    throw new ArgumentException(Resources.ValidationResultName);
+                }
+                _name = value;
+            }       
+        }
+
+        /// <summary>
+        /// Description of tournament
+        /// </summary>
+        private string _description;
 
         /// <summary>
         /// Gets or sets a value indicating where Description.
         /// </summary>
         /// <value>Description of tournament.</value>
-        public string Description { get; set; }
+        public string Description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value) && value.Length >= 1024)
+                {
+                    throw new ArgumentException(Resources.ValidationResultDescription);
+                }
+                _description = value;
+            }
+        }
+
+        /// <summary>
+        /// Season of tournament
+        /// </summary>
+        private string _season;
 
         /// <summary>
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>
-        public string Season { get; set; }
+        public string Season
+        {
+            get
+            {
+                return _season;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value) && value.Length >= 9)
+                {
+                    throw new ArgumentException(Resources.ValidationResultSeason);
+                }
+                _season = value;
+            }
+        }
+
+        /// <summary>
+        /// Scheme of tournament
+        /// </summary>
+        private TournamentSchemeEnum _scheme;
 
         /// <summary>
         /// Gets or sets a value indicating where Scheme.
         /// </summary>
         /// <value>Scheme of tournament.</value>
-        public TournamentSchemeEnum Scheme { get; set; }
+        public TournamentSchemeEnum Scheme
+        {
+            get
+            {
+                return _scheme;
+            }
+            set
+            {
+                if (!Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
+                {
+                    throw new ArgumentException(Resources.ValidationResultScheme);
+                }
+                _scheme = value;
+            }
+        }
+
+        /// <summary>
+        /// Season of tournament
+        /// </summary>
+        private string _regulationsLink;
 
         /// <summary>
         /// Gets or sets a value indicating regulations of tournament.
         /// </summary>
         /// <value>regulations of tournament.</value>
-        public string RegulationsLink { get; set; }
-
-        /// <summary>
-        /// Validates the model properties
-        /// </summary>
-        /// <param name="validationContext">Context of Validation</param>
-        /// <returns>List of validation errors</returns>
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public string RegulationsLink
         {
-            List<ValidationResult> errors = new List<ValidationResult>();
-
-            if (string.IsNullOrEmpty(Name) && Name.Length >= 80)
+            get
             {
-                errors.Add(new ValidationResult(Resources.ValidationResultName));
+                return _regulationsLink;
             }
-
-            if (Description.Length >= 1024)
+            set
             {
-                errors.Add(new ValidationResult(Resources.ValidationResultDescription));
+                if (string.IsNullOrEmpty(value) && value.Length >= 1024)
+                {
+                    throw new ArgumentException(Resources.ValidationResultRegLink);
+                }
+                _regulationsLink = value;
             }
-
-            if (string.IsNullOrEmpty(Season) && Season.Length >= 9)
-            {
-                errors.Add(new ValidationResult(Resources.ValidationResultSeason));
-            }
-
-            if (!Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
-            {
-                errors.Add(new ValidationResult(Resources.ValidationResultScheme));
-            }
-
-            if (RegulationsLink.Length >= 1024)
-            {
-                errors.Add(new ValidationResult(Resources.ValidationResultRegLink));
-            }
-            return errors;
         }
     }
 }

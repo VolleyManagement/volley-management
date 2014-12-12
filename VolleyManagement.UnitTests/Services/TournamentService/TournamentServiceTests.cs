@@ -52,6 +52,28 @@
                    .ToConstant(this._tournamentRepositoryMock.Object);
         }
 
+        [TestMethod]
+        public void FindById_Id1_TournamentFounded()
+        {
+            _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
+                .Returns(new List<Tournament>() { new Tournament { Id = 1 } }.AsQueryable());
+            var tournamentService = this._kernel.Get<TournamentService>();
+            int id = 1;
+            var tournament = new TournamentBuilder().WithId(1).Build();
+            
+            Assert.AreEqual(tournament.Id, tournamentService.FindById(id).Id);
+        }
+
+        [TestMethod]
+        public void FindById_NotExistingTournament_ExceptionThrown()
+        {
+            _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
+                           .Returns(new List<Tournament>() { null }.AsQueryable());
+            var tournamentService = this._kernel.Get<TournamentService>();
+            var tournament = tournamentService.FindById(1);
+
+            Assert.IsNull(tournament);
+        }
         /// <summary>
         /// Test for GetAll() method. The method should return existing tournaments
         /// (order is important).

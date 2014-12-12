@@ -52,6 +52,9 @@
                    .ToConstant(this._tournamentRepositoryMock.Object);
         }
 
+        /// <summary>
+        /// Test for FinById method.
+        /// </summary>
         [TestMethod]
         public void FindById_Id1_TournamentFounded()
         {
@@ -64,8 +67,11 @@
             Assert.AreEqual(tournament.Id, tournamentService.FindById(id).Id);
         }
 
+        /// <summary>
+        /// Test for FinById method. Null returned.
+        /// </summary>
         [TestMethod]
-        public void FindById_NotExistingTournament_ExceptionThrown()
+        public void FindById_NotExistingTournament_NullReturned()
         {
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
                            .Returns(new List<Tournament>() { null }.AsQueryable());

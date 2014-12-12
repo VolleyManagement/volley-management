@@ -81,22 +81,13 @@
         [TestMethod]
         public void Post_NewTournament_TournamentAdded()
         {
-            Tournament t = new Tournament { Id = 1, Name = "Tournament 1" };
-            List<Tournament> tournaments = new List<Tournament>();
-            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Callback((Tournament tournament) =>
-                {
-                    _tournamentRepositoryMock.Setup(r => r.Add(It.IsAny<Tournament>()))
-                        .Callback((Tournament tourn) =>
-                        {
-                            tournaments.Add(tourn);
-                        });
-                });
+            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>())).Verifiable();
 
-            ITournamentService service = _tournamentServiceMock.Object;
-            ITournamentRepository repository = _tournamentRepositoryMock.Object;
-            service.Create(t);
-            CollectionAssert.Contains(tournaments, t);
+            var tournament = new TournamentBuilder().WithId(1).Build();
+            var tournamentService = _tournamentServiceMock.Object;
+            tournamentService.Create(tournament);
+            
+            _tournamentServiceMock.Verify();
         }
 
         /// <summary>

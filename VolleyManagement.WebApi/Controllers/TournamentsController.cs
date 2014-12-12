@@ -53,22 +53,20 @@
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
+            var response = new HttpResponseMessage();
+            try
+            {
             _tournamentService.Create(ViewModelToDomain.Map(viewModel));
-            return new HttpResponseMessage(HttpStatusCode.OK);
-
-            ////HttpResponseMessage response;
-            ////try
-            ////{
-            ////    //_tournamentService.Create(tournamentViewModel.Tournament);
-            ////   // response = Request.CreateResponse(HttpStatusCode.Created, tournamentViewModel.Tournament);
-            ////    response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
-            ////    return response;
-            ////}
-            ////catch (Exception)
-            ////{
-            ////    response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-            ////    return response;
-            ////}
+            var tournamentToReturn = _tournamentService.GetAll().Single(t => t.Name == viewModel.Name);
+            response = Request.CreateResponse(HttpStatusCode.Created, tournamentToReturn);
+            response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
+            return response;
+            }
+            catch (Exception)
+            {
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                return response;
+            }
         }
 
         /// <summary>

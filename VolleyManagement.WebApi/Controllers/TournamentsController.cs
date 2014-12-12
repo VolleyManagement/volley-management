@@ -36,10 +36,10 @@
         /// Gets all tournaments from TournamentService
         /// </summary>
         /// <returns>All tournaments</returns>
-        //public IQueryable<Tournament> Get()
-        //{
-        //    return _tournamentService.GetAll();
-        //}
+        public IQueryable<Tournament> Get()
+        {
+            return _tournamentService.GetAll();
+        }
 
         /// <summary>
         /// Creates new Tournament.
@@ -69,6 +69,20 @@
             ////    response = Request.CreateResponse(HttpStatusCode.InternalServerError);
             ////    return response;
             ////}
+        }
+
+        /// <summary>
+        /// Removes tournament from TournamentService
+        /// </summary>
+        /// <returns>All tournaments</returns>
+        public void Remove(int id)
+        {
+            Tournament tournamentToDelete = _tournamentService.FindById(id);
+            if (tournamentToDelete == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+            _tournamentService.Delete(id);
         }
     }
 }

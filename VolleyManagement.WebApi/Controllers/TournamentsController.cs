@@ -75,7 +75,8 @@
         /// Removes tournament from TournamentService
         /// </summary>
         /// <returns>All tournaments</returns>
-        public void Delete(int id)
+        [HttpDelete]
+        public HttpResponseMessage Delete(int id)
         {
             Tournament tournamentToDelete = _tournamentService.FindById(id);
             if (tournamentToDelete == null)
@@ -83,6 +84,7 @@
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
             _tournamentService.Delete(id);
+            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }
 }

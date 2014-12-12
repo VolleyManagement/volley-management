@@ -89,10 +89,12 @@
         /// <summary>
         /// Removes specified tournament.
         /// </summary>
-        /// <param name="entity">The tournament to remove.</param>
-        public void Remove(Domain.Tournament entity)
+        /// <param name="domainTournamentToRemove">The tournament to remove.</param>
+        public void Remove(Domain.Tournament domainTournamentToRemove)
         {
-            throw new NotImplementedException();
+            var dalToRemove = 
+                new Dal.Tournament { Id = domainTournamentToRemove.Id };
+            _dalTournaments.DeleteObject(dalToRemove);
         }
     }
 }

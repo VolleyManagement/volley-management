@@ -80,6 +80,7 @@
     <Reference Include="System.Web.Http.OData">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.4.0.30506\lib\net40\System.Web.Http.OData.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -94,6 +95,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mvc\Controllers\TournamentsController\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
     <Compile Include="Mvc\Mappers\FieldsComparer.cs" />
     <Compile Include="Mvc\Mappers\ViewModelToDomainTests.cs" />

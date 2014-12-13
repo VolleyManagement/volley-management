@@ -71,7 +71,10 @@
         /// <param name="id">Tournament id</param>
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var tournamentToDelete =
+                _tournamentRepository.FindWhere(t => t.Id == id).Single();
+            _tournamentRepository.Remove(tournamentToDelete);
+            _tournamentRepository.UnitOfWork.Commit();
         }
     }
 }

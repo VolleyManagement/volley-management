@@ -20,21 +20,16 @@
             tournament.Name = tournamentViewModel.Name;
             tournament.Description = tournamentViewModel.Description;
             tournament.Season = tournamentViewModel.Season;
-            int schemeValue;
-            bool parsed = int.TryParse(tournamentViewModel.Scheme, out schemeValue);
-            if (parsed)
-            {
-                switch (schemeValue)
+                switch (tournamentViewModel.Scheme)
                 {
-                    case 1: tournament.Scheme = TournamentSchemeEnum.One;
+                    case "1": tournament.Scheme = TournamentSchemeEnum.One;
                         break;
-                    case 2: tournament.Scheme = TournamentSchemeEnum.Two;
+                    case "2": tournament.Scheme = TournamentSchemeEnum.Two;
                         break;
-                    case 3: tournament.Scheme = TournamentSchemeEnum.TwoAndHalf;
+                    case "2.5": tournament.Scheme = TournamentSchemeEnum.TwoAndHalf;
                         break;
                 }
-            }
-
+            
             tournament.RegulationsLink = tournamentViewModel.RegulationsLink;
             return tournament;
         }

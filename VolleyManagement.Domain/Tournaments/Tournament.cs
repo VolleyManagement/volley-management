@@ -52,7 +52,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) && value.Length >= 80)
+                if (string.IsNullOrEmpty(value) && value.Length > 60)
                 {
                     throw new ArgumentException(Resources.ValidationResultName);
                 }
@@ -74,7 +74,7 @@
 
             set
             {
-                if (!string.IsNullOrEmpty(value) && value.Length >= 1024)
+                if (!string.IsNullOrEmpty(value) && value.Length > 300)
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
@@ -96,7 +96,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) && value.Length >= 9)
+                if (string.IsNullOrEmpty(value) && value.Length > 9)
                 {
                     throw new ArgumentException(Resources.ValidationResultSeason);
                 }
@@ -118,7 +118,7 @@
 
             set
             {
-                if (Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
+                if (!Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
                 {
                     throw new ArgumentException(Resources.ValidationResultScheme);
                 }
@@ -140,7 +140,7 @@
 
             set
             {
-                if (!string.IsNullOrEmpty(value) && value.Length >= 1024)
+                if (!string.IsNullOrEmpty(value) && value.Length > 255)
                 {
                     throw new ArgumentException(Resources.ValidationResultRegLink);
                 }

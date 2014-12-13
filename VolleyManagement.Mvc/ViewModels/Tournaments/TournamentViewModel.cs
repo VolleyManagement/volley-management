@@ -47,7 +47,7 @@
         [Display(Name = "TournamentName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(80)]
+        [StringLength(60)]
         public string Name { get; set; }
 
         /// <summary>
@@ -55,7 +55,7 @@
         /// </summary>
         /// <value>Description of tournament.</value>
         [Display(Name = "TournamentDescription", ResourceType = typeof(ViewModelResources))]
-        [StringLength(1024)]
+        [StringLength(300)]
         public string Description { get; set; }
 
         /// <summary>
@@ -82,7 +82,7 @@
         /// </summary>
         /// <value>regulations of tournament.</value>
         [Display(Name = "TournamentRegulationsLink", ResourceType = typeof(ViewModelResources))]
-        [StringLength(1024)]
+        [StringLength(255)]
         public string RegulationsLink { get; set; }
     }
 }

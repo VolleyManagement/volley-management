@@ -19,14 +19,14 @@
         /// </summary>
         /// <value>Name of tournament.</value>
         [Required]
-        [StringLength(80)]
+        [StringLength(60)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Description.
         /// </summary>
         /// <value>Description of tournament.</value>
-        [StringLength(1024)]
+        [StringLength(300)]
         public string Description { get; set; }
 
         /// <summary>
@@ -34,7 +34,7 @@
         /// </summary>
         /// <value>Season of tournament.</value>
         [Required]
-        [StringLength(40)]
+        [StringLength(9)]
         public string Season { get; set; }
 
         /// <summary>
@@ -48,7 +48,7 @@
         /// Gets or sets a value indicating regulations of tournament.
         /// </summary>
         /// <value>regulations of tournament.</value>
-        [StringLength(1024)]
+        [StringLength(255)]
         public string RegulationsLink { get; set; }
     }
 }

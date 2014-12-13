@@ -70,7 +70,7 @@ namespace VolleyManagement.Mvc.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Описание турнира.
+        ///   Looks up a localized string similar to Описание.
         /// </summary>
         public static string TournamentDescription {
             get {
@@ -88,7 +88,7 @@ namespace VolleyManagement.Mvc.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Регламент.
+        ///   Looks up a localized string similar to Ссылка на регламент.
         /// </summary>
         public static string TournamentRegulationsLink {
             get {

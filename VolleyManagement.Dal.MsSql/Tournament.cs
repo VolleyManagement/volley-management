@@ -21,13 +21,12 @@ namespace VolleyManagement.Dal.MsSql
         /// Gets or sets the tournament name
         /// </summary>
         [Required]
-        [StringLength(80)]
+        [StringLength(60)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament scheme
         /// </summary>
-        [Required]
         public byte Scheme { get; set; }
 
         /// <summary>
@@ -40,13 +39,13 @@ namespace VolleyManagement.Dal.MsSql
         /// <summary>
         /// Gets or sets the tournament description
         /// </summary>
-        [StringLength(1024)]
+        [StringLength(300)]
         public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets regulations of the tournament
         /// </summary>
-        [StringLength(1024)]
+        [StringLength(255)]
         public string RegulationsLink { get; set; }
     }
 }

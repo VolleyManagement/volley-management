@@ -121,13 +121,13 @@
     <value>Поле "{0}" является обязательным.</value>
   </data>
   <data name="TournamentDescription" xml:space="preserve">
-    <value>Описание турнира</value>
+    <value>Описание</value>
   </data>
   <data name="TournamentName" xml:space="preserve">
     <value>Название турнира</value>
   </data>
   <data name="TournamentRegulationsLink" xml:space="preserve">
-    <value>Регламент</value>
+    <value>Ссылка на регламент</value>
   </data>
   <data name="TournamentScheme" xml:space="preserve">
     <value>Схема</value>

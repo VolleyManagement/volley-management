@@ -82,9 +82,9 @@
             var response = new HttpResponseMessage();
             try
             {
-                _tournamentService.Create(ViewModelToDomain.Map(viewModel));
-                var tournamentToReturn = _tournamentService.GetAll().Single(t => t.Name == viewModel.Name);
-                viewModel.Id = tournamentToReturn.Id;
+                var tournamentToCreate = ViewModelToDomain.Map(viewModel);
+                _tournamentService.Create(tournamentToCreate);
+                viewModel.Id = tournamentToCreate.Id;
                 response = Request.CreateResponse<TournamentViewModel>(HttpStatusCode.Created, viewModel);
                 return response;
             }

@@ -71,8 +71,7 @@
         /// <param name="id">Tournament id</param>
         public void Delete(int id)
         {
-            var tournamentToDelete =
-                _tournamentRepository.FindWhere(t => t.Id == id).Single();
+            var tournamentToDelete = new Tournament { Id = id };
             _tournamentRepository.Remove(tournamentToDelete);
             _tournamentRepository.UnitOfWork.Commit();
         }

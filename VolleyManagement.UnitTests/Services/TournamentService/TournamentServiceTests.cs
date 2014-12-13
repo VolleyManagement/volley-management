@@ -63,7 +63,7 @@
             var tournamentService = this._kernel.Get<TournamentService>();
             int id = 1;
             var tournament = new TournamentBuilder().WithId(1).Build();
-            
+
             Assert.AreEqual(tournament.Id, tournamentService.FindById(id).Id);
         }
 
@@ -80,6 +80,7 @@
 
             Assert.IsNull(tournament);
         }
+
         /// <summary>
         /// Test for GetAll() method. The method should return existing tournaments
         /// (order is important).

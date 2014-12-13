@@ -20,7 +20,7 @@
                 Name = tournamentViewModel.Name,
                 Description = tournamentViewModel.Description,
                 Season = tournamentViewModel.Season,
-                //Scheme = tournamentViewModel.Scheme,
+                ////Scheme = tournamentViewModel.Scheme,
                 RegulationsLink = tournamentViewModel.RegulationsLink,
             };
             return tournament;

@@ -9,40 +9,57 @@
     public class Tournament
     {
         /// <summary>
+        /// Name of tournament
+        /// </summary>
+        private string _name;
+
+        /// <summary>
+        /// Description of tournament
+        /// </summary>
+        private string _description;
+
+        /// <summary>
+        /// Season of tournament
+        /// </summary>
+        private string _season;
+
+        /// <summary>
+        /// Scheme of tournament
+        /// </summary>
+        private TournamentSchemeEnum _scheme;
+
+        /// <summary>
+        /// Season of tournament
+        /// </summary>
+        private string _regulationsLink;
+
+        /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
         /// <value>Id of tournament.</value>
         public int Id { get; set; }
 
         /// <summary>
-        /// Name of tournament
-        /// </summary>
-        private string _name;
-
-        /// <summary>
         /// Gets or sets a value indicating where Name.
         /// </summary>
         /// <value>Name of tournament.</value>
-        public string Name 
+        public string Name
         {
             get
             {
                 return _name;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value) && value.Length >= 80)
                 {
                     throw new ArgumentException(Resources.ValidationResultName);
                 }
-                _name = value;
-            }       
-        }
 
-        /// <summary>
-        /// Description of tournament
-        /// </summary>
-        private string _description;
+                _name = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating where Description.
@@ -54,20 +71,17 @@
             {
                 return _description;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value) && value.Length >= 1024)
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
+
                 _description = value;
             }
         }
-
-        /// <summary>
-        /// Season of tournament
-        /// </summary>
-        private string _season;
 
         /// <summary>
         /// Gets or sets a value indicating where Season.
@@ -79,20 +93,17 @@
             {
                 return _season;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value) && value.Length >= 9)
                 {
                     throw new ArgumentException(Resources.ValidationResultSeason);
                 }
+
                 _season = value;
             }
         }
-
-        /// <summary>
-        /// Scheme of tournament
-        /// </summary>
-        private TournamentSchemeEnum _scheme;
 
         /// <summary>
         /// Gets or sets a value indicating where Scheme.
@@ -104,20 +115,17 @@
             {
                 return _scheme;
             }
+
             set
             {
                 if (!Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
                 {
                     throw new ArgumentException(Resources.ValidationResultScheme);
                 }
+
                 _scheme = value;
             }
         }
-
-        /// <summary>
-        /// Season of tournament
-        /// </summary>
-        private string _regulationsLink;
 
         /// <summary>
         /// Gets or sets a value indicating regulations of tournament.
@@ -129,12 +137,14 @@
             {
                 return _regulationsLink;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value) && value.Length >= 1024)
                 {
                     throw new ArgumentException(Resources.ValidationResultRegLink);
                 }
+
                 _regulationsLink = value;
             }
         }

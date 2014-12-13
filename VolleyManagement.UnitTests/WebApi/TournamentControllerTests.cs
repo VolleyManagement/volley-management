@@ -10,12 +10,7 @@
     using Services.TournamentService;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.WebApi.Controllers;
-    using System.Net.Http;
-    using System.Web.Http;
-    using System.Web.Http.Routing;
-    using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
-    using System.Net;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -92,7 +87,7 @@
             var tournament = new TournamentBuilder().WithId(1).Build();
             var tournamentService = _tournamentServiceMock.Object;
             tournamentService.Create(tournament);
-            
+
             _tournamentServiceMock.Verify();
         }
 

@@ -22,8 +22,8 @@
                 defaults: new { id = RouteParameter.Optional });
 
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            //builder.EntitySet<Tournament>("Tournaments");
-            
+            ////builder.EntitySet<Tournament>("Tournaments");
+
             builder.EntitySet<TournamentViewModel>("Tournaments");
             config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
         }

@@ -53,14 +53,15 @@
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
+
             var response = new HttpResponseMessage();
             try
             {
-            _tournamentService.Create(ViewModelToDomain.Map(viewModel));
-            var tournamentToReturn = _tournamentService.GetAll().Single(t => t.Name == viewModel.Name);
-            response = Request.CreateResponse(HttpStatusCode.Created, tournamentToReturn);
-            response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
-            return response;
+                _tournamentService.Create(ViewModelToDomain.Map(viewModel));
+                var tournamentToReturn = _tournamentService.GetAll().Single(t => t.Name == viewModel.Name);
+                response = Request.CreateResponse(HttpStatusCode.Created, tournamentToReturn);
+                response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
+                return response;
             }
             catch (Exception)
             {
@@ -72,17 +73,21 @@
         /// <summary>
         /// Removes tournament from TournamentService
         /// </summary>
+        /// <param name="id">tournament id</param>
         /// <returns>All tournaments</returns>
         [HttpDelete]
         public HttpResponseMessage Delete(int id)
         {
-            Tournament tournamentToDelete = _tournamentService.FindById(id);
-            if (tournamentToDelete == null)
+            try
+            {
+                Tournament tournamentToDelete = _tournamentService.FindById(id);
+                _tournamentService.Delete(id);
+                return Request.CreateResponse(HttpStatusCode.Accepted);
+            }
+            catch (Exception)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
-            _tournamentService.Delete(id);
-            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }
 }

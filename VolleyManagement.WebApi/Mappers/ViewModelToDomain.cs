@@ -17,6 +17,7 @@
         public static Tournament Map(TournamentViewModel tournamentViewModel)
         {
             var tournament = new Tournament();
+            tournament.Id = tournamentViewModel.Id;
             tournament.Name = tournamentViewModel.Name;
             tournament.Description = tournamentViewModel.Description;
             tournament.Season = tournamentViewModel.Season;

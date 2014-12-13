@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.WebApi.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -9,7 +10,6 @@
     using System.Web.Http.OData.Routing;
     using Contracts;
     using Domain.Tournaments;
-
     using VolleyManagement.WebApi.Mappers;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
 
@@ -36,9 +36,34 @@
         /// Gets all tournaments from TournamentService
         /// </summary>
         /// <returns>All tournaments</returns>
-        public IQueryable<Tournament> Get()
+        public IQueryable<TournamentViewModel> Get()
         {
-            return _tournamentService.GetAll();
+             var tounaments = _tournamentService.GetAll().ToList();
+             var tvm = new List<TournamentViewModel>();
+             foreach (var t in tounaments)
+             {
+                 tvm.Add(DomainToViewModel.Map(t));
+             }
+
+             return tvm.AsQueryable<TournamentViewModel>();
+        }
+
+        /// <summary>
+        /// Gets specific tournament from TournamentService
+        /// </summary>
+        /// <param name="key">Tournament id</param>
+        /// <returns>Response with specific tournament</returns>
+        public HttpResponseMessage Get([FromODataUri]int key)
+        {
+            try
+            {
+                var tournament = _tournamentService.FindById(key);
+                return Request.CreateResponse(HttpStatusCode.OK, DomainToViewModel.Map(tournament));
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
         }
 
         /// <summary>
@@ -60,7 +85,7 @@
                 _tournamentService.Create(ViewModelToDomain.Map(viewModel));
                 var tournamentToReturn = _tournamentService.GetAll().Single(t => t.Name == viewModel.Name);
                 response = Request.CreateResponse<Tournament>(HttpStatusCode.Created, tournamentToReturn);
-                //response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
+                ////response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
                 return response;
             }
             catch (Exception)

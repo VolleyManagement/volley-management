@@ -17,6 +17,7 @@
         {
             var tournamentViewModel = new TournamentViewModel
             {
+                Id = tournament.Id,
                 Name = tournament.Name,
                 Description = tournament.Description,
                 Season = tournament.Season,

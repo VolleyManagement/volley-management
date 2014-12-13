@@ -74,7 +74,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) && value.Length >= 1024)
+                if (!string.IsNullOrEmpty(value) && value.Length >= 1024)
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
@@ -140,7 +140,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) && value.Length >= 1024)
+                if (!string.IsNullOrEmpty(value) && value.Length >= 1024)
                 {
                     throw new ArgumentException(Resources.ValidationResultRegLink);
                 }

@@ -10,6 +10,12 @@
     public class TournamentViewModel
     {
         /// <summary>
+        /// Gets or sets a value indicating where Id.
+        /// </summary>
+        /// <value>Id of tournament.</value>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating where Name.
         /// </summary>
         /// <value>Name of tournament.</value>

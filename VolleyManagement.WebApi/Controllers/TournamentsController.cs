@@ -38,14 +38,14 @@
         /// <returns>All tournaments</returns>
         public IQueryable<TournamentViewModel> Get()
         {
-             var tounaments = _tournamentService.GetAll().ToList();
-             var tvm = new List<TournamentViewModel>();
-             foreach (var t in tounaments)
-             {
-                 tvm.Add(DomainToViewModel.Map(t));
-             }
+            var tounaments = _tournamentService.GetAll().ToList();
+            var tvm = new List<TournamentViewModel>();
+            foreach (var t in tounaments)
+            {
+                tvm.Add(DomainToViewModel.Map(t));
+            }
 
-             return tvm.AsQueryable<TournamentViewModel>();
+            return tvm.AsQueryable<TournamentViewModel>();
         }
 
         /// <summary>
@@ -84,8 +84,8 @@
             {
                 _tournamentService.Create(ViewModelToDomain.Map(viewModel));
                 var tournamentToReturn = _tournamentService.GetAll().Single(t => t.Name == viewModel.Name);
-                response = Request.CreateResponse<Tournament>(HttpStatusCode.Created, tournamentToReturn);
-                ////response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
+                viewModel.Id = tournamentToReturn.Id;
+                response = Request.CreateResponse<TournamentViewModel>(HttpStatusCode.Created, viewModel);
                 return response;
             }
             catch (Exception)

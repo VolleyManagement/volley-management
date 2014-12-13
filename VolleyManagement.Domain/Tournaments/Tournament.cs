@@ -74,7 +74,7 @@
 
             set
             {
-                if (value.Length > 300)
+                if (!string.IsNullOrEmpty(value) && value.Length > 300)
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
@@ -118,10 +118,11 @@
 
             set
             {
-                if (!Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
+                if (!Enum.IsDefined(typeof(TournamentSchemeEnum), value))
                 {
                     throw new ArgumentException(Resources.ValidationResultScheme);
                 }
+
                 _scheme = value;
             }
         }
@@ -139,10 +140,11 @@
 
             set
             {
-                if (value.Length > 255)
+                if (!string.IsNullOrEmpty(value) && value.Length > 255)
                 {
                     throw new ArgumentException(Resources.ValidationResultRegLink);
                 }
+
                 _regulationsLink = value;
             }
         }

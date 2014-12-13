@@ -21,9 +21,18 @@
                 Name = tournament.Name,
                 Description = tournament.Description,
                 Season = tournament.Season,
-                Scheme = tournament.Scheme.ToString(),
                 RegulationsLink = tournament.RegulationsLink,
             };
+            switch (tournament.Scheme)
+            {
+                case TournamentSchemeEnum.One: tournamentViewModel.Scheme = "1";
+                    break;
+                case TournamentSchemeEnum.Two: tournamentViewModel.Scheme = "2";
+                    break;
+                case TournamentSchemeEnum.TwoAndHalf: tournamentViewModel.Scheme = "2.5";
+                    break;
+            }
+
             return tournamentViewModel;
         }
     }

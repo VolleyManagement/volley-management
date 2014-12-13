@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.WebApi.Mappers
 {
+    using System;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
 
@@ -15,14 +16,26 @@
         /// <returns>Tournament Domain model</returns>
         public static Tournament Map(TournamentViewModel tournamentViewModel)
         {
-            var tournament = new Tournament
+            var tournament = new Tournament();
+            tournament.Name = tournamentViewModel.Name;
+            tournament.Description = tournamentViewModel.Description;
+            tournament.Season = tournamentViewModel.Season;
+            int schemeValue;
+            bool parsed = int.TryParse(tournamentViewModel.Scheme, out schemeValue);
+            if (parsed)
             {
-                Name = tournamentViewModel.Name,
-                Description = tournamentViewModel.Description,
-                Season = tournamentViewModel.Season,
-                ////Scheme = tournamentViewModel.Scheme,
-                RegulationsLink = tournamentViewModel.RegulationsLink,
-            };
+                switch (schemeValue)
+                {
+                    case 1: tournament.Scheme = TournamentSchemeEnum.One;
+                        break;
+                    case 2: tournament.Scheme = TournamentSchemeEnum.Two;
+                        break;
+                    case 3: tournament.Scheme = TournamentSchemeEnum.TwoAndHalf;
+                        break;
+                }
+            }
+
+            tournament.RegulationsLink = tournamentViewModel.RegulationsLink;
             return tournament;
         }
     }

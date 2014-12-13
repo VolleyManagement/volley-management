@@ -86,6 +86,7 @@
         {
             Dal.Tournament newTournament = DomainToDal.Map(newEntity);
             _dalTournaments.AddObject(newTournament);
+            newEntity.Id = newTournament.Id;
         }
 
         /// <summary>

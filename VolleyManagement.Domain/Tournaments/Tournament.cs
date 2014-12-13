@@ -118,7 +118,7 @@
 
             set
             {
-                if (!Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
+                if (Enum.IsDefined(typeof(TournamentSchemeEnum), Scheme))
                 {
                     throw new ArgumentException(Resources.ValidationResultScheme);
                 }

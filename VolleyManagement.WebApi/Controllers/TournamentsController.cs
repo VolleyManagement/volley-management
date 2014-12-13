@@ -57,7 +57,9 @@
             var response = new HttpResponseMessage();
             try
             {
-                _tournamentService.Create(ViewModelToDomain.Map(viewModel));
+                Tournament trata = new Tournament();
+                trata = ViewModelToDomain.Map(viewModel);
+                _tournamentService.Create(trata);
                 var tournamentToReturn = _tournamentService.GetAll().Single(t => t.Name == viewModel.Name);
                 response = Request.CreateResponse(HttpStatusCode.Created, tournamentToReturn);
                 response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));

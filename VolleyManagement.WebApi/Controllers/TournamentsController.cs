@@ -57,12 +57,10 @@
             var response = new HttpResponseMessage();
             try
             {
-                Tournament trata = new Tournament();
-                trata = ViewModelToDomain.Map(viewModel);
-                _tournamentService.Create(trata);
+                _tournamentService.Create(ViewModelToDomain.Map(viewModel));
                 var tournamentToReturn = _tournamentService.GetAll().Single(t => t.Name == viewModel.Name);
-                response = Request.CreateResponse(HttpStatusCode.Created, tournamentToReturn);
-                response.Headers.Add("Location", Url.ODataLink(new EntitySetPathSegment("Tournaments")));
+                viewModel.Id = tournamentToReturn.Id;
+                response = Request.CreateResponse<TournamentViewModel>(HttpStatusCode.Created, viewModel);
                 return response;
             }
             catch (Exception)

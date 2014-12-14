@@ -111,7 +111,7 @@
             }
             catch (Exception)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
         }
     }

@@ -10,6 +10,7 @@
     using Services.TournamentService;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.WebApi.Controllers;
+    using VolleyManagement.WebApi.Mappers;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
 
     /// <summary>
@@ -70,7 +71,11 @@
                                             .ToList();
 
             // Actual result
-            var actual = sut.Get().ToList();
+            var actual = new List<Tournament>();
+            foreach (var t in sut.Get().ToList())
+            {
+                actual.Add(ViewModelToDomain.Map(t));
+            }
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());

@@ -111,6 +111,7 @@
         public void Remove(int id)
         {
             var dalToRemove = new Dal.Tournament { Id = id };
+            _dalTournaments.Attach(dalToRemove);
             _dalTournaments.DeleteObject(dalToRemove);
         }
     }

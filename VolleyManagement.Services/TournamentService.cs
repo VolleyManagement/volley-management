@@ -66,12 +66,13 @@
         }
 
         /// <summary>
-        /// Delete tournament
+        /// Delete tournament by id.
         /// </summary>
-        /// <param name="id">Tournament id</param>
+        /// <param name="id">The id of tournament to delete.</param>
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            _tournamentRepository.Remove(id);
+            _tournamentRepository.UnitOfWork.Commit();
         }
     }
 }

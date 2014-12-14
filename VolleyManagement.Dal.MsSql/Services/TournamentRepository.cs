@@ -106,12 +106,13 @@
         }
 
         /// <summary>
-        /// Removes specified tournament.
+        /// Removes tournament by id.
         /// </summary>
-        /// <param name="domainTournamentToRemove">The tournament to remove.</param>
-        public void Remove(Domain.Tournament domainTournamentToRemove)
+        /// <param name="domainTournamentToRemove">The id of tournament to remove.</param>
+        public void Remove(int id)
         {
-            var dalToRemove = new Dal.Tournament { Id = domainTournamentToRemove.Id };
+            var dalToRemove = new Dal.Tournament { Id = id };
+            _dalTournaments.Attach(dalToRemove);
             _dalTournaments.DeleteObject(dalToRemove);
         }
     }

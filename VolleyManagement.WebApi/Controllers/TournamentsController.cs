@@ -96,17 +96,17 @@
         }
 
         /// <summary>
-        /// Removes tournament from TournamentService
+        /// Deletes tournament from TournamentService
         /// </summary>
-        /// <param name="id">tournament id</param>
+        /// <param name="key">key to delete</param>
         /// <returns>All tournaments</returns>
         [HttpDelete]
-        public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete(int key)
         {
             try
             {
-                Tournament tournamentToDelete = _tournamentService.FindById(id);
-                _tournamentService.Delete(id);
+                Tournament tournamentToDelete = _tournamentService.FindById(key);
+                _tournamentService.Delete(key);
                 return Request.CreateResponse(HttpStatusCode.Accepted);
             }
             catch (Exception)

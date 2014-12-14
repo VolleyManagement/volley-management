@@ -111,7 +111,7 @@
         /// <param name="domainTournamentToRemove">The tournament to remove.</param>
         public void Remove(Domain.Tournament domainTournamentToRemove)
         {
-            var dalToRemove = _dalTournaments.Where(t => t.Id == domainTournamentToRemove.Id).Single();
+            var dalToRemove = new Dal.Tournament { Id = domainTournamentToRemove.Id };
             _dalTournaments.DeleteObject(dalToRemove);
         }
     }

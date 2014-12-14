@@ -36,9 +36,9 @@
         void Update(T oldEntity);
 
         /// <summary>
-        /// Deletes the specified T type element from the store.
+        /// Deletes the element by id from the store.
         /// </summary>
-        /// <param name="entity">Element to delete.</param>
-        void Remove(T entity);
+        /// <param name="entity">The id of element to remove.</param>
+        void Remove(int id);
     }
 }

@@ -87,6 +87,22 @@
         }
 
         /// <summary>
+        /// Test for Delete tournament action
+        /// </summary>
+        [TestMethod]
+        public void Delete_TournamentExists_TournamentIsDeleted()
+        {
+            var testData = this._testFixture.TestTournaments()
+                                      .Build();
+            var tournamentToDelete = testData.Last().Id;
+            var tournamentService = _tournamentServiceMock.Object;
+
+            tournamentService.Delete(tournamentToDelete);
+
+            _tournamentServiceMock.Verify(m => m.Delete(tournamentToDelete));
+        }
+
+        /// <summary>
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>

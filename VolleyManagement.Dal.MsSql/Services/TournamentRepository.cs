@@ -108,7 +108,7 @@
         /// <summary>
         /// Removes tournament by id.
         /// </summary>
-        /// <param name="domainTournamentToRemove">The id of tournament to remove.</param>
+        /// <param name="id">The id of tournament to remove.</param>
         public void Remove(int id)
         {
             var dalToRemove = new Dal.Tournament { Id = id };

@@ -38,7 +38,7 @@
         /// <summary>
         /// Deletes the element by id from the store.
         /// </summary>
-        /// <param name="entity">The id of element to remove.</param>
+        /// <param name="id">The id of element to remove.</param>
         void Remove(int id);
     }
 }

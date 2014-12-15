@@ -2,6 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Http.Hosting;
     using Contracts;
     using Domain.Tournaments;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -48,6 +51,28 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITournamentService>()
                    .ToConstant(this._tournamentServiceMock.Object);
+        }
+
+        /// <summary>
+        /// Test for Get() by key method. The method should return specific tournament
+        /// </summary>
+        [TestMethod]
+        public void Get_SpecificTournamentExist_TournamentReturned()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder().WithId(5).Build();
+            MockTournament(tournament);
+            var tournamentsController = _kernel.Get<TournamentsController>();
+            tournamentsController.Request = new HttpRequestMessage();
+            tournamentsController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+
+            // Act
+            var response = tournamentsController.Get(tournament.Id);
+
+            // Assert
+            ObjectContent content = response.Content as ObjectContent;
+            TournamentViewModel result = content.Value as TournamentViewModel;
+            Assert.AreEqual(tournament.Id, result.Id);
         }
 
         /// <summary>
@@ -131,7 +156,16 @@
         /// <param name="testData">Data to mock</param>
         private void MockTournaments(IEnumerable<Tournament> testData)
         {
-            this._tournamentServiceMock.Setup(tr => tr.GetAll()).Returns(testData.AsQueryable());
+            _tournamentServiceMock.Setup(tr => tr.GetAll()).Returns(testData.AsQueryable());
+        }
+
+        /// <summary>
+        /// Mocks test data
+        /// </summary>
+        /// <param name="testData">Data to mock</param>
+        private void MockTournament(Tournament testData)
+        {
+            _tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
         }
     }
 }

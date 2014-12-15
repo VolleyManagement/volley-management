@@ -59,13 +59,18 @@
         [TestMethod]
         public void FindById_Id1_TournamentFounded()
         {
+            // Arrange
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
                 .Returns(new List<Tournament>() { new Tournament { Id = 1 } }.AsQueryable());
             var tournamentService = this._kernel.Get<TournamentService>();
             int id = 1;
             var tournament = new TournamentBuilder().WithId(1).Build();
+            
+            // Act
+            var foundedTournament = tournamentService.FindById(id);
 
-            Assert.AreEqual(tournament.Id, tournamentService.FindById(id).Id);
+            // Assert
+            Assert.AreEqual(tournament.Id, foundedTournament.Id);
         }
 
         /// <summary>
@@ -74,11 +79,15 @@
         [TestMethod]
         public void FindById_NotExistingTournament_NullReturned()
         {
+            // Arrange
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
                            .Returns(new List<Tournament>() { null }.AsQueryable());
             var tournamentService = this._kernel.Get<TournamentService>();
+           
+            // Act
             var tournament = tournamentService.FindById(1);
 
+            // Assert
             Assert.IsNull(tournament);
         }
 

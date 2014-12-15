@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Mappers
 {
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Services.TournamentService;
@@ -22,6 +23,8 @@
             var testViewModel = new TournamentMvcViewModelBuilder()
                                         .WithId(2)
                                         .WithName("testViewModel")
+                                        .WithScheme(TournamentSchemeEnum.One)
+                                        .WithSeason("2016/2017")
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
 

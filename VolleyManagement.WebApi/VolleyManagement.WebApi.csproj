@@ -165,6 +165,42 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\SampleCss.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\css\app\Messenger\Hint.css" />
+    <Content Include="Scripts\css\app\Messenger\Notice.css" />
+    <Content Include="Scripts\css\app\Messenger\Popup.css" />
+    <Content Include="Scripts\css\app\Tournaments\Tournament.css" />
+    <Content Include="Scripts\css\app\Tournaments\TournamentCollection.css" />
+    <Content Include="Scripts\css\app\Tournaments\TournamentHomepage.css" />
+    <Content Include="Scripts\css\lib\bootstrap-theme.css" />
+    <Content Include="Scripts\css\lib\bootstrap.css" />
+    <Content Include="Scripts\js\app\Messenger\Controller.js" />
+    <Content Include="Scripts\js\app\Messenger\tpl\HintTpl.js" />
+    <Content Include="Scripts\js\app\Messenger\tpl\NoticeTpl.js" />
+    <Content Include="Scripts\js\app\Messenger\tpl\PopupTpl.js" />
+    <Content Include="Scripts\js\app\Messenger\view\HintView.js" />
+    <Content Include="Scripts\js\app\Messenger\view\NoticeView.js" />
+    <Content Include="Scripts\js\app\Messenger\view\PopupView.js" />
+    <Content Include="Scripts\js\app\Tournaments\Controller.js" />
+    <Content Include="Scripts\js\app\Tournaments\Tournament.js" />
+    <Content Include="Scripts\js\app\Tournaments\TournamentCollection.js" />
+    <Content Include="Scripts\js\app\Tournaments\TournamentRouter.js" />
+    <Content Include="Scripts\js\app\Tournaments\tpl\EditTournamentTpl.js" />
+    <Content Include="Scripts\js\app\Tournaments\tpl\TournamentCollectionTpl.js" />
+    <Content Include="Scripts\js\app\Tournaments\tpl\TournamentHomepageTpl.js" />
+    <Content Include="Scripts\js\app\Tournaments\tpl\TournamentTpl.js" />
+    <Content Include="Scripts\js\app\Tournaments\view\CreateEditTournamentView.js" />
+    <Content Include="Scripts\js\app\Tournaments\view\TournamentCollectionView.js" />
+    <Content Include="Scripts\js\app\Tournaments\view\TournamentHomepageView.js" />
+    <Content Include="Scripts\js\app\Tournaments\view\TournamentView.js" />
+    <Content Include="Scripts\js\lib\backbone-modelbinder.js" />
+    <Content Include="Scripts\js\lib\backbone-odata.js" />
+    <Content Include="Scripts\js\lib\backbone-parse.js" />
+    <Content Include="Scripts\js\lib\backbone.js" />
+    <Content Include="Scripts\js\lib\jquery-ajaxsetup.js" />
+    <Content Include="Scripts\js\lib\jquery.js" />
+    <Content Include="Scripts\js\lib\mediator.js" />
+    <Content Include="Scripts\js\lib\underscore.js" />
+    <Content Include="Scripts\js\main.js" />
     <Content Include="Scripts\SampleScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -208,6 +244,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\css\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\css\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\css\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Scripts\css\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Scripts\css\lib\bootstrap-theme.css.map" />
+    <Content Include="Scripts\css\lib\bootstrap.css.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

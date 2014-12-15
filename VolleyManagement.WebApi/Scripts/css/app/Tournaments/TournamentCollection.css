@@ -1,0 +1,12 @@
+.tournament-collection h4 {
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.tournament-collection .panel-heading h4 {
+    display: inline-block;
+}
+
+.tournament-collection .create {
+    margin-top: 4px;
+}

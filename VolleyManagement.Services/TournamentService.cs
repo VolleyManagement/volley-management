@@ -35,6 +35,24 @@
         }
 
         /// <summary>
+        /// Checks whether tournament name is unique or not.
+        /// </summary>
+        /// <param name="newTournament">tournament to edit or create</param>
+        /// <returns>true, if name is unique</returns>
+        public bool IsTournamentNameUnique(Tournament newTournament)
+        {
+            var tournament = _tournamentRepository.FindWhere(t => t.Name == newTournament.Name
+                && t.Id != newTournament.Id).FirstOrDefault();
+
+            if (tournament != null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Create a new tournament
         /// </summary>
         /// <param name="tournamentToCreate">A Tournament to create</param>

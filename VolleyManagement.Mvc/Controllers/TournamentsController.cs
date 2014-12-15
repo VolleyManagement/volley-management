@@ -1,9 +1,11 @@
 ﻿namespace VolleyManagement.Mvc.Controllers
 {
+    using System;
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Mvc.App_GlobalResources;
     using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
 
@@ -65,13 +67,33 @@
         [HttpPost]
         public ActionResult Create(TournamentViewModel tournamentViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _tournamentService.Create(ViewModelToDomain.Map(tournamentViewModel));
-                return RedirectToAction("Index");
-            }
+                var tournament = ViewModelToDomain.Map(tournamentViewModel);
 
-            return View(tournamentViewModel);
+                if (!_tournamentService.IsTournamentNameUnique(tournament))
+                {
+                    ModelState.AddModelError("Name", ViewModelResources.TournamentNameMustBeUnique);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _tournamentService.Create(tournament);
+                    return RedirectToAction("Index");
+                }
+
+                return View(tournamentViewModel);
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(tournamentViewModel);
+            }
+            catch (Exception)
+            {
+                // should return some error view
+                return View(tournamentViewModel);
+            }
         }
 
         /// <summary>
@@ -81,9 +103,17 @@
         /// <returns>View to edit specific tournament</returns>
         public ActionResult Edit(int id)
         {
-            var tournament = _tournamentService.FindById(id);
-            TournamentViewModel tournamentViewModel = DomainToViewModel.Map(tournament);
-            return View(tournamentViewModel);
+            try
+            {
+                var tournament = _tournamentService.FindById(id);
+                TournamentViewModel tournamentViewModel = DomainToViewModel.Map(tournament);
+                return View(tournamentViewModel);
+            }
+            catch (Exception)
+            {
+                // should return some error view
+                return RedirectToAction("Index");
+            }
         }
 
         /// <summary>
@@ -94,13 +124,33 @@
         [HttpPost]
         public ActionResult Edit(TournamentViewModel tournamentViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _tournamentService.Edit(ViewModelToDomain.Map(tournamentViewModel));
-                return RedirectToAction("Index");
-            }
+                var tournament = ViewModelToDomain.Map(tournamentViewModel);
 
-            return View(tournamentViewModel);
+                if (!_tournamentService.IsTournamentNameUnique(tournament))
+                {
+                    ModelState.AddModelError("Name", ViewModelResources.TournamentNameMustBeUnique);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    _tournamentService.Edit(tournament);
+                    return RedirectToAction("Index");
+                }
+
+                return View(tournamentViewModel);
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(tournamentViewModel);
+            }
+            catch (Exception)
+            {
+                // should return some error view
+                return View(tournamentViewModel);
+            }
         }
 
         /// <summary>

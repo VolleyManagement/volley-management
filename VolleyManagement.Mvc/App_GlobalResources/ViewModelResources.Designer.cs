@@ -88,6 +88,15 @@ namespace VolleyManagement.Mvc.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Название турнира должно быть уникальным..
+        /// </summary>
+        public static string TournamentNameMustBeUnique {
+            get {
+                return ResourceManager.GetString("TournamentNameMustBeUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ссылка на регламент.
         /// </summary>
         public static string TournamentRegulationsLink {

@@ -50,6 +50,7 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITournamentRepository>()
                    .ToConstant(this._tournamentRepositoryMock.Object);
+            this._tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
         /// <summary>
@@ -92,17 +93,13 @@
             var testData = this._testFixture.TestTournaments()
                                        .Build();
             _tournamentRepositoryMock.Setup(tr => tr.FindAll()).Returns(testData.AsQueryable());
-
-            // sut - stands for System Under Test
             var sut = this._kernel.Get<TournamentService>();
-
-            // Expected result
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
                                             .Build()
                                             .ToList();
 
-            // Actual result
+            // Act
             var actual = sut.GetAll().ToList();
 
             // Assert
@@ -121,17 +118,17 @@
                                         .WithId(1)
                                         .WithName("Test Tournament")
                                         .Build();
-            this.MockUnitOfWork();
             Func<Tournament, bool> tournamentsMatch = delegate(Tournament t)
             {
                 return t.Id.Equals(testTournament.Id)
                     && t.Name.Equals(testTournament.Name);
             };
 
-            // System Under Test
+            // Act
             var sut = this._kernel.Get<TournamentService>();
             sut.Edit(testTournament);
 
+            // Assert
             this._tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => tournamentsMatch(t))), Times.Once());
             this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
@@ -146,13 +143,13 @@
         {
             // Arrange
             Tournament testTournament = null;
-            this.MockUnitOfWork();
             _tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<InvalidOperationException>();
 
-            // System Under Test
+            // Act
             var sut = this._kernel.Get<TournamentService>();
             sut.Edit(testTournament);
 
+            // Assert
             this._unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 
@@ -162,21 +159,11 @@
         [TestMethod]
         public void Create_TournamentNotExist_TournamentCreated()
         {
-            this.MockUnitOfWork();
-
             var sut = this._kernel.Get<TournamentService>();
             sut.Create(new Tournament());
 
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.IsAny<Tournament>()), Times.Once());
             this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
-        }
-
-        /// <summary>
-        /// Mocks unit of work
-        /// </summary>
-        private void MockUnitOfWork()
-        {
-            this._tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
     }
 }

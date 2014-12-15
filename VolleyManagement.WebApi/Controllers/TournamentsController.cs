@@ -105,7 +105,6 @@
         {
             try
             {
-                Tournament tournamentToDelete = _tournamentService.FindById(key);
                 _tournamentService.Delete(key);
                 return Request.CreateResponse(HttpStatusCode.Accepted);
             }

@@ -91,7 +91,7 @@
             // Arrange
             var testData = this._testFixture.TestTournaments()
                                        .Build();
-            this.MockTournaments(testData);
+            _tournamentRepositoryMock.Setup(tr => tr.FindAll()).Returns(testData.AsQueryable());
 
             // sut - stands for System Under Test
             var sut = this._kernel.Get<TournamentService>();
@@ -147,7 +147,7 @@
             // Arrange
             Tournament testTournament = null;
             this.MockUnitOfWork();
-            this.MockUpdateNullTournament();
+            _tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<InvalidOperationException>();
 
             // System Under Test
             var sut = this._kernel.Get<TournamentService>();
@@ -162,23 +162,13 @@
         [TestMethod]
         public void Create_TournamentNotExist_TournamentCreated()
         {
-            var unitOfWorkMock = new Mock<IUnitOfWork>();
-            _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(unitOfWorkMock.Object);
+            this.MockUnitOfWork();
 
             var sut = this._kernel.Get<TournamentService>();
             sut.Create(new Tournament());
 
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.IsAny<Tournament>()), Times.Once());
-            unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
-        }
-
-        /// <summary>
-        /// Mocks test data
-        /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockTournaments(IEnumerable<Tournament> testData)
-        {
-            this._tournamentRepositoryMock.Setup(tr => tr.FindAll()).Returns(testData.AsQueryable());
+            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
 
         /// <summary>
@@ -187,14 +177,6 @@
         private void MockUnitOfWork()
         {
             this._tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
-        }
-
-        /// <summary>
-        /// Mocks unit of work
-        /// </summary>
-        private void MockUpdateNullTournament()
-        {
-            this._tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<InvalidOperationException>();
         }
     }
 }

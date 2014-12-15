@@ -7,6 +7,16 @@ Backbone.Model = Backbone.Model.extend({
 
         return (out);
        // return (resp.Id ? resp : resp.value);
+    },
+    toJSON: function () {
+        var out = _.clone(this.attributes);
+
+
+        delete out.id;
+        
+
+        return (out);
+       
     }
 });
 

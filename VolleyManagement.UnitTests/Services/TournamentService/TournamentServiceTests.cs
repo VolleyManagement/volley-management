@@ -65,7 +65,7 @@
             var tournamentService = this._kernel.Get<TournamentService>();
             int id = 1;
             var tournament = new TournamentBuilder().WithId(1).Build();
-            
+
             // Act
             var foundedTournament = tournamentService.FindById(id);
 
@@ -83,7 +83,7 @@
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
                            .Returns(new List<Tournament>() { null }.AsQueryable());
             var tournamentService = this._kernel.Get<TournamentService>();
-           
+
             // Act
             var tournament = tournamentService.FindById(1);
 

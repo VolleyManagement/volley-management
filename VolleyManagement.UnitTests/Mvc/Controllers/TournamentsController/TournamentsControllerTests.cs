@@ -3,15 +3,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-
     using Contracts;
     using Domain.Tournaments;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-
     using VolleyManagement.Mvc.Controllers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
@@ -139,7 +138,7 @@
         public void CreateGetAction_TournamentViewModel_ReturnsToTheView()
         {
             // Arrange
-            var tournamentsController = this._kernel.Get<TournamentsController>();
+            var tournamentsController = _kernel.Get<TournamentsController>();
 
             // Act
             var result = tournamentsController.Create() as ViewResult;
@@ -147,6 +146,31 @@
 
             // Assert
             Assert.IsNotNull(model, "Tournament view model should return to the view.");
+        }
+
+        /// <summary>
+        /// Test for Create tournament action (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_ValidTournamentViewModel_RedirectToIndex()
+        {
+            // Arrange
+            var tournamentsController = _kernel.Get<TournamentsController>();
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithId(1)
+                .WithName("testName")
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason("2015/2016")
+                .Build();
+            _tournamentServiceMock.Setup(tr => tr.IsTournamentNameUnique(It.IsAny<Tournament>()))
+                .Returns(true);
+
+            // Act
+            var result = tournamentsController.Create(tournamentViewModel) as RedirectToRouteResult;
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
+            Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
         /// <summary>

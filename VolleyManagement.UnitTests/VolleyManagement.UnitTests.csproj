@@ -99,7 +99,7 @@
     <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
     <Compile Include="Mvc\Mappers\FieldsComparer.cs" />
     <Compile Include="Mvc\Mappers\ViewModelToDomainTests.cs" />
-    <Compile Include="Services\TournamentService\TournamentMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />

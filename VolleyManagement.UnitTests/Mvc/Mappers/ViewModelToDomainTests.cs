@@ -4,7 +4,7 @@
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
-    using VolleyManagement.UnitTests.Services.TournamentService;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
 
     /// <summary>
     /// Tests for ViewModelToDomain class.

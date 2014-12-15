@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentService
+﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Mvc.ViewModels.Tournaments;

@@ -112,26 +112,16 @@
         [TestMethod]
         public void Post_NewTournament_CreateMethodInvoked()
         {
+            // Arrange
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>())).Verifiable();
-
             var tournament = new TournamentBuilder().WithId(1).Build();
             var tournamentService = _tournamentServiceMock.Object;
+
+            // Act
             tournamentService.Create(tournament);
 
+            // Assert
             _tournamentServiceMock.Verify();
-        }
-
-        /// <summary>
-        /// Post method test, response is not null.
-        /// </summary>
-        [TestMethod]
-        public void Post_CorrectResponse_ResponseCreated()
-        {
-            var controller = this._kernel.Get<TournamentsController>();
-
-            var response = controller.Post(new TournamentViewModel { Name = "Tournament" });
-
-            Assert.IsNotNull(response);
         }
 
         /// <summary>

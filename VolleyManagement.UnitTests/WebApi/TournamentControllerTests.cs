@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Hosting;
@@ -15,7 +16,6 @@
     using VolleyManagement.WebApi.Controllers;
     using VolleyManagement.WebApi.Mappers;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
-    using System.Net;
 
     /// <summary>
     /// Tests for TournamentController class.

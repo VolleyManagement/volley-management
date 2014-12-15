@@ -174,6 +174,50 @@
         }
 
         /// <summary>
+        /// Test for Edit tournament action (GET)
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_TournamentViewModel_ReturnsToTheView()
+        {
+            // Arrange
+            var tournamentsController = _kernel.Get<TournamentsController>();
+            var tournament = new TournamentBuilder().WithId(5).Build();
+            MockTournament(tournament);
+
+            // Act
+            var result = tournamentsController.Edit(tournament.Id) as ViewResult;
+            var model = result.ViewData.Model as TournamentViewModel;
+
+            // Assert
+            Assert.AreEqual(tournament.Id, model.Id);
+        }
+
+        /// <summary>
+        /// Test for Edit tournament action (POST)
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_ValidTournamentViewModel_RedirectToIndex()
+        {
+            // Arrange
+            var tournamentsController = _kernel.Get<TournamentsController>();
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithId(1)
+                .WithName("testName")
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason("2015/2016")
+                .Build();
+            _tournamentServiceMock.Setup(tr => tr.IsTournamentNameUnique(It.IsAny<Tournament>()))
+                .Returns(true);
+
+            // Act
+            var result = tournamentsController.Edit(tournamentViewModel) as RedirectToRouteResult;
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        /// <summary>
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>
@@ -181,6 +225,15 @@
         {
             this._tournamentServiceMock.Setup(tr => tr.GetAll())
                 .Returns(testData.AsQueryable());
+        }
+
+        /// <summary>
+        /// Mocks test data
+        /// </summary>
+        /// <param name="testData">Data to mock</param>
+        private void MockTournament(Tournament testData)
+        {
+            _tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
         }
     }
 }

@@ -1,12 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace VolleyManagement.UnitTests.Mvc
+﻿namespace VolleyManagement.UnitTests.Mvc
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.Collections;
+
     public static class AssertHelper
     {
         public static void AreEqual(object obj1, object obj2, IComparer comparer)

@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentService
+﻿namespace VolleyManagement.UnitTests
 {
     using System.Collections.Generic;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,7 +11,7 @@
         /// <summary>
         /// Test equals of two objects with specific comparer.
         /// </summary>
-        /// <typeparam name="T">Type</typeparam>
+        /// <typeparam name="T">Type of object.</typeparam>
         /// <param name="expected">Expected result</param>
         /// <param name="actual">Actual result</param>
         /// <param name="comparer">Specific comparer</param>

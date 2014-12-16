@@ -4,13 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-
     using Ninject;
-
+    using VolleyManagement.Contracts;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Services;
@@ -35,6 +32,11 @@
         /// Unit of work mock.
         /// </summary>
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
+
+        /// <summary>
+        /// ITournament service mock
+        /// </summary>
+        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
 
         /// <summary>
         /// IoC for tests.
@@ -73,10 +75,10 @@
                 .Build();
 
             //// Act
-            var foundedTournament = tournamentService.FindById(id);
+            var actualResult = tournamentService.FindById(id);
 
             // Assert
-            AssertExtensions.AreEqual<Tournament>(tournament, foundedTournament, new TournamentComparer());
+            AssertExtensions.AreEqual<Tournament>(tournament, actualResult, new TournamentComparer());
         }
 
         /// <summary>
@@ -86,8 +88,7 @@
         public void FindById_NotExistingTournament_NullReturned()
         {
             // Arrange
-            _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
-                           .Returns(new List<Tournament>() { null }.AsQueryable());
+            MockTournamentServiceFindByIdAlternativeStory();
             var tournamentService = this._kernel.Get<TournamentService>();
 
             // Act
@@ -186,19 +187,27 @@
         /// </summary>
         private void MockTournamentServiceFindById()
         {
-            _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
-                .Returns(new List<Tournament>() 
-                { 
-                    new Tournament 
-                    { 
+            _tournamentServiceMock.Setup(ts => ts.FindById(It.IsAny<int>()))
+                .Returns(
+                    new Tournament
+                    {
                         Id = 1,
                         Name = "Name",
                         Description = "Description",
                         Scheme = TournamentSchemeEnum.One,
                         Season = "2014/2015",
                         RegulationsLink = "link"
-                    }
-                }.AsQueryable());
+                    });
+                
+        }
+
+        /// <summary>
+        /// Mocks FindById method.
+        /// </summary>
+        private void MockTournamentServiceFindByIdAlternativeStory()
+        {
+            _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
+                           .Returns(new List<Tournament>() { null }.AsQueryable());
         }
     }
 }

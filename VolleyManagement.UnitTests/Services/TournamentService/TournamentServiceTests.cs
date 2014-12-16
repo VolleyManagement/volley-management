@@ -140,7 +140,7 @@
 
             // Assert
             this._tournamentRepositoryMock.Verify(
-                tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, testTournament))), 
+                tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, testTournament))),
                 Times.Once());
             this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
@@ -186,9 +186,8 @@
         /// <returns>True if given tournaments have the same properties.</returns>
         private bool TournamentsAreEqual(Tournament x, Tournament y)
         {
-            return x.Id.Equals(y.Id) && x.Name.Equals(y.Name)
-                && x.Description.Equals(y.Description) && x.Season.Equals(y.Season)
-                && x.Scheme.Equals(y.Scheme) && x.RegulationsLink.Equals(y.RegulationsLink);
+            TournamentComparer comparer = new TournamentComparer();
+            return comparer.Compare(x, y) == 0;
         }
 
         /// <summary>

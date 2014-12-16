@@ -71,11 +71,6 @@
             {
                 var tournament = ViewModelToDomain.Map(tournamentViewModel);
 
-                if (!_tournamentService.IsTournamentNameUnique(tournament))
-                {
-                    ModelState.AddModelError("Name", ViewModelResources.TournamentNameMustBeUnique);
-                }
-
                 if (ModelState.IsValid)
                 {
                     _tournamentService.Create(tournament);
@@ -91,8 +86,7 @@
             }
             catch (Exception)
             {
-                // should return some error view
-                return View(tournamentViewModel);
+                return HttpNotFound();
             }
         }
 
@@ -111,8 +105,7 @@
             }
             catch (Exception)
             {
-                // should return some error view
-                return RedirectToAction("Index");
+                return HttpNotFound();
             }
         }
 
@@ -127,11 +120,6 @@
             try
             {
                 var tournament = ViewModelToDomain.Map(tournamentViewModel);
-
-                if (!_tournamentService.IsTournamentNameUnique(tournament))
-                {
-                    ModelState.AddModelError("Name", ViewModelResources.TournamentNameMustBeUnique);
-                }
 
                 if (ModelState.IsValid)
                 {
@@ -148,8 +136,7 @@
             }
             catch (Exception)
             {
-                // should return some error view
-                return View(tournamentViewModel);
+                return HttpNotFound();
             }
         }
 

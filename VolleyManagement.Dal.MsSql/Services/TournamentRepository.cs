@@ -67,15 +67,7 @@
         /// <returns>Collection of domain tournaments.</returns>
         public IQueryable<Domain.Tournament> FindWhere(Expression<Func<Domain.Tournament, bool>> predicate)
         {
-            return _dalTournaments.Select(t => new Domain.Tournament
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Description = t.Description,
-                RegulationsLink = t.RegulationsLink,
-                Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
-                Season = t.Season
-            }).Where(predicate);
+            return FindAll().Where(predicate);
         }
 
         /// <summary>

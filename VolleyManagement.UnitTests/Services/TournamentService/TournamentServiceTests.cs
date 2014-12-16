@@ -63,14 +63,22 @@
             MockTournamentServiceFindById();
             var tournamentService = this._kernel.Get<TournamentService>();
             int id = 1;
-            var tournament = new TournamentBuilder().WithId(1).Build();
+            var tournament = new TournamentBuilder()
+                .WithId(1)
+                .WithName("Name")
+                .WithDescription("Description")
+                .WithScheme(TournamentSchemeEnum.One)
+                .WithSeason("2014/2015")
+                .WithRegulationsLink("link")
+                .Build();
+            int equalsResult = 0;
 
             // Act
             var foundedTournament = tournamentService.FindById(id);
-
+            int compareResult = new TournamentComparer().Compare(tournament, foundedTournament);
+            
             // Assert
-            Assert.IsTrue(tournament.Equals(foundedTournament));
-            //Assert.AreEqual(tournament.Id, foundedTournament.Id);
+            Assert.AreEqual(equalsResult, compareResult);
         }
 
         /// <summary>
@@ -175,6 +183,9 @@
             this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
 
+        /// <summary>
+        /// Mocks FindById method.
+        /// </summary>
         private void MockTournamentServiceFindById()
         {
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))

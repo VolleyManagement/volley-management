@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Services
 {
+    using System;
     using System.Linq;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
@@ -44,12 +44,7 @@
             var tournament = _tournamentRepository.FindWhere(t => t.Name == newTournament.Name
                 && t.Id != newTournament.Id).FirstOrDefault();
 
-            if (tournament != null)
-            {
-                return false;
-            }
-
-            return true;
+            return tournament == null;
         }
 
         /// <summary>
@@ -58,8 +53,15 @@
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
-            _tournamentRepository.Add(tournamentToCreate);
-            _tournamentRepository.UnitOfWork.Commit();
+            if (IsTournamentNameUnique(tournamentToCreate))
+            {
+                _tournamentRepository.Add(tournamentToCreate);
+                _tournamentRepository.UnitOfWork.Commit();
+            }
+            else
+            {
+                throw new ArgumentException(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique);
+            }
         }
 
         /// <summary>
@@ -79,8 +81,15 @@
         /// <param name="tournamentToEdit">Tournament to edit</param>
         public void Edit(Tournament tournamentToEdit)
         {
-            _tournamentRepository.Update(tournamentToEdit);
-            _tournamentRepository.UnitOfWork.Commit();
+            if (IsTournamentNameUnique(tournamentToEdit))
+            {
+                _tournamentRepository.Update(tournamentToEdit);
+                _tournamentRepository.UnitOfWork.Commit();
+            }
+            else
+            {
+                throw new ArgumentException(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique);
+            }
         }
 
         /// <summary>

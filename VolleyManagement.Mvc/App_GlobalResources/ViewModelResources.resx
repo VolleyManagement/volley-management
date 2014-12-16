@@ -126,9 +126,6 @@
   <data name="TournamentName" xml:space="preserve">
     <value>Название турнира</value>
   </data>
-  <data name="TournamentNameMustBeUnique" xml:space="preserve">
-    <value>Название турнира должно быть уникальным.</value>
-  </data>
   <data name="TournamentRegulationsLink" xml:space="preserve">
     <value>Ссылка на регламент</value>
   </data>

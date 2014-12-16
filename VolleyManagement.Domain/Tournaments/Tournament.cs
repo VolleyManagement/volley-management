@@ -52,7 +52,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) || value.Length > 60)
+                if (string.IsNullOrEmpty(value) || value.Length > Constants.nameLength)
                 {
                     throw new ArgumentException(Resources.ValidationResultName);
                 }
@@ -74,7 +74,7 @@
 
             set
             {
-                if (!string.IsNullOrEmpty(value) && value.Length > 300)
+                if (!string.IsNullOrEmpty(value) && value.Length > Constants.descriptionLength)
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
@@ -96,7 +96,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) || value.Length > 9)
+                if (string.IsNullOrEmpty(value) || value.Length > Constants.seasonLength)
                 {
                     throw new ArgumentException(Resources.ValidationResultSeason);
                 }
@@ -140,7 +140,7 @@
 
             set
             {
-                if (!string.IsNullOrEmpty(value) && value.Length > 255)
+                if (!string.IsNullOrEmpty(value) && value.Length > Constants.regLinkLength)
                 {
                     throw new ArgumentException(Resources.ValidationResultRegLink);
                 }

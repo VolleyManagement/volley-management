@@ -71,14 +71,12 @@
                 .WithSeason("2014/2015")
                 .WithRegulationsLink("link")
                 .Build();
-            int equalsResult = 0;
 
-            // Act
+            //// Act
             var foundedTournament = tournamentService.FindById(id);
-            int compareResult = new TournamentComparer().Compare(tournament, foundedTournament);
-            
+
             // Assert
-            Assert.AreEqual(equalsResult, compareResult);
+            AssertExtensions.AreEqual<Tournament>(tournament, foundedTournament, new TournamentComparer());
         }
 
         /// <summary>
@@ -189,7 +187,18 @@
         private void MockTournamentServiceFindById()
         {
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
-                .Returns(new List<Tournament>() { new Tournament { Id = 1 } }.AsQueryable());
+                .Returns(new List<Tournament>() 
+                { 
+                    new Tournament 
+                    { 
+                        Id = 1,
+                        Name = "Name",
+                        Description = "Description",
+                        Scheme = TournamentSchemeEnum.One,
+                        Season = "2014/2015",
+                        RegulationsLink = "link"
+                    }
+                }.AsQueryable());
         }
     }
 }

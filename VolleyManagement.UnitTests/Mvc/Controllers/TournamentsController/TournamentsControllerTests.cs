@@ -120,7 +120,7 @@
             // Act
             var result = tournamentService.Details(searchId) as ViewResult;
 
-            var actual = (Tournament)result.ViewData.Model;          
+            var actual = (Tournament)result.ViewData.Model;       
 
             // Assert
             AssertHelper.AreEqual(expected, actual, new TournamentComparer());

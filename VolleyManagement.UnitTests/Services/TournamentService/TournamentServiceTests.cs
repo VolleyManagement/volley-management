@@ -172,11 +172,20 @@
         [TestMethod]
         public void Create_TournamentNotExist_TournamentCreated()
         {
-            var sut = this._kernel.Get<TournamentService>();
-            sut.Create(new Tournament());
+            // Arrange
+            var newTournament = new TournamentBuilder()
+                                        .WithId(4)
+                                        .WithName("New Tournament")
+                                        .Build();
 
-            _tournamentRepositoryMock.Verify(tr => tr.Add(It.IsAny<Tournament>()), Times.Once());
-            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+            // Act
+            var sut = this._kernel.Get<TournamentService>();
+            sut.Create(newTournament);
+
+            // Assert
+            this._tournamentRepositoryMock.Verify(
+                tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, newTournament))));
+            this._unitOfWorkMock.Verify(u => u.Commit());
         }
 
         /// <summary>
@@ -207,7 +216,6 @@
                         Season = "2014/2015",
                         RegulationsLink = "link"
                     });
-                
         }
 
         /// <summary>

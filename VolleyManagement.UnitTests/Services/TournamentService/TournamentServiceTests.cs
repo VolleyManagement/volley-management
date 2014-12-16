@@ -69,7 +69,8 @@
             var foundedTournament = tournamentService.FindById(id);
 
             // Assert
-            Assert.AreEqual(tournament.Id, foundedTournament.Id);
+            Assert.IsTrue(tournament.Equals(foundedTournament));
+            //Assert.AreEqual(tournament.Id, foundedTournament.Id);
         }
 
         /// <summary>

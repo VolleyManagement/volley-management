@@ -8,13 +8,6 @@
     public static class Constants
     {
         /// <summary>
-        /// Private constructor to prevent instantiation 
-        /// </summary>
-        private Constants()
-        {
-        }
-
-        /// <summary>
         /// constant defined the length of the name field
         /// </summary>
         public const int nameLength = 60;

@@ -57,11 +57,10 @@
         /// Test for FinById method.
         /// </summary>
         [TestMethod]
-        public void FindById_Id1_TournamentFounded()
+        public void FindById_Id1_TournamentFound()
         {
             // Arrange
-            _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
-                .Returns(new List<Tournament>() { new Tournament { Id = 1 } }.AsQueryable());
+            MockTournamentServiceFindById();
             var tournamentService = this._kernel.Get<TournamentService>();
             int id = 1;
             var tournament = new TournamentBuilder().WithId(1).Build();
@@ -173,6 +172,12 @@
 
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.IsAny<Tournament>()), Times.Once());
             this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+        }
+
+        private void MockTournamentServiceFindById()
+        {
+            _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
+                .Returns(new List<Tournament>() { new Tournament { Id = 1 } }.AsQueryable());
         }
     }
 }

@@ -92,7 +92,9 @@
         [TestMethod]
         public void Details_TournamentExists_TournamentIsReturned()
         {
+            // Arrange
             int searchId = 11;
+
             _tournamentServiceMock.Setup(tr => tr.FindById(It.IsAny<int>()))
                           .Returns(new Tournament
                           {
@@ -103,16 +105,25 @@
                               Scheme = TournamentSchemeEnum.Two,
                               RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('11')"
                           });
+
             var tournamentService = this._kernel.Get<TournamentsController>();
-            var result = tournamentService.Details(searchId) as ViewResult;
-            var actual = (Tournament)result.ViewData.Model;
-            var expected = new TournamentBuilder().WithId(searchId).WithName("Tournament 11")
-                .WithDescription("Tournament 11 description").WithSeason("2014/2015")
+
+            var expected = new TournamentBuilder()
+                .WithId(searchId)
+                .WithName("Tournament 11")
+                .WithDescription("Tournament 11 description")
+                .WithSeason("2014/2015")
                 .WithScheme(TournamentSchemeEnum.Two)
-                .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('11')").Build();
-            var tournamentComparer = new TournamentComparer();
-            var resultofComparation = tournamentComparer.Compare(expected, actual);
-            Assert.IsTrue(resultofComparation == 0);
+                .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('11')")
+                .Build();
+
+            // Act
+            var result = tournamentService.Details(searchId) as ViewResult;
+
+            var actual = (Tournament)result.ViewData.Model;          
+
+            // Assert
+            AssertHelper.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>

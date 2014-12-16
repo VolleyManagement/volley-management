@@ -134,18 +134,15 @@
                                         .WithId(1)
                                         .WithName("Test Tournament")
                                         .Build();
-            Func<Tournament, bool> tournamentsMatch = delegate(Tournament t)
-            {
-                return t.Id.Equals(testTournament.Id)
-                    && t.Name.Equals(testTournament.Name);
-            };
 
             // Act
             var sut = this._kernel.Get<TournamentService>();
             sut.Edit(testTournament);
 
             // Assert
-            this._tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => tournamentsMatch(t))), Times.Once());
+            this._tournamentRepositoryMock.Verify(
+                tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, testTournament))),
+                Times.Once());
             this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
 
@@ -180,6 +177,18 @@
 
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.IsAny<Tournament>()), Times.Once());
             this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+        }
+
+        /// <summary>
+        /// Find out whether two tournament objects have the same properties.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>True if given tournaments have the same properties.</returns>
+        private bool TournamentsAreEqual(Tournament x, Tournament y)
+        {
+            TournamentComparer comparer = new TournamentComparer();
+            return comparer.Compare(x, y) == 0;
         }
 
         /// <summary>

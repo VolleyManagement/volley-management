@@ -10,7 +10,23 @@
         /// <summary>
         /// Holds test tournament instance
         /// </summary>
-        private Tournament _tournament = new Tournament();
+        private Tournament _tournament;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TournamentBuilder"/> class
+        /// </summary>
+        public TournamentBuilder()
+        {
+            this._tournament = new Tournament
+            {
+                Id = 1,
+                Name = "Name",
+                Description = "Description 1",
+                Season = "2014/2015",
+                Scheme = TournamentSchemeEnum.Two,
+                RegulationsLink = "http://default.com"
+            };
+        }
 
         /// <summary>
         /// Sets id of test tournament

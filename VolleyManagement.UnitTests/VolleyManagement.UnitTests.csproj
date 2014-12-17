@@ -101,6 +101,7 @@
     <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
     <Compile Include="Mvc\Mappers\FieldsComparer.cs" />
     <Compile Include="Mvc\Mappers\ViewModelToDomainTests.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="AssertExtensions.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />

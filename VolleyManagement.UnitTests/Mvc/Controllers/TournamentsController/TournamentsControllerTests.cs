@@ -153,13 +153,14 @@
         {
             // Arrange
             var tournamentsController = _kernel.Get<TournamentsController>();
+            var expected = new TournamentViewModel();
 
             // Act
             var result = tournamentsController.Create() as ViewResult;
-            var model = result.ViewData.Model as TournamentViewModel;
+            var actual = result.ViewData.Model as TournamentViewModel;
 
             // Assert
-            Assert.IsTrue(DoesModelContainDefaultData(model));
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -288,56 +289,6 @@
         private void MockSingleTournament(Tournament testData)
         {
             _tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
-        }
-
-        /// <summary>
-        /// Checks that the seasons list contains valid data
-        /// </summary>
-        /// <param name="seasonsList">List of seasons</param>
-        /// <returns>True, if data is valid</returns>
-        private bool IsSeasonsListValid(IList<string> seasonsList)
-        {
-            bool isSeasonsListValid = true;
-            int currentYear = DateTime.Now.Year;
-            const int yearsBeforeToday = 5;
-            int i = 0;
-            foreach (var season in seasonsList)
-            {
-                int year = currentYear - yearsBeforeToday + i;
-                string currentSeason = year.ToString() + "/" + (year + 1).ToString();
-                if (!season.Equals(currentSeason))
-                {
-                    isSeasonsListValid = false;
-                    break;
-                }
-
-                i++;
-            }
-
-            return isSeasonsListValid;
-        }
-
-        /// <summary>
-        /// Checks that the model contains default data
-        /// </summary>
-        /// <param name="model">Tournament view model</param>
-        /// <returns>True, if model contains default data</returns>
-        private bool DoesModelContainDefaultData(TournamentViewModel model)
-        {
-            if (IsSeasonsListValid(model.SeasonsList) &&
-                model.Id == 0 &&
-                string.IsNullOrEmpty(model.Description) &&
-                string.IsNullOrEmpty(model.Name) &&
-                string.IsNullOrEmpty(model.RegulationsLink) &&
-                string.IsNullOrEmpty(model.Season) &&
-                model.Scheme == TournamentSchemeEnum.One)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }

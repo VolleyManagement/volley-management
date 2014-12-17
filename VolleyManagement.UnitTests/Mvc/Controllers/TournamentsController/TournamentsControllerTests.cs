@@ -12,10 +12,12 @@
     using VolleyManagement.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class TournamentsControllerTests
     {

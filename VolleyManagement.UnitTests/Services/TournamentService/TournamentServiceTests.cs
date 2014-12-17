@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -11,10 +12,11 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Services;
-
+    
     /// <summary>
     /// Tests for TournamentService class.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class TournamentServiceTests
     {
@@ -206,23 +208,8 @@
         /// <param name="testData">Test data to mock.</param>
         private void MockTournamentServiceFindWhere(IEnumerable<Tournament> testData)
         {
-<<<<<<< HEAD
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
                 .Returns(testData.AsQueryable());
-
-=======
-            _tournamentServiceMock.Setup(ts => ts.FindById(It.IsAny<int>()))
-                .Returns(
-                    new Tournament
-                    {
-                        Id = 1,
-                        Name = "Name",
-                        Description = "Description",
-                        Scheme = TournamentSchemeEnum.One,
-                        Season = "2014/2015",
-                        RegulationsLink = "link"
-                    });
->>>>>>> f0a61730d788b6f68729009676430e563dcbb89a
         }
 
         /// <summary>

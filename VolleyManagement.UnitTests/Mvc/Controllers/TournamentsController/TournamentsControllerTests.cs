@@ -12,6 +12,7 @@
     using Ninject;
     using VolleyManagement.Mvc.Controllers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.UnitTests.Mvc.Mappers;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
 
@@ -150,12 +151,11 @@
         public void Create_GetView_ReturnsViewWithDefaultData()
         {
             // Arrange
-            var tournamentsController = _kernel.Get<TournamentsController>();
+            var controller = _kernel.Get<TournamentsController>();
             var expected = new TournamentViewModel();
 
             // Act
-            var result = tournamentsController.Create() as ViewResult;
-            var actual = result.ViewData.Model as TournamentViewModel;
+            var actual = GetModel<TournamentViewModel>(controller.Create());
 
             // Assert
             AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -190,19 +190,18 @@
         public void CreatePostAction_InvalidTournamentViewModel_ReturnsViewModelToView()
         {
             // Arrange
-            var tournamentsController = _kernel.Get<TournamentsController>();
+            var controller = _kernel.Get<TournamentsController>();
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason("2015/2016")
                 .Build();
 
             // Act
-            var result = tournamentsController.Create(tournamentViewModel) as ViewResult;
-            var model = result.ViewData.Model as TournamentViewModel;
+            var actual = GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsNotNull(model, "Model with incorrect data should be returned to the view.");
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
         }
 
         /// <summary>
@@ -212,16 +211,15 @@
         public void EditGetAction_TournamentViewModel_ReturnsToTheView()
         {
             // Arrange
-            var tournamentsController = _kernel.Get<TournamentsController>();
+            var controller = _kernel.Get<TournamentsController>();
             var tournament = new TournamentBuilder().WithId(5).Build();
             MockSingleTournament(tournament);
 
             // Act
-            var result = tournamentsController.Edit(tournament.Id) as ViewResult;
-            var model = result.ViewData.Model as TournamentViewModel;
+            var actual = GetModel<TournamentViewModel>(controller.Edit(tournament.Id));
 
             // Assert
-            Assert.AreEqual(tournament.Id, model.Id);
+            Assert.IsTrue(FieldsComparer.AreFieldsEqual(tournament, actual));
         }
 
         /// <summary>
@@ -254,7 +252,7 @@
         public void EditPostAction_InvalidTournamentViewModel_ReturnsViewModelToView()
         {
             // Arrange
-            var tournamentsController = _kernel.Get<TournamentsController>();
+            var controller = _kernel.Get<TournamentsController>();
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
                 .WithId(1)
                 .WithScheme(TournamentSchemeEnum.Two)
@@ -262,12 +260,11 @@
                 .Build();
 
             // Act
-            var result = tournamentsController.Edit(tournamentViewModel) as ViewResult;
-            var model = result.ViewData.Model as TournamentViewModel;
+            var actual = GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsNotNull(model, "Model with incorrect data should be returned to the view.");
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
         }
 
         /// <summary>

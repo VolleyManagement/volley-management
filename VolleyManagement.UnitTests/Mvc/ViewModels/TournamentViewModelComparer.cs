@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
 
     /// <summary>
@@ -33,32 +34,6 @@
         }
 
         /// <summary>
-        /// Checks whether lists are equal or not
-        /// </summary>
-        /// <param name="x">first list</param>
-        /// <param name="y">second list</param>
-        /// <returns>True, if equal</returns>
-        private bool AreSeasonListsEqual(IList<string> x, IList<string> y)
-        {
-            if (x.Count != y.Count)
-            {
-                return false;
-            }
-
-            bool areSeasonListsEqual = true;
-            for (int i = 0; i < x.Count; i++)
-            {
-                if (!x[i].Equals(y[i]))
-                {
-                    areSeasonListsEqual = false;
-                    break;
-                }
-            }
-
-            return areSeasonListsEqual;
-        }
-
-        /// <summary>
         /// Finds out whether two tournament objects have the same properties.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
@@ -66,20 +41,13 @@
         /// <returns>True if given tournaments have the same properties.</returns>
         private bool IsEqual(TournamentViewModel x, TournamentViewModel y)
         {
-            if (AreSeasonListsEqual(x.SeasonsList, y.SeasonsList) &&
+            return x.SeasonsList.SequenceEqual(y.SeasonsList) &&
                 x.Id == y.Id &&
                 x.Description == y.Description &&
                 x.Name == y.Description &&
                 x.RegulationsLink == y.Description &&
                 x.Season == y.Description &&
-                x.Scheme == y.Scheme)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+                x.Scheme == y.Scheme;
         }
     }
 }

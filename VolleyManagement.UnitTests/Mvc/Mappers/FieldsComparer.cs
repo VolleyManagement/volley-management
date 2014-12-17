@@ -16,19 +16,12 @@
         /// <returns>true if fields are equal</returns>
         public static bool AreFieldsEqual(Tournament tournament, TournamentViewModel tournamentViewModel)
         {
-            if (tournament.Id == tournamentViewModel.Id &&
+            return tournament.Id == tournamentViewModel.Id &&
                 tournament.Name == tournamentViewModel.Name &&
                 tournament.Description == tournamentViewModel.Description &&
                 tournament.RegulationsLink == tournamentViewModel.RegulationsLink &&
                 tournament.Scheme == tournamentViewModel.Scheme &&
-                tournament.Season == tournamentViewModel.Season)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+                tournament.Season == tournamentViewModel.Season;
         }
     }
 }

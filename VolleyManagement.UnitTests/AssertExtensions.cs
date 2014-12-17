@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    
+
     /// <summary>
     /// Class for custom asserts.
     /// </summary>

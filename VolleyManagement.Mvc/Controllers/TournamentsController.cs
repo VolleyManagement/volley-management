@@ -34,8 +34,15 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            var tournaments = _tournamentService.GetAll().ToList();
-            return View(tournaments);
+            try
+            {
+                var tournaments = _tournamentService.GetAll().ToList();
+                return View(tournaments);
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }
         }
 
         /// <summary>
@@ -43,10 +50,17 @@
         /// </summary>
         /// <param name="id">Tournament id</param>
         /// <returns>View with specific tournament</returns>
-        public ViewResult Details(int id)
+        public ActionResult Details(int id)
         {
-            Tournament tournament = _tournamentService.FindById(id);
-            return View(tournament);
+            try
+            {
+                Tournament tournament = _tournamentService.FindById(id);
+                return View(tournament);
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }
         }
 
         /// <summary>
@@ -155,7 +169,7 @@
             catch (Exception)
             {
                 return HttpNotFound();
-            }           
+            }
         }
 
         /// <summary>
@@ -174,7 +188,7 @@
             catch (Exception)
             {
                 return HttpNotFound();
-            }           
+            }
         }
     }
 }

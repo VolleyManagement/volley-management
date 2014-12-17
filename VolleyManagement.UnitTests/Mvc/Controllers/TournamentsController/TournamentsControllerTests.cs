@@ -1,6 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers.TournamentsController
 {
+    using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.Mvc;
     using Contracts;
@@ -17,6 +19,7 @@
     /// Tests for MVC TournamentController class.
     /// </summary>
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class TournamentsControllerTests
     {
         /// <summary>
@@ -149,7 +152,7 @@
         /// Test for Create tournament action (GET)
         /// </summary>
         [TestMethod]
-        public void CreateGetAction_TournamentViewModel_ReturnsToTheView()
+        public void Create_GetView_ReturnsViewWithDefaultData()
         {
             // Arrange
             var tournamentsController = _kernel.Get<TournamentsController>();
@@ -159,7 +162,7 @@
             var model = result.ViewData.Model as TournamentViewModel;
 
             // Assert
-            Assert.IsNotNull(model, "Tournament view model should return to the view.");
+            Assert.IsTrue(DoesModelContainDefaultData(model));
         }
 
         /// <summary>
@@ -176,8 +179,8 @@
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason("2015/2016")
                 .Build();
-            _tournamentServiceMock.Setup(tr => tr.IsTournamentNameUnique(It.IsAny<Tournament>()))
-                .Returns(true);
+            ////_tournamentServiceMock.Setup(tr => tr.IsTournamentNameUnique(It.IsAny<Tournament>()))
+            ////    .Returns(true);
 
             // Act
             var result = tournamentsController.Create(tournamentViewModel) as RedirectToRouteResult;
@@ -196,7 +199,7 @@
             // Arrange
             var tournamentsController = _kernel.Get<TournamentsController>();
             var tournament = new TournamentBuilder().WithId(5).Build();
-            MockTournament(tournament);
+            MockSingleTournament(tournament);
 
             // Act
             var result = tournamentsController.Edit(tournament.Id) as ViewResult;
@@ -220,8 +223,6 @@
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason("2015/2016")
                 .Build();
-            _tournamentServiceMock.Setup(tr => tr.IsTournamentNameUnique(It.IsAny<Tournament>()))
-                .Returns(true);
 
             // Act
             var result = tournamentsController.Edit(tournamentViewModel) as RedirectToRouteResult;
@@ -245,9 +246,49 @@
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>
-        private void MockTournament(Tournament testData)
+        private void MockSingleTournament(Tournament testData)
         {
             _tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
+        }
+
+        /// <summary>
+        /// Checks that the model contains default data
+        /// </summary>
+        /// <param name="model">Tournament view model</param>
+        /// <returns>True, if model contains default data</returns>
+        private bool DoesModelContainDefaultData(TournamentViewModel model)
+        {
+            bool isSeasonsListValid = true;
+            int currentYear = DateTime.Now.Year;
+            const int yearsBeforeToday = 5;
+            int i = 0;
+            foreach (var season in model.SeasonsList)
+            {
+                int year = currentYear - yearsBeforeToday + i;
+                string currentSeason = year.ToString() + "/" + (year + 1).ToString();
+                if (!season.Equals(currentSeason))
+                {
+                    isSeasonsListValid = false;
+                    break;
+                }
+
+                i++;
+            }
+
+            if (isSeasonsListValid &&
+                model.Id == 0 &&
+                string.IsNullOrEmpty(model.Description) &&
+                string.IsNullOrEmpty(model.Name) &&
+                string.IsNullOrEmpty(model.RegulationsLink) &&
+                string.IsNullOrEmpty(model.Season) &&
+                model.Scheme == TournamentSchemeEnum.One)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

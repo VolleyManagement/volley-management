@@ -17,15 +17,8 @@
         /// </summary>
         public TournamentViewModel()
         {
-            SeasonsList = new List<string>();
-            int currentYear = DateTime.Now.Year;
-            const int yearsRange = 16;
-            const int yearsBeforeToday = 5;
-            for (int i = 0; i < yearsRange; i++)
-            {
-                int year = currentYear - yearsBeforeToday + i;
-                SeasonsList.Add(year.ToString() + "/" + (year + 1).ToString());
-            }
+            Scheme = TournamentSchemeEnum.One;
+            InitializeSeasonsList();
         }
 
         /// <summary>
@@ -84,5 +77,21 @@
         [Display(Name = "TournamentRegulationsLink", ResourceType = typeof(ViewModelResources))]
         [StringLength(255)]
         public string RegulationsLink { get; set; }
+
+        /// <summary>
+        /// Initializes list of seasons.
+        /// </summary>
+        private void InitializeSeasonsList()
+        {
+            SeasonsList = new List<string>();
+            int currentYear = DateTime.Now.Year;
+            const int yearsRange = 16;
+            const int yearsBeforeToday = 5;
+            for (int i = 0; i < yearsRange; i++)
+            {
+                int year = currentYear - yearsBeforeToday + i;
+                SeasonsList.Add(year.ToString() + "/" + (year + 1).ToString());
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
@@ -21,6 +22,7 @@
     /// Tests for TournamentController class.
     /// </summary>
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class TournamentControllerTests
     {
         /// <summary>
@@ -62,16 +64,15 @@
         {
             // Arrange
             var tournament = new TournamentBuilder().WithId(5).Build();
-            MockTournament(tournament);
+            MockSingleTournament(tournament);
             var tournamentsController = _kernel.Get<TournamentsController>();
             GetRequestForController(tournamentsController);
 
             // Act
             var response = tournamentsController.Get(tournament.Id);
+            var result = GetTournamentViewModelFromResponse(response);
 
             // Assert
-            ObjectContent content = response.Content as ObjectContent;
-            TournamentViewModel result = content.Value as TournamentViewModel;
             Assert.AreEqual(tournament.Id, result.Id);
         }
 
@@ -167,9 +168,20 @@
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>
-        private void MockTournament(Tournament testData)
+        private void MockSingleTournament(Tournament testData)
         {
             _tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
+        }
+
+        /// <summary>
+        /// Gets tournament view model from response content
+        /// </summary>
+        /// <param name="response">Http response message</param>
+        /// <returns>Tournament view model</returns>
+        private TournamentViewModel GetTournamentViewModelFromResponse(HttpResponseMessage response)
+        {
+            ObjectContent content = response.Content as ObjectContent;
+            return content.Value as TournamentViewModel;
         }
     }
 }

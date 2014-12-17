@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Mappers
 {
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Mvc.Mappers;
@@ -10,6 +11,7 @@
     /// Tests for ViewModelToDomain class.
     /// </summary>
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ViewModelToDomainTests
     {
         /// <summary>

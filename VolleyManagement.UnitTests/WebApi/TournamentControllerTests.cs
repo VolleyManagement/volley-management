@@ -122,6 +122,30 @@
         }
 
         /// <summary>
+        /// Test Post method. Basic story.
+        /// </summary>
+        [TestMethod]
+        public void Post_TournamentCreated_ResponseSent()
+        {
+            // Arrange
+            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
+                .Callback(() =>
+                {
+                    HttpResponseMessage actual = new HttpResponseMessage(HttpStatusCode.Created);
+                });
+
+            // Expected result
+            HttpResponseMessage message = new HttpResponseMessage(HttpStatusCode.Created);
+
+            // Actual result
+            var controller = this._kernel.Get<TournamentsController>();
+            controller.Post(new TournamentViewModel());
+
+            // Assert
+            Assert.AreEqual(message.StatusCode, actual)
+        }
+
+        /// <summary>
         /// Test for Delete() method
         /// </summary>
         [TestMethod]

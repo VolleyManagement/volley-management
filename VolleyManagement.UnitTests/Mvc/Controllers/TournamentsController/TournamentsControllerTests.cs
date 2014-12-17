@@ -107,7 +107,7 @@
                 .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('11')")
                 .Build());
 
-            var tournamentService = this._kernel.Get<TournamentsController>();
+            var controller = this._kernel.Get<TournamentsController>();
 
             var expected = new TournamentBuilder()
                 .WithId(searchId)
@@ -119,9 +119,7 @@
                 .Build();
 
             // Act
-            var result = tournamentService.Details(searchId) as ViewResult;
-
-            var actual = (Tournament)result.ViewData.Model;
+            var actual = GetModel<Tournament>(controller.Details(searchId));
 
             // Assert
             AssertHelper.AreEqual(expected, actual, new TournamentComparer());

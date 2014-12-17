@@ -96,7 +96,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Mvc\AssertHelper.cs" />
     <Compile Include="Mvc\Controllers\TournamentsController\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
     <Compile Include="Mvc\Mappers\FieldsComparer.cs" />

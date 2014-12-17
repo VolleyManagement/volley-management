@@ -61,7 +61,7 @@
         /// Test for FinById method.
         /// </summary>
         [TestMethod]
-        public void FindById_Id1_TournamentFound()
+        public void FindById_Existing_TournamentFound()
         {
             // Arrange
             var tournamentService = this._kernel.Get<TournamentService>();
@@ -74,7 +74,7 @@
                 .WithSeason("2014/2015")
                 .WithRegulationsLink("link")
                 .Build();
-            MockTournamentServiceFindWhere(new List<Tournament>() { tournament });
+            MockRepositoryFindWhere(new List<Tournament>() { tournament });
 
             //// Act
             var actualResult = tournamentService.FindById(id);
@@ -90,7 +90,7 @@
         public void FindById_NotExistingTournament_NullReturned()
         {
             // Arrange
-            MockTournamentServiceFindWhereAlternativeStory();
+            MockRepositoryFindWhere(new List<Tournament>() { null });
             var tournamentService = this._kernel.Get<TournamentService>();
 
             // Act
@@ -206,19 +206,10 @@
         /// Mocks FindWhere method.
         /// </summary>
         /// <param name="testData">Test data to mock.</param>
-        private void MockTournamentServiceFindWhere(IEnumerable<Tournament> testData)
+        private void MockRepositoryFindWhere(IEnumerable<Tournament> testData)
         {
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
                 .Returns(testData.AsQueryable());
-        }
-
-        /// <summary>
-        /// Mocks FindWhere method.
-        /// </summary>
-        private void MockTournamentServiceFindWhereAlternativeStory()
-        {
-            _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
-                           .Returns(new List<Tournament>() { null }.AsQueryable());
         }
     }
 }

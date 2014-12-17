@@ -203,7 +203,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsNotNull(model, "Model with incorrect data should returne to the view.");
+            Assert.IsNotNull(model, "Model with incorrect data should be returned to the view.");
         }
 
         /// <summary>
@@ -268,7 +268,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsNotNull(model, "Model with incorrect data should return to the view.");
+            Assert.IsNotNull(model, "Model with incorrect data should be returned to the view.");
         }
 
         /// <summary>

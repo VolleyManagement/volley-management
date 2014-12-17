@@ -14,10 +14,12 @@
     using VolleyManagement.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class TournamentsControllerTests
@@ -135,17 +137,14 @@
         [TestMethod]
         public void Delete_TournamentExists_TournamentIsDeleted()
         {
-            // Arrange
             var testData = this._testFixture.TestTournaments()
                                       .Build();
-            var tournamentIdToDelete = testData.Last().Id;
+            var tournamentToDelete = testData.Last().Id;
             var tournamentService = _tournamentServiceMock.Object;
 
-            // Act
-            tournamentService.Delete(tournamentIdToDelete);
+            tournamentService.Delete(tournamentToDelete);
 
-            // Assert
-            _tournamentServiceMock.Verify(m => m.Delete(tournamentIdToDelete));
+            _tournamentServiceMock.Verify(m => m.Delete(tournamentToDelete));
         }
 
         /// <summary>

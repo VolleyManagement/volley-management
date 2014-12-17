@@ -17,10 +17,12 @@
     using VolleyManagement.WebApi.Controllers;
     using VolleyManagement.WebApi.Mappers;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
+    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Tests for TournamentController class.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class TournamentControllerTests

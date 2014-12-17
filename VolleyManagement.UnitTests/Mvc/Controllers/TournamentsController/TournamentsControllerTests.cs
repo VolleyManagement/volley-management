@@ -203,7 +203,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsNotNull(model, "Model with incorrect data should be returned to the view.");
+            Assert.IsNotNull(model, "Model with incorrect data should returne to the view.");
         }
 
         /// <summary>
@@ -249,6 +249,29 @@
         }
 
         /// <summary>
+        /// Test for Edit tournament action with invalid model (POST)
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_InvalidTournamentViewModel_ReturnsViewModelToView()
+        {
+            // Arrange
+            var tournamentsController = _kernel.Get<TournamentsController>();
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithId(1)
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason("2015/2016")
+                .Build();
+
+            // Act
+            var result = tournamentsController.Edit(tournamentViewModel) as ViewResult;
+            var model = result.ViewData.Model as TournamentViewModel;
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
+            Assert.IsNotNull(model, "Model with incorrect data should return to the view.");
+        }
+
+        /// <summary>
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>
@@ -268,17 +291,17 @@
         }
 
         /// <summary>
-        /// Checks that the model contains default data
+        /// Checks that the seasons list contains valid data
         /// </summary>
-        /// <param name="model">Tournament view model</param>
-        /// <returns>True, if model contains default data</returns>
-        private bool DoesModelContainDefaultData(TournamentViewModel model)
+        /// <param name="seasonsList">List of seasons</param>
+        /// <returns>True, if data is valid</returns>
+        private bool IsSeasonsListValid(IList<string> seasonsList)
         {
             bool isSeasonsListValid = true;
             int currentYear = DateTime.Now.Year;
             const int yearsBeforeToday = 5;
             int i = 0;
-            foreach (var season in model.SeasonsList)
+            foreach (var season in seasonsList)
             {
                 int year = currentYear - yearsBeforeToday + i;
                 string currentSeason = year.ToString() + "/" + (year + 1).ToString();
@@ -291,7 +314,17 @@
                 i++;
             }
 
-            if (isSeasonsListValid &&
+            return isSeasonsListValid;
+        }
+
+        /// <summary>
+        /// Checks that the model contains default data
+        /// </summary>
+        /// <param name="model">Tournament view model</param>
+        /// <returns>True, if model contains default data</returns>
+        private bool DoesModelContainDefaultData(TournamentViewModel model)
+        {
+            if (IsSeasonsListValid(model.SeasonsList) &&
                 model.Id == 0 &&
                 string.IsNullOrEmpty(model.Description) &&
                 string.IsNullOrEmpty(model.Name) &&

@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.WebApi.Mappers
 {
     using System;
+    using System.Linq;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
 
@@ -21,17 +22,10 @@
             tournament.Name = tournamentViewModel.Name;
             tournament.Description = tournamentViewModel.Description;
             tournament.Season = tournamentViewModel.Season;
-            switch (tournamentViewModel.Scheme)
-            {
-                case "1": tournament.Scheme = TournamentSchemeEnum.One;
-                    break;
-                case "2": tournament.Scheme = TournamentSchemeEnum.Two;
-                    break;
-                case "2.5": tournament.Scheme = TournamentSchemeEnum.TwoAndHalf;
-                    break;
-            }
-
             tournament.RegulationsLink = tournamentViewModel.RegulationsLink;
+            tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum))
+                .Cast<TournamentSchemeEnum>()
+                .FirstOrDefault(v => v.ToDescription() == tournamentViewModel.Scheme);
             return tournament;
         }
     }

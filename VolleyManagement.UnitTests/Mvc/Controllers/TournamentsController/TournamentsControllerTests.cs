@@ -14,14 +14,12 @@
     using VolleyManagement.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class TournamentsControllerTests
     {
         /// <summary>
@@ -173,13 +171,10 @@
             // Arrange
             var tournamentsController = _kernel.Get<TournamentsController>();
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithId(1)
                 .WithName("testName")
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason("2015/2016")
                 .Build();
-            ////_tournamentServiceMock.Setup(tr => tr.IsTournamentNameUnique(It.IsAny<Tournament>()))
-            ////    .Returns(true);
 
             // Act
             var result = tournamentsController.Create(tournamentViewModel) as RedirectToRouteResult;
@@ -187,6 +182,28 @@
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
             Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        /// <summary>
+        /// Test for Create tournament action with invalid view model (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_InvalidTournamentViewModel_ReturnsViewModelToView()
+        {
+            // Arrange
+            var tournamentsController = _kernel.Get<TournamentsController>();
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason("2015/2016")
+                .Build();
+
+            // Act
+            var result = tournamentsController.Create(tournamentViewModel) as ViewResult;
+            var model = result.ViewData.Model as TournamentViewModel;
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Never());
+            Assert.IsNotNull(model, "Model with incorrect data should be returned to the view.");
         }
 
         /// <summary>

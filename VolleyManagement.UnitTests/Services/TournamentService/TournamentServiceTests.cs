@@ -5,7 +5,6 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -13,13 +12,12 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Services;
-    
+
     /// <summary>
     /// Tests for TournamentService class.
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
-    [ExcludeFromCodeCoverage]
     public class TournamentServiceTests
     {
         /// <summary>

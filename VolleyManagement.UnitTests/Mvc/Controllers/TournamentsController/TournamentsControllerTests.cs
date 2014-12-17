@@ -69,9 +69,7 @@
                                             .ToList();
 
             // Act
-            var result = sut.Index() as ViewResult;
-
-            var actual = (IEnumerable<Tournament>)result.ViewData.Model;
+            var actual = GetModel<IEnumerable<Tournament>>(sut.Index());
 
             // Assert
             CollectionAssert.AreEqual(expected, actual.ToList(), new TournamentComparer());
@@ -288,6 +286,17 @@
         private void MockSingleTournament(Tournament testData)
         {
             _tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
+        }
+
+        /// <summary>
+        /// Get generic T model by ViewResult from action view
+        /// </summary>
+        /// <typeparam name="T">model type</typeparam>
+        /// <param name="result">object to convert and return</param>
+        /// <returns>T result by ViewResult from action view</returns>
+        private static T GetModel<T>(object result)
+        {
+            return (T)(result as ViewResult).ViewData.Model;
         }
 
         /// <summary>

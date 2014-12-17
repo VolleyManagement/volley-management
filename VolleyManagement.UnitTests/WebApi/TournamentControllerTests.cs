@@ -66,7 +66,7 @@
             var tournament = new TournamentBuilder().WithId(5).Build();
             MockSingleTournament(tournament);
             var tournamentsController = _kernel.Get<TournamentsController>();
-            GetRequestForController(tournamentsController);
+            SetControllerRequest(tournamentsController);
 
             // Act
             var response = tournamentsController.Get(tournament.Id);
@@ -132,7 +132,7 @@
                           .Build();
             var tournamentToDeleteID = testTournaments.Last().Id;
             var controller = this._kernel.Get<TournamentsController>();
-            GetRequestForController(controller);
+            SetControllerRequest(controller);
 
             // Act
             var response = controller.Delete(tournamentToDeleteID);
@@ -142,10 +142,10 @@
         }
 
         /// <summary>
-        /// Gets request message for controller
+        /// Sets request message for controller
         /// </summary>
         /// <param name="controller">Current controller</param>
-        public void GetRequestForController(TournamentsController controller)
+        public void SetControllerRequest(TournamentsController controller)
         {
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());

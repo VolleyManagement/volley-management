@@ -98,15 +98,14 @@
             int searchId = 11;
 
             _tournamentServiceMock.Setup(tr => tr.FindById(It.IsAny<int>()))
-                          .Returns(new Tournament
-                          {
-                              Id = 11,
-                              Name = "Tournament 11",
-                              Description = "Tournament 11 description",
-                              Season = "2014/2015",
-                              Scheme = TournamentSchemeEnum.Two,
-                              RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('11')"
-                          });
+                .Returns(new TournamentBuilder()
+                .WithId(11)
+                .WithName("Tournament 11")
+                .WithDescription("Tournament 11 description")
+                .WithSeason("2014/2015")
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('11')")
+                .Build());
 
             var tournamentService = this._kernel.Get<TournamentsController>();
 

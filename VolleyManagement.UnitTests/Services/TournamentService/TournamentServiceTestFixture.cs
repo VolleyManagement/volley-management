@@ -50,6 +50,17 @@
         }
 
         /// <summary>
+        /// Add tournament to collection.
+        /// </summary>
+        /// <param name="newTournament">Tournament to add.</param>
+        /// <returns>Builder object with collection of tournaments.</returns>
+        public TournamentServiceTestFixture AddTournament(Tournament newTournament)
+        {
+            _tournaments.Add(newTournament);
+            return this;
+        }
+
+        /// <summary>
         /// Builds test data
         /// </summary>
         /// <returns>Tournament collection</returns>

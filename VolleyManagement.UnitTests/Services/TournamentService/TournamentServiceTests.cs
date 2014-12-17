@@ -110,7 +110,7 @@
             // Arrange
             var testData = this._testFixture.TestTournaments()
                                        .Build();
-            _tournamentRepositoryMock.Setup(tr => tr.FindAll()).Returns(testData.AsQueryable());
+            MockRepositoryFindAll(testData);
             var sut = this._kernel.Get<TournamentService>();
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
@@ -169,6 +169,36 @@
         }
 
         /// <summary>
+        /// Test for Edit() method where input tournament has non-unique name. The method should throw ArgumentException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Edit_TournamentWithNonUniqueName_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new TournamentServiceTestFixture()
+                                    .AddTournament(new TournamentBuilder()
+                                                        .WithId(1)
+                                                        .WithName("Non-Unique Tournament")
+                                                        .Build())
+                                    .Build();
+            MockRepositoryFindWhere(testData);
+
+            Tournament nonUniqueNameTournament = new TournamentBuilder()
+                                                        .WithId(2)
+                                                        .WithName("Non-Unique Tournament")
+                                                        .Build();
+
+            // Act
+            var sut = this._kernel.Get<TournamentService>();
+            sut.Edit(nonUniqueNameTournament);
+
+            // Assert
+            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
         /// Test for Create() method. The method should return a created tournament.
         /// </summary>
         [TestMethod]
@@ -200,6 +230,15 @@
         {
             TournamentComparer comparer = new TournamentComparer();
             return comparer.Compare(x, y) == 0;
+        }
+
+        /// <summary>
+        /// Mocks FindAll method.
+        /// </summary>
+        /// <param name="testData">Test data to mock.</param>
+        private void MockRepositoryFindAll(IEnumerable<Tournament> testData)
+        {
+            _tournamentRepositoryMock.Setup(tr => tr.FindAll()).Returns(testData.AsQueryable());
         }
 
         /// <summary>

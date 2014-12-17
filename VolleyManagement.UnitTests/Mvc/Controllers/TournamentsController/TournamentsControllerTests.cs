@@ -132,17 +132,14 @@
         [TestMethod]
         public void Delete_TournamentExists_TournamentIsDeleted()
         {
-            // Arrange
             var testData = this._testFixture.TestTournaments()
                                       .Build();
-            var tournamentIdToDelete = testData.Last().Id;
+            var tournamentToDelete = testData.Last().Id;
             var tournamentService = _tournamentServiceMock.Object;
 
-            // Act
-            tournamentService.Delete(tournamentIdToDelete);
+            tournamentService.Delete(tournamentToDelete);
 
-            // Assert
-            _tournamentServiceMock.Verify(m => m.Delete(tournamentIdToDelete));
+            _tournamentServiceMock.Verify(m => m.Delete(tournamentToDelete));
         }
 
         /// <summary>

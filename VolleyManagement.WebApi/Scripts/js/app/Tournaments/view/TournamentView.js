@@ -1,6 +1,12 @@
 "use strict";
 
-(function (This) {
+(function (This, scope) {
+    var mediator;
+
+    function extractMediator () {
+        mediator = scope.mediator;
+    }
+
     This.TournamentView = Backbone.View.extend({
         tagName: 'li',
         className: 'list-group-item',
@@ -12,6 +18,8 @@
         },
 
         initialize: function () {
+            extractMediator();
+
             this.model.on('change', this.render, this);
             this.model.on('remove', this.remove, this);
         },
@@ -26,4 +34,4 @@
             mediator.publish('ShowTournamentInfo', this.model);
         }
     });
-})(App.Tournaments);
+})(App.Tournaments, vm.tournaments);

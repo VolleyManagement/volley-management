@@ -1,6 +1,12 @@
 "use strict";
 
-(function (This) {
+(function (This, scope) {
+    var mediator;
+
+    function extractMediator () {
+        mediator = scope.mediator;
+    }
+
     This.TournamentCollectionView = Backbone.View.extend({
         tagName: 'div',
 
@@ -11,6 +17,8 @@
         },
 
         initialize: function () {
+            extractMediator();
+
             this.collection = new This.TournamentCollection();
             this.collection.on('add', this.addOne, this);
             
@@ -62,4 +70,4 @@
             }
         }
     });
-})(App.Tournaments);
+})(App.Tournaments, vm.tournaments);

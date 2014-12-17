@@ -1,6 +1,12 @@
 "use strict";
 
-(function (This) {
+(function (This, scope) {
+	var mediator;
+
+    function extractMediator () {
+        mediator = scope.mediator;
+    }
+
     This.CreateEditView = Backbone.View.extend({
         tagName: 'div',
 
@@ -8,11 +14,12 @@
 
         events: {
             'click .save': 'save',
-            'click .cancel': 'cancel',
-            'click .delete': 'confirmDelete'
+            'click .cancel': 'cancel'
         },
 
         initialize: function () {
+        	extractMediator();
+
             this.model = this.model || new This.Tournament();
 			this.defaultModelJSON = this.model.toJSON();
             this.modelBinder = new Backbone.ModelBinder();
@@ -35,17 +42,17 @@
                 this.model.save();
 
                 mediator.publish('TournamentSaved', this.model);
-                mediator.publish('Notice', 'success', this.model.isNew() ?
+                vm.messenger.notice('success', this.model.isNew() ?
                                                       'Турнир успешно создан' :
                                                       'Турнир успешно изменён'
                 );
             } else {
 			    if (validation.errorText['name']) {
-					mediator.publish('Hint', validation.errorText['name'], this.$('input:eq(0)'));
+					vm.messenger.hint(validation.errorText['name'], this.$('input:eq(0)'));
 				} else if (validation.errorText['description']) {
-					mediator.publish('Hint', validation.errorText['description'], this.$('textarea'));
+					vm.messenger.hint(validation.errorText['description'], this.$('textarea'));
 				} else if (validation.errorText['link']) {
-					mediator.publish('Hint', validation.errorText['link'], this.$('input:eq(1)'));
+					vm.messenger.hint(validation.errorText['link'], this.$('input:eq(1)'));
 				}
             }
         },
@@ -60,10 +67,6 @@
             this.modelBinder.unbind();
 			
             this.model.set(this.defaultModelJSON);
-        },
-
-        confirmDelete: function () {
-            mediator.publish('Popup', 'Вы действительно хотите удалить турнир?', this.delete.bind(this));
         },
 		
 		modelValidate: function () {
@@ -126,11 +129,6 @@
 				errorText: errorText,
 				isValid: isValid
 			};
-		},
-
-        delete: function () {
-            this.model.destroy();
-            mediator.publish("TournamentViewClosed");   
-        }
+		}
     });
-})(App.Tournaments);
+})(App.Tournaments, vm.tournaments);

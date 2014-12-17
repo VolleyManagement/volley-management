@@ -1,6 +1,12 @@
 "use strict";
 
-(function (This) {
+(function (This, scope) {
+    var mediator;
+
+    function extractMediator () {
+        mediator = scope.mediator;
+    }
+
     This.TournamentHomepageView = Backbone.View.extend({
         tagName: 'div',
         className: 'homepage',
@@ -14,6 +20,8 @@
         },
 		
 		initialize: function () {
+            extractMediator();
+
             this.modelBinder = new Backbone.ModelBinder();
 		},
 
@@ -38,13 +46,15 @@
         },
 
         confirmDelete: function () {
-            mediator.publish('Popup', 'Вы действительно хотите удалить турнир?', this.delete.bind(this));
+            vm.messenger.popup('Вы действительно хотите удалить турнир?', this.delete.bind(this));
         },
 
         delete: function () {
             this.model.destroy();
 
             mediator.publish('TournamentViewClosed');   
+
+            vm.messenger.notice('success', 'Турнир успешно удален!');
         }
     });
-})(App.Tournaments);
+})(App.Tournaments, vm.tournaments);

@@ -1,4 +1,6 @@
 (function (This) {
+    var HINT_HEIGHT = 48;
+
     This.HintView = Backbone.View.extend({
         tagName: 'div',
         className: 'hint hidden',
@@ -12,8 +14,8 @@
 
         render: function () {
             var offset = this.$target.position();
-//create comment for variable =)))
-            offset.top -= 48;
+
+            offset.top -= HINT_HEIGHT;
 
             this.$el.parent().css({
                 position: 'relative'

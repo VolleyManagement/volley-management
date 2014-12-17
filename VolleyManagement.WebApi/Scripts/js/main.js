@@ -1,19 +1,23 @@
 "use strict";
 
-var mediator, messenger, tournamentRouter,
-    App = {
+var App = {
         Messenger: {},
         Tournaments: {}
     },
-    vm  = {};
+    vm  = {
+    	mediator: new Mediator(),
+    	messenger: {},
+    	tournaments: {}
+    };
 
 //app - hash with Constructors
 //vm - hash with objects like mediator
 
 $(function () {
-    mediator = new Mediator();
-    messenger = new App.Messenger.Controller();
-    tournamentRouter = new App.Tournaments.TournamentRouter();
+    vm.messenger = new App.Messenger.Controller();
+
+    vm.tournaments.mediator = new Mediator();
+    vm.tournaments.router = new App.Tournaments.TournamentRouter();
 
     Backbone.history.start({pushState: true});
 });

@@ -1,33 +1,41 @@
 "use strict";
 
-(function (This)  {
+(function (This, scope)  {
+    var mediator;
+
+    function extractMediator () {
+        mediator = scope.mediator;
+    }
+
     This.TournamentRouter = Backbone.Router.extend({
-            routes: {
-                '': 'allTournaments',
-                'Tournaments': 'allTournaments',
-                'Tournaments/new': 'create',
-                'Tournaments/edit/:id': 'edit',
-                'Tournaments/:id': 'oneTournament'
-            },
+        routes: {
+            '': 'allTournaments',
+            'Tournaments': 'allTournaments',
+            'Tournaments/new': 'create',
+            'Tournaments/:id/edit': 'edit',
+            'Tournaments/:id': 'oneTournament'
+        },
 
-            initialize: function () {
-                this.controller = new App.Tournaments.Controller();
-            },
+        initialize: function () {
+            extractMediator();
 
-            allTournaments: function () {
-                mediator.publish('ShowTournaments');
-            },
+            this.controller = new App.Tournaments.Controller(this);
+        },
 
-            oneTournament: function (id) {
-                mediator.publish('ShowTournamentById', id);
-            },
+        allTournaments: function () {
+            mediator.publish('ShowTournaments');
+        },
 
-            create: function () {
-                mediator.publish('CreateTournament');
-            },
+        oneTournament: function (id) {
+            mediator.publish('ShowTournamentById', id);
+        },
 
-            edit: function (id) {
-                mediator.publish('EditTournamentById', id);
-            }
+        create: function () {
+            mediator.publish('CreateTournament');
+        },
+
+        edit: function (id) {
+            mediator.publish('EditTournamentById', id);
+        }
     });
-})(App.Tournaments);
+})(App.Tournaments, vm.tournaments);

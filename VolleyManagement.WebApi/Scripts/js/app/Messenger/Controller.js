@@ -6,10 +6,6 @@
             hintView = new This.HintView(),
             popupView = new This.PopupView();
 
-        mediator.subscribe("Notice", showNotice);
-        mediator.subscribe("Hint", showHint);
-        mediator.subscribe("Popup", showPopup);
-
         $('#messenger').html(noticeView.el);
         $('#popup').html(popupView.el);
 
@@ -30,6 +26,10 @@
 
             popupView.render();
         }
+
+        this.notice = showNotice;
+        this.hint = showHint;
+        this.popup = showPopup;
 
         return this;
     }

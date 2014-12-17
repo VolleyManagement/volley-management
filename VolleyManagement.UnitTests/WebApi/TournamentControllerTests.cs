@@ -97,14 +97,10 @@
                                             .ToList();
 
             // Actual result
-            var actual = new List<Tournament>();
-            foreach (var t in sut.Get().ToList())
-            {
-                actual.Add(ViewModelToDomain.Map(t));
-            }
+            var actual = sut.Get().ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            CollectionAssert.AreEqual(expected, actual, new TournamentsViewModelComparer());
         }
 
         /// <summary>

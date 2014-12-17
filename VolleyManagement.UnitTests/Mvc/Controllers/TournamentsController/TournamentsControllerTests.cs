@@ -120,7 +120,7 @@
             // Act
             var result = tournamentService.Details(searchId) as ViewResult;
 
-            var actual = (Tournament)result.ViewData.Model;       
+            var actual = (Tournament)result.ViewData.Model;
 
             // Assert
             AssertHelper.AreEqual(expected, actual, new TournamentComparer());
@@ -132,14 +132,17 @@
         [TestMethod]
         public void Delete_TournamentExists_TournamentIsDeleted()
         {
+            // Arrange
             var testData = this._testFixture.TestTournaments()
                                       .Build();
-            var tournamentToDelete = testData.Last().Id;
+            var tournamentIdToDelete = testData.Last().Id;
             var tournamentService = _tournamentServiceMock.Object;
 
-            tournamentService.Delete(tournamentToDelete);
+            // Act
+            tournamentService.Delete(tournamentIdToDelete);
 
-            _tournamentServiceMock.Verify(m => m.Delete(tournamentToDelete));
+            // Assert
+            _tournamentServiceMock.Verify(m => m.Delete(tournamentIdToDelete));
         }
 
         /// <summary>

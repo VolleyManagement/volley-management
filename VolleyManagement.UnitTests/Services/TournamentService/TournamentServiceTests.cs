@@ -172,11 +172,20 @@
         [TestMethod]
         public void Create_TournamentNotExist_TournamentCreated()
         {
-            var sut = this._kernel.Get<TournamentService>();
-            sut.Create(new Tournament());
+            // Arrange
+            var newTournament = new TournamentBuilder()
+                                        .WithId(4)
+                                        .WithName("New Tournament")
+                                        .Build();
 
-            _tournamentRepositoryMock.Verify(tr => tr.Add(It.IsAny<Tournament>()), Times.Once());
-            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+            // Act
+            var sut = this._kernel.Get<TournamentService>();
+            sut.Create(newTournament);
+
+            // Assert
+            this._tournamentRepositoryMock.Verify(
+                tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, newTournament))));
+            this._unitOfWorkMock.Verify(u => u.Commit());
         }
 
         /// <summary>
@@ -197,9 +206,23 @@
         /// <param name="testData">Test data to mock.</param>
         private void MockTournamentServiceFindWhere(IEnumerable<Tournament> testData)
         {
+<<<<<<< HEAD
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
                 .Returns(testData.AsQueryable());
 
+=======
+            _tournamentServiceMock.Setup(ts => ts.FindById(It.IsAny<int>()))
+                .Returns(
+                    new Tournament
+                    {
+                        Id = 1,
+                        Name = "Name",
+                        Description = "Description",
+                        Scheme = TournamentSchemeEnum.One,
+                        Season = "2014/2015",
+                        RegulationsLink = "link"
+                    });
+>>>>>>> f0a61730d788b6f68729009676430e563dcbb89a
         }
 
         /// <summary>

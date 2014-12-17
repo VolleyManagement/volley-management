@@ -147,8 +147,15 @@
         /// <returns>View to delete specific tournament</returns>
         public ActionResult Delete(int id)
         {
-            Tournament tournament = _tournamentService.FindById(id);
-            return View(tournament);
+            try
+            {
+                Tournament tournament = _tournamentService.FindById(id);
+                return View(tournament);
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }           
         }
 
         /// <summary>
@@ -159,8 +166,15 @@
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            _tournamentService.Delete(id);
-            return RedirectToAction("Index");
+            try
+            {
+                _tournamentService.Delete(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }           
         }
     }
 }

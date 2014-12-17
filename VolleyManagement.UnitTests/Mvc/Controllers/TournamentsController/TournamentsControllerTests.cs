@@ -122,7 +122,7 @@
             var actual = GetModel<Tournament>(controller.Details(searchId));
 
             // Assert
-            AssertHelper.AreEqual(expected, actual, new TournamentComparer());
+            AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
         }
 
         /// <summary>

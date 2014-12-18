@@ -38,14 +38,21 @@
         /// <returns>All tournaments</returns>
         public IQueryable<TournamentViewModel> Get()
         {
-            var tounaments = _tournamentService.GetAll().ToList();
-            var tvm = new List<TournamentViewModel>();
-            foreach (var t in tounaments)
+            try
             {
-                tvm.Add(DomainToViewModel.Map(t));
-            }
+                var tounaments = _tournamentService.GetAll().ToList();
+                var viewModelTournament = new List<TournamentViewModel>();
+                foreach (var t in tounaments)
+                {
+                    viewModelTournament.Add(DomainToViewModel.Map(t));
+                }
 
-            return tvm.AsQueryable<TournamentViewModel>();
+                return viewModelTournament.AsQueryable<TournamentViewModel>();
+            }
+            catch (Exception)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
+            }
         }
 
         /// <summary>

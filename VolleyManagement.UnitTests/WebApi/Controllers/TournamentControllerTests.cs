@@ -17,6 +17,7 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
     using VolleyManagement.WebApi.Controllers;
+    using VolleyManagement.WebApi.Mappers;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
 
     /// <summary>
@@ -109,20 +110,24 @@
                                        .Build();
             this.MockTournaments(testData);
 
-            // sut - stands for System Under Test
             var sut = this._kernel.Get<TournamentsController>();
 
             // Expected result
-            var expected = new TournamentServiceTestFixture()
+            var domainTournaments = new TournamentServiceTestFixture()
                                             .TestTournaments()
                                             .Build()
                                             .ToList();
+            var expected = new List<TournamentViewModel>();
+            foreach (var item in domainTournaments)
+            {
+                expected.Add(DomainToViewModel.Map(item));
+            }
 
             // Actual result
             var actual = sut.Get().ToList();
 
             // Assert
-            Assert.AreEqual(expected.Count, actual.Count);
+            CollectionAssert.AreEqual(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>

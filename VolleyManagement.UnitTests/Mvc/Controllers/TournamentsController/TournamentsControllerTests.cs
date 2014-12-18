@@ -15,6 +15,8 @@
     using VolleyManagement.UnitTests.Mvc.Mappers;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
+    using System.Net;
+    //using System.Net;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -81,19 +83,20 @@
         /// The action should thrown Argument null exception
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentNullException))]
         public void Index_TournamentsDoNotExist_ExceptionThrown()
         {
             // Arrange
             this._tournamentServiceMock.Setup(tr => tr.GetAll())
                 .Throws(new ArgumentNullException());
 
-            var tournamentService = _tournamentServiceMock.Object;
+            var sut = this._kernel.Get<TournamentsController>();
+            var expected = (Int32)HttpStatusCode.NotFound;
 
             // Act
-            tournamentService.GetAll();
-
-            // Assert is handled by ExpectedException attribute
+            var actual = (sut.Index() as HttpNotFoundResult).StatusCode;
+            
+            // Assert
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>

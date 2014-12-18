@@ -245,6 +245,25 @@
         }
 
         /// <summary>
+        /// Test for Edit tournament action (GET)
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_GeneralException_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentId = 5;
+            _tournamentServiceMock.Setup(ts => ts.FindById(tournamentId))
+               .Throws(new ArgumentNullException());
+            var controller = _kernel.Get<TournamentsController>();
+
+            // Act
+            var actual = controller.Edit(tournamentId);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
         /// Test for Edit tournament action (POST)
         /// </summary>
         [TestMethod]

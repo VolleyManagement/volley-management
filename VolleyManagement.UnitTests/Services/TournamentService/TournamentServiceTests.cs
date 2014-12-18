@@ -221,6 +221,56 @@
         }
 
         /// <summary>
+        /// Test for Create() method with null as a parameter. The method should throw InvalidOperationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Create_TournamentNullAsParam_ExceptionThrown()
+        {
+            // Arrange
+            Tournament testTournament = null;
+            _tournamentRepositoryMock.Setup(tr => tr.Add(null)).Throws<InvalidOperationException>();
+
+            // Act
+            var sut = this._kernel.Get<TournamentService>();
+            sut.Create(testTournament);
+
+            // Assert
+            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method where tournament name should be unique. The method should throw ArgumentException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_TournamentWithNonUniqueName_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new TournamentServiceTestFixture()
+                                    .AddTournament(new TournamentBuilder()
+                                                        .WithId(1)
+                                                        .WithName("Tournament 5")
+                                                        .Build())
+                                    .Build();
+            MockRepositoryFindWhere(testData);
+
+            Tournament nonUniqueNameTournament = new TournamentBuilder()
+                                                        .WithId(2)
+                                                        .WithName("Tournament 5")
+                                                        .Build();
+
+            // Act
+            var sut = this._kernel.Get<TournamentService>();
+            sut.Create(nonUniqueNameTournament);
+
+            // Assert
+            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
         /// Find out whether two tournament objects have the same properties.
         /// </summary>
         /// <param name="x">The first object to compare.</param>

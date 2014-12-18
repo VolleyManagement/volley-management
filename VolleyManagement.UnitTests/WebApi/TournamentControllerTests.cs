@@ -125,24 +125,26 @@
         /// Test Post method. Basic story.
         /// </summary>
         [TestMethod]
-        public void Post_TournamentCreated_ResponseSent()
+        public void Post_ValidViewModel_TournamentCreated()
         {
             // Arrange
-            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Callback(() =>
-                {
-                    HttpResponseMessage actual = new HttpResponseMessage(HttpStatusCode.Created);
-                });
+            var controller = _kernel.Get<TournamentsController>();
+            SetControllerRequest(controller);
+            var validModel = new TournamentViewModel
+            {
+                Name = "testName",
+                Season = "2016/2017",
+                Scheme = "2.5"
+            };
 
-            // Expected result
-            HttpResponseMessage message = new HttpResponseMessage(HttpStatusCode.Created);
+            HttpResponseMessage expected = new HttpResponseMessage(HttpStatusCode.Created);
 
-            // Actual result
-            var controller = this._kernel.Get<TournamentsController>();
-            controller.Post(new TournamentViewModel());
+            // Act
+            var actual = controller.Post(validModel);
 
             // Assert
-            Assert.AreEqual(message.StatusCode, actual)
+            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
+            Assert.AreEqual(expected.StatusCode, actual.StatusCode);
         }
 
         /// <summary>

@@ -134,19 +134,41 @@
         }
 
         /// <summary>
-        /// Test for Delete tournament action
+        /// Test for DeleteConfirmed method. The method should invoke Delete() method of ITournamentService
+        /// and redirect to Index.
         /// </summary>
         [TestMethod]
-        public void Delete_TournamentExists_TournamentIsDeleted()
+        public void DeleteConfirmed_TournamentExists_TournamentIsDeleted()
         {
-            var testData = this._testFixture.TestTournaments()
-                                      .Build();
-            var tournamentToDelete = testData.Last().Id;
-            var tournamentService = _tournamentServiceMock.Object;
+            // Arrange
+            int tournamentIdToDelete = 4;
 
-            tournamentService.Delete(tournamentToDelete);
+            // Act
+            var sut = this._kernel.Get<TournamentsController>();
+            var actual = sut.DeleteConfirmed(tournamentIdToDelete) as RedirectToRouteResult;
 
-            _tournamentServiceMock.Verify(m => m.Delete(tournamentToDelete));
+            // Assert
+            _tournamentServiceMock.Verify(m => m.Delete(It.Is<int>(id => id == tournamentIdToDelete)), Times.Once());
+            Assert.AreEqual("Index", actual.RouteValues["action"]);
+        }
+
+        /// <summary>
+        /// Test for DeleteConfirmed method where input parameter is tournament id, which doesn't exist in database.
+        /// The method should return HttpNotFound.
+        /// </summary>
+        [TestMethod]
+        public void DeleteConfirmed_TournamentDoesntExist_HttpNotFoundReturned()
+        {
+            // Arrange
+            int tournamentIdToDelete = 4;
+            _tournamentServiceMock.Setup(ts => ts.Delete(4)).Throws<InvalidOperationException>();
+
+            // Act
+            var sut = this._kernel.Get<TournamentsController>();
+            var actual = sut.DeleteConfirmed(tournamentIdToDelete);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
         }
 
         /// <summary>

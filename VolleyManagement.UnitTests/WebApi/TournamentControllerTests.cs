@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -74,6 +75,26 @@
 
             // Assert
             Assert.AreEqual(tournament.Id, result.Id);
+        }
+
+        /// <summary>
+        /// Test for Get() by key method. The method should return specific tournament
+        /// </summary>
+        [TestMethod]
+        public void Get_TournamentDoesNotExist_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentId = 5;
+            _tournamentServiceMock.Setup(ts => ts.FindById(tournamentId))
+               .Throws(new ArgumentNullException());
+            var tournamentsController = new TournamentsController(_tournamentServiceMock.Object);
+            SetControllerRequest(tournamentsController);
+
+            // Act
+            var actual = tournamentsController.Get(tournamentId);
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.NotFound, actual.StatusCode);
         }
 
         /// <summary>

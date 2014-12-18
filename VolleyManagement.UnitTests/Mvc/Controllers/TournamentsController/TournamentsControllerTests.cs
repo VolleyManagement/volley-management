@@ -92,9 +92,8 @@
 
             // Act
             tournamentService.GetAll();
-            
-            // Assert is handled by ExpectedException attribute
 
+            // Assert is handled by ExpectedException attribute
         }
 
         /// <summary>

@@ -2,12 +2,14 @@
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for tournament objects.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal class TournamentsViewModelComparer : IComparer
     {
         /// <summary>

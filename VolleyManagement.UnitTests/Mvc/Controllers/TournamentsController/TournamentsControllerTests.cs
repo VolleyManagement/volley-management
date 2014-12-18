@@ -289,7 +289,7 @@
         /// <typeparam name="T">model type</typeparam>
         /// <param name="result">object to convert and return</param>
         /// <returns>T result by ViewResult from action view</returns>
-        private T GetModel<T>(object result)
+        private T GetModel<T>(object result) where T : class
         {
             return (T)(result as ViewResult).ViewData.Model;
         }

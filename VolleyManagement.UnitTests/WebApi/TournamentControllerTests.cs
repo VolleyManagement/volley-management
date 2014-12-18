@@ -70,7 +70,7 @@
 
             // Act
             var response = tournamentsController.Get(tournament.Id);
-            var result = GetTournamentViewModelFromResponse(response);
+            var result = GetModelFromResponse<TournamentViewModel>(response);
 
             // Assert
             Assert.AreEqual(tournament.Id, result.Id);
@@ -196,14 +196,15 @@
         }
 
         /// <summary>
-        /// Gets tournament view model from response content
+        /// Gets generic T model from response content
         /// </summary>
+        /// <typeparam name="T">Model type</typeparam>
         /// <param name="response">Http response message</param>
-        /// <returns>Tournament view model</returns>
-        private TournamentViewModel GetTournamentViewModelFromResponse(HttpResponseMessage response)
+        /// <returns>T model</returns>
+        private T GetModelFromResponse<T>(HttpResponseMessage response) where T : class
         {
             ObjectContent content = response.Content as ObjectContent;
-            return content.Value as TournamentViewModel;
+            return (T)content.Value;
         }
     }
 }

@@ -90,7 +90,7 @@
             for (int i = 0; i < yearsRange; i++)
             {
                 int year = currentYear - yearsBeforeToday + i;
-                SeasonsList.Add(year.ToString() + "/" + (year + 1).ToString());
+                SeasonsList.Add(string.Format("{0}/{1}", year, year + 1));
             }
         }
     }

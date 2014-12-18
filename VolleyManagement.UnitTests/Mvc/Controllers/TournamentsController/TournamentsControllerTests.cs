@@ -84,8 +84,17 @@
         [ExpectedException(typeof(System.ArgumentNullException))]
         public void Index_TournamentsDoNotExist_ExceptionThrown()
         {
-            List<Tournament> testData = null;
-            this.MockTournaments(testData);
+            // Arrange
+            this._tournamentServiceMock.Setup(tr => tr.GetAll())
+                .Throws(new ArgumentNullException());
+
+            var tournamentService = _tournamentServiceMock.Object;
+
+            // Act
+            tournamentService.GetAll();
+            
+            // Assert is handled by ExpectedException attribute
+
         }
 
         /// <summary>

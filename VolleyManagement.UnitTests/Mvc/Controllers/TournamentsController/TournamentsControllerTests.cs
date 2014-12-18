@@ -140,16 +140,33 @@
         /// Test for Delete tournament action
         /// </summary>
         [TestMethod]
-        public void Delete_TournamentExists_TournamentIsDeleted()
+        public void DeleteGetAction_Tournament_ReturnsToTheView()
         {
-            var testData = this._testFixture.TestTournaments()
-                                      .Build();
-            var tournamentToDelete = testData.Last().Id;
-            var tournamentService = _tournamentServiceMock.Object;
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            var tournament = new TournamentBuilder()
+                            .WithId(1)
+                            .WithName("MyTournament")
+                            .WithDescription("Hello!")
+                            .WithScheme(TournamentSchemeEnum.Two)
+                            .WithSeason("2016/2017")
+                            .WithRegulationsLink("google.com.ua")
+                            .Build();
+            MockSingleTournament(tournament);
+            var expected = new TournamentBuilder()
+                                        .WithId(1)
+                                        .WithName("MyTournament")
+                                        .WithDescription("Hello!")
+                                        .WithScheme(TournamentSchemeEnum.Two)
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("google.com.ua")
+                                        .Build();
 
-            tournamentService.Delete(tournamentToDelete);
+            // Act
+            var actual = GetModel<Tournament>(controller.Delete(tournament.Id));
 
-            _tournamentServiceMock.Verify(m => m.Delete(tournamentToDelete));
+            // Assert
+            AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
         }
 
         /// <summary>

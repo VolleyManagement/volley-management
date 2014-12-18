@@ -197,7 +197,7 @@
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithName(string.Empty)
+                .WithName(null)
                 .Build();
 
             // Act
@@ -206,6 +206,54 @@
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Never());
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
+        /// Test for Create tournament action (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_ArgumentException_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithId(1)
+                .WithName("testName")
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason("2015/2016")
+                .Build();
+            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
+                .Throws(new ArgumentException());
+            var controller = _kernel.Get<TournamentsController>();
+
+            // Act
+            var actual = GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
+
+            // Assert
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
+        /// Test for Create tournament action (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_GeneralException_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithId(1)
+                .WithName("testName")
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason("2015/2016")
+                .Build();
+            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
+                .Throws(new Exception());
+            var controller = _kernel.Get<TournamentsController>();
+
+            // Act
+            var actual = controller.Create(tournamentViewModel);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
         }
 
         /// <summary>
@@ -301,6 +349,54 @@
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
+        /// Test for Edit tournament action (POST)
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_ArgumentException_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithId(1)
+                .WithName("testName")
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason("2015/2016")
+                .Build();
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+                .Throws(new ArgumentException());
+            var controller = _kernel.Get<TournamentsController>();
+
+            // Act
+            var actual = GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
+
+            // Assert
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
+        /// Test for Edit tournament action (POST)
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_GeneralException_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithId(1)
+                .WithName("testName")
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason("2015/2016")
+                .Build();
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+                .Throws(new Exception());
+            var controller = _kernel.Get<TournamentsController>();
+
+            // Act
+            var actual = controller.Edit(tournamentViewModel);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
         }
 
         /// <summary>

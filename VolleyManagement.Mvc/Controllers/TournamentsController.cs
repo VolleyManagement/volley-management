@@ -83,10 +83,9 @@
         {
             try
             {
-                var tournament = ViewModelToDomain.Map(tournamentViewModel);
-
                 if (ModelState.IsValid)
                 {
+                    var tournament = ViewModelToDomain.Map(tournamentViewModel);
                     _tournamentService.Create(tournament);
                     return RedirectToAction("Index");
                 }
@@ -133,10 +132,9 @@
         {
             try
             {
-                var tournament = ViewModelToDomain.Map(tournamentViewModel);
-
                 if (ModelState.IsValid)
                 {
+                    var tournament = ViewModelToDomain.Map(tournamentViewModel);
                     _tournamentService.Edit(tournament);
                     return RedirectToAction("Index");
                 }

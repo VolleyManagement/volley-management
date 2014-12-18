@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Mvc.Controllers.TournamentsController
+﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -252,8 +252,9 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
+            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithName(null)
+                .WithName(string.Empty)
                 .Build();
 
             // Act
@@ -354,7 +355,7 @@
             // Arrange
             var tournamentId = 5;
             _tournamentServiceMock.Setup(ts => ts.FindById(tournamentId))
-               .Throws(new ArgumentNullException());
+               .Throws(new Exception());
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
@@ -395,6 +396,7 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
+            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
                 .WithName(string.Empty)
                 .Build();

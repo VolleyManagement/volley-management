@@ -96,7 +96,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Mvc\Controllers\TournamentsController\TournamentsControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
     <Compile Include="Mvc\Mappers\ViewModelToDomainTests.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
@@ -107,8 +107,9 @@
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebApi\TournamentControllerTests.cs" />
-    <Compile Include="WebApi\TournamentsViewModelComparer.cs" />
+    <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
+    <Compile Include="WebApi\ViewModels\TournamentViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">

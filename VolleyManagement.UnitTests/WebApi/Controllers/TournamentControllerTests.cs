@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.WebApi
+﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -15,8 +15,8 @@
     using Ninject;
     using Services.TournamentService;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.UnitTests.WebApi.ViewModels;
     using VolleyManagement.WebApi.Controllers;
-    using VolleyManagement.WebApi.Mappers;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
 
     /// <summary>
@@ -122,7 +122,7 @@
             var actual = sut.Get().ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentsViewModelComparer());
+            Assert.AreEqual(expected.Count, actual.Count);
         }
 
         /// <summary>
@@ -152,21 +152,16 @@
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
             SetControllerRequest(controller);
-            var validModel = new TournamentViewModel
-            {
-                Name = "testName",
-                Season = "2016/2017",
-                Scheme = "2.5"
-            };
-
-            HttpResponseMessage expected = new HttpResponseMessage(HttpStatusCode.Created);
+            var expected = new TournamentViewModelBuilder().Build();
 
             // Act
-            var actual = controller.Post(validModel);
+            var response = controller.Post(expected);
+            var actual = GetModelFromResponse<TournamentViewModel>(response);
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
-            Assert.AreEqual(expected.StatusCode, actual.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.WebApi
+﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -10,7 +10,7 @@
     /// Comparer for tournament objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class TournamentsViewModelComparer : IComparer
+    internal class TournamentViewModelComparer : IComparer<TournamentViewModel>, IComparer
     {
         /// <summary>
         /// Compares two tournament objects.
@@ -61,12 +61,12 @@
         /// <returns>True if given tournaments have the same properties.</returns>
         private bool IsEqual(TournamentViewModel x, TournamentViewModel y)
         {
-            return x.Description.Equals(y.Description) &&
-                x.Name.Equals(y.Name) &&
-                x.Id.Equals(y.Id) &&
-                x.RegulationsLink.Equals(y.RegulationsLink) &&
-                x.Season.Equals(y.Season) &&
-                x.Scheme.Equals(y.Scheme);
+            return x.Description == y.Description &&
+                x.Name == y.Name &&
+                x.Id == y.Id &&
+                x.RegulationsLink == y.RegulationsLink &&
+                x.Season == y.Season &&
+                x.Scheme == y.Scheme;
         }
     }
 }

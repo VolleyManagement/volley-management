@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Net;
     using System.Web.Mvc;
     using Contracts;
     using Domain.Tournaments;
@@ -15,8 +16,6 @@
     using VolleyManagement.UnitTests.Mvc.Mappers;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
-    using System.Net;
-    //using System.Net;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -90,11 +89,11 @@
                 .Throws(new ArgumentNullException());
 
             var sut = this._kernel.Get<TournamentsController>();
-            var expected = (Int32)HttpStatusCode.NotFound;
+            var expected = (int)HttpStatusCode.NotFound;
 
             // Act
             var actual = (sut.Index() as HttpNotFoundResult).StatusCode;
-            
+
             // Assert
             Assert.AreEqual(expected, actual);
         }
@@ -167,6 +166,43 @@
 
             // Assert
             AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// Test for DeleteConfirmed method. The method should invoke Delete() method of ITournamentService
+        /// and redirect to Index.
+        /// </summary>
+        public void DeleteConfirmed_TournamentExists_TournamentIsDeleted()
+        {
+            // Arrange
+            int tournamentIdToDelete = 4;
+
+            // Act
+            var sut = this._kernel.Get<TournamentsController>();
+            var actual = sut.DeleteConfirmed(tournamentIdToDelete) as RedirectToRouteResult;
+
+            // Assert
+            _tournamentServiceMock.Verify(m => m.Delete(It.Is<int>(id => id == tournamentIdToDelete)), Times.Once());
+            Assert.AreEqual("Index", actual.RouteValues["action"]);
+        }
+
+        /// <summary>
+        /// Test for DeleteConfirmed method where input parameter is tournament id, which doesn't exist in database.
+        /// The method should return HttpNotFound.
+        /// </summary>
+        [TestMethod]
+        public void DeleteConfirmed_TournamentDoesntExist_HttpNotFoundReturned()
+        {
+            // Arrange
+            int tournamentIdToDelete = 4;
+            _tournamentServiceMock.Setup(ts => ts.Delete(4)).Throws<InvalidOperationException>();
+
+            // Act
+            var sut = this._kernel.Get<TournamentsController>();
+            var actual = sut.DeleteConfirmed(tournamentIdToDelete);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
         }
 
         /// <summary>

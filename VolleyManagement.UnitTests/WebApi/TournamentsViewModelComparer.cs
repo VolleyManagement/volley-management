@@ -18,15 +18,11 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>A signed integer that indicates the relative values of tournaments.</returns>
-        public int Compare(Tournament x, TournamentViewModel y)
+        public int Compare(TournamentViewModel x, TournamentViewModel y)
         {
             if (IsEqual(x, y))
             {
                 return 0;
-            }
-            else if (x.Id < y.Id)
-            {
-                return -1;
             }
             else
             {
@@ -42,7 +38,7 @@
         /// <returns>A signed integer that indicates the relative values of tournaments.</returns>
         public int Compare(object x, object y)
         {
-            Tournament firstTournament = x as Tournament;
+            TournamentViewModel firstTournament = x as TournamentViewModel;
             TournamentViewModel secondTournament = y as TournamentViewModel;
 
             if (firstTournament == null)
@@ -63,18 +59,14 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given tournaments have the same properties.</returns>
-        private bool IsEqual(Tournament x, TournamentViewModel y)
+        private bool IsEqual(TournamentViewModel x, TournamentViewModel y)
         {
-            if (x.Description.Equals(y.Description) && x.Name.Equals(y.Name)
-                && x.Id.Equals(y.Id) && x.RegulationsLink.Equals(y.RegulationsLink)
-                && x.Season.Equals(y.Season))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return x.Description.Equals(y.Description) &&
+                x.Name.Equals(y.Name) &&
+                x.Id.Equals(y.Id) &&
+                x.RegulationsLink.Equals(y.RegulationsLink) &&
+                x.Season.Equals(y.Season) &&
+                x.Scheme.Equals(y.Scheme);
         }
     }
 }

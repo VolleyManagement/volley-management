@@ -25,10 +25,6 @@
             {
                 return 0;
             }
-            else if (x.Id < y.Id)
-            {
-                return -1;
-            }
             else
             {
                 return 1;

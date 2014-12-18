@@ -1,11 +1,13 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
     /// Class for generating test data
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal class TournamentServiceTestFixture
     {
         /// <summary>

@@ -2,7 +2,10 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Mvc.Mappers;
+    using VolleyManagement.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
@@ -20,16 +23,28 @@
         public void Map_TournamentAsParam_MappedToViewModel()
         {
             // Arrange
-            var testTournament = new TournamentBuilder()
+            var tournament = new TournamentBuilder()
                                         .WithId(1)
-                                        .WithName("Test Tournament")
+                                        .WithName("test")
+                                        .WithDescription("Volley")
+                                        .WithScheme(TournamentSchemeEnum.Two)
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
+            var expected = new TournamentMvcViewModelBuilder()
+                                        .WithId(1)
+                                        .WithName("test")
+                                        .WithDescription("Volley")
+                                        .WithScheme(TournamentSchemeEnum.Two)
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
                                         .Build();
 
             // Act
-            var tournamentViewModel = DomainToViewModel.Map(testTournament);
+            var actual = DomainToViewModel.Map(tournament);
 
             // Assert
-            Assert.IsTrue(FieldsComparer.AreFieldsEqual(testTournament, tournamentViewModel));
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
+    using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
     /// Builder for test tournaments
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal class TournamentBuilder
     {
         /// <summary>

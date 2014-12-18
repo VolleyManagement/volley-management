@@ -6,6 +6,7 @@
     using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Tests for ViewModelToDomain class.
@@ -24,17 +25,26 @@
             // Arrange
             var testViewModel = new TournamentMvcViewModelBuilder()
                                         .WithId(2)
-                                        .WithName("testViewModel")
+                                        .WithDescription("Volley")
+                                        .WithName("test tournament")
+                                        .WithScheme(TournamentSchemeEnum.One)
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
+            var expected = new TournamentBuilder()
+                                        .WithId(2)
+                                        .WithDescription("Volley")
+                                        .WithName("test tournament")
                                         .WithScheme(TournamentSchemeEnum.One)
                                         .WithSeason("2016/2017")
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
 
             // Act
-            var tournament = ViewModelToDomain.Map(testViewModel);
+            var actual = ViewModelToDomain.Map(testViewModel);
 
             // Assert
-            Assert.IsTrue(FieldsComparer.AreFieldsEqual(tournament, testViewModel));
+            AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
         }
     }
 }

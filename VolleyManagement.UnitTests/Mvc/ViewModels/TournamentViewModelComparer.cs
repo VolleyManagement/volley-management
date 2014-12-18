@@ -3,12 +3,14 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for tournament objects.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal class TournamentViewModelComparer : IComparer<TournamentViewModel>
     {
         /// <summary>
@@ -44,9 +46,9 @@
             return x.SeasonsList.SequenceEqual(y.SeasonsList) &&
                 x.Id == y.Id &&
                 x.Description == y.Description &&
-                x.Name == y.Description &&
-                x.RegulationsLink == y.Description &&
-                x.Season == y.Description &&
+                x.Name == y.Name &&
+                x.RegulationsLink == y.RegulationsLink &&
+                x.Season == y.Season &&
                 x.Scheme == y.Scheme;
         }
     }

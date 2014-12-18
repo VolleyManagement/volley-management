@@ -98,7 +98,6 @@
   <ItemGroup>
     <Compile Include="Mvc\Controllers\TournamentsController\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
-    <Compile Include="Mvc\Mappers\FieldsComparer.cs" />
     <Compile Include="Mvc\Mappers\ViewModelToDomainTests.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />

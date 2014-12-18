@@ -1,11 +1,13 @@
 ﻿namespace VolleyManagement.UnitTests
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
     /// Class for custom asserts.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal static class AssertExtensions
     {
         /// <summary>

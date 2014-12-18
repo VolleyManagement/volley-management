@@ -189,8 +189,7 @@
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason("2015/2016")
+                .WithName(string.Empty)
                 .Build();
 
             // Act
@@ -209,14 +208,29 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            var tournament = new TournamentBuilder().WithId(5).Build();
+            var tournament = new TournamentBuilder()
+                            .WithId(1)
+                            .WithName("test tournament")
+                            .WithDescription("Volley")
+                            .WithScheme(TournamentSchemeEnum.Two)
+                            .WithSeason("2016/2017")
+                            .WithRegulationsLink("volley.dp.ua")
+                            .Build();
             MockSingleTournament(tournament);
+            var expected = new TournamentMvcViewModelBuilder()
+                                        .WithId(1)
+                                        .WithName("test tournament")
+                                        .WithDescription("Volley")
+                                        .WithScheme(TournamentSchemeEnum.Two)
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
 
             // Act
             var actual = GetModel<TournamentViewModel>(controller.Edit(tournament.Id));
 
             // Assert
-            Assert.IsTrue(FieldsComparer.AreFieldsEqual(tournament, actual));
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -251,9 +265,7 @@
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithId(1)
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason("2015/2016")
+                .WithName(string.Empty)
                 .Build();
 
             // Act

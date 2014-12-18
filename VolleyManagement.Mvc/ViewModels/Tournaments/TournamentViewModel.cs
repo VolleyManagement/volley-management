@@ -84,13 +84,12 @@
         private void InitializeSeasonsList()
         {
             SeasonsList = new List<string>();
-            int currentYear = DateTime.Now.Year;
             const int yearsRange = 16;
             const int yearsBeforeToday = 5;
+            int year = DateTime.Now.Year - yearsBeforeToday;
             for (int i = 0; i < yearsRange; i++)
             {
-                int year = currentYear - yearsBeforeToday + i;
-                SeasonsList.Add(string.Format("{0}/{1}", year, year + 1));
+                SeasonsList.Add(string.Format("{0}/{1}", year, ++year));
             }
         }
     }

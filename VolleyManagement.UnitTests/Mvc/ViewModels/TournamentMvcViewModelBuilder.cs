@@ -1,17 +1,35 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Builder for test MVC tournament view models
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal class TournamentMvcViewModelBuilder
     {
         /// <summary>
         /// Holds test tournament view model instance
         /// </summary>
-        private TournamentViewModel _tournamentViewModel = new TournamentViewModel();
+        private TournamentViewModel _tournamentViewModel;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TournamentMvcViewModelBuilder"/> class
+        /// </summary>
+        public TournamentMvcViewModelBuilder()
+        {
+            _tournamentViewModel = new TournamentViewModel()
+            {
+                Id = 1,
+                Name = "Name",
+                Description = "Description 1",
+                Season = "2014/2015",
+                Scheme = TournamentSchemeEnum.Two,
+                RegulationsLink = "http://default.com"
+            };
+        }
 
         /// <summary>
         /// Sets id of test tournament view model

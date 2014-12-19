@@ -19,7 +19,7 @@
             tournament.Name = domainTournament.Name;
             tournament.Season = domainTournament.Season;
             tournament.Description = domainTournament.Description;
-            tournament.Scheme = domainTournament.Scheme;
+            tournament.Scheme = (byte)domainTournament.Scheme;
             tournament.RegulationsLink = domainTournament.RegulationsLink;
             return tournament;
         }

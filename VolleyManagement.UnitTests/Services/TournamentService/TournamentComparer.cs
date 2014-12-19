@@ -1,12 +1,14 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentsService
+﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System.Collections;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
     /// Comparer for tournament objects.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal class TournamentComparer : IComparer<Tournament>, IComparer
     {
         /// <summary>
@@ -20,10 +22,6 @@
             if (IsEqual(x, y))
             {
                 return 0;
-            }
-            else if (x.Id < y.Id)
-            {
-                return -1;
             }
             else
             {
@@ -62,16 +60,12 @@
         /// <returns>True if given tournaments have the same properties.</returns>
         private bool IsEqual(Tournament x, Tournament y)
         {
-            if (x.Description.Equals(y.Description) && x.Name.Equals(y.Name)
-                && x.Id.Equals(y.Id) && x.RegulationsLink.Equals(y.RegulationsLink)
-                && x.Scheme.Equals(y.Scheme) && x.Season.Equals(y.Season))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return x.Description.Equals(y.Description) &&
+                x.Name.Equals(y.Name) &&
+                x.Id.Equals(y.Id) &&
+                x.RegulationsLink.Equals(y.RegulationsLink) &&
+                x.Scheme.Equals(y.Scheme) &&
+                x.Season.Equals(y.Season);
         }
     }
 }

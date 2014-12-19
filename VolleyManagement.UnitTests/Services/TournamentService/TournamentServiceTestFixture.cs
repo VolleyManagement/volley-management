@@ -1,11 +1,13 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentsService
+﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
     /// Class for generating test data
     /// </summary>
+    [ExcludeFromCodeCoverage]
     internal class TournamentServiceTestFixture
     {
         /// <summary>
@@ -25,7 +27,7 @@
                     Name = "Tournament 1",
                     Description = "Tournament 1 description",
                     Season = "2014/2015",
-                    Scheme = "1",
+                    Scheme = TournamentSchemeEnum.One,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')"
                 });
             _tournaments.Add(new Tournament()
@@ -34,7 +36,7 @@
                     Name = "Tournament 2",
                     Description = "Tournament 2 description",
                     Season = "2014/2015",
-                    Scheme = "2",
+                    Scheme = TournamentSchemeEnum.Two,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')"
                 });
             _tournaments.Add(new Tournament()
@@ -43,9 +45,20 @@
                     Name = "Tournament 3",
                     Description = "Tournament 3 description",
                     Season = "2013/2014",
-                    Scheme = "2.5",
+                    Scheme = TournamentSchemeEnum.TwoAndHalf,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')"
                 });
+            return this;
+        }
+
+        /// <summary>
+        /// Add tournament to collection.
+        /// </summary>
+        /// <param name="newTournament">Tournament to add.</param>
+        /// <returns>Builder object with collection of tournaments.</returns>
+        public TournamentServiceTestFixture AddTournament(Tournament newTournament)
+        {
+            _tournaments.Add(newTournament);
             return this;
         }
 

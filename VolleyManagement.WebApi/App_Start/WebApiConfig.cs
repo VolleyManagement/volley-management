@@ -3,6 +3,7 @@
     using System.Web.Http;
     using System.Web.Http.OData.Builder;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.WebApi.ViewModels.Tournaments;
 
     /// <summary>
     /// Defines WebAPIConfig
@@ -21,7 +22,7 @@
                 defaults: new { id = RouteParameter.Optional });
 
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-            builder.EntitySet<Tournament>("Tournaments");
+            builder.EntitySet<TournamentViewModel>("Tournaments");
             config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
         }
     }

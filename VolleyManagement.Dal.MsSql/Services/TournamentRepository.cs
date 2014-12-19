@@ -1,10 +1,12 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Services
 {
     using System;
+    using System.Data.Entity;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     using System.Linq.Expressions;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Tournaments;
 
@@ -48,14 +50,14 @@
         public IQueryable<Domain.Tournament> FindAll()
         {
             return _dalTournaments.Select(t => new Domain.Tournament
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Description = t.Description,
-                RegulationsLink = t.RegulationsLink,
-                Scheme = t.Scheme,
-                Season = t.Season
-            });
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Description = t.Description,
+                    RegulationsLink = t.RegulationsLink,
+                    Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
+                    Season = t.Season
+                });
         }
 
         /// <summary>
@@ -65,16 +67,19 @@
         /// <returns>Collection of domain tournaments.</returns>
         public IQueryable<Domain.Tournament> FindWhere(Expression<Func<Domain.Tournament, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return FindAll().Where(predicate);
         }
 
         /// <summary>
         /// Adds new tournament.
         /// </summary>
-        /// <param name="newEntity">The tournament to add.</param>
+        /// <param name="newEntity">The tournament for adding.</param>
         public void Add(Domain.Tournament newEntity)
         {
-            throw new NotImplementedException();
+            Dal.Tournament newTournament = DomainToDal.Map(newEntity);
+            _dalTournaments.AddObject(newTournament);
+            _unitOfWork.Commit();
+            newEntity.Id = newTournament.Id;
         }
 
         /// <summary>
@@ -83,16 +88,24 @@
         /// <param name="oldEntity">The tournament to update.</param>
         public void Update(Domain.Tournament oldEntity)
         {
-            throw new NotImplementedException();
+            var tournamentToUpdate = _dalTournaments.Where(t => t.Id == oldEntity.Id).Single();
+            tournamentToUpdate.Name = oldEntity.Name;
+            tournamentToUpdate.Description = oldEntity.Description;
+            tournamentToUpdate.RegulationsLink = oldEntity.RegulationsLink;
+            tournamentToUpdate.Scheme = (byte)oldEntity.Scheme;
+            tournamentToUpdate.Season = oldEntity.Season;
+            _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 
         /// <summary>
-        /// Removes specified tournament.
+        /// Removes tournament by id.
         /// </summary>
-        /// <param name="entity">The tournament to remove.</param>
-        public void Remove(Domain.Tournament entity)
+        /// <param name="id">The id of tournament to remove.</param>
+        public void Remove(int id)
         {
-            throw new NotImplementedException();
+            var dalToRemove = new Dal.Tournament { Id = id };
+            _dalTournaments.Attach(dalToRemove);
+            _dalTournaments.DeleteObject(dalToRemove);
         }
     }
 }

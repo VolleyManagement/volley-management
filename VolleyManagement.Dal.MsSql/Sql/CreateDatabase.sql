@@ -19,10 +19,10 @@ GO
 CREATE TABLE dbo.Tournament(
   Id int identity(1, 1) NOT NULL
     CONSTRAINT PK_Tournament_Id PRIMARY KEY CLUSTERED,
-  Name nvarchar(80) NOT NULL,
-  Scheme nvarchar(40) NOT NULL,
-  Season nvarchar(40) NOT NULL,
-  [Description] nvarchar(1024) NOT NULL,
-  RegulationsLink nvarchar(1024) NULL
+  Name nvarchar(60) NOT NULL,
+  Scheme tinyint NOT NULL DEFAULT 1,
+  Season nvarchar(9) NOT NULL,
+  [Description] nvarchar(300) NULL,
+  RegulationsLink nvarchar(255) NULL
 );
 GO

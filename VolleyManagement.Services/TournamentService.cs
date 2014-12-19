@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Services
 {
+    using System;
     using System.Linq;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
@@ -35,21 +35,71 @@
         }
 
         /// <summary>
-        /// Create tournament
+        /// Checks whether tournament name is unique or not.
         /// </summary>
-        /// <param name="tournament">New tournament</param>
-        public void Create(Tournament tournament)
+        /// <param name="newTournament">tournament to edit or create</param>
+        /// <returns>true, if name is unique</returns>
+        public bool IsTournamentNameUnique(Tournament newTournament)
         {
-            throw new System.NotImplementedException();
+            var tournament = _tournamentRepository.FindWhere(t => t.Name == newTournament.Name
+                && t.Id != newTournament.Id).FirstOrDefault();
+
+            return tournament == null;
+        }
+
+        /// <summary>
+        /// Create a new tournament
+        /// </summary>
+        /// <param name="tournamentToCreate">A Tournament to create</param>
+        public void Create(Tournament tournamentToCreate)
+        {
+            if (IsTournamentNameUnique(tournamentToCreate))
+            {
+                _tournamentRepository.Add(tournamentToCreate);
+                _tournamentRepository.UnitOfWork.Commit();
+            }
+            else
+            {
+                throw new ArgumentException(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique);
+            }
+        }
+
+        /// <summary>
+        /// Finds a Tournament by id
+        /// </summary>
+        /// <param name="id">id for search</param>
+        /// <returns>A found Tournament</returns>
+        public Tournament FindById(int id)
+        {
+            var tournament = _tournamentRepository.FindWhere(t => t.Id == id).Single();
+            return tournament;
         }
 
         /// <summary>
         /// Edit tournament
         /// </summary>
-        /// <param name="tournament">New data</param>
-        public void Edit(Tournament tournament)
+        /// <param name="tournamentToEdit">Tournament to edit</param>
+        public void Edit(Tournament tournamentToEdit)
         {
-            throw new System.NotImplementedException();
+            if (IsTournamentNameUnique(tournamentToEdit))
+            {
+                _tournamentRepository.Update(tournamentToEdit);
+                _tournamentRepository.UnitOfWork.Commit();
+            }
+            else
+            {
+                throw new ArgumentException(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique);
+            }
+        }
+
+        /// <summary>
+        /// Delete tournament by id.
+        /// </summary>
+        /// <param name="id">The id of tournament to delete.</param>
+        public void Delete(int id)
+        {
+            _tournamentRepository.Remove(id);
+            _tournamentRepository.UnitOfWork.Commit();
         }
     }
 }

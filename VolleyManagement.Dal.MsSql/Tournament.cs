@@ -21,34 +21,31 @@ namespace VolleyManagement.Dal.MsSql
         /// Gets or sets the tournament name
         /// </summary>
         [Required]
-        [StringLength(80)]
+        [StringLength(60)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament scheme
         /// </summary>
-        [Required]
-        [StringLength(40)]
-        public string Scheme { get; set; }
+        public byte Scheme { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament season
         /// </summary>
         [Required]
-        [StringLength(40)]
+        [StringLength(9)]
         public string Season { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament description
         /// </summary>
-        [Required]
-        [StringLength(1024)]
+        [StringLength(300)]
         public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets regulations of the tournament
         /// </summary>
-        [StringLength(1024)]
+        [StringLength(255)]
         public string RegulationsLink { get; set; }
     }
 }

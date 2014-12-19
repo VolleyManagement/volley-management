@@ -57,6 +57,7 @@
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -73,12 +74,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.OData">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.4.0.30506\lib\net40\System.Web.Http.OData.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -93,11 +96,20 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
+    <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
+    <Compile Include="Mvc\Mappers\ViewModelToDomainTests.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
+    <Compile Include="AssertExtensions.cs" />
+    <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebApi\TournamentControllerTests.cs" />
+    <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
+    <Compile Include="WebApi\ViewModels\TournamentViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">
@@ -111,6 +123,10 @@
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
       <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>
       <Name>VolleyManagement.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Mvc\VolleyManagement.Mvc.csproj">
+      <Project>{66b942c2-63e9-448e-8d08-f9dac7aed79c}</Project>
+      <Name>VolleyManagement.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Services\VolleyManagement.Services.csproj">
       <Project>{4d6c885f-9e5d-4f09-b81b-cd14ed6a527f}</Project>

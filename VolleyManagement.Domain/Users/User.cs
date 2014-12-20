@@ -25,7 +25,7 @@
         private string _fullName;
 
         /// <summary>
-        /// Telephone of user
+        /// Cell phone of user
         /// </summary>
         private string _cellPhone;
 

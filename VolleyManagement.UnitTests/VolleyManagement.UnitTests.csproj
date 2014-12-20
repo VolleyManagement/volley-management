@@ -107,9 +107,15 @@
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\UserService\UserBuilder.cs" />
+    <Compile Include="Services\UserService\UserComparer.cs" />
+    <Compile Include="Services\UserService\UserServiceTestFixture.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
+    <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
+    <Compile Include="WebApi\Mappers\ViewModelToDomainTests.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs" />
+    <Compile Include="WebApi\ViewModels\UserViewModelBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">

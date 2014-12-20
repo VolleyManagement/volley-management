@@ -53,6 +53,7 @@
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\ITournamentRepository.cs" />
     <Compile Include="Contracts\IUnitOfWork.cs" />
+    <Compile Include="Contracts\IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

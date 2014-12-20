@@ -110,7 +110,7 @@
         /// Gets or sets a value indicating where Telephone.
         /// </summary>
         /// <value>Telephone of user.</value>
-        public string CellPnone
+        public string CellPhone
         {
             get
             {

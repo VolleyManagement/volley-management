@@ -1,7 +1,9 @@
 ﻿namespace VolleyManagement.WebApi.Mappers
 {
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain.Users;
     using VolleyManagement.WebApi.ViewModels.Tournaments;
+    using VolleyManagement.WebApi.ViewModels.Users;
 
     /// <summary>
     /// Maps domain model to view model.

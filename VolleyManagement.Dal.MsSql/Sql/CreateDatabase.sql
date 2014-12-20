@@ -26,3 +26,16 @@ CREATE TABLE dbo.Tournament(
   RegulationsLink nvarchar(255) NULL
 );
 GO
+
+CREATE TABLE dbo.Users(
+  Id int identity(1, 1) NOT NULL 
+    CONSTRAINT PK_Users_Id PRIMARY KEY CLUSTERED,
+  Login nvarchar(20) NOT NULL
+    CONSTRAINT UN_Users_Login UNIQUE,
+  Password char(64) NOT NULL,
+  FullName nvarchar(60) NULL,
+  Telephone nvarchar(20) NUll,
+  Email nvarchar(80) NOT NULL
+    CONSTRAINT UN_Users_Email UNIQUE
+);
+GO

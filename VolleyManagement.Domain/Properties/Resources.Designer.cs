@@ -70,6 +70,33 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plese, enter the email correctly.
+        /// </summary>
+        public static string ValidationEmail {
+            get {
+                return ResourceManager.GetString("ValidationEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plese, enter the full name correctly.
+        /// </summary>
+        public static string ValidationFullName {
+            get {
+                return ResourceManager.GetString("ValidationFullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plese, enter the password correctly.
+        /// </summary>
+        public static string ValidationPassword {
+            get {
+                return ResourceManager.GetString("ValidationPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please, reduce the description text.
         /// </summary>
         public static string ValidationResultDescription {
@@ -111,6 +138,24 @@ namespace VolleyManagement.Domain.Properties {
         public static string ValidationResultSeason {
             get {
                 return ResourceManager.GetString("ValidationResultSeason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plese, enter the telepnone correctly.
+        /// </summary>
+        public static string ValidationTelephone {
+            get {
+                return ResourceManager.GetString("ValidationTelephone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Plese, enter the user name correctly.
+        /// </summary>
+        public static string ValidationUserName {
+            get {
+                return ResourceManager.GetString("ValidationUserName", resourceCulture);
             }
         }
     }

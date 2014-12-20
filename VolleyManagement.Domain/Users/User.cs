@@ -1,9 +1,9 @@
-﻿using System;
-using VolleyManagement.Domain.Properties;
-using VolleyManagement.Domain.Tournaments;
-
-namespace VolleyManagement.Domain.Users
+﻿namespace VolleyManagement.Domain.Users
 {
+    using System;
+    using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.Tournaments;
+
     /// <summary>
     /// User domain class.
     /// </summary>
@@ -27,7 +27,7 @@ namespace VolleyManagement.Domain.Users
         /// <summary>
         /// Telephone of user
         /// </summary>
-        private string _telephone;
+        private string _cellPhone;
 
         /// <summary>
         /// Email of user
@@ -110,21 +110,21 @@ namespace VolleyManagement.Domain.Users
         /// Gets or sets a value indicating where Telephone.
         /// </summary>
         /// <value>Telephone of user.</value>
-        public string Telepnone
+        public string CellPnone
         {
             get
             {
-                return _telephone;
+                return _cellPhone;
             }
 
             set
             {
-                if (UserValidation.ValidateTelephone(value))
+                if (UserValidation.ValidateCellPhone(value))
                 {
-                    throw new ArgumentException(Resources.ValidationTelephone);
+                    throw new ArgumentException(Resources.ValidationCellPhone);
                 }
 
-                _telephone = value;
+                _cellPhone = value;
             }
         }
 

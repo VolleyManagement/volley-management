@@ -70,6 +70,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Plese, enter the telepnone correctly.
+        /// </summary>
+        public static string ValidationCellPhone {
+            get {
+                return ResourceManager.GetString("ValidationCellPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Plese, enter the email correctly.
         /// </summary>
         public static string ValidationEmail {
@@ -138,15 +147,6 @@ namespace VolleyManagement.Domain.Properties {
         public static string ValidationResultSeason {
             get {
                 return ResourceManager.GetString("ValidationResultSeason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Plese, enter the telepnone correctly.
-        /// </summary>
-        public static string ValidationTelephone {
-            get {
-                return ResourceManager.GetString("ValidationTelephone", resourceCulture);
             }
         }
         

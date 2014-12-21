@@ -9,7 +9,7 @@ namespace VolleyManagement.Dal.MsSql
     /// <summary>
     /// DAL user model
     /// </summary>
-    [Table("User")]
+    [Table("Users")]
     public partial class User
     {
         /// <summary>

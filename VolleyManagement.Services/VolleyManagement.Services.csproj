@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UserService.cs" />
     <Compile Include="Infrastructure\NinjectServiceBindModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TournamentService.cs" />

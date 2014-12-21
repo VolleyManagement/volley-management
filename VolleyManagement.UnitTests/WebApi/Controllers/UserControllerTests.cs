@@ -1,11 +1,5 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
-    using Contracts;
-    using Domain.Users;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Ninject;
-    using Services.UserService;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -14,6 +8,12 @@
     using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Hosting;
+    using Contracts;
+    using Domain.Users;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using Ninject;
+    using Services.UserService;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
     using VolleyManagement.WebApi.Controllers;

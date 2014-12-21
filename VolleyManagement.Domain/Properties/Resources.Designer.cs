@@ -70,6 +70,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The user name must be unique.
+        /// </summary>
+        public static string UserNameMustBeUnique {
+            get {
+                return ResourceManager.GetString("UserNameMustBeUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Plese, enter the telepnone correctly.
         /// </summary>
         public static string ValidationCellPhone {

@@ -58,7 +58,12 @@
         /// <returns>Validity of Full name</returns>
         public static bool ValidateFullName(string fullName)
         {
-            return fullName.Length > Constants.MaxNameLength || fullName.Trim(' ').All(Char.IsLetter);
+            if (string.IsNullOrEmpty(fullName))
+                return false;
+            else
+            {
+                return fullName.Length > 60 || !fullName.Replace(" ", "").All(Char.IsLetter);
+            }
         }
     }
 }

@@ -16,6 +16,7 @@
         {
             Bind<IUnitOfWork>().To<VolleyUnitOfWork>().InSingletonScope();
             Bind<ITournamentRepository>().To<TournamentRepository>().InSingletonScope();
+            Bind<IUserRepository>().To<UserRepository>().InSingletonScope();
         }
     }
 }

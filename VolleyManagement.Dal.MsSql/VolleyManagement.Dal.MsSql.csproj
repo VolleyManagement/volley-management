@@ -62,6 +62,7 @@
     <Compile Include="Services\TournamentRepository.cs" />
     <Compile Include="Services\VolleyUnitOfWork.cs" />
     <Compile Include="Tournament.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="VolleyManagementContext.cs" />
   </ItemGroup>
   <ItemGroup>

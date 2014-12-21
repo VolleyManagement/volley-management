@@ -1,6 +1,8 @@
 ﻿namespace VolleyManagement.Domain.Users
 {
     using System;
+    using System.Linq;
+    using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
     /// User validation class.
@@ -13,7 +15,9 @@
         /// <param name="email">Email for validation</param>
         /// <returns>Validity of email</returns>
         public static bool ValidateEmail(string email)
-        {
+        {//not empty
+            //valid
+            //uniq
             throw new NotImplementedException();
         }
 
@@ -23,7 +27,7 @@
         /// <param name="cellPhone">Telephone for validation</param>
         /// <returns>Validity of Telephone</returns>
         public static bool ValidateCellPhone(string cellPhone)
-        {
+        {//valid
             throw new NotImplementedException();
         }
 
@@ -33,8 +37,11 @@
         /// <param name="userName">User name for validation</param>
         /// <returns>Validity of User nam</returns>
         public static bool ValidateUserName(string userName)
-        {
-            throw new NotImplementedException();
+        {//not empty
+            //uniq
+            //60
+            //letters of any languages
+            return string.IsNullOrEmpty(userName) && userName.All(Char.IsLetter) && userName.Length > Constants.MaxNameLength;
         }
 
         /// <summary>
@@ -44,7 +51,7 @@
         /// <returns>Validity of Password</returns>
         public static bool ValidatePassword(string password)
         {
-            throw new NotImplementedException();
+            return string.IsNullOrEmpty(password);
         }
 
         /// <summary>
@@ -53,8 +60,9 @@
         /// <param name="fullName">Full name for validation</param>
         /// <returns>Validity of Full name</returns>
         public static bool ValidateFullName(string fullName)
-        {
-            throw new NotImplementedException();
+        {//60
+            //letters of any languages
+            return fullName.All(Char.IsLetter);
         }
     }
 }

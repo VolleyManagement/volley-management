@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
@@ -15,10 +16,9 @@
         /// <param name="email">Email for validation</param>
         /// <returns>Validity of email</returns>
         public static bool ValidateEmail(string email)
-        {//not empty
+        {
             //valid
-            //uniq
-            throw new NotImplementedException();
+            return string.IsNullOrEmpty(email);
         }
 
         /// <summary>
@@ -35,13 +35,10 @@
         /// Validates user name.
         /// </summary>
         /// <param name="userName">User name for validation</param>
-        /// <returns>Validity of User nam</returns>
+        /// <returns>Validity of User name</returns>
         public static bool ValidateUserName(string userName)
-        {//not empty
-            //uniq
-            //60
-            //letters of any languages
-            return string.IsNullOrEmpty(userName) && userName.All(Char.IsLetter) && userName.Length > Constants.MaxNameLength;
+        {
+            return string.IsNullOrEmpty(userName) || !userName.All(Char.IsLetter) || userName.Length > Constants.MaxNameLength;
         }
 
         /// <summary>
@@ -60,9 +57,8 @@
         /// <param name="fullName">Full name for validation</param>
         /// <returns>Validity of Full name</returns>
         public static bool ValidateFullName(string fullName)
-        {//60
-            //letters of any languages
-            return fullName.All(Char.IsLetter);
+        {
+            return fullName.Length > Constants.MaxNameLength || fullName.Trim(' ').All(Char.IsLetter);
         }
     }
 }

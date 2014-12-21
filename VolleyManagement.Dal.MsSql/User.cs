@@ -22,7 +22,7 @@ namespace VolleyManagement.Dal.MsSql
         /// </summary>
         [Required]
         [StringLength(20)]
-        public string Login { get; set; }
+        public string UserName { get; set; }
 
         /// <summary>
         /// Gets or sets password of user
@@ -41,7 +41,7 @@ namespace VolleyManagement.Dal.MsSql
         /// Gets or sets telephone of user
         /// </summary>
         [StringLength(20)]
-        public string Telephone { get; set; }
+        public string CellPhone { get; set; }
 
         /// <summary>
         /// Gets or sets email of user

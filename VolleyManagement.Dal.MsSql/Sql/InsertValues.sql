@@ -24,10 +24,10 @@ VALUES
 GO
 
 INSERT INTO dbo.Users(
-  [Login],
+  [UserName],
   [Password],
   [FullName],
-  [Telephone],
+  [CellPhone],
   [Email]
 ) VALUES 
   ('admin', 'AC31406E5DA35EF6A170901CE1136567FDEB8E7BD8089C0F4A1E86CFB7B5A2F2','Иванов Иван Иванович','+3(050)995-70-40','volleyms@gmail.com'),

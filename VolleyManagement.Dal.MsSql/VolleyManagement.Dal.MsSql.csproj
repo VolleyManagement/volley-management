@@ -60,6 +60,7 @@
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\TournamentRepository.cs" />
+    <Compile Include="Services\UserRepository.cs" />
     <Compile Include="Services\VolleyUnitOfWork.cs" />
     <Compile Include="Tournament.cs" />
     <Compile Include="User.cs" />

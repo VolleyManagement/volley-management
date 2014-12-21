@@ -1,5 +1,11 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
+    using Contracts;
+    using Domain.Users;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using Ninject;
+    using Services.UserService;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -8,12 +14,6 @@
     using System.Net.Http;
     using System.Web.Http;
     using System.Web.Http.Hosting;
-    using Contracts;
-    using Domain.Users;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Ninject;
-    using Services.UserService;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
     using VolleyManagement.WebApi.Controllers;
@@ -33,12 +33,12 @@
         private readonly UserServiceTestFixture _testFixture = new UserServiceTestFixture();
 
         /// <summary>
-        /// Users Service Mock
+        /// User Service Mock
         /// </summary>
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
 
         /// <summary>
-        /// Tournaments Repository Mock
+        /// User Repository Mock
         /// </summary>
         private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
 
@@ -56,15 +56,6 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<IUserService>()
                    .ToConstant(this._userServiceMock.Object);
-        }
-
-        /// <summary>
-        /// Test Post method
-        /// </summary>
-        [TestMethod]
-        public void Post_NewUser_CreateMethodInvoked()
-        {
-            throw new NotImplementedException();
         }
     }
 }

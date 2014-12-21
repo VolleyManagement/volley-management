@@ -70,7 +70,25 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The user name must be unique.
+        ///   Looks up a localized string similar to The user email must be unique..
+        /// </summary>
+        public static string UserEmailMustBeUnique {
+            get {
+                return ResourceManager.GetString("UserEmailMustBeUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user name and email must be unique..
+        /// </summary>
+        public static string UserNameAndEmailMustBeUnique {
+            get {
+                return ResourceManager.GetString("UserNameAndEmailMustBeUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The user name must be unique..
         /// </summary>
         public static string UserNameMustBeUnique {
             get {

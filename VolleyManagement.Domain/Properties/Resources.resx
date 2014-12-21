@@ -120,8 +120,14 @@
   <data name="TournamentNameMustBeUnique" xml:space="preserve">
     <value>The name of the tournament must be unique</value>
   </data>
+  <data name="UserEmailMustBeUnique" xml:space="preserve">
+    <value>The user email must be unique.</value>
+  </data>
+  <data name="UserNameAndEmailMustBeUnique" xml:space="preserve">
+    <value>The user name and email must be unique.</value>
+  </data>
   <data name="UserNameMustBeUnique" xml:space="preserve">
-    <value>The user name must be unique</value>
+    <value>The user name must be unique.</value>
   </data>
   <data name="ValidationCellPhone" xml:space="preserve">
     <value>Plese, enter the telepnone correctly</value>

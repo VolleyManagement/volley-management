@@ -21,8 +21,10 @@
     using VolleyManagement.WebApi.ViewModels.Users;
 
     /// <summary>
-    /// Tests for UserController class.
+    /// Tests for UsersController class.
     /// </summary>
+    [ExcludeFromCodeCoverage]
+    [TestClass]
     public class UserControllerTests
     {
         /// <summary>
@@ -57,7 +59,7 @@
         }
 
         /// <summary>
-        /// Test Post method.
+        /// Test Post method
         /// </summary>
         [TestMethod]
         public void Post_NewUser_CreateMethodInvoked()

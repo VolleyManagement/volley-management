@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Services.UserComparer
+﻿namespace VolleyManagement.UnitTests.Services.UserService
 {
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Users;
@@ -51,6 +51,17 @@
         }
 
         /// <summary>
+        /// Sets test user FullName
+        /// </summary>
+        /// <param name="fullName">test user FullName</param>
+        /// <returns>User builder object</returns>
+        public UserBuilder WithFullName(string fullName)
+        {
+            this._user.FullName = fullName;
+            return this;
+        }
+
+        /// <summary>
         /// Sets test user email
         /// </summary>
         /// <param name="email">test user email</param>
@@ -69,6 +80,17 @@
         public UserBuilder WithPassword(string password)
         {
             this._user.Password = password;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets test user cell phone
+        /// </summary>
+        /// <param name="cellPhone">test user cell phone</param>
+        /// <returns>User builder object</returns>
+        public UserBuilder WithCellPhone(string cellPhone)
+        {
+            this._user.CellPhone = cellPhone;
             return this;
         }
 

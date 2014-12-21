@@ -19,7 +19,7 @@
     public class UsersController : ODataController
     {
         /// <summary>
-        /// Holds TournamentService instance
+        /// Holds IUserService instance
         /// </summary>
         private readonly IUserService _userService;
 

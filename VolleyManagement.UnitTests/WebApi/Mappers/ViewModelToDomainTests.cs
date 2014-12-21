@@ -3,8 +3,8 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Services.UserService;
     using VolleyManagement.Domain.Users;
-    using VolleyManagement.UnitTests.Services.UserComparer;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
     using VolleyManagement.WebApi.Mappers;
 

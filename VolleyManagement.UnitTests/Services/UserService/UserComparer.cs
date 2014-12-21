@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Services.UserComparer
+﻿namespace VolleyManagement.UnitTests.Services.UserService
 {
     using System.Collections;
     using System.Collections.Generic;

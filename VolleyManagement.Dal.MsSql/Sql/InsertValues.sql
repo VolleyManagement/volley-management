@@ -23,7 +23,7 @@ VALUES
 ('Пятый чемпионат любительской лиги', '1', '2014/2015', 'Любительская лига','');
 GO
 
-INSERT INTO dbo.User(
+INSERT INTO dbo.Users(
   [Login],
   [Password],
   [FullName],

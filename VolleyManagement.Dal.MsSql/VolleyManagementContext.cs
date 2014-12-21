@@ -24,7 +24,7 @@ namespace VolleyManagement.Dal.MsSql
         /// <summary>
         /// Gets or sets the user table.
         /// </summary>
-        public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         /// <summary>
         /// configure models if needed

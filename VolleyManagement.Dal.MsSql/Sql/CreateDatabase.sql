@@ -27,7 +27,7 @@ CREATE TABLE dbo.Tournament(
 );
 GO
 
-CREATE TABLE dbo.Users(
+CREATE TABLE dbo.User(
   Id int identity(1, 1) NOT NULL 
     CONSTRAINT PK_Users_Id PRIMARY KEY CLUSTERED,
   Login nvarchar(20) NOT NULL

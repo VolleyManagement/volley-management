@@ -124,7 +124,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plese, enter the password correctly.
+        ///   Looks up a localized string similar to Password cann&apos;t be empty!.
         /// </summary>
         public static string ValidationPassword {
             get {

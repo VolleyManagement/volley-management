@@ -28,7 +28,7 @@
                 FullName = "Test Name 1",
                 Email = "test1@gmail.com",
                 Password = "abc111",
-                CellPhone = "+38(050)0000001"
+                CellPhone = "0500000001"
             });
             _users.Add(new User()
             {
@@ -37,7 +37,7 @@
                 FullName = "Test Name 2",
                 Email = "test2@gmail.com",
                 Password = "abc222",
-                CellPhone = "+38(050)0000002"
+                CellPhone = "0500000002"
             });
             _users.Add(new User()
             {
@@ -46,7 +46,7 @@
                 FullName = "Test Name 3",
                 Email = "test3@gmail.com",
                 Password = "abc333",
-                CellPhone = "+38(050)0000003"
+                CellPhone = "0500000003"
             });
             return this;
         }

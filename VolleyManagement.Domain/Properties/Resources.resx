@@ -139,7 +139,7 @@
     <value>Plese, enter the full name correctly</value>
   </data>
   <data name="ValidationPassword" xml:space="preserve">
-    <value>Plese, enter the password correctly</value>
+    <value>Password cann't be empty!</value>
   </data>
   <data name="ValidationResultDescription" xml:space="preserve">
     <value>Please, reduce the description text</value>

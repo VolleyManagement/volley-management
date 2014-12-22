@@ -1,6 +1,10 @@
 ﻿namespace VolleyManagement.Domain.Users
 {
     using System;
+    using System.Globalization;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using Tournaments;
 
     /// <summary>
     /// User validation class.
@@ -14,7 +18,7 @@
         /// <returns>Validity of email</returns>
         public static bool ValidateEmail(string email)
         {
-            return false;
+            return string.IsNullOrEmpty(email);
         }
 
         /// <summary>
@@ -24,17 +28,17 @@
         /// <returns>Validity of Telephone</returns>
         public static bool ValidateCellPhone(string cellPhone)
         {
-            return false;
+            return string.IsNullOrEmpty(cellPhone) || cellPhone.Length != Constants.TelephoneLength || !cellPhone.All(char.IsDigit);
         }
 
         /// <summary>
         /// Validates user name.
         /// </summary>
         /// <param name="userName">User name for validation</param>
-        /// <returns>Validity of User nam</returns>
+        /// <returns>Validity of User name</returns>
         public static bool ValidateUserName(string userName)
         {
-            return false;
+            return string.IsNullOrEmpty(userName) || !userName.All(char.IsLetter) || userName.Length > Constants.MaxNameLength;
         }
 
         /// <summary>
@@ -44,7 +48,7 @@
         /// <returns>Validity of Password</returns>
         public static bool ValidatePassword(string password)
         {
-            return false;
+            return string.IsNullOrEmpty(password);
         }
 
         /// <summary>
@@ -54,7 +58,12 @@
         /// <returns>Validity of Full name</returns>
         public static bool ValidateFullName(string fullName)
         {
-            return false;
+            if (string.IsNullOrEmpty(fullName))
+            {
+                return false;
+            }
+
+            return fullName.Length > 60 || !fullName.Replace(" ", string.Empty).All(char.IsLetter);
         }
     }
 }

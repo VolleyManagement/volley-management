@@ -23,5 +23,22 @@
             tournament.RegulationsLink = domainTournament.RegulationsLink;
             return tournament;
         }
+
+        /// <summary>
+        /// Maps User model.
+        /// </summary>
+        /// <param name="domainUser">User Domain model</param>
+        /// <returns>User Dal model</returns>
+        public static User Map(Domain.Users.User domainUser)
+        {
+            User user = new User();
+            user.Id = domainUser.Id;
+            user.FullName = domainUser.FullName;
+            user.UserName = domainUser.UserName;
+            user.Email = domainUser.Email;
+            user.CellPhone = domainUser.CellPhone;
+            user.Password = domainUser.Password;
+            return user;
+        }
     }
 }

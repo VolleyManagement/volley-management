@@ -16,7 +16,7 @@ GO
   Creating tables
 *************************************************/
 
-CREATE TABLE dbo.Tournament(
+CREATE TABLE dbo.Tournaments(
   Id int identity(1, 1) NOT NULL
     CONSTRAINT PK_Tournament_Id PRIMARY KEY CLUSTERED,
   Name nvarchar(60) NOT NULL,
@@ -30,11 +30,11 @@ GO
 CREATE TABLE dbo.Users(
   Id int identity(1, 1) NOT NULL 
     CONSTRAINT PK_Users_Id PRIMARY KEY CLUSTERED,
-  Login nvarchar(20) NOT NULL
+  UserName nvarchar(20) NOT NULL
     CONSTRAINT UN_Users_Login UNIQUE,
-  Password char(64) NOT NULL,
+  Password char(68) NOT NULL,
   FullName nvarchar(60) NULL,
-  Telephone nvarchar(20) NUll,
+  CellPhone nvarchar(20) NUll,
   Email nvarchar(80) NOT NULL
     CONSTRAINT UN_Users_Email UNIQUE
 );

@@ -1,9 +1,7 @@
 ﻿namespace VolleyManagement.Domain.Users
 {
-    using System;
     using System.Linq;
-    using System.Text.RegularExpressions;
-    using VolleyManagement.Domain.Tournaments;
+    using Tournaments;
 
     /// <summary>
     /// User validation class.
@@ -17,7 +15,6 @@
         /// <returns>Validity of email</returns>
         public static bool ValidateEmail(string email)
         {
-            //valid
             return string.IsNullOrEmpty(email);
         }
 
@@ -27,8 +24,15 @@
         /// <param name="cellPhone">Telephone for validation</param>
         /// <returns>Validity of Telephone</returns>
         public static bool ValidateCellPhone(string cellPhone)
-        {//valid
-            throw new NotImplementedException();
+        {
+            if (string.IsNullOrEmpty(cellPhone))
+            {
+                return false;
+            }
+
+            string template = @"^(\+)?[\- ]?[\d]{1,2}?[\- ]?(\(?\d{2,3}\)?)?[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}$";
+            var helpExpression = new System.Text.RegularExpressions.Regex(template);
+            return !helpExpression.IsMatch(cellPhone);
         }
 
         /// <summary>
@@ -38,7 +42,7 @@
         /// <returns>Validity of User name</returns>
         public static bool ValidateUserName(string userName)
         {
-            return string.IsNullOrEmpty(userName) || !userName.All(Char.IsLetter) || userName.Length > Constants.MaxNameLength;
+            return string.IsNullOrEmpty(userName) || !userName.All(char.IsLetter) || userName.Length > Constants.MaxNameLength;
         }
 
         /// <summary>
@@ -59,11 +63,11 @@
         public static bool ValidateFullName(string fullName)
         {
             if (string.IsNullOrEmpty(fullName))
-                return false;
-            else
             {
-                return fullName.Length > 60 || !fullName.Replace(" ", "").All(Char.IsLetter);
+                return false;
             }
+
+            return fullName.Length > 60 || !fullName.Replace(" ", string.Empty).All(char.IsLetter);
         }
     }
 }

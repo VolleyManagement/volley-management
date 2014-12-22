@@ -22,9 +22,11 @@
             _user = new User
             {
                 Id = 1,
-                UserName = "testLogin",
+                UserName = "UserName",
                 Email = "test@gmail.com",
-                Password = "abc123"
+                Password = "abc123",
+                CellPhone = "1234567890",
+                FullName = "Full Name"
             };
         }
 

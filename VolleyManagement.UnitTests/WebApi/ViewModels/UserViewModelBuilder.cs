@@ -26,7 +26,7 @@
                 FullName = "Test Name",
                 Email = "test@gmail.com",
                 Password = "abc123",
-                CellPhone = "+38(050)0000000"
+                CellPhone = "0500000000"
             };
         }
 

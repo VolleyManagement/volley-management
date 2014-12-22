@@ -16,7 +16,7 @@ GO
   Creating tables
 *************************************************/
 
-CREATE TABLE dbo.Tournament(
+CREATE TABLE dbo.Tournaments(
   Id int identity(1, 1) NOT NULL
     CONSTRAINT PK_Tournament_Id PRIMARY KEY CLUSTERED,
   Name nvarchar(60) NOT NULL,

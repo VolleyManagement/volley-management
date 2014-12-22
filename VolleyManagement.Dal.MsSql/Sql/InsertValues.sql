@@ -8,7 +8,7 @@ GO
   Inserting data to database
 *************************************************/
 
-INSERT INTO dbo.Tournament(
+INSERT INTO dbo.Tournaments(
 [Name],
 [Scheme],
 [Season],

@@ -2,8 +2,8 @@
 {
     using System;
     using System.Web.Mvc;
-    using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Users;
 
     /// <summary>
@@ -29,9 +29,6 @@
         {
             return View();
         }
-
-        //
-        // GET: /Users/Details/5
 
         public ActionResult Details(int id)
         {
@@ -78,16 +75,10 @@
             }
         }
 
-        //
-        // GET: /Users/Edit/5
-
         public ActionResult Edit(int id)
         {
             return View();
         }
-
-        //
-        // POST: /Users/Edit/5
 
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
@@ -104,16 +95,10 @@
             }
         }
 
-        //
-        // GET: /Users/Delete/5
-
         public ActionResult Delete(int id)
         {
             return View();
         }
-
-        //
-        // POST: /Users/Delete/5
 
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)

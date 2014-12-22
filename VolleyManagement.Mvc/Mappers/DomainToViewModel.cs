@@ -34,7 +34,7 @@
         /// <summary>
         /// Maps User.
         /// </summary>
-        /// <param name="userViewModel">User Domain model</param>
+        /// <param name="user">User Domain model</param>
         /// <returns>User view model</returns>
         public static UserViewModel Map(User user)
         {

@@ -24,7 +24,9 @@
                 Id = 1,
                 UserName = "testLogin",
                 Email = "test@gmail.com",
-                Password = "abc123"
+                Password = "abc123",
+                CellPhone = "+38-056-995-70-40",
+                FullName = "test full name"
             };
         }
 
@@ -35,7 +37,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithId(int id)
         {
-            this._user.Id = id;
+            _user.Id = id;
             return this;
         }
 
@@ -46,7 +48,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithUserName(string userName)
         {
-            this._user.UserName = userName;
+            _user.UserName = userName;
             return this;
         }
 
@@ -57,7 +59,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithFullName(string fullName)
         {
-            this._user.FullName = fullName;
+            _user.FullName = fullName;
             return this;
         }
 
@@ -68,7 +70,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithEmail(string email)
         {
-            this._user.Email = email;
+            _user.Email = email;
             return this;
         }
 
@@ -79,7 +81,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithPassword(string password)
         {
-            this._user.Password = password;
+            _user.Password = password;
             return this;
         }
 
@@ -90,7 +92,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithCellPhone(string cellPhone)
         {
-            this._user.CellPhone = cellPhone;
+            _user.CellPhone = cellPhone;
             return this;
         }
 
@@ -100,7 +102,7 @@
         /// <returns>Test user</returns>
         public User Build()
         {
-            return this._user;
+            return _user;
         }
     }
 }

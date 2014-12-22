@@ -50,5 +50,25 @@
             });
             return this;
         }
+
+        /// <summary>
+        /// Add user to collection.
+        /// </summary>
+        /// <param name="newUser">User to add.</param>
+        /// <returns>Builder object with collection of users.</returns>
+        public UserServiceTestFixture AddUser(User newUser)
+        {
+            _users.Add(newUser);
+            return this;
+        }
+
+        /// <summary>
+        /// Builds test data
+        /// </summary>
+        /// <returns>User collection</returns>
+        public IList<User> Build()
+        {
+            return _users;
+        }
     }
 }

@@ -50,5 +50,14 @@
             });
             return this;
         }
+
+        /// <summary>
+        /// Builds test data
+        /// </summary>
+        /// <returns>Users collection</returns>
+        public IList<User> Build()
+        {
+            return _users;
+        }
     }
 }

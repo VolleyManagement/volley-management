@@ -32,7 +32,7 @@
         /// <returns>All users</returns>
         public IQueryable<User> GetAll()
         {
-            throw new NotImplementedException();
+            return _userRepository.FindAll();
         }
 
         /// <summary>

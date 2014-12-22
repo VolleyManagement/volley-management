@@ -1,6 +1,9 @@
 ﻿namespace VolleyManagement.Domain.Users
 {
+    using System;
+    using System.Globalization;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using Tournaments;
 
     /// <summary>
@@ -9,15 +12,47 @@
     public static class UserValidation
     {
         /// <summary>
+        ///  Validity of value
+        /// </summary>
+        static bool invalid = false;
+
+        /// <summary>
         /// Validates email.
         /// </summary>
         /// <param name="email">Email for validation</param>
         /// <returns>Validity of email</returns>
         public static bool ValidateEmail(string email)
         {
-            return string.IsNullOrEmpty(email);
+            invalid = false;
+            if (string.IsNullOrEmpty(email))
+                return true;
+            email = System.Text.RegularExpressions.Regex.Replace(email, @"(@)(.+)$", DomainMapper);
+            if (invalid)
+                return true;
+            return !System.Text.RegularExpressions.Regex.IsMatch(email,
+                   @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
+                   @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$",
+                   RegexOptions.IgnoreCase);
         }
 
+        /// <summary>
+        ///  Translate Unicode characters that are outside the US-ASCII character range
+        /// </summary>
+        /// <param name="match">Represents the results from a single regular expression match</param>
+        private static string DomainMapper(Match match)
+        {
+            IdnMapping idn = new IdnMapping();
+            string domainName = match.Groups[2].Value;
+            try
+            {
+                domainName = idn.GetAscii(domainName);
+            }
+            catch (ArgumentException)
+            {
+                invalid = true;
+            }
+            return match.Groups[1].Value + domainName;
+        }
         /// <summary>
         /// Validates telephone.
         /// </summary>

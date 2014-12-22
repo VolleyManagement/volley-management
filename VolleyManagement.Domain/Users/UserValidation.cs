@@ -14,7 +14,7 @@
         /// <returns>Validity of email</returns>
         public static bool ValidateEmail(string email)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@
         /// <returns>Validity of Telephone</returns>
         public static bool ValidateCellPhone(string cellPhone)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@
         /// <returns>Validity of User nam</returns>
         public static bool ValidateUserName(string userName)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@
         /// <returns>Validity of Password</returns>
         public static bool ValidatePassword(string password)
         {
-            throw new NotImplementedException();
+            return false;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@
         /// <returns>Validity of Full name</returns>
         public static bool ValidateFullName(string fullName)
         {
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

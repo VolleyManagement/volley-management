@@ -49,7 +49,15 @@
         /// <returns>Collection of domain users.</returns>
         public IQueryable<Domain.User> FindAll()
         {
-            throw new NotImplementedException();
+            return _dalUsers.Select(u => new Domain.User 
+            { 
+                Id = u.Id,
+                FullName = u.FullName,
+                UserName = u.UserName,
+                Email = u.Email,
+                CellPhone = u.CellPhone,
+                Password = u.Password
+            });
         }
 
         /// <summary>

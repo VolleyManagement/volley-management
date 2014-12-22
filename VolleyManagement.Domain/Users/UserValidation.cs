@@ -12,47 +12,15 @@
     public static class UserValidation
     {
         /// <summary>
-        ///  Validity of value
-        /// </summary>
-        static bool invalid = false;
-
-        /// <summary>
         /// Validates email.
         /// </summary>
         /// <param name="email">Email for validation</param>
         /// <returns>Validity of email</returns>
         public static bool ValidateEmail(string email)
         {
-            invalid = false;
-            if (string.IsNullOrEmpty(email))
-                return true;
-            email = System.Text.RegularExpressions.Regex.Replace(email, @"(@)(.+)$", DomainMapper);
-            if (invalid)
-                return true;
-            return !System.Text.RegularExpressions.Regex.IsMatch(email,
-                   @"^(?("")(""[^""]+?""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
-                   @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9]{2,17}))$",
-                   RegexOptions.IgnoreCase);
+            return string.IsNullOrEmpty(email);
         }
 
-        /// <summary>
-        ///  Translate Unicode characters that are outside the US-ASCII character range
-        /// </summary>
-        /// <param name="match">Represents the results from a single regular expression match</param>
-        private static string DomainMapper(Match match)
-        {
-            IdnMapping idn = new IdnMapping();
-            string domainName = match.Groups[2].Value;
-            try
-            {
-                domainName = idn.GetAscii(domainName);
-            }
-            catch (ArgumentException)
-            {
-                invalid = true;
-            }
-            return match.Groups[1].Value + domainName;
-        }
         /// <summary>
         /// Validates telephone.
         /// </summary>
@@ -60,14 +28,7 @@
         /// <returns>Validity of Telephone</returns>
         public static bool ValidateCellPhone(string cellPhone)
         {
-            if (string.IsNullOrEmpty(cellPhone))
-            {
-                return false;
-            }
-
-            string template = @"^(\+)?[\- ]?[\d]{1,2}?[\- ]?(\(?\d{2,3}\)?)?[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}[\- ]?[\d]{1}$";
-            var helpExpression = new System.Text.RegularExpressions.Regex(template);
-            return !helpExpression.IsMatch(cellPhone);
+            return string.IsNullOrEmpty(cellPhone) || cellPhone.Length != Constants.TelephoneLength || !cellPhone.All(char.IsDigit);
         }
 
         /// <summary>

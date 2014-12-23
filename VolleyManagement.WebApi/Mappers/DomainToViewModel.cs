@@ -43,7 +43,8 @@
                 UserName = user.UserName,
                 FullName = user.FullName,
                 Email = user.Email,
-                CellPhone = user.CellPhone
+                CellPhone = user.CellPhone,
+                Password = string.Empty
             };
 
             return userViewModel;

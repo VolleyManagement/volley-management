@@ -111,6 +111,7 @@
     <Compile Include="Services\UserService\UserComparer.cs" />
     <Compile Include="Services\UserService\UserServiceTestFixture.cs" />
     <Compile Include="Services\UserService\UserServiceTests.cs" />
+    <Compile Include="TestExtensions.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
     <Compile Include="WebApi\Mappers\ViewModelToDomainTests.cs" />

@@ -67,7 +67,7 @@
 
             // Act
             var response = tournamentsController.Get(tournament.Id);
-            var result = AssertExtensions.GetModelFromResponse<TournamentViewModel>(response);
+            var result = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
 
             // Assert
             Assert.AreEqual(tournament.Id, result.Id);
@@ -156,7 +156,7 @@
 
             // Act
             var response = controller.Post(expected);
-            var actual = AssertExtensions.GetModelFromResponse<TournamentViewModel>(response);
+            var actual = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());

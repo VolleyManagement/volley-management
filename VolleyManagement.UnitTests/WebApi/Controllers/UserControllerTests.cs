@@ -66,7 +66,7 @@
 
             // Act
             var response = controller.Post(expected);
-            var actual = AssertExtensions.GetModelFromResponse<UserViewModel>(response);
+            var actual = TestExtensions.GetModelFromResponse<UserViewModel>(response);
 
             // Assert
             _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once());

@@ -15,14 +15,5 @@
     [ExcludeFromCodeCoverage]
     public class ViewModelToDomainTests
     {
-        /// <summary>
-        /// Test for Map() method.
-        /// The method should map tournament view model to domain model.
-        /// </summary>
-        [TestMethod]
-        public void Map_UserViewModelAsParam_MappedToDomainModel()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

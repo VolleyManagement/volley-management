@@ -60,5 +60,23 @@
                 return response;
             }
         }
+
+        /// <summary>
+        /// Gets specific user from UserService
+        /// </summary>
+        /// <param name="key">User id</param>
+        /// <returns>Response with specific user</returns>
+        public HttpResponseMessage Get([FromODataUri]int key)
+        {
+            try
+            {
+                var user = _userService.FindById(key);
+                return Request.CreateResponse(HttpStatusCode.OK, DomainToViewModel.Map(user));
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+        }
     }
 }

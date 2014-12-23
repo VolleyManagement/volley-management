@@ -49,8 +49,8 @@
         /// <returns>Collection of domain users.</returns>
         public IQueryable<Domain.User> FindAll()
         {
-            return _dalUsers.Select(u => new Domain.User 
-            { 
+            return _dalUsers.Select(u => new Domain.User
+            {
                 Id = u.Id,
                 FullName = u.FullName,
                 UserName = u.UserName,
@@ -67,7 +67,7 @@
         /// <returns>Collection of domain users.</returns>
         public IQueryable<Domain.User> FindWhere(System.Linq.Expressions.Expression<Func<Domain.User, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return FindAll().Where(predicate);
         }
 
         /// <summary>

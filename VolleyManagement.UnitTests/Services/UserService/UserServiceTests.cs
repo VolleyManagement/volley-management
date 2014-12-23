@@ -10,7 +10,7 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Users;
     using VolleyManagement.Services;
-  
+
     /// <summary>
     /// Tests for UserService class.
     /// </summary>

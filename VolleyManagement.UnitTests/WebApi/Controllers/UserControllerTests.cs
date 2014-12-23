@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTesus.WebApi.Controllers
+﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -25,7 +25,7 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
-    public class UserControllerTesus
+    public class UserControllerTests
     {
         /// <summary>
         /// Test Fixture

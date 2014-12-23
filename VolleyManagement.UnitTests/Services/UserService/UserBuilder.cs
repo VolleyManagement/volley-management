@@ -25,7 +25,7 @@
                 UserName = "testLogin",
                 Email = "test@gmail.com",
                 Password = "abc123",
-                CellPhone = "+38-056-995-70-40",
+                CellPhone = "0569957040",
                 FullName = "test full name"
             };
         }

@@ -25,7 +25,7 @@
         private string _fullName;
 
         /// <summary>
-        /// Telephone of user
+        /// Cell phone of user
         /// </summary>
         private string _cellPhone;
 
@@ -124,7 +124,8 @@
                     throw new ArgumentException(Resources.ValidationCellPhone);
                 }
 
-                _cellPhone = value;
+                _cellPhone = "(" + value.Substring(0, 3) + ") " + value.Substring(3, 3) + "-"
+                    + value.Substring(6, 2) + "-" + value.Substring(8, 2);
             }
         }
 

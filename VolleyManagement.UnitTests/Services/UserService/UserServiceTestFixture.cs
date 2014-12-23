@@ -24,8 +24,8 @@
             _users.Add(new User()
             {
                 Id = 1,
-                UserName = "testA",
-                FullName = "Test Name A",
+                UserName = "testLogin1",
+                FullName = "Test Name 1",
                 Email = "test1@gmail.com",
                 Password = "abc111",
                 CellPhone = "0500000001"
@@ -33,8 +33,8 @@
             _users.Add(new User()
             {
                 Id = 2,
-                UserName = "testB",
-                FullName = "Test Name B",
+                UserName = "testLogin2",
+                FullName = "Test Name 2",
                 Email = "test2@gmail.com",
                 Password = "abc222",
                 CellPhone = "0500000002"
@@ -42,8 +42,8 @@
             _users.Add(new User()
             {
                 Id = 3,
-                UserName = "testC",
-                FullName = "Test Name C",
+                UserName = "testLogin3",
+                FullName = "Test Name 3",
                 Email = "test3@gmail.com",
                 Password = "abc333",
                 CellPhone = "0500000003"
@@ -52,9 +52,20 @@
         }
 
         /// <summary>
+        /// Add user to collection.
+        /// </summary>
+        /// <param name="newUser">User to add.</param>
+        /// <returns>Builder object with collection of users.</returns>
+        public UserServiceTestFixture AddUser(User newUser)
+        {
+            _users.Add(newUser);
+            return this;
+        }
+
+        /// <summary>
         /// Builds test data
         /// </summary>
-        /// <returns>Users collection</returns>
+        /// <returns>User collection</returns>
         public IList<User> Build()
         {
             return _users;

@@ -71,7 +71,7 @@
                                             .ToList();
 
             // Act
-            var actual = GetModel<IEnumerable<Tournament>>(sut.Index());
+            var actual = TestExtensions.GetModel<IEnumerable<Tournament>>(sut.Index());
 
             // Assert
             CollectionAssert.AreEqual(expected, actual.ToList(), new TournamentComparer());
@@ -129,7 +129,7 @@
                 .Build();
 
             // Act
-            var actual = GetModel<Tournament>(controller.Details(searchId));
+            var actual = TestExtensions.GetModel<Tournament>(controller.Details(searchId));
 
             // Assert
             AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
@@ -162,7 +162,7 @@
                                         .Build();
 
             // Act
-            var actual = GetModel<Tournament>(controller.Delete(tournament.Id));
+            var actual = TestExtensions.GetModel<Tournament>(controller.Delete(tournament.Id));
 
             // Assert
             AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
@@ -216,7 +216,7 @@
             var expected = new TournamentViewModel();
 
             // Act
-            var actual = GetModel<TournamentViewModel>(controller.Create());
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create());
 
             // Assert
             AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -258,7 +258,7 @@
                 .Build();
 
             // Act
-            var actual = GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Never());
@@ -283,7 +283,7 @@
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
-            var actual = GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
 
             // Assert
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
@@ -340,7 +340,7 @@
                                         .Build();
 
             // Act
-            var actual = GetModel<TournamentViewModel>(controller.Edit(tournament.Id));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournament.Id));
 
             // Assert
             AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -402,7 +402,7 @@
                 .Build();
 
             // Act
-            var actual = GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
@@ -427,7 +427,7 @@
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
-            var actual = GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
 
             // Assert
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
@@ -474,17 +474,6 @@
         private void MockSingleTournament(Tournament testData)
         {
             _tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
-        }
-
-        /// <summary>
-        /// Get generic T model by ViewResult from action view
-        /// </summary>
-        /// <typeparam name="T">model type</typeparam>
-        /// <param name="result">object to convert and return</param>
-        /// <returns>T result by ViewResult from action view</returns>
-        private T GetModel<T>(object result) where T : class
-        {
-            return (T)(result as ViewResult).ViewData.Model;
         }
     }
 }

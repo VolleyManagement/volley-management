@@ -5,19 +5,14 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
-    using System.Web.Http.Hosting;
     using Contracts;
     using Domain.Users;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Dal.Contracts;
     using VolleyManagement.UnitTests.Services.UserService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
     using VolleyManagement.WebApi.Controllers;
-    using VolleyManagement.WebApi.Mappers;
     using VolleyManagement.WebApi.ViewModels.Users;
 
     /// <summary>
@@ -36,11 +31,6 @@
         /// User Service Mock
         /// </summary>
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
-
-        /// <summary>
-        /// User Repository Mock
-        /// </summary>
-        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
 
         /// <summary>
         /// IoC for tests
@@ -64,17 +54,32 @@
         public void Get_SpecificUserExist_UserReturned()
         {
             // Arrange
-            var user = new UserBuilder().WithId(5).Build();
+            var user = new UserBuilder()
+                            .WithId(2)
+                            .WithUserName("UserLogin")
+                            .WithFullName("Second User")
+                            .WithEmail("seconduser@gmail.com")
+                            .WithPassword("abc222")
+                            .WithCellPhone("0503222233")
+                            .Build();
+            var expected = new UserViewModelBuilder()
+                            .WithId(2)
+                            .WithUserName("UserLogin")
+                            .WithFullName("Second User")
+                            .WithEmail("seconduser@gmail.com")
+                            .WithPassword(string.Empty)
+                            .WithCellPhone("0503222233")
+                            .Build();
             MockSingleUser(user);
             var usersController = _kernel.Get<UsersController>();
-            SetControllerRequest(usersController);
+            TestExtensions.SetControllerRequest(usersController);
 
             // Act
             var response = usersController.Get(user.Id);
-            var result = GetModelFromResponse<UserViewModel>(response);
+            var actual = TestExtensions.GetModelFromResponse<UserViewModel>(response);
 
             // Assert
-            Assert.AreEqual(user.Id, result.Id);
+            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
         }
 
         /// <summary>
@@ -88,7 +93,7 @@
             _userServiceMock.Setup(us => us.FindById(userId))
                .Throws(new Exception());
             var usersController = _kernel.Get<UsersController>();
-            SetControllerRequest(usersController);
+            TestExtensions.SetControllerRequest(usersController);
             var expected = HttpStatusCode.NotFound;
 
             // Act
@@ -96,16 +101,6 @@
 
             // Assert
             Assert.AreEqual(expected, actual.StatusCode);
-        }
-
-        /// <summary>
-        /// Sets request message for controller
-        /// </summary>
-        /// <param name="controller">Current controller</param>
-        public void SetControllerRequest(UsersController controller)
-        {
-            controller.Request = new HttpRequestMessage();
-            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
         }
 
         /// <summary>
@@ -124,18 +119,6 @@
         private void MockSingleUser(User testData)
         {
             _userServiceMock.Setup(ur => ur.FindById(testData.Id)).Returns(testData);
-        }
-
-        /// <summary>
-        /// Gets generic T model from response content
-        /// </summary>
-        /// <typeparam name="T">Model type</typeparam>
-        /// <param name="response">Http response message</param>
-        /// <returns>T model</returns>
-        private T GetModelFromResponse<T>(HttpResponseMessage response) where T : class
-        {
-            ObjectContent content = response.Content as ObjectContent;
-            return (T)content.Value;
         }
     }
 }

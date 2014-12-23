@@ -38,11 +38,6 @@
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
 
         /// <summary>
-        /// User Repository Mock
-        /// </summary>
-        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
-
-        /// <summary>
         /// IoC for tests
         /// </summary>
         private IKernel _kernel;
@@ -59,24 +54,6 @@
         }
 
         /// <summary>
-        /// Test Post method
-        /// </summary>
-        [TestMethod]
-        public void Post_NewUser_CreateMethodInvoked()
-        {
-            // Arrange
-            _userServiceMock.Setup(us => us.Create(It.IsAny<User>())).Verifiable();
-            var user = new UserBuilder().WithId(1).Build();
-            var userService = _userServiceMock.Object;
-
-            // Act
-            userService.Create(user);
-
-            // Assert
-            _userServiceMock.Verify();
-        }
-
-        /// <summary>
         /// Test Post method. Basic story.
         /// </summary>
         [TestMethod]
@@ -89,7 +66,7 @@
 
             // Act
             var response = controller.Post(expected);
-            var actual = GetModelFromResponse<UserViewModel>(response);
+            var actual = AssertExtensions.GetModelFromResponse<UserViewModel>(response);
 
             // Assert
             _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once());
@@ -105,18 +82,6 @@
         {
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-        }
-
-        /// <summary>
-        /// Gets generic T model from response content
-        /// </summary>
-        /// <typeparam name="T">Model type</typeparam>
-        /// <param name="response">Http response message</param>
-        /// <returns>T model</returns>
-        private T GetModelFromResponse<T>(HttpResponseMessage response) where T : class
-        {
-            ObjectContent content = response.Content as ObjectContent;
-            return (T)content.Value;
         }
     }
 }

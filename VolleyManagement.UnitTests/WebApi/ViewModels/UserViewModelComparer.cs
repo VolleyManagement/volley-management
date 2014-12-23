@@ -7,7 +7,7 @@
     using VolleyManagement.WebApi.ViewModels.Users;
 
     /// <summary>
-    /// Comparer for tournament objects.
+    /// Comparer for user objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class UserViewModelComparer : IComparer<UserViewModel>, IComparer

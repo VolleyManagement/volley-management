@@ -32,7 +32,7 @@ CREATE TABLE dbo.Users(
     CONSTRAINT PK_Users_Id PRIMARY KEY CLUSTERED,
   UserName nvarchar(20) NOT NULL
     CONSTRAINT UN_Users_Login UNIQUE,
-  Password char(64) NOT NULL,
+  Password char(68) NOT NULL,
   FullName nvarchar(60) NULL,
   CellPhone nvarchar(20) NUll,
   Email nvarchar(80) NOT NULL

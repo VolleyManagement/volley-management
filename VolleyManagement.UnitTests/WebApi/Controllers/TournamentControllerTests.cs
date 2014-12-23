@@ -193,7 +193,7 @@
         /// Sets request message for controller
         /// </summary>
         /// <param name="controller">Current controller</param>
-        public void SetControllerRequest(TournamentsController controller)
+        private void SetControllerRequest(TournamentsController controller)
         {
             controller.Request = new HttpRequestMessage();
             controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());

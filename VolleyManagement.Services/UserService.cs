@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Web.Helpers;
     using VolleyManagement.Contracts;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Properties;
@@ -91,6 +92,7 @@
         public void Create(User userToCreate)
         {
             IsUserUnique(userToCreate);
+            userToCreate.Password = Crypto.HashPassword(userToCreate.Password);
             _userRepository.Add(userToCreate);
             _userRepository.UnitOfWork.Commit();
         }

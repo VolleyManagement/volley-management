@@ -67,7 +67,7 @@
         /// <returns>Collection of domain users.</returns>
         public IQueryable<Domain.User> FindWhere(System.Linq.Expressions.Expression<Func<Domain.User, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return FindAll().Where(predicate);
         }
 
         /// <summary>

@@ -57,5 +57,96 @@
             this._kernel.Bind<IUserService>()
                    .ToConstant(this._userServiceMock.Object);
         }
+
+        /// <summary>
+        /// Test Post method
+        /// </summary>
+        [TestMethod]
+        public void Post_NewUser_CreateMethodInvoked()
+        {
+            // Arrange
+            _userServiceMock.Setup(us => us.Create(It.IsAny<User>())).Verifiable();
+            var user = new UserBuilder().WithId(1).Build();
+            var userService = _userServiceMock.Object;
+
+            // Act
+            userService.Create(user);
+
+            // Assert
+            _userServiceMock.Verify();
+        }
+
+        /// <summary>
+        /// Test Post method. Basic story.
+        /// </summary>
+        [TestMethod]
+        public void Post_ValidViewModel_UserCreated()
+        {
+            // Arrange
+            var controller = _kernel.Get<UsersController>();
+            SetControllerRequest(controller);
+            var expected = new UserViewModelBuilder().Build();
+
+            // Act
+            var response = controller.Post(expected);
+            var actual = GetModelFromResponse<UserViewModel>(response);
+
+            // Assert
+            _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once());
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+        }
+
+        [TestMethod]
+        public void Get_UsersExist_UsersReturned()
+        { 
+            // Arrange
+            var testData = _testFixture.TestUsers().Build();
+            MockUsers(testData);
+            var sut = _kernel.Get<UsersController>();
+
+            var expected = new List<UserViewModel>();
+            foreach (var user in testData)
+            {
+                expected.Add(DomainToViewModel.Map(user));
+            }
+
+            // Act
+            var actual = sut.Get().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new UserViewModelComparer());
+        }
+
+        /// <summary>
+        /// Sets request message for controller
+        /// </summary>
+        /// <param name="controller">Current controller</param>
+        private void SetControllerRequest(UsersController controller)
+        {
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+        }
+
+        /// <summary>
+        /// Gets generic T model from response content
+        /// </summary>
+        /// <typeparam name="T">Model type</typeparam>
+        /// <param name="response">Http response message</param>
+        /// <returns>T model</returns>
+        private T GetModelFromResponse<T>(HttpResponseMessage response) where T : class
+        {
+            ObjectContent content = response.Content as ObjectContent;
+            return (T)content.Value;
+        }
+
+        /// <summary>
+        /// Mocks users test data.
+        /// </summary>
+        /// <param name="testData">Users to mock.</param>
+        private void MockUsers(IEnumerable<User> testData)
+        {
+            _userServiceMock.Setup(u => u.GetAll()).Returns(testData.AsQueryable());
+        }
     }
 }

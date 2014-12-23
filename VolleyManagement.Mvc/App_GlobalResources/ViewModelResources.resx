@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmUserPassword" xml:space="preserve">
+    <value>Подтверждение пароля</value>
+  </data>
   <data name="FieldRequired" xml:space="preserve">
     <value>Поле "{0}" является обязательным.</value>
+  </data>
+  <data name="PasswordDidNotMatch" xml:space="preserve">
+    <value>Пароли не совпадают</value>
   </data>
   <data name="TournamentDescription" xml:space="preserve">
     <value>Описание</value>

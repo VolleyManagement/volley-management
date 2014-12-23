@@ -61,11 +61,29 @@ namespace VolleyManagement.Mvc.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Подтверждение пароля.
+        /// </summary>
+        public static string ConfirmUserPassword {
+            get {
+                return ResourceManager.GetString("ConfirmUserPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Поле &quot;{0}&quot; является обязательным..
         /// </summary>
         public static string FieldRequired {
             get {
                 return ResourceManager.GetString("FieldRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Пароли не совпадают.
+        /// </summary>
+        public static string PasswordDidNotMatch {
+            get {
+                return ResourceManager.GetString("PasswordDidNotMatch", resourceCulture);
             }
         }
         

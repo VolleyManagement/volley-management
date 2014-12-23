@@ -14,8 +14,16 @@
     @Html.LabelFor(model => model.Password)
 </div>
 <div class="editor-field">
-    @Html.EditorFor(model => model.Password)
+    @Html.PasswordFor(model => model.Password)
     @Html.ValidationMessageFor(model => model.Password)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ConfirmPassword)
+</div>
+<div class="editor-field">
+    @Html.PasswordFor(model => model.ConfirmPassword)
+    @Html.ValidationMessageFor(model => model.ConfirmPassword)
 </div>
 
 <div class="editor-label">

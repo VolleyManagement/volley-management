@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web;
+    using System.Web.Mvc;
     using VolleyManagement.Mvc.App_GlobalResources;
 
     /// <summary>
@@ -37,6 +38,18 @@
             ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(68)]
         public string Password { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where ConfirmPassword.
+        /// </summary>
+        /// <value>ConfirmPassword of user.</value>
+        [Display(Name = "ConfirmUserPassword", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Compare("Password", ErrorMessageResourceName = "PasswordDidNotMatch",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(68)]
+        public string ConfirmPassword { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Full Name.

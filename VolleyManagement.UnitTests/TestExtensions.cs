@@ -2,6 +2,9 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Net.Http;
+    using System.Web.Http;
+    using System.Web.Http.Hosting;
+    using System.Web.Http.OData;
     using System.Web.Mvc;
 
     /// <summary>
@@ -31,6 +34,16 @@
         public static T GetModel<T>(object result) where T : class
         {
             return (T)(result as ViewResult).ViewData.Model;
+        }
+
+        /// <summary>
+        /// Sets http request for controller
+        /// </summary>
+        /// <param name="controller">controller to set request</param>
+        public static void SetControllerRequest(ODataController controller)
+        {
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
         }
     }
 }

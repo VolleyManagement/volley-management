@@ -61,7 +61,7 @@
         {
             // Arrange
             var controller = _kernel.Get<UsersController>();
-            SetControllerRequest(controller);
+            TestExtensions.SetControllerRequest(controller);
             var expected = new UserViewModelBuilder().Build();
 
             // Act
@@ -72,16 +72,6 @@
             _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once());
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
-        }
-
-        /// <summary>
-        /// Sets request message for controller
-        /// </summary>
-        /// <param name="controller">Current controller</param>
-        public void SetControllerRequest(UsersController controller)
-        {
-            controller.Request = new HttpRequestMessage();
-            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
         }
     }
 }

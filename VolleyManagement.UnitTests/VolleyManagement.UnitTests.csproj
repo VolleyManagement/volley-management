@@ -97,6 +97,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\UsersControllerTests.cs" />
     <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
     <Compile Include="Mvc\Mappers\ViewModelToDomainTests.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />

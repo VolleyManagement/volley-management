@@ -28,6 +28,10 @@
         /// <returns>Validity of Telephone</returns>
         public static bool ValidateCellPhone(string cellPhone)
         {
+            if (string.IsNullOrEmpty(cellPhone))
+            {
+                return false;
+            }
             return cellPhone.Length != Constants.TelephoneLength || !cellPhone.All(char.IsDigit);
         }
 

@@ -60,5 +60,27 @@
                 return response;
             }
         }
+
+        /// <summary>
+        /// Gets all users from UserService.
+        /// </summary>
+        /// <returns>All users.</returns>
+        public IQueryable<UserViewModel> Get()
+        {
+            try
+            {
+                var users = _userService.GetAll().ToList();
+                var userViewModels = new List<UserViewModel>();
+                foreach (var u in users)
+                {
+                    userViewModels.Add(DomainToViewModel.Map(u));
+                }
+                return userViewModels.AsQueryable();
+            }
+            catch (Exception)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound));
+            }
+        }
     }
 }

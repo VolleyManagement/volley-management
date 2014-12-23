@@ -97,9 +97,12 @@
             AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
         }
 
+        /// <summary>
+        /// Test for Get() method. Method should return existing users.
+        /// </summary>
         [TestMethod]
         public void Get_UsersExist_UsersReturned()
-        { 
+        {
             // Arrange
             var testData = _testFixture.TestUsers().Build();
             MockUsers(testData);

@@ -117,6 +117,7 @@
     <Compile Include="WebApi\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\UserViewModelBuilder.cs" />
+    <Compile Include="WebApi\ViewModels\UserViewModelComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">

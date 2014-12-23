@@ -38,11 +38,6 @@
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
 
         /// <summary>
-        /// Tournaments Repository Mock
-        /// </summary>
-        private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
-
-        /// <summary>
         /// IoC for tests
         /// </summary>
         private IKernel _kernel;
@@ -72,7 +67,7 @@
 
             // Act
             var response = tournamentsController.Get(tournament.Id);
-            var result = GetModelFromResponse<TournamentViewModel>(response);
+            var result = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
 
             // Assert
             Assert.AreEqual(tournament.Id, result.Id);
@@ -161,7 +156,7 @@
 
             // Act
             var response = controller.Post(expected);
-            var actual = GetModelFromResponse<TournamentViewModel>(response);
+            var actual = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
@@ -215,18 +210,6 @@
         private void MockSingleTournament(Tournament testData)
         {
             _tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
-        }
-
-        /// <summary>
-        /// Gets generic T model from response content
-        /// </summary>
-        /// <typeparam name="T">Model type</typeparam>
-        /// <param name="response">Http response message</param>
-        /// <returns>T model</returns>
-        private T GetModelFromResponse<T>(HttpResponseMessage response) where T : class
-        {
-            ObjectContent content = response.Content as ObjectContent;
-            return (T)content.Value;
         }
     }
 }

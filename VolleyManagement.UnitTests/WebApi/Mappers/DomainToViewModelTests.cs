@@ -38,7 +38,7 @@
                                         .WithFullName("Second User")
                                         .WithEmail("seconduser@gmail.com")
                                         .WithPassword(string.Empty)
-                                        .WithCellPhone("(050) 322-22-33")
+                                        .WithCellPhone("0503222233")
                                         .Build();
 
             // Act

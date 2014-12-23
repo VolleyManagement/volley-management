@@ -43,10 +43,10 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<IUserRepository>()
-                   .ToConstant(this._userRepositoryMock.Object);
-            this._userRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            _kernel = new StandardKernel();
+            _kernel.Bind<IUserRepository>()
+                   .ToConstant(_userRepositoryMock.Object);
+            _userRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
         /// <summary>
@@ -56,10 +56,10 @@
         public void GetAll_UsersExist_UsersReturned()
         {
             // Arrange
-            var testData = this._testFixture.TestUsers()
+            var testData = _testFixture.TestUsers()
                                        .Build();
             MockRepositoryFindAll(testData);
-            var sut = this._kernel.Get<UserService>();
+            var sut = _kernel.Get<UserService>();
             var expected = new UserServiceTestFixture()
                                             .TestUsers()
                                             .Build()
@@ -79,7 +79,7 @@
         public void FindById_ExistingUser_UserFound()
         {
             // Arrange
-            var userService = this._kernel.Get<UserService>();
+            var userService = _kernel.Get<UserService>();
             int id = 1;
             var user = new UserBuilder()
                 .Build();
@@ -100,7 +100,7 @@
         {
             // Arrange
             MockRepositoryFindWhere(new List<User>() { null });
-            var userService = this._kernel.Get<UserService>();
+            var userService = _kernel.Get<UserService>();
 
             // Act
             var tournament = userService.FindById(1);

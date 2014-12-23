@@ -28,7 +28,7 @@
         /// <returns>Validity of Telephone</returns>
         public static bool ValidateCellPhone(string cellPhone)
         {
-            return string.IsNullOrEmpty(cellPhone) || cellPhone.Length != Constants.TelephoneLength || !cellPhone.All(char.IsDigit);
+            return cellPhone.Length != Constants.TelephoneLength || !cellPhone.All(char.IsDigit);
         }
 
         /// <summary>

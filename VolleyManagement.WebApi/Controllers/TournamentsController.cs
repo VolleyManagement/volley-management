@@ -109,34 +109,26 @@
         /// <param name="viewModel">Tournament to update.</param>
         /// <returns>HttpResponse successful updated.</returns>
         [HttpPut]
-        public HttpResponseMessage Put(int key, TournamentViewModel viewModel)
+        public HttpResponseMessage Put([FromODataUri]int key, [FromBody]TournamentViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || viewModel.Id != key)
             {
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
 
-            var response = new HttpResponseMessage();
             try
             {
                 var tournamentToUpdate = ViewModelToDomain.Map(viewModel);
-
-                if (tournamentToUpdate.Id != key)
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotModified);
-                }
-                else
-                {
-                    tournamentToUpdate.Id = key;
-                    _tournamentService.Edit(tournamentToUpdate);
-                    response = Request.CreateResponse(HttpStatusCode.OK);
-                    return response;
-                }
+                _tournamentService.Edit(tournamentToUpdate);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (ArgumentException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception)
             {
-                response = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                return response;
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
 

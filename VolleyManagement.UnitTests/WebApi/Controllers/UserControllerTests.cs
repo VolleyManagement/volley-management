@@ -104,6 +104,85 @@
         }
 
         /// <summary>
+        /// Test Put method. Basic story.
+        /// </summary>
+        [TestMethod]
+        public void Put_ValidViewModel_UserUpdated()
+        {
+            // Arrange
+            var controller = _kernel.Get<UsersController>();
+            TestExtensions.SetControllerRequest(controller);
+            var expected = new UserViewModelBuilder().Build();
+
+            // Act
+            var actual = controller.Put(expected.Id, expected);
+
+            // Assert
+            _userServiceMock.Verify(us => us.Edit(It.IsAny<User>()), Times.Once());
+            Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode);
+        }
+
+        /// <summary>
+        /// Test Put method. Invalid data
+        /// </summary>
+        [TestMethod]
+        public void Put_InvalidData_BadRequestReturned()
+        {
+            // Arrange
+            var controller = _kernel.Get<UsersController>();
+            TestExtensions.SetControllerRequest(controller);
+            var expected = new UserViewModelBuilder().Build();
+            var invalidKey = expected.Id + 1;
+
+            // Act
+            var actual = controller.Put(invalidKey, expected);
+
+            // Assert
+            _userServiceMock.Verify(us => us.Edit(It.IsAny<User>()), Times.Never());
+            Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
+        }
+
+        /// <summary>
+        /// Test for Put method. The method should return "Bad request" status
+        /// </summary>
+        [TestMethod]
+        public void Put_ArgumentException_BadRequestReturned()
+        {
+            // Arrange
+            var expected = new UserViewModelBuilder().Build();
+            _userServiceMock.Setup(us => us.Edit(It.IsAny<User>()))
+               .Throws(new ArgumentException());
+            var controller = _kernel.Get<UsersController>();
+            TestExtensions.SetControllerRequest(controller);
+
+            // Act
+            var actual = controller.Put(expected.Id, expected);
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
+        }
+
+        /// <summary>
+        /// Test for Put method. The method should return "Internal server error" status
+        /// </summary>
+        [TestMethod]
+        public void Put_GeneralException_InternalServerErrorReturned()
+        {
+            // Arrange
+            var expected = new UserViewModelBuilder().Build();
+            _userServiceMock.Setup(us => us.Edit(It.IsAny<User>()))
+               .Throws(new Exception());
+            var controller = _kernel.Get<UsersController>();
+            TestExtensions.SetControllerRequest(controller);
+
+            // Act
+            var actual = controller.Put(expected.Id, expected);
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.InternalServerError, actual.StatusCode);
+        }
+
+        /// <summary>
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>

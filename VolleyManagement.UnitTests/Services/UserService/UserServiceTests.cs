@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,6 +16,7 @@
     /// Tests for UserService class.
     /// </summary>
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class UserServiceTests
     {
         /// <summary>

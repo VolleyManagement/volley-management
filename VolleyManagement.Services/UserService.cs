@@ -115,6 +115,7 @@
         public void Edit(User userToEdit)
         {
             IsUserNameUnique(userToEdit);
+            userToEdit.Password = Crypto.HashPassword(userToEdit.Password);
             _userRepository.Update(userToEdit);
             _userRepository.UnitOfWork.Commit();
         }

@@ -50,7 +50,7 @@
             this._kernel.Bind<IUserService>()
                    .ToConstant(this._userServiceMock.Object);
         }
-            		
+
         /// <summary>
         /// Test for Create user action (GET)
         /// </summary>
@@ -164,7 +164,65 @@
             // Assert
             Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
         }
-        
+
+        /// <summary>
+        /// Test for Details()
+        /// </summary>
+        [TestMethod]
+        public void Details_UserExists_UserIsReturned()
+        {
+            // Arrange
+            int searchId = 111;
+
+            _userServiceMock.Setup(tr => tr.FindById(It.IsAny<int>()))
+                .Returns(new UserBuilder()
+                .WithId(searchId)
+                .WithUserName("Kapitoshka")
+                .WithEmail("aaa@ukr.net")
+                .WithCellPhone("0931212123")
+                .WithFullName("Kapitoshkin Kapitoshka Kapitoshkovich")
+                .Build());
+
+            var controller = this._kernel.Get<UsersController>();
+
+            var expected = new UserBuilder()
+                .WithId(searchId)
+                .WithUserName("Kapitoshka")
+                .WithEmail("aaa@ukr.net")
+                .WithCellPhone("0931212123")
+                .WithFullName("Kapitoshkin Kapitoshka Kapitoshkovich")
+                .Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<User>(controller.Details(searchId));
+
+            // Assert
+            AssertExtensions.AreEqual<User>(expected, actual, new UserComparer());
+        }
+
+        /// <summary>
+        /// Test for Details()
+        /// </summary>
+        [TestMethod]
+        public void Details_UserDoesNotExist_HttpNotFoundIsReturned()
+        {
+            // Arrange
+            int searchId = 111;
+
+            _userServiceMock.Setup(tr => tr.FindById(It.IsAny<int>()))
+                .Throws(new ArgumentNullException());
+
+            var controller = this._kernel.Get<UsersController>();
+
+            var expected = (int)HttpStatusCode.NotFound;
+
+            // Act
+            var actual = (controller.Details(searchId) as HttpNotFoundResult).StatusCode;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
         /// <summary>
         /// Mocks test data
         /// </summary>

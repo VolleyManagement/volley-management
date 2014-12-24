@@ -28,7 +28,7 @@ namespace VolleyManagement.Dal.MsSql
         /// Gets or sets password of user
         /// </summary>
         [Required]
-        [StringLength(64)]
+        [StringLength(68)]
         public string Password { get; set; }
 
         /// <summary>

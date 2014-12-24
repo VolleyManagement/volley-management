@@ -51,10 +51,10 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<ITournamentRepository>()
-                   .ToConstant(this._tournamentRepositoryMock.Object);
-            this._tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            _kernel = new StandardKernel();
+            _kernel.Bind<ITournamentRepository>()
+                   .ToConstant(_tournamentRepositoryMock.Object);
+            _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@
         public void FindById_Existing_TournamentFound()
         {
             // Arrange
-            var tournamentService = this._kernel.Get<TournamentService>();
+            var tournamentService = _kernel.Get<TournamentService>();
             int id = 1;
             var tournament = new TournamentBuilder()
                 .WithId(1)
@@ -91,7 +91,7 @@
         {
             // Arrange
             MockRepositoryFindWhere(new List<Tournament>() { null });
-            var tournamentService = this._kernel.Get<TournamentService>();
+            var tournamentService = _kernel.Get<TournamentService>();
 
             // Act
             var tournament = tournamentService.FindById(1);
@@ -108,10 +108,10 @@
         public void GetAll_TournamentsExist_TournamentsReturned()
         {
             // Arrange
-            var testData = this._testFixture.TestTournaments()
+            var testData = _testFixture.TestTournaments()
                                        .Build();
             MockRepositoryFindAll(testData);
-            var sut = this._kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
                                             .Build()
@@ -138,14 +138,14 @@
                                         .Build();
 
             // Act
-            var sut = this._kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
             sut.Edit(testTournament);
 
             // Assert
-            this._tournamentRepositoryMock.Verify(
+            _tournamentRepositoryMock.Verify(
                 tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, testTournament))),
                 Times.Once());
-            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
 
         /// <summary>
@@ -161,11 +161,11 @@
             _tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<InvalidOperationException>();
 
             // Act
-            var sut = this._kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
             sut.Edit(testTournament);
 
             // Assert
-            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 
         /// <summary>
@@ -191,11 +191,11 @@
                                                         .Build();
 
             // Act
-            var sut = this._kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
             sut.Edit(nonUniqueNameTournament);
 
             // Assert
-            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 
         /// <summary>
@@ -211,13 +211,13 @@
                                         .Build();
 
             // Act
-            var sut = this._kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
             sut.Create(newTournament);
 
             // Assert
-            this._tournamentRepositoryMock.Verify(
+            _tournamentRepositoryMock.Verify(
                 tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, newTournament))));
-            this._unitOfWorkMock.Verify(u => u.Commit());
+            _unitOfWorkMock.Verify(u => u.Commit());
         }
 
         /// <summary>
@@ -233,11 +233,11 @@
             _tournamentRepositoryMock.Setup(tr => tr.Add(null)).Throws<InvalidOperationException>();
 
             // Act
-            var sut = this._kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
             sut.Create(testTournament);
 
             // Assert
-            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 
         /// <summary>
@@ -263,11 +263,11 @@
                                                         .Build();
 
             // Act
-            var sut = this._kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
             sut.Create(nonUniqueNameTournament);
 
             // Assert
-            this._unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 
         /// <summary>

@@ -73,7 +73,7 @@
                                         .WithFullName("Test Name")
                                         .WithEmail("test2@gmail.com")
                                         .WithPassword("abc222")
-                                        .WithCellPhone("(050) 000-00-02")
+                                        .WithCellPhone("0500000002")
                                         .Build();
 
             // Act

@@ -1,0 +1,51 @@
+﻿@model VolleyManagement.Mvc.ViewModels.Users.UserViewModel
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.UserName)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.UserName)
+    @Html.ValidationMessageFor(model => model.UserName)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Password)
+</div>
+<div class="editor-field">
+    @Html.PasswordFor(model => model.Password)
+    @Html.ValidationMessageFor(model => model.Password)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ConfirmPassword)
+</div>
+<div class="editor-field">
+    @Html.PasswordFor(model => model.ConfirmPassword)
+    @Html.ValidationMessageFor(model => model.ConfirmPassword)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.FullName)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.FullName)
+    @Html.ValidationMessageFor(model => model.FullName)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.CellPhone)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.CellPhone)
+    @Html.ValidationMessageFor(model => model.CellPhone)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Email)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Email)
+    @Html.ValidationMessageFor(model => model.Email)
+</div>

@@ -3,10 +3,14 @@
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain.Users;
     using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.Mvc.ViewModels.Users;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
+    using VolleyManagement.UnitTests.Services.UserService;
+
 
     /// <summary>
     /// Tests for DomainToViewModel class.
@@ -45,6 +49,38 @@
 
             // Assert
             AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Map() method.
+        /// The method should map user domain model to view model.
+        /// </summary>
+        [TestMethod]
+        public void Map_UserAsParam_MappedToViewModel()
+        {
+            // Arrange
+            var user = new UserBuilder()
+                                        .WithId(2)
+                                        .WithUserName("testLogin")
+                                        .WithFullName("Test Name")
+                                        .WithEmail("test2@gmail.com")
+                                        .WithPassword("abc222")
+                                        .WithCellPhone("0500000002")
+                                        .Build();
+            var expected = new UserMvcViewModelBuilder()
+                                        .WithId(2)
+                                        .WithUserName("testLogin")
+                                        .WithFullName("Test Name")
+                                        .WithEmail("test2@gmail.com")
+                                        .WithPassword("abc222")
+                                        .WithCellPhone("0500000002")
+                                        .Build();
+
+            // Act
+            var actual = DomainToViewModel.Map(user);
+
+            // Assert
+            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
         }
     }
 }

@@ -38,11 +38,6 @@
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
 
         /// <summary>
-        /// User Repository Mock
-        /// </summary>
-        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
-
-        /// <summary>
         /// IoC for tests
         /// </summary>
         private IKernel _kernel;
@@ -56,6 +51,27 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<IUserService>()
                    .ToConstant(this._userServiceMock.Object);
+        }
+
+        /// <summary>
+        /// Test Post method. Basic story.
+        /// </summary>
+        [TestMethod]
+        public void Post_ValidViewModel_UserCreated()
+        {
+            // Arrange
+            var controller = _kernel.Get<UsersController>();
+            TestExtensions.SetControllerRequest(controller);
+            var expected = new UserViewModelBuilder().Build();
+
+            // Act
+            var response = controller.Post(expected);
+            var actual = TestExtensions.GetModelFromResponse<UserViewModel>(response);
+
+            // Assert
+            _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once());
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
         }
     }
 }

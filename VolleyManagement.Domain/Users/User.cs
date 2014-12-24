@@ -124,8 +124,7 @@
                     throw new ArgumentException(Resources.ValidationCellPhone);
                 }
 
-                _cellPhone = "(" + value.Substring(0, 3) + ") " + value.Substring(3, 3) + "-"
-                    + value.Substring(6, 2) + "-" + value.Substring(8, 2);
+                _cellPhone = value;
             }
         }
 

@@ -9,7 +9,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using Contracts;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Domain.Users;
     using VolleyManagement.Mvc.Controllers;
     using VolleyManagement.Mvc.ViewModels.Users;
@@ -50,7 +50,54 @@
             this._kernel.Bind<IUserService>()
                    .ToConstant(this._userServiceMock.Object);
         }
-                
+            
+		/// <summary>
+        /// Test to Index action. The action should return not empty users list
+        /// </summary>
+        [TestMethod]
+        public void Index_UsersExist_UsersReturned()
+        {
+            // Arrange
+            var testData = this._testFixture.TestUsers()
+                                       .Build();
+            this.MockUsers(testData);
+
+            var usersController = this._kernel.Get<UsersController>();
+
+            var expected = new UserServiceTestFixture()
+                                            .TestUsers()
+                                            .Build()
+                                            .ToList();
+
+            // Act
+            var viewResult = usersController.Index() as ViewResult;
+            var actual = (IEnumerable<User>)viewResult.ViewData.Model;
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual.ToList(), new UserComparer());
+        }
+
+        /// <summary>
+        /// Test with negative scenario for Index action.
+        /// The action should thrown Argument null exception
+        /// </summary>
+        [TestMethod]
+        public void Index_UsersDoNotExist_ExceptionThrown()
+        {
+            // Arrange
+            this._userServiceMock.Setup(ur => ur.GetAll())
+                .Throws(new ArgumentNullException());
+
+            var sut = this._kernel.Get<UsersController>();
+            var expected = (int)HttpStatusCode.NotFound;
+
+            // Act
+            var actual = (sut.Index() as HttpNotFoundResult).StatusCode;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+    
         /// <summary>
         /// Test for Create user action (GET)
         /// </summary>

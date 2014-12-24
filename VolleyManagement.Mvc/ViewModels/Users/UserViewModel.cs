@@ -36,7 +36,7 @@
         [Display(Name = "UserPassword", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(68)]
+        [StringLength(20, MinimumLength = 6)]
         public string Password { get; set; }
 
         /// <summary>
@@ -48,7 +48,7 @@
             ErrorMessageResourceType = typeof(ViewModelResources))]
         [Compare("Password", ErrorMessageResourceName = "PasswordDidNotMatch",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(68)]
+        [StringLength(20, MinimumLength = 6)]
         public string ConfirmPassword { get; set; }
 
         /// <summary>

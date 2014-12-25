@@ -103,6 +103,8 @@
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="AssertExtensions.cs" />
+    <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\UserViewModelComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Services\UserService\UserServiceTests.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
+    <Compile Include="WebApi\Mappers\DomainToViewModelTests.cs" />
     <Compile Include="WebApi\Mappers\ViewModelToDomainTests.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs" />

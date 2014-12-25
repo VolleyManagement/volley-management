@@ -104,7 +104,8 @@
         /// <returns>A found User</returns>
         public User FindById(int id)
         {
-            throw new NotImplementedException();
+            var user = _userRepository.FindWhere(t => t.Id == id).Single();
+            return user;
         }
 
         /// <summary>

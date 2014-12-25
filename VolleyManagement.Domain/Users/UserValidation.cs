@@ -32,6 +32,7 @@
             {
                 return false;
             }
+
             return cellPhone.Length != Constants.TelephoneLength || !cellPhone.All(char.IsDigit);
         }
 

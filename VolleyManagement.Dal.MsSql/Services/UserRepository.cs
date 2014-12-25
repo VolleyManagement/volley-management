@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     using System.Text;
@@ -88,7 +89,13 @@
         /// <param name="oldEntity">The user to update.</param>
         public void Update(Domain.User oldEntity)
         {
-            throw new NotImplementedException();
+            var userToUpdate = _dalUsers.Where(t => t.Id == oldEntity.Id).Single();
+            userToUpdate.UserName = oldEntity.UserName;
+            userToUpdate.Password = oldEntity.Password;
+            userToUpdate.FullName = oldEntity.FullName;
+            userToUpdate.Email = oldEntity.Email;
+            userToUpdate.CellPhone = oldEntity.CellPhone;
+            _dalUsers.Context.ObjectStateManager.ChangeObjectState(userToUpdate, EntityState.Modified);
         }
 
         /// <summary>

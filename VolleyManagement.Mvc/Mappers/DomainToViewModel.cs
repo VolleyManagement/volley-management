@@ -21,31 +21,33 @@
         /// <returns>Tournament view model</returns>
         public static TournamentViewModel Map(Tournament tournament)
         {
-            TournamentViewModel tournamentViewModel = new TournamentViewModel();
-            tournamentViewModel.Id = tournament.Id;
-            tournamentViewModel.Name = tournament.Name;
-            tournamentViewModel.Description = tournament.Description;
-            tournamentViewModel.Season = tournament.Season;
-            tournamentViewModel.Scheme = tournament.Scheme;
-            tournamentViewModel.RegulationsLink = tournament.RegulationsLink;
-            return tournamentViewModel;
+            return new TournamentViewModel
+            {
+                Id = tournament.Id,
+                Name = tournament.Name,
+                Description = tournament.Description,
+                Season = tournament.Season,
+                Scheme = tournament.Scheme,
+                RegulationsLink = tournament.RegulationsLink
+            };
         }
 
         /// <summary>
-        /// Maps User.
+        /// Maps User. Password is set to empty string to avoid exposing it out of server.
         /// </summary>
         /// <param name="user">User Domain model</param>
         /// <returns>User view model</returns>
         public static UserViewModel Map(User user)
         {
-            UserViewModel userViewModel = new UserViewModel();
-            userViewModel.Id = user.Id;
-            userViewModel.UserName = user.UserName;
-            userViewModel.Password = user.Password;
-            userViewModel.FullName = user.FullName;
-            userViewModel.CellPhone = user.CellPhone;
-            userViewModel.Email = user.Email;
-            return userViewModel;
+            return new UserViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Password = string.Empty,
+                FullName = user.FullName,
+                CellPhone = user.CellPhone,
+                Email = user.Email
+            };
         }
     }
 }

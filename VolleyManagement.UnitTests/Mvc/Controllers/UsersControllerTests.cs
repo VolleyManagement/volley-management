@@ -12,6 +12,9 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.Users;
     using VolleyManagement.Mvc.Controllers;
+    using VolleyManagement.Mvc.Mappers;
+    using VolleyManagement.Mvc.ViewModels.Users;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.UserService;
 
     /// <summary>
@@ -62,16 +65,22 @@
 
             var usersController = this._kernel.Get<UsersController>();
 
-            var expected = new UserServiceTestFixture()
+            var domainUsers = new UserServiceTestFixture()
                                             .TestUsers()
                                             .Build()
                                             .ToList();
 
+            var expected = new List<UserViewModel>();
+            foreach (var item in domainUsers)
+            {
+                expected.Add(DomainToViewModel.Map(item));
+            }
+
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<User>>(usersController.Index());
+            var actual = TestExtensions.GetModel<IEnumerable<UserViewModel>>(usersController.Index());
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual.ToList(), new UserComparer());
+            CollectionAssert.AreEqual(expected, actual.ToList(), new UserViewModelComparer());
         }
 
         /// <summary>

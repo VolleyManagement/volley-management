@@ -161,6 +161,7 @@
       <DependentUpon>TournamentViews.resx</DependentUpon>
     </Compile>
     <Compile Include="Mappers\ViewModelToDomain.cs" />
+    <Compile Include="ViewModels\Users\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -222,6 +223,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TournamentViews.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

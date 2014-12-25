@@ -21,14 +21,15 @@
         /// <returns>Tournament Domain model</returns>
         public static Tournament Map(TournamentViewModel tournamentViewModel)
         {
-            Tournament tournament = new Tournament();
-            tournament.Id = tournamentViewModel.Id;
-            tournament.Name = tournamentViewModel.Name;
-            tournament.Description = tournamentViewModel.Description;
-            tournament.Season = tournamentViewModel.Season;
-            tournament.Scheme = tournamentViewModel.Scheme;
-            tournament.RegulationsLink = tournamentViewModel.RegulationsLink;
-            return tournament;
+            return new Tournament
+            {
+                Id = tournamentViewModel.Id,
+                Name = tournamentViewModel.Name,
+                Description = tournamentViewModel.Description,
+                Season = tournamentViewModel.Season,
+                Scheme = tournamentViewModel.Scheme,
+                RegulationsLink = tournamentViewModel.RegulationsLink
+            };
         }
 
         /// <summary>
@@ -38,14 +39,15 @@
         /// <returns>User Domain model</returns>
         public static User Map(UserViewModel userViewModel)
         {
-            User user = new User();
-            user.Id = userViewModel.Id;
-            user.UserName = userViewModel.UserName;
-            user.Password = userViewModel.Password;
-            user.FullName = userViewModel.FullName;
-            user.CellPhone = userViewModel.CellPhone;
-            user.Email = userViewModel.Email;
-            return user;
+            return new User
+            {
+                Id = userViewModel.Id,
+                UserName = userViewModel.UserName,
+                Password = userViewModel.Password,
+                FullName = userViewModel.FullName,
+                CellPhone = userViewModel.CellPhone,
+                Email = userViewModel.Email
+            };
         }
     }
 }

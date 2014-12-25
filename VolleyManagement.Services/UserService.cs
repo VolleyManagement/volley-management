@@ -19,6 +19,16 @@
         private readonly IUserRepository _userRepository;
 
         /// <summary>
+        /// True if user name is unique
+        /// </summary>
+        private bool _isUserNameUnique;
+
+        /// <summary>
+        /// True if user email is unique
+        /// </summary>
+        private bool _isUserEmailUnique;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class
         /// </summary>
         /// <param name="userRepository">The user repository</param>
@@ -37,52 +47,15 @@
         }
 
         /// <summary>
-        /// Checks whether user name is unique or not.
-        /// </summary>
-        /// <param name="newUser">user to edit or create</param>
-        /// <returns>true, if name is unique</returns>
-        public bool IsUserNameUnique(User newUser)
-        {
-            var userName = _userRepository.FindWhere(t => t.UserName == newUser.UserName
-                && t.Id != newUser.Id).FirstOrDefault();
-
-            return userName == null;
-        }
-
-        /// <summary>
-        /// Checks whether user email is unique or not.
-        /// </summary>
-        /// <param name="newUser">user to edit or create</param>
-        /// <returns>true, if email is unique</returns>
-        public bool IsUserEmailUnique(User newUser)
-        {
-            var userEmail = _userRepository.FindWhere(t => t.Email == newUser.Email
-                && t.Id != newUser.Id).FirstOrDefault();
-
-            return userEmail == null;
-        }
-
-        /// <summary>
         /// Checks whether user data is unique or not.
         /// </summary>
         /// <param name="newUser">user to validate</param>
         public void IsUserUnique(User newUser)
         {
-            bool isNameUnique = IsUserNameUnique(newUser);
-            bool isEmailUnique = IsUserEmailUnique(newUser);
-
-            if (!isNameUnique && !isEmailUnique)
-            {
-                throw new ArgumentException(Resources.UserNameAndEmailMustBeUnique);
-            }
-            else if (!isNameUnique)
-            {
-                throw new ArgumentException(Resources.UserNameMustBeUnique);
-            }
-            else if (!isEmailUnique)
-            {
-                throw new ArgumentException(Resources.UserEmailMustBeUnique);
-            }
+            _isUserNameUnique = true;
+            _isUserEmailUnique = true;
+            CheckUserDataUniqueness(newUser);
+            ThrowExceptionForUserData();
         }
 
         /// <summary>
@@ -124,6 +97,60 @@
         public void Delete(int id)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Checks whether user data is unique or not
+        /// </summary>
+        /// <param name="newUser">New user</param>
+        private void CheckUserDataUniqueness(User newUser)
+        {
+            var userDuplicatesList = _userRepository.FindWhere(u => u.Id != newUser.Id &&
+                (u.Email == newUser.Email || u.UserName == newUser.UserName)).ToList();
+
+            if (userDuplicatesList != null)
+            {
+                foreach (var userDuplicate in userDuplicatesList)
+                {
+                    if (userDuplicate.UserName.Equals(newUser.UserName))
+                    {
+                        _isUserNameUnique = false;
+                    }
+
+                    if (userDuplicate.Email.Equals(newUser.Email))
+                    {
+                        _isUserEmailUnique = false;
+                    }
+
+                    if (!_isUserNameUnique && !_isUserEmailUnique)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Method throws specific exception for invalid user data
+        /// </summary>
+        private void ThrowExceptionForUserData()
+        {
+            if (_isUserNameUnique && _isUserEmailUnique)
+            {
+                return;
+            }
+            else if (!_isUserNameUnique && !_isUserEmailUnique)
+            {
+                throw new ArgumentException(Resources.UserNameAndEmailMustBeUnique);
+            }
+            else if (!_isUserNameUnique)
+            {
+                throw new ArgumentException(Resources.UserNameMustBeUnique);
+            }
+            else if (!_isUserEmailUnique)
+            {
+                throw new ArgumentException(Resources.UserEmailMustBeUnique);
+            }
         }
     }
 }

@@ -114,7 +114,10 @@
         /// <param name="userToEdit">User to edit</param>
         public void Edit(User userToEdit)
         {
-            throw new NotImplementedException();
+            IsUserNameUnique(userToEdit);
+            userToEdit.Password = Crypto.HashPassword(userToEdit.Password);
+            _userRepository.Update(userToEdit);
+            _userRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

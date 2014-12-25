@@ -19,6 +19,16 @@
         private readonly IUserRepository _userRepository;
 
         /// <summary>
+        /// True if user name is unique
+        /// </summary>
+        private bool _isUserNameUnique;
+
+        /// <summary>
+        /// True if user email is unique
+        /// </summary>
+        private bool _isUserEmailUnique;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class
         /// </summary>
         /// <param name="userRepository">The user repository</param>
@@ -42,30 +52,10 @@
         /// <param name="newUser">user to validate</param>
         public void IsUserUnique(User newUser)
         {
-            bool isNameUnique = true;
-            bool isEmailUnique = true;
-            var userDuplicatesList = _userRepository.FindWhere(u => u.Id != newUser.Id &&
-                (u.Email == newUser.Email || u.UserName == newUser.UserName)).ToList();
-
-            foreach (var userDuplicate in userDuplicatesList)
-            {
-                if (userDuplicate.UserName.Equals(newUser.UserName))
-                {
-                    isNameUnique = false;
-                }
-
-                if (userDuplicate.Email.Equals(newUser.Email))
-                {
-                    isEmailUnique = false;
-                }
-
-                if (!isNameUnique && !isEmailUnique)
-                {
-                    break;
-                }
-            }
-
-            ThrowExceptionForUserData(isNameUnique, isEmailUnique);
+            _isUserNameUnique = true;
+            _isUserEmailUnique = true;
+            CheckUserDataUniqueness(newUser);
+            ThrowExceptionForUserData();
         }
 
         /// <summary>
@@ -109,25 +99,54 @@
         }
 
         /// <summary>
+        /// Checks whether user data is unique or not
+        /// </summary>
+        /// <param name="newUser">New user</param>
+        private void CheckUserDataUniqueness(User newUser)
+        {
+            var userDuplicatesList = _userRepository.FindWhere(u => u.Id != newUser.Id &&
+                (u.Email == newUser.Email || u.UserName == newUser.UserName)).ToList();
+
+            if (userDuplicatesList != null)
+            {
+                foreach (var userDuplicate in userDuplicatesList)
+                {
+                    if (userDuplicate.UserName.Equals(newUser.UserName))
+                    {
+                        _isUserNameUnique = false;
+                    }
+
+                    if (userDuplicate.Email.Equals(newUser.Email))
+                    {
+                        _isUserEmailUnique = false;
+                    }
+
+                    if (!_isUserNameUnique && !_isUserEmailUnique)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Method throws specific exception for invalid user data
         /// </summary>
-        /// <param name="isNameUnique">true if user name unique</param>
-        /// <param name="isEmailUnique">true if user email unique</param>
-        private void ThrowExceptionForUserData(bool isNameUnique, bool isEmailUnique)
+        private void ThrowExceptionForUserData()
         {
-            if (isNameUnique && isEmailUnique)
+            if (_isUserNameUnique && _isUserEmailUnique)
             {
                 return;
             }
-            else if (!isNameUnique && !isEmailUnique)
+            else if (!_isUserNameUnique && !_isUserEmailUnique)
             {
                 throw new ArgumentException(Resources.UserNameAndEmailMustBeUnique);
             }
-            else if (!isNameUnique)
+            else if (!_isUserNameUnique)
             {
                 throw new ArgumentException(Resources.UserNameMustBeUnique);
             }
-            else if (!isEmailUnique)
+            else if (!_isUserEmailUnique)
             {
                 throw new ArgumentException(Resources.UserEmailMustBeUnique);
             }

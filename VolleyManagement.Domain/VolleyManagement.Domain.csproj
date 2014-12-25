@@ -54,7 +54,6 @@
     <Compile Include="Tournaments\EnumExtensions.cs" />
     <Compile Include="Tournaments\TournamentSchemeEnum.cs" />
     <Compile Include="Tournaments\Tournament.cs" />
-    <Compile Include="Users\Constants.cs" />
     <Compile Include="Users\User.cs" />
     <Compile Include="Users\UserValidation.cs" />
   </ItemGroup>

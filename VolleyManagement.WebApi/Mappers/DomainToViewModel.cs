@@ -31,7 +31,7 @@
         }
 
         /// <summary>
-        /// Maps User.
+        /// Maps User. Password is set to empty string to avoid exposing it out of server.
         /// </summary>
         /// <param name="user">User Domain model</param>
         /// <returns>User ViewModel</returns>

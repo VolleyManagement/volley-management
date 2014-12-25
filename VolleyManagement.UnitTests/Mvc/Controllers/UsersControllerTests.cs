@@ -68,8 +68,7 @@
                                             .ToList();
 
             // Act
-            var viewResult = usersController.Index() as ViewResult;
-            var actual = (IEnumerable<User>)viewResult.ViewData.Model;
+            var actual = TestExtensions.GetModel<IEnumerable<User>>(usersController.Index());
 
             // Assert
             CollectionAssert.AreEqual(expected, actual.ToList(), new UserComparer());

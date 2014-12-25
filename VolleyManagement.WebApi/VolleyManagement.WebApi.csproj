@@ -231,7 +231,6 @@
     <Content Include="Scripts\js\lib\mediator.js" />
     <Content Include="Scripts\js\lib\underscore.js" />
     <Content Include="Scripts\js\main.js" />
-    <Content Include="Scripts\SampleScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -244,6 +243,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,6 +16,7 @@
     /// Tests for UserService class.
     /// </summary>
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class UserServiceTests
     {
         /// <summary>
@@ -134,17 +136,6 @@
         }
 
         /// <summary>
-        /// Find out whether two users objects have the same property values.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if the users have the same property values.</returns>
-        private bool UsersAreEqual(User x, User y)
-        {
-            return new UserComparer().Compare(x, y) == 0;
-        }
-
-        /// <summary>
         /// Test for Create() method. The method should create a new user.
         /// </summary>
         [TestMethod]
@@ -228,15 +219,14 @@
         }
 
         /// <summary>
-        /// Find out whether two user objects have the same properties.
+        /// Find out whether two users objects have the same property values.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given users have the same properties.</returns>
+        /// <returns>True if the users have the same property values.</returns>
         private bool UsersAreEqual(User x, User y)
         {
-            UserComparer comparer = new UserComparer();
-            return comparer.Compare(x, y) == 0;
+            return new UserComparer().Compare(x, y) == 0;
         }
 
         /// <summary>

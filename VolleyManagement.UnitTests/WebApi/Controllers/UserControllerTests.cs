@@ -73,5 +73,38 @@
             Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
             AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
         }
+
+        /// <summary>
+        /// Test for Get() method. Method should return existing users.
+        /// </summary>
+        [TestMethod]
+        public void Get_UsersExist_UsersReturned()
+        {
+            // Arrange
+            var testData = _testFixture.TestUsers().Build();
+            MockUsers(testData);
+            var sut = _kernel.Get<UsersController>();
+
+            var expected = new List<UserViewModel>();
+            foreach (var user in testData)
+            {
+                expected.Add(DomainToViewModel.Map(user));
+            }
+
+            // Act
+            var actual = sut.Get().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new UserViewModelComparer());
+        }
+
+        /// <summary>
+        /// Mocks users test data.
+        /// </summary>
+        /// <param name="testData">Users to mock.</param>
+        private void MockUsers(IEnumerable<User> testData)
+        {
+            _userServiceMock.Setup(u => u.GetAll()).Returns(testData.AsQueryable());
+        }
     }
 }

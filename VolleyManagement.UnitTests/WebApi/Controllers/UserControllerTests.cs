@@ -185,24 +185,6 @@
         }
 
         /// <summary>
-        /// Test Post method
-        /// </summary>
-        [TestMethod]
-        public void Post_NewUser_CreateMethodInvoked()
-        {
-            // Arrange
-            _userServiceMock.Setup(us => us.Create(It.IsAny<User>())).Verifiable();
-            var user = new UserBuilder().WithId(1).Build();
-            var userService = _userServiceMock.Object;
-
-            // Act/// Test Post method
-            userService.Create(user);
-
-            // Assert
-            _userServiceMock.Verify();
-        }
-
-        /// <summary>
         /// Test Post method. Basic story.
         /// </summary>
         [TestMethod]

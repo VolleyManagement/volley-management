@@ -1,0 +1,11 @@
+.modal {
+    display: block;
+}
+.modal-backdrop {
+    height: 100%;
+    min-height: 100%;
+}
+
+.modal-md {
+    width: 450px;
+}

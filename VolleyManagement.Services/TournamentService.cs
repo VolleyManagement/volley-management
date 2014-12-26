@@ -35,33 +35,14 @@
         }
 
         /// <summary>
-        /// Checks whether tournament name is unique or not.
-        /// </summary>
-        /// <param name="newTournament">tournament to edit or create</param>
-        /// <returns>true, if name is unique</returns>
-        public bool IsTournamentNameUnique(Tournament newTournament)
-        {
-            var tournament = _tournamentRepository.FindWhere(t => t.Name == newTournament.Name
-                && t.Id != newTournament.Id).FirstOrDefault();
-
-            return tournament == null;
-        }
-
-        /// <summary>
         /// Create a new tournament
         /// </summary>
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
-            if (IsTournamentNameUnique(tournamentToCreate))
-            {
-                _tournamentRepository.Add(tournamentToCreate);
-                _tournamentRepository.UnitOfWork.Commit();
-            }
-            else
-            {
-                throw new ArgumentException(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique);
-            }
+            IsTournamentNameUnique(tournamentToCreate);
+            _tournamentRepository.Add(tournamentToCreate);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -81,15 +62,9 @@
         /// <param name="tournamentToEdit">Tournament to edit</param>
         public void Edit(Tournament tournamentToEdit)
         {
-            if (IsTournamentNameUnique(tournamentToEdit))
-            {
-                _tournamentRepository.Update(tournamentToEdit);
-                _tournamentRepository.UnitOfWork.Commit();
-            }
-            else
-            {
-                throw new ArgumentException(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique);
-            }
+            IsTournamentNameUnique(tournamentToEdit);
+            _tournamentRepository.Update(tournamentToEdit);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -100,6 +75,21 @@
         {
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Checks whether tournament name is unique or not.
+        /// </summary>
+        /// <param name="newTournament">tournament to edit or create</param>
+        private void IsTournamentNameUnique(Tournament newTournament)
+        {
+            var tournament = _tournamentRepository.FindWhere(t => t.Name == newTournament.Name
+                && t.Id != newTournament.Id).FirstOrDefault();
+
+            if (tournament != null)
+            {
+                throw new ArgumentException(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique);
+            }
         }
     }
 }

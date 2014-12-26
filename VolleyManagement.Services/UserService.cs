@@ -97,7 +97,8 @@
         private void CheckUserDataUniqueness(User newUser, ref bool isUserNameUnique, ref bool isUserEmailUnique)
         {
             var userDuplicatesList = _userRepository.FindWhere(u => u.Id != newUser.Id &&
-                (u.Email == newUser.Email || u.UserName == newUser.UserName)).ToList();
+                (u.Email == newUser.Email || u.UserName == newUser.UserName))
+                .Select(u => new { u.UserName, u.Email }).ToList();
 
             if (userDuplicatesList != null)
             {
@@ -128,11 +129,7 @@
         /// <param name="isUserEmailUnique">True if user email is unique</param>
         private void ThrowExceptionForUserData(bool isUserNameUnique, bool isUserEmailUnique)
         {
-            if (isUserNameUnique && isUserEmailUnique)
-            {
-                return;
-            }
-            else if (!isUserNameUnique && !isUserEmailUnique)
+            if (!isUserNameUnique && !isUserEmailUnique)
             {
                 throw new ArgumentException(Resources.UserNameAndEmailMustBeUnique);
             }

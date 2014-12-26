@@ -1,9 +1,12 @@
 ﻿namespace VolleyManagement.Mvc.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Mvc.Mappers;
+    using VolleyManagement.Mvc.ViewModels.Users;
 
     /// <summary>
     /// Defines UsersController
@@ -32,8 +35,14 @@
         {
             try
             {
-                var users = _userService.GetAll().ToList();
-                return View(users);
+                var domainUsers = _userService.GetAll().ToList();
+                var userViewModels = new List<UserViewModel>();
+                foreach (var u in domainUsers)
+                {
+                    userViewModels.Add(DomainToViewModel.Map(u));
+                }
+
+                return View(userViewModels);
             }
             catch (Exception)
             {

@@ -135,4 +135,22 @@
   <data name="TournamentSeason" xml:space="preserve">
     <value>Сезон</value>
   </data>
+  <data name="UserCellPhone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="UserDescription" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="UserEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="UserFullName" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="UserPassword" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
 </root>

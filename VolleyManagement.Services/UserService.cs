@@ -37,18 +37,6 @@
         }
 
         /// <summary>
-        /// Checks whether user data is unique or not.
-        /// </summary>
-        /// <param name="newUser">user to validate</param>
-        public void IsUserUnique(User newUser)
-        {
-            bool isUserNameUnique = true;
-            bool isUserEmailUnique = true;
-            CheckUserDataUniqueness(newUser, ref isUserNameUnique, ref isUserEmailUnique);
-            ThrowExceptionForUserData(isUserNameUnique, isUserEmailUnique);
-        }
-
-        /// <summary>
         /// Create a new user
         /// </summary>
         /// <param name="userToCreate">A User to create</param>
@@ -86,6 +74,18 @@
         public void Delete(int id)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Checks whether user data is unique or not.
+        /// </summary>
+        /// <param name="newUser">user to validate</param>
+        private void IsUserUnique(User newUser)
+        {
+            bool isUserNameUnique = true;
+            bool isUserEmailUnique = true;
+            CheckUserDataUniqueness(newUser, ref isUserNameUnique, ref isUserEmailUnique);
+            ThrowExceptionForUserData(isUserNameUnique, isUserEmailUnique);
         }
 
         /// <summary>

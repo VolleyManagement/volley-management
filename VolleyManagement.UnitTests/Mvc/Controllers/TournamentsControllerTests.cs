@@ -71,10 +71,10 @@
                                             .ToList();
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<Tournament>>(sut.Index());
+            var actual = TestExtensions.GetModel<IEnumerable<Tournament>>(sut.Index()).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual.ToList(), new TournamentComparer());
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>

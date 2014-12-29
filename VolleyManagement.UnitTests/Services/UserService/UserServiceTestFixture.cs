@@ -52,6 +52,17 @@
         }
 
         /// <summary>
+        /// Adds a particular user to collection.
+        /// </summary>
+        /// <param name="newUser">User to add.</param>
+        /// <returns>Builder object with collection of users.</returns>
+        public UserServiceTestFixture AddUser(User newUser)
+        {
+            _users.Add(newUser);
+            return this;
+        }
+
+        /// <summary>
         /// Builds test data
         /// </summary>
         /// <returns>Users collection</returns>

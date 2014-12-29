@@ -35,12 +35,10 @@
         {
             try
             {
-                var domainUsers = _userService.GetAll().ToList();
-                var userViewModels = new List<UserViewModel>();
-                foreach (var u in domainUsers)
-                {
-                    userViewModels.Add(DomainToViewModel.Map(u));
-                }
+                var userViewModels = _userService
+                                        .GetAll()
+                                        .ToList()
+                                        .Select(u => DomainToViewModel.Map(u));
 
                 return View(userViewModels);
             }

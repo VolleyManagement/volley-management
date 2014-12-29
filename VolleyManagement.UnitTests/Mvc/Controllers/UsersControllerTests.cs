@@ -59,28 +59,37 @@
         public void Index_UsersExist_UsersReturned()
         {
             // Arrange
-            var testData = this._testFixture.TestUsers()
+            var testData = this._testFixture
+                                       .AddUser(new UserBuilder()
+                                                        .WithId(1)
+                                                        .WithUserName("testUser")
+                                                        .WithFullName("User")
+                                                        .WithEmail("testuser@test.com")
+                                                        .WithCellPhone("1234567890")
+                                                        .WithPassword("testpass")
+                                                        .Build())
                                        .Build();
             this.MockUsers(testData);
 
-            var usersController = this._kernel.Get<UsersController>();
+            var sut = this._kernel.Get<UsersController>();
 
-            var domainUsers = new UserServiceTestFixture()
-                                            .TestUsers()
-                                            .Build()
-                                            .ToList();
-
-            var expected = new List<UserViewModel>();
-            foreach (var item in domainUsers)
+            var expected = new List<UserViewModel>
             {
-                expected.Add(DomainToViewModel.Map(item));
-            }
+                new UserViewModelBuilder()
+                            .WithId(1)
+                            .WithUserName("testUser")
+                            .WithFullName("User")
+                            .WithEmail("testuser@test.com")
+                            .WithCellPhone("1234567890")
+                            .WithPassword(string.Empty)
+                            .Build()
+            };
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<UserViewModel>>(usersController.Index());
+            var actual = TestExtensions.GetModel<IEnumerable<UserViewModel>>(sut.Index()).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual.ToList(), new UserViewModelComparer());
+            CollectionAssert.AreEqual(expected, actual, new UserViewModelComparer());
         }
 
         /// <summary>

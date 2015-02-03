@@ -52,7 +52,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) || value.Length > Constants.MaxNameLength)
+                if (string.IsNullOrEmpty(value) || value.Length > Constants.Tournament.MaxNameLength)
                 {
                     throw new ArgumentException(Resources.ValidationResultName);
                 }
@@ -74,7 +74,7 @@
 
             set
             {
-                if (!string.IsNullOrEmpty(value) && value.Length > Constants.MaxDescriptionLength)
+                if (!string.IsNullOrEmpty(value) && value.Length > Constants.Tournament.MaxDescriptionLength)
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
@@ -96,7 +96,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) || value.Length > Constants.MaxSeasonLength)
+                if (string.IsNullOrEmpty(value) || value.Length > Constants.Tournament.MaxSeasonLength)
                 {
                     throw new ArgumentException(Resources.ValidationResultSeason);
                 }
@@ -140,7 +140,7 @@
 
             set
             {
-                if (!string.IsNullOrEmpty(value) && value.Length > Constants.MaxRegLinkLength)
+                if (!string.IsNullOrEmpty(value) && value.Length > Constants.Tournament.MaxRegLinkLength)
                 {
                     throw new ArgumentException(Resources.ValidationResultRegLink);
                 }

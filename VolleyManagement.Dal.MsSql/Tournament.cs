@@ -9,7 +9,7 @@ namespace VolleyManagement.Dal.MsSql
     /// <summary>
     /// DAL tournament model
     /// </summary>
-    [Table("Tournament")]
+    [Table("Tournaments")]
     public partial class Tournament
     {
         /// <summary>

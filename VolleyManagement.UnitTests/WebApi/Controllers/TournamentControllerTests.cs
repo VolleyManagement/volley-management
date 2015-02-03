@@ -38,11 +38,6 @@
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
 
         /// <summary>
-        /// Tournaments Repository Mock
-        /// </summary>
-        private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
-
-        /// <summary>
         /// IoC for tests
         /// </summary>
         private IKernel _kernel;
@@ -68,11 +63,11 @@
             var tournament = new TournamentBuilder().WithId(5).Build();
             MockSingleTournament(tournament);
             var tournamentsController = _kernel.Get<TournamentsController>();
-            SetControllerRequest(tournamentsController);
+            TestExtensions.SetControllerRequest(tournamentsController);
 
             // Act
             var response = tournamentsController.Get(tournament.Id);
-            var result = GetModelFromResponse<TournamentViewModel>(response);
+            var result = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
 
             // Assert
             Assert.AreEqual(tournament.Id, result.Id);
@@ -89,7 +84,7 @@
             _tournamentServiceMock.Setup(ts => ts.FindById(tournamentId))
                .Throws(new ArgumentNullException());
             var tournamentsController = _kernel.Get<TournamentsController>();
-            SetControllerRequest(tournamentsController);
+            TestExtensions.SetControllerRequest(tournamentsController);
             var expected = HttpStatusCode.NotFound;
 
             // Act
@@ -156,12 +151,12 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            SetControllerRequest(controller);
+            TestExtensions.SetControllerRequest(controller);
             var expected = new TournamentViewModelBuilder().Build();
 
             // Act
             var response = controller.Post(expected);
-            var actual = GetModelFromResponse<TournamentViewModel>(response);
+            var actual = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
@@ -180,23 +175,13 @@
                           .Build();
             var tournamentToDeleteID = testTournaments.Last().Id;
             var controller = this._kernel.Get<TournamentsController>();
-            SetControllerRequest(controller);
+            TestExtensions.SetControllerRequest(controller);
 
             // Act
             var response = controller.Delete(tournamentToDeleteID);
 
             // Assert
             Assert.AreEqual(HttpStatusCode.Accepted, response.StatusCode);
-        }
-
-        /// <summary>
-        /// Sets request message for controller
-        /// </summary>
-        /// <param name="controller">Current controller</param>
-        public void SetControllerRequest(TournamentsController controller)
-        {
-            controller.Request = new HttpRequestMessage();
-            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
         }
 
         /// <summary>
@@ -215,18 +200,6 @@
         private void MockSingleTournament(Tournament testData)
         {
             _tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
-        }
-
-        /// <summary>
-        /// Gets generic T model from response content
-        /// </summary>
-        /// <typeparam name="T">Model type</typeparam>
-        /// <param name="response">Http response message</param>
-        /// <returns>T model</returns>
-        private T GetModelFromResponse<T>(HttpResponseMessage response) where T : class
-        {
-            ObjectContent content = response.Content as ObjectContent;
-            return (T)content.Value;
         }
     }
 }

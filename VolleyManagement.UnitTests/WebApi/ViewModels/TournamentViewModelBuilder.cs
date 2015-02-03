@@ -4,7 +4,7 @@
     using VolleyManagement.WebApi.ViewModels.Tournaments;
 
     /// <summary>
-    /// Builder for test MVC tournament view models
+    /// Builder for test tournament view models
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class TournamentViewModelBuilder

@@ -120,6 +120,27 @@
   <data name="TournamentNameMustBeUnique" xml:space="preserve">
     <value>The name of the tournament must be unique</value>
   </data>
+  <data name="UserEmailMustBeUnique" xml:space="preserve">
+    <value>The user email must be unique.</value>
+  </data>
+  <data name="UserNameAndEmailMustBeUnique" xml:space="preserve">
+    <value>The user name and email must be unique.</value>
+  </data>
+  <data name="UserNameMustBeUnique" xml:space="preserve">
+    <value>The user name must be unique.</value>
+  </data>
+  <data name="ValidationCellPhone" xml:space="preserve">
+    <value>Plese, enter the telepnone correctly</value>
+  </data>
+  <data name="ValidationEmail" xml:space="preserve">
+    <value>Plese, enter the email correctly</value>
+  </data>
+  <data name="ValidationFullName" xml:space="preserve">
+    <value>Plese, enter the full name correctly</value>
+  </data>
+  <data name="ValidationPassword" xml:space="preserve">
+    <value>Password cann't be empty!</value>
+  </data>
   <data name="ValidationResultDescription" xml:space="preserve">
     <value>Please, reduce the description text</value>
   </data>
@@ -134,5 +155,8 @@
   </data>
   <data name="ValidationResultSeason" xml:space="preserve">
     <value>Please, enter the season correctly</value>
+  </data>
+  <data name="ValidationUserName" xml:space="preserve">
+    <value>Plese, enter the user name correctly</value>
   </data>
 </root>

@@ -19,7 +19,12 @@ namespace VolleyManagement.Dal.MsSql
         /// <summary>
         /// Gets or sets the tournament table.
         /// </summary>
-        public virtual DbSet<Tournament> Tournament { get; set; }
+        public virtual DbSet<Tournament> Tournaments { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user table.
+        /// </summary>
+        public virtual DbSet<User> Users { get; set; }
 
         /// <summary>
         /// configure models if needed

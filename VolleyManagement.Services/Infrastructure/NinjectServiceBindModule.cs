@@ -15,6 +15,7 @@
         public override void Load()
         {
             Bind<ITournamentService>().To<TournamentService>().InSingletonScope();
+            Bind<IUserService>().To<UserService>().InSingletonScope();
         }
     }
 }

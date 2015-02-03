@@ -20,14 +20,7 @@
         /// <returns>A signed integer that indicates the relative values of users.</returns>
         public int Compare(UserViewModel x, UserViewModel y)
         {
-            if (IsEqual(x, y))
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
+            return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
@@ -59,7 +52,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given users have the same properties.</returns>
-        private bool IsEqual(UserViewModel x, UserViewModel y)
+        private bool AreEqual(UserViewModel x, UserViewModel y)
         {
             return x.Id == y.Id &&
                 x.FullName == y.FullName &&

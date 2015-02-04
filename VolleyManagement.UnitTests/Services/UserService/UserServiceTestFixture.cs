@@ -24,7 +24,7 @@
             _users.Add(new User()
             {
                 Id = 1,
-                UserName = "testLoginA",
+                UserName = "testA",
                 FullName = "Test Name A",
                 Email = "test1@gmail.com",
                 Password = "abc111",
@@ -33,7 +33,7 @@
             _users.Add(new User()
             {
                 Id = 2,
-                UserName = "testLoginB",
+                UserName = "testB",
                 FullName = "Test Name B",
                 Email = "test2@gmail.com",
                 Password = "abc222",
@@ -42,7 +42,7 @@
             _users.Add(new User()
             {
                 Id = 3,
-                UserName = "testLoginC",
+                UserName = "testC",
                 FullName = "Test Name C",
                 Email = "test3@gmail.com",
                 Password = "abc333",

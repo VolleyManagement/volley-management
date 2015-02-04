@@ -117,6 +117,8 @@
     <Compile Include="TestExtensions.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
+    <Compile Include="WebApi\Mappers\DomainToViewModelTests.cs" />
+    <Compile Include="WebApi\Mappers\ViewModelToDomainTests.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\UserViewModelBuilder.cs" />
@@ -151,9 +153,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="WebApi\Mappers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -3,6 +3,7 @@
     using System;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Domain.Users;
     using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Users;
 
@@ -25,14 +26,31 @@
             _userService = userService;
         }
 
+        /// <summary>
+        /// Gets all users from UserService
+        /// </summary>
+        /// <returns>View with collection of users</returns>
         public ActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Gets details for specific user
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns>View with specific user</returns>
         public ActionResult Details(int id)
         {
-            return View();
+            try
+            {
+                User user = _userService.FindById(id);
+                return View(user);
+            }
+            catch (Exception)
+            {
+                return HttpNotFound();
+            }
         }
 
         /// <summary>
@@ -95,6 +113,11 @@
             }
         }
 
+        /// <summary>
+        /// Delete user action (GET)
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <returns>View to delete specific user</returns>
         public ActionResult Delete(int id)
         {
             return View();

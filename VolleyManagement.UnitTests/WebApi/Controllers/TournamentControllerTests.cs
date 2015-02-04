@@ -5,16 +5,12 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
-    using System.Web.Http.Hosting;
     using Contracts;
     using Domain.Tournaments;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
     using Services.TournamentService;
-    using VolleyManagement.Dal.Contracts;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
     using VolleyManagement.WebApi.Controllers;
     using VolleyManagement.WebApi.Mappers;

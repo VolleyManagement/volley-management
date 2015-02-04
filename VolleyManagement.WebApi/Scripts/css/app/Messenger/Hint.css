@@ -1,0 +1,26 @@
+.hint {
+    position: absolute;
+    padding: 10px 20px;
+    color: #fff;
+    background: #d14743;
+    height: 40px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 3px;
+    opacity: 0.8;
+    z-index: 9999;
+}
+
+.hint:after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -8px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid #d14743;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+}
+

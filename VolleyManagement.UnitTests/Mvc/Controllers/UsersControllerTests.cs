@@ -59,37 +59,23 @@
         public void Index_UsersExist_UsersReturned()
         {
             // Arrange
-            var testData = this._testFixture
-                                       .AddUser(new UserBuilder()
-                                                        .WithId(1)
-                                                        .WithUserName("testUser")
-                                                        .WithFullName("User")
-                                                        .WithEmail("testuser@test.com")
-                                                        .WithCellPhone("1234567890")
-                                                        .WithPassword("testpass")
-                                                        .Build())
+            var testData = this._testFixture.TestUsers()
                                        .Build();
             this.MockUsers(testData);
 
-            var sut = this._kernel.Get<UsersController>();
+            var usersController = this._kernel.Get<UsersController>();
 
-            var expected = new List<UserViewModel>
-            {
-                new UserViewModelBuilder()
-                            .WithId(1)
-                            .WithUserName("testUser")
-                            .WithFullName("User")
-                            .WithEmail("testuser@test.com")
-                            .WithCellPhone("1234567890")
-                            .WithPassword(string.Empty)
-                            .Build()
-            };
+            var expected = new UserServiceTestFixture()
+                                            .TestUsers()
+                                            .Build()
+                                            .ToList();
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<UserViewModel>>(sut.Index()).ToList();
+            var viewResult = usersController.Index() as ViewResult;
+            var actual = (IEnumerable<User>)viewResult.ViewData.Model;
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new UserViewModelComparer());
+            CollectionAssert.AreEqual(expected, actual.ToList(), new UserComparer());
         }
 
         /// <summary>
@@ -114,13 +100,196 @@
         }
 
         /// <summary>
+        /// Test for Create user action (GET)
+        /// </summary>
+        [TestMethod]
+        public void Create_GetView_ReturnsViewWithDefaultData()
+        {
+            // Arrange
+            var controller = _kernel.Get<UsersController>();
+            var expected = new UserViewModel();
+
+            // Act
+            var actual = GetModel<UserViewModel>(controller.Create());
+
+            // Assert
+            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Create user action (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_ValidUserViewModel_RedirectToIndex()
+        {
+            // Arrange
+            var usersController = _kernel.Get<UsersController>();
+            var userViewModel = new UserMvcViewModelBuilder()
+                .WithUserName("testLoginB")
+                .WithFullName("Test Name B")
+                .WithEmail("test2@gmail.com")
+                .WithPassword("abc222")
+                .WithCellPhone("0500000002")
+                .Build();
+
+            // Act
+            var result = usersController.Create(userViewModel) as RedirectToRouteResult;
+
+            // Assert
+            _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once());
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        /// <summary>
+        /// Test for Create user action with invalid view model (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_InvalidUserViewModel_ReturnsViewModelToView()
+        {
+            // Arrange
+            var controller = _kernel.Get<UsersController>();
+            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
+            var userViewModel = new UserMvcViewModelBuilder()
+                .WithUserName(string.Empty)
+                .Build();
+
+            // Act
+            var actual = GetModel<UserViewModel>(controller.Create(userViewModel));
+
+            // Assert
+            _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Never());
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
+        /// Test for Create user action (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_ArgumentException_ExceptionThrown()
+        {
+            // Arrange
+            var userViewModel = new UserMvcViewModelBuilder()
+                .WithId(1)
+                .WithUserName("testLogin2")
+                .WithFullName("Test Name 1")
+                .WithEmail("test3@gmail.com")
+                .WithPassword("abc222")
+                .WithCellPhone("+38(050)0000002")
+                .Build();
+            _userServiceMock.Setup(ts => ts.Create(It.IsAny<User>()))
+                .Throws(new ArgumentException());
+            var controller = _kernel.Get<UsersController>();
+
+            // Act
+            var actual = GetModel<UserViewModel>(controller.Create(userViewModel));
+
+            // Assert
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
+        /// Test for Create user action (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_GeneralException_ExceptionThrown()
+        {
+            // Arrange
+            var userViewModel = new UserMvcViewModelBuilder()
+                .WithId(1)
+                .WithUserName("testLoginC")
+                .WithFullName("Test Name A")
+                .WithEmail("test2@gmail.com")
+                .WithPassword("abc222")
+                .WithCellPhone("0500000002")
+                .Build();
+            _userServiceMock.Setup(ts => ts.Create(It.IsAny<User>()))
+                .Throws(new Exception());
+            var controller = _kernel.Get<UsersController>();
+
+            // Act
+            var actual = controller.Create(userViewModel);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Test for Details()
+        /// </summary>
+        [TestMethod]
+        public void Details_UserExists_UserIsReturned()
+        {
+            // Arrange
+            int searchId = 111;
+
+            _userServiceMock.Setup(tr => tr.FindById(It.IsAny<int>()))
+                .Returns(new UserBuilder()
+                .WithId(searchId)
+                .WithUserName("Kapitoshka")
+                .WithEmail("aaa@ukr.net")
+                .WithCellPhone("0931212123")
+                .WithFullName("Kapitoshkin Kapitoshka Kapitoshkovich")
+                .Build());
+
+            var controller = this._kernel.Get<UsersController>();
+
+            var expected = new UserBuilder()
+                .WithId(searchId)
+                .WithUserName("Kapitoshka")
+                .WithEmail("aaa@ukr.net")
+                .WithCellPhone("0931212123")
+                .WithFullName("Kapitoshkin Kapitoshka Kapitoshkovich")
+                .Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<User>(controller.Details(searchId));
+
+            // Assert
+            AssertExtensions.AreEqual<User>(expected, actual, new UserComparer());
+        }
+
+        /// <summary>
+        /// Test for Details()
+        /// </summary>
+        [TestMethod]
+        public void Details_UserDoesNotExist_HttpNotFoundIsReturned()
+        {
+            // Arrange
+            int searchId = 111;
+
+            _userServiceMock.Setup(tr => tr.FindById(It.IsAny<int>()))
+                .Throws(new ArgumentNullException());
+
+            var controller = this._kernel.Get<UsersController>();
+
+            var expected = (int)HttpStatusCode.NotFound;
+
+            // Act
+            var actual = (controller.Details(searchId) as HttpNotFoundResult).StatusCode;
+
+            // Ashttps://bitbucket.org/VolleyManagement/volleymanagement.gitsert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>
         private void MockUsers(IEnumerable<User> testData)
         {
-            this._userServiceMock.Setup(ur => ur.GetAll())
+            this._userServiceMock.Setup(tr => tr.GetAll())
                 .Returns(testData.AsQueryable());
+        }
+
+        /// <summary>
+        /// Get generic T model by ViewResult from action view
+        /// </summary>
+        /// <typeparam name="T">model type</typeparam>
+        /// <param name="result">object to convert and return</param>
+        /// <returns>T result by ViewResult from action view</returns>
+        private T GetModel<T>(object result) where T : class
+        {
+            return (T)(result as ViewResult).ViewData.Model;
         }
     }
 }

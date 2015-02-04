@@ -1,5 +1,5 @@
 ﻿var tournamentTpl = _.template([
-    '<div class="row tournament">',
+    '<div class="row">',
         '<div class="col-sm-9">',
             '<h4><%= Name %></h4>',
         '</div>',

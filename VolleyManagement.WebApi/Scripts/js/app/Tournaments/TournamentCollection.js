@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 (function (This) {
     This.TournamentCollection = Backbone.Collection.extend({
@@ -6,5 +6,4 @@
 
         model: This.Tournament
     });
-
 })(App.Tournaments);

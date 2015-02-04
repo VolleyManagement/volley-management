@@ -51,4 +51,3 @@ var editTournamentTpl = _.template([
         '</div>',
     '</div>'
 ].join(""));
-

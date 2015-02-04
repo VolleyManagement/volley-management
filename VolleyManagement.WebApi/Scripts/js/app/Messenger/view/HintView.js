@@ -1,3 +1,5 @@
+'use strict';
+
 (function (This) {
     var HINT_HEIGHT = 48;
 
@@ -25,13 +27,13 @@
                 .removeClass('hidden')
                 .css({
                     top: offset.top + 'px',
-                    right: offset.left + 'px'
+                    right: '0px'
                 });
 
             this.$target
                 .on('focus', this.leaveItAlone.bind(this))
                 .parent()
-                .addClass("has-error");
+                .addClass('has-error');
 
             setTimeout(this.remove.bind(this), 5000);
 
@@ -39,7 +41,7 @@
         },
 
         leaveItAlone: function () {
-            this.$target.parent().removeClass("has-error");
+            this.$target.parent().removeClass('has-error');
             this.remove();
         }
     });

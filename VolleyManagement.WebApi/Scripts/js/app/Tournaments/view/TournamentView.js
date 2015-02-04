@@ -1,25 +1,17 @@
-"use strict";
+'use strict';
 
-(function (This, scope) {
-    var mediator;
-
-    function extractMediator () {
-        mediator = scope.mediator;
-    }
-
+(function (This) {
     This.TournamentView = Backbone.View.extend({
         tagName: 'li',
-        className: 'list-group-item',
+        className: 'tournament list-group-item',
 
         template: tournamentTpl,
 
         events: {
-			'click h4': 'showInfo'
+            'click': 'showInfo'
         },
 
         initialize: function () {
-            extractMediator();
-
             this.model.on('change', this.render, this);
             this.model.on('remove', this.remove, this);
         },
@@ -31,7 +23,7 @@
         },
 
         showInfo: function () {
-            mediator.publish('ShowTournamentInfo', this.model);
+            vm.mediator.publish('ShowTournamentInfo', this.model);
         }
     });
-})(App.Tournaments, vm.tournaments);
+})(App.Tournaments);

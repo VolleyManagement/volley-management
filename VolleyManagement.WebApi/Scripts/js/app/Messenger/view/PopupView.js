@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 (function (This) {
     This.PopupView = Backbone.View.extend({
@@ -8,8 +8,8 @@
         template: popupTpl,
 
         events: {
-            "click .delete": "delete",
-            "click .cancel": "hide"
+            'click .delete': 'delete',
+            'click .cancel': 'hide'
         },
         
         initialize: function () {
@@ -44,4 +44,3 @@
         }
     });
 })(App.Messenger);
-

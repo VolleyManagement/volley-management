@@ -171,9 +171,13 @@
     <Content Include="Scripts\css\app\Messenger\Hint.css" />
     <Content Include="Scripts\css\app\Messenger\Notice.css" />
     <Content Include="Scripts\css\app\Messenger\Popup.css" />
+    <Content Include="Scripts\css\app\ServicePages\Group.css" />
     <Content Include="Scripts\css\app\Tournaments\Tournament.css" />
     <Content Include="Scripts\css\app\Tournaments\TournamentCollection.css" />
     <Content Include="Scripts\css\app\Tournaments\TournamentHomepage.css" />
+    <Content Include="Scripts\css\app\Users\User.css" />
+    <Content Include="Scripts\css\app\Users\UserCollection.css" />
+    <Content Include="Scripts\css\app\Users\UserHomepage.css" />
     <Content Include="Scripts\css\lib\bootstrap-theme.css" />
     <Content Include="Scripts\css\lib\bootstrap.css" />
     <Content Include="Scripts\js\app\Messenger\Controller.js" />
@@ -183,6 +187,15 @@
     <Content Include="Scripts\js\app\Messenger\view\HintView.js" />
     <Content Include="Scripts\js\app\Messenger\view\NoticeView.js" />
     <Content Include="Scripts\js\app\Messenger\view\PopupView.js" />
+    <Content Include="Scripts\js\app\Router.js" />
+    <Content Include="Scripts\js\app\ServicePages\Controller.js" />
+    <Content Include="Scripts\js\app\ServicePages\Group.js" />
+    <Content Include="Scripts\js\app\ServicePages\GroupCollection.js" />
+    <Content Include="Scripts\js\app\ServicePages\ServicePagesRouter.js" />
+    <Content Include="Scripts\js\app\ServicePages\tpl\GroupCollectionTpl.js" />
+    <Content Include="Scripts\js\app\ServicePages\tpl\GroupTpl.js" />
+    <Content Include="Scripts\js\app\ServicePages\view\GroupCollectionView.js" />
+    <Content Include="Scripts\js\app\ServicePages\view\GroupView.js" />
     <Content Include="Scripts\js\app\Tournaments\Controller.js" />
     <Content Include="Scripts\js\app\Tournaments\Tournament.js" />
     <Content Include="Scripts\js\app\Tournaments\TournamentCollection.js" />
@@ -195,16 +208,30 @@
     <Content Include="Scripts\js\app\Tournaments\view\TournamentCollectionView.js" />
     <Content Include="Scripts\js\app\Tournaments\view\TournamentHomepageView.js" />
     <Content Include="Scripts\js\app\Tournaments\view\TournamentView.js" />
+    <Content Include="Scripts\js\app\Users\Controller.js" />
+    <Content Include="Scripts\js\app\Users\tpl\EditUserTpl.js" />
+    <Content Include="Scripts\js\app\Users\tpl\UserCollectionTpl.js" />
+    <Content Include="Scripts\js\app\Users\tpl\UserHomepageTpl.js" />
+    <Content Include="Scripts\js\app\Users\tpl\UserTpl.js" />
+    <Content Include="Scripts\js\app\Users\User.js" />
+    <Content Include="Scripts\js\app\Users\UserCollection.js" />
+    <Content Include="Scripts\js\app\Users\UsersRouter.js" />
+    <Content Include="Scripts\js\app\Users\view\CreateEditUserView.js" />
+    <Content Include="Scripts\js\app\Users\view\UserCollectionView.js" />
+    <Content Include="Scripts\js\app\Users\view\UserHomepageView.js" />
+    <Content Include="Scripts\js\app\Users\view\UserView.js" />
     <Content Include="Scripts\js\lib\backbone-modelbinder.js" />
     <Content Include="Scripts\js\lib\backbone-odata.js" />
     <Content Include="Scripts\js\lib\backbone-parse.js" />
+    <Content Include="Scripts\js\lib\backbone-validation-messages.js" />
+    <Content Include="Scripts\js\lib\backbone-validation-patterns.js" />
+    <Content Include="Scripts\js\lib\backbone-validation.js" />
     <Content Include="Scripts\js\lib\backbone.js" />
     <Content Include="Scripts\js\lib\jquery-ajaxsetup.js" />
     <Content Include="Scripts\js\lib\jquery.js" />
     <Content Include="Scripts\js\lib\mediator.js" />
     <Content Include="Scripts\js\lib\underscore.js" />
     <Content Include="Scripts\js\main.js" />
-    <Content Include="Scripts\SampleScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -217,6 +244,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -255,6 +283,7 @@
     <Content Include="Scripts\css\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Scripts\css\lib\bootstrap-theme.css.map" />
     <Content Include="Scripts\css\lib\bootstrap.css.map" />
+    <Content Include="Scripts\js\app\Users\.sublb25.tmp" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

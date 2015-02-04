@@ -2,8 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Net.Http;
-    using System.Web.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>

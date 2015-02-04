@@ -1,14 +1,9 @@
-"use strict";
+'use strict';
 
-(function (This, scope) {
-    var mediator;
-
-    function extractMediator () {
-        mediator = scope.mediator;
-    }
-
+(function (This) {
     This.TournamentCollectionView = Backbone.View.extend({
         tagName: 'div',
+        className: 'tournament-collection',
 
         template: tournamentCollectionTpl,
 
@@ -17,12 +12,10 @@
         },
 
         initialize: function () {
-            extractMediator();
-
             this.collection = new This.TournamentCollection();
             this.collection.on('add', this.addOne, this);
             
-            mediator.subscribe("TournamentSaved", this.saveModel, {}, this);
+            vm.mediator.subscribe('TournamentSaved', this.saveModel, {}, this);
 
             this.update();
         },
@@ -33,7 +26,6 @@
 
         update: function () {
             this.collection.fetch();
-            
         },
 
         render: function () {
@@ -43,21 +35,21 @@
         },
 
         addOne: function (tournament) {
-            var view = new This.TournamentView({ model: tournament });
-            
+            var view = new This.TournamentView({model: tournament});
+            console.log(tournament);
             this.$('ul').append(view.render().el);
         },
 
         create: function () {
-            mediator.publish('CreateTournament');
+            vm.mediator.publish('CreateTournament');
         },
 
         show: function () {
-            this.$el.removeClass("hidden");
+            this.$el.removeClass('hidden');
         },
 
         hide: function () {
-            this.$el.addClass("hidden");
+            this.$el.addClass('hidden');
         },
 
         getModelById: function (id, callback) {
@@ -70,4 +62,4 @@
             }
         }
     });
-})(App.Tournaments, vm.tournaments);
+})(App.Tournaments);

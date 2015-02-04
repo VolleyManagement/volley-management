@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 (function (This) {
     This.NoticeView = Backbone.View.extend({
@@ -13,7 +13,7 @@
         },
 
         events: {
-            "click .close": "hide"
+            'click .close': 'hide'
         },
 
         render: function () {
@@ -31,4 +31,3 @@
         }
     });
 })(App.Messenger);
-

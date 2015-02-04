@@ -15,12 +15,6 @@
         IQueryable<User> GetAll();
 
         /// <summary>
-        /// Delete specific user
-        /// </summary>
-        /// <param name="id">User id</param>
-        void Delete(int id);
-
-        /// <summary>
         /// Create new user.
         /// </summary>
         /// <param name="user">New user</param>

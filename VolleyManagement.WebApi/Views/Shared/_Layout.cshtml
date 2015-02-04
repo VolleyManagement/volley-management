@@ -15,10 +15,46 @@
         <script src="~/Scripts/js/lib/backbone-odata.js"></script>
         <script src="~/Scripts/js/lib/backbone-parse.js"></script>
         <script src="~/Scripts/js/lib/backbone-modelbinder.js"></script>
+        <script src='~/Scripts/js/lib/backbone-validation.js'></script>
+        <script src='~/Scripts/js/lib/backbone-validation-patterns.js'></script>
+        <script src='~/Scripts/js/lib/backbone-validation-messages.js'></script>
         <script src="~/Scripts/js/main.js"></script>
+
+        <script type='text/javascript' src='~/Scripts/js/app/Router.js'></script>
 
         <script src="~/Scripts/js/app/Tournaments/TournamentRouter.js"></script>
         
+        <!-- SERVICE_PAGES LAYER -->
+        <script type='text/javascript' src='~/Scripts/js/app/ServicePages/tpl/GroupTpl.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/ServicePages/tpl/GroupCollectionTpl.js'></script>
+
+        <script type='text/javascript' src='~/Scripts/js/app/ServicePages/ServicePagesRouter.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/ServicePages/Controller.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/ServicePages/Group.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/ServicePages/GroupCollection.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/ServicePages/view/GroupCollectionView.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/ServicePages/view/GroupView.js'></script>
+        <!-- SERVICE_PAGES LAYER -->
+       
+        <!-- USERS LAYER -->
+        <script type='text/javascript' src='~/Scripts/js/app/Users/tpl/UserTpl.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/Users/tpl/UserCollectionTpl.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/Users/tpl/UserHomepageTpl.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/Users/tpl/EditUserTpl.js'></script>
+
+        <script type='text/javascript' src='~/Scripts/js/app/Users/User.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/Users/UserCollection.js'></script>
+
+
+        <script type='text/javascript' src='~/Scripts/js/app/Users/view/UserView.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/Users/view/UserCollectionView.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/Users/view/UserHomepageView.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/Users/view/CreateEditUserView.js'></script>
+
+        <script type='text/javascript' src='~/Scripts/js/app/Users/UsersRouter.js'></script>
+        <script type='text/javascript' src='~/Scripts/js/app/Users/Controller.js'></script>
+        <!-- USERS LAYER -->
+
         <script src="~/Scripts/js/app/Messenger/tpl/NoticeTpl.js"></script>
         <script src="~/Scripts/js/app/Messenger/tpl/HintTpl.js"></script>
         <script src="~/Scripts/js/app/Messenger/tpl/PopupTpl.js"></script>
@@ -47,23 +83,34 @@
 
         <link href="~/Scripts/css/lib/bootstrap-theme.css" rel="stylesheet" />
         <link href="~/Scripts/css/lib/bootstrap.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="~/Scripts/css/app/ServicePages/Group.css">
         <link href="~/Scripts/css/app/Messenger/Hint.css" rel="stylesheet" />
         <link href="~/Scripts/css/app/Messenger/Notice.css" rel="stylesheet" />
         <link href="~/Scripts/css/app/Messenger/Popup.css" rel="stylesheet" />
         <link href="~/Scripts/css/app/Tournaments/Tournament.css" rel="stylesheet" />
         <link href="~/Scripts/css/app/Tournaments/TournamentCollection.css" rel="stylesheet" />
         <link href="~/Scripts/css/app/Tournaments/TournamentHomepage.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="~/Scripts/css/app/Users/User.css">
+        <link rel="stylesheet" type="text/css" href="~/Scripts/css/app/Users/UserCollection.css">
+        <link rel="stylesheet" type="text/css" href="~/Scripts/css/app/Users/UserHomepage.css">
+
     </head>
     <body>
+        <ul class='tmp-menu list-group' style='position:fixed;top:15px;left:20px;border:1px solid grey;list-style:none;padding:5px;'>
+            <li><a href='/Tournaments'>Tournaments</a></li>
+            <li><a href='/Tournaments/new'>Tournaments new</a></li>
+            <li><a href='/Users'>Users</a></li>
+            <li><a href='/Users/new'>User new</a></li>
+            <li><a href='/About'>About</a></li>
+        </ul>
         <div class="container">
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
                     <div id="messenger"></div>
-                    <div id="tournaments"></div>
+                    <div id="main"></div>
                 </div>
             </div>
         </div>
-
         <div id="popup"></div>
         <div id="body">
                 @RenderBody()

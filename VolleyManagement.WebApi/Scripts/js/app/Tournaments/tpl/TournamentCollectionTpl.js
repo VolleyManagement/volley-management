@@ -1,5 +1,5 @@
 var tournamentCollectionTpl = _.template([
-    '<div class="panel panel-default tournament-collection">',
+    '<div class="panel panel-default">',
         '<div class="panel-heading">',
             '<div class="row">',
                 '<div class="col-md-9 col-sm-8">',

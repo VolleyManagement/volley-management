@@ -1,64 +1,59 @@
-"use strict";
+'use strict';
 
-(function (This, scope)  {
-    var mediator;
-
-    function extractMediator () {
-        mediator = scope.mediator;        
-    }
-
+(function (This)  {
     This.Controller = function (router) {
         var tournaments = new This.TournamentCollectionView(),
-            $tournaments = $('#tournaments'),
+            $tournaments = $('#main'),
             view;
         
-        extractMediator();
-
-        mediator.subscribe('CreateTournament', createView);
-        mediator.subscribe('EditTournament', editView);
-        mediator.subscribe('ShowTournamentInfo', showView);
-        mediator.subscribe('ShowTournaments', showAll);
-        mediator.subscribe('TournamentSaved', showAll);
-        mediator.subscribe('TournamentViewClosed', showAll);
-        mediator.subscribe('EditTournamentById', editViewById, {}, this);
-        mediator.subscribe('ShowTournamentById', showViewById, {}, this);
-
-        start();
+        start();     
         
         function start () {
+            setUpMediator();
             $tournaments.append(tournaments.render().el);
         }
         
+        function setUpMediator () {
+            vm.mediator.subscribe('ShowTournaments', showAll); 
+            vm.mediator.subscribe('ShowTournamentInfo', showView);
+            vm.mediator.subscribe('ShowTournamentById', showViewById);
+            
+            vm.mediator.subscribe('CreateTournament', createView);
+            vm.mediator.subscribe('EditTournament', editView);
+            vm.mediator.subscribe('EditTournamentById', editViewById);
+
+            vm.mediator.subscribe('TournamentsViewClosed', viewClosed);
+        }
+
         function showAll () {
             view && view.remove();
-			
+            
             tournaments.show();
             router.navigate('Tournaments');
         }
 
         function createView () {
-			view && view.remove();
+            view && view.remove();
             view = new This.CreateEditView();
-			view.collection = tournaments.collection;
-			
+            
             router.navigate('Tournaments/new');
             tournaments.hide();
             $tournaments.append(view.render().el);
         }
 
         function editView (tournament) {
-			view && view.remove();
+            view && view.remove();
             view = new This.CreateEditView({model: tournament});
-			
+            
             router.navigate('Tournaments/' + tournament.id + '/edit');
             tournaments.hide();
             $tournaments.append(view.render().el);
         }
 
-        function showView(tournament) {
-			view && view.remove();
+        function showView (tournament) {
+            view && view.remove();
             view = new This.TournamentHomepageView({model: tournament});
-			
+            
             router.navigate('Tournaments/' + tournament.id);
             tournaments.hide();
             $tournaments.append(view.render().el);
@@ -68,10 +63,18 @@
             tournaments.getModelById(id, editView);
         }
 
+        function viewClosed (reason, id) {
+            if (reason === 'afterCreating') {
+                showAll();
+            } else {
+                showViewById(id);
+            }
+        }
+
         function showViewById (id) {
             tournaments.getModelById(id, showView);
         }
-		
+
         return this;
     }
-})(App.Tournaments, vm.tournaments);
+})(App.Tournaments);

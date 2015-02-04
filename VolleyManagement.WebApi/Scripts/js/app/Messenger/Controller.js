@@ -1,10 +1,13 @@
-"use strict";
+'use strict';
 
 (function (This) {
     This.Controller = function () {
         var noticeView = new This.NoticeView(),
-            hintView = new This.HintView(),
             popupView = new This.PopupView();
+
+        vm.mediator.subscribe("Notice", showNotice);
+        vm.mediator.subscribe("Hint", showHint);
+        vm.mediator.subscribe("Popup", showPopup);
 
         $('#messenger').html(noticeView.el);
         $('#popup').html(popupView.el);
@@ -16,8 +19,10 @@
         }
 
         function showHint (message, $target) {
+            var hintView = new This.HintView();
+            
             hintView.set(message, $target);
-  
+
             $target.parent().prepend(hintView.render().el);
         }
 
@@ -26,10 +31,6 @@
 
             popupView.render();
         }
-
-        this.notice = showNotice;
-        this.hint = showHint;
-        this.popup = showPopup;
 
         return this;
     }

@@ -10,7 +10,6 @@
     using System.Web.Http.OData.Routing;
     using Contracts;
     using VolleyManagement.WebApi.Mappers;
-    using VolleyManagement.WebApi.ViewModels.Tournaments;
     using VolleyManagement.WebApi.ViewModels.Users;
 
     /// <summary>
@@ -76,6 +75,36 @@
             catch (Exception)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+        }
+
+        /// <summary>
+        /// Updates user.
+        /// </summary>
+        /// <param name="key">User id</param>
+        /// <param name="viewModel">User to update.</param>
+        /// <returns>HttpResponse for update result.</returns>
+        [HttpPut]
+        public HttpResponseMessage Put([FromODataUri]int key, [FromBody]UserViewModel viewModel)
+        {
+            if (!ModelState.IsValid || viewModel.Id != key)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            try
+            {
+                var userToUpdate = ViewModelToDomain.Map(viewModel);
+                _userService.Edit(userToUpdate);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (ArgumentException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception)
+            {
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
     }

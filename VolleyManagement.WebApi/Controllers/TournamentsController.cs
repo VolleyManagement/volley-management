@@ -103,6 +103,36 @@
         }
 
         /// <summary>
+        /// Updates tournament.
+        /// </summary>
+        /// <param name="key">Tournament id</param>
+        /// <param name="viewModel">Tournament to update.</param>
+        /// <returns>HttpResponse successful updated.</returns>
+        [HttpPut]
+        public HttpResponseMessage Put([FromODataUri]int key, [FromBody]TournamentViewModel viewModel)
+        {
+            if (!ModelState.IsValid || viewModel.Id != key)
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            }
+
+            try
+            {
+                var tournamentToUpdate = ViewModelToDomain.Map(viewModel);
+                _tournamentService.Edit(tournamentToUpdate);
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (ArgumentException ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
+            catch (Exception)
+            {
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        /// <summary>
         /// Deletes tournament from TournamentService
         /// </summary>
         /// <param name="key">key to delete</param>

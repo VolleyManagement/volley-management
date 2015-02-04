@@ -167,7 +167,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\SampleCss.css" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\SampleScript.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -180,6 +179,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

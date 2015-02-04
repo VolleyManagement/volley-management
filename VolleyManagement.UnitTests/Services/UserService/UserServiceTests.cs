@@ -105,10 +105,45 @@
             var userService = _kernel.Get<UserService>();
 
             // Act
-            var tournament = userService.FindById(1);
+            var user = userService.FindById(1);
 
             // Assert
-            Assert.IsNull(tournament);
+            Assert.IsNull(user);
+        }
+
+        /// <summary>
+        /// Test for Edit() method. The method should invoke Update() method of IUserRepository
+        /// </summary>
+        [TestMethod]
+        public void Edit_UserAsParam_UserEdited()
+        {
+            // Arrange
+            var testUser = new UserBuilder()
+                                        .WithId(1)
+                                        .WithUserName("TestUser")
+                                        .WithPassword("TestPassword")
+                                        .WithEmail("user@user.com")
+                                        .Build();
+
+            // Act
+            var sut = _kernel.Get<UserService>();
+            sut.Edit(testUser);
+
+            // Assert
+            _userRepositoryMock.Verify(
+                ur => ur.Update(It.Is<User>(u => UsersAreEqual(u, testUser))));
+            _unitOfWorkMock.Verify(u => u.Commit());
+        }
+
+        /// <summary>
+        /// Find out whether two users objects have the same property values.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>True if the users have the same property values.</returns>
+        private bool UsersAreEqual(User x, User y)
+        {
+            return new UserComparer().Compare(x, y) == 0;
         }
 
         /// <summary>

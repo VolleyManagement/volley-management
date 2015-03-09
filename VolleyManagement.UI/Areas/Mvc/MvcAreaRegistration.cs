@@ -1,18 +1,28 @@
-﻿using System.Web.Mvc;
-
-namespace VolleyManagement.UI.Areas.Mvc
+﻿namespace VolleyManagement.UI.Areas.Mvc
 {
-    public class MvcAreaRegistration : AreaRegistration 
+    using System.Web.Mvc;
+
+    /// <summary>
+    /// The MVC area registration.
+    /// </summary>
+    public class MvcAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        /// <summary>
+        /// Gets the area name.
+        /// </summary>
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "Mvc";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        /// <summary>
+        /// The register area.
+        /// </summary>
+        /// <param name="context"> The context. </param>
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
                 "Mvc_default",

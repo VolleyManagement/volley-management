@@ -47,6 +47,37 @@
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Edm, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.Edm.5.6.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Data.OData.5.6.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Common">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc">
+      <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Spatial, Version=5.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Spatial.5.6.0\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -59,6 +90,18 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.OData, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.5.0.0\lib\net45\System.Web.Http.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -87,6 +130,9 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -106,10 +152,18 @@
     <Content Include="Areas\Mvc\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Mvc\Views\Home\Index.cshtml" />
-    <Content Include="Areas\WebAPI\Views\web.config" />
-    <Content Include="Areas\WebAPI\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\WebAPI\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\WebAPI\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Delete.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Users\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\Users\Index.cshtml" />
+    <Content Include="Areas\WebApi\Views\Home\Index.cshtml" />
+    <Content Include="Areas\WebApi\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\WebApi\Views\web.config" />
+    <Content Include="Areas\WebApi\Views\_ViewStart.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -121,14 +175,46 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\TournamentViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TournamentViews.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\UserViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UserViews.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\ViewModelResources.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ViewModelResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\TournamentsController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Mvc\EnumHtmlHelper.cs" />
+    <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
+    <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
-    <Compile Include="Areas\WebAPI\Controllers\HomeController.cs" />
-    <Compile Include="Areas\WebAPI\WebAPIAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
+    <Compile Include="Areas\WebApi\ApiControllers\TournamentsController.cs" />
+    <Compile Include="Areas\WebApi\ApiControllers\UsersController.cs" />
+    <Compile Include="Areas\WebApi\Controllers\HomeController.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\Tournaments\TournamentViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\Users\UserViewModel.cs" />
+    <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
+    <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -143,6 +229,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -152,9 +239,42 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Mvc\Models\" />
-    <Folder Include="Areas\WebAPI\Models\" />
-    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">
+      <Project>{285D93E6-1AD5-4F78-AEF6-72B81D81465D}</Project>
+      <Name>VolleyManagement.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj">
+      <Project>{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}</Project>
+      <Name>VolleyManagement.Crosscutting.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Dal.MsSql\VolleyManagement.Dal.MsSql.csproj">
+      <Project>{F82FF279-9D06-4494-BC61-1B7AC88A737D}</Project>
+      <Name>VolleyManagement.Dal.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
+      <Project>{996EEE53-56AC-4002-891F-B989659323D1}</Project>
+      <Name>VolleyManagement.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Services\VolleyManagement.Services.csproj">
+      <Project>{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F}</Project>
+      <Name>VolleyManagement.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TournamentViews.designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\UserViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>UserViews.designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\ViewModelResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ViewModelResources.designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

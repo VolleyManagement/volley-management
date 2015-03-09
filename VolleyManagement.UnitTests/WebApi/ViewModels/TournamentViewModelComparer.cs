@@ -3,8 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Tournaments;
-    using VolleyManagement.WebApi.ViewModels.Tournaments;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for tournament objects.
@@ -20,14 +19,7 @@
         /// <returns>A signed integer that indicates the relative values of tournaments.</returns>
         public int Compare(TournamentViewModel x, TournamentViewModel y)
         {
-            if (IsEqual(x, y))
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
+            return this.AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
@@ -59,7 +51,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given tournaments have the same properties.</returns>
-        private bool IsEqual(TournamentViewModel x, TournamentViewModel y)
+        private bool AreEqual(TournamentViewModel x, TournamentViewModel y)
         {
             return x.Description == y.Description &&
                 x.Name == y.Name &&

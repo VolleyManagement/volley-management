@@ -2,7 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
-    using VolleyManagement.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Builder for test MVC tournament view models

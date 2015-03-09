@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        /// GetAll Test.
+        /// Get Test.
         /// </summary>
         [TestMethod]
         public void GetAll_UsersExist_UsersReturned()
@@ -66,19 +66,19 @@
                                             .ToList();
 
             // Act
-            var actual = sut.GetAll().ToList();
+            var actual = sut.Get().ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new UserComparer());
         }
 
         /// <summary>
-        /// Mocks FindAll method.
+        /// Mocks Find method.
         /// </summary>
         /// <param name="testData">Test data to mock.</param>
         private void MockRepositoryFindAll(IEnumerable<User> testData)
         {
-            _userRepositoryMock.Setup(tr => tr.FindAll()).Returns(testData.AsQueryable());
+            _userRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿namespace VolleyManagement.UnitTests
 {
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Net.Http;
     using System.Web.Http;
-    using System.Web.Http.Hosting;
-    using System.Web.Http.OData;
     using System.Web.Mvc;
 
     /// <summary>
@@ -37,13 +36,14 @@
         }
 
         /// <summary>
-        /// Sets http request for controller
+        /// The get model from single result.
         /// </summary>
-        /// <param name="controller">controller to set request</param>
-        public static void SetControllerRequest(ODataController controller)
+        /// <param name="response"> Single result object </param>
+        /// <typeparam name="T"> Model type </typeparam>
+        /// <returns> Model object </returns>
+        public static T GetModelFromSingleResult<T>(SingleResult<T> response)
         {
-            controller.Request = new HttpRequestMessage();
-            controller.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+            return response.Queryable.SingleOrDefault();
         }
     }
 }

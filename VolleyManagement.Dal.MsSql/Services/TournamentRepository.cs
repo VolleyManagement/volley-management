@@ -40,7 +40,7 @@
         /// Gets all tournaments.
         /// </summary>
         /// <returns>Collection of domain tournaments.</returns>
-        public IQueryable<Domain.Tournament> FindAll()
+        public IQueryable<Domain.Tournament> Find()
         {
             return _dalTournaments.Select(t => new Domain.Tournament
                 {
@@ -60,7 +60,7 @@
         /// <returns>Collection of domain tournaments.</returns>
         public IQueryable<Domain.Tournament> FindWhere(Expression<Func<Domain.Tournament, bool>> predicate)
         {
-            return FindAll().Where(predicate);
+            return this.Find().Where(predicate);
         }
 
         /// <summary>

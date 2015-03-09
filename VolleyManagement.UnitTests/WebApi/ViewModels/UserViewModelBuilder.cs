@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.WebApi.ViewModels.Users;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Users;
 
     /// <summary>
     /// Builder for test User view model
@@ -19,7 +19,7 @@
         /// </summary>
         public UserViewModelBuilder()
         {
-            _userViewModel = new UserViewModel()
+            _userViewModel = new UserViewModel
             {
                 Id = 1,
                 UserName = "testLogin",

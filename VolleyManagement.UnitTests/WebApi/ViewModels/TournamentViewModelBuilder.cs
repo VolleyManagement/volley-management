@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.WebApi.ViewModels.Tournaments;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
     /// Builder for test tournament view models

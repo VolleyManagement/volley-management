@@ -14,6 +14,6 @@
         /// Gets all tournaments.
         /// </summary>
         /// <returns>Collection of tournaments from the repository.</returns>
-        IQueryable<Tournament> FindAll();
+        IQueryable<Tournament> Find();
     }
 }

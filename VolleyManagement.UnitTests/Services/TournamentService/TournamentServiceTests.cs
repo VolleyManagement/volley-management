@@ -77,7 +77,7 @@
             MockRepositoryFindWhere(new List<Tournament>() { tournament });
 
             //// Act
-            var actualResult = tournamentService.FindById(id);
+            var actualResult = tournamentService.Get(id);
 
             // Assert
             AssertExtensions.AreEqual<Tournament>(tournament, actualResult, new TournamentComparer());
@@ -94,14 +94,14 @@
             var tournamentService = _kernel.Get<TournamentService>();
 
             // Act
-            var tournament = tournamentService.FindById(1);
+            var tournament = tournamentService.Get(1);
 
             // Assert
             Assert.IsNull(tournament);
         }
 
         /// <summary>
-        /// Test for GetAll() method. The method should return existing tournaments
+        /// Test for Get() method. The method should return existing tournaments
         /// (order is important).
         /// </summary>
         [TestMethod]
@@ -118,7 +118,7 @@
                                             .ToList();
 
             // Act
-            var actual = sut.GetAll().ToList();
+            var actual = sut.Get().ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
@@ -283,12 +283,12 @@
         }
 
         /// <summary>
-        /// Mocks FindAll method.
+        /// Mocks Find method.
         /// </summary>
         /// <param name="testData">Test data to mock.</param>
         private void MockRepositoryFindAll(IEnumerable<Tournament> testData)
         {
-            _tournamentRepositoryMock.Setup(tr => tr.FindAll()).Returns(testData.AsQueryable());
+            _tournamentRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
 
         /// <summary>

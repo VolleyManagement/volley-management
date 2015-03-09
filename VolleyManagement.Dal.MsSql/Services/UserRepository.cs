@@ -39,7 +39,7 @@
         /// Gets all users.
         /// </summary>
         /// <returns>Collection of domain users.</returns>
-        public IQueryable<Domain.User> FindAll()
+        public IQueryable<Domain.User> Find()
         {
             return _dalUsers.Select(u => new Domain.User
             {
@@ -59,7 +59,7 @@
         /// <returns>Collection of domain users.</returns>
         public IQueryable<Domain.User> FindWhere(System.Linq.Expressions.Expression<Func<Domain.User, bool>> predicate)
         {
-            return FindAll().Where(predicate);
+            return this.Find().Where(predicate);
         }
 
         /// <summary>

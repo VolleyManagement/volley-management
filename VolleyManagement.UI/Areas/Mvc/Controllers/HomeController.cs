@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
+    using System.Web.Mvc;
+
+    /// <summary>
+    /// The home controller.
+    /// </summary>
     public class HomeController : Controller
     {
-        //
-        // GET: /Mvc/Home/
+        /// <summary>
+        /// The index action.
+        /// </summary>
+        /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Tournaments");
         }
-	}
+    }
 }

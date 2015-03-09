@@ -3,8 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Users;
-    using VolleyManagement.Mvc.ViewModels.Users;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
 
     /// <summary>
     /// Comparer for user objects.

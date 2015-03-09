@@ -1,6 +1,12 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Infrastructure
 {
+    using System;
+    using System.Collections.Generic;
+
+    using Ninject.Activation;
     using Ninject.Modules;
+    using Ninject.Planning.Bindings;
+
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.MsSql.Services;
 
@@ -9,14 +15,32 @@
     /// </summary>
     public class NinjectDataAccessModule : NinjectModule
     {
+        private readonly Func<IContext, object> _scopeCallback;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NinjectDataAccessModule"/> class.
+        /// </summary>
+        /// <param name="scopeCallback"> The scope callback. </param>
+        public NinjectDataAccessModule(Func<IContext, object> scopeCallback)
+        {
+            this._scopeCallback = scopeCallback;
+        }
+
         /// <summary>
         /// Loads bindings
         /// </summary>
         public override void Load()
         {
-            Bind<IUnitOfWork>().To<VolleyUnitOfWork>().InSingletonScope();
-            Bind<ITournamentRepository>().To<TournamentRepository>().InSingletonScope();
-            Bind<IUserRepository>().To<UserRepository>().InSingletonScope();
+            var configs = new List<IBindingConfiguration>
+                              {
+                                  Bind<IUnitOfWork>().To<VolleyUnitOfWork>().BindingConfiguration,
+                                  Bind<ITournamentRepository>().To<TournamentRepository>().BindingConfiguration,
+                                  Bind<IUserRepository>().To<UserRepository>().BindingConfiguration
+                              };
+            if (_scopeCallback != null)
+            {
+                configs.ForEach(bc => bc.ScopeCallback = _scopeCallback);
+            }
         }
     }
 }

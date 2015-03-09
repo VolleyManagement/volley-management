@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-
-namespace VolleyManagement.UI
+﻿namespace VolleyManagement.UI
 {
-    using System.Linq.Expressions;
+    using System.Web.Mvc;
+    using System.Web.Routing;
 
+    /// <summary>
+    /// The route config.
+    /// </summary>
     public class RouteConfig
     {
+        /// <summary>
+        /// The register routes.
+        /// </summary>
+        /// <param name="routes"> The routes collection. </param>
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");

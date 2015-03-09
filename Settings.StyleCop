@@ -1,4 +1,11 @@
 <StyleCopSettings Version="105">
+  <GlobalSettings>
+    <CollectionProperty Name="RecognizedWords">
+      <Value>api</Value>
+      <Value>Api</Value>
+      <Value>WebApi</Value>
+    </CollectionProperty>
+  </GlobalSettings>
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
       <Rules>
@@ -83,9 +90,10 @@
         <StringProperty Name="AdvancedNaming_PrivateConst">$(AA_BB)</StringProperty>
         <StringProperty Name="AdvancedNaming_ProtectedStaticField">_$(aaBb)</StringProperty>
         <StringProperty Name="AdvancedNaming_PrivateStaticField">_$(aaBb)</StringProperty>
-        <StringProperty Name="AdvancedNaming_Words">3D A B C FxCop ID IDs MVC Ninject OK StyleCop UI X</StringProperty>
+        <StringProperty Name="AdvancedNaming_Words">3D A Api B C FxCop ID IDs Mvc MVC Ninject OData OK StyleCop UI WebApi X</StringProperty>
         <StringProperty Name="AdvancedNaming_PublicConst">$(AA_BB)</StringProperty>
         <StringProperty Name="AdvancedNaming_InternalConst">$(AA_BB)</StringProperty>
+        <StringProperty Name="AdvancedNaming_MethodProtectedEventHandler">$(AaBb):$(aaBb)_$(AaBb):$(AaBb)_$(AaBb):$(Aa_Bb)</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">

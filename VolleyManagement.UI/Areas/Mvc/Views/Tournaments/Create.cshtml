@@ -1,0 +1,26 @@
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
+
+@{
+    ViewBag.Title = Resources.TournamentViews.CreateTournamentTitle;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>@Resources.TournamentViews.TournamentLegend</legend>
+
+		@Html.Partial("_CreateOrEdit", Model)
+
+        <p>
+            <input type="submit" value="@Resources.TournamentViews.Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink(Resources.TournamentViews.BackToList, "Index")
+</div>
+
+

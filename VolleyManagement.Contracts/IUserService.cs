@@ -12,7 +12,7 @@
         /// Gets list of all users
         /// </summary>
         /// <returns>Return list of all users.</returns>
-        IQueryable<User> GetAll();
+        IQueryable<User> Get();
 
         /// <summary>
         /// Delete specific user
@@ -37,6 +37,6 @@
         /// </summary>
         /// <param name="id">User id</param>
         /// <returns>Found user</returns>
-        User FindById(int id);
+        User Get(int id);
     }
 }

@@ -1,24 +1,49 @@
-﻿using System.Web.Mvc;
-
-namespace VolleyManagement.UI.Areas.WebAPI
+﻿namespace VolleyManagement.UI.Areas.WebApi
 {
-    public class WebAPIAreaRegistration : AreaRegistration 
+    using System.Web.Http;
+    using System.Web.Http.OData.Builder;
+    using System.Web.Mvc;
+
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
+
+    /// <summary>
+    /// The WebApi area registration.
+    /// </summary>
+    public class WebApiAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        /// <summary>
+        /// Gets the area name.
+        /// </summary>
+        public override string AreaName
         {
-            get 
+            get
             {
-                return "WebAPI";
+                return "WebApi";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        /// <summary>
+        /// The register area.
+        /// </summary>
+        /// <param name="context"> The context. </param>
+        public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "WebAPI_default",
-                "WebAPI/{controller}/{action}/{id}",
+                "WebApi_default",
+                "WebApi/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional },
-                new[] { "VolleyManagement.UI.Areas.WebAPI.Controllers" });
+                new[] { "VolleyManagement.UI.Areas.WebApi.Controllers" });
+
+            RegisterOData(GlobalConfiguration.Configuration);
+        }
+
+        private void RegisterOData(HttpConfiguration config)
+        {
+            var builder = new ODataConventionModelBuilder();
+
+            builder.EntitySet<TournamentViewModel>("Tournaments");
+
+            config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
         }
     }
 }

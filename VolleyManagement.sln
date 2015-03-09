@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.WebApi", "VolleyManagement.WebApi\VolleyManagement.WebApi.csproj", "{023B3213-606F-4359-9EB2-498DAE28AB98}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Domain", "VolleyManagement.Domain\VolleyManagement.Domain.csproj", "{996EEE53-56AC-4002-891F-B989659323D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Services", "VolleyManagement.Services\VolleyManagement.Services.csproj", "{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F}"
@@ -18,11 +16,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B46688
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Mvc", "VolleyManagement.Mvc\VolleyManagement.Mvc.csproj", "{66B942C2-63E9-448E-8D08-F9DAC7AED79C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Contracts", "VolleyManagement.Contracts\VolleyManagement.Contracts.csproj", "{285D93E6-1AD5-4F78-AEF6-72B81D81465D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.UnitTests", "VolleyManagement.UnitTests\VolleyManagement.UnitTests.csproj", "{96908ED1-5E16-4771-AD88-5C9820823F28}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{E6A8CFA8-FB27-4FF7-88A0-E5D7DCBE7596}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Crosscutting.Contracts", "VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj", "{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Crosscutting", "VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj", "{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{7FA1212A-3834-421F-8FCA-CBBF7650948E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{6A07E1F5-E557-400A-BDA9-FABC65F3090A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{B955D566-45CA-4850-8BAF-4BE1B8196351}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.UI", "VolleyManagement.UI\VolleyManagement.UI.csproj", "{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +40,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{023B3213-606F-4359-9EB2-498DAE28AB98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{023B3213-606F-4359-9EB2-498DAE28AB98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{023B3213-606F-4359-9EB2-498DAE28AB98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{023B3213-606F-4359-9EB2-498DAE28AB98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{996EEE53-56AC-4002-891F-B989659323D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{996EEE53-56AC-4002-891F-B989659323D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{996EEE53-56AC-4002-891F-B989659323D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -50,10 +56,6 @@ Global
 		{F82FF279-9D06-4494-BC61-1B7AC88A737D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F82FF279-9D06-4494-BC61-1B7AC88A737D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F82FF279-9D06-4494-BC61-1B7AC88A737D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66B942C2-63E9-448E-8D08-F9DAC7AED79C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66B942C2-63E9-448E-8D08-F9DAC7AED79C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66B942C2-63E9-448E-8D08-F9DAC7AED79C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66B942C2-63E9-448E-8D08-F9DAC7AED79C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{285D93E6-1AD5-4F78-AEF6-72B81D81465D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{285D93E6-1AD5-4F78-AEF6-72B81D81465D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{285D93E6-1AD5-4F78-AEF6-72B81D81465D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,8 +64,33 @@ Global
 		{96908ED1-5E16-4771-AD88-5C9820823F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96908ED1-5E16-4771-AD88-5C9820823F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96908ED1-5E16-4771-AD88-5C9820823F28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1} = {7FA1212A-3834-421F-8FCA-CBBF7650948E}
+		{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
+		{285D93E6-1AD5-4F78-AEF6-72B81D81465D} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
+		{996EEE53-56AC-4002-891F-B989659323D1} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
+		{F82FF279-9D06-4494-BC61-1B7AC88A737D} = {6A07E1F5-E557-400A-BDA9-FABC65F3090A}
+		{7A32AA11-6E95-4896-9E7A-FC3DF24524EA} = {6A07E1F5-E557-400A-BDA9-FABC65F3090A}
+		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C} = {E6A8CFA8-FB27-4FF7-88A0-E5D7DCBE7596}
+		{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28} = {E6A8CFA8-FB27-4FF7-88A0-E5D7DCBE7596}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35
 	EndGlobalSection
 EndGlobal

@@ -13,9 +13,6 @@
     /// </summary>
     public class UserService : IUserService
     {
-        /// <summary>
-        /// Holds UserRepository instance
-        /// </summary>
         private readonly IUserRepository _userRepository;
 
         /// <summary>
@@ -85,13 +82,8 @@
             var userDuplicatesList = _userRepository.FindWhere(u => u.Id != newUser.Id &&
                 (u.Email == newUser.Email || u.UserName == newUser.UserName)).Select(u => new { u.UserName, u.Email });
 
-            var userDuplicateName = userDuplicatesList
-                                        .Where(ud => ud.UserName.Equals(newUser.UserName))
-                                        .FirstOrDefault();
-
-            var userDuplicateEmail = userDuplicatesList
-                                        .Where(ud => ud.Email.Equals(newUser.Email))
-                                        .FirstOrDefault();
+            var userDuplicateName = userDuplicatesList.FirstOrDefault(ud => ud.UserName.Equals(newUser.UserName));
+            var userDuplicateEmail = userDuplicatesList.FirstOrDefault(ud => ud.Email.Equals(newUser.Email));
 
             if (userDuplicateName != null && userDuplicateEmail != null)
             {

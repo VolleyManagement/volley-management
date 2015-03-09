@@ -24,7 +24,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\UnitTests\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,7 +33,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\bin\UnitTests\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -136,20 +136,13 @@
       <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>
       <Name>VolleyManagement.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Mvc\VolleyManagement.Mvc.csproj">
-      <Project>{66b942c2-63e9-448e-8d08-f9dac7aed79c}</Project>
-      <Name>VolleyManagement.Mvc</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Services\VolleyManagement.Services.csproj">
       <Project>{4d6c885f-9e5d-4f09-b81b-cd14ed6a527f}</Project>
       <Name>VolleyManagement.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.WebApi\VolleyManagement.WebApi.csproj">
-      <Project>{023b3213-606f-4359-9eb2-498dae28ab98}</Project>
-      <Name>VolleyManagement.WebApi</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

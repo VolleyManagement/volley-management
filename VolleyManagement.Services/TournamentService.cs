@@ -11,9 +11,6 @@
     /// </summary>
     public class TournamentService : ITournamentService
     {
-        /// <summary>
-        /// Holds TournamentRepository instance
-        /// </summary>
         private readonly ITournamentRepository _tournamentRepository;
 
         /// <summary>

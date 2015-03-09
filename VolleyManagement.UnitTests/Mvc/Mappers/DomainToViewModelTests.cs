@@ -3,7 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using VolleyManagement.Domain.Tournaments;
-    using VolleyManagement.Mvc.Mappers;
+    using VolleyManagement.Mvc.Areas.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;

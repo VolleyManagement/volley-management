@@ -15,14 +15,7 @@
     /// </summary>
     internal class TournamentRepository : ITournamentRepository
     {
-        /// <summary>
-        /// Holds object set of DAL tournaments.
-        /// </summary>
         private readonly ObjectSet<Dal.Tournament> _dalTournaments;
-
-        /// <summary>
-        /// Holds UnitOfWork instance.
-        /// </summary>
         private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>
@@ -88,7 +81,7 @@
         /// <param name="oldEntity">The tournament to update.</param>
         public void Update(Domain.Tournament oldEntity)
         {
-            var tournamentToUpdate = _dalTournaments.Where(t => t.Id == oldEntity.Id).Single();
+            var tournamentToUpdate = _dalTournaments.Single(t => t.Id == oldEntity.Id);
             tournamentToUpdate.Name = oldEntity.Name;
             tournamentToUpdate.Description = oldEntity.Description;
             tournamentToUpdate.RegulationsLink = oldEntity.RegulationsLink;

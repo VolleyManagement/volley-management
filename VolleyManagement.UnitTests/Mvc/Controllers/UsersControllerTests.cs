@@ -12,7 +12,6 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.Users;
     using VolleyManagement.Mvc.Controllers;
-    using VolleyManagement.Mvc.Mappers;
     using VolleyManagement.Mvc.ViewModels.Users;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.UserService;

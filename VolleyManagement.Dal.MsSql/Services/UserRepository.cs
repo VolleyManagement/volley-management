@@ -1,10 +1,9 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    using System.Text;
+
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
@@ -15,14 +14,7 @@
     /// </summary>
     internal class UserRepository : IUserRepository
     {
-        /// <summary>
-        /// Holds object set of DAL users.
-        /// </summary>
         private readonly ObjectSet<Dal.User> _dalUsers;
-
-        /// <summary>
-        /// Holds UnitOfWork instance.
-        /// </summary>
         private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>

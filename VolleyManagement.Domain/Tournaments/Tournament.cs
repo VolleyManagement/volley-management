@@ -8,29 +8,10 @@
     /// </summary>
     public class Tournament
     {
-        /// <summary>
-        /// Name of tournament
-        /// </summary>
         private string _name;
-
-        /// <summary>
-        /// Description of tournament
-        /// </summary>
         private string _description;
-
-        /// <summary>
-        /// Season of tournament
-        /// </summary>
         private string _season;
-
-        /// <summary>
-        /// Scheme of tournament
-        /// </summary>
         private TournamentSchemeEnum _scheme;
-
-        /// <summary>
-        /// Season of tournament
-        /// </summary>
         private string _regulationsLink;
 
         /// <summary>
@@ -52,7 +33,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) || value.Length > Constants.Tournament.MaxNameLength)
+                if (string.IsNullOrEmpty(value) || value.Length > Constants.Tournament.MAX_NAME_LENGTH)
                 {
                     throw new ArgumentException(Resources.ValidationResultName);
                 }
@@ -74,7 +55,7 @@
 
             set
             {
-                if (!string.IsNullOrEmpty(value) && value.Length > Constants.Tournament.MaxDescriptionLength)
+                if (!string.IsNullOrEmpty(value) && value.Length > Constants.Tournament.MAX_DESCRIPTION_LENGTH)
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
@@ -96,7 +77,7 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) || value.Length > Constants.Tournament.MaxSeasonLength)
+                if (string.IsNullOrEmpty(value) || value.Length > Constants.Tournament.MAX_SEASON_LENGTH)
                 {
                     throw new ArgumentException(Resources.ValidationResultSeason);
                 }
@@ -140,7 +121,7 @@
 
             set
             {
-                if (!string.IsNullOrEmpty(value) && value.Length > Constants.Tournament.MaxRegLinkLength)
+                if (!string.IsNullOrEmpty(value) && value.Length > Constants.Tournament.MAX_REGULATION_LENGTH)
                 {
                     throw new ArgumentException(Resources.ValidationResultRegLink);
                 }

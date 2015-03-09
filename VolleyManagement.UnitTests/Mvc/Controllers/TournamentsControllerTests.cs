@@ -13,7 +13,6 @@
     using Ninject;
     using VolleyManagement.Mvc.Controllers;
     using VolleyManagement.Mvc.ViewModels.Tournaments;
-    using VolleyManagement.UnitTests.Mvc.Mappers;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
 
@@ -24,21 +23,9 @@
     [TestClass]
     public class TournamentsControllerTests
     {
-        /// <summary>
-        /// Test Fixture
-        /// </summary>
-        private readonly TournamentServiceTestFixture _testFixture =
-            new TournamentServiceTestFixture();
+        private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
+        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
 
-        /// <summary>
-        /// Tournaments Service Mock
-        /// </summary>
-        private readonly Mock<ITournamentService> _tournamentServiceMock =
-            new Mock<ITournamentService>();
-
-        /// <summary>
-        /// IoC for tests
-        /// </summary>
         private IKernel _kernel;
 
         /// <summary>
@@ -59,7 +46,7 @@
         public void Index_TournamentsExist_TournamentsReturned()
         {
             // Arrange
-            var testData = this._testFixture.TestTournaments()
+            var testData = _testFixture.TestTournaments()
                                        .Build();
             this.MockTournaments(testData);
 

@@ -12,13 +12,14 @@
         /// Gets list of all tournaments
         /// </summary>
         /// <returns>Return list of all tournaments.</returns>
-        IQueryable<Tournament> GetAll();
+        IQueryable<Tournament> Get();
 
         /// <summary>
-        /// Delete specific tournament
+        /// Find a Tournament by id
         /// </summary>
-        /// <param name="id">Tournament id</param>
-        void Delete(int id);
+        /// <param name="id">id of Tournament to find</param>
+        /// <returns>Found Tournament</returns>
+        Tournament Get(int id);
 
         /// <summary>
         /// Create new tournament.
@@ -33,10 +34,9 @@
         void Edit(Tournament tournament);
 
         /// <summary>
-        /// Find a Tournament by id
+        /// Delete specific tournament
         /// </summary>
-        /// <param name="id">id of Tournament to find</param>
-        /// <returns>Found Tournament</returns>
-        Tournament FindById(int id);
+        /// <param name="id">Tournament id</param>
+        void Delete(int id);
     }
 }

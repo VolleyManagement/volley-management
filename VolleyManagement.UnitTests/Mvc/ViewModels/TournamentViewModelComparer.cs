@@ -1,11 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
-    using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.Mvc.ViewModels.Tournaments;
+
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for tournament objects.

@@ -12,6 +12,6 @@
         /// Gets all users.
         /// </summary>
         /// <returns>Collection of users from the repository.</returns>
-        IQueryable<User> FindAll();
+        IQueryable<User> Find();
     }
 }

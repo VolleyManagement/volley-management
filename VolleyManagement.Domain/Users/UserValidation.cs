@@ -32,7 +32,12 @@
             {
                 return false;
             }
+<<<<<<< HEAD
             return cellPhone.Length != Constants.User.PhoneLength || !cellPhone.All(char.IsDigit);
+=======
+
+            return cellPhone.Length != Constants.User.PHONE_LENGTH || !cellPhone.All(char.IsDigit);
+>>>>>>> SingleSite
         }
 
         /// <summary>
@@ -42,7 +47,7 @@
         /// <returns>Validity of User name</returns>
         public static bool ValidateUserName(string userName)
         {
-            return string.IsNullOrEmpty(userName) || !userName.All(char.IsLetter) || userName.Length > Constants.User.MaxNameLength;
+            return string.IsNullOrEmpty(userName) || !userName.All(char.IsLetter) || userName.Length > Constants.User.MAX_NAME_LENGTH;
         }
 
         /// <summary>

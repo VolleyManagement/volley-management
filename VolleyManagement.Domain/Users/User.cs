@@ -2,36 +2,16 @@
 {
     using System;
     using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
     /// User domain class.
     /// </summary>
     public class User
     {
-        /// <summary>
-        ///  User name
-        /// </summary>
         private string _userName;
-
-        /// <summary>
-        /// Password of user
-        /// </summary>
         private string _password;
-
-        /// <summary>
-        /// Full name of user
-        /// </summary>
         private string _fullName;
-
-        /// <summary>
-        /// Cell phone of user
-        /// </summary>
         private string _cellPhone;
-
-        /// <summary>
-        /// Email of user
-        /// </summary>
         private string _email;
 
         /// <summary>

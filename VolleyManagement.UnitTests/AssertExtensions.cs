@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Net.Http;
-    using System.Web.Mvc;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Class for custom asserts.

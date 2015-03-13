@@ -3,8 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Users;
-    using VolleyManagement.WebApi.ViewModels.Users;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Users;
 
     /// <summary>
     /// Comparer for user objects.
@@ -20,14 +19,7 @@
         /// <returns>A signed integer that indicates the relative values of users.</returns>
         public int Compare(UserViewModel x, UserViewModel y)
         {
-            if (IsEqual(x, y))
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
+            return this.AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
@@ -45,7 +37,8 @@
             {
                 return -1;
             }
-            else if (secondUser == null)
+
+            if (secondUser == null)
             {
                 return 1;
             }
@@ -59,7 +52,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given users have the same properties.</returns>
-        private bool IsEqual(UserViewModel x, UserViewModel y)
+        private bool AreEqual(UserViewModel x, UserViewModel y)
         {
             return x.Id == y.Id &&
                 x.FullName == y.FullName &&

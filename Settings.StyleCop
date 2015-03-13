@@ -1,4 +1,11 @@
 <StyleCopSettings Version="105">
+  <GlobalSettings>
+    <CollectionProperty Name="RecognizedWords">
+      <Value>api</Value>
+      <Value>Api</Value>
+      <Value>WebApi</Value>
+    </CollectionProperty>
+  </GlobalSettings>
   <Analyzers>
     <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
       <Rules>
@@ -79,10 +86,14 @@
         <StringProperty Name="AdvancedNaming_Enum">$(AaBb)Enum</StringProperty>
         <StringProperty Name="AdvancedNaming_ProtectedInstanceField">_$(aaBb)</StringProperty>
         <StringProperty Name="AdvancedNaming_PrivateInstanceField">_$(aaBb)</StringProperty>
-        <StringProperty Name="AdvancedNaming_ProtectedConst">$(AaBb)</StringProperty>
-        <StringProperty Name="AdvancedNaming_PrivateConst">$(AaBb):$(AA_BB)</StringProperty>
+        <StringProperty Name="AdvancedNaming_ProtectedConst">$(AA_BB)</StringProperty>
+        <StringProperty Name="AdvancedNaming_PrivateConst">$(AA_BB)</StringProperty>
         <StringProperty Name="AdvancedNaming_ProtectedStaticField">_$(aaBb)</StringProperty>
         <StringProperty Name="AdvancedNaming_PrivateStaticField">_$(aaBb)</StringProperty>
+        <StringProperty Name="AdvancedNaming_Words">3D A Api B C FxCop ID IDs Mvc MVC Ninject OData OK StyleCop UI WebApi X</StringProperty>
+        <StringProperty Name="AdvancedNaming_PublicConst">$(AA_BB)</StringProperty>
+        <StringProperty Name="AdvancedNaming_InternalConst">$(AA_BB)</StringProperty>
+        <StringProperty Name="AdvancedNaming_MethodProtectedEventHandler">$(AaBb):$(aaBb)_$(AaBb):$(AaBb)_$(AaBb):$(Aa_Bb)</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
@@ -122,8 +133,16 @@
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>
         </Rule>
+        <Rule Name="EnumerationItemsMustBeDocumented">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
       </Rules>
-      <AnalyzerSettings />
+      <AnalyzerSettings>
+        <BooleanProperty Name="IgnorePrivates">True</BooleanProperty>
+        <BooleanProperty Name="IncludeFields">False</BooleanProperty>
+      </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.ReadabilityRules">
       <Rules>
@@ -139,6 +158,11 @@
         </Rule>
       </Rules>
       <AnalyzerSettings />
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.OrderingRules">
+      <AnalyzerSettings>
+        <BooleanProperty Name="GeneratedCodeElementOrder">False</BooleanProperty>
+      </AnalyzerSettings>
     </Analyzer>
   </Analyzers>
 </StyleCopSettings>

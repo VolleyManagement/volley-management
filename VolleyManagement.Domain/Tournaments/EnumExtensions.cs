@@ -1,10 +1,8 @@
 ﻿namespace VolleyManagement.Domain.Tournaments
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Extension methods for enumeration

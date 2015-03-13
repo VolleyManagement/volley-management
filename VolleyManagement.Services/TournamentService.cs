@@ -11,9 +11,6 @@
     /// </summary>
     public class TournamentService : ITournamentService
     {
-        /// <summary>
-        /// Holds TournamentRepository instance
-        /// </summary>
         private readonly ITournamentRepository _tournamentRepository;
 
         /// <summary>
@@ -29,9 +26,9 @@
         /// Method to get all tournaments
         /// </summary>
         /// <returns>All tournaments</returns>
-        public IQueryable<Tournament> GetAll()
+        public IQueryable<Tournament> Get()
         {
-            return _tournamentRepository.FindAll();
+            return _tournamentRepository.Find();
         }
 
         /// <summary>
@@ -50,7 +47,7 @@
         /// </summary>
         /// <param name="id">id for search</param>
         /// <returns>A found Tournament</returns>
-        public Tournament FindById(int id)
+        public Tournament Get(int id)
         {
             var tournament = _tournamentRepository.FindWhere(t => t.Id == id).Single();
             return tournament;

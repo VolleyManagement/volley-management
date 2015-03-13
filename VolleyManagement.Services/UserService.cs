@@ -31,9 +31,9 @@
         /// Method to get all users
         /// </summary>
         /// <returns>All users</returns>
-        public IQueryable<User> GetAll()
+        public IQueryable<User> Get()
         {
-            return _userRepository.FindAll();
+            return _userRepository.Find();
         }
 
         /// <summary>
@@ -53,7 +53,7 @@
         /// </summary>
         /// <param name="id">id for search</param>
         /// <returns>A found User</returns>
-        public User FindById(int id)
+        public User Get(int id)
         {
             var user = _userRepository.FindWhere(t => t.Id == id).Single();
             return user;

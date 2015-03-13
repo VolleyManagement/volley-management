@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Tournaments;
-    using VolleyManagement.Mvc.ViewModels.Users;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
+    using VolleyManagement.UnitTests.Services.UserService;
 
     /// <summary>
     /// Builder for test MVC user view models

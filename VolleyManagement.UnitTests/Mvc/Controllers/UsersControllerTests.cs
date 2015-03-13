@@ -11,9 +11,8 @@
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.Users;
-    using VolleyManagement.Mvc.Controllers;
-    using VolleyManagement.Mvc.Mappers;
-    using VolleyManagement.Mvc.ViewModels.Users;
+    using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.UserService;
 
@@ -86,7 +85,7 @@
         public void Index_UsersDoNotExist_ExceptionThrown()
         {
             // Arrange
-            this._userServiceMock.Setup(ur => ur.GetAll())
+            this._userServiceMock.Setup(ur => ur.Get())
                 .Throws(new ArgumentNullException());
 
             var sut = this._kernel.Get<UsersController>();
@@ -222,7 +221,7 @@
             // Arrange
             int searchId = 111;
 
-            _userServiceMock.Setup(tr => tr.FindById(It.IsAny<int>()))
+            _userServiceMock.Setup(tr => tr.Get(It.IsAny<int>()))
                 .Returns(new UserBuilder()
                 .WithId(searchId)
                 .WithUserName("Kapitoshka")
@@ -257,7 +256,7 @@
             // Arrange
             int searchId = 111;
 
-            _userServiceMock.Setup(tr => tr.FindById(It.IsAny<int>()))
+            _userServiceMock.Setup(tr => tr.Get(It.IsAny<int>()))
                 .Throws(new ArgumentNullException());
 
             var controller = this._kernel.Get<UsersController>();
@@ -277,7 +276,7 @@
         /// <param name="testData">Data to mock</param>
         private void MockUsers(IEnumerable<User> testData)
         {
-            this._userServiceMock.Setup(tr => tr.GetAll())
+            this._userServiceMock.Setup(tr => tr.Get())
                 .Returns(testData.AsQueryable());
         }
 

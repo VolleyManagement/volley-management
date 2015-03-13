@@ -32,12 +32,8 @@
             {
                 return false;
             }
-<<<<<<< HEAD
-            return cellPhone.Length != Constants.User.PhoneLength || !cellPhone.All(char.IsDigit);
-=======
 
             return cellPhone.Length != Constants.User.PHONE_LENGTH || !cellPhone.All(char.IsDigit);
->>>>>>> SingleSite
         }
 
         /// <summary>

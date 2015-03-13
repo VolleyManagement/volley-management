@@ -68,7 +68,7 @@
                                             .ToList();
 
             // Act
-            var actual = sut.GetAll().ToList();
+            var actual = sut.Get().ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new UserComparer());
@@ -88,7 +88,7 @@
             MockRepositoryFindWhere(new List<User>() { user });
 
             //// Act
-            var actualResult = userService.FindById(id);
+            var actualResult = userService.Get(id);
 
             // Assert
             AssertExtensions.AreEqual<User>(user, actualResult, new UserComparer());
@@ -105,7 +105,7 @@
             var userService = _kernel.Get<UserService>();
 
             // Act
-            var user = userService.FindById(1);
+            var user = userService.Get(1);
 
             // Assert
             Assert.IsNull(user);
@@ -245,7 +245,7 @@
         /// <param name="testData">Test data to mock.</param>
         private void MockRepositoryFindAll(IEnumerable<User> testData)
         {
-            _userRepositoryMock.Setup(tr => tr.FindAll()).Returns(testData.AsQueryable());
+            _userRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
     }
 }

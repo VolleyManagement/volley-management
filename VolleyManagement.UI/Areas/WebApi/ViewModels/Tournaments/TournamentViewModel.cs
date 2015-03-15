@@ -87,12 +87,14 @@
             tournament.Description = this.Description;
             tournament.Season = this.Season;
             tournament.RegulationsLink = this.RegulationsLink;
-            tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum)) // TODO: Check efficiency
-                .Cast<TournamentSchemeEnum>()
-                .FirstOrDefault(v => v.ToDescription() == this.Scheme);
+            //tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum)) // TODO: Check efficiency
+            //    .Cast<TournamentSchemeEnum>()
+            //    .FirstOrDefault(v => v.ToDescription() == this.Scheme); 
+            tournament.Scheme = (TournamentSchemeEnum)Enum.Parse(typeof(TournamentSchemeEnum), this.Scheme);
+
             return tournament;
         }
-
+        
         #endregion
     }
 }

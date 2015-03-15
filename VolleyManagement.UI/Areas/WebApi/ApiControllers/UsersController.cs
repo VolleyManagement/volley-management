@@ -35,22 +35,22 @@
         }
 
         /// <summary>
-        /// Creates Tournament
+        /// Creates User
         /// </summary>
-        /// <param name="tournament"> The tournament. </param>
-        /// <returns> The <see cref="IHttpActionResult"/>. </returns>
-        public IHttpActionResult Post(UserViewModel tournament)
+        /// <param name="tournament"> The user. </param>
+        /// <returns> The action result <see cref="IHttpActionResult"/>. </returns>
+        public IHttpActionResult Post(UserViewModel user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var tournamentToCreate = tournament.ToDomain();
-            _userService.Create(tournamentToCreate);
-            tournament.Id = tournamentToCreate.Id;
+            var userToCreate = user.ToDomain();
+            _userService.Create(userToCreate);
+            user.Id = userToCreate.Id;
 
-            return Created(tournament);
+            return Created(user);
         }
     }
 }

@@ -147,15 +147,16 @@
     <Compile Include="Services\UserService\UserServiceTests.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
-    <Compile Include="WebApi\Mappers\DomainToViewModelTests.cs" />
-    <Compile Include="WebApi\Mappers\ViewModelToDomainTests.cs" />
+    <Compile Include="WebApi\ViewModels\TournamentWebApiViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="WebApi\ViewModels\TournamentViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\TournamentViewModelTests.cs" />
     <Compile Include="WebApi\ViewModels\UserViewModelBuilder.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="WebApi\ViewModels\UserViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\UserViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">

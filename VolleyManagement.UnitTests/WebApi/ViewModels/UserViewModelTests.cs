@@ -8,7 +8,7 @@
     using VolleyManagement.UnitTests.Services.UserService;
 
     /// <summary>
-    /// UserViewModel class tests
+    /// Is correctly UserViewModel mapped to domain and back tests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]

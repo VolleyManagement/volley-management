@@ -37,7 +37,7 @@
         /// <summary>
         /// Creates User
         /// </summary>
-        /// <param name="tournament"> The user. </param>
+        /// <param name="user"> The user. </param>
         /// <returns> The action result <see cref="IHttpActionResult"/>. </returns>
         public IHttpActionResult Post(UserViewModel user)
         {

@@ -47,7 +47,7 @@
             _kernel = new StandardKernel();
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
         }
-        
+
         /// <summary>
         /// Gets generic T model from response content
         /// </summary>

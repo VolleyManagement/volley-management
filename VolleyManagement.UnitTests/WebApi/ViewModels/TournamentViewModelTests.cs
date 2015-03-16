@@ -8,7 +8,7 @@
     using VolleyManagement.UnitTests.WebApi.ViewModels;
 
     /// <summary>
-    /// TournamentViewModel (WebApi) class tests
+    ///  Is correctly TournamentViewModel mapped to domain and back tests
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -30,11 +30,11 @@
                                         .WithSeason("2016/2017")
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
-            var expected = new TournamentWebApiViewModelBuilder()
+            var expected = new TournamentViewModelBuilder()
                                         .WithId(1)
                                         .WithName("test")
                                         .WithDescription("Volley")
-                                        .WithScheme(TournamentSchemeEnum.Two)
+                                        .WithScheme(TournamentSchemeEnum.Two.ToString())
                                         .WithSeason("2016/2017")
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
@@ -54,11 +54,11 @@
         public void Map_TournamentViewModelWebApi_MappedToDomainModel()
         {
             // Arrange
-            var testViewModel = new TournamentWebApiViewModelBuilder()
+            var testViewModel = new TournamentViewModelBuilder()
                                         .WithId(2)
                                         .WithDescription("Volley")
                                         .WithName("test tournament")
-                                        .WithScheme(TournamentSchemeEnum.One)
+                                        .WithScheme(TournamentSchemeEnum.One.ToString())
                                         .WithSeason("2016/2017")
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();

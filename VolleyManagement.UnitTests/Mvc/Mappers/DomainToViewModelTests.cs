@@ -6,6 +6,8 @@
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
     using VolleyManagement.UnitTests.Services.UserService;
+    using VolleyManagement.UI.Areas.Mvc.Mappers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Tests for DomainToViewModel class.
@@ -19,32 +21,32 @@
         /// The method should map tournament domain model to view model.
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
+        ////[Ignore]// BUG: FIX ASAP
         public void Map_TournamentAsParam_MappedToViewModel()
         {
             // Arrange
-            //var tournament = new TournamentBuilder()
-            //                            .WithId(1)
-            //                            .WithName("test")
-            //                            .WithDescription("Volley")
-            //                            .WithScheme(TournamentSchemeEnum.Two)
-            //                            .WithSeason("2016/2017")
-            //                            .WithRegulationsLink("volley.dp.ua")
-            //                            .Build();
-            //var expected = new TournamentMvcViewModelBuilder()
-            //                            .WithId(1)
-            //                            .WithName("test")
-            //                            .WithDescription("Volley")
-            //                            .WithScheme(TournamentSchemeEnum.Two)
-            //                            .WithSeason("2016/2017")
-            //                            .WithRegulationsLink("volley.dp.ua")
-            //                            .Build();
+            var tournament = new TournamentBuilder()
+                                        .WithId(1)
+                                        .WithName("test")
+                                        .WithDescription("Volley")
+                                        .WithScheme(TournamentSchemeEnum.Two)
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
+            var expected = new TournamentMvcViewModelBuilder()
+                                        .WithId(1)
+                                        .WithName("test")
+                                        .WithDescription("Volley")
+                                        .WithScheme(TournamentSchemeEnum.Two)
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
 
-            //// Act
-            //var actual = DomainToViewModel.Map(tournament);
+            // Act
+            var actual = DomainToViewModel.Map(tournament);
 
-            //// Assert
-            //AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            // Assert
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>

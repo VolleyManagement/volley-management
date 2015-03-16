@@ -69,12 +69,7 @@
             // Arrange
             var controller = _kernel.Get<UsersController>();
             var expected = new UserViewModelBuilder().Build();
-            expected.Id = EXPECTED_USER_ID;
-            _userServiceMock.Setup(us => us.Create(It.IsAny<User>()))
-                .Callback((User u) => { u.Id = EXPECTED_USER_ID; });
-            var input = new UserViewModelBuilder()
-                .WithId(UNASSIGNED_USER_ID)
-                .Build();
+            var input = new UserViewModelBuilder().Build();
 
 
             // Act
@@ -86,6 +81,32 @@
             var actual = createdResult.Entity;
             _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once);
             AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test Post method. Tests that newly created Id is returned with the
+        /// entity.
+        /// </summary>
+        [TestMethod]
+        public void Post_IdCreated_IdReturnedWithEntity()
+        {
+            // Arrange
+            var controller = _kernel.Get<UsersController>();
+            _userServiceMock.Setup(us => us.Create(It.IsAny<User>()))
+                .Callback((User u) => { u.Id = EXPECTED_USER_ID; });
+
+            var input = new UserViewModelBuilder()
+                .WithId(UNASSIGNED_USER_ID)
+                .Build();
+
+            // Act
+            var createdResult = controller.Post(input) as
+                CreatedODataResult<UserViewModel>;
+            var actual = createdResult.Entity;
+
+            // Assert
+            _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once);
+            Assert.AreEqual(actual.Id, EXPECTED_USER_ID);
         }
 
         /// <summary>

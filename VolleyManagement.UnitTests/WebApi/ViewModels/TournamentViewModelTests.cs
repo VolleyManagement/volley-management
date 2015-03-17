@@ -34,7 +34,7 @@
                                         .WithId(1)
                                         .WithName("test")
                                         .WithDescription("Volley")
-                                        .WithScheme(TournamentSchemeEnum.Two.ToString())
+                                        .WithScheme("2")
                                         .WithSeason("2016/2017")
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
@@ -58,7 +58,7 @@
                                         .WithId(2)
                                         .WithDescription("Volley")
                                         .WithName("test tournament")
-                                        .WithScheme(TournamentSchemeEnum.One.ToString())
+                                        .WithScheme("2.5")
                                         .WithSeason("2016/2017")
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
@@ -66,7 +66,7 @@
                                         .WithId(2)
                                         .WithDescription("Volley")
                                         .WithName("test tournament")
-                                        .WithScheme(TournamentSchemeEnum.One)
+                                        .WithScheme(TournamentSchemeEnum.TwoAndHalf)
                                         .WithSeason("2016/2017")
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();

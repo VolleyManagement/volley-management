@@ -8,6 +8,7 @@
     using VolleyManagement.UnitTests.Services.UserService;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
 
     /// <summary>
     /// Tests for DomainToViewModel class.
@@ -21,7 +22,7 @@
         /// The method should map tournament domain model to view model.
         /// </summary>
         [TestMethod]
-        ////[Ignore]// BUG: FIX ASAP
+       
         public void Map_TournamentAsParam_MappedToViewModel()
         {
             // Arrange
@@ -54,32 +55,32 @@
         /// The method should map user domain model to view model.
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
+    
         public void Map_UserAsParam_MappedToViewModel()
         {
-            // Arrange
-            //var user = new UserBuilder()
-            //                            .WithId(2)
-            //                            .WithUserName("testLogin")
-            //                            .WithFullName("Test Name")
-            //                            .WithEmail("test2@gmail.com")
-            //                            .WithPassword("abc222")
-            //                            .WithCellPhone("0500000002")
-            //                            .Build();
-            //var expected = new UserMvcViewModelBuilder()
-            //                            .WithId(2)
-            //                            .WithUserName("testLogin")
-            //                            .WithFullName("Test Name")
-            //                            .WithEmail("test2@gmail.com")
-            //                            .WithPassword("abc222")
-            //                            .WithCellPhone("0500000002")
-            //                            .Build();
+           //  Arrange
+            var user = new UserBuilder()
+                                        .WithId(2)
+                                        .WithUserName("testLogin")
+                                        .WithFullName("Test Name")
+                                        .WithEmail("test2@gmail.com")
+                                        .WithPassword("abc222")
+                                        .WithCellPhone("0500000002")
+                                        .Build();
+            var expected = new UserMvcViewModelBuilder()
+                                        .WithId(2)
+                                        .WithUserName("testLogin")
+                                        .WithFullName("Test Name")
+                                        .WithEmail("test2@gmail.com")
+                                        .WithPassword(string.Empty)
+                                        .WithCellPhone("0500000002")
+                                        .Build();
 
-            //// Act
-            //var actual = DomainToViewModel.Map(user);
+            // Act
+            var actual = DomainToViewModel.Map(user);
 
-            //// Assert
-            //AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+            // Assert
+            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
         }
     }
 }

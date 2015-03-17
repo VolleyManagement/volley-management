@@ -171,8 +171,24 @@
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            this._tournamentService.Delete(id);
-            return this.RedirectToAction("Index");
+            // This will return "An error occured in VolleyManagement application."
+            // Please contact site administrator." if tournament doesnt exist
+            // this._tournamentService.Delete(id);
+            // return this.RedirectToAction("Index");
+
+            // This will return 404
+            ActionResult result;
+            try
+            {
+                this._tournamentService.Delete(id);
+                result = this.RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                result = this.HttpNotFound();
+            }
+
+            return result;
         }
     }
 }

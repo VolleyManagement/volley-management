@@ -25,7 +25,7 @@
        
         public void Map_TournamentAsParam_MappedToViewModel()
         {
-            // Arrange
+            //// Arrange
             var tournament = new TournamentBuilder()
                                         .WithId(1)
                                         .WithName("test")

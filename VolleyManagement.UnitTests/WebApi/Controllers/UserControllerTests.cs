@@ -6,11 +6,13 @@
     using System.Linq;
     using System.Net;
     using System.Net.Http;
-    using System.Web.Http.Results;
     using System.Web.Http.OData.Results;
+    using System.Web.Http.Results;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.Users;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
@@ -69,11 +71,9 @@
             // Arrange
             var controller = _kernel.Get<UsersController>();
             var expected = new UserViewModelBuilder().Build();
-            var input = new UserViewModelBuilder().Build();
-
 
             // Act
-            var createdResult = controller.Post(input) as
+            var createdResult = controller.Post(expected) as
                 CreatedODataResult<UserViewModel>;
 
             // Assert
@@ -105,7 +105,9 @@
             var actual = createdResult.Entity;
 
             // Assert
-            _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once);
+            _userServiceMock.Verify(
+                us => us.Create(It.Is<User>(u => u.Id == EXPECTED_USER_ID)), 
+                Times.Once);
             Assert.AreEqual(actual.Id, EXPECTED_USER_ID);
         }
 

@@ -16,6 +16,8 @@
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
 
+    using System.Web.Http.Results;
+
     /// <summary>
     /// Tests for TournamentController class.
     /// </summary>
@@ -148,21 +150,21 @@
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
+        //[Ignore]// BUG: FIX ASAP
         public void Delete_TournamentExist_TournamentDeleted()
         {
             //// Arrange
-            //var testTournaments = _testFixture.TestTournaments()
-            //              .Build();
-            //var tournamentToDeleteID = testTournaments.Last().Id;
-            //var controller = _kernel.Get<TournamentsController>();
+            var testTournaments = _testFixture.TestTournaments()
+                          .Build();
+            var tournamentToDeleteID = testTournaments.Last().Id;
+            var controller = _kernel.Get<TournamentsController>();
             //TestExtensions.SetControllerRequest(controller);
 
             //// Act
-            //var response = controller.Delete(tournamentToDeleteID);
+            var response = controller.Delete(tournamentToDeleteID) as StatusCodeResult;
 
             //// Assert
-            //Assert.AreEqual(HttpStatusCode.Accepted, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         /// <summary>

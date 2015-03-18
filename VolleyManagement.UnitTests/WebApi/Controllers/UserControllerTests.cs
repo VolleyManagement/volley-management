@@ -71,6 +71,7 @@
             // Arrange
             var controller = _kernel.Get<UsersController>();
             var input = new UserViewModelBuilder().Build();
+            var expected = new UserViewModelBuilder().Build();
             var expectedDomain = new UserBuilder()
                 .WithId(input.Id)
                 .WithUserName(input.UserName)
@@ -88,10 +89,14 @@
             Assert.IsNotNull(createdResult);
             var actual = createdResult.Entity;
 
-            _userServiceMock.Verify(us => us.Create(It.Is<User>(
-                u => new UserComparer().Compare(u, expectedDomain) == 0)), Times.Once);
+            _userServiceMock.Verify(
+                us => us.Create(
+                    It.Is<User>(
+                        u => new UserComparer().Compare(
+                            u, expectedDomain) == 0)),
+                Times.Once);
 
-            AssertExtensions.AreEqual<UserViewModel>(input, actual, new UserViewModelComparer());
+            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
         }
 
         /// <summary>

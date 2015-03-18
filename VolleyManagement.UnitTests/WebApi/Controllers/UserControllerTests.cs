@@ -80,10 +80,6 @@
                 .WithCellPhone(input.CellPhone)
                 .Build();
 
-            var actualDomain = new User();
-            _userServiceMock.Setup(us => us.Create(It.IsAny<User>()))
-                .Callback((User u) => actualDomain = u);
-
             // Act
             var createdResult = controller.Post(input) as
                 CreatedODataResult<UserViewModel>;
@@ -91,9 +87,11 @@
             // Assert
             Assert.IsNotNull(createdResult);
             var actual = createdResult.Entity;
-            _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once);
+
+            _userServiceMock.Verify(us => us.Create(It.Is<User>(
+                u => new UserComparer().Compare(u, expectedDomain) == 0)), Times.Once);
+
             AssertExtensions.AreEqual<UserViewModel>(input, actual, new UserViewModelComparer());
-            AssertExtensions.AreEqual<User>(expectedDomain, actualDomain, new UserComparer());
         }
 
         /// <summary>

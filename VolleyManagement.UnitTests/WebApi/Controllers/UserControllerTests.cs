@@ -70,17 +70,30 @@
         {
             // Arrange
             var controller = _kernel.Get<UsersController>();
-            var expected = new UserViewModelBuilder().Build();
+            var input = new UserViewModelBuilder().Build();
+            var expectedDomain = new UserBuilder()
+                .WithId(input.Id)
+                .WithUserName(input.UserName)
+                .WithFullName(input.FullName)
+                .WithPassword(input.Password)
+                .WithEmail(input.Email)
+                .WithCellPhone(input.CellPhone)
+                .Build();
+
+            var actualDomain = new User();
+            _userServiceMock.Setup(us => us.Create(It.IsAny<User>()))
+                .Callback((User u) => actualDomain = u);
 
             // Act
-            var createdResult = controller.Post(expected) as
+            var createdResult = controller.Post(input) as
                 CreatedODataResult<UserViewModel>;
 
             // Assert
             Assert.IsNotNull(createdResult);
             var actual = createdResult.Entity;
             _userServiceMock.Verify(us => us.Create(It.IsAny<User>()), Times.Once);
-            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+            AssertExtensions.AreEqual<UserViewModel>(input, actual, new UserViewModelComparer());
+            AssertExtensions.AreEqual<User>(expectedDomain, actualDomain, new UserComparer());
         }
 
         /// <summary>

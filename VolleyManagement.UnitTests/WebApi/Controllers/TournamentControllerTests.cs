@@ -55,20 +55,25 @@
         /// Test for Get() by key method. The method should return specific tournament
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
+        //[Ignore]// BUG: FIX ASAP
         public void Get_SpecificTournamentExist_TournamentReturned()
         {
             // Arrange
-            var tournament = new TournamentBuilder().WithId(5).Build();
-            MockSingleTournament(tournament);
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            _tournamentServiceMock.Setup(tr => tr.Get())
+                                            .Returns(testData.AsQueryable());
             var tournamentsController = _kernel.Get<TournamentsController>();
 
             // Act
-            var response = tournamentsController.GetTournaments();
-            //var result = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
-
+            var domainTournaments = new TournamentServiceTestFixture()
+                                            .TestTournaments()
+                                            .Build()
+                                            .AsQueryable();
+            var expected = domainTournaments.Single(dt => dt.Id == 2);
+            var result = tournamentsController.GetTournament(2).Queryable.Single();
             // Assert
-            //Assert.AreEqual(tournament.Id, result.Id);
+            Assert.AreEqual(expected.Id, result.Id);
         }
 
         /// <summary>
@@ -96,32 +101,32 @@
         /// Test for Get() method. The method should return existing tournaments
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
+        //[Ignore]// BUG: FIX ASAP
         public void Get_TournamentsExist_TournamentsReturned()
         {
             // Arrange
-            //var testData = _testFixture.TestTournaments()
-            //                           .Build();
-            //MockTournaments(testData);
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            _tournamentServiceMock.Setup(tr => tr.Get())
+                                            .Returns(testData.AsQueryable());
 
-            //var sut = _kernel.Get<TournamentsController>();
+            var sut = _kernel.Get<TournamentsController>();
 
             //// Expected result
-            //var domainTournaments = new TournamentServiceTestFixture()
-            //                                .TestTournaments()
-            //                                .Build()
-            //                                .ToList();
-            //var expected = new List<TournamentViewModel>();
-            //foreach (var item in domainTournaments)
-            //{
-            //    expected.Add(DomainToViewModel.Map(item));
-            //}
+            var domainTournaments = new TournamentServiceTestFixture()
+                                            .TestTournaments()
+                                            .Build()
+                                            .AsQueryable();
+            var expected = domainTournaments
+                                            .Select(dt => TournamentViewModel.Map(dt))
+                                            .ToList();
 
             //// Actual result
-            //var actual = sut.Get().ToList();
+            var actual = sut.GetTournaments().ToList();
 
             //// Assert
-            //CollectionAssert.AreEqual(expected, actual, new TournamentViewModelComparer());
+            _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
+            CollectionAssert.AreEqual(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>

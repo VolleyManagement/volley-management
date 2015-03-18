@@ -40,7 +40,8 @@
         [Display(Name = "TournamentName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(60)]
+        [StringLength(60, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
         /// <summary>
@@ -48,7 +49,8 @@
         /// </summary>
         /// <value>Description of tournament.</value>
         [Display(Name = "TournamentDescription", ResourceType = typeof(ViewModelResources))]
-        [StringLength(300)]
+        [StringLength(300, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Description { get; set; }
 
         /// <summary>
@@ -58,7 +60,8 @@
         [Display(Name = "TournamentSeason", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(9)]
+        [StringLength(9, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Season { get; set; }
 
         /// <summary>
@@ -75,7 +78,8 @@
         /// </summary>
         /// <value>regulations of tournament.</value>
         [Display(Name = "TournamentRegulationsLink", ResourceType = typeof(ViewModelResources))]
-        [StringLength(255)]
+        [StringLength(255, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string RegulationsLink { get; set; }
 
         /// <summary>

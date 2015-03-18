@@ -81,5 +81,40 @@
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+
+        /// <summary>
+        /// Updates Tournament
+        /// </summary>
+        /// <param name="tournament">The tournament to update</param>
+        /// <returns>The <see cref="IHttpActionResult"/>.</returns>
+        public IHttpActionResult Put(TournamentViewModel tournament)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (_tournamentService.Get().Count(t => t.Id == tournament.Id) == 0)
+            {
+                this.ModelState.AddModelError(string.Empty, VolleyManagement.UI.App_GlobalResources.ViewModelResources.IdNotFound);
+                return BadRequest(ModelState);
+            }
+            
+            var tournamentToUpdate = tournament.ToDomain();
+
+            try
+            {
+                _tournamentService.Edit(tournamentToUpdate);
+            }
+            catch (System.ArgumentException ex)
+            {
+                // ArgumentException will appear in case of not-uniq tournament name
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return BadRequest(ModelState);
+            }
+
+            return Updated(tournament);
+        }
+
     }
 }

@@ -1,13 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Mappers
 {
-    using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.Domain.Tournaments;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.TournamentService;
-    using VolleyManagement.UnitTests.Services.UserService;
+    using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.UserService;
 
     /// <summary>
     /// Tests for DomainToViewModel class.

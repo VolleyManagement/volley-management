@@ -141,7 +141,7 @@
             //// Assert
             //_tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
             //Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            //AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            ////AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -152,17 +152,17 @@
         public void Delete_TournamentExist_TournamentDeleted()
         {
             //// Arrange
-            //var testTournaments = _testFixture.TestTournaments()
-            //              .Build();
-            //var tournamentToDeleteID = testTournaments.Last().Id;
-            //var controller = _kernel.Get<TournamentsController>();
+            ////var testTournaments = _testFixture.TestTournaments()
+            ////              .Build();
+            ////var tournamentToDeleteID = testTournaments.Last().Id;
+            ////var controller = _kernel.Get<TournamentsController>();
             //TestExtensions.SetControllerRequest(controller);
 
             //// Act
-            //var response = controller.Delete(tournamentToDeleteID);
+            ////var response = controller.Delete(tournamentToDeleteID);
 
             //// Assert
-            //Assert.AreEqual(HttpStatusCode.Accepted, response.StatusCode);
+            ////Assert.AreEqual(HttpStatusCode.Accepted, response.StatusCode);
         }
 
         /// <summary>
@@ -194,17 +194,17 @@
         public void Put_InvalidData_BadRequestReturned()
         {
             // Arrange
-            //var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
-            //var expected = new TournamentViewModelBuilder().Build();
-            //var invalidKey = expected.Id + 1;
+            ////var controller = _kernel.Get<TournamentsController>();
+            ////TestExtensions.SetControllerRequest(controller);
+            ////var expected = new TournamentViewModelBuilder().Build();
+            ////var invalidKey = expected.Id + 1;
 
             //// Act
-            //var actual = controller.Put(invalidKey, expected);
+            ////var actual = controller.Put(invalidKey, expected);
 
             //// Assert
-            //_tournamentServiceMock.Verify(us => us.Edit(It.IsAny<Tournament>()), Times.Never());
-            //Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
+            ////_tournamentServiceMock.Verify(us => us.Edit(It.IsAny<Tournament>()), Times.Never());
+            ////Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
         }
 
         /// <summary>
@@ -214,18 +214,18 @@
         [Ignore]// BUG: FIX ASAP
         public void Put_ArgumentException_BadRequestReturned()
         {
-            // Arrange
-            //var expected = new TournamentViewModelBuilder().Build();
-            //_tournamentServiceMock.Setup(us => us.Edit(It.IsAny<Tournament>()))
-            //   .Throws(new ArgumentException());
-            //var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
+            //// Arrange
+            ////var expected = new TournamentViewModelBuilder().Build();
+            ////_tournamentServiceMock.Setup(us => us.Edit(It.IsAny<Tournament>()))
+            ////   .Throws(new ArgumentException());
+            ////var controller = _kernel.Get<TournamentsController>();
+            ////TestExtensions.SetControllerRequest(controller);
 
             //// Act
-            //var actual = controller.Put(expected.Id, expected);
+            ////var actual = controller.Put(expected.Id, expected);
 
             //// Assert
-            //Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
+            ////Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
         }
 
         /// <summary>
@@ -236,17 +236,17 @@
         public void Put_GeneralException_InternalServerErrorReturned()
         {
             //// Arrange
-            //var expected = new TournamentViewModelBuilder().Build();
-            //_tournamentServiceMock.Setup(us => us.Edit(It.IsAny<Tournament>()))
-            //   .Throws(new Exception());
-            //var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
+            ////var expected = new TournamentViewModelBuilder().Build();
+            ////_tournamentServiceMock.Setup(us => us.Edit(It.IsAny<Tournament>()))
+            ////   .Throws(new Exception());
+            ////var controller = _kernel.Get<TournamentsController>();
+            ////TestExtensions.SetControllerRequest(controller);
 
             //// Act
-            //var actual = controller.Put(expected.Id, expected);
+            ////var actual = controller.Put(expected.Id, expected);
 
             //// Assert
-            //Assert.AreEqual(HttpStatusCode.InternalServerError, actual.StatusCode);
+            ////Assert.AreEqual(HttpStatusCode.InternalServerError, actual.StatusCode);
         }
 
         /// <summary>
@@ -255,7 +255,7 @@
         /// <param name="testData">Data to mock</param>
         private void MockTournaments(IEnumerable<Tournament> testData)
         {
-            //_tournamentServiceMock.Setup(tr => tr.GetAll()).Returns(testData.AsQueryable());
+            ////_tournamentServiceMock.Setup(tr => tr.GetAll()).Returns(testData.AsQueryable());
         }
 
         /// <summary>
@@ -264,7 +264,7 @@
         /// <param name="testData">Data to mock</param>
         private void MockSingleTournament(Tournament testData)
         {
-            //_tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
+            ////_tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
         }
     }
 }

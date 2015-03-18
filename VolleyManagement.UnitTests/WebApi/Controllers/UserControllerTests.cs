@@ -118,9 +118,6 @@
             var actual = createdResult.Entity;
 
             // Assert
-            _userServiceMock.Verify(
-                us => us.Create(It.Is<User>(u => u.Id == EXPECTED_USER_ID)), 
-                Times.Once);
             Assert.AreEqual(actual.Id, EXPECTED_USER_ID);
         }
 

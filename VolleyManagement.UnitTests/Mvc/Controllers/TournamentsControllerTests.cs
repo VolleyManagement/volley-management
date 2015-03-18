@@ -180,8 +180,6 @@
         /// The method should return HttpNotFound.
         /// </summary>
         [TestMethod]
-        //[Ignore]// BUG: FIX ASAP
-        //I think this test doesnt need
         public void DeleteConfirmed_TournamentDoesntExist_HttpNotFoundReturned()
         {
             // Arrange

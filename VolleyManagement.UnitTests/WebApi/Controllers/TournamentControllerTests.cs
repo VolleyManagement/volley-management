@@ -55,7 +55,6 @@
         /// Test for Get() by key method. The method should return specific tournament
         /// </summary>
         [TestMethod]
-        //[Ignore]// BUG: FIX ASAP
         public void Get_SpecificTournamentExist_TournamentReturned()
         {
             // Arrange
@@ -72,6 +71,7 @@
                                             .AsQueryable();
             var expected = domainTournaments.Single(dt => dt.Id == 2);
             var result = tournamentsController.GetTournament(2).Queryable.Single();
+
             // Assert
             Assert.AreEqual(expected.Id, result.Id);
         }
@@ -101,7 +101,6 @@
         /// Test for Get() method. The method should return existing tournaments
         /// </summary>
         [TestMethod]
-        //[Ignore]// BUG: FIX ASAP
         public void Get_TournamentsExist_TournamentsReturned()
         {
             // Arrange
@@ -155,7 +154,6 @@
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
-        //[Ignore]// BUG: FIX ASAP
         public void Delete_TournamentExist_TournamentDeleted()
         {
             //// Arrange
@@ -163,7 +161,6 @@
                           .Build();
             var tournamentToDeleteID = testTournaments.Last().Id;
             var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
 
             //// Act
             var response = controller.Delete(tournamentToDeleteID) as StatusCodeResult;

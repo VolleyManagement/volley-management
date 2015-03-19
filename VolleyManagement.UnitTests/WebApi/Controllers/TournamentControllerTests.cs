@@ -112,12 +112,9 @@
             var sut = _kernel.Get<TournamentsController>();
 
             //// Expected result
-            var domainTournaments = new TournamentServiceTestFixture()
+            var expected = new TournamentViewModelServiceTestFixture()
                                             .TestTournaments()
                                             .Build()
-                                            .AsQueryable();
-            var expected = domainTournaments
-                                            .Select(dt => TournamentViewModel.Map(dt))
                                             .ToList();
 
             //// Actual result

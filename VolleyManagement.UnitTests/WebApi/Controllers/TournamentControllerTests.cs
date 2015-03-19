@@ -235,12 +235,12 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-
+            var sended = new TournamentViewModelBuilder().Build();
             var expected = new TournamentViewModelBuilder().Build();
 
             //// Act
             var response = (System.Web.Http.OData.Results.CreatedODataResult<TournamentViewModel>)
-                controller.Post(expected);
+                controller.Post(sended);
 
             var actual = response.Entity;
 

@@ -161,6 +161,7 @@
             var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
 
             // Assert
+            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.AtLeastOnce());
             Assert.AreEqual<int>(expectedId, actual.Id);
         }
 

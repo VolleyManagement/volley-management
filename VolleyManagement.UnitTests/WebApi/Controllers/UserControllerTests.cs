@@ -1,13 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Web.Http.OData.Results;
-    using System.Web.Http.Results;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
@@ -27,24 +24,12 @@
     [TestClass]
     public class UserControllerTests
     {
-        /// <summary>
-        /// An unassigned user identifier.
-        /// </summary>
         private const int UNASSIGNED_USER_ID = 0;
 
-        /// <summary>
-        /// An expected test user identifier.
-        /// </summary>
         private const int EXPECTED_USER_ID = 10;
 
-        /// <summary>
-        /// Test Fixture
-        /// </summary>
         private readonly UserServiceTestFixture _testFixture = new UserServiceTestFixture();
 
-        /// <summary>
-        /// User Service Mock
-        /// </summary>
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
 
         /// <summary>
@@ -90,13 +75,10 @@
             var actual = createdResult.Entity;
 
             _userServiceMock.Verify(
-                us => us.Create(
-                    It.Is<User>(
-                        u => new UserComparer().Compare(
-                            u, expectedDomain) == 0)),
+                us => us.Create(It.Is<User>(u => UserComparer.AreEqual(u, expectedDomain))),
                 Times.Once);
 
-            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+            AssertExtensions.AreEqual(expected, actual, new UserViewModelComparer());
         }
 
         /// <summary>

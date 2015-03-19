@@ -123,28 +123,6 @@
         }
 
         /// <summary>
-        /// Test Post method. Basic story.
-        /// </summary>
-        [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Post_ValidViewModel_TournamentCreated()
-        {
-            // Arrange
-            //var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
-            //var expected = new TournamentViewModelBuilder().Build();
-
-            //// Act
-            //var response = controller.Post(expected);
-            //var actual = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
-
-            //// Assert
-            //_tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
-            //Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            //AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
-        }
-
-        /// <summary>
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
@@ -247,6 +225,27 @@
 
             //// Assert
             //Assert.AreEqual(HttpStatusCode.InternalServerError, actual.StatusCode);
+        }
+
+        /// <summary>
+        /// Test Post method. TournamentViewModel state.
+        /// </summary>
+        [TestMethod]
+        public void Post_ValidViewModel_AfterTournamentCreated()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+
+            var expected = new TournamentViewModelBuilder().Build();
+
+            //// Act
+            var response = (System.Web.Http.OData.Results.CreatedODataResult<TournamentViewModel>)
+                controller.Post(expected);
+
+            var actual = response.Entity;
+
+            //// Assert
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>

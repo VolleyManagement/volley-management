@@ -131,18 +131,15 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            var expected = new TournamentViewModelBuilder().WithId(10).Build();
-            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Callback((Tournament t) => { t.Id = 10; });
+            var expected = new TournamentViewModelBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()));
 
             // Act
-            var input = new TournamentViewModelBuilder().WithId(0).Build();
+            var input = new TournamentViewModelBuilder().Build();
             var response = controller.Post(input);
             var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
 
             // Assert
-
-            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
             AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
@@ -150,13 +147,13 @@
         /// Test Post method. Basic story.
         /// </summary>
         [TestMethod]
-        public void Post_Valid_Id_TournamentCreated()
+        public void Post_IdCreated_IdReturnedWithEntity()
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            var expected = new TournamentViewModelBuilder().WithId(10).Build();
+            var expectedId = 10;
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Callback((Tournament t) => { t.Id = 10; });
+                .Callback((Tournament t) => { t.Id = expectedId; });
 
             // Act
             var input = new TournamentViewModelBuilder().WithId(0).Build();
@@ -164,10 +161,8 @@
             var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
-            Assert.AreEqual<int>(expected.Id, actual.Id);
+            Assert.AreEqual<int>(expectedId, actual.Id);
         }
-
 
         /// <summary>
         /// Test for Delete() method

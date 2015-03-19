@@ -238,14 +238,28 @@
             var sended = new TournamentViewModelBuilder().Build();
             var expected = new TournamentViewModelBuilder().Build();
 
+            var expectedDomain = new TournamentBuilder()
+                .WithId(sended.Id)
+                .WithName(sended.Name)
+                .WithSeason(sended.Season)
+                .WithScheme(Enum.GetValues(typeof(TournamentSchemeEnum))
+                .Cast<TournamentSchemeEnum>()
+                .FirstOrDefault(v => v.ToDescription() == sended.Scheme))
+                .WithRegulationsLink(sended.RegulationsLink)
+                .WithDescription(sended.Description);
+
             //// Act
             var response = (System.Web.Http.OData.Results.CreatedODataResult<TournamentViewModel>)
                 controller.Post(sended);
 
             var actual = response.Entity;
 
+            _tournamentServiceMock.Verify(
+                trServ => trServ.Create(It.Is<Tournament>(t => TournamentComparer.Equals(t, expectedDomain))),
+                Times.Once());
+
             //// Assert
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            //AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>

@@ -69,7 +69,7 @@
                                               Description = tournament.Description,
                                               Season = tournament.Season,
                                               RegulationsLink = tournament.RegulationsLink,
-                                              Scheme = tournament.Scheme.ToString() ////Bug: Use description
+                                              Scheme = tournament.Scheme.ToDescription()
                                           };
 
             return tournamentViewModel;

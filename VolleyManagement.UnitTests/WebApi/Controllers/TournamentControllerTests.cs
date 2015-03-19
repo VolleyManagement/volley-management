@@ -41,6 +41,11 @@
         private IKernel _kernel;
 
         /// <summary>
+        /// ID for tests
+        /// </summary>
+        const int TEST_ID = 2;
+
+        /// <summary>
         /// Initializes test data
         /// </summary>
         [TestInitialize]
@@ -69,10 +74,11 @@
                                             .TestTournaments()
                                             .Build()
                                             .AsQueryable();
-            var expected = domainTournaments.Single(dt => dt.Id == 2);
-            var result = tournamentsController.GetTournament(2).Queryable.Single();
+            var expected = domainTournaments.Single(dt => dt.Id == TEST_ID);
+            var result = tournamentsController.GetTournament(TEST_ID).Queryable.Single();
 
             // Assert
+            _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
             Assert.AreEqual(expected.Id, result.Id);
         }
 
@@ -248,24 +254,6 @@
 
             //// Assert
             //Assert.AreEqual(HttpStatusCode.InternalServerError, actual.StatusCode);
-        }
-
-        /// <summary>
-        /// Mocks test data
-        /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockTournaments(IEnumerable<Tournament> testData)
-        {
-            //_tournamentServiceMock.Setup(tr => tr.GetAll()).Returns(testData.AsQueryable());
-        }
-
-        /// <summary>
-        /// Mocks test data
-        /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockSingleTournament(Tournament testData)
-        {
-            //_tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
         }
     }
 }

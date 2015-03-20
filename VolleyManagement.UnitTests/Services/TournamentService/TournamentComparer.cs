@@ -58,7 +58,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given tournaments have the same properties.</returns>
-        private bool IsEqual(Tournament x, Tournament y)
+        public bool IsEqual(Tournament x, Tournament y)
         {
             return x.Description.Equals(y.Description) &&
                 x.Name.Equals(y.Name) &&

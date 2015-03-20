@@ -228,10 +228,11 @@
         }
 
         /// <summary>
-        /// Test Post method. TournamentViewModel state.
+        /// Test Post method. Is valid tournament domain model 
+        /// pass to Create Service method
         /// </summary>
         [TestMethod]
-        public void AAAAPost_ValidViewModel_AfterTournamentCreated()
+        public void Post_ValidTournamentDomain_PassToCreateMethod()
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
@@ -239,33 +240,23 @@
             var expected = new TournamentViewModelBuilder().Build();
 
             var expectedDomain = new TournamentBuilder()
-                .WithId(sent.Id)
-                .WithName(sent.Name)
-                .WithSeason(sent.Season)
+                .WithId(expected.Id)
+                .WithName(expected.Name)
+                .WithSeason(expected.Season)
                 .WithScheme(Enum.GetValues(typeof(TournamentSchemeEnum))
                 .Cast<TournamentSchemeEnum>()
-                .FirstOrDefault(v => v.ToDescription() == sent.Scheme))
-                .WithRegulationsLink(sent.RegulationsLink)
-                .WithDescription(sent.Description)
+                .FirstOrDefault(v => v.ToDescription() == expected.Scheme))
+                .WithRegulationsLink(expected.RegulationsLink)
+                .WithDescription(expected.Description)
                 .Build();
 
             // Act
-            var response = (System.Web.Http.OData.Results.CreatedODataResult<TournamentViewModel>)
-                controller.Post(sent);
+            controller.Post(sent);
 
-            Tournament tour = sent.ToDomain();
-
-            bool areEquals = TournamentComparer.Equals(tour, expectedDomain);
-
-            //_tournamentServiceMock.Verify(
-            //    trServ => trServ.Create(It.Is<Tournament>(t => )));
-
-            var actual = response.Entity;
-
-            //_tournamentServiceMock.Verify(
-            //    trServ => trServ.Create(It.Is<Tournament>(t => TournamentComparer.Equals(t, expectedDomain))),
-            //    Times.Once());
-
+            // Assert
+            _tournamentServiceMock.Verify(
+                trServ => trServ.Create(It.Is<Tournament>(t => new TournamentComparer().IsEqual(t, expectedDomain))),
+                Times.Once());
         }
 
         /// <summary>

@@ -43,7 +43,7 @@
         /// <summary>
         /// ID for tests
         /// </summary>
-        const int TEST_ID = 2;
+        const int SPECIFIC_TOURNAMENT_ID = 2;
 
         /// <summary>
         /// Initializes test data
@@ -63,23 +63,20 @@
         public void Get_SpecificTournamentExist_TournamentReturned()
         {
             // Arrange
-            var testData = _testFixture.TestTournaments()
-                                            .Build();
-            _tournamentServiceMock.Setup(tr => tr.Get())
-                                            .Returns(testData.AsQueryable());
+            MockTournaments();
             var tournamentsController = _kernel.Get<TournamentsController>();
 
             // Act
-            var domainTournaments = new TournamentServiceTestFixture()
+            var domainTournaments = new TournamentViewModelServiceTestFixture()
                                             .TestTournaments()
                                             .Build()
                                             .AsQueryable();
-            var expected = domainTournaments.Single(dt => dt.Id == TEST_ID);
-            var result = tournamentsController.GetTournament(TEST_ID).Queryable.Single();
+            var expected = domainTournaments.Single(dt => dt.Id == SPECIFIC_TOURNAMENT_ID);
+            var result = tournamentsController.GetTournament(SPECIFIC_TOURNAMENT_ID).Queryable.Single();
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            Assert.AreEqual(expected.Id, result.Id);
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer()); 
         }
 
         /// <summary>
@@ -110,11 +107,7 @@
         public void Get_TournamentsExist_TournamentsReturned()
         {
             // Arrange
-            var testData = _testFixture.TestTournaments()
-                                            .Build();
-            _tournamentServiceMock.Setup(tr => tr.Get())
-                                            .Returns(testData.AsQueryable());
-
+            MockTournaments();
             var sut = _kernel.Get<TournamentsController>();
 
             //// Expected result
@@ -254,6 +247,17 @@
 
             //// Assert
             //Assert.AreEqual(HttpStatusCode.InternalServerError, actual.StatusCode);
+        }
+
+        /// <summary>
+        /// Mock the Tournaments
+        /// </summary>
+        void MockTournaments()
+        {
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            _tournamentServiceMock.Setup(tr => tr.Get())
+                                            .Returns(testData.AsQueryable());
         }
     }
 }

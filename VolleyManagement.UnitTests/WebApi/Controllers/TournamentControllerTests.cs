@@ -127,7 +127,7 @@
         /// Test Post method. Basic story.
         /// </summary>
         [TestMethod]
-        public void Post_ValidViewModel_TournamentCreated()
+        public void Post_ValidTournamentViewModel_Returned()
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();

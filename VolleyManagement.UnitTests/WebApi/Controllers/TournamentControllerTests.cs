@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
+    using System.Web.Http.Results;
     using Contracts;
     using Domain.Tournaments;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,8 +17,6 @@
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
 
-    using System.Web.Http.Results;
-
     /// <summary>
     /// Tests for TournamentController class.
     /// </summary>
@@ -25,6 +24,12 @@
     [TestClass]
     public class TournamentControllerTests
     {
+
+        /// <summary>
+        /// ID for tests
+        /// </summary>
+        private const int SPECIFIC_TOURNAMENT_ID = 2;
+
         /// <summary>
         /// Test Fixture
         /// </summary>
@@ -39,11 +44,6 @@
         /// IoC for tests
         /// </summary>
         private IKernel _kernel;
-
-        /// <summary>
-        /// ID for tests
-        /// </summary>
-        const int SPECIFIC_TOURNAMENT_ID = 2;
 
         /// <summary>
         /// Initializes test data
@@ -252,7 +252,7 @@
         /// <summary>
         /// Mock the Tournaments
         /// </summary>
-        void MockTournaments()
+        private void MockTournaments()
         {
             var testData = _testFixture.TestTournaments()
                                             .Build();

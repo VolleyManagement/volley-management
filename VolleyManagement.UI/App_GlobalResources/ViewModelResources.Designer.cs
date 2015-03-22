@@ -79,15 +79,6 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Идентификатор не найден.
-        /// </summary>
-        public static string IdNotFound {
-            get {
-                return ResourceManager.GetString("IdNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Поле должно содержать только печатаемые символы.
         /// </summary>
         public static string InvalidEntriesError {
@@ -97,7 +88,16 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Поле не может содержать более &quot;{1}&quot; символов.
+        ///   Looks up a localized string similar to Неверный идентификатор турнира.
+        /// </summary>
+        public static string InvalidTournamentId {
+            get {
+                return ResourceManager.GetString("InvalidTournamentId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поле не может содержать более &quot;{0}&quot; символов.
         /// </summary>
         public static string MaxLengthErrorMessage {
             get {

@@ -87,7 +87,7 @@
         /// </summary>
         /// <param name="tournament">The tournament to update</param>
         /// <returns>The <see cref="IHttpActionResult"/>.</returns>
-        public IHttpActionResult Put(TournamentViewModel tournament)
+        public IHttpActionResult Put(int id, TournamentViewModel tournament)
         {
             if (!ModelState.IsValid)
             {
@@ -96,7 +96,7 @@
 
             if (_tournamentService.Get().Count(t => t.Id == tournament.Id) == 0)
             {
-                this.ModelState.AddModelError(string.Empty, VolleyManagement.UI.App_GlobalResources.ViewModelResources.IdNotFound);
+                this.ModelState.AddModelError(string.Empty, VolleyManagement.UI.App_GlobalResources.ViewModelResources.InvalidTournamentId);
                 return BadRequest(ModelState);
             }
             
@@ -106,9 +106,8 @@
             {
                 _tournamentService.Edit(tournamentToUpdate);
             }
-            catch (System.ArgumentException ex)
+            catch (System.Exception ex)
             {
-                // ArgumentException will appear in case of not-uniq tournament name
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return BadRequest(ModelState);
             }

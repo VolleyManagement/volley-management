@@ -15,6 +15,7 @@
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
+    using System.Web.Http.OData.Results;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -172,81 +173,81 @@
         [Ignore]// BUG: FIX ASAP
         public void Put_ValidViewModel_TournamentUpdated()
         {
-        //{
-        //    // Arrange
-        //    var controller = _kernel.Get<TournamentsController>();
-        //    TestExtensions.SetControllerRequest(controller);
-        //    var expected = new TournamentViewModelBuilder().Build();
 
-        //    // Act
-        //    var actual = controller.Put(expected.Id, expected);
+            // Arrange
+            int countOfReturnedId = 1;
+            var controller = _kernel.Get<TournamentsController>();
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()));
+            _tournamentServiceMock.Setup(ts => ts.Get().Count()).Returns(countOfReturnedId);  // need I add smth to Count params? 
+            var expected = new TournamentViewModelBuilder().Build();
 
-        //    // Assert
-        //    _tournamentServiceMock.Verify(us => us.Edit(It.IsAny<Tournament>()), Times.Once());
-        //    Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode);
+            // Act
+            var input = new TournamentViewModelBuilder().Build();
+            var actual = ((UpdatedODataResult<TournamentViewModel>)controller.Put(input.Id, input)).Entity;
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
-        /// Test Put method. Invalid data
+        /// Test Put method. Invalid id
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Put_InvalidData_BadRequestReturned()
+        public void Put_InvalidId_BadRequestReturned()
         {
             // Arrange
-            //var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
-            //var expected = new TournamentViewModelBuilder().Build();
-            //var invalidKey = expected.Id + 1;
-
+            int countOfReturnedId = 0;
+            var controller = _kernel.Get<TournamentsController>();
+            _tournamentServiceMock.Setup(ts => ts.Get().Count()).Returns(countOfReturnedId);  // need I add smth to Count params? 
+            
             //// Act
-            //var actual = controller.Put(invalidKey, expected);
+            var input = new TournamentViewModelBuilder().Build();
+            var actual = controller.Put(input.Id, input);
 
             //// Assert
-            //_tournamentServiceMock.Verify(us => us.Edit(It.IsAny<Tournament>()), Times.Never());
-            //Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
+            Assert.IsTrue(actual is System.Web.Http.Results.InvalidModelStateResult);
+            // Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
         }
 
         /// <summary>
-        /// Test for Put method. The method should return "Bad request" status
+        /// Test Put method. Invalid id
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Put_ArgumentException_BadRequestReturned()
+        public void Put_InvalidModelState_BadRequestReturned()
         {
             // Arrange
-            //var expected = new TournamentViewModelBuilder().Build();
-            //_tournamentServiceMock.Setup(us => us.Edit(It.IsAny<Tournament>()))
-            //   .Throws(new ArgumentException());
-            //var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
+            var controller = _kernel.Get<TournamentsController>();
+            string invalidParameter = null;
 
             //// Act
-            //var actual = controller.Put(expected.Id, expected);
+            var input = new TournamentViewModelBuilder().WithName(invalidParameter).Build();
+            var actual = controller.Put(input.Id, input);
 
             //// Assert
-            //Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
+            Assert.IsTrue(actual is System.Web.Http.Results.InvalidModelStateResult);
         }
 
         /// <summary>
         /// Test for Put method. The method should return "Internal server error" status
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Put_GeneralException_InternalServerErrorReturned()
+        public void Put_WithinEditOperationException_BadRequestReturned()
         {
-            //// Arrange
-            //var expected = new TournamentViewModelBuilder().Build();
-            //_tournamentServiceMock.Setup(us => us.Edit(It.IsAny<Tournament>()))
-            //   .Throws(new Exception());
-            //var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>())).Throws(new Exception());
 
             //// Act
-            //var actual = controller.Put(expected.Id, expected);
+            var input = new TournamentViewModelBuilder().Build();
+            var actual = controller.Put(input.Id, input);
 
             //// Assert
-            //Assert.AreEqual(HttpStatusCode.InternalServerError, actual.StatusCode);
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.AtLeastOnce());
+            Assert.IsTrue(actual is System.Web.Http.Results.InvalidModelStateResult);
+            // Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
         }
 
         /// <summary>

@@ -63,7 +63,9 @@
         public void Get_SpecificTournamentExist_TournamentReturned()
         {
             // Arrange
-            MockTournaments();
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            MockTournaments(testData);
             var tournamentsController = _kernel.Get<TournamentsController>();
 
             // Act
@@ -107,7 +109,9 @@
         public void Get_TournamentsExist_TournamentsReturned()
         {
             // Arrange
-            MockTournaments();
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            MockTournaments(testData);
             var sut = _kernel.Get<TournamentsController>();
 
             //// Expected result
@@ -252,10 +256,8 @@
         /// <summary>
         /// Mock the Tournaments
         /// </summary>
-        private void MockTournaments()
+        private void MockTournaments(IList<Tournament> testData)
         {
-            var testData = _testFixture.TestTournaments()
-                                            .Build();
             _tournamentServiceMock.Setup(tr => tr.Get())
                                             .Returns(testData.AsQueryable());
         }

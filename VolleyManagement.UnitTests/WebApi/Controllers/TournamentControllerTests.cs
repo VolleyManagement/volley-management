@@ -127,26 +127,6 @@
         /// Test Post method. Basic story.
         /// </summary>
         [TestMethod]
-        public void Post_ValidViewModel_ReturnedViewModelAreEqual()
-        {
-            // Arrange
-            var controller = _kernel.Get<TournamentsController>();
-            var expected = new TournamentViewModelBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()));
-
-            // Act
-            var input = new TournamentViewModelBuilder().Build();
-            var response = controller.Post(input);
-            var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
-
-            // Assert
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
-        }
-
-        /// <summary>
-        /// Test Post method. Basic story.
-        /// </summary>
-        [TestMethod]
         public void Post_IdCreated_IdReturnedWithEntity()
         {
             // Arrange

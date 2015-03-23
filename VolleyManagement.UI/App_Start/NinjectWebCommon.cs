@@ -7,6 +7,7 @@ namespace VolleyManagement.UI
 {
     using System;
     using System.Web;
+    using System.Web.Http;
     using System.Web.Mvc;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
@@ -15,6 +16,7 @@ namespace VolleyManagement.UI
     using Ninject.Activation;
     using Ninject.Web.Common;
     using Ninject.Web.Mvc.FilterBindingSyntax;
+    using Ninject.Web.WebApi;
 
     using VolleyManagement.Dal.MsSql.Infrastructure;
     using VolleyManagement.Services.Infrastructure;
@@ -35,6 +37,9 @@ namespace VolleyManagement.UI
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             _bootstrapper.Initialize(CreateKernel);
+
+            // Set resolver for Api controllers
+            GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(_bootstrapper.Kernel);
         }
 
         /// <summary>

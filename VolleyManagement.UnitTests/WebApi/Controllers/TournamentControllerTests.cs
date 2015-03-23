@@ -16,6 +16,7 @@
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
+    using System.Web.Http.OData.Results;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -132,22 +133,22 @@
         /// Test Post method. Basic story.
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Post_ValidViewModel_TournamentCreated()
+        public void Post_IdCreated_IdReturnedWithEntity()
         {
             // Arrange
-            //var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
-            //var expected = new TournamentViewModelBuilder().Build();
+            var controller = _kernel.Get<TournamentsController>();
+            var expectedId = 10;
+            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
+                .Callback((Tournament t) => { t.Id = expectedId; });
 
-            //// Act
-            //var response = controller.Post(expected);
-            //var actual = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
+            // Act
+            var input = new TournamentViewModelBuilder().WithId(0).Build();
+            var response = controller.Post(input);
+            var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
 
-            //// Assert
-            //_tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
-            //Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            ////AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.AtLeastOnce());
+            Assert.AreEqual<int>(expectedId, actual.Id);
         }
 
         /// <summary>

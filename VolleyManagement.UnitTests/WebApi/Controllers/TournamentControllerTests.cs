@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
+    using System.Web.Http.OData.Results;
     using Contracts;
     using Domain.Tournaments;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,6 +33,11 @@
         /// Tournaments Service Mock
         /// </summary>
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+
+        /// <summary>
+        /// A new but not saved tournament id
+        /// </summary>
+        private const int READY_TO_SAVE_TOURNAMENT_ID = 0;
 
         /// <summary>
         /// IoC for tests
@@ -145,19 +151,24 @@
         }
 
         /// <summary>
-        /// Test Post method. Does a valid ViewModel return after Tournament has been created.
+        /// Test Post method. Does a valid ViewModel return after a Tournament has been created.
         /// </summary>
         [TestMethod]
-        public void Post_ValidViewModel_TournamentCreatedWebApi()
+        public void Post_ValidVMTournament_Returned_AfterCreatedWebApi()
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            var incoming = new TournamentViewModelBuilder().Build();
-            var expected = new TournamentViewModelBuilder().Build();
+            var incoming = new TournamentViewModelBuilder().WithId(READY_TO_SAVE_TOURNAMENT_ID).Build();
+            var randomDbId = new Random().Next();
+
+            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
+                .Callback<Tournament>(t => { t.Id = randomDbId; });
+
+            var expected = new TournamentViewModelBuilder().WithId(randomDbId).Build();
 
             // Act
             var response = controller.Post(incoming);
-            var actual = ((System.Web.Http.OData.Results.CreatedODataResult<TournamentViewModel>)response).Entity;
+            var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
 
             // Assert
             AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());

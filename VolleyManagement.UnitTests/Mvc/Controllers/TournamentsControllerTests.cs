@@ -8,6 +8,7 @@
     using System.Web.Mvc;
 
     using Contracts;
+    using Contracts.Exceptions;
     using Domain.Tournaments;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
@@ -268,7 +269,7 @@
                 .WithSeason("2015/2016")
                 .Build();
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Throws(new ArgumentException());
+                .Throws(new TournamentValidationException());
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
@@ -412,7 +413,7 @@
                 .WithSeason("2015/2016")
                 .Build();
             _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
-                .Throws(new ArgumentException());
+                .Throws(new TournamentValidationException());
             var controller = _kernel.Get<TournamentsController>();
 
             // Act

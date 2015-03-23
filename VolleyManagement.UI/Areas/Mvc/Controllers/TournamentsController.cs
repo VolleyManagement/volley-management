@@ -5,6 +5,7 @@
     using System.Web.Mvc;
 
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
@@ -92,7 +93,7 @@
 
                 return this.View(tournamentViewModel);
             }
-            catch (ArgumentException ex)
+            catch (TournamentValidationException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(tournamentViewModel);
@@ -141,7 +142,7 @@
 
                 return this.View(tournamentViewModel);
             }
-            catch (ArgumentException ex)
+            catch (TournamentValidationException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(tournamentViewModel);

@@ -145,6 +145,25 @@
         }
 
         /// <summary>
+        /// Test Post method. Does a valid ViewModel return after Tournament has been created.
+        /// </summary>
+        [TestMethod]
+        public void Post_ValidViewModel_TournamentCreatedWebApi()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            var incoming = new TournamentViewModelBuilder().Build();
+            var expected = new TournamentViewModelBuilder().Build();
+
+            // Act
+            var response = controller.Post(incoming);
+            var actual = ((System.Web.Http.OData.Results.CreatedODataResult<TournamentViewModel>)response).Entity;
+
+            // Assert
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+        }
+
+        /// <summary>
         /// Test for Delete() method
         /// </summary>
         [TestMethod]

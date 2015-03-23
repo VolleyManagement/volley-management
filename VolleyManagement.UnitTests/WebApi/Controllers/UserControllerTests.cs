@@ -141,6 +141,5 @@
         {
             _userServiceMock.Setup(u => u.Get()).Returns(testData.AsQueryable());
         }
-
     }
 }

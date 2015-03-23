@@ -228,7 +228,7 @@
         }
 
         /// <summary>
-        /// Test Post method. Is valid tournament domain model 
+        /// Test Post method. Is valid tournament domain model
         /// pass to Create Service method
         /// </summary>
         [TestMethod]

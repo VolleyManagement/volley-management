@@ -51,6 +51,7 @@
     <Compile Include="IUserService.cs" />
     <Compile Include="ITournamentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Exceptions\TournamentValidationException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">

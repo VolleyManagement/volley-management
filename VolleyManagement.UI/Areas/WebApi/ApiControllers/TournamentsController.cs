@@ -64,7 +64,7 @@
             var tournamentToCreate = tournament.ToDomain();
             _tournamentService.Create(tournamentToCreate);
             tournament.Id = tournamentToCreate.Id;
-
+            
             return Created(tournament);
         }
 

@@ -69,7 +69,11 @@
                                               Description = tournament.Description,
                                               Season = tournament.Season,
                                               RegulationsLink = tournament.RegulationsLink,
+<<<<<<< HEAD
                                               Scheme = tournament.Scheme.ToDescription()
+=======
+                                              Scheme = tournament.Scheme.ToDescription() 
+>>>>>>> master
                                           };
 
             return tournamentViewModel;
@@ -87,12 +91,13 @@
             tournament.Description = this.Description;
             tournament.Season = this.Season;
             tournament.RegulationsLink = this.RegulationsLink;
-            tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum)) // TODO: Check efficiency
+            tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum))
                 .Cast<TournamentSchemeEnum>()
                 .FirstOrDefault(v => v.ToDescription() == this.Scheme);
+
             return tournament;
         }
-
+        
         #endregion
     }
 }

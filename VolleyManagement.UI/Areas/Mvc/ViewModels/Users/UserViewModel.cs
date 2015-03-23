@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Users
 {
     using System.ComponentModel.DataAnnotations;
-
+    using VolleyManagement.Domain.Users;
     using VolleyManagement.UI.App_GlobalResources;
 
     /// <summary>
@@ -72,5 +72,44 @@
             ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(80)]
         public string Email { get; set; }
+
+        #region Factory Methods
+
+        /// <summary>
+        /// Maps domain entity to presentation
+        /// </summary>
+        /// <param name="user"> Domain object </param>
+        /// <returns> View model object </returns>
+        public static UserViewModel Map(User user)
+        {
+            return new UserViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Password = string.Empty,
+                FullName = user.FullName,
+                CellPhone = user.CellPhone,
+                Email = user.Email
+            };
+        }
+
+        /// <summary>
+        /// Maps presentation entity to domain
+        /// </summary>
+        /// <returns> Domain object </returns>
+        public User ToDomain()
+        {
+            return new User
+            {
+                Id = this.Id,
+                UserName = this.UserName,
+                Password = this.Password,
+                FullName = this.FullName,
+                CellPhone = this.CellPhone,
+                Email = this.Email
+            };
+        }
+
+        #endregion
     }
 }

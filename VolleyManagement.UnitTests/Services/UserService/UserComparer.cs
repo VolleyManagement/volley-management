@@ -12,6 +12,18 @@
     internal class UserComparer : IComparer<User>, IComparer
     {
         /// <summary>
+        /// Checks equality.
+        /// </summary>
+        /// <param name="x"> The x. </param>
+        /// <param name="y"> The y. </param>
+        /// <returns> The <see cref="bool"/>. </returns>
+        public static bool AreEqual(User x, User y)
+        {
+            var cmp = new UserComparer();
+            return cmp.Compare(x, y) == 0;
+        }
+
+        /// <summary>
         /// Compares two user objects.
         /// </summary>
         /// <param name="x">The first object to compare.</param>

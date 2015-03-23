@@ -46,7 +46,7 @@
             _kernel = new StandardKernel();
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
         }
-
+        
         /// <summary>
         /// Test Post method. Basic story.
         /// </summary>
@@ -123,6 +123,70 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new UserViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Map() method.
+        /// The method should map user domain model to view model.
+        /// </summary>
+        [TestMethod]
+        public void Map_UserDomainModelAsParam_MappedToViewModelWebApi()
+        {
+            // Arrange
+            var testUser = new UserBuilder()
+                            .WithId(2)
+                            .WithUserName("UserLogin")
+                            .WithFullName("Second User")
+                            .WithEmail("seconduser@gmail.com")
+                            .WithPassword("abc222")
+                            .WithCellPhone("0503222233")
+                            .Build();
+            var expected = new UserViewModelBuilder()
+                                        .WithId(2)
+                                        .WithUserName("UserLogin")
+                                        .WithFullName("Second User")
+                                        .WithEmail("seconduser@gmail.com")
+                                        .WithPassword(string.Empty)
+                                        .WithCellPhone("0503222233")
+                                        .Build();
+
+            // Act
+            var actual = UserViewModel.Map(testUser);
+
+            // Assert
+            AssertExtensions.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for ToDomain() method.
+        /// The method should map user view model to domain model.
+        /// </summary>
+        [TestMethod]
+        public void Map_UserViewModelWebApi_MappedToDomainModel()
+        {
+            // Arrange
+            var testUserViewModel = new UserViewModelBuilder()
+                                        .WithId(2)
+                                        .WithUserName("UserVolley")
+                                        .WithFullName("Second User")
+                                        .WithEmail("seconduser@gmail.com")
+                                        .WithPassword("abc222")
+                                        .WithCellPhone("0500000002")
+                                        .Build();
+            var expected = new UserBuilder()
+                                        .WithId(2)
+                                        .WithUserName("UserVolley")
+                                        .WithFullName("Second User")
+                                        .WithEmail("seconduser@gmail.com")
+                                        .WithPassword("abc222")
+                                        .WithCellPhone("0500000002")
+                                        .Build();
+
+            // Act
+            var actual = testUserViewModel.ToDomain();
+
+            // Assert
+            AssertExtensions.AreEqual<User>(expected, actual, new UserComparer());
         }
 
         /// <summary>

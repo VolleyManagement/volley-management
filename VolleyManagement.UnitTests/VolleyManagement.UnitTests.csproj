@@ -148,8 +148,6 @@
     <Compile Include="Services\UserService\UserServiceTests.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
-    <Compile Include="WebApi\Mappers\DomainToViewModelTests.cs" />
-    <Compile Include="WebApi\Mappers\ViewModelToDomainTests.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs">
       <SubType>Code</SubType>
     </Compile>

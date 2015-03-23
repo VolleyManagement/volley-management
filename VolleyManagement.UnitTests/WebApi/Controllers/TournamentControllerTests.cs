@@ -250,6 +250,102 @@
         }
 
         /// <summary>
+        /// Test Post method. Is valid tournament domain model
+        /// pass to Create Service method
+        /// </summary>
+        [TestMethod]
+        public void Post_ValidTournamentDomain_PassToCreateMethod()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            var sent = new TournamentViewModelBuilder().Build();
+            var expected = new TournamentViewModelBuilder().Build();
+
+            var expectedDomain = new TournamentBuilder()
+                .WithId(expected.Id)
+                .WithName(expected.Name)
+                .WithSeason(expected.Season)
+                .WithScheme(Enum.GetValues(typeof(TournamentSchemeEnum))
+                .Cast<TournamentSchemeEnum>()
+                .FirstOrDefault(v => v.ToDescription() == expected.Scheme))
+                .WithRegulationsLink(expected.RegulationsLink)
+                .WithDescription(expected.Description)
+                .Build();
+
+            // Act
+            controller.Post(sent);
+
+            // Assert
+            _tournamentServiceMock.Verify(
+                trServ => trServ.Create(It.Is<Tournament>(t => new TournamentComparer().IsEqual(t, expectedDomain))),
+                Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Map() method.
+        /// The method should map tournament domain model to view model.
+        /// </summary>
+        [TestMethod]
+        public void Map_TournamentAsParam_MappedToViewModelWebApi()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                                        .WithId(1)
+                                        .WithName("test")
+                                        .WithDescription("Volley")
+                                        .WithScheme(TournamentSchemeEnum.Two)
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
+            var expected = new TournamentViewModelBuilder()
+                                        .WithId(1)
+                                        .WithName("test")
+                                        .WithDescription("Volley")
+                                        .WithScheme("2")
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
+
+            // Act
+            var actual = TournamentViewModel.Map(tournament);
+
+            // Assert
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Map() method.
+        /// The method should map tournament view model to domain model.
+        /// </summary>
+        [TestMethod]
+        public void Map_TournamentViewModelWebApi_MappedToDomainModel()
+        {
+            // Arrange
+            var testViewModel = new TournamentViewModelBuilder()
+                                        .WithId(2)
+                                        .WithDescription("Volley")
+                                        .WithName("test tournament")
+                                        .WithScheme("2.5")
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
+            var expected = new TournamentBuilder()
+                                        .WithId(2)
+                                        .WithDescription("Volley")
+                                        .WithName("test tournament")
+                                        .WithScheme(TournamentSchemeEnum.TwoAndHalf)
+                                        .WithSeason("2016/2017")
+                                        .WithRegulationsLink("volley.dp.ua")
+                                        .Build();
+
+            // Act
+            var actual = testViewModel.ToDomain();
+
+            // Assert
+            AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>

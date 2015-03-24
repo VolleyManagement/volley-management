@@ -9,6 +9,7 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Services;
@@ -173,7 +174,7 @@
         /// and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(TournamentValidationException))]
         public void Edit_TournamentWithNonUniqueName_ExceptionThrown()
         {
             // Arrange
@@ -245,7 +246,7 @@
         /// and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(TournamentValidationException))]
         public void Create_TournamentWithNonUniqueName_ExceptionThrown()
         {
             // Arrange

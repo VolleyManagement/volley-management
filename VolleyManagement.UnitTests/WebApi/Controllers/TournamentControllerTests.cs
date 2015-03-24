@@ -18,13 +18,6 @@
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
 
-    using System.Web.Http;
-    using System.Net.Http;
-    using System.Threading;
-    using System.Web.Http.OData.Builder;
-    using System.Web.Mvc;
-    using System.Web.Http.SelfHost;
-
     /// <summary>
     /// Tests for TournamentController class.
     /// </summary>
@@ -32,6 +25,12 @@
     [TestClass]
     public class TournamentControllerTests
     {
+
+        /// <summary>
+        /// ID for tests
+        /// </summary>
+        private const int SPECIFIC_TOURNAMENT_ID = 2;
+
         /// <summary>
         /// Test Fixture
         /// </summary>
@@ -67,20 +66,25 @@
         /// Test for Get() by key method. The method should return specific tournament
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
         public void Get_SpecificTournamentExist_TournamentReturned()
         {
             // Arrange
-            var tournament = new TournamentBuilder().WithId(5).Build();
-            MockSingleTournament(tournament);
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            MockTournaments(testData);
             var tournamentsController = _kernel.Get<TournamentsController>();
 
             // Act
-            var response = tournamentsController.GetTournaments();
-            //var result = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
+            var domainTournaments = new TournamentViewModelServiceTestFixture()
+                                            .TestTournaments()
+                                            .Build()
+                                            .AsQueryable();
+            var expected = domainTournaments.Single(dt => dt.Id == SPECIFIC_TOURNAMENT_ID);
+            var result = tournamentsController.GetTournament(SPECIFIC_TOURNAMENT_ID).Queryable.Single();
 
             // Assert
-            //Assert.AreEqual(tournament.Id, result.Id);
+            _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer()); 
         }
 
         /// <summary>
@@ -108,54 +112,48 @@
         /// Test for Get() method. The method should return existing tournaments
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
         public void Get_TournamentsExist_TournamentsReturned()
         {
             // Arrange
-            //var testData = _testFixture.TestTournaments()
-            //                           .Build();
-            //MockTournaments(testData);
-
-            //var sut = _kernel.Get<TournamentsController>();
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            MockTournaments(testData);
+            var sut = _kernel.Get<TournamentsController>();
 
             //// Expected result
-            //var domainTournaments = new TournamentServiceTestFixture()
-            //                                .TestTournaments()
-            //                                .Build()
-            //                                .ToList();
-            //var expected = new List<TournamentViewModel>();
-            //foreach (var item in domainTournaments)
-            //{
-            //    expected.Add(DomainToViewModel.Map(item));
-            //}
+            var expected = new TournamentViewModelServiceTestFixture()
+                                            .TestTournaments()
+                                            .Build()
+                                            .ToList();
 
             //// Actual result
-            //var actual = sut.Get().ToList();
+            var actual = sut.GetTournaments().ToList();
 
             //// Assert
-            //CollectionAssert.AreEqual(expected, actual, new TournamentViewModelComparer());
+            _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
+            CollectionAssert.AreEqual(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
         /// Test Post method. Basic story.
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Post_ValidViewModel_TournamentCreated()
+        public void Post_IdCreated_IdReturnedWithEntity()
         {
             // Arrange
-            //var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
-            //var expected = new TournamentViewModelBuilder().Build();
+            var controller = _kernel.Get<TournamentsController>();
+            var expectedId = 10;
+            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
+                .Callback((Tournament t) => { t.Id = expectedId; });
 
-            //// Act
-            //var response = controller.Post(expected);
-            //var actual = TestExtensions.GetModelFromResponse<TournamentViewModel>(response);
+            // Act
+            var input = new TournamentViewModelBuilder().WithId(0).Build();
+            var response = controller.Post(input);
+            var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
 
-            //// Assert
-            //_tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
-            //Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
-            ////AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.AtLeastOnce());
+            Assert.AreEqual<int>(expectedId, actual.Id);
         }
 
         /// <summary>
@@ -206,21 +204,19 @@
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
-        [Ignore]// BUG: FIX ASAP
         public void Delete_TournamentExist_TournamentDeleted()
         {
             //// Arrange
-            ////var testTournaments = _testFixture.TestTournaments()
-            ////              .Build();
-            ////var tournamentToDeleteID = testTournaments.Last().Id;
-            ////var controller = _kernel.Get<TournamentsController>();
-            //TestExtensions.SetControllerRequest(controller);
+            var testTournaments = _testFixture.TestTournaments()
+                          .Build();
+            var tournamentToDeleteID = testTournaments.Last().Id;
+            var controller = _kernel.Get<TournamentsController>();
 
             //// Act
-            ////var response = controller.Delete(tournamentToDeleteID);
+            var response = controller.Delete(tournamentToDeleteID) as StatusCodeResult;
 
             //// Assert
-            ////Assert.AreEqual(HttpStatusCode.Accepted, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 
         /// <summary>
@@ -404,21 +400,12 @@
         }
 
         /// <summary>
-        /// Mocks test data
+        /// Mock the Tournaments
         /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockTournaments(IEnumerable<Tournament> testData)
+        private void MockTournaments(IList<Tournament> testData)
         {
-            ////_tournamentServiceMock.Setup(tr => tr.GetAll()).Returns(testData.AsQueryable());
-        }
-
-        /// <summary>
-        /// Mocks test data
-        /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockSingleTournament(Tournament testData)
-        {
-            ////_tournamentServiceMock.Setup(tr => tr.FindById(testData.Id)).Returns(testData);
+            _tournamentServiceMock.Setup(tr => tr.Get())
+                                            .Returns(testData.AsQueryable());
         }
     }
 }

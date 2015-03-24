@@ -93,12 +93,6 @@
             {
                 return BadRequest(ModelState);
             }
-
-            //if (_tournamentService.Get().Count(t => t.Id == tournament.Id) == 0)
-            //{
-            //    this.ModelState.AddModelError(string.Empty, VolleyManagement.UI.App_GlobalResources.ViewModelResources.InvalidTournamentId);
-            //    return BadRequest(ModelState);
-            //}
             
             var tournamentToUpdate = tournament.ToDomain();
 

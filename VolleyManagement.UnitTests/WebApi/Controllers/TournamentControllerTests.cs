@@ -183,28 +183,7 @@
 
             // Assert
             var comparer = new TournamentComparer();
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)), Times.AtLeastOnce());
-        }
-
-        /// <summary>
-        /// Test Put method. Invalid id
-        /// </summary>
-        [TestMethod]
-        public void Put_InvalidId_BadRequestReturned()
-        {
-            // Arrange
-            int countOfReturnedId = 0;
-            var controller = _kernel.Get<TournamentsController>();
-            _tournamentServiceMock.Setup(ts => ts.Get().Count()).Returns(countOfReturnedId);  // need I add smth to Count params? 
-            
-            //// Act
-            var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input);
-
-            //// Assert
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsTrue(actual is System.Web.Http.Results.InvalidModelStateResult);
-            // Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)), Times.Once());
         }
 
         /// <summary>
@@ -217,13 +196,13 @@
             var controller = _kernel.Get<TournamentsController>();
             controller.ModelState.AddModelError(string.Empty, "test error message");
 
-            //// Act
+            // Act
             var input = new TournamentViewModelBuilder().Build();
             var actual = controller.Put(input.Id, input);
 
-            //// Assert
+            // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
-            //Assert.IsTrue(actual is System.Web.Http.Results.InvalidModelStateResult);
+            Assert.IsTrue(actual is System.Web.Http.Results.InvalidModelStateResult);
         }
 
         /// <summary>
@@ -236,14 +215,13 @@
             var controller = _kernel.Get<TournamentsController>();
             _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>())).Throws(new Exception());
 
-            //// Act
+            // Act
             var input = new TournamentViewModelBuilder().Build();
             var actual = controller.Put(input.Id, input);
 
-            //// Assert
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.AtLeastOnce());
-            // Assert.IsTrue(actual is System.Web.Http.Results.InvalidModelStateResult);
-            // Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
+             Assert.IsTrue(actual is System.Web.Http.Results.InvalidModelStateResult);
         }
 
         /// <summary>

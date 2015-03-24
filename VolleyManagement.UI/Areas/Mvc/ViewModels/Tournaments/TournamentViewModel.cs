@@ -89,5 +89,45 @@
                 this.SeasonsList.Add(string.Format("{0}/{1}", year, ++year));
             }
         }
+        #region Factory Methods
+
+        /// <summary>
+        /// Maps domain entity to presentation
+        /// </summary>
+        /// <param name="tournament"> Domain object </param>
+        /// <returns> View model object </returns>
+        public static TournamentViewModel Map(Tournament tournament)
+        {
+            var tournamentViewModel = new TournamentViewModel
+            {
+                Id = tournament.Id,
+                Name = tournament.Name,
+                Description = tournament.Description,
+                Season = tournament.Season,
+                RegulationsLink = tournament.RegulationsLink,
+                Scheme = tournament.Scheme
+            };
+
+            return tournamentViewModel;
+        }
+
+        /// <summary>
+        /// Maps presentation entity to domain
+        /// </summary>
+        /// <returns> Domain object </returns>
+        public Tournament ToDomain()
+        {
+            return new Tournament
+            {
+                Id = this.Id,
+                Name = this.Name,
+                Description = this.Description,
+                Season = this.Season,
+                Scheme = this.Scheme,
+                RegulationsLink = this.RegulationsLink
+            };
+        }
+        #endregion
+
     }
 }

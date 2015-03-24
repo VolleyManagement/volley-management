@@ -20,6 +20,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>6921d854</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -129,11 +130,12 @@
   <ItemGroup>
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\UsersControllerTests.cs" />
-    <Compile Include="Mvc\Mappers\DomainToViewModelTests.cs" />
-    <Compile Include="Mvc\Mappers\ViewModelToDomainTests.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="AssertExtensions.cs" />
+    <Compile Include="Mvc\ViewModels\UserDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserViewModelComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
@@ -147,8 +149,6 @@
     <Compile Include="Services\UserService\UserServiceTests.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
-    <Compile Include="WebApi\Mappers\DomainToViewModelTests.cs" />
-    <Compile Include="WebApi\Mappers\ViewModelToDomainTests.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -210,10 +210,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets'))" />
     <Error Condition="!Exists('..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props'))" />
+    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets'))" />
   </Target>
-  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.0\build\StyleCop.MSBuild.Targets')" />
+  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

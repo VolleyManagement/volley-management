@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Net;
     using System.Web.Http.OData.Results;
+    using System.Web.Http.Results;
     using Contracts;
     using Domain.Tournaments;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,6 +17,13 @@
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
+
+    using System.Web.Http;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Web.Http.OData.Builder;
+    using System.Web.Mvc;
+    using System.Web.Http.SelfHost;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -151,10 +159,10 @@
         }
 
         /// <summary>
-        /// Test Post method. Does a valid ViewModel return after a Tournament has been created.
+        /// Test Post method. Does a valid ViewModel return after Tournament has been created.
         /// </summary>
         [TestMethod]
-        public void Post_ValidVMTournament_Returned_AfterCreatedWebApi()
+        public void Post_ValidVMTournament_Returned_AfterCreated_WebApi()
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
@@ -172,6 +180,26 @@
 
             // Assert
             AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test Post method(). Returns InvalidModelStateResult 
+        /// if the ModelState has some errors
+        /// </summary>
+        [TestMethod]
+        public void Post_NotValidTournametnVM_ReturnBadRequest_WebApi()
+        {
+            //Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            controller.ModelState.Clear();
+            var notValidVM = new TournamentViewModelBuilder().WithSeason("12345678910").Build();
+            controller.ModelState.AddModelError("NotValidSeason", "Season field isn't valid");
+
+            //Act
+            var result = controller.Post(notValidVM) as InvalidModelStateResult;
+
+            //Assert
+            Assert.IsInstanceOfType(result, typeof(InvalidModelStateResult));
         }
 
         /// <summary>

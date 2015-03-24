@@ -69,11 +69,7 @@
                                               Description = tournament.Description,
                                               Season = tournament.Season,
                                               RegulationsLink = tournament.RegulationsLink,
-<<<<<<< HEAD
                                               Scheme = tournament.Scheme.ToDescription()
-=======
-                                              Scheme = tournament.Scheme.ToDescription() 
->>>>>>> master
                                           };
 
             return tournamentViewModel;

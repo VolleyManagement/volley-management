@@ -199,7 +199,7 @@
         /// Test Put method. The method should return "Bad request (Invalid model state)" status
         /// </summary>
         [TestMethod]
-        public void Put_ValidationExceptionThrown_BadRequestReturned()
+        public void Put_InvalidModelState_InvalidModelStateResultReturned()
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
@@ -219,7 +219,7 @@
         /// Test for Put method. The method should return "Bad request" status
         /// </summary>
         [TestMethod]
-        public void Put_WithinEditOperationTournamentValidationException_BadRequestErrorMessageResultReturned()
+        public void Put_ValidationExceptionThrown_BadRequestReturned()
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();

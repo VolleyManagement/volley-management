@@ -178,9 +178,8 @@
         public void Put_ValidViewModel_TournamentUpdated()
         {
             // Arrange
-            var expectedDomainTournament = new TournamentViewModelBuilder().Build().ToDomain();
+            var expectedDomainTournament = new TournamentBuilder().Build();
             var controller = _kernel.Get<TournamentsController>();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()));
 
             // Act
             var input = new TournamentViewModelBuilder().Build();

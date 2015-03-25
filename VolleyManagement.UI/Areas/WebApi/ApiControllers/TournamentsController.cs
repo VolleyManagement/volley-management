@@ -105,9 +105,9 @@
             {
                 return BadRequest(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return InternalServerError(ex);                
+                return InternalServerError();                
             }
 
             return Updated(tournament);

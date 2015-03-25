@@ -202,17 +202,24 @@
         public void Put_InvalidModelState_InvalidModelStateResultReturned()
         {
             // Arrange
+            var keyForErrorMessage = "keyForErrorMessage";
             var controller = _kernel.Get<TournamentsController>();
-            controller.ModelState.AddModelError(string.Empty, "test error message");
+            controller.ModelState.AddModelError(keyForErrorMessage, EXCEPTION_MESSAGE);
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input)
-                as System.Web.Http.Results.InvalidModelStateResult;
+            var actualResult = controller.Put(input.Id, input) as System.Web.Http.Results.InvalidModelStateResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsNotNull(actual);
+            Assert.IsNotNull(actualResult);
+
+            System.Web.Http.ModelBinding.ModelState actualErrorCollection;
+
+            Assert.IsTrue(actualResult.ModelState.TryGetValue(keyForErrorMessage, out actualErrorCollection));
+
+            var actualCorrectErrorCount = actualErrorCollection.Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
+            Assert.IsTrue(actualCorrectErrorCount != 0);
         }
 
         /// <summary>
@@ -244,17 +251,15 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
-                .Throws(new Exception(EXCEPTION_MESSAGE));
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>())).Throws(new Exception());
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input)
-                as System.Web.Http.Results.InternalServerErrorResult;
+            var actual = controller.Put(input.Id, input) is System.Web.Http.Results.InternalServerErrorResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
-            Assert.IsNotNull(actual);
+            Assert.IsTrue(actual);
         }
 
         /// <summary>

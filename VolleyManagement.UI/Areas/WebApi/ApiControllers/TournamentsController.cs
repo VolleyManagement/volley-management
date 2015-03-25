@@ -33,15 +33,7 @@
         public IQueryable<TournamentViewModel> GetTournaments()
         {
             return _tournamentService.Get()
-                                     .Select(t => new TournamentViewModel
-                                     {
-                                         Id = t.Id,
-                                         Name = t.Name,
-                                         Description = t.Description,
-                                         Season = t.Season,
-                                         RegulationsLink = t.RegulationsLink,
-                                         Scheme = t.Scheme.ToString()
-                                     });
+                                     .Select(t => TournamentViewModel.Map(t));
         }
 
         /// <summary>

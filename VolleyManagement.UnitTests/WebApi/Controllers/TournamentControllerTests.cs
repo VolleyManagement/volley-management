@@ -244,15 +244,17 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>())).Throws(new Exception());
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+                .Throws(new Exception(EXCEPTION_MESSAGE));
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input);
+            var actual = controller.Put(input.Id, input)
+                as System.Web.Http.Results.InternalServerErrorResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
-            Assert.IsTrue(actual is System.Web.Http.Results.InternalServerErrorResult);
+            Assert.IsNotNull(actual);
         }
 
         /// <summary>

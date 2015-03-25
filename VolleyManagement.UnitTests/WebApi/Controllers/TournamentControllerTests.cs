@@ -33,6 +33,11 @@
         private const int SPECIFIC_TOURNAMENT_ID = 2;
 
         /// <summary>
+        /// Message that should be passed to exception.
+        /// </summary>
+        private const string EXCEPTION_MESSAGE = "Test exception message.";
+
+        /// <summary>
         /// Test Fixture
         /// </summary>
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
@@ -194,7 +199,7 @@
         /// Test Put method. The method should return "Bad request (Invalid model state)" status
         /// </summary>
         [TestMethod]
-        public void Put_InvalidModelState_InvalidModelStateResultReturned()
+        public void Put_ValidationExceptionThrown_BadRequestReturned()
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
@@ -202,11 +207,12 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input);
+            var actual = controller.Put(input.Id, input)
+                as System.Web.Http.Results.InvalidModelStateResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsTrue(actual is System.Web.Http.Results.InvalidModelStateResult);
+            Assert.IsNotNull(actual);
         }
 
         /// <summary>
@@ -217,15 +223,17 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>())).Throws(new TournamentValidationException());
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+                .Throws(new TournamentValidationException(EXCEPTION_MESSAGE));
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input);
+            var actual = controller.Put(input.Id, input) as System.Web.Http.Results.BadRequestErrorMessageResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
-            Assert.IsTrue(actual is System.Web.Http.Results.BadRequestErrorMessageResult);
+            Assert.IsNotNull(actual);
+            Assert.AreEqual<string>(actual.Message, EXCEPTION_MESSAGE);
         }
 
         /// <summary>

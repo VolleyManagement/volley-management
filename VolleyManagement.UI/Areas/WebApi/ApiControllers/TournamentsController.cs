@@ -50,7 +50,7 @@
                                                          .Where(t => t.Id == key)
                                                          .ToList()
                                                          .Select(t => TournamentViewModel.Map(t))
-                                                        .AsQueryable());
+                                                         .AsQueryable());
         }
 
         /// <summary>

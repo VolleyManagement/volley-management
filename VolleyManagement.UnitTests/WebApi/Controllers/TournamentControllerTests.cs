@@ -44,7 +44,7 @@
         /// <summary>
         /// A new but not saved tournament id
         /// </summary>
-        private const int READY_TO_SAVE_TOURNAMENT_ID = 0;
+        private const int UNASSIGNED_ID = 0;
 
         /// <summary>
         /// IoC for tests
@@ -164,7 +164,7 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            var incoming = new TournamentViewModelBuilder().WithId(READY_TO_SAVE_TOURNAMENT_ID).Build();
+            var input = new TournamentViewModelBuilder().WithId(UNASSIGNED_ID).Build();
             var randomDbId = new Random().Next();
 
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
@@ -173,7 +173,7 @@
             var expected = new TournamentViewModelBuilder().WithId(randomDbId).Build();
 
             // Act
-            var response = controller.Post(incoming);
+            var response = controller.Post(input);
             var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
 
             // Assert

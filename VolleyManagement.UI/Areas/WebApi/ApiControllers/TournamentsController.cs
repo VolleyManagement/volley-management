@@ -1,12 +1,13 @@
 ﻿namespace VolleyManagement.UI.Areas.WebApi.ApiControllers
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
     using System.Web.Http.OData;
     using System.Web.Mvc;
-
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
@@ -86,5 +87,36 @@
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+
+        /// <summary>
+        /// Updates Tournament
+        /// </summary>
+        /// <param name="tournament">The tournament to update</param>
+        /// <returns>The <see cref="IHttpActionResult"/>.</returns>
+        public IHttpActionResult Put(int id, TournamentViewModel tournament)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            var tournamentToUpdate = tournament.ToDomain();
+
+            try
+            {
+                _tournamentService.Edit(tournamentToUpdate);
+            }
+            catch(TournamentValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return InternalServerError();                
+            }
+
+            return Updated(tournament);
+        }
+
     }
 }

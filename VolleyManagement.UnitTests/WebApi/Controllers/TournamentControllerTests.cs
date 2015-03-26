@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
+    using System.Web.Http.ModelBinding;
     using System.Web.Http.OData.Results;
     using System.Web.Http.Results;
     using Contracts;
@@ -12,8 +13,8 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using Services.TournamentService;
-
+    using Services.TournamentService;       
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
@@ -29,6 +30,16 @@
         /// ID for tests
         /// </summary>
         private const int SPECIFIC_TOURNAMENT_ID = 2;
+
+        /// <summary>
+        /// Message that should be passed to exception.
+        /// </summary>
+        private const string EXCEPTION_MESSAGE = "Test exception message.";
+
+        /// <summary>
+        /// Key used for getting exception from ModelStateDictionary.
+        /// </summary>
+        private const string KEY_FOR_EXCEPTION_MESSAGE = "keyForErrorMessage";
 
         /// <summary>
         /// A new but not saved tournament id
@@ -83,7 +94,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer()); 
         }
 
         /// <summary>
@@ -180,46 +191,6 @@
         }
 
         /// <summary>
-        /// Test for Delete() method
-        /// </summary>
-        [TestMethod]
-        public void Delete_TournamentExist_TournamentDeleted()
-        {
-            //// Arrange
-            var testTournaments = _testFixture.TestTournaments()
-                          .Build();
-            var tournamentToDeleteID = testTournaments.Last().Id;
-            var controller = _kernel.Get<TournamentsController>();
-
-            //// Act
-            var response = controller.Delete(tournamentToDeleteID) as StatusCodeResult;
-
-            //// Assert
-            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-        }
-
-        /// <summary>
-        /// Test Put method. Basic story.
-        /// </summary>
-        [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Put_ValidViewModel_TournamentUpdated()
-        {
-        // {
-              // Arrange
-        //    var controller = _kernel.Get<TournamentsController>();
-        //    TestExtensions.SetControllerRequest(controller);
-        //    var expected = new TournamentViewModelBuilder().Build();
-
-              // Act
-        //    var actual = controller.Put(expected.Id, expected);
-
-              // Assert
-        //    _tournamentServiceMock.Verify(us => us.Edit(It.IsAny<Tournament>()), Times.Once());
-        //    Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode);
-        }
-        
-        /// <summary>
         /// Test Post method. Is valid tournament domain model
         /// pass to Create Service method
         /// </summary>
@@ -249,6 +220,106 @@
             _tournamentServiceMock.Verify(
                 trServ => trServ.Create(It.Is<Tournament>(t => new TournamentComparer().IsEqual(t, expectedDomain))),
                 Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete() method
+        /// </summary>
+        [TestMethod]
+        public void Delete_TournamentExist_TournamentDeleted()
+        {
+            //// Arrange
+            var testTournaments = _testFixture.TestTournaments()
+                          .Build();
+            var tournamentToDeleteID = testTournaments.Last().Id;
+            var controller = _kernel.Get<TournamentsController>();
+
+            //// Act
+            var response = controller.Delete(tournamentToDeleteID) as StatusCodeResult;
+
+            //// Assert
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        /// <summary>
+        /// Test Put method. Valid ViewModel.
+        /// </summary>
+        [TestMethod]
+        public void Put_ValidViewModel_TournamentUpdated()
+        {
+            // Arrange
+            var expectedDomainTournament = new TournamentBuilder().Build();
+            var controller = _kernel.Get<TournamentsController>();
+
+            // Act
+            var input = new TournamentViewModelBuilder().Build();
+            controller.Put(input.Id, input);
+
+            // Assert
+            var comparer = new TournamentComparer();
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)), Times.Once());
+        }
+
+        /// <summary>
+        /// Test Put method. The method should return "Bad request (Invalid model state)" status
+        /// </summary>
+        [TestMethod]
+        public void Put_InvalidModelState_InvalidModelStateResultReturned()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            controller.ModelState.AddModelError(KEY_FOR_EXCEPTION_MESSAGE, EXCEPTION_MESSAGE);
+
+            // Act
+            var input = new TournamentViewModelBuilder().Build();
+            var actualResult = controller.Put(input.Id, input) as InvalidModelStateResult;
+            var actualCorrectErrorCount = actualResult.ModelState.Single(msvp => msvp.Key == KEY_FOR_EXCEPTION_MESSAGE).Value
+                                                                    .Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
+            Assert.IsNotNull(actualResult);
+            Assert.AreEqual(1, actualCorrectErrorCount);
+        }
+
+        /// <summary>
+        /// Test for Put method. The method should return "Bad request" status
+        /// </summary>
+        [TestMethod]
+        public void Put_ValidationExceptionThrown_BadRequestReturned()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+                .Throws(new TournamentValidationException(EXCEPTION_MESSAGE));
+
+            // Act
+            var input = new TournamentViewModelBuilder().Build();
+            var actual = controller.Put(input.Id, input) as BadRequestErrorMessageResult;
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
+            Assert.IsNotNull(actual);
+            Assert.AreEqual<string>(actual.Message, EXCEPTION_MESSAGE);
+        }
+        
+        /// <summary>
+        /// Test for Put method. The method should return "Internal server error" status
+        /// </summary>
+        [TestMethod]
+        public void Put_WithinEditOperationException_InternalServerErrorResultReturned()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>())).Throws(new Exception());
+
+            // Act
+            var input = new TournamentViewModelBuilder().Build();
+            var actual = controller.Put(input.Id, input) is InternalServerErrorResult;
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
+            Assert.IsTrue(actual);
         }
 
         /// <summary>

@@ -48,10 +48,8 @@
         /// Initializes a new instance of the TournamentValidationException
         /// class with a serialized data.
         /// </summary>
-        /// <param name="info">The SerializationInfo that holds the 
-        /// serialized data about the exception being trown.</param>
-        /// <param name="context">StreamingContext that contains the 
-        /// information about the source or destination.</param>
+        /// <param name="info">The SerializationInfo that holds the serialized data about the exception being thrown.</param>
+        /// <param name="context">StreamingContext that contains the information about the source or destination.</param>
         public TournamentValidationException(SerializationInfo info, StreamingContext context)
         {
         }

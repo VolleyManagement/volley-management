@@ -219,15 +219,15 @@
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
             Assert.IsNotNull(actualResult);
 
-            var actualCorrectErrorCount = actualResult.ModelState.Single(msvp => msvp.Key == EXCEPTION_MESSAGE).Value
+            var actualCorrectErrorCount = actualResult.ModelState.Single(msvp => msvp.Key == KEY_FOR_EXCEPTION_MESSAGE).Value
                                                                     .Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
 
-            //var actualCorrectErrorCount3 = (from msvp in actualResult.ModelState
-            //                                where msvp.Key == KEY_FOR_EXCEPTION_MESSAGE
-            //                                && msvp.Value.Errors.Any<ModelError>(me => me.ErrorMessage == EXCEPTION_MESSAGE)
-            //                                select msvp).Count();
+            //var actualCorrectErrorCount = (from msvp in actualResult.ModelState
+            //                               where msvp.Key == KEY_FOR_EXCEPTION_MESSAGE
+            //                               && msvp.Value.Errors.Any<ModelError>(me => me.ErrorMessage == EXCEPTION_MESSAGE)
+            //                               select msvp).Count();
             
-            Assert.IsTrue(actualCorrectErrorCount != 0);           
+            Assert.IsTrue(actualCorrectErrorCount == 1);           
 
         }
 

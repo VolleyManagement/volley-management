@@ -59,7 +59,7 @@
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
-
+                
                 _description = value;
             }
         }

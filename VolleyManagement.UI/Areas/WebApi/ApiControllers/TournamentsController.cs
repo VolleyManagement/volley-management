@@ -56,8 +56,9 @@
         /// <summary>
         /// Creates Tournament
         /// </summary>
-        /// <param name="tournament"> The tournament. </param>
-        /// <returns> The <see cref="IHttpActionResult"/>. </returns>
+        /// <param name="tournament"> The tournament as ViewModel. </param>
+        /// <returns> Has been saved successfully - Created OData result
+        /// unsuccessfully - Bad request </returns>
         public IHttpActionResult Post(TournamentViewModel tournament)
         {
             if (!ModelState.IsValid)

@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
+    using System.Web.Http.OData.Results;
     using System.Web.Http.Results;
     using Contracts;
     using Domain.Tournaments;
@@ -16,7 +17,6 @@
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
-    using System.Web.Http.OData.Results;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -29,6 +29,11 @@
         /// ID for tests
         /// </summary>
         private const int SPECIFIC_TOURNAMENT_ID = 2;
+
+        /// <summary>
+        /// A new but not saved tournament id
+        /// </summary>
+        private const int UNASSIGNED_ID = 0;
 
         /// <summary>
         /// Test Fixture
@@ -130,6 +135,51 @@
         }
 
         /// <summary>
+        /// Test Post method. Does a valid ViewModel return after Tournament has been created.
+        /// </summary>
+        [TestMethod]
+        public void Post_ValidViewModelTournament_ReturnedAfterCreatedWebApi()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            var input = new TournamentViewModelBuilder().WithId(UNASSIGNED_ID).Build();
+
+            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
+                .Callback<Tournament>(t => { t.Id = SPECIFIC_TOURNAMENT_ID; });
+
+            var expected = new TournamentViewModelBuilder().WithId(SPECIFIC_TOURNAMENT_ID).Build();
+
+            // Act
+            var response = controller.Post(input);
+            var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
+
+            // Assert
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test Post method(). Returns InvalidModelStateResult
+        /// if the ModelState has some errors
+        /// </summary>
+        [TestMethod]
+        public void Post_NotValidTournametnViewModel_ReturnBadRequestWebApi()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            controller.ModelState.Clear();
+            var notValidViewModel = new TournamentViewModelBuilder().WithSeason("12345678910").Build();
+            controller.ModelState.AddModelError("NotValidSeason", "Season field isn't valid");
+
+            // Act
+            var result = controller.Post(notValidViewModel) as InvalidModelStateResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ModelState.Count == 1);
+            Assert.IsTrue(result.ModelState.Keys.Contains("NotValidSeason"));
+        }
+
+        /// <summary>
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
@@ -155,16 +205,16 @@
         [Ignore]// BUG: FIX ASAP
         public void Put_ValidViewModel_TournamentUpdated()
         {
-        //{
-        //    // Arrange
+        // {
+              // Arrange
         //    var controller = _kernel.Get<TournamentsController>();
         //    TestExtensions.SetControllerRequest(controller);
         //    var expected = new TournamentViewModelBuilder().Build();
 
-        //    // Act
+              // Act
         //    var actual = controller.Put(expected.Id, expected);
 
-        //    // Assert
+              // Assert
         //    _tournamentServiceMock.Verify(us => us.Edit(It.IsAny<Tournament>()), Times.Once());
         //    Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode);
         }

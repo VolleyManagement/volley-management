@@ -58,7 +58,7 @@
                 Tournament tournament = this._tournamentService.Get(id);
                 return View(tournament);
             }
-            catch (Exception)
+            catch (InvalidOperationException)
             {
                 return this.HttpNotFound();
             }

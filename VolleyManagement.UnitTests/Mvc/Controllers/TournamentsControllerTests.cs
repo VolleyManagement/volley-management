@@ -92,6 +92,26 @@
         /// Test for Details()
         /// </summary>
         [TestMethod]
+        public void Details_TournamentDoesNotExist_NotFoundResult()
+        {
+            // Arrange
+            this._tournamentServiceMock.Setup(tr => tr.Get(It.IsAny<int>()))
+                .Throws(new InvalidOperationException());
+
+            var sut = this._kernel.Get<TournamentsController>();
+            var expected = (int)HttpStatusCode.NotFound;
+
+            // Act
+            var actual = (sut.Details(It.IsAny<int>()) as HttpNotFoundResult).StatusCode;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for Details()
+        /// </summary>
+        [TestMethod]
         public void Details_TournamentExists_TournamentIsReturned()
         {
             // Arrange

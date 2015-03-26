@@ -46,7 +46,7 @@
             _kernel = new StandardKernel();
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
         }
-        
+
         /// <summary>
         /// Test Post method. Basic story.
         /// </summary>

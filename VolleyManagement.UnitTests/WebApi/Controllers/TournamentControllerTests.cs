@@ -25,7 +25,6 @@
     [TestClass]
     public class TournamentControllerTests
     {
-
         /// <summary>
         /// ID for tests
         /// </summary>
@@ -79,7 +78,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer()); 
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -332,6 +331,7 @@
         /// <summary>
         /// Mock the Tournaments
         /// </summary>
+        /// <param name="testData">Data what will be returned</param>
         private void MockTournaments(IList<Tournament> testData)
         {
             _tournamentServiceMock.Setup(tr => tr.Get())

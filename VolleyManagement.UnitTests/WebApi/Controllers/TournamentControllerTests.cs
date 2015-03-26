@@ -218,70 +218,7 @@
         //    _tournamentServiceMock.Verify(us => us.Edit(It.IsAny<Tournament>()), Times.Once());
         //    Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode);
         }
-
-        /// <summary>
-        /// Test Put method. Invalid data
-        /// </summary>
-        [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Put_InvalidData_BadRequestReturned()
-        {
-            // Arrange
-            ////var controller = _kernel.Get<TournamentsController>();
-            ////TestExtensions.SetControllerRequest(controller);
-            ////var expected = new TournamentViewModelBuilder().Build();
-            ////var invalidKey = expected.Id + 1;
-
-            //// Act
-            ////var actual = controller.Put(invalidKey, expected);
-
-            //// Assert
-            ////_tournamentServiceMock.Verify(us => us.Edit(It.IsAny<Tournament>()), Times.Never());
-            ////Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
-        }
-
-        /// <summary>
-        /// Test for Put method. The method should return "Bad request" status
-        /// </summary>
-        [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Put_ArgumentException_BadRequestReturned()
-        {
-            //// Arrange
-            ////var expected = new TournamentViewModelBuilder().Build();
-            ////_tournamentServiceMock.Setup(us => us.Edit(It.IsAny<Tournament>()))
-            ////   .Throws(new ArgumentException());
-            ////var controller = _kernel.Get<TournamentsController>();
-            ////TestExtensions.SetControllerRequest(controller);
-
-            //// Act
-            ////var actual = controller.Put(expected.Id, expected);
-
-            //// Assert
-            ////Assert.AreEqual(HttpStatusCode.BadRequest, actual.StatusCode);
-        }
-
-        /// <summary>
-        /// Test for Put method. The method should return "Internal server error" status
-        /// </summary>
-        [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Put_GeneralException_InternalServerErrorReturned()
-        {
-            //// Arrange
-            ////var expected = new TournamentViewModelBuilder().Build();
-            ////_tournamentServiceMock.Setup(us => us.Edit(It.IsAny<Tournament>()))
-            ////   .Throws(new Exception());
-            ////var controller = _kernel.Get<TournamentsController>();
-            ////TestExtensions.SetControllerRequest(controller);
-
-            //// Act
-            ////var actual = controller.Put(expected.Id, expected);
-
-            //// Assert
-            ////Assert.AreEqual(HttpStatusCode.InternalServerError, actual.StatusCode);
-        }
-
+        
         /// <summary>
         /// Test Post method. Is valid tournament domain model
         /// pass to Create Service method

@@ -25,7 +25,6 @@
     [TestClass]
     public class TournamentControllerTests
     {
-
         /// <summary>
         /// ID for tests
         /// </summary>
@@ -75,32 +74,11 @@
                                             .Build()
                                             .AsQueryable();
             var expected = domainTournaments.Single(dt => dt.Id == SPECIFIC_TOURNAMENT_ID);
-            var result = tournamentsController.GetTournament(SPECIFIC_TOURNAMENT_ID).Queryable.Single();
+            var result = tournamentsController.Get(SPECIFIC_TOURNAMENT_ID).Queryable.Single();
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer()); 
-        }
-
-        /// <summary>
-        /// Test for Get() by key method. The method should return specific tournament
-        /// </summary>
-        [TestMethod]
-        [Ignore]// BUG: FIX ASAP
-        public void Get_GeneralException_ExceptionThrown()
-        {
-            // Arrange
-            var tournamentId = 5;
-            _tournamentServiceMock.Setup(ts => ts.Get(tournamentId))
-               .Throws(new ArgumentNullException());
-            var tournamentsController = _kernel.Get<TournamentsController>();
-            // var expected = HttpStatusCode.NotFound;
-
-            // Act
-            var actual = tournamentsController.GetTournament(tournamentId);
-
-            // Assert
-            // Assert.AreEqual(expected, actual.StatusCode);
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -353,6 +331,7 @@
         /// <summary>
         /// Mock the Tournaments
         /// </summary>
+        /// <param name="testData">Data what will be returned</param>
         private void MockTournaments(IList<Tournament> testData)
         {
             _tournamentServiceMock.Setup(tr => tr.Get())

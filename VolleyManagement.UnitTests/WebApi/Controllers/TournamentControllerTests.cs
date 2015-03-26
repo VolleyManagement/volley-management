@@ -18,6 +18,7 @@
     using VolleyManagement.UnitTests.WebApi.ViewModels;
     using System.Web.Http.OData.Results;
     using VolleyManagement.Contracts.Exceptions;
+    using System.Web.Http.ModelBinding;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -36,6 +37,11 @@
         /// Message that should be passed to exception.
         /// </summary>
         private const string EXCEPTION_MESSAGE = "Test exception message.";
+
+        /// <summary>
+        /// Key used for getting exception from ModelStateDictionary.
+        /// </summary>
+        private const string KEY_FOR_EXCEPTION_MESSAGE = "keyForErrorMessage";
 
         /// <summary>
         /// Test Fixture
@@ -202,24 +208,27 @@
         public void Put_InvalidModelState_InvalidModelStateResultReturned()
         {
             // Arrange
-            var keyForErrorMessage = "keyForErrorMessage";
             var controller = _kernel.Get<TournamentsController>();
-            controller.ModelState.AddModelError(keyForErrorMessage, EXCEPTION_MESSAGE);
+            controller.ModelState.AddModelError(KEY_FOR_EXCEPTION_MESSAGE, EXCEPTION_MESSAGE);
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actualResult = controller.Put(input.Id, input) as System.Web.Http.Results.InvalidModelStateResult;
+            var actualResult = controller.Put(input.Id, input) as InvalidModelStateResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
             Assert.IsNotNull(actualResult);
 
-            System.Web.Http.ModelBinding.ModelState actualErrorCollection;
+            var actualCorrectErrorCount = actualResult.ModelState.Single(msvp => msvp.Key == EXCEPTION_MESSAGE).Value
+                                                                    .Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
 
-            Assert.IsTrue(actualResult.ModelState.TryGetValue(keyForErrorMessage, out actualErrorCollection));
+            //var actualCorrectErrorCount3 = (from msvp in actualResult.ModelState
+            //                                where msvp.Key == KEY_FOR_EXCEPTION_MESSAGE
+            //                                && msvp.Value.Errors.Any<ModelError>(me => me.ErrorMessage == EXCEPTION_MESSAGE)
+            //                                select msvp).Count();
+            
+            Assert.IsTrue(actualCorrectErrorCount != 0);           
 
-            var actualCorrectErrorCount = actualErrorCollection.Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
-            Assert.IsTrue(actualCorrectErrorCount != 0);
         }
 
         /// <summary>
@@ -235,7 +244,7 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input) as System.Web.Http.Results.BadRequestErrorMessageResult;
+            var actual = controller.Put(input.Id, input) as BadRequestErrorMessageResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
@@ -255,7 +264,7 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input) is System.Web.Http.Results.InternalServerErrorResult;
+            var actual = controller.Put(input.Id, input) is InternalServerErrorResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());

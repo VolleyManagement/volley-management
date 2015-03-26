@@ -165,12 +165,11 @@
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
             var input = new TournamentViewModelBuilder().WithId(UNASSIGNED_ID).Build();
-            var randomDbId = new Random().Next();
 
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Callback<Tournament>(t => { t.Id = randomDbId; });
+                .Callback<Tournament>(t => { t.Id = SPECIFIC_TOURNAMENT_ID; });
 
-            var expected = new TournamentViewModelBuilder().WithId(randomDbId).Build();
+            var expected = new TournamentViewModelBuilder().WithId(SPECIFIC_TOURNAMENT_ID).Build();
 
             // Act
             var response = controller.Post(input);
@@ -198,6 +197,8 @@
 
             //Assert
             Assert.IsInstanceOfType(result, typeof(InvalidModelStateResult));
+            Assert.IsTrue(result.ModelState.Count == 1);
+            Assert.IsTrue(result.ModelState.Keys.Contains("NotValidSeason"));
         }
 
         /// <summary>

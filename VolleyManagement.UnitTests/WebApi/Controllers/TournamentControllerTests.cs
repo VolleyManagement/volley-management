@@ -214,21 +214,13 @@
             // Act
             var input = new TournamentViewModelBuilder().Build();
             var actualResult = controller.Put(input.Id, input) as InvalidModelStateResult;
+            var actualCorrectErrorCount = actualResult.ModelState.Single(msvp => msvp.Key == KEY_FOR_EXCEPTION_MESSAGE).Value
+                                                                    .Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
             Assert.IsNotNull(actualResult);
-
-            var actualCorrectErrorCount = actualResult.ModelState.Single(msvp => msvp.Key == KEY_FOR_EXCEPTION_MESSAGE).Value
-                                                                    .Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
-
-            //var actualCorrectErrorCount = (from msvp in actualResult.ModelState
-            //                               where msvp.Key == KEY_FOR_EXCEPTION_MESSAGE
-            //                               && msvp.Value.Errors.Any<ModelError>(me => me.ErrorMessage == EXCEPTION_MESSAGE)
-            //                               select msvp).Count();
-            
-            Assert.IsTrue(actualCorrectErrorCount == 1);           
-
+            Assert.AreEqual(1, actualCorrectErrorCount);           
         }
 
         /// <summary>

@@ -196,7 +196,7 @@
             var result = controller.Post(notValidVM) as InvalidModelStateResult;
 
             //Assert
-            Assert.IsInstanceOfType(result, typeof(InvalidModelStateResult));
+            Assert.IsNotNull(result);
             Assert.IsTrue(result.ModelState.Count == 1);
             Assert.IsTrue(result.ModelState.Keys.Contains("NotValidSeason"));
         }

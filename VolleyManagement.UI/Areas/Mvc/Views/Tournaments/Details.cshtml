@@ -23,7 +23,7 @@
     <div class="display-field">@Model.Scheme.ToDescription()</div>
 
     <div class="display-label">@Html.LabelFor(model => model.RegulationsLink)</div>
-    <div class="display-field">@Html.DisplayFor(model => model.RegulationsLink)</div>
+    <div class="display-field"><a href="@Html.DisplayFor(model => model.RegulationsLink)" target="_blank">@Model.Name</a></div>
 </fieldset>
 <p>
     @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id=Model.Id }) |

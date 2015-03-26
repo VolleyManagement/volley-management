@@ -34,7 +34,9 @@
         public IQueryable<TournamentViewModel> GetTournaments()
         {
             return _tournamentService.Get()
-                                     .Select(t => TournamentViewModel.Map(t));
+                                     .ToList()
+                                     .Select(t => TournamentViewModel.Map(t))
+                                     .AsQueryable();
         }
 
         /// <summary>
@@ -43,18 +45,21 @@
         /// <param name="key"> The key. </param>
         /// <returns> The <see cref="SingleResult"/>. </returns>
         [Queryable]
-        public SingleResult<TournamentViewModel> GetTournament([FromODataUri] int key)
+        public SingleResult<TournamentViewModel> Get([FromODataUri] int key)
         {
             return SingleResult.Create(_tournamentService.Get()
                                                          .Where(t => t.Id == key)
-                                                         .Select(t => TournamentViewModel.Map(t)));
+                                                         .ToList()
+                                                         .Select(t => TournamentViewModel.Map(t))
+                                                         .AsQueryable());
         }
 
         /// <summary>
         /// Creates Tournament
         /// </summary>
-        /// <param name="tournament"> The tournament. </param>
-        /// <returns> The <see cref="IHttpActionResult"/>. </returns>
+        /// <param name="tournament"> The tournament as ViewModel. </param>
+        /// <returns> Has been saved successfully - Created OData result
+        /// unsuccessfully - Bad request </returns>
         public IHttpActionResult Post(TournamentViewModel tournament)
         {
             if (!ModelState.IsValid)

@@ -191,6 +191,38 @@
         }
 
         /// <summary>
+        /// Test Post method. Is valid tournament domain model
+        /// pass to Create Service method
+        /// </summary>
+        [TestMethod]
+        public void Post_ValidTournamentDomain_PassToCreateMethod()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            var sent = new TournamentViewModelBuilder().Build();
+            var expected = new TournamentViewModelBuilder().Build();
+
+            var expectedDomain = new TournamentBuilder()
+                .WithId(expected.Id)
+                .WithName(expected.Name)
+                .WithSeason(expected.Season)
+                .WithScheme(Enum.GetValues(typeof(TournamentSchemeEnum))
+                .Cast<TournamentSchemeEnum>()
+                .FirstOrDefault(v => v.ToDescription() == expected.Scheme))
+                .WithRegulationsLink(expected.RegulationsLink)
+                .WithDescription(expected.Description)
+                .Build();
+
+            // Act
+            controller.Post(sent);
+
+            // Assert
+            _tournamentServiceMock.Verify(
+                trServ => trServ.Create(It.Is<Tournament>(t => new TournamentComparer().IsEqual(t, expectedDomain))),
+                Times.Once());
+        }
+
+        /// <summary>
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
@@ -288,38 +320,6 @@
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
             Assert.IsTrue(actual);
-        }
-
-        /// <summary>
-        /// Test Post method. Is valid tournament domain model
-        /// pass to Create Service method
-        /// </summary>
-        [TestMethod]
-        public void Post_ValidTournamentDomain_PassToCreateMethod()
-        {
-            // Arrange
-            var controller = _kernel.Get<TournamentsController>();
-            var sent = new TournamentViewModelBuilder().Build();
-            var expected = new TournamentViewModelBuilder().Build();
-
-            var expectedDomain = new TournamentBuilder()
-                .WithId(expected.Id)
-                .WithName(expected.Name)
-                .WithSeason(expected.Season)
-                .WithScheme(Enum.GetValues(typeof(TournamentSchemeEnum))
-                .Cast<TournamentSchemeEnum>()
-                .FirstOrDefault(v => v.ToDescription() == expected.Scheme))
-                .WithRegulationsLink(expected.RegulationsLink)
-                .WithDescription(expected.Description)
-                .Build();
-
-            // Act
-            controller.Post(sent);
-
-            // Assert
-            _tournamentServiceMock.Verify(
-                trServ => trServ.Create(It.Is<Tournament>(t => new TournamentComparer().IsEqual(t, expectedDomain))),
-                Times.Once());
         }
 
         /// <summary>

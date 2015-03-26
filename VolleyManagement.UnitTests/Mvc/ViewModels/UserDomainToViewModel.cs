@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Mappers
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Diagnostics.CodeAnalysis;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.UserService;
@@ -21,7 +21,7 @@
 
         public void Map_UserAsParam_MappedToViewModel()
         {
-            //Arrange
+            // Arrange
             var user = new UserBuilder()
                                         .WithId(2)
                                         .WithUserName("testLogin")

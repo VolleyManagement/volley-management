@@ -25,11 +25,15 @@
     [TestClass]
     public class TournamentControllerTests
     {
-
         /// <summary>
         /// ID for tests
         /// </summary>
         private const int SPECIFIC_TOURNAMENT_ID = 2;
+
+        /// <summary>
+        /// A new but not saved tournament id
+        /// </summary>
+        private const int UNASSIGNED_ID = 0;
 
         /// <summary>
         /// Test Fixture
@@ -40,11 +44,6 @@
         /// Tournaments Service Mock
         /// </summary>
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
-
-        /// <summary>
-        /// A new but not saved tournament id
-        /// </summary>
-        private const int UNASSIGNED_ID = 0;
 
         /// <summary>
         /// IoC for tests
@@ -84,7 +83,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer()); 
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -99,6 +98,7 @@
             _tournamentServiceMock.Setup(ts => ts.Get(tournamentId))
                .Throws(new ArgumentNullException());
             var tournamentsController = _kernel.Get<TournamentsController>();
+
             // var expected = HttpStatusCode.NotFound;
 
             // Act
@@ -160,7 +160,7 @@
         /// Test Post method. Does a valid ViewModel return after Tournament has been created.
         /// </summary>
         [TestMethod]
-        public void Post_ValidVMTournament_Returned_AfterCreated_WebApi()
+        public void Post_ValidViewModelTournament_ReturnedAfterCreatedWebApi()
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
@@ -180,22 +180,22 @@
         }
 
         /// <summary>
-        /// Test Post method(). Returns InvalidModelStateResult 
+        /// Test Post method(). Returns InvalidModelStateResult
         /// if the ModelState has some errors
         /// </summary>
         [TestMethod]
-        public void Post_NotValidTournametnVM_ReturnBadRequest_WebApi()
+        public void Post_NotValidTournametnViewModel_ReturnBadRequestWebApi()
         {
-            //Arrange
+            // Arrange
             var controller = _kernel.Get<TournamentsController>();
             controller.ModelState.Clear();
-            var notValidVM = new TournamentViewModelBuilder().WithSeason("12345678910").Build();
+            var notValidViewModel = new TournamentViewModelBuilder().WithSeason("12345678910").Build();
             controller.ModelState.AddModelError("NotValidSeason", "Season field isn't valid");
 
-            //Act
-            var result = controller.Post(notValidVM) as InvalidModelStateResult;
+            // Act
+            var result = controller.Post(notValidViewModel) as InvalidModelStateResult;
 
-            //Assert
+            // Assert
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ModelState.Count == 1);
             Assert.IsTrue(result.ModelState.Keys.Contains("NotValidSeason"));
@@ -227,16 +227,16 @@
         [Ignore]// BUG: FIX ASAP
         public void Put_ValidViewModel_TournamentUpdated()
         {
-        //{
-        //    // Arrange
+        // {
+              // Arrange
         //    var controller = _kernel.Get<TournamentsController>();
         //    TestExtensions.SetControllerRequest(controller);
         //    var expected = new TournamentViewModelBuilder().Build();
 
-        //    // Act
+              // Act
         //    var actual = controller.Put(expected.Id, expected);
 
-        //    // Assert
+              // Assert
         //    _tournamentServiceMock.Verify(us => us.Edit(It.IsAny<Tournament>()), Times.Once());
         //    Assert.AreEqual(HttpStatusCode.OK, actual.StatusCode);
         }
@@ -403,6 +403,7 @@
         /// <summary>
         /// Mock the Tournaments
         /// </summary>
+        /// <param name="testData"> The Test data. </param>
         private void MockTournaments(IList<Tournament> testData)
         {
             _tournamentServiceMock.Setup(tr => tr.Get())

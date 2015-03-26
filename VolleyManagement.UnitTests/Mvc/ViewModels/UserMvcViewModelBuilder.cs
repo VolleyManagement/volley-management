@@ -16,7 +16,7 @@
         private UserViewModel _userViewModel;
 
         /// <summary>
-        ///  Initializes a new instance of the <see cref="UserBuilder"/> class
+        ///  Initializes a new instance of the <see cref="UserMvcViewModelBuilder" /> class.
         /// </summary>
         public UserMvcViewModelBuilder()
         {

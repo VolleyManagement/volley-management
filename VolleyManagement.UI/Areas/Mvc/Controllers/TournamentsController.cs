@@ -86,7 +86,7 @@
             {
                 if (this.ModelState.IsValid)
                 {
-                    var tournament = ViewModelToDomain.Map(tournamentViewModel);
+                    var tournament = tournamentViewModel.ToDomain();
                     this._tournamentService.Create(tournament);
                     return this.RedirectToAction("Index");
                 }
@@ -114,7 +114,7 @@
             try
             {
                 var tournament = this._tournamentService.Get(id);
-                TournamentViewModel tournamentViewModel = DomainToViewModel.Map(tournament);
+                TournamentViewModel tournamentViewModel = TournamentViewModel.Map(tournament);
                 return this.View(tournamentViewModel);
             }
             catch (Exception)
@@ -135,7 +135,7 @@
             {
                 if (this.ModelState.IsValid)
                 {
-                    var tournament = ViewModelToDomain.Map(tournamentViewModel);
+                    var tournament = tournamentViewModel.ToDomain();
                     this._tournamentService.Edit(tournament);
                     return this.RedirectToAction("Index");
                 }
@@ -161,6 +161,7 @@
         public ActionResult Delete(int id)
         {
             Tournament tournament = this._tournamentService.Get(id);
+            TournamentViewModel tournamentViewModel = TournamentViewModel.Map(tournament);
             return View(tournament);
         }
 

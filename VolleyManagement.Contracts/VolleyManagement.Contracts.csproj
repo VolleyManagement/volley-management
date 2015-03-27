@@ -48,6 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\PlayerValidationException.cs" />
+    <Compile Include="IPlayerService.cs" />
     <Compile Include="IUserService.cs" />
     <Compile Include="ITournamentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

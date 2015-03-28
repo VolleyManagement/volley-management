@@ -39,3 +39,14 @@ CREATE TABLE dbo.Users(
     CONSTRAINT UN_Users_Email UNIQUE
 );
 GO
+
+CREATE TABLE dbo.Players(
+  Id int identity(1, 1) NOT NULL 
+    CONSTRAINT PK_Players_Id PRIMARY KEY CLUSTERED,
+  FirstName nvarchar(60) NOT NULL,
+  LastName nvarchar(60) NOT NULL,
+  BirthYear int NULL CHECK (BirthYear >= 1900 AND BirthYear <= 2100),
+  Height int NULL CHECK (Height >= 10 AND Height <= 250),
+  Weight int NULL CHECK (Weight >= 10 AND Weight <= 500)
+);
+GO

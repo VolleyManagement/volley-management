@@ -86,7 +86,9 @@
 
             if (tournament != null)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique);
+                throw new TournamentValidationException(
+                    VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique)
+                    { Source = "Tournament.Name" };
             }
         }
     }

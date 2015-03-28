@@ -67,9 +67,23 @@
                 return BadRequest(ModelState);
             }
 
-            var tournamentToCreate = tournament.ToDomain();
-            _tournamentService.Create(tournamentToCreate);
-            tournament.Id = tournamentToCreate.Id;
+            try
+            {
+                var tournamentToCreate = tournament.ToDomain();
+                _tournamentService.Create(tournamentToCreate);
+                tournament.Id = tournamentToCreate.Id;
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError(ex.Source, ex.Message);
+                return BadRequest(ModelState);
+            }
+
+            catch (TournamentValidationException ex)
+            {
+                ModelState.AddModelError(ex.Source, ex.Message);
+                return BadRequest(ModelState);
+            }
             
             return Created(tournament);
         }

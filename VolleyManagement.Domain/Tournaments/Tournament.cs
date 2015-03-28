@@ -101,7 +101,7 @@
             {
                 if (!Enum.IsDefined(typeof(TournamentSchemeEnum), value))
                 {
-                    throw new ArgumentException(Resources.ValidationResultScheme);
+                    throw new ArgumentException(Resources.ValidationResultScheme) { Source = "tournament.Scheme" };
                 }
 
                 _scheme = value;

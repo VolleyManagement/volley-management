@@ -223,6 +223,45 @@
         }
 
         /// <summary>
+        /// Test Post method. Does method catch ArgumentExeption
+        /// and returns BadRequest with some info
+        /// </summary>
+        [TestMethod]
+        public void Post_CatchArgumentExeption_ReturnBadRequest()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+
+            // Act
+            var result = controller.Post(new TournamentViewModelBuilder().WithScheme("5").Build())
+                as InvalidModelStateResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ModelState.Count > 0);
+        }
+
+        /// <summary>
+        /// Test Post method. Does method catch TournamentValidationException
+        /// and returns BadRequest with some info
+        /// </summary>
+        [TestMethod]
+        public void Post_CatchTournamentValidationException_ReturnBadRequest()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            _tournamentServiceMock.Setup(
+                ts => ts.Create(It.IsAny<Tournament>())).Throws(new TournamentValidationException());
+
+            // Act
+            var result = controller.Post(new TournamentViewModelBuilder().Build()) as InvalidModelStateResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ModelState.Count > 0);
+        }
+
+        /// <summary>
         /// Test for Delete() method
         /// </summary>
         [TestMethod]

@@ -40,6 +40,7 @@
         [Display(Name = "TournamentName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(60, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
         /// <summary>
@@ -48,6 +49,7 @@
         /// <value>Description of tournament.</value>
         [Display(Name = "TournamentDescription", ResourceType = typeof(ViewModelResources))]
         [StringLength(300, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Description { get; set; }
 
         /// <summary>

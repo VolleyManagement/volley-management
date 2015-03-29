@@ -97,7 +97,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plese, enter the telepnone correctly.
+        ///   Looks up a localized string similar to Please, enter the telepnone correctly.
         /// </summary>
         public static string ValidationCellPhone {
             get {
@@ -106,7 +106,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plese, enter the email correctly.
+        ///   Looks up a localized string similar to Please, enter the email correctly.
         /// </summary>
         public static string ValidationEmail {
             get {
@@ -115,7 +115,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plese, enter the full name correctly.
+        ///   Looks up a localized string similar to Please, enter the full name correctly.
         /// </summary>
         public static string ValidationFullName {
             get {
@@ -124,11 +124,56 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password cann&apos;t be empty!.
+        ///   Looks up a localized string similar to Password cannot be empty!.
         /// </summary>
         public static string ValidationPassword {
             get {
                 return ResourceManager.GetString("ValidationPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, enter the birth year correctly..
+        /// </summary>
+        public static string ValidationPlayerBirthYear {
+            get {
+                return ResourceManager.GetString("ValidationPlayerBirthYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, enter the first name correctly.
+        /// </summary>
+        public static string ValidationPlayerFirstName {
+            get {
+                return ResourceManager.GetString("ValidationPlayerFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, enter the height correctly..
+        /// </summary>
+        public static string ValidationPlayerHeight {
+            get {
+                return ResourceManager.GetString("ValidationPlayerHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, enter the last name correctly.
+        /// </summary>
+        public static string ValidationPlayerLastName {
+            get {
+                return ResourceManager.GetString("ValidationPlayerLastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, enter the weight correctly..
+        /// </summary>
+        public static string ValidationPlayerWeight {
+            get {
+                return ResourceManager.GetString("ValidationPlayerWeight", resourceCulture);
             }
         }
         
@@ -178,7 +223,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Plese, enter the user name correctly.
+        ///   Looks up a localized string similar to Please, enter the user name correctly.
         /// </summary>
         public static string ValidationUserName {
             get {

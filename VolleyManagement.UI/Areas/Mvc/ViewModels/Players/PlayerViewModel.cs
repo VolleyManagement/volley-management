@@ -2,7 +2,10 @@
 namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
     using System.ComponentModel.DataAnnotations;
+
+    using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.App_GlobalResources;
+    using playerConst = VolleyManagement.Domain.Constants.Player;
 
     /// <summary>
     /// Represents player view model
@@ -18,18 +21,24 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
         /// Gets or sets the player first name
         /// </summary>
         [Display(Name = "PlayerFirstName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(60, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(playerConst.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the player last name
         /// </summary>
         [Display(Name = "PlayerLastName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(60, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(playerConst.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string LastName { get; set; }
 
         /// <summary>
@@ -41,22 +50,24 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
         /// <summary>
         /// Gets or sets the player birth year
         /// </summary>
-        [Range(1900, 2100, ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(playerConst.MIN_BIRTH_YEAR, playerConst.MAX_BIRTH_YEAR
+            , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int BirthYear { get; set; }
 
         /// <summary>
         /// Gets or sets the player height
         /// </summary>
-        [Range(10, 250, ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(playerConst.MIN_HEIGHT, playerConst.MAX_HEIGHT
+            , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int Height { get; set; }
 
         /// <summary>
         /// Gets or sets the player weight
         /// </summary>
-        [Range(10, 250, ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(playerConst.MIN_WEIGHT, playerConst.MAX_WEIGHT
+            , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int Weight { get; set; }
 
-        /*
         #region Factory Methods
 
         /// <summary>
@@ -68,13 +79,13 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
         {
             var playerViewModel = new PlayerViewModel
             {
-                Id = ,
-                FirstName = ,
-                LastName = ,
-                Photo = ,
-                BirthYear = ,
-                Height = ,
-                Weight = 
+                Id = player.Id,
+                FirstName = player.FirstName,
+                LastName = player.LastName,
+                // TO DO: Photo = player.,
+                BirthYear = player.BirthYear,
+                Height = player.Height,
+                Weight = player.Weight
             };
 
             return playerViewModel;
@@ -88,10 +99,16 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
         {
             return new Player
             {
+                Id = this.Id,
+                FirstName = this.FirstName,
+                LastName = this.LastName,
+                // TO DO: Photo
+                BirthYear = this.BirthYear,
+                Height = this.Height,
+                Weight = this.Weight
             };
         }
         #endregion
-         */
         
     }
 }

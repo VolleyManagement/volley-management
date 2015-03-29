@@ -120,6 +120,9 @@
   <data name="ConfirmUserPassword" xml:space="preserve">
     <value>FixMe: Confirm password</value>
   </data>
+  <data name="FieldRange" xml:space="preserve">
+    <value>Поле {0} должно быть заполнено в диапазоне</value>
+  </data>
   <data name="FieldRequired" xml:space="preserve">
     <value>Поле "{0}" является обязательным.</value>
   </data>

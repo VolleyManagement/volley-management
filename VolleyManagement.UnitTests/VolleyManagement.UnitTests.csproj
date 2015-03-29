@@ -137,9 +137,13 @@
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="AssertExtensions.cs" />
     <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerViewModelToDomain.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\UserDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserViewModelComparer.cs" />
+    <Compile Include="Services\PlayerService\PlayerBuilder.cs" />
+    <Compile Include="Services\PlayerService\PlayerComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />

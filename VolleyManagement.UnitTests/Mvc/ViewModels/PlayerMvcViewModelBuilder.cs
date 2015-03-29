@@ -1,9 +1,8 @@
-﻿
-namespace VolleyManagement.UnitTests.Mvc.ViewModels
+﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Players;
     using UI.Areas.Mvc.ViewModels.Players;
+    using VolleyManagement.Domain.Players;
 
     /// <summary>
     /// Player view model builder
@@ -24,10 +23,12 @@ namespace VolleyManagement.UnitTests.Mvc.ViewModels
             _playerViewModel = new PlayerViewModel()
             {
                 Id = 1,
-                FirstName = "First name",
-                LastName = "Last name",
+                FirstName = "FirstName",
+                LastName = "LastName",
                 BirthYear = 1983,
-                Photo = "Photo.jpg",
+                //Photo = "Photo.jpg",
+
+                // TO DO: Photo
                 Height = 186,
                 Weight = 95
             };

@@ -46,5 +46,51 @@
             /// </summary>
             public const int PHONE_LENGTH = 10;
         }
+
+        /// <summary>
+        /// Container for player constants.
+        /// </summary>
+        public static class Player
+        {
+            /// <summary>
+            /// constant defined the length of the first name field
+            /// </summary>
+            public const int MAX_FIRST_NAME_LENGTH = 60;
+
+            /// <summary>
+            /// constant defined the length of the last name field
+            /// </summary>
+            public const int MAX_LAST_NAME_LENGTH = 60;
+
+            /// <summary>
+            /// constant defined the minimum value of the birth year field
+            /// </summary>
+            public const int MIN_BIRTH_YEAR = 1900;
+
+            /// <summary>
+            /// constant defined the maximum value of the birth year field
+            /// </summary>
+            public const int MAX_BIRTH_YEAR = 2100;
+
+            /// <summary>
+            /// constant defined the minimum value of the height field
+            /// </summary>
+            public const int MIN_HEIGHT = 10;
+
+            /// <summary>
+            /// constant defined the maximum value of the height field
+            /// </summary>
+            public const int MAX_HEIGHT = 250;
+
+            /// <summary>
+            /// constant defined the minimum value of the weight field
+            /// </summary>
+            public const int MIN_WEIGHT = 10;
+
+            /// <summary>
+            /// constant defined the maximum value of the weight field
+            /// </summary>
+            public const int MAX_WEIGHT = 500;
+        }
     }
 }

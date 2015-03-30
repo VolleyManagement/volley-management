@@ -106,6 +106,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Поле &quot;{0}&quot; должно быть в диапазоне &quot;{1}&quot; - &quot;{2}&quot;.
+        /// </summary>
+        public static string NotInRange {
+            get {
+                return ResourceManager.GetString("NotInRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FixMe: Password didn&apos;t match.
         /// </summary>
         public static string PasswordDidNotMatch {

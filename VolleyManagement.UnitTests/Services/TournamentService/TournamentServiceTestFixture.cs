@@ -27,7 +27,7 @@
                     Id = 1,
                     Name = "Tournament 1",
                     Description = "Tournament 1 description",
-                    Season = "2014/2015",
+                    Season = 2014,
                     Scheme = TournamentSchemeEnum.One,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')"
                 });
@@ -36,7 +36,7 @@
                     Id = 2,
                     Name = "Tournament 2",
                     Description = "Tournament 2 description",
-                    Season = "2014/2015",
+                    Season = 2014,
                     Scheme = TournamentSchemeEnum.Two,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')"
                 });
@@ -45,7 +45,7 @@
                     Id = 3,
                     Name = "Tournament 3",
                     Description = "Tournament 3 description",
-                    Season = "2013/2014",
+                    Season = 2014,
                     Scheme = TournamentSchemeEnum.TwoAndHalf,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')"
                 });
@@ -95,7 +95,7 @@
                     Id = 1,
                     Name = "Tournament 1",
                     Description = "Tournament 1 description",
-                    Season = "2014/2015",
+                    Season = 2014,
                     Scheme = "1",
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')"
                 });
@@ -104,7 +104,7 @@
                     Id = 2,
                     Name = "Tournament 2",
                     Description = "Tournament 2 description",
-                    Season = "2014/2015",
+                    Season = 2014,
                     Scheme = "2",
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')"
                 });
@@ -113,7 +113,7 @@
                     Id = 3,
                     Name = "Tournament 3",
                     Description = "Tournament 3 description",
-                    Season = "2013/2014",
+                    Season = 2014,
                     Scheme = "2.5",
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')"
                 });

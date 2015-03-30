@@ -10,7 +10,7 @@
     {
         private string _name;
         private string _description;
-        private string _season;
+        private short _season;
         private TournamentSchemeEnum _scheme;
         private string _regulationsLink;
 
@@ -68,7 +68,7 @@
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>
-        public string Season
+        public short Season
         {
             get
             {
@@ -77,11 +77,10 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) || value.Length > Constants.Tournament.MAX_SEASON_LENGTH)
+                if (value < Constants.Tournament.MINIMAL_SEASON_YEAR || value > Constants.Tournament.MAXIMAL_SEASON_YEAR)
                 {
-                    throw new ArgumentException(Resources.ValidationResultSeason);
+                    throw new ArgumentException(Resources.ValidationTournamentSeason);
                 }
-
                 _season = value;
             }
         }

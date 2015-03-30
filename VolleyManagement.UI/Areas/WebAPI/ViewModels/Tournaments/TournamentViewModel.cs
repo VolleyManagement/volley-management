@@ -7,6 +7,8 @@
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.App_GlobalResources;
 
+    using tournConst = VolleyManagement.Domain.Constants.Tournament;
+
     /// <summary>
     /// TournamentViewModel class.
     /// </summary>
@@ -39,8 +41,9 @@
         /// </summary>
         /// <value>Season of tournament.</value>
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(9, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public string Season { get; set; }
+        [Range(tournConst.MINIMAL_SEASON_YEAR, tournConst.MAXIMAL_SEASON_YEAR
+            , ErrorMessageResourceName = "NotInRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public short Season { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Scheme.

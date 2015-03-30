@@ -13,7 +13,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using Services.TournamentService;       
+    using Services.TournamentService;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
@@ -94,7 +94,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer()); 
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -178,7 +178,7 @@
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
             controller.ModelState.Clear();
-            var notValidViewModel = new TournamentViewModelBuilder().WithSeason("12345678910").Build();
+            var notValidViewModel = new TournamentViewModelBuilder().WithSeason(300).Build();
             controller.ModelState.AddModelError("NotValidSeason", "Season field isn't valid");
 
             // Act
@@ -223,7 +223,7 @@
         }
 
         /// <summary>
-        /// Test Post method. Does method catch ArgumentExeption
+        /// Test Post method. Does method catch ArgumentException
         /// and returns BadRequest with some info
         /// </summary>
         [TestMethod]
@@ -296,7 +296,8 @@
 
             // Assert
             var comparer = new TournamentComparer();
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)), Times.Once());
+            _tournamentServiceMock.Verify(ts => 
+                ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)), Times.Once());
         }
 
         /// <summary>
@@ -341,7 +342,7 @@
             Assert.IsNotNull(actual);
             Assert.AreEqual<string>(actual.Message, EXCEPTION_MESSAGE);
         }
-        
+
         /// <summary>
         /// Test for Put method. The method should return "Internal server error" status
         /// </summary>
@@ -374,7 +375,7 @@
                                         .WithName("test")
                                         .WithDescription("Volley")
                                         .WithScheme(TournamentSchemeEnum.Two)
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
             var expected = new TournamentViewModelBuilder()
@@ -382,7 +383,7 @@
                                         .WithName("test")
                                         .WithDescription("Volley")
                                         .WithScheme("2")
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
 
@@ -406,7 +407,7 @@
                                         .WithDescription("Volley")
                                         .WithName("test tournament")
                                         .WithScheme("2.5")
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
             var expected = new TournamentBuilder()
@@ -414,7 +415,7 @@
                                         .WithDescription("Volley")
                                         .WithName("test tournament")
                                         .WithScheme(TournamentSchemeEnum.TwoAndHalf)
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
 

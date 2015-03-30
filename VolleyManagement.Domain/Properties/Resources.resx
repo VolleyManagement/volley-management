@@ -171,6 +171,9 @@
   <data name="ValidationResultSeason" xml:space="preserve">
     <value>Please, enter the season correctly</value>
   </data>
+  <data name="ValidationTournamentSeason" xml:space="preserve">
+    <value>Please, enter the season date correctly</value>
+  </data>
   <data name="ValidationUserName" xml:space="preserve">
     <value>Please, enter the user name correctly</value>
   </data>

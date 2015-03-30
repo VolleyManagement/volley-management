@@ -7,6 +7,8 @@
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.App_GlobalResources;
 
+    using tournConst = VolleyManagement.Domain.Constants.Tournament;
+
     /// <summary>
     /// TournamentViewModel for Create and Edit actions
     /// </summary>
@@ -25,7 +27,7 @@
         /// Gets or sets the list of seasons.
         /// </summary>
         /// <value>The list of seasons.</value>
-        public List<string> SeasonsList { get; set; }
+        public Dictionary<short, string> SeasonsList { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -39,7 +41,8 @@
         /// <value>Name of tournament.</value>
         [Display(Name = "TournamentName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(60, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(60, ErrorMessageResourceName = "MaxLengthErrorMessage"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
         /// <summary>
@@ -47,7 +50,8 @@
         /// </summary>
         /// <value>Description of tournament.</value>
         [Display(Name = "TournamentDescription", ResourceType = typeof(ViewModelResources))]
-        [StringLength(300, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(300, ErrorMessageResourceName = "MaxLengthErrorMessage"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Description { get; set; }
 
         /// <summary>
@@ -56,8 +60,9 @@
         /// <value>Season of tournament.</value>
         [Display(Name = "TournamentSeason", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(9, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public string Season { get; set; }
+        [Range(tournConst.MINIMAL_SEASON_YEAR, tournConst.MAXIMAL_SEASON_YEAR
+            , ErrorMessageResourceName = "NotInRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public short Season { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Scheme.
@@ -72,7 +77,8 @@
         /// </summary>
         /// <value>regulations of tournament.</value>
         [Display(Name = "TournamentRegulationsLink", ResourceType = typeof(ViewModelResources))]
-        [StringLength(255, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(255, ErrorMessageResourceName = "MaxLengthErrorMessage"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string RegulationsLink { get; set; }
 
         /// <summary>
@@ -80,13 +86,13 @@
         /// </summary>
         private void InitializeSeasonsList()
         {
-            this.SeasonsList = new List<string>();
-            const int yearsRange = 16;
-            const int yearsBeforeToday = 5;
-            int year = DateTime.Now.Year - yearsBeforeToday;
+            this.SeasonList = new Dictionary<short, string>();
+            const short yearsRange = 16;
+            const short yearsBeforeToday = 5;
+            short year = (short)(DateTime.Now.Year - yearsBeforeToday); 
             for (int i = 0; i < yearsRange; i++)
             {
-                this.SeasonsList.Add(string.Format("{0}/{1}", year, ++year));
+                this.SeasonList.Add(year, string.Format("{0}/{1}", year, ++year));
             }
         }
         #region Factory Methods

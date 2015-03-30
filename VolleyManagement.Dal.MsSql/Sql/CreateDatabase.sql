@@ -45,11 +45,8 @@ CREATE TABLE dbo.Players(
     CONSTRAINT PK_Players_Id PRIMARY KEY CLUSTERED,
   FirstName nvarchar(60) NOT NULL,
   LastName nvarchar(60) NOT NULL,
-  BirthYear int NULL 
-	CONSTRAINT Rng_Players_BirthYear CHECK (BirthYear >= 1900 AND BirthYear <= 2100),
-  Height int NULL
-	CONSTRAINT Rng_Players_Height CHECK (Height >= 10 AND Height <= 250),
-  Weight int NULL 
-	CONSTRAINT Rng_Players_Weight CHECK (Weight >= 10 AND Weight <= 500)
+  BirthYear int NULL,
+  Height int NULL,
+  Weight int NULL
 );
 GO

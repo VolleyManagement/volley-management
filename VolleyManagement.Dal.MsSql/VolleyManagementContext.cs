@@ -31,8 +31,6 @@ namespace VolleyManagement.Dal.MsSql
         /// </summary>
         public virtual DbSet<Player> Players { get; set; }
 
-
-
         /// <summary>
         /// configure models if needed
         /// </summary>

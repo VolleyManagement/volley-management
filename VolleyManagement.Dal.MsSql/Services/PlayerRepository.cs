@@ -90,12 +90,19 @@
         public void Update(Domain.Player oldEntity)
         {
             var playerToUpdate = _dalPlayers.Where(t => t.Id == oldEntity.Id).Single();
-            playerToUpdate.FirstName = oldEntity.FirstName;
-            playerToUpdate.LastName = oldEntity.LastName;
-            playerToUpdate.BirthYear = oldEntity.BirthYear;
-            playerToUpdate.Height = oldEntity.Height;
-            playerToUpdate.Weight = oldEntity.Weight;
-            _dalPlayers.Context.ObjectStateManager.ChangeObjectState(playerToUpdate, EntityState.Modified);
+            if (playerToUpdate.FirstName != oldEntity.FirstName
+             || playerToUpdate.LastName != oldEntity.LastName
+             || playerToUpdate.BirthYear != oldEntity.BirthYear
+             || playerToUpdate.Height != oldEntity.Height
+             || playerToUpdate.Weight != oldEntity.Weight)
+            {
+                playerToUpdate.FirstName = oldEntity.FirstName;
+                playerToUpdate.LastName = oldEntity.LastName;
+                playerToUpdate.BirthYear = oldEntity.BirthYear;
+                playerToUpdate.Height = oldEntity.Height;
+                playerToUpdate.Weight = oldEntity.Weight;
+                _dalPlayers.Context.ObjectStateManager.ChangeObjectState(playerToUpdate, EntityState.Modified);
+            }
         }
 
         /// <summary>

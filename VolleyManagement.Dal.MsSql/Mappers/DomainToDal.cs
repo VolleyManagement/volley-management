@@ -42,7 +42,7 @@
         /// <summary>
         /// Maps Player model.
         /// </summary>
-        /// <param name="domainUser">Player Domain model</param>
+        /// <param name="domainPlayer">Player Domain model</param>
         /// <returns>Player Dal model</returns>
         public static Player Map(Domain.Players.Player domainPlayer)
         {

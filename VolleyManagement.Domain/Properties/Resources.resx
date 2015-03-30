@@ -130,16 +130,31 @@
     <value>The user name must be unique.</value>
   </data>
   <data name="ValidationCellPhone" xml:space="preserve">
-    <value>Plese, enter the telepnone correctly</value>
+    <value>Please, enter the telepnone correctly</value>
   </data>
   <data name="ValidationEmail" xml:space="preserve">
-    <value>Plese, enter the email correctly</value>
+    <value>Please, enter the email correctly</value>
   </data>
   <data name="ValidationFullName" xml:space="preserve">
-    <value>Plese, enter the full name correctly</value>
+    <value>Please, enter the full name correctly</value>
   </data>
   <data name="ValidationPassword" xml:space="preserve">
-    <value>Password cann't be empty!</value>
+    <value>Password cannot be empty!</value>
+  </data>
+  <data name="ValidationPlayerBirthYear" xml:space="preserve">
+    <value>Please, enter the birth year correctly.</value>
+  </data>
+  <data name="ValidationPlayerFirstName" xml:space="preserve">
+    <value>Please, enter the first name correctly</value>
+  </data>
+  <data name="ValidationPlayerHeight" xml:space="preserve">
+    <value>Please, enter the height correctly.</value>
+  </data>
+  <data name="ValidationPlayerLastName" xml:space="preserve">
+    <value>Please, enter the last name correctly</value>
+  </data>
+  <data name="ValidationPlayerWeight" xml:space="preserve">
+    <value>Please, enter the weight correctly.</value>
   </data>
   <data name="ValidationResultDescription" xml:space="preserve">
     <value>Please, reduce the description text</value>
@@ -157,6 +172,6 @@
     <value>Please, enter the season correctly</value>
   </data>
   <data name="ValidationUserName" xml:space="preserve">
-    <value>Plese, enter the user name correctly</value>
+    <value>Please, enter the user name correctly</value>
   </data>
 </root>

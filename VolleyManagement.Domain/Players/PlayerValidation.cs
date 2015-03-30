@@ -40,7 +40,7 @@
         /// <returns>Validity of Player birth year.</returns>
         public static bool ValidateBirthYear(int birthYear)
         {
-            return birthYear >= Constants.Player.MIN_BIRTH_YEAR && birthYear <= Constants.Player.MAX_BIRTH_YEAR;
+            return birthYear <= Constants.Player.MIN_BIRTH_YEAR && birthYear >= Constants.Player.MAX_BIRTH_YEAR;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@
         /// <returns>Validity of Player height.</returns>
         public static bool ValidateHeight(int height)
         {
-            return height >= Constants.Player.MIN_HEIGHT && height <= Constants.Player.MAX_HEIGHT;
+            return height <= Constants.Player.MIN_HEIGHT && height >= Constants.Player.MAX_HEIGHT;
         }
 
         /// <summary>
@@ -60,7 +60,7 @@
         /// <returns>Validity of Player weight.</returns>
         public static bool ValidateWeight(int weight)
         {
-            return weight >= Constants.Player.MIN_WEIGHT && weight <= Constants.Player.MAX_WEIGHT;
+            return weight <= Constants.Player.MIN_WEIGHT && weight >= Constants.Player.MAX_WEIGHT;
         }
     }
 }

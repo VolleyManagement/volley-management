@@ -1,0 +1,41 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayerViewModel
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.FirstName)
+</div>
+<div class="editor-label">
+    @Html.EditorFor(model => model.FirstName)
+    @Html.ValidationMessageFor(model => model.FirstName)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.LastName)
+</div>
+<div class="editor-label">
+    @Html.EditorFor(model => model.LastName)
+    @Html.ValidationMessageFor(model => model.LastName)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.BirthYear)
+</div>
+<div class="editor-label">
+    @Html.EditorFor(model => model.BirthYear)
+    @Html.ValidationMessageFor(model => model.BirthYear)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Height)
+</div>
+<div class="editor-label">
+    @Html.EditorFor(model => model.Height)
+    @Html.ValidationMessageFor(model => model.Height)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Weight)
+</div>
+<div class="editor-label">
+    @Html.EditorFor(model => model.Weight)
+    @Html.ValidationMessageFor(model => model.Weight)
+</div>

@@ -77,7 +77,7 @@
 
             set
             {
-                if (!PlayerValidation.ValidateBirthYear(value))
+                if (PlayerValidation.ValidateBirthYear(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerBirthYear);
                 }
@@ -99,7 +99,7 @@
 
             set
             {
-                if (!PlayerValidation.ValidateHeight(value))
+                if (PlayerValidation.ValidateHeight(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerHeight);
                 }
@@ -121,7 +121,7 @@
 
             set
             {
-                if (!PlayerValidation.ValidateWeight(value))
+                if (PlayerValidation.ValidateWeight(value))
                 {
                     throw new ArgumentException(Resources.ValidationPlayerWeight);
                 }

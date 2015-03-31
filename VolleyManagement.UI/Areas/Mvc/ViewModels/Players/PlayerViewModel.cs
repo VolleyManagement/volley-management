@@ -3,9 +3,9 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
     using System.ComponentModel.DataAnnotations;
 
+    using VolleyManagement.Domain;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.App_GlobalResources;
-    using playerConst = VolleyManagement.Domain.Constants.Player;
 
     /// <summary>
     /// Represents player view model
@@ -23,7 +23,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
         [Display(Name = "PlayerFirstName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(playerConst.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
+        [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
@@ -35,36 +35,30 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
         [Display(Name = "PlayerLastName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(playerConst.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
+        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string LastName { get; set; }
 
         /// <summary>
-        /// Gets or sets the player photo path
-        /// </summary>
-        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public string Photo { get; set; }
-
-        /// <summary>
         /// Gets or sets the player birth year
         /// </summary>
-        [Range(playerConst.MIN_BIRTH_YEAR, playerConst.MAX_BIRTH_YEAR
+        [Range(Constants.Player.MIN_BIRTH_YEAR, Constants.Player.MAX_BIRTH_YEAR
             , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int BirthYear { get; set; }
 
         /// <summary>
         /// Gets or sets the player height
         /// </summary>
-        [Range(playerConst.MIN_HEIGHT, playerConst.MAX_HEIGHT
+        [Range(Constants.Player.MIN_HEIGHT, Constants.Player.MAX_HEIGHT
             , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int Height { get; set; }
 
         /// <summary>
         /// Gets or sets the player weight
         /// </summary>
-        [Range(playerConst.MIN_WEIGHT, playerConst.MAX_WEIGHT
+        [Range(Constants.Player.MIN_WEIGHT, Constants.Player.MAX_WEIGHT
             , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int Weight { get; set; }
 
@@ -82,7 +76,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
                 Id = player.Id,
                 FirstName = player.FirstName,
                 LastName = player.LastName,
-                // TO DO: Photo = player.,
                 BirthYear = player.BirthYear,
                 Height = player.Height,
                 Weight = player.Weight
@@ -102,7 +95,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
                 Id = this.Id,
                 FirstName = this.FirstName,
                 LastName = this.LastName,
-                // TO DO: Photo
                 BirthYear = this.BirthYear,
                 Height = this.Height,
                 Weight = this.Weight

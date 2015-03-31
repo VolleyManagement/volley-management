@@ -30,8 +30,6 @@
                 .WithWeight(95)
                 .Build();
 
-            // TO DO: Photo
-
             var testDomainModel = new PlayerBuilder()
                 .WithId(1)
                 .WithFirstName("FirstName")
@@ -40,8 +38,6 @@
                 .WithHeight(186)
                 .WithWeight(95)
                 .Build();
-
-            // TO DO: Photo
 
             // Act
             var actual = PlayerViewModel.Map(testDomainModel);

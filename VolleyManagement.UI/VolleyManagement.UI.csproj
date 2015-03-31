@@ -167,6 +167,8 @@
     <Content Include="Areas\WebApi\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\WebApi\Views\web.config" />
     <Content Include="Areas\WebApi\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\_CreateOrEdit.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -183,6 +185,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\PlayerViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlayerViews.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\TournamentViews.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -244,7 +251,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Mvc\Views\Players\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">
@@ -269,6 +275,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_GlobalResources\PlayerViews.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PlayerViews.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TournamentViews.designer.cs</LastGenOutput>

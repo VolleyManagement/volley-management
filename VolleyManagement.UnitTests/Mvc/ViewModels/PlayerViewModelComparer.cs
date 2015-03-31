@@ -41,7 +41,6 @@
             return x.Id == y.Id &&
                 x.FirstName == y.FirstName &&
                 x.LastName == y.LastName &&
-                x.Photo == y.Photo &&
                 x.BirthYear == y.BirthYear &&
                 x.Height == y.Height &&
                 x.Weight == y.Weight;

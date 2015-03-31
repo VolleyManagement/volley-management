@@ -4,10 +4,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using VolleyManagement.Domain;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.App_GlobalResources;
-
-    using tournConst = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>
     /// TournamentViewModel for Create and Edit actions
@@ -41,7 +40,7 @@
         /// <value>Name of tournament.</value>
         [Display(Name = "TournamentName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(60, ErrorMessageResourceName = "MaxLengthErrorMessage"
+        [StringLength(Constants.Tournament.MAX_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
@@ -50,7 +49,7 @@
         /// </summary>
         /// <value>Description of tournament.</value>
         [Display(Name = "TournamentDescription", ResourceType = typeof(ViewModelResources))]
-        [StringLength(300, ErrorMessageResourceName = "MaxLengthErrorMessage"
+        [StringLength(Constants.Tournament.MAX_DESCRIPTION_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Description { get; set; }
 
@@ -60,7 +59,7 @@
         /// <value>Season of tournament.</value>
         [Display(Name = "TournamentSeason", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [Range(tournConst.MINIMAL_SEASON_YEAR, tournConst.MAXIMAL_SEASON_YEAR
+        [Range(Constants.Tournament.MINIMAL_SEASON_YEAR, Constants.Tournament.MAXIMAL_SEASON_YEAR
             , ErrorMessageResourceName = "NotInRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public short Season { get; set; }
 
@@ -77,7 +76,7 @@
         /// </summary>
         /// <value>regulations of tournament.</value>
         [Display(Name = "TournamentRegulationsLink", ResourceType = typeof(ViewModelResources))]
-        [StringLength(255, ErrorMessageResourceName = "MaxLengthErrorMessage"
+        [StringLength(Constants.Tournament.MAX_REGULATION_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string RegulationsLink { get; set; }
 

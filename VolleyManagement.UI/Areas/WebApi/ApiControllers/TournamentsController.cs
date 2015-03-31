@@ -17,6 +17,8 @@
     {
         private readonly ITournamentService _tournamentService;
 
+        private const string CONTROLLER_NAME = "tournaments";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class.
         /// </summary>
@@ -75,13 +77,13 @@
             }
             catch (ArgumentException ex)
             {
-                ModelState.AddModelError(ex.Source, ex.Message);
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.ParamName), ex.Message);
                 return BadRequest(ModelState);
             }
 
             catch (TournamentValidationException ex)
             {
-                ModelState.AddModelError(ex.Source, ex.Message);
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.ParamName), ex.Message); 
                 return BadRequest(ModelState);
             }
             

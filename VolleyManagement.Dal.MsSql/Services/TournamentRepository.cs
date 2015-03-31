@@ -7,10 +7,9 @@
     using System.Linq.Expressions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.MsSql.Mappers;
+    using VolleyManagement.Domain;
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Tournaments;
-
-    using constants = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>
     /// Defines implementation of the ITournamentRepository contract.
@@ -51,7 +50,7 @@
                     Description = t.Description,
                     RegulationsLink = t.RegulationsLink,
                     Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
-                    Season = (short)(constants.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB + t.Season)
+                    Season = (short)(Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB + t.Season)
                 });
         }
 
@@ -88,7 +87,7 @@
             tournamentToUpdate.Description = oldEntity.Description;
             tournamentToUpdate.RegulationsLink = oldEntity.RegulationsLink;
             tournamentToUpdate.Scheme = (byte)oldEntity.Scheme;
-            tournamentToUpdate.Season = (byte)(oldEntity.Season - constants.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
+            tournamentToUpdate.Season = (byte)(oldEntity.Season - Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
             _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 

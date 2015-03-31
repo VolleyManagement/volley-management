@@ -15,6 +15,11 @@
     public class TournamentValidationException : Exception
     {
         /// <summary>
+        /// Gets or sets name of a not valid parameter
+        /// </summary>
+        public string ParamName { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the TournamentValidationException
         /// class.
         /// </summary>
@@ -29,6 +34,18 @@
         /// <param name="message">The message that describes the error.</param>
         public TournamentValidationException(string message) : base(message)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the TournamentValidationException
+        /// class with a specified error message and a name of not valid parameter.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="paramName">The not valid parameter name.</param>
+        public TournamentValidationException(string message, string paramName)
+            : base(message)
+        {
+            ParamName = paramName;
         }
 
         /// <summary>

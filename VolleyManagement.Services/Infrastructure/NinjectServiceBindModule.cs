@@ -34,7 +34,8 @@
             var configs = new List<IBindingConfiguration>
                               {
                                   Bind<ITournamentService>().To<TournamentService>().BindingConfiguration,
-                                  Bind<IUserService>().To<UserService>().BindingConfiguration
+                                  Bind<IUserService>().To<UserService>().BindingConfiguration,
+                                  //Bind<IPlayerService>().To<PlayerService>().BindingConfiguration
                               };
             if (_scopeCallback != null)
             {

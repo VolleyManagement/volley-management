@@ -13,7 +13,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using Services.TournamentService;       
+    using Services.TournamentService;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
@@ -94,7 +94,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer()); 
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
         }
 
         /// <summary>

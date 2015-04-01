@@ -15,11 +15,6 @@
     public class TournamentValidationException : Exception
     {
         /// <summary>
-        /// Gets or sets name of a not valid parameter
-        /// </summary>
-        public string ParamName { get; set; }
-
-        /// <summary>
         /// Initializes a new instance of the TournamentValidationException
         /// class.
         /// </summary>
@@ -70,5 +65,10 @@
         public TournamentValidationException(SerializationInfo info, StreamingContext context)
         {
         }
+
+        /// <summary>
+        /// Gets or sets name of a not valid parameter
+        /// </summary>
+        public string ParamName { get; set; }
     }
 }

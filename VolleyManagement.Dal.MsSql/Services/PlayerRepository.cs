@@ -96,8 +96,6 @@
             playerToUpdate.BirthYear = oldEntity.BirthYear;
             playerToUpdate.Height = oldEntity.Height;
             playerToUpdate.Weight = oldEntity.Weight;
-            
-            _dalPlayers.ApplyOriginalValues(playerToUpdate);
         }
 
         /// <summary>

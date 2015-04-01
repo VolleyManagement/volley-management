@@ -121,13 +121,13 @@
     <value>FixMe: Confirm password</value>
   </data>
   <data name="FieldRange" xml:space="preserve">
-    <value>Поле {0} должно быть заполнено в диапазоне</value>
+    <value>Поле {0} должно быть заполнено в диапазоне {1} - {2}</value>
   </data>
   <data name="FieldRequired" xml:space="preserve">
     <value>Поле "{0}" является обязательным.</value>
   </data>
   <data name="InvalidEntriesError" xml:space="preserve">
-    <value>Поле должно содержать только печатаемые символы</value>
+    <value>Поле {0} должно содержать только печатаемые символы</value>
   </data>
   <data name="InvalidTournamentId" xml:space="preserve">
     <value>Неверный идентификатор турнира</value>

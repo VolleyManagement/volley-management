@@ -1,5 +1,6 @@
 @model Tournament
 @using VolleyManagement.Domain.Tournaments
+@using VolleyManagement.UI.Areas.Mvc;
 
 @{
     ViewBag.Title = Resources.TournamentViews.DeleteTournamentTitle;
@@ -18,7 +19,7 @@
     <div class="display-field">@Html.DisplayFor(model => model.Description)</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Season)</div>
-    <div class="display-field">@Model.Season</div>
+    <div class="display-field">@Html.DisplaySeason(Model.Season)</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Scheme)</div>
     <div class="display-field">@Model.Scheme.ToDescription()</div>

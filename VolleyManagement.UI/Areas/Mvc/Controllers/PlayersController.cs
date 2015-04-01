@@ -1,5 +1,4 @@
-﻿
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Web;
@@ -56,16 +55,17 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 this._playerService.Create(domainPlayer);
                 return this.RedirectToAction("Index");
             }
-            catch (PlayerValidationException ex)
-            {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                return this.View(playerViewModel);
-            }
             catch (ArgumentException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(playerViewModel);
             }
+            catch (Exception ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return this.View(playerViewModel);
+            }
+
         }
     }
 }

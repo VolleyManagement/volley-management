@@ -138,6 +138,7 @@
     <Compile Include="Mvc\ViewModels\UserDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserViewModelComparer.cs" />
+    <Compile Include="Services\PlayerService\PlayerComparer.cs" />
     <Compile Include="Services\PlayerService\PlayerServiceTestFixture.cs" />
     <Compile Include="Services\PlayerService\PlayerServiceTests.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />

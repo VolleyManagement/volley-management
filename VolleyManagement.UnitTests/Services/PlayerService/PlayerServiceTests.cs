@@ -1,11 +1,11 @@
 ﻿namespace VolleyManagement.UnitTests.Services.PlayerService
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Ninject;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Players;
@@ -16,7 +16,7 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
-    class PlayerServiceTests
+    public class PlayerServiceTests
     {
         /// <summary>
         /// Test Fixture.

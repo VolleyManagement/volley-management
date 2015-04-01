@@ -9,9 +9,8 @@
     /// Class for generating test data
     /// </summary>
     [ExcludeFromCodeCoverage]
-    class PlayerServiceTestFixture
+    public class PlayerServiceTestFixture
     {
-
         /// <summary>
         /// Holds collection of tournaments
         /// </summary>

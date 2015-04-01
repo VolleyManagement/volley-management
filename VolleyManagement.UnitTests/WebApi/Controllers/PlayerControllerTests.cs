@@ -1,22 +1,23 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UnitTests.Services.PlayerService;
+    using VolleyManagement.UnitTests.WebApi.ViewModels;
 
     /// <summary>
     /// Tests for PlayerController class.
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
-    class PlayerControllerTests
+    public class PlayerControllerTests
     {
         /// <summary>
         /// Test Fixture
@@ -32,6 +33,17 @@
         /// IoC for tests
         /// </summary>
         private IKernel _kernel;
+
+        /// <summary>
+        /// Initializes test data
+        /// </summary>
+        [TestInitialize]
+        public void TestInit()
+        {
+            _kernel = new StandardKernel();
+            _kernel.Bind<IPlayerService>()
+                   .ToConstant(_playerServiceMock.Object);
+        }
 
         /// <summary>
         /// Test for Get() method. The method should return existing players

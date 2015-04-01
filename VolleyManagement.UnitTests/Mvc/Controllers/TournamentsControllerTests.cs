@@ -122,7 +122,7 @@
                 .WithId(11)
                 .WithName("Tournament 11")
                 .WithDescription("Tournament 11 description")
-                .WithSeason("2014/2015")
+                .WithSeason(2014)
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('11')")
                 .Build());
@@ -133,7 +133,7 @@
                 .WithId(searchId)
                 .WithName("Tournament 11")
                 .WithDescription("Tournament 11 description")
-                .WithSeason("2014/2015")
+                .WithSeason(2014)
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('11')")
                 .Build();
@@ -158,7 +158,7 @@
                             .WithName("MyTournament")
                             .WithDescription("Hello!")
                             .WithScheme(TournamentSchemeEnum.Two)
-                            .WithSeason("2016/2017")
+                            .WithSeason(2016)
                             .WithRegulationsLink("google.com.ua")
                             .Build();
             MockSingleTournament(tournament);
@@ -167,7 +167,7 @@
                                         .WithName("MyTournament")
                                         .WithDescription("Hello!")
                                         .WithScheme(TournamentSchemeEnum.Two)
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("google.com.ua")
                                         .Build();
 
@@ -243,7 +243,7 @@
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
                 .WithName("testName")
                 .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason("2015/2016")
+                .WithSeason(2015)
                 .Build();
 
             // Act
@@ -286,7 +286,7 @@
                 .WithId(1)
                 .WithName("testName")
                 .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason("2015/2016")
+                .WithSeason(2015)
                 .Build();
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
                 .Throws(new TournamentValidationException());
@@ -310,7 +310,7 @@
                 .WithId(1)
                 .WithName("testName")
                 .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason("2015/2016")
+                .WithSeason(2015)
                 .Build();
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
                 .Throws(new Exception());
@@ -336,7 +336,7 @@
                             .WithName("test tournament")
                             .WithDescription("Volley")
                             .WithScheme(TournamentSchemeEnum.Two)
-                            .WithSeason("2016/2017")
+                            .WithSeason(2016)
                             .WithRegulationsLink("volley.dp.ua")
                             .Build();
             MockSingleTournament(tournament);
@@ -345,7 +345,7 @@
                                         .WithName("test tournament")
                                         .WithDescription("Volley")
                                         .WithScheme(TournamentSchemeEnum.Two)
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
 
@@ -387,7 +387,7 @@
                 .WithId(1)
                 .WithName("testName")
                 .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason("2015/2016")
+                .WithSeason(2015)
                 .Build();
 
             // Act
@@ -430,7 +430,7 @@
                 .WithId(1)
                 .WithName("testName")
                 .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason("2015/2016")
+                .WithSeason(2015)
                 .Build();
             _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
                 .Throws(new TournamentValidationException());
@@ -454,7 +454,7 @@
                 .WithId(1)
                 .WithName("testName")
                 .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason("2015/2016")
+                .WithSeason(2015)
                 .Build();
             _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
                 .Throws(new Exception());

@@ -19,14 +19,7 @@
         /// <returns>A signed integer that indicates the relative values of players.</returns>
         public int Compare(Player x, Player y)
         {
-            if (IsEqual(x, y))
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
+            return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
@@ -58,7 +51,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given players have the same properties.</returns>
-        public bool IsEqual(Player x, Player y)
+        public bool AreEqual(Player x, Player y)
         {
             return x.Id == y.Id &&
                 x.FirstName == y.FirstName &&
@@ -66,8 +59,6 @@
                 x.BirthYear == y.BirthYear &&
                 x.Height == y.Height &&
                 x.Weight == y.Weight;
-
-                // TO DO: photo
         }
     }
 }

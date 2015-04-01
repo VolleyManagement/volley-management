@@ -39,7 +39,6 @@
         /// <param name="playerToCreate">A Player to create.</param>
         public void Create(Player playerToCreate)
         {
-            // uniqueness check can be here
             _playerRepository.Add(playerToCreate);
             _playerRepository.UnitOfWork.Commit();
         }

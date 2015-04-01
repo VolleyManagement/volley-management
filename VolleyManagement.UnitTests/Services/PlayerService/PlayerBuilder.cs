@@ -25,8 +25,6 @@
                 FirstName = "FirstName",
                 LastName = "LastName",
                 BirthYear = 1983,
-
-                // TO DO: photo
                 Height = 186,
                 Weight = 93
             };

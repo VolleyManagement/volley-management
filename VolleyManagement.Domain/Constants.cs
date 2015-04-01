@@ -29,6 +29,22 @@
             /// constant defined the length of the regulation link field
             /// </summary>
             public const int MAX_REGULATION_LENGTH = 255;
+
+            /// <summary>
+            /// constant defined the offset when the schema fields saves or gets from database
+            /// schema saves in database by byte / in domain model by short
+            /// </summary>
+            public const short SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB = 1900;
+
+            /// <summary>
+            /// constant defines the minimal year available to season
+            /// </summary>
+            public const short MINIMAL_SEASON_YEAR = 1900;
+
+            /// <summary>
+            /// constant defines the maximal year available to season
+            /// </summary>
+            public const short MAXIMAL_SEASON_YEAR = 2155;
         }
 
         /// <summary>

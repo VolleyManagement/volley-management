@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-    using UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.Domain.Players;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
     /// Player view model builder
@@ -26,9 +26,6 @@
                 FirstName = "FirstName",
                 LastName = "LastName",
                 BirthYear = 1983,
-                //Photo = "Photo.jpg",
-
-                // TO DO: Photo
                 Height = 186,
                 Weight = 95
             };
@@ -75,17 +72,6 @@
         public PlayerMvcViewModelBuilder WithBirthYear(int birthYear)
         {
             _playerViewModel.BirthYear = birthYear;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the player view model photo path
-        /// </summary>
-        /// <param name="photoPath">Player view model photo path</param>
-        /// <returns>Player view model builder object</returns>
-        public PlayerMvcViewModelBuilder WithPhotoPath(string photoPath)
-        {
-            _playerViewModel.Photo = photoPath;
             return this;
         }
 

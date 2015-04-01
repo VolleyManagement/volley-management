@@ -117,64 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TournamentNameMustBeUnique" xml:space="preserve">
-    <value>The name of the tournament must be unique</value>
+  <data name="BackToList" xml:space="preserve">
+    <value>Назад к списку</value>
   </data>
-  <data name="UserEmailMustBeUnique" xml:space="preserve">
-    <value>The user email must be unique.</value>
+  <data name="Create" xml:space="preserve">
+    <value>Создать</value>
   </data>
-  <data name="UserNameAndEmailMustBeUnique" xml:space="preserve">
-    <value>The user name and email must be unique.</value>
+  <data name="CreatePlayerTitle" xml:space="preserve">
+    <value>Создать нового игрока</value>
   </data>
-  <data name="UserNameMustBeUnique" xml:space="preserve">
-    <value>The user name must be unique.</value>
-  </data>
-  <data name="ValidationCellPhone" xml:space="preserve">
-    <value>Please, enter the telepnone correctly</value>
-  </data>
-  <data name="ValidationEmail" xml:space="preserve">
-    <value>Please, enter the email correctly</value>
-  </data>
-  <data name="ValidationFullName" xml:space="preserve">
-    <value>Please, enter the full name correctly</value>
-  </data>
-  <data name="ValidationPassword" xml:space="preserve">
-    <value>Password cannot be empty!</value>
-  </data>
-  <data name="ValidationPlayerBirthYear" xml:space="preserve">
-    <value>Please, enter the birth year correctly.</value>
-  </data>
-  <data name="ValidationPlayerFirstName" xml:space="preserve">
-    <value>Please, enter the first name correctly</value>
-  </data>
-  <data name="ValidationPlayerHeight" xml:space="preserve">
-    <value>Please, enter the height correctly.</value>
-  </data>
-  <data name="ValidationPlayerLastName" xml:space="preserve">
-    <value>Please, enter the last name correctly</value>
-  </data>
-  <data name="ValidationPlayerWeight" xml:space="preserve">
-    <value>Please, enter the weight correctly.</value>
-  </data>
-  <data name="ValidationResultDescription" xml:space="preserve">
-    <value>Please, reduce the description text</value>
-  </data>
-  <data name="ValidationResultName" xml:space="preserve">
-    <value>Please, enter the tournament name</value>
-  </data>
-  <data name="ValidationResultRegLink" xml:space="preserve">
-    <value>Please, reduce the link text</value>
-  </data>
-  <data name="ValidationResultScheme" xml:space="preserve">
-    <value>Please, enter the scheme correctly</value>
-  </data>
-  <data name="ValidationResultSeason" xml:space="preserve">
-    <value>Please, enter the season correctly</value>
-  </data>
-  <data name="ValidationTournamentSeason" xml:space="preserve">
-    <value>Please, enter the season date correctly</value>
-  </data>
-  <data name="ValidationUserName" xml:space="preserve">
-    <value>Please, enter the user name correctly</value>
+  <data name="TournamentLegend" xml:space="preserve">
+    <value>Игрок</value>
   </data>
 </root>

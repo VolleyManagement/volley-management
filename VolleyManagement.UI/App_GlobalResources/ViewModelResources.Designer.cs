@@ -106,11 +106,20 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Поле &quot;{0}&quot; не может содержать более  &quot;{1}&quot; символов.
+        ///   Looks up a localized string similar to Поле &quot;{0}&quot; не может содержать более &quot;{1}&quot; символов.
         /// </summary>
         public static string MaxLengthErrorMessage {
             get {
                 return ResourceManager.GetString("MaxLengthErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поле &quot;{0}&quot; должно быть в диапазоне &quot;{1}&quot; - &quot;{2}&quot;.
+        /// </summary>
+        public static string NotInRange {
+            get {
+                return ResourceManager.GetString("NotInRange", resourceCulture);
             }
         }
         
@@ -120,6 +129,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string PasswordDidNotMatch {
             get {
                 return ResourceManager.GetString("PasswordDidNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя.
+        /// </summary>
+        public static string PlayerFirstName {
+            get {
+                return ResourceManager.GetString("PlayerFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фамилия.
+        /// </summary>
+        public static string PlayerLastName {
+            get {
+                return ResourceManager.GetString("PlayerLastName", resourceCulture);
             }
         }
         

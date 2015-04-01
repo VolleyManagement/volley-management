@@ -58,8 +58,8 @@
                 if (!string.IsNullOrEmpty(value) && value.Length > Constants.Tournament.MAX_DESCRIPTION_LENGTH)
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
-                }
-                
+                }       
+         
                 _description = value;
             }
         }

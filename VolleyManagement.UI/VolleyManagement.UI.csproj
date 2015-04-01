@@ -169,6 +169,7 @@
     <Content Include="Areas\WebApi\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -217,6 +218,7 @@
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\ListOfPlayers.cs" />
     <Compile Include="Areas\Mvc\TournamentSeasonHtmlHelper.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />

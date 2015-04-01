@@ -1,0 +1,72 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.ListOfPlayers
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+
+    </tr>
+
+    @foreach (var item in Model.list)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.FirstName, "Details", new { id = item.Id })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthYear)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Height)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@if (Model.Index != 0)
+{
+    Html.RouteLink("1", "index", new { id = (0) });
+}
+
+@if (Model.Index - 1 > 0)
+{
+    if (Model.Index - 1 > 1)
+    {
+        <b>...</b>
+    }
+    Html.RouteLink("Model.Index - 1", "index", new { id = (Model.Index - 1) });
+}
+
+@Model.Index
+
+@if (Model.Index + 1 < Model.NumberOfPages - 1)
+{
+    Html.RouteLink("Model.Index + 1", "index", new { id = (Model.Index + 1) });
+    if (Model.Index + 1 < Model.NumberOfPages - 2)
+    {
+        <b>...</b>
+    }
+}
+
+@if (Model.Index != Model.NumberOfPages - 1)
+{
+    Html.RouteLink("Model.NumberOfPages", "index", new { id = (Model.NumberOfPages) });
+}

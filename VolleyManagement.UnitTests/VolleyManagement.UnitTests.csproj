@@ -129,7 +129,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
-    <Compile Include="Mvc\Controllers\PlayerControllerTests.cs" />
     <Compile Include="Mvc\Controllers\UsersControllerTests.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
@@ -145,6 +144,7 @@
     <Compile Include="Mvc\ViewModels\UserViewModelComparer.cs" />
     <Compile Include="Services\PlayerService\PlayerBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerComparer.cs" />
+    <Compile Include="Services\PlayerService\PlayerServiceTests.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />

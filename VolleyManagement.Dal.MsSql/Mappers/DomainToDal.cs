@@ -55,6 +55,6 @@
             player.Height = domainPlayer.Height;
             player.Weight = domainPlayer.Weight;
             return player;
-        }    
+        }
     }
 }

@@ -31,7 +31,7 @@
             public const int MAX_REGULATION_LENGTH = 255;
 
             /// <summary>
-            /// constant defined the offset when the schema fiels saves or gets from database
+            /// constant defined the offset when the schema fields saves or gets from database
             /// schema saves in database by byte / in domain model by short
             /// </summary>
             public const short SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB = 1900;

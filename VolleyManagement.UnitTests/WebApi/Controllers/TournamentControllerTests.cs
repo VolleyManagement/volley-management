@@ -292,7 +292,7 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            controller.Put(input.Id, input);
+            controller.Put(input);
 
             // Assert
             var comparer = new TournamentComparer();
@@ -313,7 +313,7 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actualResult = controller.Put(input.Id, input) as InvalidModelStateResult;
+            var actualResult = controller.Put(input) as InvalidModelStateResult;
             var actualCorrectErrorCount = actualResult.ModelState.Single(msvp => msvp.Key == KEY_FOR_EXCEPTION_MESSAGE).Value
                                                                     .Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
 
@@ -336,7 +336,7 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input) as BadRequestErrorMessageResult;
+            var actual = controller.Put(input) as BadRequestErrorMessageResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
@@ -356,7 +356,7 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input) is InternalServerErrorResult;
+            var actual = controller.Put(input) is InternalServerErrorResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());

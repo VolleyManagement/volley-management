@@ -109,7 +109,7 @@
         /// </summary>
         /// <param name="tournament">The tournament to update</param>
         /// <returns>The <see cref="IHttpActionResult"/>.</returns>
-        public IHttpActionResult Put(int id, TournamentViewModel tournament)
+        public IHttpActionResult Put(TournamentViewModel tournament)
         {
             if (!ModelState.IsValid)
             {

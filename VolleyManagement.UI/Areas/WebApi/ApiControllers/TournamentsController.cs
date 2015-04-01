@@ -17,6 +17,8 @@
     {
         private readonly ITournamentService _tournamentService;
 
+        private const string CONTROLLER_NAME = "tournaments";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class.
         /// </summary>
@@ -67,9 +69,23 @@
                 return BadRequest(ModelState);
             }
 
-            var tournamentToCreate = tournament.ToDomain();
-            _tournamentService.Create(tournamentToCreate);
-            tournament.Id = tournamentToCreate.Id;
+            try
+            {
+                var tournamentToCreate = tournament.ToDomain();
+                _tournamentService.Create(tournamentToCreate);
+                tournament.Id = tournamentToCreate.Id;
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.ParamName), ex.Message);
+                return BadRequest(ModelState);
+            }
+
+            catch (TournamentValidationException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.ParamName), ex.Message); 
+                return BadRequest(ModelState);
+            }
             
             return Created(tournament);
         }

@@ -70,6 +70,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Поле {0} должно быть заполнено в диапазоне.
+        /// </summary>
+        public static string FieldRange {
+            get {
+                return ResourceManager.GetString("FieldRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Поле &quot;{0}&quot; является обязательным..
         /// </summary>
         public static string FieldRequired {
@@ -111,6 +120,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string PasswordDidNotMatch {
             get {
                 return ResourceManager.GetString("PasswordDidNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя.
+        /// </summary>
+        public static string PlayerFirstName {
+            get {
+                return ResourceManager.GetString("PlayerFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фамилия.
+        /// </summary>
+        public static string PlayerLastName {
+            get {
+                return ResourceManager.GetString("PlayerLastName", resourceCulture);
             }
         }
         

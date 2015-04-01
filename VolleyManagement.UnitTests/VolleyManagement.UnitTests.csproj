@@ -129,12 +129,17 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\PlayerControllerTests.cs" />
     <Compile Include="Mvc\Controllers\UsersControllerTests.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="AssertExtensions.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerViewModelToDomain.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\UserDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserViewModelComparer.cs" />

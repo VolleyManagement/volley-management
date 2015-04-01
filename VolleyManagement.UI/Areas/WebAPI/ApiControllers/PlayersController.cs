@@ -26,6 +26,26 @@
         }
 
         /// <summary>
+        /// Creates Player
+        /// </summary>
+        /// <param name="player"> The  player as ViewModel. </param>
+        /// <returns> Has been saved successfully - Created OData result
+        /// unsuccessfully - Bad request </returns>
+        public IHttpActionResult Post(PlayerViewModel player)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var playerToCreate = player.ToDomain();
+            _playerService.Create(playerToCreate);
+            player.Id = playerToCreate.Id;
+
+            return Created(player);
+        }
+
+        /// <summary>
         /// Gets players
         /// </summary>
         /// <returns> Tournament list. </returns>
@@ -37,6 +57,8 @@
                                 .Select(t => PlayerViewModel.Map(t))
                                 .AsQueryable();
         }
+
+
 
     }
 }

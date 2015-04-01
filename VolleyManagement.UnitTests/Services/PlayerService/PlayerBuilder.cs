@@ -37,7 +37,7 @@
         /// <returns>Player builder object</returns>
         public PlayerBuilder WithId(int id)
         {
-            this._player.Id = id;
+            _player.Id = id;
             return this;
         }
 
@@ -48,7 +48,7 @@
         /// <returns>Player builder object</returns>
         public PlayerBuilder WithFirstName(string firstName)
         {
-            this._player.FirstName = firstName;
+            _player.FirstName = firstName;
             return this;
         }
 
@@ -59,7 +59,7 @@
         /// <returns>Player builder object</returns>
         public PlayerBuilder WithLastName(string lastName)
         {
-            this._player.LastName = lastName;
+            _player.LastName = lastName;
             return this;
         }
 
@@ -70,7 +70,7 @@
         /// <returns>Player builder object</returns>
         public PlayerBuilder WithBirthYear(int birthYear)
         {
-            this._player.BirthYear = birthYear;
+            _player.BirthYear = birthYear;
             return this;
         }
 
@@ -81,7 +81,7 @@
         /// <returns>Player builder object</returns>
         public PlayerBuilder WithHeight(int height)
         {
-            this._player.Height = height;
+            _player.Height = height;
             return this;
         }
 
@@ -92,7 +92,7 @@
         /// <returns>Player builder object</returns>
         public PlayerBuilder WithWeight(int weight)
         {
-            this._player.Weight = weight;
+            _player.Weight = weight;
             return this;
         }
 
@@ -102,7 +102,7 @@
         /// <returns>Test player</returns>
         public Player Build()
         {
-            return this._player;
+            return _player;
         }
     }
 }

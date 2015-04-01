@@ -130,7 +130,10 @@
     <value>Неверный идентификатор турнира</value>
   </data>
   <data name="MaxLengthErrorMessage" xml:space="preserve">
-    <value>Поле "{0}" не может содержать более  "{1}" символов</value>
+    <value>Поле "{0}" не может содержать более "{1}" символов</value>
+  </data>
+  <data name="NotInRange" xml:space="preserve">
+    <value>Поле "{0}" должно быть в диапазоне "{1}" - "{2}"</value>
   </data>
   <data name="PasswordDidNotMatch" xml:space="preserve">
     <value>FixMe: Password didn't match</value>

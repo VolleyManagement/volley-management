@@ -33,6 +33,18 @@
 
         /// <summary>
         /// Initializes a new instance of the TournamentValidationException
+        /// class with a specified error message and a name of not valid parameter.
+        /// </summary>
+        /// <param name="message">The message that describes the error.</param>
+        /// <param name="paramName">The not valid parameter name.</param>
+        public TournamentValidationException(string message, string paramName)
+            : base(message)
+        {
+            ParamName = paramName;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the TournamentValidationException
         /// class with a specified error message and a reference to the inner
         /// exception that is the cause of this exception.
         /// </summary>
@@ -53,5 +65,10 @@
         public TournamentValidationException(SerializationInfo info, StreamingContext context)
         {
         }
+
+        /// <summary>
+        /// Gets or sets name of a not valid parameter
+        /// </summary>
+        public string ParamName { get; set; }
     }
 }

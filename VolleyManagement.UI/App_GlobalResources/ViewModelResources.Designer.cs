@@ -70,7 +70,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Поле {0} должно быть заполнено в диапазоне.
+        ///   Looks up a localized string similar to Поле {0} должно быть заполнено в диапазоне {1} - {2}.
         /// </summary>
         public static string FieldRange {
             get {
@@ -88,7 +88,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Поле должно содержать только печатаемые символы.
+        ///   Looks up a localized string similar to Поле {0} должно содержать только печатаемые символы.
         /// </summary>
         public static string InvalidEntriesError {
             get {

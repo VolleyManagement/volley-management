@@ -38,7 +38,5 @@ namespace VolleyManagement.Dal.MsSql
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
         }
-
-        //public System.Data.Entity.DbSet<VolleyManagement.Domain.Players.Player> Players { get; set; }
     }
 }

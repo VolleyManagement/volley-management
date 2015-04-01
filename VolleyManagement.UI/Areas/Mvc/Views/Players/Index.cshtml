@@ -1,72 +1,71 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.ListOfPlayers
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PagedPlayersViewModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Resources.PlayerViews.PlayersIndexTitle;
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
 </p>
 <table class="table">
     <tr>
-
+        <th>
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().FirstName)
+        </th>
+        <th></th>
     </tr>
 
-    @foreach (var item in Model.list)
+    @foreach (var item in Model.List)
     {
         <tr>
             <td>
-                @Html.ActionLink(item.FirstName, "Details", new { id = item.Id })
+                @Html.ActionLink(item.LastName, "Details", new { id = item.Id })
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BirthYear)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Height)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Weight)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) |
+                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id })
             </td>
         </tr>
     }
 
 </table>
 
-@if (Model.Index != 0)
+@if (Model.Index != 1)
 {
-    Html.RouteLink("1", "index", new { id = (0) });
+    @Html.RouteLink("1", "UpcomingPlayers", new { id = (0) });
 }
 
-@if (Model.Index - 1 > 0)
+@if (Model.Index - 1 > 1)
 {
-    if (Model.Index - 1 > 1)
+    if (Model.Index - 1 > 2)
     {
         <b>...</b>
     }
-    Html.RouteLink("Model.Index - 1", "index", new { id = (Model.Index - 1) });
+    int PageBefore = Model.Index - 1;
+    @Html.RouteLink(PageBefore.ToString(), "UpcomingPlayers", new { id = (Model.Index - 2) });
 }
 
 @Model.Index
 
-@if (Model.Index + 1 < Model.NumberOfPages - 1)
+@if (Model.Index + 1 < Model.NumberOfPages)
 {
-    Html.RouteLink("Model.Index + 1", "index", new { id = (Model.Index + 1) });
-    if (Model.Index + 1 < Model.NumberOfPages - 2)
-    {
-        <b>...</b>
-    }
+    int PageAfter = Model.Index + 1;
+    @Html.RouteLink(PageAfter.ToString(), "UpcomingPlayers", new { id = (Model.Index) });
+        if (Model.Index + 1 < Model.NumberOfPages - 1)
+        {
+            <b>...</b>
+        }
 }
 
-@if (Model.Index != Model.NumberOfPages - 1)
+@if (Model.Index != Model.NumberOfPages)
 {
-    Html.RouteLink("Model.NumberOfPages", "index", new { id = (Model.NumberOfPages) });
+    @Html.RouteLink(Model.NumberOfPages.ToString(), "UpcomingPlayers", new { id = (Model.NumberOfPages - 1) })
 }

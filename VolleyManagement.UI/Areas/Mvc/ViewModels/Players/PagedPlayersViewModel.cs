@@ -7,20 +7,20 @@
     using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
-    public class ListOfPlayers
+    public class PagedPlayersViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ListOfPlayers"/> class
+        /// Initializes a new instance of the <see cref="PagedPlayersViewModel"/> class
         /// </summary>
         /// <param name="source">All players</param>
         /// <param name="index">Index of page</param>
         /// <param name="size">Number of players on page</param>
-        public ListOfPlayers(IQueryable<Player> source, int index, int size)
+        public PagedPlayersViewModel(IQueryable<Player> source, int index, int size)
         {
             this.Size = size;
-            this.Index = index;
+            this.Index = index + 1;
             this.NumberOfPages = (int) Math.Ceiling(source.Count() / (double)Size);
-            this.list = new List<Player>(source.Skip(Index * Size).Take(Size));
+            this.List = new List<Player>(source.Skip(index * Size).Take(Size));
         }
 
         /// <summary>
@@ -41,6 +41,6 @@
         /// <summary>
         /// List Of Players
         /// </summary>
-        public List<Player> list { get; private set; }
+        public List<Player> List { get; private set; }
     }
 }

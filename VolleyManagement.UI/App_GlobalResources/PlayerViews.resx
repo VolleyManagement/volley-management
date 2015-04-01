@@ -123,8 +123,20 @@
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
   </data>
+  <data name="CreateNewPlayer" xml:space="preserve">
+    <value>Создать нового игрока</value>
+  </data>
   <data name="CreatePlayerTitle" xml:space="preserve">
     <value>Создать нового игрока</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
+  <data name="PlayersIndexTitle" xml:space="preserve">
+    <value>Игроки</value>
   </data>
   <data name="TournamentLegend" xml:space="preserve">
     <value>Игрок</value>

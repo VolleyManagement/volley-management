@@ -6,14 +6,14 @@
     /// Represents errors that occurs during the searching entity id
     /// in database
     /// </summary>
-    public class InvalidIdException : ArgumentException
+    public class InvalidKeyFieldException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the InvalidIdException
         /// class.
         /// </summary>
-        public InvalidIdException() :
-            base("Specified id is not exist")
+        public InvalidKeyFieldException() :
+            base("Specified value is not exist in database")
         {
         }
     }

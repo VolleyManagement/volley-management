@@ -1,12 +1,20 @@
-﻿
-
-namespace VolleyManagement.Dal.MsSql.Exceptions
+﻿namespace VolleyManagement.Dal.MsSql.Exceptions
 {
     using System;
 
-    class InvalidIdException : ArgumentException
+    /// <summary>
+    /// Represents errors that occurs during the searching entity id
+    /// in database
+    /// </summary>
+    public class InvalidIdException : ArgumentException
     {
-        public InvalidIdException():base("Specified id is not exist")
-        { }
+        /// <summary>
+        /// Initializes a new instance of the InvalidIdException
+        /// class.
+        /// </summary>
+        public InvalidIdException() :
+            base("Specified id is not exist")
+        {
+        }
     }
 }

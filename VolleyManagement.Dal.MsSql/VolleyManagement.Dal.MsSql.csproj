@@ -61,7 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\InvalidIdException.cs" />
     <Compile Include="Infrastructure\NinjectDataAccessModule.cs" />
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Player.cs" />

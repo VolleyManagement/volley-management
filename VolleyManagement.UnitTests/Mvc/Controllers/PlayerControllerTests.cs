@@ -86,7 +86,7 @@
             var controller = _kernel.Get<PlayersController>();
             controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
             var playerViewModel = new PlayerMvcViewModelBuilder()
-                .WithFirstName("")
+                .WithFirstName(string.Empty)
                 .Build();
 
             // Act

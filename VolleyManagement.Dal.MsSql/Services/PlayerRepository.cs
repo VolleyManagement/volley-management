@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Text;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Players;
@@ -101,7 +102,7 @@
             }
             catch (InvalidOperationException)
             {
-                //throw new InvalidIdException();
+                throw new InvalidKeyValueException();
             }
         }
 

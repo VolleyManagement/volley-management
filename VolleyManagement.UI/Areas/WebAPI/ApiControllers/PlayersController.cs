@@ -50,7 +50,7 @@
         /// </summary>
         /// <returns> Tournament list. </returns>
         [Queryable]
-        public IQueryable<PlayerViewModel> GetTournaments()
+        public IQueryable<PlayerViewModel> GetPlayers()
         {
             return _playerService.Get()
                                 .ToList()

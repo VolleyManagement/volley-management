@@ -48,7 +48,7 @@
         /// <summary>
         /// Gets players
         /// </summary>
-        /// <returns> Tournament list. </returns>
+        /// <returns> Player list. </returns>
         [Queryable]
         public IQueryable<PlayerViewModel> GetPlayers()
         {

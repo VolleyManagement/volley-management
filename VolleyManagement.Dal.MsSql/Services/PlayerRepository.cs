@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Text;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.MsSql.Exceptions;
     using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Players;
@@ -89,13 +90,20 @@
         /// <param name="oldEntity">The player to update.</param>
         public void Update(Domain.Player oldEntity)
         {
-            var playerToUpdate = _dalPlayers.Where(t => t.Id == oldEntity.Id).Single();
-            playerToUpdate.Id = oldEntity.Id;
-            playerToUpdate.FirstName = oldEntity.FirstName;
-            playerToUpdate.LastName = oldEntity.LastName;
-            playerToUpdate.BirthYear = oldEntity.BirthYear;
-            playerToUpdate.Height = oldEntity.Height;
-            playerToUpdate.Weight = oldEntity.Weight;
+            try
+            {
+                var playerToUpdate = _dalPlayers.Where(t => t.Id == oldEntity.Id).Single();
+                playerToUpdate.Id = oldEntity.Id;
+                playerToUpdate.FirstName = oldEntity.FirstName;
+                playerToUpdate.LastName = oldEntity.LastName;
+                playerToUpdate.BirthYear = oldEntity.BirthYear;
+                playerToUpdate.Height = oldEntity.Height;
+                playerToUpdate.Weight = oldEntity.Weight;
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidIdException();
+            }
         }
 
         /// <summary>
@@ -104,9 +112,7 @@
         /// <param name="id">The id of player to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Dal.Player { Id = id };
-            _dalPlayers.Attach(dalToRemove);
-            _dalPlayers.DeleteObject(dalToRemove);
+            throw new NotImplementedException();
         }
     }
 }

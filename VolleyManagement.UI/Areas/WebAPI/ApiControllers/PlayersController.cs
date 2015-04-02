@@ -10,7 +10,7 @@
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
 
     /// <summary>
-    /// The plauers controller.
+    /// The players controller.
     /// </summary>
     public class PlayersController : ODataController
     {
@@ -57,8 +57,5 @@
                                 .Select(t => PlayerViewModel.Map(t))
                                 .AsQueryable();
         }
-
-
-
     }
 }

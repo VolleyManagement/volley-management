@@ -6,15 +6,14 @@
     using System.Linq;
     using System.Net;
     using System.Web.Mvc;
-
     using Contracts;
     using Domain.Players;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.PlayerService;
 
     /// <summary>
@@ -69,7 +68,7 @@
             var expected = currectList.OrderBy(p => p.LastName)
                 .Skip((TESTING_PAGE - 1) * MAX_PLAYERS_ON_PAGE)
                 .Take(MAX_PLAYERS_ON_PAGE)
-                .Select(p => 
+                .Select(p =>
                     new PlayerViewModel
                     {
                         Id = p.Id,

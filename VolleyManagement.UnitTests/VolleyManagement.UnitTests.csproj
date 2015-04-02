@@ -128,6 +128,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mvc\Controllers\PlayerControllerTests.cs" />
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\UsersControllerTests.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />

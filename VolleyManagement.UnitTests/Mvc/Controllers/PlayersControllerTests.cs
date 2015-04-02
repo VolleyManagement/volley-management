@@ -13,6 +13,7 @@
     using Moq;
     using Ninject;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Services.PlayerService;
 
@@ -27,6 +28,7 @@
         private const int FIRST_ASCII_LETTER = 65;
         private const int LAST_ASCII_LETTER = 90;
         private const int MAX_PLAYERS_ON_PAGE = 10;
+        private const int TESTING_PAGE = 1;
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
         private IKernel _kernel;
@@ -43,10 +45,10 @@
         }
 
         /// <summary>
-        /// Test for Index action. The action should return not empty ordering list with players
+        /// Test for Index action. The action should return not empty ordering page with players
         /// </summary>
         [TestMethod]
-        public void Index_PlayersExist_PlayersReturned()
+        public void Index_PlayersExist_PlayersPageReturned()
         {
             // Arrange
             List<Player> currectList = new List<Player>();
@@ -64,13 +66,26 @@
             _playerServiceMock.Setup(tr => tr.Get()).Returns(currectList.AsQueryable());
 
             var sut = this._kernel.Get<PlayersController>();
-            var expected = currectList.OrderBy(p => p.LastName).Skip(0).Take(MAX_PLAYERS_ON_PAGE).ToList();
+            var expected = currectList.OrderBy(p => p.LastName)
+                .Skip((TESTING_PAGE - 1) * MAX_PLAYERS_ON_PAGE)
+                .Take(MAX_PLAYERS_ON_PAGE)
+                .Select(p => 
+                    new PlayerViewModel
+                    {
+                        Id = p.Id,
+                        FirstName = p.FirstName,
+                        LastName = p.LastName,
+                        BirthYear = p.BirthYear,
+                        Height = p.Height,
+                        Weight = p.Weight
+                    })
+                .ToList();
 
             // Act
-            var actual = TestExtensions.GetModel<PagedPlayersViewModel>(sut.Index(0)).List;
+            var actual = TestExtensions.GetModel<PlayersListViewModel>(sut.Index(TESTING_PAGE)).List;
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new PlayerComparer());
+            CollectionAssert.AreEqual(expected, actual, new PlayerViewModelComparer());
         }
 
         /// <summary>

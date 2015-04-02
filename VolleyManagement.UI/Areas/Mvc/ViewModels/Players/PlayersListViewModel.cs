@@ -6,27 +6,35 @@
     using System.Web;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using VolleyManagement.UI.Areas.Mvc.Mappers;
 
-    public class PagedPlayersViewModel
+    public class PlayersListViewModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PagedPlayersViewModel"/> class
+        /// Initializes a new instance of the <see cref="PlayersListViewModel"/> class
         /// </summary>
         /// <param name="source">All players</param>
         /// <param name="index">Index of page</param>
         /// <param name="size">Number of players on page</param>
-        public PagedPlayersViewModel(IQueryable<Player> source, int index, int size)
+        public PlayersListViewModel(IQueryable<Player> source, int? index, int size)
         {
             this.Size = size;
-            this.Index = index + 1;
+            this.PageNumber = index ?? 1;
             this.NumberOfPages = (int) Math.Ceiling(source.Count() / (double)Size);
-            this.List = new List<Player>(source.Skip(index * Size).Take(Size));
+
+            if (index > this.NumberOfPages)
+                throw new ArgumentOutOfRangeException();
+
+            this.List = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size).Take(Size)
+                .ToList()
+                .Select(p => PlayerViewModel.Map(p))
+                .AsQueryable());
         }
 
         /// <summary>
         /// Index of page
         /// </summary>
-        public int Index { get; private set; }
+        public int PageNumber { get; private set; }
 
         /// <summary>
         /// Number of players on page
@@ -41,6 +49,6 @@
         /// <summary>
         /// List Of Players
         /// </summary>
-        public List<Player> List { get; private set; }
+        public List<PlayerViewModel> List { get; private set; }
     }
 }

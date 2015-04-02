@@ -38,12 +38,12 @@
         /// Gets playerss from PlayerService
         /// </summary>
         /// <returns>View with collection of playerss</returns>
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? page)
         {
             try
             {
                 var allPlayers = this._playerService.Get().OrderBy(p => p.LastName);
-                var playersOnPage = new PagedPlayersViewModel(allPlayers, id ?? 0, MAX_PLAYERS_ON_PAGE);
+                var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE);
 
                 return View(playersOnPage);
             }

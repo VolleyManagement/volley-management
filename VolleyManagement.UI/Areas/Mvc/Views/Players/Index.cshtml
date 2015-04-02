@@ -1,4 +1,4 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PagedPlayersViewModel
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayersListViewModel
 
 @{
     ViewBag.Title = Resources.PlayerViews.PlayersIndexTitle;
@@ -17,7 +17,6 @@
         <th>
             @Html.DisplayNameFor(model => model.List.FirstOrDefault().FirstName)
         </th>
-        <th></th>
     </tr>
 
     @foreach (var item in Model.List)
@@ -29,43 +28,42 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
-            <td>
-                @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) |
-                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id })
-            </td>
         </tr>
     }
 
 </table>
-
-@if (Model.Index != 1)
-{
-    @Html.RouteLink("1", "UpcomingPlayers", new { id = (0) });
+@{
+    int firstPage = 1;
+    int pageBefore = Model.PageNumber - 1;
+    int pageAfter = Model.PageNumber + 1;
 }
 
-@if (Model.Index - 1 > 1)
+@if (Model.PageNumber != firstPage)
 {
-    if (Model.Index - 1 > 2)
+    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage) });
+}
+
+@if (pageBefore > firstPage)
+{
+    if (pageBefore > 2)
     {
         <b>...</b>
     }
-    int PageBefore = Model.Index - 1;
-    @Html.RouteLink(PageBefore.ToString(), "UpcomingPlayers", new { id = (Model.Index - 2) });
+    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore) });
 }
 
-@Model.Index
+@Model.PageNumber
 
-@if (Model.Index + 1 < Model.NumberOfPages)
+@if (pageAfter < Model.NumberOfPages)
 {
-    int PageAfter = Model.Index + 1;
-    @Html.RouteLink(PageAfter.ToString(), "UpcomingPlayers", new { id = (Model.Index) });
-        if (Model.Index + 1 < Model.NumberOfPages - 1)
-        {
-            <b>...</b>
-        }
+    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter) });
+    if (pageAfter < Model.NumberOfPages - 1)
+    {
+        <b>...</b>
+    }
 }
 
-@if (Model.Index != Model.NumberOfPages)
+@if (Model.PageNumber != Model.NumberOfPages)
 {
-    @Html.RouteLink(Model.NumberOfPages.ToString(), "UpcomingPlayers", new { id = (Model.NumberOfPages - 1) })
+    @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages) })
 }

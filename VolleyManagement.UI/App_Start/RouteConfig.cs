@@ -17,13 +17,6 @@
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-            name: "UpcomingPlayers",                               // Route name
-            url: "Mvc/Players/Index/{id}",                           // URL with params
-            defaults: new { controller = "Players", action = "Index"}, // Param defaults
-            namespaces: new[] { "VolleyManagement.UI.Areas.Mvc.Controllers" }
-            );
-
-            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },

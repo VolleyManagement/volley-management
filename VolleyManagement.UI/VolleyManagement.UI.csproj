@@ -218,7 +218,7 @@
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
-    <Compile Include="Areas\Mvc\ViewModels\Players\PagedPlayersViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListViewModel.cs" />
     <Compile Include="Areas\Mvc\TournamentSeasonHtmlHelper.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />

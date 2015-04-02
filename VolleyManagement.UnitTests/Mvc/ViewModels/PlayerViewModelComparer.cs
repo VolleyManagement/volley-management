@@ -1,16 +1,16 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
     /// Comparer for player objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class PlayerViewModelComparer : IComparer<PlayerViewModel>
+    internal class PlayerViewModelComparer : IComparer<PlayerViewModel>, IComparer
     {
         /// <summary>
         /// Compares two players objects.
@@ -28,6 +28,29 @@
             {
                 return 1;
             }
+        }
+
+        /// <summary>
+        /// Compares two player objects (non-generic implementation).
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>A signed integer that indicates the relative values of players.</returns>
+        public int Compare(object x, object y)
+        {
+            PlayerViewModel firstPlayer = x as PlayerViewModel;
+            PlayerViewModel secondPlayer = y as PlayerViewModel;
+
+            if (firstPlayer == null)
+            {
+                return -1;
+            }
+            else if (secondPlayer == null)
+            {
+                return 1;
+            }
+
+            return Compare(firstPlayer, secondPlayer);
         }
 
         /// <summary>

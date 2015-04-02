@@ -46,3 +46,15 @@ INSERT INTO dbo.Users(
   ('cappp',	'3571759416F60909E1EB1A44F0424177AFA296E6CC08997C645064B8DDE40239','','1234567891','sms3@sms.com'),
   ('capppp',	'82FAB6B5F1F4360A1C94C782DAF2E564086986B2645BB3FC0CCB88764B000D6F','','1234567891','sms4@sms.com');
 GO
+
+INSERT INTO dbo.Players(
+  [FirstName],
+  [LastName],
+  [BirthYear],
+  [Height],
+  [Weight]
+) VALUES 
+  ('asd','asdasd?',1986, 180, 85),
+  ('qwe','qweqweqwe',1987, 181, 86),
+  ('zxc','zxczxc',1988, 182, 87);
+GO

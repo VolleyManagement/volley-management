@@ -34,16 +34,16 @@
         /// <summary>
         /// Gets or sets birth year of player
         /// </summary>
-        public int BirthYear { get; set; }
+        public int? BirthYear { get; set; }
 
         /// <summary>
         /// Gets or sets height of player
         /// </summary>
-        public int Height { get; set; }
+        public int? Height { get; set; }
 
         /// <summary>
         /// Gets or sets weight of player
         /// </summary>
-        public int Weight { get; set; }
+        public int? Weight { get; set; }
     }
 }

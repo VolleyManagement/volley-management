@@ -39,6 +39,6 @@ namespace VolleyManagement.Dal.MsSql
         {
         }
 
-        public System.Data.Entity.DbSet<VolleyManagement.Domain.Players.Player> Players { get; set; }
+        //public System.Data.Entity.DbSet<VolleyManagement.Domain.Players.Player> Players { get; set; }
     }
 }

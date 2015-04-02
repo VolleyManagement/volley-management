@@ -24,7 +24,7 @@
         private const int MAX_PLAYERS_ON_PAGE = 10;
 
         /// <summary>
-        /// Holds TournamentService instance
+        /// Holds PlayerService instance
         /// </summary>
         private readonly IPlayerService _playerService;
 
@@ -43,6 +43,7 @@
         /// <returns>View with collection of playerss</returns>
         public ActionResult Index(int id)
         {
+            //int id = 0;
             try
             {
                 var allPlayers = this._playerService.Get().OrderBy(p => p.LastName);

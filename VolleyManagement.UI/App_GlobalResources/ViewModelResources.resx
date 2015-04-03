@@ -141,11 +141,20 @@
   <data name="PasswordDidNotMatch" xml:space="preserve">
     <value>FixMe: Password didn't match</value>
   </data>
+  <data name="PlayerBirthYear" xml:space="preserve">
+    <value>Год рождения</value>
+  </data>
   <data name="PlayerFirstName" xml:space="preserve">
     <value>Имя</value>
   </data>
+  <data name="PlayerHeight" xml:space="preserve">
+    <value>Рост</value>
+  </data>
   <data name="PlayerLastName" xml:space="preserve">
     <value>Фамилия</value>
+  </data>
+  <data name="PlayerWeight" xml:space="preserve">
+    <value>Вес</value>
   </data>
   <data name="TournamentDescription" xml:space="preserve">
     <value>Описание</value>

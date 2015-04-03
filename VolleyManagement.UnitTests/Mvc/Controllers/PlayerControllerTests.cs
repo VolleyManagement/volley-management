@@ -107,7 +107,7 @@
             var playerViewModel = new PlayerMvcViewModelBuilder().Build();
 
             _playerServiceMock.Setup(ps => ps.Create(It.IsAny<Player>()))
-                .Throws(new Exception());
+                .Throws(new ArgumentException());
             var controller = _kernel.Get<PlayersController>();
 
             // Act
@@ -117,18 +117,17 @@
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
         }
 
-        /*
         /// <summary>
         /// Create player action test (POST)
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_ArgumentException_ExceptionThrown()
+        public void CreatePostAction_GeneralExceptionCatch_ReturnToEditPage()
         {
             // Arrange
             var playerViewModel = new PlayerMvcViewModelBuilder().Build();
 
             _playerServiceMock.Setup(ps => ps.Create(It.IsAny<Player>()))
-                .Throws(new ArgumentException());
+                .Throws(new Exception());
             var controller = _kernel.Get<PlayersController>();
 
             // Act
@@ -137,6 +136,5 @@
             // Assert
             Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
         }
-         */
     }
 }

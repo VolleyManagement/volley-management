@@ -133,6 +133,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Год рождения.
+        /// </summary>
+        public static string PlayerBirthYear {
+            get {
+                return ResourceManager.GetString("PlayerBirthYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Имя.
         /// </summary>
         public static string PlayerFirstName {
@@ -142,11 +151,29 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Рост.
+        /// </summary>
+        public static string PlayerHeight {
+            get {
+                return ResourceManager.GetString("PlayerHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Фамилия.
         /// </summary>
         public static string PlayerLastName {
             get {
                 return ResourceManager.GetString("PlayerLastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вес.
+        /// </summary>
+        public static string PlayerWeight {
+            get {
+                return ResourceManager.GetString("PlayerWeight", resourceCulture);
             }
         }
         

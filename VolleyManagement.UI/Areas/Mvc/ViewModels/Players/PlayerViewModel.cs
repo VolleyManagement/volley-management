@@ -44,6 +44,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
         /// <summary>
         /// Gets or sets the player birth year
         /// </summary>
+        [Display(Name = "PlayerBirthYear", ResourceType = typeof(ViewModelResources))]
         [Range(Constants.Player.MIN_BIRTH_YEAR, Constants.Player.MAX_BIRTH_YEAR
             , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int? BirthYear { get; set; }
@@ -51,6 +52,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
         /// <summary>
         /// Gets or sets the player height
         /// </summary>
+        [Display(Name = "PlayerHeight", ResourceType = typeof(ViewModelResources))]
         [Range(Constants.Player.MIN_HEIGHT, Constants.Player.MAX_HEIGHT
             , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int? Height { get; set; }
@@ -58,6 +60,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
         /// <summary>
         /// Gets or sets the player weight
         /// </summary>
+        [Display(Name = "PlayerWeight", ResourceType = typeof(ViewModelResources))]
         [Range(Constants.Player.MIN_WEIGHT, Constants.Player.MAX_WEIGHT
             , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int? Weight { get; set; }

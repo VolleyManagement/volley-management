@@ -1,5 +1,4 @@
-﻿
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -104,6 +103,5 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
             };
         }
         #endregion
-        
     }
 }

@@ -112,7 +112,7 @@
         /// Test for Create player action (GET)
         /// </summary>
         [TestMethod]
-        public void Create_GetView_ReturnsViewWithDefaultData()
+        public void CreateGetAction_GetView_ReturnsViewWithDefaultData()
         {
             // Arrange
             var controller = _kernel.Get<PlayersController>();
@@ -187,6 +187,7 @@
             var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Create(playerViewModel));
 
             // Assert
+            Assert.AreNotEqual(0, controller.ModelState.Count, "Model state should containe some error");
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
         }
 

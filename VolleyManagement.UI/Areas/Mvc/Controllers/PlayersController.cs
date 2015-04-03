@@ -35,7 +35,7 @@
         }
 
         /// <summary>
-        /// Gets playerss from PlayerService
+        /// Gets players from PlayerService
         /// </summary>
         /// <returns>View with collection of playerss</returns>
         public ActionResult Index(int? page)
@@ -54,7 +54,7 @@
         }
 
         /// <summary>
-        /// Create player action
+        /// Create player action GET       
         /// </summary>
         /// <returns>Empty player view model</returns>
         public ActionResult Create()
@@ -64,10 +64,10 @@
         }
 
         /// <summary>
-        /// Create player action
+        /// Create player action POST
         /// </summary>
         /// <param name="playerViewModel">Player view model</param>
-        /// <returns></returns>
+        /// <returns>Redirect to players index page</returns>
         [HttpPost]
         public ActionResult Create(PlayerViewModel playerViewModel)
         {
@@ -87,12 +87,10 @@
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(playerViewModel);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                return this.View(playerViewModel);
+                return this.HttpNotFound();
             }
-
         }
     }
 }

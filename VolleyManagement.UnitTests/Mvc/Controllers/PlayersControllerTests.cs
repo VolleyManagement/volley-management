@@ -134,6 +134,16 @@
             // Arrange
             var playerController = _kernel.Get<PlayersController>();
             var playerViewModel = new PlayerMvcViewModelBuilder()
+                .WithId(0)
+                .WithFirstName("FirstName")
+                .WithLastName("LastName")
+                .WithBirthYear(1983)
+                .WithHeight(186)
+                .WithWeight(95)
+                .Build();
+
+            var expected = new PlayerBuilder()
+                .WithId(0)
                 .WithFirstName("FirstName")
                 .WithLastName("LastName")
                 .WithBirthYear(1983)
@@ -145,7 +155,7 @@
             var result = playerController.Create(playerViewModel) as RedirectToRouteResult;
 
             // Assert
-            _playerServiceMock.Verify(ts => ts.Create(It.IsAny<Player>()), Times.Once());
+            _playerServiceMock.Verify(ts => ts.Create(It.Is<Player>(pl => new PlayerComparer().AreEqual(pl,expected))), Times.Once());
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 

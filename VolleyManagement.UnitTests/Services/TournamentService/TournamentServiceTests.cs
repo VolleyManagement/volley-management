@@ -72,7 +72,7 @@
                 .WithName("Name")
                 .WithDescription("Description")
                 .WithScheme(TournamentSchemeEnum.One)
-                .WithSeason("2014/2015")
+                .WithSeason(2014)
                 .WithRegulationsLink("link")
                 .Build();
             MockRepositoryFindWhere(new List<Tournament>() { tournament });

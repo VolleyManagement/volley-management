@@ -30,11 +30,10 @@ namespace VolleyManagement.Dal.MsSql
         public byte Scheme { get; set; }
 
         /// <summary>
-        /// Gets or sets the tournament season
+        /// Gets or sets the tournament season as a byte offset from the 1900
         /// </summary>
         [Required]
-        [StringLength(9)]
-        public string Season { get; set; }
+        public byte Season { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament description

@@ -24,7 +24,7 @@
                 Id = 1,
                 Name = "Name",
                 Description = "Description 1",
-                Season = "2014/2015",
+                Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
                 RegulationsLink = "http://default.com"
             };
@@ -79,7 +79,7 @@
         /// </summary>
         /// <param name="season">Season for test tournament</param>
         /// <returns>Tournament builder object</returns>
-        public TournamentBuilder WithSeason(string season)
+        public TournamentBuilder WithSeason(short season)
         {
             this._tournament.Season = season;
             return this;

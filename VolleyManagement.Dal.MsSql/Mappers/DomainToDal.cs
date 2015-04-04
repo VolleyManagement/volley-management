@@ -1,5 +1,7 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Mappers
 {
+    using constants = VolleyManagement.Domain.Constants.Tournament;
+
     /// <summary>
     /// Maps Domain models to Dal.
     /// </summary>
@@ -15,7 +17,7 @@
             Tournament tournament = new Tournament();
             tournament.Id = domainTournament.Id;
             tournament.Name = domainTournament.Name;
-            tournament.Season = domainTournament.Season;
+            tournament.Season = (byte)(domainTournament.Season - constants.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
             tournament.Description = domainTournament.Description;
             tournament.Scheme = (byte)domainTournament.Scheme;
             tournament.RegulationsLink = domainTournament.RegulationsLink;

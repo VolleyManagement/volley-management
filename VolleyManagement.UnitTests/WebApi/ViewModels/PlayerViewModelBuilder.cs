@@ -2,7 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
-    
+
     /// <summary>
     /// Builder for test player view models
     /// </summary>
@@ -10,12 +10,12 @@
     internal class PlayerViewModelBuilder
     {
         /// <summary>
-        /// Holds test player view model instance   
+        /// Holds test player view model instance
         /// </summary>
         private PlayerViewModel _playerViewModel;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlayerViewModelBuilder" /> class 
+        /// Initializes a new instance of the <see cref="PlayerViewModelBuilder" /> class
         /// </summary>
         public PlayerViewModelBuilder()
         {
@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// Sets the last name of test player view model 
+        /// Sets the last name of test player view model
         /// </summary>
         /// <param name="lastName">Last name fir test player view model</param>
         /// <returns>Player view model builder object</returns>

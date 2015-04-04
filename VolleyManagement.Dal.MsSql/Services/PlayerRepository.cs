@@ -90,20 +90,22 @@
         /// <param name="oldEntity">The player to update.</param>
         public void Update(Domain.Player oldEntity)
         {
+            Player playerToUpdate;
             try
             {
-                var playerToUpdate = _dalPlayers.Where(t => t.Id == oldEntity.Id).Single();
-                playerToUpdate.Id = oldEntity.Id;
-                playerToUpdate.FirstName = oldEntity.FirstName;
-                playerToUpdate.LastName = oldEntity.LastName;
-                playerToUpdate.BirthYear = oldEntity.BirthYear;
-                playerToUpdate.Height = oldEntity.Height;
-                playerToUpdate.Weight = oldEntity.Weight;
+                playerToUpdate = _dalPlayers.Where(t => t.Id == oldEntity.Id).Single();
             }
             catch (InvalidOperationException)
             {
                 throw new InvalidKeyValueException();
             }
+
+            playerToUpdate.Id = oldEntity.Id;
+            playerToUpdate.FirstName = oldEntity.FirstName;
+            playerToUpdate.LastName = oldEntity.LastName;
+            playerToUpdate.BirthYear = oldEntity.BirthYear;
+            playerToUpdate.Height = oldEntity.Height;
+            playerToUpdate.Weight = oldEntity.Weight;
         }
 
         /// <summary>

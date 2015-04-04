@@ -34,6 +34,7 @@
 </table>
 @{
     int firstPage = 1;
+    int secondPage = 2;
     int pageBefore = Model.PageNumber - 1;
     int pageAfter = Model.PageNumber + 1;
 }
@@ -45,7 +46,7 @@
 
 @if (pageBefore > firstPage)
 {
-    if (pageBefore > 2)
+    if (pageBefore > secondPage)
     {
         <b>...</b>
     }

@@ -10,6 +10,8 @@
 
     public class PlayersListViewModel
     {
+        private const int FIRST_PAGE = 1;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersListViewModel"/> class
         /// </summary>
@@ -19,7 +21,7 @@
         public PlayersListViewModel(IQueryable<Player> source, int? index, int size)
         {
             this.Size = size;
-            this.PageNumber = index ?? 1;
+            this.PageNumber = index ?? FIRST_PAGE;
             this.NumberOfPages = (int) Math.Ceiling(source.Count() / (double)Size);
 
             if (index > this.NumberOfPages)

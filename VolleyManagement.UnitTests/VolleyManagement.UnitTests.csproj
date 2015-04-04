@@ -153,6 +153,7 @@
     <Compile Include="WebApi\Controllers\PlayerControllerTests.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
+    <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs">
       <SubType>Code</SubType>

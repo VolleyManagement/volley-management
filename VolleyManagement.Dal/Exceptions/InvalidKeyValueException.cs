@@ -13,7 +13,7 @@
         /// class.
         /// </summary>
         public InvalidKeyValueException() :
-            base("Specified key value is not exist in database")
+            base("Specified key value does not exist in database")
         {
         }
     }

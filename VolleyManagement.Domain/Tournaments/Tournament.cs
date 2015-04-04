@@ -59,7 +59,7 @@
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
-                
+
                 _description = value;
             }
         }
@@ -81,6 +81,7 @@
                 {
                     throw new ArgumentException(Resources.ValidationTournamentSeason);
                 }
+
                 _season = value;
             }
         }

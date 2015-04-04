@@ -212,9 +212,11 @@
     <Compile Include="Areas\Mvc\TournamentSeasonHtmlHelper.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
+    <Compile Include="Areas\WebApi\ApiControllers\PlayersController.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\TournamentsController.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\UsersController.cs" />
     <Compile Include="Areas\WebApi\Controllers\HomeController.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />

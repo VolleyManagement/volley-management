@@ -40,5 +40,21 @@
             user.Password = domainUser.Password;
             return user;
         }
+
+        /// <summary>
+        /// Maps Player model.
+        /// </summary>
+        /// <param name="domainPlayer">Player Domain model</param>
+        /// <returns>Player Dal model</returns>
+        public static Player Map(Domain.Players.Player domainPlayer)
+        {
+            Player player = new Player();
+            player.Id = domainPlayer.Id;
+            player.FirstName = domainPlayer.FirstName;
+            player.LastName = domainPlayer.LastName;
+            player.Height = domainPlayer.Height;
+            player.Weight = domainPlayer.Weight;
+            return player;
+        }
     }
 }

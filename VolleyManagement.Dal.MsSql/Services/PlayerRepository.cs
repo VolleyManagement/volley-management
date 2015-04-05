@@ -97,7 +97,9 @@
             }
             catch (InvalidOperationException)
             {
-                throw new InvalidKeyValueException();
+                var exc = new InvalidKeyValueException();
+                exc.Data["Constants.EntityIdKey"] = oldEntity.Id;
+                throw exc;
             }
 
             playerToUpdate.Id = oldEntity.Id;

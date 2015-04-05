@@ -1,8 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
-    using System.Web;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
@@ -79,9 +80,15 @@
             {
                 var domainPlayer = playerViewModel.ToDomain();
                 this._playerService.Create(domainPlayer);
+                playerViewModel.Id = domainPlayer.Id;
                 return this.RedirectToAction("Index");
             }
             catch (ArgumentException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return this.View(playerViewModel);
+            }
+            catch (ValidationException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(playerViewModel);

@@ -151,6 +151,7 @@
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TournamentService\TournamentViewModelServiceTestFixture.cs" />
     <Compile Include="Services\UserService\UserBuilder.cs" />
     <Compile Include="Services\UserService\UserComparer.cs" />
     <Compile Include="Services\UserService\UserServiceTestFixture.cs" />

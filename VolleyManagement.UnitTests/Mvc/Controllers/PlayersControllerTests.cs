@@ -28,6 +28,7 @@
         private const int LAST_ASCII_LETTER = 90;
         private const int MAX_PLAYERS_ON_PAGE = 10;
         private const int TESTING_PAGE = 1;
+        private const int SAVED_PLAYER_ID = 10;
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
         private IKernel _kernel;
@@ -155,8 +156,27 @@
             var result = playerController.Create(playerViewModel) as RedirectToRouteResult;
 
             // Assert
-            _playerServiceMock.Verify(ts => ts.Create(It.Is<Player>(pl => new PlayerComparer().AreEqual(pl,expected))), Times.Once());
+            _playerServiceMock.Verify(ts => ts.Create(It.Is<Player>(pl => new PlayerComparer().AreEqual(pl, expected))), Times.Once());
             Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        /// <summary>
+        /// Create player action test (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_ValidPlayerViewModel_GotNewIdFromDatabase()
+        {
+            // Arrange
+            var playerController = _kernel.Get<PlayersController>();
+            var playerViewModel = new PlayerMvcViewModelBuilder().Build();
+
+            _playerServiceMock.Setup(ps => ps.Create(It.IsAny<Player>())).Callback<Player>(p => p.Id = SAVED_PLAYER_ID);
+
+            // Act
+            playerController.Create(playerViewModel);
+
+            // Assert
+            Assert.AreEqual(SAVED_PLAYER_ID, playerViewModel.Id, "The player wasn't saved");
         }
 
         /// <summary>

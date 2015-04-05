@@ -12,6 +12,7 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
 
     /// <summary>

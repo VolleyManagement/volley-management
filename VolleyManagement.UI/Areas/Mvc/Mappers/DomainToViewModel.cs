@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Mappers
 {
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Domain.Users;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;

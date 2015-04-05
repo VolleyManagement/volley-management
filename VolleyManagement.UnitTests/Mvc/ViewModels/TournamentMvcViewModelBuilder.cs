@@ -2,6 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>

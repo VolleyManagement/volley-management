@@ -3,6 +3,8 @@
     using System.Linq;
     using Domain.Tournaments;
 
+    using VolleyManagement.Domain.TournamentsAggregate;
+
     /// <summary>
     /// Interface for TournamentService
     /// </summary>

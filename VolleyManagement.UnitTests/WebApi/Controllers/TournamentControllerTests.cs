@@ -15,6 +15,7 @@
     using Ninject;
     using Services.TournamentService;       
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;

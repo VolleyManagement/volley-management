@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Linq.Expressions;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
     /// Defines specific contract for TournamentRepository

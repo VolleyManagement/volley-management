@@ -7,6 +7,8 @@
     using System.Linq.Expressions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.MsSql.Mappers;
+    using VolleyManagement.Domain.TournamentsAggregate;
+
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Tournaments;
 
@@ -40,15 +42,15 @@
         /// Gets all tournaments.
         /// </summary>
         /// <returns>Collection of domain tournaments.</returns>
-        public IQueryable<Domain.Tournament> Find()
+        public IQueryable<Tournament> Find()
         {
-            return _dalTournaments.Select(t => new Domain.Tournament
+            return _dalTournaments.Select(t => new Tournament
                 {
                     Id = t.Id,
                     Name = t.Name,
                     Description = t.Description,
                     RegulationsLink = t.RegulationsLink,
-                    Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
+                    Scheme = (TournamentSchemeEnum)t.Scheme,
                     Season = t.Season
                 });
         }
@@ -58,7 +60,7 @@
         /// </summary>
         /// <param name="predicate">Condition to find tournaments.</param>
         /// <returns>Collection of domain tournaments.</returns>
-        public IQueryable<Domain.Tournament> FindWhere(Expression<Func<Domain.Tournament, bool>> predicate)
+        public IQueryable<Tournament> FindWhere(Expression<Func<Tournament, bool>> predicate)
         {
             return this.Find().Where(predicate);
         }
@@ -67,7 +69,7 @@
         /// Adds new tournament.
         /// </summary>
         /// <param name="newEntity">The tournament for adding.</param>
-        public void Add(Domain.Tournament newEntity)
+        public void Add(Tournament newEntity)
         {
             Dal.Tournament newTournament = DomainToDal.Map(newEntity);
             _dalTournaments.AddObject(newTournament);
@@ -79,7 +81,7 @@
         /// Updates specified tournament.
         /// </summary>
         /// <param name="oldEntity">The tournament to update.</param>
-        public void Update(Domain.Tournament oldEntity)
+        public void Update(Tournament oldEntity)
         {
             var tournamentToUpdate = _dalTournaments.Single(t => t.Id == oldEntity.Id);
             tournamentToUpdate.Name = oldEntity.Name;

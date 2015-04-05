@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="domainTournament">Tournament Domain model</param>
         /// <returns>Tournament Dal model</returns>
-        public static Tournament Map(Domain.Tournaments.Tournament domainTournament)
+        public static Tournament Map(Domain.TournamentsAggregate.Tournament domainTournament)
         {
             Tournament tournament = new Tournament();
             tournament.Id = domainTournament.Id;

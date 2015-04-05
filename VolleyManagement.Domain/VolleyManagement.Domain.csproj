@@ -54,11 +54,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Tournaments\EnumExtensions.cs" />
-    <Compile Include="Tournaments\TournamentSchemeEnum.cs" />
-    <Compile Include="Tournaments\Tournament.cs" />
-    <Compile Include="Users\User.cs" />
-    <Compile Include="Users\UserValidation.cs" />
+    <Compile Include="Specifications\ISpecification.cs" />
+    <Compile Include="TournamentsAggregate\TournamentSchemeEnum.cs" />
+    <Compile Include="TournamentsAggregate\Tournament.cs" />
+    <Compile Include="TournamentsAggregate\TournamentValidationSpecification.cs" />
+    <Compile Include="UsersAggregate\User.cs" />
+    <Compile Include="UsersAggregate\UserValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

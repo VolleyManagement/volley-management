@@ -2,6 +2,7 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
     /// Builder for test tournaments

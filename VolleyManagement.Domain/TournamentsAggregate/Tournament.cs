@@ -1,6 +1,7 @@
-﻿namespace VolleyManagement.Domain.Tournaments
+﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
     using System;
+
     using VolleyManagement.Domain.Properties;
 
     /// <summary>
@@ -28,7 +29,7 @@
         {
             get
             {
-                return _name;
+                return this._name;
             }
 
             set
@@ -38,7 +39,7 @@
                     throw new ArgumentException(Resources.ValidationResultName);
                 }
 
-                _name = value;
+                this._name = value;
             }
         }
 
@@ -50,7 +51,7 @@
         {
             get
             {
-                return _description;
+                return this._description;
             }
 
             set
@@ -59,8 +60,7 @@
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
-                
-                _description = value;
+                this._description = value;
             }
         }
 
@@ -72,7 +72,7 @@
         {
             get
             {
-                return _season;
+                return this._season;
             }
 
             set
@@ -82,7 +82,7 @@
                     throw new ArgumentException(Resources.ValidationResultSeason);
                 }
 
-                _season = value;
+                this._season = value;
             }
         }
 
@@ -94,7 +94,7 @@
         {
             get
             {
-                return _scheme;
+                return this._scheme;
             }
 
             set
@@ -104,7 +104,7 @@
                     throw new ArgumentException(Resources.ValidationResultScheme);
                 }
 
-                _scheme = value;
+                this._scheme = value;
             }
         }
 
@@ -116,7 +116,7 @@
         {
             get
             {
-                return _regulationsLink;
+                return this._regulationsLink;
             }
 
             set
@@ -126,7 +126,7 @@
                     throw new ArgumentException(Resources.ValidationResultRegLink);
                 }
 
-                _regulationsLink = value;
+                this._regulationsLink = value;
             }
         }
     }

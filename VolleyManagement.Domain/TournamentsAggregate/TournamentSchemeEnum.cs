@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Domain.Tournaments
+﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
     using System.ComponentModel;
 

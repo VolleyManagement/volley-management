@@ -5,6 +5,7 @@
     using System.Linq;
 
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
 
     /// <summary>

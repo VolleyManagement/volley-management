@@ -18,17 +18,17 @@
         /// <param name="source">All players</param>
         /// <param name="index">Index of page</param>
         /// <param name="size">Number of players on page</param>
-        public PlayersListViewModel(IQueryable<Player> source, int? index, int size)
+        public PlayersListViewModel(IList<Player> source, int? index, int size)
         {
             this.Size = size;
             this.PageNumber = index ?? FIRST_PAGE;
             this.NumberOfPages = (int) Math.Ceiling(source.Count() / (double)Size);
 
-            if (index > this.NumberOfPages)
+            if ((index > this.NumberOfPages) || (index < FIRST_PAGE))
                 throw new ArgumentOutOfRangeException();
 
-            this.List = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size).Take(Size)
-                .ToList()
+            this.List = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
+                .Take(Size)
                 .Select(p => PlayerViewModel.Map(p)));
         }
 

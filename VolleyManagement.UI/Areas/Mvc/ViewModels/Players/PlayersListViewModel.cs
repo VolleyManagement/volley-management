@@ -18,7 +18,7 @@
         /// <param name="source">All players</param>
         /// <param name="index">Index of page</param>
         /// <param name="size">Number of players on page</param>
-        public PlayersListViewModel(IList<Player> source, int? index, int size)
+        public PlayersListViewModel(IQueryable <Player> source, int? index, int size)
         {
             this.Size = size;
             this.PageNumber = index ?? FIRST_PAGE;

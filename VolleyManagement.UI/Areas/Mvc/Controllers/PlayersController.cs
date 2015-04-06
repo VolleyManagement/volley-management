@@ -43,7 +43,7 @@
         {
             try
             {
-                var allPlayers = this._playerService.Get().OrderBy(p => p.LastName).ToList();
+                var allPlayers = this._playerService.Get().OrderBy(p => p.LastName);
                 var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE);
                 return View(playersOnPage);
             }

@@ -1,25 +1,26 @@
-﻿namespace VolleyManagement.UnitTests.Services.PlayerService
+﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Players;
+    using System.Linq;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
 
     /// <summary>
     /// Comparer for player objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class PlayerComparer : IComparer<Player>, IComparer
+    internal class PlayerViewModelComparer : IComparer<PlayerViewModel>, IComparer
     {
         /// <summary>
-        /// Compares two player objects.
+        /// Compares two players objects.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>A signed integer that indicates the relative values of players.</returns>
-        public int Compare(Player x, Player y)
+        public int Compare(PlayerViewModel x, PlayerViewModel y)
         {
-            return AreEqual(x, y) ? 0 : 1;
+            return this.IsEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
@@ -30,8 +31,8 @@
         /// <returns>A signed integer that indicates the relative values of players.</returns>
         public int Compare(object x, object y)
         {
-            Player firstPlayer = x as Player;
-            Player secondPlayer = y as Player;
+            PlayerViewModel firstPlayer = x as PlayerViewModel;
+            PlayerViewModel secondPlayer = y as PlayerViewModel;
 
             if (firstPlayer == null)
             {
@@ -51,7 +52,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given players have the same properties.</returns>
-        public bool AreEqual(Player x, Player y)
+        private bool IsEqual(PlayerViewModel x, PlayerViewModel y)
         {
             return x.Id == y.Id &&
                 x.FirstName == y.FirstName &&

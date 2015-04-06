@@ -1,24 +1,28 @@
 ﻿namespace VolleyManagement.UnitTests.Services.PlayerService
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Linq.Expressions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Services;
 
     /// <summary>
-    /// Tests for PlayerService class.
+    /// Tests for TournamentService class.
     /// </summary>
-    [TestClass]
     [ExcludeFromCodeCoverage]
+    [TestClass]
     public class PlayerServiceTests
     {
+        /// <summary>
+        /// Test Fixture.
+        /// </summary>
+        private readonly PlayerServiceTestFixture _testFixture = new PlayerServiceTestFixture();
+
         /// <summary>
         /// Players Repository Mock.
         /// </summary>
@@ -28,6 +32,11 @@
         /// Unit of work mock.
         /// </summary>
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
+
+        /// <summary>
+        /// ITournament service mock
+        /// </summary>
+        private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
 
         /// <summary>
         /// IoC for tests.
@@ -46,6 +55,39 @@
             _playerRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
+        /// <summary>
+        /// Test for Get() method. The method should return existing players
+        /// (order is important).
+        /// </summary>
+        [TestMethod]
+        public void GetAll_PlayersExist_PlayersReturned()
+        {
+            // Arrange
+            var testData = _testFixture.TestPlayers()
+                                       .Build();
+            MockRepositoryFindAll(testData);
+            var sut = _kernel.Get<PlayerService>();
+            var expected = new PlayerServiceTestFixture()
+                                            .TestPlayers()
+                                            .Build()
+                                            .ToList();
+
+            // Act
+            var actual = sut.Get().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new PlayerComparer());
+        }
+
+        /// <summary>
+        /// Mocks Find method.
+        /// </summary>
+        /// <param name="testData">Test data to mock.</param>
+        private void MockRepositoryFindAll(IEnumerable<Player> testData)
+        {
+            _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
+        }
+    
         /// <summary>
         /// Test for Create() method. The method should create a new player.
         /// </summary>

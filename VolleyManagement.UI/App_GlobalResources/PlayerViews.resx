@@ -138,9 +138,6 @@
   <data name="PlayersIndexTitle" xml:space="preserve">
     <value>Игроки</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="TournamentLegend" xml:space="preserve">
     <value>Игрок</value>
   </data>

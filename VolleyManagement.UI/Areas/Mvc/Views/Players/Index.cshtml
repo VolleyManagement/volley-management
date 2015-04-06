@@ -17,6 +17,7 @@
         <th>
             @Html.DisplayNameFor(model => model.List.FirstOrDefault().FirstName)
         </th>
+        <th></th>
     </tr>
 
     @foreach (var item in Model.List)
@@ -27,6 +28,10 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) |
+                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id })
             </td>
         </tr>
     }

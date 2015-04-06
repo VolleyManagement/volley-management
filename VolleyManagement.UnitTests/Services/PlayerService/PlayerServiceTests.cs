@@ -87,7 +87,7 @@
         {
             _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
-    
+
         /// <summary>
         /// Test for Create() method. The method should create a new player.
         /// </summary>

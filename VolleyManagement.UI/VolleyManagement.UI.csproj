@@ -167,6 +167,9 @@
     <Content Include="Areas\WebApi\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\WebApi\Views\web.config" />
     <Content Include="Areas\WebApi\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -183,6 +186,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\PlayerViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlayerViews.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\TournamentViews.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -203,13 +211,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\PlayersController.cs" />
     <Compile Include="Areas\Mvc\Controllers\TournamentsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\UsersController.cs" />
     <Compile Include="Areas\Mvc\EnumHtmlHelper.cs" />
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListViewModel.cs" />
     <Compile Include="Areas\Mvc\TournamentSeasonHtmlHelper.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\PlayersController.cs" />
@@ -269,6 +280,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_GlobalResources\PlayerViews.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>PlayerViews.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TournamentViews.designer.cs</LastGenOutput>

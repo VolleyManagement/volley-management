@@ -87,5 +87,35 @@
         {
             _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
+    
+        /// <summary>
+        /// Test for Create() method. The method should create a new player.
+        /// </summary>
+        [TestMethod]
+        public void Create_PlayerPassed_PlayerCreated()
+        {
+            // Arrange
+            var newPlayer = new PlayerBuilder().Build();
+
+            // Act
+            var sut = _kernel.Get<PlayerService>();
+            sut.Create(newPlayer);
+
+            // Assert
+            _playerRepositoryMock.Verify(
+                ur => ur.Add(It.Is<Player>(u => PlayersAreEqual(u, newPlayer))));
+            _unitOfWorkMock.Verify(u => u.Commit());
+        }
+
+        /// <summary>
+        /// Find out whether two players objects have the same property values.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>True if the players have the same property values.</returns>
+        private bool PlayersAreEqual(Player x, Player y)
+        {
+            return new PlayerComparer().Compare(x, y) == 0;
+        }
     }
 }

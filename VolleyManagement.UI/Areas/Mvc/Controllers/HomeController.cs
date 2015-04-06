@@ -13,7 +13,7 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Index()
         {
-            return RedirectToAction("Index", "Tournaments");
+            return View();
         }
     }
 }

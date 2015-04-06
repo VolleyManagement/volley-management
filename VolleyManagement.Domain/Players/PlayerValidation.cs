@@ -38,9 +38,10 @@
         /// </summary>
         /// <param name="birthYear">Player birth year for validation</param>
         /// <returns>Validity of Player birth year.</returns>
-        public static bool ValidateBirthYear(int birthYear)
+        public static bool ValidateBirthYear(int? birthYear)
         {
-            return birthYear <= Constants.Player.MIN_BIRTH_YEAR && birthYear >= Constants.Player.MAX_BIRTH_YEAR;
+            return birthYear.HasValue
+                && birthYear <= Constants.Player.MIN_BIRTH_YEAR && birthYear >= Constants.Player.MAX_BIRTH_YEAR;
         }
 
         /// <summary>
@@ -48,9 +49,10 @@
         /// </summary>
         /// <param name="height">Player height for validation</param>
         /// <returns>Validity of Player height.</returns>
-        public static bool ValidateHeight(int height)
+        public static bool ValidateHeight(int? height)
         {
-            return height <= Constants.Player.MIN_HEIGHT && height >= Constants.Player.MAX_HEIGHT;
+            return height.HasValue
+                && height <= Constants.Player.MIN_HEIGHT && height >= Constants.Player.MAX_HEIGHT;
         }
 
         /// <summary>
@@ -58,9 +60,10 @@
         /// </summary>
         /// <param name="weight">Player weight for validation</param>
         /// <returns>Validity of Player weight.</returns>
-        public static bool ValidateWeight(int weight)
+        public static bool ValidateWeight(int? weight)
         {
-            return weight <= Constants.Player.MIN_WEIGHT && weight >= Constants.Player.MAX_WEIGHT;
+            return weight.HasValue
+                && weight <= Constants.Player.MIN_WEIGHT && weight >= Constants.Player.MAX_WEIGHT;
         }
     }
 }

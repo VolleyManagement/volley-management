@@ -1,8 +1,10 @@
 ﻿namespace VolleyManagement.Services
 {
+    using System;
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
 
     /// <summary>
@@ -39,7 +41,6 @@
         /// <param name="playerToCreate">A Player to create.</param>
         public void Create(Player playerToCreate)
         {
-            // uniqueness check can be here
             _playerRepository.Add(playerToCreate);
             _playerRepository.UnitOfWork.Commit();
         }
@@ -51,7 +52,16 @@
         /// <returns>A found Player.</returns>
         public Player Get(int id)
         {
-            var player = _playerRepository.FindWhere(t => t.Id == id).Single();
+            Player player;
+            try
+            {
+                player = _playerRepository.FindWhere(t => t.Id == id).Single();
+            }
+            catch (InvalidOperationException)
+            {
+                throw new InvalidKeyValueException();
+            }
+
             return player;
         }
 

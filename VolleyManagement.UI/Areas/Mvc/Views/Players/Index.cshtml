@@ -1,0 +1,70 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayersListViewModel
+
+@{
+    ViewBag.Title = Resources.PlayerViews.PlayersIndexTitle;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().FirstName)
+        </th>
+    </tr>
+
+    @foreach (var item in Model.List)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.LastName, "Details", new { id = item.Id })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+        </tr>
+    }
+
+</table>
+@{
+    int firstPage = 1;
+    int secondPage = 2;
+    int pageBefore = Model.PageNumber - 1;
+    int pageAfter = Model.PageNumber + 1;
+}
+
+@if (Model.PageNumber != firstPage)
+{
+    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage) });
+}
+
+@if (pageBefore > firstPage)
+{
+    if (pageBefore > secondPage)
+    {
+        <b>...</b>
+    }
+    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore) });
+}
+
+@Model.PageNumber
+
+@if (pageAfter < Model.NumberOfPages)
+{
+    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter) });
+    if (pageAfter < Model.NumberOfPages - 1)
+    {
+        <b>...</b>
+    }
+}
+
+@if (Model.PageNumber != Model.NumberOfPages)
+{
+    @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages) })
+}

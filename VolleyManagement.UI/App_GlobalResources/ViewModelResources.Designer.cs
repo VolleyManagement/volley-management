@@ -70,6 +70,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Поле {0} должно быть заполнено в диапазоне {1} - {2}.
+        /// </summary>
+        public static string FieldRange {
+            get {
+                return ResourceManager.GetString("FieldRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Поле &quot;{0}&quot; является обязательным..
         /// </summary>
         public static string FieldRequired {
@@ -79,7 +88,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Поле должно содержать только печатаемые символы.
+        ///   Looks up a localized string similar to Поле {0} должно содержать только печатаемые символы.
         /// </summary>
         public static string InvalidEntriesError {
             get {
@@ -120,6 +129,123 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string PasswordDidNotMatch {
             get {
                 return ResourceManager.GetString("PasswordDidNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Указан неверный год рождения.
+        /// </summary>
+        public static string PlayerBirthFieldRange {
+            get {
+                return ResourceManager.GetString("PlayerBirthFieldRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Год рождения.
+        /// </summary>
+        public static string PlayerBirthYear {
+            get {
+                return ResourceManager.GetString("PlayerBirthYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя.
+        /// </summary>
+        public static string PlayerFirstName {
+            get {
+                return ResourceManager.GetString("PlayerFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} должно содержать только буквы.
+        /// </summary>
+        public static string PlayerFirstNameInvalidEntriesError {
+            get {
+                return ResourceManager.GetString("PlayerFirstNameInvalidEntriesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может быть пустым.
+        /// </summary>
+        public static string PlayerFirstNameRequired {
+            get {
+                return ResourceManager.GetString("PlayerFirstNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Рост.
+        /// </summary>
+        public static string PlayerHeight {
+            get {
+                return ResourceManager.GetString("PlayerHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Указан неверный рост.
+        /// </summary>
+        public static string PlayerHeightFieldRange {
+            get {
+                return ResourceManager.GetString("PlayerHeightFieldRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фамилия.
+        /// </summary>
+        public static string PlayerLastName {
+            get {
+                return ResourceManager.GetString("PlayerLastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} должна содержать только буквы.
+        /// </summary>
+        public static string PlayerLastNameInvalidEntriesError {
+            get {
+                return ResourceManager.GetString("PlayerLastNameInvalidEntriesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может быть пустой.
+        /// </summary>
+        public static string PlayerLastNameRequired {
+            get {
+                return ResourceManager.GetString("PlayerLastNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может содержать более {1} символов.
+        /// </summary>
+        public static string PlayerMaxLengthErrorMessage {
+            get {
+                return ResourceManager.GetString("PlayerMaxLengthErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вес.
+        /// </summary>
+        public static string PlayerWeight {
+            get {
+                return ResourceManager.GetString("PlayerWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Указан неверный вес.
+        /// </summary>
+        public static string PlayerWeightFieldRange {
+            get {
+                return ResourceManager.GetString("PlayerWeightFieldRange", resourceCulture);
             }
         }
         

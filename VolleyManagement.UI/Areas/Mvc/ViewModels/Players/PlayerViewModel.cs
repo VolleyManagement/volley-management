@@ -1,5 +1,4 @@
-﻿
-namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -15,17 +14,17 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
         /// <summary>
         /// Gets or sets the player Id
         /// </summary>
-        public int Id { get; set; }
+        public int Id {get; set;}
 
         /// <summary>
         /// Gets or sets the player first name
         /// </summary>
         [Display(Name = "PlayerFirstName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired"
+        [Required(ErrorMessageResourceName = "PlayerFirstNameRequired"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
+        [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "PlayerMaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError"
+        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "PlayerFirstNameInvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string FirstName { get; set; }
 
@@ -33,33 +32,36 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
         /// Gets or sets the player last name
         /// </summary>
         [Display(Name = "PlayerLastName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired"
+        [Required(ErrorMessageResourceName = "PlayerLastNameRequired"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
+        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "PlayerMaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError"
+        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "PlayerLastNameInvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string LastName { get; set; }
 
         /// <summary>
         /// Gets or sets the player birth year
         /// </summary>
+        [Display(Name = "PlayerBirthYear", ResourceType = typeof(ViewModelResources))]
         [Range(Constants.Player.MIN_BIRTH_YEAR, Constants.Player.MAX_BIRTH_YEAR
-            , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+            , ErrorMessageResourceName = "PlayerBirthFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int? BirthYear { get; set; }
 
         /// <summary>
         /// Gets or sets the player height
         /// </summary>
+        [Display(Name = "PlayerHeight", ResourceType = typeof(ViewModelResources))]
         [Range(Constants.Player.MIN_HEIGHT, Constants.Player.MAX_HEIGHT
-            , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+            , ErrorMessageResourceName = "PlayerHeightFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the player weight
         /// </summary>
+        [Display(Name = "PlayerWeight", ResourceType = typeof(ViewModelResources))]
         [Range(Constants.Player.MIN_WEIGHT, Constants.Player.MAX_WEIGHT
-            , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+            , ErrorMessageResourceName = "PlayerWeightFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int? Weight { get; set; }
 
         #region Factory Methods
@@ -101,6 +103,5 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
             };
         }
         #endregion
-
     }
 }

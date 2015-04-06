@@ -22,8 +22,8 @@
             _playerViewModel = new PlayerViewModel()
             {
                 Id = 2,
-                FirstName = "First name 1",
-                LastName = "Last name 1",
+                FirstName = "FirstName",
+                LastName = "LastName",
                 BirthYear = 1955,
                 Weight = 100,
                 Height = 180

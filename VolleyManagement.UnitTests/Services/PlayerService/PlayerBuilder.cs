@@ -68,7 +68,7 @@
         /// </summary>
         /// <param name="birthYear">Test player birth year</param>
         /// <returns>Player builder object</returns>
-        public PlayerBuilder WithBirthYear(int birthYear)
+        public PlayerBuilder WithBirthYear(int? birthYear)
         {
             _player.BirthYear = birthYear;
             return this;
@@ -79,7 +79,7 @@
         /// </summary>
         /// <param name="height">Test player height</param>
         /// <returns>Player builder object</returns>
-        public PlayerBuilder WithHeight(int height)
+        public PlayerBuilder WithHeight(int? height)
         {
             _player.Height = height;
             return this;
@@ -90,7 +90,7 @@
         /// </summary>
         /// <param name="weight">Test player weight</param>
         /// <returns>Player builder object</returns>
-        public PlayerBuilder WithWeight(int weight)
+        public PlayerBuilder WithWeight(int? weight)
         {
             _player.Weight = weight;
             return this;

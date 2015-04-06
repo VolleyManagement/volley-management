@@ -29,6 +29,7 @@
 
             this.List = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
                 .Take(Size)
+                .ToList()
                 .Select(p => PlayerViewModel.Map(p)));
         }
 

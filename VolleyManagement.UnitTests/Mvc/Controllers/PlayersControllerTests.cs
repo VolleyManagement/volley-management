@@ -113,7 +113,7 @@
         }
 
         /// <summary>
-        /// Test for Details(). Requested id doesn`t exist in the database.
+        /// Test for Details(). Requested id does not exist in the database.
         /// </summary>
         [TestMethod]
         public void Details_PlayerDoesNotExist_NotFoundResult()

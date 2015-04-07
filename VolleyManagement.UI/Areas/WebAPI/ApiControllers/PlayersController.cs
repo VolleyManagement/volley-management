@@ -57,5 +57,14 @@
                                 .Select(t => PlayerViewModel.Map(t))
                                 .AsQueryable();
         }
+
+        /// <summary> Deletes tournament </summary>
+        /// <param name="key"> The key. </param>
+        /// <returns> The <see cref="IHttpActionResult"/>. </returns>
+        public IHttpActionResult Delete([FromODataUri] int key)
+        {
+            _playerService.Delete(key);
+            return StatusCode(HttpStatusCode.NoContent);
+        }
     }
 }

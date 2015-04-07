@@ -189,6 +189,24 @@
         }
 
         /// <summary>
+        /// Test for Delete() method
+        /// </summary>
+        [TestMethod]
+        public void Delete_PlayerExist_PlayerDeleted()
+        {
+            //// Arrange
+            var testPlayers = _testFixture.TestPlayers().Build();
+            var playerToDeleteID = testPlayers.Last().Id;
+            var controller = _kernel.Get<PlayersController>();
+
+            //// Act
+            var response = controller.Delete(playerToDeleteID) as StatusCodeResult;
+
+            //// Assert
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        /// <summary>
         /// Mock the players
         /// </summary>
         /// <param name="testData">Data what will be returned</param>

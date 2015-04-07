@@ -14,7 +14,7 @@
         /// <summary>
         /// Gets or sets the player Id
         /// </summary>
-        public int Id {get; set;}
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the player first name

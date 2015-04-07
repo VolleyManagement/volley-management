@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.Http.OData.Results;
@@ -185,6 +186,120 @@
             _playerServiceMock.Verify(
                 pServ => pServ.Create(It.Is<Player>(p => new PlayerComparer().AreEqual(p, expectedDomain))),
                 Times.Once());
+        }
+
+        /// <summary>
+        /// Test Put method(). Returns InvalidModelStateResult
+        /// if the ModelState has some errors
+        /// </summary>
+        [TestMethod]
+        public void Put_NotValidPlayerViewModel_ReturnBadRequestWebApi()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            controller.ModelState.Clear();
+            var notValidViewModel = new PlayerViewModelBuilder().WithBirthYear(1).Build();
+            controller.ModelState.AddModelError("NotValidBirthYear", "BirthYear field isn't valid");
+
+            // Act
+            var result = controller.Post(notValidViewModel) as InvalidModelStateResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ModelState.Count == 1);
+            Assert.IsTrue(result.ModelState.Keys.Contains("NotValidBirthYear"));
+        }
+
+        /// <summary>
+        /// Test Put method. Is valid player domain model
+        /// pass to Edit Service method
+        /// </summary>
+        [TestMethod]
+        public void Put_ValidPlayerDomain_PassToEditMethod()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            var sent = new PlayerViewModelBuilder().Build();
+            var expected = new PlayerViewModelBuilder().Build();
+
+            var expectedDomain = new PlayerBuilder()
+                .WithId(expected.Id)
+                .WithFirstName(expected.FirstName)
+                .WithLastName(expected.LastName)
+                .WithBirthYear(expected.BirthYear)
+                .WithHeight(expected.Height)
+                .WithWeight(expected.Weight)
+                .Build();
+
+            // Act
+            controller.Put(sent);
+
+            // Assert
+            _playerServiceMock.Verify(
+                plServ => plServ.Edit(It.Is<Player>(p => new PlayerComparer().AreEqual(p, expectedDomain))),
+                Times.Once());
+        }
+
+        /// <summary>
+        /// Test Put method. Is valid player view model
+        /// returns after create
+        /// </summary>
+        [TestMethod]
+        public void Put_ValidPlayerViewModelIncoming_ValidViewModelOutcoming()
+        {
+            // Arrange
+            var incomingPlayerVM = new PlayerViewModelBuilder().Build();
+            var expectedPlayerVM = new PlayerViewModelBuilder().Build();
+            var controller = _kernel.Get<PlayersController>();
+
+            // Act
+            var response = controller.Put(incomingPlayerVM);
+            var actual = ((UpdatedODataResult<PlayerViewModel>)response).Entity;
+
+            // Assert
+            AssertExtensions.AreEqual<PlayerViewModel>(expectedPlayerVM, actual, new PlayerViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test Put method. Thrown Agrument exception
+        /// returns bad request
+        /// </summary>
+        [TestMethod]
+        public void Put_ThrownArgumentException_BadRequestReturns()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            var playerViewModel = new PlayerViewModelBuilder().Build();
+            _playerServiceMock.Setup(
+                ps => ps.Edit(It.IsAny<Player>())).Throws(new ArgumentException());
+
+            // Act
+            var result = controller.Put(playerViewModel) as InvalidModelStateResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ModelState.Count > 0);
+        }
+
+        /// <summary>
+        /// Test Put method. Thrown ValidationException
+        /// returns bad request
+        /// </summary>
+        [TestMethod]
+        public void Put_ThrownValidationException_BadRequestReturns()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            var playerViewModel = new PlayerViewModelBuilder().Build();
+            _playerServiceMock.Setup(
+                ps => ps.Edit(It.IsAny<Player>())).Throws(new ValidationException());
+
+            // Act
+            var result = controller.Put(playerViewModel) as InvalidModelStateResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ModelState.Count > 0);
         }
 
         /// <summary>

@@ -11,11 +11,12 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.UI.App_GlobalResources;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.PlayerService;
-
+    
     /// <summary>
     /// Tests for MVC PlayersController class.
     /// </summary>
@@ -30,6 +31,7 @@
         private const int TESTING_PAGE = 1;
         private const int SAVED_PLAYER_ID = 10;
         private const int PLAYER_UNEXISTING_ID_TO_DELETE = 4;
+        private const string HTTP_NOT_FOUND_DESCRIPTION = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
         private IKernel _kernel;
@@ -65,20 +67,21 @@
 
         /// <summary>
         /// Test for DeleteConfirmed method where input parameter is player id, which doesn't exist in database.
-        /// The method should return HttpNotFound.
+        /// The method should return HttpNotFound with a specific message.
         /// </summary>
         [TestMethod]
         public void DeleteConfirmed_PlayerDoesntExist_HttpNotFoundReturned()
         {
             // Arrange
             _playerServiceMock.Setup(ps => ps.Delete(PLAYER_UNEXISTING_ID_TO_DELETE)).Throws<InvalidOperationException>();
-
+            
             // Act
             var sut = this._kernel.Get<PlayersController>();
             var actual = sut.DeleteConfirmed(PLAYER_UNEXISTING_ID_TO_DELETE);
 
             // Assert
             Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+            Assert.AreEqual((actual as HttpNotFoundResult).StatusDescription, HTTP_NOT_FOUND_DESCRIPTION);
         }
 
         /// <summary>

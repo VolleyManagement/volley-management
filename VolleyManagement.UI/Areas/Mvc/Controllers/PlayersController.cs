@@ -22,6 +22,8 @@
         /// </summary>
         private const int MAX_PLAYERS_ON_PAGE = 10;
 
+        private const string HTTP_NOT_FOUND_DESCRIPTION = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
+
         /// <summary>
         /// Holds PlayerService instance
         /// </summary>
@@ -132,7 +134,7 @@
             }
             catch (Exception)
             {
-                result = this.HttpNotFound();
+                result = this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
             }
 
             return result;

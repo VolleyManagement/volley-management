@@ -15,6 +15,7 @@
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UnitTests.Services.PlayerService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
+    using System.Net;
 
 
     /// <summary>
@@ -192,17 +193,16 @@
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
-        public void Delete_PlayerExist_PlayerDeleted()
+        public void Delete_ValidId_NoContentReturned()
         {
-            //// Arrange
-            var testPlayers = _testFixture.TestPlayers().Build();
-            var playerToDeleteID = testPlayers.Last().Id;
+            // Arrange
             var controller = _kernel.Get<PlayersController>();
 
-            //// Act
-            var response = controller.Delete(playerToDeleteID) as StatusCodeResult;
+            // Act
+            var response = controller.Delete(SPECIFIC_PLAYER_ID) as StatusCodeResult;
 
-            //// Assert
+            // Assert
+            _playerServiceMock.Verify(ps => ps.Delete(It.Is<int>(id => id == SPECIFIC_PLAYER_ID)), Times.Once());
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
         }
 

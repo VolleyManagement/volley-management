@@ -170,6 +170,7 @@
     <Content Include="Areas\Mvc\Views\Players\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\_CreateOrEdit.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Details.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -218,6 +219,7 @@
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayerRefererViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListViewModel.cs" />
     <Compile Include="Areas\Mvc\TournamentSeasonHtmlHelper.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
@@ -269,6 +271,10 @@
     <ProjectReference Include="..\VolleyManagement.Dal.MsSql\VolleyManagement.Dal.MsSql.csproj">
       <Project>{F82FF279-9D06-4494-BC61-1B7AC88A737D}</Project>
       <Name>VolleyManagement.Dal.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Dal\VolleyManagement.Dal.csproj">
+      <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
+      <Name>VolleyManagement.Dal</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
       <Project>{996EEE53-56AC-4002-891F-B989659323D1}</Project>

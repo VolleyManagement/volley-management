@@ -26,7 +26,7 @@
                 LastName = "LastName",
                 BirthYear = 1983,
                 Height = 186,
-                Weight = 93
+                Weight = 95
             };
         }
 

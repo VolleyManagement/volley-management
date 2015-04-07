@@ -6,11 +6,13 @@
     using System.Linq;
     using System.Net;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Contracts;
     using Domain.Players;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -29,6 +31,7 @@
         private const int MAX_PLAYERS_ON_PAGE = 10;
         private const int TESTING_PAGE = 1;
         private const int SAVED_PLAYER_ID = 10;
+        private const string TEST_CONTROLLER_NAME = "TestController";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
         private IKernel _kernel;
@@ -107,6 +110,57 @@
 
             // Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for Details(). Requested id doesn`t exist in the database.
+        /// </summary>
+        [TestMethod]
+        public void Details_PlayerDoesNotExist_NotFoundResult()
+        {
+            // Arrange
+            this._playerServiceMock.Setup(ps => ps.Get(It.IsAny<int>()))
+                .Throws(new InvalidKeyValueException());
+
+            var sut = this._kernel.Get<PlayersController>();
+            var expected = (int)HttpStatusCode.NotFound;
+
+            // Act
+            var actual = (sut.Details(It.IsAny<int>()) as HttpNotFoundResult).StatusCode;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for Details(). Gets player with requested id.
+        /// </summary>
+        [TestMethod]
+        public void Details_TournamentExists_TournamentIsReturned()
+        {
+            // Arrange
+            _playerServiceMock.Setup(tr => tr.Get(It.Is<int>(id => id == SAVED_PLAYER_ID)))
+                .Returns(new PlayerBuilder()
+                .WithId(SAVED_PLAYER_ID)
+                .Build());
+
+            var controller = this._kernel.Get<PlayersController>();
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.RouteData = new RouteData();
+            controller.RouteData.Values["controller"] = TEST_CONTROLLER_NAME;
+
+            var expectedPlayer = new PlayerMvcViewModelBuilder()
+                .WithId(SAVED_PLAYER_ID)
+                .Build();
+
+            var expectedReferer = TEST_CONTROLLER_NAME;
+
+            // Act
+            var actual = TestExtensions.GetModel<PlayerRefererViewModel>(controller.Details(SAVED_PLAYER_ID));
+
+            // Assert
+            AssertExtensions.AreEqual<PlayerViewModel>(expectedPlayer, actual.Player, new PlayerViewModelComparer());
+            Assert.AreEqual<string>(expectedReferer, actual.Referer);
         }
 
         /// <summary>

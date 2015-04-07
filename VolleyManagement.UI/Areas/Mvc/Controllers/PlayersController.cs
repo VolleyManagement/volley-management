@@ -7,7 +7,8 @@
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Dal.Exceptions;
+    using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
@@ -52,6 +53,26 @@
                 return RedirectToAction("Index");
             }
             catch (Exception)
+            {
+                return this.HttpNotFound();
+            }
+        }
+
+        /// <summary>
+        /// Gets details for specific player
+        /// </summary>
+        /// <param name="id">Player id.</param>
+        /// <returns>View with specific player.</returns>
+        public ActionResult Details(int id)
+        {
+            try
+            {
+                var model = 
+                    new PlayerRefererViewModel(_playerService.Get(id),
+                        (string)RouteData.Values["controller"]);
+                return View(model);
+            }
+            catch (InvalidKeyValueException)
             {
                 return this.HttpNotFound();
             }

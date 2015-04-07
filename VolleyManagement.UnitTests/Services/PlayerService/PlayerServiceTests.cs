@@ -7,7 +7,9 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Services;
 
@@ -105,6 +107,22 @@
             _playerRepositoryMock.Verify(
                 ur => ur.Add(It.Is<Player>(u => PlayersAreEqual(u, newPlayer))));
             _unitOfWorkMock.Verify(u => u.Commit());
+        }
+
+        /// <summary>
+        /// Edit() method test. catch InvalidKeyValueException from DAL
+        /// Throws InvalidKeyException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(InvalidKeyException))]
+        public void Edit_CatchDalInvalidKeyValueException_ThrowInvalidKeyException()
+        {
+            // Arrange
+            _playerRepositoryMock.Setup(pr => pr.Update(It.IsAny<Player>())).Throws(new InvalidKeyValueException());
+            var sut = _kernel.Get<PlayerService>();
+
+            // Act
+            sut.Edit(new PlayerBuilder().Build());
         }
 
         /// <summary>

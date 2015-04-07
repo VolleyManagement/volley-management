@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
@@ -71,7 +72,19 @@
         /// <param name="playerToEdit">Player to edit.</param>
         public void Edit(Player playerToEdit)
         {
-            _playerRepository.Update(playerToEdit);
+            try
+            {
+                _playerRepository.Update(playerToEdit);
+            }
+            catch (InvalidKeyValueException ex)
+            {
+                InvalidKeyException InvalidKeyExc
+                    = new Contracts.Exceptions.InvalidKeyException();
+                InvalidKeyExc.Data["Constants.EntityIdKey"] = ex.Data["Constants.EntityIdKey"];
+                InvalidKeyExc.Data["ErrorMessage"] = ex.Data["ErrorMessage"];
+                throw InvalidKeyExc;
+            }
+
             _playerRepository.UnitOfWork.Commit();
         }
     }

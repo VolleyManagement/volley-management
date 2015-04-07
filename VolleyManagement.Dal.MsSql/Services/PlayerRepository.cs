@@ -17,6 +17,10 @@
     /// </summary>
     internal class PlayerRepository : IPlayerRepository
     {
+        private const int START_DATABASE_ID_VALUE = 0;
+        private const string NOT_SUPPORTED_ID_MESSAGE = "Not supported id";
+        private const string DOESNT_EXIST_ID_MESSAGE = "id doesn't exist";
+
         /// <summary>
         /// Holds object set of DAL users.
         /// </summary>
@@ -90,6 +94,14 @@
         /// <param name="oldEntity">The player to update.</param>
         public void Update(Domain.Player oldEntity)
         {
+            if (oldEntity.Id < START_DATABASE_ID_VALUE)
+            {
+                var exc = new InvalidKeyValueException();
+                exc.Data["Constants.EntityIdKey"] = oldEntity.Id;
+                exc.Data["ErrorMessage"] = NOT_SUPPORTED_ID_MESSAGE;
+                throw exc;
+            }
+
             Player playerToUpdate;
             try
             {
@@ -99,6 +111,7 @@
             {
                 var exc = new InvalidKeyValueException();
                 exc.Data["Constants.EntityIdKey"] = oldEntity.Id;
+                exc.Data["ErrorMessage"] = DOESNT_EXIST_ID_MESSAGE;
                 throw exc;
             }
 

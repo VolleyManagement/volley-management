@@ -142,6 +142,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Данный игрок не найден, т.к. был удален. Операция редактирования невозможна. Хотите создать данного игрока?.
+        /// </summary>
+        internal static string PlayerWasDeleted {
+            get {
+                return ResourceManager.GetString("PlayerWasDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Сохранить.
         /// </summary>
         internal static string Save {

@@ -17,7 +17,6 @@
     public class PlayersController : Controller
     {
         private const int MAX_PLAYERS_ON_PAGE = 10;
-        private const string PLAYER_WAS_DELETED_DESCRIPTION = "Данный игрок не найден, т.к. был удален. Операция редактирования невозможна.";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -128,7 +127,6 @@
         [HttpPost]
         public ActionResult Edit(PlayerViewModel playerViewModel)
         {
-            ////playerViewModel.Id = 20; ////its for test while I dont have delete action
             try
             {
                 if (this.ModelState.IsValid)
@@ -140,9 +138,10 @@
 
                 return this.View(playerViewModel);
             }
-            catch (InvalidKeyValueException)
+            catch (InvalidKeyException)
             {
-                return this.HttpNotFound(PLAYER_WAS_DELETED_DESCRIPTION);
+                this.ModelState.AddModelError("Player_was_deleted", "");
+                return this.View(playerViewModel);
             }
             catch (ValidationException ex)
             {

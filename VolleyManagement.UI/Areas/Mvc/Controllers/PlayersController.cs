@@ -16,10 +16,8 @@
     /// </summary>
     public class PlayersController : Controller
     {
-        /// <summary>
-        /// Max Players on page
-        /// </summary>
         private const int MAX_PLAYERS_ON_PAGE = 10;
+        private const string PLAYER_WAS_DELETED_DESCRIPTION = "Данный игрок не найден, т.к. был удален. Операция редактирования невозможна.";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -91,6 +89,60 @@
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(playerViewModel);
+            }
+            catch (ValidationException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return this.View(playerViewModel);
+            }
+            catch (Exception)
+            {
+                return this.HttpNotFound();
+            }
+        }
+
+        /// <summary>
+        /// Edit player action (GET)
+        /// </summary>
+        /// <param name="id">Player id</param>
+        /// <returns>View to edit specific player</returns>
+        public ActionResult Edit(int id)
+        {
+            try
+            {
+                var player = this._playerService.Get(id);
+                PlayerViewModel playerViewModel = PlayerViewModel.Map(player);
+                return this.View(playerViewModel);
+            }
+            catch (Exception)
+            {
+                return this.HttpNotFound();
+            }
+        }
+
+        /// <summary>
+        /// Edit player action (POST)
+        /// </summary>
+        /// <param name="playerViewModel">Player after editing</param>
+        /// <returns>Index view if player was valid, else - edit view</returns>
+        [HttpPost]
+        public ActionResult Edit(PlayerViewModel playerViewModel)
+        {
+            ////playerViewModel.Id = 20; ////its for test while I dont have delete action
+            try
+            {
+                if (this.ModelState.IsValid)
+                {
+                    var player = playerViewModel.ToDomain();
+                    this._playerService.Edit(player);
+                    return this.RedirectToAction("Index");
+                }
+
+                return this.View(playerViewModel);
+            }
+            catch (InvalidKeyValueException)
+            {
+                return this.HttpNotFound(PLAYER_WAS_DELETED_DESCRIPTION);
             }
             catch (ValidationException ex)
             {

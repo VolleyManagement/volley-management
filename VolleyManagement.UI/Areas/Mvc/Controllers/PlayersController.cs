@@ -7,6 +7,7 @@
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
@@ -101,6 +102,40 @@
             {
                 return this.HttpNotFound();
             }
+        }
+
+        /// <summary>
+        /// Delete player action (GET)
+        /// </summary>
+        /// <param name="id">Player id</param>
+        /// <returns>View to delete specific player</returns>
+        public ActionResult Delete(int id)
+        {
+            Player player = this._playerService.Get(id);
+            PlayerViewModel playerViewModel = PlayerViewModel.Map(player);
+            return View(player);
+        }
+
+        /// <summary>
+        /// Delete player action (POST)
+        /// </summary>
+        /// <param name="id">Player id</param>
+        /// <returns>Index view</returns>
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            ActionResult result;
+            try
+            {
+                this._playerService.Delete(id);
+                result = this.RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                result = this.HttpNotFound();
+            }
+
+            return result;
         }
     }
 }

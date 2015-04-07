@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>Действие</value>
+  </data>
   <data name="BackToList" xml:space="preserve">
     <value>Назад к списку</value>
   </data>
@@ -132,13 +135,19 @@
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
+  <data name="DeleteConfirm" xml:space="preserve">
+    <value>Вы уверены, что хотите это удалить?</value>
+  </data>
+  <data name="DeletePlayerTitle" xml:space="preserve">
+    <value>Удалить игрока</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>
+  <data name="PlayerLegend" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
   <data name="PlayersIndexTitle" xml:space="preserve">
     <value>Игроки</value>
-  </data>
-  <data name="TournamentLegend" xml:space="preserve">
-    <value>Игрок</value>
   </data>
 </root>

@@ -32,5 +32,7 @@
         /// <param name="id">Player id.</param>
         /// <returns>Found player.</returns>
         Player Get(int id);
+
+        void Delete(int id);
     }
 }

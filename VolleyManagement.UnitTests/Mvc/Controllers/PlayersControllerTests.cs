@@ -29,6 +29,7 @@
         private const int MAX_PLAYERS_ON_PAGE = 10;
         private const int TESTING_PAGE = 1;
         private const int SAVED_PLAYER_ID = 10;
+        private const int PLAYER_UNEXISTING_ID_TO_DELETE = 4;
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
         private IKernel _kernel;
@@ -42,6 +43,75 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<IPlayerService>()
                    .ToConstant(this._playerServiceMock.Object);
+        }
+
+        /// <summary>
+        /// Test for DeleteConfirmed method. The method should invoke Delete() method of IPlayerService
+        /// and redirect to Index.
+        /// </summary>
+        [TestMethod]
+        public void DeleteConfirmed_PlayerExists_PlayerIsDeleted()
+        {
+            // Arrange
+
+            // Act
+            var sut = this._kernel.Get<PlayersController>();
+            var actual = sut.DeleteConfirmed(PLAYER_UNEXISTING_ID_TO_DELETE) as RedirectToRouteResult;
+
+            // Assert
+            _playerServiceMock.Verify(ps => ps.Delete(It.Is<int>(id => id == PLAYER_UNEXISTING_ID_TO_DELETE)), Times.Once());
+            Assert.AreEqual("Index", actual.RouteValues["action"]);
+        }
+
+        /// <summary>
+        /// Test for DeleteConfirmed method where input parameter is player id, which doesn't exist in database.
+        /// The method should return HttpNotFound.
+        /// </summary>
+        [TestMethod]
+        public void DeleteConfirmed_PlayerDoesntExist_HttpNotFoundReturned()
+        {
+            // Arrange
+            _playerServiceMock.Setup(ps => ps.Delete(PLAYER_UNEXISTING_ID_TO_DELETE)).Throws<InvalidOperationException>();
+
+            // Act
+            var sut = this._kernel.Get<PlayersController>();
+            var actual = sut.DeleteConfirmed(PLAYER_UNEXISTING_ID_TO_DELETE);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Test for Delete tournament action
+        /// </summary>
+        [TestMethod]
+        public void DeleteGetAction_Player_ReturnsToTheView()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            var player = new PlayerBuilder()
+                            .WithId(1)
+                            .WithFirstName("FirstName")
+                            .WithLastName("LastName")
+                            .WithBirthYear(1990)
+                            .WithHeight(192)
+                            .WithWeight(90)
+                            .Build();
+            MockSinglePlayer(player);
+            var expected = new PlayerBuilder()
+                            .WithId(1)
+                            .WithFirstName("FirstName")
+                            .WithLastName("LastName")
+                            .WithBirthYear(1990)
+                            .WithHeight(192)
+                            .WithWeight(90)
+                            .Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<Player>(controller.Delete(player.Id));
+
+            // Assert
+            AssertExtensions.AreEqual<Player>(expected, actual, new PlayerComparer());
         }
 
         /// <summary>
@@ -239,6 +309,15 @@
 
             // Assert
             Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Mocks test data
+        /// </summary>
+        /// <param name="testData">Data to mock</param>
+        private void MockSinglePlayer(Player testData)
+        {
+            _playerServiceMock.Setup(p => p.Get(testData.Id)).Returns(testData);
         }
     }
 }

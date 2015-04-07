@@ -80,15 +80,6 @@
         }
 
         /// <summary>
-        /// Mocks Find method.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
-        private void MockRepositoryFindAll(IEnumerable<Player> testData)
-        {
-            _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
-        }
-    
-        /// <summary>
         /// Test for Create() method. The method should create a new player.
         /// </summary>
         [TestMethod]
@@ -116,6 +107,15 @@
         private bool PlayersAreEqual(Player x, Player y)
         {
             return new PlayerComparer().Compare(x, y) == 0;
+        }
+
+        /// <summary>
+        /// Mocks Find method.
+        /// </summary>
+        /// <param name="testData">Test data to mock.</param>
+        private void MockRepositoryFindAll(IEnumerable<Player> testData)
+        {
+            _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
     }
 }

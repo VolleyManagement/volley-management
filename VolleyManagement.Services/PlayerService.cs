@@ -26,6 +26,11 @@
             _playerRepository = playerRepository;
         }
 
+        public void Delete(int id)
+        {
+            new NotImplementedException();
+        }
+
         /// <summary>
         /// Method to get all players.
         /// </summary>

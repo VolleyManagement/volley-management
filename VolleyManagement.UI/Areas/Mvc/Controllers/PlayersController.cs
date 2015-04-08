@@ -7,7 +7,6 @@
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
@@ -18,6 +17,7 @@
     {
         private const int MAX_PLAYERS_ON_PAGE = 10;
         private const string PLAYER_WAS_DELETED_DESCRIPTION = "Player_was_deleted";
+        private const string PLAYER_NOT_FOUND_DESCRIPTION = "Игрок не найден. Игрока с данным ID не существует или он был удален.";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -114,9 +114,9 @@
                 PlayerViewModel playerViewModel = PlayerViewModel.Map(player);
                 return this.View(playerViewModel);
             }
-            catch (Exception)
+            catch (MissingEntityException)
             {
-                return this.HttpNotFound();
+                return this.HttpNotFound(PLAYER_NOT_FOUND_DESCRIPTION);
             }
         }
 
@@ -148,10 +148,6 @@
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(playerViewModel);
-            }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
             }
         }
     }

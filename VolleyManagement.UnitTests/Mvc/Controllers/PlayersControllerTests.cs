@@ -136,7 +136,7 @@
         /// Test for Details(). Gets player with requested id.
         /// </summary>
         [TestMethod]
-        public void Details_TournamentExists_TournamentIsReturned()
+        public void Details_PlayerExists_PlayerIsReturned()
         {
             // Arrange
             _playerServiceMock.Setup(tr => tr.Get(It.Is<int>(id => id == SAVED_PLAYER_ID)))
@@ -145,9 +145,7 @@
                 .Build());
 
             var controller = this._kernel.Get<PlayersController>();
-            controller.ControllerContext = new ControllerContext();
-            controller.ControllerContext.RouteData = new RouteData();
-            controller.RouteData.Values["controller"] = TEST_CONTROLLER_NAME;
+            SetControllerRouteData(controller);
 
             var expectedPlayer = new PlayerMvcViewModelBuilder()
                 .WithId(SAVED_PLAYER_ID)
@@ -159,7 +157,7 @@
             var actual = TestExtensions.GetModel<PlayerRefererViewModel>(controller.Details(SAVED_PLAYER_ID));
 
             // Assert
-            AssertExtensions.AreEqual<PlayerViewModel>(expectedPlayer, actual.Player, new PlayerViewModelComparer());
+            AssertExtensions.AreEqual<PlayerViewModel>(expectedPlayer, actual.Model, new PlayerViewModelComparer());
             Assert.AreEqual<string>(expectedReferer, actual.Referer);
         }
 
@@ -293,6 +291,17 @@
 
             // Assert
             Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Set test route data to the ControllerContext.
+        /// </summary>
+        /// <param name="controller">Controller to set the route data of.</param>
+        private void SetControllerRouteData(PlayersController controller)
+        {
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.RouteData = new RouteData();
+            controller.RouteData.Values["controller"] = TEST_CONTROLLER_NAME;
         }
     }
 }

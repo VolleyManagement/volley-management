@@ -30,7 +30,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class
         /// </summary>
-        /// <param name="playerSerivce"></param>
+        /// <param name="playerSerivce">Instance of the class that implements
+        /// IPlayerService.</param>
         public PlayersController(IPlayerService playerSerivce)
         {
             _playerService = playerSerivce;
@@ -39,7 +40,8 @@
         /// <summary>
         /// Gets players from PlayerService
         /// </summary>
-        /// <returns>View with collection of playerss</returns>
+        /// <param name="page">Number of the page.</param>
+        /// <returns>View with collection of players.</returns>
         public ActionResult Index(int? page)
         {
             try
@@ -65,17 +67,19 @@
         /// <returns>View with specific player.</returns>
         public ActionResult Details(int id)
         {
+            Domain.Players.Player player;
             try
             {
-                var model = 
-                    new PlayerRefererViewModel(_playerService.Get(id),
-                        (string)RouteData.Values["controller"]);
-                return View(model);
+                player = _playerService.Get(id);
             }
             catch (InvalidKeyValueException)
             {
                 return this.HttpNotFound();
             }
+
+            var referer = (string)RouteData.Values["controller"];
+            var model = new PlayerRefererViewModel(player, referer);
+            return View(model);
         }
 
         /// <summary>

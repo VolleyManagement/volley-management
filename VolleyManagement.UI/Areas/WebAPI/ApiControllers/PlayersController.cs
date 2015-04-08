@@ -67,9 +67,9 @@
             {
                 _playerService.Delete(key);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest(ModelState);
+                return BadRequest(ex.Message);
             }
             
             return StatusCode(HttpStatusCode.NoContent);

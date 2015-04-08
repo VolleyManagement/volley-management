@@ -215,7 +215,7 @@
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
-        public void Delete_ServiceLayerException_BadRequestReturned()
+        public void Delete_ExceptionFromService_BadRequestReturned()
         {
             // Arrange
             var controller = _kernel.Get<PlayersController>();
@@ -228,7 +228,6 @@
             // Assert
             _playerServiceMock.Verify(ps => ps.Delete(It.Is<int>(id => id == SPECIFIC_PLAYER_ID)), Times.Once());
             Assert.IsNotNull(response);
-            Assert.AreEqual(HttpStatusCode.NoContent, response);
             Assert.AreEqual<string>(response.Message, EXCEPTION_MESSAGE);
         }
 

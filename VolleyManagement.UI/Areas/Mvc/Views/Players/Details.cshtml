@@ -1,0 +1,30 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayerRefererViewModel
+
+@{
+    ViewBag.Title = Resources.PlayerViews.PlayerDetailsTitle;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<fieldset>
+    <legend>@Resources.PlayerViews.PlayerLegend</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.Model.FirstName)</div>
+    <div class="display-field">@Model.Model.FirstName</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Model.LastName)</div>
+    <div class="display-field">@Model.Model.LastName</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Model.BirthYear)</div>
+    <div class="display-field">@Model.Model.BirthYear</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Model.Height)</div>
+    <div class="display-field">@Model.Model.Height</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Model.Weight)</div>
+    <div class="display-field">@Model.Model.Weight</div>
+</fieldset>
+<p>
+    @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) |
+    @Html.ActionLink(Resources.PlayerViews.Back, "Index", Model.Referer)
+</p>

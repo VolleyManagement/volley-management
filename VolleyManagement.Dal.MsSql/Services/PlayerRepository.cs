@@ -12,7 +12,7 @@
     using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Players;
-    
+
     /// <summary>
     /// Defines implementation of the IPlayerRepository contract.
     /// </summary>
@@ -128,8 +128,7 @@
                 var exc = new InvalidKeyValueException();
                 // TODO: add exception data filling
                 throw exc;
-            }
-            
+            }            
         }
     }
 }

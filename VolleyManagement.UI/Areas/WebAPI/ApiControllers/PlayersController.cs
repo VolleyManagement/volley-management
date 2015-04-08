@@ -20,7 +20,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class.
         /// </summary>
-        /// <param name="playerService"> The tournament service. </param>
+        /// <param name="playerService"> The player service. </param>
         public PlayersController(IPlayerService playerService)
         {
             this._playerService = playerService;
@@ -57,6 +57,21 @@
                                 .ToList()
                                 .Select(t => PlayerViewModel.Map(t))
                                 .AsQueryable();
+        }
+
+        /// <summary>
+        /// The get player.
+        /// </summary>
+        /// <param name="key"> The key. </param>
+        /// <returns> The <see cref="SingleResult"/>. </returns>
+        [Queryable]
+        public SingleResult<PlayerViewModel> Get([FromODataUri] int key)
+        {
+            return SingleResult.Create(_playerService.Get()
+                                                         .Where(p => p.Id == key)
+                                                         .ToList()
+                                                         .Select(p => PlayerViewModel.Map(p))
+                                                         .AsQueryable());
         }
     }
 }

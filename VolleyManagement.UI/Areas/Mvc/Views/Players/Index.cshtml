@@ -31,7 +31,7 @@
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
-                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id })
+                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id, lastName = item.LastName, firstName = item.FirstName })
             </td>
         </tr>
     }

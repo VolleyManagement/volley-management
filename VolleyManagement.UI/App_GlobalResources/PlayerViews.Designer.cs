@@ -115,7 +115,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вы уверены, что хотите это удалить?.
+        ///   Looks up a localized string similar to Вы уверены, что хотите его удалить?.
         /// </summary>
         internal static string DeleteConfirm {
             get {

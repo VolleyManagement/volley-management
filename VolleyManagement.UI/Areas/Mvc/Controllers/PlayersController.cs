@@ -111,11 +111,16 @@
         /// </summary>
         /// <param name="id">Player id</param>
         /// <returns>View to delete specific player</returns>
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, string firstName, string lastName)
         {
-            Player player = this._playerService.Get(id);
-            PlayerViewModel playerViewModel = PlayerViewModel.Map(player);
-            return View(player);
+            PlayerViewModel playerViewModel = new PlayerViewModel()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Id = id
+            };
+
+            return View(playerViewModel);
         }
 
         /// <summary>
@@ -132,7 +137,7 @@
                 this._playerService.Delete(id);
                 result = this.RedirectToAction("Index");
             }
-            catch (Exception)
+            catch (MissingEntityException)
             {
                 result = this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
             }

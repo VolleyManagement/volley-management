@@ -136,7 +136,7 @@
     <value>Удалить</value>
   </data>
   <data name="DeleteConfirm" xml:space="preserve">
-    <value>Вы уверены, что хотите это удалить?</value>
+    <value>Вы уверены, что хотите его удалить?</value>
   </data>
   <data name="DeletePlayerTitle" xml:space="preserve">
     <value>Удалить игрока</value>

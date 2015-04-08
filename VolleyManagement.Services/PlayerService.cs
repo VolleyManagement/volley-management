@@ -60,7 +60,7 @@
             }
             catch (InvalidOperationException)
             {
-                throw new InvalidKeyValueException();
+                throw new MissingEntityException();
             }
 
             return player;

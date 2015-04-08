@@ -17,7 +17,6 @@
     {
         private const int MAX_PLAYERS_ON_PAGE = 10;
         private const string PLAYER_WAS_DELETED_DESCRIPTION = "Player_was_deleted";
-        private const string PLAYER_NOT_FOUND_DESCRIPTION = "Игрок не найден. Игрока с данным ID не существует или он был удален.";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -116,7 +115,7 @@
             }
             catch (MissingEntityException)
             {
-                return this.HttpNotFound(PLAYER_NOT_FOUND_DESCRIPTION);
+                return this.HttpNotFound();
             }
         }
 

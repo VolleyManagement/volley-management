@@ -65,6 +65,30 @@
         }
 
         /// <summary>
+        /// Test for Get() by key method. The method should return specific player
+        /// </summary>
+        [TestMethod]
+        public void Get_SpecificPlayerExist_PlayerReturned()
+        {
+            // Arrange
+            var testData = _testFixture.TestPlayers()
+                                            .Build();
+            MockPlayers(testData);
+            var playersController = _kernel.Get<PlayersController>();
+
+            // Act
+            var domainPlayers = new PlayerViewModelServiceTestFixture()
+                                            .TestPlayers()
+                                            .Build()
+                                            .AsQueryable();
+            var expected = domainPlayers.Single(dp => dp.Id == SPECIFIC_PLAYER_ID);
+            var result = playersController.Get(SPECIFIC_PLAYER_ID).Queryable.Single();
+
+            // Assert
+            _playerServiceMock.Verify(ps => ps.Get(), Times.Once());
+            AssertExtensions.AreEqual<PlayerViewModel>(expected, result, new PlayerViewModelComparer());
+        }
+        /// <summary>
         /// Test for Get() method. The method should return existing players
         /// </summary>
         [TestMethod]

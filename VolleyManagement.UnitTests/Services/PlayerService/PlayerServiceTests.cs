@@ -111,18 +111,19 @@
 
         /// <summary>
         /// Edit() method test. catch InvalidKeyValueException from DAL
-        /// Throws InvalidKeyException
+        /// Throws MissingEntityException
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(MissingEntityException))]
-        public void Edit_CatchDalInvalidKeyValueException_ThrowInvalidKeyException()
+        public void Edit_CatchDalInvalidKeyValueException_ThrowMissingEntityException()
         {
             // Arrange
             _playerRepositoryMock.Setup(pr => pr.Update(It.IsAny<Player>())).Throws(new InvalidKeyValueException());
             var sut = _kernel.Get<PlayerService>();
+            var playerWithWrongId = new PlayerBuilder().Build();
 
             // Act
-            sut.Edit(new PlayerBuilder().Build());
+            sut.Edit(playerWithWrongId);
         }
 
         /// <summary>

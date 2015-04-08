@@ -78,11 +78,8 @@
             }
             catch (InvalidKeyValueException ex)
             {
-                InvalidKeyException InvalidKeyExc
-                    = new InvalidKeyException();
-                InvalidKeyExc.Data["Constants.EntityIdKey"] = ex.Data["Constants.EntityIdKey"];
-                InvalidKeyExc.Data["ErrorMessage"] = ex.Data["ErrorMessage"];
-                throw InvalidKeyExc;
+                MissingEntityException missingEntityExc = new MissingEntityException(ex);
+                throw missingEntityExc;
             }
 
             _playerRepository.UnitOfWork.Commit();

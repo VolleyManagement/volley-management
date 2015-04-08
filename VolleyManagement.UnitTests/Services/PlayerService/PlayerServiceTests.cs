@@ -114,7 +114,7 @@
         /// Throws InvalidKeyException
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(InvalidKeyException))]
+        [ExpectedException(typeof(MissingEntityException))]
         public void Edit_CatchDalInvalidKeyValueException_ThrowInvalidKeyException()
         {
             // Arrange

@@ -17,6 +17,7 @@
     public class PlayersController : Controller
     {
         private const int MAX_PLAYERS_ON_PAGE = 10;
+        private const string PLAYER_WAS_DELETED_DESCRIPTION = "Player_was_deleted";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -138,9 +139,9 @@
 
                 return this.View(playerViewModel);
             }
-            catch (InvalidKeyException)
+            catch (MissingEntityException)
             {
-                this.ModelState.AddModelError("Player_was_deleted", "");
+                this.ModelState.AddModelError(PLAYER_WAS_DELETED_DESCRIPTION, "");
                 return this.View(playerViewModel);
             }
             catch (ValidationException ex)

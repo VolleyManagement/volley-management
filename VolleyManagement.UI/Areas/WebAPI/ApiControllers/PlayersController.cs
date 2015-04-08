@@ -63,7 +63,15 @@
         /// <returns> The <see cref="IHttpActionResult"/>. </returns>
         public IHttpActionResult Delete([FromODataUri] int key)
         {
-            _playerService.Delete(key);
+            try
+            {
+                _playerService.Delete(key);
+            }
+            catch (Exception)
+            {
+                return BadRequest(ModelState);
+            }
+            
             return StatusCode(HttpStatusCode.NoContent);
         }
     }

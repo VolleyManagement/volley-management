@@ -39,6 +39,11 @@
         /// Not valid birth year
         /// </summary>
         private const int NOT_VALID_BIRTH_YEAR = 2101;
+        
+        /// <summary>
+        /// Message that should be passed to exception.
+        /// </summary>
+        private const string EXCEPTION_MESSAGE = "Test exception message.";
 
         /// <summary>
         /// Test Fixture
@@ -204,6 +209,27 @@
             // Assert
             _playerServiceMock.Verify(ps => ps.Delete(It.Is<int>(id => id == SPECIFIC_PLAYER_ID)), Times.Once());
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+        }
+
+        /// <summary>
+        /// Test for Delete() method
+        /// </summary>
+        [TestMethod]
+        public void Delete_ServiceLayerException_BadRequestReturned()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            _playerServiceMock.Setup(ps => ps.Delete(It.IsAny<int>()))
+                .Throws(new Exception(EXCEPTION_MESSAGE));
+
+            // Act
+            var response = controller.Delete(SPECIFIC_PLAYER_ID) as BadRequestErrorMessageResult;
+
+            // Assert
+            _playerServiceMock.Verify(ps => ps.Delete(It.Is<int>(id => id == SPECIFIC_PLAYER_ID)), Times.Once());
+            Assert.IsNotNull(response);
+            Assert.AreEqual(HttpStatusCode.NoContent, response);
+            Assert.AreEqual<string>(response.Message, EXCEPTION_MESSAGE);
         }
 
         /// <summary>

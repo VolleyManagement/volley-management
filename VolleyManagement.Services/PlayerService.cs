@@ -81,8 +81,17 @@
         /// <param name="id">The id of player to delete.</param>
         public void Delete(int id)
         {
-            _playerRepository.Remove(id);
-            _playerRepository.UnitOfWork.Commit();
+            try
+            {
+                _playerRepository.Remove(id);
+                _playerRepository.UnitOfWork.Commit();
+            }
+            catch (InvalidKeyValueException ex)
+            {                
+                var serviceException = new MissingEntityException();
+                // TODO: add exception data filling
+                throw serviceException;
+            }                       
         }
     }
 }

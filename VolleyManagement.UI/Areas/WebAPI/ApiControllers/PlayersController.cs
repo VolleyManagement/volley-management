@@ -67,7 +67,7 @@
             {
                 _playerService.Delete(key);
             }
-            catch (Exception ex)
+            catch (MissingEntityException ex)
             {
                 return BadRequest(ex.Message);
             }

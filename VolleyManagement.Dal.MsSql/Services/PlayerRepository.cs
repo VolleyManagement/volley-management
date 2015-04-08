@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Core;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     using System.Text;
@@ -11,7 +12,7 @@
     using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Players;
-
+    
     /// <summary>
     /// Defines implementation of the IPlayerRepository contract.
     /// </summary>
@@ -118,7 +119,17 @@
         {
             var dalToRemove = new Dal.Player { Id = id };
             _dalPlayers.Attach(dalToRemove);
-            _dalPlayers.DeleteObject(dalToRemove);
+            try
+            {
+                _dalPlayers.DeleteObject(dalToRemove);
+            }
+            catch (OptimisticConcurrencyException)
+            {
+                var exc = new InvalidKeyValueException();
+                // TODO: add exception data filling
+                throw exc;
+            }
+            
         }
     }
 }

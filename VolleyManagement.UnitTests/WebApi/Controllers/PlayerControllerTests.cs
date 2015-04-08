@@ -215,12 +215,12 @@
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
-        public void Delete_ExceptionFromService_BadRequestReturned()
+        public void Delete_MissingEntityException_BadRequestReturned()
         {
             // Arrange
             var controller = _kernel.Get<PlayersController>();
             _playerServiceMock.Setup(ps => ps.Delete(It.IsAny<int>()))
-                .Throws(new Exception(EXCEPTION_MESSAGE));
+                .Throws(new MissingEntityException(EXCEPTION_MESSAGE));
 
             // Act
             var response = controller.Delete(SPECIFIC_PLAYER_ID) as BadRequestErrorMessageResult;

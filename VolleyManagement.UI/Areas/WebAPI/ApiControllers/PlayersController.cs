@@ -7,6 +7,7 @@
     using System.Web.Http.OData;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
 
     /// <summary>

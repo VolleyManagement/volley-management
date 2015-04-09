@@ -7,7 +7,10 @@
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Dal.Exceptions;
+    using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
@@ -21,6 +24,8 @@
         /// </summary>
         private const int MAX_PLAYERS_ON_PAGE = 10;
 
+        private const string HTTP_NOT_FOUND_DESCRIPTION = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
+
         /// <summary>
         /// Holds PlayerService instance
         /// </summary>
@@ -29,7 +34,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class
         /// </summary>
-        /// <param name="playerSerivce"></param>
+        /// <param name="playerSerivce">Instance of the class that implements
+        /// IPlayerService.</param>
         public PlayersController(IPlayerService playerSerivce)
         {
             _playerService = playerSerivce;
@@ -38,7 +44,8 @@
         /// <summary>
         /// Gets players from PlayerService
         /// </summary>
-        /// <returns>View with collection of playerss</returns>
+        /// <param name="page">Number of the page.</param>
+        /// <returns>View with collection of players.</returns>
         public ActionResult Index(int? page)
         {
             try
@@ -55,6 +62,28 @@
             {
                 return this.HttpNotFound();
             }
+        }
+
+        /// <summary>
+        /// Gets details for specific player
+        /// </summary>
+        /// <param name="id">Player id.</param>
+        /// <returns>View with specific player.</returns>
+        public ActionResult Details(int id)
+        {
+            Domain.Players.Player player;
+            try
+            {
+                player = _playerService.Get(id);
+            }
+            catch (InvalidKeyValueException)
+            {
+                return this.HttpNotFound();
+            }
+
+            var referer = (string)RouteData.Values["controller"];
+            var model = new PlayerRefererViewModel(player, referer);
+            return View(model);
         }
 
         /// <summary>
@@ -101,6 +130,46 @@
             {
                 return this.HttpNotFound();
             }
+        }
+
+        /// <summary>
+        /// Delete player action (GET)
+        /// </summary>
+        /// <param name="id">Player id</param>
+        /// <returns>View to delete specific player</returns>
+        public ActionResult Delete(int id, string firstName, string lastName)
+        {
+            PlayerViewModel playerViewModel = new PlayerViewModel()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Id = id
+            };
+
+            return View(playerViewModel);
+        }
+
+        /// <summary>
+        /// Delete player action (POST)
+        /// </summary>
+        /// <param name="id">Player id</param>
+        /// <returns>Index view</returns>
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            ActionResult result;
+            try
+            {
+                this._playerService.Delete(id);
+                result = this.RedirectToAction("Index");
+            }
+            catch (MissingEntityException)
+            {
+                result = this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
+            }
+
+            return result;
+           
         }
     }
 }

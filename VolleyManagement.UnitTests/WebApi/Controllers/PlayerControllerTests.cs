@@ -16,7 +16,6 @@
     using VolleyManagement.UnitTests.Services.PlayerService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
 
-
     /// <summary>
     /// Tests for PlayerController class.
     /// </summary>

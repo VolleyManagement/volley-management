@@ -116,7 +116,9 @@
         /// <param name="id">The id of player to remove.</param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            var dalToRemove = new Dal.Player { Id = id };
+            _dalPlayers.Attach(dalToRemove);
+            _dalPlayers.DeleteObject(dalToRemove);
         }
     }
 }

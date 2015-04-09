@@ -73,7 +73,7 @@
             {
                 player = _playerService.Get(id);
             }
-            catch (InvalidKeyValueException)
+            catch (MissingEntityException)
             {
                 return this.HttpNotFound();
             }

@@ -16,5 +16,10 @@
             base("Specified key value does not exist in database")
         {
         }
+
+        public InvalidKeyValueException(string message):
+            base(message)
+        {
+        }
     }
 }

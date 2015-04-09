@@ -8,6 +8,8 @@
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
 
+    using DAL = VolleyManagement.Dal.Contracts;
+
     /// <summary>
     /// Defines PlayerService
     /// </summary>
@@ -78,7 +80,9 @@
             }
             catch (InvalidKeyValueException ex)
             {
-                MissingEntityException missingEntityExc = new MissingEntityException(ex);
+                MissingEntityException missingEntityExc = new MissingEntityException(ex.Message);
+                missingEntityExc.Data[Constants.ENTITY_ID_KEY] 
+                    = ex.Data[DAL.Constants.ENTITY_ID_KEY];
                 throw missingEntityExc;
             }
 

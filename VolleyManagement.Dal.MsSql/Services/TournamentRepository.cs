@@ -50,7 +50,7 @@
                     Description = t.Description,
                     RegulationsLink = t.RegulationsLink,
                     Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
-                    Season = (short)(Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB + t.Season)
+                    Season = (short)(VolleyManagement.Domain.Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB + t.Season)
                 });
         }
 
@@ -87,7 +87,8 @@
             tournamentToUpdate.Description = oldEntity.Description;
             tournamentToUpdate.RegulationsLink = oldEntity.RegulationsLink;
             tournamentToUpdate.Scheme = (byte)oldEntity.Scheme;
-            tournamentToUpdate.Season = (byte)(oldEntity.Season - Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
+            tournamentToUpdate.Season = (byte)(oldEntity.Season 
+                - VolleyManagement.Domain.Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
             _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 

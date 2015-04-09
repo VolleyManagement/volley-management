@@ -18,10 +18,6 @@
     internal class PlayerRepository : IPlayerRepository
     {
         private const int START_DATABASE_ID_VALUE = 0;
-        private const string NOT_SUPPORTED_ID_MESSAGE = "Not supported id";
-        private const string DOESNT_EXIST_ID_MESSAGE = "id doesn't exist";
-        private const string EXC_DATA_KEY_FOR_INVALID_ID = "Constants.EntityIdKey";
-        private const string EXC_DATA_KEY_FOR_MESSAGE = "ErrorMessage";
 
         /// <summary>
         /// Holds object set of DAL users.
@@ -98,9 +94,8 @@
         {
             if (oldEntity.Id < START_DATABASE_ID_VALUE)
             {
-                var exc = new InvalidKeyValueException();
-                exc.Data[EXC_DATA_KEY_FOR_INVALID_ID] = oldEntity.Id;
-                exc.Data[EXC_DATA_KEY_FOR_MESSAGE] = NOT_SUPPORTED_ID_MESSAGE;
+                var exc = new InvalidKeyValueException(Constants.NOT_SUPPORTED_ID_MESSAGE);
+                exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
                 throw exc;
             }
 
@@ -111,9 +106,8 @@
             }
             catch (InvalidOperationException)
             {
-                var exc = new InvalidKeyValueException();
-                exc.Data[EXC_DATA_KEY_FOR_INVALID_ID] = oldEntity.Id;
-                exc.Data[EXC_DATA_KEY_FOR_MESSAGE] = DOESNT_EXIST_ID_MESSAGE;
+                var exc = new InvalidKeyValueException(Constants.DOESNT_EXIST_ID_MESSAGE);
+                exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
                 throw exc;
             }
 

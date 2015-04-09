@@ -21,13 +21,9 @@
         /// Initializes a new instance of the MissingEntityException class.
         /// </summary>
         /// <param name="exception">Exception uses to initialize data MissingEntityException</param>
-        public MissingEntityException(Exception exception) :
-            base("Specified entity missing in database")
+        public MissingEntityException(string message) :
+            base(message)
         {
-            foreach(DictionaryEntry dataItem in exception.Data)
-            {
-                this.Data[dataItem.Key] = dataItem.Value;
-            }
         }
     }
 }

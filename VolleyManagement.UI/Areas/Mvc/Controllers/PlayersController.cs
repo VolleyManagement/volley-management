@@ -9,6 +9,8 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Dal.Exceptions;
+    using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
@@ -32,7 +34,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class
         /// </summary>
-        /// <param name="playerSerivce"></param>
+        /// <param name="playerSerivce">Instance of the class that implements
+        /// IPlayerService.</param>
         public PlayersController(IPlayerService playerSerivce)
         {
             _playerService = playerSerivce;
@@ -41,7 +44,8 @@
         /// <summary>
         /// Gets players from PlayerService
         /// </summary>
-        /// <returns>View with collection of playerss</returns>
+        /// <param name="page">Number of the page.</param>
+        /// <returns>View with collection of players.</returns>
         public ActionResult Index(int? page)
         {
             try
@@ -58,6 +62,28 @@
             {
                 return this.HttpNotFound();
             }
+        }
+
+        /// <summary>
+        /// Gets details for specific player
+        /// </summary>
+        /// <param name="id">Player id.</param>
+        /// <returns>View with specific player.</returns>
+        public ActionResult Details(int id)
+        {
+            Domain.Players.Player player;
+            try
+            {
+                player = _playerService.Get(id);
+            }
+            catch (InvalidKeyValueException)
+            {
+                return this.HttpNotFound();
+            }
+
+            var referer = (string)RouteData.Values["controller"];
+            var model = new PlayerRefererViewModel(player, referer);
+            return View(model);
         }
 
         /// <summary>

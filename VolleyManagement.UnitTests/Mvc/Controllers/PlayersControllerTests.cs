@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
@@ -11,6 +12,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -239,6 +241,165 @@
 
             // Assert
             Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Test for Edit player action (GET)
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_PlayerViewModel_ReturnsToTheView()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            var player = new PlayerBuilder()
+                            .WithId(1)
+                            .WithFirstName("firstName")
+                            .WithLastName("lastName")
+                            .WithBirthYear(1993)
+                            .WithHeight(201)
+                            .WithWeight(80)
+                            .Build();
+            MockSinglePlayer(player);
+            var expected = new PlayerMvcViewModelBuilder()
+                            .WithId(1)
+                            .WithFirstName("firstName")
+                            .WithLastName("lastName")
+                            .WithBirthYear(1993)
+                            .WithHeight(201)
+                            .WithWeight(80)
+                            .Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Edit(player.Id));
+
+            // Assert
+            AssertExtensions.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Edit player action (GET)
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_MissingEntityExceptionCatch_NotFoundReturn()
+        {
+            // Arrange
+            var playerId = 5;
+            _playerServiceMock.Setup(ts => ts.Get(playerId))
+               .Throws(new MissingEntityException());
+            var controller = _kernel.Get<PlayersController>();
+
+            // Act
+            var actual = controller.Edit(playerId);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Test for Edit player action (POST)
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_ValidPlayerViewModel_RedirectToIndex()
+        {
+            // Arrange
+            var playersController = _kernel.Get<PlayersController>();
+            var playerViewModel = new PlayerMvcViewModelBuilder()
+                            .WithId(1)
+                            .WithFirstName("firstName")
+                            .WithLastName("lastName")
+                            .WithBirthYear(1993)
+                            .WithHeight(201)
+                            .WithWeight(80)
+                            .Build();
+
+            // Act
+            var result = playersController.Edit(playerViewModel) as RedirectToRouteResult;
+
+            // Assert
+            _playerServiceMock.Verify(ts => ts.Edit(It.IsAny<Player>()), Times.Once());
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        /// <summary>
+        /// Test for Edit player action with invalid model (POST)
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_InvalidPlayerViewModel_ReturnsViewModelToView()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
+            var playerViewModel = new PlayerMvcViewModelBuilder()
+                .WithFirstName(string.Empty)
+                .Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Edit(playerViewModel));
+
+            // Assert
+            _playerServiceMock.Verify(ts => ts.Edit(It.IsAny<Player>()), Times.Never());
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
+        /// Test for Edit player action (POST)
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_ArgumentException_ExceptionThrown()
+        {
+            // Arrange
+            var playerViewModel = new PlayerMvcViewModelBuilder()
+                            .WithId(1)
+                            .WithFirstName("firstName")
+                            .WithLastName("lastName")
+                            .WithBirthYear(1993)
+                            .WithHeight(201)
+                            .WithWeight(80)
+                            .Build();
+            _playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
+                .Throws(new ValidationException());
+            var controller = _kernel.Get<PlayersController>();
+
+            // Act
+            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Edit(playerViewModel));
+
+            // Assert
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
+        /// Test for Edit player action (POST)
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_MissingEntityExceptionCatch_ViewModelWithErrorReturn()
+        {
+            // Arrange
+            var playerViewModel = new PlayerMvcViewModelBuilder()
+                            .WithId(1)
+                            .WithFirstName("firstName")
+                            .WithLastName("lastName")
+                            .WithBirthYear(1993)
+                            .WithHeight(201)
+                            .WithWeight(80)
+                            .Build();
+            _playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
+                .Throws(new MissingEntityException());
+            var controller = _kernel.Get<PlayersController>();
+
+            // Act
+            var actual = controller.Edit(playerViewModel);
+
+            // Assert
+            Assert.AreEqual(1, controller.ModelState.Count);
+        }
+
+        /// <summary>
+        /// Mocks test data
+        /// </summary>
+        /// <param name="testData">Data to mock</param>
+        private void MockSinglePlayer(Player testData)
+        {
+            _playerServiceMock.Setup(tr => tr.Get(testData.Id)).Returns(testData);
         }
     }
 }

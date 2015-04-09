@@ -135,10 +135,19 @@
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>
+  <data name="EditPlayerTitle" xml:space="preserve">
+    <value>Редактирование игрока</value>
+  </data>
+  <data name="PlayerLegend" xml:space="preserve">
+    <value>Игрок</value>
+  </data>
   <data name="PlayersIndexTitle" xml:space="preserve">
     <value>Игроки</value>
   </data>
-  <data name="TournamentLegend" xml:space="preserve">
-    <value>Игрок</value>
+  <data name="PlayerWasDeleted" xml:space="preserve">
+    <value>Данный игрок не найден, т.к. был удален. Операция редактирования невозможна. Хотите создать данного игрока?</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
   </data>
 </root>

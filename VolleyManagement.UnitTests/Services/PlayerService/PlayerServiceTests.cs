@@ -7,7 +7,9 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Services;
 
@@ -80,15 +82,6 @@
         }
 
         /// <summary>
-        /// Mocks Find method.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
-        private void MockRepositoryFindAll(IEnumerable<Player> testData)
-        {
-            _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
-        }
-
-        /// <summary>
         /// Test for Create() method. The method should create a new player.
         /// </summary>
         [TestMethod]
@@ -105,6 +98,32 @@
             _playerRepositoryMock.Verify(
                 ur => ur.Add(It.Is<Player>(u => PlayersAreEqual(u, newPlayer))));
             _unitOfWorkMock.Verify(u => u.Commit());
+        }
+
+        /// <summary>
+        /// Edit() method test. catch InvalidKeyValueException from DAL
+        /// Throws MissingEntityException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(MissingEntityException))]
+        public void Edit_CatchDalInvalidKeyValueException_ThrowMissingEntityException()
+        {
+            // Arrange
+            _playerRepositoryMock.Setup(pr => pr.Update(It.IsAny<Player>())).Throws(new InvalidKeyValueException());
+            var sut = _kernel.Get<PlayerService>();
+            var playerWithWrongId = new PlayerBuilder().Build();
+
+            // Act
+            sut.Edit(playerWithWrongId);
+        }
+
+        /// <summary>
+        /// Mocks Find method.
+        /// </summary>
+        /// <param name="testData">Test data to mock.</param>
+        private void MockRepositoryFindAll(IEnumerable<Player> testData)
+        {
+            _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
 
         /// <summary>

@@ -1,10 +1,19 @@
 ﻿namespace VolleyManagement.Domain
 {
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Container for global constants.
     /// </summary>
     public static class Constants
     {
+        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
+                        Justification = "It's a COnstants sub-class")]
+        public static class ExceptionManagement
+        {
+            public const string ENTITY_ID_KEY = "EntityId";
+        }
+
         /// <summary>
         /// Container for tournament constants.
         /// </summary>

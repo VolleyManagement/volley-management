@@ -98,9 +98,8 @@
                 _playerRepository.UnitOfWork.Commit();
             }
             catch (InvalidKeyValueException ex)
-            {                
-                var serviceException = new MissingEntityException();
-                // TODO: add exception data filling
+            {
+                var serviceException = new MissingEntityException("Player with specified Id can not be found", ex);
                 throw serviceException;
             }                       
         }

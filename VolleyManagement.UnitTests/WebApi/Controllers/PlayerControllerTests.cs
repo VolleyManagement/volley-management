@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Net;
     using System.Web.Http.OData.Results;
     using System.Web.Http.Results;
     using Contracts;
@@ -16,8 +17,7 @@
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UnitTests.Services.PlayerService;
-    using VolleyManagement.UnitTests.WebApi.ViewModels;
-    using System.Net;
+    using VolleyManagement.UnitTests.WebApi.ViewModels;  
 
     /// <summary>
     /// Tests for PlayerController class.

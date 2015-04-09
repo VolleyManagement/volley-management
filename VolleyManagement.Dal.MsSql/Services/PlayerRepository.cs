@@ -132,10 +132,10 @@
             {
                 _dalPlayers.DeleteObject(dalToRemove);
             }
-            catch (OptimisticConcurrencyException)
+            catch (OptimisticConcurrencyException ex)
             {
-                var exc = new InvalidKeyValueException();
-                // TODO: add exception data filling
+                var exc = new InvalidKeyValueException("Entity with request Id does not exist", ex);
+                exc.Data[Constants.ENTITY_ID_KEY] = id;
                 throw exc;
             }            
         }

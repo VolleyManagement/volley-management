@@ -60,7 +60,7 @@
             {
                 player = _playerRepository.FindWhere(t => t.Id == id).Single();
             }
-            catch (InvalidKeyValueException ex)
+            catch (InvalidOperationException ex)
             {
                 throw new MissingEntityException("Player with specified Id can not be found", ex);
             }

@@ -1,9 +1,10 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Services
 {
+    using System.Data.Entity.Core;
     using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
-
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.Exceptions;
 
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
@@ -37,7 +38,14 @@
         /// </summary>
         public void Commit()
         {
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (OptimisticConcurrencyException ex)
+            {
+                throw new InvalidKeyValueException("Entity with request Id does not exist", ex);
+            } 
         }
 
         /// <summary>

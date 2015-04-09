@@ -94,7 +94,7 @@
         {
             if (oldEntity.Id < START_DATABASE_ID_VALUE)
             {
-                var exc = new InvalidKeyValueException(Constants.NOT_SUPPORTED_ID_MESSAGE);
+                var exc = new InvalidKeyValueException("Id is invalid for this Entity");
                 exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
                 throw exc;
             }
@@ -104,9 +104,9 @@
             {
                 playerToUpdate = _dalPlayers.Where(t => t.Id == oldEntity.Id).Single();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
-                var exc = new InvalidKeyValueException(Constants.DOESNT_EXIST_ID_MESSAGE);
+                var exc = new InvalidKeyValueException("Entity with request Id does not exist", e);
                 exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
                 throw exc;
             }

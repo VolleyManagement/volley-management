@@ -60,9 +60,9 @@
             {
                 player = _playerRepository.FindWhere(t => t.Id == id).Single();
             }
-            catch (InvalidOperationException)
+            catch (InvalidKeyValueException ex)
             {
-                throw new MissingEntityException();
+                throw new MissingEntityException("Player with specified Id can not be found", ex);
             }
 
             return player;
@@ -80,10 +80,7 @@
             }
             catch (InvalidKeyValueException ex)
             {
-                MissingEntityException missingEntityExc = new MissingEntityException(ex.Message);
-                missingEntityExc.Data[Constants.ENTITY_ID_KEY] 
-                    = ex.Data[DAL.Constants.ENTITY_ID_KEY];
-                throw missingEntityExc;
+                throw new MissingEntityException("Player with specified Id can not be found", ex);
             }
 
             _playerRepository.UnitOfWork.Commit();

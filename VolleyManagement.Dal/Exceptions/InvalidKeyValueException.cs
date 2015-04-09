@@ -17,8 +17,24 @@
         {
         }
 
-        public InvalidKeyValueException(string message):
+        /// <summary>
+        /// Initializes a new instance of the InvalidKeyValueException
+        /// class with message and inner exception
+        /// </summary>
+        /// <param name="message">Message text</param>
+        public InvalidKeyValueException(string message) :
             base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the InvalidKeyValueException
+        /// class with message and inner exception
+        /// </summary>
+        /// <param name="message">Message text</param>
+        /// <param name="innerException">Original exception</param>
+        public InvalidKeyValueException(string message, Exception innerException) :
+            base(message, innerException)
         {
         }
     }

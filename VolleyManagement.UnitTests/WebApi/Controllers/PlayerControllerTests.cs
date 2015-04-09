@@ -261,7 +261,7 @@
         }
 
         /// <summary>
-        /// Test Put method. Thrown Agrument exception
+        /// Test Put method. Catch Agrument exception
         /// returns bad request
         /// </summary>
         [TestMethod]
@@ -282,7 +282,7 @@
         }
 
         /// <summary>
-        /// Test Put method. Thrown ValidationException
+        /// Test Put method. Catch ValidationException
         /// returns bad request
         /// </summary>
         [TestMethod]
@@ -301,6 +301,28 @@
             Assert.IsNotNull(result);
             Assert.IsTrue(result.ModelState.Count > 0);
         }
+
+        /// <summary>
+        /// Test Put method. Catch MissingEntityException
+        /// returns bad request
+        /// </summary>
+        [TestMethod]
+        public void Put_MissingEntityException_BadRequestReturns()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            var playerViewModel = new PlayerViewModelBuilder().Build();
+            _playerServiceMock.Setup(
+                ps => ps.Edit(It.IsAny<Player>())).Throws(new MissingEntityException());
+
+            // Act
+            var result = controller.Put(playerViewModel) as MissingEntityException;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ModelState.Count > 0);
+        }
+
 
         /// <summary>
         /// Mock the players

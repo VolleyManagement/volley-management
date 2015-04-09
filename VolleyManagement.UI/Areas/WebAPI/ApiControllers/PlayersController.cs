@@ -89,10 +89,11 @@
                 ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
                 return BadRequest(ModelState);
             }
-            //catch (InvalidKeyValueException ex)
-            //{
-
-            //}
+            catch (MissingEntityException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
+            }
 
             return Updated(player);
         }

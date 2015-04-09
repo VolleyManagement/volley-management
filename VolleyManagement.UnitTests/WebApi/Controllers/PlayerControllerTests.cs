@@ -11,6 +11,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
@@ -154,7 +155,7 @@
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.ModelState.Count == 1);
+            Assert.AreEqual(1, result.ModelState.Count);
             Assert.IsTrue(result.ModelState.Keys.Contains("NotValidBirthYear"));
         }
 
@@ -206,7 +207,7 @@
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.ModelState.Count == 1);
+            Assert.AreEqual(1, result.ModelState.Count);
             Assert.IsTrue(result.ModelState.Keys.Contains("NotValidBirthYear"));
         }
 
@@ -248,20 +249,20 @@
         public void Put_ValidPlayerViewModelIncoming_ValidViewModelOutcoming()
         {
             // Arrange
-            var incomingPlayerVM = new PlayerViewModelBuilder().Build();
-            var expectedPlayerVM = new PlayerViewModelBuilder().Build();
+            var incomingPlayerViewModel = new PlayerViewModelBuilder().Build();
+            var expectedPlayerViewModel = new PlayerViewModelBuilder().Build();
             var controller = _kernel.Get<PlayersController>();
 
             // Act
-            var response = controller.Put(incomingPlayerVM);
+            var response = controller.Put(incomingPlayerViewModel);
             var actual = ((UpdatedODataResult<PlayerViewModel>)response).Entity;
 
             // Assert
-            AssertExtensions.AreEqual<PlayerViewModel>(expectedPlayerVM, actual, new PlayerViewModelComparer());
+            AssertExtensions.AreEqual<PlayerViewModel>(expectedPlayerViewModel, actual, new PlayerViewModelComparer());
         }
 
         /// <summary>
-        /// Test Put method. Catch Agrument exception
+        /// Test Put method. Catch ArgumentException
         /// returns bad request
         /// </summary>
         [TestMethod]
@@ -278,7 +279,7 @@
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.ModelState.Count > 0);
+            Assert.AreEqual(1, result.ModelState.Count);
         }
 
         /// <summary>
@@ -299,7 +300,7 @@
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.ModelState.Count > 0);
+            Assert.AreEqual(1, result.ModelState.Count);
         }
 
         /// <summary>
@@ -316,13 +317,12 @@
                 ps => ps.Edit(It.IsAny<Player>())).Throws(new MissingEntityException());
 
             // Act
-            var result = controller.Put(playerViewModel) as MissingEntityException;
+            var result = controller.Put(playerViewModel) as InvalidModelStateResult;
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsTrue(result.ModelState.Count > 0);
+            Assert.AreEqual(1, result.ModelState.Count);
         }
-
 
         /// <summary>
         /// Mock the players

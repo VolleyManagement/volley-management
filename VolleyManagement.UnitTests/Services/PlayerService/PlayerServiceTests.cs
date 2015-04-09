@@ -7,7 +7,9 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Services;
 
@@ -117,6 +119,23 @@
         }
 
         /// <summary>
+        /// Edit() method test. catch InvalidKeyValueException from DAL
+        /// Throws MissingEntityException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(MissingEntityException))]
+        public void Edit_CatchDalInvalidKeyValueException_ThrowMissingEntityException()
+        {
+            // Arrange
+            _playerRepositoryMock.Setup(pr => pr.Update(It.IsAny<Player>())).Throws(new InvalidKeyValueException());
+            var sut = _kernel.Get<PlayerService>();
+            var playerWithWrongId = new PlayerBuilder().Build();
+
+            // Act
+            sut.Edit(playerWithWrongId);
+        }
+
+        /// <summary>
         /// Mocks Find method.
         /// </summary>
         /// <param name="testData">Test data to mock.</param>
@@ -124,7 +143,7 @@
         {
             _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
-    
+
         /// <summary>
         /// Find out whether two players objects have the same property values.
         /// </summary>

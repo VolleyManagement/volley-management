@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\MissingEntityException.cs" />
     <Compile Include="IPlayerService.cs" />
     <Compile Include="IUserService.cs" />
     <Compile Include="ITournamentService.cs" />

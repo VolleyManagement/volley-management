@@ -1,0 +1,30 @@
+﻿@model PlayerViewModel
+
+@using VolleyManagement.Domain.Players;
+@using VolleyManagement.UI.Areas.Mvc;
+@using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+
+@{
+    ViewBag.Title = Resources.PlayerViews.DeletePlayerTitle;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>@Resources.PlayerViews.DeleteConfirm</h3>
+<fieldset>
+    <legend>@Resources.PlayerViews.PlayerLegend</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.FirstName)</div>
+    <div class="display-field">@Model.FirstName</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.LastName)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.LastName)</div>
+
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        <input type="submit" value=@Resources.PlayerViews.Delete /> |
+        @Html.ActionLink(Resources.PlayerViews.BackToList, "Index")
+    </p>
+}

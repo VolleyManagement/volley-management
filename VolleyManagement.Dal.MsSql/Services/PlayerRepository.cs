@@ -18,6 +18,8 @@
     /// </summary>
     internal class PlayerRepository : IPlayerRepository
     {
+        private const int START_DATABASE_ID_VALUE = 0;
+
         /// <summary>
         /// Holds object set of DAL users.
         /// </summary>
@@ -91,15 +93,22 @@
         /// <param name="oldEntity">The player to update.</param>
         public void Update(Domain.Player oldEntity)
         {
+            if (oldEntity.Id < START_DATABASE_ID_VALUE)
+            {
+                var exc = new InvalidKeyValueException("Id is invalid for this Entity");
+                exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
+                throw exc;
+            }
+
             Player playerToUpdate;
             try
             {
                 playerToUpdate = _dalPlayers.Where(t => t.Id == oldEntity.Id).Single();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException e)
             {
-                var exc = new InvalidKeyValueException();
-                exc.Data["Constants.EntityIdKey"] = oldEntity.Id;
+                var exc = new InvalidKeyValueException("Entity with request Id does not exist", e);
+                exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
                 throw exc;
             }
 

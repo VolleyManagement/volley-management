@@ -44,7 +44,7 @@
         public int Size { get; private set; }
 
         /// <summary>
-        /// Numder of pages
+        /// Number of pages
         /// </summary>
         public int NumberOfPages { get; private set; }
 

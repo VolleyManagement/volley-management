@@ -181,9 +181,9 @@
             Assert.AreEqual(expected, actual);
         }
 
-        /// <summary>
-        /// Test for Details(). Requested id does not exist in the database.
-        /// </summary>
+        // <summary>
+        // Test for Details(). Requested id does not exist in the database.
+        // </summary>
         [TestMethod]
         public void Details_PlayerDoesNotExist_NotFoundResult()
         {

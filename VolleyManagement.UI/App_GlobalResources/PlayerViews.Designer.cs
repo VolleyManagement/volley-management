@@ -153,15 +153,6 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Игроки.
         /// </summary>
-        internal static string PlayerLegend {
-            get {
-                return ResourceManager.GetString("PlayerLegend", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Игроки.
-        /// </summary>
         internal static string PlayersIndexTitle {
             get {
                 return ResourceManager.GetString("PlayersIndexTitle", resourceCulture);

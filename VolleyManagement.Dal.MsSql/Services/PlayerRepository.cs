@@ -128,7 +128,7 @@
         {
             var dalToRemove = new Dal.Player { Id = id };
             _dalPlayers.Attach(dalToRemove);
-            _dalPlayers.DeleteObject(dalToRemove);         
+            _dalPlayers.DeleteObject(dalToRemove);
         }
     }
 }

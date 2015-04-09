@@ -2,24 +2,12 @@
 
 @{
     ViewBag.Title = Resources.PlayerViews.EditPlayerTitle;
-    string action;
-    string errorMessage = string.Empty;
-    if (ViewData.ModelState.IsValidField("Player_was_deleted"))
-    {
-        action = "Edit";
-    }
-    else
-    {
-        action = "Create";
-        errorMessage = Resources.PlayerViews.PlayerWasDeleted;
-    }
 }
 
 <h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm(action, "Players"))
+@using (Html.BeginForm())
 {
-    @:<span class="field-validation-error" data-valmsg-for="Player_was_deleted" data-valmsg-replace="true">@errorMessage</span>
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>@Resources.PlayerViews.PlayerLegend</legend>

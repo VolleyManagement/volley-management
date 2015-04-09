@@ -45,7 +45,7 @@
             catch (OptimisticConcurrencyException ex)
             {
                 throw new InvalidKeyValueException("Entity with request Id does not exist", ex);
-            } 
+            }
         }
 
         /// <summary>

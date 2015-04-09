@@ -101,7 +101,7 @@
             {
                 var serviceException = new MissingEntityException("Player with specified Id can not be found", ex);
                 throw serviceException;
-            }                       
+            }
         }
     }
 }

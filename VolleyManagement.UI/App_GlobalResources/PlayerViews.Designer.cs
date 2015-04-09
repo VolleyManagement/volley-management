@@ -187,7 +187,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Данный игрок не найден, т.к. был удален. Операция редактирования невозможна. Хотите создать данного игрока?.
+        ///   Looks up a localized string similar to Данный игрок не найден, т.к. был удален. Операция редактирования невозможна. Для создания игрока воспользуйтесь соответствующей ссылкой..
         /// </summary>
         internal static string PlayerWasDeleted {
             get {

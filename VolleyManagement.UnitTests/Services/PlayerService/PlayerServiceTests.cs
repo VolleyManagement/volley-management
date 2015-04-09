@@ -101,6 +101,33 @@
         }
 
         /// <summary>
+        /// Test for Create() method. The method should create a new player.
+        /// </summary>
+        [TestMethod]
+        public void Delete_PlayerId_CorrectIdPostedToDAL()
+        {
+            // Arrange
+            var expectedId = 10;
+
+            // Act
+            var ps = _kernel.Get<PlayerService>();
+            ps.Delete(expectedId);
+
+            // Assert
+            _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(playerId => playerId == expectedId)), Times.Once());
+            _unitOfWorkMock.Verify(pr => pr.Commit());
+        }
+
+        /// <summary>
+        /// Mocks Find method.
+        /// </summary>
+        /// <param name="testData">Test data to mock.</param>
+        private void MockRepositoryFindAll(IEnumerable<Player> testData)
+        {
+            _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
+        }
+    
+        /// <summary>
         /// Edit() method test. catch InvalidKeyValueException from DAL
         /// Throws MissingEntityException
         /// </summary>

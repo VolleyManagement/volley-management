@@ -7,11 +7,14 @@
     using System.Linq;
     using System.Net;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Contracts;
     using Domain.Players;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.UI.App_GlobalResources;
+    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
@@ -31,6 +34,9 @@
         private const int MAX_PLAYERS_ON_PAGE = 10;
         private const int TESTING_PAGE = 1;
         private const int SAVED_PLAYER_ID = 10;
+        private const int PLAYER_UNEXISTING_ID_TO_DELETE = 4;
+        private const string HTTP_NOT_FOUND_DESCRIPTION = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
+        private const string TEST_CONTROLLER_NAME = "TestController";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
         private IKernel _kernel;
@@ -44,6 +50,72 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<IPlayerService>()
                    .ToConstant(this._playerServiceMock.Object);
+        }
+
+        /// <summary>
+        /// Test for DeleteConfirmed method. The method should invoke Delete() method of IPlayerService
+        /// and redirect to Index.
+        /// </summary>
+        [TestMethod]
+        public void DeleteConfirmed_PlayerExists_PlayerIsDeleted()
+        {
+            // Arrange
+
+            // Act
+            var sut = this._kernel.Get<PlayersController>();
+            var actual = sut.DeleteConfirmed(PLAYER_UNEXISTING_ID_TO_DELETE) as RedirectToRouteResult;
+
+            // Assert
+            _playerServiceMock.Verify(ps => ps.Delete(It.Is<int>(id => id == PLAYER_UNEXISTING_ID_TO_DELETE)), Times.Once());
+            Assert.AreEqual("Index", actual.RouteValues["action"]);
+        }
+
+        /// <summary>
+        /// Test for DeleteConfirmed method where input parameter is player id, which doesn't exist in database.
+        /// The method should return HttpNotFound with a specific message.
+        /// </summary>
+        [TestMethod]
+        public void DeleteConfirmed_PlayerDoesntExist_HttpNotFoundReturned()
+        {
+            // Arrange
+            _playerServiceMock.Setup(ps => ps.Delete(PLAYER_UNEXISTING_ID_TO_DELETE)).Throws<InvalidOperationException>();
+
+            // Act
+            var sut = this._kernel.Get<PlayersController>();
+            var actual = sut.DeleteConfirmed(PLAYER_UNEXISTING_ID_TO_DELETE);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+            Assert.AreEqual((actual as HttpNotFoundResult).StatusDescription, HTTP_NOT_FOUND_DESCRIPTION);
+        }
+
+        /// <summary>
+        /// Test for Delete tournament action
+        /// </summary>
+        [TestMethod]
+        public void DeleteGetAction_Player_ReturnsToTheView()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            var player = new PlayerBuilder()
+                            .WithId(1)
+                            .WithFirstName("FirstName")
+                            .WithLastName("LastName")
+                            .Build();
+            MockSinglePlayer(player);
+            var expected = new PlayerMvcViewModelBuilder()
+                            .WithId(1)
+                            .WithFirstName("FirstName")
+                            .WithLastName("LastName")
+                            .Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Delete(player.Id, player.FirstName, player.LastName));
+
+            // Assert
+            Assert.AreEqual(expected.Id, actual.Id);
+            Assert.AreEqual(expected.FirstName, actual.FirstName);
+            Assert.AreEqual(expected.LastName, actual.LastName);
         }
 
         /// <summary>
@@ -109,6 +181,55 @@
 
             // Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for Details(). Requested id does not exist in the database.
+        /// </summary>
+        [TestMethod]
+        public void Details_PlayerDoesNotExist_NotFoundResult()
+        {
+            // Arrange
+            this._playerServiceMock.Setup(ps => ps.Get(It.IsAny<int>()))
+                .Throws(new InvalidKeyValueException());
+
+            var sut = this._kernel.Get<PlayersController>();
+            var expected = (int)HttpStatusCode.NotFound;
+
+            // Act
+            var actual = (sut.Details(It.IsAny<int>()) as HttpNotFoundResult).StatusCode;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for Details(). Gets player with requested id.
+        /// </summary>
+        [TestMethod]
+        public void Details_PlayerExists_PlayerIsReturned()
+        {
+            // Arrange
+            _playerServiceMock.Setup(tr => tr.Get(It.Is<int>(id => id == SAVED_PLAYER_ID)))
+                .Returns(new PlayerBuilder()
+                .WithId(SAVED_PLAYER_ID)
+                .Build());
+
+            var controller = this._kernel.Get<PlayersController>();
+            SetControllerRouteData(controller);
+
+            var expectedPlayer = new PlayerMvcViewModelBuilder()
+                .WithId(SAVED_PLAYER_ID)
+                .Build();
+
+            var expectedReferer = TEST_CONTROLLER_NAME;
+
+            // Act
+            var actual = TestExtensions.GetModel<PlayerRefererViewModel>(controller.Details(SAVED_PLAYER_ID));
+
+            // Assert
+            AssertExtensions.AreEqual<PlayerViewModel>(expectedPlayer, actual.Model, new PlayerViewModelComparer());
+            Assert.AreEqual<string>(expectedReferer, actual.Referer);
         }
 
         /// <summary>
@@ -400,6 +521,18 @@
         private void MockSinglePlayer(Player testData)
         {
             _playerServiceMock.Setup(tr => tr.Get(testData.Id)).Returns(testData);
+        }
+
+
+        /// <summary>
+        /// Set test route data to the ControllerContext.
+        /// </summary>
+        /// <param name="controller">Controller to set the route data of.</param>
+        private void SetControllerRouteData(PlayersController controller)
+        {
+            controller.ControllerContext = new ControllerContext();
+            controller.ControllerContext.RouteData = new RouteData();
+            controller.RouteData.Values["controller"] = TEST_CONTROLLER_NAME;
         }
     }
 }

@@ -85,5 +85,15 @@
 
             _playerRepository.UnitOfWork.Commit();
         }
+
+        /// <summary>
+        /// Delete player by id.
+        /// </summary>
+        /// <param name="id">The id of player to delete.</param>
+        public void Delete(int id)
+        {
+            _playerRepository.Remove(id);
+            _playerRepository.UnitOfWork.Commit();
+        }
     }
 }

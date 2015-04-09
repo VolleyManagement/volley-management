@@ -170,6 +170,7 @@
     <Content Include="Areas\Mvc\Views\Players\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\_CreateOrEdit.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

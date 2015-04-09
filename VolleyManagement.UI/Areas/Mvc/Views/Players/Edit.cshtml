@@ -1,0 +1,38 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayerViewModel
+
+@{
+    ViewBag.Title = Resources.PlayerViews.EditPlayerTitle;
+    string action;
+    string errorMessage = string.Empty;
+    if (ViewData.ModelState.IsValidField("Player_was_deleted"))
+    {
+        action = "Edit";
+    }
+    else
+    {
+        action = "Create";
+        errorMessage = Resources.PlayerViews.PlayerWasDeleted;
+    }
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(action, "Players"))
+{
+    @:<span class="field-validation-error" data-valmsg-for="Player_was_deleted" data-valmsg-replace="true">@errorMessage</span>
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>@Resources.PlayerViews.PlayerLegend</legend>
+
+        @Html.HiddenFor(model => model.Id)
+        @Html.Partial("_CreateOrEdit", Model)
+
+        <p>
+            <input type="submit" value="@Resources.PlayerViews.Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink(Resources.PlayerViews.BackToList, "Index")
+</div>

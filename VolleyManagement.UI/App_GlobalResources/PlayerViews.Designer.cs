@@ -115,6 +115,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Редактирование игрока.
+        /// </summary>
+        internal static string EditPlayerTitle {
+            get {
+                return ResourceManager.GetString("EditPlayerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Игрок.
+        /// </summary>
+        internal static string PlayerLegend {
+            get {
+                return ResourceManager.GetString("PlayerLegend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Игроки.
         /// </summary>
         internal static string PlayersIndexTitle {
@@ -124,11 +142,20 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Игрок.
+        ///   Looks up a localized string similar to Данный игрок не найден, т.к. был удален. Операция редактирования невозможна. Хотите создать данного игрока?.
         /// </summary>
-        internal static string TournamentLegend {
+        internal static string PlayerWasDeleted {
             get {
-                return ResourceManager.GetString("TournamentLegend", resourceCulture);
+                return ResourceManager.GetString("PlayerWasDeleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сохранить.
+        /// </summary>
+        internal static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
     }

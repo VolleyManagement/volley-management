@@ -13,9 +13,9 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.UI.App_GlobalResources;
-    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Dal.Exceptions;
+    using VolleyManagement.UI.App_GlobalResources;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -35,7 +35,9 @@
         private const int TESTING_PAGE = 1;
         private const int SAVED_PLAYER_ID = 10;
         private const int PLAYER_UNEXISTING_ID_TO_DELETE = 4;
-        private const string HTTP_NOT_FOUND_DESCRIPTION = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
+        private const string HTTP_NOT_FOUND_DESCRIPTION
+            = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
+
         private const string TEST_CONTROLLER_NAME = "TestController";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
@@ -183,9 +185,9 @@
             Assert.AreEqual(expected, actual);
         }
 
-        // <summary>
-        // Test for Details(). Requested id does not exist in the database.
-        // </summary>
+        /// <summary>
+        /// Test for Details(). Requested id does not exist in the database.
+        /// </summary>
         [TestMethod]
         public void Details_PlayerDoesNotExist_NotFoundResult()
         {
@@ -522,7 +524,6 @@
         {
             _playerServiceMock.Setup(tr => tr.Get(testData.Id)).Returns(testData);
         }
-
 
         /// <summary>
         /// Set test route data to the ControllerContext.

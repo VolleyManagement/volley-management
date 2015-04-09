@@ -90,6 +90,7 @@
             _playerServiceMock.Verify(ps => ps.Get(), Times.Once());
             AssertExtensions.AreEqual<PlayerViewModel>(expected, result, new PlayerViewModelComparer());
         }
+
         /// <summary>
         /// Test for Get() method. The method should return existing players
         /// </summary>

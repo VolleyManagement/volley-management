@@ -214,6 +214,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Player1Controller.cs" />
     <Compile Include="Areas\Mvc\Controllers\PlayersController.cs" />
     <Compile Include="Areas\Mvc\Controllers\TournamentsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\UsersController.cs" />
@@ -261,6 +262,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Mvc\Views\Player1\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">

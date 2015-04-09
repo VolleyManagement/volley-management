@@ -7,6 +7,7 @@
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
@@ -20,6 +21,8 @@
         /// Max Players on page
         /// </summary>
         private const int MAX_PLAYERS_ON_PAGE = 10;
+
+        private const string HTTP_NOT_FOUND_DESCRIPTION = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -101,6 +104,47 @@
             {
                 return this.HttpNotFound();
             }
+        }
+
+        /// <summary>
+        /// Delete player action (GET)
+        /// </summary>
+        /// <param name="id">Player id</param>
+        /// <returns>View to delete specific player</returns>
+        public ActionResult Delete(int id, string firstName, string lastName)
+        {
+            PlayerViewModel playerViewModel = new PlayerViewModel()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Id = id
+            };
+
+            return View(playerViewModel);
+        }
+
+        /// <summary>
+        /// Delete player action (POST)
+        /// </summary>
+        /// <param name="id">Player id</param>
+        /// <returns>Index view</returns>
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            ActionResult result;
+            try
+            {
+                this._playerService.Delete(id);
+                result = this.RedirectToAction("Index");
+            }
+            catch { }
+            //catch (MissingEntityException)
+            //{
+            //    result = this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
+            //}
+
+            return this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
+           
         }
     }
 }

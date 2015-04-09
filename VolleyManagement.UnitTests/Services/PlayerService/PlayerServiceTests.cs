@@ -119,15 +119,6 @@
         }
 
         /// <summary>
-        /// Mocks Find method.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
-        private void MockRepositoryFindAll(IEnumerable<Player> testData)
-        {
-            _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
-        }
-    
-        /// <summary>
         /// Edit() method test. catch InvalidKeyValueException from DAL
         /// Throws MissingEntityException
         /// </summary>

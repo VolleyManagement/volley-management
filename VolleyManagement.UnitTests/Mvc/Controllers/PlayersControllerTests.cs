@@ -78,7 +78,7 @@
         public void DeleteConfirmed_PlayerDoesntExist_HttpNotFoundReturned()
         {
             // Arrange
-            _playerServiceMock.Setup(ps => ps.Delete(PLAYER_UNEXISTING_ID_TO_DELETE)).Throws<InvalidOperationException>();
+            _playerServiceMock.Setup(ps => ps.Delete(PLAYER_UNEXISTING_ID_TO_DELETE)).Throws<MissingEntityException>();
 
             // Act
             var sut = this._kernel.Get<PlayersController>();
@@ -183,9 +183,9 @@
             Assert.AreEqual(expected, actual);
         }
 
-        /// <summary>
-        /// Test for Details(). Requested id does not exist in the database.
-        /// </summary>
+        // <summary>
+        // Test for Details(). Requested id does not exist in the database.
+        // </summary>
         [TestMethod]
         public void Details_PlayerDoesNotExist_NotFoundResult()
         {

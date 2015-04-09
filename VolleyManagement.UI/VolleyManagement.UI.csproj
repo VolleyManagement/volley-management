@@ -261,9 +261,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">
       <Project>{285D93E6-1AD5-4F78-AEF6-72B81D81465D}</Project>
       <Name>VolleyManagement.Contracts</Name>

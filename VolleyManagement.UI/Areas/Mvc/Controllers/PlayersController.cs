@@ -10,7 +10,6 @@
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
@@ -167,7 +166,7 @@
             }
 
             return result;
-           
+
         }
 
         /// <summary>

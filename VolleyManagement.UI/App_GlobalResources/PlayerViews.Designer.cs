@@ -138,7 +138,7 @@ namespace Resources {
         internal static string PlayerDetailsTitle {
             get {
                 return ResourceManager.GetString("PlayerDetailsTitle", resourceCulture);
-        }
+            }
         }
         
         /// <summary>

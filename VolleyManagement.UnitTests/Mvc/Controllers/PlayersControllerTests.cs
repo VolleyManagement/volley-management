@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
@@ -11,11 +12,11 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.PlayerService;
-    using System.ComponentModel.DataAnnotations;
 
     /// <summary>
     /// Tests for MVC PlayersController class.
@@ -279,12 +280,12 @@
         /// Test for Edit player action (GET)
         /// </summary>
         [TestMethod]
-        public void EditGetAction_GeneralException_ExceptionThrown()
+        public void EditGetAction_MissingEntityExceptionCatch_NotFoundReturn()
         {
             // Arrange
             var playerId = 5;
             _playerServiceMock.Setup(ts => ts.Get(playerId))
-               .Throws(new Exception());
+               .Throws(new MissingEntityException());
             var controller = _kernel.Get<PlayersController>();
 
             // Act
@@ -339,7 +340,7 @@
             _playerServiceMock.Verify(ts => ts.Edit(It.IsAny<Player>()), Times.Never());
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
         }
-        
+
         /// <summary>
         /// Test for Edit player action (POST)
         /// </summary>
@@ -365,12 +366,12 @@
             // Assert
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
         }
-        
+
         /// <summary>
         /// Test for Edit player action (POST)
         /// </summary>
         [TestMethod]
-        public void EditPostAction_GeneralException_ExceptionThrown()
+        public void EditPostAction_MissingEntityExceptionCatch_ViewModelWithErrorReturn()
         {
             // Arrange
             var playerViewModel = new PlayerMvcViewModelBuilder()
@@ -382,14 +383,14 @@
                             .WithWeight(80)
                             .Build();
             _playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
-                .Throws(new Exception());
+                .Throws(new MissingEntityException());
             var controller = _kernel.Get<PlayersController>();
 
             // Act
             var actual = controller.Edit(playerViewModel);
 
             // Assert
-            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+            Assert.AreEqual(1, controller.ModelState.Count);
         }
 
         /// <summary>

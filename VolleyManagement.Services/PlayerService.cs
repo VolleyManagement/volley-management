@@ -3,9 +3,12 @@
     using System;
     using System.Linq;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
+
+    using DAL = VolleyManagement.Dal.Contracts;
 
     /// <summary>
     /// Defines PlayerService
@@ -57,9 +60,9 @@
             {
                 player = _playerRepository.FindWhere(t => t.Id == id).Single();
             }
-            catch (InvalidOperationException)
+            catch (InvalidKeyValueException ex)
             {
-                throw new InvalidKeyValueException();
+                throw new MissingEntityException("Player with specified Id can not be found", ex);
             }
 
             return player;
@@ -71,7 +74,15 @@
         /// <param name="playerToEdit">Player to edit.</param>
         public void Edit(Player playerToEdit)
         {
-            _playerRepository.Update(playerToEdit);
+            try
+            {
+                _playerRepository.Update(playerToEdit);
+            }
+            catch (InvalidKeyValueException ex)
+            {
+                throw new MissingEntityException("Player with specified Id can not be found", ex);
+            }
+
             _playerRepository.UnitOfWork.Commit();
         }
     }

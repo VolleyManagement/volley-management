@@ -82,15 +82,6 @@
         }
 
         /// <summary>
-        /// Mocks Find method.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
-        private void MockRepositoryFindAll(IEnumerable<Player> testData)
-        {
-            _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
-        }
-
-        /// <summary>
         /// Test for Create() method. The method should create a new player.
         /// </summary>
         [TestMethod]
@@ -124,6 +115,15 @@
 
             // Act
             sut.Edit(playerWithWrongId);
+        }
+
+        /// <summary>
+        /// Mocks Find method.
+        /// </summary>
+        /// <param name="testData">Test data to mock.</param>
+        private void MockRepositoryFindAll(IEnumerable<Player> testData)
+        {
+            _playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
 
         /// <summary>

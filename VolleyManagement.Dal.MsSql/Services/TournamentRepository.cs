@@ -87,7 +87,7 @@
             tournamentToUpdate.Description = oldEntity.Description;
             tournamentToUpdate.RegulationsLink = oldEntity.RegulationsLink;
             tournamentToUpdate.Scheme = (byte)oldEntity.Scheme;
-            tournamentToUpdate.Season = (byte)(oldEntity.Season 
+            tournamentToUpdate.Season = (byte)(oldEntity.Season
                 - VolleyManagement.Domain.Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
             _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }

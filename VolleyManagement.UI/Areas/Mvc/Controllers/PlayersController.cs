@@ -137,13 +137,12 @@
                 this._playerService.Delete(id);
                 result = this.RedirectToAction("Index");
             }
-            catch { }
-            //catch (MissingEntityException)
-            //{
-            //    result = this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
-            //}
+            catch (MissingEntityException)
+            {
+                result = this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
+            }
 
-            return this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
+            return result;
            
         }
     }

@@ -16,7 +16,7 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.PlayerService;
-    
+
     /// <summary>
     /// Tests for MVC PlayersController class.
     /// </summary>
@@ -74,7 +74,7 @@
         {
             // Arrange
             _playerServiceMock.Setup(ps => ps.Delete(PLAYER_UNEXISTING_ID_TO_DELETE)).Throws<InvalidOperationException>();
-            
+
             // Act
             var sut = this._kernel.Get<PlayersController>();
             var actual = sut.DeleteConfirmed(PLAYER_UNEXISTING_ID_TO_DELETE);
@@ -87,35 +87,31 @@
         /// <summary>
         /// Test for Delete tournament action
         /// </summary>
-        //[TestMethod]
-        //public void DeleteGetAction_Player_ReturnsToTheView()
-        //{
-        //     Arrange
-        //    var controller = _kernel.Get<PlayersController>();
-        //    var player = new PlayerBuilder()
-        //                    .WithId(1)
-        //                    .WithFirstName("FirstName")
-        //                    .WithLastName("LastName")
-        //                    .WithBirthYear(1990)
-        //                    .WithHeight(192)
-        //                    .WithWeight(90)
-        //                    .Build();
-        //    MockSinglePlayer(player);
-        //    var expected = new PlayerBuilder()
-        //                    .WithId(1)
-        //                    .WithFirstName("FirstName")
-        //                    .WithLastName("LastName")
-        //                    .WithBirthYear(1990)
-        //                    .WithHeight(192)
-        //                    .WithWeight(90)
-        //                    .Build();
+        [TestMethod]
+        public void DeleteGetAction_Player_ReturnsToTheView()
+        {
+            // Arrange
+            var controller = _kernel.Get<PlayersController>();
+            var player = new PlayerBuilder()
+                            .WithId(1)
+                            .WithFirstName("FirstName")
+                            .WithLastName("LastName")
+                            .Build();
+            MockSinglePlayer(player);
+            var expected = new PlayerMvcViewModelBuilder()
+                            .WithId(1)
+                            .WithFirstName("FirstName")
+                            .WithLastName("LastName")
+                            .Build();
 
-        //     Act
-        //    var actual = TestExtensions.GetModel<Player>(controller.Delete(player.Id));
+            // Act
+            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Delete(player.Id, player.FirstName, player.LastName));
 
-        //     Assert
-        //    AssertExtensions.AreEqual<Player>(expected, actual, new PlayerComparer());
-        //}
+            // Assert
+            Assert.AreEqual(expected.Id, actual.Id);
+            Assert.AreEqual(expected.FirstName, actual.FirstName);
+            Assert.AreEqual(expected.LastName, actual.LastName);
+        }
 
         /// <summary>
         /// Test for Index action. The action should return not empty ordering page with players

@@ -193,7 +193,7 @@
         {
             // Arrange
             this._playerServiceMock.Setup(ps => ps.Get(It.IsAny<int>()))
-                .Throws(new InvalidKeyValueException());
+                .Throws(new MissingEntityException());
 
             var sut = this._kernel.Get<PlayersController>();
             var expected = (int)HttpStatusCode.NotFound;

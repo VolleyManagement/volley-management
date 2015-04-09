@@ -52,6 +52,7 @@
             player.Id = domainPlayer.Id;
             player.FirstName = domainPlayer.FirstName;
             player.LastName = domainPlayer.LastName;
+            player.BirthYear = domainPlayer.BirthYear;
             player.Height = domainPlayer.Height;
             player.Weight = domainPlayer.Weight;
             return player;

@@ -12,10 +12,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.List.FirstOrDefault().LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.List.FirstOrDefault().FirstName)
+            @Html.DisplayNameFor(model => model.List.FirstOrDefault().FullName)
         </th>
         <th>
         </th>
@@ -25,10 +22,7 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(item.LastName, "Details", new { id = item.Id })
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.ActionLink(item.FullName, "Details", new { id = item.Id })
             </td>
             <td>
                 @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) |

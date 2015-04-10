@@ -146,14 +146,10 @@
                 .Skip((TESTING_PAGE - 1) * MAX_PLAYERS_ON_PAGE)
                 .Take(MAX_PLAYERS_ON_PAGE)
                 .Select(p =>
-                    new PlayerViewModel
+                    new PlayerNameViewModel
                     {
                         Id = p.Id,
-                        FirstName = p.FirstName,
-                        LastName = p.LastName,
-                        BirthYear = p.BirthYear,
-                        Height = p.Height,
-                        Weight = p.Weight
+                        FullName = p.LastName + " " + p.FirstName
                     })
                 .ToList();
 
@@ -161,7 +157,7 @@
             var actual = TestExtensions.GetModel<PlayersListViewModel>(sut.Index(TESTING_PAGE)).List;
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new PlayerViewModelComparer());
+            CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
         }
 
         /// <summary>

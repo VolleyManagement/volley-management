@@ -20,6 +20,7 @@
         /// <param name="size">Number of players on page</param>
         public PlayersListViewModel(IQueryable <Player> source, int? index, int size)
         {
+
             this.Size = size;
             this.PageNumber = index ?? FIRST_PAGE;
             this.NumberOfPages = (int) Math.Ceiling(source.Count() / (double)Size);
@@ -27,10 +28,16 @@
             if ((index > this.NumberOfPages) || (index < FIRST_PAGE))
                 throw new ArgumentOutOfRangeException();
 
-            this.List = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
+            List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
                 .Take(Size)
                 .ToList()
                 .Select(p => PlayerViewModel.Map(p)));
+
+            this.List = new List<PlayerNameViewModel>();
+            foreach(PlayerViewModel player in listOfPlayers)
+            {
+                this.List.Add(new PlayerNameViewModel() { FullName = player.LastName + " " + player.FirstName, Id = player.Id });
+            }
         }
 
         /// <summary>
@@ -51,6 +58,6 @@
         /// <summary>
         /// List Of Players
         /// </summary>
-        public List<PlayerViewModel> List { get; private set; }
+        public List<PlayerNameViewModel> List { get; private set; }
     }
 }

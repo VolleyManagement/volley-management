@@ -9,20 +9,20 @@
     /// Class for generating test data
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class PlayerServiceTestFixture
+    internal class PlayerViewModelServiceTestFixture
     {
         /// <summary>
-        /// Holds collection of tournaments
+        /// Holds collection of players
         /// </summary>
-        private IList<Player> _players = new List<Player>();
+        private IList<PlayerViewModel> _players = new List<PlayerViewModel>();
 
         /// <summary>
         /// Adds players to collection
         /// </summary>
         /// <returns>Builder object with collection of players</returns>
-        public PlayerServiceTestFixture TestPlayers()
+        public PlayerViewModelServiceTestFixture TestPlayers()
         {
-            _players.Add(new Player()
+            _players.Add(new PlayerViewModel()
             {
                 Id = 1,
                 FirstName = "FirstNameA",
@@ -31,7 +31,7 @@
                 Height = 211,
                 Weight = 120
             });
-            _players.Add(new Player()
+            _players.Add(new PlayerViewModel()
             {
                 Id = 2,
                 FirstName = "FirstNameB",
@@ -40,7 +40,7 @@
                 Height = 205,
                 Weight = 99
             });
-            _players.Add(new Player()
+            _players.Add(new PlayerViewModel()
             {
                 Id = 3,
                 FirstName = "FirstNameC",
@@ -56,8 +56,8 @@
         /// Add player to collection.
         /// </summary>
         /// <param name="newPlayer">Player to add.</param>
-        /// <returns>Builder object with collection of tournaments.</returns>
-        public PlayerServiceTestFixture AddPlayer(Player newPlayer)
+        /// <returns>Builder object with collection of players.</returns>
+        public PlayerViewModelServiceTestFixture AddTournament(PlayerViewModel newPlayer)
         {
             _players.Add(newPlayer);
             return this;
@@ -67,7 +67,7 @@
         /// Builds test data
         /// </summary>
         /// <returns>Player collection</returns>
-        public IList<Player> Build()
+        public IList<PlayerViewModel> Build()
         {
             return _players;
         }

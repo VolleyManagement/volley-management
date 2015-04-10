@@ -9,7 +9,7 @@
     /// <summary>
     /// Represents player view model
     /// </summary>
-    public class PlayerInListViewModel
+    public class PlayerNameViewModel
     {
         /// <summary>
         /// Gets or sets the player Id
@@ -19,6 +19,7 @@
         /// <summary>
         /// Gets or sets the player name
         /// </summary>
+        [Display(Name = "PlayerFullName", ResourceType = typeof(ViewModelResources))]
         public string FullName { get; set; }
     }
 }

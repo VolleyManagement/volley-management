@@ -131,6 +131,7 @@
     <Compile Include="Mvc\Controllers\PlayersControllerTests.cs" />
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\UsersControllerTests.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />

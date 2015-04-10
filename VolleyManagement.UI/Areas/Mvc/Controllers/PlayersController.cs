@@ -19,7 +19,7 @@
     public class PlayersController : Controller
     {
         private const int MAX_PLAYERS_ON_PAGE = 10;
-
+        private const string PLAYER_WAS_DELETED_DESCRIPTION = "Данный игрок не найден, т.к. был удален. Операция редактирования невозможна. Для создания игрока воспользуйтесь соответствующей ссылкой.";
         private const string HTTP_NOT_FOUND_DESCRIPTION = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
 
         /// <summary>
@@ -208,7 +208,7 @@
             }
             catch (MissingEntityException)
             {
-                this.ModelState.AddModelError(string.Empty, Resources.PlayerViews.PlayerWasDeleted);
+                this.ModelState.AddModelError(string.Empty, PLAYER_WAS_DELETED_DESCRIPTION);
                 return this.View(playerViewModel);
             }
             catch (ValidationException ex)

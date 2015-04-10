@@ -126,9 +126,6 @@
   <data name="FieldRequired" xml:space="preserve">
     <value>Поле "{0}" является обязательным.</value>
   </data>
-  <data name="FullName" xml:space="preserve">
-    <value>Фамилия Имя</value>
-  </data>
   <data name="InvalidEntriesError" xml:space="preserve">
     <value>Поле {0} должно содержать только печатаемые символы</value>
   </data>
@@ -158,6 +155,9 @@
   </data>
   <data name="PlayerFirstNameRequired" xml:space="preserve">
     <value>{0} не может быть пустым</value>
+  </data>
+  <data name="PlayerFullName" xml:space="preserve">
+    <value>Фамилия Имя</value>
   </data>
   <data name="PlayerHeight" xml:space="preserve">
     <value>Рост</value>

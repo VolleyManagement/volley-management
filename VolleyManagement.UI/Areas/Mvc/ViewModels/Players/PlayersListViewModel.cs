@@ -33,10 +33,10 @@
                 .ToList()
                 .Select(p => PlayerViewModel.Map(p)));
 
-            this.List = new List<PlayerInListViewModel>();
+            this.List = new List<PlayerNameViewModel>();
             foreach(PlayerViewModel player in listOfPlayers)
             {
-                this.List.Add(new PlayerInListViewModel(){FullName = player.LastName + " " + player.FirstName, Id = player.Id});
+                this.List.Add(new PlayerNameViewModel() { FullName = player.LastName + " " + player.FirstName, Id = player.Id });
             }
         }
 
@@ -58,6 +58,6 @@
         /// <summary>
         /// List Of Players
         /// </summary>
-        public List<PlayerInListViewModel> List { get; private set; }
+        public List<PlayerNameViewModel> List { get; private set; }
     }
 }

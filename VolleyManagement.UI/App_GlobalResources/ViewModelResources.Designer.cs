@@ -88,15 +88,6 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Фамилия Имя.
-        /// </summary>
-        public static string FullName {
-            get {
-                return ResourceManager.GetString("FullName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Поле {0} должно содержать только печатаемые символы.
         /// </summary>
         public static string InvalidEntriesError {
@@ -183,6 +174,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string PlayerFirstNameRequired {
             get {
                 return ResourceManager.GetString("PlayerFirstNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фамилия Имя.
+        /// </summary>
+        public static string PlayerFullName {
+            get {
+                return ResourceManager.GetString("PlayerFullName", resourceCulture);
             }
         }
         

@@ -104,7 +104,7 @@
         /// Test for Create() method. The method should create a new player.
         /// </summary>
         [TestMethod]
-        public void Delete_PlayerId_CorrectIdPostedToDAL()
+        public void Delete_PlayerId_CorrectIdPostedToDatabaseLayer()
         {
             // Arrange
             var expectedId = 10;

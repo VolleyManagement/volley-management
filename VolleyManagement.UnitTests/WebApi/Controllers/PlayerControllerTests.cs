@@ -17,7 +17,7 @@
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UnitTests.Services.PlayerService;
-    using VolleyManagement.UnitTests.WebApi.ViewModels;  
+    using VolleyManagement.UnitTests.WebApi.ViewModels;
 
     /// <summary>
     /// Tests for PlayerController class.

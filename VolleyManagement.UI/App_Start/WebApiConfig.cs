@@ -4,6 +4,7 @@
     using System.Web.OData.Builder;
     using System.Web.OData.Extensions;
 
+    using VolleyManagement.UI.Areas.WebApi;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
 
@@ -27,7 +28,7 @@
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional });
 
-            RegisterOData(config);
+            WebApiAreaRegistration.RegisterOData(config);
         }
 
         private static void RegisterOData(HttpConfiguration config)

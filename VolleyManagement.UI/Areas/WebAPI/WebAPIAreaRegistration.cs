@@ -25,6 +25,21 @@
         }
 
         /// <summary>
+        /// Registers OData routing
+        /// </summary>
+        /// <param name="config">The config.</param>
+        public static void RegisterOData(HttpConfiguration config)
+        {
+            var builder = new ODataConventionModelBuilder();
+            builder.EnableLowerCamelCase();
+
+            builder.EntitySet<TournamentViewModel>("Tournaments");
+            builder.EntitySet<PlayerViewModel>("Players");
+
+            config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
+        }
+
+        /// <summary>
         /// The register area.
         /// </summary>
         /// <param name="context"> The context. </param>
@@ -35,19 +50,6 @@
                 "WebApi/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional },
                 new[] { "VolleyManagement.UI.Areas.WebApi.Controllers" });
-
-            //this.RegisterOData(GlobalConfiguration.Configuration);
-        }
-
-        private void RegisterOData(HttpConfiguration config)
-        {
-            var builder = new ODataConventionModelBuilder();
-            builder.EnableLowerCamelCase();
-
-            builder.EntitySet<TournamentViewModel>("Tournaments");
-            builder.EntitySet<PlayerViewModel>("Players");
-
-            config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
     }
 }

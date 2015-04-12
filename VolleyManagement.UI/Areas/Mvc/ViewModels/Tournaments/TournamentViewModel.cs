@@ -90,7 +90,7 @@
             this.SeasonsList = new Dictionary<short, string>();
             const short yearsRange = 16;
             const short yearsBeforeToday = 5;
-            short year = (short)(DateTime.Now.Year - yearsBeforeToday); 
+            short year = (short)(DateTime.Now.Year - yearsBeforeToday);
             for (int i = 0; i < yearsRange; i++)
             {
                 this.SeasonsList.Add(year, string.Format("{0}/{1}", year, ++year));
@@ -135,6 +135,5 @@
             };
         }
         #endregion
-
-    }
+        }
 }

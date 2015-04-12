@@ -1,8 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.WebApi
 {
     using System.Web.Http;
-    using System.Web.Http.OData.Builder;
     using System.Web.Mvc;
+    using System.Web.OData.Builder;
+    using System.Web.OData.Extensions;
 
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
@@ -35,17 +36,18 @@
                 new { action = "Index", id = UrlParameter.Optional },
                 new[] { "VolleyManagement.UI.Areas.WebApi.Controllers" });
 
-            RegisterOData(GlobalConfiguration.Configuration);
+            //this.RegisterOData(GlobalConfiguration.Configuration);
         }
 
         private void RegisterOData(HttpConfiguration config)
         {
             var builder = new ODataConventionModelBuilder();
+            builder.EnableLowerCamelCase();
 
             builder.EntitySet<TournamentViewModel>("Tournaments");
             builder.EntitySet<PlayerViewModel>("Players");
 
-            config.Routes.MapODataRoute("odata", "odata", builder.GetEdmModel());
+            config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
     }
 }

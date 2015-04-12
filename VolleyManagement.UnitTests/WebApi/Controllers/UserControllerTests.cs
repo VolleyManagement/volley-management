@@ -4,7 +4,8 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net.Http;
-    using System.Web.Http.OData.Results;
+    using System.Web.Http.Results;
+    using System.Web.OData.Results;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;

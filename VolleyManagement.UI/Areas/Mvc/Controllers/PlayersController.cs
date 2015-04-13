@@ -129,43 +129,23 @@
         }
 
         /// <summary>
-        /// Delete player action (GET)
-        /// </summary>
-        /// <param name="id">Player id</param>
-        /// <returns>View to delete specific player</returns>
-        public ActionResult Delete(int id, string firstName, string lastName)
-        {
-            PlayerViewModel playerViewModel = new PlayerViewModel()
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Id = id
-            };
-
-            return View(playerViewModel);
-        }
-
-        /// <summary>
         /// Delete player action (POST)
         /// </summary>
         /// <param name="id">Player id</param>
-        /// <returns>Index view</returns>
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        /// <returns>Result message</returns>
+        [HttpPost]
+        public JsonResult Delete(int id)
         {
-            ActionResult result;
             try
             {
                 this._playerService.Delete(id);
-                result = this.RedirectToAction("Index");
             }
-            catch (MissingEntityException)
+            catch (MissingEntityException ex)
             {
-                result = this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
+                return Json(ex.Message);
             }
 
-            return result;
-
+            return Json(App_GlobalResources.ViewModelResources.PlayerWasDeletedSuccessfully);
         }
 
         /// <summary>

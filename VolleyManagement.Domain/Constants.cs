@@ -116,6 +116,11 @@
             /// constant defined the maximum value of the weight field
             /// </summary>
             public const int MAX_WEIGHT = 500;
+
+            /// <summary>
+            /// constant defined for the correct format of last and first name
+            /// </summary>
+            public const string CORRECT_NAME_FORMAT = @"([ '-]?\p{L})+$";
         }
     }
 }

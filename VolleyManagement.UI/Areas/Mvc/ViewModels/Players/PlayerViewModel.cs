@@ -24,7 +24,7 @@
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "PlayerMaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "PlayerFirstNameInvalidEntriesError"
+        [RegularExpression(@"([ '-]?\p{L})+$", ErrorMessageResourceName = "PlayerFirstNameInvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string FirstName { get; set; }
 
@@ -36,7 +36,7 @@
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "PlayerMaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "PlayerLastNameInvalidEntriesError"
+        [RegularExpression(@"([ '-]?\p{L})+$", ErrorMessageResourceName = "PlayerLastNameInvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string LastName { get; set; }
 

@@ -12,7 +12,14 @@ function OnDeleteClick(e) {
             type: 'POST',
             data: { id: playerId },
             dataType: 'json',
-            success: function (result) { alert(result); $("#" + playerId).parent().parent().remove(); }
+            success: function (resultJson) {
+                alert(resultJson.message);
+                if (resultJson.result) {
+                    $("#" + playerId).parent().parent().remove();
+                } else {
+                    window.location.pathname = "Mvc/Players";
+                }
+            }
         });
     }
     return false;

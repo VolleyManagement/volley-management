@@ -37,18 +37,26 @@
             _playerService = playerSerivce;
         }
 
-
         /// <summary>
         /// Gets players from PlayerService
         /// </summary>
         /// <param name="page">Number of the page.</param>
+        /// <param name="textToSearch">Substring to search in full name of a player.</param>
         /// <returns>View with collection of players.</returns>
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string textToSearch = "")
         {
+            textToSearch = textToSearch.Trim();
             try
             {
-                var allPlayers = this._playerService.Get().OrderBy(p => p.LastName);
-                var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE);
+                var allPlayers = textToSearch == string.Empty ?
+                      this._playerService.Get()
+                            .OrderBy(p => p.LastName)
+                      : this._playerService.Get()
+                            .Where(p => (p.FirstName + p.LastName).Contains(textToSearch))
+                            .OrderBy(p => p.LastName);
+
+                var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
+
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)
@@ -133,6 +141,8 @@
         /// Delete player action (GET)
         /// </summary>
         /// <param name="id">Player id</param>
+        /// <param name="firstName">Player first name</param>
+        /// <param name="lastName">Player last name</param>
         /// <returns>View to delete specific player</returns>
         public ActionResult Delete(int id, string firstName, string lastName)
         {
@@ -166,7 +176,6 @@
             }
 
             return result;
-
         }
 
         /// <summary>

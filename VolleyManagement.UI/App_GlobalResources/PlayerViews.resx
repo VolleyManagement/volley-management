@@ -165,4 +165,7 @@
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
+  <data name="SearchTitle" xml:space="preserve">
+    <value>Введите текст для поиска</value>
+  </data>
 </root>

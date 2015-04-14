@@ -6,9 +6,15 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
-</p>
+<div>
+    @using (@Html.BeginForm("Index"))
+    {
+        @Html.Label(Resources.PlayerViews.SearchTitle)
+        @Html.TextBox("textToSearch", Model.TextToSearch)
+    }
+</div>
+@Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
+</>
 <table class="table">
     <tr>
         <th>
@@ -41,7 +47,7 @@
 
 @if (Model.PageNumber != firstPage)
 {
-    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage) });
+    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.TextToSearch });
 }
 
 @if (pageBefore > firstPage)
@@ -50,21 +56,21 @@
     {
         <b>...</b>
     }
-    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore) });
+    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.TextToSearch });
 }
 
 @Model.PageNumber
 
 @if (pageAfter < Model.NumberOfPages)
 {
-    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter) });
-    if (pageAfter < Model.NumberOfPages - 1)
-    {
-        <b>...</b>
-    }
+    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.TextToSearch });
+                                                                                                                  if (pageAfter < Model.NumberOfPages - 1)
+                                                                                                                  {
+                                                                                                                    <b>...</b>
+                                                                                                                  }
 }
 
 @if (Model.PageNumber != Model.NumberOfPages)
 {
-    @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages) })
+    @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages), textToSearch = Model.TextToSearch })
 }

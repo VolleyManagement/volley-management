@@ -29,12 +29,7 @@
             if ((index > this.NumberOfPages) || (index < FIRST_PAGE))
                 throw new ArgumentOutOfRangeException();
 
-            List<PlayerViewModel> listOfPlayers = textToSearch == string.Empty ?
-                        new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
-                            .Take(Size)
-                            .ToList()
-                            .Select(p => PlayerViewModel.Map(p)))
-                        : new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
+            List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
                             .Where(p => (p.FirstName + p.LastName).Contains(textToSearch))
                             .Take(Size)
                             .ToList()

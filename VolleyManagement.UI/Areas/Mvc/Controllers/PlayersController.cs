@@ -12,6 +12,7 @@
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Defines player controller
@@ -48,12 +49,16 @@
             textToSearch = textToSearch.Trim();
             try
             {
-                var allPlayers = textToSearch == string.Empty ?
-                      this._playerService.Get()
-                            .OrderBy(p => p.LastName)
-                      : this._playerService.Get()
-                            .Where(p => (p.FirstName + p.LastName).Contains(textToSearch))
-                            .OrderBy(p => p.LastName);
+                IQueryable<Player> allPlayers = this._playerService
+                    .Get()
+                    .OrderBy(p => p.LastName);
+
+                if (textToSearch == string.Empty)
+                {
+                    allPlayers = allPlayers
+                        .Where(p => (p.FirstName + p.LastName).Contains(textToSearch));
+                }
+
                 var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
                 return View(playersOnPage);
             }

@@ -151,10 +151,10 @@
                     })
                 .ToList();
 
-            //// Act
-            var actual = TestExtensions.GetModel<PlayersListViewModel>(sup.Index(5, SUBSTRING_TO_SEARCH)).List;
+            // Act
+            var actual = TestExtensions.GetModel<PlayersListViewModel>(sup.Index(null, SUBSTRING_TO_SEARCH)).List;
 
-            //// Assert
+            // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
             Assert.AreEqual(expected.Count, actual.Count);
         }

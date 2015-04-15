@@ -3,12 +3,15 @@
 @{
     ViewBag.Title = Resources.PlayerViews.PlayersIndexTitle;
 }
-
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 <h2>@ViewBag.Title</h2>
 
 <p>
     @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
 </p>
+
+<script src="~/Scripts/UserActions.js" type="text/javascript"></script>
+
 <table class="table">
     <tr>
         <th>
@@ -17,16 +20,18 @@
         <th>
         </th>
     </tr>
-
+    
     @foreach (var item in Model.List)
     {
         <tr>
             <td>
-                @Html.ActionLink(item.FullName, "Details", new { id = item.Id })
+                @Html.ActionLink(item.FullName, "Details", new { id = item.Id },
+                new { @class = "playerName", @id = item.Id + "playerName"})
             </td>
             <td>
                 @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) |
-                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id })
+                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id },
+                 new { @class = "delete", @id = item.Id })
             </td>
         </tr>
     }
@@ -68,3 +73,5 @@
 {
     @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages) })
 }
+
+@Html.Hidden("DeleteConfirmationMessage", Resources.PlayerViews.DeleteConfirmationMessage)

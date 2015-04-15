@@ -12,11 +12,6 @@
     public class PlayerViewModel
     {
         /// <summary>
-        /// constant defined for the correct format of last and first name
-        /// </summary>
-        private const string NAME_VALIDATION_REGEX = @"([ '-]?\p{L})+$";
-
-        /// <summary>
         /// Gets or sets the player Id
         /// </summary>
         public int Id { get; set; }
@@ -29,7 +24,7 @@
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "PlayerMaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(NAME_VALIDATION_REGEX, ErrorMessageResourceName = "PlayerFirstNameInvalidEntriesError"
+        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "PlayerFirstNameInvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string FirstName { get; set; }
 
@@ -41,7 +36,7 @@
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "PlayerMaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(NAME_VALIDATION_REGEX, ErrorMessageResourceName = "PlayerLastNameInvalidEntriesError"
+        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "PlayerLastNameInvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string LastName { get; set; }
 

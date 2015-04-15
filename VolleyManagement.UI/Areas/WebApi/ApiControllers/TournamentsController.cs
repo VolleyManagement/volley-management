@@ -4,8 +4,8 @@
     using System.Linq;
     using System.Net;
     using System.Web.Http;
-    using System.Web.Http.OData;
-    using System.Web.Mvc;
+    using System.Web.OData;
+
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
@@ -15,9 +15,9 @@
     /// </summary>
     public class TournamentsController : ODataController
     {
-        private readonly ITournamentService _tournamentService;
-
         private const string CONTROLLER_NAME = "tournaments";
+
+        private readonly ITournamentService _tournamentService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class.
@@ -32,7 +32,8 @@
         /// Gets tournaments
         /// </summary>
         /// <returns> Tournament list. </returns>
-        [Queryable]
+        [EnableQuery]
+        [HttpGet]
         public IQueryable<TournamentViewModel> GetTournaments()
         {
             return _tournamentService.Get()
@@ -46,7 +47,8 @@
         /// </summary>
         /// <param name="key"> The key. </param>
         /// <returns> The <see cref="SingleResult"/>. </returns>
-        [Queryable]
+        [EnableQuery]
+        [HttpGet]
         public SingleResult<TournamentViewModel> Get([FromODataUri] int key)
         {
             return SingleResult.Create(_tournamentService.Get()
@@ -62,6 +64,7 @@
         /// <param name="tournament"> The tournament as ViewModel. </param>
         /// <returns> Has been saved successfully - Created OData result
         /// unsuccessfully - Bad request </returns>
+        [HttpPost]
         public IHttpActionResult Post(TournamentViewModel tournament)
         {
             if (!ModelState.IsValid)
@@ -80,19 +83,19 @@
                 ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.ParamName), ex.Message);
                 return BadRequest(ModelState);
             }
-
             catch (TournamentValidationException ex)
             {
                 ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.ParamName), ex.Message); 
                 return BadRequest(ModelState);
             }
-            
+
             return Created(tournament);
         }
 
         /// <summary> Deletes tournament </summary>
         /// <param name="key"> The key. </param>
         /// <returns> The <see cref="IHttpActionResult"/>. </returns>
+        [HttpDelete]
         public IHttpActionResult Delete([FromODataUri] int key)
         {
             // if (tournament == null)
@@ -109,6 +112,7 @@
         /// </summary>
         /// <param name="tournament">The tournament to update</param>
         /// <returns>The <see cref="IHttpActionResult"/>.</returns>
+        [HttpPut]
         public IHttpActionResult Put(TournamentViewModel tournament)
         {
             if (!ModelState.IsValid)

@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Net;
     using System.Web.Http;
-    using System.Web.Http.OData;
-    using System.Web.Mvc;
+    using System.Web.OData;
+
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
@@ -53,7 +53,7 @@
         /// Gets players
         /// </summary>
         /// <returns> Player list. </returns>
-        [Queryable]
+        [EnableQuery]
         public IQueryable<PlayerViewModel> GetPlayers()
         {
             return _playerService.Get()
@@ -104,7 +104,7 @@
         /// </summary>
         /// <param name="key"> The key. </param>
         /// <returns> The <see cref="SingleResult"/>. </returns>
-        [Queryable]
+        [EnableQuery]
         public SingleResult<PlayerViewModel> Get([FromODataUri] int key)
         {
             return SingleResult.Create(_playerService.Get()

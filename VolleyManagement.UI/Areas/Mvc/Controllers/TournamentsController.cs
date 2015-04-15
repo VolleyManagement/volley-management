@@ -15,6 +15,7 @@
     /// </summary>
     public class TournamentsController : Controller
     {
+        private const string UNIQUE_NAME_KEY = "uniqueName";
         /// <summary>
         /// Holds TournamentService instance
         /// </summary>
@@ -93,9 +94,9 @@
 
                 return this.View(tournamentViewModel);
             }
-            catch (TournamentValidationException ex)
+            catch (TournamentValidationException )
             {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
+                this.ModelState.AddModelError(UNIQUE_NAME_KEY, "Имя турнира должно быть уникальным");
                 return this.View(tournamentViewModel);
             }
             catch (Exception)

@@ -120,7 +120,7 @@
             /// <summary>
             /// constant defined for the correct format of last and first name
             /// </summary>
-            public const string CORRECT_NAME_FORMAT = @"([ '-]?\p{L})+$";
+            public const string NAME_VALIDATION_REGEX = @"([ '-]?\p{L})+$";
         }
     }
 }

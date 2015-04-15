@@ -52,8 +52,8 @@
                 IQueryable<Player> allPlayers = this._playerService
                     .Get()
                     .OrderBy(p => p.LastName);
-
-                if (textToSearch == string.Empty)
+                
+                if (textToSearch != string.Empty)
                 {
                     allPlayers = allPlayers
                         .Where(p => (p.FirstName + p.LastName).Contains(textToSearch));

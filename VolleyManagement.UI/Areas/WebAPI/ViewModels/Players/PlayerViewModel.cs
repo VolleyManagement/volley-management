@@ -25,7 +25,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError"
+        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "InvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string FirstName { get; set; }
 
@@ -37,7 +37,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"\p{L}+$", ErrorMessageResourceName = "InvalidEntriesError"
+        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "InvalidEntriesError"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string LastName { get; set; }
 

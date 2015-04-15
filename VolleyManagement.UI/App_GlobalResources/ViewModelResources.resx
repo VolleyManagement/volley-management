@@ -151,7 +151,7 @@
     <value>Имя</value>
   </data>
   <data name="PlayerFirstNameInvalidEntriesError" xml:space="preserve">
-    <value>{0} должно содержать только буквы</value>
+    <value>{0} должно содержать только буквы и пробелы или символы " - ", " ' "(не более одного подряд). {0} не должно заканчиваться спецсимволом.</value>
   </data>
   <data name="PlayerFirstNameRequired" xml:space="preserve">
     <value>{0} не может быть пустым</value>
@@ -169,7 +169,7 @@
     <value>Фамилия</value>
   </data>
   <data name="PlayerLastNameInvalidEntriesError" xml:space="preserve">
-    <value>{0} должна содержать только буквы</value>
+    <value>{0} должна содержать только буквы и пробелы или символы " - ", " ' "(не более одного подряд). {0} не должна заканчиваться спецсимволом.</value>
   </data>
   <data name="PlayerLastNameRequired" xml:space="preserve">
     <value>{0} не может быть пустой</value>

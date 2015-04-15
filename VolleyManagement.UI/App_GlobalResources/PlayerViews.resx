@@ -165,4 +165,7 @@
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
+  <data name="DeleteConfirmationMessage" xml:space="preserve">
+    <value>Вы действительно хотите удалить игрока</value>
+  </data>
 </root>

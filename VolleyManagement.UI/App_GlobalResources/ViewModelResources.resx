@@ -177,6 +177,9 @@
   <data name="PlayerMaxLengthErrorMessage" xml:space="preserve">
     <value>{0} не может содержать более {1} символов</value>
   </data>
+  <data name="PlayerWasDeletedSuccessfully" xml:space="preserve">
+    <value>Игрок был удален успешно</value>
+  </data>
   <data name="PlayerWeight" xml:space="preserve">
     <value>Вес</value>
   </data>

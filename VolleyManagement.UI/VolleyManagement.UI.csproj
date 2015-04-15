@@ -171,7 +171,6 @@
     <Content Include="Areas\Mvc\Views\Players\_CreateOrEdit.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Index.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Details.cshtml" />
-    <Content Include="Areas\Mvc\Views\Players\Deletem.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Delete.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

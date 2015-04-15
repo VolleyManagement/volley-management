@@ -160,6 +160,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Игроки с искомым именем не были найдены.
+        /// </summary>
+        internal static string NotFoundPlayerMessage {
+            get {
+                return ResourceManager.GetString("NotFoundPlayerMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Подробности игрока.
         /// </summary>
         internal static string PlayerDetailsTitle {

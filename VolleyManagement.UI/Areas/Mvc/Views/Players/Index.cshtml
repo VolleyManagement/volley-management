@@ -44,33 +44,42 @@
     int pageBefore = Model.PageNumber - 1;
     int pageAfter = Model.PageNumber + 1;
 }
-
-@if (Model.PageNumber != firstPage)
-{
-    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.TextToSearch });
-}
-
-@if (pageBefore > firstPage)
-{
-    if (pageBefore > secondPage)
+ 
+    @if (Model.PageNumber != firstPage && Model.List.Count != 0)
     {
-        <b>...</b>
+        @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.TextToSearch });
     }
-    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.TextToSearch });
-}
 
-@Model.PageNumber
+    @if (pageBefore > firstPage && Model.List.Count != 0)
+    {
+        if (pageBefore > secondPage)
+        {
+            <b>...</b>
+        }
+        @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.TextToSearch });
+    }
 
-@if (pageAfter < Model.NumberOfPages)
+    @if( Model.List.Count != 0)
+    {
+        @Model.PageNumber
+    }
+
+    @if (pageAfter < Model.NumberOfPages && Model.List.Count != 0)
+    {
+        @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.TextToSearch });
+        if (pageAfter < Model.NumberOfPages - 1)
+        {
+            <b>...</b>
+        }
+    }
+
+    @if (Model.PageNumber != Model.NumberOfPages && Model.List.Count != 0)
+    {
+        @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages), textToSearch = Model.TextToSearch })
+    }
+  
+
+@if (Model.List.Count == 0)
 {
-    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.TextToSearch });
-                                                                                                                  if (pageAfter < Model.NumberOfPages - 1)
-                                                                                                                  {
-                                                                                                                    <b>...</b>
-                                                                                                                  }
-}
-
-@if (Model.PageNumber != Model.NumberOfPages)
-{
-    @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages), textToSearch = Model.TextToSearch })
+    <p>@Resources.PlayerViews.NotFoundPlayerMessage</p>
 }

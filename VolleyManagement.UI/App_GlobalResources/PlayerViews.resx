@@ -168,4 +168,7 @@
   <data name="SearchTitle" xml:space="preserve">
     <value>Введите текст для поиска</value>
   </data>
+  <data name="NotFoundPlayerMessage" xml:space="preserve">
+    <value>Игроки с искомым именем не были найдены</value>
+  </data>
 </root>

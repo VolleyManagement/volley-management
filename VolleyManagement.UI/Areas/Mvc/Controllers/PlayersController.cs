@@ -54,9 +54,7 @@
                       : this._playerService.Get()
                             .Where(p => (p.FirstName + p.LastName).Contains(textToSearch))
                             .OrderBy(p => p.LastName);
-
                 var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
-
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)

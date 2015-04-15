@@ -56,7 +56,7 @@
 
         /// <summary>
         /// Delete method test. The method should invoke Delete() method of IPlayerService
-        /// and return result as json.
+        /// and return result as JavaScript Object Notation.
         /// </summary>
         [TestMethod]
         public void Delete_PlayerExists_PlayerIsDeleted()
@@ -72,7 +72,7 @@
 
         /// <summary>
         /// Delete method test. Input parameter is player id, which doesn't exist in database.
-        /// The method should return message as json.
+        /// The method should return message as JavaScript Object Notation.
         /// </summary>
         [TestMethod]
         public void Delete_PlayerDoesntExist_JsonReturned()

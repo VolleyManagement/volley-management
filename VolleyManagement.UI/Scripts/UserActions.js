@@ -13,8 +13,8 @@ function OnDeleteClick(e) {
             data: { id: playerId },
             dataType: 'json',
             success: function (resultJson) {
-                alert(resultJson.message);
-                if (resultJson.result) {
+                alert(resultJson.Message);
+                if (resultJson.HasDeleted) {
                     $("#" + playerId).parent().parent().remove();
                 } else {
                     window.location.pathname = "Mvc/Players";

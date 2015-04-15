@@ -142,11 +142,14 @@
             }
             catch (MissingEntityException ex)
             {
-                return Json(new { result = false, message = ex.Message });
+                return Json(new PlayerDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
             }
 
-            return Json(new { result = true, 
-                message = App_GlobalResources.ViewModelResources.PlayerWasDeletedSuccessfully });
+            return Json(new PlayerDeleteResultViewModel
+            {
+                Message = App_GlobalResources.ViewModelResources.PlayerWasDeletedSuccessfully
+                ,HasDeleted = true
+            });
         }
 
         /// <summary>

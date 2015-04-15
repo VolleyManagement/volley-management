@@ -221,6 +221,7 @@
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Players\PlayerDeleteResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerNameViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerRefererViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Generic\RefererViewModel.cs" />

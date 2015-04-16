@@ -228,6 +228,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
     <Compile Include="Areas\Mvc\Controllers\PlayersController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\TeamsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\TournamentsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\UsersController.cs" />
     <Compile Include="Areas\Mvc\EnumHtmlHelper.cs" />
@@ -241,6 +242,7 @@
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListViewModel.cs" />
     <Compile Include="Areas\Mvc\TournamentSeasonHtmlHelper.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\PlayersController.cs" />
@@ -318,6 +320,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ViewModelResources.designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\Mvc\Views\Teams\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

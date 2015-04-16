@@ -186,6 +186,27 @@
   <data name="PlayerWeightFieldRange" xml:space="preserve">
     <value>Указан неверный вес</value>
   </data>
+  <data name="TeamAchievements" xml:space="preserve">
+    <value>Достижения</value>
+  </data>
+  <data name="TeamCaptain" xml:space="preserve">
+    <value>Капитан</value>
+  </data>
+  <data name="TeamCoach" xml:space="preserve">
+    <value>Тренер</value>
+  </data>
+  <data name="TeamMaxLengthErrorMessage" xml:space="preserve">
+    <value>{0} не может содержать более {1} символов</value>
+  </data>
+  <data name="TeamName" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="TeamNameRequired" xml:space="preserve">
+    <value>{0} не может быть пустым</value>
+  </data>
+  <data name="TeamRoster" xml:space="preserve">
+    <value>Состав</value>
+  </data>
   <data name="TournamentDescription" xml:space="preserve">
     <value>Описание</value>
   </data>

@@ -23,7 +23,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
-        /// <param name="playerRepository">The user repository</param>
+        /// <param name="playerRepository">The player repository</param>
         public PlayerService(IPlayerRepository playerRepository)
         {
             _playerRepository = playerRepository;

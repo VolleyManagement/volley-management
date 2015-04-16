@@ -35,6 +35,7 @@
         private const int TESTING_PAGE = 1;
         private const int SAVED_PLAYER_ID = 10;
         private const int PLAYER_UNEXISTING_ID_TO_DELETE = 4;
+        private const string SUBSTRING_TO_SEARCH = "CLastName";
         private const string HTTP_NOT_FOUND_DESCRIPTION
             = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
 
@@ -86,6 +87,44 @@
 
             // Assert
             Assert.IsNotNull(actual);
+        }
+
+        /// <summary>
+        /// Test for Index action. The action should return page of specified players
+        /// </summary>
+        [TestMethod]
+        public void Index_PlayersExist_SpecifiedPlayersPageReturned()
+        {
+            // Arrange
+            List<Player> listOfPlayers = new List<Player>() 
+            { 
+                new Player() {Id = 1, FirstName = "FirstNameA", LastName = "LastNameA"},
+                new Player() {Id = 2, FirstName = "FirstNameB", LastName = "LastNameB"},
+                new Player() {Id = 3, FirstName = "FirstNameC", LastName = "LastNameC"},
+                new Player() {Id = 4, FirstName = "FirstNameD", LastName = "LastNameD"}
+            };
+
+            _playerServiceMock.Setup(p => p.Get()).Returns(listOfPlayers.AsQueryable());
+            var sup = this._kernel.Get<PlayersController>();
+
+            var expected = listOfPlayers.OrderBy(p => p.LastName)
+                .Where(p => (p.FirstName + p.LastName).Contains(SUBSTRING_TO_SEARCH))
+                .Skip((TESTING_PAGE - 1) * MAX_PLAYERS_ON_PAGE)
+                .Take(MAX_PLAYERS_ON_PAGE)
+                .Select(p =>
+                    new PlayerNameViewModel
+                    {
+                        Id = p.Id,
+                        FullName = p.LastName + " " + p.FirstName
+                    })
+                .ToList();
+
+            // Act
+            var actual = TestExtensions.GetModel<PlayersListViewModel>(sup.Index(null, SUBSTRING_TO_SEARCH)).List;
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
+            Assert.AreEqual(expected.Count, actual.Count);
         }
 
         /// <summary>

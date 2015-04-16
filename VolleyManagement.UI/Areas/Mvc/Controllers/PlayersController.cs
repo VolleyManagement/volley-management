@@ -10,6 +10,7 @@
     using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Defines player controller
@@ -39,13 +40,24 @@
         /// Gets players from PlayerService
         /// </summary>
         /// <param name="page">Number of the page.</param>
+        /// <param name="textToSearch">Substring to search in full name of a player.</param>
         /// <returns>View with collection of players.</returns>
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string textToSearch = "")
         {
+            textToSearch = textToSearch.Trim();
             try
             {
-                var allPlayers = this._playerService.Get().OrderBy(p => p.LastName);
-                var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE);
+                IQueryable<Player> allPlayers = this._playerService
+                    .Get()
+                    .OrderBy(p => p.LastName);
+                
+                if (textToSearch != string.Empty)
+                {
+                    allPlayers = allPlayers
+                        .Where(p => (p.FirstName + p.LastName).Contains(textToSearch));
+                }
+
+                var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)

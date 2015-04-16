@@ -6,7 +6,13 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <h2>@ViewBag.Title</h2>
 
-<p>
+<div>
+    @using (@Html.BeginForm("Index"))
+    {
+        @Html.Label(Resources.PlayerViews.SearchTitle)
+        @Html.TextBox("textToSearch", Model.TextToSearch)
+    }
+</div>
     @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
 </p>
 
@@ -20,7 +26,7 @@
         <th>
         </th>
     </tr>
-    
+
     @foreach (var item in Model.List)
     {
         <tr>
@@ -44,34 +50,43 @@
     int pageAfter = Model.PageNumber + 1;
 }
 
-@if (Model.PageNumber != firstPage)
+    @if (Model.PageNumber != firstPage && Model.List.Count != 0)
 {
-    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage) });
+        @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.TextToSearch });
 }
 
-@if (pageBefore > firstPage)
+    @if (pageBefore > firstPage && Model.List.Count != 0)
 {
     if (pageBefore > secondPage)
     {
         <b>...</b>
     }
-    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore) });
+        @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.TextToSearch });
 }
 
+    @if( Model.List.Count != 0)
+    {
 @Model.PageNumber
+    }
 
-@if (pageAfter < Model.NumberOfPages)
+    @if (pageAfter < Model.NumberOfPages && Model.List.Count != 0)
 {
-    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter) });
+        @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.TextToSearch });
     if (pageAfter < Model.NumberOfPages - 1)
     {
         <b>...</b>
     }
+    }
+
+    @if (Model.PageNumber != Model.NumberOfPages && Model.List.Count != 0)
+    {
+        @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages), textToSearch = Model.TextToSearch })
 }
 
-@if (Model.PageNumber != Model.NumberOfPages)
+
+@if (Model.List.Count == 0)
 {
-    @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages) })
+    <p>@Resources.PlayerViews.NotFoundPlayerMessage</p>
 }
 
 @Html.Hidden("DeleteConfirmationMessage", Resources.PlayerViews.DeleteConfirmationMessage)

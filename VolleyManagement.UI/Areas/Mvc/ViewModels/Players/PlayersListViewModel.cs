@@ -5,8 +5,8 @@
     using System.Linq;
     using System.Web;
     using VolleyManagement.Domain.Players;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
     public class PlayersListViewModel
     {
@@ -18,9 +18,10 @@
         /// <param name="source">All players</param>
         /// <param name="index">Index of page</param>
         /// <param name="size">Number of players on page</param>
-        public PlayersListViewModel(IQueryable <Player> source, int? index, int size)
+        /// <param name="textToSearch">Substring to search</param>
+        public PlayersListViewModel(IQueryable <Player> source, int? index, int size, string textToSearch)
         {
-
+            this.TextToSearch = textToSearch;
             this.Size = size;
             this.PageNumber = index ?? FIRST_PAGE;
             this.NumberOfPages = (int) Math.Ceiling(source.Count() / (double)Size);
@@ -29,9 +30,10 @@
                 throw new ArgumentOutOfRangeException();
 
             List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
-                .Take(Size)
-                .ToList()
-                .Select(p => PlayerViewModel.Map(p)));
+                            .Where(p => (p.FirstName + p.LastName).Contains(textToSearch))
+                            .Take(Size)
+                            .ToList()
+                            .Select(p => PlayerViewModel.Map(p)));
 
             this.List = new List<PlayerNameViewModel>();
             foreach(PlayerViewModel player in listOfPlayers)
@@ -39,6 +41,11 @@
                 this.List.Add(new PlayerNameViewModel() { FullName = player.LastName + " " + player.FirstName, Id = player.Id });
             }
         }
+
+        /// <summary>
+        /// Substring to search player
+        /// </summary>
+        public string TextToSearch { get; set; }
 
         /// <summary>
         /// Index of page

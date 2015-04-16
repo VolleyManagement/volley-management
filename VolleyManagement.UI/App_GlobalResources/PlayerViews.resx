@@ -165,6 +165,12 @@
   <data name="Back" xml:space="preserve">
     <value>Назад</value>
   </data>
+  <data name="SearchTitle" xml:space="preserve">
+    <value>Введите текст для поиска</value>
+  </data>
+  <data name="NotFoundPlayerMessage" xml:space="preserve">
+    <value>Игроки с искомым именем не были найдены</value>
+  </data>
   <data name="DeleteConfirmationMessage" xml:space="preserve">
     <value>Вы действительно хотите удалить игрока</value>
   </data>

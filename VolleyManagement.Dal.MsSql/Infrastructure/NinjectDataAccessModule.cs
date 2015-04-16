@@ -36,7 +36,8 @@
                                   Bind<IUnitOfWork>().To<VolleyUnitOfWork>().BindingConfiguration,
                                   Bind<ITournamentRepository>().To<TournamentRepository>().BindingConfiguration,
                                   Bind<IUserRepository>().To<UserRepository>().BindingConfiguration,
-                                  Bind<IPlayerRepository>().To<PlayerRepository>().BindingConfiguration
+                                  Bind<IPlayerRepository>().To<PlayerRepository>().BindingConfiguration,
+                                  Bind<ITeamRepository>().To<TeamRepository>().BindingConfiguration
                               };
             if (_scopeCallback != null)
             {

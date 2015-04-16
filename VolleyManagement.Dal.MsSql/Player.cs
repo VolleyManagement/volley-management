@@ -7,7 +7,7 @@
     using System.Data.Entity.Spatial;
 
     /// <summary>
-    /// DAL user model
+    /// DAL player model
     /// </summary>
     [Table("Players")]
     public partial class Player

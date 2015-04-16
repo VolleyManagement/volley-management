@@ -13,6 +13,7 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Index()
         {
+            ViewBag.SelectedMenuItem = "Home";
             return View();
         }
     }

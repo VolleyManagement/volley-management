@@ -39,6 +39,7 @@
             try
             {
                 var tournaments = this._tournamentService.Get().ToList();
+                ViewBag.SelectedMenuItem = "Tournaments";
                 return View(tournaments);
             }
             catch (Exception)

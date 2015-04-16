@@ -19,21 +19,23 @@
                 </button>
                 @Html.ActionLink("Application name", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
-            </div>
         </div>
     </div>
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+    <div id="menu">
+        @Html.ActionLink("Home", "Index", "Home", null, new { @class = ViewBag.SelectedMenuItem == "Home" ? "selected" : null})
+        @Html.ActionLink(Resources.TournamentViews.TournamentsIndexTitle, "Index", "Tournaments",
+                          null, new { @class = ViewBag.SelectedMenuItem == "Tournaments" ? "selected" : null })
+        @Html.ActionLink(Resources.PlayerViews.PlayersIndexTitle, "Index", "Players",
+                          null, new { @class = ViewBag.SelectedMenuItem == "Players" ? "selected" : null })
+        @Html.ActionLink("Teams", "Index", "Teams",
+                          null, new { @class = ViewBag.SelectedMenuItem == "Teams" ? "selected" : null })
+        @Html.ActionLink("About", "Index", "About",
+                          null, new { @class = ViewBag.SelectedMenuItem == "About" ? "selected" : null })
     </div>
-
+    <div id="content">
+        @RenderBody()
+    </div>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
 </body>

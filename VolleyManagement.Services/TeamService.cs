@@ -69,15 +69,6 @@
         }
 
         /// <summary>
-        /// Edit team.
-        /// </summary>
-        /// <param name="teamToEdit">Team to edit.</param>
-        public void Edit(Team teamToEdit)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Delete team by id.
         /// </summary>
         /// <param name="id">The id of team to delete.</param>

@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = Resources.PlayerViews.PlayersIndexTitle;
 }
-
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 <h2>@ViewBag.Title</h2>
 
 <div>
@@ -13,8 +13,11 @@
         @Html.TextBox("textToSearch", Model.TextToSearch)
     }
 </div>
-@Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
-</>
+    @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
+</p>
+
+<script src="~/Scripts/UserActions.js" type="text/javascript"></script>
+
 <table class="table">
     <tr>
         <th>
@@ -28,11 +31,13 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(item.FullName, "Details", new { id = item.Id })
+                @Html.ActionLink(item.FullName, "Details", new { id = item.Id },
+                new { @class = "playerName", @id = item.Id + "playerName"})
             </td>
             <td>
                 @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) |
-                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id })
+                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id },
+                 new { @class = "delete", @id = item.Id })
             </td>
         </tr>
     }
@@ -44,42 +49,44 @@
     int pageBefore = Model.PageNumber - 1;
     int pageAfter = Model.PageNumber + 1;
 }
- 
+
     @if (Model.PageNumber != firstPage && Model.List.Count != 0)
-    {
+{
         @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.TextToSearch });
-    }
+}
 
     @if (pageBefore > firstPage && Model.List.Count != 0)
+{
+    if (pageBefore > secondPage)
     {
-        if (pageBefore > secondPage)
-        {
-            <b>...</b>
-        }
-        @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.TextToSearch });
+        <b>...</b>
     }
+        @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.TextToSearch });
+}
 
     @if( Model.List.Count != 0)
     {
-        @Model.PageNumber
+@Model.PageNumber
     }
 
     @if (pageAfter < Model.NumberOfPages && Model.List.Count != 0)
-    {
+{
         @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.TextToSearch });
-        if (pageAfter < Model.NumberOfPages - 1)
-        {
-            <b>...</b>
-        }
+    if (pageAfter < Model.NumberOfPages - 1)
+    {
+        <b>...</b>
+    }
     }
 
     @if (Model.PageNumber != Model.NumberOfPages && Model.List.Count != 0)
     {
         @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages), textToSearch = Model.TextToSearch })
-    }
-  
+}
+
 
 @if (Model.List.Count == 0)
 {
     <p>@Resources.PlayerViews.NotFoundPlayerMessage</p>
 }
+
+@Html.Hidden("DeleteConfirmationMessage", Resources.PlayerViews.DeleteConfirmationMessage)

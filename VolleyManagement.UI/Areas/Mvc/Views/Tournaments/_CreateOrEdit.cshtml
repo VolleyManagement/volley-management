@@ -8,6 +8,7 @@
 </div>
 <div class="editor-field">
     @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessage("uniqueName")
     @Html.ValidationMessageFor(model => model.Name)
 </div>
 
@@ -23,7 +24,7 @@
     @Html.LabelFor(model => model.Season)
 </div>
 <div class="editor-field">
-    @Html.DropDownListFor(model => model.Season, new SelectList(Model.SeasonsList, "Key", "Value"))
+    @Html.DropDownListFor(model => model.Season, new SelectList(Model.SeasonsList, "Key", "Value", Model.SelectedSeason))
     @Html.ValidationMessageFor(model => model.Season)
 </div>
 

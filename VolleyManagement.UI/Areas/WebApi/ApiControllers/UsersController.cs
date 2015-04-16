@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using System.Web.Http;
-    using System.Web.Http.OData;
+    using System.Web.OData;
 
     using VolleyManagement.Contracts;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Users;
@@ -27,7 +27,7 @@
         /// Gets tournaments
         /// </summary>
         /// <returns> Tournament list. </returns>
-        [Queryable]
+        [EnableQuery]
         public IQueryable<UserViewModel> GetUsers()
         {
             return _userService.Get()

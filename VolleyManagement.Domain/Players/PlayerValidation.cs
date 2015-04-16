@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -18,7 +19,7 @@
         /// <returns>Validity of Player first name</returns>
         public static bool ValidateFirstName(string firstName)
         {
-            return string.IsNullOrEmpty(firstName) || !firstName.All(char.IsLetter)
+            return string.IsNullOrEmpty(firstName) || !Regex.IsMatch(firstName, Constants.Player.NAME_VALIDATION_REGEX)
                 || firstName.Length > Constants.Player.MAX_FIRST_NAME_LENGTH;
         }
 
@@ -29,7 +30,7 @@
         /// <returns>Validity of Player last name</returns>
         public static bool ValidateLastName(string lastName)
         {
-            return string.IsNullOrEmpty(lastName) || !lastName.All(char.IsLetter)
+            return string.IsNullOrEmpty(lastName) || !Regex.IsMatch(lastName, Constants.Player.NAME_VALIDATION_REGEX)
                 || lastName.Length > Constants.Player.MAX_LAST_NAME_LENGTH;
         }
 

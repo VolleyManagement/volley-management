@@ -29,6 +29,12 @@
         public Dictionary<short, string> SeasonsList { get; set; }
 
         /// <summary>
+        /// Gets or sets the default season
+        /// </summary>
+        /// <value>Default season</value>
+        public string SelectedSeason { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
         /// <value>Id of tournament.</value>
@@ -90,10 +96,15 @@
             this.SeasonsList = new Dictionary<short, string>();
             const short yearsRange = 16;
             const short yearsBeforeToday = 5;
-            short year = (short)(DateTime.Now.Year - yearsBeforeToday); 
-            for (int i = 0; i < yearsRange; i++)
+            short year = (short)(DateTime.Now.Year - yearsBeforeToday);
+            for (int i = 0; i < yearsRange; i++, year++)
             {
-                this.SeasonsList.Add(year, string.Format("{0}/{1}", year, ++year));
+                var str = string.Format("{0}/{1}", year, year + 1);
+                if (DateTime.Now.Year == year + 1)
+                {
+                    SelectedSeason = str;
+                }
+                this.SeasonsList.Add(year,str);
             }
         }
         #region Factory Methods
@@ -135,6 +146,5 @@
             };
         }
         #endregion
-
-    }
+        }
 }

@@ -171,4 +171,7 @@
   <data name="NotFoundPlayerMessage" xml:space="preserve">
     <value>Игроки с искомым именем не были найдены</value>
   </data>
+  <data name="DeleteConfirmationMessage" xml:space="preserve">
+    <value>Вы действительно хотите удалить игрока</value>
+  </data>
 </root>

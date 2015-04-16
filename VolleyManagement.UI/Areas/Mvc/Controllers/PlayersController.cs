@@ -8,8 +8,6 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.Players;
-    using VolleyManagement.Domain.Tournaments;
-    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using System.Collections.Generic;
@@ -141,44 +139,27 @@
         }
 
         /// <summary>
-        /// Delete player action (GET)
-        /// </summary>
-        /// <param name="id">Player id</param>
-        /// <param name="firstName">Player first name</param>
-        /// <param name="lastName">Player last name</param>
-        /// <returns>View to delete specific player</returns>
-        public ActionResult Delete(int id, string firstName, string lastName)
-        {
-            PlayerViewModel playerViewModel = new PlayerViewModel()
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Id = id
-            };
-
-            return View(playerViewModel);
-        }
-
-        /// <summary>
         /// Delete player action (POST)
         /// </summary>
         /// <param name="id">Player id</param>
-        /// <returns>Index view</returns>
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        /// <returns>Result message</returns>
+        [HttpPost]
+        public JsonResult Delete(int id)
         {
-            ActionResult result;
             try
             {
                 this._playerService.Delete(id);
-                result = this.RedirectToAction("Index");
             }
-            catch (MissingEntityException)
+            catch (MissingEntityException ex)
             {
-                result = this.HttpNotFound(HTTP_NOT_FOUND_DESCRIPTION);
+                return Json(new PlayerDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
             }
 
-            return result;
+            return Json(new PlayerDeleteResultViewModel
+            {
+                Message = App_GlobalResources.ViewModelResources.PlayerWasDeletedSuccessfully
+                ,HasDeleted = true
+            });
         }
 
         /// <summary>

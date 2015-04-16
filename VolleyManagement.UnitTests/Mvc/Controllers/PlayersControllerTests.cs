@@ -56,69 +56,37 @@
         }
 
         /// <summary>
-        /// Test for DeleteConfirmed method. The method should invoke Delete() method of IPlayerService
-        /// and redirect to Index.
+        /// Delete method test. The method should invoke Delete() method of IPlayerService
+        /// and return result as JavaScript Object Notation.
         /// </summary>
         [TestMethod]
-        public void DeleteConfirmed_PlayerExists_PlayerIsDeleted()
+        public void Delete_PlayerExists_PlayerIsDeleted()
         {
-            // Arrange
-
             // Act
             var sut = this._kernel.Get<PlayersController>();
-            var actual = sut.DeleteConfirmed(PLAYER_UNEXISTING_ID_TO_DELETE) as RedirectToRouteResult;
+            var actual = sut.Delete(PLAYER_UNEXISTING_ID_TO_DELETE) as JsonResult;
 
             // Assert
             _playerServiceMock.Verify(ps => ps.Delete(It.Is<int>(id => id == PLAYER_UNEXISTING_ID_TO_DELETE)), Times.Once());
-            Assert.AreEqual("Index", actual.RouteValues["action"]);
+            Assert.IsNotNull(actual);
         }
 
         /// <summary>
-        /// Test for DeleteConfirmed method where input parameter is player id, which doesn't exist in database.
-        /// The method should return HttpNotFound with a specific message.
+        /// Delete method test. Input parameter is player id, which doesn't exist in database.
+        /// The method should return message as JavaScript Object Notation.
         /// </summary>
         [TestMethod]
-        public void DeleteConfirmed_PlayerDoesntExist_HttpNotFoundReturned()
+        public void Delete_PlayerDoesntExist_JsonReturned()
         {
             // Arrange
             _playerServiceMock.Setup(ps => ps.Delete(PLAYER_UNEXISTING_ID_TO_DELETE)).Throws<MissingEntityException>();
 
             // Act
             var sut = this._kernel.Get<PlayersController>();
-            var actual = sut.DeleteConfirmed(PLAYER_UNEXISTING_ID_TO_DELETE);
+            var actual = sut.Delete(PLAYER_UNEXISTING_ID_TO_DELETE) as JsonResult;
 
             // Assert
-            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
-            Assert.AreEqual((actual as HttpNotFoundResult).StatusDescription, HTTP_NOT_FOUND_DESCRIPTION);
-        }
-
-        /// <summary>
-        /// Test for Delete tournament action
-        /// </summary>
-        [TestMethod]
-        public void DeleteGetAction_Player_ReturnsToTheView()
-        {
-            // Arrange
-            var controller = _kernel.Get<PlayersController>();
-            var player = new PlayerBuilder()
-                            .WithId(1)
-                            .WithFirstName("FirstName")
-                            .WithLastName("LastName")
-                            .Build();
-            MockSinglePlayer(player);
-            var expected = new PlayerMvcViewModelBuilder()
-                            .WithId(1)
-                            .WithFirstName("FirstName")
-                            .WithLastName("LastName")
-                            .Build();
-
-            // Act
-            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Delete(player.Id, player.FirstName, player.LastName));
-
-            // Assert
-            Assert.AreEqual(expected.Id, actual.Id);
-            Assert.AreEqual(expected.FirstName, actual.FirstName);
-            Assert.AreEqual(expected.LastName, actual.LastName);
+            Assert.IsNotNull(actual);
         }
 
         /// <summary>

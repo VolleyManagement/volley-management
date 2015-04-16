@@ -5,9 +5,9 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
-    using System.Web.Http.ModelBinding;
-    using System.Web.Http.OData.Results;
     using System.Web.Http.Results;
+    using System.Web.OData.Results;
+
     using Contracts;
     using Domain.Tournaments;
     using Microsoft.VisualStudio.TestTools.UnitTesting;

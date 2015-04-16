@@ -122,5 +122,28 @@
             /// </summary>
             public const string NAME_VALIDATION_REGEX = @"([ '-]?\p{L})+$";
         }
+
+        /// <summary>
+        /// Container for team constants.
+        /// </summary>
+        public static class Team
+        {
+            /// <summary>
+            /// constant defined the length of the team name field
+            /// </summary>
+            public const int MAX_NAME_LENGTH = 30;
+
+            /// <summary>
+            /// constant defined the length of the coach name field
+            /// </summary>
+            public const int MAX_COACH_NAME_LENGTH = 60;
+
+            /// <summary>
+            /// constant defined the length of the achivements field
+            /// </summary>
+            public const int MAX_ACHIEVEMENTS_LENGTH = 4000;
+
+        }
+    
     }
 }

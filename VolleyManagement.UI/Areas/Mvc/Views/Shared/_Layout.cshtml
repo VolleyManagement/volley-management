@@ -23,7 +23,6 @@
     </div>
 
     <div id="menu">
-        @Html.ActionLink("Home", "Index", "Home", null, new { @class = ViewBag.SelectedMenuItem == "Home" ? "selected" : null})
         @Html.ActionLink(Resources.TournamentViews.TournamentsIndexTitle, "Index", "Tournaments",
                           null, new { @class = ViewBag.SelectedMenuItem == "Tournaments" ? "selected" : null })
         @Html.ActionLink(Resources.PlayerViews.PlayersIndexTitle, "Index", "Players",

@@ -66,7 +66,14 @@
         /// <returns>Team Dal model</returns>
         public static Team Map(Domain.Teams.Team domainTeam)
         {
-            throw new NotImplementedException();
+            Team dalTeam = new Team();
+            dalTeam.Id = domainTeam.Id;
+            dalTeam.Name = domainTeam.Name;
+            dalTeam.CaptainId = domainTeam.Captain.Id;
+            dalTeam.Coach = domainTeam.Coach;
+            dalTeam.Achievements = domainTeam.Achievements;
+
+            return dalTeam;
         }
     }
 }

@@ -29,6 +29,12 @@
         /// Holds UnitOfWork instance.
         /// </summary>
         private readonly IUnitOfWork _unitOfWork;
+        
+        /// <summary>
+        /// Holds TeamRepository instance
+        /// Initialized on first using
+        /// </summary>
+        private TeamRepository _teamRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerRepository"/> class.
@@ -112,12 +118,19 @@
                 throw exc;
             }
 
+            if (oldEntity.Team != null && !TeamExist(oldEntity.Team.Id))
+            {
+                throw new InvalidKeyValueException("Team with requested Id does not exist", oldEntity.Team.Id);
+            }
+
             playerToUpdate.Id = oldEntity.Id;
             playerToUpdate.FirstName = oldEntity.FirstName;
             playerToUpdate.LastName = oldEntity.LastName;
             playerToUpdate.BirthYear = oldEntity.BirthYear;
             playerToUpdate.Height = oldEntity.Height;
             playerToUpdate.Weight = oldEntity.Weight;
+
+            UpdateTeamId(playerToUpdate, oldEntity.Team);
         }
 
         /// <summary>
@@ -129,6 +142,34 @@
             var dalToRemove = new Dal.Player { Id = id };
             _dalPlayers.Attach(dalToRemove);
             _dalPlayers.DeleteObject(dalToRemove);
+        }
+
+        private TeamRepository GetTeamRepository()
+        {
+            if (_teamRepository == null)
+            {
+                _teamRepository = new TeamRepository(new VolleyUnitOfWork());
+            }
+
+            return _teamRepository;
+        }
+
+        private bool TeamExist(int id)
+        {
+            var teamRepository = GetTeamRepository();
+            return teamRepository.Find().Count(t => t.Id == id) > 0;
+        }
+
+        private void UpdateTeamId(Player dalPlayer, VolleyManagement.Domain.Teams.Team team)
+        {
+            if (team == null)
+            {
+                dalPlayer.TeamId = null;
+            }
+            else
+            {
+                dalPlayer.TeamId = team.Id;
+            }
         }
     }
 }

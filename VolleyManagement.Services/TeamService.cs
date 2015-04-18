@@ -44,7 +44,14 @@
         /// <param name="teamToCreate">A Team to create.</param>
         public void Create(Team teamToCreate)
         {
-            _teamRepository.Add(teamToCreate);
+            try
+            {
+                _teamRepository.Add(teamToCreate);
+            }
+            catch (InvalidKeyValueException ex)
+            {
+                throw new MissingEntityException(ex.Message, ex);
+            }
             _teamRepository.UnitOfWork.Commit();
         }
 

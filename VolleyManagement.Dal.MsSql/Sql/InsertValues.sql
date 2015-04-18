@@ -71,5 +71,34 @@ INSERT INTO dbo.Players(
   ('Станислав','Овраменко',1991, NULL, 90),
   ('Денис','Бабылев',1992, 186, NULL),
   ('Андрей','Хромой',NULL, NULL, NULL)
+GO
 
+INSERT INTO dbo.Teams(
+[Name],
+[CaptainId],
+[Coach],
+[Achievements]
+)
+VALUES
+('Одуванчики', 1, NULL, 'Сомнительные'),
+('Укропчики', 2, 'Садовый Иннокентий Поликарпович', NULL),
+('Команда А', 3, 'Ганибал Акакий Филиппович','Впечатляющие');
+GO
+
+/*************************************************
+ Updating foreign keys TeamId in Players 
+*************************************************/
+UPDATE dbo.Players
+SET TeamId = 1
+WHERE Id IN (1, 5, 6, 7)
+GO
+
+UPDATE dbo.Players
+SET TeamId = 2
+WHERE Id IN (2, 8, 9, 10)
+GO
+
+UPDATE dbo.Players
+SET TeamId = 3
+WHERE Id IN (3, 11, 12, 13)
 GO

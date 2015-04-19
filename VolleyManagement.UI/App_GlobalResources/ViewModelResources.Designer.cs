@@ -286,6 +286,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} не может быть пустым.
+        /// </summary>
+        public static string TeamCaptainRequired {
+            get {
+                return ResourceManager.GetString("TeamCaptainRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Тренер.
         /// </summary>
         public static string TeamCoach {

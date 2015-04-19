@@ -192,6 +192,9 @@
   <data name="TeamCaptain" xml:space="preserve">
     <value>Капитан</value>
   </data>
+  <data name="TeamCaptainRequired" xml:space="preserve">
+    <value>{0} не может быть пустым</value>
+  </data>
   <data name="TeamCoach" xml:space="preserve">
     <value>Тренер</value>
   </data>

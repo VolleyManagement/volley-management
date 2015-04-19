@@ -46,13 +46,15 @@
         /// Gets or sets the captain of the team
         /// </summary>
         [Display(Name = "TeamCaptain", ResourceType = typeof(ViewModelResources))]
-        public PlayerViewModel Captain { get; set; }
+        [Required(ErrorMessageResourceName = "TeamCaptainRequired"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        public PlayerNameViewModel Captain { get; set; }
 
         /// <summary>
         /// Gets or sets the roster of the team
         /// </summary>
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
-        public IEnumerable<PlayerViewModel> Roster { get; set; }
+        public IEnumerable<PlayerNameViewModel> Roster { get; set; }
 
         #region Factory Methods
 
@@ -71,15 +73,12 @@
                 Achievements = team.Achievements                
             };
 
-            if (team.Captain != null)
-            {
-                teamViewModel.Captain = PlayerViewModel.Map(team.Captain)
-            }
+            teamViewModel.Captain = PlayerNameViewModel.Map(team.Captain);
 
-            teamViewModel.Roster = new List<PlayerViewModel>();
+            teamViewModel.Roster = new List<PlayerNameViewModel>();
             foreach (var player in team.Roster)
             {
-                ((List<PlayerViewModel>)teamViewModel.Roster).Add(PlayerViewModel.Map(player));
+                ((List<PlayerNameViewModel>)teamViewModel.Roster).Add(PlayerNameViewModel.Map(player));
             }
 
             return teamViewModel;
@@ -95,17 +94,12 @@
             {
                 Id = this.Id,
                 Name = this.Name,
+                Captain = this.Captain.ToDomain(),
                 Coach = this.Coach,
                 Achievements = this.Achievements    
             };
-
-            if (this.Captain != null)
-            {
-                domainTeam.Captain = this.Captain.ToDomain();
-            }
-
             domainTeam.Roster = new List<Player>();
-            foreach (var player in Roster)
+            foreach (var player in this.Roster)
             {
                 ((List<Player>)domainTeam.Roster).Add(player.ToDomain());
             }

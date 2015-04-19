@@ -52,6 +52,7 @@
             {
                 throw new MissingEntityException(ex.Message, ex);
             }
+
             _teamRepository.UnitOfWork.Commit();
         }
 

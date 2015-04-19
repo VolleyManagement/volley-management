@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using PlayerService;
     using VolleyManagement.Domain.Teams;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
-
+    
     /// <summary>
     /// Class for generating test data
     /// </summary>
@@ -17,15 +18,23 @@
         private IList<Team> _teams = new List<Team>();
 
         /// <summary>
+        /// Holds collection of teams
+        /// </summary>
+        private PlayerBuilder _playerBuilder;
+
+        /// <summary>
         /// Return test collection of teams
         /// </summary>
         /// <returns>Builder object with collection of teams</returns>
         public TeamServiceTestFixture TestTeams()
         {
+            _playerBuilder = new PlayerBuilder();
+
             _teams.Add(new Team()
             {
                 Id = 1,
                 Name = "TeamNameA",
+                Captain = _playerBuilder.WithId(1).Build(),
                 Coach = "TeamCoachA",
                 Achievements = "TeamAchievementsA"
             });
@@ -33,6 +42,7 @@
             {
                 Id = 2,
                 Name = "TeamNameB",
+                Captain = _playerBuilder.WithId(2).Build(),
                 Coach = "TeamCoachB",
                 Achievements = "TeamAchievementsB"
             });
@@ -40,6 +50,7 @@
             {
                 Id = 3,
                 Name = "TeamNameC",
+                Captain = _playerBuilder.WithId(3).Build(),
                 Coach = "TeamCoachC",
                 Achievements = "TeamAchievementsC"
             });

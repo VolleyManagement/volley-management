@@ -109,6 +109,7 @@
     <Compile Include="Services\PlayerService\PlayerServiceTests.cs" />
     <Compile Include="Services\PlayerService\PlayerViewModelServiceTestFixture.cs" />
     <Compile Include="Services\TeamService\TeamBuilder.cs" />
+    <Compile Include="Services\TeamService\TeamComparer.cs" />
     <Compile Include="Services\TeamService\TeamServiceTestFixture.cs" />
     <Compile Include="Services\TeamService\TeamServiceTests.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />

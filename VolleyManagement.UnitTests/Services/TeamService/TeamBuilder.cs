@@ -1,7 +1,8 @@
-﻿namespace VolleyManagement.UnitTests.Services.PlayerService
+﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using Services.PlayerService;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
 
@@ -16,15 +17,20 @@
         /// </summary>
         private Team _team;
 
+        private PlayerBuilder _playerBuilder;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamBuilder"/> class
         /// </summary>
         public TeamBuilder()
         {
+            _playerBuilder = new PlayerBuilder();
+
             this._team = new Team
             {
                 Id = 1,
                 Name = "TeamNameA",
+                Captain = _playerBuilder.Build(),
                 Coach = "TeamCoachA",
                 Achievements = "TeamAchievementsA"
             };
@@ -79,18 +85,18 @@
         /// </summary>
         /// <param name="captain">Test team captain</param>
         /// <returns>Team builder object</returns>
-        public TeamBuilder WithAchievements(Player captain)
+        public TeamBuilder WithCaptain(Player captain)
         {
             _team.Captain = captain;
             return this;
         }
 
         /// <summary>
-        /// Sets team test captain
+        /// Sets team test roster
         /// </summary>
-        /// <param name="roster">Test team captain</param>
+        /// <param name="roster">Test team roster</param>
         /// <returns>Team builder object</returns>
-        public TeamBuilder WithAchievements(IEnumerable<Player> roster)
+        public TeamBuilder WithRoster(IEnumerable<Player> roster)
         {
             _team.Roster = roster;
             return this;

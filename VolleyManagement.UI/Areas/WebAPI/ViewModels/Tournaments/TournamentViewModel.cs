@@ -59,6 +59,9 @@
         [StringLength(255, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
         public string RegulationsLink { get; set; }
 
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
         #region Factory Methods
 
         /// <summary>
@@ -75,7 +78,9 @@
                                               Description = tournament.Description,
                                               Season = tournament.Season,
                                               RegulationsLink = tournament.RegulationsLink,
-                                              Scheme = tournament.Scheme.ToDescription()
+                                              Scheme = tournament.Scheme.ToDescription(),
+                                              StartDate = tournament.StartDate,
+                                              EndDate = tournament.EndDate
                                           };
 
             return tournamentViewModel;
@@ -96,6 +101,8 @@
             tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum))
                 .Cast<TournamentSchemeEnum>()
                 .FirstOrDefault(v => v.ToDescription() == this.Scheme);
+            tournament.StartDate = this.StartDate;
+            tournament.EndDate = this.EndDate;
 
             return tournament;
         }

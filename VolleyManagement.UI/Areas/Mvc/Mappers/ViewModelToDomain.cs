@@ -24,7 +24,9 @@
                 Description = tournamentViewModel.Description,
                 Season = tournamentViewModel.Season,
                 Scheme = tournamentViewModel.Scheme,
-                RegulationsLink = tournamentViewModel.RegulationsLink
+                RegulationsLink = tournamentViewModel.RegulationsLink,
+                StartDate = tournamentViewModel.StartDate,
+                EndDate = tournamentViewModel.EndDate
             };
         }
 

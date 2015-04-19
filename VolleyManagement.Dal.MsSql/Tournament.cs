@@ -46,5 +46,8 @@ namespace VolleyManagement.Dal.MsSql
         /// </summary>
         [StringLength(255)]
         public string RegulationsLink { get; set; }
+
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

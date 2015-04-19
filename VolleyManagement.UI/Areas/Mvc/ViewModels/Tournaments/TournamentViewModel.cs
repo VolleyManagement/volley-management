@@ -88,6 +88,9 @@
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string RegulationsLink { get; set; }
 
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
         /// <summary>
         /// Initializes list of seasons.
         /// </summary>
@@ -123,7 +126,9 @@
                 Description = tournament.Description,
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
-                Scheme = tournament.Scheme
+                Scheme = tournament.Scheme,
+                StartDate = tournament.StartDate,
+                EndDate = tournament.EndDate
             };
 
             return tournamentViewModel;
@@ -142,7 +147,9 @@
                 Description = this.Description,
                 Season = this.Season,
                 Scheme = this.Scheme,
-                RegulationsLink = this.RegulationsLink
+                RegulationsLink = this.RegulationsLink,
+                StartDate = this.StartDate,
+                EndDate = this.EndDate
             };
         }
         #endregion

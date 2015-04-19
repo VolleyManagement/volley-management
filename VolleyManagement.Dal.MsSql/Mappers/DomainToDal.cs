@@ -21,6 +21,8 @@
             tournament.Description = domainTournament.Description;
             tournament.Scheme = (byte)domainTournament.Scheme;
             tournament.RegulationsLink = domainTournament.RegulationsLink;
+            tournament.StartDate = domainTournament.StartDate;
+            tournament.EndDate = domainTournament.EndDate;
             return tournament;
         }
 

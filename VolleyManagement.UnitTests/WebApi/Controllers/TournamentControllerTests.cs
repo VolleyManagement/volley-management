@@ -93,7 +93,7 @@
             var result = tournamentsController.Get(SPECIFIC_TOURNAMENT_ID).Queryable.Single();
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
+            _tournamentServiceMock.Verify(ts => ts.Get(TournamentStatusFilter.All), Times.Once());
             AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
         }
 
@@ -119,7 +119,7 @@
             var actual = sut.GetTournaments().ToList();
 
             //// Assert
-            _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
+            _tournamentServiceMock.Verify(ts => ts.Get(TournamentStatusFilter.All), Times.Once());
             CollectionAssert.AreEqual(expected, actual, new TournamentViewModelComparer());
         }
 
@@ -433,7 +433,7 @@
         /// <param name="testData">Data what will be returned</param>
         private void MockTournaments(IList<Tournament> testData)
         {
-            _tournamentServiceMock.Setup(tr => tr.Get())
+            _tournamentServiceMock.Setup(tr => tr.Get(TournamentStatusFilter.All))
                                             .Returns(testData.AsQueryable());
         }
     }

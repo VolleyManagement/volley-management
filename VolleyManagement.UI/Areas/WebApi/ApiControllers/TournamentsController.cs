@@ -8,6 +8,7 @@
 
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>

@@ -75,7 +75,7 @@
         public void Index_TournamentsDoNotExist_ExceptionThrown()
         {
             // Arrange
-            this._tournamentServiceMock.Setup(tr => tr.Get())
+            this._tournamentServiceMock.Setup(tr => tr.Get(TournamentStatusFilter.All))
                 .Throws(new ArgumentNullException());
 
             var sut = this._kernel.Get<TournamentsController>();
@@ -473,7 +473,7 @@
         /// <param name="testData">Data to mock</param>
         private void MockTournaments(IEnumerable<Tournament> testData)
         {
-            this._tournamentServiceMock.Setup(tr => tr.Get())
+            this._tournamentServiceMock.Setup(tr => tr.Get(TournamentStatusFilter.All))
                 .Returns(testData.AsQueryable());
         }
 

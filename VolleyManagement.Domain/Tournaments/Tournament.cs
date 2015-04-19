@@ -3,6 +3,8 @@
     using System;
     using VolleyManagement.Domain.Properties;
 
+    public enum TournamentStatusFilter { All, ActualAndExpected, Finished };
+
     /// <summary>
     /// Tournament domain class.
     /// </summary>

@@ -27,8 +27,23 @@
         /// Method to get all tournaments
         /// </summary>
         /// <returns>All tournaments</returns>
-        public IQueryable<Tournament> Get()
+        public IQueryable<Tournament> Get(TournamentStatusFilter filter = TournamentStatusFilter.All)
         {
+            if (filter == TournamentStatusFilter.ActualAndExpected)
+            {
+                DateTime now = DateTime.Now;
+                DateTime limitStartDate = now.AddMonths(3);
+
+                return _tournamentRepository.Find().Where(tr =>
+                        (tr.StartDate < now && tr.EndDate > now) ||
+                        (tr.StartDate < limitStartDate && tr.StartDate > now))
+                        .OrderBy(tr => tr.StartDate);
+            }
+            else if (filter == TournamentStatusFilter.Finished)
+            {
+                return _tournamentRepository.Find(); // TO DO: getting finished logic
+            }
+
             return _tournamentRepository.Find();
         }
 

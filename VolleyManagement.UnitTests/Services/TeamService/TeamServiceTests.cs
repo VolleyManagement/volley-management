@@ -175,16 +175,14 @@
             {
                 ts.Delete(expectedId);
             }
-            catch (MissingEntityException ex)
+            catch (MissingEntityException)
             {
                 gotException = true;
-                actualErrorMessage = ex.Message;
             }
             
             // Assert
             _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(teamId => teamId == expectedId)), Times.Once());
             Assert.IsTrue(gotException);
-            Assert.AreEqual(actualErrorMessage, EXCEPTION_MESSAGE);
             _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Never());
         }
         

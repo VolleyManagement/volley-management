@@ -68,20 +68,29 @@
             bool captainsCheck = _playerComparer.AreEqual(x.Captain, y.Captain);
 
             // Check rosters
-            var rostersTeamX = x.Roster.ToList<Player>();
-            var rostersTeamY = y.Roster.ToList<Player>();
-
-            bool rostersCheck = rostersTeamX.Count == rostersTeamY.Count;
-            if (rostersCheck)
+            bool rostersCheck = true;
+            if (x.Roster != null && y.Roster != null)
             {
-                for (int i = 0; i < rostersTeamX.Count; i++)
+                var rostersTeamX = x.Roster.ToList<Player>();
+                var rostersTeamY = y.Roster.ToList<Player>();
+
+                rostersCheck = rostersTeamX.Count == rostersTeamY.Count;
+                if (rostersCheck)
                 {
-                    if (!_playerComparer.AreEqual(rostersTeamX[i], rostersTeamY[i]))
+                    for (int i = 0; i < rostersTeamX.Count; i++)
                     {
-                        rostersCheck = false;
-                        break;
+                        if (!_playerComparer.AreEqual(rostersTeamX[i], rostersTeamY[i]))
+                        {
+                            rostersCheck = false;
+                            break;
+                        }
                     }
                 }
+            }
+            else if ((x.Roster != null && y.Roster == null) ||
+                     (x.Roster == null && y.Roster != null))
+            {
+                rostersCheck = false;
             }
 
             return fieldsCheck && captainsCheck && rostersCheck;

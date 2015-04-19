@@ -144,6 +144,17 @@
             _dalPlayers.DeleteObject(dalToRemove);
         }
 
+        /// <summary>
+        /// Set new TeamId value for entity in database
+        /// </summary>
+        /// <param name="playerId">The player Id, which TeamId should be modified</param>
+        /// <param name="team">Team, which shoud be setted</param>
+        internal void UpdateTeamId(int playerId, VolleyManagement.Domain.Teams.Team team)
+        {
+            var dalPlayer = _dalPlayers.Where(p => p.Id == playerId).Single();
+            UpdateTeamId(dalPlayer, team);
+        }
+        
         private TeamRepository GetTeamRepository()
         {
             if (_teamRepository == null)

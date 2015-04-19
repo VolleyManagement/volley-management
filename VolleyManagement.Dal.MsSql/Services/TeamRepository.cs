@@ -161,8 +161,7 @@
             var playerRepository = GetPlayerRepository();
             foreach (var domainPlayer in players)
             {
-                domainPlayer.Team = domainTeam;
-                _playerRepository.Update(domainPlayer);
+                _playerRepository.UpdateTeamId(domainPlayer.Id, domainTeam);
             }
         }
     }

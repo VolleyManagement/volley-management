@@ -43,9 +43,18 @@
             }
 
             var teamToCreate = team.ToDomain();
-            _teamService.Create(teamToCreate);
-            team.Id = teamToCreate.Id;
 
+            try
+            {
+                _teamService.Create(teamToCreate);
+            }
+            catch (MissingEntityException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
+            }
+
+            team.Id = teamToCreate.Id;
             return Created(team);
         }
     }

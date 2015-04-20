@@ -10,10 +10,12 @@
 <p>
     @Html.ActionLink(Resources.TournamentViews.CreateNewTournament, "Create")
 </p>
-<div>
+<p>
+    @{ViewBag.Header = Resources.TournamentViews.CurrentTournamentsHeader;}
     @{Html.RenderPartial("TournamentsList", Model.CurrentTournaments);}
-</div>
-<div>
+</p>
+<p>
+    @{ViewBag.Header = Resources.TournamentViews.ExpectedTournamentsHeader;}
     @{Html.RenderPartial("TournamentsList", Model.ExpectedTournaments);}
-</div>
+</p>
 

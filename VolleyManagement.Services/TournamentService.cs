@@ -29,9 +29,10 @@
         }
 
         /// <summary>
-        /// Method to get all tournaments
+        /// Get tournaments according to set filter
         /// </summary>
-        /// <returns>All tournaments</returns>
+        /// <param name="filter">Tournament status filter</param>
+        /// <returns>Filtered tournaments</returns>
         public IQueryable<Tournament> Get(TournamentStatusFilter filter = TournamentStatusFilter.All)
         {
             DateTime now = DateTime.Now;
@@ -39,10 +40,6 @@
             if (filter == TournamentStatusFilter.ActualAndExpected)
             {
                 DateTime maxStartDateFilter = now.AddMonths( NUMBER_OF_MONTH_QUERY_LIMIT );
-
-                //return _tournamentRepository.Find().Where(tr =>
-                //        (tr.StartDate <= now && tr.EndDate >= now) ||
-                //        (tr.StartDate <= maxStartDateFilter && tr.StartDate >= now));
 
                 return _tournamentRepository.Find().Where(tr =>
                     tr.EndDate >= now && tr.StartDate <= maxStartDateFilter);

@@ -1,27 +1,26 @@
-﻿@model IEnumerable<VolleyManagement.Domain.Tournaments.Tournament>
+﻿@using VolleyManagement.UI.Areas.Mvc
+@model IEnumerable<VolleyManagement.Domain.Tournaments.Tournament>
 
-<table>
+<h3>
+    @ViewBag.Header
+</h3>
+
+<table class="table-bordered">
     <thead>
         <tr>
-            <td>
+            <td width="400">
                 @Html.DisplayNameFor(model => model.Name)
             </td>
-            <td>
-                @Html.DisplayNameFor(model => model.Description)
-            </td>
-            <td>
+            <td width="100">
                 @Html.DisplayNameFor(model => model.Season)
             </td>
-            <td>
+            <td width="100">
                 @Html.DisplayNameFor(model => model.Scheme)
             </td>
-            <td>
-                @Html.DisplayNameFor(model => model.RegulationsLink)
-            </td>
-            <td>
+            <td width="100">
                 @Html.DisplayNameFor(model => model.StartDate)
             </td>
-            <td>
+            <td width="100">
                 @Html.DisplayNameFor(model => model.EndDate)
             </td>
         </tr>
@@ -31,25 +30,19 @@
         {
             <tr>
                 <td>
-                    @tournament.Name
+                    @Html.ActionLink(tournament.Name, "Details", new { id = tournament.Id })
                 </td>
                 <td>
-                    @tournament.Description
-                </td>
-                <td>
-                    @tournament.Season
+                    @Html.DisplaySeason(tournament.Season)
                 </td>
                 <td>
                     @tournament.Scheme
                 </td>
                 <td>
-                    @tournament.RegulationsLink
+                    @tournament.StartDate.ToShortDateString()
                 </td>
                 <td>
-                    @tournament.StartDate
-                </td>
-                <td>
-                    @tournament.StartDate
+                    @tournament.EndDate.ToShortDateString()
                 </td>
             </tr>
         }

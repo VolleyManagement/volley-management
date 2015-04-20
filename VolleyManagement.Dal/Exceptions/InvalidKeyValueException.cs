@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Dal.Exceptions
 {
     using System;
+    using VolleyManagement.Dal.Contracts;
 
     /// <summary>
     /// Represents errors that occurs during the searching entity id
@@ -36,6 +37,36 @@
         public InvalidKeyValueException(string message, Exception innerException) :
             base(message, innerException)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the InvalidKeyValueException
+        /// class with message and inner exception
+        /// </summary>
+        /// <param name="message">Message text</param>
+        /// <param name="errorId">Id related to error occuring</param>
+        public InvalidKeyValueException(string message, int errorId) :
+            base(message)
+        {
+            SetRelatedErrorId(errorId);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the InvalidKeyValueException
+        /// class with message and inner exception
+        /// </summary>
+        /// <param name="message">Message text</param>
+        /// <param name="errorId">Id related to error occuring</param>
+        /// <param name="innerException">Original exception</param>
+        public InvalidKeyValueException(string message, int errorId, Exception innerException) :
+            base(message, innerException)
+        {
+            SetRelatedErrorId(errorId);
+        }
+
+        private void SetRelatedErrorId(int errorId)
+        {
+            this.Data[Constants.ENTITY_ID_KEY] = errorId;
         }
     }
 }

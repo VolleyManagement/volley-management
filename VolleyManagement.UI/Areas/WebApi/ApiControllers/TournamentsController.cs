@@ -60,6 +60,34 @@
         }
 
         /// <summary>
+        /// Returns only actual and expected tournaments
+        /// </summary>
+        /// <returns>The tournaments as json format</returns>
+        [HttpGet]
+        public IHttpActionResult GetActualAndExpected()
+        {
+            var result = _tournamentService.Get(TournamentStatusFilter.ActualAndExpected)
+                .ToList()
+                .Select(t => TournamentViewModel.Map(t));
+
+            return Json(result);
+        }
+
+        /// <summary>
+        /// Returns only finished tournaments
+        /// </summary>
+        /// <returns>The tournaments as json format</returns>
+        [HttpGet]
+        public IHttpActionResult GetFinished()
+        {
+            var result = _tournamentService.Get(TournamentStatusFilter.Finished)
+                .ToList()
+                .Select(t => TournamentViewModel.Map(t));
+
+            return Json(result);
+        }
+
+        /// <summary>
         /// Creates Tournament
         /// </summary>
         /// <param name="tournament"> The tournament as ViewModel. </param>

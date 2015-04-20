@@ -1,16 +1,57 @@
-﻿@model ICollection<VolleyManagement.Domain.Tournaments.Tournament>
+﻿@model IEnumerable<VolleyManagement.Domain.Tournaments.Tournament>
 
 <table>
     <thead>
         <tr>
             <td>
-                @Html.LabelFor(Model.Name);
+                @Html.DisplayNameFor(model => model.Name)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Description)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Season)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.Scheme)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.RegulationsLink)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </td>
+            <td>
+                @Html.DisplayNameFor(model => model.EndDate)
             </td>
         </tr>
     </thead>
-    <tr>
-        <td>
-
-        </td>
-    </tr>
+    <tbody>
+        @foreach (var tournament in Model)
+        {
+            <tr>
+                <td>
+                    @tournament.Name
+                </td>
+                <td>
+                    @tournament.Description
+                </td>
+                <td>
+                    @tournament.Season
+                </td>
+                <td>
+                    @tournament.Scheme
+                </td>
+                <td>
+                    @tournament.RegulationsLink
+                </td>
+                <td>
+                    @tournament.StartDate
+                </td>
+                <td>
+                    @tournament.StartDate
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

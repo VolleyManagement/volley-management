@@ -11,11 +11,11 @@
         /// <summary>
         /// Gets or sets current tournaments collection
         /// </summary>
-        public ICollection<Tournament> CurrentTournaments { get; set; }
+        public IEnumerable<Tournament> CurrentTournaments { get; set; }
 
         /// <summary>
         /// Gets or sets expected tournaments collection
         /// </summary>
-        public ICollection<Tournament> ExpectedTournaments { get; set; }
+        public IEnumerable<Tournament> ExpectedTournaments { get; set; }
     }
 }

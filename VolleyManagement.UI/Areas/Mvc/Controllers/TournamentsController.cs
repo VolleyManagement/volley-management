@@ -31,15 +31,29 @@
         }
 
         /// <summary>
-        /// Gets all tournaments from TournamentService
+        /// Gets actual and expected tournaments from TournamentService
         /// </summary>
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
             try
             {
-                var tournaments = this._tournamentService.Get().ToList();
-                return View(tournaments);
+                var tournaments = this._tournamentService
+                    .Get(TournamentStatusFilter.ActualAndExpected)
+                    .ToList().AsQueryable();
+
+                TournamentsCollectionsViewModel tournamentsCollections 
+                    = new TournamentsCollectionsViewModel();
+
+                DateTime now = DateTime.Now;
+
+                tournamentsCollections.CurrentTournaments = tournaments
+                    .Where(tr => tr.StartDate <= now && tr.EndDate >= now).ToArray();
+
+                tournamentsCollections.ExpectedTournaments = tournaments
+                    .Where(tr => tr.StartDate > now).ToArray();
+
+                return View(tournamentsCollections);
             }
             catch (Exception)
             {

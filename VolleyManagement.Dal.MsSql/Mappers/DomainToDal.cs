@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Mappers
 {
+    using VolleyManagement.Domain.Contributors;
     using constants = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>
@@ -56,6 +57,21 @@
             player.Height = domainPlayer.Height;
             player.Weight = domainPlayer.Weight;
             return player;
+        }
+
+        /// <summary>
+        /// Maps Contributor model.
+        /// </summary>
+        /// <param name="domainContributor">Contributor Domain model</param>
+        /// <returns>Contributor Dal model</returns>
+        public static Contributor Map(Domain.Contributors.Contributor domainContributor)
+        {
+            Contributor contributor = new Contributor();
+            contributor.Id = domainContributor.Id;
+            contributor.FirstName = domainContributor.FirstName;
+            contributor.LastName = domainContributor.LastName;
+            contributor.ContributorTeamId = domainContributor.ContributorTeamId;
+            return contributor;
         }
     }
 }

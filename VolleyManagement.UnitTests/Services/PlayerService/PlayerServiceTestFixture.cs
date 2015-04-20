@@ -12,7 +12,7 @@
     public class PlayerServiceTestFixture
     {
         /// <summary>
-        /// Holds collection of tournaments
+        /// Holds collection of players
         /// </summary>
         private IList<Player> _players = new List<Player>();
 

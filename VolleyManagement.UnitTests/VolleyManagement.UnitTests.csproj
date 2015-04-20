@@ -103,6 +103,10 @@
     <Compile Include="Mvc\ViewModels\UserDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserViewModelComparer.cs" />
+    <Compile Include="Services\ContributorService\ContributorComparer.cs" />
+    <Compile Include="Services\ContributorService\ContributorServiceTestFixture.cs" />
+    <Compile Include="Services\ContributorService\ContributorServiceTests.cs" />
+    <Compile Include="Services\ContributorService\ContributorViewModelServiceTestFixture.cs" />
     <Compile Include="Services\PlayerService\PlayerBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerComparer.cs" />
     <Compile Include="Services\PlayerService\PlayerServiceTestFixture.cs" />

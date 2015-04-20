@@ -186,6 +186,15 @@
   <data name="PlayerWeightFieldRange" xml:space="preserve">
     <value>Указан неверный вес</value>
   </data>
+  <data name="TeamAchivements" xml:space="preserve">
+    <value>Достижения</value>
+  </data>
+  <data name="TeamCoach" xml:space="preserve">
+    <value>Тренер</value>
+  </data>
+  <data name="TeamName" xml:space="preserve">
+    <value>Название</value>
+  </data>
   <data name="TournamentDescription" xml:space="preserve">
     <value>Описание</value>
   </data>

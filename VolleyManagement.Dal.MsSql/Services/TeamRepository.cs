@@ -12,7 +12,6 @@
     using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
     using Domain = VolleyManagement.Domain.Teams;
-    using DomainPlayer = VolleyManagement.Domain.Players.Player;
 
     /// <summary>
     /// Defines implementation of the ITeamRepository contract.
@@ -30,12 +29,6 @@
         /// Holds UnitOfWork instance.
         /// </summary>
         private readonly IUnitOfWork _unitOfWork;
-
-        /// <summary>
-        /// Holds PlayerRepository instance
-        /// Initialized on first using
-        /// </summary>
-        private PlayerRepository _playerRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamRepository"/> class.
@@ -64,9 +57,9 @@
             return _dalTeams.Select(t => new Domain.Team
             {
                 Id = t.Id,
-                Name = t.Name
-
-                // TODO: Create DalToDomain mapper class
+                Name = t.Name,
+                Coach = t.Coach,
+                CaptainId = t.CaptainId
             });
         }
 
@@ -86,26 +79,11 @@
         /// <param name="newEntity">The team for adding.</param>
         public void Add(Domain.Team newEntity)
         {
-            if (!PlayerExist(newEntity.Captain.Id))
-            {
-                throw new InvalidKeyValueException("Captain with requested Id does not exist", newEntity.Captain.Id);
-            }
-
-            foreach (var domainPlayer in newEntity.Roster)
-            {
-                if (!PlayerExist(domainPlayer.Id))
-                {
-                    throw new InvalidKeyValueException("Roster player with requested Id does not exist", domainPlayer.Id);
-                }
-            }
-
             Dal.Team newTeam = DomainToDal.Map(newEntity);
             _dalTeams.AddObject(newTeam);
             _unitOfWork.Commit();
 
             newEntity.Id = newTeam.Id;
-
-            UpdateTeamForRosterPlayers(newEntity.Roster, newEntity);
         }
 
         /// <summary>
@@ -124,8 +102,6 @@
                 throw new InvalidKeyValueException("Team with requested Id does not exist", id, ex);
             }
 
-            UpdateTeamForRosterPlayers(domainTeam.Roster, null);
-
             var dalToRemove = new Dal.Team { Id = id };
             _dalTeams.Attach(dalToRemove);
             _dalTeams.DeleteObject(dalToRemove);
@@ -138,31 +114,6 @@
         public void Update(Domain.Team oldEntity)
         {
             throw new NotImplementedException();
-        }
-
-        private bool PlayerExist(int id)
-        {
-            var playerRepository = GetPlayerRepository();
-            return playerRepository.Find().Count(p => p.Id == id) > 0;
-        }
-
-        private PlayerRepository GetPlayerRepository()
-        {
-            if (_playerRepository == null)
-            {
-                _playerRepository = new PlayerRepository(new VolleyUnitOfWork());
-            }
-
-            return _playerRepository;
-        }
-
-        private void UpdateTeamForRosterPlayers(IEnumerable<DomainPlayer> players, Domain.Team domainTeam)
-        {
-            var playerRepository = GetPlayerRepository();
-            foreach (var domainPlayer in players)
-            {
-                _playerRepository.UpdateTeamId(domainPlayer.Id, domainTeam);
-            }
         }
     }
 }

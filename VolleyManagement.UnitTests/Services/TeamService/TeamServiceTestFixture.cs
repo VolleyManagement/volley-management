@@ -5,7 +5,7 @@
     using PlayerService;
     using VolleyManagement.Domain.Teams;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
-    
+
     /// <summary>
     /// Class for generating test data
     /// </summary>
@@ -34,7 +34,7 @@
             {
                 Id = 1,
                 Name = "TeamNameA",
-                Captain = _playerBuilder.WithId(1).Build(),
+                CaptainId = 1,
                 Coach = "TeamCoachA",
                 Achievements = "TeamAchievementsA"
             });
@@ -42,7 +42,7 @@
             {
                 Id = 2,
                 Name = "TeamNameB",
-                Captain = _playerBuilder.WithId(2).Build(),
+                CaptainId = 2,
                 Coach = "TeamCoachB",
                 Achievements = "TeamAchievementsB"
             });
@@ -50,7 +50,7 @@
             {
                 Id = 3,
                 Name = "TeamNameC",
-                Captain = _playerBuilder.WithId(3).Build(),
+                CaptainId = 3,
                 Coach = "TeamCoachC",
                 Achievements = "TeamAchievementsC"
             });

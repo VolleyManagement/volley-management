@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Services.PlayerService;
-    using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
 
     /// <summary>
@@ -17,20 +16,16 @@
         /// </summary>
         private Team _team;
 
-        private PlayerBuilder _playerBuilder;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamBuilder"/> class
         /// </summary>
         public TeamBuilder()
         {
-            _playerBuilder = new PlayerBuilder();
-
             this._team = new Team
             {
                 Id = 1,
                 Name = "TeamNameA",
-                Captain = _playerBuilder.Build(),
+                CaptainId = 1,
                 Coach = "TeamCoachA",
                 Achievements = "TeamAchievementsA"
             };
@@ -83,22 +78,11 @@
         /// <summary>
         /// Sets team test captain
         /// </summary>
-        /// <param name="captain">Test team captain</param>
+        /// <param name="captainId">Test team captain</param>
         /// <returns>Team builder object</returns>
-        public TeamBuilder WithCaptain(Player captain)
+        public TeamBuilder WithCaptain(int captainId)
         {
-            _team.Captain = captain;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets team test roster
-        /// </summary>
-        /// <param name="roster">Test team roster</param>
-        /// <returns>Team builder object</returns>
-        public TeamBuilder WithRoster(IEnumerable<Player> roster)
-        {
-            _team.Roster = roster;
+            _team.CaptainId = captainId;
             return this;
         }
 

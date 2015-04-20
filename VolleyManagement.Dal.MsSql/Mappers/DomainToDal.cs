@@ -56,6 +56,8 @@
             player.BirthYear = domainPlayer.BirthYear;
             player.Height = domainPlayer.Height;
             player.Weight = domainPlayer.Weight;
+            player.TeamId = domainPlayer.TeamId;
+
             return player;
         }
 
@@ -69,7 +71,7 @@
             Team dalTeam = new Team();
             dalTeam.Id = domainTeam.Id;
             dalTeam.Name = domainTeam.Name;
-            dalTeam.CaptainId = domainTeam.Captain.Id;
+            dalTeam.CaptainId = domainTeam.CaptainId;
             dalTeam.Coach = domainTeam.Coach;
             dalTeam.Achievements = domainTeam.Achievements;
 

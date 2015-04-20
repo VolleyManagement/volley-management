@@ -139,11 +139,9 @@
             public const int MAX_COACH_NAME_LENGTH = 60;
 
             /// <summary>
-            /// constant defined the length of the achivements field
+            /// constant defined the length of the achievements field
             /// </summary>
             public const int MAX_ACHIEVEMENTS_LENGTH = 4000;
-
         }
-    
     }
 }

@@ -87,9 +87,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Mvc\Controllers\ContributorsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\PlayersControllerTests.cs" />
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\UsersControllerTests.cs" />
+    <Compile Include="Mvc\ViewModels\ContributorDomainToViewModel.cs" />
+    <Compile Include="Mvc\ViewModels\ContributorMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\ContributorViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
@@ -103,6 +107,7 @@
     <Compile Include="Mvc\ViewModels\UserDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserViewModelComparer.cs" />
+    <Compile Include="Services\ContributorService\ContributorBuilder.cs" />
     <Compile Include="Services\ContributorService\ContributorComparer.cs" />
     <Compile Include="Services\ContributorService\ContributorServiceTestFixture.cs" />
     <Compile Include="Services\ContributorService\ContributorServiceTests.cs" />
@@ -122,9 +127,12 @@
     <Compile Include="Services\UserService\UserComparer.cs" />
     <Compile Include="Services\UserService\UserServiceTestFixture.cs" />
     <Compile Include="Services\UserService\UserServiceTests.cs" />
+    <Compile Include="WebApi\Controllers\ContributorControllerTests.cs" />
     <Compile Include="WebApi\Controllers\PlayerControllerTests.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
+    <Compile Include="WebApi\ViewModels\ContributorViewModelBuilder.cs" />
+    <Compile Include="WebApi\ViewModels\ContributorViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs">

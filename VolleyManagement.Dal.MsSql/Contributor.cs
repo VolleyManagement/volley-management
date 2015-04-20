@@ -23,12 +23,12 @@
         public string FirstName { get; set; }
 
         /// <summary>
-        /// Gets or sets last name of player
+        /// Gets or sets last name of contributor
         /// </summary>
         public string LastName { get; set; }
 
         /// <summary>
-        /// Gets or sets Contributor Team Id of player
+        /// Gets or sets Contributor Team Id of contributor
         /// </summary>
         public int? ContributorTeamId { get; set; }
     }

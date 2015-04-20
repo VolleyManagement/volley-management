@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Contributors;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Contributors;
 
     /// <summary>
     /// Class for generating test data
@@ -49,7 +49,7 @@
         /// <summary>
         /// Add player to collection.
         /// </summary>
-        /// <param name="newPlayer">Contributor to add.</param>
+        /// <param name="newContributor">Contributor to add.</param>
         /// <returns>Builder object with collection of tournaments.</returns>
         public ContributorServiceTestFixture AddContributor(Contributor newContributor)
         {

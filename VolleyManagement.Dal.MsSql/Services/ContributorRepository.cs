@@ -14,7 +14,7 @@
     using Domain = VolleyManagement.Domain.Contributors;
 
     /// <summary>
-    /// Defines implementation of the IPlayerRepository contract.
+    /// Defines implementation of the IContributorRepository contract.
     /// </summary>
     internal class ContributorRepository : IContributorRepository
     {
@@ -54,14 +54,50 @@
         /// <returns>Collection of domain contributors.</returns>
         public IQueryable<Domain.Contributor> Find()
         {
-            return _dalContributors.Select(p => new Domain.Contributor
+            return _dalContributors.Select(c => new Domain.Contributor
             {
-                Id = p.Id,
-                FirstName = p.FirstName,
-                LastName = p.LastName,
-                BirthYear = p.BirthYear,
-                ContributorTeamId = p.ContributorTeamId
+                Id = c.Id,
+                FirstName = c.FirstName,
+                LastName = c.LastName,
+                ContributorTeamId = c.ContributorTeamId
             });
+        }
+
+        /// <summary>
+        /// Gets specified collection of contributors.
+        /// </summary>
+        /// <param name="predicate">Condition to find contributors.</param>
+        /// <returns>Collection of domain contributors.</returns>
+        public IQueryable<Domain.Contributor> FindWhere(System.Linq.Expressions.Expression<Func<Domain.Contributor, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Adds new contributor.
+        /// </summary>
+        /// <param name="newEntity">The contributor for adding.</param>
+        public void Add(Domain.Contributor newEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Updates specified contributor.
+        /// </summary>
+        /// <param name="oldEntity">The contributor to update.</param>
+        public void Update(Domain.Contributor oldEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Removes contributor by id.
+        /// </summary>
+        /// <param name="id">The id of contributor to remove.</param>
+        public void Remove(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

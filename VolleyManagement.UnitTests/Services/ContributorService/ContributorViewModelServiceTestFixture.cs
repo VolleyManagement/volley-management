@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Contributors;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Contributors;
 
     /// <summary>
     /// Class for generating test data

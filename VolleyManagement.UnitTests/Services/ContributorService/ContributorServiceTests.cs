@@ -7,11 +7,9 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.Services;
     using VolleyManagement.Domain.Contributors;
+    using VolleyManagement.Services;
 
     /// <summary>
     /// Tests for TournamentService class.

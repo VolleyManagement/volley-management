@@ -30,7 +30,7 @@
         /// <summary>
         /// Method to get all contributors.
         /// </summary>
-        /// <returns>All players.</returns>
+        /// <returns>All contributors.</returns>
         public IQueryable<Contributor> Get()
         {
             return _contributorRepository.Find();

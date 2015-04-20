@@ -15,7 +15,7 @@
         /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
-        /// <value>Id of player.</value>
+        /// <value>Id of contributor.</value>
         public int Id { get; set; }
 
         /// <summary>

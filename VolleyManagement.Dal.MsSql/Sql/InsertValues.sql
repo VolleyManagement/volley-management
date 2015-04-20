@@ -73,3 +73,28 @@ INSERT INTO dbo.Players(
   ('Андрей','Хромой',NULL, NULL, NULL)
 
 GO
+
+INSERT INTO dbo.ContributorTeam(
+  [Name],
+  [ItaName],
+  [CourseDirection]
+) VALUES 
+  ('SharkiUi','Dp-065.UI','Web UI'),
+  ('ProAbout','Dp-072.NET','.NET')
+GO
+
+INSERT INTO dbo.Contributors(
+  [FirstName],
+  [LastName],
+  [ContributorTeamId]
+) VALUES 
+  ('Денис','Руденко',1),
+  ('Никита','Курченков',1),
+  ('Елизавета','Рудакова',1),
+  ('Михаил','Зажарский',1),
+  ('Дмитрий','Рындин',1),
+  ('Дмитрий','Шаповал',1),
+  ('Юайщик','Юайщиков',2),
+  ('Юа','Юавин',2),
+  ('Юай','Юайко',2)
+GO

@@ -14,5 +14,15 @@
         /// Gets or sets the result of delete
         /// </summary>
         public bool HasDeleted { get; set; }
+
+        /// <summary>
+        /// Gets or sets the id
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Error
+        /// </summary>
+        public bool HasError { get; set; }
     }
 }

@@ -24,7 +24,7 @@
         }
 
         /// <summary>
-        /// Get tournaments according to set filter
+        /// Get all tournaments
         /// </summary>
         /// <returns>Filtered tournaments</returns>
         public IQueryable<Tournament> Get()

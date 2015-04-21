@@ -21,13 +21,17 @@
         /// </summary>
         private readonly IPlayerRepository _playerRepository;
 
+        private readonly ITeamService _teamService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
         /// <param name="playerRepository">The player repository</param>
-        public PlayerService(IPlayerRepository playerRepository)
+        /// <param name="teamService">Service which provide basic operation with team repository</param>
+        public PlayerService(IPlayerRepository playerRepository, ITeamService teamService)
         {
             _playerRepository = playerRepository;
+            _teamService = teamService;
         }
 
         /// <summary>
@@ -84,10 +88,10 @@
                 throw new MissingEntityException("Player with specified Id can not be found", ex);
             }
 
-            // TODO: Handle cases: 
+            // TODO: Handle cases:
             // 1. teamId isn't exist
-            // 2. after updating some team will lose required field captainId  
-
+            // 2. after updating some team will lose required field captainId
+            
             _playerRepository.UnitOfWork.Commit();
         }
 
@@ -118,7 +122,14 @@
         /// <returns>Player's team</returns>
         public Team GetPlayerTeam(Player player)
         {
-            throw new NotImplementedException();
+            if (player.TeamId != null)
+            {
+                return _teamService.Get((int)player.TeamId);
+            }
+            else
+            {
+                throw new ArgumentException("Player doesn't play in any team");
+            }
         }
     }
 }

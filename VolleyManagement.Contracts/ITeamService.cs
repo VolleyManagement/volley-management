@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Contracts
 {
-    using System.Linq;
     using System.Collections.Generic;
-    using Domain.Players;    
+    using System.Linq;
+    using Domain.Players;
     using Domain.Teams;
 
     /// <summary>
@@ -15,6 +15,13 @@
         /// </summary>
         /// <returns>Return list of all teams.</returns>
         IQueryable<Team> Get();
+
+        /// <summary>
+        /// Find team by id.
+        /// </summary>
+        /// <param name="id">Team id.</param>
+        /// <returns>Found team.</returns>
+        Team Get(int id);
 
         /// <summary>
         /// Create new team.

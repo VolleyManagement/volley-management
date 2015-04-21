@@ -14,7 +14,7 @@
         private int? _birthYear;
         private int? _height;
         private int? _weight;
-        private Team _team;
+        private int? _teamId;
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -136,16 +136,16 @@
         /// Gets or sets a value indicating where Team.
         /// </summary>
         /// <value>The player team.</value>
-        public Team Team
+        public int? TeamId
         {
             get
             {
-                return _team;
+                return _teamId;
             }
 
             set
             {
-                _team = value;
+                _teamId = value;
             }
         }
     }

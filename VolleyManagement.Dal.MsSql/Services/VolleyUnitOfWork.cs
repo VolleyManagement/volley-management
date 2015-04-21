@@ -55,5 +55,21 @@
         {
             _context.Dispose();
         }
+
+        /// <summary>
+        /// Begin transaction with database
+        /// </summary>
+        public void BeginTransaction()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Commit changes in current transaction
+        /// </summary>
+        public void CommitTransaction()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

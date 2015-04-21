@@ -179,13 +179,13 @@
             {
                 gotException = true;
             }
-            
+
             // Assert
             _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(teamId => teamId == expectedId)), Times.Once());
             Assert.IsTrue(gotException);
             _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Never());
         }
-        
+
         /// <summary>
         /// Find out whether two teams objects have the same property values.
         /// </summary>

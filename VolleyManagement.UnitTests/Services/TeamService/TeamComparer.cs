@@ -5,7 +5,6 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using PlayerService;
-    using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
 
     /// <summary>
@@ -14,8 +13,6 @@
     [ExcludeFromCodeCoverage]
     internal class TeamComparer : IComparer<Team>, IComparer
     {
-        private PlayerComparer _playerComparer = new PlayerComparer();
-
         /// <summary>
         /// Compares two player objects.
         /// </summary>
@@ -59,41 +56,11 @@
         public bool AreEqual(Team x, Team y)
         {
             // Check primitive fields
-            bool fieldsCheck = x.Id == y.Id &&
-                x.Name == y.Name &&
-                x.Coach == y.Coach &&
-                x.Achievements == y.Achievements;
-
-            // Check captains
-            bool captainsCheck = _playerComparer.AreEqual(x.Captain, y.Captain);
-
-            // Check rosters
-            bool rostersCheck = true;
-            if (x.Roster != null && y.Roster != null)
-            {
-                var rostersTeamX = x.Roster.ToList<Player>();
-                var rostersTeamY = y.Roster.ToList<Player>();
-
-                rostersCheck = rostersTeamX.Count == rostersTeamY.Count;
-                if (rostersCheck)
-                {
-                    for (int i = 0; i < rostersTeamX.Count; i++)
-                    {
-                        if (!_playerComparer.AreEqual(rostersTeamX[i], rostersTeamY[i]))
-                        {
-                            rostersCheck = false;
-                            break;
-                        }
-                    }
-                }
-            }
-            else if ((x.Roster != null && y.Roster == null) ||
-                     (x.Roster == null && y.Roster != null))
-            {
-                rostersCheck = false;
-            }
-
-            return fieldsCheck && captainsCheck && rostersCheck;
+            return x.Id == y.Id &&
+                   x.Name == y.Name &&
+                   x.Coach == y.Coach &&
+                   x.Achievements == y.Achievements &&
+                   x.CaptainId == y.CaptainId;
         }
     }
 }

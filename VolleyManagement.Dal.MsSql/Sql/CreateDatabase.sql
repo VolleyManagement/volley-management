@@ -23,7 +23,13 @@ CREATE TABLE dbo.Tournaments(
   Scheme tinyint NOT NULL DEFAULT 1,
   Season tinyint NOT NULL,
   [Description] nvarchar(300) NULL,
-  RegulationsLink nvarchar(255) NULL
+  RegulationsLink nvarchar(255) NULL,
+  RegisrationStart smalldatetime NOT NULL,
+  RegistrationEnd smalldatetime NOT NULL,
+  StartDate smalldatetime NOT NULL,
+  EndDate smalldatetime NOT NULL,
+  TransferStart smalldatetime NOT NULL,
+  TransferEnd smalldatetime NOT NULL
 );
 GO
 

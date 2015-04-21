@@ -14,6 +14,110 @@
         private TournamentSchemeEnum _scheme;
         private string _regulationsLink;
 
+        private DateTime _startDate;
+        private DateTime _endDate;
+        private DateTime _registrationStart;
+        private DateTime _registrationEnd;
+        private DateTime _transferStart;
+        private DateTime _transferEnd;
+
+        /// <summary>
+        /// Gets or sets tournament start
+        /// </summary>
+        public DateTime StartDate
+        {
+            get
+            {
+                return _startDate;
+            }
+
+            set
+            {
+                _startDate = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the tournament end 
+        /// </summary>
+        public DateTime EndDate
+        {
+            get
+            {
+                return _endDate;
+            }
+
+            set
+            {
+                _endDate = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets start registration date of a tournament
+        /// </summary>
+        public DateTime RegistrationStart
+        {
+            get
+            {
+                return _registrationStart;
+            }
+            
+            set
+            {
+                _registrationStart = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets end registration date of a tournament 
+        /// </summary>
+        public DateTime RegistrationEnd 
+        {
+            get
+            {
+                return _registrationEnd;
+            }
+
+            set
+            {
+                _registrationEnd = value;
+            }
+
+        }
+
+        /// <summary>
+        /// Gets or sets transfer end of a tournament
+        /// </summary>
+        public DateTime TransferEnd
+        {
+            get
+            {
+                return _transferEnd;
+            }
+
+            set
+            {
+                _transferEnd = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets transfer start of a tournament
+        /// </summary>
+        public DateTime TransferStart
+        {
+            get
+            {
+                return _transferStart;
+            }
+
+            set
+            {
+                _transferStart = value;
+            }
+        }
+
         /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>

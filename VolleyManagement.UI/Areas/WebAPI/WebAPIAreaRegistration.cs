@@ -6,6 +6,7 @@
     using System.Web.OData.Extensions;
 
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
@@ -34,7 +35,10 @@
             builder.EnableLowerCamelCase();
 
             builder.EntitySet<TournamentViewModel>("Tournaments");
-            builder.EntitySet<PlayerViewModel>("Players");
+            var players = builder.EntitySet<PlayerViewModel>("Players");
+            //players.EntityType.ContainsOptional<TeamViewModel>(p => p.Id);
+            builder.EntitySet<TeamViewModel>("Teams");
+
 
             config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }

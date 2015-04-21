@@ -1,11 +1,13 @@
-﻿
-namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
+﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
 {
     using System.ComponentModel.DataAnnotations;
 
     using VolleyManagement.Domain;
+    using VolleyManagement.Domain.Teams;
     using VolleyManagement.Domain.Players;
+    using Services = VolleyManagement.Services;
     using VolleyManagement.UI.App_GlobalResources;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
 
     /// <summary>
     /// Represents player view model
@@ -16,6 +18,11 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
         /// Gets or sets the player Id
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the player team Id
+        /// </summary>
+        public TeamViewModel Team { get; set; }
 
         /// <summary>
         /// Gets or sets the player first name
@@ -69,7 +76,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
         /// </summary>
         /// <param name="player"> Domain object </param>
         /// <returns> View model object </returns>
-        public static PlayerViewModel Map(Player player)
+        public static PlayerViewModel Map(Player player, Team team)
         {
             var playerViewModel = new PlayerViewModel
             {
@@ -78,7 +85,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
                 LastName = player.LastName,
                 BirthYear = player.BirthYear,
                 Height = player.Height,
-                Weight = player.Weight
+                Weight = player.Weight,
+                Team = TeamViewModel.Map(team)
             };
 
             return playerViewModel;
@@ -97,7 +105,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
                 LastName = this.LastName,
                 BirthYear = this.BirthYear,
                 Height = this.Height,
-                Weight = this.Weight
+                Weight = this.Weight,
+                TeamId = this.Team.Id
             };
         }
         #endregion

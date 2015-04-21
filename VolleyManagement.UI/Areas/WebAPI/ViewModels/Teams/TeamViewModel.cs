@@ -60,7 +60,7 @@
                 Name = team.Name,
                 Coach = team.Coach,
                 Achievements = team.Achievements,
-                //CaptainId = team.CaptainId
+                CaptainId = team.CaptainId
             };
 
             return teamViewModel;
@@ -78,7 +78,7 @@
                 Name = this.Name,
                 Coach = this.Coach,
                 Achievements = this.Achievements,
-                //CaptainId = this.CaptainId
+                CaptainId = this.CaptainId
             };
         }
         #endregion

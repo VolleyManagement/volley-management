@@ -18,7 +18,7 @@
     /// </summary>
     public class TeamsController : Controller
     {
-        private const string TEAM_DELETED_SUCCESSFULLY_DESCRITPION = " была успешно удалена.";
+        private const string TEAM_DELETED_SUCCESSFULLY_DESCRITPION = "Команда была успешно удалена.";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -66,10 +66,9 @@
             TeamDeleteResultViewModel jsondata;
             try
             {
-                var teamName = this._teamService.Get().Single(t => t.Id == id).Name;
                 this._teamService.Delete(id);
                 jsondata = new TeamDeleteResultViewModel {
-                    Message = '"' + teamName + '"' + TEAM_DELETED_SUCCESSFULLY_DESCRITPION,
+                    Message = TEAM_DELETED_SUCCESSFULLY_DESCRITPION,
                     HasDeleted = true
                 };
             }

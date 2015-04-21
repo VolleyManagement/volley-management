@@ -53,7 +53,7 @@
         {
             // Act
             var sut = this._kernel.Get<TeamsController>();
-            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE, true) as JsonResult;
+            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE) as JsonResult;
 
             // Assert
             _teamServiceMock.Verify(ps => ps.Delete(It.Is<int>(id => id == TEAM_UNEXISTING_ID_TO_DELETE)), Times.Once());
@@ -69,10 +69,9 @@
         {
             // Arrange
             _teamServiceMock.Setup(ps => ps.Delete(TEAM_UNEXISTING_ID_TO_DELETE)).Throws<MissingEntityException>();
-
             // Act
             var sut = this._kernel.Get<TeamsController>();
-            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE, true) as JsonResult;
+            var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE) as JsonResult;
 
             // Assert
             Assert.IsNotNull(actual);

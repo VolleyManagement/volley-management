@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
@@ -29,7 +30,13 @@
                     Description = "Tournament 1 description",
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.One,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')"
+                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')",
+                    RegistrationStart = new DateTime(2015, 02, 20),
+                    RegistrationEnd = new DateTime(2015, 06, 20),
+                    StartDate = new DateTime(2015, 06, 30),
+                    EndDate = new DateTime(2015, 11, 30),
+                    TransferStart = new DateTime(2015, 08, 20),
+                    TransferEnd = new DateTime(2015, 09, 10)
                 });
             _tournaments.Add(new Tournament()
                 {
@@ -38,7 +45,13 @@
                     Description = "Tournament 2 description",
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.Two,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')"
+                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')",
+                    RegistrationStart = new DateTime(2015, 02, 20),
+                    RegistrationEnd = new DateTime(2015, 06, 20),
+                    StartDate = new DateTime(2015, 06, 30),
+                    EndDate = new DateTime(2015, 11, 30),
+                    TransferStart = new DateTime(2015, 08, 20),
+                    TransferEnd = new DateTime(2015, 09, 10)
                 });
             _tournaments.Add(new Tournament()
                 {
@@ -47,7 +60,13 @@
                     Description = "Tournament 3 description",
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.TwoAndHalf,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')"
+                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')",
+                    RegistrationStart = new DateTime(2015, 02, 20),
+                    RegistrationEnd = new DateTime(2015, 06, 20),
+                    StartDate = new DateTime(2015, 06, 30),
+                    EndDate = new DateTime(2015, 11, 30),
+                    TransferStart = new DateTime(2015, 08, 20),
+                    TransferEnd = new DateTime(2015, 09, 10)
                 });
             return this;
         }

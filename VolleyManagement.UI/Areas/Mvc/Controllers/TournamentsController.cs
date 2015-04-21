@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Web.Mvc;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.Tournaments;
@@ -36,15 +35,12 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            try
-            {
-                var tournaments = this._tournamentService.Get().ToList();
-                return View(tournaments);
-            }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
+                var tournaments = this._tournamentService.Get()
+                                                         .ToList();
+                                                         //.Select(t => TournamentViewModel.Map(t))
+                                                         //.AsQueryable();
+                return View(tournaments);        
+            
         }
 
         /// <summary>

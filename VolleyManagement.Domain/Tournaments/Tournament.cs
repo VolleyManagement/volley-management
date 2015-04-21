@@ -13,7 +13,6 @@
         private short _season;
         private TournamentSchemeEnum _scheme;
         private string _regulationsLink;
-
         private DateTime _startDate;
         private DateTime _endDate;
         private DateTime _registrationStart;

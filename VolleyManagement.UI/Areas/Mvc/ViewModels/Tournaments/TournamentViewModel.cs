@@ -88,6 +88,42 @@
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string RegulationsLink { get; set; }
 
+
+        /// <summary>
+        /// Start of a tournament
+        /// </summary>
+        public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// End of a tournament
+        /// </summary>
+        public DateTime EndDate { get; set; }
+
+        /// <summary>
+        /// Start of a transfer period
+        /// </summary>
+        public DateTime TransferStart { get; set; }
+
+        /// <summary>
+        /// End of a transfer period
+        /// </summary>
+        public DateTime TransferEnd { get; set; }
+
+        /// <summary>
+        /// Start of a tournament registration
+        /// </summary>
+        public DateTime RegistrationStart { get; set; }
+
+        /// <summary>
+        /// End of a tournament registration
+        /// </summary>
+        public DateTime RegistrationEnd { get; set; }
+
+
+
+
+
+
         /// <summary>
         /// Initializes list of seasons.
         /// </summary>
@@ -104,7 +140,7 @@
                 {
                     SelectedSeason = str;
                 }
-                this.SeasonsList.Add(year,str);
+                this.SeasonsList.Add(year, str);
             }
         }
         #region Factory Methods
@@ -123,7 +159,13 @@
                 Description = tournament.Description,
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
-                Scheme = tournament.Scheme
+                Scheme = tournament.Scheme,
+                StartDate = tournament.StartDate,
+                EndDate = tournament.EndDate,
+                RegistrationStart = tournament.RegistrationStart,
+                RegistrationEnd = tournament.RegistrationEnd,
+                TransferStart = tournament.TransferStart,
+                TransferEnd = tournament.TransferEnd
             };
 
             return tournamentViewModel;
@@ -142,9 +184,15 @@
                 Description = this.Description,
                 Season = this.Season,
                 Scheme = this.Scheme,
-                RegulationsLink = this.RegulationsLink
+                RegulationsLink = this.RegulationsLink,
+                StartDate = this.StartDate,
+                EndDate = this.EndDate,
+                RegistrationStart = this.RegistrationStart,
+                RegistrationEnd  = this.RegistrationEnd,
+                TransferStart = this.TransferStart,
+                TransferEnd = this.TransferEnd
             };
         }
         #endregion
-        }
+    }
 }

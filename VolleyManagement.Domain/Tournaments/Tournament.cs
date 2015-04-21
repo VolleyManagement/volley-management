@@ -3,7 +3,16 @@
     using System;
     using VolleyManagement.Domain.Properties;
 
-    public enum TournamentState { finished, current, upcoming, notStarted };
+    /// <summary>
+    /// Represents tournament state
+    /// </summary>
+    public enum TournamentStateEnum
+    {
+        Finished,
+        Current,
+        Upcoming,
+        NotStarted
+    }
 
     /// <summary>
     /// Tournament domain class.
@@ -132,26 +141,29 @@
             }
         }
 
-        public TournamentState State
+        /// <summary>
+        /// Gets tournament state
+        /// </summary>
+        public TournamentStateEnum State
         {
             get
             {
-                if (StartDate > Constants.APPLICATION_DATE.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
+                if (StartDate > Constants.ApplicationDate.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
                 {
-                    return TournamentState.notStarted;
+                    return TournamentStateEnum.NotStarted;
                 }
-                else if(StartDate > Constants.APPLICATION_DATE
-                    && StartDate <= Constants.APPLICATION_DATE.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
+                else if (StartDate > Constants.ApplicationDate
+                    && StartDate <= Constants.ApplicationDate.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
                 {
-                    return TournamentState.upcoming;
+                    return TournamentStateEnum.Upcoming;
                 }
-                else if (StartDate <= Constants.APPLICATION_DATE && EndDate >= Constants.APPLICATION_DATE)
+                else if (StartDate <= Constants.ApplicationDate && EndDate >= Constants.ApplicationDate)
                 {
-                    return TournamentState.current;
+                    return TournamentStateEnum.Current;
                 }
-                else if (EndDate < Constants.APPLICATION_DATE)
+                else if (EndDate < Constants.ApplicationDate)
                 {
-                    return TournamentState.finished;
+                    return TournamentStateEnum.Finished;
                 }
                 else
                 {

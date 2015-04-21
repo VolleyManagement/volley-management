@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
@@ -30,6 +31,8 @@
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.One,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')",
+                    StartDate = DateTime.Now.AddMonths(-2),
+                    EndDate = DateTime.Now.AddMonths(-1)
                 });
             _tournaments.Add(new Tournament()
                 {
@@ -38,7 +41,9 @@
                     Description = "Tournament 2 description",
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.Two,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')"
+                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')",
+                    StartDate = DateTime.Now.AddMonths(-1),
+                    EndDate = DateTime.Now.AddMonths(1)
                 });
             _tournaments.Add(new Tournament()
                 {
@@ -47,7 +52,9 @@
                     Description = "Tournament 3 description",
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.TwoAndHalf,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')"
+                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')",
+                    StartDate = DateTime.Now.AddMonths(1),
+                    EndDate = DateTime.Now.AddMonths(2)
                 });
             return this;
         }

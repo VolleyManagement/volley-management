@@ -42,10 +42,10 @@
                     = new TournamentsCollectionsViewModel();
 
                 tournamentsCollections.CurrentTournaments = this._tournamentService
-                    .Get().Where(tr => tr.State == TournamentState.current).ToArray();
+                    .Get().Where(tr => tr.State == TournamentStateEnum.Current).ToArray();
 
                 tournamentsCollections.UpcomingTournaments = this._tournamentService
-                    .Get().Where(tr => tr.State == TournamentState.upcoming).ToArray();
+                    .Get().Where(tr => tr.State == TournamentStateEnum.Upcoming).ToArray();
 
                 return View(tournamentsCollections);
             }

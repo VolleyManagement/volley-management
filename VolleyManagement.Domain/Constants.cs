@@ -8,6 +8,8 @@
     /// </summary>
     public static class Constants
     {
+        public static readonly DateTime ApplicationDate = DateTime.Now;
+
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
                         Justification = "It's a COnstants sub-class")]
         public static class ExceptionManagement
@@ -15,16 +17,13 @@
             public const string ENTITY_ID_KEY = "EntityId";
         }
 
-        public static readonly DateTime APPLICATION_DATE = DateTime.Now;
-
-
         /// <summary>
         /// Container for tournament constants.
         /// </summary>
         public static class Tournament
         {
             /// <summary>
-            /// The number of month uses for sets the limit date from now for getting expected tournaments 
+            /// The number of month uses for sets the limit date from now for getting expected tournaments
             /// </summary>
             public const int UPCOMING_TOURNAMENTS_MONTH_LIMIT = 3;
 
@@ -151,8 +150,6 @@
             /// constant defined the length of the achivements field
             /// </summary>
             public const int MAX_ACHIEVEMENTS_LENGTH = 4000;
-
         }
-    
     }
 }

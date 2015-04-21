@@ -66,13 +66,19 @@
         [HttpGet]
         public IHttpActionResult GetCurrentAndUpcoming()
         {
-            var result = _tournamentService.Get()
-                .Where(tr => tr.State == TournamentState.current 
-                    || tr.State == TournamentState.upcoming)
-                .ToList()
-                .Select(t => TournamentViewModel.Map(t));
-
-            return Json(result);
+            try
+            {
+                var result = _tournamentService.Get()
+                    .Where(tr => tr.State == TournamentStateEnum.Current 
+                        || tr.State == TournamentStateEnum.Upcoming)
+                    .ToList()
+                    .Select(t => TournamentViewModel.Map(t));
+                    return Json(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>
@@ -82,12 +88,18 @@
         [HttpGet]
         public IHttpActionResult GetFinished()
         {
-            var result = _tournamentService.Get()
-                .Where(tr => tr.State == TournamentState.finished)
-                .ToList()
-                .Select(t => TournamentViewModel.Map(t));
-
-            return Json(result);
+            try
+            {
+                var result = _tournamentService.Get()
+                    .Where(tr => tr.State == TournamentStateEnum.Finished)
+                    .ToList()
+                    .Select(t => TournamentViewModel.Map(t));
+                    return Json(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>

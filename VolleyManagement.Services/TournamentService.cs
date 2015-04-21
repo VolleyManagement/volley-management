@@ -26,7 +26,6 @@
         /// <summary>
         /// Get tournaments according to set filter
         /// </summary>
-        /// <param name="filter">Tournament status filter</param>
         /// <returns>Filtered tournaments</returns>
         public IQueryable<Tournament> Get()
         {

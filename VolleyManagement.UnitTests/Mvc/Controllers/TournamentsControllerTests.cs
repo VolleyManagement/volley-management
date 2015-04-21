@@ -14,6 +14,7 @@
     using Moq;
     using Ninject;
 
+    using VolleyManagement.Domain;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -43,29 +44,59 @@
         }
 
         /// <summary>
-        /// Test for Index action. The action should return not empty tournaments list
+        /// Index action test. The action should return TournamentsCollectionsViewModel
+        /// with two correct collections of tournaments: Current and Upcoming
         /// </summary>
         [TestMethod]
-        public void Index_TournamentsExist_TournamentsReturned()
+        public void Index_TournamentsCurrentAndUpcomingRequest_CorrectCollectionsReturned()
         {
             // Arrange
-            var testData = _testFixture.TestTournaments()
-                                       .Build();
+            var testData = _testFixture.TestTournaments().Build();
             this.MockTournaments(testData);
 
             var sut = this._kernel.Get<TournamentsController>();
 
-            var expected = new TournamentServiceTestFixture()
+            var expectedCurrentTournaments = new TournamentServiceTestFixture()
                                             .TestTournaments()
-                                            .Build()
+                                            .Build().Where(tr => tr.StartDate <= DateTime.Now
+                                                && tr.EndDate >= DateTime.Now)
+                                            .ToList();
+
+            var expectedUpcomingTournaments = new TournamentServiceTestFixture()
+                                            .TestTournaments()
+                                            .Build().Where(tr => tr.StartDate > DateTime.Now
+                                                && tr.StartDate <= DateTime.Now.AddMonths(
+                                                Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
                                             .ToList();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentsCollectionsViewModel>(sut.Index())
+            var actualCurrentTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(sut.Index())
                 .CurrentTournaments.ToList();
+            var actualUpcomingTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(sut.Index())
+                .UpcomingTournaments.ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            CollectionAssert.AreEqual(expectedCurrentTournaments, actualCurrentTournaments, new TournamentComparer());
+            CollectionAssert.AreEqual(expectedUpcomingTournaments, actualUpcomingTournaments, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// Index method test. If service layer thrown AgrumentException
+        /// method should return not found result
+        /// </summary>
+        public void Index_ServiceArgumentExceptionThrown_NotFoundReturn()
+        {
+            // Arrange
+            this._tournamentServiceMock.Setup(tr => tr.Get())
+                .Throws(new ArgumentException());
+
+            var sut = this._kernel.Get<TournamentsController>();
+
+            // Act
+            var actual = sut.Index() as HttpNotFoundResult;
+
+            // Assert
+            Assert.IsNotNull(actual);
         }
 
         /// <summary>

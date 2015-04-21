@@ -15,11 +15,6 @@
         private readonly ITournamentRepository _tournamentRepository;
 
         /// <summary>
-        /// The number of month uses for sets the limit date from now for getting expected tournaments 
-        /// </summary>
-        private const int NUMBER_OF_MONTH_QUERY_LIMIT = 3;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TournamentService"/> class
         /// </summary>
         /// <param name="tournamentRepository">The tournament repository</param>
@@ -33,23 +28,8 @@
         /// </summary>
         /// <param name="filter">Tournament status filter</param>
         /// <returns>Filtered tournaments</returns>
-        public IQueryable<Tournament> Get(TournamentStatusFilter filter = TournamentStatusFilter.All)
+        public IQueryable<Tournament> Get()
         {
-            DateTime now = DateTime.Now;
-
-            if (filter == TournamentStatusFilter.ActualAndExpected)
-            {
-                DateTime maxStartDateFilter = now.AddMonths( NUMBER_OF_MONTH_QUERY_LIMIT );
-
-                return _tournamentRepository.Find().Where(tr =>
-                    tr.EndDate >= now && tr.StartDate <= maxStartDateFilter);
-            }
-            else if (filter == TournamentStatusFilter.Finished)
-            {
-                return _tournamentRepository.Find().Where(tr =>
-                    tr.EndDate < now );
-            }
-
             return _tournamentRepository.Find();
         }
 

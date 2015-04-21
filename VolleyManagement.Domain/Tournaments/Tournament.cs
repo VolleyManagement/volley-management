@@ -3,7 +3,7 @@
     using System;
     using VolleyManagement.Domain.Properties;
 
-    public enum TournamentStatusFilter { All, ActualAndExpected, Finished };
+    public enum TournamentState { finished, current, upcoming, notStarted };
 
     /// <summary>
     /// Tournament domain class.
@@ -129,6 +129,34 @@
                 }
 
                 _regulationsLink = value;
+            }
+        }
+
+        public TournamentState State
+        {
+            get
+            {
+                if (StartDate > Constants.APPLICATION_DATE.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
+                {
+                    return TournamentState.notStarted;
+                }
+                else if(StartDate > Constants.APPLICATION_DATE
+                    && StartDate <= Constants.APPLICATION_DATE.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
+                {
+                    return TournamentState.upcoming;
+                }
+                else if (StartDate <= Constants.APPLICATION_DATE && EndDate >= Constants.APPLICATION_DATE)
+                {
+                    return TournamentState.current;
+                }
+                else if (EndDate < Constants.APPLICATION_DATE)
+                {
+                    return TournamentState.finished;
+                }
+                else
+                {
+                    throw new ArgumentException("The state haven't been set");
+                }
             }
         }
 

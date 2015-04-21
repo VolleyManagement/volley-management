@@ -29,7 +29,7 @@
                     Description = "Tournament 1 description",
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.One,
-                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')"
+                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')",
                 });
             _tournaments.Add(new Tournament()
                 {

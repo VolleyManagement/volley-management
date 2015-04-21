@@ -16,6 +16,6 @@
         /// <summary>
         /// Gets or sets expected tournaments collection
         /// </summary>
-        public IEnumerable<Tournament> ExpectedTournaments { get; set; }
+        public IEnumerable<Tournament> UpcomingTournaments { get; set; }
     }
 }

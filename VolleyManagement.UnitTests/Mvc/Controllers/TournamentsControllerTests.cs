@@ -61,7 +61,8 @@
                                             .ToList();
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<Tournament>>(sut.Index()).ToList();
+            var actual = TestExtensions.GetModel<TournamentsCollectionsViewModel>(sut.Index())
+                .CurrentTournaments.ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
@@ -75,7 +76,7 @@
         public void Index_TournamentsDoNotExist_ExceptionThrown()
         {
             // Arrange
-            this._tournamentServiceMock.Setup(tr => tr.Get(TournamentStatusFilter.All))
+            this._tournamentServiceMock.Setup(tr => tr.Get())
                 .Throws(new ArgumentNullException());
 
             var sut = this._kernel.Get<TournamentsController>();
@@ -473,7 +474,7 @@
         /// <param name="testData">Data to mock</param>
         private void MockTournaments(IEnumerable<Tournament> testData)
         {
-            this._tournamentServiceMock.Setup(tr => tr.Get(TournamentStatusFilter.All))
+            this._tournamentServiceMock.Setup(tr => tr.Get())
                 .Returns(testData.AsQueryable());
         }
 

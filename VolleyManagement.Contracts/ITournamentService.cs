@@ -12,7 +12,7 @@
         /// Gets list of all tournaments
         /// </summary>
         /// <returns>Return list of all tournaments.</returns>
-        IQueryable<Tournament> Get(TournamentStatusFilter filter = TournamentStatusFilter.All);
+        IQueryable<Tournament> Get();
 
         /// <summary>
         /// Find a Tournament by id

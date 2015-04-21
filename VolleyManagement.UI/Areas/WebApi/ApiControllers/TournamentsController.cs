@@ -60,13 +60,15 @@
         }
 
         /// <summary>
-        /// Returns only actual and expected tournaments
+        /// Returns only upcoming and current tournaments
         /// </summary>
         /// <returns>The tournaments as json format</returns>
         [HttpGet]
-        public IHttpActionResult GetActualAndExpected()
+        public IHttpActionResult GetCurrentAndUpcoming()
         {
-            var result = _tournamentService.Get(TournamentStatusFilter.ActualAndExpected)
+            var result = _tournamentService.Get()
+                .Where(tr => tr.State == TournamentState.current 
+                    || tr.State == TournamentState.upcoming)
                 .ToList()
                 .Select(t => TournamentViewModel.Map(t));
 
@@ -80,7 +82,8 @@
         [HttpGet]
         public IHttpActionResult GetFinished()
         {
-            var result = _tournamentService.Get(TournamentStatusFilter.Finished)
+            var result = _tournamentService.Get()
+                .Where(tr => tr.State == TournamentState.finished)
                 .ToList()
                 .Select(t => TournamentViewModel.Map(t));
 

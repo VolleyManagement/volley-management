@@ -42,7 +42,6 @@
             IsDatesValid(tournamentToCreate);
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
-
         }
 
         /// <summary>
@@ -99,47 +98,46 @@
         /// <param name="tournament">Tournament to check</param>
         private void IsDatesValid(Tournament tournament)
         {
-            int minimumCountOfMonth = 3;
-
             // if registration dates don't go one after another 
             if (tournament.RegistrationStart >= tournament.EndDate)
             {
-                throw new TournamentValidationException("Неверные даты регистрации турнира");
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationDates);
             }
 
             // if start tournaments dates don't go one after another
             if (tournament.StartDate >= tournament.EndDate)
             {
-                throw new TournamentValidationException("Неверные даты начала турнира");
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongStartTournamentDates);
             }
 
             // if transfer dates don't go one after another 
             if (tournament.TransferEnd >= tournament.TransferStart)
             {
-                throw new TournamentValidationException("Неверный даты трансфера турнира");
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongStartTransferDates);
             }
 
             // registration period is less then 3 month
-            if (tournament.RegistrationStart.Month - tournament.RegistrationEnd.Month < minimumCountOfMonth)
+            if (tournament.RegistrationStart.Month - tournament.RegistrationEnd.Month < VolleyManagement.Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH)
             {
-                throw new TournamentValidationException("Регистрация турнира менее чем три месяца");
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationDates);
             }
 
             // registration goes after tournament has started
             if (tournament.RegistrationEnd > tournament.StartDate)
             {
-                throw new TournamentValidationException("Регистрация турнира проводится после начала турнира");
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.InvelidPeriodTournament);
             }
 
             // transfer starts before tournament has started 
             if (tournament.StartDate >= tournament.TransferStart)
             {
-                throw new TournamentValidationException("Трансфер начался раньше чем турнир");
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.InvalidPeriodTransfer);
             }
 
+            // fransfer end before tournament end date
             if (tournament.TransferEnd >= tournament.EndDate)
             {
-                throw new TournamentValidationException("Трансфер не закончился до того, как хакончился турнир");
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.InvalidTransferEndpoint);
             }
         }
     }

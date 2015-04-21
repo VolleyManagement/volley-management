@@ -35,9 +35,15 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
+            try
+            {
                 var tournaments = this._tournamentService.Get().ToList();
-
-            return View(tournaments);        
+                return View(tournaments);
+            }
+            catch (Exception)
+            {
+                return this.HttpNotFound();
+            }
         }
 
         /// <summary>
@@ -87,7 +93,7 @@
 
                 return this.View(tournamentViewModel);
             }
-            catch (TournamentValidationException )
+            catch (TournamentValidationException)
             {
                 this.ModelState.AddModelError(UNIQUE_NAME_KEY, "Имя турнира должно быть уникальным");
                 return this.View(tournamentViewModel);

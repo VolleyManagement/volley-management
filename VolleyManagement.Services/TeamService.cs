@@ -21,13 +21,17 @@
         /// </summary>
         private readonly ITeamRepository _teamRepository;
 
+        private readonly IPlayerService _playerService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamService"/> class.
         /// </summary>
         /// <param name="teamRepository">The team repository</param>
-        public TeamService(ITeamRepository teamRepository)
+        /// <param name="playerService">Service which provide basic operation with player repository</param>
+        public TeamService(ITeamRepository teamRepository, IPlayerService playerService)
         {
             _teamRepository = teamRepository;
+            _playerService = playerService;
         }
 
         /// <summary>
@@ -106,7 +110,7 @@
         /// <returns>Team's captain</returns>
         public Domain.Players.Player GetTeamCaptain(Team team)
         {
-            throw new NotImplementedException();
+            return _playerService.Get(team.CaptainId);
         }
 
         /// <summary>
@@ -116,7 +120,7 @@
         /// <returns>Collection of team's players</returns>
         public IEnumerable<Player> GetTeamRoster(Team team)
         {
-            throw new NotImplementedException();
+            return _playerService.Get().Where(p => p.TeamId == team.Id).ToList();
         }
     }
 }

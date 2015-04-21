@@ -44,11 +44,11 @@
         /// class with message and inner exception
         /// </summary>
         /// <param name="message">Message text</param>
-        /// <param name="errorId">Id related to error occuring</param>
-        public InvalidKeyValueException(string message, int errorId) :
+        /// <param name="entityId">Id related to error occuring</param>
+        public InvalidKeyValueException(string message, int entityId) :
             base(message)
         {
-            SetRelatedErrorId(errorId);
+            AddEntityIdToData(entityId);
         }
 
         /// <summary>
@@ -56,17 +56,17 @@
         /// class with message and inner exception
         /// </summary>
         /// <param name="message">Message text</param>
-        /// <param name="errorId">Id related to error occuring</param>
+        /// <param name="entityId">Id related to error occuring</param>
         /// <param name="innerException">Original exception</param>
-        public InvalidKeyValueException(string message, int errorId, Exception innerException) :
+        public InvalidKeyValueException(string message, int entityId, Exception innerException) :
             base(message, innerException)
         {
-            SetRelatedErrorId(errorId);
+            AddEntityIdToData(entityId);
         }
 
-        private void SetRelatedErrorId(int errorId)
+        private void AddEntityIdToData(int entityId)
         {
-            this.Data[Constants.ENTITY_ID_KEY] = errorId;
+            this.Data[Constants.ENTITY_ID_KEY] = entityId;
         }
     }
 }

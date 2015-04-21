@@ -33,6 +33,7 @@
 
             set
             {
+                // TODO: add validation
                 _startDate = value;
             }
         }

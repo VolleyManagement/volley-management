@@ -121,6 +121,11 @@
         /// <returns>Player's team</returns>
         public Team GetPlayerTeam(Player player)
         {
+            if (player.TeamId == null)
+            {
+                return null;
+            }
+            
             try
             {
                 return _teamRepository.FindWhere(t => t.Id == player.TeamId).Single();

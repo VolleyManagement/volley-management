@@ -35,9 +35,9 @@
             builder.EnableLowerCamelCase();
 
             builder.EntitySet<TournamentViewModel>("Tournaments");
-            var players = builder.EntitySet<PlayerViewModel>("Players");
-            //players.EntityType.ContainsOptional<TeamViewModel>(p => p.Id);
             builder.EntitySet<TeamViewModel>("Teams");
+            var players = builder.EntitySet<PlayerViewModel>("Players");
+            players.EntityType.ContainsOptional<TeamViewModel>(p => p.Team);
 
 
             config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());

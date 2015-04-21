@@ -5,7 +5,6 @@
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.Teams;
     using VolleyManagement.Domain.Players;
-    using Services = VolleyManagement.Services;
     using VolleyManagement.UI.App_GlobalResources;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
 
@@ -98,6 +97,16 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
+            int? teamId;
+            if (Team == null)
+            {
+                teamId = null;
+            }
+            else
+            {
+                teamId = this.Team.Id;
+            }
+
             return new Player
             {
                 Id = this.Id,
@@ -106,7 +115,7 @@
                 BirthYear = this.BirthYear,
                 Height = this.Height,
                 Weight = this.Weight,
-                TeamId = this.Team.Id
+                TeamId = teamId
             };
         }
         #endregion

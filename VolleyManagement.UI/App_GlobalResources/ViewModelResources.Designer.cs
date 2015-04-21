@@ -270,9 +270,9 @@ namespace VolleyManagement.UI.App_GlobalResources {
         /// <summary>
         ///   Looks up a localized string similar to Достижения.
         /// </summary>
-        public static string TeamAchivements {
+        public static string TeamAchievements {
             get {
-                return ResourceManager.GetString("TeamAchivements", resourceCulture);
+                return ResourceManager.GetString("TeamAchievements", resourceCulture);
             }
         }
         

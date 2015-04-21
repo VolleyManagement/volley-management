@@ -57,5 +57,18 @@
             team.Id = teamToCreate.Id;
             return Created(team);
         }
+
+        /// <summary>
+        /// Gets teams.
+        /// </summary>
+        /// <returns>Team list. </returns>
+        [EnableQuery]
+        public IQueryable<TeamViewModel> GetTeams()
+        {
+            return _teamService.Get()
+                                .ToList()
+                                .Select(t => TeamViewModel.Map(t))
+                                .AsQueryable();
+        }
     }
 }

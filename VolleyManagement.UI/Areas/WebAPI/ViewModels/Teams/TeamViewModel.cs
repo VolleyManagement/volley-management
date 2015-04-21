@@ -54,6 +54,11 @@
         /// <returns> View model object </returns>
         public static TeamViewModel Map(Team team)
         {
+            if (team == null)
+            {
+                return null;
+            }
+
             var teamViewModel = new TeamViewModel
             {
                 Id = team.Id,

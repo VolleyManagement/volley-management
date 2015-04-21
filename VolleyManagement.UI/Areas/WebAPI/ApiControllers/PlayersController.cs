@@ -59,7 +59,7 @@
         {
             return _playerService.Get()
                                 .ToList()
-                                .Select(t => PlayerViewModel.Map(t))
+                                .Select(p => PlayerViewModel.Map(p, _playerService.GetPlayerTeam(p)))
                                 .AsQueryable();
         }
 
@@ -111,7 +111,7 @@
             return SingleResult.Create(_playerService.Get()
                                                          .Where(p => p.Id == key)
                                                          .ToList()
-                                                         .Select(p => PlayerViewModel.Map(p))
+                                                         .Select(p => PlayerViewModel.Map(p, _playerService.GetPlayerTeam(p)))
                                                          .AsQueryable());
         }
 

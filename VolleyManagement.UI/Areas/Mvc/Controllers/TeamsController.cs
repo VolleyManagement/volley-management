@@ -44,7 +44,7 @@
         }
 
         /// <summary>
-        /// Create player action GET       
+        /// Create team action GET       
         /// </summary>
         /// <returns>Empty team view model</returns>
         public ActionResult Create()

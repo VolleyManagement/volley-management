@@ -94,16 +94,10 @@
             {
                 Id = this.Id,
                 Name = this.Name,
-                Captain = this.Captain.ToDomain(),
+                CaptainId = this.Captain.Id,
                 Coach = this.Coach,
                 Achievements = this.Achievements    
-            };
-            domainTeam.Roster = new List<Player>();
-            foreach (var player in this.Roster)
-            {
-                ((List<Player>)domainTeam.Roster).Add(player.ToDomain());
-            }
-            
+            };            
             return domainTeam;
         }
         #endregion

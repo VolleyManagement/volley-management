@@ -2,7 +2,6 @@
 {
     using System;
 using System.Collections.Generic;
-using VolleyManagement.Domain.Players;
 using VolleyManagement.Domain.Properties;
 
     /// <summary>
@@ -13,8 +12,7 @@ using VolleyManagement.Domain.Properties;
         private string _name;
         private string _coach;
         private string _achievements;
-        private Player _captain;
-        private IEnumerable<Player> _roster;
+        private int _captainId;
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -38,7 +36,7 @@ using VolleyManagement.Domain.Properties;
                 _name = value;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets a value indicating where Coach.
         /// </summary>
@@ -77,34 +75,17 @@ using VolleyManagement.Domain.Properties;
         /// Gets or sets a value indicating where Captain.
         /// </summary>
         /// <value>Captain of the team</value>
-        public Player Captain
+        public int CaptainId
         {
             get
             {
-                return _captain;
+                return _captainId;
             }
 
             set
             {
-                _captain = value;
+                _captainId = value;
             }
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating where Roster.
-        /// </summary>
-        /// <value>Roster of the team</value>
-        public IEnumerable<Player> Roster
-        {
-            get
-            {
-                return _roster;
-            }
-
-            set
-            {
-                _roster = value;
-            }
-        } 
     }
 }

@@ -23,7 +23,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
-        /// <param name="playerRepository">The user repository</param>
+        /// <param name="playerRepository">The player repository</param>
         public PlayerService(IPlayerRepository playerRepository)
         {
             _playerRepository = playerRepository;
@@ -83,6 +83,10 @@
                 throw new MissingEntityException("Player with specified Id can not be found", ex);
             }
 
+            // TODO: Handle cases: 
+            // 1. teamId isn't exist
+            // 2. after updating some team will lose required field captainId  
+
             _playerRepository.UnitOfWork.Commit();
         }
 
@@ -102,6 +106,8 @@
                 var serviceException = new MissingEntityException("Player with specified Id can not be found", ex);
                 throw serviceException;
             }
+
+            // TODO: Handle case if after deleting some team will lose required field captainId 
         }
     }
 }

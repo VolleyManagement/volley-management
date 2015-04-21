@@ -7,6 +7,7 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
+    using VolleyManagement.Domain.Teams;
 
     using DAL = VolleyManagement.Dal.Contracts;
 
@@ -108,6 +109,16 @@
             }
 
             // TODO: Handle case if after deleting some team will lose required field captainId 
+        }
+        
+        /// <summary>
+        /// Find team of specified player
+        /// </summary>
+        /// <param name="player">Player which team should be found</param>
+        /// <returns>Player's team</returns>
+        public Team GetPlayerTeam(Player player)
+        {
+            throw new NotImplementedException();
         }
     }
 }

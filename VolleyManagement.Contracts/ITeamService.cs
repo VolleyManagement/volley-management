@@ -1,6 +1,8 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Linq;
+    using System.Collections.Generic;
+    using Domain.Players;    
     using Domain.Teams;
 
     /// <summary>
@@ -25,5 +27,19 @@
         /// </summary>
         /// <param name="id">Team id.</param>
         void Delete(int id);
+
+        /// <summary>
+        /// Find captain of specified team
+        /// </summary>
+        /// <param name="team">Team which captain should be found</param>
+        /// <returns>Team's captain</returns>
+        Player GetTeamCaptain(Team team);
+
+        /// <summary>
+        /// Find players of specified team
+        /// </summary>
+        /// <param name="team">Team which players should be found</param>
+        /// <returns>Collection of team's players</returns>
+        IEnumerable<Player> GetTeamRoster(Team team);
     }
 }

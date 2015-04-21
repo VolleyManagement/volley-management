@@ -1,13 +1,14 @@
 ﻿namespace VolleyManagement.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.Exceptions;
+    using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
-
     using DAL = VolleyManagement.Dal.Contracts;
 
     /// <summary>
@@ -53,6 +54,8 @@
                 throw new MissingEntityException(ex.Message, ex);
             }
 
+            // TODO: update players teamId
+
             _teamRepository.UnitOfWork.Commit();
         }
 
@@ -92,6 +95,28 @@
                 var serviceException = new MissingEntityException("Team with specified Id can not be found", ex);
                 throw serviceException;
             }
+            
+            // TODO: update players teamId
+        }
+
+        /// <summary>
+        /// Find captain of specified team
+        /// </summary>
+        /// <param name="team">Team which captain should be found</param>
+        /// <returns>Team's captain</returns>
+        public Domain.Players.Player GetTeamCaptain(Team team)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Find players of specified team
+        /// </summary>
+        /// <param name="team">Team which players should be found</param>
+        /// <returns>Collection of team's players</returns>
+        public IEnumerable<Player> GetTeamRoster(Team team)
+        {
+            throw new NotImplementedException();
         }
     }
 }

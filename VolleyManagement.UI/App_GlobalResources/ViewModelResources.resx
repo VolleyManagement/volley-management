@@ -120,6 +120,9 @@
   <data name="ConfirmUserPassword" xml:space="preserve">
     <value>FixMe: Confirm password</value>
   </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>Дата окончания турнира</value>
+  </data>
   <data name="FieldRange" xml:space="preserve">
     <value>Поле {0} должно быть заполнено в диапазоне {1} - {2}</value>
   </data>
@@ -186,6 +189,15 @@
   <data name="PlayerWeightFieldRange" xml:space="preserve">
     <value>Указан неверный вес</value>
   </data>
+  <data name="RegistrationEnd" xml:space="preserve">
+    <value>Конец регистрации на турнир</value>
+  </data>
+  <data name="RegistrationStart" xml:space="preserve">
+    <value>Начало регистрации на турнир</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Дата начала турнира</value>
+  </data>
   <data name="TournamentDescription" xml:space="preserve">
     <value>Описание</value>
   </data>
@@ -200,6 +212,12 @@
   </data>
   <data name="TournamentSeason" xml:space="preserve">
     <value>Сезон</value>
+  </data>
+  <data name="TransferEnd" xml:space="preserve">
+    <value>Дата окончания трансферного окна</value>
+  </data>
+  <data name="TransferStart" xml:space="preserve">
+    <value>Дата начала трансферного окна</value>
   </data>
   <data name="UserCellPhone" xml:space="preserve">
     <value>Телефон</value>

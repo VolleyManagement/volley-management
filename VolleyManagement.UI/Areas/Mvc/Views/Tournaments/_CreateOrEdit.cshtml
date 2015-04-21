@@ -44,3 +44,50 @@
     @Html.ValidationMessageFor(model => model.RegulationsLink)
 </div>
 
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.StartDate)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.StartDate)
+    @Html.ValidationMessageFor(model => model.StartDate)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.EndDate)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.EndDate)
+    @Html.ValidationMessageFor(model => model.EndDate)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.RegistrationStart)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.RegistrationStart)
+    @Html.ValidationMessageFor(model => model.RegistrationStart)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.RegistrationEnd)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.RegistrationEnd)
+    @Html.ValidationMessageFor(model => model.RegistrationEnd)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.TransferStart)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.TransferStart, "")
+    @Html.ValidationMessageFor(model => model.TransferStart)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.TransferEnd)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.TransferEnd)
+    @Html.ValidationMessageFor(model => model.TransferEnd)
+</div>
+
+
+
+

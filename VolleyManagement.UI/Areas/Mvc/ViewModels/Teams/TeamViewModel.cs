@@ -63,7 +63,7 @@
         /// </summary>
         /// <param name="team"> Domain object </param>
         /// <returns> View model object </returns>
-        public static TeamViewModel Map(Team team)
+        public static TeamViewModel Map(Team team, Player captain, IEnumerable<Player> roster)
         {
             var teamViewModel = new TeamViewModel
             {
@@ -73,10 +73,10 @@
                 Achievements = team.Achievements                
             };
 
-            teamViewModel.Captain = PlayerNameViewModel.Map(team.Captain);
+            teamViewModel.Captain = PlayerNameViewModel.Map(captain);
 
             teamViewModel.Roster = new List<PlayerNameViewModel>();
-            foreach (var player in team.Roster)
+            foreach (var player in roster)
             {
                 ((List<PlayerNameViewModel>)teamViewModel.Roster).Add(PlayerNameViewModel.Map(player));
             }

@@ -1,0 +1,62 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Name)
+</div>
+<div class="editor-label">
+    @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Coach)
+</div>
+<div class="editor-label">
+    @Html.EditorFor(model => model.Coach)
+    @Html.ValidationMessageFor(model => model.Coach)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Captain)
+</div>
+
+<div class="editor-label">
+    @Html.EditorFor(model => model.Captain)
+    @*on editor field should be added choosing player window*@
+    @Html.ValidationMessageFor(model => model.Captain)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Achievements)
+</div>
+<div class="editor-label">
+    @Html.EditorFor(model => model.Achievements)
+    @Html.ValidationMessageFor(model => model.Achievements)
+</div>
+
+<div id="RosterPlayers">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)
+            </th>
+            <th class="hidden">
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Roster)
+        {
+            <tr>
+                <td>
+                    @item.FullName;
+                </td>
+                <td class ="hidden">
+                    @item.Id;
+                </td>
+            </tr>
+        }
+
+    </table>
+    @*here should be list with player and choosing player window*@
+</div>
+

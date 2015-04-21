@@ -186,6 +186,8 @@
     <Content Include="Areas\Mvc\Views\Players\Delete.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\Teams\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Teams\_CreateEdit.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -207,6 +209,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PlayerViews.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TeamViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TeamViews.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\TournamentViews.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -308,6 +315,10 @@
     <Content Include="App_GlobalResources\PlayerViews.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>PlayerViews.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="App_GlobalResources\TeamViews.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TeamViews.Designer.cs</LastGenOutput>
     </Content>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

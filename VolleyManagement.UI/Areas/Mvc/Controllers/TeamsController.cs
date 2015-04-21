@@ -52,5 +52,24 @@
             var teamViewModel = new TeamViewModel();
             return this.View(teamViewModel);
         }
+
+        /// <summary>
+        /// Create team action POST
+        /// </summary>
+        /// <param name="teamViewModel">Team view model</param>
+        /// <returns>Redirect to team index page</returns>
+        [HttpPost]
+        public ActionResult Create(TeamViewModel teamViewModel)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(teamViewModel);
+            }
+
+            var domainTeam = teamViewModel.ToDomain();
+            this._teamService.Create(domainTeam);
+            teamViewModel.Id = domainTeam.Id;
+            return this.RedirectToAction("Index");
+        }
     }
 }

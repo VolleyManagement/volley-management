@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
 
@@ -26,7 +27,13 @@
                 Description = "Description 1",
                 Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
-                RegulationsLink = "http://default.com"
+                RegulationsLink = "http://default.com",
+                RegistrationStart = new DateTime(2015, 02, 20),
+                RegistrationEnd = new DateTime(2015, 06, 20),
+                StartDate = new DateTime(2015, 06, 30),
+                EndDate = new DateTime(2015, 11, 30),
+                TransferStart = new DateTime(2015, 08, 20),
+                TransferEnd = new DateTime(2015, 09, 10)
             };
         }
 
@@ -95,6 +102,8 @@
             this._tournament.RegulationsLink = regulationsLink;
             return this;
         }
+
+
 
         /// <summary>
         /// Builds test tournament

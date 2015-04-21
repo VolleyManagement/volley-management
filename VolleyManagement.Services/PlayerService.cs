@@ -83,6 +83,10 @@
                 throw new MissingEntityException("Player with specified Id can not be found", ex);
             }
 
+            // TODO: Handle cases: 
+            // 1. teamId isn't exist
+            // 2. after updating some team will lose required field captainId  
+
             _playerRepository.UnitOfWork.Commit();
         }
 
@@ -102,6 +106,8 @@
                 var serviceException = new MissingEntityException("Player with specified Id can not be found", ex);
                 throw serviceException;
             }
+
+            // TODO: Handle case if after deleting some team will lose required field captainId 
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data.Entity.Core.Objects;
+    using System.Transactions;
 
     /// <summary>
     /// Describe methods to work with the store.
@@ -21,7 +22,7 @@
         /// <summary>
         /// Begin transaction with database
         /// </summary>
-        void BeginTransaction();
+        TransactionScope BeginTransaction();
 
         /// <summary>
         /// Commit changes in current transaction

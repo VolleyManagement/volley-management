@@ -35,12 +35,9 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-                var tournaments = this._tournamentService.Get()
-                                                         .ToList();
-                                                         //.Select(t => TournamentViewModel.Map(t))
-                                                         //.AsQueryable();
-                return View(tournaments);        
-            
+                var tournaments = this._tournamentService.Get().ToList();
+
+            return View(tournaments);        
         }
 
         /// <summary>

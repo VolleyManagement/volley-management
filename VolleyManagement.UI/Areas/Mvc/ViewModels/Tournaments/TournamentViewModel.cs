@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.App_GlobalResources;

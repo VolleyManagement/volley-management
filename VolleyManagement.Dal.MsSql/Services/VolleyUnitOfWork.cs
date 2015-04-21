@@ -74,5 +74,10 @@
         {
             _transactionScope.Complete();
         }
+
+        TransactionScope IUnitOfWork.BeginTransaction()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

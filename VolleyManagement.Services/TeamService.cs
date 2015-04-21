@@ -59,7 +59,6 @@
             }
 
             // TODO: update players teamId
-
             _teamRepository.UnitOfWork.Commit();
         }
 
@@ -99,7 +98,7 @@
                 var serviceException = new MissingEntityException("Team with specified Id can not be found", ex);
                 throw serviceException;
             }
-            
+
             // TODO: update players teamId
         }
 

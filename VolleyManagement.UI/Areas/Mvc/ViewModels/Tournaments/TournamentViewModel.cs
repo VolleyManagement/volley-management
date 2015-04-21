@@ -91,37 +91,41 @@
         /// Start of a tournament
         /// </summary>
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "StartDate", ResourceType = typeof(ViewModelResources))]
         public DateTime StartDate { get; set; }
 
         /// <summary>
         /// End of a tournament
         /// </summary>
+        [DataType(DataType.Date)]
         [Display(Name = "EndDate", ResourceType = typeof(ViewModelResources))]
         public DateTime EndDate { get; set; }
 
         /// <summary>
         /// Start of a transfer period
         /// </summary>
+        [DataType(DataType.Date)]
         [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
         public DateTime TransferStart { get; set; }
 
         /// <summary>
         /// End of a transfer period
         /// </summary>
+        [DataType(DataType.Date)]
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
         public DateTime TransferEnd { get; set; }
 
         /// <summary>
         /// Start of a tournament registration
         /// </summary>
+        [DataType(DataType.Date)]
         [Display(Name = "RegistrationStart", ResourceType = typeof(ViewModelResources))]
         public DateTime RegistrationStart { get; set; }
 
         /// <summary>
         /// End of a tournament registration
         /// </summary>
+        [DataType(DataType.Date)]
         [Display(Name = "RegistrationEnd", ResourceType = typeof(ViewModelResources))]
         public DateTime RegistrationEnd { get; set; }
 

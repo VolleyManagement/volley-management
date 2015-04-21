@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Contracts
 {
-    using System.Linq;
     using System.Collections.Generic;
-    using Domain.Players;    
+    using System.Linq;
+    using Domain.Players;
     using Domain.Teams;
 
     /// <summary>

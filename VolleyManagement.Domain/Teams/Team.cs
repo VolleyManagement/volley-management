@@ -36,7 +36,7 @@ using VolleyManagement.Domain.Properties;
                 _name = value;
             }
         }
-        
+
         /// <summary>
         /// Gets or sets a value indicating where Coach.
         /// </summary>
@@ -86,6 +86,6 @@ using VolleyManagement.Domain.Properties;
             {
                 _captainId = value;
             }
-        } 
+        }
     }
 }

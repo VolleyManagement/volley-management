@@ -95,7 +95,7 @@
                 var serviceException = new MissingEntityException("Team with specified Id can not be found", ex);
                 throw serviceException;
             }
-            
+
             // TODO: update players teamId
         }
 

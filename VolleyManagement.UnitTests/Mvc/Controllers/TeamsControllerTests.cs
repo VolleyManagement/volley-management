@@ -19,7 +19,6 @@
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
-    //using VolleyManagement.UnitTests.Services.TeamService;
 
     /// <summary>
     /// Tests for MVC TeamsController class.
@@ -69,6 +68,7 @@
         {
             // Arrange
             _teamServiceMock.Setup(ps => ps.Delete(TEAM_UNEXISTING_ID_TO_DELETE)).Throws<MissingEntityException>();
+
             // Act
             var sut = this._kernel.Get<TeamsController>();
             var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE) as JsonResult;

@@ -44,7 +44,7 @@
         /// class with message and inner exception
         /// </summary>
         /// <param name="message">Message text</param>
-        /// <param name="errorId">Id related to error occuring</param>
+        /// <param name="errorId">Id related to error occurring</param>
         public InvalidKeyValueException(string message, int errorId) :
             base(message)
         {
@@ -56,7 +56,7 @@
         /// class with message and inner exception
         /// </summary>
         /// <param name="message">Message text</param>
-        /// <param name="errorId">Id related to error occuring</param>
+        /// <param name="errorId">Id related to error occurring</param>
         /// <param name="innerException">Original exception</param>
         public InvalidKeyValueException(string message, int errorId, Exception innerException) :
             base(message, innerException)

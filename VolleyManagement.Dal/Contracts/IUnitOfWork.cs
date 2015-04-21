@@ -27,6 +27,5 @@
         /// Commit changes in current transaction
         /// </summary>
         void CommitTransaction();
-
     }
 }

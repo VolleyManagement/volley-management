@@ -7,6 +7,7 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
+    using VolleyManagement.Domain.Teams;
 
     using DAL = VolleyManagement.Dal.Contracts;
 
@@ -23,7 +24,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
-        /// <param name="playerRepository">The user repository</param>
+        /// <param name="playerRepository">The player repository</param>
         public PlayerService(IPlayerRepository playerRepository)
         {
             _playerRepository = playerRepository;
@@ -83,6 +84,10 @@
                 throw new MissingEntityException("Player with specified Id can not be found", ex);
             }
 
+            // TODO: Handle cases: 
+            // 1. teamId isn't exist
+            // 2. after updating some team will lose required field captainId  
+
             _playerRepository.UnitOfWork.Commit();
         }
 
@@ -102,6 +107,18 @@
                 var serviceException = new MissingEntityException("Player with specified Id can not be found", ex);
                 throw serviceException;
             }
+
+            // TODO: Handle case if after deleting some team will lose required field captainId 
+        }
+        
+        /// <summary>
+        /// Find team of specified player
+        /// </summary>
+        /// <param name="player">Player which team should be found</param>
+        /// <returns>Player's team</returns>
+        public Team GetPlayerTeam(Player player)
+        {
+            throw new NotImplementedException();
         }
     }
 }

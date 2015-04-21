@@ -7,7 +7,7 @@
     using System.Data.Entity.Spatial;
 
     /// <summary>
-    /// DAL user model
+    /// DAL player model
     /// </summary>
     [Table("Players")]
     public partial class Player
@@ -45,5 +45,10 @@
         /// Gets or sets weight of player
         /// </summary>
         public int? Weight { get; set; }
+
+        /// <summary>
+        /// Gets or sets teamId of player
+        /// </summary>
+        public int? TeamId { get; set; }
     }
 }

@@ -45,8 +45,25 @@ CREATE TABLE dbo.Players(
     CONSTRAINT PK_Players_Id PRIMARY KEY CLUSTERED,
   FirstName nvarchar(60) NOT NULL,
   LastName nvarchar(60) NOT NULL,
+  TeamId int NULL,
   BirthYear int NULL,
   Height int NULL,
   Weight int NULL
 );
+GO
+
+CREATE TABLE dbo.Teams(
+  Id int identity(1, 1) NOT NULL
+    CONSTRAINT PK_Teams_Id PRIMARY KEY CLUSTERED,
+  Name nvarchar(30) NOT NULL,     
+  CaptainId int NOT NULL
+    CONSTRAINT FK_Teams_CaptainId_Players_Id FOREIGN KEY REFERENCES dbo.Players(Id),
+  Coach nvarchar(60) NULL, 
+  Achievements nvarchar(4000) NULL
+);
+GO
+
+ALTER TABLE dbo.Players
+ADD CONSTRAINT FK_Players_TeamId_Teams_Id 
+FOREIGN KEY (TeamId) REFERENCES dbo.Teams(Id);	 
 GO

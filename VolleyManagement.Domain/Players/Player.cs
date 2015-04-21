@@ -2,6 +2,7 @@
 {
     using System;
     using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.Teams;
 
     /// <summary>
     /// Player domain class.
@@ -13,6 +14,7 @@
         private int? _birthYear;
         private int? _height;
         private int? _weight;
+        private int? _teamId;
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -127,6 +129,23 @@
                 }
 
                 _weight = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating where Team.
+        /// </summary>
+        /// <value>The player team.</value>
+        public int? TeamId
+        {
+            get
+            {
+                return _teamId;
+            }
+
+            set
+            {
+                _teamId = value;
             }
         }
     }

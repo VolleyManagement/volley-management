@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using Domain.Players;
+    using Domain.Teams;
 
     /// <summary>
     /// Interface for PlayerService.
@@ -38,5 +39,12 @@
         /// </summary>
         /// <param name="id">Player id.</param>
         void Delete(int id);
+
+        /// <summary>
+        /// Find team of specified player
+        /// </summary>
+        /// <param name="player">Player which team should be found</param>
+        /// <returns>Player's team</returns>
+        Team GetPlayerTeam(Player player);
     }
 }

@@ -3,6 +3,7 @@
     using System.Data.Entity.Core;
     using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
+    using System.Transactions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.Exceptions;
 
@@ -15,6 +16,8 @@
         /// Context of the data source.
         /// </summary>
         private readonly ObjectContext _context;
+
+        private TransactionScope _transactionScope;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VolleyUnitOfWork"/> class.
@@ -54,6 +57,22 @@
         public void Dispose()
         {
             _context.Dispose();
+        }
+
+        /// <summary>
+        /// Begin transaction with database
+        /// </summary>
+        public void BeginTransaction()
+        {
+            _transactionScope = new TransactionScope();
+        }
+
+        /// <summary>
+        /// Commit changes in current transaction
+        /// </summary>
+        public void CommitTransaction()
+        {
+            _transactionScope.Complete();
         }
     }
 }

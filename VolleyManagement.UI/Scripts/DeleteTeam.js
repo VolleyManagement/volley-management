@@ -1,31 +1,32 @@
-﻿function OnDelete(e) {
-    var teamId = e.id;
-    if (e.HasError)
+﻿$(document).ready(function ()
+{
+    $('.delete').click(OnDelete);
+});
+function OnDelete(e)
+{
+    var teamId = e.target.id;
+    var message = document.getElementById("DeleteConfirmationMessage").getAttribute("value");
+    var teamName = document.getElementById("TeamName " + teamId).innerHTML.trim();
+    var confirmation = confirm(message + ' "' + teamName + '" ?');
+    if (confirmation)
     {
-        $.alert(e.Message);
-        return;
-    }
-    else
-    {
-        var teamName = e.Message;
-        var message = document.getElementById("DeleteConfirmationMessage").getAttribute("value");
-        var flag = confirm(message + ' ' + teamName + ' ?');
-        if (flag) {
-            $.ajax({
-                url: 'Teams/Delete',
-                type: 'POST',
-                data: { id: teamId, confirm: true },
-                dataType: 'json',
-                success: function (resultJson) {
-                    alert(resultJson.Message);
-                    if (resultJson.HasDeleted) {
-                        $("#" + teamId).parent().parent().remove();
-                    } else {
-                        window.location.pathname = "Mvc/Teams";
-                    }
+        $.ajax({
+            url: 'Teams/Delete',
+            type: 'POST',
+            data: { id: teamId },
+            dataType: 'json',
+            success: function (resultJson)
+            {
+                alert(resultJson.Message);
+                if (resultJson.HasDeleted)
+                {
+                    $("#" + teamId).parent().parent().remove();
+                } else
+                {
+                    window.location.pathname = "Mvc/Teams";
                 }
-            });
-        }
-        return false;
+            }
+        });
     }
+    return false;
 }

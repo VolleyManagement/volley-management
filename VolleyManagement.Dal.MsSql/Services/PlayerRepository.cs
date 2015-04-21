@@ -118,6 +118,7 @@
             playerToUpdate.BirthYear = oldEntity.BirthYear;
             playerToUpdate.Height = oldEntity.Height;
             playerToUpdate.Weight = oldEntity.Weight;
+            playerToUpdate.TeamId = oldEntity.TeamId;
         }
 
         /// <summary>

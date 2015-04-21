@@ -54,6 +54,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,9 +67,11 @@
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PlayerRepository.cs" />
+    <Compile Include="Services\TeamRepository.cs" />
     <Compile Include="Services\TournamentRepository.cs" />
     <Compile Include="Services\UserRepository.cs" />
     <Compile Include="Services\VolleyUnitOfWork.cs" />
+    <Compile Include="Team.cs" />
     <Compile Include="Tournament.cs" />
     <Compile Include="User.cs" />
     <Compile Include="VolleyManagementContext.cs" />

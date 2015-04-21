@@ -38,7 +38,7 @@
             this.List = new List<PlayerNameViewModel>();
             foreach(PlayerViewModel player in listOfPlayers)
             {
-                this.List.Add(new PlayerNameViewModel() { FullName = player.LastName + " " + player.FirstName, Id = player.Id });
+                this.List.Add(PlayerNameViewModel.Map(player));
             }
         }
 

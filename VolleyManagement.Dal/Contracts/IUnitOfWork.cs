@@ -17,5 +17,16 @@
         /// Commits all the changes the store.
         /// </summary>
         void Commit();
+
+        /// <summary>
+        /// Begin transaction with database
+        /// </summary>
+        void BeginTransaction();
+
+        /// <summary>
+        /// Commit changes in current transaction
+        /// </summary>
+        void CommitTransaction();
+
     }
 }

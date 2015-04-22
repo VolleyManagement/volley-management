@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Transactions;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
@@ -21,13 +22,17 @@
         /// </summary>
         private readonly ITeamRepository _teamRepository;
 
+        private readonly IPlayerService _playerService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamService"/> class.
         /// </summary>
         /// <param name="teamRepository">The team repository</param>
-        public TeamService(ITeamRepository teamRepository)
+        /// <param name="playerService">Service which provide basic operation with player repository</param>
+        public TeamService(ITeamRepository teamRepository, IPlayerService playerService)
         {
             _teamRepository = teamRepository;
+            _playerService = playerService;
         }
 
         /// <summary>
@@ -47,16 +52,16 @@
         {
             try
             {
-                _teamRepository.Add(teamToCreate);
+                using (TransactionScope transaction = new TransactionScope())
+                {
+                    _teamRepository.Add(teamToCreate);
+                    SetTeamForRosterPlayer(teamToCreate.CaptainId, teamToCreate.Id);
+                }
             }
             catch (InvalidKeyValueException ex)
             {
                 throw new MissingEntityException(ex.Message, ex);
             }
-
-            // TODO: update players teamId
-
-            _teamRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -87,16 +92,25 @@
         {
             try
             {
-                _teamRepository.Remove(id);
-                _teamRepository.UnitOfWork.Commit();
+                using (TransactionScope transaction = new TransactionScope())
+                {
+                    IEnumerable<Player> roster = GetTeamRoster(id);
+                    foreach (var player in roster)
+                    {
+                        SetTeamForRosterPlayer(player.Id, null);
+                    }
+
+                    _teamRepository.Remove(id);
+                    _teamRepository.UnitOfWork.Commit();
+
+                    transaction.Complete();
+                }
             }
             catch (InvalidKeyValueException ex)
             {
                 var serviceException = new MissingEntityException("Team with specified Id can not be found", ex);
                 throw serviceException;
             }
-            
-            // TODO: update players teamId
         }
 
         /// <summary>
@@ -106,7 +120,7 @@
         /// <returns>Team's captain</returns>
         public Domain.Players.Player GetTeamCaptain(Team team)
         {
-            throw new NotImplementedException();
+            return _playerService.Get(team.CaptainId);
         }
 
         /// <summary>
@@ -116,7 +130,19 @@
         /// <returns>Collection of team's players</returns>
         public IEnumerable<Player> GetTeamRoster(Team team)
         {
-            throw new NotImplementedException();
+            return GetTeamRoster(team.Id);
+        }
+
+        private IEnumerable<Player> GetTeamRoster(int teamId)
+        {
+            return _playerService.Get().Where(p => p.TeamId == teamId).ToList();
+        }
+
+        private void SetTeamForRosterPlayer(int playerId, int? teamId)
+        {
+            Player player = _playerService.Get().Where(p => p.Id == playerId).Single();
+            player.TeamId = teamId;
+            _playerService.Edit(player);
         }
     }
 }

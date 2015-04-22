@@ -21,13 +21,17 @@
         /// </summary>
         private readonly IPlayerRepository _playerRepository;
 
+        private readonly ITeamRepository _teamRepository;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
         /// <param name="playerRepository">The player repository</param>
-        public PlayerService(IPlayerRepository playerRepository)
+        /// <param name="teamRepository">The team repository</param>
+        public PlayerService(IPlayerRepository playerRepository, ITeamRepository teamRepository)
         {
             _playerRepository = playerRepository;
+            _teamRepository = teamRepository;
         }
 
         /// <summary>
@@ -84,10 +88,9 @@
                 throw new MissingEntityException("Player with specified Id can not be found", ex);
             }
 
-            // TODO: Handle cases: 
+            // TODO: Handle cases:
             // 1. teamId isn't exist
-            // 2. after updating some team will lose required field captainId  
-
+            // 2. after updating some team will lose required field captainId
             _playerRepository.UnitOfWork.Commit();
         }
 
@@ -108,9 +111,9 @@
                 throw serviceException;
             }
 
-            // TODO: Handle case if after deleting some team will lose required field captainId 
+            // TODO: Handle case if after deleting some team will lose required field captainId
         }
-        
+
         /// <summary>
         /// Find team of specified player
         /// </summary>
@@ -118,7 +121,19 @@
         /// <returns>Player's team</returns>
         public Team GetPlayerTeam(Player player)
         {
-            throw new NotImplementedException();
+            if (player.TeamId == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                return _teamRepository.FindWhere(t => t.Id == player.TeamId).Single();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new MissingEntityException("Team with specified Id can not be found", ex);
+            }
         }
     }
 }

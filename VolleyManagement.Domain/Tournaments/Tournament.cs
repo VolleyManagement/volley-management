@@ -2,7 +2,7 @@
 {
     using System;
     using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.Providers;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
 
     /// <summary>
     /// Represents tournament state

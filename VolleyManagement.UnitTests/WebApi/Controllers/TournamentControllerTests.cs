@@ -18,8 +18,8 @@
     using Ninject;
     using Services.TournamentService;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain;
-    using VolleyManagement.Domain.Providers;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
@@ -433,37 +433,21 @@
         }
 
         /// <summary>
-        /// GetGetActual method test. The method should return collection of
-        /// current and upcoming tournaments
+        /// GetActual method test. The method should return json collection
         /// </summary>
         [TestMethod]
-        public void GetGetActual_TournamentsCurrentAndUpcomingRequest_CorrectCollectionsReturned()
+        public void GetActual_ServiceGetActualCalled_JsonResultReturned()
         {
             // Arrange
-            var testData = _testFixture.TestTournaments().Build();
-            this.MockTournaments(testData);
-
             var sut = this._kernel.Get<TournamentsController>();
 
-            var timeMock = new Mock<TimeProvider>();
-            timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
-            TimeProvider.Current = timeMock.Object;
-            DateTime now = TimeProvider.Current.UtcNow;
-
-            var expected = new TournamentServiceTestFixture()
-                                            .TestTournaments()
-                                            .Build()
-                                            .Where(tr => (tr.GamesEnd >= now
-                                                && tr.GamesStart <= now.AddMonths(
-                                                Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT)))
-                                            .ToList().Select(t => TournamentViewModel.Map(t)).ToList();
-
             // Act
-            var result = sut.GetActual() as JsonResult<IEnumerable<TournamentViewModel>>;
+            var result = sut.GetActual() as JsonResult<IQueryable<TournamentViewModel>>;
             var actual = result.Content.ToList();
 
             // Assert
-            CollectionAssert.AreEqual((ICollection)expected, (ICollection)actual, new TournamentViewModelComparer());
+            Assert.IsNotNull(result);
+            _tournamentServiceMock.Verify(ts => ts.GetActual(), Times.Once());
         }
 
         /// <summary>

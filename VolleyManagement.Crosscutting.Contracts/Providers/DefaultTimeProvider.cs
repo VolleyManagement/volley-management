@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Domain.Providers
+﻿namespace VolleyManagement.Crosscutting.Contracts.Providers
 {
     using System;
 

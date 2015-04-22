@@ -39,9 +39,7 @@
             TournamentsCollectionsViewModel tournamentsCollections 
                 = new TournamentsCollectionsViewModel();
 
-            var actualTournaments = this._tournamentService
-                .Get().Where(tr => tr.State == TournamentStateEnum.Current
-                || tr.State == TournamentStateEnum.Upcoming).ToArray();
+            var actualTournaments = this._tournamentService.GetActual().ToArray();
 
             tournamentsCollections.CurrentTournaments = actualTournaments
                 .Where(tr => tr.State == TournamentStateEnum.Current);

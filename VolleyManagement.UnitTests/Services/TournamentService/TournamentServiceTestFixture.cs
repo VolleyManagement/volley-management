@@ -32,7 +32,7 @@
                     Scheme = TournamentSchemeEnum.One,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')",
                     GamesStart = new DateTime(2015, 01, 01),
-                    GamesEnd = new DateTime(2015, 01, 01)
+                    GamesEnd = new DateTime(2015, 02, 01)
                 });
             _tournaments.Add(new Tournament()
                 {

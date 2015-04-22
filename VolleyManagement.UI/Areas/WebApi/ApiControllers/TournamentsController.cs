@@ -66,10 +66,7 @@
         [HttpGet]
         public IHttpActionResult GetActual()
         {
-            var result = _tournamentService.Get()
-                .Where(tr => tr.State == TournamentStateEnum.Current 
-                    || tr.State == TournamentStateEnum.Upcoming)
-                .ToList()
+            var result = _tournamentService.GetActual()
                 .Select(t => TournamentViewModel.Map(t));
                 return Json(result);
         }

@@ -14,8 +14,8 @@
     using Moq;
     using Ninject;
 
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain;
-    using VolleyManagement.Domain.Providers;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -53,7 +53,9 @@
         {
             // Arrange
             var testData = _testFixture.TestTournaments().Build();
-            this.MockTournaments(testData);
+
+            this._tournamentServiceMock.Setup(tr => tr.GetActual())
+                .Returns(testData.AsQueryable());
 
             var sut = this._kernel.Get<TournamentsController>();
 

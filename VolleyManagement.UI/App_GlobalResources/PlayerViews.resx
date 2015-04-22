@@ -174,4 +174,13 @@
   <data name="DeleteConfirmationMessage" xml:space="preserve">
     <value>Вы действительно хотите удалить игрока</value>
   </data>
+  <data name="ChoosingPlayer" xml:space="preserve">
+    <value>Выбор игрока</value>
+  </data>
+  <data name="ChoosingPlayers" xml:space="preserve">
+    <value>Выбор игроков</value>
+  </data>
+  <data name="AddPlayerToTeam" xml:space="preserve">
+    <value>Добавить игрока в команду</value>
+  </data>
 </root>

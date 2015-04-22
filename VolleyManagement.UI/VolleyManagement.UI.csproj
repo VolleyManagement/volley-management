@@ -188,6 +188,7 @@
     <Content Include="Areas\Mvc\Views\Teams\Index.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\_CreateEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\ChoosePlayers.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

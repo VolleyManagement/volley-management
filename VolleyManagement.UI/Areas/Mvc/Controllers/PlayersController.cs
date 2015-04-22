@@ -211,5 +211,15 @@
                 return this.View(playerViewModel);
             }
         }
+
+        /// <summary>
+        /// Open window with form which allow to choose player or players
+        /// </summary>
+        /// <param name="id">Mode of chosing window</param>
+        /// <returns>View with choosing form</returns>
+        public ActionResult ChoosePlayers(int id)
+        { 
+        
+        }
     }
 }

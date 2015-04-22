@@ -27,7 +27,7 @@
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
         /// <param name="playerRepository">The player repository</param>
-        /// <param name="teamService">Service which provide basic operation with team repository</param>
+        /// <param name="teamRepository">The team repository</param>
         public PlayerService(IPlayerRepository playerRepository, ITeamRepository teamRepository)
         {
             _playerRepository = playerRepository;
@@ -125,7 +125,7 @@
             {
                 return null;
             }
-            
+
             try
             {
                 return _teamRepository.FindWhere(t => t.Id == player.TeamId).Single();

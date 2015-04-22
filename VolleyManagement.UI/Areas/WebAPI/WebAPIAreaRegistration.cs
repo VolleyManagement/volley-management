@@ -39,7 +39,7 @@
             builder.Namespace = "TournamentService";
             builder.EntityType<TournamentViewModel>()
                 .Collection
-                .Function("GetCurrentAndUpcoming")
+                .Function("GetActual")
                 .Returns<TournamentViewModel>();
 
             builder.EntityType<TournamentViewModel>()

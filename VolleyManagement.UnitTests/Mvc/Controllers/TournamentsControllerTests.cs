@@ -15,6 +15,7 @@
     using Ninject;
 
     using VolleyManagement.Domain;
+    using VolleyManagement.Domain.Providers;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -48,7 +49,7 @@
         /// with two correct collections of tournaments: Current and Upcoming
         /// </summary>
         [TestMethod]
-        public void Index_TournamentsCurrentAndUpcomingRequest_CorrectCollectionsReturned()
+        public void Index_ActualTournamentsRequest_CorrectCollectionsReturned()
         {
             // Arrange
             var testData = _testFixture.TestTournaments().Build();
@@ -56,16 +57,21 @@
 
             var sut = this._kernel.Get<TournamentsController>();
 
+            var timeMock = new Mock<TimeProvider>();
+            timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
+            TimeProvider.Current = timeMock.Object;
+            DateTime now = TimeProvider.Current.UtcNow;
+
             var expectedCurrentTournaments = new TournamentServiceTestFixture()
                                             .TestTournaments()
-                                            .Build().Where(tr => tr.StartDate <= DateTime.Now
-                                                && tr.EndDate >= DateTime.Now)
+                                            .Build().Where(tr => tr.GamesStart <= now
+                                                && tr.GamesEnd >= now)
                                             .ToList();
 
             var expectedUpcomingTournaments = new TournamentServiceTestFixture()
                                             .TestTournaments()
-                                            .Build().Where(tr => tr.StartDate > DateTime.Now
-                                                && tr.StartDate <= DateTime.Now.AddMonths(
+                                            .Build().Where(tr => tr.GamesStart > now
+                                                && tr.GamesStart <= now.AddMonths(
                                                 Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
                                             .ToList();
 
@@ -78,46 +84,6 @@
             // Assert
             CollectionAssert.AreEqual(expectedCurrentTournaments, actualCurrentTournaments, new TournamentComparer());
             CollectionAssert.AreEqual(expectedUpcomingTournaments, actualUpcomingTournaments, new TournamentComparer());
-        }
-
-        /// <summary>
-        /// Index method test. If service layer thrown AgrumentException
-        /// method should return not found result
-        /// </summary>
-        public void Index_ServiceArgumentExceptionThrown_NotFoundReturn()
-        {
-            // Arrange
-            this._tournamentServiceMock.Setup(tr => tr.Get())
-                .Throws(new ArgumentException());
-
-            var sut = this._kernel.Get<TournamentsController>();
-
-            // Act
-            var actual = sut.Index() as HttpNotFoundResult;
-
-            // Assert
-            Assert.IsNotNull(actual);
-        }
-
-        /// <summary>
-        /// Test with negative scenario for Index action.
-        /// The action should thrown Argument null exception
-        /// </summary>
-        [TestMethod]
-        public void Index_TournamentsDoNotExist_ExceptionThrown()
-        {
-            // Arrange
-            this._tournamentServiceMock.Setup(tr => tr.Get())
-                .Throws(new ArgumentNullException());
-
-            var sut = this._kernel.Get<TournamentsController>();
-            var expected = (int)HttpStatusCode.NotFound;
-
-            // Act
-            var actual = (sut.Index() as HttpNotFoundResult).StatusCode;
-
-            // Assert
-            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>

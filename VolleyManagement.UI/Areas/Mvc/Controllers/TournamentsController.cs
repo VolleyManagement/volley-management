@@ -36,27 +36,20 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            try
-            {
-                TournamentsCollectionsViewModel tournamentsCollections 
-                    = new TournamentsCollectionsViewModel();
+            TournamentsCollectionsViewModel tournamentsCollections 
+                = new TournamentsCollectionsViewModel();
 
-                tournamentsCollections.CurrentTournaments = this._tournamentService
-                    .Get().Where(tr => tr.State == TournamentStateEnum.Current).ToArray();
+            var actualTournaments = this._tournamentService
+                .Get().Where(tr => tr.State == TournamentStateEnum.Current
+                || tr.State == TournamentStateEnum.Upcoming).ToArray();
 
-                tournamentsCollections.UpcomingTournaments = this._tournamentService
-                    .Get().Where(tr => tr.State == TournamentStateEnum.Upcoming).ToArray();
+            tournamentsCollections.CurrentTournaments = actualTournaments
+                .Where(tr => tr.State == TournamentStateEnum.Current);
 
-                return View(tournamentsCollections);
-            }
-            catch (ArgumentException)
-            {
-                return this.HttpNotFound();
-            }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
+            tournamentsCollections.UpcomingTournaments = actualTournaments
+                .Where(tr => tr.State == TournamentStateEnum.Upcoming);
+
+            return View(tournamentsCollections);
         }
 
         /// <summary>

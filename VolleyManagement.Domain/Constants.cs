@@ -8,8 +8,6 @@
     /// </summary>
     public static class Constants
     {
-        public static readonly DateTime ApplicationDate = DateTime.Now;
-
         [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
                         Justification = "It's a COnstants sub-class")]
         public static class ExceptionManagement

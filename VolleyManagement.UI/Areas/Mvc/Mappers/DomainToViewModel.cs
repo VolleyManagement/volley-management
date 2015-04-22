@@ -25,8 +25,8 @@
                 Season = tournament.Season,
                 Scheme = tournament.Scheme,
                 RegulationsLink = tournament.RegulationsLink,
-                StartDate = tournament.StartDate,
-                EndDate = tournament.EndDate
+                GamesStart = tournament.GamesStart,
+                GamesEnd = tournament.GamesEnd
             };
         }
 

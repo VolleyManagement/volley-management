@@ -17,12 +17,6 @@
             <td width="100">
                 @Html.DisplayNameFor(model => model.Scheme)
             </td>
-            <td width="100">
-                @Html.DisplayNameFor(model => model.StartDate)
-            </td>
-            <td width="100">
-                @Html.DisplayNameFor(model => model.EndDate)
-            </td>
         </tr>
     </thead>
     <tbody>
@@ -37,12 +31,6 @@
                 </td>
                 <td>
                     @tournament.Scheme
-                </td>
-                <td>
-                    @tournament.StartDate.ToShortDateString()
-                </td>
-                <td>
-                    @tournament.EndDate.ToShortDateString()
                 </td>
             </tr>
         }

@@ -19,6 +19,7 @@
     using Services.TournamentService;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain;
+    using VolleyManagement.Domain.Providers;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
@@ -432,11 +433,11 @@
         }
 
         /// <summary>
-        /// GetCurrentAndUpcoming method test. The method should return collection of
+        /// GetGetActual method test. The method should return collection of
         /// current and upcoming tournaments
         /// </summary>
         [TestMethod]
-        public void GetCurrentAndUpcoming_TournamentsCurrentAndUpcomingRequest_CorrectCollectionsReturned()
+        public void GetGetActual_TournamentsCurrentAndUpcomingRequest_CorrectCollectionsReturned()
         {
             // Arrange
             var testData = _testFixture.TestTournaments().Build();
@@ -444,39 +445,25 @@
 
             var sut = this._kernel.Get<TournamentsController>();
 
+            var timeMock = new Mock<TimeProvider>();
+            timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
+            TimeProvider.Current = timeMock.Object;
+            DateTime now = TimeProvider.Current.UtcNow;
+
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
                                             .Build()
-                                            .Where(tr => (tr.EndDate >= DateTime.Now
-                                                && tr.StartDate <= DateTime.Now.AddMonths(
+                                            .Where(tr => (tr.GamesEnd >= now
+                                                && tr.GamesStart <= now.AddMonths(
                                                 Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT)))
                                             .ToList().Select(t => TournamentViewModel.Map(t)).ToList();
 
             // Act
-            var result = sut.GetCurrentAndUpcoming() as JsonResult<IEnumerable<TournamentViewModel>>;
+            var result = sut.GetActual() as JsonResult<IEnumerable<TournamentViewModel>>;
             var actual = result.Content.ToList();
 
             // Assert
             CollectionAssert.AreEqual((ICollection)expected, (ICollection)actual, new TournamentViewModelComparer());
-        }
-
-        /// <summary>
-        /// GetCurrentAndUpcoming method test. If service layer thrown Agrument Exception
-        /// method should return bad request
-        /// </summary>
-        public void GetCurrentAndUpcoming_ServiceArgumentExceptionThrown_BadRequesReturn()
-        {
-            // Arrange
-            this._tournamentServiceMock.Setup(tr => tr.Get())
-                .Throws(new ArgumentException());
-
-            var sut = this._kernel.Get<TournamentsController>();
-
-            // Act
-            var actual = sut.GetCurrentAndUpcoming() as BadRequestResult;
-
-            // Assert
-            Assert.IsNotNull(actual);
         }
 
         /// <summary>

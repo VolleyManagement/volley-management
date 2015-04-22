@@ -2,6 +2,7 @@
 {
     using System;
     using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.Providers;
 
     /// <summary>
     /// Represents tournament state
@@ -11,7 +12,8 @@
         Finished,
         Current,
         Upcoming,
-        NotStarted
+        NotStarted,
+        Indefinite
     }
 
     /// <summary>
@@ -148,31 +150,35 @@
         {
             get
             {
-                if (StartDate > Constants.ApplicationDate.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
+                DateTime now = TimeProvider.Current.UtcNow;
+                DateTime limitUpcomingTournamentsStartDate
+                    = now.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
+
+                if (GamesStart > limitUpcomingTournamentsStartDate)
                 {
                     return TournamentStateEnum.NotStarted;
                 }
-                else if (StartDate > Constants.ApplicationDate
-                    && StartDate <= Constants.ApplicationDate.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
+                else if (GamesStart > now
+                    && GamesStart <= limitUpcomingTournamentsStartDate)
                 {
                     return TournamentStateEnum.Upcoming;
                 }
-                else if (StartDate <= Constants.ApplicationDate && EndDate >= Constants.ApplicationDate)
+                else if (GamesStart <= now && GamesEnd >= now)
                 {
                     return TournamentStateEnum.Current;
                 }
-                else if (EndDate < Constants.ApplicationDate)
+                else if (GamesEnd < now)
                 {
                     return TournamentStateEnum.Finished;
                 }
                 else
                 {
-                    throw new ArgumentException("The state haven't been set");
+                    return TournamentStateEnum.Indefinite;
                 }
             }
         }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime GamesStart { get; set; }
+        public DateTime GamesEnd { get; set; }
     }
 }

@@ -79,8 +79,8 @@
                                               Season = tournament.Season,
                                               RegulationsLink = tournament.RegulationsLink,
                                               Scheme = tournament.Scheme.ToDescription(),
-                                              StartDate = tournament.StartDate,
-                                              EndDate = tournament.EndDate
+                                              StartDate = tournament.GamesStart,
+                                              EndDate = tournament.GamesEnd
                                           };
 
             return tournamentViewModel;
@@ -101,8 +101,8 @@
             tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum))
                 .Cast<TournamentSchemeEnum>()
                 .FirstOrDefault(v => v.ToDescription() == this.Scheme);
-            tournament.StartDate = this.StartDate;
-            tournament.EndDate = this.EndDate;
+            tournament.GamesStart = this.StartDate;
+            tournament.GamesEnd = this.EndDate;
 
             return tournament;
         }

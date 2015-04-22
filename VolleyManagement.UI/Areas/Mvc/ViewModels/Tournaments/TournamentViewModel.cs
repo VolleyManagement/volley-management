@@ -91,6 +91,7 @@
         /// Start of a tournament
         /// </summary>
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "StartDate", ResourceType = typeof(ViewModelResources))]
         public DateTime StartDate { get; set; }
 
@@ -165,10 +166,10 @@
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
                 Scheme = tournament.Scheme,
-                StartDate = tournament.StartDate,
-                EndDate = tournament.EndDate,
-                RegistrationStart = tournament.RegistrationStart,
-                RegistrationEnd = tournament.RegistrationEnd,
+                StartDate = tournament.GamesStart,
+                EndDate = tournament.GamesEnd,
+                RegistrationStart = tournament.ApplyingPeriodStart,
+                RegistrationEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
                 TransferEnd = tournament.TransferEnd
             };
@@ -190,10 +191,10 @@
                 Season = this.Season,
                 Scheme = this.Scheme,
                 RegulationsLink = this.RegulationsLink,
-                StartDate = this.StartDate,
-                EndDate = this.EndDate,
-                RegistrationStart = this.RegistrationStart,
-                RegistrationEnd = this.RegistrationEnd,
+                GamesStart = this.StartDate,
+                GamesEnd = this.EndDate,
+                ApplyingPeriodStart = this.RegistrationStart,
+                ApplyingPeriodEnd = this.RegistrationEnd,
                 TransferStart = this.TransferStart,
                 TransferEnd = this.TransferEnd
             };

@@ -13,10 +13,10 @@
         private short _season;
         private TournamentSchemeEnum _scheme;
         private string _regulationsLink;
-        private DateTime _startDate;
-        private DateTime _endDate;
-        private DateTime _registrationStart;
-        private DateTime _registrationEnd;
+        private DateTime _gamesStart;
+        private DateTime _gamesEnd;
+        private DateTime _applyingPeriodStart;
+        private DateTime _applyingPeriodEnd;
         private DateTime _transferStart;
         private DateTime _transferEnd;
 
@@ -139,65 +139,65 @@
         /// <summary>
         /// Gets or sets tournament start
         /// </summary>
-        public DateTime StartDate
+        public DateTime GamesStart
         {
             get
             {
-                return _startDate;
+                return _gamesStart;
             }
 
             set
             {
                 // TODO: add validation
-                _startDate = value;
+                _gamesStart = value;
             }
         }
 
         /// <summary>
         /// Gets or sets the tournament end 
         /// </summary>
-        public DateTime EndDate
+        public DateTime GamesEnd
         {
             get
             {
-                return _endDate;
+                return _gamesEnd;
             }
 
             set
             {
-                _endDate = value;
+                _gamesEnd = value;
             }
         }
 
         /// <summary>
         /// Gets or sets start registration date of a tournament
         /// </summary>
-        public DateTime RegistrationStart
+        public DateTime ApplyingPeriodStart
         {
             get
             {
-                return _registrationStart;
+                return _applyingPeriodStart;
             }
 
             set
             {
-                _registrationStart = value;
+                _applyingPeriodStart = value;
             }
         }
 
         /// <summary>
         /// Gets or sets end registration date of a tournament 
         /// </summary>
-        public DateTime RegistrationEnd
+        public DateTime ApplyingPeriodEnd
         {
             get
             {
-                return _registrationEnd;
+                return _applyingPeriodEnd;
             }
 
             set
             {
-                _registrationEnd = value;
+                _applyingPeriodEnd = value;
             }
 
         }

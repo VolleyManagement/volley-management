@@ -108,10 +108,10 @@
                                               Season = tournament.Season,
                                               RegulationsLink = tournament.RegulationsLink,
                                               Scheme = tournament.Scheme.ToDescription(),
-                                              StartDate = tournament.StartDate,
-                                              EndDate = tournament.EndDate,
-                                              RegistrationStart = tournament.RegistrationStart,
-                                              RegistrationEnd = tournament.RegistrationEnd,
+                                              StartDate = tournament.GamesStart,
+                                              EndDate = tournament.GamesEnd,
+                                              RegistrationStart = tournament.ApplyingPeriodStart,
+                                              RegistrationEnd = tournament.ApplyingPeriodEnd,
                                               TransferStart = tournament.TransferStart,
                                               TransferEnd = tournament.TransferEnd
                                           };
@@ -134,10 +134,10 @@
             tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum))
                 .Cast<TournamentSchemeEnum>()
                 .FirstOrDefault(v => v.ToDescription() == this.Scheme);
-            tournament.StartDate = this.StartDate;
-            tournament.EndDate = this.EndDate;
-            tournament.RegistrationStart = this.RegistrationStart;
-            tournament.RegistrationEnd = this.RegistrationEnd;
+            tournament.GamesStart = this.StartDate;
+            tournament.GamesEnd = this.EndDate;
+            tournament.ApplyingPeriodStart = this.RegistrationStart;
+            tournament.ApplyingPeriodEnd = this.RegistrationEnd;
             tournament.TransferStart = this.TransferStart;
             tournament.TransferEnd = this.TransferEnd;
 

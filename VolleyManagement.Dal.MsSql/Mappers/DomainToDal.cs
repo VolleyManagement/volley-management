@@ -21,10 +21,10 @@
             tournament.Description = domainTournament.Description;
             tournament.Scheme = (byte)domainTournament.Scheme;
             tournament.RegulationsLink = domainTournament.RegulationsLink;
-            tournament.StartDate = domainTournament.StartDate;
-            tournament.EndDate = domainTournament.EndDate;
-            tournament.RegistrationStart = domainTournament.RegistrationStart;
-            tournament.RegistrationEnd = domainTournament.RegistrationEnd;
+            tournament.StartDate = domainTournament.GamesStart;
+            tournament.EndDate = domainTournament.GamesEnd;
+            tournament.RegistrationStart = domainTournament.ApplyingPeriodStart;
+            tournament.RegistrationEnd = domainTournament.ApplyingPeriodEnd;
             tournament.TransferStart = domainTournament.TransferStart;
             tournament.TransferEnd = domainTournament.TransferEnd;
             return tournament;

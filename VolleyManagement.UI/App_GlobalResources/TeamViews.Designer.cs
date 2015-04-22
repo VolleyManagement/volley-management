@@ -61,6 +61,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить игрока в команду.
+        /// </summary>
+        internal static string AddPlayerToRoster {
+            get {
+                return ResourceManager.GetString("AddPlayerToRoster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Назад к списку.
         /// </summary>
         internal static string BackToList {

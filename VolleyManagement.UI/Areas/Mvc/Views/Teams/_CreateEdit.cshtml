@@ -1,5 +1,14 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
 
+<script>
+    function openChoosingPlayerWindow()
+    {
+        w = window.open("/Mvc/Players/Index", "Window Name", "width=400,height=400,status=no,location=no, resizable=no,")
+    }
+
+</script>
+
+
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
 </div>
@@ -17,13 +26,13 @@
 </div>
 
 <div class="editor-label">
-    @Html.LabelFor(model => model.Captain)
+    <label for="Captain_FullNameText">Капитан</label>
 </div>
 
 <div class="editor-label">
-    @Html.EditorFor(model => model.Captain)
-    @*on editor field should be added choosing player window*@
-    @Html.ValidationMessageFor(model => model.Captain)
+    <input class="text-box single-line" id="Captain_FullNameText" name="Captain_FullName" type="text" value="" onfocus="openChoosingPlayerWindow()" />
+    <input class="hidden" id="Captain_FullName" name="Captain.FullName" type="text" value="" />
+    <input class="hidden" id="Captain_Id" name="Captain.Id" type="number" value="" />  
 </div>
 
 <div class="editor-label">
@@ -35,6 +44,8 @@
 </div>
 
 <div id="RosterPlayers">
+    <h4>@Resources.TeamViews.RosterTitle</h4>
+    <input type="button" value="@Resources.TeamViews.AddPlayerToRoster" onclick="openChoosingPlayerWindow()">
     <table class="table">
         <tr>
             <th>
@@ -43,20 +54,20 @@
             <th class="hidden">
             </th>
         </tr>
-
-        @foreach (var item in Model.Roster)
+        @if (Model.Roster != null)
         {
-            <tr>
-                <td>
-                    @item.FullName;
-                </td>
-                <td class ="hidden">
-                    @item.Id;
-                </td>
-            </tr>
+            foreach (var item in Model.Roster)
+            {
+                <tr>
+                    <td>
+                        @item.FullName;
+                    </td>
+                    <td class="hidden">
+                        @item.Id;
+                    </td>
+                </tr>
+            }
         }
-
     </table>
     @*here should be list with player and choosing player window*@
 </div>
-

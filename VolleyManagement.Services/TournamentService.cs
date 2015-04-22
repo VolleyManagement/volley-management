@@ -26,7 +26,7 @@
         /// <summary>
         /// Get all tournaments
         /// </summary>
-        /// <returns>Filtered tournaments</returns>
+        /// <returns>All tournaments</returns>
         public IQueryable<Tournament> Get()
         {
             return _tournamentRepository.Find();

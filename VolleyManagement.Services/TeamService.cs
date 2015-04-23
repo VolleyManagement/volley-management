@@ -55,7 +55,8 @@
                 using (TransactionScope transaction = new TransactionScope())
                 {
                     _teamRepository.Add(teamToCreate);
-                    SetTeamForRosterPlayer(teamToCreate.CaptainId, teamToCreate.Id);
+                    Player captain = _playerService.Get(teamToCreate.CaptainId);
+                    _playerService.UpdatePlayerTeam(captain, teamToCreate);
                 }
             }
             catch (InvalidKeyValueException ex)
@@ -94,13 +95,15 @@
             {
                 using (TransactionScope transaction = new TransactionScope())
                 {
+                    // Does repository throw exception because players had RefKeys?
+                    _teamRepository.Remove(id);
+
                     IEnumerable<Player> roster = GetTeamRoster(id);
                     foreach (var player in roster)
                     {
-                        SetTeamForRosterPlayer(player.Id, null);
+                        _playerService.UpdatePlayerTeam(player, null);
                     }
 
-                    _teamRepository.Remove(id);
                     _teamRepository.UnitOfWork.Commit();
 
                     transaction.Complete();
@@ -136,13 +139,6 @@
         private IEnumerable<Player> GetTeamRoster(int teamId)
         {
             return _playerService.Get().Where(p => p.TeamId == teamId).ToList();
-        }
-
-        private void SetTeamForRosterPlayer(int playerId, int? teamId)
-        {
-            Player player = _playerService.Get().Where(p => p.Id == playerId).Single();
-            player.TeamId = teamId;
-            _playerService.Edit(player);
         }
     }
 }

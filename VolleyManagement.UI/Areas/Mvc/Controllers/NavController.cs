@@ -6,11 +6,21 @@
     using System.Web;
     using System.Web.Mvc;
 
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Menu;
+
     public class NavController : Controller
     {
-        public string Menu()
+        public PartialViewResult Menu(string id)
+        
         {
-            return "Test message";
+            IEnumerable<MenuItemViewModel> items 
+                = new List<MenuItemViewModel>
+                {
+                    new MenuItemViewModel() { Name = "Tournaments", Route = "Tournaments" },
+                    new MenuItemViewModel() { Name = "Players", Route = "Players" }
+                };
+
+            return PartialView(items);
         }
     }
 }

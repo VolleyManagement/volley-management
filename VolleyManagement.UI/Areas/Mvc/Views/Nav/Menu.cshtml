@@ -1,0 +1,17 @@
+﻿@using VolleyManagement.UI.Areas.Mvc.ViewModels.Menu
+
+@model IEnumerable<MenuItemViewModel>
+
+@foreach (var item in Model)
+{
+    @Html.ActionLink(item.Name, "Menu", "Nav", null, new { id = item.Name})
+}
+
+@*@Html.ActionLink(Resources.TournamentViews.TournamentsIndexTitle, "Index", "Tournaments",
+                      null, new { @class = ViewBag.SelectedMenuItem == "Tournaments" ? "selected" : null })
+    @Html.ActionLink(Resources.PlayerViews.PlayersIndexTitle, "Index", "Players",
+                      null, new { @class = ViewBag.SelectedMenuItem == "Players" ? "selected" : null })
+    @Html.ActionLink("Teams", "Index", "Teams",
+                      null, new { @class = ViewBag.SelectedMenuItem == "Teams" ? "selected" : null })
+    @Html.ActionLink("About", "Index", "About",
+                      null, new { @class = ViewBag.SelectedMenuItem == "About" ? "selected" : null })*@

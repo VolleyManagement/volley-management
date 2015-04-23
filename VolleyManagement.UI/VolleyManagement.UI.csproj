@@ -185,6 +185,7 @@
     <Content Include="Areas\Mvc\Views\Players\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Delete.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Nav\Menu.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -321,9 +322,7 @@
       <LastGenOutput>ViewModelResources.designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Areas\Mvc\Views\Nav\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

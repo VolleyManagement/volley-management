@@ -4,6 +4,8 @@
     {
         public string Name { get; set; }
 
-        public bool IsCurentItem { get; set; }
+        public bool IsCurent { get; set; }
+
+        public string Route { get; set; }
     }
 }

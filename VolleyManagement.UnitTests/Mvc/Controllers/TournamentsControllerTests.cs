@@ -30,6 +30,7 @@
     {
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
         private IKernel _kernel;
 
@@ -42,6 +43,31 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITournamentService>()
                    .ToConstant(this._tournamentServiceMock.Object);
+
+            this._timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
+            TimeProvider.Current = this._timeMock.Object;
+        }
+
+        /// <summary>
+        /// Cleanup test data
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            TimeProvider.ResetToDefault();
+        }
+
+        /// <summary>
+        /// Index action test. The method should invoke GetActual() method of ITournamentService
+        /// </summary>
+        public void Index_ActualTournamentsRequest_GetActualCalled()
+        {
+            // Act
+            var sut = this._kernel.Get<TournamentsController>();
+            sut.Index();
+
+            // Assert
+            _tournamentServiceMock.Verify(m => m.GetActual(), Times.Once());
         }
 
         /// <summary>
@@ -59,9 +85,6 @@
 
             var sut = this._kernel.Get<TournamentsController>();
 
-            var timeMock = new Mock<TimeProvider>();
-            timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
-            TimeProvider.Current = timeMock.Object;
             DateTime now = TimeProvider.Current.UtcNow;
 
             var expectedCurrentTournaments = new TournamentServiceTestFixture()

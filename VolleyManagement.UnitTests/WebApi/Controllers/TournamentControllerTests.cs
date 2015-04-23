@@ -433,6 +433,19 @@
         }
 
         /// <summary>
+        /// GetActual method test. The method should invoke GetActual() method of ITournamentService
+        /// </summary>
+        public void GetActual_ActualTournamentsRequest_GetActualCalled()
+        {
+            // Act
+            var sut = this._kernel.Get<TournamentsController>();
+            sut.GetActual();
+
+            // Assert
+            _tournamentServiceMock.Verify(m => m.GetActual(), Times.Once());
+        }
+
+        /// <summary>
         /// GetActual method test. The method should return json collection
         /// </summary>
         [TestMethod]

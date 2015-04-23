@@ -85,8 +85,9 @@
             if (playerTeam != null &&
                 (playerToEdit.TeamId == null || playerTeam.Id != playerToEdit.TeamId))
             {
-                string message = string.Format("Player is captain of the team {0}", playerTeam.Name);
-                throw new InvalidOperationException(message);
+                var ex = new InvalidOperationException("Player is captain of another team");
+                ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = playerTeam.Id;
+                throw ex;
             }
             else if (playerToEdit.TeamId != null)
             {
@@ -163,26 +164,11 @@
         /// <summary>
         /// Update player team
         /// </summary>
-        /// <param name="playerId">Player which team should update</param>
-        /// <param name="teamId">Team which should be set to player</param>
+        /// <param name="player">Player which team should update</param>
+        /// <param name="team">Team which should be set to player</param>
         public void UpdatePlayerTeam(Player player, Team team)
         {
-            if (team != null)
-            {
-                // Check if new team isn't exist
-                try
-                {
-                    GetTeamWhere(t => t.Id == team.Id);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    throw new MissingEntityException("Team with specified Id can not be found", team.Id, ex); ;
-                };
-            }
-
-            // Check case if player was a captain and team changed
-
-            // Get player
+            // Check if player isn't exist
             Player playerToUpdate;
             try
             {
@@ -191,7 +177,30 @@
             catch (InvalidOperationException ex)
             {
                 throw new MissingEntityException("Player with specified Id can not be found", player.Id, ex);
-            };
+            }
+
+            // Check if new team isn't exist
+            if (team != null)
+            {
+                try
+                {
+                    GetTeamWhere(t => t.Id == team.Id);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    throw new MissingEntityException("Team with specified Id can not be found", team.Id, ex);
+                }
+            }
+
+            // Check if player was a captain and team changed
+            Team leadedTeam = GetPlayerLeadedTeam(player.Id);
+            if (leadedTeam != null &&
+                (team == null || leadedTeam.Id != team.Id))
+            {
+                var ex = new InvalidOperationException("Player is captain of another team");
+                ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = team.Id;
+                throw ex;
+            }
 
             // Update team
             if (team == null)
@@ -216,7 +225,7 @@
             catch (InvalidOperationException)
             {
                 team = null;
-            };
+            }
 
             return team;
         }

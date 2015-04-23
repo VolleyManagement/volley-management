@@ -55,7 +55,8 @@
                 using (TransactionScope transaction = new TransactionScope())
                 {
                     _teamRepository.Add(teamToCreate);
-                    SetTeamForRosterPlayer(teamToCreate.CaptainId, teamToCreate.Id);
+                    Player captain = _playerService.Get(teamToCreate.CaptainId);
+                    _playerService.UpdatePlayerTeam(captain, teamToCreate);
                 }
             }
             catch (InvalidKeyValueException ex)
@@ -94,7 +95,7 @@
             {
                 using (TransactionScope transaction = new TransactionScope())
                 {
-                    // Does repository throw exception because players had RefKeys
+                    // Does repository throw exception because players had RefKeys?
                     _teamRepository.Remove(id);
 
                     IEnumerable<Player> roster = GetTeamRoster(id);

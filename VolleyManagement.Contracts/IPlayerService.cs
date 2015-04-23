@@ -50,8 +50,8 @@
         /// <summary>
         /// Update player team
         /// </summary>
-        /// <param name="playerId">Player which team should update</param>
-        /// <param name="teamId">Team which should be set to player</param>
+        /// <param name="player">Player which team should update</param>
+        /// <param name="team">Team which should be set to player</param>
         void UpdatePlayerTeam(Player player, Team team);
     }
 }

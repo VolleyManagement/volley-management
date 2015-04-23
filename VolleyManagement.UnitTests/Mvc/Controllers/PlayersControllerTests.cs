@@ -98,10 +98,10 @@
             // Arrange
             List<Player> listOfPlayers = new List<Player>() 
             { 
-                new Player() {Id = 1, FirstName = "FirstNameA", LastName = "LastNameA"},
-                new Player() {Id = 2, FirstName = "FirstNameB", LastName = "LastNameB"},
-                new Player() {Id = 3, FirstName = "FirstNameC", LastName = "LastNameC"},
-                new Player() {Id = 4, FirstName = "FirstNameD", LastName = "LastNameD"}
+                new Player() { Id = 1, FirstName = "FirstNameA", LastName = "LastNameA" },
+                new Player() { Id = 2, FirstName = "FirstNameB", LastName = "LastNameB" },
+                new Player() { Id = 3, FirstName = "FirstNameC", LastName = "LastNameC" },
+                new Player() { Id = 4, FirstName = "FirstNameD", LastName = "LastNameD" }
             };
 
             _playerServiceMock.Setup(p => p.Get()).Returns(listOfPlayers.AsQueryable());

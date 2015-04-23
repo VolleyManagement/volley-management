@@ -10,6 +10,7 @@
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Services;
@@ -42,6 +43,11 @@
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
 
         /// <summary>
+        /// TimeProvider mock
+        /// </summary>
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+
+        /// <summary>
         /// IoC for tests.
         /// </summary>
         private IKernel _kernel;
@@ -56,6 +62,18 @@
             _kernel.Bind<ITournamentRepository>()
                    .ToConstant(_tournamentRepositoryMock.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
+
+            this._timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
+            TimeProvider.Current = this._timeMock.Object;
+        }
+
+        /// <summary>
+        /// Cleanup test data
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            TimeProvider.ResetToDefault();
         }
 
         /// <summary>
@@ -269,6 +287,47 @@
 
             // Assert
             _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should invoke Find() method of ITournamentRepository
+        /// </summary>
+        public void GetActual_ActualTournamentsRequest_FindCalled()
+        {
+            // Act
+            var tournamentService = _kernel.Get<TournamentService>();
+            tournamentService.GetActual();
+
+            // Assert
+            _tournamentRepositoryMock.Verify(m => m.Find(), Times.Once());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should return actual tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetActual_TournamentsExist_ActualTournamentsReturnes()
+        {
+            // Arrange
+            var tournamentService = _kernel.Get<TournamentService>();
+            var testData = _testFixture.TestTournaments()
+                                       .Build();
+            MockRepositoryFindAll(testData);
+
+            DateTime now = TimeProvider.Current.UtcNow;
+            DateTime limitStartDate = now.AddMonths(VolleyManagement.Domain.Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
+
+            var expected = new TournamentServiceTestFixture()
+                                            .TestTournaments()
+                                            .Build().Where(tr => tr.GamesEnd >= now
+                                                && tr.GamesStart <= limitStartDate)
+                                            .ToList();
+
+            // Act
+            var actual = tournamentService.GetActual().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>

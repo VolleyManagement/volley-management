@@ -97,7 +97,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Текущие турниры.
+        ///   Looks up a localized string similar to Текущие.
         /// </summary>
         public static string CurrentTournamentsHeader {
             get {
@@ -151,15 +151,6 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ожидаемые турниры.
-        /// </summary>
-        public static string ExpectedTournamentsHeader {
-            get {
-                return ResourceManager.GetString("ExpectedTournamentsHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Сохранить.
         /// </summary>
         public static string Save {
@@ -192,6 +183,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string TournamentsIndexTitle {
             get {
                 return ResourceManager.GetString("TournamentsIndexTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ожидаемые.
+        /// </summary>
+        public static string UpcomingTournamentsHeader {
+            get {
+                return ResourceManager.GetString("UpcomingTournamentsHeader", resourceCulture);
             }
         }
     }

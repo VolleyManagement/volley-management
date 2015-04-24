@@ -25,22 +25,19 @@
             _contributors.Add(new Contributor()
             {
                 Id = 1,
-                FirstName = "FirstNameA",
-                LastName = "LastNameA",
+                Name = "FirstNameA",
                 ContributorTeamId = 1
             });
             _contributors.Add(new Contributor()
             {
                 Id = 2,
-                FirstName = "FirstNameB",
-                LastName = "LastNameB",
+                Name = "FirstNameB",
                 ContributorTeamId = 1
             });
             _contributors.Add(new Contributor()
             {
                 Id = 3,
-                FirstName = "FirstNameC",
-                LastName = "LastNameC",
+                Name = "FirstNameC",
                 ContributorTeamId = 2
             });
             return this;

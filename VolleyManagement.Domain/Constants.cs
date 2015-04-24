@@ -142,8 +142,6 @@
             /// constant defined the length of the achivements field
             /// </summary>
             public const int MAX_ACHIEVEMENTS_LENGTH = 4000;
-
         }
-    
     }
 }

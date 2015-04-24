@@ -88,16 +88,15 @@
             // Arrange
             var contributor = new ContributorBuilder()
                                         .WithId(1)
-                                        .WithFirstName("FirstName")
-                                        .WithLastName("LastName")
+                                        .WithName("Name")
                                         .WithContributorTeamId(1)
                                         .Build();
             var expected = new ContributorViewModelBuilder()
                                         .WithId(1)
-                                        .WithFirstName("FirstName")
-                                        .WithLastName("LastName")
+                                        .WithName("FirstName")
                                         .WithContributorTeamId(1)
                                         .Build();
+
             // Act
             var actual = ContributorViewModel.Map(contributor);
 

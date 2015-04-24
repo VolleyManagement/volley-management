@@ -88,8 +88,6 @@
             Assert.AreEqual(expected, actual);
         }
 
-
-
         /// <summary>
         /// Mocks test data
         /// </summary>

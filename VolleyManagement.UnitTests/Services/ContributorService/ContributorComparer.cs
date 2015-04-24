@@ -54,8 +54,7 @@
         public bool AreEqual(Contributor x, Contributor y)
         {
             return x.Id == y.Id &&
-                x.FirstName == y.FirstName &&
-                x.LastName == y.LastName &&
+                x.Name == y.Name &&
                 x.ContributorTeamId == y.ContributorTeamId;
         }
     }

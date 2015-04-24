@@ -1,17 +1,17 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Linq;
-    using Domain.Contributors;
+    using Domain.ContributorTeams;
 
     /// <summary>
     /// Interface for ContributorService.
     /// </summary>
-    public interface IContributorService
+    public interface IContributorTeamService
     {
         /// <summary>
-        /// Gets list of all contributors.
+        /// Gets list of all contributors team.
         /// </summary>
         /// <returns>Return list of all contributors.</returns>
-        IQueryable<Contributor> Get();
+        IQueryable<ContributorTeam> Get();
     }
 }

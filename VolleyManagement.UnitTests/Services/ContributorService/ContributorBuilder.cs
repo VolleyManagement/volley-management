@@ -22,8 +22,7 @@
             this._contributor = new Contributor
             {
                 Id = 1,
-                FirstName = "FirstName",
-                LastName = "LastName",
+                Name = "FirstName",
                 ContributorTeamId = 1
             };
         }
@@ -42,36 +41,24 @@
         /// <summary>
         /// Sets name of test contributor
         /// </summary>
-        /// <param name="firstName">Name for test contributor</param>
+        /// <param name="name">Name for test contributor</param>
         /// <returns>Contributor builder object</returns>
-        public ContributorBuilder WithFirstName(string firstName)
+        public ContributorBuilder WithName(string name)
         {
-            this._contributor.FirstName = firstName;
+            this._contributor.Name = name;
             return this;
         }
 
         /// <summary>
         /// Sets contributor test last name
         /// </summary>
-        /// <param name="lastName">Test contributor last name</param>
-        /// <returns>Contributor builder object</returns>
-        public ContributorBuilder WithLastName(string lastName)
-        {
-            this._contributor.LastName = lastName;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets contributor test last name
-        /// </summary>
-        /// <param name="lastName">Test contributor last name</param>
+        /// <param name="contributorTeamId">Test contributor last name</param>
         /// <returns>Contributor builder object</returns>
         public ContributorBuilder WithContributorTeamId(int contributorTeamId)
         {
             this._contributor.ContributorTeamId = contributorTeamId;
             return this;
         }
-
       
         /// <summary>
         /// Builds test contributor

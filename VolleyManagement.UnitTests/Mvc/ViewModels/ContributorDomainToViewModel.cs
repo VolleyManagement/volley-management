@@ -23,15 +23,13 @@
             // Arrange
             var testViewModel = new ContributorMvcViewModelBuilder()
                 .WithId(1)
-                .WithFirstName("FirstName")
-                .WithLastName("LastName")
+                .WithName("FirstName")
                 .WithContributorTeamId(1)
                 .Build();
 
             var testDomainModel = new ContributorBuilder()
                 .WithId(1)
-                .WithFirstName("FirstName")
-                .WithLastName("LastName")
+                .WithName("FirstName")
                 .WithContributorTeamId(1)
                 .Build();
 

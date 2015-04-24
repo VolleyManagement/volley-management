@@ -55,8 +55,7 @@
         private bool IsEqual(ContributorViewModel x, ContributorViewModel y)
         {
             return x.Id == y.Id &&
-                x.FirstName == y.FirstName &&
-                x.LastName == y.LastName &&
+                x.Name == y.Name &&
                 x.ContributorTeamId == y.ContributorTeamId;
         }
     }

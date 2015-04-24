@@ -19,12 +19,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Contributors
         /// <summary>
         /// Gets or sets the contributor first name
         /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the contributor last name
-        /// </summary>
-        public string LastName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets contributor Team Id of player
@@ -43,8 +38,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Contributors
             var contributorViewModel = new ContributorViewModel
             {
                 Id = contributor.Id,
-                FirstName = contributor.FirstName,
-                LastName = contributor.LastName,
+                Name = contributor.Name,
                 ContributorTeamId = contributor.ContributorTeamId
             };
 
@@ -60,8 +54,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Contributors
             return new Contributor
             {
                 Id = this.Id,
-                FirstName = this.FirstName,
-                LastName = this.LastName,
+                Name = this.Name,
                 ContributorTeamId = this.ContributorTeamId
             };
         }

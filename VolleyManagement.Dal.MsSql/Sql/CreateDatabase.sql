@@ -55,7 +55,6 @@ CREATE TABLE dbo.ContributorTeam(
   Id int identity(1, 1) NOT NULL 
     CONSTRAINT PK_ContributorTeam_Id PRIMARY KEY CLUSTERED,
   Name nvarchar(20) NOT NULL,
-  ItaName nvarchar(20) NOT NULL,
   CourseDirection nvarchar(20) NOT NULL
 );
 GO
@@ -63,11 +62,8 @@ GO
 CREATE TABLE dbo.Contributors(
   Id int identity(1, 1) NOT NULL 
     CONSTRAINT PK_Contributors_Id PRIMARY KEY CLUSTERED,
-  FirstName nvarchar(15) NOT NULL,
-  LastName nvarchar(15) NOT NULL,
+  Name nvarchar(30) NOT NULL,
   ContributorTeamId int FOREIGN KEY  REFERENCES ContributorTeam(Id)
-      ON DELETE CASCADE
-      ON UPDATE CASCADE
 );
 GO
 

@@ -9,22 +9,27 @@
     /// <summary>
     /// DAL user model
     /// </summary>
-    [Table("Contributors")]
-    public partial class Contributor
+    [Table("ContributorTeam")]
+    public partial class ContributorTeam
     {
         /// <summary>
-        /// Gets or sets id of contributor
+        /// Gets or sets id of ContributorTeam
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets first name of contributor
+        /// Gets or sets first name of ContributorTeam
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets Contributor Team Id of contributor
+        /// Gets or sets first name of ContributorTeam
         /// </summary>
-        public int? ContributorTeamId { get; set; }
+        public string CourseDirection { get; set; }
+
+        /// <summary>
+        /// Gets or sets contributors in ContributorTeam
+        /// </summary>
+        public IList<Contributor> Contributors { get; set; }
     }
 }

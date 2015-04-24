@@ -23,8 +23,7 @@
             _contributorViewModel = new ContributorViewModel()
             {
                 Id = 1,
-                FirstName = "FirstName",
-                LastName = "LastName",
+                Name = "FirstName",
                 ContributorTeamId = 1
             };
         }
@@ -43,22 +42,11 @@
         /// <summary>
         /// Sets id of test contributor view model
         /// </summary>
-        /// <param name="firstName">FirstName for test contributor view model</param>
+        /// <param name="name">FirstName for test contributor view model</param>
         /// <returns>Contributor view model builder object</returns>
-        public ContributorMvcViewModelBuilder WithFirstName(string firstName)
+        public ContributorMvcViewModelBuilder WithName(string name)
         {
-            _contributorViewModel.FirstName = firstName;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets id of test contributor view model
-        /// </summary>
-        /// <param name="lastName">LastName for test contributor view model</param>
-        /// <returns>Contributor view model builder object</returns>
-        public ContributorMvcViewModelBuilder WithLastName(string lastName)
-        {
-            _contributorViewModel.LastName = lastName;
+            _contributorViewModel.Name = name;
             return this;
         }
 

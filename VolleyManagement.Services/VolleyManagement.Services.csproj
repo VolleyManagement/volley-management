@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Constantscs.cs" />
     <Compile Include="ContributorService.cs" />
+    <Compile Include="ContributorTeamService.cs" />
     <Compile Include="PlayerService.cs" />
     <Compile Include="UserService.cs" />
     <Compile Include="Infrastructure\NinjectServiceBindModule.cs" />

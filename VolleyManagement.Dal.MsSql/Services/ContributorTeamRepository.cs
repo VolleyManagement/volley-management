@@ -12,6 +12,7 @@
     using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
     using VolleyManagement.Domain.ContributorTeams;
+    using VolleyManagement.Domain.ContributorTeams;
 
     /// <summary>
     /// Defines implementation of the IContributorRepository contract.
@@ -55,8 +56,23 @@
             {
                 Id = c.Id,
                 Name = c.Name,
-                CourseDirection = c.CourseDirection
+                CourseDirection = c.CourseDirection,
+                //one to many relationship code first entity framework
             });
+        }
+
+        /// <summary>
+        /// Removes contributor by id.
+        /// </summary>
+        /// <param name="id">The id of contributor team to remove.</param>
+        public void Remove(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        IQueryable<ContributorTeam> IContributorTeamRepository.Find()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -64,7 +80,7 @@
         /// </summary>
         /// <param name="predicate">Condition to find contributors.</param>
         /// <returns>Collection of domain contributors.</returns>
-        public IQueryable<Domain.ContributorTeam> FindWhere(System.Linq.Expressions.Expression<Func<Domain.ContributorTeam, bool>> predicate)
+        public IQueryable<ContributorTeam> FindWhere(System.Linq.Expressions.Expression<Func<ContributorTeam, bool>> predicate)
         {
             throw new NotImplementedException();
         }
@@ -73,7 +89,7 @@
         /// Adds new contributor.
         /// </summary>
         /// <param name="newEntity">The contributor team for adding.</param>
-        public void Add(Domain.ContributorTeam newEntity)
+        public void Add(ContributorTeam newEntity)
         {
             throw new NotImplementedException();
         }
@@ -82,16 +98,7 @@
         /// Updates specified contributor.
         /// </summary>
         /// <param name="oldEntity">The contributor team to update.</param>
-        public void Update(Domain.ContributorTeam oldEntity)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Removes contributor by id.
-        /// </summary>
-        /// <param name="id">The id of contributor team to remove.</param>
-        public void Remove(int id)
+        public void Update(ContributorTeam oldEntity)
         {
             throw new NotImplementedException();
         }

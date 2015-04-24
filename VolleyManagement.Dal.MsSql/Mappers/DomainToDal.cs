@@ -65,7 +65,7 @@
         /// </summary>
         /// <param name="domainContributorTeam">Contributor Domain model</param>
         /// <returns>Contributor Dal model</returns>
-        public static ContributorTeam Map(Domain.Contributors.ContributorTeam domainContributor)
+        public static ContributorTeam Map(Domain.ContributorTeams.ContributorTeam domainContributorTeam)
         {
             ContributorTeam contributorTeam = new ContributorTeam();
             contributorTeam.Id = domainContributorTeam.Id;

@@ -13,16 +13,13 @@
     /// </summary>
     public class ContributorTeamService : IContributorTeamService
     {
-        /// <summary>
-        /// Holds ContributorRepositoryTeam instance.
-        /// </summary>
-        private readonly IContributorTeamService _contributorTeamRepository;
+        private readonly IContributorTeamRepository _contributorTeamRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContributorTeamService"/> class.
         /// </summary>
         /// <param name="contributorRepository">The user repository</param>
-        public ContributorTeamService(IContributorTeamService contributorTeamRepository)
+        public ContributorTeamService(IContributorTeamRepository contributorTeamRepository)
         {
             _contributorTeamRepository = contributorTeamRepository;
         }

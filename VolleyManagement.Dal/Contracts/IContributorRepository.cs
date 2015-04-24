@@ -6,7 +6,7 @@
     using VolleyManagement.Domain.Contributors;
 
     /// <summary>
-    /// Defines specific contract for ContributorRepository
+    /// Defines specific contract for TournamentRepository
     /// </summary>
     public interface IContributorRepository : IRepository<Contributor>
     {

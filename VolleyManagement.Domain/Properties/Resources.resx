@@ -121,10 +121,13 @@
     <value>Transfer has started before tourament</value>
   </data>
   <data name="InvalidTransferEndpoint" xml:space="preserve">
-    <value>Tournament finished before transfer</value>
+    <value>Окончание трансферного периода должно быть раньше окончания игр</value>
   </data>
   <data name="InvelidPeriodTournament" xml:space="preserve">
     <value>Tournament registration is after of a tournament</value>
+  </data>
+  <data name="LateRegistrationDates" xml:space="preserve">
+    <value>Вы не можете указывать начало периода заявок в прошлом</value>
   </data>
   <data name="TournamentNameMustBeUnique" xml:space="preserve">
     <value>The name of the tournament must be unique</value>
@@ -186,13 +189,22 @@
   <data name="ValidationUserName" xml:space="preserve">
     <value>Please, enter the user name correctly</value>
   </data>
-  <data name="WrongRegistrationDates" xml:space="preserve">
-    <value>Invalid distance of registration dates</value>
+  <data name="WrongRegistrationDatesPeriod" xml:space="preserve">
+    <value>Начало периода заявок должно быть раньше чем его окнчание</value>
+  </data>
+  <data name="WrongRegistrationGames" xml:space="preserve">
+    <value>Период заявок должен следовать перед началом игр</value>
   </data>
   <data name="WrongStartTournamentDates" xml:space="preserve">
-    <value>Start date has to be before end date</value>
+    <value>Начальная дата турнира должна следовать перед ее окончанием</value>
   </data>
   <data name="WrongStartTransferDates" xml:space="preserve">
     <value>Start transfer date has to be before end date</value>
+  </data>
+  <data name="WrongTransferPeriod" xml:space="preserve">
+    <value>Начало трансферного периода должно быть раньше чем его окнчание</value>
+  </data>
+  <data name="WrongTransferStart" xml:space="preserve">
+    <value>Начало трансферного окна должно быть после начала игр</value>
   </data>
 </root>

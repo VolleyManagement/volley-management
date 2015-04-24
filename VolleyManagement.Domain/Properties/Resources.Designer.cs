@@ -70,7 +70,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tournament finished before transfer.
+        ///   Looks up a localized string similar to Окончание трансферного периода должно быть раньше окончания игр.
         /// </summary>
         public static string InvalidTransferEndpoint {
             get {
@@ -84,6 +84,15 @@ namespace VolleyManagement.Domain.Properties {
         public static string InvelidPeriodTournament {
             get {
                 return ResourceManager.GetString("InvelidPeriodTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вы не можете указывать начало периода заявок в прошлом.
+        /// </summary>
+        public static string LateRegistrationDates {
+            get {
+                return ResourceManager.GetString("LateRegistrationDates", resourceCulture);
             }
         }
         
@@ -268,16 +277,25 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid distance of registration dates.
+        ///   Looks up a localized string similar to Начало периода заявок должно быть раньше чем его окнчание.
         /// </summary>
-        public static string WrongRegistrationDates {
+        public static string WrongRegistrationDatesPeriod {
             get {
-                return ResourceManager.GetString("WrongRegistrationDates", resourceCulture);
+                return ResourceManager.GetString("WrongRegistrationDatesPeriod", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start date has to be before end date.
+        ///   Looks up a localized string similar to Период заявок должен следовать перед началом игр.
+        /// </summary>
+        public static string WrongRegistrationGames {
+            get {
+                return ResourceManager.GetString("WrongRegistrationGames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начальная дата турнира должна следовать перед ее окончанием.
         /// </summary>
         public static string WrongStartTournamentDates {
             get {
@@ -291,6 +309,24 @@ namespace VolleyManagement.Domain.Properties {
         public static string WrongStartTransferDates {
             get {
                 return ResourceManager.GetString("WrongStartTransferDates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начало трансферного периода должно быть раньше чем его окнчание.
+        /// </summary>
+        public static string WrongTransferPeriod {
+            get {
+                return ResourceManager.GetString("WrongTransferPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начало трансферного окна должно быть после начала игр.
+        /// </summary>
+        public static string WrongTransferStart {
+            get {
+                return ResourceManager.GetString("WrongTransferStart", resourceCulture);
             }
         }
     }

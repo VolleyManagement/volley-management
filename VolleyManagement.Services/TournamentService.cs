@@ -38,8 +38,12 @@
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
-            IsTournamentNameUnique(tournamentToCreate);
-            IsDatesValid(tournamentToCreate);
+            if (tournamentToCreate != null)
+            {
+                IsTournamentNameUnique(tournamentToCreate);
+                AreDatesValid(tournamentToCreate);
+            }
+            
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -96,42 +100,42 @@
         /// Checks the tournament dates 
         /// </summary>
         /// <param name="tournament">Tournament to check</param>
-        private void IsDatesValid(Tournament tournament)
+        private void AreDatesValid(Tournament tournament)
         {
-            // if registration dates don't go one after another 
-            if (tournament.ApplyingPeriodStart >= tournament.GamesEnd)
+            // if registration dates before now 
+            if (DateTime.UtcNow >= tournament.ApplyingPeriodStart)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationDates);
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.LateRegistrationDates);
             }
 
-            // if start tournaments dates don't go one after another
+            // if registration start date after end date 
+            if ( tournament.ApplyingPeriodStart >= tournament.ApplyingPeriodEnd)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationDatesPeriod);
+            }
+
+            // if registration period is after games start
+            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationGames);
+            }
+
+            // if tournament start dates goes after tournament end
             if (tournament.GamesStart >= tournament.GamesEnd)
             {
                 throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongStartTournamentDates);
             }
 
-            // if transfer dates don't go one after another 
-            if (tournament.TransferEnd >= tournament.TransferStart)
-            {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongStartTransferDates);
-            }
-
-            // registration period is less then 3 month
-            if (tournament.ApplyingPeriodStart.Month - tournament.ApplyingPeriodEnd.Month < VolleyManagement.Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH)
-            {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationDates);
-            }
-
-            // registration goes after tournament has started
-            if (tournament.ApplyingPeriodEnd > tournament.GamesStart)
-            {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.InvelidPeriodTournament);
-            }
-
-            // transfer starts before tournament has started 
+            // if games date go after transfer start 
             if (tournament.GamesStart >= tournament.TransferStart)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.InvalidPeriodTransfer);
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongTransferStart);
+            }
+
+            // if transfer start goes after transfer end
+            if (tournament.TransferStart >= tournament.TransferEnd)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongTransferPeriod);
             }
 
             // fransfer end before tournament end date

@@ -148,7 +148,6 @@
 
             set
             {
-                // TODO: add validation
                 _gamesStart = value;
             }
         }

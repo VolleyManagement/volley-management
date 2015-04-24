@@ -56,6 +56,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Providers\DefaultTimeProvider.cs" />
+    <Compile Include="Providers\TimeProvider.cs" />
     <Compile Include="Tournaments\EnumExtensions.cs" />
     <Compile Include="Tournaments\TournamentSchemeEnum.cs" />
     <Compile Include="Tournaments\Tournament.cs" />

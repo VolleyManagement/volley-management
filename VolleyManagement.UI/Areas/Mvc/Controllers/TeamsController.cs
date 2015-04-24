@@ -63,21 +63,22 @@
         [HttpPost]
         public JsonResult Delete(int id)
         {
-            TeamDeleteResultViewModel jsondata;
+            TeamDeleteResultViewModel result;
             try
             {
                 this._teamService.Delete(id);
-                jsondata = new TeamDeleteResultViewModel {
+                result = new TeamDeleteResultViewModel
+                {
                     Message = TEAM_DELETED_SUCCESSFULLY_DESCRITPION,
                     HasDeleted = true
                 };
             }
             catch (MissingEntityException ex)
             {
-                jsondata = new TeamDeleteResultViewModel { Message = ex.Message, HasDeleted = false };
+                result = new TeamDeleteResultViewModel { Message = ex.Message, HasDeleted = false };
             }
 
-            return Json(jsondata, JsonRequestBehavior.DenyGet);
+            return Json(result, JsonRequestBehavior.DenyGet);
         }
     }
 }

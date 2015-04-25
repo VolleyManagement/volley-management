@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
-    using Moq;
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using Moq;
     using VolleyManagement.Domain.Providers;
     using VolleyManagement.Domain.Tournaments;
 
@@ -12,21 +12,23 @@
     [ExcludeFromCodeCoverage]
     internal class TournamentBuilder
     {
+        public const int TRANSFER_PERIOD_DAYS = 10;
+
+        public const int TRANSFER_PERIOD_MONTH = 6;
+
         /// <summary>
         /// Holds test tournament instance
         /// </summary>
         private Tournament _tournament;
 
-        private const int transferPeriodDays = 10;
-
-        private const int tournamentPeriodMonth = 6;
+        private DateTime _mockNowDate;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentBuilder"/> class
         /// </summary>
         public TournamentBuilder()
         {
-            DateTime now = MockDate();
+             _mockNowDate = MockDate();
             this._tournament = new Tournament
             {
                 Id = 1,
@@ -35,13 +37,26 @@
                 Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
                 RegulationsLink = "http://default.com",
-                ApplyingPeriodStart = now.AddDays(1),
-                ApplyingPeriodEnd = now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH).AddDays(1),
-                GamesStart = now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1),
-                GamesEnd = now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + tournamentPeriodMonth),
-                TransferStart = now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1),
-                TransferEnd = now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(transferPeriodDays)
+                ApplyingPeriodStart = _mockNowDate.AddDays(1),
+                ApplyingPeriodEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH)
+                        .AddDays(1),
+                GamesStart = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1),
+                GamesEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + TRANSFER_PERIOD_MONTH),
+                TransferStart = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1),
+                TransferEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1)
+                        .AddDays(TRANSFER_PERIOD_DAYS)
             };
+        }
+
+        /// <summary>
+        /// Gets now date for testing
+        /// </summary>
+        public DateTime Now
+        {
+            get
+            {
+                return _mockNowDate;
+            }
         }
 
         /// <summary>
@@ -113,7 +128,7 @@
         /// <summary>
         /// Sets tournament start
         /// </summary>
-        /// <param name="gamesStart"></param>
+        /// <param name="gamesStart">Games start</param>
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithGamesStart(DateTime gamesStart)
         {
@@ -124,7 +139,7 @@
         /// <summary>
         /// Sets tournament end
         /// </summary>
-        /// <param name="gamesEnd"></param>
+        /// <param name="gamesEnd">Games end</param>
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithGamesEnd(DateTime gamesEnd)
         {
@@ -135,7 +150,7 @@
         /// <summary>
         /// Sets applying start date of a tournament
         /// </summary>
-        /// <param name="applyingPeriodStart"></param>
+        /// <param name="applyingPeriodStart">Applying period start</param>
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithApplyingPeriodStart(DateTime applyingPeriodStart)
         {
@@ -146,7 +161,7 @@
         /// <summary>
         /// Sets applying end date of a tournament
         /// </summary>
-        /// <param name="applyingPeriodEnd"></param>
+        /// <param name="applyingPeriodEnd">Applying period end</param>
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithApplyingPeriodEnd(DateTime applyingPeriodEnd)
         {
@@ -157,7 +172,7 @@
         /// <summary>
         /// Sets tournament transfer start date
         /// </summary>
-        /// <param name="transferStart"></param>
+        /// <param name="transferStart">Start transfer period</param>
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithTransferStart(DateTime transferStart)
         {
@@ -166,9 +181,9 @@
         }
 
         /// <summary>
-        /// Sets tournament transfer end date 
+        /// Sets tournament transfer end date
         /// </summary>
-        /// <param name="transferEnd"></param>
+        /// <param name="transferEnd">End transfer period</param>
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithTransferEnd(DateTime transferEnd)
         {
@@ -185,6 +200,10 @@
             return this._tournament;
         }
 
+        /// <summary>
+        /// Mocks the dateB
+        /// </summary>
+        /// <returns>Mocked date</returns>
         private DateTime MockDate()
         {
             var gamesStart = new Mock<TimeProvider>();

@@ -12,7 +12,10 @@
         /// </summary>
         public override DateTime UtcNow
         {
-            get { return DateTime.UtcNow; }
+            get 
+            { 
+                return DateTime.UtcNow; 
+            }
         }
     }
 }

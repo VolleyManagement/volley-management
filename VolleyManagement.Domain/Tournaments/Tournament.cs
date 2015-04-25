@@ -13,12 +13,6 @@
         private short _season;
         private TournamentSchemeEnum _scheme;
         private string _regulationsLink;
-        private DateTime _gamesStart;
-        private DateTime _gamesEnd;
-        private DateTime _applyingPeriodStart;
-        private DateTime _applyingPeriodEnd;
-        private DateTime _transferStart;
-        private DateTime _transferEnd;
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -139,98 +133,31 @@
         /// <summary>
         /// Gets or sets tournament start
         /// </summary>
-        public DateTime GamesStart
-        {
-            get
-            {
-                return _gamesStart;
-            }
-
-            set
-            {
-                _gamesStart = value;
-            }
-        }
+        public DateTime GamesStart { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament end 
         /// </summary>
-        public DateTime GamesEnd
-        {
-            get
-            {
-                return _gamesEnd;
-            }
-
-            set
-            {
-                _gamesEnd = value;
-            }
-        }
+        public DateTime GamesEnd { get; set; }
 
         /// <summary>
         /// Gets or sets start registration date of a tournament
         /// </summary>
-        public DateTime ApplyingPeriodStart
-        {
-            get
-            {
-                return _applyingPeriodStart;
-            }
-
-            set
-            {
-                _applyingPeriodStart = value;
-            }
-        }
-
+        public DateTime ApplyingPeriodStart { get; set; }
+        
         /// <summary>
         /// Gets or sets end registration date of a tournament 
         /// </summary>
-        public DateTime ApplyingPeriodEnd
-        {
-            get
-            {
-                return _applyingPeriodEnd;
-            }
-
-            set
-            {
-                _applyingPeriodEnd = value;
-            }
-
-        }
+        public DateTime ApplyingPeriodEnd { get; set; }
 
         /// <summary>
         /// Gets or sets transfer end of a tournament
         /// </summary>
-        public DateTime TransferEnd
-        {
-            get
-            {
-                return _transferEnd;
-            }
-
-            set
-            {
-                _transferEnd = value;
-            }
-        }
+        public DateTime TransferEnd { get; set; }
 
         /// <summary>
         /// Gets or sets transfer start of a tournament
         /// </summary>
-        public DateTime TransferStart
-        {
-            get
-            {
-                return _transferStart;
-            }
-
-            set
-            {
-                _transferStart = value;
-            }
-        }
+        public DateTime TransferStart { get; set; }
     }
 }

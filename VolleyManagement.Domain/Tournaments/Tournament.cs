@@ -12,8 +12,7 @@
         Finished,
         Current,
         Upcoming,
-        NotStarted,
-        Indefinite
+        NotStarted
     }
 
     /// <summary>
@@ -167,13 +166,9 @@
                 {
                     return TournamentStateEnum.Current;
                 }
-                else if (GamesEnd < now)
+                else 
                 {
                     return TournamentStateEnum.Finished;
-                }
-                else
-                {
-                    return TournamentStateEnum.Indefinite;
                 }
             }
         }

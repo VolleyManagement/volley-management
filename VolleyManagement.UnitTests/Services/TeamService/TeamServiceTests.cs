@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
     using System.Collections.Generic;
+    using System.Data;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,6 +13,7 @@
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Teams;
     using VolleyManagement.Services;
+
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -35,6 +37,8 @@
         /// </summary>
         private readonly Mock<ITeamRepository> _teamRepositoryMock = new Mock<ITeamRepository>();
 
+        private readonly Mock<IPlayerRepository> _playerRepositoryMock = new Mock<IPlayerRepository>();
+
         /// <summary>
         /// Unit of work mock.
         /// </summary>
@@ -44,6 +48,8 @@
         /// ITeamService mock
         /// </summary>
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
+
+        private readonly Mock<IDbTransaction> _dbTransaction = new Mock<IDbTransaction>();
 
         /// <summary>
         /// IoC for tests.
@@ -59,7 +65,12 @@
             _kernel = new StandardKernel();
             _kernel.Bind<ITeamRepository>()
                    .ToConstant(_teamRepositoryMock.Object);
+            _kernel.Bind<IPlayerRepository>()
+                   .ToConstant(_playerRepositoryMock.Object);
+            
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            
+            _unitOfWorkMock.Setup(u => u.BeginTransaction(It.IsAny<IsolationLevel>())).Returns(_dbTransaction.Object);
         }
 
         /// <summary>

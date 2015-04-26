@@ -64,6 +64,7 @@ using VolleyManagement.Dal.Exceptions;
         /// <returns>Current transaction manager</returns>
         public IDbTransaction BeginTransaction(IsolationLevel isolationLevel)
         {
+            _context.Connection.Open();
             return _context.Connection.BeginTransaction(isolationLevel);
         }
     }

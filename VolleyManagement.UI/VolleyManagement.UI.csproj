@@ -185,7 +185,7 @@
     <Content Include="Areas\Mvc\Views\Players\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Delete.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
-    <Content Include="Areas\Mvc\Views\Nav\Menu.cshtml" />
+    <Content Include="Areas\Mvc\Views\Navigation\Menu.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -228,7 +228,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
-    <Compile Include="Areas\Mvc\Controllers\NavController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Mvc\Controllers\PlayersController.cs" />
     <Compile Include="Areas\Mvc\Controllers\TournamentsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\UsersController.cs" />

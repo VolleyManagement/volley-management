@@ -58,7 +58,6 @@
                 }
 
                 var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
-                ViewBag.SelectedMenuItem = "Players";
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)

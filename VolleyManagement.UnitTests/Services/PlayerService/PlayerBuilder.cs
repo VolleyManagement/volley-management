@@ -26,7 +26,8 @@
                 LastName = "LastName",
                 BirthYear = 1983,
                 Height = 186,
-                Weight = 95
+                Weight = 95,
+                TeamId = 1
             };
         }
 
@@ -93,6 +94,17 @@
         public PlayerBuilder WithWeight(int? weight)
         {
             _player.Weight = weight;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets player test teamId
+        /// </summary>
+        /// <param name="weight">Test player weight</param>
+        /// <returns>Player builder object</returns>
+        public PlayerBuilder WithTeamId(int? teamId)
+        {
+            _player.TeamId = teamId;
             return this;
         }
 

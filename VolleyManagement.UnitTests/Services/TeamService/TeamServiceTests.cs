@@ -13,6 +13,10 @@
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Teams;
     using VolleyManagement.Services;
+    using VolleyManagement.Domain.Players;
+    using System.Linq.Expressions;
+    using System;
+    using VolleyManagement.UnitTests.Services.PlayerService;
 
 
     /// <summary>
@@ -104,6 +108,17 @@
         {
             // Arrange
             var newTeam = new TeamBuilder().Build();
+            int captainId = 1;
+
+            var captain = (new PlayerBuilder()).WithId(captainId).Build();
+            IQueryable<Player> listOfPlayers = ((new PlayerServiceTestFixture())
+                                                .AddPlayer(captain).Build())
+                                                .AsQueryable();
+
+            IQueryable<Player> queriableCaptain = listOfPlayers.Where(p => p.Id == captainId);
+            
+            _playerRepositoryMock.Setup(pr => pr.FindWhere(It.IsAny<Expression<Func<Player, bool>>>()))
+                                                .Returns(queriableCaptain);
 
             // Act
             var sut = _kernel.Get<TeamService>();

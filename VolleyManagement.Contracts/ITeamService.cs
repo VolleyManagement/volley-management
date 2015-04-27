@@ -17,6 +17,13 @@
         IQueryable<Team> Get();
 
         /// <summary>
+        /// Find team by id.
+        /// </summary>
+        /// <param name="id">Team id.</param>
+        /// <returns>Found team.</returns>
+        Team Get(int id);
+
+        /// <summary>
         /// Create new team.
         /// </summary>
         /// <param name="team">New team.</param>

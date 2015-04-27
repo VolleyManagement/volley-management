@@ -3,7 +3,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Contributors
 {
     using System.ComponentModel.DataAnnotations;
     using VolleyManagement.Domain;
-    using VolleyManagement.Domain.Contributors;
+    using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
 
     /// <summary>

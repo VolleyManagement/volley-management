@@ -25,6 +25,9 @@
         /// <summary>
         /// Gets or sets Contributor Team Id of contributor
         /// </summary>
+        [ForeignKey("ContributorTeamId")]
+        public virtual ContributorTeam ContributorTeam { get; set; }
+
         public int? ContributorTeamId { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Contributors;
+    using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Contributors;
 
     /// <summary>

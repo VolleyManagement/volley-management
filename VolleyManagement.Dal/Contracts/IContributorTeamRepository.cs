@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Domain.ContributorTeams;
+    using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>
     /// Defines specific contract for ContributorRepository

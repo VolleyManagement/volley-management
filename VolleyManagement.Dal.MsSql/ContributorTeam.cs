@@ -30,6 +30,6 @@
         /// <summary>
         /// Gets or sets contributors in ContributorTeam
         /// </summary>
-        public IList<Contributor> Contributors { get; set; }
+        public virtual ICollection<Contributor> Contributors { get; set; }
     }
 }

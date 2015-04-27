@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\Constants.cs" />
-    <Compile Include="Contracts\IContributorRepository.cs" />
     <Compile Include="Contracts\IContributorTeamRepository.cs" />
     <Compile Include="Contracts\IPlayerRepository.cs" />
     <Compile Include="Contracts\IRepository.cs" />

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.ContributorService
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Contributors;
+    using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>
     /// Builder for test contributors

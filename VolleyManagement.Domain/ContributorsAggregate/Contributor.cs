@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Domain.Contributors
+﻿namespace VolleyManagement.Domain.ContributorsAggregate
 {
     using System;
     using VolleyManagement.Domain.Properties;

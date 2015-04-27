@@ -1,8 +1,7 @@
-﻿namespace VolleyManagement.Domain.ContributorTeams
+﻿namespace VolleyManagement.Domain.ContributorsAggregate
 {
     using System;
     using System.Collections.Generic;
-    using VolleyManagement.Domain.Contributors;
     using VolleyManagement.Domain.Properties;
 
     /// <summary>
@@ -28,6 +27,6 @@
         /// <summary>
         /// Gets or sets contributors in ContributorTeam
         /// </summary>
-        public virtual ICollection<Contributor> Contributors { get; set; }
+        public IEnumerable<Contributor> Contributors { get; set; }
     }
 }

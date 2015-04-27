@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Linq;
-    using Domain.ContributorTeams;
+    using Domain.ContributorsAggregate;
 
     /// <summary>
     /// Interface for ContributorService.

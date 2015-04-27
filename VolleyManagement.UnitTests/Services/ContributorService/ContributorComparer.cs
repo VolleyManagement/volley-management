@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Contributors;
+    using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>
     /// Comparer for contributor objects.

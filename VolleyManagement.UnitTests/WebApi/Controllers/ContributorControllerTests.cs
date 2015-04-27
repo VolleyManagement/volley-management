@@ -9,7 +9,7 @@
     using System.Web.OData.Results;
 
     using Contracts;
-    using Domain.Contributors;
+    using Domain.ContributorsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -61,7 +61,7 @@
             // Arrange
             var testData = _testFixture.TestContributors()
                                             .Build();
-            MockContributors(testData);
+            //MockContributors(testData);
             var sut = _kernel.Get<ContributorsController>();
 
             //// Expected result
@@ -104,14 +104,14 @@
             AssertExtensions.AreEqual<ContributorViewModel>(expected, actual, new ContributorViewModelComparer());
         }
 
-        /// <summary>
-        /// Mock the Contributors
-        /// </summary>
-        /// <param name="testData">Data what will be returned</param>
-        private void MockContributors(IList<Contributor> testData)
-        {
-            _contributorServiceMock.Setup(cn => cn.Get())
-                                            .Returns(testData.AsQueryable());
-        }
+        ///// <summary>
+        ///// Mock the Contributors
+        ///// </summary>
+        ///// <param name="testData">Data what will be returned</param>
+        //private void MockContributors(IList<Contributor> testData)
+        //{
+        //    _contributorServiceMock.Setup(cn => cn.Get())
+        //                                    .Returns(testData.AsQueryable());
+        //}
     }
 }

@@ -11,8 +11,7 @@
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Dal.MsSql.Mappers;
     using Dal = VolleyManagement.Dal.MsSql;
-    using VolleyManagement.Domain.ContributorTeams;
-    using VolleyManagement.Domain.ContributorTeams;
+    using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>
     /// Defines implementation of the IContributorRepository contract.
@@ -21,7 +20,8 @@
     {
         private const int START_DATABASE_ID_VALUE = 0;
 
-        private readonly ObjectSet<Dal.ContributorTeam> _dalContributorTeam;
+        private readonly ObjectSet<Dal.ContributorTeam> _teamsSet;
+        private readonly ObjectSet<Dal.Contributor> _contribsSet;
 
         /// <summary>
         /// Holds UnitOfWork instance.
@@ -35,7 +35,8 @@
         public ContributorTeamRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _dalContributorTeam = unitOfWork.Context.CreateObjectSet<Dal.ContributorTeam>();
+            _teamsSet = unitOfWork.Context.CreateObjectSet<Dal.ContributorTeam>();
+            _contribsSet = unitOfWork.Context.CreateObjectSet<Dal.Contributor>();
         }
 
         /// <summary>
@@ -46,31 +47,31 @@
             get { return _unitOfWork; }
         }
 
-        /// <summary>
-        /// Gets all contributors Team.
-        /// </summary>
-        /// <returns>Collection of domain contributor team.</returns>
-        public IQueryable<Domain.ContributorTeam> Find()
+        public IQueryable<Domain.ContributorsAggregate.ContributorTeam> Find()
         {
-            return _dalContributorTeam.Select(c => new Domain.ContributorTeam
-            {
-                Id = c.Id,
-                Name = c.Name,
-                CourseDirection = c.CourseDirection,
-                //one to many relationship code first entity framework
-            });
+            var result = _contribsSet.GroupBy(c => c.ContributorTeam)
+                                    .Select(gr => new Domain.ContributorsAggregate.ContributorTeam
+                                    {
+                                        Id = gr.Key.Id,
+                                        Name = gr.Key.Name,
+                                        CourseDirection = gr.Key.CourseDirection,
+                                        Contributors = gr.Select(c => new Domain.ContributorsAggregate.Contributor
+                                        {
+                                            Id = c.Id,
+                                            Name = c.Name
+                                        })
+                                    });
+
+            return result;
         }
+
+
 
         /// <summary>
         /// Removes contributor by id.
         /// </summary>
         /// <param name="id">The id of contributor team to remove.</param>
         public void Remove(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        IQueryable<ContributorTeam> IContributorTeamRepository.Find()
         {
             throw new NotImplementedException();
         }

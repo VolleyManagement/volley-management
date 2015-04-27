@@ -3,7 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using VolleyManagement.Domain.Contributors;
+    using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Contributors;
     using VolleyManagement.UnitTests.Services.ContributorService;
 

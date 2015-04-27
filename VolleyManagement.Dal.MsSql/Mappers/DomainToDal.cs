@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Mappers
 {
-    using VolleyManagement.Domain.Contributors;
-    using VolleyManagement.Domain.ContributorTeams;
+    using VolleyManagement.Domain.ContributorsAggregate;
     using constants = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>
@@ -65,7 +64,7 @@
         /// </summary>
         /// <param name="domainContributorTeam">Contributor Domain model</param>
         /// <returns>Contributor Dal model</returns>
-        public static ContributorTeam Map(Domain.ContributorTeams.ContributorTeam domainContributorTeam)
+        public static ContributorTeam Map(Domain.ContributorsAggregate.ContributorTeam domainContributorTeam)
         {
             ContributorTeam contributorTeam = new ContributorTeam();
             contributorTeam.Id = domainContributorTeam.Id;
@@ -79,7 +78,7 @@
         /// </summary>
         /// <param name="domainContributor">Contributor Domain model</param>
         /// <returns>Contributor Dal model</returns>
-        public static Contributor Map(Domain.Contributors.Contributor domainContributor)
+        public static Contributor Map(Domain.ContributorsAggregate.Contributor domainContributor)
         {
             Contributor contributor = new Contributor();
             contributor.Id = domainContributor.Id;

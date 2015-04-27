@@ -6,7 +6,7 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.Domain.ContributorTeams;
+    using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>
     /// Defines ContributorService

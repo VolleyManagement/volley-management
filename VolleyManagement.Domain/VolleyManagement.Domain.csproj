@@ -48,8 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Contributors\Contributor.cs" />
-    <Compile Include="ContributorTeams\ContributorTeam.cs" />
+    <Compile Include="ContributorsAggregate\Contributor.cs" />
+    <Compile Include="ContributorsAggregate\ContributorTeam.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Players\PlayerValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

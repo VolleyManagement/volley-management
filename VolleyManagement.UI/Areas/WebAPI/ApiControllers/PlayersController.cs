@@ -9,6 +9,7 @@
 
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.UI.Areas.WebApi.Infrastructure;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
 
@@ -18,6 +19,7 @@
     public class PlayersController : ODataController
     {
         private readonly IPlayerService _playerService;
+        private readonly ITeamService _teamService;
 
         private const string CONTROLLER_NAME = "players";
 
@@ -25,9 +27,10 @@
         /// Initializes a new instance of the <see cref="PlayersController"/> class.
         /// </summary>
         /// <param name="playerService"> The player service. </param>
-        public PlayersController(IPlayerService playerService)
+        public PlayersController(IPlayerService playerService, ITeamService teamService)
         {
             this._playerService = playerService;
+            this._teamService = teamService;
         }
 
         /// <summary>
@@ -98,6 +101,41 @@
             }
 
             return Updated(player);
+        }
+
+        [AcceptVerbs("POST", "PUT")]
+        /// <summary>
+        /// Updates player team by id.
+        /// </summary>
+        /// <param name="playerViewModel">The player view model to update</param>
+        /// <param name="teamId">Team id to assign the player to.</param>
+        /// <returns><see cref="IHttpActionResult"/></returns>
+        public IHttpActionResult CreateRef([FromODataUri] int key,
+            string navigationProperty, [FromBody] Uri link)
+        {
+            Domain.Players.Player playerToUpdate;
+            Domain.Teams.Team team;
+            switch (navigationProperty)
+            {
+                case "Teams":
+                    int teamId = Helpers.GetKeyFromUri<int>(Request, link);
+                    try
+                    {
+                        playerToUpdate = _playerService.Get(key);
+                        team = _teamService.Get(teamId);
+                    }
+                    catch (MissingEntityException ex)
+                    {
+                        ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                        return BadRequest(ModelState);
+                    }
+                    playerToUpdate.TeamId = teamId;
+                    _playerService.Edit(playerToUpdate);
+                    var player = PlayerViewModel.Map(playerToUpdate, team);
+                    return Updated(player);
+                default:
+                    return StatusCode(HttpStatusCode.NotImplemented);
+            }
         }
 
         /// <summary>

@@ -112,6 +112,7 @@
     <Compile Include="Services\TeamService\TeamComparer.cs" />
     <Compile Include="Services\TeamService\TeamServiceTestFixture.cs" />
     <Compile Include="Services\TeamService\TeamServiceTests.cs" />
+    <Compile Include="Services\TeamService\TeamViewModelServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
@@ -128,6 +129,8 @@
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\TeamViewModelBuilder.cs" />
+    <Compile Include="WebApi\ViewModels\TeamViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs">
       <SubType>Code</SubType>
     </Compile>

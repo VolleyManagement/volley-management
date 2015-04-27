@@ -248,6 +248,7 @@
     <Compile Include="Areas\WebApi\ApiControllers\TournamentsController.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\UsersController.cs" />
     <Compile Include="Areas\WebApi\Controllers\HomeController.cs" />
+    <Compile Include="Areas\WebApi\Infrastructure\Helpers.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Teams\TeamViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Tournaments\TournamentViewModel.cs" />

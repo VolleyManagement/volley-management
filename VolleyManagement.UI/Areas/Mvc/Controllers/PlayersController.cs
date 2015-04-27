@@ -212,14 +212,25 @@
             }
         }
 
-        ///// <summary>
-        ///// Open window with form which allow to choose player or players
-        ///// </summary>
-        ///// <param name="id">Mode of chosing window</param>
-        ///// <returns>View with choosing form</returns>
-        //public ActionResult ChoosePlayers(int id)
-        //{ 
-        
-        //}
+        /// <summary>
+        /// Open window with form which allow to choose player or players
+        /// </summary>
+        /// <param name="id">Mode of chosing window</param>
+        /// <returns>View with choosing form</returns>
+        public ActionResult ChoosePlayers()
+        {
+            List<Player> allPlayers = this._playerService
+                    .Get()
+                    .OrderBy(p => p.LastName).ToList();
+
+            List<PlayerNameViewModel> players = new List<PlayerNameViewModel>();
+
+            for (int i = 0; i < allPlayers.Count && i < 10; i++)
+            {
+                players.Add(PlayerNameViewModel.Map(allPlayers[i]));
+            }
+
+            return View(players);
+        }
     }
 }

@@ -1,12 +1,6 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
 
-<script>
-    function openChoosingPlayerWindow()
-    {
-        w = window.open("/Mvc/Players/Index", "Window Name", "width=400,height=400,status=no,location=no, resizable=no,")
-    }
-
-</script>
+<script src="~/Scripts/ChoosingPlayersFunctions.js"></script>
 
 
 <div class="editor-label">
@@ -30,7 +24,7 @@
 </div>
 
 <div class="editor-label">
-    <input class="text-box single-line" id="Captain_FullNameText" name="Captain_FullName" type="text" value="" onfocus="openChoosingPlayerWindow()" />
+    <input class="text-box single-line" id="Captain_FullNameText" name="Captain_FullName" type="text" value="" onfocus="openChoosingCaptainWindow()" />
     <input class="hidden" id="Captain_FullName" name="Captain.FullName" type="text" value="" />
     <input class="hidden" id="Captain_Id" name="Captain.Id" type="number" value="" />  
 </div>
@@ -48,7 +42,7 @@
     <div>
 
     </div>
-    <input type="button" value="@Resources.TeamViews.AddPlayerToRoster" onclick="openChoosingPlayerWindow()">
+    <input type="button" value="@Resources.TeamViews.AddPlayerToRoster" onclick="openChoosingRosterWindow()">
     <table class="table">
         <tr>
             <th>

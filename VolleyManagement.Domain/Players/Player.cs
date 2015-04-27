@@ -136,17 +136,6 @@
         /// Gets or sets a value indicating where Team.
         /// </summary>
         /// <value>The player team.</value>
-        public int? TeamId
-        {
-            get
-            {
-                return _teamId;
-            }
-
-            set
-            {
-                _teamId = value;
-            }
-        }
+        public int? TeamId { get; set; }
     }
 }

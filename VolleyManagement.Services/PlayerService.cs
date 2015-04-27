@@ -92,16 +92,10 @@
             }
 
             // Check if new team id isn't exist
-            if (playerToEdit.TeamId != null)
+            if (playerToEdit.TeamId != null 
+                && _teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
             {
-                try
-                {
-                    Team newTeam = GetTeamWhere(t => t.Id == playerToEdit.TeamId);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    throw new MissingEntityException("Team with specified Id can not be found", ex);
-                }
+                throw new MissingEntityException("Team with specified Id can not be found", playerToEdit.TeamId);
             }
 
             try
@@ -155,7 +149,7 @@
 
             try
             {
-                return GetTeamWhere(t => t.Id == player.TeamId);
+                return _teamRepository.FindWhere(t => t.Id == player.TeamId).Single();
             }
             catch (InvalidOperationException ex)
             {
@@ -165,22 +159,7 @@
 
         private Team GetPlayerLeadedTeam(int playerId)
         {
-            Team team;
-            try
-            {
-                team = GetTeamWhere(t => t.CaptainId == playerId);
-            }
-            catch (InvalidOperationException)
-            {
-                team = null;
-            }
-
-            return team;
-        }
-
-        private Team GetTeamWhere(System.Linq.Expressions.Expression<Func<Team, bool>> predicate)
-        {
-            return _teamRepository.FindWhere(predicate).Single();
+            return _teamRepository.FindWhere(t => t.CaptainId == playerId).SingleOrDefault();
         }
     }
 }

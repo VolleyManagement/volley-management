@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Dal.Contracts
 {
     using System;
-    using System.Data;
     using System.Data.Entity.Core.Objects;
 
     /// <summary>
@@ -24,6 +23,6 @@
         /// </summary>
         /// <param name="isolationLevel">Level of transaction isolation</param>
         /// <returns>Manager of transaction</returns>
-        IDbTransaction BeginTransaction(IsolationLevel isolationLevel);
+        IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel);
     }
 }

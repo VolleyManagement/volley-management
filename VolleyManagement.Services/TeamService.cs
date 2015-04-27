@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
     using VolleyManagement.Contracts;
@@ -48,12 +47,12 @@
         /// <param name="teamToCreate">A Team to create.</param>
         public void Create(Team teamToCreate)
         {
-            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
                 Player captain;
                 try
                 {
-                    captain = GetPlayerWhere(p => p.Id == teamToCreate.CaptainId).Single();
+                    captain = _playerRepository.FindWhere(p => p.Id == teamToCreate.CaptainId).Single();
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -93,7 +92,7 @@
         /// <param name="teamId">The id of team to delete.</param>
         public void Delete(int teamId)
         {
-            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
             {
                 try
                 {
@@ -121,7 +120,7 @@
         /// <returns>Team's captain</returns>
         public Player GetTeamCaptain(Team team)
         {
-            return GetPlayerWhere(p => p.Id == team.CaptainId).Single();
+            return _playerRepository.FindWhere(p => p.Id == team.CaptainId).Single();
         }
 
         /// <summary>
@@ -131,7 +130,7 @@
         /// <returns>Collection of team's players</returns>
         public IEnumerable<Player> GetTeamRoster(int teamId)
         {
-            return GetPlayerWhere(p => p.TeamId == teamId).ToList();
+            return _playerRepository.FindWhere(p => p.TeamId == teamId).ToList();
         }
 
         /// <summary>
@@ -144,7 +143,7 @@
             Player player;
             try
             {
-                player = GetPlayerWhere(p => p.Id == playerId).Single();
+                player = _playerRepository.FindWhere(p => p.Id == playerId).Single();
             }
             catch (InvalidOperationException ex)
             {
@@ -168,11 +167,6 @@
         {
             player.TeamId = teamId;
             _playerRepository.Update(player);
-        }
-
-        private IQueryable<Player> GetPlayerWhere(Expression<Func<Player, bool>> predicate)
-        {
-            return _playerRepository.FindWhere(predicate);
         }
     }
 }

@@ -50,29 +50,15 @@
 
 <script type="text/javascript">
     $(function () {
-        // $.fn.datepicker.defaults.format = '';
-
-        $('#StartDate').datepicker({
-            format: 'mm.dd.yyyy'
+        $.datepicker.setDefaults({
+            dateFormat: 'dd.mm.yy'
         });
-
-
-
-        $("#EndDate").datepicker({
-            format: 'mm/dd/yyyy'
-        });
-        $("#TransferStart").datepicker({
-            format: 'mm/dd/yyyy'
-        });
-        $("#TransferEnd").datepicker({
-            format: 'mm/dd/yyyy'
-        });
-        $("#RegistrationStart").datepicker({
-            format: 'mm/dd/yyyy'
-        });
-        $("#RegistrationEnd").datepicker({
-            format: 'mm/dd/yyyy'
-        });
+        $('#StartDate').datepicker();
+        $("#EndDate").datepicker();
+        $("#TransferStart").datepicker();
+        $("#TransferEnd").datepicker();
+        $("#RegistrationStart").datepicker();
+        $("#RegistrationEnd").datepicker();
     });
 </script>
 
@@ -80,43 +66,41 @@
     @Html.LabelFor(model => model.StartDate)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.StartDate, new { id = "StartDate", @readonly = "readonly", 
-                @Value = DateTime.Now.ToShortDateString(), data_date_format = "mm.dd.yyyy"
-})
+    @Html.TextBoxFor(model => model.StartDate, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
     @Html.ValidationMessageFor(model => model.StartDate)
 </div>
 <div class="editor-label">
     @Html.LabelFor(model => model.EndDate)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.EndDate, new { id = "EndDate", @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
+    @Html.TextBoxFor(model => model.EndDate, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
     @Html.ValidationMessageFor(model => model.EndDate)
 </div>
 <div class="editor-label">
     @Html.LabelFor(model => model.RegistrationStart)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.RegistrationStart, new { id = "RegistrationStart", @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
+    @Html.TextBoxFor(model => model.RegistrationStart, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
     @Html.ValidationMessageFor(model => model.RegistrationStart)
 </div>
 <div class="editor-label">
     @Html.LabelFor(model => model.RegistrationEnd)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.RegistrationEnd, new { id = "RegistrationEnd", @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
+    @Html.TextBoxFor(model => model.RegistrationEnd, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
     @Html.ValidationMessageFor(model => model.RegistrationEnd)
 </div>
 <div class="editor-label">
     @Html.LabelFor(model => model.TransferStart)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.TransferStart, new { id = "TransferStart", @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
+    @Html.TextBoxFor(model => model.TransferStart, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
     @Html.ValidationMessageFor(model => model.TransferStart)
 </div>
 <div class="editor-label">
     @Html.LabelFor(model => model.TransferEnd)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.TransferEnd, new { id = "TransferEnd", @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
+    @Html.TextBoxFor(model => model.TransferEnd, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
     @Html.ValidationMessageFor(model => model.TransferEnd)
 </div>

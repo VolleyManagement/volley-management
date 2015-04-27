@@ -27,7 +27,7 @@
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
         /// <param name="playerRepository">The player repository</param>
-        /// <param name="teamService">Service which provide basic operation with team repository</param>
+        /// <param name="teamRepository">The team repository</param>
         public PlayerService(IPlayerRepository playerRepository, ITeamRepository teamRepository)
         {
             _playerRepository = playerRepository;
@@ -79,6 +79,31 @@
         /// <param name="playerToEdit">Player to edit.</param>
         public void Edit(Player playerToEdit)
         {
+            // It seems to me, that we shouldn't open transaction for current operation
+
+            // Check if player is captain of team and teamId is null or changed
+            Team leadedTeam = GetPlayerLeadedTeam(playerToEdit.Id);
+            if (leadedTeam != null &&
+                (playerToEdit.TeamId == null || playerToEdit.TeamId != leadedTeam.Id))
+            {
+                var ex = new InvalidOperationException("Player is captain of another team");
+                ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = leadedTeam.Id;
+                throw ex;
+            }
+
+            // Check if new team id isn't exist
+            if (playerToEdit.TeamId != null)
+            {
+                try
+                {
+                    Team newTeam = GetTeamWhere(t => t.Id == playerToEdit.TeamId);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    throw new MissingEntityException("Team with specified Id can not be found", ex);
+                }
+            }
+
             try
             {
                 _playerRepository.Update(playerToEdit);
@@ -88,9 +113,6 @@
                 throw new MissingEntityException("Player with specified Id can not be found", ex);
             }
 
-            // TODO: Handle cases:
-            // 1. teamId isn't exist
-            // 2. after updating some team will lose required field captainId
             _playerRepository.UnitOfWork.Commit();
         }
 
@@ -100,6 +122,14 @@
         /// <param name="id">The id of player to delete.</param>
         public void Delete(int id)
         {
+            Team playerTeam = GetPlayerLeadedTeam(id);
+            if (playerTeam != null)
+            {
+                var ex = new InvalidOperationException("Player is captain of existing team");
+                ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = playerTeam.Id;
+                throw ex;
+            }
+
             try
             {
                 _playerRepository.Remove(id);
@@ -107,11 +137,8 @@
             }
             catch (InvalidKeyValueException ex)
             {
-                var serviceException = new MissingEntityException("Player with specified Id can not be found", ex);
-                throw serviceException;
+                throw new MissingEntityException("Player with specified Id can not be found", id, ex);
             }
-
-            // TODO: Handle case if after deleting some team will lose required field captainId
         }
 
         /// <summary>
@@ -125,15 +152,35 @@
             {
                 return null;
             }
-            
+
             try
             {
-                return _teamRepository.FindWhere(t => t.Id == player.TeamId).Single();
+                return GetTeamWhere(t => t.Id == player.TeamId);
             }
             catch (InvalidOperationException ex)
             {
-                throw new MissingEntityException("Team with specified Id can not be found", ex);
+                throw new MissingEntityException("Team with specified Id can not be found", player.TeamId, ex);
             }
+        }
+
+        private Team GetPlayerLeadedTeam(int playerId)
+        {
+            Team team;
+            try
+            {
+                team = GetTeamWhere(t => t.CaptainId == playerId);
+            }
+            catch (InvalidOperationException)
+            {
+                team = null;
+            }
+
+            return team;
+        }
+
+        private Team GetTeamWhere(System.Linq.Expressions.Expression<Func<Team, bool>> predicate)
+        {
+            return _teamRepository.FindWhere(predicate).Single();
         }
     }
 }

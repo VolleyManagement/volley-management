@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Dal.Contracts
 {
     using System;
+    using System.Data;
     using System.Data.Entity.Core.Objects;
-    using System.Transactions;
 
     /// <summary>
     /// Describe methods to work with the store.
@@ -20,13 +20,10 @@
         void Commit();
 
         /// <summary>
-        /// Begin transaction with database
+        /// Begins transaction
         /// </summary>
-        TransactionScope BeginTransaction();
-
-        /// <summary>
-        /// Commit changes in current transaction
-        /// </summary>
-        void CommitTransaction();
+        /// <param name="isolationLevel">Level of transaction isolation</param>
+        /// <returns>Manager of transaction</returns>
+        IDbTransaction BeginTransaction(IsolationLevel isolationLevel);
     }
 }

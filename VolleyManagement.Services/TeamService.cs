@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Linq;
+    using System.Linq.Expressions;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
@@ -16,22 +18,19 @@
     /// </summary>
     public class TeamService : ITeamService
     {
-        /// <summary>
-        /// Holds PlayerRepository instance.
-        /// </summary>
         private readonly ITeamRepository _teamRepository;
 
-        private readonly IPlayerService _playerService;
+        private readonly IPlayerRepository _playerRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamService"/> class.
         /// </summary>
         /// <param name="teamRepository">The team repository</param>
-        /// <param name="playerService">Service which provide basic operation with player repository</param>
-        public TeamService(ITeamRepository teamRepository, IPlayerService playerService)
+        /// <param name="playerRepository">The player repository</param>
+        public TeamService(ITeamRepository teamRepository, IPlayerRepository playerRepository)
         {
             _teamRepository = teamRepository;
-            _playerService = playerService;
+            _playerRepository = playerRepository;
         }
 
         /// <summary>
@@ -49,17 +48,23 @@
         /// <param name="teamToCreate">A Team to create.</param>
         public void Create(Team teamToCreate)
         {
-            try
+            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
-                _teamRepository.Add(teamToCreate);
-            }
-            catch (InvalidKeyValueException ex)
-            {
-                throw new MissingEntityException(ex.Message, ex);
-            }
+                Player captain;
+                try
+                {
+                    captain = GetPlayerWhere(p => p.Id == teamToCreate.CaptainId).Single();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    throw new MissingEntityException("Player with specified Id can not be found", teamToCreate.CaptainId, ex);
+                }
 
-            // TODO: update players teamId
-            _teamRepository.UnitOfWork.Commit();
+                _teamRepository.Add(teamToCreate);
+                SetPlayerTeam(captain, teamToCreate.Id);
+
+                _teamRepository.UnitOfWork.Commit();
+            }
         }
 
         /// <summary>
@@ -76,7 +81,7 @@
             }
             catch (InvalidOperationException ex)
             {
-                throw new MissingEntityException("Team with specified Id can not be found", ex);
+                throw new MissingEntityException("Team with specified Id can not be found", id, ex);
             }
 
             return team;
@@ -85,21 +90,28 @@
         /// <summary>
         /// Delete team by id.
         /// </summary>
-        /// <param name="id">The id of team to delete.</param>
-        public void Delete(int id)
+        /// <param name="teamId">The id of team to delete.</param>
+        public void Delete(int teamId)
         {
-            try
+            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
-                _teamRepository.Remove(id);
+                try
+                {
+                    _teamRepository.Remove(teamId);
+                }
+                catch (InvalidKeyValueException ex)
+                {
+                    throw new MissingEntityException("Team with specified Id can not be found", teamId, ex);
+                }
+
+                IEnumerable<Player> roster = GetTeamRoster(teamId);
+                foreach (var player in roster)
+                {
+                    SetPlayerTeam(player, null);
+                }
+
                 _teamRepository.UnitOfWork.Commit();
             }
-            catch (InvalidKeyValueException ex)
-            {
-                var serviceException = new MissingEntityException("Team with specified Id can not be found", ex);
-                throw serviceException;
-            }
-
-            // TODO: update players teamId
         }
 
         /// <summary>
@@ -107,19 +119,60 @@
         /// </summary>
         /// <param name="team">Team which captain should be found</param>
         /// <returns>Team's captain</returns>
-        public Domain.Players.Player GetTeamCaptain(Team team)
+        public Player GetTeamCaptain(Team team)
         {
-            return _playerService.Get(team.CaptainId);
+            return GetPlayerWhere(p => p.Id == team.CaptainId).Single();
         }
 
         /// <summary>
         /// Find players of specified team
         /// </summary>
-        /// <param name="team">Team which players should be found</param>
+        /// <param name="teamId">Id of team which players should be found</param>
         /// <returns>Collection of team's players</returns>
-        public IEnumerable<Player> GetTeamRoster(Team team)
+        public IEnumerable<Player> GetTeamRoster(int teamId)
         {
-            return _playerService.Get().Where(p => p.TeamId == team.Id).ToList();
+            return GetPlayerWhere(p => p.TeamId == teamId).ToList();
+        }
+
+        /// <summary>
+        /// Sets team to player
+        /// </summary>
+        /// <param name="playerId">Id of player to set the team</param>
+        /// <param name="teamId">Id of team which should be set to player</param>
+        public void SetPlayerTeam(int playerId, int teamId)
+        {
+            Player player;
+            try
+            {
+                player = GetPlayerWhere(p => p.Id == playerId).Single();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new MissingEntityException("Player with specified Id can not be found", playerId, ex);
+            }
+
+            Team team;
+            try
+            {
+                team = _teamRepository.FindWhere(t => t.Id == teamId).Single();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new MissingEntityException("Team with specified Id can not be found", teamId, ex);
+            }
+
+            SetPlayerTeam(player, teamId);
+        }
+
+        private void SetPlayerTeam(Player player, int? teamId)
+        {
+            player.TeamId = teamId;
+            _playerRepository.Update(player);
+        }
+
+        private IQueryable<Player> GetPlayerWhere(Expression<Func<Player, bool>> predicate)
+        {
+            return _playerRepository.FindWhere(predicate);
         }
     }
 }

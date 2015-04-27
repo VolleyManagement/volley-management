@@ -1,11 +1,11 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Services
 {
-    using System.Data.Entity.Core;
-    using System.Data.Entity.Core.Objects;
-    using System.Data.Entity.Infrastructure;
-    using System.Transactions;
-    using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.Exceptions;
+    using System.Data;
+using System.Data.Entity.Core;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+using VolleyManagement.Dal.Contracts;
+using VolleyManagement.Dal.Exceptions;
 
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
@@ -16,8 +16,6 @@
         /// Context of the data source.
         /// </summary>
         private readonly ObjectContext _context;
-
-        private TransactionScope _transactionScope;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VolleyUnitOfWork"/> class.
@@ -60,24 +58,14 @@
         }
 
         /// <summary>
-        /// Begin transaction with database
+        /// Begins transaction
         /// </summary>
-        public void BeginTransaction()
+        /// <param name="isolationLevel">Level of transaction isolation</param>
+        /// <returns>Current transaction manager</returns>
+        public IDbTransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            _transactionScope = new TransactionScope();
-        }
-
-        /// <summary>
-        /// Commit changes in current transaction
-        /// </summary>
-        public void CommitTransaction()
-        {
-            _transactionScope.Complete();
-        }
-
-        TransactionScope IUnitOfWork.BeginTransaction()
-        {
-            throw new System.NotImplementedException();
+            _context.Connection.Open();
+            return _context.Connection.BeginTransaction(isolationLevel);
         }
     }
 }

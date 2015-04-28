@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Domain.Tournaments
 {
     using System;
-    using VolleyManagement.Domain.Properties;
     using VolleyManagement.Crosscutting.Contracts.Providers;
+    using VolleyManagement.Domain.Properties;
 
     /// <summary>
     /// Represents tournament state
@@ -166,7 +166,7 @@
                 {
                     return TournamentStateEnum.Current;
                 }
-                else 
+                else
                 {
                     return TournamentStateEnum.Finished;
                 }

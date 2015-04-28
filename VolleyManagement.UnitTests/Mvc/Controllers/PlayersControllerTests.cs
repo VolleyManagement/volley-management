@@ -108,7 +108,7 @@
             var sup = this._kernel.Get<PlayersController>();
 
             var expected = listOfPlayers.OrderBy(p => p.LastName)
-                .Where(p => (p.FirstName + " "+ p.LastName).Contains(SUBSTRING_TO_SEARCH))
+                .Where(p => (p.FirstName + " " + p.LastName).Contains(SUBSTRING_TO_SEARCH))
                 .Skip((TESTING_PAGE - 1) * MAX_PLAYERS_ON_PAGE)
                 .Take(MAX_PLAYERS_ON_PAGE)
                 .Select(p =>

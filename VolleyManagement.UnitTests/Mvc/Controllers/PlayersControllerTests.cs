@@ -96,8 +96,8 @@
         public void Index_PlayersExist_SpecifiedPlayersPageReturned()
         {
             // Arrange
-            List<Player> listOfPlayers = new List<Player>() 
-            { 
+            List<Player> listOfPlayers = new List<Player>()
+            {
                 new Player() { Id = 1, FirstName = "FirstNameA", LastName = "LastNameA" },
                 new Player() { Id = 2, FirstName = "FirstNameB", LastName = "LastNameB" },
                 new Player() { Id = 3, FirstName = "FirstNameC", LastName = "LastNameC" },
@@ -108,7 +108,7 @@
             var sup = this._kernel.Get<PlayersController>();
 
             var expected = listOfPlayers.OrderBy(p => p.LastName)
-                .Where(p => (p.FirstName + " "+ p.LastName).Contains(SUBSTRING_TO_SEARCH))
+                .Where(p => (p.FirstName + " " + p.LastName).Contains(SUBSTRING_TO_SEARCH))
                 .Skip((TESTING_PAGE - 1) * MAX_PLAYERS_ON_PAGE)
                 .Take(MAX_PLAYERS_ON_PAGE)
                 .Select(p =>

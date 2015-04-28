@@ -50,8 +50,10 @@
                     Description = t.Description,
                     RegulationsLink = t.RegulationsLink,
                     Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
-                    Season = (short)(VolleyManagement.Domain.Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB + t.Season)
-                });
+                    Season = (short)(VolleyManagement.Domain.Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB + t.Season),
+                    GamesStart = t.StartDate,
+                    GamesEnd = t.EndDate
+                }).ToArray().AsQueryable();
         }
 
         /// <summary>

@@ -24,7 +24,9 @@
                 Description = tournament.Description,
                 Season = tournament.Season,
                 Scheme = tournament.Scheme,
-                RegulationsLink = tournament.RegulationsLink
+                RegulationsLink = tournament.RegulationsLink,
+                GamesStart = tournament.GamesStart,
+                GamesEnd = tournament.GamesEnd
             };
         }
 

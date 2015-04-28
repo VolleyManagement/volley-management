@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Domain
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
@@ -19,6 +20,11 @@
         /// </summary>
         public static class Tournament
         {
+            /// <summary>
+            /// The number of month uses for sets the limit date from now for getting expected tournaments
+            /// </summary>
+            public const int UPCOMING_TOURNAMENTS_MONTH_LIMIT = 3;
+
             /// <summary>
             /// constant defined the length of the name field
             /// </summary>
@@ -142,8 +148,6 @@
             /// constant defined the length of the achivements field
             /// </summary>
             public const int MAX_ACHIEVEMENTS_LENGTH = 4000;
-
         }
-    
     }
 }

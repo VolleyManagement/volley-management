@@ -13,7 +13,7 @@
         /// <summary>
         /// Gets or sets is item menu current
         /// </summary>
-        public bool IsCurent { get; set; }
+        public bool IsCurrent { get; set; }
 
         /// <summary>
         /// Gets or sets item menu controller name

@@ -129,6 +129,9 @@
   <data name="CreateTournamentTitle" xml:space="preserve">
     <value>Создание нового турнира</value>
   </data>
+  <data name="CurrentTournamentsHeader" xml:space="preserve">
+    <value>Текущие</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
@@ -155,5 +158,8 @@
   </data>
   <data name="TournamentsIndexTitle" xml:space="preserve">
     <value>Турниры</value>
+  </data>
+  <data name="UpcomingTournamentsHeader" xml:space="preserve">
+    <value>Ожидаемые</value>
   </data>
 </root>

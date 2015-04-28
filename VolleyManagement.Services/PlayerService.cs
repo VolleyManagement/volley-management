@@ -10,6 +10,7 @@
     using VolleyManagement.Domain.Teams;
 
     using DAL = VolleyManagement.Dal.Contracts;
+    using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
     /// Defines PlayerService
@@ -79,35 +80,35 @@
         /// <param name="playerToEdit">Player to edit.</param>
         public void Edit(Player playerToEdit)
         {
-            // It seems to me, that we shouldn't open transaction for current operation
-
-            // Check if player is captain of team and teamId is null or changed
-            Team leadedTeam = GetPlayerLeadedTeam(playerToEdit.Id);
-            if (leadedTeam != null &&
-                (playerToEdit.TeamId == null || playerToEdit.TeamId != leadedTeam.Id))
+            using (IDbTransaction transaction = _playerRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
-                var ex = new InvalidOperationException("Player is captain of another team");
-                ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = leadedTeam.Id;
-                throw ex;
-            }
+                // Check if player is captain of team and teamId is null or changed
+                Team leadedTeam = GetPlayerLedTeam(playerToEdit.Id);
+                if (leadedTeam != null &&
+                    (playerToEdit.TeamId == null || playerToEdit.TeamId != leadedTeam.Id))
+                {
+                    var ex = new InvalidOperationException("Player is captain of another team");
+                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = leadedTeam.Id;
+                    throw ex;
+                }
+                else if (playerToEdit.TeamId != null
+                         && _teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
+                {
+                    throw new MissingEntityException("Team with specified Id can not be found", playerToEdit.TeamId);
+                }
 
-            // Check if new team id isn't exist
-            if (playerToEdit.TeamId != null 
-                && _teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
-            {
-                throw new MissingEntityException("Team with specified Id can not be found", playerToEdit.TeamId);
-            }
+                try
+                {
+                    _playerRepository.Update(playerToEdit);
+                }
+                catch (InvalidKeyValueException ex)
+                {
+                    throw new MissingEntityException("Player with specified Id can not be found", ex);
+                }
 
-            try
-            {
-                _playerRepository.Update(playerToEdit);
+                _playerRepository.UnitOfWork.Commit();
+                transaction.Commit();
             }
-            catch (InvalidKeyValueException ex)
-            {
-                throw new MissingEntityException("Player with specified Id can not be found", ex);
-            }
-
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -116,7 +117,7 @@
         /// <param name="id">The id of player to delete.</param>
         public void Delete(int id)
         {
-            Team playerTeam = GetPlayerLeadedTeam(id);
+            Team playerTeam = GetPlayerLedTeam(id);
             if (playerTeam != null)
             {
                 var ex = new InvalidOperationException("Player is captain of existing team");
@@ -157,7 +158,7 @@
             }
         }
 
-        private Team GetPlayerLeadedTeam(int playerId)
+        private Team GetPlayerLedTeam(int playerId)
         {
             return _teamRepository.FindWhere(t => t.CaptainId == playerId).SingleOrDefault();
         }

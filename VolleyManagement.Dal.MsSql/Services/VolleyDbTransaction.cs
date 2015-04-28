@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using VolleyManagement.Dal.Contracts;
-
-namespace VolleyManagement.Dal.MsSql.Services
+﻿namespace VolleyManagement.Dal.MsSql.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using VolleyManagement.Dal.Contracts;
+
+    /// <summary>
+    /// Defines implementation of the IDbTransaction contract.
+    /// </summary>
     public class VolleyDbTransaction : IDbTransaction
     {
         private System.Data.IDbTransaction _transaction;

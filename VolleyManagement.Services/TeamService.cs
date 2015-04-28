@@ -11,6 +11,7 @@
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
     using DAL = VolleyManagement.Dal.Contracts;
+    using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
     /// Defines TeamService
@@ -47,7 +48,7 @@
         /// <param name="teamToCreate">A Team to create.</param>
         public void Create(Team teamToCreate)
         {
-            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
                 Player captain;
                 try
@@ -60,9 +61,12 @@
                 }
 
                 _teamRepository.Add(teamToCreate);
-                SetPlayerTeam(captain, teamToCreate.Id);
 
-                _teamRepository.UnitOfWork.Commit();
+                captain.TeamId = teamToCreate.Id;
+                _playerRepository.Update(captain);
+                _playerRepository.UnitOfWork.Commit();
+
+                transaction.Commit();
             }
         }
 
@@ -92,7 +96,7 @@
         /// <param name="teamId">The id of team to delete.</param>
         public void Delete(int teamId)
         {
-            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted))
+            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
                 try
                 {
@@ -106,10 +110,12 @@
                 IEnumerable<Player> roster = GetTeamRoster(teamId);
                 foreach (var player in roster)
                 {
-                    SetPlayerTeam(player, null);
+                    player.TeamId = teamId;
+                    _playerRepository.Update(player);
                 }
 
                 _teamRepository.UnitOfWork.Commit();
+                transaction.Commit();
             }
         }
 
@@ -160,13 +166,9 @@
                 throw new MissingEntityException("Team with specified Id can not be found", teamId, ex);
             }
 
-            SetPlayerTeam(player, teamId);
-        }
-
-        private void SetPlayerTeam(Player player, int? teamId)
-        {
             player.TeamId = teamId;
             _playerRepository.Update(player);
+            _playerRepository.UnitOfWork.Commit();
         }
     }
 }

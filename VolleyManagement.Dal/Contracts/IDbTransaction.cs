@@ -17,6 +17,5 @@
         /// Rolls back a transaction
         /// </summary>
         void Rollback();
-
     }
 }

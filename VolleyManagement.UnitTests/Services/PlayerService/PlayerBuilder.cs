@@ -100,7 +100,7 @@
         /// <summary>
         /// Sets player test teamId
         /// </summary>
-        /// <param name="weight">Test player weight</param>
+        /// <param name="teamId">Test player weight</param>
         /// <returns>Player builder object</returns>
         public PlayerBuilder WithTeamId(int? teamId)
         {

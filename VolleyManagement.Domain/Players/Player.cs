@@ -14,7 +14,6 @@
         private int? _birthYear;
         private int? _height;
         private int? _weight;
-        private int? _teamId;
 
         /// <summary>
         /// Gets or sets a value indicating where Id.

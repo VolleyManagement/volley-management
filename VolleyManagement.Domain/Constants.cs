@@ -54,6 +54,11 @@
             /// constant defines the maximal year available to season
             /// </summary>
             public const short MAXIMAL_SEASON_YEAR = 2155;
+
+            /// <summary>
+            /// Constant defines the minimum number of the months of a registration
+            /// </summary>
+            public const byte MINIMUN_REGISTRATION_PERIOD_MONTH = 3;
         }
 
         /// <summary>

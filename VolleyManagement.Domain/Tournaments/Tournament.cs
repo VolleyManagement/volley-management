@@ -129,5 +129,35 @@
                 _regulationsLink = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets tournament start
+        /// </summary>
+        public DateTime GamesStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tournament end
+        /// </summary>
+        public DateTime GamesEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets start registration date of a tournament
+        /// </summary>
+        public DateTime ApplyingPeriodStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets end registration date of a tournament
+        /// </summary>
+        public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets transfer end of a tournament
+        /// </summary>
+        public DateTime TransferEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets transfer start of a tournament
+        /// </summary>
+        public DateTime TransferStart { get; set; }
     }
 }

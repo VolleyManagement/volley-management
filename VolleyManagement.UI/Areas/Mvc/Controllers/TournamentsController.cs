@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Web.Mvc;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.Tournaments;
@@ -94,7 +93,7 @@
 
                 return this.View(tournamentViewModel);
             }
-            catch (TournamentValidationException )
+            catch (TournamentValidationException)
             {
                 this.ModelState.AddModelError(UNIQUE_NAME_KEY, "Имя турнира должно быть уникальным");
                 return this.View(tournamentViewModel);

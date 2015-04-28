@@ -25,6 +25,25 @@
 
     <div class="display-label">@Html.LabelFor(model => model.RegulationsLink)</div>
     <div class="display-field"><a href="@Html.DisplayFor(model => model.RegulationsLink)" target="_blank">@Model.Name</a></div>
+
+    <div class="display-label">@Html.LabelFor(model => model.StartDate)</div>
+    <div class="display-field">@Model.StartDate.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.EndDate)</div>
+    <div class="display-field">@Model.EndDate.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.RegistrationStart)</div>
+    <div class="display-field">@Model.RegistrationStart.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.RegistrationEnd)</div>
+    <div class="display-field">@Model.RegistrationEnd.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.TransferStart)</div>
+    <div class="display-field">@Model.TransferStart.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.TransferEnd)</div>
+    <div class="display-field">@Model.TransferEnd.ToShortDateString()</div>
+
 </fieldset>
 <p>
     @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id=Model.Id }) |

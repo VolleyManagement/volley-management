@@ -59,6 +59,38 @@
         [StringLength(255, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
         public string RegulationsLink { get; set; }
 
+
+        /// <summary>
+        /// Start of a tournament
+        /// </summary>
+        public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// End of a tournament
+        /// </summary>
+        public DateTime EndDate { get; set; }
+
+        /// <summary>
+        /// Start of a transfer period
+        /// </summary>
+        public DateTime TransferStart { get; set; }
+
+        /// <summary>
+        /// End of a transfer period
+        /// </summary>
+        public DateTime TransferEnd { get; set; }
+
+        /// <summary>
+        /// Start of a tournament registration
+        /// </summary>
+        public DateTime RegistrationStart { get; set; }
+
+        /// <summary>
+        /// End of a tournament registration
+        /// </summary>
+        public DateTime RegistrationEnd { get; set; }
+
+
         #region Factory Methods
 
         /// <summary>
@@ -75,7 +107,13 @@
                                               Description = tournament.Description,
                                               Season = tournament.Season,
                                               RegulationsLink = tournament.RegulationsLink,
-                                              Scheme = tournament.Scheme.ToDescription()
+                                              Scheme = tournament.Scheme.ToDescription(),
+                                              StartDate = tournament.GamesStart,
+                                              EndDate = tournament.GamesEnd,
+                                              RegistrationStart = tournament.ApplyingPeriodStart,
+                                              RegistrationEnd = tournament.ApplyingPeriodEnd,
+                                              TransferStart = tournament.TransferStart,
+                                              TransferEnd = tournament.TransferEnd
                                           };
 
             return tournamentViewModel;
@@ -96,10 +134,16 @@
             tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum))
                 .Cast<TournamentSchemeEnum>()
                 .FirstOrDefault(v => v.ToDescription() == this.Scheme);
+            tournament.GamesStart = this.StartDate;
+            tournament.GamesEnd = this.EndDate;
+            tournament.ApplyingPeriodStart = this.RegistrationStart;
+            tournament.ApplyingPeriodEnd = this.RegistrationEnd;
+            tournament.TransferStart = this.TransferStart;
+            tournament.TransferEnd = this.TransferEnd;
 
             return tournament;
         }
-        
+
         #endregion
     }
 }

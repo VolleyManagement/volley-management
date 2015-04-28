@@ -38,7 +38,12 @@
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
-            IsTournamentNameUnique(tournamentToCreate);
+            if (tournamentToCreate != null)
+            {
+                IsTournamentNameUnique(tournamentToCreate);
+                AreDatesValid(tournamentToCreate);
+            }
+
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -88,6 +93,55 @@
             {
                 throw new TournamentValidationException(
                     VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique, "Name");
+            }
+        }
+
+        /// <summary>
+        /// Checks the tournament dates
+        /// </summary>
+        /// <param name="tournament">Tournament to check</param>
+        private void AreDatesValid(Tournament tournament)
+        {
+            // if registration dates before now
+            if (DateTime.UtcNow >= tournament.ApplyingPeriodStart)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.LateRegistrationDates);
+            }
+
+            // if registration start date after end date
+            if (tournament.ApplyingPeriodStart >= tournament.ApplyingPeriodEnd)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationDatesPeriod);
+            }
+
+            // if registration period is after games start
+            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationGames);
+            }
+
+            // if tournament start dates goes after tournament end
+            if (tournament.GamesStart >= tournament.GamesEnd)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongStartTournamentDates);
+            }
+
+            // if games date go after transfer start
+            if (tournament.GamesStart >= tournament.TransferStart)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongTransferStart);
+            }
+
+            // if transfer start goes after transfer end
+            if (tournament.TransferStart >= tournament.TransferEnd)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongTransferPeriod);
+            }
+
+            // fransfer end before tournament end date
+            if (tournament.TransferEnd >= tournament.GamesEnd)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.InvalidTransferEndpoint);
             }
         }
     }

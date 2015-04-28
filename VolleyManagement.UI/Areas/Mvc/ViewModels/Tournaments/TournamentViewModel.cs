@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.App_GlobalResources;
@@ -89,6 +88,49 @@
         public string RegulationsLink { get; set; }
 
         /// <summary>
+        /// Start of a tournament
+        /// </summary>
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name = "StartDate", ResourceType = typeof(ViewModelResources))]
+        public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// End of a tournament
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "EndDate", ResourceType = typeof(ViewModelResources))]
+        public DateTime EndDate { get; set; }
+
+        /// <summary>
+        /// Start of a transfer period
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
+        public DateTime TransferStart { get; set; }
+
+        /// <summary>
+        /// End of a transfer period
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
+        public DateTime TransferEnd { get; set; }
+
+        /// <summary>
+        /// Start of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "RegistrationStart", ResourceType = typeof(ViewModelResources))]
+        public DateTime RegistrationStart { get; set; }
+
+        /// <summary>
+        /// End of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "RegistrationEnd", ResourceType = typeof(ViewModelResources))]
+        public DateTime RegistrationEnd { get; set; }
+
+        /// <summary>
         /// Initializes list of seasons.
         /// </summary>
         private void InitializeSeasonsList()
@@ -104,7 +146,7 @@
                 {
                     SelectedSeason = str;
                 }
-                this.SeasonsList.Add(year,str);
+                this.SeasonsList.Add(year, str);
             }
         }
         #region Factory Methods
@@ -123,7 +165,13 @@
                 Description = tournament.Description,
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
-                Scheme = tournament.Scheme
+                Scheme = tournament.Scheme,
+                StartDate = tournament.GamesStart,
+                EndDate = tournament.GamesEnd,
+                RegistrationStart = tournament.ApplyingPeriodStart,
+                RegistrationEnd = tournament.ApplyingPeriodEnd,
+                TransferStart = tournament.TransferStart,
+                TransferEnd = tournament.TransferEnd
             };
 
             return tournamentViewModel;
@@ -142,9 +190,15 @@
                 Description = this.Description,
                 Season = this.Season,
                 Scheme = this.Scheme,
-                RegulationsLink = this.RegulationsLink
+                RegulationsLink = this.RegulationsLink,
+                GamesStart = this.StartDate,
+                GamesEnd = this.EndDate,
+                ApplyingPeriodStart = this.RegistrationStart,
+                ApplyingPeriodEnd = this.RegistrationEnd,
+                TransferStart = this.TransferStart,
+                TransferEnd = this.TransferEnd
             };
         }
         #endregion
-        }
+    }
 }

@@ -22,4 +22,8 @@
     </h3>
     @{Html.RenderPartial("TournamentsList", Model.UpcomingTournaments);}
 </p>
+<p>
+    @Html.ActionLink(Resources.TournamentViews.FinishedTournaments, string.Empty, null, 
+        new { @class = "showFinishedTournamenst"})
+</p>
 

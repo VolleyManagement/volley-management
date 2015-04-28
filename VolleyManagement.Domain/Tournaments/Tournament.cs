@@ -136,7 +136,7 @@
         public DateTime GamesStart { get; set; }
 
         /// <summary>
-        /// Gets or sets the tournament end 
+        /// Gets or sets the tournament end
         /// </summary>
         public DateTime GamesEnd { get; set; }
 
@@ -144,9 +144,9 @@
         /// Gets or sets start registration date of a tournament
         /// </summary>
         public DateTime ApplyingPeriodStart { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets end registration date of a tournament 
+        /// Gets or sets end registration date of a tournament
         /// </summary>
         public DateTime ApplyingPeriodEnd { get; set; }
 

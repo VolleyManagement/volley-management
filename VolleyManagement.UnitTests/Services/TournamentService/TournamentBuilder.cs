@@ -3,7 +3,6 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using Moq;
-    using VolleyManagement.Domain.Providers;
     using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
@@ -40,17 +39,6 @@
                 GamesEnd = new DateTime(2015, 12, 03),
                 TransferStart = new DateTime(2015, 10, 01),
                 TransferEnd = new DateTime(2015, 11, 01)
-
-
-
-                //ApplyingPeriodStart = _mockNowDate.AddDays(1),
-                //ApplyingPeriodEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH)
-                //        .AddDays(1),
-                //GamesStart = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1),
-                //GamesEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + TRANSFER_PERIOD_MONTH),
-                //TransferStart = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1),
-                //TransferEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1)
-                //        .AddDays(TRANSFER_PERIOD_DAYS)
             };
         }
 
@@ -194,17 +182,5 @@
         {
             return this._tournament;
         }
-
-        /// <summary>
-        /// Mocks the dateB
-        /// </summary>
-        /// <returns>Mocked date</returns>
-        //private DateTime MockDate()
-        //{
-        //    var gamesStart = new Mock<TimeProvider>();
-        //    gamesStart.SetupGet(t => t.UtcNow).Returns(new DateTime(2015, 06, 01));
-        //    TimeProvider.Current = gamesStart.Object;
-        //    return TimeProvider.Current.UtcNow;
-        //}
     }
 }

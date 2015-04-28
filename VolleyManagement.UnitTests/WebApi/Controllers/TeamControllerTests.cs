@@ -15,7 +15,7 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
-    public class TeamControllerTest
+    public class TeamControllerTests
     {
         private const int SPECIFIC_TEAM_ID = 2;
         private const string EXCEPTION_MESSAGE = "Test exception message.";

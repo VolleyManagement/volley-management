@@ -1,11 +1,10 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Services
 {
-    using System.Data;
-using System.Data.Entity.Core;
-using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
-using VolleyManagement.Dal.Contracts;
-using VolleyManagement.Dal.Exceptions;
+    using System.Data.Entity.Core;
+    using System.Data.Entity.Core.Objects;
+    using System.Data.Entity.Infrastructure;
+    using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.Exceptions;
 
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
@@ -62,10 +61,11 @@ using VolleyManagement.Dal.Exceptions;
         /// </summary>
         /// <param name="isolationLevel">Level of transaction isolation</param>
         /// <returns>Current transaction manager</returns>
-        public IDbTransaction BeginTransaction(IsolationLevel isolationLevel)
+        public IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel)
         {
             _context.Connection.Open();
-            return _context.Connection.BeginTransaction(isolationLevel);
+            var transaction = _context.Connection.BeginTransaction(isolationLevel);
+            return new VolleyDbTransaction(transaction);
         }
     }
 }

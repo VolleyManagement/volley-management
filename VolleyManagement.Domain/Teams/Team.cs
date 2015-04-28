@@ -12,7 +12,6 @@ using VolleyManagement.Domain.Properties;
         private string _name;
         private string _coach;
         private string _achievements;
-        private int _captainId;
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -75,17 +74,6 @@ using VolleyManagement.Domain.Properties;
         /// Gets or sets a value indicating where Captain.
         /// </summary>
         /// <value>Captain of the team</value>
-        public int CaptainId
-        {
-            get
-            {
-                return _captainId;
-            }
-
-            set
-            {
-                _captainId = value;
-            }
-        }
+        public int CaptainId { get; set; }
     }
 }

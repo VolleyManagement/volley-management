@@ -1,9 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
+    using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Linq.Expressions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -11,13 +12,11 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.Exceptions;
+    using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
     using VolleyManagement.Services;
-    using VolleyManagement.Domain.Players;
-    using System.Linq.Expressions;
-    using System;
     using VolleyManagement.UnitTests.Services.PlayerService;
-
+    using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -26,38 +25,20 @@
     [TestClass]
     public class TeamServiceTests
     {
-        /// <summary>
-        /// Message that should be passed to exception.
-        /// </summary>
         private const string EXCEPTION_MESSAGE = "Test exception message.";
 
-        /// <summary>
-        /// Test Fixture.
-        /// </summary>
         private readonly TeamServiceTestFixture _testFixture = new TeamServiceTestFixture();
 
-        /// <summary>
-        /// Team Repository Mock.
-        /// </summary>
         private readonly Mock<ITeamRepository> _teamRepositoryMock = new Mock<ITeamRepository>();
 
         private readonly Mock<IPlayerRepository> _playerRepositoryMock = new Mock<IPlayerRepository>();
 
-        /// <summary>
-        /// Unit of work mock.
-        /// </summary>
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
-        /// <summary>
-        /// ITeamService mock
-        /// </summary>
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
 
         private readonly Mock<IDbTransaction> _dbTransaction = new Mock<IDbTransaction>();
 
-        /// <summary>
-        /// IoC for tests.
-        /// </summary>
         private IKernel _kernel;
 
         /// <summary>
@@ -71,9 +52,9 @@
                    .ToConstant(_teamRepositoryMock.Object);
             _kernel.Bind<IPlayerRepository>()
                    .ToConstant(_playerRepositoryMock.Object);
-            
+
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
-            
+
             _unitOfWorkMock.Setup(u => u.BeginTransaction(It.IsAny<IsolationLevel>())).Returns(_dbTransaction.Object);
         }
 
@@ -111,12 +92,12 @@
             int captainId = 1;
 
             var captain = (new PlayerBuilder()).WithId(captainId).Build();
-            IQueryable<Player> listOfPlayers = ((new PlayerServiceTestFixture())
-                                                .AddPlayer(captain).Build())
+            IQueryable<Player> listOfPlayers = (new PlayerServiceTestFixture())
+                                                .AddPlayer(captain).Build()
                                                 .AsQueryable();
 
             IQueryable<Player> queriableCaptain = listOfPlayers.Where(p => p.Id == captainId);
-            
+
             _playerRepositoryMock.Setup(pr => pr.FindWhere(It.IsAny<Expression<Func<Player, bool>>>()))
                                                 .Returns(queriableCaptain);
 

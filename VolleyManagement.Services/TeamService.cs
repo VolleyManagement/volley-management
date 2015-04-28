@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
     using VolleyManagement.Contracts;
@@ -12,6 +11,7 @@
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
     using DAL = VolleyManagement.Dal.Contracts;
+    using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
     /// Defines TeamService
@@ -53,7 +53,7 @@
                 Player captain;
                 try
                 {
-                    captain = GetPlayerWhere(p => p.Id == teamToCreate.CaptainId).Single();
+                    captain = _playerRepository.FindWhere(p => p.Id == teamToCreate.CaptainId).Single();
                 }
                 catch (InvalidOperationException ex)
                 {
@@ -61,9 +61,12 @@
                 }
 
                 _teamRepository.Add(teamToCreate);
-                SetPlayerTeam(captain, teamToCreate.Id);
 
-                _teamRepository.UnitOfWork.Commit();
+                captain.TeamId = teamToCreate.Id;
+                _playerRepository.Update(captain);
+                _playerRepository.UnitOfWork.Commit();
+
+                transaction.Commit();
             }
         }
 
@@ -107,10 +110,12 @@
                 IEnumerable<Player> roster = GetTeamRoster(teamId);
                 foreach (var player in roster)
                 {
-                    SetPlayerTeam(player, null);
+                    player.TeamId = teamId;
+                    _playerRepository.Update(player);
                 }
 
                 _teamRepository.UnitOfWork.Commit();
+                transaction.Commit();
             }
         }
 
@@ -121,7 +126,7 @@
         /// <returns>Team's captain</returns>
         public Player GetTeamCaptain(Team team)
         {
-            return GetPlayerWhere(p => p.Id == team.CaptainId).Single();
+            return _playerRepository.FindWhere(p => p.Id == team.CaptainId).Single();
         }
 
         /// <summary>
@@ -131,7 +136,7 @@
         /// <returns>Collection of team's players</returns>
         public IEnumerable<Player> GetTeamRoster(int teamId)
         {
-            return GetPlayerWhere(p => p.TeamId == teamId).ToList();
+            return _playerRepository.FindWhere(p => p.TeamId == teamId).ToList();
         }
 
         /// <summary>
@@ -144,7 +149,7 @@
             Player player;
             try
             {
-                player = GetPlayerWhere(p => p.Id == playerId).Single();
+                player = _playerRepository.FindWhere(p => p.Id == playerId).Single();
             }
             catch (InvalidOperationException ex)
             {
@@ -161,18 +166,9 @@
                 throw new MissingEntityException("Team with specified Id can not be found", teamId, ex);
             }
 
-            SetPlayerTeam(player, teamId);
-        }
-
-        private void SetPlayerTeam(Player player, int? teamId)
-        {
             player.TeamId = teamId;
             _playerRepository.Update(player);
-        }
-
-        private IQueryable<Player> GetPlayerWhere(Expression<Func<Player, bool>> predicate)
-        {
-            return _playerRepository.FindWhere(predicate);
+            _playerRepository.UnitOfWork.Commit();
         }
     }
 }

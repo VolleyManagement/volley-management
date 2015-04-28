@@ -77,7 +77,7 @@
             var players = (EdmEntitySet)edmModel.EntityContainer.FindEntitySet("Players");
             var teamType = (EdmEntityType)edmModel.FindDeclaredType("VolleyManagement.UI.Areas.WebApi.ViewModels.Teams.TeamViewModel");
             var playerType = (EdmEntityType)edmModel.FindDeclaredType("VolleyManagement.UI.Areas.WebApi.ViewModels.Players.PlayerViewModel");
-            // AddOneToManyNavigation("Players", teams, players, teamType, playerType);
+            AddOneToManyNavigation("Players", teams, players, teamType, playerType);
             AddManyToOneNavigation("Teams", teams, players, teamType, playerType);
         }
 

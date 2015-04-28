@@ -1,10 +1,13 @@
 ﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Teams
 {
     using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.Teams;
     using VolleyManagement.UI.App_GlobalResources;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
 
     /// <summary>
     /// Represents team view model
@@ -44,6 +47,11 @@
         [StringLength(Constants.Team.MAX_ACHIEVEMENTS_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
             , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Achievements { get; set; }
+
+        /// <summary>
+        /// Gets or sets the team roster.
+        /// </summary>
+        public IQueryable<PlayerViewModel> Roster { get; set; }
 
         #region Factory Methods
 

@@ -62,7 +62,7 @@
         {
             return _playerService.Get()
                                 .ToList()
-                                .Select(p => PlayerViewModel.Map(p, _playerService.GetPlayerTeam(p)))
+                                .Select(p => PlayerViewModel.Map(p))
                                 .AsQueryable();
         }
 
@@ -103,18 +103,18 @@
             return Updated(player);
         }
 
-        [AcceptVerbs("POST", "PUT")]
         /// <summary>
-        /// Updates player team by id.
+        /// Creates reference between Player and connected entity.
         /// </summary>
-        /// <param name="playerViewModel">The player view model to update</param>
-        /// <param name="teamId">Team id to assign the player to.</param>
+        /// <param name="key">ID of the Player.</param>
+        /// <param name="navigationProperty">Name of the property.</param>
+        /// <param name="link">Link to the entity.</param>
         /// <returns><see cref="IHttpActionResult"/></returns>
+        [AcceptVerbs("POST", "PUT")]
         public IHttpActionResult CreateRef([FromODataUri] int key,
             string navigationProperty, [FromBody] Uri link)
         {
             Domain.Players.Player playerToUpdate;
-            Domain.Teams.Team team;
             switch (navigationProperty)
             {
                 case "Teams":
@@ -122,7 +122,7 @@
                     try
                     {
                         playerToUpdate = _playerService.Get(key);
-                        team = _teamService.Get(teamId);
+                        _teamService.Get(teamId);
                     }
                     catch (MissingEntityException ex)
                     {
@@ -131,7 +131,7 @@
                     }
                     playerToUpdate.TeamId = teamId;
                     _playerService.Edit(playerToUpdate);
-                    var player = PlayerViewModel.Map(playerToUpdate, team);
+                    var player = PlayerViewModel.Map(playerToUpdate);
                     return Updated(player);
                 default:
                     return StatusCode(HttpStatusCode.NotImplemented);
@@ -149,8 +149,25 @@
             return SingleResult.Create(_playerService.Get()
                                                          .Where(p => p.Id == key)
                                                          .ToList()
-                                                         .Select(p => PlayerViewModel.Map(p, _playerService.GetPlayerTeam(p)))
+                                                         .Select(p => PlayerViewModel.Map(p))
                                                          .AsQueryable());
+        }
+
+        /// <summary>
+        /// Gets player Team.
+        /// </summary>
+        /// <param name="key">ID of the player.</param>
+        /// <returns>Team that linked to the player.</returns>
+        [EnableQuery]
+        public SingleResult<TeamViewModel> GetTeams([FromODataUri] int key)
+        {
+            var player = _playerService.Get(key);
+            var result = _teamService.Get()
+                .Where(t => t.Id == player.TeamId)
+                .ToList()
+                .Select(t => TeamViewModel.Map(t))
+                .AsQueryable();
+            return SingleResult.Create(result);
         }
 
         /// <summary> Deletes tournament </summary>

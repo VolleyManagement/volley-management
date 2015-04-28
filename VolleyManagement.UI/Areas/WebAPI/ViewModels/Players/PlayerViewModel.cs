@@ -75,7 +75,7 @@
         /// </summary>
         /// <param name="player"> Domain object </param>
         /// <returns> View model object </returns>
-        public static PlayerViewModel Map(Player player, Team team)
+        public static PlayerViewModel Map(Player player)
         {
             var playerViewModel = new PlayerViewModel
             {
@@ -85,7 +85,7 @@
                 BirthYear = player.BirthYear,
                 Height = player.Height,
                 Weight = player.Weight,
-                Team = TeamViewModel.Map(team)
+                //Team = TeamViewModel.Map(team)
             };
 
             return playerViewModel;
@@ -97,7 +97,7 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            int? teamId;
+            /*int? teamId;
             if (Team == null)
             {
                 teamId = null;
@@ -106,7 +106,7 @@
             {
                 teamId = this.Team.Id;
             }
-
+            */
             return new Player
             {
                 Id = this.Id,
@@ -115,7 +115,6 @@
                 BirthYear = this.BirthYear,
                 Height = this.Height,
                 Weight = this.Weight,
-                TeamId = teamId
             };
         }
         #endregion

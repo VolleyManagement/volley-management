@@ -10,6 +10,7 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
 
     /// <summary>
     /// The teams controller.
@@ -69,6 +70,19 @@
                                 .ToList()
                                 .Select(t => TeamViewModel.Map(t))
                                 .AsQueryable();
+        }
+
+        /// <summary>
+        /// Gets roster of the team.
+        /// </summary>
+        /// <param name="key">Id of the team.</param>
+        /// <returns>Players in team roster.</returns>
+        [EnableQuery]
+        public IQueryable<PlayerViewModel> GetPlayers([FromODataUri] int key)
+        {
+            return _teamService.GetTeamRoster(key)
+                .Select(p => PlayerViewModel.Map(p))
+                .AsQueryable();
         }
     }
 }

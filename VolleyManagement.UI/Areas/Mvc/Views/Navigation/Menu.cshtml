@@ -1,0 +1,9 @@
+﻿@using VolleyManagement.UI.Areas.Mvc.ViewModels.Menu
+
+@model IEnumerable<MenuItemViewModel>
+
+@foreach (var item in Model)
+{
+    @Html.ActionLink(item.Name, item.Action, item.Controller, null, 
+        new { @class = item.IsCurent ? "selected" : null})
+}

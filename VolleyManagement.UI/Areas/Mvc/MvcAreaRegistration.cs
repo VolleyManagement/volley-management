@@ -27,7 +27,7 @@
             context.MapRoute(
                 "Mvc_default",
                 "Mvc/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional },
+                new { action = "Index", controller = "Tournaments", id = UrlParameter.Optional },
                 new[] { "VolleyManagement.UI.Areas.Mvc.Controllers" });
         }
     }

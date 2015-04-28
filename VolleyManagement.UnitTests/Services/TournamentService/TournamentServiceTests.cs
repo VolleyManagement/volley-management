@@ -468,7 +468,7 @@
         private DateTime MockDate()
         {
             var gamesStart = new Mock<TimeProvider>();
-            gamesStart.SetupGet(t => t.UtcNow).Returns(new DateTime(2015, 06, 01));
+            gamesStart.SetupGet(t => t.UtcNow).Returns(new DateTime(2015, 04, 01));
             TimeProvider.Current = gamesStart.Object;
             return TimeProvider.Current.UtcNow;
         }

@@ -15,6 +15,14 @@
     public class TournamentsController : Controller
     {
         private const string UNIQUE_NAME_KEY = "uniqueName";
+        private const string APPLYING_START_BEFORE_NOW = "ApplyingStartbeforeNow";
+        private const string APPLYING_START_DATE_AFTER_END_DATE = "ApplyingStartAfterDate";
+        private const string APPLYING_AND_DATE_AFTER_START_GAMES = "ApplyingPeriodAfterStartGames";
+        private const string START_GAMES_AFTER_END_GAMES = "StartGamesAfterEndGaes";
+        private const string TRANSFER_PERIOD_BEFORE_GAMES_START = "TransferPeriodBeforeGamesStart";
+        private const string TRANSFER_END_BEFORE_TRANSFER_START = "TransferEndBeforeStart";
+        private const string TRANSFER_END_AFTER_GAMES_END = "TransferEndAfterGamesEnd";
+
         /// <summary>
         /// Holds TournamentService instance
         /// </summary>
@@ -96,6 +104,14 @@
             catch (TournamentValidationException)
             {
                 this.ModelState.AddModelError(UNIQUE_NAME_KEY, "Имя турнира должно быть уникальным");
+
+
+
+
+
+
+
+
                 return this.View(tournamentViewModel);
             }
             catch (Exception)

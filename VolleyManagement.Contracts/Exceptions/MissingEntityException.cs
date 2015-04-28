@@ -68,10 +68,5 @@
         {
             this.Data[Constants.ExceptionManagement.ENTITY_ID_KEY] = entityId;
         }
-
-        private void AddEntityIdToData(int entityId)
-        {
-            this.Data[Constants.ExceptionManagement.ENTITY_ID_KEY] = entityId;
-        }
     }
 }

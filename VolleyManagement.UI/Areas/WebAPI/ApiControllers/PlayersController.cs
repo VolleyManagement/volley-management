@@ -111,28 +111,23 @@
         /// <param name="link">Link to the entity.</param>
         /// <returns><see cref="IHttpActionResult"/></returns>
         [AcceptVerbs("POST", "PUT")]
-        public IHttpActionResult CreateRef([FromODataUri] int key,
-            string navigationProperty, [FromBody] Uri link)
+        public IHttpActionResult CreateRef([FromODataUri] int key, string navigationProperty, [FromBody] Uri link)
         {
             Domain.Players.Player playerToUpdate;
+            try
+            {
+                playerToUpdate = _playerService.Get(key);
+            }
+            catch (MissingEntityException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
+            }
+
             switch (navigationProperty)
             {
                 case "Teams":
-                    int teamId = Helpers.GetKeyFromUri<int>(Request, link);
-                    try
-                    {
-                        playerToUpdate = _playerService.Get(key);
-                        _teamService.Get(teamId);
-                    }
-                    catch (MissingEntityException ex)
-                    {
-                        ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                        return BadRequest(ModelState);
-                    }
-                    playerToUpdate.TeamId = teamId;
-                    _playerService.Edit(playerToUpdate);
-                    var player = PlayerViewModel.Map(playerToUpdate);
-                    return Updated(player);
+                    return AssignTeamToPlayer(playerToUpdate, link);
                 default:
                     return StatusCode(HttpStatusCode.NotImplemented);
             }
@@ -185,6 +180,30 @@
             }
             
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        private IHttpActionResult AssignTeamToPlayer(Domain.Players.Player playerToUpdate, Uri link)
+        {
+            int teamId;
+            try
+            {
+                teamId = Helpers.GetKeyFromUri<int>(Request, link);
+                _teamService.Get(teamId);
+            }
+            catch (MissingEntityException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
+            }
+            playerToUpdate.TeamId = teamId;
+            _playerService.Edit(playerToUpdate);
+            var player = PlayerViewModel.Map(playerToUpdate);
+            return Updated(player);
         }
     }
 }

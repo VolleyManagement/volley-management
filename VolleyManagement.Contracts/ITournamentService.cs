@@ -18,7 +18,7 @@
         /// <summary>
         /// Returns only actual tournaments
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Actual tournaments</returns>
         IQueryable<Tournament> GetActual();
 
         /// <summary>

@@ -446,7 +446,7 @@
         }
 
         /// <summary>
-        /// GetActual method test. The method should return json collection
+        /// GetActual method test. The method should return JavaScript Object Notation collection
         /// </summary>
         [TestMethod]
         public void GetActual_ServiceGetActualCalled_JsonResultReturned()

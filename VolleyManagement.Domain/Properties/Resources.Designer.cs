@@ -61,7 +61,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transfer has started before tourament.
+        ///   Looks up a localized string similar to Трансфер должен начинаться до начала турнира.
         /// </summary>
         public static string InvalidPeriodTransfer {
             get {
@@ -79,7 +79,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tournament registration is after of a tournament.
+        ///   Looks up a localized string similar to Регистрация на турнир должна быть раньше чем его начало.
         /// </summary>
         public static string InvelidPeriodTournament {
             get {
@@ -97,7 +97,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The name of the tournament must be unique.
+        ///   Looks up a localized string similar to Название турнира должно быть уникальным.
         /// </summary>
         public static string TournamentNameMustBeUnique {
             get {
@@ -106,7 +106,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The user email must be unique..
+        ///   Looks up a localized string similar to Email пользователя должен быть уникальным.
         /// </summary>
         public static string UserEmailMustBeUnique {
             get {
@@ -115,7 +115,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The user name and email must be unique..
+        ///   Looks up a localized string similar to Имя пользователя и email должны быть уникальны.
         /// </summary>
         public static string UserNameAndEmailMustBeUnique {
             get {
@@ -124,7 +124,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The user name must be unique..
+        ///   Looks up a localized string similar to Имя пользователя должно быть уникально.
         /// </summary>
         public static string UserNameMustBeUnique {
             get {
@@ -133,7 +133,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the telepnone correctly.
+        ///   Looks up a localized string similar to Пожалуйста, введите телефон правильно.
         /// </summary>
         public static string ValidationCellPhone {
             get {
@@ -142,7 +142,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the email correctly.
+        ///   Looks up a localized string similar to Пожалуйста, введите email правильно.
         /// </summary>
         public static string ValidationEmail {
             get {
@@ -151,7 +151,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the full name correctly.
+        ///   Looks up a localized string similar to Пожалуйста, введите имя правильно.
         /// </summary>
         public static string ValidationFullName {
             get {
@@ -160,7 +160,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password cannot be empty!.
+        ///   Looks up a localized string similar to Пароль не может быть пустым.
         /// </summary>
         public static string ValidationPassword {
             get {
@@ -169,7 +169,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the birth year correctly..
+        ///   Looks up a localized string similar to Пожалуйста, введите дату рождения верно.
         /// </summary>
         public static string ValidationPlayerBirthYear {
             get {
@@ -178,7 +178,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the first name correctly.
+        ///   Looks up a localized string similar to Пожалуйста, введите имя корректно.
         /// </summary>
         public static string ValidationPlayerFirstName {
             get {
@@ -187,7 +187,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the height correctly..
+        ///   Looks up a localized string similar to Пожалуйста, введите рост корректно.
         /// </summary>
         public static string ValidationPlayerHeight {
             get {
@@ -196,7 +196,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the last name correctly.
+        ///   Looks up a localized string similar to Пожалуйста, введите фамилию корректно.
         /// </summary>
         public static string ValidationPlayerLastName {
             get {
@@ -205,7 +205,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the weight correctly..
+        ///   Looks up a localized string similar to Пожалуйта, введите вес корректно.
         /// </summary>
         public static string ValidationPlayerWeight {
             get {
@@ -214,7 +214,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, reduce the description text.
+        ///   Looks up a localized string similar to Пожалуйста, уменьшите текст описания.
         /// </summary>
         public static string ValidationResultDescription {
             get {
@@ -223,7 +223,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the tournament name.
+        ///   Looks up a localized string similar to Пожалуйста, введите название турнира.
         /// </summary>
         public static string ValidationResultName {
             get {
@@ -232,7 +232,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, reduce the link text.
+        ///   Looks up a localized string similar to Увеличен размер email.
         /// </summary>
         public static string ValidationResultRegLink {
             get {
@@ -241,7 +241,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the scheme correctly.
+        ///   Looks up a localized string similar to Пожалуйста, введите схему корректно.
         /// </summary>
         public static string ValidationResultScheme {
             get {
@@ -250,7 +250,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the season correctly.
+        ///   Looks up a localized string similar to Пожалуйста, введите данные в поле сезон корректно.
         /// </summary>
         public static string ValidationResultSeason {
             get {
@@ -259,7 +259,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the season date correctly.
+        ///   Looks up a localized string similar to Пожалуйста, введите дату начала сезна корректно.
         /// </summary>
         public static string ValidationTournamentSeason {
             get {
@@ -268,7 +268,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the user name correctly.
+        ///   Looks up a localized string similar to Пожалуйста, введите имя пользователя корректно.
         /// </summary>
         public static string ValidationUserName {
             get {
@@ -277,7 +277,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Начало периода заявок должно быть раньше чем его окнчание.
+        ///   Looks up a localized string similar to Начало периода заявок должно быть раньше чем его окончание.
         /// </summary>
         public static string WrongRegistrationDatesPeriod {
             get {
@@ -304,7 +304,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start transfer date has to be before end date.
+        ///   Looks up a localized string similar to Начало трансфера должно быть после начала турнира.
         /// </summary>
         public static string WrongStartTransferDates {
             get {
@@ -313,7 +313,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Начало трансферного периода должно быть раньше чем его окнчание.
+        ///   Looks up a localized string similar to Начало трансферного периода должно быть раньше чем его окончание.
         /// </summary>
         public static string WrongTransferPeriod {
             get {

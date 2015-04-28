@@ -21,14 +21,11 @@
         /// </summary>
         private Tournament _tournament;
 
-        private DateTime _mockNowDate;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentBuilder"/> class
         /// </summary>
         public TournamentBuilder()
         {
-             _mockNowDate = MockDate();
             this._tournament = new Tournament
             {
                 Id = 1,
@@ -37,26 +34,24 @@
                 Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
                 RegulationsLink = "http://default.com",
-                ApplyingPeriodStart = _mockNowDate.AddDays(1),
-                ApplyingPeriodEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH)
-                        .AddDays(1),
-                GamesStart = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1),
-                GamesEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + TRANSFER_PERIOD_MONTH),
-                TransferStart = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1),
-                TransferEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1)
-                        .AddDays(TRANSFER_PERIOD_DAYS)
-            };
-        }
+                ApplyingPeriodStart = new DateTime(2015, 06, 02),
+                ApplyingPeriodEnd = new DateTime(2015, 09, 02),
+                GamesStart = new DateTime(2015, 09, 03),
+                GamesEnd = new DateTime(2015, 12, 03),
+                TransferStart = new DateTime(2015, 10, 01),
+                TransferEnd = new DateTime(2015, 11, 01)
 
-        /// <summary>
-        /// Gets now date for testing
-        /// </summary>
-        public DateTime Now
-        {
-            get
-            {
-                return _mockNowDate;
-            }
+
+
+                //ApplyingPeriodStart = _mockNowDate.AddDays(1),
+                //ApplyingPeriodEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH)
+                //        .AddDays(1),
+                //GamesStart = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1),
+                //GamesEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + TRANSFER_PERIOD_MONTH),
+                //TransferStart = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1),
+                //TransferEnd = _mockNowDate.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1)
+                //        .AddDays(TRANSFER_PERIOD_DAYS)
+            };
         }
 
         /// <summary>
@@ -204,12 +199,12 @@
         /// Mocks the dateB
         /// </summary>
         /// <returns>Mocked date</returns>
-        private DateTime MockDate()
-        {
-            var gamesStart = new Mock<TimeProvider>();
-            gamesStart.SetupGet(t => t.UtcNow).Returns(new DateTime(2015, 06, 01));
-            TimeProvider.Current = gamesStart.Object;
-            return TimeProvider.Current.UtcNow;
-        }
+        //private DateTime MockDate()
+        //{
+        //    var gamesStart = new Mock<TimeProvider>();
+        //    gamesStart.SetupGet(t => t.UtcNow).Returns(new DateTime(2015, 06, 01));
+        //    TimeProvider.Current = gamesStart.Object;
+        //    return TimeProvider.Current.UtcNow;
+        //}
     }
 }

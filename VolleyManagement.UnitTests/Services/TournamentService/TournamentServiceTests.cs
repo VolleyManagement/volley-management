@@ -209,7 +209,7 @@
         {
             // Arrange
             var tournamentBuilder = new TournamentBuilder();
-            var now = tournamentBuilder.Now;
+            var now = this.MockDate();
             var newTournament = tournamentBuilder
                 .WithApplyingPeriodStart(now.AddDays(1))
                 .WithApplyingPeriodEnd(now.AddDays(-1))
@@ -232,7 +232,7 @@
         {
             // Arrange
             var tournamentBuilder = new TournamentBuilder();
-            var now = tournamentBuilder.Now;
+            var now = this.MockDate();
             var newTournament = tournamentBuilder
                 .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH - 1))
                 .Build();
@@ -254,7 +254,7 @@
         {
             // Arrange
             var tournamentBuilder = new TournamentBuilder();
-            var now = tournamentBuilder.Now;
+            var now = this.MockDate();
             int tournamentPeriodMonth = TournamentBuilder.TRANSFER_PERIOD_MONTH;
             var newTournament = tournamentBuilder
                 .WithGamesEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + tournamentPeriodMonth))
@@ -278,7 +278,7 @@
         {
             // Arrange
             var tournamentBuilder = new TournamentBuilder();
-            var now = tournamentBuilder.Now;
+            var now = this.MockDate();
             var newTournament = tournamentBuilder
                 .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH))
                 .WithGamesEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH))
@@ -301,7 +301,7 @@
         {
             // Arrange
             var tournamentBuilder = new TournamentBuilder();
-            var now = tournamentBuilder.Now;
+            var now = this.MockDate();
             var newTournament = tournamentBuilder
                 .WithTransferStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1))
                 .WithTransferEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
@@ -324,7 +324,7 @@
         {
             // Arrange
             var tournamentBuilder = new TournamentBuilder();
-            var now = tournamentBuilder.Now;
+            var now = this.MockDate();
             var newTournament = tournamentBuilder
                 .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
                 .WithTransferStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(-1))
@@ -347,7 +347,7 @@
         {
             // Arrange
             var tournamentBuilder = new TournamentBuilder();
-            var now = tournamentBuilder.Now;
+            var now = this.MockDate();
             var newTournament = tournamentBuilder
                 .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1))
                 .WithGamesEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
@@ -459,6 +459,18 @@
         {
             _tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
                 .Returns(testData.AsQueryable());
+        }
+
+        /// <summary>
+        /// Mocks the dateB
+        /// </summary>
+        /// <returns>Mocked date</returns>
+        private DateTime MockDate()
+        {
+            var gamesStart = new Mock<TimeProvider>();
+            gamesStart.SetupGet(t => t.UtcNow).Returns(new DateTime(2015, 06, 01));
+            TimeProvider.Current = gamesStart.Object;
+            return TimeProvider.Current.UtcNow;
         }
     }
 }

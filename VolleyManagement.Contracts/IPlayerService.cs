@@ -46,12 +46,5 @@
         /// <param name="player">Player which team should be found</param>
         /// <returns>Player's team</returns>
         Team GetPlayerTeam(Player player);
-
-        /// <summary>
-        /// Update player team
-        /// </summary>
-        /// <param name="player">Player which team should update</param>
-        /// <param name="team">Team which should be set to player</param>
-        void UpdatePlayerTeam(Player player, Team team);
     }
 }

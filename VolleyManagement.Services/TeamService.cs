@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Transactions;
+    using System.Linq.Expressions;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
@@ -11,28 +11,26 @@
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
     using DAL = VolleyManagement.Dal.Contracts;
+    using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
     /// Defines TeamService
     /// </summary>
     public class TeamService : ITeamService
     {
-        /// <summary>
-        /// Holds PlayerRepository instance.
-        /// </summary>
         private readonly ITeamRepository _teamRepository;
 
-        private readonly IPlayerService _playerService;
+        private readonly IPlayerRepository _playerRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamService"/> class.
         /// </summary>
         /// <param name="teamRepository">The team repository</param>
-        /// <param name="playerService">Service which provide basic operation with player repository</param>
-        public TeamService(ITeamRepository teamRepository, IPlayerService playerService)
+        /// <param name="playerRepository">The player repository</param>
+        public TeamService(ITeamRepository teamRepository, IPlayerRepository playerRepository)
         {
             _teamRepository = teamRepository;
-            _playerService = playerService;
+            _playerRepository = playerRepository;
         }
 
         /// <summary>
@@ -50,19 +48,26 @@
         /// <param name="teamToCreate">A Team to create.</param>
         public void Create(Team teamToCreate)
         {
+            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            {
+                Player captain;
             try
             {
-                using (TransactionScope transaction = new TransactionScope())
-                {
-                _teamRepository.Add(teamToCreate);
-                    Player captain = _playerService.Get(teamToCreate.CaptainId);
-                    _playerService.UpdatePlayerTeam(captain, teamToCreate);
-            }
-            }
-            catch (InvalidKeyValueException ex)
+                    captain = _playerRepository.FindWhere(p => p.Id == teamToCreate.CaptainId).Single();
+                }
+                catch (InvalidOperationException ex)
             {
-                throw new MissingEntityException(ex.Message, ex);
+                    throw new MissingEntityException("Player with specified Id can not be found", teamToCreate.CaptainId, ex);
             }
+
+                _teamRepository.Add(teamToCreate);
+
+                captain.TeamId = teamToCreate.Id;
+                _playerRepository.Update(captain);
+                _playerRepository.UnitOfWork.Commit();
+
+                transaction.Commit();
+        }
         }
 
         /// <summary>
@@ -79,7 +84,7 @@
             }
             catch (InvalidOperationException ex)
             {
-                throw new MissingEntityException("Team with specified Id can not be found", ex);
+                throw new MissingEntityException("Team with specified Id can not be found", id, ex);
             }
 
             return team;
@@ -88,31 +93,29 @@
         /// <summary>
         /// Delete team by id.
         /// </summary>
-        /// <param name="id">The id of team to delete.</param>
-        public void Delete(int id)
+        /// <param name="teamId">The id of team to delete.</param>
+        public void Delete(int teamId)
         {
+            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            {
             try
             {
-                using (TransactionScope transaction = new TransactionScope())
+                    _teamRepository.Remove(teamId);
+                }
+                catch (InvalidKeyValueException ex)
                 {
-                    // Does repository throw exception because players had RefKeys?
-                _teamRepository.Remove(id);
+                    throw new MissingEntityException("Team with specified Id can not be found", teamId, ex);
+                }
 
-                    IEnumerable<Player> roster = GetTeamRoster(id);
+                IEnumerable<Player> roster = GetTeamRoster(teamId);
                     foreach (var player in roster)
                     {
-                        _playerService.UpdatePlayerTeam(player, null);
+                    player.TeamId = teamId;
+                    _playerRepository.Update(player);
                     }
 
-                _teamRepository.UnitOfWork.Commit();
-
-                    transaction.Complete();
-                }
-            }
-            catch (InvalidKeyValueException ex)
-            {
-                var serviceException = new MissingEntityException("Team with specified Id can not be found", ex);
-                throw serviceException;
+                    _teamRepository.UnitOfWork.Commit();
+                transaction.Commit();
             }
         }
 
@@ -121,24 +124,51 @@
         /// </summary>
         /// <param name="team">Team which captain should be found</param>
         /// <returns>Team's captain</returns>
-        public Domain.Players.Player GetTeamCaptain(Team team)
+        public Player GetTeamCaptain(Team team)
         {
-            return _playerService.Get(team.CaptainId);
+            return _playerRepository.FindWhere(p => p.Id == team.CaptainId).Single();
         }
 
         /// <summary>
         /// Find players of specified team
         /// </summary>
-        /// <param name="team">Team which players should be found</param>
+        /// <param name="teamId">Id of team which players should be found</param>
         /// <returns>Collection of team's players</returns>
-        public IEnumerable<Player> GetTeamRoster(Team team)
+        public IEnumerable<Player> GetTeamRoster(int teamId)
         {
-            return GetTeamRoster(team.Id);
+            return _playerRepository.FindWhere(p => p.TeamId == teamId).ToList();
         }
 
-        private IEnumerable<Player> GetTeamRoster(int teamId)
+        /// <summary>
+        /// Sets team to player
+        /// </summary>
+        /// <param name="playerId">Id of player to set the team</param>
+        /// <param name="teamId">Id of team which should be set to player</param>
+        public void SetPlayerTeam(int playerId, int teamId)
         {
-            return _playerService.Get().Where(p => p.TeamId == teamId).ToList();
+            Player player;
+            try
+            {
+                player = _playerRepository.FindWhere(p => p.Id == playerId).Single();
+            }
+            catch (InvalidOperationException ex)
+        {
+                throw new MissingEntityException("Player with specified Id can not be found", playerId, ex);
+        }
+
+            Team team;
+            try
+            {
+                team = _teamRepository.FindWhere(t => t.Id == teamId).Single();
+            }
+            catch (InvalidOperationException ex)
+        {
+                throw new MissingEntityException("Team with specified Id can not be found", teamId, ex);
+            }
+
+            player.TeamId = teamId;
+            _playerRepository.Update(player);
+            _playerRepository.UnitOfWork.Commit();
         }
     }
 }

@@ -45,8 +45,15 @@
         /// <summary>
         /// Find players of specified team
         /// </summary>
-        /// <param name="team">Team which players should be found</param>
+        /// <param name="teamId">Id of team which players should be found</param>
         /// <returns>Collection of team's players</returns>
-        IEnumerable<Player> GetTeamRoster(Team team);
+        IEnumerable<Player> GetTeamRoster(int teamId);
+
+        /// <summary>
+        /// Sets team to player
+        /// </summary>
+        /// <param name="playerId">Id of player to set the team</param>
+        /// <param name="teamId">Id of team which should be set to player</param>
+        void SetPlayerTeam(int playerId, int teamId);
     }
 }

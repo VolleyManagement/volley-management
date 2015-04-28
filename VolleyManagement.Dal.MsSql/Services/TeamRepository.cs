@@ -20,14 +20,8 @@
     {
         private const int START_DATABASE_ID_VALUE = 0;
 
-        /// <summary>
-        /// Holds object set of DAL users.
-        /// </summary>
         private readonly ObjectSet<Dal.Team> _dalTeams;
 
-        /// <summary>
-        /// Holds UnitOfWork instance.
-        /// </summary>
         private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>

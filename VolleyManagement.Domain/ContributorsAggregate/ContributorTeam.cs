@@ -27,6 +27,6 @@
         /// <summary>
         /// Gets or sets contributors in ContributorTeam
         /// </summary>
-        public List<Contributor> Contributors { get; set; }
+        public IEnumerable<Contributor> Contributors { get; set; }
     }
 }

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
     using System.Linq.Expressions;
     using VolleyManagement.Contracts;
@@ -12,6 +11,7 @@
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
     using DAL = VolleyManagement.Dal.Contracts;
+    using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
     /// Defines TeamService
@@ -50,20 +50,33 @@
         {
             using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
-                Player captain;
-                try
+                Player captain = _playerRepository.FindWhere(p => p.Id == teamToCreate.CaptainId).SingleOrDefault();
+                if (captain == null)
                 {
-                    captain = GetPlayerWhere(p => p.Id == teamToCreate.CaptainId).Single();
+                    throw new MissingEntityException("Player with specified Id can not be found", teamToCreate.CaptainId);
                 }
-                catch (InvalidOperationException ex)
+
+                // how will players change their teams? can I check condition "teamId == null" or should check as done here
+
+                // Check if captain in teamToCreate is captain of another team
+                if (captain.TeamId != null)
                 {
-                    throw new MissingEntityException("Player with specified Id can not be found", teamToCreate.CaptainId, ex);
+                    var existTeam = GetPlayerLedTeam(captain.Id);
+                    if (existTeam != null)
+                    {
+                        var ex = new InvalidOperationException("Player is captain of another team");
+                        ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existTeam.Id;
+                        throw ex;
+                    }
                 }
 
                 _teamRepository.Add(teamToCreate);
-                SetPlayerTeam(captain, teamToCreate.Id);
 
-                _teamRepository.UnitOfWork.Commit();
+                captain.TeamId = teamToCreate.Id;
+                _playerRepository.Update(captain);
+                _playerRepository.UnitOfWork.Commit();
+
+                transaction.Commit();
             }
         }
 
@@ -107,10 +120,12 @@
                 IEnumerable<Player> roster = GetTeamRoster(teamId);
                 foreach (var player in roster)
                 {
-                    SetPlayerTeam(player, null);
+                    player.TeamId = teamId;
+                    _playerRepository.Update(player);
                 }
 
                 _teamRepository.UnitOfWork.Commit();
+                transaction.Commit();
             }
         }
 
@@ -121,7 +136,7 @@
         /// <returns>Team's captain</returns>
         public Player GetTeamCaptain(Team team)
         {
-            return GetPlayerWhere(p => p.Id == team.CaptainId).Single();
+            return _playerRepository.FindWhere(p => p.Id == team.CaptainId).Single();
         }
 
         /// <summary>
@@ -131,7 +146,7 @@
         /// <returns>Collection of team's players</returns>
         public IEnumerable<Player> GetTeamRoster(int teamId)
         {
-            return GetPlayerWhere(p => p.TeamId == teamId).ToList();
+            return _playerRepository.FindWhere(p => p.TeamId == teamId).ToList();
         }
 
         /// <summary>
@@ -139,40 +154,44 @@
         /// </summary>
         /// <param name="playerId">Id of player to set the team</param>
         /// <param name="teamId">Id of team which should be set to player</param>
-        public void SetPlayerTeam(int playerId, int teamId)
+        public void UpdatePlayerTeam(int playerId, int? teamId)
         {
-            Player player;
-            try
+            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
-                player = GetPlayerWhere(p => p.Id == playerId).Single();
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new MissingEntityException("Player with specified Id can not be found", playerId, ex);
-            }
+                Player player = _playerRepository.FindWhere(p => p.Id == playerId).SingleOrDefault();
+                if (player == null)
+                {
+                    throw new MissingEntityException("Player with specified Id can not be found", playerId);
+                }
 
-            Team team;
-            try
-            {
-                team = _teamRepository.FindWhere(t => t.Id == teamId).Single();
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new MissingEntityException("Team with specified Id can not be found", teamId, ex);
-            }
+                // Check if player is captain of another team
+                if (player.TeamId != null)
+                {
+                    var existingTeam = GetPlayerLedTeam(player.Id);
+                    if (existingTeam != null && teamId != existingTeam.Id)
+                    {
+                        var ex = new InvalidOperationException("Player is captain of another team");
+                        ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existingTeam.Id;
+                        throw ex;
+                    }
+                }
 
-            SetPlayerTeam(player, teamId);
+                Team team = _teamRepository.FindWhere(t => t.Id == teamId).SingleOrDefault();
+                if (team == null)
+                {
+                    throw new MissingEntityException("Team with specified Id can not be found", teamId);
+                }
+
+                player.TeamId = teamId;
+                _playerRepository.Update(player);
+                _playerRepository.UnitOfWork.Commit();
+                transaction.Commit();
+            }
         }
 
-        private void SetPlayerTeam(Player player, int? teamId)
+        private Team GetPlayerLedTeam(int playerId)
         {
-            player.TeamId = teamId;
-            _playerRepository.Update(player);
-        }
-
-        private IQueryable<Player> GetPlayerWhere(Expression<Func<Player, bool>> predicate)
-        {
-            return _playerRepository.FindWhere(predicate);
+            return _teamRepository.FindWhere(t => t.CaptainId == playerId).SingleOrDefault();
         }
     }
 }

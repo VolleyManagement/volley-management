@@ -27,6 +27,7 @@
                 .WithBirthYear(1983)
                 .WithHeight(186)
                 .WithWeight(95)
+                .WithTeamId(1)
                 .Build();
 
             var testDomainModel = new PlayerBuilder()
@@ -36,6 +37,7 @@
                 .WithBirthYear(1983)
                 .WithHeight(186)
                 .WithWeight(95)
+                .WithTeamId(1)
                 .Build();
 
             // Act

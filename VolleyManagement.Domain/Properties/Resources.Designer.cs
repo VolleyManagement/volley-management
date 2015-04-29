@@ -106,6 +106,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Имя турнира должно быть уникальным.
+        /// </summary>
+        public static string UniqueNameMessage {
+            get {
+                return ResourceManager.GetString("UniqueNameMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email пользователя должен быть уникальным.
         /// </summary>
         public static string UserEmailMustBeUnique {
@@ -309,6 +318,15 @@ namespace VolleyManagement.Domain.Properties {
         public static string WrongStartTransferDates {
             get {
                 return ResourceManager.GetString("WrongStartTransferDates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Период регистрации менее чем 3 месяца.
+        /// </summary>
+        public static string WrongThreeMonthRule {
+            get {
+                return ResourceManager.GetString("WrongThreeMonthRule", resourceCulture);
             }
         }
         

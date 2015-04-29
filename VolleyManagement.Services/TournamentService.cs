@@ -114,6 +114,11 @@
                 throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationDatesPeriod);
             }
 
+            if ((tournament.ApplyingPeriodEnd - tournament.ApplyingPeriodStart).TotalDays < Constants.DAYS_BETWEEN_START_AND_END_APPLYING_DATE)
+            {
+                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongThreeMonthRule);
+            }
+
             // if registration period is after games start
             if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
             {

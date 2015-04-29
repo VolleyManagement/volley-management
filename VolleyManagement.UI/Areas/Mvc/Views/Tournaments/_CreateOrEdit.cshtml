@@ -1,4 +1,5 @@
 @using VolleyManagement.UI.Areas.Mvc
+@using VolleyManagement.UI.Areas.Mvc.Controllers
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
 
 @* This partial view defines form fields that will appear when creating and editing entities *@
@@ -12,7 +13,7 @@
 </div>
 <div class="editor-field">
     @Html.EditorFor(model => model.Name)
-    @Html.ValidationMessage("uniqueName")
+    @Html.ValidationMessage(TournamentsController.UNIQUE_NAME_KEY)
     @Html.ValidationMessageFor(model => model.Name)
 </div>
 
@@ -53,54 +54,62 @@
         $.datepicker.setDefaults({
             dateFormat: 'dd.mm.yy'
         });
-        $('#StartDate').datepicker();
-        $("#EndDate").datepicker();
+        $("#ApplyingStart").datepicker();
+        $("#ApplyingEnd").datepicker();
+        $('#GamesStart').datepicker();
+        $("#GamesEnd").datepicker();
         $("#TransferStart").datepicker();
         $("#TransferEnd").datepicker();
-        $("#RegistrationStart").datepicker();
-        $("#RegistrationEnd").datepicker();
+        
     });
 </script>
-
 <div class="editor-label">
-    @Html.LabelFor(model => model.StartDate)
+    @Html.LabelFor(model => model.ApplyingStart)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.StartDate, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
-    @Html.ValidationMessageFor(model => model.StartDate)
+    @Html.TextBoxFor(model => model.ApplyingStart, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
+    @Html.ValidationMessage(TournamentsController.APPLYING_START_BEFORE_NOW)
+    @Html.ValidationMessage(TournamentsController.APPLYING_START_DATE_AFTER_END_DATE)
+    @Html.ValidationMessageFor(model => model.ApplyingStart)
 </div>
 <div class="editor-label">
-    @Html.LabelFor(model => model.EndDate)
+    @Html.LabelFor(model => model.ApplyingEnd)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.EndDate, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
-    @Html.ValidationMessageFor(model => model.EndDate)
+    @Html.TextBoxFor(model => model.ApplyingEnd, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
+    
+    @Html.ValidationMessageFor(model => model.ApplyingEnd)
 </div>
 <div class="editor-label">
-    @Html.LabelFor(model => model.RegistrationStart)
+    @Html.LabelFor(model => model.GamesStart)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.RegistrationStart, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
-    @Html.ValidationMessageFor(model => model.RegistrationStart)
+    @Html.TextBoxFor(model => model.GamesStart, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
+    @Html.ValidationMessage(TournamentsController.START_GAMES_AFTER_END_GAMES)
+    @Html.ValidationMessage(TournamentsController.APPLYING_END_DATE_AFTER_START_GAMES)
+    @Html.ValidationMessageFor(model => model.GamesStart)
 </div>
 <div class="editor-label">
-    @Html.LabelFor(model => model.RegistrationEnd)
+    @Html.LabelFor(model => model.GamesEnd)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.RegistrationEnd, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
-    @Html.ValidationMessageFor(model => model.RegistrationEnd)
+    @Html.TextBoxFor(model => model.GamesEnd, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
+    @Html.ValidationMessage(TournamentsController.TRANSFER_END_AFTER_GAMES_END)
+    @Html.ValidationMessageFor(model => model.GamesEnd)
 </div>
 <div class="editor-label">
     @Html.LabelFor(model => model.TransferStart)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.TransferStart, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
+    @Html.TextBoxFor(model => model.TransferStart, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
+    @Html.ValidationMessage(TournamentsController.TRANSFER_PERIOD_BEFORE_GAMES_START)
     @Html.ValidationMessageFor(model => model.TransferStart)
 </div>
 <div class="editor-label">
     @Html.LabelFor(model => model.TransferEnd)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.TransferEnd, new { @readonly = "readonly", @Value = DateTime.Now.ToShortDateString() })
+    @Html.TextBoxFor(model => model.TransferEnd, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
+    @Html.ValidationMessage(TournamentsController.TRANSFER_END_BEFORE_TRANSFER_START)
     @Html.ValidationMessageFor(model => model.TransferEnd)
 </div>

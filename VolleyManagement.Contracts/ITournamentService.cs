@@ -22,6 +22,12 @@
         IQueryable<Tournament> GetActual();
 
         /// <summary>
+        /// Returns only finished tournaments
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<Tournament> GetFinished();
+
+        /// <summary>
         /// Find a Tournament by id
         /// </summary>
         /// <param name="id">id of Tournament to find</param>

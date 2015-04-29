@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Script.Serialization;
 
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.Tournaments;
@@ -26,6 +27,7 @@
         /// Gets or sets the list of seasons.
         /// </summary>
         /// <value>The list of seasons.</value>
+        [ScriptIgnore]
         public Dictionary<short, string> SeasonsList { get; set; }
 
         /// <summary>

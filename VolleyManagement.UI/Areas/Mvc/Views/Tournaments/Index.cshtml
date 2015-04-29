@@ -27,3 +27,7 @@
         new { @class = "showFinishedTournamenst"})
 </p>
 
+@{ ViewBag.TableId = "id=finished_table"; }
+<p>
+    @{Html.RenderPartial("TournamentsList", new List<VolleyManagement.Domain.Tournaments.Tournament>());}
+</p>

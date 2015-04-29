@@ -45,6 +45,16 @@
         }
 
         /// <summary>
+        /// Get only finished tournaments
+        /// </summary>
+        /// <returns></returns>
+        public IQueryable<Tournament> GetFinished()
+        {
+            return _tournamentRepository.Find()
+                .Where(tr => tr.State == TournamentStateEnum.Finished);
+        }
+
+        /// <summary>
         /// Create a new tournament
         /// </summary>
         /// <param name="tournamentToCreate">A Tournament to create</param>

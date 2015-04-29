@@ -78,7 +78,7 @@
         [HttpGet]
         public IHttpActionResult GetFinished()
         {
-            var result = _tournamentService.Get().ToList()
+            var result = _tournamentService.GetFinished().ToList()
                 .Select(t => TournamentViewModel.Map(t));
                 return Json(result);
         }

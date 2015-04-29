@@ -147,6 +147,9 @@
   <data name="EditTournamentTitle" xml:space="preserve">
     <value>Редактирование турнира</value>
   </data>
+  <data name="FinishedTournaments" xml:space="preserve">
+    <value>Показать завершенные</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>

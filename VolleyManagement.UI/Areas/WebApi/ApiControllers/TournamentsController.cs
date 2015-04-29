@@ -78,9 +78,7 @@
         [HttpGet]
         public IHttpActionResult GetFinished()
         {
-            var result = _tournamentService.Get()
-                .Where(tr => tr.State == TournamentStateEnum.Finished)
-                .ToList()
+            var result = _tournamentService.GetFinished().ToList()
                 .Select(t => TournamentViewModel.Map(t));
                 return Json(result);
         }

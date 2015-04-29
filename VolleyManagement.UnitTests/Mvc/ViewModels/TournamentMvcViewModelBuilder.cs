@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
@@ -27,7 +28,13 @@
                 Description = "Description 1",
                 Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
-                RegulationsLink = "http://default.com"
+                RegulationsLink = "http://default.com",
+                ApplyingPeriodStart = new DateTime(2015, 06, 02),
+                ApplyingPeriodEnd = new DateTime(2015, 09, 02),
+                GamesStart = new DateTime(2015, 09, 03),
+                GamesEnd = new DateTime(2015, 12, 03),
+                TransferStart = new DateTime(2015, 10, 01),
+                TransferEnd = new DateTime(2015, 11, 01)
             };
         }
 

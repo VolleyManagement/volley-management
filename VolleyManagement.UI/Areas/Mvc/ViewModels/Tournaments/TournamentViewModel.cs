@@ -119,15 +119,15 @@
         /// Start of a tournament registration
         /// </summary>
         [DataType(DataType.Date)]
-        [Display(Name = "ApplyingStart", ResourceType = typeof(ViewModelResources))]
-        public DateTime ApplyingStart { get; set; }
+        [Display(Name = "ApplyingPeriodStart", ResourceType = typeof(ViewModelResources))]
+        public DateTime ApplyingPeriodStart { get; set; }
 
         /// <summary>
         /// End of a tournament registration
         /// </summary>
         [DataType(DataType.Date)]
-        [Display(Name = "ApplyingEnd", ResourceType = typeof(ViewModelResources))]
-        public DateTime ApplyingEnd { get; set; }
+        [Display(Name = "ApplyingPeriodEnd", ResourceType = typeof(ViewModelResources))]
+        public DateTime ApplyingPeriodEnd { get; set; }
 
         /// <summary>
         /// Initializes list of seasons.
@@ -167,8 +167,8 @@
                 Scheme = tournament.Scheme,
                 GamesStart = tournament.GamesStart,
                 GamesEnd = tournament.GamesEnd,
-                ApplyingStart = tournament.ApplyingPeriodStart,
-                ApplyingEnd = tournament.ApplyingPeriodEnd,
+                ApplyingPeriodStart = tournament.ApplyingPeriodStart,
+                ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
                 TransferEnd = tournament.TransferEnd
             };
@@ -192,8 +192,8 @@
                 RegulationsLink = this.RegulationsLink,
                 GamesStart = this.GamesStart,
                 GamesEnd = this.GamesEnd,
-                ApplyingPeriodStart = this.ApplyingStart,
-                ApplyingPeriodEnd = this.ApplyingEnd,
+                ApplyingPeriodStart = this.ApplyingPeriodStart,
+                ApplyingPeriodEnd = this.ApplyingPeriodEnd,
                 TransferStart = this.TransferStart,
                 TransferEnd = this.TransferEnd
             };

@@ -50,8 +50,20 @@
         /// <param name="playerToCreate">A Player to create.</param>
         public void Create(Player playerToCreate)
         {
-            _playerRepository.Add(playerToCreate);
-            _playerRepository.UnitOfWork.Commit();
+            using (IDbTransaction transaction = _playerRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            {
+                if (playerToCreate.TeamId != null)
+                {
+                    if (_teamRepository.FindWhere(t => t.Id == playerToCreate.TeamId).SingleOrDefault() == null)
+                    {
+                        throw new MissingEntityException("Team with specified id can not be found", playerToCreate.TeamId);
+                    }
+                }
+
+                _playerRepository.Add(playerToCreate);
+                _playerRepository.UnitOfWork.Commit();
+                transaction.Commit();
+            }
         }
 
         /// <summary>
@@ -64,7 +76,7 @@
             Player player;
             try
             {
-                player = _playerRepository.FindWhere(t => t.Id == id).Single();
+                player = _playerRepository.FindWhere(p => p.Id == id).Single();
             }
             catch (InvalidOperationException ex)
             {
@@ -83,12 +95,12 @@
             using (IDbTransaction transaction = _playerRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
                 // Check if player is captain of team and teamId is null or changed
-                Team leadedTeam = GetPlayerLedTeam(playerToEdit.Id);
-                if (leadedTeam != null &&
-                    (playerToEdit.TeamId == null || playerToEdit.TeamId != leadedTeam.Id))
+                Team ledTeam = GetPlayerLedTeam(playerToEdit.Id);
+                if (ledTeam != null &&
+                    (playerToEdit.TeamId == null || playerToEdit.TeamId != ledTeam.Id))
                 {
                     var ex = new InvalidOperationException("Player is captain of another team");
-                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = leadedTeam.Id;
+                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
                     throw ex;
                 }
                 else if (playerToEdit.TeamId != null

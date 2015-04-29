@@ -210,6 +210,7 @@
                 .WithBirthYear(expected.BirthYear)
                 .WithWeight(expected.Weight)
                 .WithHeight(expected.Height)
+                .WithTeamId(expected.TeamId)
                 .Build();
 
             // Act
@@ -262,6 +263,7 @@
                 .WithBirthYear(expected.BirthYear)
                 .WithHeight(expected.Height)
                 .WithWeight(expected.Weight)
+                .WithTeamId(expected.TeamId)
                 .Build();
 
             // Act

@@ -24,7 +24,7 @@
         /// <summary>
         /// Returns only finished tournaments
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Finished tournaments</returns>
         IQueryable<Tournament> GetFinished();
 
         /// <summary>

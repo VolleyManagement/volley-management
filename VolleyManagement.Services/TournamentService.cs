@@ -47,7 +47,7 @@
         /// <summary>
         /// Get only finished tournaments
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Finished tournaments</returns>
         public IQueryable<Tournament> GetFinished()
         {
             return _tournamentRepository.Find()

@@ -19,7 +19,7 @@
     using VolleyManagement.UnitTests.Services.ContributorService;
 
     /// <summary>
-    /// Tests for MVC ContributorController class.
+    /// Tests for MVC ContributorTeamController class.
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -42,7 +42,7 @@
         }
 
         /// <summary>
-        /// Test for Index action. The action should return not empty contributors list
+        /// Test for Index action. The action should return not empty contributors team list
         /// </summary>
         [TestMethod]
         public void Index_ContributorsExist_ContributorsReturned()

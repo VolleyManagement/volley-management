@@ -6,17 +6,17 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
 
     /// <summary>
-    /// Comparer for contributor objects.
+    /// Comparer for contributor team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class ContributorTeamViewModelComparer : IComparer<ContributorsTeamViewModel>
     {
         /// <summary>
-        /// Compares two contributor objects.
+        /// Compares two contributor team objects.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of contributor.</returns>
+        /// <returns>A signed integer that indicates the relative values of contributor team.</returns>
         public int Compare(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
         {
             if (IsEqual(x, y))
@@ -30,7 +30,7 @@
         }
 
         /// <summary>
-        /// Finds out whether two contributor objects have the same properties.
+        /// Finds out whether two contributor team objects have the same properties.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>

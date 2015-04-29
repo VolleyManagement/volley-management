@@ -13,7 +13,7 @@
     internal class ContributorTeamViewModelComparer : IComparer<ContributorsTeamViewModel>, IComparer
     {
         /// <summary>
-        /// Compares two contributors objects.
+        /// Compares two contributors team objects.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
@@ -24,34 +24,34 @@
         }
 
         /// <summary>
-        /// Compares two contributor objects (non-generic implementation).
+        /// Compares two contributors team objects (non-generic implementation).
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of contributors.</returns>
+        /// <returns>A signed integer that indicates the relative values of contributors team.</returns>
         public int Compare(object x, object y)
         {
-            ContributorsTeamViewModel firstContributor = x as ContributorsTeamViewModel;
-            ContributorsTeamViewModel secondContributor = y as ContributorsTeamViewModel;
+            ContributorsTeamViewModel firstContributorTeam = x as ContributorsTeamViewModel;
+            ContributorsTeamViewModel secondContributorTeam = y as ContributorsTeamViewModel;
 
-            if (firstContributor == null)
+            if (firstContributorTeam == null)
             {
                 return -1;
             }
-            else if (secondContributor == null)
+            else if (secondContributorTeam == null)
             {
                 return 1;
             }
 
-            return Compare(firstContributor, secondContributor);
+            return Compare(firstContributorTeam, secondContributorTeam);
         }
 
         /// <summary>
-        /// Finds out whether two contributor objects have the same properties.
+        /// Finds out whether two contributors team objects have the same properties.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given contributors have the same properties.</returns>
+        /// <returns>True if given contributors team have the same properties.</returns>
         private bool IsEqual(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
         {
             return x.Id == y.Id &&

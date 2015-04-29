@@ -5,16 +5,14 @@
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.ContributorsTeam;
 
-
-
     /// <summary>
-    /// Builder for test contributor view models
+    /// Builder for test contributors team view models
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class ContributorTeamViewModelBuilder
     {
         /// <summary>
-        /// Holds test contributor view model instance
+        /// Holds test contributors team view model instance
         /// </summary>
         private ContributorsTeamViewModel _contributorTeamViewModel;
 
@@ -53,10 +51,10 @@
         }
 
         /// <summary>
-        /// Sets id of test contributor view model
+        /// Sets id of test contributors team view model
         /// </summary>
-        /// <param name="id">Id for test contributor view model</param>
-        /// <returns>Contributor view model builder object</returns>
+        /// <param name="id">Id for test contributors team view model</param>
+        /// <returns>Contributors team view model builder object</returns>
         public ContributorTeamViewModelBuilder WithId(int id)
         {
             _contributorTeamViewModel.Id = id;
@@ -66,7 +64,7 @@
         /// <summary>
         /// Sets id of test contributor view model
         /// </summary>
-        /// <param name="name">FirstName for test contributor view model</param>
+        /// <param name="name">Name for test contributors team view model</param>
         /// <returns>Contributor view model builder object</returns>
         public ContributorTeamViewModelBuilder WithName(string name)
         {
@@ -77,7 +75,7 @@
         /// <summary>
         /// Sets id of test contributor view model
         /// </summary>
-        /// <param name="contributorTeamId">ContributorTeamId for test contributor view model</param>
+        /// <param name="courseDirection">course direction for test contributor view model</param>
         /// <returns>Contributor view model builder object</returns>
         public ContributorTeamViewModelBuilder WithcourseDirection(string courseDirection)
         {
@@ -88,7 +86,7 @@
         /// <summary>
         /// Sets id of test contributor view model
         /// </summary>
-        /// <param name="contributorTeamId">ContributorTeamId for test contributor view model</param>
+        /// <param name="contributors">Contributors in team for test contributor view model</param>
         /// <returns>Contributor view model builder object</returns>
         public ContributorTeamViewModelBuilder Withcontributors(IList<Contributor> contributors)
         {
@@ -97,7 +95,7 @@
         }
 
         /// <summary>
-        /// Builds test contributor view model
+        /// Builds test contributor team view model
         /// </summary>
         /// <returns>test contributor view model</returns>
         public ContributorsTeamViewModel Build()

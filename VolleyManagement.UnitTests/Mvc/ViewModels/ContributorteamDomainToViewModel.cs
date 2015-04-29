@@ -1,21 +1,20 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
-    using System.Diagnostics.CodeAnalysis;
+    using System.Collections.Generic;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
     using VolleyManagement.UnitTests.Services.ContributorService;
-    using System.Collections.Generic;
 
     /// <summary>
-    /// View model contributor class test
+    /// View model contributor team class test
     /// </summary>
     [TestClass]
     public class ContributorteamDomainToViewModel
     {
         /// <summary>
         /// Map() method test.
-        /// Does correct a contributor domain model mapped to a view model.
+        /// Does correct a contributor team domain model mapped to a view model.
         /// </summary>
         [TestMethod]
         public void Map_DomainContributorTeamAsParam_MappedToViewModel()
@@ -41,6 +40,7 @@
                         ContributorTeamId = 1
                     }
                 };
+
             // Arrange
             var testViewModel = new ContributorTeamMvcViewModelBuilder()
                 .WithId(1)

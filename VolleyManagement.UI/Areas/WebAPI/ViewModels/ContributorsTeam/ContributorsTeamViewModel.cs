@@ -7,7 +7,7 @@
     using VolleyManagement.UI.App_GlobalResources;
 
     /// <summary>
-    /// Represents contributor team view model
+    /// Represents contributors team team view model
     /// </summary>
     public class ContributorsTeamViewModel
     {
@@ -17,12 +17,12 @@
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets first name of ContributorTeam
+        /// Gets or sets name of ContributorTeam
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets first name of ContributorTeam
+        /// Gets or sets course direction of ContributorTeam
         /// </summary>
         public string CourseDirection { get; set; }
 

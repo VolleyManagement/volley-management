@@ -12,14 +12,14 @@
     internal class ContributorTeamViewModelServiceTestFixture
     {
         /// <summary>
-        /// Holds collection of contributors
+        /// Holds collection of contributors team
         /// </summary>
         private IList<ContributorsTeamViewModel> _contributorsTeam = new List<ContributorsTeamViewModel>();
 
         /// <summary>
         /// Adds contributors to collection
         /// </summary>
-        /// <returns>Builder object with collection of contributors</returns>
+        /// <returns>Builder object with collection of contributors team</returns>
         public ContributorTeamViewModelServiceTestFixture TestContributor()
         {
             _contributorsTeam.Add(new ContributorsTeamViewModel()
@@ -80,11 +80,11 @@
         }
 
         /// <summary>
-        /// Add contributor to collection.
+        /// Add contributor team to collection.
         /// </summary>
         /// <param name="newContributor">Contributor to add.</param>
         /// <returns>Builder object with collection of contributors.</returns>
-        public ContributorTeamViewModelServiceTestFixture AddTournament(ContributorsTeamViewModel newContributor)
+        public ContributorTeamViewModelServiceTestFixture AddContributorTeam(ContributorsTeamViewModel newContributor)
         {
             _contributorsTeam.Add(newContributor);
             return this;
@@ -93,7 +93,7 @@
         /// <summary>
         /// Builds test data
         /// </summary>
-        /// <returns>Contributor collection</returns>
+        /// <returns>Contributors team collection</returns>
         public IList<ContributorsTeamViewModel> Build()
         {
             return _contributorsTeam;

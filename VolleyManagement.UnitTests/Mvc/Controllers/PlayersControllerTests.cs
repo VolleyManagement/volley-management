@@ -96,8 +96,8 @@
         public void Index_PlayersExist_SpecifiedPlayersPageReturned()
         {
             // Arrange
-            List<Player> listOfPlayers = new List<Player>() 
-            { 
+            List<Player> listOfPlayers = new List<Player>()
+            {
                 new Player() {Id = 1, FirstName = "FirstNameA", LastName = "LastNameA"},
                 new Player() {Id = 2, FirstName = "FirstNameB", LastName = "LastNameB"},
                 new Player() {Id = 3, FirstName = "FirstNameC", LastName = "LastNameC"},

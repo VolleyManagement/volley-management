@@ -5,13 +5,13 @@
     using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>
-    /// Builder for test contributors
+    /// Builder for test contributors team
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class ContributorTeamBuilder
     {
         /// <summary>
-        /// Holds test contributor instance
+        /// Holds test contributor team instance
         /// </summary>
         private ContributorTeam _contributorTeam;
 
@@ -50,7 +50,7 @@
         }
 
         /// <summary>
-        /// Sets id of test contributor
+        /// Sets id of test contributor team
         /// </summary>
         /// <param name="id">Id for test contributor</param>
         /// <returns>Contributor builder object</returns>
@@ -64,7 +64,7 @@
         /// Sets name of test contributor
         /// </summary>
         /// <param name="name">Name for test contributor</param>
-        /// <returns>Contributor builder object</returns>
+        /// <returns>Contributor team builder object</returns>
         public ContributorTeamBuilder WithName(string name)
         {
             this._contributorTeam.Name = name;
@@ -72,10 +72,10 @@
         }
 
         /// <summary>
-        /// Sets contributor test last name
+        /// Sets contributor team test last name
         /// </summary>
-        /// <param name="courseDirection">Test contributor last name</param>
-        /// <returns>Contributor builder object</returns>
+        /// <param name="courseDirection">Test contributor team last name</param>
+        /// <returns>Contributor team builder object</returns>
         public ContributorTeamBuilder WithcourseDirection(string courseDirection)
         {
             this._contributorTeam.CourseDirection = courseDirection;
@@ -83,10 +83,10 @@
         }
 
         /// <summary>
-        /// Sets contributor test last name
+        /// Sets contributor team test last name
         /// </summary>
-        /// <param name="courseDirection">Test contributor last name</param>
-        /// <returns>Contributor builder object</returns>
+        /// <param name="contributors">Test contributor team last name</param>
+        /// <returns>Contributor team builder object</returns>
         public ContributorTeamBuilder Withcontributors(IList<Contributor> contributors)
         {
             this._contributorTeam.Contributors = contributors;
@@ -94,9 +94,9 @@
         }
       
         /// <summary>
-        /// Builds test contributor
+        /// Builds test contributor team
         /// </summary>
-        /// <returns>Test contributor</returns>
+        /// <returns>Test contributor team</returns>
         public ContributorTeam Build()
         {
             return this._contributorTeam;

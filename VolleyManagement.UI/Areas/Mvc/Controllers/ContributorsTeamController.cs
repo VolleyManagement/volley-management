@@ -13,13 +13,13 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Defines contributor controller
+    /// Defines contributor team controller
     /// </summary>
     public class ContributorsTeamController : Controller
     {
        
         /// <summary>
-        /// Holds ContributorService instance
+        /// Holds ContributorTeamService instance
         /// </summary>
         private readonly IContributorTeamService _contributorTeamService;
 
@@ -27,16 +27,16 @@
         /// Initializes a new instance of the <see cref="ContributorsTeamController"/> class
         /// </summary>
         /// <param name="contributorTeamService">Instance of the class that implements
-        /// IContributorService.</param>
+        /// IContributorTeamService.</param>
         public ContributorsTeamController(IContributorTeamService contributorTeamService)
         {
             _contributorTeamService = contributorTeamService;
         }
 
         /// <summary>
-        /// Gets all contributors from ContributorService
+        /// Gets all contributors teams from ContributorService
         /// </summary>
-        /// <returns>View with collection of contributors</returns>
+        /// <returns>View with collection of contributors teams</returns>
         public ActionResult Index()
         {
             try

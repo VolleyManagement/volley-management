@@ -4,7 +4,6 @@
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.ContributorsAggregate;
 
-
     /// <summary>
     /// Class for generating test data
     /// </summary>
@@ -12,14 +11,14 @@
     public class ContributorTeamServiceTestFixture
     {
         /// <summary>
-        /// Holds collection of contributors
+        /// Holds collection of contributors team
         /// </summary>
         private IList<ContributorTeam> _contributorsTeam = new List<ContributorTeam>();
 
         /// <summary>
-        /// Adds contributors to collection
+        /// Adds contributors to collection team
         /// </summary>
-        /// <returns>Builder object with collection of contributors</returns>
+        /// <returns>Builder object with collection teams of contributors</returns>
         public ContributorTeamServiceTestFixture TestContributors()
         {
             _contributorsTeam.Add(new ContributorTeam()
@@ -82,7 +81,7 @@
         /// <summary>
         /// Builds test data
         /// </summary>
-        /// <returns>Contributor collection</returns>
+        /// <returns>Contributors team collection</returns>
         public IList<ContributorTeam> Build()
         {
             return _contributorsTeam;

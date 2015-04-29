@@ -20,7 +20,7 @@
     using VolleyManagement.UI.Areas.WebApi.ViewModels.ContributorsTeam;
 
     /// <summary>
-    /// Tests for ContributorsController class.
+    /// Tests for ContributorsTeamController class.
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -32,7 +32,7 @@
         private readonly ContributorTeamServiceTestFixture _testFixture = new ContributorTeamServiceTestFixture();
 
         /// <summary>
-        /// Contributors Service Mock
+        /// Contributors team Service Mock
         /// </summary>
         private readonly Mock<IContributorTeamService> _contributorTeamServiceMock = new Mock<IContributorTeamService>();
 
@@ -53,7 +53,7 @@
         }
 
         /// <summary>
-        /// Test for Get() method. The method should return existing contributor
+        /// Test for Get() method. The method should return existing contributors team
         /// </summary>
         [TestMethod]
         public void Get_ContributorsTeamExist_ContributorsTeamReturned()
@@ -80,7 +80,7 @@
 
         /// <summary>
         /// Test for Map() method.
-        /// The method should map contributor domain model to view model.
+        /// The method should map contributors team domain model to view model.
         /// </summary>
         [TestMethod]
         public void Map_ContributorAsParam_MappedToViewModelWebApi()

@@ -1,17 +1,19 @@
 ﻿namespace VolleyManagement.UnitTests.Services.ContributorService
 {
-    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Ninject;
-    using VolleyManagement.Dal.MsSql.Infrastructure;
-    using VolleyManagement.Dal.Contracts;
     using Moq;
+    using Ninject;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Dal.MsSql.Infrastructure;
     using VolleyManagement.Domain.ContributorsAggregate;
-    using System.Collections.Generic;
     using VolleyManagement.Services;
 
+    /// <summary>
+    /// Tests for ContributorTeamServiceTests class.
+    /// </summary>
     [TestClass]
     public class ContributorTeamServiceTests
     {
@@ -43,10 +45,6 @@
         /// <summary>
         /// Initializes test data.
         /// </summary>
-
-        /// <summary>
-        /// Initializes test data.
-        /// </summary>
         [TestInitialize]
         public void TestInit()
         {
@@ -57,8 +55,7 @@
         }
 
         /// <summary>
-        /// Test for Get() method. The method should return existing players
-        /// (order is important).
+        /// Test for Get() method. The method should return existing contributors teams
         /// </summary>
         [TestMethod]
         public void GetAll_ContributorsTeamExist_ContributorsTeamReturned()
@@ -90,11 +87,11 @@
         }
 
         /// <summary>
-        /// Find out whether two players objects have the same property values.
+        /// Find out whether two contributor team objects have the same property values.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>True if the players have the same property values.</returns>
+        /// <returns>True if the team have the same property values.</returns>
         private bool PlayersAreEqual(ContributorTeam x, ContributorTeam y)
         {
             return new ContributorTeamComparer().Compare(x, y) == 0;

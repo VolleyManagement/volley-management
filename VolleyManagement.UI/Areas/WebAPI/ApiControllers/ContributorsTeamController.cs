@@ -12,7 +12,7 @@
     using VolleyManagement.UI.Areas.WebApi.ViewModels.ContributorsTeam;
 
     /// <summary>
-    /// The contributors controller.
+    /// The contributors team controller.
     /// </summary>
     public class ContributorsTeamController : ODataController
     {
@@ -23,16 +23,16 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ContributorsTeamController"/> class.
         /// </summary>
-        /// <param name="contributorTeamService"> The contributor service. </param>
+        /// <param name="contributorTeamService"> The contributors team service. </param>
         public ContributorsTeamController(IContributorTeamService contributorTeamService)
         {
             this._contributorTeamService = contributorTeamService;
         }
 
         /// <summary>
-        /// Gets contributors
+        /// Gets contributors teams
         /// </summary>
-        /// <returns> Contributor list. </returns>
+        /// <returns> Contributors teams list. </returns>
         [EnableQuery]
         [HttpGet]
         public IQueryable<ContributorsTeamViewModel> GetContributorsTeam()

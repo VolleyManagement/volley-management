@@ -6,24 +6,24 @@
     using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>
-    /// Comparer for contributor objects.
+    /// Comparer for contributor team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class ContributorTeamComparer : IComparer<ContributorTeam>, IComparer
     {
         /// <summary>
-        /// Compares two contributor objects.
+        /// Compares two contributor team objects.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of contributors.</returns>
+        /// <returns>A signed integer that indicates the relative values of contributors team.</returns>
         public int Compare(ContributorTeam x, ContributorTeam y)
         {
             return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
-        /// Compares two contributor objects (non-generic implementation).
+        /// Compares two contributors team objects (non-generic implementation).
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
@@ -46,17 +46,17 @@
         }
 
         /// <summary>
-        /// Finds out whether two contributor objects have the same properties.
+        /// Finds out whether two contributors team objects have the same properties.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given contributors have the same properties.</returns>
+        /// <returns>True if given contributors team have the same properties.</returns>
         public bool AreEqual(ContributorTeam x, ContributorTeam y)
         {
             return x.Id == y.Id &&
                 x.Name == y.Name &&
                 x.CourseDirection == y.CourseDirection &&
-                x.Contributors== y.Contributors;
+                x.Contributors == y.Contributors;
         }
     }
 }

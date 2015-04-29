@@ -17,12 +17,12 @@
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets first name of ContributorTeam
+        /// Gets or sets name of ContributorTeam
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets first name of ContributorTeam
+        /// Gets or sets course directionof ContributorTeam
         /// </summary>
         public string CourseDirection { get; set; }
 

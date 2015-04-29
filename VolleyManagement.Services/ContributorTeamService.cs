@@ -18,7 +18,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="ContributorTeamService"/> class.
         /// </summary>
-        /// <param name="contributorRepository">The user repository</param>
+        /// <param name="contributorTeamRepository">The user repository</param>
         public ContributorTeamService(IContributorTeamRepository contributorTeamRepository)
         {
             _contributorTeamRepository = contributorTeamRepository;

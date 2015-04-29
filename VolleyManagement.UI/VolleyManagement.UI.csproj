@@ -185,7 +185,7 @@
     <Content Include="Areas\Mvc\Views\Players\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Delete.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
-    <Content Include="Areas\Mvc\Views\Contributors\Index.cshtml" />
+    <Content Include="Areas\Mvc\Views\ContributorsTeam\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -227,7 +227,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Areas\Mvc\Controllers\ContributorsController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\ContributorsTeamController.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
     <Compile Include="Areas\Mvc\Controllers\PlayersController.cs" />
     <Compile Include="Areas\Mvc\Controllers\TournamentsController.cs" />
@@ -236,7 +236,7 @@
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
-    <Compile Include="Areas\Mvc\ViewModels\Contributors\ContributorViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerDeleteResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerNameViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerRefererViewModel.cs" />
@@ -246,12 +246,12 @@
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
-    <Compile Include="Areas\WebApi\ApiControllers\ContributorsController.cs" />
+    <Compile Include="Areas\WebApi\ApiControllers\ContributorsTeamController.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\PlayersController.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\TournamentsController.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\UsersController.cs" />
     <Compile Include="Areas\WebApi\Controllers\HomeController.cs" />
-    <Compile Include="Areas\WebApi\ViewModels\Contributors\ContributorViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Users\UserViewModel.cs" />

@@ -9,28 +9,28 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Contributors;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
     using System.Collections.Generic;
 
     /// <summary>
     /// Defines contributor controller
     /// </summary>
-    public class ContributorsController : Controller
+    public class ContributorsTeamController : Controller
     {
        
         /// <summary>
         /// Holds ContributorService instance
         /// </summary>
-        private readonly IContributorService _contributorService;
+        private readonly IContributorTeamService _contributorTeamService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContributorsController"/> class
+        /// Initializes a new instance of the <see cref="ContributorsTeamController"/> class
         /// </summary>
-        /// <param name="contributorService">Instance of the class that implements
+        /// <param name="contributorTeamService">Instance of the class that implements
         /// IContributorService.</param>
-        public ContributorsController(IContributorService contributorService)
+        public ContributorsTeamController(IContributorTeamService contributorTeamService)
         {
-            _contributorService = contributorService;
+            _contributorTeamService = contributorTeamService;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@
         {
             try
             {
-                var contributors = this._contributorService.Get().ToList();
+                var contributors = this._contributorTeamService.Get().ToList();
                 return View(contributors);
             }
             catch (Exception)

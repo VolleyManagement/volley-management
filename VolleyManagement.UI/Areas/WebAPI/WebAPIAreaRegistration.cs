@@ -4,10 +4,10 @@
     using System.Web.Mvc;
     using System.Web.OData.Builder;
     using System.Web.OData.Extensions;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Contributors;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.ContributorsTeam;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Contributors;
+
 
     /// <summary>
     /// The WebApi area registration.
@@ -36,7 +36,7 @@
 
             builder.EntitySet<TournamentViewModel>("Tournaments");
             builder.EntitySet<PlayerViewModel>("Players");
-            builder.EntitySet<ContributorViewModel>("Contributors");
+            builder.EntitySet<ContributorsTeamViewModel>("ContributorsTeam");
 
             config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }

@@ -10,8 +10,8 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Dal.MsSql.Mappers;
-    using Dal = VolleyManagement.Dal.MsSql;
     using VolleyManagement.Domain.ContributorsAggregate;
+    using Dal = VolleyManagement.Dal.MsSql;
 
     /// <summary>
     /// Defines implementation of the IContributorRepository contract.
@@ -29,7 +29,7 @@
         private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContributorRepository"/> class.
+        /// Initializes a new instance of the <see cref="ContributorTeamRepository"/> class.
         /// </summary>
         /// <param name="unitOfWork">The unit of work.</param>
         public ContributorTeamRepository(IUnitOfWork unitOfWork)
@@ -47,6 +47,10 @@
             get { return _unitOfWork; }
         }
 
+        /// <summary>
+        /// Gets all teams with contributors inside.
+        /// </summary>
+        /// <returns>Collection of teams with contributors</returns>
         public IQueryable<Domain.ContributorsAggregate.ContributorTeam> Find()
         {
             var result = _contribsSet.GroupBy(c => c.ContributorTeam)
@@ -64,8 +68,6 @@
 
             return result;
         }
-
-
 
         /// <summary>
         /// Removes contributor by id.

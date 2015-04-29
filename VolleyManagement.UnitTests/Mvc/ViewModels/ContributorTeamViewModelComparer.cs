@@ -3,14 +3,13 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Contributors;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
 
     /// <summary>
     /// Comparer for contributor objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ContributorViewModelComparer : IComparer<ContributorViewModel>
+    internal class ContributorTeamViewModelComparer : IComparer<ContributorsTeamViewModel>
     {
         /// <summary>
         /// Compares two contributor objects.
@@ -18,7 +17,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>A signed integer that indicates the relative values of contributor.</returns>
-        public int Compare(ContributorViewModel x, ContributorViewModel y)
+        public int Compare(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
         {
             if (IsEqual(x, y))
             {
@@ -36,11 +35,12 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given contributor have the same properties.</returns>
-        private bool IsEqual(ContributorViewModel x, ContributorViewModel y)
+        private bool IsEqual(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
         {
             return x.Id == y.Id &&
-                x.Name == y.Name &&
-                x.ContributorTeamId == y.ContributorTeamId;
+               x.Name == y.Name &&
+               x.CourseDirection == y.CourseDirection &&
+               x.Contributors == y.Contributors;
         }
     }
 }

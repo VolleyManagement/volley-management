@@ -23,11 +23,14 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets Contributor Team Id of contributor
+        /// Gets or sets Contributor Team of contributor
         /// </summary>
         [ForeignKey("ContributorTeamId")]
         public virtual ContributorTeam ContributorTeam { get; set; }
 
+        /// <summary>
+        /// Gets or sets Contributor Team Id of contributor
+        /// </summary>
         public int? ContributorTeamId { get; set; }
     }
 }

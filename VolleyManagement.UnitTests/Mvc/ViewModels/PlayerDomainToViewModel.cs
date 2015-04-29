@@ -2,7 +2,6 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Services.PlayerService;

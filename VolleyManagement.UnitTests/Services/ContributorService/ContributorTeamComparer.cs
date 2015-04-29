@@ -9,7 +9,7 @@
     /// Comparer for contributor objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ContributorComparer : IComparer<Contributor>, IComparer
+    internal class ContributorTeamComparer : IComparer<ContributorTeam>, IComparer
     {
         /// <summary>
         /// Compares two contributor objects.
@@ -17,7 +17,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>A signed integer that indicates the relative values of contributors.</returns>
-        public int Compare(Contributor x, Contributor y)
+        public int Compare(ContributorTeam x, ContributorTeam y)
         {
             return AreEqual(x, y) ? 0 : 1;
         }
@@ -30,19 +30,19 @@
         /// <returns>A signed integer that indicates the relative values of contributors.</returns>
         public int Compare(object x, object y)
         {
-            Contributor firstContributor = x as Contributor;
-            Contributor secondContributor = y as Contributor;
+            ContributorTeam firstTeamContributor = x as ContributorTeam;
+            ContributorTeam secondTeamContributor = y as ContributorTeam;
 
-            if (firstContributor == null)
+            if (firstTeamContributor == null)
             {
                 return -1;
             }
-            else if (secondContributor == null)
+            else if (secondTeamContributor == null)
             {
                 return 1;
             }
 
-            return Compare(firstContributor, secondContributor);
+            return Compare(firstTeamContributor, secondTeamContributor);
         }
 
         /// <summary>
@@ -51,11 +51,12 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given contributors have the same properties.</returns>
-        public bool AreEqual(Contributor x, Contributor y)
+        public bool AreEqual(ContributorTeam x, ContributorTeam y)
         {
             return x.Id == y.Id &&
                 x.Name == y.Name &&
-                x.ContributorTeamId == y.ContributorTeamId;
+                x.CourseDirection == y.CourseDirection &&
+                x.Contributors== y.Contributors;
         }
     }
 }

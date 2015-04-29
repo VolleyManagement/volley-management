@@ -1,0 +1,40 @@
+﻿@using VolleyManagement.UI.Areas.Mvc;
+@model IEnumerable<VolleyManagement.Domain.ContributorsAggregate.ContributorTeam>
+@{
+    ViewBag.Title = "Contributors";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CourseDirection)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contributors)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.CourseDirection
+            </td>
+            <td>
+                @foreach (var contr in item.Contributors)
+                {
+                    @contr.Name<br />
+                }
+            </td>
+        </tr>
+    }
+
+</table>

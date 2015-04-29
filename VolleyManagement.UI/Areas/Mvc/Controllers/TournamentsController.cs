@@ -9,13 +9,15 @@
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
+    using ErrorMessages = VolleyManagement.Domain.Properties.Resources;
+    using ValidationMessages = App_GlobalResources.ViewModelResources;
+
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
     public class TournamentsController : Controller
     {
         public const string UNIQUE_NAME_KEY = "uniqueName";
-
         public const string APPLYING_START_BEFORE_NOW = "ApplyingStartbeforeNow";
         public const string APPLYING_START_DATE_AFTER_END_DATE = "ApplyingStartAfterDate";
         public const string APPLYING_PERIOD_LESS_THREE_MONTH = "ApplyingThreeMonthRule";        
@@ -24,7 +26,6 @@
         public const string TRANSFER_PERIOD_BEFORE_GAMES_START = "TransferPeriodBeforeGamesStart";
         public const string TRANSFER_END_BEFORE_TRANSFER_START = "TransferEndBeforeStart";
         public const string TRANSFER_END_AFTER_GAMES_END = "TransferEndAfterGamesEnd";
-        
 
         /// <summary>
         /// Holds TournamentService instance
@@ -106,48 +107,41 @@
             }
             catch (TournamentValidationException e)
             {
-                if (e.Message.Equals(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique))
+                if (e.Message.Equals(ErrorMessages.TournamentNameMustBeUnique))
                 {
-                    this.ModelState.AddModelError(UNIQUE_NAME_KEY, App_GlobalResources.ViewModelResources.UniqueNameMessage);
+                    this.ModelState.AddModelError(UNIQUE_NAME_KEY, ValidationMessages.UniqueNameMessage);
                 }
-                else if (e.Message.Equals(VolleyManagement.Domain.Properties.Resources.LateRegistrationDates))
+                else if (e.Message.Equals(ErrorMessages.LateRegistrationDates))
                 {
-                    // is
-                    this.ModelState.AddModelError(APPLYING_START_BEFORE_NOW, App_GlobalResources.ViewModelResources.ApplyingStartBeforeNow);
+                    this.ModelState.AddModelError(APPLYING_START_BEFORE_NOW, ValidationMessages.ApplyingStartBeforeNow);
                 }
-                else if (e.Message.Equals(VolleyManagement.Domain.Properties.Resources.WrongRegistrationDatesPeriod))
+                else if (e.Message.Equals(ErrorMessages.WrongRegistrationDatesPeriod))
                 {
-                    // is
-                    this.ModelState.AddModelError(APPLYING_START_DATE_AFTER_END_DATE, App_GlobalResources.ViewModelResources.ApplyingStartBeforeEnd);
+                    this.ModelState.AddModelError(APPLYING_START_DATE_AFTER_END_DATE, ValidationMessages.ApplyingStartBeforeEnd);
                 }
-                else if (e.Message.Equals(VolleyManagement.Domain.Properties.Resources.WrongThreeMonthRule))
+                else if (e.Message.Equals(ErrorMessages.WrongThreeMonthRule))
                 {
-                    this.ModelState.AddModelError(APPLYING_PERIOD_LESS_THREE_MONTH, App_GlobalResources.ViewModelResources.ApplyingDateThreeMonth);
+                    this.ModelState.AddModelError(APPLYING_PERIOD_LESS_THREE_MONTH, ValidationMessages.ApplyingDateThreeMonth);
                 }
-                else if (e.Message.Equals(VolleyManagement.Domain.Properties.Resources.WrongRegistrationGames))
+                else if (e.Message.Equals(ErrorMessages.WrongRegistrationGames))
                 {
-                    // is
-                    this.ModelState.AddModelError(APPLYING_END_DATE_AFTER_START_GAMES, App_GlobalResources.ViewModelResources.ApplyingPeriodBeforeGamesStart);
+                    this.ModelState.AddModelError(APPLYING_END_DATE_AFTER_START_GAMES, ValidationMessages.ApplyingPeriodBeforeGamesStart);
                 }
-                else if (e.Message.Equals(VolleyManagement.Domain.Properties.Resources.WrongStartTournamentDates))
+                else if (e.Message.Equals(ErrorMessages.WrongStartTournamentDates))
                 {
-                    // is 
-                    this.ModelState.AddModelError(START_GAMES_AFTER_END_GAMES, App_GlobalResources.ViewModelResources.EndGamesBeforeStart);
+                    this.ModelState.AddModelError(START_GAMES_AFTER_END_GAMES, ValidationMessages.EndGamesBeforeStart);
                 }
-                else if (e.Message.Equals(VolleyManagement.Domain.Properties.Resources.WrongTransferStart))
+                else if (e.Message.Equals(ErrorMessages.WrongTransferStart))
                 {
-                    // is 
-                    this.ModelState.AddModelError(TRANSFER_PERIOD_BEFORE_GAMES_START, App_GlobalResources.ViewModelResources.TransferStartBeforeGamesStart);
+                    this.ModelState.AddModelError(TRANSFER_PERIOD_BEFORE_GAMES_START, ValidationMessages.TransferStartBeforeGamesStart);
                 }
-                else if (e.Message.Equals(VolleyManagement.Domain.Properties.Resources.WrongTransferPeriod))
+                else if (e.Message.Equals(ErrorMessages.WrongTransferPeriod))
                 {
-                    // is 
-                    this.ModelState.AddModelError(TRANSFER_END_BEFORE_TRANSFER_START, App_GlobalResources.ViewModelResources.TransferEndAfterStart);
+                    this.ModelState.AddModelError(TRANSFER_END_BEFORE_TRANSFER_START, ValidationMessages.TransferEndAfterStart);
                 }
-                else if (e.Message.Equals(VolleyManagement.Domain.Properties.Resources.InvalidTransferEndpoint))
+                else if (e.Message.Equals(ErrorMessages.InvalidTransferEndpoint))
                 {
-                    // is
-                    this.ModelState.AddModelError(TRANSFER_END_AFTER_GAMES_END, App_GlobalResources.ViewModelResources.TransferEndBeforeGamesEnd);
+                    this.ModelState.AddModelError(TRANSFER_END_AFTER_GAMES_END, ValidationMessages.TransferEndBeforeGamesEnd);
                 }
 
                 return this.View(tournamentViewModel);

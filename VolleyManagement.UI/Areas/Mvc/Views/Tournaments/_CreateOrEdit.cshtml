@@ -64,21 +64,21 @@
     });
 </script>
 <div class="editor-label">
-    @Html.LabelFor(model => model.ApplyingStart)
+    @Html.LabelFor(model => model.ApplyingPeriodStart)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.ApplyingStart, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
+    @Html.TextBoxFor(model => model.ApplyingPeriodStart, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
     @Html.ValidationMessage(TournamentsController.APPLYING_START_BEFORE_NOW)
     @Html.ValidationMessage(TournamentsController.APPLYING_START_DATE_AFTER_END_DATE)
-    @Html.ValidationMessageFor(model => model.ApplyingStart)
+    @Html.ValidationMessageFor(model => model.ApplyingPeriodStart)
 </div>
 <div class="editor-label">
-    @Html.LabelFor(model => model.ApplyingEnd)
+    @Html.LabelFor(model => model.ApplyingPeriodEnd)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.ApplyingEnd, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
+    @Html.TextBoxFor(model => model.ApplyingPeriodEnd, new { @readonly = "readonly", @Value = DateTime.Now.AddDays(1).ToShortDateString() })
     
-    @Html.ValidationMessageFor(model => model.ApplyingEnd)
+    @Html.ValidationMessageFor(model => model.ApplyingPeriodEnd)
 </div>
 <div class="editor-label">
     @Html.LabelFor(model => model.GamesStart)

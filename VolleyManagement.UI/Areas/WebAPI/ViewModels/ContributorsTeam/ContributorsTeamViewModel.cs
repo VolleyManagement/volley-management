@@ -11,6 +11,11 @@
     /// </summary>
     public class ContributorsTeamViewModel
     {
+        public ContributorsTeamViewModel()
+        {
+            Contributors = new List<string>();
+        }
+
         /// <summary>
         /// Gets or sets id of ContributorTeam
         /// </summary>
@@ -29,7 +34,7 @@
         /// <summary>
         /// Gets or sets contributors in ContributorTeam
         /// </summary>
-        public IEnumerable<Contributor> Contributors { get; set; }
+        public List<string> Contributors { get; set; }
 
         #region Factory Methods
 
@@ -44,9 +49,13 @@
             {
                 Id = contributorTeam.Id,
                 Name = contributorTeam.Name,
-                CourseDirection = contributorTeam.CourseDirection,
-                Contributors = contributorTeam.Contributors
+                CourseDirection = contributorTeam.CourseDirection
             };
+
+            foreach (var c in contributorTeam.Contributors)
+            {
+                contributorTeamViewModel.Contributors.Add(c.Name);
+            }
 
             return contributorTeamViewModel;
         }
@@ -55,16 +64,16 @@
         /// Maps presentation entity to domain
         /// </summary>
         /// <returns> Domain object </returns>
-        public ContributorTeam ToDomain()
-        {
-            return new ContributorTeam
-            {
-                Id = this.Id,
-                Name = this.Name,
-                CourseDirection = this.CourseDirection,
-                Contributors = this.Contributors
-            };
-        }
+        //public ContributorTeam ToDomain()
+        //{
+        //    return new ContributorTeam
+        //    {
+        //        Id = this.Id,
+        //        Name = this.Name,
+        //        CourseDirection = this.CourseDirection,
+        //        Contributors = this.Contributors
+        //    };
+        //}
         #endregion
 
     }

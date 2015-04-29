@@ -98,7 +98,7 @@
         /// End of a tournament
         /// </summary>
         [DataType(DataType.Date)]
-        [Display(Name = "GamesDate", ResourceType = typeof(ViewModelResources))]
+        [Display(Name = "GamesEnd", ResourceType = typeof(ViewModelResources))]
         public DateTime GamesEnd { get; set; }
 
         /// <summary>

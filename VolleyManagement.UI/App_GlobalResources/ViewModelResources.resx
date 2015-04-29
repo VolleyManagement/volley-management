@@ -123,6 +123,12 @@
   <data name="ApplyingPeriodBeforeGamesStart" xml:space="preserve">
     <value>Начало турнира должно следовать после завершения периода регистрации</value>
   </data>
+  <data name="ApplyingPeriodEnd" xml:space="preserve">
+    <value>Конец регистрации на турнир</value>
+  </data>
+  <data name="ApplyingPeriodStart" xml:space="preserve">
+    <value>Начало регистрации на турнир</value>
+  </data>
   <data name="ApplyingStartBeforeEnd" xml:space="preserve">
     <value>Начало периода регистрации на турнир должно быть раннее чем его окончание</value>
   </data>
@@ -132,9 +138,6 @@
   <data name="ConfirmUserPassword" xml:space="preserve">
     <value>FixMe: Confirm password</value>
   </data>
-  <data name="EndDate" xml:space="preserve">
-    <value>Дата окончания турнира</value>
-  </data>
   <data name="EndGamesBeforeStart" xml:space="preserve">
     <value>Конец турнира должен быть после его начала</value>
   </data>
@@ -143,6 +146,12 @@
   </data>
   <data name="FieldRequired" xml:space="preserve">
     <value>Поле "{0}" является обязательным.</value>
+  </data>
+  <data name="GamesEnd" xml:space="preserve">
+    <value>Дата окончания турнира</value>
+  </data>
+  <data name="GamesStart" xml:space="preserve">
+    <value>Дата начала турнира</value>
   </data>
   <data name="InvalidEntriesError" xml:space="preserve">
     <value>Поле {0} должно содержать только печатаемые символы</value>
@@ -203,15 +212,6 @@
   </data>
   <data name="PlayerWeightFieldRange" xml:space="preserve">
     <value>Указан неверный вес</value>
-  </data>
-  <data name="RegistrationEnd" xml:space="preserve">
-    <value>Конец регистрации на турнир</value>
-  </data>
-  <data name="RegistrationStart" xml:space="preserve">
-    <value>Начало регистрации на турнир</value>
-  </data>
-  <data name="StartDate" xml:space="preserve">
-    <value>Дата начала турнира</value>
   </data>
   <data name="TournamentDescription" xml:space="preserve">
     <value>Описание</value>

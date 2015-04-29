@@ -123,7 +123,7 @@
     <Compile Include="Services\UserService\UserServiceTestFixture.cs" />
     <Compile Include="Services\UserService\UserServiceTests.cs" />
     <Compile Include="WebApi\Controllers\PlayerControllerTests.cs" />
-    <Compile Include="WebApi\Controllers\TeamControllerTest.cs" />
+    <Compile Include="WebApi\Controllers\TeamControllerTests.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />

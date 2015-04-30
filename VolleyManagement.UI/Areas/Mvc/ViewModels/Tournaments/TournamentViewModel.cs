@@ -88,6 +88,21 @@
         public string RegulationsLink { get; set; }
 
         /// <summary>
+        /// Start of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "ApplyingPeriodStart", ResourceType = typeof(ViewModelResources))]
+       // [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.mm.yyyy}")]
+        public DateTime ApplyingPeriodStart { get; set; }
+
+        /// <summary>
+        /// End of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "ApplyingPeriodEnd", ResourceType = typeof(ViewModelResources))]
+        public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// <summary>
         /// Start of a tournament
         /// </summary>
         [DataType(DataType.Date)]
@@ -114,20 +129,6 @@
         [DataType(DataType.Date)]
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
         public DateTime TransferEnd { get; set; }
-
-        /// <summary>
-        /// Start of a tournament registration
-        /// </summary>
-        [DataType(DataType.Date)]
-        [Display(Name = "ApplyingPeriodStart", ResourceType = typeof(ViewModelResources))]
-        public DateTime ApplyingPeriodStart { get; set; }
-
-        /// <summary>
-        /// End of a tournament registration
-        /// </summary>
-        [DataType(DataType.Date)]
-        [Display(Name = "ApplyingPeriodEnd", ResourceType = typeof(ViewModelResources))]
-        public DateTime ApplyingPeriodEnd { get; set; }
 
         /// <summary>
         /// Initializes list of seasons.

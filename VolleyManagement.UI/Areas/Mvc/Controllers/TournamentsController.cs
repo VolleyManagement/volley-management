@@ -82,7 +82,16 @@
         /// <returns>View to create a tournament</returns>
         public ActionResult Create()
         {
-            var tournamentViewModel = new TournamentViewModel();
+            var tournamentViewModel = new TournamentViewModel()
+                {
+                    ApplyingPeriodStart = DateTime.Now.AddDays(1),
+                    ApplyingPeriodEnd = DateTime.Now.AddDays(1),
+                    GamesStart = DateTime.Now.AddDays(1),
+                    GamesEnd = DateTime.Now.AddDays(1),
+                    TransferStart = DateTime.Now.AddDays(1),
+                    TransferEnd = DateTime.Now.AddDays(1)
+                };
+
             return this.View(tournamentViewModel);
         }
 

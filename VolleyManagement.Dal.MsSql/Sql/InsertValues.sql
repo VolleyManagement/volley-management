@@ -14,10 +14,10 @@ INSERT INTO dbo.Tournaments(
 [Season],
 [Description],
 [RegulationsLink],
-[RegistrationStart],
-[RegistrationEnd],
-[StartDate],
-[EndDate],
+[ApplyingPeriodStart],
+[ApplyingPeriodEnd],
+[GamesStart],
+[GamesEnd],
 [TransferStart],
 [TransferEnd]
 )

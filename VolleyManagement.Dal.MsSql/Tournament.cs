@@ -72,7 +72,7 @@ namespace VolleyManagement.Dal.MsSql
         public DateTime TransferEnd { get; set; }
 
         /// <summary>
-        /// Gets or sets start of a tournament registration
+        /// Gets or sets start of a tournament
         /// </summary>
         [Required]
         public DateTime ApplyingPeriodStart { get; set; }

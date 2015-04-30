@@ -90,7 +90,8 @@ namespace VolleyManagement.Domain.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Вы не можете указывать начало периода заявок в прошлом.
         /// </summary>
-        public static string LateRegistrationDates {
+        public static string LateRegistrationDates
+        {
             get {
                 return ResourceManager.GetString("LateRegistrationDates", resourceCulture);
             }

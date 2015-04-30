@@ -24,10 +24,10 @@ CREATE TABLE dbo.Tournaments(
   Season tinyint NOT NULL,
   [Description] nvarchar(300) NULL,
   RegulationsLink nvarchar(255) NULL,
-  RegistrationStart date NOT NULL,
-  RegistrationEnd date NOT NULL,
-  StartDate date NOT NULL,
-  EndDate date NOT NULL,
+  ApplyingPeriodStart date NOT NULL,
+  ApplyingPeriodEnd date NOT NULL,
+  GamesStart date NOT NULL,
+  GamesEnd date NOT NULL,
   TransferStart date NOT NULL,
   TransferEnd date NOT NULL
 );

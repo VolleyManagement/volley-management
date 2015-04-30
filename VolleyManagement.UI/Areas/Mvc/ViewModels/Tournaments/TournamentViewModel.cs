@@ -92,7 +92,6 @@
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "ApplyingPeriodStart", ResourceType = typeof(ViewModelResources))]
-       // [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.mm.yyyy}")]
         public DateTime ApplyingPeriodStart { get; set; }
 
         /// <summary>

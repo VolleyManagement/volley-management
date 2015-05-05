@@ -14,6 +14,7 @@
     using Moq;
     using Ninject;
 
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -26,9 +27,13 @@
     [TestClass]
     public class TournamentsControllerTests
     {
+        /// <summary>
+        /// TimeProvider mock
+        /// </summary>
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
-
         private IKernel _kernel;
 
         /// <summary>
@@ -40,6 +45,8 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITournamentService>()
                    .ToConstant(this._tournamentServiceMock.Object);
+            this._timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
+            TimeProvider.Current = this._timeMock.Object;
         }
 
         /// <summary>

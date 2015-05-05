@@ -17,16 +17,6 @@
     /// </summary>
     public class TournamentsController : Controller
     {
-        public const string UNIQUE_NAME_KEY = "uniqueName";
-        public const string APPLYING_START_BEFORE_NOW = "ApplyingStartbeforeNow";
-        public const string APPLYING_START_DATE_AFTER_END_DATE = "ApplyingStartAfterDate";
-        public const string APPLYING_PERIOD_LESS_THREE_MONTH = "ApplyingThreeMonthRule";        
-        public const string APPLYING_END_DATE_AFTER_START_GAMES = "ApplyingPeriodAfterStartGames";
-        public const string START_GAMES_AFTER_END_GAMES = "StartGamesAfterEndGaes";
-        public const string TRANSFER_PERIOD_BEFORE_GAMES_START = "TransferPeriodBeforeGamesStart";
-        public const string TRANSFER_END_BEFORE_TRANSFER_START = "TransferEndBeforeStart";
-        public const string TRANSFER_END_AFTER_GAMES_END = "TransferEndAfterGamesEnd";
-
         /// <summary>
         /// Holds TournamentService instance
         /// </summary>
@@ -98,7 +88,7 @@
         /// <summary>
         /// Create tournament action (POST)
         /// </summary>
-        /// <param name="tournamentViewModel">Tournament, which the user wants to create</param>
+        /// <param name="tournamentViewMsodel">Tournament, which the user wants to create</param>
         /// <returns>Index view if tournament was valid, else - create view</returns>
         [HttpPost]
         public ActionResult Create(TournamentViewModel tournamentViewModel)
@@ -116,43 +106,7 @@
             }
             catch (TournamentValidationException e)
             {
-                if (e.Message.Equals(ErrorMessages.TournamentNameMustBeUnique))
-                {
-                    this.ModelState.AddModelError(UNIQUE_NAME_KEY, ValidationMessages.UniqueNameMessage);
-                }
-                else if (e.Message.Equals(ErrorMessages.LateRegistrationDates))
-                {
-                    this.ModelState.AddModelError(APPLYING_START_BEFORE_NOW, ValidationMessages.ApplyingStartBeforeNow);
-                }
-                else if (e.Message.Equals(ErrorMessages.WrongRegistrationDatesPeriod))
-                {
-                    this.ModelState.AddModelError(APPLYING_START_DATE_AFTER_END_DATE, ValidationMessages.ApplyingStartBeforeEnd);
-                }
-                else if (e.Message.Equals(ErrorMessages.WrongThreeMonthRule))
-                {
-                    this.ModelState.AddModelError(APPLYING_PERIOD_LESS_THREE_MONTH, ValidationMessages.ApplyingDateThreeMonth);
-                }
-                else if (e.Message.Equals(ErrorMessages.WrongRegistrationGames))
-                {
-                    this.ModelState.AddModelError(APPLYING_END_DATE_AFTER_START_GAMES, ValidationMessages.ApplyingPeriodBeforeGamesStart);
-                }
-                else if (e.Message.Equals(ErrorMessages.WrongStartTournamentDates))
-                {
-                    this.ModelState.AddModelError(START_GAMES_AFTER_END_GAMES, ValidationMessages.EndGamesBeforeStart);
-                }
-                else if (e.Message.Equals(ErrorMessages.WrongTransferStart))
-                {
-                    this.ModelState.AddModelError(TRANSFER_PERIOD_BEFORE_GAMES_START, ValidationMessages.TransferStartBeforeGamesStart);
-                }
-                else if (e.Message.Equals(ErrorMessages.WrongTransferPeriod))
-                {
-                    this.ModelState.AddModelError(TRANSFER_END_BEFORE_TRANSFER_START, ValidationMessages.TransferEndAfterStart);
-                }
-                else if (e.Message.Equals(ErrorMessages.InvalidTransferEndpoint))
-                {
-                    this.ModelState.AddModelError(TRANSFER_END_AFTER_GAMES_END, ValidationMessages.TransferEndBeforeGamesEnd);
-                }
-
+                this.ModelState.AddModelError(e.UserValidationKey, e.Message);
                 return this.View(tournamentViewModel);
             }
             catch (Exception)

@@ -1,5 +1,6 @@
 @using VolleyManagement.UI.Areas.Mvc
 @using VolleyManagement.UI.Areas.Mvc.Controllers
+@using VolleyManagement.Services;
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
 @{
     const string dateformat = "{0:dd.MM.yyyy}";
@@ -15,7 +16,7 @@
 </div>
 <div class="editor-field">
     @Html.EditorFor(model => model.Name)
-    @Html.ValidationMessage(TournamentsController.UNIQUE_NAME_KEY)
+    @Html.ValidationMessage(Constants.UNIQUE_NAME_KEY)
     @Html.ValidationMessageFor(model => model.Name)
 </div>
 
@@ -69,8 +70,8 @@
 </div>
 <div class="editor-field">
     @Html.TextBoxFor(model => model.ApplyingPeriodStart, dateformat, new { @readonly = "readonly" })
-    @Html.ValidationMessage(TournamentsController.APPLYING_START_BEFORE_NOW)
-    @Html.ValidationMessage(TournamentsController.APPLYING_START_DATE_AFTER_END_DATE)
+    @Html.ValidationMessage(Constants.APPLYING_START_DATE_AFTER_END_DATE)
+    @Html.ValidationMessage(Constants.APPLYING_START_BEFORE_NOW)
     @Html.ValidationMessageFor(model => model.ApplyingPeriodStart)
 </div>
 <div class="editor-label">
@@ -78,7 +79,7 @@
 </div>
 <div class="editor-field">
     @Html.TextBoxFor(model => model.ApplyingPeriodEnd, dateformat, new { @readonly = "readonly" })
-    @Html.ValidationMessage(TournamentsController.APPLYING_PERIOD_LESS_THREE_MONTH)
+    @Html.ValidationMessage(Constants.APPLYING_PERIOD_LESS_THREE_MONTH)
     @Html.ValidationMessageFor(model => model.ApplyingPeriodEnd)
 </div>
 <div class="editor-label">
@@ -86,7 +87,7 @@
 </div>
 <div class="editor-field">
     @Html.TextBoxFor(model => model.GamesStart, dateformat, new { @readonly = "readonly" })
-    @Html.ValidationMessage(TournamentsController.APPLYING_END_DATE_AFTER_START_GAMES)
+    @Html.ValidationMessage(Constants.APPLYING_END_DATE_AFTER_START_GAMES)
     @Html.ValidationMessageFor(model => model.GamesStart)
 </div>
 <div class="editor-label">
@@ -94,8 +95,8 @@
 </div>
 <div class="editor-field">
     @Html.TextBoxFor(model => model.GamesEnd, dateformat, new { @readonly = "readonly" })
-    @Html.ValidationMessage(TournamentsController.START_GAMES_AFTER_END_GAMES)
-    @Html.ValidationMessage(TournamentsController.TRANSFER_END_AFTER_GAMES_END)
+    @Html.ValidationMessage(Constants.START_GAMES_AFTER_END_GAMES)
+    @Html.ValidationMessage(Constants.TRANSFER_END_AFTER_GAMES_END)
     @Html.ValidationMessageFor(model => model.GamesEnd)
 </div>
 <div class="editor-label">
@@ -103,7 +104,7 @@
 </div>
 <div class="editor-field">
     @Html.TextBoxFor(model => model.TransferStart, dateformat, new { @readonly = "readonly" })
-    @Html.ValidationMessage(TournamentsController.TRANSFER_PERIOD_BEFORE_GAMES_START)
+    @Html.ValidationMessage(Constants.TRANSFER_PERIOD_BEFORE_GAMES_START)
     @Html.ValidationMessageFor(model => model.TransferStart)
 </div>
 <div class="editor-label">
@@ -111,6 +112,6 @@
 </div>
 <div class="editor-field">
     @Html.TextBoxFor(model => model.TransferEnd, dateformat, new { @readonly = "readonly" })
-    @Html.ValidationMessage(TournamentsController.TRANSFER_END_BEFORE_TRANSFER_START)
+    @Html.ValidationMessage(Constants.TRANSFER_END_BEFORE_TRANSFER_START)
     @Html.ValidationMessageFor(model => model.TransferEnd)
 </div>

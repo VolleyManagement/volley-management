@@ -36,6 +36,16 @@
             builder.EntitySet<TournamentViewModel>("Tournaments");
             builder.EntitySet<PlayerViewModel>("Players");
 
+            builder.EntityType<TournamentViewModel>()
+                .Collection
+                .Function("GetActual")
+                .Returns<TournamentViewModel>();
+
+            builder.EntityType<TournamentViewModel>()
+                .Collection
+                .Function("GetFinished")
+                .Returns<TournamentViewModel>();
+
             config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
 

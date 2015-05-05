@@ -32,20 +32,34 @@
         }
 
         /// <summary>
-        /// Gets all tournaments from TournamentService
+        /// Gets current and upcoming tournaments from TournamentService
         /// </summary>
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            try
-            {
-                var tournaments = this._tournamentService.Get().ToList();
-                return View(tournaments);
-            }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
+            TournamentsCollectionsViewModel tournamentsCollections 
+                = new TournamentsCollectionsViewModel();
+
+            var actualTournaments = this._tournamentService.GetActual().ToArray();
+
+            tournamentsCollections.CurrentTournaments = actualTournaments
+                .Where(tr => tr.State == TournamentStateEnum.Current);
+
+            tournamentsCollections.UpcomingTournaments = actualTournaments
+                .Where(tr => tr.State == TournamentStateEnum.Upcoming);
+
+            return View(tournamentsCollections);
+        }
+
+        /// <summary>
+        /// Get finished tournaments
+        /// </summary>
+        /// <returns>Json result</returns>
+        public JsonResult GetFinished()
+        {
+            var result = _tournamentService.GetFinished().ToList()
+                 .Select(t => TournamentViewModel.Map(t));
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

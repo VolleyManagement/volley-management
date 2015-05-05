@@ -158,7 +158,9 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\styles.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -185,17 +187,24 @@
     <Content Include="Areas\Mvc\Views\Players\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Delete.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Areas\Mvc\Views\Navigation\Menu.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\TournamentsList.cshtml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-2.1.3.min.map" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-2.1.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.3.js" />
+    <Content Include="Scripts\jquery-2.1.3.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\scripts.js" />
     <Content Include="Scripts\UserActions.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -227,6 +236,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Mvc\Controllers\PlayersController.cs" />
     <Compile Include="Areas\Mvc\Controllers\TournamentsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\UsersController.cs" />
@@ -234,6 +244,7 @@
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerDeleteResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerNameViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerRefererViewModel.cs" />
@@ -241,9 +252,11 @@
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListViewModel.cs" />
     <Compile Include="Areas\Mvc\TournamentSeasonHtmlHelper.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentsCollectionsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\PlayersController.cs" />
+    <Compile Include="Areas\WebApi\ApiControllers\TeamsController.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\TournamentsController.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\UsersController.cs" />
     <Compile Include="Areas\WebApi\Controllers\HomeController.cs" />
@@ -263,7 +276,6 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Areas\Mvc\Views\web.config" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -319,6 +331,7 @@
       <LastGenOutput>ViewModelResources.designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

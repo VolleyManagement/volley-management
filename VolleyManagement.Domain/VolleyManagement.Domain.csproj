@@ -56,6 +56,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Teams\Team.cs" />
     <Compile Include="Tournaments\EnumExtensions.cs" />
     <Compile Include="Tournaments\TournamentSchemeEnum.cs" />
     <Compile Include="Tournaments\Tournament.cs" />
@@ -70,6 +71,12 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj">
+      <Project>{ba2d2bb6-9862-4d96-9d64-54ece7f8ca2c}</Project>
+      <Name>VolleyManagement.Crosscutting.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

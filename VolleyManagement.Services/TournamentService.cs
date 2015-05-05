@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
@@ -27,12 +28,33 @@
         }
 
         /// <summary>
-        /// Method to get all tournaments
+        /// Get all tournaments
         /// </summary>
         /// <returns>All tournaments</returns>
         public IQueryable<Tournament> Get()
         {
             return _tournamentRepository.Find();
+        }
+
+        /// <summary>
+        /// Get only actual tournaments
+        /// </summary>
+        /// <returns>actual tournaments</returns>
+        public IQueryable<Tournament> GetActual()
+        {
+            return _tournamentRepository.Find()
+                .Where(tr => tr.State == TournamentStateEnum.Current
+                || tr.State == TournamentStateEnum.Upcoming);
+        }
+
+        /// <summary>
+        /// Get only finished tournaments
+        /// </summary>
+        /// <returns>Finished tournaments</returns>
+        public IQueryable<Tournament> GetFinished()
+        {
+            return _tournamentRepository.Find()
+                .Where(tr => tr.State == TournamentStateEnum.Finished);
         }
 
         /// <summary>

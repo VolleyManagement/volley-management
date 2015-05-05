@@ -67,6 +67,15 @@
         }
 
         /// <summary>
+        /// Cleanup test data
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            TimeProvider.ResetToDefault();
+        }
+
+        /// <summary>
         /// Test for FinById method.
         /// </summary>
         [TestMethod]
@@ -435,6 +444,47 @@
 
             // Assert
             _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should invoke Find() method of ITournamentRepository
+        /// </summary>
+        public void GetActual_ActualTournamentsRequest_FindCalled()
+        {
+            // Act
+            var tournamentService = _kernel.Get<TournamentService>();
+            tournamentService.GetActual();
+
+            // Assert
+            _tournamentRepositoryMock.Verify(m => m.Find(), Times.Once());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should return actual tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetActual_TournamentsExist_ActualTournamentsReturnes()
+        {
+            // Arrange
+            var tournamentService = _kernel.Get<TournamentService>();
+            var testData = _testFixture.TestTournaments()
+                                       .Build();
+            MockRepositoryFindAll(testData);
+
+            DateTime now = TimeProvider.Current.UtcNow;
+            DateTime limitStartDate = now.AddMonths(VolleyManagement.Domain.Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
+
+            var expected = new TournamentServiceTestFixture()
+                                            .TestTournaments()
+                                            .Build().Where(tr => tr.GamesEnd >= now
+                                                && tr.GamesStart <= limitStartDate)
+                                            .ToList();
+
+            // Act
+            var actual = tournamentService.GetActual().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>

@@ -57,7 +57,7 @@
                     ApplyingPeriodEnd = t.ApplyingPeriodEnd,
                     TransferEnd = t.TransferEnd,
                     TransferStart = t.TransferStart
-                });
+                }).ToArray().AsQueryable();
         }
 
         /// <summary>

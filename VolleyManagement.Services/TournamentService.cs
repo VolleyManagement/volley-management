@@ -7,6 +7,9 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
 
+    using ExceptionParams = VolleyManagement.Domain.Constants.Tournament;
+    using MessageList = VolleyManagement.Domain.Properties.Resources;
+
     /// <summary>
     /// Defines TournamentService
     /// </summary>
@@ -92,7 +95,7 @@
             if (tournament != null)
             {
                 throw new TournamentValidationException(
-                    VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique, "Name");
+                   MessageList.TournamentNameMustBeUnique, ExceptionParams.UNIQUE_NAME_KEY, "Name");
             }
         }
 
@@ -105,43 +108,75 @@
             // if registration dates before now
             if (DateTime.UtcNow >= tournament.ApplyingPeriodStart)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.LateRegistrationDates);
+                throw new TournamentValidationException(
+                    MessageList.LateRegistrationDates,
+                    ExceptionParams.APPLYING_START_BEFORE_NOW,
+                    ExceptionParams.APPLYING_START_CAPTURE);
             }
 
             // if registration start date after end date
             if (tournament.ApplyingPeriodStart >= tournament.ApplyingPeriodEnd)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationDatesPeriod);
+                throw new TournamentValidationException(
+                    MessageList.WrongRegistrationDatesPeriod,
+                    ExceptionParams.APPLYING_START_DATE_AFTER_END_DATE,
+                    ExceptionParams.APPLYING_START_CAPTURE);
+            }
+
+            double totalApplyingPeriodDays = (tournament.ApplyingPeriodEnd - tournament.ApplyingPeriodStart).TotalDays;
+
+            // if registration period is little
+            if (totalApplyingPeriodDays < ExceptionParams.DAYS_BETWEEN_START_AND_END_APPLYING_DATE)
+            {
+                throw new TournamentValidationException(
+                    MessageList.WrongThreeMonthRule,
+                    ExceptionParams.APPLYING_PERIOD_LESS_THREE_MONTH,
+                    ExceptionParams.APPLYING_END_CAPTURE);
             }
 
             // if registration period is after games start
             if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongRegistrationGames);
+                throw new TournamentValidationException(
+                    MessageList.WrongRegistrationGames,
+                    ExceptionParams.APPLYING_END_DATE_AFTER_START_GAMES,
+                    ExceptionParams.GAMES_START_CAPTURE);
             }
 
             // if tournament start dates goes after tournament end
             if (tournament.GamesStart >= tournament.GamesEnd)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongStartTournamentDates);
+                throw new TournamentValidationException(
+                    MessageList.WrongStartTournamentDates,
+                    ExceptionParams.START_GAMES_AFTER_END_GAMES,
+                    ExceptionParams.GAMES_END_CAPTURE);
             }
 
             // if games date go after transfer start
             if (tournament.GamesStart >= tournament.TransferStart)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongTransferStart);
+                throw new TournamentValidationException(
+                    MessageList.WrongTransferStart,
+                    ExceptionParams.TRANSFER_PERIOD_BEFORE_GAMES_START,
+                    ExceptionParams.TRANSFER_START_CAPTURE);
             }
 
             // if transfer start goes after transfer end
             if (tournament.TransferStart >= tournament.TransferEnd)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.WrongTransferPeriod);
+                throw new TournamentValidationException(
+                    MessageList.WrongTransferPeriod,
+                    ExceptionParams.TRANSFER_END_BEFORE_TRANSFER_START,
+                    ExceptionParams.TRANSFER_END_CAPTURE);
             }
 
             // fransfer end before tournament end date
             if (tournament.TransferEnd >= tournament.GamesEnd)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.InvalidTransferEndpoint);
+                throw new TournamentValidationException(
+                    MessageList.InvalidTransferEndpoint,
+                    ExceptionParams.TRANSFER_END_AFTER_GAMES_END,
+                    ExceptionParams.GAMES_END_CAPTURE);
             }
         }
     }

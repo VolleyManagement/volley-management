@@ -9,12 +9,14 @@
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
+    using ErrorMessages = VolleyManagement.Domain.Properties.Resources;
+    using ValidationMessages = App_GlobalResources.ViewModelResources;
+
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
     public class TournamentsController : Controller
     {
-        private const string UNIQUE_NAME_KEY = "uniqueName";
         /// <summary>
         /// Holds TournamentService instance
         /// </summary>
@@ -70,14 +72,23 @@
         /// <returns>View to create a tournament</returns>
         public ActionResult Create()
         {
-            var tournamentViewModel = new TournamentViewModel();
+            var tournamentViewModel = new TournamentViewModel()
+                {
+                    ApplyingPeriodStart = DateTime.Now.AddDays(1),
+                    ApplyingPeriodEnd = DateTime.Now.AddDays(1),
+                    GamesStart = DateTime.Now.AddDays(1),
+                    GamesEnd = DateTime.Now.AddDays(1),
+                    TransferStart = DateTime.Now.AddDays(1),
+                    TransferEnd = DateTime.Now.AddDays(1)
+                };
+
             return this.View(tournamentViewModel);
         }
 
         /// <summary>
         /// Create tournament action (POST)
         /// </summary>
-        /// <param name="tournamentViewModel">Tournament, which the user wants to create</param>
+        /// <param name="tournamentViewMsodel">Tournament, which the user wants to create</param>
         /// <returns>Index view if tournament was valid, else - create view</returns>
         [HttpPost]
         public ActionResult Create(TournamentViewModel tournamentViewModel)
@@ -93,9 +104,9 @@
 
                 return this.View(tournamentViewModel);
             }
-            catch (TournamentValidationException)
+            catch (TournamentValidationException e)
             {
-                this.ModelState.AddModelError(UNIQUE_NAME_KEY, "Имя турнира должно быть уникальным");
+                this.ModelState.AddModelError(e.UserValidationKey, e.Message);
                 return this.View(tournamentViewModel);
             }
             catch (Exception)

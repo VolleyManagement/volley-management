@@ -132,6 +132,9 @@
   <data name="TournamentNameMustBeUnique" xml:space="preserve">
     <value>Название турнира должно быть уникальным</value>
   </data>
+  <data name="UniqueNameMessage" xml:space="preserve">
+    <value>Имя турнира должно быть уникальным</value>
+  </data>
   <data name="UserEmailMustBeUnique" xml:space="preserve">
     <value>Email пользователя должен быть уникальным</value>
   </data>
@@ -200,6 +203,9 @@
   </data>
   <data name="WrongStartTransferDates" xml:space="preserve">
     <value>Начало трансфера должно быть после начала турнира</value>
+  </data>
+  <data name="WrongThreeMonthRule" xml:space="preserve">
+    <value>Период регистрации менее чем 3 месяца</value>
   </data>
   <data name="WrongTransferPeriod" xml:space="preserve">
     <value>Начало трансферного периода должно быть раньше чем его окончание</value>

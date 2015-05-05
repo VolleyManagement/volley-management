@@ -51,13 +51,13 @@ namespace VolleyManagement.Dal.MsSql
         /// Gets or sets start of a tournament
         /// </summary>
         [Required]
-        public DateTime StartDate { get; set; }
+        public DateTime GamesStart { get; set; }
 
         /// <summary>
         /// Gets or sets end of a tournament
         /// </summary>
         [Required]
-        public DateTime EndDate { get; set; }
+        public DateTime GamesEnd { get; set; }
 
         /// <summary>
         /// Gets or sets start of a transfer period
@@ -72,15 +72,15 @@ namespace VolleyManagement.Dal.MsSql
         public DateTime TransferEnd { get; set; }
 
         /// <summary>
-        /// Gets or sets start of a tournament registration
+        /// Gets or sets start of a tournament
         /// </summary>
         [Required]
-        public DateTime RegistrationStart { get; set; }
+        public DateTime ApplyingPeriodStart { get; set; }
 
         /// <summary>
         /// Gets or sets end of a tournament registration
         /// </summary>
         [Required]
-        public DateTime RegistrationEnd { get; set; }
+        public DateTime ApplyingPeriodEnd { get; set; }
     }
 }

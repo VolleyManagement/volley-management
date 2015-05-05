@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
@@ -27,7 +28,13 @@
                 Description = "Description 1",
                 Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
-                RegulationsLink = "http://default.com"
+                RegulationsLink = "http://default.com",
+                ApplyingPeriodStart = new DateTime(2015, 06, 02),
+                ApplyingPeriodEnd = new DateTime(2015, 09, 02),
+                GamesStart = new DateTime(2015, 09, 03),
+                GamesEnd = new DateTime(2015, 12, 03),
+                TransferStart = new DateTime(2015, 10, 01),
+                TransferEnd = new DateTime(2015, 11, 01)
             };
         }
 
@@ -94,6 +101,72 @@
         public TournamentMvcViewModelBuilder WithRegulationsLink(string regulationsLink)
         {
             _tournamentViewModel.RegulationsLink = regulationsLink;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament start
+        /// </summary>
+        /// <param name="gamesStart">Games start</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentMvcViewModelBuilder WithGamesStart(DateTime gamesStart)
+        {
+            _tournamentViewModel.GamesStart = gamesStart;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament end
+        /// </summary>
+        /// <param name="gamesEnd">Games end</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentMvcViewModelBuilder WithGamesEnd(DateTime gamesEnd)
+        {
+            _tournamentViewModel.GamesEnd = gamesEnd;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets applying start date of a tournament
+        /// </summary>
+        /// <param name="applyingPeriodStart">Applying period start</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentMvcViewModelBuilder WithApplyingPeriodStart(DateTime applyingPeriodStart)
+        {
+            _tournamentViewModel.ApplyingPeriodStart = applyingPeriodStart;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets applying end date of a tournament
+        /// </summary>
+        /// <param name="applyingPeriodEnd">Applying period end</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentMvcViewModelBuilder WithApplyingPeriodEnd(DateTime applyingPeriodEnd)
+        {
+            _tournamentViewModel.ApplyingPeriodEnd = applyingPeriodEnd;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament transfer start date
+        /// </summary>
+        /// <param name="transferStart">Start transfer period</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentMvcViewModelBuilder WithTransferStart(DateTime transferStart)
+        {
+            _tournamentViewModel.TransferStart = transferStart;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament transfer end date
+        /// </summary>
+        /// <param name="transferEnd">End transfer period</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentMvcViewModelBuilder WithTransferEnd(DateTime transferEnd)
+        {
+            _tournamentViewModel.TransferEnd = transferEnd;
             return this;
         }
 

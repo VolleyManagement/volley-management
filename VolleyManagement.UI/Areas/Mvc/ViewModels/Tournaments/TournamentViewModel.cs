@@ -88,19 +88,32 @@
         public string RegulationsLink { get; set; }
 
         /// <summary>
+        /// Start of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "ApplyingPeriodStart", ResourceType = typeof(ViewModelResources))]
+        public DateTime ApplyingPeriodStart { get; set; }
+
+        /// <summary>
+        /// End of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "ApplyingPeriodEnd", ResourceType = typeof(ViewModelResources))]
+        public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// <summary>
         /// Start of a tournament
         /// </summary>
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        [Display(Name = "StartDate", ResourceType = typeof(ViewModelResources))]
-        public DateTime StartDate { get; set; }
+        [Display(Name = "GamesStart", ResourceType = typeof(ViewModelResources))]
+        public DateTime GamesStart { get; set; }
 
         /// <summary>
         /// End of a tournament
         /// </summary>
         [DataType(DataType.Date)]
-        [Display(Name = "EndDate", ResourceType = typeof(ViewModelResources))]
-        public DateTime EndDate { get; set; }
+        [Display(Name = "GamesEnd", ResourceType = typeof(ViewModelResources))]
+        public DateTime GamesEnd { get; set; }
 
         /// <summary>
         /// Start of a transfer period
@@ -115,20 +128,6 @@
         [DataType(DataType.Date)]
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
         public DateTime TransferEnd { get; set; }
-
-        /// <summary>
-        /// Start of a tournament registration
-        /// </summary>
-        [DataType(DataType.Date)]
-        [Display(Name = "RegistrationStart", ResourceType = typeof(ViewModelResources))]
-        public DateTime RegistrationStart { get; set; }
-
-        /// <summary>
-        /// End of a tournament registration
-        /// </summary>
-        [DataType(DataType.Date)]
-        [Display(Name = "RegistrationEnd", ResourceType = typeof(ViewModelResources))]
-        public DateTime RegistrationEnd { get; set; }
 
         /// <summary>
         /// Initializes list of seasons.
@@ -166,10 +165,10 @@
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
                 Scheme = tournament.Scheme,
-                StartDate = tournament.GamesStart,
-                EndDate = tournament.GamesEnd,
-                RegistrationStart = tournament.ApplyingPeriodStart,
-                RegistrationEnd = tournament.ApplyingPeriodEnd,
+                GamesStart = tournament.GamesStart,
+                GamesEnd = tournament.GamesEnd,
+                ApplyingPeriodStart = tournament.ApplyingPeriodStart,
+                ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
                 TransferEnd = tournament.TransferEnd
             };
@@ -191,10 +190,10 @@
                 Season = this.Season,
                 Scheme = this.Scheme,
                 RegulationsLink = this.RegulationsLink,
-                GamesStart = this.StartDate,
-                GamesEnd = this.EndDate,
-                ApplyingPeriodStart = this.RegistrationStart,
-                ApplyingPeriodEnd = this.RegistrationEnd,
+                GamesStart = this.GamesStart,
+                GamesEnd = this.GamesEnd,
+                ApplyingPeriodStart = this.ApplyingPeriodStart,
+                ApplyingPeriodEnd = this.ApplyingPeriodEnd,
                 TransferStart = this.TransferStart,
                 TransferEnd = this.TransferEnd
             };

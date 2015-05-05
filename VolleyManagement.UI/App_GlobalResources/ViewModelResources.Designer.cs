@@ -61,6 +61,60 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Период регистрации должен быть минимум 3 месяца.
+        /// </summary>
+        public static string ApplyingDateThreeMonth {
+            get {
+                return ResourceManager.GetString("ApplyingDateThreeMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начало турнира должно следовать после завершения периода регистрации.
+        /// </summary>
+        public static string ApplyingPeriodBeforeGamesStart {
+            get {
+                return ResourceManager.GetString("ApplyingPeriodBeforeGamesStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Конец регистрации на турнир.
+        /// </summary>
+        public static string ApplyingPeriodEnd {
+            get {
+                return ResourceManager.GetString("ApplyingPeriodEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начало регистрации на турнир.
+        /// </summary>
+        public static string ApplyingPeriodStart {
+            get {
+                return ResourceManager.GetString("ApplyingPeriodStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начало периода регистрации на турнир должно быть раннее чем его окончание.
+        /// </summary>
+        public static string ApplyingStartBeforeEnd {
+            get {
+                return ResourceManager.GetString("ApplyingStartBeforeEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начало регистрации турнира должно быть позже чем сегодня.
+        /// </summary>
+        public static string ApplyingStartBeforeNow {
+            get {
+                return ResourceManager.GetString("ApplyingStartBeforeNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FixMe: Confirm password.
         /// </summary>
         public static string ConfirmUserPassword {
@@ -70,11 +124,11 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дата окончания турнира.
+        ///   Looks up a localized string similar to Конец турнира должен быть после его начала.
         /// </summary>
-        public static string EndDate {
+        public static string EndGamesBeforeStart {
             get {
-                return ResourceManager.GetString("EndDate", resourceCulture);
+                return ResourceManager.GetString("EndGamesBeforeStart", resourceCulture);
             }
         }
         
@@ -93,6 +147,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string FieldRequired {
             get {
                 return ResourceManager.GetString("FieldRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дата окончания турнира.
+        /// </summary>
+        public static string GamesEnd {
+            get {
+                return ResourceManager.GetString("GamesEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дата начала турнира.
+        /// </summary>
+        public static string GamesStart {
+            get {
+                return ResourceManager.GetString("GamesStart", resourceCulture);
             }
         }
         
@@ -277,33 +349,6 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Конец регистрации на турнир.
-        /// </summary>
-        public static string RegistrationEnd {
-            get {
-                return ResourceManager.GetString("RegistrationEnd", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Начало регистрации на турнир.
-        /// </summary>
-        public static string RegistrationStart {
-            get {
-                return ResourceManager.GetString("RegistrationStart", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Дата начала турнира.
-        /// </summary>
-        public static string StartDate {
-            get {
-                return ResourceManager.GetString("StartDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Описание.
         /// </summary>
         public static string TournamentDescription {
@@ -358,11 +403,47 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Начало трансфера должно быть перед его окончанием.
+        /// </summary>
+        public static string TransferEndAfterStart {
+            get {
+                return ResourceManager.GetString("TransferEndAfterStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Окончание трасферного периода должно быть перед окончанием турнира.
+        /// </summary>
+        public static string TransferEndBeforeGamesEnd {
+            get {
+                return ResourceManager.GetString("TransferEndBeforeGamesEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дата начала трансферного окна.
         /// </summary>
         public static string TransferStart {
             get {
                 return ResourceManager.GetString("TransferStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Начало трансферного периода должно быть в течении турнира.
+        /// </summary>
+        public static string TransferStartBeforeGamesStart {
+            get {
+                return ResourceManager.GetString("TransferStartBeforeGamesStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя турнира должно быть уникальным.
+        /// </summary>
+        public static string UniqueNameMessage {
+            get {
+                return ResourceManager.GetString("UniqueNameMessage", resourceCulture);
             }
         }
         

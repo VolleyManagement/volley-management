@@ -170,7 +170,7 @@
                     ExceptionParams.TRANSFER_END_CAPTURE);
             }
 
-            // fransfer end before tournament end date
+            // if transfer end is before tournament end date
             if (tournament.TransferEnd >= tournament.GamesEnd)
             {
                 throw new TournamentValidationException(

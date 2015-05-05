@@ -44,7 +44,7 @@
             : base(message)
         {
             ParamName = paramName;
-            UserValidationKey = validationKey;
+            ValidationKey = validationKey;
         }
 
         /// <summary>
@@ -78,6 +78,6 @@
         /// <summary>
         /// Gets or sets the key to message in a dictionary
         /// </summary>
-        public string UserValidationKey { get; set; }
+        public string ValidationKey { get; set; }
     }
 }

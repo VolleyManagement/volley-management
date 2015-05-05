@@ -106,7 +106,7 @@
             }
             catch (TournamentValidationException e)
             {
-                this.ModelState.AddModelError(e.UserValidationKey, e.Message);
+                this.ModelState.AddModelError(e.ValidationKey, e.Message);
                 return this.View(tournamentViewModel);
             }
             catch (Exception)

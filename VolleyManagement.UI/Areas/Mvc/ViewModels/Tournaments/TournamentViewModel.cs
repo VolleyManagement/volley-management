@@ -92,6 +92,7 @@
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "ApplyingPeriodStart", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime ApplyingPeriodStart { get; set; }
 
         /// <summary>
@@ -99,6 +100,7 @@
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "ApplyingPeriodEnd", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime ApplyingPeriodEnd { get; set; }
 
         /// <summary>
@@ -106,6 +108,7 @@
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "GamesStart", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime GamesStart { get; set; }
 
         /// <summary>
@@ -113,6 +116,7 @@
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "GamesEnd", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime GamesEnd { get; set; }
 
         /// <summary>
@@ -120,6 +124,7 @@
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime TransferStart { get; set; }
 
         /// <summary>
@@ -127,6 +132,7 @@
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime TransferEnd { get; set; }
 
         /// <summary>

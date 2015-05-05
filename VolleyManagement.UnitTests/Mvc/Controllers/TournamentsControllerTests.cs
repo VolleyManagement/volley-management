@@ -295,8 +295,9 @@
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason(2015)
                 .Build();
+
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Throws(new TournamentValidationException());
+                .Throws(new TournamentValidationException("Message", "ValidationKey", "paramName"));
             var controller = _kernel.Get<TournamentsController>();
 
             // Act

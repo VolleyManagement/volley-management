@@ -7,7 +7,7 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
 
-    using ExceptionParams = VolleyManagement.Services.Constants;
+    using ExceptionParams = VolleyManagement.Domain.Constants.Tournament;
     using MessageList = VolleyManagement.Domain.Properties.Resources;
 
     /// <summary>
@@ -126,7 +126,7 @@
             double totalApplyingPeriodDays = (tournament.ApplyingPeriodEnd - tournament.ApplyingPeriodStart).TotalDays;
 
             // if registration period is little
-            if (totalApplyingPeriodDays < Constants.DAYS_BETWEEN_START_AND_END_APPLYING_DATE)
+            if (totalApplyingPeriodDays < ExceptionParams.DAYS_BETWEEN_START_AND_END_APPLYING_DATE)
             {
                 throw new TournamentValidationException(
                     MessageList.WrongThreeMonthRule,

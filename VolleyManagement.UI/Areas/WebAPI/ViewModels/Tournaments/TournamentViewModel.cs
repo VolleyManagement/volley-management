@@ -107,52 +107,6 @@
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime TransferEnd { get; set; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        ///// <summary>
-        ///// Start of a tournament
-        ///// </summary>
-        //public DateTime StartDate { get; set; }
-
-        ///// <summary>
-        ///// End of a tournament
-        ///// </summary>
-        //public DateTime EndDate { get; set; }
-
-        ///// <summary>
-        ///// Start of a transfer period
-        ///// </summary>
-        //public DateTime TransferStart { get; set; }
-
-        ///// <summary>
-        ///// End of a transfer period
-        ///// </summary>
-        //public DateTime TransferEnd { get; set; }
-
-        ///// <summary>
-        ///// Start of a tournament registration
-        ///// </summary>
-        //public DateTime RegistrationStart { get; set; }
-
-        ///// <summary>
-        ///// End of a tournament registration
-        ///// </summary>
-        //public DateTime RegistrationEnd { get; set; }
-
-
         #region Factory Methods
 
         /// <summary>

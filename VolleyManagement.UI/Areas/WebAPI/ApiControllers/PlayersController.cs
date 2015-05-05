@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.WebApi.ApiControllers
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Net;
@@ -156,13 +157,18 @@
         [EnableQuery]
         public SingleResult<TeamViewModel> GetTeams([FromODataUri] int key)
         {
-            var player = _playerService.Get(key);
-            var result = _teamService.Get()
-                .Where(t => t.Id == player.TeamId)
-                .ToList()
-                .Select(t => TeamViewModel.Map(t))
-                .AsQueryable();
-            return SingleResult.Create(result);
+            TeamViewModel team;
+            try
+            {
+                var player = _playerService.Get(key);
+                team = TeamViewModel.Map(_playerService.GetPlayerTeam(player));
+            }
+            catch (MissingEntityException)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            return Helpers.ObjectToSingleResult(team);
         }
 
         /// <summary> Deletes tournament </summary>

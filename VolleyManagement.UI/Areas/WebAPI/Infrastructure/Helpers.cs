@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Net.Http;
     using System.Web.Http.Routing;
+    using System.Web.Http;
     using System.Web.OData.Extensions;
     using System.Web.OData.Routing;
 
@@ -36,6 +37,16 @@
 
             var value = ODataUriUtils.ConvertFromUriLiteral(keySegment.Value, ODataVersion.V4);
             return (TKey)value;
+        }
+
+        /// <summary>
+        /// Returns the SingleResult of the passed object.
+        /// </summary>
+        /// <param name="obj">Instance that should be represented as the SingleResult.</param>
+        /// <returns></returns>
+        public static SingleResult<T> ObjectToSingleResult<T>(T obj)
+        {
+            return SingleResult.Create(new[] { obj }.AsQueryable());
         }
     }
 }

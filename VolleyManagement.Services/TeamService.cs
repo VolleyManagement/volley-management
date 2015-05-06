@@ -57,8 +57,6 @@
                     throw new MissingEntityException("Player with specified Id can not be found", teamToCreate.CaptainId);
                 }
 
-                // how will players change their teams? can I check condition "teamId == null" or should check as done here
-
                 // Check if captain in teamToCreate is captain of another team
                 if (captain.TeamId != null)
                 {
@@ -68,7 +66,7 @@
                         var ex = new ValidationException("Player is captain of another team");
                         ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existTeam.Id;
                         throw ex;
-                }
+                    }
                 }
 
                 _teamRepository.Add(teamToCreate);
@@ -121,7 +119,7 @@
                 IEnumerable<Player> roster = GetTeamRoster(teamId);
                 foreach (var player in roster)
                 {
-                    player.TeamId = teamId;
+                    player.TeamId = null;
                     _playerRepository.Update(player);
                 }
 

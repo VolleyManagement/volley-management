@@ -78,7 +78,7 @@
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(teamViewModel);
             }
-            catch (InvalidOperationException ex)
+            catch (ValidationException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(teamViewModel);

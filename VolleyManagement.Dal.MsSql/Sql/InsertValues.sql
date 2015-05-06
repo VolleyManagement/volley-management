@@ -78,8 +78,8 @@ INSERT INTO dbo.ContributorTeam(
   [Name],
   [CourseDirection]
 ) VALUES 
-  ('Dp-065.UI','Web UI'),
-  ('Dp-072.NET','.NET')
+  ('Dp-072.NET','.NET'),
+  ('Dp-065.UI','Web UI')
 GO
 
 INSERT INTO dbo.Contributors(

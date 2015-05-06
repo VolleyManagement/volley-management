@@ -6,18 +6,21 @@
 
 <h2>@ViewBag.Title</h2>
 
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CourseDirection)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Contributors)
-        </th>
-    </tr>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseDirection)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contributors)
+            </th>
+        </tr>
+
+    </thead>
 
     @foreach (var item in Model)
     {

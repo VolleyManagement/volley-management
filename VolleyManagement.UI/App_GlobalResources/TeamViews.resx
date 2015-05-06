@@ -141,4 +141,7 @@
   <data name="TeamsIndexTitle" xml:space="preserve">
     <value>Команды</value>
   </data>
+  <data name="DeleteConfirmationMessage" xml:space="preserve">
+    <value>Вы действительно хотите удалить команду</value>
+  </data>
 </root>

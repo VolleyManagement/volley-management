@@ -5,11 +5,14 @@
     ViewBag.Title = "Teams";
 }
 
+
 <h2>List of teams</h2>
 
 <p>
     @Html.ActionLink(Resources.TeamViews.Create, "Create")
 </p>
+
+<script src="~/Scripts/DeleteTeam.js" type="text/javascript"></script>
 <table class="table">
     <tr>
         <th>
@@ -21,13 +24,16 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
+            <td id="TeamName @item.Id">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink(Resources.TeamViews.Delete, "Delete", new { id = item.Id })
+                @Html.ActionLink(Resources.TeamViews.Delete, "Delete", new { id = item.Id }, 
+                new { @class = "delete", @id = item.Id })
             </td>
         </tr>
     }
 
 </table>
+
+@Html.Hidden("DeleteConfirmationMessage", Resources.TeamViews.DeleteConfirmationMessage)

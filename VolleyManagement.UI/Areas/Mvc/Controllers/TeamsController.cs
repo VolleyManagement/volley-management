@@ -18,6 +18,8 @@
     /// </summary>
     public class TeamsController : Controller
     {
+        private const string TEAM_DELETED_SUCCESSFULLY_DESCRITPION = "Команда была успешно удалена.";
+
         /// <summary>
         /// Holds PlayerService instance
         /// </summary>
@@ -96,6 +98,32 @@
             teamViewModel.Id = domainTeam.Id;
             
             return this.RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Delete team action (POST)
+        /// </summary>
+        /// <param name="id">Team id</param>
+        /// <returns>Result message</returns>
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            TeamDeleteResultViewModel result;
+            try
+            {
+                this._teamService.Delete(id);
+                result = new TeamDeleteResultViewModel
+                {
+                    Message = TEAM_DELETED_SUCCESSFULLY_DESCRITPION,
+                    HasDeleted = true
+                };
+            }
+            catch (MissingEntityException ex)
+            {
+                result = new TeamDeleteResultViewModel { Message = ex.Message, HasDeleted = false };
+            }
+
+            return Json(result, JsonRequestBehavior.DenyGet);
         }
     }
 }

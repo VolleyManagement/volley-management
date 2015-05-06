@@ -60,20 +60,7 @@
             return contributorTeamViewModel;
         }
 
-        /// <summary>
-        /// Maps presentation entity to domain
-        /// </summary>
-        /// <returns> Domain object </returns>
-        //public ContributorTeam ToDomain()
-        //{
-        //    return new ContributorTeam
-        //    {
-        //        Id = this.Id,
-        //        Name = this.Name,
-        //        CourseDirection = this.CourseDirection,
-        //        Contributors = this.Contributors
-        //    };
-        //}
+       
         #endregion
 
     }

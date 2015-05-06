@@ -26,27 +26,9 @@
                 Id = 1,
                 Name = "FirstName",
                 CourseDirection = "Course",
-                Contributors = new List<Contributor>
-                {
-                    new Contributor
-                    {
-                        Id = 1,
-                        Name = "FirstNameA",
-                        ContributorTeamId = 1
-                    },
-                    new Contributor
-                    {
-                        Id = 2,
-                        Name = "FirstNameB",
-                        ContributorTeamId = 1
-                    },
-                    new Contributor
-                    {
-                        Id = 3,
-                        Name = "FirstNameC",
-                        ContributorTeamId = 1
-                    }
-                }
+                Contributors = new List<string>
+                {"FirstNameA","FirstNameB","FirstNameC"}
+                
             };
         }
 
@@ -88,9 +70,12 @@
         /// </summary>
         /// <param name="contributors">Contributors in team for test contributor view model</param>
         /// <returns>Contributor view model builder object</returns>
-        public ContributorTeamViewModelBuilder Withcontributors(IList<Contributor> contributors)
+        public ContributorTeamViewModelBuilder Withcontributors(IList<string> contributors)
         {
-            this._contributorTeamViewModel.Contributors = contributors;
+            foreach (var item in contributors)
+            {
+                this._contributorTeamViewModel.Contributors.Add(item);
+            }
             return this;
         }
 

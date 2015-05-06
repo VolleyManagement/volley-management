@@ -42,7 +42,14 @@
             try
             {
                 var contributors = this._contributorTeamService.Get().ToList();
-                return View(contributors);
+                List<ContributorsTeamViewModel> contributorsTeamView = new List<ContributorsTeamViewModel>();
+                
+                foreach (var item in contributors)
+                {
+                    var oneContributorTeamView = ContributorsTeamViewModel.Map(item);
+                    contributorsTeamView.Add(oneContributorTeamView);
+                }
+                return View(contributorsTeamView);
             }
             catch (Exception)
             {

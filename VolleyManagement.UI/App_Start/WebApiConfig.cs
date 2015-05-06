@@ -6,6 +6,7 @@
 
     using VolleyManagement.UI.Areas.WebApi;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
@@ -38,6 +39,7 @@
 
             builder.EntitySet<TournamentViewModel>("Tournaments");
             builder.EntitySet<PlayerViewModel>("Players");
+            builder.EntitySet<TeamViewModel>("Teams");
 
             config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }

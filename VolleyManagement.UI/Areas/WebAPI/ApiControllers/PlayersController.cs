@@ -195,6 +195,8 @@
             {
                 teamId = Helpers.GetKeyFromUri<int>(Request, link);
                 _teamService.Get(teamId);
+                playerToUpdate.TeamId = teamId;
+                _playerService.Edit(playerToUpdate);
             }
             catch (MissingEntityException ex)
             {
@@ -206,8 +208,7 @@
                 ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
                 return BadRequest(ModelState);
             }
-            playerToUpdate.TeamId = teamId;
-            _playerService.Edit(playerToUpdate);
+
             var player = PlayerViewModel.Map(playerToUpdate);
             return Updated(player);
         }

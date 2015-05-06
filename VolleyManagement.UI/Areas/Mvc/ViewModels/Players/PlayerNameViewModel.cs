@@ -21,5 +21,58 @@
         /// </summary>
         [Display(Name = "PlayerFullName", ResourceType = typeof(ViewModelResources))]
         public string FullName { get; set; }
+
+        #region Factory Methods
+        
+        /// <summary>
+        /// Maps domain entity to presentation
+        /// </summary>
+        /// <param name="player"> Domain object </param>
+        /// <returns> View model object </returns>
+        public static PlayerNameViewModel Map(Player player)
+        {
+            PlayerNameViewModel playerNameViewModel = new PlayerNameViewModel()
+            {
+                Id = player.Id,
+                FullName = GetFullName(player)
+            };
+            return playerNameViewModel;
+        }
+
+        /// <summary>
+        /// Maps PlayerViewModel to PlayerNameViewModel
+        /// </summary>
+        /// <param name="player"> Domain object </param>
+        /// <returns> View model object </returns>
+        public static PlayerNameViewModel Map(PlayerViewModel player)
+        {
+            PlayerNameViewModel playerNameViewModel = new PlayerNameViewModel()
+            {
+                Id = player.Id,
+                FullName = GetFullName(player)
+            };
+            return playerNameViewModel;
+        }
+
+        /// <summary>
+        /// Maps presentation entity to domain
+        /// </summary>
+        /// <returns> Domain object </returns>
+        public Player ToDomain()
+        {
+            return new Player { Id = this.Id };
+        }
+        
+        #endregion
+        
+        private static string GetFullName(Player player)
+        {
+            return player.LastName + " " + player.FirstName;
+        }
+
+        private static string GetFullName(PlayerViewModel player)
+        {
+            return player.LastName + " " + player.FirstName;
+        }
     }
 }

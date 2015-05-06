@@ -17,7 +17,7 @@
     /// </summary>
     public class PlayersController : Controller
     {
-        private const int MAX_PLAYERS_ON_PAGE = 10;
+        private const int MAX_PLAYERS_ON_PAGE = 5;
         private const string PLAYER_WAS_DELETED_DESCRIPTION = "Данный игрок не найден, т.к. был удален. Операция редактирования невозможна. Для создания игрока воспользуйтесь соответствующей ссылкой.";
         private const string HTTP_NOT_FOUND_DESCRIPTION = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
 
@@ -44,20 +44,9 @@
         /// <returns>View with collection of players.</returns>
         public ActionResult Index(int? page, string textToSearch = "")
         {
-            textToSearch = textToSearch.Trim();
             try
             {
-                IQueryable<Player> allPlayers = this._playerService
-                    .Get()
-                    .OrderBy(p => p.LastName);
-                
-                if (textToSearch != string.Empty)
-                {
-                    allPlayers = allPlayers
-                        .Where(p => (p.LastName + " " + p.FirstName).Contains(textToSearch));
-                }
-
-                var playersOnPage = new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
+                PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)
@@ -158,7 +147,8 @@
             return Json(new PlayerDeleteResultViewModel
             {
                 Message = App_GlobalResources.ViewModelResources.PlayerWasDeletedSuccessfully
-                ,HasDeleted = true
+                ,
+                HasDeleted = true
             });
         }
 
@@ -210,6 +200,52 @@
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(playerViewModel);
             }
+        }
+
+        /// <summary>
+        /// Open window with form which allow to choose player or players
+        /// </summary>
+        /// <param name="id">Mode of chosing window</param>
+        /// <returns>View with choosing form</returns>
+        public ActionResult ChoosePlayers(int? page, string textToSearch = "")
+        {
+            textToSearch = textToSearch.Trim();
+            try
+            {
+                PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
+
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_PartialNameViewModelCollection", playersOnPage.List);
+                }
+
+                return View(playersOnPage);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return RedirectToAction("ChoosePlayers");
+            }
+            catch (Exception)
+            {
+                return this.HttpNotFound();
+            }
+        }
+
+        private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
+        {
+
+            textToSearch = textToSearch.Trim();
+            IQueryable<Player> allPlayers = this._playerService
+                                                .Get()
+                                                .OrderBy(p => p.LastName);
+
+            if (textToSearch != string.Empty)
+            {
+                allPlayers = allPlayers
+                    .Where(p => (p.FirstName + p.LastName).Contains(textToSearch));
+            }
+
+            return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
         }
     }
 }

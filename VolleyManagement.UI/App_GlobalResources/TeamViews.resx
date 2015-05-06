@@ -117,130 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfirmUserPassword" xml:space="preserve">
-    <value>FixMe: Confirm password</value>
+  <data name="AddPlayersToRoster" xml:space="preserve">
+    <value>Добавить игроков в команду</value>
   </data>
-  <data name="FieldRange" xml:space="preserve">
-    <value>Поле {0} должно быть заполнено в диапазоне {1} - {2}</value>
+  <data name="BackToList" xml:space="preserve">
+    <value>Назад к списку</value>
   </data>
-  <data name="FieldRequired" xml:space="preserve">
-    <value>Поле "{0}" является обязательным.</value>
+  <data name="Create" xml:space="preserve">
+    <value>Создать команду</value>
   </data>
-  <data name="InvalidEntriesError" xml:space="preserve">
-    <value>Поле {0} должно содержать только печатаемые символы</value>
+  <data name="CreateTeamTitle" xml:space="preserve">
+    <value>Создать новую команду</value>
   </data>
-  <data name="InvalidTournamentId" xml:space="preserve">
-    <value>Неверный идентификатор турнира</value>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить команду</value>
   </data>
-  <data name="MaxLengthErrorMessage" xml:space="preserve">
-    <value>Поле "{0}" не может содержать более "{1}" символов</value>
+  <data name="RosterTitle" xml:space="preserve">
+    <value>Игроки команды</value>
   </data>
-  <data name="NotInRange" xml:space="preserve">
-    <value>Поле "{0}" должно быть в диапазоне "{1}" - "{2}"</value>
+  <data name="TeamLegend" xml:space="preserve">
+    <value>Команда</value>
   </data>
-  <data name="PasswordDidNotMatch" xml:space="preserve">
-    <value>FixMe: Password didn't match</value>
-  </data>
-  <data name="PlayerBirthFieldRange" xml:space="preserve">
-    <value>Указан неверный год рождения</value>
-  </data>
-  <data name="PlayerBirthYear" xml:space="preserve">
-    <value>Год рождения</value>
-  </data>
-  <data name="PlayerFirstName" xml:space="preserve">
-    <value>Имя</value>
-  </data>
-  <data name="PlayerFirstNameInvalidEntriesError" xml:space="preserve">
-    <value>{0} должно содержать только буквы и пробелы или символы " - ", " ' "(не более одного подряд). {0} не должно заканчиваться спецсимволом.</value>
-  </data>
-  <data name="PlayerFirstNameRequired" xml:space="preserve">
-    <value>{0} не может быть пустым</value>
-  </data>
-  <data name="PlayerFullName" xml:space="preserve">
-    <value>Фамилия Имя</value>
-  </data>
-  <data name="PlayerHeight" xml:space="preserve">
-    <value>Рост</value>
-  </data>
-  <data name="PlayerHeightFieldRange" xml:space="preserve">
-    <value>Указан неверный рост</value>
-  </data>
-  <data name="PlayerLastName" xml:space="preserve">
-    <value>Фамилия</value>
-  </data>
-  <data name="PlayerLastNameInvalidEntriesError" xml:space="preserve">
-    <value>{0} должна содержать только буквы и пробелы или символы " - ", " ' "(не более одного подряд). {0} не должна заканчиваться спецсимволом.</value>
-  </data>
-  <data name="PlayerLastNameRequired" xml:space="preserve">
-    <value>{0} не может быть пустой</value>
-  </data>
-  <data name="PlayerMaxLengthErrorMessage" xml:space="preserve">
-    <value>{0} не может содержать более {1} символов</value>
-  </data>
-  <data name="PlayerWasDeletedSuccessfully" xml:space="preserve">
-    <value>Игрок был удален успешно</value>
-  </data>
-  <data name="PlayerWeight" xml:space="preserve">
-    <value>Вес</value>
-  </data>
-  <data name="PlayerWeightFieldRange" xml:space="preserve">
-    <value>Указан неверный вес</value>
-  </data>
-  <data name="TeamAchievements" xml:space="preserve">
-    <value>Достижения</value>
-  </data>
-  <data name="TeamCaptain" xml:space="preserve">
-    <value>Капитан</value>
-  </data>
-  <data name="TeamCaptainRequired" xml:space="preserve">
-    <value>{0} не может быть пустым</value>
-  </data>
-  <data name="TeamCoach" xml:space="preserve">
-    <value>Тренер</value>
-  </data>
-  <data name="TeamMaxLengthErrorMessage" xml:space="preserve">
-    <value>{0} не может содержать более {1} символов</value>
-  </data>
-  <data name="TeamName" xml:space="preserve">
-    <value>Имя</value>
-  </data>
-  <data name="TeamNameRequired" xml:space="preserve">
-    <value>{0} не может быть пустым</value>
-  </data>
-  <data name="TeamRoster" xml:space="preserve">
-    <value>Состав</value>
-  </data>
-  <data name="TournamentDescription" xml:space="preserve">
-    <value>Описание</value>
-  </data>
-  <data name="TournamentName" xml:space="preserve">
-    <value>Название турнира</value>
-  </data>
-  <data name="TournamentRegulationsLink" xml:space="preserve">
-    <value>Ссылка на регламент</value>
-  </data>
-  <data name="TournamentScheme" xml:space="preserve">
-    <value>Схема</value>
-  </data>
-  <data name="TournamentSeason" xml:space="preserve">
-    <value>Сезон</value>
-  </data>
-  <data name="UserCellPhone" xml:space="preserve">
-    <value>Телефон</value>
-  </data>
-  <data name="UserDescription" xml:space="preserve">
-    <value>Описание</value>
-  </data>
-  <data name="UserEmail" xml:space="preserve">
-    <value>Email</value>
-  </data>
-  <data name="UserFullName" xml:space="preserve">
-    <value>Имя</value>
-  </data>
-  <data name="UserName" xml:space="preserve">
-    <value>Логин</value>
-  </data>
-  <data name="UserPassword" xml:space="preserve">
-    <value>Пароль</value>
+  <data name="TeamsIndexTitle" xml:space="preserve">
+    <value>Команды</value>
   </data>
 </root>

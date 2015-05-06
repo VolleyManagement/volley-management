@@ -277,6 +277,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Капитан.
+        /// </summary>
+        public static string TeamCaptain {
+            get {
+                return ResourceManager.GetString("TeamCaptain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может быть пустым.
+        /// </summary>
+        public static string TeamCaptainRequired {
+            get {
+                return ResourceManager.GetString("TeamCaptainRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Тренер.
         /// </summary>
         public static string TeamCoach {
@@ -286,11 +304,38 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Название.
+        ///   Looks up a localized string similar to {0} не может содержать более {1} символов.
+        /// </summary>
+        public static string TeamMaxLengthErrorMessage {
+            get {
+                return ResourceManager.GetString("TeamMaxLengthErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Имя.
         /// </summary>
         public static string TeamName {
             get {
                 return ResourceManager.GetString("TeamName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может быть пустым.
+        /// </summary>
+        public static string TeamNameRequired {
+            get {
+                return ResourceManager.GetString("TeamNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Состав.
+        /// </summary>
+        public static string TeamRoster {
+            get {
+                return ResourceManager.GetString("TeamRoster", resourceCulture);
             }
         }
         

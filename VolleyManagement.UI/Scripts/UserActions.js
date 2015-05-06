@@ -2,6 +2,7 @@
     $('a.delete').click(OnDeleteClick);
     $('a.showFinishedTournamenst').click(OnShowFinishedTournamentsClick);
     $('#finished_table').hide();
+    $('#FinishedHeader').hide();
 });
 function OnDeleteClick(e) {
     var playerId = e.target.id;
@@ -36,10 +37,12 @@ function OnShowFinishedTournamentsClick(e) {
         type: 'GET',
         dataType: 'json',
         success: function (resultJson) {
+            $('a.showFinishedTournamenst').hide();
+            $('#FinishedHeader').show();
             $.each(resultJson, function (i, item) {
                 var $tr = $('<tr class="dynamicData">').append(
                     $('<td width="400">').append($('<a/>').attr('href','mvc/Tournaments/Details/' + item.Id).text(item.Name)),
-                    $('<td width="100">').text(DisplaySeason(item.Season))
+                    $('<td width="100">').append($('<label>').text(DisplaySeason(item.Season)))
                 ).appendTo('#finished_table');
             });
         }

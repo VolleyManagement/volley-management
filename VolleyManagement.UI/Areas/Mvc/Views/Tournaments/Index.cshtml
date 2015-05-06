@@ -29,5 +29,9 @@
 
 @{ ViewBag.TableId = "id=finished_table"; }
 <p>
+    <h3 id="FinishedHeader">
+        @Resources.TournamentViews.FinishedTournamentsHeader
+    </h3>
+
     @{Html.RenderPartial("TournamentsList", new List<VolleyManagement.Domain.Tournaments.Tournament>());}
 </p>

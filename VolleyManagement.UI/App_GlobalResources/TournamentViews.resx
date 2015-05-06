@@ -150,6 +150,9 @@
   <data name="FinishedTournaments" xml:space="preserve">
     <value>Показать завершенные</value>
   </data>
+  <data name="FinishedTournamentsHeader" xml:space="preserve">
+    <value>Завершенные</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>

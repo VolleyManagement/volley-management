@@ -160,6 +160,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Завершенные.
+        /// </summary>
+        public static string FinishedTournamentsHeader {
+            get {
+                return ResourceManager.GetString("FinishedTournamentsHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Сохранить.
         /// </summary>
         public static string Save {

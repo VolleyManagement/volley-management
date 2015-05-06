@@ -1,42 +1,27 @@
-﻿@model IEnumerable<VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayerNameViewModel>
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayersListViewModel
 
 @{
     ViewBag.Title = Resources.PlayerViews.ChoosingPlayers;
 }
 <script src="~/Scripts/jquery-1.10.2.js"></script>
-
+<script src="~/Scripts/CreateEditTeamFunctions.js"></script>
 <script>
-    $(document).ready(function () {
+    window.onblur = function () {
+        window.close();
+    }
+</script>
+<h2>@ViewBag.Title</h2>
+<div id="currentPlayersPage">
+    @Html.Partial("_PartialNameViewModelCollection", Model.List)
+</div>
 
-        setTimeout("finishChoosing()", 2000);
+<div id="pagesBar">
+    <ul>
 
-    });
+    </ul>
+</div>
+<script>
+    printPagesBar(@Model.PageNumber, @Model.NumberOfPages);
 </script>
 
-<h2>@ViewBag.Title</h2>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FullName)
-        </th>
-        <th>
-        </th>
-        <th class="hidden">
-        </th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @item.FullName
-            </td>
-            <td>
-                <input type="button" name="choosePlayerButton" value="@Resources.PlayerViews.AddPlayerToTeam" />
-            </td>
-            <td class ="hidden">
-                @item.Id
-            </td>
-        </tr>
-    }
-</table>

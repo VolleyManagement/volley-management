@@ -1,8 +1,5 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
 
-<script src="~/Scripts/ChoosingPlayersFunctions.js"></script>
-
-
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
 </div>
@@ -24,9 +21,18 @@
 </div>
 
 <div class="editor-label">
-    <input class="text-box single-line" id="Captain_FullNameText" name="Captain_FullName" type="text" value="" onfocus="openChoosingCaptainWindow()" />
-    <input class="hidden" id="Captain_FullName" name="Captain.FullName" type="text" value="" />
-    <input class="hidden" id="Captain_Id" name="Captain.Id" type="number" value="" />  
+    <input class="text-box single-line"
+           id="captainFullName"
+           name="Captain.FullName"
+           type="text"
+           readonly/>
+    <input type="button" 
+           name="openChoosingPlayersButton" 
+           value="..." 
+           onclick ="openChoosingPlayersWindow('ChoosingCaptainWindow')"/>
+    <input class="hidden" 
+           id="captainId" 
+           name="Captain.Id"/>  
 </div>
 
 <div class="editor-label">
@@ -37,13 +43,15 @@
     @Html.ValidationMessageFor(model => model.Achievements)
 </div>
 
-<div id="RosterPlayers">
-    <h4>@Resources.TeamViews.RosterTitle</h4>
-    <div>
+<br />
 
-    </div>
-    <input type="button" value="@Resources.TeamViews.AddPlayerToRoster" onclick="openChoosingRosterWindow()">
-    <table class="table">
+<div>
+    <h4>@Resources.TeamViews.RosterTitle</h4>
+   
+    <br />
+
+    <input type="button" value="@Resources.TeamViews.AddPlayersToRoster" onclick="openChoosingPlayersWindow('ChoosingRosterWindow')">
+    <table id="teamRoster" class="table">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)
@@ -53,18 +61,22 @@
         </tr>
         @if (Model.Roster != null)
         {
-            foreach (var item in Model.Roster)
+            for (int i = 0; i < Model.Roster.Count(); i++)
             {
-                <tr>
-                    <td>
-                        @item.FullName;
-                    </td>
-                    <td class="hidden">
-                        @item.Id;
-                    </td>
-                </tr>
+                var item = Model.Roster[i];
+                if (item.Id != Model.Captain.Id)
+                {
+                    <tr id="player_@item.Id" class="rosterPlayer">
+                        <td>
+                            <input type="text" name="Roster[@i].FullName" value="@item.FullName" readonly />
+                            @item.FullName;
+                        </td>
+                        <td class="hidden rosterPlayerId">
+                            <input type="text" name="Roster[@i].Id" value="@item.Id" hidden/>
+                        </td>
+                    </tr>
+                }
             }
         }
     </table>
-    @*here should be list with player and choosing player window*@
 </div>

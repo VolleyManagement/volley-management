@@ -67,8 +67,34 @@
             }
 
             var domainTeam = teamViewModel.ToDomain();
-            this._teamService.Create(domainTeam);
+            try
+            {
+                this._teamService.Create(domainTeam);
+            }
+            catch (MissingEntityException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return this.View(teamViewModel);
+            }
+            catch (InvalidOperationException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return this.View(teamViewModel);
+            }
+
+            //if (teamViewModel.Roster != null)
+            //{
+            //    foreach (var item in teamViewModel.Roster)
+            //    {
+            //        if (item.Id != domainTeam.CaptainId)
+            //        {
+            //            this._teamService.UpdatePlayerTeam(item.Id, domainTeam.Id);
+            //        }
+            //    }
+            //}
+
             teamViewModel.Id = domainTeam.Id;
+            
             return this.RedirectToAction("Index");
         }
     }

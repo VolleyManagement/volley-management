@@ -61,11 +61,11 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить игрока в команду.
+        ///   Looks up a localized string similar to Добавить игроков в команду.
         /// </summary>
-        internal static string AddPlayerToRoster {
+        internal static string AddPlayersToRoster {
             get {
-                return ResourceManager.GetString("AddPlayerToRoster", resourceCulture);
+                return ResourceManager.GetString("AddPlayersToRoster", resourceCulture);
             }
         }
         
@@ -79,7 +79,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Создать.
+        ///   Looks up a localized string similar to Создать команду.
         /// </summary>
         internal static string Create {
             get {
@@ -93,6 +93,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         internal static string CreateTeamTitle {
             get {
                 return ResourceManager.GetString("CreateTeamTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Удалить команду.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         

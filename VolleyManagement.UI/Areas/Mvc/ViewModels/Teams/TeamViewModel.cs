@@ -54,7 +54,7 @@
         /// Gets or sets the roster of the team
         /// </summary>
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
-        public IEnumerable<PlayerNameViewModel> Roster { get; set; }
+        public List<PlayerNameViewModel> Roster { get; set; }
 
         #region Factory Methods
 
@@ -78,7 +78,7 @@
             teamViewModel.Roster = new List<PlayerNameViewModel>();
             foreach (var player in roster)
             {
-                ((List<PlayerNameViewModel>)teamViewModel.Roster).Add(PlayerNameViewModel.Map(player));
+                teamViewModel.Roster.Add(PlayerNameViewModel.Map(player));
             }
 
             return teamViewModel;

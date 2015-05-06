@@ -4,6 +4,8 @@
     ViewBag.Title = Resources.TeamViews.CreateTeamTitle;
 }
 
+<script src="~/Scripts/CreateEditTeamFunctions.js"></script>
+
 <h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm())
@@ -15,7 +17,7 @@
         @Html.Partial("_CreateEdit", Model)
 
         <p>
-            <input type="submit" value="@Resources.TeamViews.Create" />
+            <input type="submit" value="@Resources.TeamViews.Create"/>
         </p>
     </fieldset>
 

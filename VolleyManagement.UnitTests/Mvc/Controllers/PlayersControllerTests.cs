@@ -31,7 +31,7 @@
         private const int NUMBER_OF_PLAYERS_FOR_MOCK = 12;
         private const int FIRST_ASCII_LETTER = 65;
         private const int LAST_ASCII_LETTER = 90;
-        private const int MAX_PLAYERS_ON_PAGE = 10;
+        private const int MAX_PLAYERS_ON_PAGE = 5;
         private const int TESTING_PAGE = 1;
         private const int SAVED_PLAYER_ID = 10;
         private const int PLAYER_UNEXISTING_ID_TO_DELETE = 4;
@@ -108,7 +108,7 @@
             var sup = this._kernel.Get<PlayersController>();
 
             var expected = listOfPlayers.OrderBy(p => p.LastName)
-                .Where(p => (p.FirstName + " "+ p.LastName).Contains(SUBSTRING_TO_SEARCH))
+                .Where(p => (p.FirstName + " " + p.LastName).Contains(SUBSTRING_TO_SEARCH))
                 .Skip((TESTING_PAGE - 1) * MAX_PLAYERS_ON_PAGE)
                 .Take(MAX_PLAYERS_ON_PAGE)
                 .Select(p =>

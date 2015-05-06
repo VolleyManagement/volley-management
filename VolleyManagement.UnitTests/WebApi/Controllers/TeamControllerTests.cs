@@ -47,7 +47,8 @@
         /// </summary>
         private IKernel _kernel;
 
-        /// Initializes test data
+        /// <summary>
+        /// Initializes test data.
         /// </summary>
         [TestInitialize]
         public void TestInit()

@@ -8,16 +8,21 @@
     /// <summary>
     /// Defines implementation of the IDbTransaction contract.
     /// </summary>
-    public class VolleyDbTransaction : IDbTransaction
+    public class DbTransactionAdapter : IDbTransaction
     {
         private System.Data.IDbTransaction _transaction;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VolleyDbTransaction"/> class.
+        /// Initializes a new instance of the <see cref="DbTransactionAdapter"/> class.
         /// </summary>
         /// <param name="transaction">Transaction manager</param>
-        public VolleyDbTransaction(System.Data.IDbTransaction transaction)
+        public DbTransactionAdapter(System.Data.IDbTransaction transaction)
         {
+            if (transaction == null)
+            {
+                throw new NullReferenceException();
+            }
+
             this._transaction = transaction;
         }
 

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
@@ -185,7 +186,7 @@
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
-        public void Delete_CaptainOfExistTeam_InvalidOperationExceptionThrown()
+        public void Delete_CaptainOfExistTeam_ValidationExceptionThrown()
         {
             // Arrange
             var expectedId = 10;
@@ -199,7 +200,7 @@
             {
                 ps.Delete(expectedId);
             }
-            catch (InvalidOperationException)
+            catch (ValidationException)
             {
                 gotException = true;
             }
@@ -262,7 +263,7 @@
         /// The method should throw InvalidOperationException.
         /// </summary>
         [TestMethod]
-        public void Edit_CaptainOfExistTeam_InvalidOperationExceptionThrown()
+        public void Edit_CaptainOfExistTeam_ValidationExceptionThrown()
         {
             // Arrange
             int? wrongTeamId = null;
@@ -279,7 +280,7 @@
             {
                 sut.Edit(playerToEdit);
             }
-            catch (InvalidOperationException)
+            catch (ValidationException)
             {
                 gotException = true;
             }

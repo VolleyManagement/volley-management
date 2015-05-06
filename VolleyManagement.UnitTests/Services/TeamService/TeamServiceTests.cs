@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
@@ -143,10 +144,10 @@
 
         /// <summary>
         /// Test for Create() method. The method check case when captain is captain of another team.
-        /// Should throw MissingEntityException
+        /// Should throw ValidationException
         /// </summary>
         [TestMethod]
-        public void Create_PlayerIsCaptainOfExistingTeam_InvalidOperationExceptionThrown()
+        public void Create_PlayerIsCaptainOfExistingTeam_ValidationExceptionThrown()
         {
             // Arrange
             var newTeam = new TeamBuilder().Build();
@@ -165,7 +166,7 @@
             {
                 sut.Create(newTeam);
             }
-            catch (InvalidOperationException)
+            catch (ValidationException)
             {
                 gotException = true;
             }
@@ -353,17 +354,22 @@
         /// The method should throw InvalidOperationException.
         /// </summary>
         [TestMethod]
-        public void UpdatePlayerTeam_PlayerIsCaptainOfExistingTeam_InvalidOperationExceptionThrown()
+        public void UpdatePlayerTeam_PlayerIsCaptainOfExistingTeam_ValidationExceptionThrown()
         {
             // Arrange
-            MockPlayerRepositoryToFindPlayer(new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build());
-            var existingTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockPlayerRepositoryToFindPlayer(new PlayerBuilder()
+                                                .WithId(SPECIFIC_PLAYER_ID)
+                                                .WithTeamId(SPECIFIC_TEAM_ID)
+                                                .Build());
+
+            var existingTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithCaptain(SPECIFIC_PLAYER_ID).Build();
 
             // next operation guarantee that new teamId will distinct from SPECIFIC_TEAM_ID
             int newTeamId = SPECIFIC_TEAM_ID + 1;
             var teamToSet = new TeamBuilder().WithId(newTeamId).Build();
 
             var teamList = new TeamServiceTestFixture().AddTeam(existingTeam).AddTeam(teamToSet).Build().AsQueryable();
+
             _teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
                                .Returns((Expression<Func<Team, bool>> whereExpr) => teamList.Where(whereExpr));
 
@@ -374,7 +380,7 @@
             {
                 ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, newTeamId);
             }
-            catch (InvalidOperationException)
+            catch (ValidationException)
             {
                 gotException = true;
             }

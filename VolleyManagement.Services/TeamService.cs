@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Linq.Expressions;
     using VolleyManagement.Contracts;
@@ -64,7 +65,7 @@
                     var existTeam = GetPlayerLedTeam(captain.Id);
                     if (existTeam != null)
                     {
-                        var ex = new InvalidOperationException("Player is captain of another team");
+                        var ex = new ValidationException("Player is captain of another team");
                         ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existTeam.Id;
                         throw ex;
                     }
@@ -170,7 +171,7 @@
                     var existingTeam = GetPlayerLedTeam(player.Id);
                     if (existingTeam != null && teamId != existingTeam.Id)
                     {
-                        var ex = new InvalidOperationException("Player is captain of another team");
+                        var ex = new ValidationException("Player is captain of another team");
                         ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existingTeam.Id;
                         throw ex;
                     }

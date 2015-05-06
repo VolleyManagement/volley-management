@@ -84,5 +84,22 @@
                 .Select(p => PlayerViewModel.Map(p))
                 .AsQueryable();
         }
+
+        /// <summary> Deletes team </summary>
+        /// <param name="id"> The id. </param>
+        /// <returns> The <see cref="IHttpActionResult"/>. </returns>
+        public IHttpActionResult Delete([FromODataUri] int id)
+        {
+            try
+            {
+                _teamService.Delete(id);
+            }
+            catch (MissingEntityException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
     }
 }

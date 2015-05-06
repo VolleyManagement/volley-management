@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Services
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
@@ -8,7 +9,6 @@
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
-
     using DAL = VolleyManagement.Dal.Contracts;
     using IsolationLevel = System.Data.IsolationLevel;
 
@@ -99,7 +99,7 @@
                 if (ledTeam != null &&
                     (playerToEdit.TeamId == null || playerToEdit.TeamId != ledTeam.Id))
                 {
-                    var ex = new InvalidOperationException("Player is captain of another team");
+                    var ex = new ValidationException("Player is captain of another team");
                     ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
                     throw ex;
                 }
@@ -132,7 +132,7 @@
             Team playerTeam = GetPlayerLedTeam(id);
             if (playerTeam != null)
             {
-                var ex = new InvalidOperationException("Player is captain of existing team");
+                var ex = new ValidationException("Player is captain of existing team");
                 ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = playerTeam.Id;
                 throw ex;
             }

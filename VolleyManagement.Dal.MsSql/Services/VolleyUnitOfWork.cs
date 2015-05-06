@@ -64,8 +64,11 @@
         public IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel)
         {
             _context.Connection.Open();
+
+            // TODO: Revisit connection opening approach
+
             var transaction = _context.Connection.BeginTransaction(isolationLevel);
-            return new VolleyDbTransaction(transaction);
+            return new DbTransactionAdapter(transaction);
         }
     }
 }

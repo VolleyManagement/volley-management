@@ -56,8 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\Constants.cs" />
+    <Compile Include="Contracts\IDbTransaction.cs" />
     <Compile Include="Contracts\IPlayerRepository.cs" />
     <Compile Include="Contracts\IRepository.cs" />
+    <Compile Include="Contracts\ITeamRepository.cs" />
     <Compile Include="Contracts\ITournamentRepository.cs" />
     <Compile Include="Contracts\IUnitOfWork.cs" />
     <Compile Include="Contracts\IUserRepository.cs" />

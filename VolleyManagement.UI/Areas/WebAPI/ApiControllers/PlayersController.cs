@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.WebApi.ApiControllers
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Net;
@@ -9,7 +10,9 @@
 
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.UI.Areas.WebApi.Infrastructure;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
 
     /// <summary>
     /// The players controller.
@@ -17,6 +20,7 @@
     public class PlayersController : ODataController
     {
         private readonly IPlayerService _playerService;
+        private readonly ITeamService _teamService;
 
         private const string CONTROLLER_NAME = "players";
 
@@ -24,9 +28,10 @@
         /// Initializes a new instance of the <see cref="PlayersController"/> class.
         /// </summary>
         /// <param name="playerService"> The player service. </param>
-        public PlayersController(IPlayerService playerService)
+        public PlayersController(IPlayerService playerService, ITeamService teamService)
         {
             this._playerService = playerService;
+            this._teamService = teamService;
         }
 
         /// <summary>
@@ -58,7 +63,7 @@
         {
             return _playerService.Get()
                                 .ToList()
-                                .Select(t => PlayerViewModel.Map(t))
+                                .Select(p => PlayerViewModel.Map(p))
                                 .AsQueryable();
         }
 
@@ -100,6 +105,36 @@
         }
 
         /// <summary>
+        /// Creates reference between Player and connected entity.
+        /// </summary>
+        /// <param name="key">ID of the Player.</param>
+        /// <param name="navigationProperty">Name of the property.</param>
+        /// <param name="link">Link to the entity.</param>
+        /// <returns><see cref="IHttpActionResult"/></returns>
+        [AcceptVerbs("POST", "PUT")]
+        public IHttpActionResult CreateRef([FromODataUri] int key, string navigationProperty, [FromBody] Uri link)
+        {
+            Domain.Players.Player playerToUpdate;
+            try
+            {
+                playerToUpdate = _playerService.Get(key);
+            }
+            catch (MissingEntityException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
+            }
+
+            switch (navigationProperty)
+            {
+                case "Teams":
+                    return AssignTeamToPlayer(playerToUpdate, link);
+                default:
+                    return StatusCode(HttpStatusCode.NotImplemented);
+            }
+        }
+
+        /// <summary>
         /// The get player.
         /// </summary>
         /// <param name="key"> The key. </param>
@@ -112,6 +147,28 @@
                                                          .ToList()
                                                          .Select(p => PlayerViewModel.Map(p))
                                                          .AsQueryable());
+        }
+
+        /// <summary>
+        /// Gets player Team.
+        /// </summary>
+        /// <param name="key">ID of the player.</param>
+        /// <returns>Team that linked to the player.</returns>
+        [EnableQuery]
+        public SingleResult<TeamViewModel> GetTeams([FromODataUri] int key)
+        {
+            TeamViewModel team;
+            try
+            {
+                var player = _playerService.Get(key);
+                team = TeamViewModel.Map(_playerService.GetPlayerTeam(player));
+            }
+            catch (MissingEntityException)
+            {
+                throw new HttpResponseException(HttpStatusCode.NotFound);
+            }
+
+            return Helpers.ObjectToSingleResult(team);
         }
 
         /// <summary> Deletes tournament </summary>
@@ -129,6 +186,31 @@
             }
             
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        private IHttpActionResult AssignTeamToPlayer(Domain.Players.Player playerToUpdate, Uri link)
+        {
+            int teamId;
+            try
+            {
+                teamId = Helpers.GetKeyFromUri<int>(Request, link);
+                _teamService.Get(teamId);
+                playerToUpdate.TeamId = teamId;
+                _playerService.Edit(playerToUpdate);
+            }
+            catch (MissingEntityException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
+            }
+
+            var player = PlayerViewModel.Map(playerToUpdate);
+            return Updated(player);
         }
     }
 }

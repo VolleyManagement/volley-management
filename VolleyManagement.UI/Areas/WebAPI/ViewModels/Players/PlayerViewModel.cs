@@ -1,11 +1,12 @@
-﻿
-namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
+﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
 {
     using System.ComponentModel.DataAnnotations;
 
     using VolleyManagement.Domain;
+    using VolleyManagement.Domain.Teams;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.App_GlobalResources;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
 
     /// <summary>
     /// Represents player view model
@@ -16,6 +17,11 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
         /// Gets or sets the player Id
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the player team Id
+        /// </summary>
+        public TeamViewModel Team { get; set; }
 
         /// <summary>
         /// Gets or sets the player first name
@@ -78,7 +84,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
                 LastName = player.LastName,
                 BirthYear = player.BirthYear,
                 Height = player.Height,
-                Weight = player.Weight
+                Weight = player.Weight,
+                //Team = TeamViewModel.Map(team)
             };
 
             return playerViewModel;
@@ -90,6 +97,16 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
+            /*int? teamId;
+            if (Team == null)
+            {
+                teamId = null;
+            }
+            else
+            {
+                teamId = this.Team.Id;
+            }
+            */
             return new Player
             {
                 Id = this.Id,
@@ -97,7 +114,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Players
                 LastName = this.LastName,
                 BirthYear = this.BirthYear,
                 Height = this.Height,
-                Weight = this.Weight
+                Weight = this.Weight,
             };
         }
         #endregion

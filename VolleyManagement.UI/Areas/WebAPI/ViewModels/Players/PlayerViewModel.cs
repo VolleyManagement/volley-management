@@ -68,6 +68,11 @@
             , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int? Weight { get; set; }
 
+        /// <summary>
+        /// Gets or sets the player teamId
+        /// </summary>
+        public int? TeamId { get; set; } 
+
         #region Factory Methods
 
         /// <summary>
@@ -85,7 +90,7 @@
                 BirthYear = player.BirthYear,
                 Height = player.Height,
                 Weight = player.Weight,
-                //Team = TeamViewModel.Map(team)
+                TeamId = player.TeamId
             };
 
             return playerViewModel;
@@ -97,16 +102,6 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            /*int? teamId;
-            if (Team == null)
-            {
-                teamId = null;
-            }
-            else
-            {
-                teamId = this.Team.Id;
-            }
-            */
             return new Player
             {
                 Id = this.Id,
@@ -115,6 +110,7 @@
                 BirthYear = this.BirthYear,
                 Height = this.Height,
                 Weight = this.Weight,
+                TeamId = this.TeamId
             };
         }
         #endregion

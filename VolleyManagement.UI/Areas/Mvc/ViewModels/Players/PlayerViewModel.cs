@@ -64,6 +64,11 @@
             , ErrorMessageResourceName = "PlayerWeightFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public int? Weight { get; set; }
 
+        /// <summary>
+        /// Gets or sets the player team
+        /// </summary>
+        public int? TeamId { get; set; }
+
         #region Factory Methods
 
         /// <summary>
@@ -99,7 +104,8 @@
                 LastName = this.LastName,
                 BirthYear = this.BirthYear,
                 Height = this.Height,
-                Weight = this.Weight
+                Weight = this.Weight,
+                TeamId = this.TeamId
             };
         }
         #endregion

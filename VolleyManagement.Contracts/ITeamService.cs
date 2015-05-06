@@ -54,6 +54,6 @@
         /// </summary>
         /// <param name="playerId">Id of player to set the team</param>
         /// <param name="teamId">Id of team which should be set to player</param>
-        void SetPlayerTeam(int playerId, int teamId);
+        void UpdatePlayerTeam(int playerId, int? teamId);
     }
 }

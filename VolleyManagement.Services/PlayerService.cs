@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Services
 {
     using System;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
@@ -8,7 +9,6 @@
     using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.Domain.Teams;
-
     using DAL = VolleyManagement.Dal.Contracts;
     using IsolationLevel = System.Data.IsolationLevel;
 
@@ -50,8 +50,20 @@
         /// <param name="playerToCreate">A Player to create.</param>
         public void Create(Player playerToCreate)
         {
-            _playerRepository.Add(playerToCreate);
-            _playerRepository.UnitOfWork.Commit();
+            using (IDbTransaction transaction = _playerRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            {
+                if (playerToCreate.TeamId != null)
+                {
+                    if (_teamRepository.FindWhere(t => t.Id == playerToCreate.TeamId).SingleOrDefault() == null)
+                    {
+                        throw new MissingEntityException("Team with specified id can not be found", playerToCreate.TeamId);
+                    }
+                }
+
+                _playerRepository.Add(playerToCreate);
+                _playerRepository.UnitOfWork.Commit();
+                transaction.Commit();
+            }
         }
 
         /// <summary>
@@ -64,7 +76,7 @@
             Player player;
             try
             {
-                player = _playerRepository.FindWhere(t => t.Id == id).Single();
+                player = _playerRepository.FindWhere(p => p.Id == id).Single();
             }
             catch (InvalidOperationException ex)
             {
@@ -83,12 +95,12 @@
             using (IDbTransaction transaction = _playerRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
             {
                 // Check if player is captain of team and teamId is null or changed
-                Team leadedTeam = GetPlayerLedTeam(playerToEdit.Id);
-                if (leadedTeam != null &&
-                    (playerToEdit.TeamId == null || playerToEdit.TeamId != leadedTeam.Id))
+                Team ledTeam = GetPlayerLedTeam(playerToEdit.Id);
+                if (ledTeam != null &&
+                    (playerToEdit.TeamId == null || playerToEdit.TeamId != ledTeam.Id))
                 {
-                    var ex = new InvalidOperationException("Player is captain of another team");
-                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = leadedTeam.Id;
+                    var ex = new ValidationException("Player is captain of another team");
+                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
                     throw ex;
                 }
                 else if (playerToEdit.TeamId != null
@@ -120,7 +132,7 @@
             Team playerTeam = GetPlayerLedTeam(id);
             if (playerTeam != null)
             {
-                var ex = new InvalidOperationException("Player is captain of existing team");
+                var ex = new ValidationException("Player is captain of existing team");
                 ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = playerTeam.Id;
                 throw ex;
             }

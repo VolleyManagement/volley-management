@@ -1,6 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
+    using Moq;
     using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
@@ -9,6 +11,10 @@
     [ExcludeFromCodeCoverage]
     internal class TournamentBuilder
     {
+        public const int TRANSFER_PERIOD_DAYS = 10;
+
+        public const int TRANSFER_PERIOD_MONTH = 6;
+
         /// <summary>
         /// Holds test tournament instance
         /// </summary>
@@ -26,7 +32,13 @@
                 Description = "Description 1",
                 Season = 2014,
                 Scheme = TournamentSchemeEnum.Two,
-                RegulationsLink = "http://default.com"
+                RegulationsLink = "http://default.com",
+                ApplyingPeriodStart = new DateTime(2015, 06, 02),
+                ApplyingPeriodEnd = new DateTime(2015, 09, 02),
+                GamesStart = new DateTime(2015, 09, 03),
+                GamesEnd = new DateTime(2015, 12, 03),
+                TransferStart = new DateTime(2015, 10, 01),
+                TransferEnd = new DateTime(2015, 11, 01)
             };
         }
 
@@ -93,6 +105,72 @@
         public TournamentBuilder WithRegulationsLink(string regulationsLink)
         {
             this._tournament.RegulationsLink = regulationsLink;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament start
+        /// </summary>
+        /// <param name="gamesStart">Games start</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentBuilder WithGamesStart(DateTime gamesStart)
+        {
+            this._tournament.GamesStart = gamesStart;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament end
+        /// </summary>
+        /// <param name="gamesEnd">Games end</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentBuilder WithGamesEnd(DateTime gamesEnd)
+        {
+            this._tournament.GamesEnd = gamesEnd;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets applying start date of a tournament
+        /// </summary>
+        /// <param name="applyingPeriodStart">Applying period start</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentBuilder WithApplyingPeriodStart(DateTime applyingPeriodStart)
+        {
+            this._tournament.ApplyingPeriodStart = applyingPeriodStart;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets applying end date of a tournament
+        /// </summary>
+        /// <param name="applyingPeriodEnd">Applying period end</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentBuilder WithApplyingPeriodEnd(DateTime applyingPeriodEnd)
+        {
+            this._tournament.ApplyingPeriodEnd = applyingPeriodEnd;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament transfer start date
+        /// </summary>
+        /// <param name="transferStart">Start transfer period</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentBuilder WithTransferStart(DateTime transferStart)
+        {
+            this._tournament.TransferStart = transferStart;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament transfer end date
+        /// </summary>
+        /// <param name="transferEnd">End transfer period</param>
+        /// <returns>Tournament builder object</returns>
+        public TournamentBuilder WithTransferEnd(DateTime transferEnd)
+        {
+            this._tournament.TransferEnd = transferEnd;
             return this;
         }
 

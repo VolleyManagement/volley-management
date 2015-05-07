@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Domain.Teams
 {
     using System;
-using System.Collections.Generic;
-using VolleyManagement.Domain.Properties;
+    using System.Collections.Generic;
+    using VolleyManagement.Domain.Properties;
 
     /// <summary>
     /// Team domain class.

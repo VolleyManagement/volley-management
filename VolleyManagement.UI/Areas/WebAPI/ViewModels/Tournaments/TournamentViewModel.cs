@@ -59,6 +59,54 @@
         [StringLength(255, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
         public string RegulationsLink { get; set; }
 
+        /// <summary>
+        /// Start of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "ApplyingPeriodStart", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime ApplyingPeriodStart { get; set; }
+
+        /// <summary>
+        /// End of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "ApplyingPeriodEnd", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// <summary>
+        /// Start of a tournament
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "GamesStart", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime GamesStart { get; set; }
+
+        /// <summary>
+        /// End of a tournament
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "GamesEnd", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime GamesEnd { get; set; }
+
+        /// <summary>
+        /// Start of a transfer period
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime TransferStart { get; set; }
+
+        /// <summary>
+        /// End of a transfer period
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime TransferEnd { get; set; }
+
         #region Factory Methods
 
         /// <summary>
@@ -75,7 +123,13 @@
                                               Description = tournament.Description,
                                               Season = tournament.Season,
                                               RegulationsLink = tournament.RegulationsLink,
-                                              Scheme = tournament.Scheme.ToDescription()
+                                              Scheme = tournament.Scheme.ToDescription(),
+                                              GamesStart = tournament.GamesStart,
+                                              GamesEnd = tournament.GamesEnd,
+                                              ApplyingPeriodStart = tournament.ApplyingPeriodStart,
+                                              ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
+                                              TransferStart = tournament.TransferStart,
+                                              TransferEnd = tournament.TransferEnd
                                           };
 
             return tournamentViewModel;
@@ -96,6 +150,12 @@
             tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum))
                 .Cast<TournamentSchemeEnum>()
                 .FirstOrDefault(v => v.ToDescription() == this.Scheme);
+            tournament.GamesStart = this.GamesStart;
+            tournament.GamesEnd = this.GamesEnd;
+            tournament.ApplyingPeriodStart = this.ApplyingPeriodStart;
+            tournament.ApplyingPeriodEnd = this.ApplyingPeriodEnd;
+            tournament.TransferStart = this.TransferStart;
+            tournament.TransferEnd = this.TransferEnd;
 
             return tournament;
         }

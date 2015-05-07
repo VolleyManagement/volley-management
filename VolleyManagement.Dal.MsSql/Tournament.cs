@@ -46,5 +46,41 @@ namespace VolleyManagement.Dal.MsSql
         /// </summary>
         [StringLength(255)]
         public string RegulationsLink { get; set; }
+
+        /// <summary>
+        /// Gets or sets start of a tournament
+        /// </summary>
+        [Required]
+        public DateTime GamesStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets end of a tournament
+        /// </summary>
+        [Required]
+        public DateTime GamesEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets start of a transfer period
+        /// </summary>
+        [Required]
+        public DateTime TransferStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets end of a transfer period
+        /// </summary>
+        [Required]
+        public DateTime TransferEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets start of a tournament
+        /// </summary>
+        [Required]
+        public DateTime ApplyingPeriodStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets end of a tournament registration
+        /// </summary>
+        [Required]
+        public DateTime ApplyingPeriodEnd { get; set; }
     }
 }

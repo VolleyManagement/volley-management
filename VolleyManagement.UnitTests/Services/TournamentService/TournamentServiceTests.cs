@@ -10,6 +10,7 @@
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Services;
@@ -42,6 +43,11 @@
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
 
         /// <summary>
+        /// TimeProvider mock
+        /// </summary>
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+
+        /// <summary>
         /// IoC for tests.
         /// </summary>
         private IKernel _kernel;
@@ -56,6 +62,17 @@
             _kernel.Bind<ITournamentRepository>()
                    .ToConstant(_tournamentRepositoryMock.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            this._timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
+            TimeProvider.Current = this._timeMock.Object;
+        }
+
+        /// <summary>
+        /// Cleanup test data
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            TimeProvider.ResetToDefault();
         }
 
         /// <summary>
@@ -200,16 +217,174 @@
         }
 
         /// <summary>
+        /// Test for Create() method where input applying end date goes before start applying date
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException), "Начало периода заявок должно быть раньше чем его окнчание")]
+        public void Create_TournamentWithInvalidApplyingDate_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentBuilder = new TournamentBuilder();
+            var now = TimeProvider.Current.UtcNow;
+            var newTournament = tournamentBuilder
+                .WithApplyingPeriodStart(now.AddDays(1))
+                .WithApplyingPeriodEnd(now.AddDays(-1))
+                .Build();
+
+            // Act
+            var sut = _kernel.Get<TournamentService>();
+            sut.Create(newTournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method where input applying start date goes before now
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException), "Период заявок должен следовать перед началом игр")]
+        public void Create_TournamentWithInvalidGameStartDate_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentBuilder = new TournamentBuilder();
+            var now = TimeProvider.Current.UtcNow;
+            var newTournament = tournamentBuilder
+                .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH - 1))
+                .Build();
+
+            // Act
+            var sut = _kernel.Get<TournamentService>();
+            sut.Create(newTournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method where input applying start date goes before now
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException), "Окончание трансферного периода должно быть раньше окончания игр")]
+        public void Create_TournamentTransferEndGoesAfterGamesEnd_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentBuilder = new TournamentBuilder();
+            var now = TimeProvider.Current.UtcNow;
+            int tournamentPeriodMonth = TournamentBuilder.TRANSFER_PERIOD_MONTH;
+            var newTournament = tournamentBuilder
+                .WithGamesEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + tournamentPeriodMonth))
+                .WithTransferEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + tournamentPeriodMonth + 1))
+                .Build();
+
+            // Act
+            var sut = _kernel.Get<TournamentService>();
+            sut.Create(newTournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method where input applying start date goes before now
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException), "Начальная дата турнира должна следовать перед ее окончанием")]
+        public void Create_TournamentGamesStartGoesAfterGamesEnd_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentBuilder = new TournamentBuilder();
+            var now = TimeProvider.Current.UtcNow;
+            var newTournament = tournamentBuilder
+                .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH))
+                .WithGamesEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH))
+                .Build();
+
+            // Act
+            var sut = _kernel.Get<TournamentService>();
+            sut.Create(newTournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Transfer end before transfer start
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException), "Начало трансферного периода должно быть раньше чем его окнчание")]
+        public void Create_TournamentTransferEndBeforeStart_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentBuilder = new TournamentBuilder();
+            var now = TimeProvider.Current.UtcNow;
+            var newTournament = tournamentBuilder
+                .WithTransferStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1))
+                .WithTransferEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
+                .Build();
+
+            // Act
+            var sut = _kernel.Get<TournamentService>();
+            sut.Create(newTournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Transfer start is before than tournaments start
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException), "Начало трансферного окна должно быть после начала игр")]
+        public void Create_TournamentTransferStartBeforeTournamentStart_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentBuilder = new TournamentBuilder();
+            var now = TimeProvider.Current.UtcNow;
+            var newTournament = tournamentBuilder
+                .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
+                .WithTransferStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(-1))
+                .Build();
+
+            // Act
+            var sut = _kernel.Get<TournamentService>();
+            sut.Create(newTournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament end is before than tournaments start
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException), "Начальная дата турнира должна следовать перед ее окончанием")]
+        public void Create_TournamentTournamentEndBeforeTournamentStart_ExceptionThrown()
+        {
+            // Arrange
+            var tournamentBuilder = new TournamentBuilder();
+            var now = TimeProvider.Current.UtcNow;
+            var newTournament = tournamentBuilder
+                .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1))
+                .WithGamesEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
+                .Build();
+
+            // Act
+            var sut = _kernel.Get<TournamentService>();
+            sut.Create(newTournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
         /// Test for Create() method. The method should return a created tournament.
         /// </summary>
         [TestMethod]
         public void Create_TournamentNotExist_TournamentCreated()
         {
             // Arrange
-            var newTournament = new TournamentBuilder()
-                                        .WithId(4)
-                                        .WithName("New Tournament")
-                                        .Build();
+            var newTournament = new TournamentBuilder().Build();
 
             // Act
             var sut = _kernel.Get<TournamentService>();
@@ -269,6 +444,47 @@
 
             // Assert
             _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should invoke Find() method of ITournamentRepository
+        /// </summary>
+        public void GetActual_ActualTournamentsRequest_FindCalled()
+        {
+            // Act
+            var tournamentService = _kernel.Get<TournamentService>();
+            tournamentService.GetActual();
+
+            // Assert
+            _tournamentRepositoryMock.Verify(m => m.Find(), Times.Once());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should return actual tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetActual_TournamentsExist_ActualTournamentsReturnes()
+        {
+            // Arrange
+            var tournamentService = _kernel.Get<TournamentService>();
+            var testData = _testFixture.TestTournaments()
+                                       .Build();
+            MockRepositoryFindAll(testData);
+
+            DateTime now = TimeProvider.Current.UtcNow;
+            DateTime limitStartDate = now.AddMonths(VolleyManagement.Domain.Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
+
+            var expected = new TournamentServiceTestFixture()
+                                            .TestTournaments()
+                                            .Build().Where(tr => tr.GamesEnd >= now
+                                                && tr.GamesStart <= limitStartDate)
+                                            .ToList();
+
+            // Act
+            var actual = tournamentService.GetActual().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
 
         /// <summary>

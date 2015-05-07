@@ -22,6 +22,12 @@
             tournament.Description = domainTournament.Description;
             tournament.Scheme = (byte)domainTournament.Scheme;
             tournament.RegulationsLink = domainTournament.RegulationsLink;
+            tournament.GamesStart = domainTournament.GamesStart;
+            tournament.GamesEnd = domainTournament.GamesEnd;
+            tournament.ApplyingPeriodStart = domainTournament.ApplyingPeriodStart;
+            tournament.ApplyingPeriodEnd = domainTournament.ApplyingPeriodEnd;
+            tournament.TransferStart = domainTournament.TransferStart;
+            tournament.TransferEnd = domainTournament.TransferEnd;
             return tournament;
         }
 

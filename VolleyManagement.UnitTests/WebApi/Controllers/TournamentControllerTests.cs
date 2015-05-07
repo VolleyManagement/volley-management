@@ -1,11 +1,14 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
+    using System.Web.Http;
     using System.Web.Http.Results;
+    using System.Web.OData;
     using System.Web.OData.Results;
 
     using Contracts;
@@ -15,6 +18,8 @@
     using Ninject;
     using Services.TournamentService;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
+    using VolleyManagement.Domain;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
@@ -425,6 +430,37 @@
 
             // Assert
             AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should invoke GetActual() method of ITournamentService
+        /// </summary>
+        public void GetActual_ActualTournamentsRequest_GetActualCalled()
+        {
+            // Act
+            var sut = this._kernel.Get<TournamentsController>();
+            sut.GetActual();
+
+            // Assert
+            _tournamentServiceMock.Verify(m => m.GetActual(), Times.Once());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should return JavaScript Object Notation collection
+        /// </summary>
+        [TestMethod]
+        public void GetActual_ServiceGetActualCalled_JsonResultReturned()
+        {
+            // Arrange
+            var sut = this._kernel.Get<TournamentsController>();
+
+            // Act
+            var result = sut.GetActual() as JsonResult<IQueryable<TournamentViewModel>>;
+            var actual = result.Content.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            _tournamentServiceMock.Verify(ts => ts.GetActual(), Times.Once());
         }
 
         /// <summary>

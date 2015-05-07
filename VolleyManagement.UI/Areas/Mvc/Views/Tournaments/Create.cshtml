@@ -10,9 +10,7 @@
     @Html.ValidationSummary(true)
     <fieldset>
         <legend>@Resources.TournamentViews.TournamentLegend</legend>
-
 		@Html.Partial("_CreateOrEdit", Model)
-
         <p>
             <input type="submit" value="@Resources.TournamentViews.Create" />
         </p>

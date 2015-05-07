@@ -8,6 +8,7 @@
 
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
@@ -56,6 +57,30 @@
                                                          .ToList()
                                                          .Select(t => TournamentViewModel.Map(t))
                                                          .AsQueryable());
+        }
+
+        /// <summary>
+        /// Returns only upcoming and current tournaments
+        /// </summary>
+        /// <returns>The tournaments as json format</returns>
+        [HttpGet]
+        public IHttpActionResult GetActual()
+        {
+            var result = _tournamentService.GetActual()
+                .Select(t => TournamentViewModel.Map(t));
+                return Json(result);
+        }
+
+        /// <summary>
+        /// Returns only finished tournaments
+        /// </summary>
+        /// <returns>The tournaments as json format</returns>
+        [HttpGet]
+        public IHttpActionResult GetFinished()
+        {
+            var result = _tournamentService.GetFinished().ToList()
+                .Select(t => TournamentViewModel.Map(t));
+                return Json(result);
         }
 
         /// <summary>

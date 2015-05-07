@@ -1,7 +1,19 @@
 ﻿namespace VolleyManagement.Domain.Tournaments
 {
     using System;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.Properties;
+
+    /// <summary>
+    /// Represents tournament state
+    /// </summary>
+    public enum TournamentStateEnum
+    {
+        Finished,
+        Current,
+        Upcoming,
+        NotStarted
+    }
 
     /// <summary>
     /// Tournament domain class.
@@ -129,5 +141,66 @@
                 _regulationsLink = value;
             }
         }
+
+        /// <summary>
+        /// Gets tournament state
+        /// </summary>
+        public TournamentStateEnum State
+        {
+            get
+            {
+                DateTime now = TimeProvider.Current.UtcNow;
+                DateTime limitUpcomingTournamentsStartDate
+                    = now.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
+
+                if (GamesStart > limitUpcomingTournamentsStartDate)
+                {
+                    return TournamentStateEnum.NotStarted;
+                }
+                else if (GamesStart > now
+                    && GamesStart <= limitUpcomingTournamentsStartDate)
+                {
+                    return TournamentStateEnum.Upcoming;
+                }
+                else if (GamesStart <= now && GamesEnd >= now)
+                {
+                    return TournamentStateEnum.Current;
+                }
+                else
+                {
+                    return TournamentStateEnum.Finished;
+                }
+        }
+        }
+
+        /// <summary>
+        /// Gets or sets tournament start
+        /// </summary>
+        public DateTime GamesStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tournament end
+        /// </summary>
+        public DateTime GamesEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets start registration date of a tournament
+        /// </summary>
+        public DateTime ApplyingPeriodStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets end registration date of a tournament
+        /// </summary>
+        public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets transfer end of a tournament
+        /// </summary>
+        public DateTime TransferEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets transfer start of a tournament
+        /// </summary>
+        public DateTime TransferStart { get; set; }
     }
 }

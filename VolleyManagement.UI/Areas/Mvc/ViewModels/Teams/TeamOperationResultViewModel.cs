@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the information which will use for the team delete dialog
     /// </summary>
-    public class TeamDeleteResultViewModel
+    public class TeamOperationResultViewModel
     {
         /// <summary>
         /// Gets or sets message to user
@@ -13,6 +13,11 @@
         /// <summary>
         /// Gets or sets the result of delete
         /// </summary>
-        public bool HasDeleted { get; set; }
+        public bool OperationSuccessful { get; set; }
+
+        /// <summary>
+        /// Gets or sets the information about internal errors during the operation
+        /// </summary>
+        public string InternalErrorInformation { get; set; }
     }
 }

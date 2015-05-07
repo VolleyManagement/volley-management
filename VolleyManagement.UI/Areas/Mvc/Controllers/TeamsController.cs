@@ -10,6 +10,7 @@
     using VolleyManagement.Domain.Teams;
     using VolleyManagement.Domain.Players;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using System.Collections.Generic;
 
@@ -84,20 +85,22 @@
                 return this.View(teamViewModel);
             }
 
-            //if (teamViewModel.Roster != null)
-            //{
-            //    foreach (var item in teamViewModel.Roster)
-            //    {
-            //        if (item.Id != domainTeam.CaptainId)
-            //        {
-            //            this._teamService.UpdatePlayerTeam(item.Id, domainTeam.Id);
-            //        }
-            //    }
-            //}
+            bool duringRosterUpdateErrors = false;
+            if (teamViewModel.Roster != null)
+            {
+                duringRosterUpdateErrors = UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
+            }
 
             teamViewModel.Id = domainTeam.Id;
-            
-            return this.RedirectToAction("Index");
+
+            if (duringRosterUpdateErrors)
+            {
+                return View("Edit", teamViewModel);
+            }
+            else
+            {
+                return this.RedirectToAction("Index");
+            }
         }
 
         /// <summary>
@@ -108,22 +111,67 @@
         [HttpPost]
         public JsonResult Delete(int id)
         {
-            TeamDeleteResultViewModel result;
+            TeamOperationResultViewModel result;
             try
             {
                 this._teamService.Delete(id);
-                result = new TeamDeleteResultViewModel
+                result = new TeamOperationResultViewModel
                 {
                     Message = TEAM_DELETED_SUCCESSFULLY_DESCRITPION,
-                    HasDeleted = true
+                    OperationSuccessful = true
                 };
             }
             catch (MissingEntityException ex)
             {
-                result = new TeamDeleteResultViewModel { Message = ex.Message, HasDeleted = false };
+                result = new TeamOperationResultViewModel { Message = ex.Message, OperationSuccessful = false };
             }
 
             return Json(result, JsonRequestBehavior.DenyGet);
+        }
+
+        private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)
+        {
+            bool errors = false;
+
+            List<PlayerNameViewModel> playersToRemoveFromViewModel = new List<PlayerNameViewModel>();
+            foreach (var item in roster)
+            {
+                // Here possible the case when captain will be updated twice
+                // First as captain in services, second - if user chose him as roster player
+                try
+                {
+                    this._teamService.UpdatePlayerTeam(item.Id, teamId);
+                }
+                catch (MissingEntityException ex)
+                {
+                    errors = true;
+                    string message = string.Format("{0} (id = {1}) : {2} \n", item.FullName, item.Id, ex.Message);
+                    this.ModelState.AddModelError(string.Empty, message);
+                    playersToRemoveFromViewModel.Add(item);
+                }
+                catch (ValidationException ex)
+                {
+                    errors = true;
+                    string message = string.Format("{0} (id = {1}) : {2} \n", item.FullName, item.Id, ex.Message);
+                    this.ModelState.AddModelError(string.Empty, message);
+                    playersToRemoveFromViewModel.Add(item);
+                }
+            }
+
+            if (playersToRemoveFromViewModel.Count > 0)
+            {
+                RemovePlayersFromRoster(roster, playersToRemoveFromViewModel);
+            }          
+
+            return errors;
+        }
+
+        private void RemovePlayersFromRoster(List<PlayerNameViewModel> roster, List<PlayerNameViewModel> playersToRemove)
+        {
+            foreach (var item in playersToRemove)
+            {
+                roster.Remove(item);
+            }
         }
     }
 }

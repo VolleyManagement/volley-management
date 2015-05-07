@@ -12,7 +12,7 @@
     @Html.ActionLink(Resources.TeamViews.Create, "Create")
 </p>
 
-<script src="~/Scripts/DeleteTeam.js" type="text/javascript"></script>
+<script src="~/Scripts/TeamOperationScripts.js" type="text/javascript"></script>
 <table class="table">
     <tr>
         <th>
@@ -23,13 +23,13 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td id="TeamName @item.Id">
+        string rowId = "team" + item.Id;
+        <tr id=@rowId>
+            <td id="TeamName ">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.ActionLink(Resources.TeamViews.Delete, "Delete", new { id = item.Id }, 
-                new { @class = "delete", @id = item.Id })
+                <input type="button" value="@Resources.TeamViews.Delete" onclick="deleteTeam(@item.Id, '@item.Name')" />
             </td>
         </tr>
     }

@@ -117,37 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddPlayersToRoster" xml:space="preserve">
-    <value>Добавить игроков в команду</value>
+  <data name="PlayerIsCaptainOfAnotherTeam" xml:space="preserve">
+    <value>Игрок является капитаном другой команды</value>
   </data>
-  <data name="BackToList" xml:space="preserve">
-    <value>Назад к списку</value>
+  <data name="PlayerNotFound" xml:space="preserve">
+    <value>Игрок с указанным Id не был найден</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Создать команду</value>
-  </data>
-  <data name="CreateTeamTitle" xml:space="preserve">
-    <value>Создать новую команду</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить команду</value>
-  </data>
-  <data name="RosterTitle" xml:space="preserve">
-    <value>Игроки команды</value>
-  </data>
-  <data name="TeamLegend" xml:space="preserve">
-    <value>Команда</value>
-  </data>
-  <data name="TeamsIndexTitle" xml:space="preserve">
-    <value>Команды</value>
-  </data>
-  <data name="DeleteConfirmationMessage" xml:space="preserve">
-    <value>Вы действительно хотите удалить команду</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Сохранить</value>
-  </data>
-  <data name="EditTeamTitle" xml:space="preserve">
-    <value>Редактирование команды</value>
+  <data name="TeamNotFound" xml:space="preserve">
+    <value>Команда с указанным Id не была найдена</value>
   </data>
 </root>

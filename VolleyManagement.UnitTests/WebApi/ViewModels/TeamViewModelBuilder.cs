@@ -65,7 +65,7 @@
         /// <summary>
         /// Sets the coach of test team view model
         /// </summary>
-        /// <param name="name">Coach for test team view model</param>
+        /// <param name="coach">Coach for test team view model</param>
         /// <returns>Team view model builder object</returns>
         public TeamViewModelBuilder WithCoach(string coach)
         {
@@ -76,7 +76,7 @@
         /// <summary>
         /// Sets the achievements of test team view model
         /// </summary>
-        /// <param name="name">Achievements for test team view model</param>
+        /// <param name="achievements">Achievements for test team view model</param>
         /// <returns>Team view model builder object</returns>
         public TeamViewModelBuilder WithAchievements(string achievements)
         {

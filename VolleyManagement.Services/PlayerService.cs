@@ -56,7 +56,7 @@
                 {
                     if (_teamRepository.FindWhere(t => t.Id == playerToCreate.TeamId).SingleOrDefault() == null)
                     {
-                        throw new MissingEntityException("Team with specified id can not be found", playerToCreate.TeamId);
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToCreate.TeamId);
                     }
                 }
 
@@ -80,7 +80,7 @@
             }
             catch (InvalidOperationException ex)
             {
-                throw new MissingEntityException("Player with specified Id can not be found", ex);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
             }
 
             return player;
@@ -99,14 +99,14 @@
                 if (ledTeam != null &&
                     (playerToEdit.TeamId == null || playerToEdit.TeamId != ledTeam.Id))
                 {
-                    var ex = new ValidationException("Player is captain of another team");
+                    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
                     ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
                     throw ex;
                 }
                 else if (playerToEdit.TeamId != null
                          && _teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
                 {
-                    throw new MissingEntityException("Team with specified Id can not be found", playerToEdit.TeamId);
+                    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToEdit.TeamId);
                 }
 
                 try
@@ -115,7 +115,7 @@
                 }
                 catch (InvalidKeyValueException ex)
                 {
-                    throw new MissingEntityException("Player with specified Id can not be found", ex);
+                    throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
                 }
 
                 _playerRepository.UnitOfWork.Commit();
@@ -132,7 +132,7 @@
             Team playerTeam = GetPlayerLedTeam(id);
             if (playerTeam != null)
             {
-                var ex = new ValidationException("Player is captain of existing team");
+                var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
                 ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = playerTeam.Id;
                 throw ex;
             }
@@ -144,7 +144,7 @@
             }
             catch (InvalidKeyValueException ex)
             {
-                throw new MissingEntityException("Player with specified Id can not be found", id, ex);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, id, ex);
             }
         }
 
@@ -166,7 +166,7 @@
             }
             catch (InvalidOperationException ex)
             {
-                throw new MissingEntityException("Team with specified Id can not be found", player.TeamId, ex);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, player.TeamId, ex);
             }
         }
 

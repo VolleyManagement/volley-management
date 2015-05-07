@@ -188,21 +188,17 @@
     <Content Include="Areas\Mvc\Views\Players\Delete.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\Index.cshtml" />
-	<Content Include="Areas\Mvc\Views\Teams\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Teams\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\_CreateEdit.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\ChoosePlayers.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\_PartialNameViewModelCollection.cshtml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Areas\Mvc\Views\Teams\Edit.cshtml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\CreateEditTeamFunctions.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Scripts\DeleteTeam.js" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
@@ -214,6 +210,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\scripts.js" />
+    <Content Include="Scripts\TeamOperationScripts.js" />
     <Content Include="Scripts\UserActions.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -266,7 +263,7 @@
     <Compile Include="Areas\Mvc\TournamentSeasonHtmlHelper.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamViewModel.cs" />
-    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamDeleteResultViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamOperationResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\ApiControllers\PlayersController.cs" />

@@ -15,10 +15,12 @@
     using Ninject;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Exceptions;
+    using VolleyManagement.Domain.Teams;
     using VolleyManagement.UI.App_GlobalResources;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.TeamService;
 
     /// <summary>
     /// Tests for MVC TeamsController class.
@@ -28,6 +30,7 @@
     public class TeamsControllerTests
     {
         private const int TEAM_UNEXISTING_ID_TO_DELETE = 4;
+        private const int SPECIFIED_TEAM_ID = 4;
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private IKernel _kernel;
@@ -75,6 +78,27 @@
 
             // Assert
             Assert.IsNotNull(actual);
+        }
+
+        /// <summary>
+        /// Create method test. Positive test
+        /// </summary>
+        [TestMethod]
+        public void Create_TeamPassed_EntityIdIsSet()
+        {
+            // Arrange
+            var viewModel = new TeamMvcViewModelBuilder().WithId(0).Build();
+            var expectedDomain = viewModel.ToDomain();
+            var comparer = new TeamComparer();
+            _teamServiceMock.Setup(ts => ts.Create(It.Is<Team>(t => comparer.AreEqual(t, expectedDomain))))
+                                           .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
+
+            // Act
+            var sut = this._kernel.Get<TeamsController>();
+            sut.Create(viewModel);
+
+            // Assert
+            Assert.AreEqual(viewModel.Id, SPECIFIED_TEAM_ID);
         }
     }
 }

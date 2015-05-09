@@ -98,6 +98,8 @@
     <Compile Include="Mvc\Controllers\UsersControllerTests.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />

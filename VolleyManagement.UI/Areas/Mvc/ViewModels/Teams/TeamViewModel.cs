@@ -72,13 +72,19 @@
                 Coach = team.Coach,
                 Achievements = team.Achievements                
             };
-
-            teamViewModel.Captain = PlayerNameViewModel.Map(captain);
-
-            teamViewModel.Roster = new List<PlayerNameViewModel>();
-            foreach (var player in roster)
+            
+            if (captain != null)
             {
-                teamViewModel.Roster.Add(PlayerNameViewModel.Map(player));
+                teamViewModel.Captain = PlayerNameViewModel.Map(captain);
+            }
+
+            if (roster != null)
+            {
+                teamViewModel.Roster = new List<PlayerNameViewModel>();
+                foreach (var player in roster)
+                {
+                    teamViewModel.Roster.Add(PlayerNameViewModel.Map(player));
+                }  
             }
 
             return teamViewModel;

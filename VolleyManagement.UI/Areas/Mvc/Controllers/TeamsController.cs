@@ -42,7 +42,9 @@
         /// <returns>View with collection of teams.</returns>
         public ActionResult Index()
         {
-            var teams = this._teamService.Get().ToList();
+            var teams = this._teamService.Get()
+                                         .Select<Team,TeamViewModel>(t => TeamViewModel.Map(t, null, null))
+                                         .ToList();
             return View(teams);
         }
 

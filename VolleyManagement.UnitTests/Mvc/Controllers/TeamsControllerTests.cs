@@ -18,6 +18,7 @@
     using VolleyManagement.Domain.Teams;
     using VolleyManagement.UI.App_GlobalResources;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TeamService;
@@ -31,6 +32,9 @@
     {
         private const int TEAM_UNEXISTING_ID_TO_DELETE = 4;
         private const int SPECIFIED_TEAM_ID = 4;
+        private const int SPECIFIED_PLAYER_ID = 4;
+        private const string SPECIFIED_PLAYER_NAME = "Test name";
+        private const string SPECIFIED_EXCEPTION_MESSAGE = "Test exception message";
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private IKernel _kernel;
@@ -99,6 +103,136 @@
 
             // Assert
             Assert.AreEqual(viewModel.Id, SPECIFIED_TEAM_ID);
+        }
+
+        /// <summary>
+        /// Create method test. Invalid captain Id
+        /// </summary>
+        [TestMethod]
+        public void Create_InvalidCaptainId_MissingEntityExceptionThrown()
+        {
+            // Arrange
+            var viewModel = new TeamMvcViewModelBuilder().Build();
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
+                                           .Throws(new MissingEntityException(SPECIFIED_EXCEPTION_MESSAGE));
+
+            // Act
+            var sut = _kernel.Get<TeamsController>();
+            sut.Create(viewModel);
+            bool gotException = sut.ModelState.Values
+                                   .Select(ms => ms.Errors
+                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
+                                   .Count() == 1;
+
+            // Assert
+            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
+            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
+            Assert.IsTrue(gotException);
+        }
+
+        /// <summary>
+        /// Create method test. Captain of another team
+        /// </summary>
+        [TestMethod]
+        public void Create_CaptainOfAnotherTeam_ValidationExceptionThrown()
+        {
+            // Arrange
+            var viewModel = new TeamMvcViewModelBuilder().Build();
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
+                                           .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
+
+            // Act
+            var sut = _kernel.Get<TeamsController>();
+            sut.Create(viewModel);
+            bool gotException = sut.ModelState.Values
+                                   .Select(ms => ms.Errors
+                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
+                                   .Count() == 1;
+
+            // Assert
+            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
+            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
+            Assert.IsTrue(gotException);
+        }
+
+        /// <summary>
+        /// Create method test. Invalid player Id
+        /// </summary>
+        [TestMethod]
+        public void Create_InvalidRosterPlayerId_MissingEntityExceptionThrown()
+        {
+            // Arrange
+            var viewModel = new TeamMvcViewModelBuilder().Build();
+            var comparer = new TeamComparer();
+            _teamServiceMock.Setup(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()))
+                                           .Throws(new MissingEntityException(SPECIFIED_EXCEPTION_MESSAGE));
+
+            // Act
+            var sut = _kernel.Get<TeamsController>();
+            sut.Create(viewModel);
+            bool gotException = sut.ModelState.Values
+                                   .Select(ms => ms.Errors
+                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
+                                   .Count() >= 1;
+
+            // Assert
+            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.AtLeastOnce());
+            Assert.IsTrue(gotException);
+        }
+
+        /// <summary>
+        /// Create method test. Captain of another team
+        /// </summary>
+        [TestMethod]
+        public void Create_RosterPlayerIsCaptainOfAnotherTeam_ValidationExceptionThrown()
+        {
+            // Arrange
+            var viewModel = new TeamMvcViewModelBuilder().Build();
+            _teamServiceMock.Setup(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()))
+                                           .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
+
+            // Act
+            var sut = _kernel.Get<TeamsController>();
+            sut.Create(viewModel);
+            bool gotException = sut.ModelState.Values
+                                   .Select(ms => ms.Errors
+                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
+                                   .Count() >= 1;
+
+            // Assert
+            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.AtLeastOnce());
+            Assert.IsTrue(gotException);
+        }
+
+        /// <summary>
+        /// Create method test. Roster players updated
+        /// </summary>
+        [TestMethod]
+        public void Create_RosterPlayerPassed_PlayersUpdated()
+        {
+            // Arrange
+            var rosterPlayer = new PlayerNameViewModel() { Id = SPECIFIED_PLAYER_ID, FullName = SPECIFIED_PLAYER_NAME };
+            var roster = new List<PlayerNameViewModel>() { rosterPlayer };
+            var viewModel = new TeamMvcViewModelBuilder().WithRoster(roster).Build();
+            int expectedCountOfUpdates = viewModel.Roster.Count();
+
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
+                                           .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
+
+            // Act
+            var sut = _kernel.Get<TeamsController>();
+            sut.Create(viewModel);
+
+            // Assert
+            _teamServiceMock.Verify(
+                             ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()),
+                             Times.Exactly(expectedCountOfUpdates));
+
+            _teamServiceMock.Verify(
+                             ts => ts.UpdatePlayerTeam(
+                                      It.Is<int>(pId => pId == SPECIFIED_PLAYER_ID),
+                                      It.Is<int>(pId => pId == SPECIFIED_TEAM_ID)),
+                             Times.Once());
         }
     }
 }

@@ -39,6 +39,7 @@
 
             builder.EntitySet<TournamentViewModel>("Tournaments");
             builder.EntitySet<PlayerViewModel>("Players");
+            builder.EntitySet<TeamViewModel>("Teams");
 
             builder.EntityType<TournamentViewModel>()
                 .Collection

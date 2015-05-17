@@ -43,8 +43,8 @@
         public ActionResult Index()
         {
             var teams = this._teamService.Get()
-                                         .Select<Team,TeamViewModel>(t => TeamViewModel.Map(t, null, null))
-                                         .ToList();
+                                         .ToList()
+                                         .Select(t => TeamViewModel.Map(t, null, null));
             return View(teams);
         }
 
@@ -90,7 +90,7 @@
             bool duringRosterUpdateErrors = false;
             if (teamViewModel.Roster != null)
             {
-                duringRosterUpdateErrors = UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
+                duringRosterUpdateErrors = !UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
             }
 
             teamViewModel.Id = domainTeam.Id;
@@ -133,7 +133,7 @@
 
         private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)
         {
-            bool errors = false;
+            bool clearUpdate = true;
 
             List<PlayerNameViewModel> playersToRemoveFromViewModel = new List<PlayerNameViewModel>();
             foreach (var item in roster)
@@ -146,14 +146,14 @@
                 }
                 catch (MissingEntityException ex)
                 {
-                    errors = true;
+                    clearUpdate = false;
                     string message = string.Format("{0} (id = {1}) : {2} \n", item.FullName, item.Id, ex.Message);
                     this.ModelState.AddModelError(string.Empty, message);
                     playersToRemoveFromViewModel.Add(item);
                 }
                 catch (ValidationException ex)
                 {
-                    errors = true;
+                    clearUpdate = false;
                     string message = string.Format("{0} (id = {1}) : {2} \n", item.FullName, item.Id, ex.Message);
                     this.ModelState.AddModelError(string.Empty, message);
                     playersToRemoveFromViewModel.Add(item);
@@ -163,9 +163,9 @@
             if (playersToRemoveFromViewModel.Count > 0)
             {
                 RemovePlayersFromRoster(roster, playersToRemoveFromViewModel);
-            }          
+            }
 
-            return errors;
+            return clearUpdate;
         }
 
         private void RemovePlayersFromRoster(List<PlayerNameViewModel> roster, List<PlayerNameViewModel> playersToRemove)

@@ -37,9 +37,36 @@
         {
             if (innerException.Data.Contains(Constants.ExceptionManagement.ENTITY_ID_KEY))
             {
-                this.Data[Constants.ExceptionManagement.ENTITY_ID_KEY]
-                        = innerException.Data[Constants.ExceptionManagement.ENTITY_ID_KEY];
+                AddEntityIdToData(innerException.Data[Constants.ExceptionManagement.ENTITY_ID_KEY]);
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MissingEntityException"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="entityId">Id related to error occur</param>
+        /// <param name="innerException">The inner exception.</param>
+        public MissingEntityException(string message, int? entityId, Exception innerException)
+            : base(message, innerException)
+        {
+            AddEntityIdToData(entityId);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MissingEntityException"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="entityId">Id related to error occur</param>
+        public MissingEntityException(string message, int? entityId)
+            : base(message)
+        {
+            AddEntityIdToData(entityId);
+        }
+
+        private void AddEntityIdToData(object entityId)
+        {
+            this.Data[Constants.ExceptionManagement.ENTITY_ID_KEY] = entityId;
         }
     }
 }

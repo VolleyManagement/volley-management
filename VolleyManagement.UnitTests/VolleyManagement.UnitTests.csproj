@@ -60,6 +60,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -92,10 +93,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Mvc\Controllers\PlayersControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\TeamsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\UsersControllerTests.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
@@ -112,6 +116,11 @@
     <Compile Include="Services\PlayerService\PlayerServiceTestFixture.cs" />
     <Compile Include="Services\PlayerService\PlayerServiceTests.cs" />
     <Compile Include="Services\PlayerService\PlayerViewModelServiceTestFixture.cs" />
+    <Compile Include="Services\TeamService\TeamBuilder.cs" />
+    <Compile Include="Services\TeamService\TeamComparer.cs" />
+    <Compile Include="Services\TeamService\TeamServiceTestFixture.cs" />
+    <Compile Include="Services\TeamService\TeamServiceTests.cs" />
+    <Compile Include="Services\TeamService\TeamViewModelServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
@@ -128,6 +137,8 @@
     <Compile Include="WebApi\Controllers\UserControllerTests.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\TeamViewModelBuilder.cs" />
+    <Compile Include="WebApi\ViewModels\TeamViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs">
       <SubType>Code</SubType>
     </Compile>

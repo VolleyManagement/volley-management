@@ -57,7 +57,7 @@
         /// </summary>
         /// <param name="newPlayer">Player to add.</param>
         /// <returns>Builder object with collection of players.</returns>
-        public PlayerViewModelServiceTestFixture AddTournament(PlayerViewModel newPlayer)
+        public PlayerViewModelServiceTestFixture AddPlayer(PlayerViewModel newPlayer)
         {
             _players.Add(newPlayer);
             return this;

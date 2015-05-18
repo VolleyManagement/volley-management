@@ -58,7 +58,8 @@
                 x.LastName == y.LastName &&
                 x.BirthYear == y.BirthYear &&
                 x.Height == y.Height &&
-                x.Weight == y.Weight;
+                x.Weight == y.Weight &&
+                x.TeamId == y.TeamId;
         }
     }
 }

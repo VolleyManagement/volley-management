@@ -52,7 +52,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given players have the same properties.</returns>
-        private bool AreEqual(PlayerNameViewModel x, PlayerNameViewModel y)
+        internal bool AreEqual(PlayerNameViewModel x, PlayerNameViewModel y)
         {
             return x.Id == y.Id &&
                 x.FullName == y.FullName;

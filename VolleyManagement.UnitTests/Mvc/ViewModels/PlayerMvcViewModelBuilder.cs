@@ -27,7 +27,8 @@
                 LastName = "LastName",
                 BirthYear = 1983,
                 Height = 186,
-                Weight = 95
+                Weight = 95,
+                TeamId = 1
             };
         }
 
@@ -94,6 +95,17 @@
         public PlayerMvcViewModelBuilder WithWeight(int weight)
         {
             _playerViewModel.Weight = weight;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the player TeamId
+        /// </summary>
+        /// <param name="teamId">Player view model teamId</param>
+        /// <returns>Player view model builder object</returns>
+        public PlayerMvcViewModelBuilder WithTeamId(int? teamId)
+        {
+            _playerViewModel.TeamId = teamId;
             return this;
         }
 

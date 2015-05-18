@@ -27,35 +27,19 @@
     [TestClass]
     public class PlayerControllerTests
     {
-        /// <summary>
-        /// ID for tests
-        /// </summary>
         private const int SPECIFIC_PLAYER_ID = 2;
 
-        /// <summary>
-        /// A new but not saved player id
-        /// </summary>
         private const int UNASSIGNED_ID = 0;
 
-        /// <summary>
-        /// Not valid birth year
-        /// </summary>
         private const int NOT_VALID_BIRTH_YEAR = 2101;
 
-        /// <summary>
-        /// Message that should be passed to exception.
-        /// </summary>
         private const string EXCEPTION_MESSAGE = "Test exception message.";
 
-        /// <summary>
-        /// Test Fixture
-        /// </summary>
         private readonly PlayerServiceTestFixture _testFixture = new PlayerServiceTestFixture();
 
-        /// <summary>
-        /// Players Service Mock
-        /// </summary>
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
+
+        private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
 
         /// <summary>
         /// IoC for tests
@@ -71,6 +55,8 @@
             _kernel = new StandardKernel();
             _kernel.Bind<IPlayerService>()
                    .ToConstant(_playerServiceMock.Object);
+            _kernel.Bind<ITeamService>()
+                   .ToConstant(_teamServiceMock.Object);
         }
 
         /// <summary>
@@ -210,6 +196,7 @@
                 .WithBirthYear(expected.BirthYear)
                 .WithWeight(expected.Weight)
                 .WithHeight(expected.Height)
+                .WithTeamId(expected.TeamId)
                 .Build();
 
             // Act
@@ -262,6 +249,7 @@
                 .WithBirthYear(expected.BirthYear)
                 .WithHeight(expected.Height)
                 .WithWeight(expected.Weight)
+                .WithTeamId(expected.TeamId)
                 .Build();
 
             // Act

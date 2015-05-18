@@ -55,5 +55,20 @@
         {
             _context.Dispose();
         }
+
+        /// <summary>
+        /// Begins transaction
+        /// </summary>
+        /// <param name="isolationLevel">Level of transaction isolation</param>
+        /// <returns>Current transaction manager</returns>
+        public IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel)
+        {
+            _context.Connection.Open();
+
+            // TODO: Revisit connection opening approach
+
+            var transaction = _context.Connection.BeginTransaction(isolationLevel);
+            return new DbTransactionAdapter(transaction);
+        }
     }
 }

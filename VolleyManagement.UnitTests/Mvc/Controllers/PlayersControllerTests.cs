@@ -31,7 +31,7 @@
         private const int NUMBER_OF_PLAYERS_FOR_MOCK = 12;
         private const int FIRST_ASCII_LETTER = 65;
         private const int LAST_ASCII_LETTER = 90;
-        private const int MAX_PLAYERS_ON_PAGE = 10;
+        private const int MAX_PLAYERS_ON_PAGE = 5;
         private const int TESTING_PAGE = 1;
         private const int SAVED_PLAYER_ID = 10;
         private const int PLAYER_UNEXISTING_ID_TO_DELETE = 4;
@@ -269,6 +269,7 @@
                 .WithBirthYear(1983)
                 .WithHeight(186)
                 .WithWeight(95)
+                .WithTeamId(1)
                 .Build();
 
             var expected = new PlayerBuilder()
@@ -278,6 +279,7 @@
                 .WithBirthYear(1983)
                 .WithHeight(186)
                 .WithWeight(95)
+                .WithTeamId(1)
                 .Build();
 
             // Act

@@ -20,7 +20,8 @@
                 = new List<MenuItemViewModel>
                 {
                     new MenuItemViewModel() { Name = "Tournaments", Controller = "Tournaments", Action = "Index" },
-                    new MenuItemViewModel() { Name = "Players", Controller = "Players", Action = "Index" }
+                    new MenuItemViewModel() { Name = "Players", Controller = "Players", Action = "Index" },
+                    new MenuItemViewModel() { Name = "Teams", Controller = "Teams", Action = "Index" }
                 }.AsQueryable();
 
             var currentItem = items.Where(item => 

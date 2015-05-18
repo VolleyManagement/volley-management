@@ -168,7 +168,7 @@
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return Helpers.ObjectToSingleResult(team);
+            return WebApiHelpers.ObjectToSingleResult(team);
         }
 
         /// <summary> Deletes tournament </summary>
@@ -193,7 +193,7 @@
             int teamId;
             try
             {
-                teamId = Helpers.GetKeyFromUri<int>(Request, link);
+                teamId = WebApiHelpers.GetKeyFromUri<int>(Request, link);
                 _teamService.Get(teamId);
                 playerToUpdate.TeamId = teamId;
                 _playerService.Edit(playerToUpdate);

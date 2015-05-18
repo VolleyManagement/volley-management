@@ -11,7 +11,7 @@
     using System.Web.OData.Extensions;
     using System.Web.OData.Routing;
 
-    public static class Helpers
+    public static class WebApiHelpers
     {
         public static TKey GetKeyFromUri<TKey>(HttpRequestMessage request, Uri uri)
         {

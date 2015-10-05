@@ -1,9 +1,9 @@
-﻿namespace VolleyManagement.Dal.MsSql.Services
+﻿namespace VolleyManagement.Data.MsSql.Services
 {
     using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
 
-    using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Data.Contracts;
 
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
@@ -20,8 +20,8 @@
         /// </summary>
         public VolleyUnitOfWork()
         {
-            _context = ((IObjectContextAdapter)new VolleyManagementContext()).ObjectContext;
-            _context.ContextOptions.LazyLoadingEnabled = true;
+            this._context = ((IObjectContextAdapter)new VolleyManagementContext()).ObjectContext;
+            this._context.ContextOptions.LazyLoadingEnabled = true;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@
         /// </summary>
         public ObjectContext Context
         {
-            get { return _context; }
+            get { return this._context; }
         }
 
         /// <summary>
@@ -37,7 +37,7 @@
         /// </summary>
         public void Commit()
         {
-            _context.SaveChanges();
+            this._context.SaveChanges();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@
         /// </summary>
         public void Dispose()
         {
-            _context.Dispose();
+            this._context.Dispose();
         }
     }
 }

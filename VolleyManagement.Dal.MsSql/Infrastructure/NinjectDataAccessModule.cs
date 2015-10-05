@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Dal.MsSql.Infrastructure
+﻿namespace VolleyManagement.Data.MsSql.Infrastructure
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,9 @@
     using Ninject.Planning.Bindings;
 
     using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.MsSql.Services;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.MsSql.Services;
+    using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
     /// Defines bindings for Service layer
@@ -33,13 +35,13 @@
         {
             var configs = new List<IBindingConfiguration>
                               {
-                                  Bind<IUnitOfWork>().To<VolleyUnitOfWork>().BindingConfiguration,
-                                  Bind<ITournamentRepository>().To<TournamentRepository>().BindingConfiguration,
-                                  Bind<IUserRepository>().To<UserRepository>().BindingConfiguration
+                                  this.Bind<IUnitOfWork>().To<VolleyUnitOfWork>().BindingConfiguration,
+                                  this.Bind<ITournamentRepository>().To<TournamentRepository>().BindingConfiguration,
+                                  this.Bind<IUserRepository>().To<UserRepository>().BindingConfiguration
                               };
-            if (_scopeCallback != null)
+            if (this._scopeCallback != null)
             {
-                configs.ForEach(bc => bc.ScopeCallback = _scopeCallback);
+                configs.ForEach(bc => bc.ScopeCallback = this._scopeCallback);
             }
         }
     }

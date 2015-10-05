@@ -162,9 +162,9 @@
       <Project>{285d93e6-1ad5-4f78-aef6-72b81d81465d}</Project>
       <Name>VolleyManagement.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Dal\VolleyManagement.Dal.csproj">
+    <ProjectReference Include="..\VolleyManagement.Dal\VolleyManagement.Data.csproj">
       <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
-      <Name>VolleyManagement.Dal</Name>
+      <Name>VolleyManagement.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
       <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>

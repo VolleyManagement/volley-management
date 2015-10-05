@@ -1,10 +1,8 @@
-﻿namespace VolleyManagement.Dal.Contracts
+﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
-    using System;
     using System.Linq;
-    using System.Linq.Expressions;
-    using VolleyManagement.Domain.Tournaments;
-    using VolleyManagement.Domain.TournamentsAggregate;
+
+    using VolleyManagement.Data.Contracts;
 
     /// <summary>
     /// Defines specific contract for TournamentRepository

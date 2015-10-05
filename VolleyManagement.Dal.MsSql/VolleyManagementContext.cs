@@ -1,4 +1,4 @@
-namespace VolleyManagement.Dal.MsSql
+namespace VolleyManagement.Data.MsSql
 {
     using System.Data.Entity;
 

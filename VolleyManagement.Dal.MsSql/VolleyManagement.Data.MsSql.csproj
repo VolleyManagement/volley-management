@@ -8,8 +8,8 @@
     <ProjectGuid>{F82FF279-9D06-4494-BC61-1B7AC88A737D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>VolleyManagement.Dal.MsSql</RootNamespace>
-    <AssemblyName>VolleyManagement.Dal.MsSql</AssemblyName>
+    <RootNamespace>VolleyManagement.Data.MsSql</RootNamespace>
+    <AssemblyName>VolleyManagement.Data.MsSql</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -72,9 +72,9 @@
     <Compile Include="VolleyManagementContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VolleyManagement.Dal\VolleyManagement.Dal.csproj">
+    <ProjectReference Include="..\VolleyManagement.Dal\VolleyManagement.Data.csproj">
       <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
-      <Name>VolleyManagement.Dal</Name>
+      <Name>VolleyManagement.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
       <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>

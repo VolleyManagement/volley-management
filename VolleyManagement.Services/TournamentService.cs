@@ -1,11 +1,8 @@
 ﻿namespace VolleyManagement.Services
 {
-    using System;
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
@@ -87,7 +84,7 @@
 
             if (tournament != null)
             {
-                throw new TournamentValidationException(VolleyManagement.Domain.Properties.Resources.TournamentNameMustBeUnique);
+                throw new TournamentValidationException(Domain.Properties.Resources.TournamentNameMustBeUnique);
             }
         }
     }

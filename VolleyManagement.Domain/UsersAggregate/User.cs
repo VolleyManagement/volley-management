@@ -2,6 +2,7 @@
 {
     using System;
     using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// User domain class.

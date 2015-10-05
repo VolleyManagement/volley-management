@@ -60,6 +60,7 @@
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
+
                 this._description = value;
             }
         }

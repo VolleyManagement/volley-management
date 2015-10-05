@@ -10,8 +10,7 @@
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
 

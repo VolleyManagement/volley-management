@@ -5,15 +5,15 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
-    using System.Web.Http.ModelBinding;
     using System.Web.Http.OData.Results;
     using System.Web.Http.Results;
+
     using Contracts;
-    using Domain.Tournaments;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using Services.TournamentService;       
+    using Services.TournamentService;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
@@ -207,9 +207,7 @@
                 .WithId(expected.Id)
                 .WithName(expected.Name)
                 .WithSeason(expected.Season)
-                .WithScheme(Enum.GetValues(typeof(TournamentSchemeEnum))
-                .Cast<TournamentSchemeEnum>()
-                .FirstOrDefault(v => v.ToDescription() == expected.Scheme))
+                .WithScheme(TournamentSchemeEnum.Two)
                 .WithRegulationsLink(expected.RegulationsLink)
                 .WithDescription(expected.Description)
                 .Build();
@@ -303,7 +301,7 @@
             Assert.IsNotNull(actual);
             Assert.AreEqual<string>(actual.Message, EXCEPTION_MESSAGE);
         }
-        
+
         /// <summary>
         /// Test for Put method. The method should return "Internal server error" status
         /// </summary>

@@ -1,23 +1,24 @@
-﻿namespace VolleyManagement.Dal.MsSql.Services
+﻿namespace VolleyManagement.Data.MsSql.Services
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.MsSql.Mappers;
+
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.MsSql.Mappers;
     using VolleyManagement.Domain.TournamentsAggregate;
 
-    using Dal = VolleyManagement.Dal.MsSql;
-    using Domain = VolleyManagement.Domain.Tournaments;
+    using DAL = VolleyManagement.Data.MsSql;
+    using Domain = VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
     /// Defines implementation of the ITournamentRepository contract.
     /// </summary>
     internal class TournamentRepository : ITournamentRepository
     {
-        private readonly ObjectSet<Dal.Tournament> _dalTournaments;
+        private readonly ObjectSet<DAL.Tournament> _dalTournaments;
         private readonly IUnitOfWork _unitOfWork;
 
         /// <summary>
@@ -26,8 +27,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public TournamentRepository(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _dalTournaments = unitOfWork.Context.CreateObjectSet<Dal.Tournament>();
+            this._unitOfWork = unitOfWork;
+            this._dalTournaments = unitOfWork.Context.CreateObjectSet<DAL.Tournament>();
         }
 
         /// <summary>
@@ -35,7 +36,7 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get { return this._unitOfWork; }
         }
 
         /// <summary>
@@ -44,7 +45,7 @@
         /// <returns>Collection of domain tournaments.</returns>
         public IQueryable<Tournament> Find()
         {
-            return _dalTournaments.Select(t => new Tournament
+            return this._dalTournaments.Select(t => new Tournament
                 {
                     Id = t.Id,
                     Name = t.Name,
@@ -60,7 +61,8 @@
         /// </summary>
         /// <param name="predicate">Condition to find tournaments.</param>
         /// <returns>Collection of domain tournaments.</returns>
-        public IQueryable<Tournament> FindWhere(Expression<Func<Tournament, bool>> predicate)
+        public IQueryable<Tournament> FindWhere(
+            Expression<Func<Tournament, bool>> predicate)
         {
             return this.Find().Where(predicate);
         }
@@ -71,9 +73,9 @@
         /// <param name="newEntity">The tournament for adding.</param>
         public void Add(Tournament newEntity)
         {
-            Dal.Tournament newTournament = DomainToDal.Map(newEntity);
-            _dalTournaments.AddObject(newTournament);
-            _unitOfWork.Commit();
+            DAL.Tournament newTournament = DomainToDal.Map(newEntity);
+            this._dalTournaments.AddObject(newTournament);
+            this._unitOfWork.Commit();
             newEntity.Id = newTournament.Id;
         }
 
@@ -83,13 +85,13 @@
         /// <param name="oldEntity">The tournament to update.</param>
         public void Update(Tournament oldEntity)
         {
-            var tournamentToUpdate = _dalTournaments.Single(t => t.Id == oldEntity.Id);
+            var tournamentToUpdate = this._dalTournaments.Single(t => t.Id == oldEntity.Id);
             tournamentToUpdate.Name = oldEntity.Name;
             tournamentToUpdate.Description = oldEntity.Description;
             tournamentToUpdate.RegulationsLink = oldEntity.RegulationsLink;
             tournamentToUpdate.Scheme = (byte)oldEntity.Scheme;
             tournamentToUpdate.Season = oldEntity.Season;
-            _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
+            this._dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 
         /// <summary>
@@ -98,9 +100,9 @@
         /// <param name="id">The id of tournament to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Dal.Tournament { Id = id };
-            _dalTournaments.Attach(dalToRemove);
-            _dalTournaments.DeleteObject(dalToRemove);
+            var dalToRemove = new DAL.Tournament { Id = id };
+            this._dalTournaments.Attach(dalToRemove);
+            this._dalTournaments.DeleteObject(dalToRemove);
         }
     }
 }

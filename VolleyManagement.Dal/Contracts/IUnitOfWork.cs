@@ -1,9 +1,7 @@
-﻿namespace VolleyManagement.Dal.Contracts
+﻿namespace VolleyManagement.Data.Contracts
 {
     using System;
     using System.Data.Entity.Core.Objects;
-
-    using VolleyManagement.Domain.Tournaments;
 
     /// <summary>
     /// Describe methods to work with the store.

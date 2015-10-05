@@ -1,10 +1,6 @@
-﻿namespace VolleyManagement.Domain.Users
+﻿namespace VolleyManagement.Domain.UsersAggregate
 {
-    using System;
-    using System.Globalization;
     using System.Linq;
-    using System.Text.RegularExpressions;
-    using Tournaments;
 
     /// <summary>
     /// User validation class.

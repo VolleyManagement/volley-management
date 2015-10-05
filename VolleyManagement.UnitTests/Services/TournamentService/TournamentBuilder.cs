@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Tournaments;
+
     using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>

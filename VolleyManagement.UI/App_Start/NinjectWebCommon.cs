@@ -18,7 +18,7 @@ namespace VolleyManagement.UI
     using Ninject.Web.Mvc.FilterBindingSyntax;
     using Ninject.Web.WebApi;
 
-    using VolleyManagement.Dal.MsSql.Infrastructure;
+    using VolleyManagement.Data.MsSql.Infrastructure;
     using VolleyManagement.Services.Infrastructure;
     using VolleyManagement.UI.Infrastructure;
 

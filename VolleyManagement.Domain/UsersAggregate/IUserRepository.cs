@@ -1,6 +1,8 @@
 ﻿namespace VolleyManagement.Dal.Contracts
 {
     using System.Linq;
+
+    using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.Users;
 
     /// <summary>

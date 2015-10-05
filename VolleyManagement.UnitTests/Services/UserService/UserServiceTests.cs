@@ -9,6 +9,7 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.Users;
     using VolleyManagement.Services;
 

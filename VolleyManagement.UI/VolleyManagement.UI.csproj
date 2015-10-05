@@ -252,9 +252,9 @@
       <Project>{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}</Project>
       <Name>VolleyManagement.Crosscutting.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Dal.MsSql\VolleyManagement.Dal.MsSql.csproj">
+    <ProjectReference Include="..\VolleyManagement.Dal.MsSql\VolleyManagement.Data.MsSql.csproj">
       <Project>{F82FF279-9D06-4494-BC61-1B7AC88A737D}</Project>
-      <Name>VolleyManagement.Dal.MsSql</Name>
+      <Name>VolleyManagement.Data.MsSql</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
       <Project>{996EEE53-56AC-4002-891F-B989659323D1}</Project>

@@ -1,10 +1,10 @@
-﻿namespace VolleyManagement.UnitTests.Mvc.Mappers
+﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.Domain.Tournaments;
+
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>

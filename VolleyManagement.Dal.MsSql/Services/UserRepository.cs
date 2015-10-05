@@ -1,15 +1,15 @@
-﻿namespace VolleyManagement.Dal.MsSql.Services
+﻿namespace VolleyManagement.Data.MsSql.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    using System.Text;
+
     using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.MsSql.Mappers;
-    using Dal = VolleyManagement.Dal.MsSql;
-    using Domain = VolleyManagement.Domain.Users;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.MsSql.Mappers;
+
+    using User = VolleyManagement.Data.MsSql.User;
 
     /// <summary>
     /// Defines implementation of the IUserRepository contract.
@@ -19,7 +19,7 @@
         /// <summary>
         /// Holds object set of DAL users.
         /// </summary>
-        private readonly ObjectSet<Dal.User> _dalUsers;
+        private readonly ObjectSet<User> _dalUsers;
 
         /// <summary>
         /// Holds UnitOfWork instance.
@@ -32,8 +32,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public UserRepository(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _dalUsers = unitOfWork.Context.CreateObjectSet<Dal.User>();
+            this._unitOfWork = unitOfWork;
+            this._dalUsers = unitOfWork.Context.CreateObjectSet<User>();
         }
 
         /// <summary>
@@ -41,16 +41,16 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get { return this._unitOfWork; }
         }
 
         /// <summary>
         /// Gets all users.
         /// </summary>
         /// <returns>Collection of domain users.</returns>
-        public IQueryable<Domain.User> Find()
+        public IQueryable<Domain.Users.User> Find()
         {
-            return _dalUsers.Select(u => new Domain.User
+            return this._dalUsers.Select(u => new Domain.Users.User
             {
                 Id = u.Id,
                 FullName = u.FullName,
@@ -66,20 +66,20 @@
         /// </summary>
         /// <param name="predicate">Condition to find users.</param>
         /// <returns>Collection of domain users.</returns>
-        public IQueryable<Domain.User> FindWhere(System.Linq.Expressions.Expression<Func<Domain.User, bool>> predicate)
+        public IQueryable<Domain.Users.User> FindWhere(System.Linq.Expressions.Expression<Func<Domain.Users.User, bool>> predicate)
         {
-            return Find().Where(predicate);
+            return this.Find().Where(predicate);
         }
 
         /// <summary>
         /// Adds new user.
         /// </summary>
         /// <param name="newEntity">The user for adding.</param>
-        public void Add(Domain.User newEntity)
+        public void Add(Domain.Users.User newEntity)
         {
-            Dal.User newUser = DomainToDal.Map(newEntity);
-            _dalUsers.AddObject(newUser);
-            _unitOfWork.Commit();
+            User newUser = DomainToDal.Map(newEntity);
+            this._dalUsers.AddObject(newUser);
+            this._unitOfWork.Commit();
             newEntity.Id = newUser.Id;
         }
 
@@ -87,15 +87,15 @@
         /// Updates specified user.
         /// </summary>
         /// <param name="oldEntity">The user to update.</param>
-        public void Update(Domain.User oldEntity)
+        public void Update(Domain.Users.User oldEntity)
         {
-            var userToUpdate = _dalUsers.Where(t => t.Id == oldEntity.Id).Single();
+            var userToUpdate = this._dalUsers.Where(t => t.Id == oldEntity.Id).Single();
             userToUpdate.UserName = oldEntity.UserName;
             userToUpdate.Password = oldEntity.Password;
             userToUpdate.FullName = oldEntity.FullName;
             userToUpdate.Email = oldEntity.Email;
             userToUpdate.CellPhone = oldEntity.CellPhone;
-            _dalUsers.Context.ObjectStateManager.ChangeObjectState(userToUpdate, EntityState.Modified);
+            this._dalUsers.Context.ObjectStateManager.ChangeObjectState(userToUpdate, EntityState.Modified);
         }
 
         /// <summary>

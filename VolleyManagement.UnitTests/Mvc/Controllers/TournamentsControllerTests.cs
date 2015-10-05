@@ -9,7 +9,7 @@
 
     using Contracts;
     using Contracts.Exceptions;
-    using Domain.Tournaments;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;

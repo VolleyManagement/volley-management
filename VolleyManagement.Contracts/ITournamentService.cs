@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Linq;
-    using Domain.Tournaments;
 
     using VolleyManagement.Domain.TournamentsAggregate;
 

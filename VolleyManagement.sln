@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Domain", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Services", "VolleyManagement.Services\VolleyManagement.Services.csproj", "{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Dal", "VolleyManagement.Dal\VolleyManagement.Dal.csproj", "{7A32AA11-6E95-4896-9E7A-FC3DF24524EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Data", "VolleyManagement.Dal\VolleyManagement.Data.csproj", "{7A32AA11-6E95-4896-9E7A-FC3DF24524EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Dal.MsSql", "VolleyManagement.Dal.MsSql\VolleyManagement.Dal.MsSql.csproj", "{F82FF279-9D06-4494-BC61-1B7AC88A737D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Data.MsSql", "VolleyManagement.Dal.MsSql\VolleyManagement.Data.MsSql.csproj", "{F82FF279-9D06-4494-BC61-1B7AC88A737D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B4668846-428B-464E-AB2F-E1A0577376E5}"
 	ProjectSection(SolutionItems) = preProject
@@ -33,6 +33,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{B955D566-45CA-4850-8BAF-4BE1B8196351}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.UI", "VolleyManagement.UI\VolleyManagement.UI.csproj", "{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Domain.Contracts", "VolleyManagement.Domain.Contracts\VolleyManagement.Domain.Contracts.csproj", "{C6C09357-5BBC-4446-B569-9331382A2E2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6C09357-5BBC-4446-B569-9331382A2E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6C09357-5BBC-4446-B569-9331382A2E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6C09357-5BBC-4446-B569-9331382A2E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6C09357-5BBC-4446-B569-9331382A2E2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
 		{285D93E6-1AD5-4F78-AEF6-72B81D81465D} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
 		{996EEE53-56AC-4002-891F-B989659323D1} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
+		{C6C09357-5BBC-4446-B569-9331382A2E2C} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
 		{F82FF279-9D06-4494-BC61-1B7AC88A737D} = {6A07E1F5-E557-400A-BDA9-FABC65F3090A}
 		{7A32AA11-6E95-4896-9E7A-FC3DF24524EA} = {6A07E1F5-E557-400A-BDA9-FABC65F3090A}
 		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C} = {E6A8CFA8-FB27-4FF7-88A0-E5D7DCBE7596}

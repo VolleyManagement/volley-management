@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Dal.MsSql.Mappers
+﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
     /// <summary>
     /// Maps Domain models to Dal.

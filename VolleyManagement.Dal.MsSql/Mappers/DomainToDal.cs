@@ -58,33 +58,5 @@
             player.Weight = domainPlayer.Weight;
             return player;
         }
-
-        /// <summary>
-        /// Maps Contributor model.
-        /// </summary>
-        /// <param name="domainContributorTeam">Contributor Domain model</param>
-        /// <returns>Contributor Dal model</returns>
-        public static ContributorTeam Map(Domain.ContributorsAggregate.ContributorTeam domainContributorTeam)
-        {
-            ContributorTeam contributorTeam = new ContributorTeam();
-            contributorTeam.Id = domainContributorTeam.Id;
-            contributorTeam.Name = domainContributorTeam.Name;
-            contributorTeam.Contributors = domainContributorTeam.Contributors;
-            return contributorTeam;
-        }
-
-        /// <summary>
-        /// Maps Contributor model.
-        /// </summary>
-        /// <param name="domainContributor">Contributor Domain model</param>
-        /// <returns>Contributor Dal model</returns>
-        public static Contributor Map(Domain.ContributorsAggregate.Contributor domainContributor)
-        {
-            Contributor contributor = new Contributor();
-            contributor.Id = domainContributor.Id;
-            contributor.Name = domainContributor.Name;
-            contributor.ContributorTeamId = domainContributor.ContributorTeamId;
-            return contributor;
-        }
     }
 }

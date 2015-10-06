@@ -3,14 +3,11 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.Players;
-    using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Defines player controller

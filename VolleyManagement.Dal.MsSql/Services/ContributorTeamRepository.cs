@@ -1,15 +1,9 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Services
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Core;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    using System.Text;
     using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.Dal.MsSql.Mappers;
     using VolleyManagement.Domain.ContributorsAggregate;
     using Dal = VolleyManagement.Dal.MsSql;
 
@@ -18,9 +12,6 @@
     /// </summary>
     internal class ContributorTeamRepository : IContributorTeamRepository
     {
-        private const int START_DATABASE_ID_VALUE = 0;
-
-        private readonly ObjectSet<Dal.ContributorTeam> _teamsSet;
         private readonly ObjectSet<Dal.Contributor> _contribsSet;
 
         /// <summary>
@@ -35,7 +26,6 @@
         public ContributorTeamRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _teamsSet = unitOfWork.Context.CreateObjectSet<Dal.ContributorTeam>();
             _contribsSet = unitOfWork.Context.CreateObjectSet<Dal.Contributor>();
         }
 
@@ -51,20 +41,20 @@
         /// Gets all teams with contributors inside.
         /// </summary>
         /// <returns>Collection of teams with contributors</returns>
-        public IQueryable<Domain.ContributorsAggregate.ContributorTeam> Find()
+        public IQueryable<ContributorTeam> Find()
         {
             var result = _contribsSet.GroupBy(c => c.ContributorTeam)
-                                    .Select(gr => new Domain.ContributorsAggregate.ContributorTeam
-                                    {
-                                        Id = gr.Key.Id,
-                                        Name = gr.Key.Name,
-                                        CourseDirection = gr.Key.CourseDirection,
-                                        Contributors = gr.Select(c => new Domain.ContributorsAggregate.Contributor
+                                     .Select(gr => new ContributorTeam
                                         {
-                                            Id = c.Id,
-                                            Name = c.Name
-                                        })
-                                    });
+                                            Id = gr.Key.Id,
+                                            Name = gr.Key.Name,
+                                            CourseDirection = gr.Key.CourseDirection,
+                                            Contributors = gr.Select(c => new Contributor
+                                            {
+                                                Id = c.Id,
+                                                Name = c.Name
+                                            })
+                                        });
 
             return result;
         }

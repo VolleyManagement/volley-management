@@ -1,14 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
     using System.Collections.Generic;
 
@@ -42,7 +37,7 @@
             try
             {
                 var contributors = this._contributorTeamService.Get().ToList();
-                List<ContributorsTeamViewModel> contributorsTeamView = new List<ContributorsTeamViewModel>();
+                var contributorsTeamView = new List<ContributorsTeamViewModel>();
                 
                 foreach (var item in contributors)
                 {

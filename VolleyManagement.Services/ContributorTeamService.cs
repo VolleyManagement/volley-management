@@ -1,11 +1,8 @@
 ﻿namespace VolleyManagement.Services
 {
-    using System;
     using System.Linq;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.Exceptions;
     using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>

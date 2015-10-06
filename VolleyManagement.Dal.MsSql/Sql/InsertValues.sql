@@ -104,7 +104,9 @@ SET TeamId = 2
 WHERE Id IN (2, 8, 9, 10)
 GO
 
-<<<<<<< HEAD
+UPDATE dbo.Players
+SET TeamId = 3
+WHERE Id IN (3, 11, 12, 13)
 GO
 
 INSERT INTO dbo.ContributorTeam(
@@ -128,9 +130,4 @@ INSERT INTO dbo.Contributors(
   ('Юайщик Юайщиков',2),
   ('Юа Юавин',2),
   ('Юай Юайко',2)
-=======
-UPDATE dbo.Players
-SET TeamId = 3
-WHERE Id IN (3, 11, 12, 13)
->>>>>>> master
-GO
+

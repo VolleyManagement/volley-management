@@ -58,7 +58,6 @@ CREATE TABLE dbo.Players(
 );
 GO
 
-<<<<<<< HEAD
 CREATE TABLE dbo.ContributorTeam(
   Id int identity(1, 1) NOT NULL 
     CONSTRAINT PK_ContributorTeam_Id PRIMARY KEY CLUSTERED,
@@ -75,7 +74,6 @@ CREATE TABLE dbo.Contributors(
 );
 GO
 
-=======
 CREATE TABLE dbo.Teams(
   Id int identity(1, 1) NOT NULL
     CONSTRAINT PK_Teams_Id PRIMARY KEY CLUSTERED,
@@ -91,4 +89,3 @@ ALTER TABLE dbo.Players
 ADD CONSTRAINT FK_Players_TeamId_Teams_Id 
 FOREIGN KEY (TeamId) REFERENCES dbo.Teams(Id);	 
 GO
->>>>>>> master

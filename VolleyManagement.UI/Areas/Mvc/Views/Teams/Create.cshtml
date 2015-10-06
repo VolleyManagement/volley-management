@@ -1,0 +1,27 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+
+@{
+    ViewBag.Title = Resources.TeamViews.CreateTeamTitle;
+}
+
+<script src="~/Scripts/TeamOperationScripts.js"></script>
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>@Resources.TeamViews.TeamLegend</legend>
+
+        @Html.Partial("_CreateEdit", Model)
+
+        <p>
+            <input type="submit" value="@Resources.TeamViews.Create"/>
+        </p>
+    </fieldset>
+
+    <div>
+        @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
+    </div>
+}

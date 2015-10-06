@@ -36,7 +36,8 @@
                                   Bind<ITournamentService>().To<TournamentService>().BindingConfiguration,
                                   Bind<IUserService>().To<UserService>().BindingConfiguration,
                                   Bind<IPlayerService>().To<PlayerService>().BindingConfiguration,
-                                  Bind<IContributorTeamService>().To<ContributorTeamService>().BindingConfiguration
+                                  Bind<IContributorTeamService>().To<ContributorTeamService>().BindingConfiguration,
+                                  Bind<ITeamService>().To<TeamService>().BindingConfiguration
                               };
             if (_scopeCallback != null)
             {

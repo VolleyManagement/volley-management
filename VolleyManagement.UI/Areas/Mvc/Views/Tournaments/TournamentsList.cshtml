@@ -1,0 +1,28 @@
+﻿@using VolleyManagement.UI.Areas.Mvc
+@model IEnumerable<VolleyManagement.Domain.Tournaments.Tournament>
+
+<table class="table" @ViewBag.TableId>
+    <thead>
+        <tr>
+            <td width="400">
+                @Html.DisplayNameFor(model => model.Name)
+            </td>
+            <td width="100">
+                @Html.DisplayNameFor(model => model.Season)
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tournament in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(tournament.Name, "Details", new { id = tournament.Id })
+                </td>
+                <td>
+                    @Html.DisplaySeason(tournament.Season)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

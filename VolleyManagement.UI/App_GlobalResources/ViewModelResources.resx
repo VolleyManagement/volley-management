@@ -117,14 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApplyingDateThreeMonth" xml:space="preserve">
+    <value>Период регистрации должен быть минимум 3 месяца</value>
+  </data>
+  <data name="ApplyingPeriodBeforeGamesStart" xml:space="preserve">
+    <value>Начало турнира должно следовать после завершения периода регистрации</value>
+  </data>
+  <data name="ApplyingPeriodEnd" xml:space="preserve">
+    <value>Конец регистрации на турнир</value>
+  </data>
+  <data name="ApplyingPeriodStart" xml:space="preserve">
+    <value>Начало регистрации на турнир</value>
+  </data>
+  <data name="ApplyingStartBeforeEnd" xml:space="preserve">
+    <value>Начало периода регистрации на турнир должно быть раннее чем его окончание</value>
+  </data>
+  <data name="ApplyingStartBeforeNow" xml:space="preserve">
+    <value>Начало регистрации турнира должно быть позже чем сегодня</value>
+  </data>
   <data name="ConfirmUserPassword" xml:space="preserve">
     <value>FixMe: Confirm password</value>
+  </data>
+  <data name="EndGamesBeforeStart" xml:space="preserve">
+    <value>Конец турнира должен быть после его начала</value>
   </data>
   <data name="FieldRange" xml:space="preserve">
     <value>Поле {0} должно быть заполнено в диапазоне {1} - {2}</value>
   </data>
   <data name="FieldRequired" xml:space="preserve">
     <value>Поле "{0}" является обязательным.</value>
+  </data>
+  <data name="GamesEnd" xml:space="preserve">
+    <value>Дата окончания турнира</value>
+  </data>
+  <data name="GamesStart" xml:space="preserve">
+    <value>Дата начала турнира</value>
   </data>
   <data name="InvalidEntriesError" xml:space="preserve">
     <value>Поле {0} должно содержать только печатаемые символы</value>
@@ -186,6 +213,30 @@
   <data name="PlayerWeightFieldRange" xml:space="preserve">
     <value>Указан неверный вес</value>
   </data>
+  <data name="TeamAchievements" xml:space="preserve">
+    <value>Достижения</value>
+  </data>
+  <data name="TeamCaptain" xml:space="preserve">
+    <value>Капитан</value>
+  </data>
+  <data name="TeamCaptainRequired" xml:space="preserve">
+    <value>{0} не может быть пустым</value>
+  </data>
+  <data name="TeamCoach" xml:space="preserve">
+    <value>Тренер</value>
+  </data>
+  <data name="TeamMaxLengthErrorMessage" xml:space="preserve">
+    <value>{0} не может содержать более {1} символов</value>
+  </data>
+  <data name="TeamName" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="TeamNameRequired" xml:space="preserve">
+    <value>{0} не может быть пустым</value>
+  </data>
+  <data name="TeamRoster" xml:space="preserve">
+    <value>Состав</value>
+  </data>
   <data name="TournamentDescription" xml:space="preserve">
     <value>Описание</value>
   </data>
@@ -200,6 +251,24 @@
   </data>
   <data name="TournamentSeason" xml:space="preserve">
     <value>Сезон</value>
+  </data>
+  <data name="TransferEnd" xml:space="preserve">
+    <value>Дата окончания трансферного окна</value>
+  </data>
+  <data name="TransferEndAfterStart" xml:space="preserve">
+    <value>Начало трансфера должно быть перед его окончанием</value>
+  </data>
+  <data name="TransferEndBeforeGamesEnd" xml:space="preserve">
+    <value>Окончание трасферного периода должно быть перед окончанием турнира</value>
+  </data>
+  <data name="TransferStart" xml:space="preserve">
+    <value>Дата начала трансферного окна</value>
+  </data>
+  <data name="TransferStartBeforeGamesStart" xml:space="preserve">
+    <value>Начало трансферного периода должно быть в течении турнира</value>
+  </data>
+  <data name="UniqueNameMessage" xml:space="preserve">
+    <value>Имя турнира должно быть уникальным</value>
   </data>
   <data name="UserCellPhone" xml:space="preserve">
     <value>Телефон</value>

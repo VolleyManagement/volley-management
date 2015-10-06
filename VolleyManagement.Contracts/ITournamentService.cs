@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Contracts
 {
+    using System.Collections.Generic;
     using System.Linq;
     using Domain.Tournaments;
 
@@ -13,6 +14,18 @@
         /// </summary>
         /// <returns>Return list of all tournaments.</returns>
         IQueryable<Tournament> Get();
+
+        /// <summary>
+        /// Returns only actual tournaments
+        /// </summary>
+        /// <returns>Actual tournaments</returns>
+        IQueryable<Tournament> GetActual();
+
+        /// <summary>
+        /// Returns only finished tournaments
+        /// </summary>
+        /// <returns>Finished tournaments</returns>
+        IQueryable<Tournament> GetFinished();
 
         /// <summary>
         /// Find a Tournament by id

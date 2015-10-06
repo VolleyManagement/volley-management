@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
     $('a.delete').click(OnDeleteClick);
+    $('a.showFinishedTournamenst').click(OnShowFinishedTournamentsClick);
+    $('#finished_table').hide();
+    $('#FinishedHeader').hide();
 });
 function OnDeleteClick(e) {
     var playerId = e.target.id;
@@ -23,4 +26,31 @@ function OnDeleteClick(e) {
         });
     }
     return false;
+}
+
+function OnShowFinishedTournamentsClick(e) {
+    $('#finished_table').show();
+    $(".dynamicData").remove();
+
+    $.ajax({
+        url: 'Tournaments/GetFinished',
+        type: 'GET',
+        dataType: 'json',
+        success: function (resultJson) {
+            $('a.showFinishedTournamenst').hide();
+            $('#FinishedHeader').show();
+            $.each(resultJson, function (i, item) {
+                var $tr = $('<tr class="dynamicData">').append(
+                    $('<td width="400">').append($('<a/>').attr('href','mvc/Tournaments/Details/' + item.Id).text(item.Name)),
+                    $('<td width="100">').append($('<label>').text(DisplaySeason(item.Season)))
+                ).appendTo('#finished_table');
+            });
+        }
+    });
+
+    return false;
+}
+
+function DisplaySeason(season) {
+    return season + "/" + (season + 1);
 }

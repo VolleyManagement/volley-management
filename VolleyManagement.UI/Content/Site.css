@@ -39,3 +39,13 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+
+div#content {border-left: 2px solid gray; margin-left: 9em; padding: 1em; }
+div#menu {float: left; width: 8em; padding: .3em; }
+div#menu a{font: bold 1.1em "Arial Narrow","Franklin Gothic Medium", Arial; display: block;
+           text-decoration: none; padding: .6em; color: black; border-bottom: 1px solid silver;
+}
+div#menu a.selected {background-color: #666; color: white;}
+div#menu a:hover {background-color: #CCC; }
+div#menu a.selected:hover{background-color: #666}

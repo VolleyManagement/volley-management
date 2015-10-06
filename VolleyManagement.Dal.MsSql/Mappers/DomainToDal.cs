@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Dal.MsSql.Mappers
 {
-    using VolleyManagement.Domain.ContributorsAggregate;
     using constants = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>
@@ -22,6 +21,12 @@
             tournament.Description = domainTournament.Description;
             tournament.Scheme = (byte)domainTournament.Scheme;
             tournament.RegulationsLink = domainTournament.RegulationsLink;
+            tournament.GamesStart = domainTournament.GamesStart;
+            tournament.GamesEnd = domainTournament.GamesEnd;
+            tournament.ApplyingPeriodStart = domainTournament.ApplyingPeriodStart;
+            tournament.ApplyingPeriodEnd = domainTournament.ApplyingPeriodEnd;
+            tournament.TransferStart = domainTournament.TransferStart;
+            tournament.TransferEnd = domainTournament.TransferEnd;
             return tournament;
         }
 
@@ -56,7 +61,26 @@
             player.BirthYear = domainPlayer.BirthYear;
             player.Height = domainPlayer.Height;
             player.Weight = domainPlayer.Weight;
+            player.TeamId = domainPlayer.TeamId;
+
             return player;
+        }
+
+        /// <summary>
+        /// Maps Team model.
+        /// </summary>
+        /// <param name="domainTeam">Team Domain model</param>
+        /// <returns>Team Dal model</returns>
+        public static Team Map(Domain.Teams.Team domainTeam)
+        {
+            Team dalTeam = new Team();
+            dalTeam.Id = domainTeam.Id;
+            dalTeam.Name = domainTeam.Name;
+            dalTeam.CaptainId = domainTeam.CaptainId;
+            dalTeam.Coach = domainTeam.Coach;
+            dalTeam.Achievements = domainTeam.Achievements;
+
+            return dalTeam;
         }
     }
 }

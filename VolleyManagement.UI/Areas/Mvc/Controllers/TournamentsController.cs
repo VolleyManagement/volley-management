@@ -3,19 +3,20 @@
     using System;
     using System.Linq;
     using System.Web.Mvc;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
+    using ErrorMessages = VolleyManagement.Domain.Properties.Resources;
+    using ValidationMessages = App_GlobalResources.ViewModelResources;
+
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
     public class TournamentsController : Controller
     {
-        private const string UNIQUE_NAME_KEY = "uniqueName";
         /// <summary>
         /// Holds TournamentService instance
         /// </summary>
@@ -31,20 +32,34 @@
         }
 
         /// <summary>
-        /// Gets all tournaments from TournamentService
+        /// Gets current and upcoming tournaments from TournamentService
         /// </summary>
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            try
-            {
-                var tournaments = this._tournamentService.Get().ToList();
-                return View(tournaments);
-            }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
+            TournamentsCollectionsViewModel tournamentsCollections 
+                = new TournamentsCollectionsViewModel();
+
+            var actualTournaments = this._tournamentService.GetActual().ToArray();
+
+            tournamentsCollections.CurrentTournaments = actualTournaments
+                .Where(tr => tr.State == TournamentStateEnum.Current);
+
+            tournamentsCollections.UpcomingTournaments = actualTournaments
+                .Where(tr => tr.State == TournamentStateEnum.Upcoming);
+
+            return View(tournamentsCollections);
+        }
+
+        /// <summary>
+        /// Get finished tournaments
+        /// </summary>
+        /// <returns>Json result</returns>
+        public JsonResult GetFinished()
+        {
+            var result = _tournamentService.GetFinished().ToList()
+                 .Select(t => TournamentViewModel.Map(t));
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -71,14 +86,23 @@
         /// <returns>View to create a tournament</returns>
         public ActionResult Create()
         {
-            var tournamentViewModel = new TournamentViewModel();
+            var tournamentViewModel = new TournamentViewModel()
+                {
+                    ApplyingPeriodStart = DateTime.Now.AddDays(1),
+                    ApplyingPeriodEnd = DateTime.Now.AddDays(1),
+                    GamesStart = DateTime.Now.AddDays(1),
+                    GamesEnd = DateTime.Now.AddDays(1),
+                    TransferStart = DateTime.Now.AddDays(1),
+                    TransferEnd = DateTime.Now.AddDays(1)
+                };
+
             return this.View(tournamentViewModel);
         }
 
         /// <summary>
         /// Create tournament action (POST)
         /// </summary>
-        /// <param name="tournamentViewModel">Tournament, which the user wants to create</param>
+        /// <param name="tournamentViewMsodel">Tournament, which the user wants to create</param>
         /// <returns>Index view if tournament was valid, else - create view</returns>
         [HttpPost]
         public ActionResult Create(TournamentViewModel tournamentViewModel)
@@ -94,9 +118,9 @@
 
                 return this.View(tournamentViewModel);
             }
-            catch (TournamentValidationException )
+            catch (TournamentValidationException e)
             {
-                this.ModelState.AddModelError(UNIQUE_NAME_KEY, "Имя турнира должно быть уникальным");
+                this.ModelState.AddModelError(e.ValidationKey, e.Message);
                 return this.View(tournamentViewModel);
             }
             catch (Exception)

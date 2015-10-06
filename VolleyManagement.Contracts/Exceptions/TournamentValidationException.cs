@@ -18,7 +18,8 @@
         /// Initializes a new instance of the TournamentValidationException
         /// class.
         /// </summary>
-        public TournamentValidationException() : base()
+        public TournamentValidationException()
+            : base()
         {
         }
 
@@ -27,7 +28,8 @@
         /// class with a specified error message.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
-        public TournamentValidationException(string message) : base(message)
+        public TournamentValidationException(string message)
+            : base(message)
         {
         }
 
@@ -36,11 +38,13 @@
         /// class with a specified error message and a name of not valid parameter.
         /// </summary>
         /// <param name="message">The message that describes the error.</param>
+        /// <param name="validationKey">The key in validation dictionary</param>
         /// <param name="paramName">The not valid parameter name.</param>
-        public TournamentValidationException(string message, string paramName)
+        public TournamentValidationException(string message, string validationKey, string paramName)
             : base(message)
         {
             ParamName = paramName;
+            ValidationKey = validationKey;
         }
 
         /// <summary>
@@ -70,5 +74,10 @@
         /// Gets or sets name of a not valid parameter
         /// </summary>
         public string ParamName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the key to message in a dictionary
+        /// </summary>
+        public string ValidationKey { get; set; }
     }
 }

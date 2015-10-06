@@ -37,7 +37,8 @@
                                   Bind<ITournamentRepository>().To<TournamentRepository>().BindingConfiguration,
                                   Bind<IUserRepository>().To<UserRepository>().BindingConfiguration,
                                   Bind<IPlayerRepository>().To<PlayerRepository>().BindingConfiguration,
-                                  Bind<IContributorTeamRepository>().To<ContributorTeamRepository>().BindingConfiguration
+                                  Bind<IContributorTeamRepository>().To<ContributorTeamRepository>().BindingConfiguration,
+                                  Bind<ITeamRepository>().To<TeamRepository>().BindingConfiguration
                               };
             if (_scopeCallback != null)
             {

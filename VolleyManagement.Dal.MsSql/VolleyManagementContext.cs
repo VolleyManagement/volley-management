@@ -42,6 +42,12 @@ namespace VolleyManagement.Dal.MsSql
         public virtual DbSet<ContributorTeam> ContributorTeam { get; set; }
 
         /// <summary>
+        /// Gets or sets the team table.
+        /// </summary>
+        public virtual DbSet<Team> Teams { get; set; }
+
+
+        /// <summary>
         /// configure models if needed
         /// </summary>
         /// <param name="modelBuilder">model builder</param>

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web.Script.Serialization;
 
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.Tournaments;
@@ -26,6 +27,7 @@
         /// Gets or sets the list of seasons.
         /// </summary>
         /// <value>The list of seasons.</value>
+        [ScriptIgnore]
         public Dictionary<short, string> SeasonsList { get; set; }
 
         /// <summary>
@@ -89,6 +91,54 @@
         public string RegulationsLink { get; set; }
 
         /// <summary>
+        /// Start of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "ApplyingPeriodStart", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime ApplyingPeriodStart { get; set; }
+
+        /// <summary>
+        /// End of a tournament registration
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "ApplyingPeriodEnd", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// <summary>
+        /// Start of a tournament
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "GamesStart", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime GamesStart { get; set; }
+
+        /// <summary>
+        /// End of a tournament
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "GamesEnd", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime GamesEnd { get; set; }
+
+        /// <summary>
+        /// Start of a transfer period
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime TransferStart { get; set; }
+
+        /// <summary>
+        /// End of a transfer period
+        /// </summary>
+        [DataType(DataType.Date)]
+        [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        public DateTime TransferEnd { get; set; }
+
+        /// <summary>
         /// Initializes list of seasons.
         /// </summary>
         private void InitializeSeasonsList()
@@ -104,7 +154,7 @@
                 {
                     SelectedSeason = str;
                 }
-                this.SeasonsList.Add(year,str);
+                this.SeasonsList.Add(year, str);
             }
         }
         #region Factory Methods
@@ -123,7 +173,13 @@
                 Description = tournament.Description,
                 Season = tournament.Season,
                 RegulationsLink = tournament.RegulationsLink,
-                Scheme = tournament.Scheme
+                Scheme = tournament.Scheme,
+                GamesStart = tournament.GamesStart,
+                GamesEnd = tournament.GamesEnd,
+                ApplyingPeriodStart = tournament.ApplyingPeriodStart,
+                ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
+                TransferStart = tournament.TransferStart,
+                TransferEnd = tournament.TransferEnd
             };
 
             return tournamentViewModel;
@@ -142,7 +198,13 @@
                 Description = this.Description,
                 Season = this.Season,
                 Scheme = this.Scheme,
-                RegulationsLink = this.RegulationsLink
+                RegulationsLink = this.RegulationsLink,
+                GamesStart = this.GamesStart,
+                GamesEnd = this.GamesEnd,
+                ApplyingPeriodStart = this.ApplyingPeriodStart,
+                ApplyingPeriodEnd = this.ApplyingPeriodEnd,
+                TransferStart = this.TransferStart,
+                TransferEnd = this.TransferEnd
             };
         }
         #endregion

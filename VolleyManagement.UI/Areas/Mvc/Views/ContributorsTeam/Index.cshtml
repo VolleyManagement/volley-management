@@ -1,43 +1,21 @@
-﻿
-@model IEnumerable<VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam.ContributorsTeamViewModel>
+﻿@model IEnumerable<VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam.ContributorsTeamViewModel>
 @{
     ViewBag.Title = "Contributors";
 }
 
 <h2>@ViewBag.Title</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CourseDirection)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Contributors)
-            </th>
-        </tr>
-
-    </thead>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @item.Name
-            </td>
-            <td>
-                @item.CourseDirection
-            </td>
-            <td>
-                @foreach (var contr in item.Contributors)
-                {
-                    @contr.Name<br />
-                }
-            </td>
-        </tr>
-    }
-
-</table>
+@foreach (var team in Model)
+{
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">@team.Name</h3>
+      </div>
+      <div class="panel-body row">       
+            @foreach (var item in team.Contributors)
+            {
+                <div class="col-md-4 col-sm-6">@item.Name</div>
+            }
+      </div>
+    </div>
+}

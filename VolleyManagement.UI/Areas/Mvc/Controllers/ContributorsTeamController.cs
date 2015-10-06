@@ -41,10 +41,9 @@
                 
                 foreach (var item in contributors)
                 {
-                    var oneContributorTeamView = ContributorsTeamViewModel.Map(item);
-                    contributorsTeamView.Add(oneContributorTeamView);
+                    contributorsTeamView.Add(ContributorsTeamViewModel.Map(item));
                 }
-                return View(contributorsTeamView);
+               return View(contributorsTeamView);
             }
             catch (Exception)
             {

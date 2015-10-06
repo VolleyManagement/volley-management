@@ -16,12 +16,12 @@
         public PartialViewResult Menu()
         {
             string controllerName = (string) this.Request.RequestContext.RouteData.Values["controller"];
-            IQueryable<MenuItemViewModel> items 
-                = new List<MenuItemViewModel>
+            IQueryable<MenuItemViewModel> items = new List<MenuItemViewModel>
                 {
                     new MenuItemViewModel() { Name = "Tournaments", Controller = "Tournaments", Action = "Index" },
                     new MenuItemViewModel() { Name = "Players", Controller = "Players", Action = "Index" },
-                    new MenuItemViewModel() { Name = "Teams", Controller = "Teams", Action = "Index" }
+                    new MenuItemViewModel() { Name = "Teams", Controller = "Teams", Action = "Index" },
+                    new MenuItemViewModel() { Name = "Contributors", Controller = "ContributorsTeam", Action = "Index" }
                 }.AsQueryable();
 
             var currentItem = items.Where(item => 

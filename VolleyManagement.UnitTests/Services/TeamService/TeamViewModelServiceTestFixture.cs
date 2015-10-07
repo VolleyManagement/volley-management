@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Teams;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
 
     /// <summary>

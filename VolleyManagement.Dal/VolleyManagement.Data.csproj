@@ -56,11 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\Constants.cs" />
-    <Compile Include="Contracts\IContributorTeamRepository.cs" />
     <Compile Include="Contracts\IDbTransaction.cs" />
-    <Compile Include="Contracts\IPlayerRepository.cs" />
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\IUnitOfWork.cs" />
+    <Compile Include="Exceptions\InvalidKeyValueException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,8 @@
-﻿namespace VolleyManagement.Dal.Exceptions
+﻿namespace VolleyManagement.Data.Exceptions
 {
     using System;
-    using VolleyManagement.Dal.Contracts;
+
+    using VolleyManagement.Data.Contracts;
 
     /// <summary>
     /// Represents errors that occurs during the searching entity id
@@ -48,7 +49,7 @@
         public InvalidKeyValueException(string message, int entityId) :
             base(message)
         {
-            AddEntityIdToData(entityId);
+            this.AddEntityIdToData(entityId);
         }
 
         /// <summary>
@@ -61,7 +62,7 @@
         public InvalidKeyValueException(string message, int entityId, Exception innerException) :
             base(message, innerException)
         {
-            AddEntityIdToData(entityId);
+            this.AddEntityIdToData(entityId);
         }
 
         private void AddEntityIdToData(int entityId)

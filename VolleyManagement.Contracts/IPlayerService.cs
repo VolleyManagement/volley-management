@@ -1,8 +1,9 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Linq;
-    using Domain.Players;
-    using Domain.Teams;
+
+    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
     /// Interface for PlayerService.

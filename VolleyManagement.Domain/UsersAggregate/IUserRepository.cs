@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Dal.Contracts
+﻿namespace VolleyManagement.Domain.UsersAggregate
 {
     using System.Linq;
 

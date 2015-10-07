@@ -14,7 +14,7 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.Players;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UnitTests.Services.PlayerService;

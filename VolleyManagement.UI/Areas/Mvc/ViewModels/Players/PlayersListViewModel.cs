@@ -3,11 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
-    using VolleyManagement.Domain.Players;
-    using VolleyManagement.UI.Areas.Mvc.Mappers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
+    using VolleyManagement.Domain.PlayersAggregate;
+
+    /// <summary>
+    /// The players list view model.
+    /// </summary>
     public class PlayersListViewModel
     {
         private const int FIRST_PAGE = 1;

@@ -1,9 +1,5 @@
-﻿namespace VolleyManagement.Domain.Teams
+﻿namespace VolleyManagement.Domain.TeamsAggregate
 {
-    using System;
-    using System.Collections.Generic;
-    using VolleyManagement.Domain.Properties;
-
     /// <summary>
     /// Team domain class.
     /// </summary>
@@ -27,12 +23,12 @@
         {
             get
             {
-                return _name;
+                return this._name;
             }
 
             set
             {
-                _name = value;
+                this._name = value;
             }
         }
 
@@ -44,12 +40,12 @@
         {
             get
             {
-                return _coach;
+                return this._coach;
             }
 
             set
             {
-                _coach = value;
+                this._coach = value;
             }
         }
 
@@ -61,12 +57,12 @@
         {
             get
             {
-                return _achievements;
+                return this._achievements;
             }
 
             set
             {
-                _achievements = value;
+                this._achievements = value;
             }
         }
 

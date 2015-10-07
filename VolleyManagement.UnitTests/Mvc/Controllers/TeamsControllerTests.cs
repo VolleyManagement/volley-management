@@ -1,25 +1,20 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Net;
     using System.Web.Mvc;
-    using System.Web.Routing;
+
     using Contracts;
-    using Domain.Players;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.Domain.Teams;
-    using VolleyManagement.UI.App_GlobalResources;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TeamService;
 

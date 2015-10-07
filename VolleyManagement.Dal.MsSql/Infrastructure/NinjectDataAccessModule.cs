@@ -7,10 +7,14 @@
     using Ninject.Modules;
     using Ninject.Planning.Bindings;
 
-    using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.MsSql.Repositories;
     using VolleyManagement.Data.MsSql.Services;
+    using VolleyManagement.Domain.ContributorsAggregate;
+    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// Defines bindings for Service layer
@@ -37,7 +41,7 @@
                               {
                                   this.Bind<IUnitOfWork>().To<VolleyUnitOfWork>().BindingConfiguration,
                                   this.Bind<ITournamentRepository>().To<TournamentRepository>().BindingConfiguration,
-                                  this.Bind<IUserRepository>().To<UserRepository>().BindingConfiguration
+                                  this.Bind<IUserRepository>().To<UserRepository>().BindingConfiguration,
                                   Bind<IPlayerRepository>().To<PlayerRepository>().BindingConfiguration,
                                   Bind<IContributorTeamRepository>().To<ContributorTeamRepository>().BindingConfiguration,
                                   Bind<ITeamRepository>().To<TeamRepository>().BindingConfiguration

@@ -20,8 +20,8 @@
                 && (string.IsNullOrEmpty(entity.Description)
                     || entity.Description.Length <= Constants.Tournament.MAX_DESCRIPTION_LENGTH)
                 //// Season
-                && (string.IsNullOrEmpty(entity.Season)
-                    && entity.Season.Length <= Constants.Tournament.MAX_SEASON_LENGTH)
+                && (entity.Season >= Constants.Tournament.MINIMAL_SEASON_YEAR
+                    && entity.Season <= Constants.Tournament.MAXIMAL_SEASON_YEAR)
                 //// Regulation link
                 && (string.IsNullOrEmpty(entity.RegulationsLink)
                       || entity.RegulationsLink.Length <= Constants.Tournament.MAX_REGULATION_LENGTH);

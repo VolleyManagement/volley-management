@@ -50,8 +50,10 @@
     <Compile Include="Constants.cs" />
     <Compile Include="ContributorsAggregate\Contributor.cs" />
     <Compile Include="ContributorsAggregate\ContributorTeam.cs" />
-    <Compile Include="Players\Player.cs" />
-    <Compile Include="Players\PlayerValidation.cs" />
+    <Compile Include="ContributorsAggregate\IContributorTeamRepository.cs" />
+    <Compile Include="PlayersAggregate\IPlayerRepository.cs" />
+    <Compile Include="PlayersAggregate\Player.cs" />
+    <Compile Include="PlayersAggregate\PlayerValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -59,19 +61,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Specifications\ISpecification.cs" />
+    <Compile Include="TeamsAggregate\ITeamRepository.cs" />
     <Compile Include="TournamentsAggregate\ITournamentRepository.cs" />
     <Compile Include="TournamentsAggregate\TournamentSchemeEnum.cs" />
     <Compile Include="TournamentsAggregate\Tournament.cs" />
+    <Compile Include="TournamentsAggregate\TournamentStateEnum.cs" />
     <Compile Include="TournamentsAggregate\TournamentValidationSpecification.cs" />
     <Compile Include="UsersAggregate\IUserRepository.cs" />
     <Compile Include="UsersAggregate\User.cs" />
     <Compile Include="UsersAggregate\UserValidation.cs" />
-    <Compile Include="Teams\Team.cs" />
-    <Compile Include="Tournaments\EnumExtensions.cs" />
-    <Compile Include="Tournaments\TournamentSchemeEnum.cs" />
-    <Compile Include="Tournaments\Tournament.cs" />
-    <Compile Include="Users\User.cs" />
-    <Compile Include="Users\UserValidation.cs" />
+    <Compile Include="TeamsAggregate\Team.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

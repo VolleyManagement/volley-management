@@ -6,10 +6,10 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.Domain.Players;
-    using VolleyManagement.Domain.Teams;
-    using DAL = VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
+
     using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
@@ -103,8 +103,9 @@
                     ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
                     throw ex;
                 }
-                else if (playerToEdit.TeamId != null
-                         && _teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
+
+                if (playerToEdit.TeamId != null
+                    && this._teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
                 {
                     throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToEdit.TeamId);
                 }

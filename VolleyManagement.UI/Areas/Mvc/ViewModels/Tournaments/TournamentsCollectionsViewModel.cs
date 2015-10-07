@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
     using System.Collections.Generic;
-    using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
     /// Represents tournaments collections

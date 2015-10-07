@@ -2,6 +2,8 @@ namespace VolleyManagement.Data.MsSql
 {
     using System.Data.Entity;
 
+    using VolleyManagement.Data.MsSql.Entities;
+
     /// <summary>
     /// volley management database context
     /// </summary>

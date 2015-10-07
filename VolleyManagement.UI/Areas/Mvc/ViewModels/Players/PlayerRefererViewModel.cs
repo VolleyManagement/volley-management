@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Generic;
 
     /// <summary>
@@ -12,7 +13,7 @@
         /// </summary>
         /// <param name="player">Domain Player model.</param>
         /// <param name="referer">Referer controller name.</param>
-        public PlayerRefererViewModel(Domain.Players.Player player, string referer)
+        public PlayerRefererViewModel(Player player, string referer)
             : base(PlayerViewModel.Map(player), referer)
         {
         }

@@ -6,7 +6,7 @@
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.Players;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
@@ -63,7 +63,7 @@
         /// <returns>View with specific player.</returns>
         public ActionResult Details(int id)
         {
-            Domain.Players.Player player;
+            Player player;
             try
             {
                 player = _playerService.Get(id);

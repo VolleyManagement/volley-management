@@ -8,8 +8,9 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Mappers;
+    using VolleyManagement.Domain.UsersAggregate;
 
-    using User = VolleyManagement.Data.MsSql.User;
+    using User = VolleyManagement.Data.MsSql.Entities.User;
 
     /// <summary>
     /// Defines implementation of the IUserRepository contract.

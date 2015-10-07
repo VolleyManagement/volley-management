@@ -1,9 +1,7 @@
-﻿namespace VolleyManagement.Dal.MsSql
+﻿namespace VolleyManagement.Data.MsSql.Entities
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     /// <summary>
     /// DAL team model

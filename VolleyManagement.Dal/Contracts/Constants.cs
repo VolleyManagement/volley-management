@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Dal.Contracts
+﻿namespace VolleyManagement.Data.Contracts
 {
     /// <summary>
     /// Container for constants.

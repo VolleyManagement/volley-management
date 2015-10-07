@@ -1,15 +1,10 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.Teams;
-    using VolleyManagement.Domain.Players;
-    using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using System.Collections.Generic;

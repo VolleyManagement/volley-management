@@ -1,25 +1,20 @@
-﻿namespace VolleyManagement.Dal.MsSql.Services
+﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Core;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    using System.Text;
-    using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.Dal.MsSql.Mappers;
-    using Dal = VolleyManagement.Dal.MsSql;
-    using Domain = VolleyManagement.Domain.Teams;
+
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.MsSql.Mappers;
+
+    using Dal = VolleyManagement.Data.MsSql.Entities;
+    using Domain = VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
     /// Defines implementation of the ITeamRepository contract.
     /// </summary>
-    internal class TeamRepository : ITeamRepository
+    internal class TeamRepository : Domain.ITeamRepository
     {
-        private const int START_DATABASE_ID_VALUE = 0;
-
         private readonly ObjectSet<Dal.Team> _dalTeams;
 
         private readonly IUnitOfWork _unitOfWork;
@@ -30,8 +25,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public TeamRepository(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _dalTeams = unitOfWork.Context.CreateObjectSet<Dal.Team>();
+            this._unitOfWork = unitOfWork;
+            this._dalTeams = unitOfWork.Context.CreateObjectSet<Dal.Team>();
         }
 
         /// <summary>
@@ -39,16 +34,16 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get { return this._unitOfWork; }
         }
 
         /// <summary>
         /// Gets all teams.
         /// </summary>
         /// <returns>Collection of domain teams.</returns>
-        public IQueryable<Domain.Team> Find()
+        public IQueryable<VolleyManagement.Domain.TeamsAggregate.Team> Find()
         {
-            return _dalTeams.Select(t => new Domain.Team
+            return this._dalTeams.Select(t => new VolleyManagement.Domain.TeamsAggregate.Team
             {
                 Id = t.Id,
                 Name = t.Name,
@@ -64,7 +59,7 @@
         /// <returns>Collection of domain teams.</returns>
         public IQueryable<Domain.Team> FindWhere(System.Linq.Expressions.Expression<Func<Domain.Team, bool>> predicate)
         {
-            return Find().Where(predicate);
+            return this.Find().Where(predicate);
         }
 
         /// <summary>
@@ -74,8 +69,8 @@
         public void Add(Domain.Team newEntity)
         {
             Dal.Team newTeam = DomainToDal.Map(newEntity);
-            _dalTeams.AddObject(newTeam);
-            _unitOfWork.Commit();
+            this._dalTeams.AddObject(newTeam);
+            this._unitOfWork.Commit();
 
             newEntity.Id = newTeam.Id;
         }
@@ -86,26 +81,16 @@
         /// <param name="id">The id of team to remove.</param>
         public void Remove(int id)
         {
-            Domain.Team domainTeam;
-            try
-            {
-                domainTeam = FindWhere(t => t.Id == id).Single();
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new InvalidKeyValueException("Team with requested Id does not exist", id, ex);
-            }
-
             var dalToRemove = new Dal.Team { Id = id };
-            _dalTeams.Attach(dalToRemove);
-            _dalTeams.DeleteObject(dalToRemove);
+            this._dalTeams.Attach(dalToRemove);
+            this._dalTeams.DeleteObject(dalToRemove);
         }
 
         /// <summary>
         /// Updates specified team.
         /// </summary>
         /// <param name="oldEntity">The team to update</param>
-        public void Update(Domain.Team oldEntity)
+        public void Update(VolleyManagement.Domain.TeamsAggregate.Team oldEntity)
         {
             throw new NotImplementedException();
         }

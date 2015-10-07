@@ -1,17 +1,13 @@
-﻿namespace VolleyManagement.Dal.MsSql.Services
+﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Core;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    using System.Text;
-    using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.Dal.MsSql.Mappers;
-    using Dal = VolleyManagement.Dal.MsSql;
-    using Domain = VolleyManagement.Domain.Players;
+
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.MsSql.Mappers;
+    using VolleyManagement.Domain.PlayersAggregate;
 
     /// <summary>
     /// Defines implementation of the IPlayerRepository contract.
@@ -23,7 +19,7 @@
         /// <summary>
         /// Holds object set of DAL users.
         /// </summary>
-        private readonly ObjectSet<Dal.Player> _dalPlayers;
+        private readonly ObjectSet<Entities.Player> _dalPlayers;
 
         /// <summary>
         /// Holds UnitOfWork instance.
@@ -36,8 +32,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public PlayerRepository(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _dalPlayers = unitOfWork.Context.CreateObjectSet<Dal.Player>();
+            this._unitOfWork = unitOfWork;
+            this._dalPlayers = unitOfWork.Context.CreateObjectSet<Entities.Player>();
         }
 
         /// <summary>
@@ -45,16 +41,16 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get { return this._unitOfWork; }
         }
 
         /// <summary>
         /// Gets all players.
         /// </summary>
         /// <returns>Collection of domain players.</returns>
-        public IQueryable<Domain.Player> Find()
+        public IQueryable<Player> Find()
         {
-            return _dalPlayers.Select(p => new Domain.Player
+            return this._dalPlayers.Select(p => new Player
             {
                 Id = p.Id,
                 FirstName = p.FirstName,
@@ -71,20 +67,20 @@
         /// </summary>
         /// <param name="predicate">Condition to find players.</param>
         /// <returns>Collection of domain players.</returns>
-        public IQueryable<Domain.Player> FindWhere(System.Linq.Expressions.Expression<Func<Domain.Player, bool>> predicate)
+        public IQueryable<Player> FindWhere(System.Linq.Expressions.Expression<Func<Player, bool>> predicate)
         {
-            return Find().Where(predicate);
+            return this.Find().Where(predicate);
         }
 
         /// <summary>
         /// Adds new player.
         /// </summary>
         /// <param name="newEntity">The player for adding.</param>
-        public void Add(Domain.Player newEntity)
+        public void Add(Player newEntity)
         {
-            Dal.Player newPlayer = DomainToDal.Map(newEntity);
-            _dalPlayers.AddObject(newPlayer);
-            _unitOfWork.Commit();
+            Entities.Player newPlayer = DomainToDal.Map(newEntity);
+            this._dalPlayers.AddObject(newPlayer);
+            this._unitOfWork.Commit();
             newEntity.Id = newPlayer.Id;
         }
 
@@ -92,7 +88,7 @@
         /// Updates specified player.
         /// </summary>
         /// <param name="oldEntity">The player to update.</param>
-        public void Update(Domain.Player oldEntity)
+        public void Update(Player oldEntity)
         {
             if (oldEntity.Id < START_DATABASE_ID_VALUE)
             {
@@ -101,10 +97,10 @@
                 throw exc;
             }
 
-            Player playerToUpdate;
+            Entities.Player playerToUpdate;
             try
             {
-                playerToUpdate = _dalPlayers.Where(t => t.Id == oldEntity.Id).Single();
+                playerToUpdate = this._dalPlayers.Single(t => t.Id == oldEntity.Id);
             }
             catch (InvalidOperationException e)
             {
@@ -128,9 +124,9 @@
         /// <param name="id">The id of player to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Dal.Player { Id = id };
-            _dalPlayers.Attach(dalToRemove);
-            _dalPlayers.DeleteObject(dalToRemove);
+            var dalToRemove = new Entities.Player { Id = id };
+            this._dalPlayers.Attach(dalToRemove);
+            this._dalPlayers.DeleteObject(dalToRemove);
         }
     }
 }

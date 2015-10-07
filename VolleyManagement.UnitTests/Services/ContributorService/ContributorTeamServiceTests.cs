@@ -6,8 +6,7 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.MsSql.Infrastructure;
+    using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.Services;
 
@@ -95,18 +94,6 @@
         private bool PlayersAreEqual(ContributorTeam x, ContributorTeam y)
         {
             return new ContributorTeamComparer().Compare(x, y) == 0;
-        }
-
-        [TestMethod]
-        public void TestMethod1()
-        {
-            var kernel = new StandardKernel(new NinjectDataAccessModule(null));
-
-            var repo = kernel.Get<IContributorTeamRepository>();
-
-            var data = repo.Find().ToList();
-
-            Assert.IsNotNull(data);
         }
     }
 }

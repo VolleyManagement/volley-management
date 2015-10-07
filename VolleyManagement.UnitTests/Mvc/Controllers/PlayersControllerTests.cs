@@ -9,13 +9,12 @@
     using System.Web.Mvc;
     using System.Web.Routing;
     using Contracts;
-    using Domain.Players;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.UI.App_GlobalResources;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Mvc.ViewModels;

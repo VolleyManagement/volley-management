@@ -1,8 +1,7 @@
-﻿namespace VolleyManagement.Dal.MsSql.Services
+﻿namespace VolleyManagement.Data.MsSql.Infrastructure
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+
     using VolleyManagement.Dal.Contracts;
 
     /// <summary>
@@ -31,7 +30,7 @@
         /// </summary>
         public void Commit()
         {
-            _transaction.Commit();
+            this._transaction.Commit();
         }
 
         /// <summary>
@@ -39,7 +38,7 @@
         /// </summary>
         public void Rollback()
         {
-            _transaction.Rollback();
+            this._transaction.Rollback();
         }
 
         /// <summary>
@@ -47,7 +46,7 @@
         /// </summary>
         public void Dispose()
         {
-            _transaction.Dispose();
+            this._transaction.Dispose();
         }
     }
 }

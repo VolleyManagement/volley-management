@@ -1,7 +1,8 @@
-﻿namespace VolleyManagement.Dal.Contracts
+﻿namespace VolleyManagement.Domain.TeamsAggregate
 {
     using System.Linq;
-    using VolleyManagement.Domain.Teams;
+
+    using VolleyManagement.Data.Contracts;
 
     /// <summary>
     /// Defines specific contract for PlayerRepository

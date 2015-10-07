@@ -4,14 +4,14 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Linq.Expressions;
+
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Dal.Exceptions;
-    using VolleyManagement.Domain.Players;
-    using VolleyManagement.Domain.Teams;
-    using DAL = VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
+
     using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>

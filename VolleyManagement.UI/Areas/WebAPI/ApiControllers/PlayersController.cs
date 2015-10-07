@@ -10,6 +10,7 @@
 
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.Areas.WebApi.Infrastructure;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
@@ -114,7 +115,7 @@
         [AcceptVerbs("POST", "PUT")]
         public IHttpActionResult CreateRef([FromODataUri] int key, string navigationProperty, [FromBody] Uri link)
         {
-            Domain.Players.Player playerToUpdate;
+            Player playerToUpdate;
             try
             {
                 playerToUpdate = _playerService.Get(key);
@@ -188,7 +189,7 @@
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        private IHttpActionResult AssignTeamToPlayer(Domain.Players.Player playerToUpdate, Uri link)
+        private IHttpActionResult AssignTeamToPlayer(Player playerToUpdate, Uri link)
         {
             int teamId;
             try

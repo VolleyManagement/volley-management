@@ -164,7 +164,7 @@
       <Project>{285d93e6-1ad5-4f78-aef6-72b81d81465d}</Project>
       <Name>VolleyManagement.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Dal.MsSql\VolleyManagement.Dal.MsSql.csproj">
+    <ProjectReference Include="..\VolleyManagement.Dal.MsSql\VolleyManagement.Data.MsSql.csproj">
       <Project>{f82ff279-9d06-4494-bc61-1b7ac88a737d}</Project>
       <Name>VolleyManagement.Dal.MsSql</Name>
     </ProjectReference>
@@ -172,7 +172,6 @@
       <Project>{ba2d2bb6-9862-4d96-9d64-54ece7f8ca2c}</Project>
       <Name>VolleyManagement.Crosscutting.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VolleyManagement.Dal\VolleyManagement.Dal.csproj">
     <ProjectReference Include="..\VolleyManagement.Dal\VolleyManagement.Data.csproj">
       <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
       <Name>VolleyManagement.Data</Name>
@@ -194,7 +193,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

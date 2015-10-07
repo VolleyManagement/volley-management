@@ -2,30 +2,12 @@
 {
     using System;
     using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Domain.Properties;
-
-    /// <summary>
-    /// Represents tournament state
-    /// </summary>
-    public enum TournamentStateEnum
-    {
-        Finished,
-        Current,
-        Upcoming,
-        NotStarted
-    }
 
     /// <summary>
     /// Tournament domain class.
     /// </summary>
     public class Tournament
     {
-        private string _name;
-        private string _description;
-        private short _season;
-        private TournamentSchemeEnum _scheme;
-        private string _regulationsLink;
-
         /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
@@ -36,111 +18,31 @@
         /// Gets or sets a value indicating where Name.
         /// </summary>
         /// <value>Name of tournament.</value>
-        public string Name
-        {
-            get
-            {
-                return this._name;
-            }
-
-            set
-            {
-                if (string.IsNullOrEmpty(value) || value.Length > Constants.Tournament.MAX_NAME_LENGTH)
-                {
-                    throw new ArgumentException(Resources.ValidationResultName);
-                }
-
-                this._name = value;
-            }
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Description.
         /// </summary>
         /// <value>Description of tournament.</value>
-        public string Description
-        {
-            get
-            {
-                return this._description;
-            }
-
-            set
-            {
-                if (!string.IsNullOrEmpty(value) && value.Length > Constants.Tournament.MAX_DESCRIPTION_LENGTH)
-                {
-                    throw new ArgumentException(Resources.ValidationResultDescription);
-                }
-                
-                this._description = value;
-            }
-        }
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>
-        public short Season
-        {
-            get
-            {
-                return this._season;
-            }
-
-            set
-            {
-                if (value < Constants.Tournament.MINIMAL_SEASON_YEAR || value > Constants.Tournament.MAXIMAL_SEASON_YEAR)
-                {
-                    throw new ArgumentException(Resources.ValidationTournamentSeason);
-                }
-
-                this._season = value;
-            }
-        }
+        public short Season { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating where Scheme.
         /// </summary>
         /// <value>Scheme of tournament.</value>
-        public TournamentSchemeEnum Scheme
-        {
-            get
-            {
-                return this._scheme;
-            }
-
-            set
-            {
-                if (!Enum.IsDefined(typeof(TournamentSchemeEnum), value))
-                {
-                    throw new ArgumentException(Resources.ValidationResultScheme, "Scheme");
-                }
-
-                this._scheme = value;
-            }
-        }
+        public TournamentSchemeEnum Scheme { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating regulations of tournament.
         /// </summary>
         /// <value>regulations of tournament.</value>
-        public string RegulationsLink
-        {
-            get
-            {
-                return this._regulationsLink;
-            }
-
-            set
-            {
-                if (!string.IsNullOrEmpty(value) && value.Length > Constants.Tournament.MAX_REGULATION_LENGTH)
-                {
-                    throw new ArgumentException(Resources.ValidationResultRegLink);
-                }
-
-                this._regulationsLink = value;
-            }
-        }
+        public string RegulationsLink { get; set; }
 
         /// <summary>
         /// Gets tournament state
@@ -156,7 +58,7 @@
                 if (GamesStart > limitUpcomingTournamentsStartDate)
                 {
                     return TournamentStateEnum.NotStarted;
-        }
+                }
                 else if (GamesStart > now
                     && GamesStart <= limitUpcomingTournamentsStartDate)
                 {
@@ -170,7 +72,7 @@
                 {
                     return TournamentStateEnum.Finished;
                 }
-        }
+            }
         }
 
         /// <summary>

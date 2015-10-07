@@ -1,5 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
+    using VolleyManagement.Data.MsSql.Entities;
+
     using constants = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>
@@ -52,7 +54,7 @@
         /// </summary>
         /// <param name="domainPlayer">Player Domain model</param>
         /// <returns>Player Dal model</returns>
-        public static Player Map(Domain.Players.Player domainPlayer)
+        public static Player Map(Domain.PlayersAggregate.Player domainPlayer)
         {
             Player player = new Player();
             player.Id = domainPlayer.Id;
@@ -71,7 +73,7 @@
         /// </summary>
         /// <param name="domainTeam">Team Domain model</param>
         /// <returns>Team Dal model</returns>
-        public static Team Map(Domain.Teams.Team domainTeam)
+        public static Team Map(Domain.TeamsAggregate.Team domainTeam)
         {
             Team dalTeam = new Team();
             dalTeam.Id = domainTeam.Id;

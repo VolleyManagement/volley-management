@@ -1,10 +1,13 @@
-﻿namespace VolleyManagement.Data.MsSql.Services
+﻿namespace VolleyManagement.Data.MsSql
 {
     using System.Data.Entity.Core;
     using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
 
+    using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.MsSql.Infrastructure;
 
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
@@ -40,7 +43,7 @@
         {
             try
             {
-                _context.SaveChanges();
+                this._context.SaveChanges();
         }
             catch (OptimisticConcurrencyException ex)
             {
@@ -63,11 +66,11 @@
         /// <returns>Current transaction manager</returns>
         public IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel)
         {
-            _context.Connection.Open();
+            this._context.Connection.Open();
 
             // TODO: Revisit connection opening approach
 
-            var transaction = _context.Connection.BeginTransaction(isolationLevel);
+            var transaction = this._context.Connection.BeginTransaction(isolationLevel);
             return new DbTransactionAdapter(transaction);
         }
     }

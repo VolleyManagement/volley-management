@@ -11,6 +11,7 @@
     using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.Users;
+    using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.Services;
 
     /// <summary>

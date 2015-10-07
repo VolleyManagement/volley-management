@@ -1,9 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Services.PlayerService;
-    using VolleyManagement.Domain.Teams;
+
+    using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
     /// Team domain object builder

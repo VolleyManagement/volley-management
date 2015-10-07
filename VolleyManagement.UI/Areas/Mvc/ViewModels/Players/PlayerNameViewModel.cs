@@ -2,8 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.Players;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.App_GlobalResources;
 
     /// <summary>
@@ -64,7 +63,7 @@
         }
         
         #endregion
-        
+
         private static string GetFullName(Player player)
         {
             return player.LastName + " " + player.FirstName;

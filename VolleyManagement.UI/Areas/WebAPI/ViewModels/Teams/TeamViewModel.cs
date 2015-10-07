@@ -1,11 +1,10 @@
 ﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Teams
 {
     using System.ComponentModel.DataAnnotations;
-    using System.Collections.Generic;
     using System.Linq;
 
     using VolleyManagement.Domain;
-    using VolleyManagement.Domain.Teams;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
 

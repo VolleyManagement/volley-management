@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using PlayerService;
-    using VolleyManagement.Domain.Teams;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
+
+    using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
     /// Class for generating test data

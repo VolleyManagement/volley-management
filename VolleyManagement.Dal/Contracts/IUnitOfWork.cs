@@ -3,6 +3,8 @@
     using System;
     using System.Data.Entity.Core.Objects;
 
+    using VolleyManagement.Dal.Contracts;
+
     /// <summary>
     /// Describe methods to work with the store.
     /// </summary>

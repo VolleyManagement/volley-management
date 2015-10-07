@@ -1,8 +1,8 @@
-﻿namespace VolleyManagement.Domain.Players
+﻿namespace VolleyManagement.Domain.PlayersAggregate
 {
     using System;
+
     using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.Teams;
 
     /// <summary>
     /// Player domain class.
@@ -29,7 +29,7 @@
         {
             get
             {
-                return _firstName;
+                return this._firstName;
             }
 
             set
@@ -39,7 +39,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerFirstName, "FirstName");
                 }
 
-                _firstName = value;
+                this._firstName = value;
             }
         }
 
@@ -51,7 +51,7 @@
         {
             get
             {
-                return _lastName;
+                return this._lastName;
             }
 
             set
@@ -61,7 +61,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerLastName, "LastName");
                 }
 
-                _lastName = value;
+                this._lastName = value;
             }
         }
 
@@ -73,7 +73,7 @@
         {
             get
             {
-                return _birthYear;
+                return this._birthYear;
             }
 
             set
@@ -83,7 +83,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerBirthYear, "BirthYear");
                 }
 
-                _birthYear = value;
+                this._birthYear = value;
             }
         }
 
@@ -95,7 +95,7 @@
         {
             get
             {
-                return _height;
+                return this._height;
             }
 
             set
@@ -105,7 +105,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerHeight, "Height");
                 }
 
-                _height = value;
+                this._height = value;
             }
         }
 
@@ -117,7 +117,7 @@
         {
             get
             {
-                return _weight;
+                return this._weight;
             }
 
             set
@@ -127,7 +127,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerWeight, "Weight");
                 }
 
-                _weight = value;
+                this._weight = value;
             }
         }
 

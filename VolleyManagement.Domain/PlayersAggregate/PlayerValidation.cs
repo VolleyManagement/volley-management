@@ -1,11 +1,6 @@
-﻿namespace VolleyManagement.Domain.Players
+﻿namespace VolleyManagement.Domain.PlayersAggregate
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Player validation class.

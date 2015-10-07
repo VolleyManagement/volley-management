@@ -1,18 +1,18 @@
-﻿namespace VolleyManagement.Dal.MsSql.Services
+﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
-    using VolleyManagement.Dal.Contracts;
+
+    using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.ContributorsAggregate;
-    using Dal = VolleyManagement.Dal.MsSql;
 
     /// <summary>
     /// Defines implementation of the IContributorRepository contract.
     /// </summary>
     internal class ContributorTeamRepository : IContributorTeamRepository
     {
-        private readonly ObjectSet<Dal.Contributor> _contribsSet;
+        private readonly ObjectSet<Entities.Contributor> _contribsSet;
 
         /// <summary>
         /// Holds UnitOfWork instance.
@@ -25,8 +25,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public ContributorTeamRepository(IUnitOfWork unitOfWork)
         {
-            _unitOfWork = unitOfWork;
-            _contribsSet = unitOfWork.Context.CreateObjectSet<Dal.Contributor>();
+            this._unitOfWork = unitOfWork;
+            this._contribsSet = unitOfWork.Context.CreateObjectSet<Entities.Contributor>();
         }
 
         /// <summary>
@@ -34,7 +34,7 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get { return this._unitOfWork; }
         }
 
         /// <summary>
@@ -43,7 +43,7 @@
         /// <returns>Collection of teams with contributors</returns>
         public IQueryable<ContributorTeam> Find()
         {
-            var result = _contribsSet.GroupBy(c => c.ContributorTeam)
+            var result = this._contribsSet.GroupBy(c => c.ContributorTeam)
                                      .Select(gr => new ContributorTeam
                                         {
                                             Id = gr.Key.Id,

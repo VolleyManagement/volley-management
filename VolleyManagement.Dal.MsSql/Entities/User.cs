@@ -1,4 +1,4 @@
-namespace VolleyManagement.Data.MsSql
+namespace VolleyManagement.Data.MsSql.Entities
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;

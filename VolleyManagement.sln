@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Domain", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Services", "VolleyManagement.Services\VolleyManagement.Services.csproj", "{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Data", "VolleyManagement.Dal\VolleyManagement.Data.csproj", "{7A32AA11-6E95-4896-9E7A-FC3DF24524EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Data", "VolleyManagement.Data\VolleyManagement.Data.csproj", "{7A32AA11-6E95-4896-9E7A-FC3DF24524EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Data.MsSql", "VolleyManagement.Dal.MsSql\VolleyManagement.Data.MsSql.csproj", "{F82FF279-9D06-4494-BC61-1B7AC88A737D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Data.MsSql", "VolleyManagement.Data.MsSql\VolleyManagement.Data.MsSql.csproj", "{F82FF279-9D06-4494-BC61-1B7AC88A737D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B4668846-428B-464E-AB2F-E1A0577376E5}"
 	ProjectSection(SolutionItems) = preProject

@@ -80,7 +80,7 @@
     <Compile Include="VolleyManagementContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VolleyManagement.Dal\VolleyManagement.Data.csproj">
+    <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj">
       <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
       <Name>VolleyManagement.Data</Name>
     </ProjectReference>
@@ -90,16 +90,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sql\CreateDatabase.sql" />
-    <Content Include="Sql\InsertValues.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Sql\CreateDatabase.sql" />
+    <Content Include="Sql\InsertValues.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

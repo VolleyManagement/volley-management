@@ -1,5 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
+    using constants = VolleyManagement.Domain.Constants.Tournament;
+
     /// <summary>
     /// Maps Domain models to Dal.
     /// </summary>
@@ -15,10 +17,16 @@
             Tournament tournament = new Tournament();
             tournament.Id = domainTournament.Id;
             tournament.Name = domainTournament.Name;
-            tournament.Season = domainTournament.Season;
+            tournament.Season = (byte)(domainTournament.Season - constants.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
             tournament.Description = domainTournament.Description;
             tournament.Scheme = (byte)domainTournament.Scheme;
             tournament.RegulationsLink = domainTournament.RegulationsLink;
+            tournament.GamesStart = domainTournament.GamesStart;
+            tournament.GamesEnd = domainTournament.GamesEnd;
+            tournament.ApplyingPeriodStart = domainTournament.ApplyingPeriodStart;
+            tournament.ApplyingPeriodEnd = domainTournament.ApplyingPeriodEnd;
+            tournament.TransferStart = domainTournament.TransferStart;
+            tournament.TransferEnd = domainTournament.TransferEnd;
             return tournament;
         }
 
@@ -37,6 +45,42 @@
             user.CellPhone = domainUser.CellPhone;
             user.Password = domainUser.Password;
             return user;
+        }
+
+        /// <summary>
+        /// Maps Player model.
+        /// </summary>
+        /// <param name="domainPlayer">Player Domain model</param>
+        /// <returns>Player Dal model</returns>
+        public static Player Map(Domain.Players.Player domainPlayer)
+        {
+            Player player = new Player();
+            player.Id = domainPlayer.Id;
+            player.FirstName = domainPlayer.FirstName;
+            player.LastName = domainPlayer.LastName;
+            player.BirthYear = domainPlayer.BirthYear;
+            player.Height = domainPlayer.Height;
+            player.Weight = domainPlayer.Weight;
+            player.TeamId = domainPlayer.TeamId;
+
+            return player;
+        }
+
+        /// <summary>
+        /// Maps Team model.
+        /// </summary>
+        /// <param name="domainTeam">Team Domain model</param>
+        /// <returns>Team Dal model</returns>
+        public static Team Map(Domain.Teams.Team domainTeam)
+        {
+            Team dalTeam = new Team();
+            dalTeam.Id = domainTeam.Id;
+            dalTeam.Name = domainTeam.Name;
+            dalTeam.CaptainId = domainTeam.CaptainId;
+            dalTeam.Coach = domainTeam.Coach;
+            dalTeam.Achievements = domainTeam.Achievements;
+
+            return dalTeam;
         }
     }
 }

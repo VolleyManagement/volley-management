@@ -27,6 +27,27 @@ namespace VolleyManagement.Data.MsSql
         public virtual DbSet<User> Users { get; set; }
 
         /// <summary>
+        /// Gets or sets the player table.
+        /// </summary>
+        public virtual DbSet<Player> Players { get; set; }
+
+        /// <summary>
+        /// Gets or sets the contributor table.
+        /// </summary>
+        public virtual DbSet<Contributor> Contributors { get; set; }
+
+        /// <summary>
+        /// Gets or sets the contributor team table.
+        /// </summary>
+        public virtual DbSet<ContributorTeam> ContributorTeam { get; set; }
+
+        /// <summary>
+        /// Gets or sets the team table.
+        /// </summary>
+        public virtual DbSet<Team> Teams { get; set; }
+
+
+        /// <summary>
         /// configure models if needed
         /// </summary>
         /// <param name="modelBuilder">model builder</param>

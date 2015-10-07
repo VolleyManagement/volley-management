@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Data.MsSql.Services
 {
+    using System.Data.Entity.Core;
     using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
 
@@ -37,7 +38,14 @@
         /// </summary>
         public void Commit()
         {
-            this._context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+        }
+            catch (OptimisticConcurrencyException ex)
+            {
+                throw new InvalidKeyValueException("Entity with request Id does not exist", ex);
+            }
         }
 
         /// <summary>
@@ -46,6 +54,21 @@
         public void Dispose()
         {
             this._context.Dispose();
+        }
+
+        /// <summary>
+        /// Begins transaction
+        /// </summary>
+        /// <param name="isolationLevel">Level of transaction isolation</param>
+        /// <returns>Current transaction manager</returns>
+        public IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel)
+        {
+            _context.Connection.Open();
+
+            // TODO: Revisit connection opening approach
+
+            var transaction = _context.Connection.BeginTransaction(isolationLevel);
+            return new DbTransactionAdapter(transaction);
         }
     }
 }

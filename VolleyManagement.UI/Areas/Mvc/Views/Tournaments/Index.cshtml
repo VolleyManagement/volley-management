@@ -1,4 +1,5 @@
-﻿@model IEnumerable<VolleyManagement.Domain.TournamentsAggregate.Tournament>
+﻿@using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+@model TournamentsCollectionsViewModel
 
 @{
     ViewBag.Title = Resources.TournamentViews.TournamentsIndexTitle;
@@ -9,30 +10,28 @@
 <p>
     @Html.ActionLink(Resources.TournamentViews.CreateNewTournament, "Create")
 </p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Season)
-        </th>
-        <th></th>
-    </tr>
+<p>
+    <h3>
+        @Resources.TournamentViews.CurrentTournamentsHeader
+    </h3>    
+    @{Html.RenderPartial("TournamentsList", Model.CurrentTournaments);}
+</p>
+<p>
+    <h3>
+        @Resources.TournamentViews.UpcomingTournamentsHeader
+    </h3>
+    @{Html.RenderPartial("TournamentsList", Model.UpcomingTournaments);}
+</p>
+<p>
+    @Html.ActionLink(Resources.TournamentViews.FinishedTournaments, string.Empty, null, 
+        new { @class = "showFinishedTournamenst"})
+</p>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>           
-            @Html.ActionLink(item.Name, "Details", new { id=item.Id })   
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Season)
-        </td>
-        <td>
-            @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id=item.Id }) |
-            @Html.ActionLink(Resources.TournamentViews.Delete, "Delete", new { id=item.Id })  
-        </td>
-    </tr>
-}
+@{ ViewBag.TableId = "id=finished_table"; }
+<p>
+    <h3 id="FinishedHeader">
+        @Resources.TournamentViews.FinishedTournamentsHeader
+    </h3>
 
-</table>
+    @{Html.RenderPartial("TournamentsList", new List<VolleyManagement.Domain.Tournaments.Tournament>());}
+</p>

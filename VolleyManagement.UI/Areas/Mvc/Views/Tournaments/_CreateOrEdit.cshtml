@@ -1,13 +1,23 @@
 @using VolleyManagement.UI.Areas.Mvc
+@using VolleyManagement.UI.Areas.Mvc.Controllers
+@using VolleyManagement.Services;
+@using ValidationKeys = VolleyManagement.Domain.Constants.Tournament;
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
-
+@{
+    const string dateformat = "{0:dd.MM.yyyy}";
+}
 @* This partial view defines form fields that will appear when creating and editing entities *@
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.8.3.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
 </div>
 <div class="editor-field">
     @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessage(ValidationKeys.UNIQUE_NAME_KEY)
     @Html.ValidationMessageFor(model => model.Name)
 </div>
 
@@ -23,7 +33,7 @@
     @Html.LabelFor(model => model.Season)
 </div>
 <div class="editor-field">
-    @Html.DropDownListFor(model => model.Season, new SelectList(Model.SeasonsList))
+    @Html.DropDownListFor(model => model.Season, new SelectList(Model.SeasonsList, "Key", "Value", Model.SelectedSeason))
     @Html.ValidationMessageFor(model => model.Season)
 </div>
 
@@ -43,3 +53,66 @@
     @Html.ValidationMessageFor(model => model.RegulationsLink)
 </div>
 
+<script type="text/javascript">
+    $(function () {
+        $.datepicker.setDefaults({
+            dateFormat: 'dd.mm.yy',
+        });
+        $("#ApplyingPeriodStart").datepicker();
+        $("#ApplyingPeriodEnd").datepicker();
+        $('#GamesStart').datepicker();
+        $("#GamesEnd").datepicker();
+        $("#TransferStart").datepicker();
+        $("#TransferEnd").datepicker();
+    });
+</script>
+<div class="editor-label">
+    @Html.LabelFor(model => model.ApplyingPeriodStart)
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.ApplyingPeriodStart, dateformat, new { @readonly = "readonly" })
+    @Html.ValidationMessage(ValidationKeys.APPLYING_START_DATE_AFTER_END_DATE)
+    @Html.ValidationMessage(ValidationKeys.APPLYING_START_BEFORE_NOW)
+    @Html.ValidationMessageFor(model => model.ApplyingPeriodStart)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.ApplyingPeriodEnd)
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.ApplyingPeriodEnd, dateformat, new { @readonly = "readonly" })
+    @Html.ValidationMessage(ValidationKeys.APPLYING_PERIOD_LESS_THREE_MONTH)
+    @Html.ValidationMessageFor(model => model.ApplyingPeriodEnd)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.GamesStart)
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.GamesStart, dateformat, new { @readonly = "readonly" })
+    @Html.ValidationMessage(ValidationKeys.APPLYING_END_DATE_AFTER_START_GAMES)
+    @Html.ValidationMessageFor(model => model.GamesStart)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.GamesEnd)
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.GamesEnd, dateformat, new { @readonly = "readonly" })
+    @Html.ValidationMessage(ValidationKeys.START_GAMES_AFTER_END_GAMES)
+    @Html.ValidationMessage(ValidationKeys.TRANSFER_END_AFTER_GAMES_END)
+    @Html.ValidationMessageFor(model => model.GamesEnd)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.TransferStart)
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.TransferStart, dateformat, new { @readonly = "readonly" })
+    @Html.ValidationMessage(ValidationKeys.TRANSFER_PERIOD_BEFORE_GAMES_START)
+    @Html.ValidationMessageFor(model => model.TransferStart)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.TransferEnd)
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.TransferEnd, dateformat, new { @readonly = "readonly" })
+    @Html.ValidationMessage(ValidationKeys.TRANSFER_END_BEFORE_TRANSFER_START)
+    @Html.ValidationMessageFor(model => model.TransferEnd)
+</div>

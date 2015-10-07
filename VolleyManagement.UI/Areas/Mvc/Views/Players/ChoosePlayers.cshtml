@@ -1,0 +1,26 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayersListViewModel
+
+@{
+    ViewBag.Title = Resources.PlayerViews.ChoosingPlayers;
+}
+<script src="~/Scripts/TeamOperationScripts.js"></script>
+<script>
+    window.onblur = function () {
+        window.close();
+    }
+</script>
+<h2>@ViewBag.Title</h2>
+<div id="currentPlayersPage">
+    @Html.Partial("_PartialNameViewModelCollection", Model.List)
+</div>
+
+<div id="pagesBar">
+    <ul>
+
+    </ul>
+</div>
+<script>
+    printPagesBar(@Model.PageNumber, @Model.NumberOfPages);
+</script>
+
+

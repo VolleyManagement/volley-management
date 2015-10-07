@@ -1,8 +1,19 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
     using System;
-
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.Properties;
+
+    /// <summary>
+    /// Represents tournament state
+    /// </summary>
+    public enum TournamentStateEnum
+    {
+        Finished,
+        Current,
+        Upcoming,
+        NotStarted
+    }
 
     /// <summary>
     /// Tournament domain class.
@@ -11,7 +22,7 @@
     {
         private string _name;
         private string _description;
-        private string _season;
+        private short _season;
         private TournamentSchemeEnum _scheme;
         private string _regulationsLink;
 
@@ -60,7 +71,7 @@
                 {
                     throw new ArgumentException(Resources.ValidationResultDescription);
                 }
-
+                
                 this._description = value;
             }
         }
@@ -69,7 +80,7 @@
         /// Gets or sets a value indicating where Season.
         /// </summary>
         /// <value>Season of tournament.</value>
-        public string Season
+        public short Season
         {
             get
             {
@@ -78,9 +89,9 @@
 
             set
             {
-                if (string.IsNullOrEmpty(value) || value.Length > Constants.Tournament.MAX_SEASON_LENGTH)
+                if (value < Constants.Tournament.MINIMAL_SEASON_YEAR || value > Constants.Tournament.MAXIMAL_SEASON_YEAR)
                 {
-                    throw new ArgumentException(Resources.ValidationResultSeason);
+                    throw new ArgumentException(Resources.ValidationTournamentSeason);
                 }
 
                 this._season = value;
@@ -102,7 +113,7 @@
             {
                 if (!Enum.IsDefined(typeof(TournamentSchemeEnum), value))
                 {
-                    throw new ArgumentException(Resources.ValidationResultScheme);
+                    throw new ArgumentException(Resources.ValidationResultScheme, "Scheme");
                 }
 
                 this._scheme = value;
@@ -130,5 +141,66 @@
                 this._regulationsLink = value;
             }
         }
+
+        /// <summary>
+        /// Gets tournament state
+        /// </summary>
+        public TournamentStateEnum State
+        {
+            get
+            {
+                DateTime now = TimeProvider.Current.UtcNow;
+                DateTime limitUpcomingTournamentsStartDate
+                    = now.AddMonths(Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
+
+                if (GamesStart > limitUpcomingTournamentsStartDate)
+                {
+                    return TournamentStateEnum.NotStarted;
+        }
+                else if (GamesStart > now
+                    && GamesStart <= limitUpcomingTournamentsStartDate)
+                {
+                    return TournamentStateEnum.Upcoming;
+                }
+                else if (GamesStart <= now && GamesEnd >= now)
+                {
+                    return TournamentStateEnum.Current;
+                }
+                else
+                {
+                    return TournamentStateEnum.Finished;
+                }
+        }
+        }
+
+        /// <summary>
+        /// Gets or sets tournament start
+        /// </summary>
+        public DateTime GamesStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the tournament end
+        /// </summary>
+        public DateTime GamesEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets start registration date of a tournament
+        /// </summary>
+        public DateTime ApplyingPeriodStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets end registration date of a tournament
+        /// </summary>
+        public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets transfer end of a tournament
+        /// </summary>
+        public DateTime TransferEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets transfer start of a tournament
+        /// </summary>
+        public DateTime TransferStart { get; set; }
     }
 }

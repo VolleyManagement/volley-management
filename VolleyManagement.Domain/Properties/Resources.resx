@@ -117,46 +117,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="InvalidPeriodTransfer" xml:space="preserve">
+    <value>Трансфер должен начинаться до начала турнира</value>
+  </data>
+  <data name="InvalidTransferEndpoint" xml:space="preserve">
+    <value>Окончание трансферного периода должно быть раньше окончания игр</value>
+  </data>
+  <data name="InvelidPeriodTournament" xml:space="preserve">
+    <value>Регистрация на турнир должна быть раньше чем его начало</value>
+  </data>
+  <data name="LateRegistrationDates" xml:space="preserve">
+    <value>Вы не можете указывать начало периода заявок в прошлом</value>
+  </data>
   <data name="TournamentNameMustBeUnique" xml:space="preserve">
-    <value>The name of the tournament must be unique</value>
+    <value>Название турнира должно быть уникальным</value>
+  </data>
+  <data name="UniqueNameMessage" xml:space="preserve">
+    <value>Имя турнира должно быть уникальным</value>
   </data>
   <data name="UserEmailMustBeUnique" xml:space="preserve">
-    <value>The user email must be unique.</value>
+    <value>Email пользователя должен быть уникальным</value>
   </data>
   <data name="UserNameAndEmailMustBeUnique" xml:space="preserve">
-    <value>The user name and email must be unique.</value>
+    <value>Имя пользователя и email должны быть уникальны</value>
   </data>
   <data name="UserNameMustBeUnique" xml:space="preserve">
-    <value>The user name must be unique.</value>
+    <value>Имя пользователя должно быть уникально</value>
   </data>
   <data name="ValidationCellPhone" xml:space="preserve">
-    <value>Plese, enter the telepnone correctly</value>
+    <value>Пожалуйста, введите телефон правильно</value>
   </data>
   <data name="ValidationEmail" xml:space="preserve">
-    <value>Plese, enter the email correctly</value>
+    <value>Пожалуйста, введите email правильно</value>
   </data>
   <data name="ValidationFullName" xml:space="preserve">
-    <value>Plese, enter the full name correctly</value>
+    <value>Пожалуйста, введите имя правильно</value>
   </data>
   <data name="ValidationPassword" xml:space="preserve">
-    <value>Password cann't be empty!</value>
+    <value>Пароль не может быть пустым</value>
+  </data>
+  <data name="ValidationPlayerBirthYear" xml:space="preserve">
+    <value>Пожалуйста, введите дату рождения верно</value>
+  </data>
+  <data name="ValidationPlayerFirstName" xml:space="preserve">
+    <value>Пожалуйста, введите имя корректно</value>
+  </data>
+  <data name="ValidationPlayerHeight" xml:space="preserve">
+    <value>Пожалуйста, введите рост корректно</value>
+  </data>
+  <data name="ValidationPlayerLastName" xml:space="preserve">
+    <value>Пожалуйста, введите фамилию корректно</value>
+  </data>
+  <data name="ValidationPlayerWeight" xml:space="preserve">
+    <value>Пожалуйта, введите вес корректно</value>
   </data>
   <data name="ValidationResultDescription" xml:space="preserve">
-    <value>Please, reduce the description text</value>
+    <value>Пожалуйста, уменьшите текст описания</value>
   </data>
   <data name="ValidationResultName" xml:space="preserve">
-    <value>Please, enter the tournament name</value>
+    <value>Пожалуйста, введите название турнира</value>
   </data>
   <data name="ValidationResultRegLink" xml:space="preserve">
-    <value>Please, reduce the link text</value>
+    <value>Увеличен размер email</value>
   </data>
   <data name="ValidationResultScheme" xml:space="preserve">
-    <value>Please, enter the scheme correctly</value>
+    <value>Пожалуйста, введите схему корректно</value>
   </data>
   <data name="ValidationResultSeason" xml:space="preserve">
-    <value>Please, enter the season correctly</value>
+    <value>Пожалуйста, введите данные в поле сезон корректно</value>
+  </data>
+  <data name="ValidationTournamentSeason" xml:space="preserve">
+    <value>Пожалуйста, введите дату начала сезна корректно</value>
   </data>
   <data name="ValidationUserName" xml:space="preserve">
-    <value>Plese, enter the user name correctly</value>
+    <value>Пожалуйста, введите имя пользователя корректно</value>
+  </data>
+  <data name="WrongRegistrationDatesPeriod" xml:space="preserve">
+    <value>Начало периода заявок должно быть раньше чем его окончание</value>
+  </data>
+  <data name="WrongRegistrationGames" xml:space="preserve">
+    <value>Период заявок должен следовать перед началом игр</value>
+  </data>
+  <data name="WrongStartTournamentDates" xml:space="preserve">
+    <value>Начальная дата турнира должна следовать перед ее окончанием</value>
+  </data>
+  <data name="WrongStartTransferDates" xml:space="preserve">
+    <value>Начало трансфера должно быть после начала турнира</value>
+  </data>
+  <data name="WrongThreeMonthRule" xml:space="preserve">
+    <value>Период регистрации менее чем 3 месяца</value>
+  </data>
+  <data name="WrongTransferPeriod" xml:space="preserve">
+    <value>Начало трансферного периода должно быть раньше чем его окончание</value>
+  </data>
+  <data name="WrongTransferStart" xml:space="preserve">
+    <value>Начало трансферного окна должно быть после начала игр</value>
   </data>
 </root>

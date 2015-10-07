@@ -27,7 +27,7 @@
                                         .WithDescription("Volley")
                                         .WithName("test tournament")
                                         .WithScheme(TournamentSchemeEnum.One)
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
             var expected = new TournamentBuilder()
@@ -35,7 +35,7 @@
                                         .WithDescription("Volley")
                                         .WithName("test tournament")
                                         .WithScheme(TournamentSchemeEnum.One)
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
 

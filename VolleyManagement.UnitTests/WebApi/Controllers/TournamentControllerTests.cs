@@ -1,20 +1,25 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net;
     using System.Web.Http.OData.Results;
     using System.Web.Http.Results;
+    using System.Web.OData;
+    using System.Web.OData.Results;
 
     using Contracts;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using Services.TournamentService;
+    using Services.TournamentService;       
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
+    using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
@@ -179,7 +184,7 @@
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
             controller.ModelState.Clear();
-            var notValidViewModel = new TournamentViewModelBuilder().WithSeason("12345678910").Build();
+            var notValidViewModel = new TournamentViewModelBuilder().WithSeason(300).Build();
             controller.ModelState.AddModelError("NotValidSeason", "Season field isn't valid");
 
             // Act
@@ -222,6 +227,45 @@
         }
 
         /// <summary>
+        /// Test Post method. Does method catch ArgumentException
+        /// and returns BadRequest with some info
+        /// </summary>
+        [TestMethod]
+        public void Post_CatchArgumentExeption_ReturnBadRequest()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+
+            // Act
+            var result = controller.Post(new TournamentViewModelBuilder().WithScheme("5").Build())
+                as InvalidModelStateResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ModelState.Count > 0);
+        }
+
+        /// <summary>
+        /// Test Post method. Does method catch TournamentValidationException
+        /// and returns BadRequest with some info
+        /// </summary>
+        [TestMethod]
+        public void Post_CatchTournamentValidationException_ReturnBadRequest()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            _tournamentServiceMock.Setup(
+                ts => ts.Create(It.IsAny<Tournament>())).Throws(new TournamentValidationException());
+
+            // Act
+            var result = controller.Post(new TournamentViewModelBuilder().Build()) as InvalidModelStateResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.ModelState.Count > 0);
+        }
+
+        /// <summary>
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
@@ -252,11 +296,13 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            controller.Put(input.Id, input);
+            controller.Put(input);
 
             // Assert
             var comparer = new TournamentComparer();
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)), Times.Once());
+            _tournamentServiceMock.Verify(
+                ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)),
+                Times.Once());
         }
 
         /// <summary>
@@ -271,7 +317,7 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actualResult = controller.Put(input.Id, input) as InvalidModelStateResult;
+            var actualResult = controller.Put(input) as InvalidModelStateResult;
             var actualCorrectErrorCount = actualResult.ModelState.Single(msvp => msvp.Key == KEY_FOR_EXCEPTION_MESSAGE).Value
                                                                     .Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
 
@@ -294,14 +340,14 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input) as BadRequestErrorMessageResult;
+            var actual = controller.Put(input) as BadRequestErrorMessageResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
             Assert.IsNotNull(actual);
             Assert.AreEqual<string>(actual.Message, EXCEPTION_MESSAGE);
         }
-
+        
         /// <summary>
         /// Test for Put method. The method should return "Internal server error" status
         /// </summary>
@@ -314,7 +360,7 @@
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
-            var actual = controller.Put(input.Id, input) is InternalServerErrorResult;
+            var actual = controller.Put(input) is InternalServerErrorResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
@@ -334,7 +380,7 @@
                                         .WithName("test")
                                         .WithDescription("Volley")
                                         .WithScheme(TournamentSchemeEnum.Two)
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
             var expected = new TournamentViewModelBuilder()
@@ -342,7 +388,7 @@
                                         .WithName("test")
                                         .WithDescription("Volley")
                                         .WithScheme("2")
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
 
@@ -366,7 +412,7 @@
                                         .WithDescription("Volley")
                                         .WithName("test tournament")
                                         .WithScheme("2.5")
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
             var expected = new TournamentBuilder()
@@ -374,7 +420,7 @@
                                         .WithDescription("Volley")
                                         .WithName("test tournament")
                                         .WithScheme(TournamentSchemeEnum.TwoAndHalf)
-                                        .WithSeason("2016/2017")
+                                        .WithSeason(2016)
                                         .WithRegulationsLink("volley.dp.ua")
                                         .Build();
 
@@ -383,6 +429,37 @@
 
             // Assert
             AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should invoke GetActual() method of ITournamentService
+        /// </summary>
+        public void GetActual_ActualTournamentsRequest_GetActualCalled()
+        {
+            // Act
+            var sut = this._kernel.Get<TournamentsController>();
+            sut.GetActual();
+
+            // Assert
+            _tournamentServiceMock.Verify(m => m.GetActual(), Times.Once());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should return JavaScript Object Notation collection
+        /// </summary>
+        [TestMethod]
+        public void GetActual_ServiceGetActualCalled_JsonResultReturned()
+        {
+            // Arrange
+            var sut = this._kernel.Get<TournamentsController>();
+
+            // Act
+            var result = sut.GetActual() as JsonResult<IQueryable<TournamentViewModel>>;
+            var actual = result.Content.ToList();
+
+            // Assert
+            Assert.IsNotNull(result);
+            _tournamentServiceMock.Verify(ts => ts.GetActual(), Times.Once());
         }
 
         /// <summary>

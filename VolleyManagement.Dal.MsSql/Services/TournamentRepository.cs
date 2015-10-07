@@ -51,9 +51,15 @@
                     Name = t.Name,
                     Description = t.Description,
                     RegulationsLink = t.RegulationsLink,
-                    Scheme = (TournamentSchemeEnum)t.Scheme,
-                    Season = t.Season
-                });
+                    Scheme = (Domain.TournamentSchemeEnum)t.Scheme,
+                    Season = (short)(VolleyManagement.Domain.Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB + t.Season),
+                    GamesStart = t.GamesStart,
+                    GamesEnd = t.GamesEnd,
+                    ApplyingPeriodStart = t.ApplyingPeriodStart,
+                    ApplyingPeriodEnd = t.ApplyingPeriodEnd,
+                    TransferEnd = t.TransferEnd,
+                    TransferStart = t.TransferStart
+                }).ToArray().AsQueryable();
         }
 
         /// <summary>
@@ -90,8 +96,15 @@
             tournamentToUpdate.Description = oldEntity.Description;
             tournamentToUpdate.RegulationsLink = oldEntity.RegulationsLink;
             tournamentToUpdate.Scheme = (byte)oldEntity.Scheme;
-            tournamentToUpdate.Season = oldEntity.Season;
-            this._dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
+            tournamentToUpdate.Season = (byte)(oldEntity.Season
+                - VolleyManagement.Domain.Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
+            tournamentToUpdate.GamesStart = oldEntity.GamesStart;
+            tournamentToUpdate.GamesEnd = oldEntity.GamesEnd;
+            tournamentToUpdate.ApplyingPeriodStart = oldEntity.ApplyingPeriodStart;
+            tournamentToUpdate.ApplyingPeriodEnd = oldEntity.ApplyingPeriodEnd;
+            tournamentToUpdate.TransferStart = oldEntity.TransferStart;
+            tournamentToUpdate.TransferEnd = oldEntity.TransferEnd;
+            _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 
         /// <summary>

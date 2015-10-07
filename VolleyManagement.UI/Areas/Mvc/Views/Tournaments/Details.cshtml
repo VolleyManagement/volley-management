@@ -1,5 +1,6 @@
 @model VolleyManagement.Domain.TournamentsAggregate.Tournament
 @using VolleyManagement.Domain.Tournaments
+@using VolleyManagement.UI.Areas.Mvc;
 
 @{
     ViewBag.Title = Resources.TournamentViews.TournamentDetailsTitle;
@@ -17,13 +18,32 @@
     <div class="display-field">@Html.DisplayFor(model => model.Description)</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Season)</div>
-    <div class="display-field">@Model.Season</div>
+    <div class="display-field">@Html.DisplaySeason(Model.Season)</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Scheme)</div>
     <div class="display-field">@Model.Scheme.ToDescription()</div>
 
     <div class="display-label">@Html.LabelFor(model => model.RegulationsLink)</div>
     <div class="display-field"><a href="@Html.DisplayFor(model => model.RegulationsLink)" target="_blank">@Model.Name</a></div>
+
+    <div class="display-label">@Html.LabelFor(model => model.ApplyingPeriodStart)</div>
+    <div class="display-field">@Model.ApplyingPeriodStart.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.ApplyingPeriodEnd)</div>
+    <div class="display-field">@Model.ApplyingPeriodEnd.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.GamesStart)</div>
+    <div class="display-field">@Model.GamesStart.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.GamesEnd)</div>
+    <div class="display-field">@Model.GamesEnd.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.TransferStart)</div>
+    <div class="display-field">@Model.TransferStart.ToShortDateString()</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.TransferEnd)</div>
+    <div class="display-field">@Model.TransferEnd.ToShortDateString()</div>
+
 </fieldset>
 <p>
     @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id=Model.Id }) |

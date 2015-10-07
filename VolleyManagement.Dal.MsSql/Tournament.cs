@@ -27,11 +27,10 @@ namespace VolleyManagement.Data.MsSql
         public byte Scheme { get; set; }
 
         /// <summary>
-        /// Gets or sets the tournament season
+        /// Gets or sets the tournament season as a byte offset from the 1900
         /// </summary>
         [Required]
-        [StringLength(9)]
-        public string Season { get; set; }
+        public byte Season { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament description
@@ -44,5 +43,41 @@ namespace VolleyManagement.Data.MsSql
         /// </summary>
         [StringLength(255)]
         public string RegulationsLink { get; set; }
+
+        /// <summary>
+        /// Gets or sets start of a tournament
+        /// </summary>
+        [Required]
+        public DateTime GamesStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets end of a tournament
+        /// </summary>
+        [Required]
+        public DateTime GamesEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets start of a transfer period
+        /// </summary>
+        [Required]
+        public DateTime TransferStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets end of a transfer period
+        /// </summary>
+        [Required]
+        public DateTime TransferEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets start of a tournament
+        /// </summary>
+        [Required]
+        public DateTime ApplyingPeriodStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets end of a tournament registration
+        /// </summary>
+        [Required]
+        public DateTime ApplyingPeriodEnd { get; set; }
     }
 }

@@ -1,0 +1,25 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayerViewModel
+
+@{
+    ViewBag.Title = Resources.PlayerViews.CreatePlayerTitle;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>@Resources.PlayerViews.PlayerLegend</legend>
+
+        @Html.Partial("_CreateOrEdit",Model)
+
+        <p>
+            <input type="submit" value="@Resources.PlayerViews.Create"/>
+        </p>
+    </fieldset>
+
+    <div>
+        @Html.ActionLink(Resources.PlayerViews.BackToList, "Index")
+    </div>
+}

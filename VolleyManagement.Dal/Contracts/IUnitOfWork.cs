@@ -17,5 +17,12 @@
         /// Commits all the changes the store.
         /// </summary>
         void Commit();
+
+        /// <summary>
+        /// Begins transaction
+        /// </summary>
+        /// <param name="isolationLevel">Level of transaction isolation</param>
+        /// <returns>Manager of transaction</returns>
+        IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel);
     }
 }

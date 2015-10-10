@@ -89,20 +89,3 @@ ALTER TABLE dbo.Players
 ADD CONSTRAINT FK_Players_TeamId_Teams_Id 
 FOREIGN KEY (TeamId) REFERENCES dbo.Teams(Id);     
 GO
-
-
-CREATE TABLE dbo.ContributorTeam(
-  Id int identity(1, 1) NOT NULL 
-    CONSTRAINT PK_ContributorTeam_Id PRIMARY KEY CLUSTERED,
-  Name nvarchar(20) NOT NULL,
-  CourseDirection nvarchar(20) NOT NULL
-);
-GO
-
-CREATE TABLE dbo.Contributors(
-  Id int identity(1, 1) NOT NULL 
-    CONSTRAINT PK_Contributors_Id PRIMARY KEY CLUSTERED,
-  Name nvarchar(30) NOT NULL,
-  ContributorTeamId int FOREIGN KEY  REFERENCES ContributorTeam(Id)
-);
-GO

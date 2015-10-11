@@ -11,9 +11,9 @@
     {
         private string _firstName;
         private string _lastName;
-        private int? _birthYear;
-        private int? _height;
-        private int? _weight;
+        private short? _birthYear;
+        private short? _height;
+        private short? _weight;
 
         /// <summary>
         /// Gets or sets a value indicating where Id.
@@ -69,7 +69,7 @@
         /// Gets or sets a value indicating where BirthYear.
         /// </summary>
         /// <value>Birth year.</value>
-        public int? BirthYear
+        public short? BirthYear
         {
             get
             {
@@ -91,7 +91,7 @@
         /// Gets or sets a value indicating where Height.
         /// </summary>
         /// <value>The height.</value>
-        public int? Height
+        public short? Height
         {
             get
             {
@@ -113,7 +113,7 @@
         /// Gets or sets a value indicating where Weight.
         /// </summary>
         /// <value>The weight.</value>
-        public int? Weight
+        public short? Weight
         {
             get
             {

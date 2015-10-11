@@ -56,11 +56,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\Constants.cs" />
-    <Compile Include="Contracts\IDbTransaction.cs" />
+    <Compile Include="Contracts\IQuery.cs" />
+    <Compile Include="Contracts\IQueryCriterion.cs" />
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\IUnitOfWork.cs" />
+    <Compile Include="Exceptions\InvalidEntityException.cs" />
     <Compile Include="Exceptions\InvalidKeyValueException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\Tournaments\FirstByNameCriterion.cs" />
+    <Compile Include="Queries\Tournaments\GetAllCriterion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

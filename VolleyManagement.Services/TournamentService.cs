@@ -4,6 +4,8 @@
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
 
     using ExceptionParams = VolleyManagement.Domain.Constants.Tournament;
@@ -16,13 +18,19 @@
     {
         private readonly ITournamentRepository _tournamentRepository;
 
+        private readonly IQuery<Tournament, FirstByNameCriterion> _firstByNameQuery;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentService"/> class
         /// </summary>
-        /// <param name="tournamentRepository">The tournament repository</param>
-        public TournamentService(ITournamentRepository tournamentRepository)
+        /// <param name="tournamentRepository"> The tournament repository </param>
+        /// <param name="firstByNameQuery"> First By Name object query </param>
+        public TournamentService(
+                 ITournamentRepository tournamentRepository,
+                 IQuery<Tournament, FirstByNameCriterion> firstByNameQuery)
         {
             _tournamentRepository = tournamentRepository;
+            _firstByNameQuery = firstByNameQuery;
         }
 
         /// <summary>
@@ -63,7 +71,7 @@
         {
             if (tournamentToCreate != null)
             {
-            IsTournamentNameUnique(tournamentToCreate);
+                IsTournamentNameUnique(tournamentToCreate);
                 AreDatesValid(tournamentToCreate);
             }
 
@@ -88,7 +96,7 @@
         /// <param name="tournamentToEdit">Tournament to edit</param>
         public void Edit(Tournament tournamentToEdit)
         {
-            IsTournamentNameUnique(tournamentToEdit);
+            IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -107,10 +115,16 @@
         /// Checks whether tournament name is unique or not.
         /// </summary>
         /// <param name="newTournament">tournament to edit or create</param>
-        private void IsTournamentNameUnique(Tournament newTournament)
+        /// <param name="isUpdate">Specifies operation</param>
+        private void IsTournamentNameUnique(Tournament newTournament, bool isUpdate = false)
         {
-            var tournament = _tournamentRepository.FindWhere(t => t.Name == newTournament.Name
-                && t.Id != newTournament.Id).FirstOrDefault();
+            var param = new FirstByNameCriterion { Name = newTournament.Name };
+            if (isUpdate)
+            {
+                param.EntityId = newTournament.Id;
+            }
+
+            var tournament = _firstByNameQuery.Execute(param);
 
             if (tournament != null)
             {

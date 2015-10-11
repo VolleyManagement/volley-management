@@ -95,7 +95,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer()); 
+            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -342,7 +342,7 @@
             Assert.IsNotNull(actual);
             Assert.AreEqual<string>(actual.Message, EXCEPTION_MESSAGE);
         }
-        
+
         /// <summary>
         /// Test for Put method. The method should return "Internal server error" status
         /// </summary>

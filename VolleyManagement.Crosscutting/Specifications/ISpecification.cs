@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Domain.Specifications
+﻿namespace VolleyManagement.Crosscutting.Specifications
 {
     /// <summary>
     /// The Specification interface.
@@ -7,10 +7,10 @@
     public interface ISpecification<in T>
     {
         /// <summary>
-        /// The is satisfied by.
+        /// Verifies that entity matches specification
         /// </summary>
         /// <param name="entity"> The entity to test </param>
-        /// <returns> The <see cref="bool"/>. </returns>
+        /// <returns> Results of the match </returns>
         bool IsSatisfiedBy(T entity);
     }
 }

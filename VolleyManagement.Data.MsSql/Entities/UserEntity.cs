@@ -1,13 +1,11 @@
 namespace VolleyManagement.Data.MsSql.Entities
 {
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
     /// DAL user model
     /// </summary>
-    [Table("Users")]
-    public partial class User
+    public class UserEntity
     {
         /// <summary>
         /// Gets or sets id of user

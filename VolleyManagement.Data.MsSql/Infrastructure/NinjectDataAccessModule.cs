@@ -9,7 +9,6 @@
 
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Repositories;
-    using VolleyManagement.Data.MsSql.Services;
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;

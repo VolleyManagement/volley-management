@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
+    using System;
     using System.Linq;
 
     using VolleyManagement.Data.Contracts;
@@ -13,6 +14,7 @@
         /// Gets all tournaments.
         /// </summary>
         /// <returns>Collection of tournaments from the repository.</returns>
+        [Obsolete("Use Object Query pattern")]
         IQueryable<Tournament> Find();
     }
 }

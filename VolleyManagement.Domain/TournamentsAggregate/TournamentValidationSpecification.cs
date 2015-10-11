@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
-    using VolleyManagement.Domain.Specifications;
+    using VolleyManagement.Crosscutting.Specifications;
 
     /// <summary>
     /// The tournament validation specification.

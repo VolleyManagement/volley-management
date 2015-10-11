@@ -2,8 +2,6 @@
 {
     using System.Linq;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Dal.Contracts;
-    using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>

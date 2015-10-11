@@ -21,6 +21,7 @@
         /// </summary>
         /// <param name="predicate">Condition to get T type elements.</param>
         /// <returns>Elements specified by the condition.</returns>
+        [Obsolete("Use Object Query pattern")]
         IQueryable<T> FindWhere(Expression<Func<T, bool>> predicate);
 
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
-    using System.Data.Entity.Core.Objects;
+    using System.Data.Entity;
     using System.Linq;
 
     using VolleyManagement.Data.Contracts;
@@ -15,9 +15,9 @@
     /// </summary>
     internal class TeamRepository : Domain.ITeamRepository
     {
-        private readonly ObjectSet<Dal.Team> _dalTeams;
+        private readonly DbSet<Dal.TeamEntity> _dalTeams;
 
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly VolleyUnitOfWork _unitOfWork;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamRepository"/> class.
@@ -25,8 +25,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public TeamRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
-            this._dalTeams = unitOfWork.Context.CreateObjectSet<Dal.Team>();
+            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            this._dalTeams = _unitOfWork.Context.Teams;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@
                 Id = t.Id,
                 Name = t.Name,
                 Coach = t.Coach,
-                CaptainId = t.CaptainId
+                CaptainId = t.Captain.Id
             });
         }
 
@@ -68,8 +68,8 @@
         /// <param name="newEntity">The team for adding.</param>
         public void Add(Domain.Team newEntity)
         {
-            Dal.Team newTeam = DomainToDal.Map(newEntity);
-            this._dalTeams.AddObject(newTeam);
+            Dal.TeamEntity newTeam = DomainToDal.Map(newEntity);
+            this._dalTeams.Add(newTeam);
             this._unitOfWork.Commit();
 
             newEntity.Id = newTeam.Id;
@@ -81,9 +81,9 @@
         /// <param name="id">The id of team to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Dal.Team { Id = id };
+            var dalToRemove = new Dal.TeamEntity { Id = id };
             this._dalTeams.Attach(dalToRemove);
-            this._dalTeams.DeleteObject(dalToRemove);
+            this._dalTeams.Remove(dalToRemove);
         }
 
         /// <summary>

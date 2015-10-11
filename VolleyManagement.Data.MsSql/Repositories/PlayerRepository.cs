@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
-    using System.Data.Entity.Core.Objects;
+    using System.Data.Entity;
     using System.Linq;
 
     using VolleyManagement.Data.Contracts;
@@ -19,12 +19,12 @@
         /// <summary>
         /// Holds object set of DAL users.
         /// </summary>
-        private readonly ObjectSet<Entities.Player> _dalPlayers;
+        private readonly DbSet<Entities.PlayerEntity> _dalPlayers;
 
         /// <summary>
         /// Holds UnitOfWork instance.
         /// </summary>
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly VolleyUnitOfWork _unitOfWork;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerRepository"/> class.
@@ -32,8 +32,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public PlayerRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
-            this._dalPlayers = unitOfWork.Context.CreateObjectSet<Entities.Player>();
+            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            this._dalPlayers = _unitOfWork.Context.Players;
         }
 
         /// <summary>
@@ -57,8 +57,7 @@
                 LastName = p.LastName,
                 BirthYear = p.BirthYear,
                 Height = p.Height,
-                Weight = p.Weight,
-                TeamId = p.TeamId
+                Weight = p.Weight
             });
         }
 
@@ -78,8 +77,8 @@
         /// <param name="newEntity">The player for adding.</param>
         public void Add(Player newEntity)
         {
-            Entities.Player newPlayer = DomainToDal.Map(newEntity);
-            this._dalPlayers.AddObject(newPlayer);
+            Entities.PlayerEntity newPlayer = DomainToDal.Map(newEntity);
+            this._dalPlayers.Add(newPlayer);
             this._unitOfWork.Commit();
             newEntity.Id = newPlayer.Id;
         }
@@ -97,7 +96,7 @@
                 throw exc;
             }
 
-            Entities.Player playerToUpdate;
+            Entities.PlayerEntity playerToUpdate;
             try
             {
                 playerToUpdate = this._dalPlayers.Single(t => t.Id == oldEntity.Id);
@@ -115,7 +114,7 @@
             playerToUpdate.BirthYear = oldEntity.BirthYear;
             playerToUpdate.Height = oldEntity.Height;
             playerToUpdate.Weight = oldEntity.Weight;
-            playerToUpdate.TeamId = oldEntity.TeamId;
+            // playerToUpdate.TeamId = oldEntity.TeamId;
         }
 
         /// <summary>
@@ -124,9 +123,9 @@
         /// <param name="id">The id of player to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Entities.Player { Id = id };
+            var dalToRemove = new Entities.PlayerEntity { Id = id };
             this._dalPlayers.Attach(dalToRemove);
-            this._dalPlayers.DeleteObject(dalToRemove);
+            this._dalPlayers.Remove(dalToRemove);
         }
     }
 }

@@ -11,14 +11,12 @@
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Services.TeamService;
-    using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -34,8 +32,6 @@
         private readonly Mock<ITeamRepository> _teamRepositoryMock = new Mock<ITeamRepository>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
-
-        private readonly Mock<IDbTransaction> _dbTransaction = new Mock<IDbTransaction>();
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
 
@@ -55,8 +51,6 @@
 
             _playerRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
-
-            _unitOfWorkMock.Setup(u => u.BeginTransaction(It.IsAny<IsolationLevel>())).Returns(_dbTransaction.Object);
         }
 
         /// <summary>

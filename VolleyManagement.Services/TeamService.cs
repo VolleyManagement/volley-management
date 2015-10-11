@@ -7,12 +7,9 @@
 
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
-
-    using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
     /// Defines TeamService
@@ -49,34 +46,29 @@
         /// <param name="teamToCreate">A Team to create.</param>
         public void Create(Team teamToCreate)
         {
-            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            Player captain = _playerRepository.FindWhere(p => p.Id == teamToCreate.CaptainId).SingleOrDefault();
+            if (captain == null)
             {
-                Player captain = _playerRepository.FindWhere(p => p.Id == teamToCreate.CaptainId).SingleOrDefault();
-                if (captain == null)
-                {
-                    throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.CaptainId);
-                }
-
-                // Check if captain in teamToCreate is captain of another team
-                if (captain.TeamId != null)
-                {
-                    var existTeam = GetPlayerLedTeam(captain.Id);
-                    if (existTeam != null)
-                    {
-                        var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-                        ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existTeam.Id;
-                        throw ex;
-                    }
-                }
-
-                _teamRepository.Add(teamToCreate);
-
-                captain.TeamId = teamToCreate.Id;
-                _playerRepository.Update(captain);
-                _playerRepository.UnitOfWork.Commit();
-
-                transaction.Commit();
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, teamToCreate.CaptainId);
             }
+
+            // Check if captain in teamToCreate is captain of another team
+            if (captain.TeamId != null)
+            {
+                var existTeam = GetPlayerLedTeam(captain.Id);
+                if (existTeam != null)
+                {
+                    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
+                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existTeam.Id;
+                    throw ex;
+                }
+            }
+
+            _teamRepository.Add(teamToCreate);
+
+            captain.TeamId = teamToCreate.Id;
+            _playerRepository.Update(captain);
+            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -105,27 +97,23 @@
         /// <param name="teamId">The id of team to delete.</param>
         public void Delete(int teamId)
         {
-            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            try
             {
-                try
-                {
-                    _teamRepository.Remove(teamId);
-                }
-                catch (InvalidKeyValueException ex)
-                {
-                    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId, ex);
-                }
-
-                IEnumerable<Player> roster = GetTeamRoster(teamId);
-                foreach (var player in roster)
-                {
-                    player.TeamId = null;
-                    _playerRepository.Update(player);
-                }
-
-                _teamRepository.UnitOfWork.Commit();
-                transaction.Commit();
+                _teamRepository.Remove(teamId);
             }
+            catch (InvalidKeyValueException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId, ex);
+            }
+
+            IEnumerable<Player> roster = GetTeamRoster(teamId);
+            foreach (var player in roster)
+            {
+                player.TeamId = null;
+                _playerRepository.Update(player);
+            }
+
+            _teamRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -155,37 +143,33 @@
         /// <param name="teamId">Id of team which should be set to player</param>
         public void UpdatePlayerTeam(int playerId, int? teamId)
         {
-            using (IDbTransaction transaction = _teamRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            Player player = _playerRepository.FindWhere(p => p.Id == playerId).SingleOrDefault();
+            if (player == null)
             {
-                Player player = _playerRepository.FindWhere(p => p.Id == playerId).SingleOrDefault();
-                if (player == null)
-                {
-                    throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
-                }
-
-                // Check if player is captain of another team
-                if (player.TeamId != null)
-                {
-                    var existingTeam = GetPlayerLedTeam(player.Id);
-                    if (existingTeam != null && teamId != existingTeam.Id)
-                    {
-                        var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-                        ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existingTeam.Id;
-                        throw ex;
-                    }
-                }
-
-                Team team = _teamRepository.FindWhere(t => t.Id == teamId).SingleOrDefault();
-                if (team == null)
-                {
-                    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
-                }
-
-                player.TeamId = teamId;
-                _playerRepository.Update(player);
-                _playerRepository.UnitOfWork.Commit();
-                transaction.Commit();
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
             }
+
+            // Check if player is captain of another team
+            if (player.TeamId != null)
+            {
+                var existingTeam = GetPlayerLedTeam(player.Id);
+                if (existingTeam != null && teamId != existingTeam.Id)
+                {
+                    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
+                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existingTeam.Id;
+                    throw ex;
+                }
+            }
+
+            Team team = _teamRepository.FindWhere(t => t.Id == teamId).SingleOrDefault();
+            if (team == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
+            }
+
+            player.TeamId = teamId;
+            _playerRepository.Update(player);
+            _playerRepository.UnitOfWork.Commit();
         }
 
         private Team GetPlayerLedTeam(int playerId)

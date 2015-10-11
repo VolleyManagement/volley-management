@@ -46,7 +46,7 @@
         [Display(Name = "PlayerBirthYear", ResourceType = typeof(ViewModelResources))]
         [Range(Constants.Player.MIN_BIRTH_YEAR, Constants.Player.MAX_BIRTH_YEAR,
             ErrorMessageResourceName = "PlayerBirthFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public int? BirthYear { get; set; }
+        public short? BirthYear { get; set; }
 
         /// <summary>
         /// Gets or sets the player height
@@ -54,7 +54,7 @@
         [Display(Name = "PlayerHeight", ResourceType = typeof(ViewModelResources))]
         [Range(Constants.Player.MIN_HEIGHT, Constants.Player.MAX_HEIGHT,
             ErrorMessageResourceName = "PlayerHeightFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public int? Height { get; set; }
+        public short? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the player weight
@@ -62,7 +62,7 @@
         [Display(Name = "PlayerWeight", ResourceType = typeof(ViewModelResources))]
         [Range(Constants.Player.MIN_WEIGHT, Constants.Player.MAX_WEIGHT,
             ErrorMessageResourceName = "PlayerWeightFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public int? Weight { get; set; }
+        public short? Weight { get; set; }
 
         /// <summary>
         /// Gets or sets the player team

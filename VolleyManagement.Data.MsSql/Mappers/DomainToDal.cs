@@ -1,8 +1,9 @@
 ﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
     using VolleyManagement.Data.MsSql.Entities;
+    using VolleyManagement.Domain.TournamentsAggregate;
 
-    using constants = VolleyManagement.Domain.Constants.Tournament;
+    using Constants = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>
     /// Maps Domain models to Dal.
@@ -12,24 +13,22 @@
         /// <summary>
         /// Maps Tournament model.
         /// </summary>
-        /// <param name="domainTournament">Tournament Domain model</param>
-        /// <returns>Tournament Dal model</returns>
-        public static Tournament Map(Domain.TournamentsAggregate.Tournament domainTournament)
+        /// <param name="entity">Mapping target</param>
+        /// <param name="domainTournament">Mapping source</param>
+        public static void Map(TournamentEntity entity, Tournament domainTournament)
         {
-            Tournament tournament = new Tournament();
-            tournament.Id = domainTournament.Id;
-            tournament.Name = domainTournament.Name;
-            tournament.Season = (byte)(domainTournament.Season - constants.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
-            tournament.Description = domainTournament.Description;
-            tournament.Scheme = (byte)domainTournament.Scheme;
-            tournament.RegulationsLink = domainTournament.RegulationsLink;
-            tournament.GamesStart = domainTournament.GamesStart;
-            tournament.GamesEnd = domainTournament.GamesEnd;
-            tournament.ApplyingPeriodStart = domainTournament.ApplyingPeriodStart;
-            tournament.ApplyingPeriodEnd = domainTournament.ApplyingPeriodEnd;
-            tournament.TransferStart = domainTournament.TransferStart;
-            tournament.TransferEnd = domainTournament.TransferEnd;
-            return tournament;
+            entity.Id = domainTournament.Id;
+            entity.Name = domainTournament.Name;
+            entity.Season = (byte)(domainTournament.Season - Constants.SCHEMA_STORAGE_OFFSET);
+            entity.Description = domainTournament.Description;
+            entity.Scheme = (byte)domainTournament.Scheme;
+            entity.RegulationsLink = domainTournament.RegulationsLink;
+            entity.GamesStart = domainTournament.GamesStart;
+            entity.GamesEnd = domainTournament.GamesEnd;
+            entity.ApplyingPeriodStart = domainTournament.ApplyingPeriodStart;
+            entity.ApplyingPeriodEnd = domainTournament.ApplyingPeriodEnd;
+            entity.TransferStart = domainTournament.TransferStart;
+            entity.TransferEnd = domainTournament.TransferEnd;
         }
 
         /// <summary>
@@ -37,9 +36,9 @@
         /// </summary>
         /// <param name="domainUser">User Domain model</param>
         /// <returns>User Dal model</returns>
-        public static User Map(Domain.Users.User domainUser)
+        public static UserEntity Map(Domain.Users.User domainUser)
         {
-            User user = new User();
+            UserEntity user = new UserEntity();
             user.Id = domainUser.Id;
             user.FullName = domainUser.FullName;
             user.UserName = domainUser.UserName;
@@ -54,16 +53,16 @@
         /// </summary>
         /// <param name="domainPlayer">Player Domain model</param>
         /// <returns>Player Dal model</returns>
-        public static Player Map(Domain.PlayersAggregate.Player domainPlayer)
+        public static PlayerEntity Map(Domain.PlayersAggregate.Player domainPlayer)
         {
-            Player player = new Player();
+            PlayerEntity player = new PlayerEntity();
             player.Id = domainPlayer.Id;
             player.FirstName = domainPlayer.FirstName;
             player.LastName = domainPlayer.LastName;
             player.BirthYear = domainPlayer.BirthYear;
             player.Height = domainPlayer.Height;
             player.Weight = domainPlayer.Weight;
-            player.TeamId = domainPlayer.TeamId;
+            // player.TeamId = domainPlayer.TeamId;
 
             return player;
         }
@@ -73,12 +72,12 @@
         /// </summary>
         /// <param name="domainTeam">Team Domain model</param>
         /// <returns>Team Dal model</returns>
-        public static Team Map(Domain.TeamsAggregate.Team domainTeam)
+        public static TeamEntity Map(Domain.TeamsAggregate.Team domainTeam)
         {
-            Team dalTeam = new Team();
+            TeamEntity dalTeam = new TeamEntity();
             dalTeam.Id = domainTeam.Id;
             dalTeam.Name = domainTeam.Name;
-            dalTeam.CaptainId = domainTeam.CaptainId;
+            // dalTeam.CaptainId = domainTeam.CaptainId;
             dalTeam.Coach = domainTeam.Coach;
             dalTeam.Achievements = domainTeam.Achievements;
 

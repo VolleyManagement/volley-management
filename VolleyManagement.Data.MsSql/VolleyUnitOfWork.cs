@@ -4,10 +4,9 @@
     using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
 
-    using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.MsSql.Infrastructure;
+    using VolleyManagement.Data.MsSql.Context;
 
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
@@ -17,21 +16,21 @@
         /// <summary>
         /// Context of the data source.
         /// </summary>
-        private readonly ObjectContext _context;
+        private readonly VolleyManagementEntities _context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VolleyUnitOfWork"/> class.
         /// </summary>
         public VolleyUnitOfWork()
         {
-            this._context = ((IObjectContextAdapter)new VolleyManagementContext()).ObjectContext;
-            this._context.ContextOptions.LazyLoadingEnabled = true;
+            _context = new VolleyManagementEntities();
+            ((IObjectContextAdapter)_context).ObjectContext.ContextOptions.LazyLoadingEnabled = true;
         }
 
         /// <summary>
         /// Gets context of the data source.
         /// </summary>
-        public ObjectContext Context
+        internal VolleyManagementEntities Context
         {
             get { return this._context; }
         }
@@ -44,7 +43,7 @@
             try
             {
                 this._context.SaveChanges();
-        }
+            }
             catch (OptimisticConcurrencyException ex)
             {
                 throw new InvalidKeyValueException("Entity with request Id does not exist", ex);
@@ -57,21 +56,6 @@
         public void Dispose()
         {
             this._context.Dispose();
-        }
-
-        /// <summary>
-        /// Begins transaction
-        /// </summary>
-        /// <param name="isolationLevel">Level of transaction isolation</param>
-        /// <returns>Current transaction manager</returns>
-        public IDbTransaction BeginTransaction(System.Data.IsolationLevel isolationLevel)
-        {
-            this._context.Connection.Open();
-
-            // TODO: Revisit connection opening approach
-
-            var transaction = this._context.Connection.BeginTransaction(isolationLevel);
-            return new DbTransactionAdapter(transaction);
         }
     }
 }

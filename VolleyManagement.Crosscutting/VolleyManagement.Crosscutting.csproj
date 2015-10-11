@@ -55,6 +55,12 @@
   <ItemGroup>
     <Compile Include="Logger\EnterpriseLibraryLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specifications\AndSpecification.cs" />
+    <Compile Include="Specifications\CompositeSpecification.cs" />
+    <Compile Include="Specifications\ExpressionSpecification.cs" />
+    <Compile Include="Specifications\ISpecification.cs" />
+    <Compile Include="Specifications\NotSpecification.cs" />
+    <Compile Include="Specifications\OrSpecification.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj">

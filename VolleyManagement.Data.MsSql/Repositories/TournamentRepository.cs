@@ -6,8 +6,12 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using VolleyManagement.Crosscutting.Specifications;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.MsSql.Mappers;
+    using VolleyManagement.Data.MsSql.Repositories.Specifications;
     using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
@@ -15,8 +19,11 @@
     /// </summary>
     internal class TournamentRepository : ITournamentRepository
     {
-        private readonly ObjectSet<Entities.Tournament> _dalTournaments;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly DbSet<TournamentEntity> _dalTournaments;
+        private readonly VolleyUnitOfWork _unitOfWork;
+
+        private readonly ISpecification<TournamentEntity> _dbStorageSpecification
+            = new TournamentsStorageSpecification();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentRepository"/> class.
@@ -24,8 +31,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public TournamentRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
-            this._dalTournaments = unitOfWork.Context.CreateObjectSet<Entities.Tournament>();
+            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            this._dalTournaments = _unitOfWork.Context.Tournaments;
         }
 
         /// <summary>
@@ -48,8 +55,8 @@
                     Name = t.Name,
                     Description = t.Description,
                     RegulationsLink = t.RegulationsLink,
-                    Scheme = (Domain.TournamentsAggregate.TournamentSchemeEnum)t.Scheme,
-                    Season = (short)(VolleyManagement.Domain.Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB + t.Season),
+                    Scheme = (TournamentSchemeEnum)t.Scheme,
+                    Season = (short)(Domain.Constants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
                     GamesStart = t.GamesStart,
                     GamesEnd = t.GamesEnd,
                     ApplyingPeriodStart = t.ApplyingPeriodStart,
@@ -76,10 +83,16 @@
         /// <param name="newEntity">The tournament for adding.</param>
         public void Add(Tournament newEntity)
         {
-            Entities.Tournament newTournament = DomainToDal.Map(newEntity);
-            this._dalTournaments.AddObject(newTournament);
+            var tournament = new TournamentEntity();
+            DomainToDal.Map(tournament, newEntity);
+            if (!_dbStorageSpecification.IsSatisfiedBy(tournament))
+            {
+                throw new InvalidEntityException();
+            }
+
+            this._dalTournaments.Add(tournament);
             this._unitOfWork.Commit();
-            newEntity.Id = newTournament.Id;
+            newEntity.Id = tournament.Id;
         }
 
         /// <summary>
@@ -89,19 +102,9 @@
         public void Update(Tournament oldEntity)
         {
             var tournamentToUpdate = this._dalTournaments.Single(t => t.Id == oldEntity.Id);
-            tournamentToUpdate.Name = oldEntity.Name;
-            tournamentToUpdate.Description = oldEntity.Description;
-            tournamentToUpdate.RegulationsLink = oldEntity.RegulationsLink;
-            tournamentToUpdate.Scheme = (byte)oldEntity.Scheme;
-            tournamentToUpdate.Season = (byte)(oldEntity.Season
-                - VolleyManagement.Domain.Constants.Tournament.SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB);
-            tournamentToUpdate.GamesStart = oldEntity.GamesStart;
-            tournamentToUpdate.GamesEnd = oldEntity.GamesEnd;
-            tournamentToUpdate.ApplyingPeriodStart = oldEntity.ApplyingPeriodStart;
-            tournamentToUpdate.ApplyingPeriodEnd = oldEntity.ApplyingPeriodEnd;
-            tournamentToUpdate.TransferStart = oldEntity.TransferStart;
-            tournamentToUpdate.TransferEnd = oldEntity.TransferEnd;
-            this._dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
+            DomainToDal.Map(tournamentToUpdate, oldEntity);
+            // ToDo: Check Do we really need this?
+            //// this._dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 
         /// <summary>
@@ -110,9 +113,9 @@
         /// <param name="id">The id of tournament to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Entities.Tournament { Id = id };
+            var dalToRemove = new Entities.TournamentEntity { Id = id };
             this._dalTournaments.Attach(dalToRemove);
-            this._dalTournaments.DeleteObject(dalToRemove);
+            this._dalTournaments.Remove(dalToRemove);
         }
     }
 }

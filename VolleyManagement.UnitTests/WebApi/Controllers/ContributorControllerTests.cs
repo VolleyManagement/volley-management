@@ -1,23 +1,21 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Net;
-    using System.Web.Http.Results;
-    using System.Web.OData.Results;
 
-    using Contracts;
-    using Domain.ContributorsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using Moq;
+
     using Ninject;
-    using Services.ContributorService;
-    using VolleyManagement.Contracts.Exceptions;
+
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.Areas.WebApi.ApiControllers;
-    using VolleyManagement.UnitTests.WebApi.ViewModels;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.ContributorsTeam;
+    using VolleyManagement.UnitTests.Services.ContributorService;
+    using VolleyManagement.UnitTests.WebApi.ViewModels;
 
     /// <summary>
     /// Tests for ContributorsTeamController class.
@@ -86,48 +84,50 @@
         public void Map_ContributorAsParam_MappedToViewModelWebApi()
         {
             var contributors = new List<Contributor>
-                {
-                    new Contributor
-                    {
-                        Id = 1,
-                        Name = "FirstNameA",
-                        ContributorTeamId = 1
-                    },
-                    new Contributor
-                    {
-                        Id = 2,
-                        Name = "FirstNameB",
-                        ContributorTeamId = 1
-                    },
-                    new Contributor
-                    {
-                        Id = 3,
-                        Name = "FirstNameC",
-                        ContributorTeamId = 1
-                    }
-                };
-            var contributorsViewModel = new List<string>
-                {"FirstNameA", "FirstNameB","FirstNameC"};
+                                   {
+                                       new Contributor
+                                           {
+                                               Id = 1,
+                                               Name = "FirstNameA",
+                                               ContributorTeamId = 1
+                                           },
+                                       new Contributor
+                                           {
+                                               Id = 2,
+                                               Name = "FirstNameB",
+                                               ContributorTeamId = 1
+                                           },
+                                       new Contributor
+                                           {
+                                               Id = 3,
+                                               Name = "FirstNameC",
+                                               ContributorTeamId = 1
+                                           }
+                                   };
+            var contributorsViewModel = new List<string> { "FirstNameA", "FirstNameB", "FirstNameC" };
 
             // Arrange
-            var contributor = new ContributorTeamBuilder()
-                                        .WithId(1)
-                                        .WithName("FirstName")
-                                        .WithcourseDirection("Course")
-                                        .Withcontributors(contributors)
-                                        .Build();
-            var expected = new ContributorTeamViewModelBuilder()
-                                        .WithId(1)
-                                        .WithName("FirstName")
-                                        .WithcourseDirection("Course")
-                                        .Withcontributors(contributorsViewModel)
-                                        .Build();
+            var contributor =
+                new ContributorTeamBuilder().WithId(1)
+                    .WithName("FirstName")
+                    .WithcourseDirection("Course")
+                    .Withcontributors(contributors)
+                    .Build();
+            var expected =
+                new ContributorTeamViewModelBuilder().WithId(1)
+                    .WithName("FirstName")
+                    .WithcourseDirection("Course")
+                    .Withcontributors(contributorsViewModel)
+                    .Build();
 
             // Act
             var actual = ContributorsTeamViewModel.Map(contributor);
 
             // Assert
-            AssertExtensions.AreEqual<ContributorsTeamViewModel>(expected, actual, new ContributorTeamViewModelComparer());
+            AssertExtensions.AreEqual<ContributorsTeamViewModel>(
+                expected,
+                actual,
+                new ContributorTeamViewModelComparer());
         }
 
         /// <summary>

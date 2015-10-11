@@ -60,7 +60,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Specifications\ISpecification.cs" />
     <Compile Include="TeamsAggregate\ITeamRepository.cs" />
     <Compile Include="TournamentsAggregate\ITournamentRepository.cs" />
     <Compile Include="TournamentsAggregate\TournamentSchemeEnum.cs" />
@@ -88,6 +87,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj">
+      <Project>{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}</Project>
+      <Name>VolleyManagement.Crosscutting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj">
       <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
       <Name>VolleyManagement.Data</Name>

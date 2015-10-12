@@ -16,7 +16,7 @@
         /// <summary>
         /// Holds collection of tournaments
         /// </summary>
-        private IList<Tournament> _tournaments = new List<Tournament>();
+        private List<Tournament> _tournaments = new List<Tournament>();
 
         /// <summary>
         /// Adds tournaments to collection
@@ -87,7 +87,7 @@
         /// Builds test data
         /// </summary>
         /// <returns>Tournament collection</returns>
-        public IList<Tournament> Build()
+        public List<Tournament> Build()
         {
             return _tournaments;
         }

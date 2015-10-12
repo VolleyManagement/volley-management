@@ -7,6 +7,7 @@
 
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
+    using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
 
@@ -15,8 +16,9 @@
     /// <summary>
     /// Provides Object Query implementation for Tournaments
     /// </summary>
-    public class TournamentQueries : IQuery<Tournament, FirstByNameCriterion>,
-                                     IQuery<List<Tournament>, GetAllCriterion>
+    public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
+                                     IQuery<List<Tournament>, GetAllCriteria>,
+                                     IQuery<Tournament, FindByIdCriteria>
     {
         #region Fields
 
@@ -42,14 +44,15 @@
         /// <summary>
         /// Finds Tournament by given criteria
         /// </summary>
-        /// <param name="criterion"> The criterion. </param>
+        /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
-        public Tournament Execute(FirstByNameCriterion criterion)
+        public Tournament Execute(UniqueTournamentCriteria criteria)
         {
-            var query = _unitOfWork.Context.Tournaments.Where(t => t.Name == criterion.Name);
-            if (criterion.EntityId.HasValue)
+            var query = _unitOfWork.Context.Tournaments.Where(t => t.Name == criteria.Name);
+            if (criteria.EntityId.HasValue)
             {
-                query = query.Where(t => t.Id == criterion.EntityId.GetValueOrDefault());
+                var id = criteria.EntityId.GetValueOrDefault();
+                query = query.Where(t => t.Id != id);
             }
 
             // ToDo: Use Automapper to substitute Select clause
@@ -59,11 +62,24 @@
         /// <summary>
         /// Finds Tournament by given criteria
         /// </summary>
-        /// <param name="criterion"> The criterion. </param>
+        /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
-        public List<Tournament> Execute(GetAllCriterion criterion)
+        public List<Tournament> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments.Select(TournamentMap()).ToList();
+        }
+
+        /// <summary>
+        /// Finds Tournament by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Tournament"/>. </returns>
+        public Tournament Execute(FindByIdCriteria criteria)
+        {
+            return _unitOfWork.Context.Tournaments
+                                      .Where(t => t.Id == criteria.Id)
+                                      .Select(TournamentMap())
+                                      .SingleOrDefault();
         }
 
         #endregion

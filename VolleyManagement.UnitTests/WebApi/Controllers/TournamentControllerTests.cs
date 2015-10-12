@@ -461,10 +461,10 @@
         /// Mock the Tournaments
         /// </summary>
         /// <param name="testData">Data what will be returned</param>
-        private void MockTournaments(IList<Tournament> testData)
+        private void MockTournaments(List<Tournament> testData)
         {
             _tournamentServiceMock.Setup(tr => tr.Get())
-                                            .Returns(testData.AsQueryable());
+                                            .Returns(testData);
         }
     }
 }

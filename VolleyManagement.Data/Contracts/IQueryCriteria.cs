@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents Object Query parameters
     /// </summary>
-    public interface IQueryCriterion
+    public interface IQueryCriteria
     {
     }
 }

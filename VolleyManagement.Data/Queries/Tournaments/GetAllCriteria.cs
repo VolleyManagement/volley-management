@@ -5,7 +5,7 @@
     /// <summary>
     /// Query criterion to read all Tournaments
     /// </summary>
-    public class GetAllCriterion : IQueryCriterion
+    public class GetAllCriteria : IQueryCriteria
     {
     }
 }

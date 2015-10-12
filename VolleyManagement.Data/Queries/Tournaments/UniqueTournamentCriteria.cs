@@ -5,7 +5,7 @@
     /// <summary>
     /// Search by name criterion
     /// </summary>
-    public class FirstByNameCriterion : IQueryCriterion
+    public class UniqueTournamentCriteria : IQueryCriteria
     {
         /// <summary>
         /// Gets or sets Name to search

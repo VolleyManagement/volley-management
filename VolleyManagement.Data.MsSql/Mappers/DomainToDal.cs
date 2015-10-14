@@ -51,20 +51,17 @@
         /// <summary>
         /// Maps Player model.
         /// </summary>
-        /// <param name="domainPlayer">Player Domain model</param>
-        /// <returns>Player Dal model</returns>
-        public static PlayerEntity Map(Domain.PlayersAggregate.Player domainPlayer)
+        /// <param name="entity">Target of the mapping</param>
+        /// <param name="domain">Source of the mapping</param>
+        public static void Map(PlayerEntity entity, Domain.PlayersAggregate.Player domain)
         {
-            PlayerEntity player = new PlayerEntity();
-            player.Id = domainPlayer.Id;
-            player.FirstName = domainPlayer.FirstName;
-            player.LastName = domainPlayer.LastName;
-            player.BirthYear = domainPlayer.BirthYear;
-            player.Height = domainPlayer.Height;
-            player.Weight = domainPlayer.Weight;
-            // player.TeamId = domainPlayer.TeamId;
-
-            return player;
+            entity.Id = domain.Id;
+            entity.FirstName = domain.FirstName;
+            entity.LastName = domain.LastName;
+            entity.BirthYear = domain.BirthYear;
+            entity.Height = domain.Height;
+            entity.Weight = domain.Weight;
+            //// entity.TeamId = domainPlayer.TeamId;
         }
 
         /// <summary>

@@ -56,7 +56,7 @@
             }
 
             // ToDo: Use Automapper to substitute Select clause
-            return query.Select(TournamentMap()).FirstOrDefault();
+            return query.Select(GetTournamentMapping()).FirstOrDefault();
         }
 
         /// <summary>
@@ -66,7 +66,7 @@
         /// <returns> The <see cref="Tournament"/>. </returns>
         public List<Tournament> Execute(GetAllCriteria criteria)
         {
-            return _unitOfWork.Context.Tournaments.Select(TournamentMap()).ToList();
+            return _unitOfWork.Context.Tournaments.Select(GetTournamentMapping()).ToList();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@
         {
             return _unitOfWork.Context.Tournaments
                                       .Where(t => t.Id == criteria.Id)
-                                      .Select(TournamentMap())
+                                      .Select(GetTournamentMapping())
                                       .SingleOrDefault();
         }
 
@@ -86,7 +86,7 @@
 
         #region Mapping
 
-        private static Expression<Func<TournamentEntity, Tournament>> TournamentMap()
+        private static Expression<Func<TournamentEntity, Tournament>> GetTournamentMapping()
         {
             return
                 t =>

@@ -3,7 +3,7 @@
     using System;
 
     /// <summary>
-    /// The invalid entity exception.
+    /// Notifies that DB save attempt was un-successful due to invalid values of provided entity
     /// </summary>
     public class InvalidEntityException : Exception
     {

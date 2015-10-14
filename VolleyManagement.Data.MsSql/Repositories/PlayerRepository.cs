@@ -6,7 +6,9 @@
 
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.MsSql.Mappers;
+    using VolleyManagement.Data.MsSql.Repositories.Specifications;
     using VolleyManagement.Domain.PlayersAggregate;
 
     /// <summary>
@@ -16,14 +18,11 @@
     {
         private const int START_DATABASE_ID_VALUE = 0;
 
-        /// <summary>
-        /// Holds object set of DAL users.
-        /// </summary>
-        private readonly DbSet<Entities.PlayerEntity> _dalPlayers;
+        private readonly PlayerStorageSpecification _dbStorageSpecification
+            = new PlayerStorageSpecification();
 
-        /// <summary>
-        /// Holds UnitOfWork instance.
-        /// </summary>
+        private readonly DbSet<PlayerEntity> _dalPlayers;
+
         private readonly VolleyUnitOfWork _unitOfWork;
 
         /// <summary>
@@ -45,39 +44,19 @@
         }
 
         /// <summary>
-        /// Gets all players.
-        /// </summary>
-        /// <returns>Collection of domain players.</returns>
-        public IQueryable<Player> Find()
-        {
-            return this._dalPlayers.Select(p => new Player
-            {
-                Id = p.Id,
-                FirstName = p.FirstName,
-                LastName = p.LastName,
-                BirthYear = p.BirthYear,
-                Height = p.Height,
-                Weight = p.Weight
-            });
-        }
-
-        /// <summary>
-        /// Gets specified collection of players.
-        /// </summary>
-        /// <param name="predicate">Condition to find players.</param>
-        /// <returns>Collection of domain players.</returns>
-        public IQueryable<Player> FindWhere(System.Linq.Expressions.Expression<Func<Player, bool>> predicate)
-        {
-            return this.Find().Where(predicate);
-        }
-
-        /// <summary>
         /// Adds new player.
         /// </summary>
         /// <param name="newEntity">The player for adding.</param>
         public void Add(Player newEntity)
         {
-            Entities.PlayerEntity newPlayer = DomainToDal.Map(newEntity);
+            var newPlayer = new PlayerEntity();
+            DomainToDal.Map(newPlayer, newEntity);
+
+            if (!_dbStorageSpecification.IsSatisfiedBy(newPlayer))
+            {
+                throw new InvalidEntityException();
+            }
+
             this._dalPlayers.Add(newPlayer);
             this._unitOfWork.Commit();
             newEntity.Id = newPlayer.Id;
@@ -96,25 +75,14 @@
                 throw exc;
             }
 
-            Entities.PlayerEntity playerToUpdate;
-            try
+            var playerToUpdate = this._dalPlayers.SingleOrDefault(t => t.Id == oldEntity.Id);
+
+            if (playerToUpdate == null)
             {
-                playerToUpdate = this._dalPlayers.Single(t => t.Id == oldEntity.Id);
-            }
-            catch (InvalidOperationException e)
-            {
-                var exc = new InvalidKeyValueException("Entity with request Id does not exist", e);
-                exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
-                throw exc;
+                throw new ConcurrencyException();
             }
 
-            playerToUpdate.Id = oldEntity.Id;
-            playerToUpdate.FirstName = oldEntity.FirstName;
-            playerToUpdate.LastName = oldEntity.LastName;
-            playerToUpdate.BirthYear = oldEntity.BirthYear;
-            playerToUpdate.Height = oldEntity.Height;
-            playerToUpdate.Weight = oldEntity.Weight;
-            // playerToUpdate.TeamId = oldEntity.TeamId;
+            DomainToDal.Map(playerToUpdate, oldEntity);
         }
 
         /// <summary>

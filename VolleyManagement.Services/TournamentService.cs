@@ -106,11 +106,13 @@
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
-            if (tournamentToCreate != null)
+            if (tournamentToCreate == null)
             {
-                IsTournamentNameUnique(tournamentToCreate);
-                AreDatesValid(tournamentToCreate);
+                throw new ArgumentNullException("tournamentToCreate");
             }
+
+            IsTournamentNameUnique(tournamentToCreate);
+            AreDatesValid(tournamentToCreate);
 
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();

@@ -237,8 +237,8 @@
         /// <param name="testData">Test data to mock.</param>
         private void MockRepositoryFindWhere(IEnumerable<User> testData)
         {
-            _userRepositoryMock.Setup(ur => ur.FindWhere(It.IsAny<Expression<Func<User, bool>>>()))
-                .Returns(testData.AsQueryable());
+            //_userRepositoryMock.Setup(ur => ur.FindWhere(It.IsAny<Expression<Func<User, bool>>>()))
+            //    .Returns(testData.AsQueryable());
         }
 
         /// <summary>

@@ -5,6 +5,8 @@
     /// </summary>
     internal class ValidationConstants
     {
+        public const int EMPTY_DATABASE_ID_VALUE = 0;
+
         /// <summary>
         /// Tournament entity validation constants
         /// </summary>

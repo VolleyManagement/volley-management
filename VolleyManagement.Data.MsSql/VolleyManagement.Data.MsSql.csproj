@@ -73,9 +73,12 @@
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\PlayerQueries.cs" />
+    <Compile Include="Queries\TeamQueries.cs" />
     <Compile Include="Queries\TournamentQueries.cs" />
     <Compile Include="Repositories\ContributorTeamRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
+    <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
     <Compile Include="Repositories\Specifications\TournamentsStorageSpecification.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Repositories\TournamentRepository.cs" />

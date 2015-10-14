@@ -1,9 +1,5 @@
 ﻿namespace VolleyManagement.Data.Contracts
 {
-    using System;
-    using System.Linq;
-    using System.Linq.Expressions;
-
     /// <summary>
     /// Define methods to work with data from store.
     /// </summary>
@@ -15,14 +11,6 @@
         /// Gets unit of work for data store.
         /// </summary>
         IUnitOfWork UnitOfWork { get; }
-
-        /// <summary>
-        /// Gets specified elements of T type.
-        /// </summary>
-        /// <param name="predicate">Condition to get T type elements.</param>
-        /// <returns>Elements specified by the condition.</returns>
-        [Obsolete("Use Object Query pattern")]
-        IQueryable<T> FindWhere(Expression<Func<T, bool>> predicate);
 
         /// <summary>
         /// Adds the T type element to the store.

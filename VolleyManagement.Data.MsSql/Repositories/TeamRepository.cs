@@ -38,31 +38,6 @@
         }
 
         /// <summary>
-        /// Gets all teams.
-        /// </summary>
-        /// <returns>Collection of domain teams.</returns>
-        public IQueryable<VolleyManagement.Domain.TeamsAggregate.Team> Find()
-        {
-            return this._dalTeams.Select(t => new VolleyManagement.Domain.TeamsAggregate.Team
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Coach = t.Coach,
-                CaptainId = t.Captain.Id
-            });
-        }
-
-        /// <summary>
-        /// Gets specified collection of teams.
-        /// </summary>
-        /// <param name="predicate">Condition to find teams.</param>
-        /// <returns>Collection of domain teams.</returns>
-        public IQueryable<Domain.Team> FindWhere(System.Linq.Expressions.Expression<Func<Domain.Team, bool>> predicate)
-        {
-            return this.Find().Where(predicate);
-        }
-
-        /// <summary>
         /// Adds new team.
         /// </summary>
         /// <param name="newEntity">The team for adding.</param>

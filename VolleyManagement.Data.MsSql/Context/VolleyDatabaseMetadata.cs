@@ -25,8 +25,6 @@
 
         public const string CONTRIBUTOR_TO_TEAM_FK = "ContributorTeamId";
 
-        public const string PLAYER_TO_TEAM_FK = "LedTeamId";
-
         public const string TEAM_TO_PLAYER_FK = "CaptainId";
     }
 }

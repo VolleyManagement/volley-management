@@ -4,9 +4,9 @@
     using System.Collections.Generic;
 
     using Ninject.Activation;
+    using Ninject.Extensions.Conventions;
     using Ninject.Modules;
     using Ninject.Planning.Bindings;
-    using Ninject.Extensions.Conventions;
 
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Queries;

@@ -200,7 +200,7 @@
 
         private Team GetPlayerLedTeam(int playerId)
         {
-            var criteria = new FindByCaptainIdCriteria { Id = playerId };
+            var criteria = new FindByCaptainIdCriteria { CaptainId = playerId };
             return _getTeamByCaptainQuery.Execute(criteria);
         }
 

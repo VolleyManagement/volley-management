@@ -71,7 +71,7 @@
         public Team Execute(FindByCaptainIdCriteria criteria)
         {
             return _unitOfWork.Context.Teams
-                                      .Where(t => t.Captain.Id == criteria.Id)
+                                      .Where(t => t.CaptainId == criteria.CaptainId)
                                       .Select(GetTeamMapping())
                                       .SingleOrDefault();
         }
@@ -87,7 +87,8 @@
                                 Id = t.Id,
                                 Name = t.Name,
                                 Coach = t.Coach,
-                                CaptainId = t.Captain.Id
+                                CaptainId = t.CaptainId,
+                                Achievements = t.Achievements
                             };
         }
 

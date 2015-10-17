@@ -7,6 +7,9 @@
     /// </summary>
     public class TeamPlayersCriteria : IQueryCriteria
     {
+        /// <summary>
+        /// Gets or sets Team ID to look for
+        /// </summary>
         public int TeamId { get; set; }
     }
 }

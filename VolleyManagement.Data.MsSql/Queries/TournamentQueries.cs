@@ -97,7 +97,7 @@
                         Description = t.Description,
                         RegulationsLink = t.RegulationsLink,
                         Scheme = (TournamentSchemeEnum)t.Scheme,
-                        Season = (short)(Constants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
+                        Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
                         GamesStart = t.GamesStart,
                         GamesEnd = t.GamesEnd,
                         ApplyingPeriodStart = t.ApplyingPeriodStart,

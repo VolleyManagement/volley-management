@@ -79,6 +79,7 @@
     <Compile Include="Repositories\ContributorTeamRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
+    <Compile Include="Repositories\Specifications\TeamStorageSpecification.cs" />
     <Compile Include="Repositories\Specifications\TournamentsStorageSpecification.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Repositories\TournamentRepository.cs" />

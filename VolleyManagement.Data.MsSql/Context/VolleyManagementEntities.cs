@@ -75,23 +75,8 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureUsers(modelBuilder);
             ConfigurePlayers(modelBuilder);
             ConfigureTeams(modelBuilder);
-
-            modelBuilder.Entity<PlayerEntity>()
-                .HasOptional(p => p.LedTeam)
-                .WithRequired(t => t.Captain);
-                //.Map(m => m.MapKey(VolleyDatabaseMetadata.PLAYER_TO_TEAM_FK));
-            modelBuilder.Entity<TeamEntity>()
-                .HasRequired(t => t.Captain)
-                .WithOptional(p => p.LedTeam);
-                //.Map(m => m.MapKey(VolleyDatabaseMetadata.TEAM_TO_PLAYER_FK));
-
             ConfigureContributors(modelBuilder);
             ConfigureContributorTeams(modelBuilder);
-
-            modelBuilder.Entity<ContributorEntity>()
-                .HasRequired(c => c.Team)
-                .WithMany(ct => ct.Contributors)
-                .Map(m => m.MapKey(VolleyDatabaseMetadata.CONTRIBUTOR_TO_TEAM_FK));
 
             base.OnModelCreating(modelBuilder);
         }
@@ -246,6 +231,18 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsUnicode()
                 .IsVariableLength()
                 .HasMaxLength(ValidationConstants.Team.MAX_ACHIEVEMENTS_LENGTH);
+
+            // FK Team -> Players
+            modelBuilder.Entity<TeamEntity>()
+                .HasMany(t => t.Players)
+                .WithOptional(p => p.Team)
+                .HasForeignKey(p => p.TeamId);
+
+            // FK Team - Captain
+            modelBuilder.Entity<TeamEntity>()
+                .HasRequired(t => t.Captain)
+                .WithMany(p => p.LedTeam)
+                .HasForeignKey(t => t.CaptainId);
         }
 
         private static void ConfigureContributors(DbModelBuilder modelBuilder)
@@ -261,6 +258,12 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsUnicode()
                 .IsVariableLength()
                 .HasMaxLength(ValidationConstants.Contributor.MAX_NAME_LENGTH);
+
+            // FK
+            modelBuilder.Entity<ContributorEntity>()
+                .HasRequired(c => c.Team)
+                .WithMany(ct => ct.Contributors)
+                .Map(m => m.MapKey(VolleyDatabaseMetadata.CONTRIBUTOR_TO_TEAM_FK));
         }
 
         private static void ConfigureContributorTeams(DbModelBuilder modelBuilder)

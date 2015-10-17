@@ -25,7 +25,6 @@
                                 t => t.RegulationsLink == null
                                   || t.RegulationsLink.Length <= ValidationConstants.Tournament.MAX_URL_LENGTH);
 
-
             return name.And(description)
                        .And(link)
                        .IsSatisfiedBy(entity);

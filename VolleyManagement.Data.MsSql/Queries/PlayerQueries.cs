@@ -70,7 +70,7 @@
         public List<Player> Execute(TeamPlayersCriteria criteria)
         {
             return _unitOfWork.Context.Players
-                                      .Where(p => p.LedTeam.Id == criteria.TeamId)
+                                      .Where(p => p.TeamId == criteria.TeamId)
                                       .Select(GetPlayerMapping())
                                       .ToList();
         }
@@ -88,7 +88,8 @@
                         LastName = p.LastName,
                         BirthYear = p.BirthYear,
                         Height = p.Height,
-                        Weight = p.Weight
+                        Weight = p.Weight,
+                        TeamId = p.TeamId
                     };
         }
 

@@ -1,5 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Entities
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// DAL player model
     /// </summary>
@@ -38,6 +40,18 @@
         /// <summary>
         /// Gets or sets Team which this player is captain of
         /// </summary>
-        public TeamEntity LedTeam { get; set; }
+        public int? TeamId { get; set; }
+
+        /// <summary>
+        /// Gets or sets Team which player playing currently
+        /// </summary>
+        public virtual TeamEntity Team { get; set; }
+
+        /// <summary>
+        /// Gets or sets team which this player is captain of
+        /// !!! SHOULD NOT BE USED !!!
+        /// Created to address mapping issues for Team - Captain relationship
+        /// </summary>
+        public virtual ICollection<TeamEntity> LedTeam { get; set; }
     }
 }

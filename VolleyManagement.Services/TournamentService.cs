@@ -161,6 +161,7 @@
             {
                 criteria.EntityId = newTournament.Id;
             }
+
             return criteria;
         }
 

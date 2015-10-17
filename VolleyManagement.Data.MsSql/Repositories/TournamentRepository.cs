@@ -56,7 +56,7 @@
                     Description = t.Description,
                     RegulationsLink = t.RegulationsLink,
                     Scheme = (TournamentSchemeEnum)t.Scheme,
-                    Season = (short)(Domain.Constants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
+                    Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
                     GamesStart = t.GamesStart,
                     GamesEnd = t.GamesEnd,
                     ApplyingPeriodStart = t.ApplyingPeriodStart,
@@ -103,6 +103,7 @@
         {
             var tournamentToUpdate = this._dalTournaments.Single(t => t.Id == oldEntity.Id);
             DomainToDal.Map(tournamentToUpdate, oldEntity);
+
             // ToDo: Check Do we really need this?
             //// this._dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }

@@ -7,6 +7,9 @@
     /// </summary>
     public class FindByCaptainIdCriteria : IQueryCriteria
     {
-        public int Id { get; set; }
+        /// <summary>
+        /// Gets or sets Captain ID to search for
+        /// </summary>
+        public int CaptainId { get; set; }
     }
 }

@@ -2,20 +2,23 @@
 {
     using System;
     using System.Data.Entity;
-    using System.Linq;
 
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.MsSql.Mappers;
-
-    using Dal = VolleyManagement.Data.MsSql.Entities;
-    using Domain = VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.Data.MsSql.Repositories.Specifications;
+    using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
     /// Defines implementation of the ITeamRepository contract.
     /// </summary>
-    internal class TeamRepository : Domain.ITeamRepository
+    internal class TeamRepository : ITeamRepository
     {
-        private readonly DbSet<Dal.TeamEntity> _dalTeams;
+        private static readonly TeamStorageSpecification _dbStorageSpecification
+            = new TeamStorageSpecification();
+
+        private readonly DbSet<TeamEntity> _dalTeams;
 
         private readonly VolleyUnitOfWork _unitOfWork;
 
@@ -41,9 +44,16 @@
         /// Adds new team.
         /// </summary>
         /// <param name="newEntity">The team for adding.</param>
-        public void Add(Domain.Team newEntity)
+        public void Add(Team newEntity)
         {
-            Dal.TeamEntity newTeam = DomainToDal.Map(newEntity);
+            var newTeam = new TeamEntity();
+            DomainToDal.Map(newTeam, newEntity);
+
+            if (!_dbStorageSpecification.IsSatisfiedBy(newTeam))
+            {
+                throw new InvalidEntityException();
+            }
+
             this._dalTeams.Add(newTeam);
             this._unitOfWork.Commit();
 
@@ -56,7 +66,7 @@
         /// <param name="id">The id of team to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Dal.TeamEntity { Id = id };
+            var dalToRemove = new TeamEntity { Id = id };
             this._dalTeams.Attach(dalToRemove);
             this._dalTeams.Remove(dalToRemove);
         }
@@ -65,7 +75,7 @@
         /// Updates specified team.
         /// </summary>
         /// <param name="oldEntity">The team to update</param>
-        public void Update(VolleyManagement.Domain.TeamsAggregate.Team oldEntity)
+        public void Update(Team oldEntity)
         {
             throw new NotImplementedException();
         }

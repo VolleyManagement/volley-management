@@ -189,7 +189,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Areas\Mvc\Views\Players\ChoosePlayers.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\_PartialNameViewModelCollection.cshtml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Areas\Mvc\Views\Navigation\Menu.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\TournamentsList.cshtml" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
@@ -197,7 +196,6 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-2.1.3.min.map" />
     <Content Include="Areas\Mvc\Views\Teams\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\Index.cshtml" />
@@ -301,7 +299,6 @@
     <Content Include="Areas\Mvc\Views\web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />

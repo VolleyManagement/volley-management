@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Crosscutting.Specifications
+﻿namespace VolleyManagement.Crosscutting.Contracts.Specifications
 {
     /// <summary>
     /// The Specification interface.

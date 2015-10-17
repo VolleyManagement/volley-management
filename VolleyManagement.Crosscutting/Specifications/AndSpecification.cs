@@ -2,6 +2,8 @@
 {
     using System;
 
+    using VolleyManagement.Crosscutting.Contracts.Specifications;
+
     /// <summary>
     /// Provides a way to chain two Specifications using AND operator
     /// </summary>

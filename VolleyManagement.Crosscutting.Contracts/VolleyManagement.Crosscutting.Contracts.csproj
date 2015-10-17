@@ -43,11 +43,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\EnumExtensions.cs" />
-    <Compile Include="Infrastructure\ILog.cs" />
-    <Compile Include="Infrastructure\LogLevel.cs" />
+    <Compile Include="Infrastructure\Logger\ILog.cs" />
+    <Compile Include="Infrastructure\Logger\LogLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\DefaultTimeProvider.cs" />
     <Compile Include="Providers\TimeProvider.cs" />
+    <Compile Include="Specifications\ISpecification.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PropertyMapping\" />
+    <Folder Include="Validation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

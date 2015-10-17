@@ -92,6 +92,10 @@
     <Compile Include="Context\VolleyManagementEntities.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj">
+      <Project>{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C}</Project>
+      <Name>VolleyManagement.Crosscutting.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj">
       <Project>{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}</Project>
       <Name>VolleyManagement.Crosscutting</Name>

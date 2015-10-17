@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Linq.Expressions;
 
+    using VolleyManagement.Crosscutting.Contracts.Specifications;
     using VolleyManagement.Crosscutting.Specifications;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;

@@ -65,6 +65,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\Migrations\201510171413220_InitialCreate.cs" />
+    <Compile Include="Context\Migrations\201510171413220_InitialCreate.Designer.cs">
+      <DependentUpon>201510171413220_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201510171919218_DropExtraIndexes.cs" />
+    <Compile Include="Context\Migrations\201510171919218_DropExtraIndexes.Designer.cs">
+      <DependentUpon>201510171919218_DropExtraIndexes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
@@ -118,6 +127,14 @@
   <ItemGroup>
     <Content Include="Sql\CreateDatabase.sql" />
     <Content Include="Sql\InsertValues.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Context\Migrations\201510171413220_InitialCreate.resx">
+      <DependentUpon>201510171413220_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201510171919218_DropExtraIndexes.resx">
+      <DependentUpon>201510171919218_DropExtraIndexes.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

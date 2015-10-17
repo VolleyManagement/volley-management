@@ -236,13 +236,15 @@ namespace VolleyManagement.Data.MsSql.Context
             modelBuilder.Entity<TeamEntity>()
                 .HasMany(t => t.Players)
                 .WithOptional(p => p.Team)
-                .HasForeignKey(p => p.TeamId);
+                .HasForeignKey(p => p.TeamId)
+                .WillCascadeOnDelete(false);
 
             // FK Team - Captain
             modelBuilder.Entity<TeamEntity>()
                 .HasRequired(t => t.Captain)
                 .WithMany(p => p.LedTeam)
-                .HasForeignKey(t => t.CaptainId);
+                .HasForeignKey(t => t.CaptainId)
+                .WillCascadeOnDelete(false);
         }
 
         private static void ConfigureContributors(DbModelBuilder modelBuilder)
@@ -263,7 +265,8 @@ namespace VolleyManagement.Data.MsSql.Context
             modelBuilder.Entity<ContributorEntity>()
                 .HasRequired(c => c.Team)
                 .WithMany(ct => ct.Contributors)
-                .Map(m => m.MapKey(VolleyDatabaseMetadata.CONTRIBUTOR_TO_TEAM_FK));
+                .Map(m => m.MapKey(VolleyDatabaseMetadata.CONTRIBUTOR_TO_TEAM_FK))
+                .WillCascadeOnDelete(false);
         }
 
         private static void ConfigureContributorTeams(DbModelBuilder modelBuilder)

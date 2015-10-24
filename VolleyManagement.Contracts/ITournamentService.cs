@@ -14,19 +14,19 @@
         /// Gets list of all tournaments
         /// </summary>
         /// <returns>Return list of all tournaments.</returns>
-        IQueryable<Tournament> Get();
+        List<Tournament> Get();
 
         /// <summary>
         /// Returns only actual tournaments
         /// </summary>
         /// <returns>Actual tournaments</returns>
-        IQueryable<Tournament> GetActual();
+        List<Tournament> GetActual();
 
         /// <summary>
         /// Returns only finished tournaments
         /// </summary>
         /// <returns>Finished tournaments</returns>
-        IQueryable<Tournament> GetFinished();
+        List<Tournament> GetFinished();
 
         /// <summary>
         /// Find a Tournament by id

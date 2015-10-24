@@ -127,10 +127,10 @@
         /// Mock the teams.
         /// </summary>
         /// <param name="testData">Data what will be returned</param>
-        private void MockTeams(IList<Team> testData)
+        private void MockTeams(List<Team> testData)
         {
             _teamServiceMock.Setup(tr => tr.Get())
-                                            .Returns(testData.AsQueryable());
+                                            .Returns(testData);
         }
     }
 }

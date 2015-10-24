@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Collections.Generic;
-    using System.Linq;
 
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -15,7 +14,7 @@
         /// Gets list of all teams.
         /// </summary>
         /// <returns>Return list of all teams.</returns>
-        IQueryable<Team> Get();
+        List<Team> Get();
 
         /// <summary>
         /// Find team by id.
@@ -48,13 +47,13 @@
         /// </summary>
         /// <param name="teamId">Id of team which players should be found</param>
         /// <returns>Collection of team's players</returns>
-        IEnumerable<Player> GetTeamRoster(int teamId);
+        List<Player> GetTeamRoster(int teamId);
 
         /// <summary>
         /// Sets team to player
         /// </summary>
         /// <param name="playerId">Id of player to set the team</param>
         /// <param name="teamId">Id of team which should be set to player</param>
-        void UpdatePlayerTeam(int playerId, int? teamId);
+        void UpdatePlayerTeam(int playerId, int teamId);
     }
 }

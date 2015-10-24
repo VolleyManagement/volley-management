@@ -69,7 +69,7 @@
         /// </summary>
         /// <param name="birthYear">Birth year for test player view model</param>
         /// <returns>Player view model builder object</returns>
-        public PlayerViewModelBuilder WithBirthYear(int birthYear)
+        public PlayerViewModelBuilder WithBirthYear(short birthYear)
         {
             _playerViewModel.BirthYear = birthYear;
             return this;
@@ -80,7 +80,7 @@
         /// </summary>
         /// <param name="weight">Weight for test player view model</param>
         /// <returns>Player view model builder object</returns>
-        public PlayerViewModelBuilder WithWeight(int weight)
+        public PlayerViewModelBuilder WithWeight(short weight)
         {
             _playerViewModel.Weight = weight;
             return this;
@@ -91,7 +91,7 @@
         /// </summary>
         /// <param name="height">Height for test player view model</param>
         /// <returns>Player view model builder object</returns>
-        public PlayerViewModelBuilder WithHeight(int height)
+        public PlayerViewModelBuilder WithHeight(short height)
         {
             _playerViewModel.Height = height;
             return this;

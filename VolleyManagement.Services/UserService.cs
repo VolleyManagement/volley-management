@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Helpers;
     using VolleyManagement.Contracts;
@@ -55,8 +56,7 @@
         /// <returns>A found User</returns>
         public User Get(int id)
         {
-            var user = _userRepository.FindWhere(t => t.Id == id).Single();
-            return user;
+            return null;
         }
 
         /// <summary>
@@ -91,9 +91,11 @@
         /// <param name="isUserEmailUnique">True if user email is unique</param>
         private void CheckUserDataUniqueness(User newUser, ref bool isUserNameUnique, ref bool isUserEmailUnique)
         {
-            var userDuplicatesList = _userRepository.FindWhere(u => u.Id != newUser.Id &&
-                (u.Email == newUser.Email || u.UserName == newUser.UserName))
-                .Select(u => new { u.UserName, u.Email }).ToList();
+            IEnumerable<User> userDuplicatesList = null;
+
+            ////_userRepository.FindWhere(u => u.Id != newUser.Id &&
+            ////    (u.Email == newUser.Email || u.UserName == newUser.UserName))
+            ////    .Select(u => new { u.UserName, u.Email }).ToList();
 
             if (userDuplicatesList != null)
             {

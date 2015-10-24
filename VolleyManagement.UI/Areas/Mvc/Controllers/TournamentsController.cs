@@ -38,8 +38,7 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            TournamentsCollectionsViewModel tournamentsCollections 
-                = new TournamentsCollectionsViewModel();
+            var tournamentsCollections = new TournamentsCollectionsViewModel();
 
             var actualTournaments = this._tournamentService.GetActual().ToArray();
 

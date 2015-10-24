@@ -4,12 +4,13 @@
     using System.Collections.Generic;
 
     using Ninject.Activation;
+    using Ninject.Extensions.Conventions;
     using Ninject.Modules;
     using Ninject.Planning.Bindings;
 
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.MsSql.Queries;
     using VolleyManagement.Data.MsSql.Repositories;
-    using VolleyManagement.Data.MsSql.Services;
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -37,11 +38,19 @@
         /// </summary>
         public override void Load()
         {
+            // Bind all queries
+            Kernel.Bind(x =>
+                    x.FromThisAssembly()
+                     .SelectAllClasses()
+                     .InNamespaceOf<TournamentQueries>()
+                     .BindAllInterfaces()
+                     .Configure(c => c.InTransientScope()));
+
             var configs = new List<IBindingConfiguration>
                               {
-                                  this.Bind<IUnitOfWork>().To<VolleyUnitOfWork>().BindingConfiguration,
-                                  this.Bind<ITournamentRepository>().To<TournamentRepository>().BindingConfiguration,
-                                  this.Bind<IUserRepository>().To<UserRepository>().BindingConfiguration,
+                                  Bind<IUnitOfWork>().To<VolleyUnitOfWork>().BindingConfiguration,
+                                  Bind<ITournamentRepository>().To<TournamentRepository>().BindingConfiguration,
+                                  Bind<IUserRepository>().To<UserRepository>().BindingConfiguration,
                                   Bind<IPlayerRepository>().To<PlayerRepository>().BindingConfiguration,
                                   Bind<IContributorTeamRepository>().To<ContributorTeamRepository>().BindingConfiguration,
                                   Bind<ITeamRepository>().To<TeamRepository>().BindingConfiguration

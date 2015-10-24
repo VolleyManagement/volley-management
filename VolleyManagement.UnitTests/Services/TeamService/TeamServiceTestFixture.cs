@@ -15,7 +15,7 @@
         /// <summary>
         /// Holds collection of teams
         /// </summary>
-        private IList<Team> _teams = new List<Team>();
+        private List<Team> _teams = new List<Team>();
 
         /// <summary>
         /// Holds collection of teams
@@ -72,7 +72,7 @@
         /// Builds test data
         /// </summary>
         /// <returns>Team collection</returns>
-        public IList<Team> Build()
+        public List<Team> Build()
         {
             return _teams;
         }

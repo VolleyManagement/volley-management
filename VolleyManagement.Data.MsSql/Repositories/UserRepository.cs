@@ -1,16 +1,14 @@
-﻿namespace VolleyManagement.Data.MsSql.Services
+﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
 
-    using VolleyManagement.Dal.Contracts;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.MsSql.Mappers;
     using VolleyManagement.Domain.UsersAggregate;
-
-    using User = VolleyManagement.Data.MsSql.Entities.User;
 
     /// <summary>
     /// Defines implementation of the IUserRepository contract.
@@ -20,12 +18,12 @@
         /// <summary>
         /// Holds object set of DAL users.
         /// </summary>
-        private readonly ObjectSet<User> _dalUsers;
+        private readonly ObjectSet<UserEntity> _dalUsers = null;
 
         /// <summary>
         /// Holds UnitOfWork instance.
         /// </summary>
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly VolleyUnitOfWork _unitOfWork = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRepository"/> class.
@@ -33,8 +31,9 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public UserRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
-            this._dalUsers = unitOfWork.Context.CreateObjectSet<User>();
+            // TODO: Change after Identity API integration
+            // this._unitOfWork = unitOfWork;
+            // this._dalUsers = unitOfWork.Context.CreateObjectSet<UserEntity>();
         }
 
         /// <summary>
@@ -78,7 +77,7 @@
         /// <param name="newEntity">The user for adding.</param>
         public void Add(Domain.Users.User newEntity)
         {
-            User newUser = DomainToDal.Map(newEntity);
+            UserEntity newUser = DomainToDal.Map(newEntity);
             this._dalUsers.AddObject(newUser);
             this._unitOfWork.Commit();
             newEntity.Id = newUser.Id;

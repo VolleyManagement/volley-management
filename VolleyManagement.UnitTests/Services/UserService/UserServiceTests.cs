@@ -8,7 +8,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Dal.Contracts;
+
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.Users;
     using VolleyManagement.Domain.UsersAggregate;
@@ -237,8 +237,8 @@
         /// <param name="testData">Test data to mock.</param>
         private void MockRepositoryFindWhere(IEnumerable<User> testData)
         {
-            _userRepositoryMock.Setup(ur => ur.FindWhere(It.IsAny<Expression<Func<User, bool>>>()))
-                .Returns(testData.AsQueryable());
+            //_userRepositoryMock.Setup(ur => ur.FindWhere(It.IsAny<Expression<Func<User, bool>>>()))
+            //    .Returns(testData.AsQueryable());
         }
 
         /// <summary>

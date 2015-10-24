@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = Resources.PlayerViews.PlayersIndexTitle;
 }
+
+
 <h2>@ViewBag.Title</h2>
 
 <div>
@@ -12,18 +14,14 @@
         @Html.TextBox("textToSearch", Model.TextToSearch)
     }
 </div>
-    @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
-</p>
-
-<script src="~/Scripts/UserActions.js" type="text/javascript"></script>
+@Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
 
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.List.FirstOrDefault().FullName)
         </th>
-        <th>
-        </th>
+        <th></th>
     </tr>
 
     @foreach (var item in Model.List)
@@ -31,12 +29,12 @@
         <tr>
             <td>
                 @Html.ActionLink(item.FullName, "Details", new { id = item.Id },
-                new { @class = "playerName", @id = item.Id + "playerName"})
+                new { @class = "playerName", @id = item.Id + "playerName" })
             </td>
             <td>
                 @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) |
                 @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id },
-                 new { @class = "delete", @id = item.Id })
+                            new { @class = "delete", @id = item.Id })
             </td>
         </tr>
     }
@@ -49,37 +47,37 @@
     int pageAfter = Model.PageNumber + 1;
 }
 
-    @if (Model.PageNumber != firstPage && Model.List.Count != 0)
+@if (Model.PageNumber != firstPage && Model.List.Count != 0)
 {
-        @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.TextToSearch });
+    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.TextToSearch });
 }
 
-    @if (pageBefore > firstPage && Model.List.Count != 0)
+@if (pageBefore > firstPage && Model.List.Count != 0)
 {
     if (pageBefore > secondPage)
     {
-        <b>...</b>
+    <b>...</b>
     }
-        @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.TextToSearch });
+    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.TextToSearch });
 }
 
-    @if( Model.List.Count != 0)
-    {
-@Model.PageNumber
-    }
-
-    @if (pageAfter < Model.NumberOfPages && Model.List.Count != 0)
+@if (Model.List.Count != 0)
 {
-        @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.TextToSearch });
-    if (pageAfter < Model.NumberOfPages - 1)
-    {
-        <b>...</b>
-    }
-    }
+    @Model.PageNumber
+}
 
-    @if (Model.PageNumber != Model.NumberOfPages && Model.List.Count != 0)
-    {
-        @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages), textToSearch = Model.TextToSearch })
+@if (pageAfter < Model.NumberOfPages && Model.List.Count != 0)
+{
+    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.TextToSearch });
+                                                                                                                  if (pageAfter < Model.NumberOfPages - 1)
+                                                                                                                  {
+    <b>...</b>
+                                                                                                                  }
+}
+
+@if (Model.PageNumber != Model.NumberOfPages && Model.List.Count != 0)
+{
+    @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages), textToSearch = Model.TextToSearch })
 }
 
 

@@ -92,7 +92,7 @@
             this._contributorTeam.Contributors = contributors;
             return this;
         }
-      
+
         /// <summary>
         /// Builds test contributor team
         /// </summary>

@@ -84,7 +84,7 @@
             var testData = _testFixture.TestTournaments().Build();
 
             this._tournamentServiceMock.Setup(tr => tr.GetActual())
-                .Returns(testData.AsQueryable());
+                .Returns(testData);
 
             var sut = this._kernel.Get<TournamentsController>();
 
@@ -498,10 +498,10 @@
         /// Mocks test data
         /// </summary>
         /// <param name="testData">Data to mock</param>
-        private void MockTournaments(IEnumerable<Tournament> testData)
+        private void MockTournaments(List<Tournament> testData)
         {
             this._tournamentServiceMock.Setup(tr => tr.Get())
-                .Returns(testData.AsQueryable());
+                .Returns(testData);
         }
 
         /// <summary>

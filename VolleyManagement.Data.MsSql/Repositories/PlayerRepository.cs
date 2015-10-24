@@ -1,12 +1,14 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
-    using System.Data.Entity.Core.Objects;
+    using System.Data.Entity;
     using System.Linq;
 
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.MsSql.Mappers;
+    using VolleyManagement.Data.MsSql.Repositories.Specifications;
     using VolleyManagement.Domain.PlayersAggregate;
 
     /// <summary>
@@ -16,15 +18,12 @@
     {
         private const int START_DATABASE_ID_VALUE = 0;
 
-        /// <summary>
-        /// Holds object set of DAL users.
-        /// </summary>
-        private readonly ObjectSet<Entities.Player> _dalPlayers;
+        private readonly PlayerStorageSpecification _dbStorageSpecification
+            = new PlayerStorageSpecification();
 
-        /// <summary>
-        /// Holds UnitOfWork instance.
-        /// </summary>
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly DbSet<PlayerEntity> _dalPlayers;
+
+        private readonly VolleyUnitOfWork _unitOfWork;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerRepository"/> class.
@@ -32,8 +31,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public PlayerRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
-            this._dalPlayers = unitOfWork.Context.CreateObjectSet<Entities.Player>();
+            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            this._dalPlayers = _unitOfWork.Context.Players;
         }
 
         /// <summary>
@@ -45,41 +44,20 @@
         }
 
         /// <summary>
-        /// Gets all players.
-        /// </summary>
-        /// <returns>Collection of domain players.</returns>
-        public IQueryable<Player> Find()
-        {
-            return this._dalPlayers.Select(p => new Player
-            {
-                Id = p.Id,
-                FirstName = p.FirstName,
-                LastName = p.LastName,
-                BirthYear = p.BirthYear,
-                Height = p.Height,
-                Weight = p.Weight,
-                TeamId = p.TeamId
-            });
-        }
-
-        /// <summary>
-        /// Gets specified collection of players.
-        /// </summary>
-        /// <param name="predicate">Condition to find players.</param>
-        /// <returns>Collection of domain players.</returns>
-        public IQueryable<Player> FindWhere(System.Linq.Expressions.Expression<Func<Player, bool>> predicate)
-        {
-            return this.Find().Where(predicate);
-        }
-
-        /// <summary>
         /// Adds new player.
         /// </summary>
         /// <param name="newEntity">The player for adding.</param>
         public void Add(Player newEntity)
         {
-            Entities.Player newPlayer = DomainToDal.Map(newEntity);
-            this._dalPlayers.AddObject(newPlayer);
+            var newPlayer = new PlayerEntity();
+            DomainToDal.Map(newPlayer, newEntity);
+
+            if (!_dbStorageSpecification.IsSatisfiedBy(newPlayer))
+            {
+                throw new InvalidEntityException();
+            }
+
+            this._dalPlayers.Add(newPlayer);
             this._unitOfWork.Commit();
             newEntity.Id = newPlayer.Id;
         }
@@ -97,25 +75,14 @@
                 throw exc;
             }
 
-            Entities.Player playerToUpdate;
-            try
+            var playerToUpdate = this._dalPlayers.SingleOrDefault(t => t.Id == oldEntity.Id);
+
+            if (playerToUpdate == null)
             {
-                playerToUpdate = this._dalPlayers.Single(t => t.Id == oldEntity.Id);
-            }
-            catch (InvalidOperationException e)
-            {
-                var exc = new InvalidKeyValueException("Entity with request Id does not exist", e);
-                exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
-                throw exc;
+                throw new ConcurrencyException();
             }
 
-            playerToUpdate.Id = oldEntity.Id;
-            playerToUpdate.FirstName = oldEntity.FirstName;
-            playerToUpdate.LastName = oldEntity.LastName;
-            playerToUpdate.BirthYear = oldEntity.BirthYear;
-            playerToUpdate.Height = oldEntity.Height;
-            playerToUpdate.Weight = oldEntity.Weight;
-            playerToUpdate.TeamId = oldEntity.TeamId;
+            DomainToDal.Map(playerToUpdate, oldEntity);
         }
 
         /// <summary>
@@ -124,9 +91,9 @@
         /// <param name="id">The id of player to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Entities.Player { Id = id };
+            var dalToRemove = new Entities.PlayerEntity { Id = id };
             this._dalPlayers.Attach(dalToRemove);
-            this._dalPlayers.DeleteObject(dalToRemove);
+            this._dalPlayers.Remove(dalToRemove);
         }
     }
 }

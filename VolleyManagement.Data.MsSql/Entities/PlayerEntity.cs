@@ -1,13 +1,11 @@
 ﻿namespace VolleyManagement.Data.MsSql.Entities
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Collections.Generic;
 
     /// <summary>
     /// DAL player model
     /// </summary>
-    [Table("Players")]
-    public partial class Player
+    public class PlayerEntity
     {
         /// <summary>
         /// Gets or sets id of player
@@ -17,35 +15,43 @@
         /// <summary>
         /// Gets or sets first name of player
         /// </summary>
-        [Required]
-        [StringLength(60)]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets last name of player
         /// </summary>
-        [Required]
-        [StringLength(60)]
         public string LastName { get; set; }
 
         /// <summary>
         /// Gets or sets birth year of player
         /// </summary>
-        public int? BirthYear { get; set; }
+        public short? BirthYear { get; set; }
 
         /// <summary>
         /// Gets or sets height of player
         /// </summary>
-        public int? Height { get; set; }
+        public short? Height { get; set; }
 
         /// <summary>
         /// Gets or sets weight of player
         /// </summary>
-        public int? Weight { get; set; }
+        public short? Weight { get; set; }
 
         /// <summary>
-        /// Gets or sets teamId of player
+        /// Gets or sets Team which this player is captain of
         /// </summary>
         public int? TeamId { get; set; }
+
+        /// <summary>
+        /// Gets or sets Team which player playing currently
+        /// </summary>
+        public virtual TeamEntity Team { get; set; }
+
+        /// <summary>
+        /// Gets or sets team which this player is captain of
+        /// !!! SHOULD NOT BE USED !!!
+        /// Created to address mapping issues for Team - Captain relationship
+        /// </summary>
+        public virtual ICollection<TeamEntity> LedTeam { get; set; }
     }
 }

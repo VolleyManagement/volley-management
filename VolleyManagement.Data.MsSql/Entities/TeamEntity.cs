@@ -1,13 +1,11 @@
 ﻿namespace VolleyManagement.Data.MsSql.Entities
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Collections.Generic;
 
     /// <summary>
     /// DAL team model
     /// </summary>
-    [Table("Teams")]
-    public partial class Team
+    public class TeamEntity
     {
         /// <summary>
         /// Gets or sets id of team
@@ -17,25 +15,31 @@
         /// <summary>
         /// Gets or sets name of team
         /// </summary>
-        [Required]
-        [StringLength(30)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets coach of team
         /// </summary>
-        [StringLength(60)]
         public string Coach { get; set; }
 
         /// <summary>
         /// Gets or sets achievements of team
         /// </summary>
-        [StringLength(4000)]
         public string Achievements { get; set; }
 
         /// <summary>
-        /// Gets or sets captain id of team
+        /// Gets or sets Captain of the team
         /// </summary>
         public int CaptainId { get; set; }
+
+        /// <summary>
+        /// Gets or sets Captain of the team
+        /// </summary>
+        public virtual PlayerEntity Captain { get; set; }
+
+        /// <summary>
+        /// Gets or sets players of the team
+        /// </summary>
+        public virtual ICollection<PlayerEntity> Players { get; set; }
     }
 }

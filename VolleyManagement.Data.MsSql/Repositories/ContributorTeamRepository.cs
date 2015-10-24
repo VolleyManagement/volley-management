@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
+    using System.Data.Entity;
     using System.Data.Entity.Core.Objects;
     using System.Linq;
 
@@ -12,12 +13,12 @@
     /// </summary>
     internal class ContributorTeamRepository : IContributorTeamRepository
     {
-        private readonly ObjectSet<Entities.Contributor> _contribsSet;
+        private readonly DbSet<Entities.ContributorEntity> _contribsSet;
 
         /// <summary>
         /// Holds UnitOfWork instance.
         /// </summary>
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly VolleyUnitOfWork _unitOfWork;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContributorTeamRepository"/> class.
@@ -25,8 +26,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public ContributorTeamRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
-            this._contribsSet = unitOfWork.Context.CreateObjectSet<Entities.Contributor>();
+            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            this._contribsSet = _unitOfWork.Context.Contributors;
         }
 
         /// <summary>
@@ -43,7 +44,7 @@
         /// <returns>Collection of teams with contributors</returns>
         public IQueryable<ContributorTeam> Find()
         {
-            var result = this._contribsSet.GroupBy(c => c.ContributorTeam)
+            var result = this._contribsSet.GroupBy(c => c.Team)
                                      .Select(gr => new ContributorTeam
                                         {
                                             Id = gr.Key.Id,

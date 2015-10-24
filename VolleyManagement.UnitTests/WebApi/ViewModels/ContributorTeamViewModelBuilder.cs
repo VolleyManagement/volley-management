@@ -26,9 +26,7 @@
                 Id = 1,
                 Name = "FirstName",
                 CourseDirection = "Course",
-                Contributors = new List<string>
-                {"FirstNameA","FirstNameB","FirstNameC"}
-                
+                Contributors = new List<string> { "FirstNameA", "FirstNameB", "FirstNameC" }
             };
         }
 
@@ -76,6 +74,7 @@
             {
                 this._contributorTeamViewModel.Contributors.Add(item);
             }
+
             return this;
         }
 

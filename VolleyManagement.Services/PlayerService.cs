@@ -5,34 +5,48 @@
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Dal.Contracts;
+    using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
-
-    using IsolationLevel = System.Data.IsolationLevel;
 
     /// <summary>
     /// Defines PlayerService
     /// </summary>
     public class PlayerService : IPlayerService
     {
-        /// <summary>
-        /// Holds PlayerRepository instance.
-        /// </summary>
         private readonly IPlayerRepository _playerRepository;
 
-        private readonly ITeamRepository _teamRepository;
+        private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
+
+        private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
+
+        private readonly IQuery<IQueryable<Player>, GetAllCriteria> _getAllPlayersQuery;
+
+        private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
         /// </summary>
-        /// <param name="playerRepository">The player repository</param>
-        /// <param name="teamRepository">The team repository</param>
-        public PlayerService(IPlayerRepository playerRepository, ITeamRepository teamRepository)
+        /// <param name="playerRepository"> The player repository </param>
+        /// <param name="getTeamByIdQuery"> Get By ID query for Teams</param>
+        /// <param name="getPlayerByIdQuery"> Get By ID query for Players</param>
+        /// <param name="getAllPlayersQuery"> Get All players query</param>
+        /// <param name="getTeamByCaptainQuery">Get Player by Captain query</param>
+        public PlayerService(
+            IPlayerRepository playerRepository,
+            IQuery<Team, FindByIdCriteria> getTeamByIdQuery,
+            IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
+            IQuery<IQueryable<Player>, GetAllCriteria> getAllPlayersQuery,
+            IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery)
         {
             _playerRepository = playerRepository;
-            _teamRepository = teamRepository;
+            _getTeamByIdQuery = getTeamByIdQuery;
+            _getPlayerByIdQuery = getPlayerByIdQuery;
+            _getAllPlayersQuery = getAllPlayersQuery;
+            _getTeamByCaptainQuery = getTeamByCaptainQuery;
         }
 
         /// <summary>
@@ -41,7 +55,7 @@
         /// <returns>All players.</returns>
         public IQueryable<Player> Get()
         {
-            return _playerRepository.Find();
+            return _getAllPlayersQuery.Execute(new GetAllCriteria());
         }
 
         /// <summary>
@@ -50,20 +64,13 @@
         /// <param name="playerToCreate">A Player to create.</param>
         public void Create(Player playerToCreate)
         {
-            using (IDbTransaction transaction = _playerRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            if (playerToCreate == null)
             {
-                if (playerToCreate.TeamId != null)
-                {
-                    if (_teamRepository.FindWhere(t => t.Id == playerToCreate.TeamId).SingleOrDefault() == null)
-                    {
-                        throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToCreate.TeamId);
-                    }
-                }
-
-                _playerRepository.Add(playerToCreate);
-                _playerRepository.UnitOfWork.Commit();
-                transaction.Commit();
+                throw new ArgumentNullException("playerToCreate");
             }
+
+            _playerRepository.Add(playerToCreate);
+            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -73,17 +80,8 @@
         /// <returns>A found Player.</returns>
         public Player Get(int id)
         {
-            Player player;
-            try
-            {
-                player = _playerRepository.FindWhere(p => p.Id == id).Single();
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
-            }
-
-            return player;
+            var criteria = new FindByIdCriteria { Id = id };
+            return _getPlayerByIdQuery.Execute(criteria);
         }
 
         /// <summary>
@@ -92,36 +90,32 @@
         /// <param name="playerToEdit">Player to edit.</param>
         public void Edit(Player playerToEdit)
         {
-            using (IDbTransaction transaction = _playerRepository.UnitOfWork.BeginTransaction(IsolationLevel.ReadUncommitted))
+            // Check if player is captain of team and teamId is null or changed
+            ////Team ledTeam = GetPlayerLedTeam(playerToEdit.Id);
+            ////if (ledTeam != null &&
+            ////    (playerToEdit.TeamId == null || playerToEdit.TeamId != ledTeam.Id))
+            ////{
+            ////    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
+            ////    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
+            ////    throw ex;
+            ////}
+
+            ////if (playerToEdit.TeamId != null
+            ////    && this._teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
+            ////{
+            ////    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToEdit.TeamId);
+            ////}
+
+            try
             {
-                // Check if player is captain of team and teamId is null or changed
-                Team ledTeam = GetPlayerLedTeam(playerToEdit.Id);
-                if (ledTeam != null &&
-                    (playerToEdit.TeamId == null || playerToEdit.TeamId != ledTeam.Id))
-                {
-                    var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-                    ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = ledTeam.Id;
-                    throw ex;
-                }
-
-                if (playerToEdit.TeamId != null
-                    && this._teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
-                {
-                    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToEdit.TeamId);
-                }
-
-                try
-                {
-                    _playerRepository.Update(playerToEdit);
-                }
-                catch (InvalidKeyValueException ex)
-                {
-                    throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
-                }
-
-                _playerRepository.UnitOfWork.Commit();
-                transaction.Commit();
+                _playerRepository.Update(playerToEdit);
             }
+            catch (InvalidKeyValueException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, ex);
+            }
+
+            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -161,19 +155,19 @@
                 return null;
             }
 
-            try
-            {
-                return _teamRepository.FindWhere(t => t.Id == player.TeamId).Single();
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, player.TeamId, ex);
-            }
+            return this.GetTeamById(player.TeamId.GetValueOrDefault());
         }
 
         private Team GetPlayerLedTeam(int playerId)
         {
-            return _teamRepository.FindWhere(t => t.CaptainId == playerId).SingleOrDefault();
+            var criteria = new FindByCaptainIdCriteria { CaptainId = playerId };
+            return _getTeamByCaptainQuery.Execute(criteria);
+        }
+
+        private Team GetTeamById(int id)
+        {
+            var criteria = new FindByIdCriteria { Id = id };
+            return _getTeamByIdQuery.Execute(criteria);
         }
     }
 }

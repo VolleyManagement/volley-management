@@ -36,8 +36,6 @@
 
             public const int MAX_REGULATION_LENGTH = 255;
 
-            public const short SCHEMA_VALUE_OFFSET_DOMAIN_TO_DB = 1900;
-
             public const short MINIMAL_SEASON_YEAR = 1900;
 
             public const short MAXIMAL_SEASON_YEAR = 2155;

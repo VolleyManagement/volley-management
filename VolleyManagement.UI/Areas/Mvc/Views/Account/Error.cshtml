@@ -1,0 +1,18 @@
+﻿@model IEnumerable<string>
+
+@{
+    ViewBag.Title = "Error";
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<h2>Login Error</h2>
+
+Error encountered when authenticated:
+
+<ul>
+    @foreach (var str in Model)
+    {
+        <li>@str</li>
+    }
+</ul>
+

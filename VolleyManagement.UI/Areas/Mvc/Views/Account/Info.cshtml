@@ -1,0 +1,11 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Account.AuthenticationStatusViewModel
+
+@if (Model.IsAuthenticated)
+{
+    <span>Hi, @Model.UserName</span>
+    @Html.ActionLink("Log Out", "Logout", new { returnUrl = Model.ReturnUrl })
+}
+else
+{
+    @Html.ActionLink("Log In", "Login", new { returnUrl = Model.ReturnUrl })
+}

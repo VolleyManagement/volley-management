@@ -12,7 +12,7 @@
     using Ninject;
 
     using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.UI.Areas.WebApi.ApiControllers;
+    using VolleyManagement.UI.Areas.WebApi.ODataControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
     using VolleyManagement.UnitTests.Services.TeamService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;

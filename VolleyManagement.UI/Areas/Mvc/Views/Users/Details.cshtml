@@ -1,4 +1,4 @@
-﻿@model User
+﻿@model VolleyManagement.Domain.UsersAggregate.User
 
 @using VolleyManagement.Domain.Users
 
@@ -20,8 +20,8 @@
     <div class="display-label">@Html.LabelFor(model => model.FullName)</div>
     <div class="display-field">@Model.FullName</div>
 
-    <div class="display-label">@Html.LabelFor(model => model.CellPhone)</div>
-    <div class="display-field">@Html.DisplayFor(model => model.CellPhone)</div>
+    <div class="display-label">@Html.LabelFor(model => model.PhoneNumber)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.PhoneNumber)</div>
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |

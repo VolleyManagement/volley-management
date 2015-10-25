@@ -15,7 +15,7 @@
     using Ninject;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.UI.Areas.WebApi.ApiControllers;
+    using VolleyManagement.UI.Areas.WebApi.ODataControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
     using VolleyManagement.UnitTests.Services.PlayerService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;

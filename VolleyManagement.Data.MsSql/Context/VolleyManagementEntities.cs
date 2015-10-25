@@ -42,6 +42,11 @@ namespace VolleyManagement.Data.MsSql.Context
         public DbSet<UserEntity> Users { get; set; }
 
         /// <summary>
+        /// Gets or sets the user table.
+        /// </summary>
+        public DbSet<LoginInfoEntity> LoginProviders { get; set; }
+
+        /// <summary>
         /// Gets or sets the player table.
         /// </summary>
         public DbSet<PlayerEntity> Players { get; set; }
@@ -73,6 +78,7 @@ namespace VolleyManagement.Data.MsSql.Context
         {
             ConfigureTournaments(modelBuilder);
             ConfigureUsers(modelBuilder);
+            ConfigureUserLogins(modelBuilder);
             ConfigurePlayers(modelBuilder);
             ConfigureTeams(modelBuilder);
             ConfigureContributors(modelBuilder);
@@ -158,7 +164,63 @@ namespace VolleyManagement.Data.MsSql.Context
 
         private static void ConfigureUsers(DbModelBuilder modelBuilder)
         {
-            // Implement with Identity API
+            modelBuilder.Entity<UserEntity>()
+                .ToTable(VolleyDatabaseMetadata.USERS_TABLE_NAME)
+                .HasKey(u => u.Id);
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(u => u.UserName)
+                .IsRequired()
+                .HasMaxLength(ValidationConstants.User.MAX_USER_NAME_LENGTH)
+                .IsUnicode()
+                .IsVariableLength();
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(u => u.Email)
+                .IsOptional()
+                .HasMaxLength(ValidationConstants.User.MAX_EMAIL_LENGTH)
+                .IsUnicode()
+                .IsVariableLength();
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(u => u.FullName)
+                .IsOptional()
+                .HasMaxLength(ValidationConstants.User.MAX_FULL_NAME_LENGTH)
+                .IsUnicode()
+                .IsVariableLength();
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(u => u.CellPhone)
+                .IsOptional()
+                .HasMaxLength(ValidationConstants.User.MAX_PHONE_LENGTH)
+                .IsUnicode()
+                .IsVariableLength();
+
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(u => u.LoginProviders)
+                .WithRequired(l => l.User)
+                .WillCascadeOnDelete(false);
+        }
+
+        private static void ConfigureUserLogins(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<LoginInfoEntity>()
+                .ToTable(VolleyDatabaseMetadata.LOGIN_PROVIDERS_TABLE_NAME)
+                .HasKey(l => new { l.ProviderKey, l.LoginProvider });
+
+            modelBuilder.Entity<LoginInfoEntity>()
+                .Property(l => l.LoginProvider)
+                .IsRequired()
+                .HasMaxLength(ValidationConstants.User.MAX_LOGIN_PROVIDER_LENGTH)
+                .IsUnicode()
+                .IsVariableLength();
+
+            modelBuilder.Entity<LoginInfoEntity>()
+                .Property(l => l.ProviderKey)
+                .IsRequired()
+                .HasMaxLength(ValidationConstants.User.MAX_PROVIDER_KEY_LENGTH)
+                .IsUnicode()
+                .IsVariableLength();
         }
 
         private static void ConfigurePlayers(DbModelBuilder modelBuilder)

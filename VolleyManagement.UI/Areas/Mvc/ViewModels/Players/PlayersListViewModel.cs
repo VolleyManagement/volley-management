@@ -20,12 +20,12 @@
         /// <param name="index">Index of page</param>
         /// <param name="size">Number of players on page</param>
         /// <param name="textToSearch">Substring to search</param>
-        public PlayersListViewModel(IQueryable <Player> source, int? index, int size, string textToSearch)
+        public PlayersListViewModel(IQueryable<Player> source, int? index, int size, string textToSearch)
         {
             this.TextToSearch = textToSearch;
             this.Size = size;
             this.PageNumber = index ?? FIRST_PAGE;
-            this.NumberOfPages = (int) Math.Ceiling(source.Count() / (double)Size);
+            this.NumberOfPages = (int)Math.Ceiling(source.Count() / (double)Size);
 
             if ((index > this.NumberOfPages) || (index < FIRST_PAGE))
                 throw new ArgumentOutOfRangeException();
@@ -37,7 +37,7 @@
                             .Select(p => PlayerViewModel.Map(p)));
 
             this.List = new List<PlayerNameViewModel>();
-            foreach(PlayerViewModel player in listOfPlayers)
+            foreach (PlayerViewModel player in listOfPlayers)
             {
                 this.List.Add(PlayerNameViewModel.Map(player));
             }

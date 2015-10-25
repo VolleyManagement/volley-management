@@ -12,7 +12,7 @@
 
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.Areas.WebApi.ApiControllers;
+    using VolleyManagement.UI.Areas.WebApi.ODataControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.ContributorsTeam;
     using VolleyManagement.UnitTests.Services.ContributorService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;

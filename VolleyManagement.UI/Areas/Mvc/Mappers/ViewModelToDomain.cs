@@ -1,8 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Mappers
 {
-    using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.Users;
+    using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
 
@@ -42,9 +41,7 @@
             {
                 Id = userViewModel.Id,
                 UserName = userViewModel.UserName,
-                Password = userViewModel.Password,
-                FullName = userViewModel.FullName,
-                CellPhone = userViewModel.CellPhone,
+                PhoneNumber = userViewModel.CellPhone,
                 Email = userViewModel.Email
             };
         }

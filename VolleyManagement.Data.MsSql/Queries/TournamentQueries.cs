@@ -11,8 +11,6 @@
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
 
-    using Constants = VolleyManagement.Domain.Constants;
-
     /// <summary>
     /// Provides Object Query implementation for Tournaments
     /// </summary>

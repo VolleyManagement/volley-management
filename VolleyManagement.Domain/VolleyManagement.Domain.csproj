@@ -67,6 +67,7 @@
     <Compile Include="TournamentsAggregate\TournamentStateEnum.cs" />
     <Compile Include="TournamentsAggregate\TournamentValidationSpecification.cs" />
     <Compile Include="UsersAggregate\IUserRepository.cs" />
+    <Compile Include="UsersAggregate\LoginProviderInfo.cs" />
     <Compile Include="UsersAggregate\User.cs" />
     <Compile Include="UsersAggregate\UserValidation.cs" />
     <Compile Include="TeamsAggregate\Team.cs" />
@@ -87,10 +88,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj">
-      <Project>{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}</Project>
-      <Name>VolleyManagement.Crosscutting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Data\VolleyManagement.Data.csproj">
       <Project>{7a32aa11-6e95-4896-9e7a-fc3df24524ea}</Project>
       <Name>VolleyManagement.Data</Name>

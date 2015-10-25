@@ -1,14 +1,17 @@
 ﻿namespace VolleyManagement.Services.Infrastructure
 {
     using System;
-    using System.Collections.Generic;
 
     using Ninject.Activation;
+    using Ninject.Infrastructure;
     using Ninject.Modules;
-    using Ninject.Planning.Bindings;
 
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authentication;
+    using VolleyManagement.Contracts.Authentication.Models;
+    using VolleyManagement.Crosscutting.Ninject;
     using VolleyManagement.Services;
+    using VolleyManagement.Services.Authentication;
 
     /// <summary>
     /// Defines bindings for Service layer
@@ -31,18 +34,16 @@
         /// </summary>
         public override void Load()
         {
-            var configs = new List<IBindingConfiguration>
+            var configs = new IHaveBindingConfiguration[]
                               {
-                                  Bind<ITournamentService>().To<TournamentService>().BindingConfiguration,
-                                  Bind<IUserService>().To<UserService>().BindingConfiguration,
-                                  Bind<IPlayerService>().To<PlayerService>().BindingConfiguration,
-                                  Bind<IContributorTeamService>().To<ContributorTeamService>().BindingConfiguration,
-                                  Bind<ITeamService>().To<TeamService>().BindingConfiguration
+                                  Bind<ITournamentService>().To<TournamentService>(),
+                                  Bind<IPlayerService>().To<PlayerService>(),
+                                  Bind<IContributorTeamService>().To<ContributorTeamService>(),
+                                  Bind<ITeamService>().To<TeamService>(),
+                                  Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
+                                  Bind<IVolleyUserStore>().To<VolleyUserStore>()
                               };
-            if (_scopeCallback != null)
-            {
-                configs.ForEach(bc => bc.ScopeCallback = _scopeCallback);
-            }
+            configs.InScope(_scopeCallback);
         }
     }
 }

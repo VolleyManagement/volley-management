@@ -1,134 +1,48 @@
-﻿namespace VolleyManagement.Domain.Users
+﻿namespace VolleyManagement.Domain.UsersAggregate
 {
-    using System;
-    using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.UsersAggregate;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// User domain class.
+    /// Represents User of the Volley Management system
     /// </summary>
     public class User
     {
-        private string _userName;
-        private string _password;
-        private string _fullName;
-        private string _cellPhone;
-        private string _email;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="User"/> class.
+        /// </summary>
+        public User()
+        {
+            LoginProviders = new List<LoginProviderInfo>();
+        }
 
         /// <summary>
-        /// Gets or sets a value indicating where Id.
+        /// User Id
         /// </summary>
-        /// <value>Id of user.</value>
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating where UserName.
+        /// User Name
         /// </summary>
-        /// <value>User name.</value>
-        public string UserName
-        {
-            get
-            {
-                return _userName;
-            }
-
-            set
-            {
-                if (UserValidation.ValidateUserName(value))
-                {
-                    throw new ArgumentException(Resources.ValidationUserName);
-                }
-
-                _userName = value;
-            }
-        }
+        public string UserName { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating where Password.
+        /// User Email
         /// </summary>
-        /// <value>Password of user.</value>
-        public string Password
-        {
-            get
-            {
-                return _password;
-            }
-
-            set
-            {
-                if (UserValidation.ValidatePassword(value))
-                {
-                    throw new ArgumentException(Resources.ValidationPassword);
-                }
-
-                _password = value;
-            }
-        }
+        public string Email { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating where Full Name.
+        /// User's full name
         /// </summary>
-        /// <value>Full name of user.</value>
-        public string FullName
-        {
-            get
-            {
-                return _fullName;
-            }
-
-            set
-            {
-                if (UserValidation.ValidateFullName(value))
-                {
-                    throw new ArgumentException(Resources.ValidationFullName);
-                }
-
-                _fullName = value;
-            }
-        }
+        public string PersonName { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating where Telephone.
+        /// Phone number for the user
         /// </summary>
-        /// <value>Telephone of user.</value>
-        public string CellPhone
-        {
-            get
-            {
-                return _cellPhone;
-            }
-
-            set
-            {
-                if (UserValidation.ValidateCellPhone(value))
-                {
-                    throw new ArgumentException(Resources.ValidationCellPhone);
-                }
-
-                _cellPhone = value;
-            }
-        }
+        public string PhoneNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating email of user.
+        /// External login information for the user
         /// </summary>
-        /// <value>Email of user.</value>
-        public string Email
-        {
-            get
-            {
-                return _email;
-            }
-
-            set
-            {
-                if (UserValidation.ValidateEmail(value))
-                {
-                    throw new ArgumentException(Resources.ValidationEmail);
-                }
-
-                _email = value;
-            }
-        }
+        public IEnumerable<LoginProviderInfo> LoginProviders { get; set; }
     }
 }

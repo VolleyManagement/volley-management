@@ -1,8 +1,12 @@
 ﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
+    using System.Linq;
+
     using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Domain;
+    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// Maps Domain models to Dal.
@@ -12,39 +16,43 @@
         /// <summary>
         /// Maps Tournament model.
         /// </summary>
-        /// <param name="entity">Mapping target</param>
-        /// <param name="domainTournament">Mapping source</param>
-        public static void Map(TournamentEntity entity, Tournament domainTournament)
+        /// <param name="to">Mapping target</param>
+        /// <param name="from">Mapping source</param>
+        public static void Map(TournamentEntity to, Tournament from)
         {
-            entity.Id = domainTournament.Id;
-            entity.Name = domainTournament.Name;
-            entity.Season = (byte)(domainTournament.Season - ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET);
-            entity.Description = domainTournament.Description;
-            entity.Scheme = (byte)domainTournament.Scheme;
-            entity.RegulationsLink = domainTournament.RegulationsLink;
-            entity.GamesStart = domainTournament.GamesStart;
-            entity.GamesEnd = domainTournament.GamesEnd;
-            entity.ApplyingPeriodStart = domainTournament.ApplyingPeriodStart;
-            entity.ApplyingPeriodEnd = domainTournament.ApplyingPeriodEnd;
-            entity.TransferStart = domainTournament.TransferStart;
-            entity.TransferEnd = domainTournament.TransferEnd;
+            to.Id = from.Id;
+            to.Name = from.Name;
+            to.Season = (byte)(from.Season - ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET);
+            to.Description = from.Description;
+            to.Scheme = (byte)from.Scheme;
+            to.RegulationsLink = from.RegulationsLink;
+            to.GamesStart = from.GamesStart;
+            to.GamesEnd = from.GamesEnd;
+            to.ApplyingPeriodStart = from.ApplyingPeriodStart;
+            to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
+            to.TransferStart = from.TransferStart;
+            to.TransferEnd = from.TransferEnd;
         }
 
         /// <summary>
         /// Maps User model.
         /// </summary>
-        /// <param name="domainUser">User Domain model</param>
-        /// <returns>User Dal model</returns>
-        public static UserEntity Map(Domain.Users.User domainUser)
+        /// <param name="to">User Entity model</param>
+        /// <param name="from">User Domain model</param>
+        public static void Map(UserEntity to, User from)
         {
-            UserEntity user = new UserEntity();
-            user.Id = domainUser.Id;
-            user.FullName = domainUser.FullName;
-            user.UserName = domainUser.UserName;
-            user.Email = domainUser.Email;
-            user.CellPhone = domainUser.CellPhone;
-            user.Password = domainUser.Password;
-            return user;
+            to.Id = from.Id;
+            to.FullName = from.PersonName;
+            to.UserName = from.UserName;
+            to.Email = from.Email;
+            to.CellPhone = from.PhoneNumber;
+            to.LoginProviders = from.LoginProviders
+                .Select(l => new LoginInfoEntity
+                                     {
+                                         LoginProvider = l.LoginProvider,
+                                         ProviderKey = l.ProviderKey
+                                     })
+                                     .ToList();
         }
 
         /// <summary>
@@ -52,7 +60,7 @@
         /// </summary>
         /// <param name="to">Target of the mapping</param>
         /// <param name="from">Source of the mapping</param>
-        public static void Map(PlayerEntity to, Domain.PlayersAggregate.Player from)
+        public static void Map(PlayerEntity to, Player from)
         {
             to.Id = from.Id;
             to.FirstName = from.FirstName;
@@ -68,7 +76,7 @@
         /// </summary>
         /// <param name="to">Team Entity model</param>
         /// <param name="from">Team Domain model</param>
-        public static void Map(TeamEntity to, Domain.TeamsAggregate.Team from)
+        public static void Map(TeamEntity to, Team from)
         {
             to.Id = from.Id;
             to.Name = from.Name;

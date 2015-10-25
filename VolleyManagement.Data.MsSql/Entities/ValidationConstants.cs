@@ -54,5 +54,23 @@
 
             public const int MAX_NAME_LENGTH = 30;
         }
+
+        /// <summary>
+        /// User entity validation constants
+        /// </summary>
+        public static class User
+        {
+            public const int MAX_USER_NAME_LENGTH = 256;
+
+            public const int MAX_EMAIL_LENGTH = 128;
+
+            public const int MAX_FULL_NAME_LENGTH = 128;
+
+            public const int MAX_PHONE_LENGTH = 15;
+
+            public const int MAX_LOGIN_PROVIDER_LENGTH = 128;
+
+            public const int MAX_PROVIDER_KEY_LENGTH = 128;
+        }
     }
 }

@@ -1,9 +1,8 @@
 ﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Users
 {
-    using System;
     using System.ComponentModel.DataAnnotations;
 
-    using VolleyManagement.Domain.Users;
+    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// TournamentViewModel class.
@@ -65,8 +64,8 @@
                            Id = user.Id,
                            UserName = user.UserName,
                            Password = string.Empty,
-                           FullName = user.FullName,
-                           CellPhone = user.CellPhone,
+                           FullName = user.PersonName,
+                           CellPhone = user.PhoneNumber,
                            Email = user.Email
                        };
         }
@@ -81,9 +80,7 @@
             {
                 Id = this.Id,
                 UserName = this.UserName,
-                Password = this.Password,
-                FullName = this.FullName,
-                CellPhone = this.CellPhone,
+                PhoneNumber = this.CellPhone,
                 Email = this.Email
             };
         }

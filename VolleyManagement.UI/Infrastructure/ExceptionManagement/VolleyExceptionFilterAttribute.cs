@@ -34,9 +34,7 @@
         /// <summary>
         /// The on exception.
         /// </summary>
-        /// <param name="filterContext">
-        /// The filter context.
-        /// </param>
+        /// <param name="filterContext"> The filter context. </param>
         public void OnException(ExceptionContext filterContext)
         {
             if (filterContext.ExceptionHandled)

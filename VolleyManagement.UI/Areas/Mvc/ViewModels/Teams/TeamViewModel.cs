@@ -23,10 +23,10 @@
         /// Gets or sets name of the team
         /// </summary>
         [Display(Name = "TeamName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "TeamNameRequired"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "TeamNameRequired",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
         /// <summary>

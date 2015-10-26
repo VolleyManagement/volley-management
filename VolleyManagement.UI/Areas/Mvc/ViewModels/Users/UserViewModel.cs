@@ -1,7 +1,8 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Users
 {
     using System.ComponentModel.DataAnnotations;
-    using VolleyManagement.Domain.Users;
+
+    using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.UI.App_GlobalResources;
 
     /// <summary>
@@ -87,8 +88,8 @@
                 Id = user.Id,
                 UserName = user.UserName,
                 Password = string.Empty,
-                FullName = user.FullName,
-                CellPhone = user.CellPhone,
+                FullName = user.PersonName,
+                CellPhone = user.PhoneNumber,
                 Email = user.Email
             };
         }
@@ -103,9 +104,7 @@
             {
                 Id = this.Id,
                 UserName = this.UserName,
-                Password = this.Password,
-                FullName = this.FullName,
-                CellPhone = this.CellPhone,
+                PhoneNumber = this.CellPhone,
                 Email = this.Email
             };
         }

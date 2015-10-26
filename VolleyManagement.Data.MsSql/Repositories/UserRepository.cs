@@ -2,7 +2,6 @@
 {
     using System;
     using System.Data.Entity;
-    using System.Data.Entity.Core.Objects;
     using System.Linq;
 
     using VolleyManagement.Data.Contracts;
@@ -18,12 +17,12 @@
         /// <summary>
         /// Holds object set of DAL users.
         /// </summary>
-        private readonly ObjectSet<UserEntity> _dalUsers = null;
+        private readonly DbSet<UserEntity> _dalUsers;
 
         /// <summary>
         /// Holds UnitOfWork instance.
         /// </summary>
-        private readonly VolleyUnitOfWork _unitOfWork = null;
+        private readonly VolleyUnitOfWork _unitOfWork;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserRepository"/> class.
@@ -31,9 +30,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public UserRepository(IUnitOfWork unitOfWork)
         {
-            // TODO: Change after Identity API integration
-            // this._unitOfWork = unitOfWork;
-            // this._dalUsers = unitOfWork.Context.CreateObjectSet<UserEntity>();
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalUsers = _unitOfWork.Context.Users;
         }
 
         /// <summary>
@@ -45,40 +43,14 @@
         }
 
         /// <summary>
-        /// Gets all users.
-        /// </summary>
-        /// <returns>Collection of domain users.</returns>
-        public IQueryable<Domain.Users.User> Find()
-        {
-            return this._dalUsers.Select(u => new Domain.Users.User
-            {
-                Id = u.Id,
-                FullName = u.FullName,
-                UserName = u.UserName,
-                Email = u.Email,
-                CellPhone = u.CellPhone,
-                Password = u.Password
-            });
-        }
-
-        /// <summary>
-        /// Gets specified collection of users.
-        /// </summary>
-        /// <param name="predicate">Condition to find users.</param>
-        /// <returns>Collection of domain users.</returns>
-        public IQueryable<Domain.Users.User> FindWhere(System.Linq.Expressions.Expression<Func<Domain.Users.User, bool>> predicate)
-        {
-            return this.Find().Where(predicate);
-        }
-
-        /// <summary>
         /// Adds new user.
         /// </summary>
         /// <param name="newEntity">The user for adding.</param>
-        public void Add(Domain.Users.User newEntity)
+        public void Add(User newEntity)
         {
-            UserEntity newUser = DomainToDal.Map(newEntity);
-            this._dalUsers.AddObject(newUser);
+            var newUser = new UserEntity();
+            DomainToDal.Map(newUser, newEntity);
+            this._dalUsers.Add(newUser);
             this._unitOfWork.Commit();
             newEntity.Id = newUser.Id;
         }
@@ -87,15 +59,10 @@
         /// Updates specified user.
         /// </summary>
         /// <param name="oldEntity">The user to update.</param>
-        public void Update(Domain.Users.User oldEntity)
+        public void Update(User oldEntity)
         {
-            var userToUpdate = this._dalUsers.Where(t => t.Id == oldEntity.Id).Single();
-            userToUpdate.UserName = oldEntity.UserName;
-            userToUpdate.Password = oldEntity.Password;
-            userToUpdate.FullName = oldEntity.FullName;
-            userToUpdate.Email = oldEntity.Email;
-            userToUpdate.CellPhone = oldEntity.CellPhone;
-            this._dalUsers.Context.ObjectStateManager.ChangeObjectState(userToUpdate, EntityState.Modified);
+            var userToUpdate = this._dalUsers.Single(t => t.Id == oldEntity.Id);
+            DomainToDal.Map(userToUpdate, oldEntity);
         }
 
         /// <summary>

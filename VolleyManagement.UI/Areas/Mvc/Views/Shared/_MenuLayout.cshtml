@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "title";
+    Layout = "~/Areas/Mvc/Views/Shared/_Layout.cshtml";
+}
+
+@section Navigation
+{
+    @{ Html.RenderAction("Menu", "Navigation"); }
+}
+
+@RenderBody()

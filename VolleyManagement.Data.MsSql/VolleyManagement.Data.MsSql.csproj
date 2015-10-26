@@ -73,9 +73,14 @@
     <Compile Include="Context\Migrations\201510171919218_DropExtraIndexes.Designer.cs">
       <DependentUpon>201510171919218_DropExtraIndexes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201510241559278_UserIdentity.cs" />
+    <Compile Include="Context\Migrations\201510241559278_UserIdentity.Designer.cs">
+      <DependentUpon>201510241559278_UserIdentity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
+    <Compile Include="Entities\LoginInfoEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
     <Compile Include="Entities\ContributorEntity.cs" />
     <Compile Include="Infrastructure\NinjectDataAccessModule.cs" />
@@ -85,6 +90,7 @@
     <Compile Include="Queries\PlayerQueries.cs" />
     <Compile Include="Queries\TeamQueries.cs" />
     <Compile Include="Queries\TournamentQueries.cs" />
+    <Compile Include="Queries\UserQueries.cs" />
     <Compile Include="Repositories\ContributorTeamRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
@@ -134,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201510171919218_DropExtraIndexes.resx">
       <DependentUpon>201510171919218_DropExtraIndexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201510241559278_UserIdentity.resx">
+      <DependentUpon>201510241559278_UserIdentity.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

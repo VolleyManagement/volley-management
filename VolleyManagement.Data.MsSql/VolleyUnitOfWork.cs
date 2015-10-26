@@ -1,11 +1,9 @@
 ﻿namespace VolleyManagement.Data.MsSql
 {
-    using System.Data.Entity.Core;
-    using System.Data.Entity.Core.Objects;
     using System.Data.Entity.Infrastructure;
+    using System.Threading.Tasks;
 
     using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.MsSql.Context;
 
     /// <summary>
@@ -40,14 +38,16 @@
         /// </summary>
         public void Commit()
         {
-            try
-            {
-                this._context.SaveChanges();
-            }
-            catch (OptimisticConcurrencyException ex)
-            {
-                throw new InvalidKeyValueException("Entity with request Id does not exist", ex);
-            }
+            this._context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Asynchronously commits all changes into the store
+        /// </summary>
+        /// <returns>Task to await</returns>
+        public Task CommitAsync()
+        {
+            return this._context.SaveChangesAsync();
         }
 
         /// <summary>

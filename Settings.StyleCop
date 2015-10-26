@@ -3,6 +3,7 @@
     <CollectionProperty Name="RecognizedWords">
       <Value>api</Value>
       <Value>Api</Value>
+      <Value>Ninject</Value>
       <Value>WebApi</Value>
     </CollectionProperty>
   </GlobalSettings>
@@ -94,6 +95,7 @@
         <StringProperty Name="AdvancedNaming_PublicConst">$(AA_BB)</StringProperty>
         <StringProperty Name="AdvancedNaming_InternalConst">$(AA_BB)</StringProperty>
         <StringProperty Name="AdvancedNaming_MethodProtectedEventHandler">$(AaBb):$(aaBb)_$(AaBb):$(AaBb)_$(AaBb):$(Aa_Bb)</StringProperty>
+        <StringProperty Name="AdvancedNaming_LocalConstant">$(AA_BB)</StringProperty>
       </AnalyzerSettings>
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
@@ -134,6 +136,11 @@
           </RuleSettings>
         </Rule>
         <Rule Name="EnumerationItemsMustBeDocumented">
+          <RuleSettings>
+            <BooleanProperty Name="Enabled">False</BooleanProperty>
+          </RuleSettings>
+        </Rule>
+        <Rule Name="PropertySummaryDocumentationMustMatchAccessors">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>

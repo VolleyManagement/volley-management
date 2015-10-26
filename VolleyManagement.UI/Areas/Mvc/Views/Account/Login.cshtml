@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "../Shared/_Layout.cshtml";
+}
+<h2>Log In</h2>
+
+Please use one of the following authentication methods.
+
+@using (Html.BeginForm("GoogleLogin", "Account"))
+{
+    <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
+    <button class="btn btn-primary" type="submit">Log In via Google</button>
+}

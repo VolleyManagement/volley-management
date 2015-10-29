@@ -33,8 +33,8 @@
         /// Gets or sets coach of the team
         /// </summary>
         [Display(Name = "TeamCoach", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage", 
-            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Coach { get; set; }
 
         /// <summary>
@@ -47,8 +47,8 @@
         /// Gets or sets the captain of the team
         /// </summary>
         [Display(Name = "TeamCaptain", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "TeamCaptainRequired",
-            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "TeamCaptainRequired"
+            , ErrorMessageResourceType = typeof(ViewModelResources))]
         public PlayerNameViewModel Captain { get; set; }
 
         /// <summary>

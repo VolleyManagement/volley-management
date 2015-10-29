@@ -514,8 +514,6 @@
         /// <param name="testData">Test data to mock.</param>
         private void MockRepositoryFindWhere(IEnumerable<Tournament> testData)
         {
-            //_tournamentRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Tournament, bool>>>()))
-            //    .Returns(testData.AsQueryable());
         }
     }
 }

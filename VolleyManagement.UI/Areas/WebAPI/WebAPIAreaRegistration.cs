@@ -65,14 +65,14 @@
                 new[] { "VolleyManagement.UI.Areas.WebApi.Controllers" });
         }
 
-        //    /// <summary>
-        //    /// Gets EdmModel using ModelBuilder.
-        //    /// </summary>
-        //    /// <returns>EdmModel with entity sets and relationships.</returns>
-        //    private static IEdmModel GetEdmModel()
-        //    {
-        //        var builder = new ODataConventionModelBuilder();
-        //        builder.EnableLowerCamelCase();
+        ////    /// <summary>
+        ////    /// Gets EdmModel using ModelBuilder.
+        ////    /// </summary>
+        ////    /// <returns>EdmModel with entity sets and relationships.</returns>
+        ////    private static IEdmModel GetEdmModel()
+        ////    {
+        ////        var builder = new ODataConventionModelBuilder();
+        ////        builder.EnableLowerCamelCase();
 
         //        builder.EntitySet<TournamentViewModel>("Tournaments");
         //        builder.EntitySet<TeamViewModel>("Teams");

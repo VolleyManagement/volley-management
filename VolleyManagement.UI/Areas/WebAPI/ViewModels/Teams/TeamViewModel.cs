@@ -27,24 +27,24 @@
         /// Gets or sets the team name.
         /// </summary>
         [Display(Name = "TeamName", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Team.MAX_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Team.MAX_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the team coach.
         /// </summary>
         [Display(Name = "TeamCoach", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Team.MAX_COACH_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Team.MAX_COACH_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Coach { get; set; }
 
         /// <summary>
         /// Gets or sets the team achievements.
         /// </summary>
         [Display(Name = "TeamAchievements", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Team.MAX_ACHIEVEMENTS_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Team.MAX_ACHIEVEMENTS_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Achievements { get; set; }
 
         /// <summary>

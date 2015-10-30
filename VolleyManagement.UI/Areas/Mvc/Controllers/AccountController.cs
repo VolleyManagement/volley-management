@@ -54,6 +54,11 @@
             return this.PartialView("Info", vm);
         }
 
+        /// <summary>
+        /// Logout and return to another page.
+        /// </summary>
+        /// <param name="returnUrl"> Url to return after logout procedure. </param>
+        /// <returns> Page from url. </returns>
         public ActionResult Logout(string returnUrl)
         {
             AuthManager.SignOut();

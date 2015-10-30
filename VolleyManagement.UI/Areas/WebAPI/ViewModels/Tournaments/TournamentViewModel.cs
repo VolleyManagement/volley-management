@@ -26,7 +26,8 @@
         /// <value>Name of tournament.</value>
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(60, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError",
+                              ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
         /// <summary>
@@ -43,8 +44,8 @@
         /// </summary>
         /// <value>Season of tournament.</value>
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [Range(tournConst.MINIMAL_SEASON_YEAR, tournConst.MAXIMAL_SEASON_YEAR
-            , ErrorMessageResourceName = "NotInRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(tournConst.MINIMAL_SEASON_YEAR, tournConst.MAXIMAL_SEASON_YEAR,
+            ErrorMessageResourceName = "NotInRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public short Season { get; set; }
 
         /// <summary>

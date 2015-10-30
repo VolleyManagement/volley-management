@@ -102,7 +102,7 @@
         /// <summary>
         /// Create tournament action (POST)
         /// </summary>
-        /// <param name="tournamentViewMsodel">Tournament, which the user wants to create</param>
+        /// <param name="tournamentViewModel">Tournament, which the user wants to create</param>
         /// <returns>Index view if tournament was valid, else - create view</returns>
         [HttpPost]
         public ActionResult Create(TournamentViewModel tournamentViewModel)

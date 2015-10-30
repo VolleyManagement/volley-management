@@ -15,8 +15,12 @@
     public class PlayersController : Controller
     {
         private const int MAX_PLAYERS_ON_PAGE = 5;
-        private const string PLAYER_WAS_DELETED_DESCRIPTION = "Данный игрок не найден, т.к. был удален. Операция редактирования невозможна. Для создания игрока воспользуйтесь соответствующей ссылкой.";
-        private const string HTTP_NOT_FOUND_DESCRIPTION = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
+        private const string PLAYER_WAS_DELETED_DESCRIPTION = @"Данный игрок не найден, т.к. был удален.
+                                                                Операция редактирования невозможна.
+                                                                Для создания игрока воспользуйтесь соответствующей ссылкой.";
+
+        private const string HTTP_NOT_FOUND_DESCRIPTION = @"При удалении игрока произошла непредвиденная ситуация.
+                                                            Пожалуйста, обратитесь к администратору";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -79,7 +83,7 @@
         }
 
         /// <summary>
-        /// Create player action GET       
+        /// Create player action GET
         /// </summary>
         /// <returns>Empty player view model</returns>
         public ActionResult Create()
@@ -201,7 +205,8 @@
         /// <summary>
         /// Open window with form which allow to choose player or players
         /// </summary>
-        /// <param name="id">Mode of chosing window</param>
+        /// <param name="page">Number of the page</param>
+        /// <param name="textToSearch">Text to filter results.</param>
         /// <returns>View with choosing form</returns>
         public ActionResult ChoosePlayers(int? page, string textToSearch = "")
         {
@@ -229,7 +234,6 @@
 
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
-
             textToSearch = textToSearch.Trim();
             IQueryable<Player> allPlayers = this._playerService
                                                 .Get()

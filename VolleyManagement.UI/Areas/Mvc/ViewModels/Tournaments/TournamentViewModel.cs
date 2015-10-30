@@ -141,25 +141,6 @@
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime TransferEnd { get; set; }
 
-        /// <summary>
-        /// Initializes list of seasons.
-        /// </summary>
-        private void InitializeSeasonsList()
-        {
-            this.SeasonsList = new Dictionary<short, string>();
-            const short YEARS_RANGE = 16;
-            const short YEARS_BEFORE_TODAY = 5;
-            short year = (short)(DateTime.Now.Year - YEARS_BEFORE_TODAY);
-            for (int i = 0; i < YEARS_RANGE; i++, year++)
-            {
-                var str = string.Format("{0}/{1}", year, year + 1);
-                if (DateTime.Now.Year == year + 1)
-                {
-                    SelectedSeason = str;
-                }
-                this.SeasonsList.Add(year, str);
-            }
-        }
         #region Factory Methods
 
         /// <summary>
@@ -211,5 +192,26 @@
             };
         }
         #endregion
+
+        /// <summary>
+        /// Initializes list of seasons.
+        /// </summary>
+        private void InitializeSeasonsList()
+        {
+            this.SeasonsList = new Dictionary<short, string>();
+            const short YEARS_RANGE = 16;
+            const short YEARS_BEFORE_TODAY = 5;
+            short year = (short)(DateTime.Now.Year - YEARS_BEFORE_TODAY);
+            for (int i = 0; i < YEARS_RANGE; i++, year++)
+            {
+                var str = string.Format("{0}/{1}", year, year + 1);
+                if (DateTime.Now.Year == year + 1)
+                {
+                    SelectedSeason = str;
+                }
+
+                this.SeasonsList.Add(year, str);
+            }
         }
+    }
 }

@@ -11,6 +11,9 @@
     /// </summary>
     public class ContributorsTeamViewModel
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContributorsTeamViewModel" /> class.
+        /// </summary>
         public ContributorsTeamViewModel()
         {
             Contributors = new List<string>();
@@ -41,7 +44,7 @@
         /// <summary>
         /// Maps domain entity to presentation
         /// </summary>
-        /// <param name="contributor"> Domain object </param>
+        /// <param name="contributorTeam"> Domain object </param>
         /// <returns> View model object </returns>
         public static ContributorsTeamViewModel Map(ContributorTeam contributorTeam)
         {
@@ -59,9 +62,6 @@
 
             return contributorTeamViewModel;
         }
-
-       
         #endregion
-
     }
 }

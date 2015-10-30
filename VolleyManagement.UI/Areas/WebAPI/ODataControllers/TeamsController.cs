@@ -15,12 +15,11 @@
     /// </summary>
     public class TeamsController : ODataController
     {
+        private const string CONTROLLER_NAME = "teams";
         private readonly ITeamService _teamService;
 
-        private const string CONTROLLER_NAME = "teams";
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="TeamsController"/> class.
+        /// Initializes a new instance of the <see cref="TeamsController" /> class
         /// </summary>
         /// <param name="teamService"> The team service. </param>
         public TeamsController(ITeamService teamService)

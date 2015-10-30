@@ -26,51 +26,51 @@
         /// Gets or sets the player first name
         /// </summary>
         [Display(Name = "PlayerFirstName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "InvalidEntriesError"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "InvalidEntriesError",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the player last name
         /// </summary>
         [Display(Name = "PlayerLastName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "InvalidEntriesError"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "InvalidEntriesError",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string LastName { get; set; }
 
         /// <summary>
         /// Gets or sets the player birth year
         /// </summary>
-        [Range(Constants.Player.MIN_BIRTH_YEAR, Constants.Player.MAX_BIRTH_YEAR
-            , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(Constants.Player.MIN_BIRTH_YEAR, Constants.Player.MAX_BIRTH_YEAR,
+            ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public short? BirthYear { get; set; }
 
         /// <summary>
         /// Gets or sets the player height
         /// </summary>
-        [Range(Constants.Player.MIN_HEIGHT, Constants.Player.MAX_HEIGHT
-            , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(Constants.Player.MIN_HEIGHT, Constants.Player.MAX_HEIGHT,
+            ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public short? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the player weight
         /// </summary>
-        [Range(Constants.Player.MIN_WEIGHT, Constants.Player.MAX_WEIGHT
-            , ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(Constants.Player.MIN_WEIGHT, Constants.Player.MAX_WEIGHT,
+            ErrorMessageResourceName = "FieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public short? Weight { get; set; }
 
         /// <summary>
         /// Gets or sets the player teamId
         /// </summary>
-        public int? TeamId { get; set; } 
+        public int? TeamId { get; set; }
 
         #region Factory Methods
 
@@ -113,6 +113,5 @@
             };
         }
         #endregion
-
     }
 }

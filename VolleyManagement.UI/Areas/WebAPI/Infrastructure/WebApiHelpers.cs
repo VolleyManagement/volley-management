@@ -11,6 +11,9 @@
     using System.Web.OData.Extensions;
     using System.Web.OData.Routing;
 
+    /// <summary>
+    /// A class that minimizes the effort incurred in the design, implementation of functionality in our application 
+    /// </summary>
     public static class WebApiHelpers
     {
         public static TKey GetKeyFromUri<TKey>(HttpRequestMessage request, Uri uri)

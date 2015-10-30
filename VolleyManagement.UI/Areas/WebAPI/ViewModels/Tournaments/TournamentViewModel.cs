@@ -35,7 +35,8 @@
         /// </summary>
         /// <value>Description of tournament.</value>
         [StringLength(300, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(
+            @"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Description { get; set; }
 
         /// <summary>
@@ -161,7 +162,6 @@
 
             return tournament;
         }
-        
         #endregion
     }
 }

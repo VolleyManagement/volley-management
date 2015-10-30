@@ -51,7 +51,7 @@
             var testData = _testFixture.TestContributors()
                                        .Build();
 
-            //this.MockContributors(testData);
+            ////this.MockContributors(testData);
             var sut = this._kernel.Get<ContributorsTeamController>();
 
             var expected = new ContributorTeamServiceTestFixture()

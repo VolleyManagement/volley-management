@@ -1,5 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.Infrastructure
-{
+﻿namespace VolleyManagement.UI.Areas.WebApi.Infrastructure {
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -12,8 +11,10 @@
     using Microsoft.OData.Core;
     using Microsoft.OData.Core.UriParser;
 
-    public static class WebApiHelpers
-    {
+    /// <summary>
+    /// A class that minimizes the effort incurred in the design, implementation of functionality in our application 
+    /// </summary>
+    public static class WebApiHelpers {
         /// <summary>
         /// Gets a key (id) from the Uri
         /// </summary>

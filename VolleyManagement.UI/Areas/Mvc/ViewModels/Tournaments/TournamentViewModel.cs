@@ -49,9 +49,10 @@
         /// <value>Name of tournament.</value>
         [Display(Name = "TournamentName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Tournament.MAX_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Tournament.MAX_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
         /// <summary>
@@ -59,9 +60,10 @@
         /// </summary>
         /// <value>Description of tournament.</value>
         [Display(Name = "TournamentDescription", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Tournament.MAX_DESCRIPTION_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Tournament.MAX_DESCRIPTION_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Description { get; set; }
 
         /// <summary>
@@ -70,8 +72,8 @@
         /// <value>Season of tournament.</value>
         [Display(Name = "TournamentSeason", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [Range(Constants.Tournament.MINIMAL_SEASON_YEAR, Constants.Tournament.MAXIMAL_SEASON_YEAR
-            , ErrorMessageResourceName = "NotInRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(Constants.Tournament.MINIMAL_SEASON_YEAR, Constants.Tournament.MAXIMAL_SEASON_YEAR,
+            ErrorMessageResourceName = "NotInRange", ErrorMessageResourceType = typeof(ViewModelResources))]
         public short Season { get; set; }
 
         /// <summary>
@@ -87,8 +89,8 @@
         /// </summary>
         /// <value>regulations of tournament.</value>
         [Display(Name = "TournamentRegulationsLink", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Tournament.MAX_REGULATION_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Tournament.MAX_REGULATION_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string RegulationsLink { get; set; }
 
         /// <summary>
@@ -139,6 +141,25 @@
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime TransferEnd { get; set; }
 
+        /// <summary>
+        /// Initializes list of seasons.
+        /// </summary>
+        private void InitializeSeasonsList()
+        {
+            this.SeasonsList = new Dictionary<short, string>();
+            const short YEARS_RANGE = 16;
+            const short YEARS_BEFORE_TODAY = 5;
+            short year = (short)(DateTime.Now.Year - YEARS_BEFORE_TODAY);
+            for (int i = 0; i < YEARS_RANGE; i++, year++)
+            {
+                var str = string.Format("{0}/{1}", year, year + 1);
+                if (DateTime.Now.Year == year + 1)
+                {
+                    SelectedSeason = str;
+                }
+                this.SeasonsList.Add(year, str);
+            }
+        }
         #region Factory Methods
 
         /// <summary>
@@ -190,26 +211,5 @@
             };
         }
         #endregion
-
-        /// <summary>
-        /// Initializes list of seasons.
-        /// </summary>
-        private void InitializeSeasonsList()
-        {
-            this.SeasonsList = new Dictionary<short, string>();
-            const short yearsRange = 16;
-            const short yearsBeforeToday = 5;
-            short year = (short)(DateTime.Now.Year - yearsBeforeToday);
-            for (int i = 0; i < yearsRange; i++, year++)
-            {
-                var str = string.Format("{0}/{1}", year, year + 1);
-                if (DateTime.Now.Year == year + 1)
-                {
-                    SelectedSeason = str;
-                }
-
-                this.SeasonsList.Add(year, str);
-            }
         }
-    }
 }

@@ -3,6 +3,9 @@
     <CollectionProperty Name="RecognizedWords">
       <Value>api</Value>
       <Value>Api</Value>
+      <Value>json</Value>
+      <Value>Json</Value>
+      <Value>JSON</Value>
       <Value>Ninject</Value>
       <Value>WebApi</Value>
     </CollectionProperty>

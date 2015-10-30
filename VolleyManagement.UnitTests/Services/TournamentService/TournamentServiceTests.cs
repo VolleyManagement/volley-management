@@ -456,7 +456,7 @@
             tournamentService.GetActual();
 
             // Assert
-            //_tournamentRepositoryMock.Verify(m => m.Find(), Times.Once());
+            ////_tournamentRepositoryMock.Verify(m => m.Find(), Times.Once());
         }
 
         /// <summary>
@@ -505,7 +505,7 @@
         /// <param name="testData">Test data to mock.</param>
         private void MockRepositoryFindAll(IEnumerable<Tournament> testData)
         {
-            //_tournamentRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
+            ////_tournamentRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
 
         /// <summary>

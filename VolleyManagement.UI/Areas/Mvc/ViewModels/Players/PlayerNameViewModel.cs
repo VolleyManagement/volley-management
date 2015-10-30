@@ -22,7 +22,7 @@
         public string FullName { get; set; }
 
         #region Factory Methods
-        
+
         /// <summary>
         /// Maps domain entity to presentation
         /// </summary>
@@ -61,7 +61,7 @@
         {
             return new Player { Id = this.Id };
         }
-        
+
         #endregion
 
         private static string GetFullName(Player player)

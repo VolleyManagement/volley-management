@@ -14,6 +14,8 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
+    using Data.Queries.Tournaments;
+    using Data.Queries.Common;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -43,6 +45,24 @@
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
 
         /// <summary>
+        /// IQuery Tournament with UniqueTournamentCriteria Mock
+        /// </summary>
+        private readonly Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock
+            = new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
+
+        /// <summary>
+        /// IQuery Tournament with allCriteria Mock
+        /// </summary>
+        private readonly Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock
+            = new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
+
+        /// <summary>
+        /// IQuery Tournament with allCriteria Mock
+        /// </summary>
+        private readonly Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock
+            = new Mock<IQuery<Tournament, FindByIdCriteria>>();
+
+        /// <summary>
         /// TimeProvider mock
         /// </summary>
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -61,6 +81,13 @@
             _kernel = new StandardKernel();
             _kernel.Bind<ITournamentRepository>()
                    .ToConstant(_tournamentRepositoryMock.Object);
+            _kernel.Bind<IQuery<Tournament, UniqueTournamentCriteria>>()
+                   .ToConstant(_uniqueTournamentQueryMock.Object);
+            _kernel.Bind<IQuery<List<Tournament>, GetAllCriteria>>()
+                   .ToConstant(_getAllQueryMock.Object);
+            _kernel.Bind<IQuery<Tournament, FindByIdCriteria>>()
+                   .ToConstant(_getByIdQueryMock.Object);
+
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             this._timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
             TimeProvider.Current = this._timeMock.Object;
@@ -384,7 +411,20 @@
         public void Create_TournamentNotExist_TournamentCreated()
         {
             // Arrange
-            var newTournament = new TournamentBuilder().Build();
+            DateTime applyingPeriodStart = DateTime.UtcNow.AddDays(1);
+            DateTime applyingPeriodEnd = applyingPeriodStart.AddDays(1);
+            DateTime gamesStart = applyingPeriodEnd.AddDays(1);
+            DateTime transferStart = gamesStart.AddDays(1);
+            DateTime transferEnd = transferStart.AddDays(1);
+            DateTime gamesEnd = transferEnd.AddDays(1);
+           
+            var newTournament = new TournamentBuilder().WithApplyingPeriodStart(applyingPeriodStart)
+                                                       .WithApplyingPeriodEnd(applyingPeriodEnd)    
+                                                       .WithGamesStart(gamesStart)
+                                                       .WithGamesEnd(gamesEnd)  
+                                                       .WithTransferStart(transferStart)
+                                                       .WithTransferEnd(transferEnd)                                 
+                                                       .Build();
 
             // Act
             var sut = _kernel.Get<TournamentService>();
@@ -397,11 +437,11 @@
         }
 
         /// <summary>
-        /// Test for Create() method with null as a parameter. The method should throw InvalidOperationException
+        /// Test for Create() method with null as a parameter. The method should throw ArgumentNullException
         /// and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Create_TournamentNullAsParam_ExceptionThrown()
         {
             // Arrange

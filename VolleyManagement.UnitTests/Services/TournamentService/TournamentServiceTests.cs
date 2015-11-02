@@ -5,13 +5,19 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using Moq;
+
     using Ninject;
+
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
 
@@ -47,6 +53,15 @@
         /// </summary>
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
+        private readonly Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock =
+            new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
+
+        private readonly Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock =
+            new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
+
+        private readonly Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock =
+            new Mock<IQuery<Tournament, FindByIdCriteria>>();
+
         /// <summary>
         /// IoC for tests.
         /// </summary>
@@ -61,6 +76,12 @@
             _kernel = new StandardKernel();
             _kernel.Bind<ITournamentRepository>()
                    .ToConstant(_tournamentRepositoryMock.Object);
+            _kernel.Bind<IQuery<Tournament, UniqueTournamentCriteria>>()
+                   .ToConstant(_uniqueTournamentQueryMock.Object);
+            _kernel.Bind<IQuery<List<Tournament>, GetAllCriteria>>()
+                   .ToConstant(_getAllQueryMock.Object);
+            _kernel.Bind<IQuery<Tournament, FindByIdCriteria>>()
+                   .ToConstant(_getByIdQueryMock.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             this._timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
             TimeProvider.Current = this._timeMock.Object;
@@ -128,7 +149,7 @@
             // Arrange
             var testData = _testFixture.TestTournaments()
                                        .Build();
-            MockRepositoryFindAll(testData);
+            MockGetAllTournamentsQuery(testData);
             var sut = _kernel.Get<TournamentService>();
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
@@ -469,7 +490,7 @@
             var tournamentService = _kernel.Get<TournamentService>();
             var testData = _testFixture.TestTournaments()
                                        .Build();
-            MockRepositoryFindAll(testData);
+            MockGetAllTournamentsQuery(testData);
 
             DateTime now = TimeProvider.Current.UtcNow;
             DateTime limitStartDate = now.AddMonths(VolleyManagement.Domain.Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
@@ -500,12 +521,12 @@
         }
 
         /// <summary>
-        /// Mocks Find method.
+        /// Mocks get all tournaments query.
         /// </summary>
         /// <param name="testData">Test data to mock.</param>
-        private void MockRepositoryFindAll(IEnumerable<Tournament> testData)
+        private void MockGetAllTournamentsQuery(IEnumerable<Tournament> testData)
         {
-            ////_tournamentRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
+            _getAllQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
         }
 
         /// <summary>

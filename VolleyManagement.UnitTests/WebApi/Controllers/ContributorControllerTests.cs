@@ -104,7 +104,6 @@
                                                ContributorTeamId = 1
                                            }
                                    };
-            var contributorsViewModel = new List<string> { "FirstNameA", "FirstNameB", "FirstNameC" };
 
             // Arrange
             var contributor =
@@ -117,7 +116,6 @@
                 new ContributorTeamViewModelBuilder().WithId(1)
                     .WithName("FirstName")
                     .WithcourseDirection("Course")
-                    .Withcontributors(contributorsViewModel)
                     .Build();
 
             // Act

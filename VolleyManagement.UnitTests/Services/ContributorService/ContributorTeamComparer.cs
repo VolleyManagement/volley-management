@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using VolleyManagement.Domain.ContributorsAggregate;
 
     /// <summary>
@@ -53,10 +54,27 @@
         /// <returns>True if given contributors team have the same properties.</returns>
         public bool AreEqual(ContributorTeam x, ContributorTeam y)
         {
-            return x.Id == y.Id &&
+            bool areEqual = x.Id == y.Id &&
                 x.Name == y.Name &&
-                x.CourseDirection == y.CourseDirection &&
-                x.Contributors == y.Contributors;
+                x.CourseDirection == y.CourseDirection;
+            foreach (var item in x.Contributors)
+            {
+                areEqual = areEqual && AreContributorsEqual(item, y.Contributors.SingleOrDefault(c => c.Id == item.Id));
+            }
+
+            return areEqual;
+        }
+
+        private bool AreContributorsEqual(Contributor first, Contributor second)
+        {
+            if (first == null || second == null)
+            {
+                return false;
+            }
+
+            return first.Id == second.Id &&
+                first.Name == second.Name &&
+                first.ContributorTeamId == second.ContributorTeamId;
         }
     }
 }

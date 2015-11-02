@@ -15,6 +15,7 @@
     using Ninject;
 
     using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.ContributorService;
 
@@ -50,8 +51,7 @@
             // Arrange
             var testData = _testFixture.TestContributors()
                                        .Build();
-
-            ////this.MockContributors(testData);
+            this.MockContributorsTeam(testData);
             var sut = this._kernel.Get<ContributorsTeamController>();
 
             var expected = new ContributorTeamServiceTestFixture()
@@ -60,7 +60,7 @@
                                             .ToList();
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<ContributorTeam>>(sut.Index()).ToList();
+            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).Select(c => c.ToDomain()).ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamComparer());

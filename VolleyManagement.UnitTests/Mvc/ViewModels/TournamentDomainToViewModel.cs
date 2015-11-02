@@ -44,7 +44,7 @@
             var actual = TournamentViewModel.Map(tournament);
 
             // Assert
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
     }
 }

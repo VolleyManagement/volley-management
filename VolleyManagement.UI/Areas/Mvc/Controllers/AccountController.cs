@@ -16,6 +16,7 @@
     /// <summary>
     /// Manages Sign In/Out process
     /// </summary>
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly IVolleyUserManager<UserModel> _userManager;
@@ -41,6 +42,7 @@
         /// Renders partial view to represent current Account information
         /// </summary>
         /// <returns> Partial view </returns>
+        [AllowAnonymous]
         public PartialViewResult Info()
         {
             var vm = new AuthenticationStatusViewModel();
@@ -54,6 +56,12 @@
             return this.PartialView("Info", vm);
         }
 
+        /// <summary>
+        /// Logs current user
+        /// </summary>
+        /// <param name="returnUrl">URL to return</param>
+        /// <returns>Action result</returns>
+        [AllowAnonymous]
         public ActionResult Logout(string returnUrl)
         {
             AuthManager.SignOut();

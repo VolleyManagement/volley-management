@@ -32,7 +32,6 @@
         /// Gets all contributors teams from ContributorService
         /// </summary>
         /// <returns>View with collection of contributors teams</returns>
-        [Authorize]
         public ActionResult Index()
         {
             try

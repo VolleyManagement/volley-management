@@ -77,10 +77,15 @@
     <Compile Include="Context\Migrations\201510241559278_UserIdentity.Designer.cs">
       <DependentUpon>201510241559278_UserIdentity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201510311319565_AddRolesSupport.cs" />
+    <Compile Include="Context\Migrations\201510311319565_AddRolesSupport.Designer.cs">
+      <DependentUpon>201510311319565_AddRolesSupport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
     <Compile Include="Entities\LoginInfoEntity.cs" />
+    <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
     <Compile Include="Entities\ContributorEntity.cs" />
     <Compile Include="Infrastructure\NinjectDataAccessModule.cs" />
@@ -88,11 +93,13 @@
     <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\PlayerQueries.cs" />
+    <Compile Include="Queries\RolesQueries.cs" />
     <Compile Include="Queries\TeamQueries.cs" />
     <Compile Include="Queries\TournamentQueries.cs" />
     <Compile Include="Queries\UserQueries.cs" />
     <Compile Include="Repositories\ContributorTeamRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
+    <Compile Include="Repositories\RoleRepostitory.cs" />
     <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
     <Compile Include="Repositories\Specifications\TeamStorageSpecification.cs" />
     <Compile Include="Repositories\Specifications\TournamentsStorageSpecification.cs" />
@@ -143,6 +150,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201510241559278_UserIdentity.resx">
       <DependentUpon>201510241559278_UserIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201510311319565_AddRolesSupport.resx">
+      <DependentUpon>201510311319565_AddRolesSupport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

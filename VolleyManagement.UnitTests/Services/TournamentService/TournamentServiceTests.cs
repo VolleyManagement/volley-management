@@ -98,7 +98,7 @@
             var actualResult = tournamentService.Get(id);
 
             // Assert
-            AssertExtensions.AreEqual<Tournament>(tournament, actualResult, new TournamentComparer());
+            TestHelper.AreEqual<Tournament>(tournament, actualResult, new TournamentComparer());
         }
 
         /// <summary>

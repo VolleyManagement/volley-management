@@ -72,5 +72,13 @@
 
             public const int MAX_PROVIDER_KEY_LENGTH = 128;
         }
+
+        /// <summary>
+        /// Role entity validation constants
+        /// </summary>
+        public static class Role
+        {
+            public const int MAX_NAME_LENGTH = 256;
+        }
     }
 }

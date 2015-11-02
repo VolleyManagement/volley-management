@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines specific contract for UserRepository
     /// </summary>
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IGenericRepository<User>
     {
     }
 }

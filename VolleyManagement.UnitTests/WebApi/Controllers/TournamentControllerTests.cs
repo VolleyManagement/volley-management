@@ -229,10 +229,11 @@
         public void Post_CatchArgumentExeption_ReturnBadRequest()
         {
             // Arrange
+            string incorrectSheme = "5";
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
-            var result = controller.Post(new TournamentViewModelBuilder().WithScheme("5").Build())
+            var result = controller.Post(new TournamentViewModelBuilder().WithScheme(incorrectSheme).Build())
                 as InvalidModelStateResult;
 
             // Assert

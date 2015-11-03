@@ -72,20 +72,13 @@
         public void TestInit()
         {
             _kernel = new StandardKernel();
-            _kernel.Bind<ITeamRepository>()
-                   .ToConstant(_teamRepositoryMock.Object);
-            _kernel.Bind<IPlayerRepository>()
-                   .ToConstant(_playerRepositoryMock.Object);
-            _kernel.Bind<IQuery<Team, FindByIdCriteria>>()
-                   .ToConstant(_getTeamByIdQueryMock.Object);
-            _kernel.Bind<IQuery<Player, FindByIdCriteria>>()
-                   .ToConstant(_getPlayerByIdQueryMock.Object);
-            _kernel.Bind<IQuery<Team, FindByCaptainIdCriteria>>()
-                   .ToConstant(_getTeamByCaptainQueryMock.Object);
-            _kernel.Bind<IQuery<List<Team>, GetAllCriteria>>()
-                   .ToConstant(_getAllTeamsQueryMock.Object);
-            _kernel.Bind<IQuery<List<Player>, TeamPlayersCriteria>>()
-                   .ToConstant(_getTeamRosterQueryMock.Object);
+            _kernel.Bind<ITeamRepository>().ToConstant(_teamRepositoryMock.Object);
+            _kernel.Bind<IPlayerRepository>().ToConstant(_playerRepositoryMock.Object);
+            _kernel.Bind<IQuery<Team, FindByIdCriteria>>().ToConstant(_getTeamByIdQueryMock.Object);
+            _kernel.Bind<IQuery<Player, FindByIdCriteria>>().ToConstant(_getPlayerByIdQueryMock.Object);
+            _kernel.Bind<IQuery<Team, FindByCaptainIdCriteria>>().ToConstant(_getTeamByCaptainQueryMock.Object);
+            _kernel.Bind<IQuery<List<Team>, GetAllCriteria>>().ToConstant(_getAllTeamsQueryMock.Object);
+            _kernel.Bind<IQuery<List<Player>, TeamPlayersCriteria>>().ToConstant(_getTeamRosterQueryMock.Object);
 
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _playerRepositoryMock.Setup(pr => pr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -236,6 +229,11 @@
         [TestMethod]
         public void Delete_TeamPassed_CorrectIdPostedToDatabaseLayer()
         {
+            // Arrange
+            var testData = new PlayerServiceTestFixture()
+                .Build();
+            MockGetTeamRosterQuery(testData.ToList());
+
             // Act
             var ts = _kernel.Get<TeamService>();
             ts.Delete(SPECIFIC_TEAM_ID);
@@ -280,6 +278,11 @@
         [TestMethod]
         public void Delete_TeamPassed_TeamDeleted()
         {
+            // Arrange
+            var testData = new PlayerServiceTestFixture()
+                    .Build();
+            MockGetTeamRosterQuery(testData.ToList());
+
             // Act
             var ts = _kernel.Get<TeamService>();
             ts.Delete(SPECIFIC_TEAM_ID);
@@ -298,8 +301,7 @@
             // Arrange
             IQueryable<Player> expectedRoster = new PlayerServiceTestFixture().TestPlayers().Build().AsQueryable<Player>();
             int expectedCountOfPlayers = expectedRoster.Count();
-            ////_playerRepositoryMock.Setup(pr => pr.FindWhere(It.IsAny<Expression<Func<Player, bool>>>()))
-            ////    .Returns(expectedRoster);
+            MockGetTeamRosterQuery(expectedRoster.ToList());
 
             // Act
             var ts = _kernel.Get<TeamService>();
@@ -454,6 +456,11 @@
         private void MockGetPlayerByIdQuery(Player player)
         {
             _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(player);
+        }
+
+        private void MockGetTeamRosterQuery(List<Player> players)
+        {
+            _getTeamRosterQueryMock.Setup(tr => tr.Execute(It.IsAny<TeamPlayersCriteria>())).Returns(players);
         }
     }
 }

@@ -128,6 +128,7 @@
     <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\PlayerDomainToViewModel.cs" />
+    <Compile Include="Services\ContributorService\ContributorEqualityComparer.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamBuilder.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamComparer.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamServiceTestFixture.cs" />

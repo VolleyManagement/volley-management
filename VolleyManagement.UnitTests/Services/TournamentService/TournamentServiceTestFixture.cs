@@ -29,45 +29,45 @@
                     Id = 1,
                     Name = "Tournament 1",
                     Description = "Tournament 1 description",
-                    Season = 2014,
+                    Season = (short)(TournamentBuilder.NextYear - 1),
                     Scheme = TournamentSchemeEnum.One,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')",
-                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
-                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
-                    GamesStart = new DateTime(2015, 06, 30),
-                    GamesEnd = new DateTime(2015, 11, 30),
-                    TransferStart = new DateTime(2015, 08, 20),
-                    TransferEnd = new DateTime(2015, 09, 10)
+                    ApplyingPeriodStart = new DateTime(TournamentBuilder.NextYear, 02, 20),
+                    ApplyingPeriodEnd = new DateTime(TournamentBuilder.NextYear, 06, 20),
+                    GamesStart = new DateTime(TournamentBuilder.NextYear, 06, 30),
+                    GamesEnd = new DateTime(TournamentBuilder.NextYear, 11, 30),
+                    TransferStart = new DateTime(TournamentBuilder.NextYear, 08, 20),
+                    TransferEnd = new DateTime(TournamentBuilder.NextYear, 09, 10)
                 });
             _tournaments.Add(new Tournament()
                 {
                     Id = 2,
                     Name = "Tournament 2",
                     Description = "Tournament 2 description",
-                    Season = 2014,
+                    Season = (short)(TournamentBuilder.NextYear - 1),
                     Scheme = TournamentSchemeEnum.Two,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')",
-                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
-                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
-                    GamesStart = new DateTime(2015, 06, 30),
-                    GamesEnd = new DateTime(2015, 11, 30),
-                    TransferStart = new DateTime(2015, 08, 20),
-                    TransferEnd = new DateTime(2015, 09, 10)
+                    ApplyingPeriodStart = new DateTime(TournamentBuilder.NextYear, 02, 20),
+                    ApplyingPeriodEnd = new DateTime(TournamentBuilder.NextYear, 06, 20),
+                    GamesStart = new DateTime(TournamentBuilder.NextYear, 06, 30),
+                    GamesEnd = new DateTime(TournamentBuilder.NextYear, 11, 30),
+                    TransferStart = new DateTime(TournamentBuilder.NextYear, 08, 20),
+                    TransferEnd = new DateTime(TournamentBuilder.NextYear, 09, 10)
                 });
             _tournaments.Add(new Tournament()
                 {
                     Id = 3,
                     Name = "Tournament 3",
                     Description = "Tournament 3 description",
-                    Season = 2014,
+                    Season = (short)(TournamentBuilder.NextYear - 1),
                     Scheme = TournamentSchemeEnum.TwoAndHalf,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')",
-                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
-                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
-                    GamesStart = new DateTime(2015, 06, 30),
-                    GamesEnd = new DateTime(2015, 11, 30),
-                    TransferStart = new DateTime(2015, 08, 20),
-                    TransferEnd = new DateTime(2015, 09, 10)
+                    ApplyingPeriodStart = new DateTime(TournamentBuilder.NextYear, 02, 20),
+                    ApplyingPeriodEnd = new DateTime(TournamentBuilder.NextYear, 06, 20),
+                    GamesStart = new DateTime(TournamentBuilder.NextYear, 06, 30),
+                    GamesEnd = new DateTime(TournamentBuilder.NextYear, 11, 30),
+                    TransferStart = new DateTime(TournamentBuilder.NextYear, 08, 20),
+                    TransferEnd = new DateTime(TournamentBuilder.NextYear, 09, 10)
                 });
             return this;
         }

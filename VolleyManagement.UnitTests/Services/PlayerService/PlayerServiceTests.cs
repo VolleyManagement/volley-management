@@ -1,11 +1,9 @@
 ﻿namespace VolleyManagement.UnitTests.Services.PlayerService
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Linq.Expressions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -13,6 +11,8 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
@@ -28,6 +28,18 @@
         private readonly PlayerServiceTestFixture _testFixture = new PlayerServiceTestFixture();
 
         private readonly Mock<IPlayerRepository> _playerRepositoryMock = new Mock<IPlayerRepository>();
+
+        private readonly Mock<IQuery<Player, FindByIdCriteria>> _playerGetPlayerByIdQuery =
+            new Mock<IQuery<Player, FindByIdCriteria>>();
+
+        private readonly Mock<IQuery<Team, FindByIdCriteria>> _playerGetTeamByIdQuery =
+            new Mock<IQuery<Team, FindByIdCriteria>>();
+
+        private readonly Mock<IQuery<IQueryable<Player>, GetAllCriteria>> _playerGetAllPlayersQuery =
+            new Mock<IQuery<IQueryable<Player>, GetAllCriteria>>();
+
+        private readonly Mock<IQuery<Team, FindByCaptainIdCriteria>> _playerGetTeamByCaptainQuery =
+            new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
 
         private readonly Mock<ITeamRepository> _teamRepositoryMock = new Mock<ITeamRepository>();
 
@@ -46,9 +58,17 @@
             _kernel = new StandardKernel();
             _kernel.Bind<IPlayerRepository>()
                    .ToConstant(_playerRepositoryMock.Object);
+            _kernel.Bind<IQuery<Player, FindByIdCriteria>>()
+                   .ToConstant(_playerGetPlayerByIdQuery.Object);
+            _kernel.Bind<IQuery<Team, FindByIdCriteria>>()
+                   .ToConstant(_playerGetTeamByIdQuery.Object);
+            _kernel.Bind<IQuery<IQueryable<Player>, GetAllCriteria>>()
+                   .ToConstant(_playerGetAllPlayersQuery.Object);
+            _kernel.Bind<IQuery<Team, FindByCaptainIdCriteria>>()
+                   .ToConstant(_playerGetTeamByCaptainQuery.Object);
+
             _kernel.Bind<ITeamRepository>()
                    .ToConstant(_teamRepositoryMock.Object);
-
             _playerRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
@@ -150,60 +170,42 @@
         /// Test for Delete() method
         /// </summary>
         [TestMethod]
+        [ExpectedException(typeof(MissingEntityException), "Игрок с указанным Id не был найден")]
         public void Delete_InvalidPlayerId_MissingEntityExceptionThrown()
         {
             // Arrange
             var expectedId = 10;
-            MockTeamRepositoryToFindTeam(null);
-            _playerRepositoryMock.Setup(tr => tr.Remove(It.IsAny<int>()))
-                .Throws(new InvalidKeyValueException());
+            _playerRepositoryMock.Setup(p => p.Remove(It.IsAny<int>()))
+                .Throws<InvalidKeyValueException>();
 
             // Act
-            var ps = _kernel.Get<PlayerService>();
-            bool gotException = false;
-            string actualErrorMessage = string.Empty;
-            try
-            {
-                ps.Delete(expectedId);
-            }
-            catch (MissingEntityException)
-            {
-                gotException = true;
-            }
+            var sut = _kernel.Get<PlayerService>();
+            sut.Delete(expectedId);
 
             // Assert
-            _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(playerId => playerId == expectedId)), Times.Once());
-            Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(uw => uw.Commit(), Times.Never());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 
         /// <summary>
-        /// Test for Delete() method
+        /// Test for Delete() method. Player we want to delete is captain of existing team.
         /// </summary>
         [TestMethod]
+        [ExpectedException(typeof(ValidationException), "Игрок является капитаном другой команды")]
         public void Delete_CaptainOfExistTeam_ValidationExceptionThrown()
         {
             // Arrange
             var expectedId = 10;
-            Team existTeam = new TeamBuilder().WithCaptain(expectedId).Build();
-            MockTeamRepositoryToFindTeam(existTeam);
+            var existTeam = new TeamBuilder().WithCaptain(expectedId).Build();
+            _playerGetTeamByCaptainQuery
+                .Setup(p => p.Execute(It.Is<FindByCaptainIdCriteria>(cr => cr.CaptainId == existTeam.CaptainId)))
+                .Returns(existTeam);
 
             // Act
-            var ps = _kernel.Get<PlayerService>();
-            bool gotException = false;
-            try
-            {
-                ps.Delete(expectedId);
-            }
-            catch (ValidationException)
-            {
-                gotException = true;
-            }
+            var sut = _kernel.Get<PlayerService>();
+            sut.Delete(expectedId);
 
             // Assert
-            _playerRepositoryMock.Verify(pr => pr.Remove(It.IsAny<int>()), Times.Never());
-            Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(uw => uw.Commit(), Times.Never());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 
         /// <summary>

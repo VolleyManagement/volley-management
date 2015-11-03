@@ -2,9 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using Moq;
-    using VolleyManagement.Domain.Tournaments;
-
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
@@ -16,6 +14,8 @@
         public const int TRANSFER_PERIOD_DAYS = 10;
 
         public const int TRANSFER_PERIOD_MONTH = 6;
+
+        public static readonly short NextYear = (short)(TimeProvider.Current.UtcNow.Year + 1);
 
         /// <summary>
         /// Holds test tournament instance
@@ -32,15 +32,15 @@
                 Id = 1,
                 Name = "Name",
                 Description = "Description 1",
-                Season = 2014,
+                Season = (short)(NextYear - 1),
                 Scheme = TournamentSchemeEnum.Two,
                 RegulationsLink = "http://default.com",
-                ApplyingPeriodStart = new DateTime(2015, 06, 02),
-                ApplyingPeriodEnd = new DateTime(2015, 09, 02),
-                GamesStart = new DateTime(2015, 09, 03),
-                GamesEnd = new DateTime(2015, 12, 03),
-                TransferStart = new DateTime(2015, 10, 01),
-                TransferEnd = new DateTime(2015, 11, 01)
+                ApplyingPeriodStart = new DateTime(NextYear, 06, 02),
+                ApplyingPeriodEnd = new DateTime(NextYear, 09, 02),
+                GamesStart = new DateTime(NextYear, 09, 03),
+                GamesEnd = new DateTime(NextYear, 12, 03),
+                TransferStart = new DateTime(NextYear, 10, 01),
+                TransferEnd = new DateTime(NextYear, 11, 01)
             };
         }
 

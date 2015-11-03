@@ -38,6 +38,8 @@
 
         private const int UNASSIGNED_ID = 0;
 
+        private const int SPECIFIC_NEW_TEAM_ID = SPECIFIC_TEAM_ID + 1;
+
         private readonly TeamServiceTestFixture _testFixture = new TeamServiceTestFixture();
 
         private readonly Mock<ITeamRepository> _teamRepositoryMock = new Mock<ITeamRepository>();
@@ -353,8 +355,6 @@
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().WithTeamId(null).Build());
             var emptyTeamList = new TeamServiceTestFixture().Build().AsQueryable<Team>();
-            ////_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
-            ////                   .Returns(emptyTeamList);
 
             // Act
             var ts = _kernel.Get<TeamService>();
@@ -393,11 +393,7 @@
 
             var existingTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithCaptain(SPECIFIC_PLAYER_ID).Build();
 
-            // next operation guarantee that new teamId will distinct from SPECIFIC_TEAM_ID
-            int newTeamId = SPECIFIC_TEAM_ID + 1;
-            var teamToSet = new TeamBuilder().WithId(newTeamId).Build();
-
-            var teamList = new TeamServiceTestFixture().AddTeam(existingTeam).AddTeam(teamToSet).Build().AsQueryable();
+            var teamToSet = new TeamBuilder().WithId(SPECIFIC_NEW_TEAM_ID).Build();
 
             _getTeamByCaptainQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(existingTeam);
 
@@ -406,7 +402,7 @@
             bool gotException = false;
             try
             {
-                ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, newTeamId);
+                ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, SPECIFIC_NEW_TEAM_ID);
             }
             catch (ValidationException)
             {

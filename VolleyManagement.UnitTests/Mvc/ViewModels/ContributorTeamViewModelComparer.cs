@@ -3,7 +3,9 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
+    using VolleyManagement.UnitTests.Services.ContributorService;
 
     /// <summary>
     /// Comparer for contributor team objects.
@@ -40,7 +42,7 @@
             return x.Id == y.Id &&
                x.Name == y.Name &&
                x.CourseDirection == y.CourseDirection &&
-               x.Contributors == y.Contributors;
+               x.Contributors.SequenceEqual(y.Contributors, new ContributorEqualityComparer());
         }
     }
 }

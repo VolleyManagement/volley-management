@@ -37,9 +37,9 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<IContributorTeamService>()
-                   .ToConstant(this._contributorTeamServiceMock.Object);
+            _kernel = new StandardKernel();
+            _kernel.Bind<IContributorTeamService>()
+                   .ToConstant(_contributorTeamServiceMock.Object);
         }
 
         /// <summary>
@@ -51,19 +51,16 @@
             // Arrange
             var testData = _testFixture.TestContributors()
                                        .Build();
-            this.MockContributorsTeam(testData);
+            MockContributorsTeam(testData);
             var sut = this._kernel.Get<ContributorsTeamController>();
 
-            var expected = new ContributorTeamServiceTestFixture()
-                                            .TestContributors()
-                                            .Build()
-                                            .ToList();
+            var expected = CreateContributorsTeamViewModelListMock(testData).ToList();
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).Select(c => c.ToDomain()).ToList();
+            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new ContributorTeamComparer());
+            CollectionAssert.AreEqual(expected, actual, new ContributorTeamMvcViewModelComparer());
         }
 
         /// <summary>
@@ -95,6 +92,16 @@
         {
             this._contributorTeamServiceMock.Setup(cn => cn.Get())
                 .Returns(testData.AsQueryable());
+        }
+
+        private IList<ContributorsTeamViewModel> CreateContributorsTeamViewModelListMock(IList<ContributorTeam> testData)
+        {
+            return testData.Select(c => new ContributorTeamMvcViewModelBuilder()
+                                                .WithId(c.Id)
+                                                .WithName(c.Name)
+                                                .WithcourseDirection(c.CourseDirection)
+                                                .Withcontributors(c.Contributors.ToList())
+                                                .Build()).ToList();
         }
     }
 }

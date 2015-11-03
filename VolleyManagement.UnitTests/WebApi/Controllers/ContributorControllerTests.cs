@@ -83,27 +83,7 @@
         [TestMethod]
         public void Map_ContributorAsParam_MappedToViewModelWebApi()
         {
-            var contributors = new List<Contributor>
-                                   {
-                                       new Contributor
-                                           {
-                                               Id = 1,
-                                               Name = "FirstNameA",
-                                               ContributorTeamId = 1
-                                           },
-                                       new Contributor
-                                           {
-                                               Id = 2,
-                                               Name = "FirstNameB",
-                                               ContributorTeamId = 1
-                                           },
-                                       new Contributor
-                                           {
-                                               Id = 3,
-                                               Name = "FirstNameC",
-                                               ContributorTeamId = 1
-                                           }
-                                   };
+            var contributors = CreateContributorsMock();
 
             // Arrange
             var contributor =
@@ -126,6 +106,35 @@
                 expected,
                 actual,
                 new ContributorTeamViewModelComparer());
+        }
+
+        /// <summary>
+        /// Create new list of tests contributors
+        /// </summary>
+        /// <returns>List of contributors</returns>
+        private IList<Contributor> CreateContributorsMock()
+        {
+            return new List<Contributor>
+                                   {
+                                       new Contributor
+                                           {
+                                               Id = 1,
+                                               Name = "FirstNameA",
+                                               ContributorTeamId = 1
+                                           },
+                                       new Contributor
+                                           {
+                                               Id = 2,
+                                               Name = "FirstNameB",
+                                               ContributorTeamId = 1
+                                           },
+                                       new Contributor
+                                           {
+                                               Id = 3,
+                                               Name = "FirstNameC",
+                                               ContributorTeamId = 1
+                                           }
+                                   };
         }
 
         /// <summary>

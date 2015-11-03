@@ -60,7 +60,7 @@
             var actual = ContributorsTeamViewModel.Map(testDomainModel);
 
             // Assert
-            AssertExtensions.AreEqual<ContributorsTeamViewModel>(testViewModel, actual, new ContributorTeamViewModelComparer());
+            TestHelper.AreEqual<ContributorsTeamViewModel>(testViewModel, actual, new ContributorTeamViewModelComparer());
         }
     }
 }

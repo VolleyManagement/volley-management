@@ -9,9 +9,11 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authentication;
     using VolleyManagement.Contracts.Authentication.Models;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Crosscutting.Ninject;
     using VolleyManagement.Services;
     using VolleyManagement.Services.Authentication;
+    using VolleyManagement.Services.Authorization;
 
     /// <summary>
     /// Defines bindings for Service layer
@@ -41,7 +43,8 @@
                                   Bind<IContributorTeamService>().To<ContributorTeamService>(),
                                   Bind<ITeamService>().To<TeamService>(),
                                   Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
-                                  Bind<IVolleyUserStore>().To<VolleyUserStore>()
+                                  Bind<IVolleyUserStore>().To<VolleyUserStore>(),
+                                  Bind<IRolesService>().To<RolesService>()
                               };
             configs.InScope(_scopeCallback);
         }

@@ -59,6 +59,7 @@
     <Compile Include="Contracts\IQuery.cs" />
     <Compile Include="Contracts\IQueryAsync.cs" />
     <Compile Include="Contracts\IQueryCriteria.cs" />
+    <Compile Include="Contracts\IGenericRepository.cs" />
     <Compile Include="Contracts\IRepository.cs" />
     <Compile Include="Contracts\IUnitOfWork.cs" />
     <Compile Include="Exceptions\ConcurrencyException.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Queries\User\FindByEmailCriteria.cs" />
     <Compile Include="Queries\User\FindByLoginInfoCriteria.cs" />
     <Compile Include="Queries\User\FindByNameCriteria.cs" />
+    <Compile Include="Queries\User\FindByRoleCriteria.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

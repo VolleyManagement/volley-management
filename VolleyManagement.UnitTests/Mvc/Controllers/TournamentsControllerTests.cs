@@ -168,7 +168,7 @@
             var actual = TestExtensions.GetModel<Tournament>(controller.Details(searchId));
 
             // Assert
-            AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual<Tournament>(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -201,7 +201,7 @@
             var actual = TestExtensions.GetModel<Tournament>(controller.Delete(tournament.Id));
 
             // Assert
-            AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual<Tournament>(expected, actual, new TournamentComparer());
         }
 
         /// <summary>
@@ -255,7 +255,7 @@
             var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create());
 
             // Assert
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -380,7 +380,7 @@
             var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournament.Id));
 
             // Assert
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>

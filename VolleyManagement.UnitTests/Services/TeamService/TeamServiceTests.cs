@@ -38,7 +38,7 @@
 
         private const int UNASSIGNED_ID = 0;
 
-        private const int SPECIFIC_NEW_TEAM_ID = SPECIFIC_TEAM_ID + 1;
+        private const int ANOTHER_TEAM_ID = SPECIFIC_TEAM_ID + 1;
 
         private readonly TeamServiceTestFixture _testFixture = new TeamServiceTestFixture();
 
@@ -393,7 +393,7 @@
 
             var existingTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithCaptain(SPECIFIC_PLAYER_ID).Build();
 
-            var teamToSet = new TeamBuilder().WithId(SPECIFIC_NEW_TEAM_ID).Build();
+            var teamToSet = new TeamBuilder().WithId(ANOTHER_TEAM_ID).Build();
 
             _getTeamByCaptainQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(existingTeam);
 
@@ -402,7 +402,7 @@
             bool gotException = false;
             try
             {
-                ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, SPECIFIC_NEW_TEAM_ID);
+                ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, ANOTHER_TEAM_ID);
             }
             catch (ValidationException)
             {

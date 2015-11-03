@@ -54,13 +54,13 @@
             MockContributorsTeam(testData);
             var sut = this._kernel.Get<ContributorsTeamController>();
 
-            var expected = CreateContributorsTeamViewModelListMock(testData).ToList();
+            var expected = CreateContributorsTeamViewModelList().ToList();
 
             // Act
             var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new ContributorTeamMvcViewModelComparer());
+            CollectionAssert.AreEqual(expected, actual, new ContributorTeamViewModelNonGenericComparer());
         }
 
         /// <summary>
@@ -94,9 +94,14 @@
                 .Returns(testData.AsQueryable());
         }
 
-        private IList<ContributorsTeamViewModel> CreateContributorsTeamViewModelListMock(IList<ContributorTeam> testData)
+        /// <summary>
+        /// Creates new list of ContributorsTeamViewModel test data
+        /// </summary>
+        /// <returns>List of ContributorsTeamViewModel</returns>
+        private IList<ContributorsTeamViewModel> CreateContributorsTeamViewModelList()
         {
-            return testData.Select(c => new ContributorTeamMvcViewModelBuilder()
+            var contributorTeams = _testFixture.TestContributors().Build();
+            return contributorTeams.Select(c => new ContributorTeamMvcViewModelBuilder()
                                                 .WithId(c.Id)
                                                 .WithName(c.Name)
                                                 .WithcourseDirection(c.CourseDirection)

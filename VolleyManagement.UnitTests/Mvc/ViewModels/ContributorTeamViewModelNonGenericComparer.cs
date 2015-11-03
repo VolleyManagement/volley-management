@@ -7,7 +7,7 @@
     /// <summary>
     /// Comparer for ContributorsTeamViewModel objects.
     /// </summary>
-    class ContributorTeamMvcViewModelComparer : IComparer
+    public class ContributorTeamViewModelNonGenericComparer : IComparer
     {
         /// <summary>
         /// Compares two contributor team objects.

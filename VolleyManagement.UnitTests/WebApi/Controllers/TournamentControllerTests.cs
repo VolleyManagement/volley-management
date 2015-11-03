@@ -48,11 +48,6 @@
         private const int UNASSIGNED_ID = 0;
 
         /// <summary>
-        /// Incorrect scheme for tournament
-        /// </summary>
-        private const string INCORRECT_SCHEME = "5";
-
-        /// <summary>
         /// Test Fixture
         /// </summary>
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
@@ -234,7 +229,7 @@
         public void Post_CatchArgumentExeption_ReturnBadRequest()
         {
             // Arrange
-            
+            const string INCORRECT_SCHEME = "5";
             var controller = _kernel.Get<TournamentsController>();
 
             // Act

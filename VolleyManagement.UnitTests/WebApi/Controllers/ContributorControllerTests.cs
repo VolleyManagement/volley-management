@@ -83,7 +83,7 @@
         [TestMethod]
         public void Map_ContributorAsParam_MappedToViewModelWebApi()
         {
-            var contributors = CreateContributorsMock();
+            var contributors = CreateContributors();
 
             // Arrange
             var contributor =
@@ -112,7 +112,7 @@
         /// Create new list of tests contributors
         /// </summary>
         /// <returns>List of contributors</returns>
-        private IList<Contributor> CreateContributorsMock()
+        private IList<Contributor> CreateContributors()
         {
             return new List<Contributor>
                                    {

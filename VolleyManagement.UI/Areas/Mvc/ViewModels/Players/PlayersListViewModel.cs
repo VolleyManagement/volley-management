@@ -28,7 +28,9 @@
             this.NumberOfPages = (int)Math.Ceiling(source.Count() / (double)Size);
 
             if ((index > this.NumberOfPages) || (index < FIRST_PAGE))
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
                             .Where(p => (p.LastName + " " + p.FirstName).Contains(textToSearch))

@@ -308,7 +308,7 @@
 
         private void MockRepositoryFindAll(IEnumerable<Player> testData)
         {
-            //_playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
+            ////_playerRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
 
         private bool PlayersAreEqual(Player x, Player y)
@@ -322,8 +322,8 @@
                                                     .AddTeam(team).Build()
                                                     .AsQueryable();
 
-            //_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
-            //                                    .Returns(listOfTeams);
+            ////_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
+            ////                                    .Returns(listOfTeams);
         }
     }
 }

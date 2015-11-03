@@ -3,7 +3,7 @@
     using System.Web.Mvc;
 
     /// <summary>
-    /// Represent extentions of HtmlHelper class.
+    /// Represent extensions of HtmlHelper class.
     /// </summary>
     public static class TournamentSeasonHtmlHelper
     {

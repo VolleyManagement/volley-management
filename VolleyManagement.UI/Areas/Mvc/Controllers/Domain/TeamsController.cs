@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web.Mvc;
@@ -7,7 +8,6 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Defines teams controller
@@ -24,7 +24,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
-        /// <param name="teamSerivce">Instance of the class that implements
+        /// <param name="teamService">Instance of the class that implements
         /// ITeamService.</param>
         public TeamsController(ITeamService teamService)
         {
@@ -44,7 +44,7 @@
         }
 
         /// <summary>
-        /// Create team action GET       
+        /// Create team action GET
         /// </summary>
         /// <returns>Empty team view model</returns>
         public ActionResult Create()

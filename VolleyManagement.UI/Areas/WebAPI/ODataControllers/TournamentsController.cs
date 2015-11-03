@@ -161,6 +161,5 @@
 
             return this.Updated(tournament);
         }
-
     }
 }

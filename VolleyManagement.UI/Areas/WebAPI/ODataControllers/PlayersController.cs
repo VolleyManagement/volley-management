@@ -19,15 +19,15 @@
     /// </summary>
     public class PlayersController : ODataController
     {
+        private const string CONTROLLER_NAME = "players";
         private readonly IPlayerService _playerService;
         private readonly ITeamService _teamService;
-
-        private const string CONTROLLER_NAME = "players";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class.
         /// </summary>
         /// <param name="playerService"> The player service. </param>
+        /// <param name="teamService"> The team service. </param>
         public PlayersController(IPlayerService playerService, ITeamService teamService)
         {
             this._playerService = playerService;
@@ -70,8 +70,9 @@
         /// <summary>
         /// Updates player
         /// </summary>
-        /// <param name="playerViewModel">The player view model to update</param>
-        /// <returns><see cref="IHttpActionResult"/></returns>
+        /// <param name="player">The player view model to update</param>
+        /// <returns> Updated player
+        /// unsuccessfully - Bad request </returns>
         public IHttpActionResult Put(PlayerViewModel player)
         {
             if (!this.ModelState.IsValid)
@@ -81,8 +82,8 @@
 
             try
             {
-                var playerToUpdate = player.ToDomain(); 
-                this._playerService.Edit(playerToUpdate); 
+                var playerToUpdate = player.ToDomain();
+                this._playerService.Edit(playerToUpdate);
                 player.Id = playerToUpdate.Id;
             }
             catch (ArgumentException ex)
@@ -184,7 +185,7 @@
             {
                 return this.BadRequest(ex.Message);
             }
-            
+
             return this.StatusCode(HttpStatusCode.NoContent);
         }
 

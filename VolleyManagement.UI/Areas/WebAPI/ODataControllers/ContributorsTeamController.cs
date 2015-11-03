@@ -12,9 +12,8 @@
     /// </summary>
     public class ContributorsTeamController : ODataController
     {
-        private readonly IContributorTeamService _contributorTeamService;
-
         private const string CONTROLLER_NAME = "contributorsTeam";
+        private readonly IContributorTeamService _contributorTeamService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContributorsTeamController"/> class.

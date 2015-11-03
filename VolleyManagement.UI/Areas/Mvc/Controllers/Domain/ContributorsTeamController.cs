@@ -1,18 +1,17 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Defines contributor team controller
     /// </summary>
     public class ContributorsTeamController : Controller
     {
-       
         /// <summary>
         /// Holds ContributorTeamService instance
         /// </summary>
@@ -38,11 +37,12 @@
             {
                 var contributors = this._contributorTeamService.Get().ToList();
                 var contributorsTeamView = new List<ContributorsTeamViewModel>();
-                
+
                 foreach (var item in contributors)
                 {
                     contributorsTeamView.Add(ContributorsTeamViewModel.Map(item));
                 }
+
                return View(contributorsTeamView);
             }
             catch (Exception)

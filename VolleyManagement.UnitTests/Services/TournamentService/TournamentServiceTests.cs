@@ -163,9 +163,9 @@
                                         .WithId(1)
                                         .WithName("Test Tournament")
                                         .Build();
+            var sut = _kernel.Get<TournamentService>();
 
             // Act
-            var sut = _kernel.Get<TournamentService>();
             sut.Edit(testTournament);
 
             // Assert

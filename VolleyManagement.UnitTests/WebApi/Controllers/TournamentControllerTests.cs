@@ -463,6 +463,8 @@
             // Assert
             Assert.IsNotNull(result);
             var actual = result.Content.ToList();
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(actual.Count, testData.Count);
             _tournamentServiceMock.Verify(ts => ts.GetActual(), Times.Once());
         }
 

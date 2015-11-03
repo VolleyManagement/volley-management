@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Services.ContributorService
+﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;

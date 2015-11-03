@@ -459,10 +459,10 @@
 
             // Act
             var result = sut.GetActual() as JsonResult<IEnumerable<TournamentViewModel>>;
-            var actual = result.Content.ToList();
 
             // Assert
             Assert.IsNotNull(result);
+            var actual = result.Content.ToList();
             _tournamentServiceMock.Verify(ts => ts.GetActual(), Times.Once());
         }
 

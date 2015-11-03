@@ -1,21 +1,21 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Ninject;
-using VolleyManagement.Contracts;
-using VolleyManagement.Contracts.Exceptions;
-using VolleyManagement.Crosscutting.Contracts.Providers;
-using VolleyManagement.Data.Contracts;
-using VolleyManagement.Data.Queries.Common;
-using VolleyManagement.Data.Queries.Tournaments;
-using VolleyManagement.Domain.TournamentsAggregate;
-using VolleyManagement.Services;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using Ninject;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Tournaments;
+    using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.Services;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -24,6 +24,10 @@ using VolleyManagement.Services;
     [TestClass]
     public class TournamentServiceTests
     {
+        private const int FIRST_TOURNAMENT_ID = 1;
+
+        private const int UPCOMING_TOURNAMENTS_MONTH_LIMIT = 3;
+
         /// <summary>
         /// Test Fixture.
         /// </summary>
@@ -39,28 +43,14 @@ using VolleyManagement.Services;
         /// </summary>
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
-        /// <summary>
-        ///  Unique tournament query mock.
-        /// </summary>
         private readonly Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock =
             new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
 
-        /// <summary>
-        /// Get all query mock.
-        /// </summary>
         private readonly Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock =
             new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
 
-        /// <summary>
-        /// Get by ID query mock.
-        /// </summary>
         private readonly Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock =
             new Mock<IQuery<Tournament, FindByIdCriteria>>();
-
-        /// <summary>
-        /// ITournament service mock
-        /// </summary>
-        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
 
         /// <summary>
         /// TimeProvider mock
@@ -109,19 +99,12 @@ using VolleyManagement.Services;
         {
             // Arrange
             var tournamentService = _kernel.Get<TournamentService>();
-            int id = 1;
-            var tournament = new TournamentBuilder()
-                .WithId(1)
-                .WithName("Name")
-                .WithDescription("Description")
-                .WithScheme(TournamentSchemeEnum.One)
-                .WithSeason(2014)
-                .WithRegulationsLink("link")
-                .Build();
+
+            var tournament = CreateAnyTournament(FIRST_TOURNAMENT_ID);
             MockGetByIdQuery(tournament);
 
             //// Act
-            var actualResult = tournamentService.Get(id);
+            var actualResult = tournamentService.Get(FIRST_TOURNAMENT_ID);
 
             // Assert
             AssertExtensions.AreEqual<Tournament>(tournament, actualResult, new TournamentComparer());
@@ -154,7 +137,7 @@ using VolleyManagement.Services;
             // Arrange
             var testData = _testFixture.TestTournaments()
                                        .Build();
-            MockRepositoryFindAll(testData);
+
             var sut = _kernel.Get<TournamentService>();
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
@@ -221,19 +204,17 @@ using VolleyManagement.Services;
         public void Edit_TournamentWithNonUniqueName_ExceptionThrown()
         {
             // Arrange
-            var testData = new TournamentServiceTestFixture()
-                                    .AddTournament(new TournamentBuilder()
-                                                        .WithId(1)
-                                                        .WithName("Non-Unique Tournament")
-                                                        .Build())
-                                    .Build();
+            var testData = new TournamentBuilder()
+                                        .WithId(1)
+                                        .WithName("Non-Unique Tournament")
+                                        .Build();
 
             Tournament nonUniqueNameTournament = new TournamentBuilder()
                                                         .WithId(2)
                                                         .WithName("Non-Unique Tournament")
                                                         .Build();
 
-            _tournamentRepositoryMock.Setup(tr => tr.Update(nonUniqueNameTournament)).Throws<TournamentValidationException>();
+            MockGetUniqueTournamentQuery(testData);
 
             // Act
             var sut = _kernel.Get<TournamentService>();
@@ -458,7 +439,6 @@ using VolleyManagement.Services;
                                                         .WithName("Tournament 5")
                                                         .Build())
                                     .Build();
-            MockRepositoryFindWhere(testData);
 
             Tournament nonUniqueNameTournament = new TournamentBuilder()
                                                         .WithId(2)
@@ -499,13 +479,9 @@ using VolleyManagement.Services;
             MockGetAllQuery(testData);
 
             DateTime now = TimeProvider.Current.UtcNow;
-            DateTime limitStartDate = now.AddMonths(VolleyManagement.Domain.Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
+            DateTime limitStartDate = now.AddMonths(UPCOMING_TOURNAMENTS_MONTH_LIMIT);
 
-            var expected = new TournamentServiceTestFixture()
-                                            .TestTournaments()
-                                            .Build().Where(tr => tr.GamesEnd >= now
-                                                && tr.GamesStart <= limitStartDate)
-                                            .ToList();
+            var expected = BuildActualTournamentsList();
 
             // Act
             var actual = tournamentService.GetActual().ToList();
@@ -527,23 +503,6 @@ using VolleyManagement.Services;
         }
 
         /// <summary>
-        /// Mocks Find method.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
-        private void MockRepositoryFindAll(IEnumerable<Tournament> testData)
-        {
-            ////_tournamentRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
-        }
-
-        /// <summary>
-        /// Mocks FindWhere method.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
-        private void MockRepositoryFindWhere(IEnumerable<Tournament> testData)
-        {
-        }
-
-        /// <summary>
         /// Mocks Execute method for get by ID.
         /// </summary>
         /// <param name="testData">Test data to mock.</param>
@@ -559,6 +518,84 @@ using VolleyManagement.Services;
         private void MockGetAllQuery(IEnumerable<Tournament> testData)
         {
             _getAllQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
+        }
+
+        /// <summary>
+        /// Mocks Execute method for get by unique criteria.
+        /// </summary>
+        /// <param name="testData">Test data to mock.</param>
+        private void MockGetUniqueTournamentQuery(Tournament testData)
+        {
+            _uniqueTournamentQueryMock.Setup(tr => tr.Execute(It.IsAny<UniqueTournamentCriteria>())).Returns(testData);
+        }
+
+        /// <summary>
+        /// Creating any tournament with required ID
+        /// </summary>
+        /// <param name="id">Required ID</param>
+        /// <returns>Created tournament</returns>
+        private Tournament CreateAnyTournament(int id)
+        {
+            return new TournamentBuilder()
+                .WithId(id)
+                .WithName("Name")
+                .WithDescription("Description")
+                .WithScheme(TournamentSchemeEnum.One)
+                .WithSeason(2014)
+                .WithRegulationsLink("link")
+                .Build();
+        }
+
+        /// <summary>
+        /// Builds a list of actual tournaments
+        /// </summary>
+        /// <returns>List of actual tournaments</returns>
+        private List<Tournament> BuildActualTournamentsList()
+        {
+            return new TournamentServiceTestFixture()
+                            .AddTournament(new TournamentBuilder()
+                                            .WithId(1)
+                                            .WithName("Tournament 1")
+                                            .WithDescription("Tournament 1 description")
+                                            .WithSeason(2014)
+                                            .WithScheme(TournamentSchemeEnum.One)
+                                            .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('1')")
+                                            .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
+                                            .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
+                                            .WithGamesStart(new DateTime(2015, 06, 30))
+                                            .WithGamesEnd(new DateTime(2015, 11, 30))
+                                            .WithTransferStart(new DateTime(2015, 08, 20))
+                                            .WithTransferEnd(new DateTime(2015, 09, 10))
+                                            .Build())
+                            .AddTournament(new TournamentBuilder()
+                                            .WithId(2)
+                                            .WithName("Tournament 2")
+                                            .WithDescription("Tournament 2 description")
+                                            .WithSeason(2014)
+                                            .WithScheme(TournamentSchemeEnum.Two)
+                                            .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('2')")
+                                            .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
+                                            .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
+                                            .WithGamesStart(new DateTime(2015, 06, 30))
+                                            .WithGamesEnd(new DateTime(2015, 11, 30))
+                                            .WithTransferStart(new DateTime(2015, 08, 20))
+                                            .WithTransferEnd(new DateTime(2015, 09, 10))
+                                            .Build())
+                            .AddTournament(new TournamentBuilder()
+                                            .WithId(3)
+                                            .WithName("Tournament 3")
+                                            .WithDescription("Tournament 3 description")
+                                            .WithSeason(2014)
+                                            .WithScheme(TournamentSchemeEnum.TwoAndHalf)
+                                            .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('3')")
+                                            .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
+                                            .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
+                                            .WithGamesStart(new DateTime(2015, 06, 30))
+                                            .WithGamesEnd(new DateTime(2015, 11, 30))
+                                            .WithTransferStart(new DateTime(2015, 08, 20))
+                                            .WithTransferEnd(new DateTime(2015, 09, 10))
+                                            .Build())
+                            .Build();
         }
     }
 }

@@ -429,8 +429,14 @@
         /// <summary>
         /// GetActual method test. The method should invoke GetActual() method of ITournamentService
         /// </summary>
+        [TestMethod]
         public void GetActual_ActualTournamentsRequest_GetActualCalled()
         {
+            // Arrange
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            MockGetActualTournaments(testData);
+
             // Act
             var sut = this._kernel.Get<TournamentsController>();
             sut.GetActual();
@@ -447,9 +453,12 @@
         {
             // Arrange
             var sut = this._kernel.Get<TournamentsController>();
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            MockGetActualTournaments(testData);
 
             // Act
-            var result = sut.GetActual() as JsonResult<IQueryable<TournamentViewModel>>;
+            var result = sut.GetActual() as JsonResult<IEnumerable<TournamentViewModel>>;
             var actual = result.Content.ToList();
 
             // Assert
@@ -464,6 +473,16 @@
         private void MockTournaments(List<Tournament> testData)
         {
             _tournamentServiceMock.Setup(tr => tr.Get())
+                                            .Returns(testData);
+        }
+
+        /// <summary>
+        /// Mock the Get Actual Tournaments
+        /// </summary>
+        /// <param name="testData">Data what will be returned</param>
+        private void MockGetActualTournaments(List<Tournament> testData)
+        {
+            _tournamentServiceMock.Setup(tr => tr.GetActual())
                                             .Returns(testData);
         }
     }

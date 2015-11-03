@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.ContributorsTeam;
 
     /// <summary>
     /// Class for generating test data
@@ -27,26 +27,11 @@
                 Id = 1,
                 Name = "FirstName1",
                 CourseDirection = "Course",
-                Contributors = new List<Contributor>
+                Contributors = new List<string>
                 {
-                    new Contributor
-                    {
-                        Id = 1,
-                        Name = "FirstNameA",
-                        ContributorTeamId = 1
-                    },
-                    new Contributor
-                    {
-                        Id = 2,
-                        Name = "FirstNameB",
-                        ContributorTeamId = 1
-                    },
-                    new Contributor
-                    {
-                        Id = 3,
-                        Name = "FirstNameC",
-                        ContributorTeamId = 1
-                    }
+                    "FirstNameA",
+                    "FirstNameB",
+                    "FirstNameC"
                 }
             });
             _contributorsTeam.Add(new ContributorsTeamViewModel()
@@ -54,26 +39,11 @@
                 Id = 2,
                 Name = "FirstName2",
                 CourseDirection = "Course",
-                Contributors = new List<Contributor>
+                Contributors = new List<string>
                 {
-                    new Contributor
-                    {
-                        Id = 4,
-                        Name = "FirstNameD",
-                        ContributorTeamId = 2
-                    },
-                    new Contributor
-                    {
-                        Id = 5,
-                        Name = "FirstNameE",
-                        ContributorTeamId = 2
-                    },
-                    new Contributor
-                    {
-                        Id = 6,
-                        Name = "FirstNameF",
-                        ContributorTeamId = 2
-                    }
+                    "FirstNameD",
+                    "FirstNameE",
+                    "FirstNameF"
                 }
             });
             return this;

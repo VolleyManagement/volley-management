@@ -1,19 +1,21 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Services;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Ninject;
+using VolleyManagement.Contracts;
+using VolleyManagement.Contracts.Exceptions;
+using VolleyManagement.Crosscutting.Contracts.Providers;
+using VolleyManagement.Data.Contracts;
+using VolleyManagement.Data.Queries.Common;
+using VolleyManagement.Data.Queries.Tournaments;
+using VolleyManagement.Domain.TournamentsAggregate;
+using VolleyManagement.Services;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -36,6 +38,24 @@
         /// Unit of work mock.
         /// </summary>
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
+
+        /// <summary>
+        ///  Unique tournament query mock.
+        /// </summary>
+        private readonly Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock =
+            new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
+
+        /// <summary>
+        /// Get all query mock.
+        /// </summary>
+        private readonly Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock =
+            new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
+
+        /// <summary>
+        /// Get by ID query mock.
+        /// </summary>
+        private readonly Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock =
+            new Mock<IQuery<Tournament, FindByIdCriteria>>();
 
         /// <summary>
         /// ITournament service mock
@@ -61,6 +81,12 @@
             _kernel = new StandardKernel();
             _kernel.Bind<ITournamentRepository>()
                    .ToConstant(_tournamentRepositoryMock.Object);
+            _kernel.Bind<IQuery<Tournament, UniqueTournamentCriteria>>()
+                   .ToConstant(_uniqueTournamentQueryMock.Object);
+            _kernel.Bind<IQuery<List<Tournament>, GetAllCriteria>>()
+                   .ToConstant(_getAllQueryMock.Object);
+            _kernel.Bind<IQuery<Tournament, FindByIdCriteria>>()
+                   .ToConstant(_getByIdQueryMock.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             this._timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
             TimeProvider.Current = this._timeMock.Object;
@@ -92,7 +118,7 @@
                 .WithSeason(2014)
                 .WithRegulationsLink("link")
                 .Build();
-            MockRepositoryFindWhere(new List<Tournament>() { tournament });
+            MockGetByIdQuery(tournament);
 
             //// Act
             var actualResult = tournamentService.Get(id);
@@ -108,7 +134,7 @@
         public void FindById_NotExistingTournament_NullReturned()
         {
             // Arrange
-            MockRepositoryFindWhere(new List<Tournament>() { null });
+            MockGetByIdQuery(null);
             var tournamentService = _kernel.Get<TournamentService>();
 
             // Act
@@ -167,16 +193,16 @@
         }
 
         /// <summary>
-        /// Test for Edit() method with null as input parameter. The method should throw InvalidOperationException
+        /// Test for Edit() method with null as input parameter. The method should throw NullReferenceException
         /// and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [ExpectedException(typeof(NullReferenceException))]
         public void Edit_TournamentNullAsParam_ExceptionThrown()
         {
             // Arrange
             Tournament testTournament = null;
-            _tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<InvalidOperationException>();
+            _tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<NullReferenceException>();
 
             // Act
             var sut = _kernel.Get<TournamentService>();
@@ -187,8 +213,8 @@
         }
 
         /// <summary>
-        /// Test for Edit() method where input tournament has non-unique name. The method should throw ArgumentException
-        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// Test for Edit() method where input tournament has non-unique name. The method should
+        /// throw TournamentValidationException and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(TournamentValidationException))]
@@ -201,12 +227,13 @@
                                                         .WithName("Non-Unique Tournament")
                                                         .Build())
                                     .Build();
-            MockRepositoryFindWhere(testData);
 
             Tournament nonUniqueNameTournament = new TournamentBuilder()
                                                         .WithId(2)
                                                         .WithName("Non-Unique Tournament")
                                                         .Build();
+
+            _tournamentRepositoryMock.Setup(tr => tr.Update(nonUniqueNameTournament)).Throws<TournamentValidationException>();
 
             // Act
             var sut = _kernel.Get<TournamentService>();
@@ -469,7 +496,7 @@
             var tournamentService = _kernel.Get<TournamentService>();
             var testData = _testFixture.TestTournaments()
                                        .Build();
-            MockRepositoryFindAll(testData);
+            MockGetAllQuery(testData);
 
             DateTime now = TimeProvider.Current.UtcNow;
             DateTime limitStartDate = now.AddMonths(VolleyManagement.Domain.Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
@@ -514,6 +541,24 @@
         /// <param name="testData">Test data to mock.</param>
         private void MockRepositoryFindWhere(IEnumerable<Tournament> testData)
         {
+        }
+
+        /// <summary>
+        /// Mocks Execute method for get by ID.
+        /// </summary>
+        /// <param name="testData">Test data to mock.</param>
+        private void MockGetByIdQuery(Tournament testData)
+        {
+            _getByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
+        }
+
+        /// <summary>
+        /// Mocks Execute method for get by ID.
+        /// </summary>
+        /// <param name="testData">Test data to mock.</param>
+        private void MockGetAllQuery(IEnumerable<Tournament> testData)
+        {
+            _getAllQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
         }
     }
 }

@@ -33,8 +33,8 @@
         /// Gets or sets coach of the team
         /// </summary>
         [Display(Name = "TeamCoach", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Coach { get; set; }
 
         /// <summary>
@@ -47,8 +47,8 @@
         /// Gets or sets the captain of the team
         /// </summary>
         [Display(Name = "TeamCaptain", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "TeamCaptainRequired"
-            , ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "TeamCaptainRequired",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public PlayerNameViewModel Captain { get; set; }
 
         /// <summary>
@@ -62,7 +62,9 @@
         /// <summary>
         /// Maps domain entity to presentation
         /// </summary>
-        /// <param name="team"> Domain object </param>
+        /// <param name="team"><see cref="Team"/> domain entity.</param>
+        /// <param name="captain">Captain of the team.</param>
+        /// <param name="roster">Roster of team's players.</param>
         /// <returns> View model object </returns>
         public static TeamViewModel Map(Team team, Player captain, IEnumerable<Player> roster)
         {
@@ -71,9 +73,9 @@
                 Id = team.Id,
                 Name = team.Name,
                 Coach = team.Coach,
-                Achievements = team.Achievements                
+                Achievements = team.Achievements
             };
-            
+
             if (captain != null)
             {
                 teamViewModel.Captain = PlayerNameViewModel.Map(captain);
@@ -85,7 +87,7 @@
                 foreach (var player in roster)
                 {
                     teamViewModel.Roster.Add(PlayerNameViewModel.Map(player));
-                }  
+                }
             }
 
             return teamViewModel;
@@ -103,8 +105,8 @@
                 Name = this.Name,
                 CaptainId = this.Captain.Id,
                 Coach = this.Coach,
-                Achievements = this.Achievements    
-            };            
+                Achievements = this.Achievements
+            };
             return domainTeam;
         }
         #endregion

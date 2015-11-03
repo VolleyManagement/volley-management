@@ -13,9 +13,13 @@
     /// </summary>
     public class NavigationController : Controller
     {
+        /// <summary>
+        /// Create list of menu items
+        /// </summary>
+        /// <returns> Partial view of the menu. </returns>
         public PartialViewResult Menu()
         {
-            string controllerName = (string) this.Request.RequestContext.RouteData.Values["controller"];
+            string controllerName = (string)this.Request.RequestContext.RouteData.Values["controller"];
             IQueryable<MenuItemViewModel> items = new List<MenuItemViewModel>
                 {
                     new MenuItemViewModel() { Name = "Tournaments", Controller = "Tournaments", Action = "Index" },
@@ -24,7 +28,7 @@
                     new MenuItemViewModel() { Name = "Contributors", Controller = "ContributorsTeam", Action = "Index" }
                 }.AsQueryable();
 
-            var currentItem = items.Where(item => 
+            var currentItem = items.Where(item =>
                 string.Equals(item.Controller, controllerName, StringComparison.OrdinalIgnoreCase));
 
             if (currentItem.Count() > 0)

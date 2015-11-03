@@ -22,7 +22,7 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets course directionof ContributorTeam
+        /// Gets or sets course direction of ContributorTeam
         /// </summary>
         public string CourseDirection { get; set; }
 
@@ -36,7 +36,7 @@
         /// <summary>
         /// Maps domain entity to presentation
         /// </summary>
-        /// <param name="contributor"> Domain object </param>
+        /// <param name="contributorTeam"> Domain object </param>
         /// <returns> View model object </returns>
         public static ContributorsTeamViewModel Map(ContributorTeam contributorTeam)
         {
@@ -66,6 +66,5 @@
             };
         }
         #endregion
-
     }
 }

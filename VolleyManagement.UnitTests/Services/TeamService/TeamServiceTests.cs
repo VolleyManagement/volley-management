@@ -151,8 +151,8 @@
 
             var captainLedTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             var testTeams = new TeamServiceTestFixture().AddTeam(captainLedTeam).Build();
-            //_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
-            //    .Returns(testTeams.AsQueryable());
+            ////_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
+            ////    .Returns(testTeams.AsQueryable());
 
             // Act
             var sut = _kernel.Get<TeamService>();
@@ -266,8 +266,8 @@
             // Arrange
             IQueryable<Player> expectedRoster = new PlayerServiceTestFixture().TestPlayers().Build().AsQueryable<Player>();
             int expectedCountOfPlayers = expectedRoster.Count();
-            //_playerRepositoryMock.Setup(pr => pr.FindWhere(It.IsAny<Expression<Func<Player, bool>>>()))
-            //    .Returns(expectedRoster);
+            ////_playerRepositoryMock.Setup(pr => pr.FindWhere(It.IsAny<Expression<Func<Player, bool>>>()))
+            ////    .Returns(expectedRoster);
 
             // Act
             var ts = _kernel.Get<TeamService>();
@@ -319,8 +319,8 @@
             // Arrange
             MockPlayerRepositoryToFindPlayer(new PlayerBuilder().WithTeamId(null).Build());
             var emptyTeamList = new TeamServiceTestFixture().Build().AsQueryable<Team>();
-            //_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
-            //                   .Returns(emptyTeamList);
+            ////_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
+            ////                   .Returns(emptyTeamList);
 
             // Act
             var ts = _kernel.Get<TeamService>();
@@ -365,8 +365,8 @@
 
             var teamList = new TeamServiceTestFixture().AddTeam(existingTeam).AddTeam(teamToSet).Build().AsQueryable();
 
-            //_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
-            //                   .Returns((Expression<Func<Team, bool>> whereExpr) => teamList.Where(whereExpr));
+            ////_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
+            ////                   .Returns((Expression<Func<Team, bool>> whereExpr) => teamList.Where(whereExpr));
 
             // Act
             var ts = _kernel.Get<TeamService>();
@@ -397,8 +397,8 @@
             var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
 
             var teamList = new TeamServiceTestFixture().AddTeam(teamToSet).Build().AsQueryable();
-            //_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
-            //                   .Returns(teamList);
+            ////_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
+            ////                   .Returns(teamList);
 
             // Act
             var ts = _kernel.Get<TeamService>();
@@ -419,7 +419,7 @@
 
         private void MockRepositoryFindAll(IEnumerable<Team> testData)
         {
-            //_teamRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
+            ////_teamRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
         }
 
         private void MockPlayerRepositoryToFindPlayer(Player player)
@@ -428,8 +428,8 @@
                                                 .AddPlayer(player).Build()
                                                 .AsQueryable();
 
-            //_playerRepositoryMock.Setup(pr => pr.FindWhere(It.IsAny<Expression<Func<Player, bool>>>()))
-            //                                    .Returns(listOfPlayers);
+            ////_playerRepositoryMock.Setup(pr => pr.FindWhere(It.IsAny<Expression<Func<Player, bool>>>()))
+            ////                                    .Returns(listOfPlayers);
         }
     }
 }

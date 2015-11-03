@@ -5,6 +5,8 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Linq.Expressions;
+    using Data.Queries.Common;
+    using Data.Queries.Tournaments;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -14,8 +16,6 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
-    using Data.Queries.Tournaments;
-    using Data.Queries.Common;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -24,52 +24,23 @@
     [TestClass]
     public class TournamentServiceTests
     {
-        /// <summary>
-        /// Test Fixture.
-        /// </summary>
+        private const int MINIMUN_REGISTRATION_PERIOD_MONTH = 3;
+
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
-
-        /// <summary>
-        /// Tournaments Repository Mock.
-        /// </summary>
         private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
-
-        /// <summary>
-        /// Unit of work mock.
-        /// </summary>
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
-
-        /// <summary>
-        /// ITournament service mock
-        /// </summary>
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
-
-        /// <summary>
-        /// IQuery Tournament with UniqueTournamentCriteria Mock
-        /// </summary>
         private readonly Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock
             = new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
 
-        /// <summary>
-        /// IQuery Tournament with allCriteria Mock
-        /// </summary>
         private readonly Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock
             = new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
 
-        /// <summary>
-        /// IQuery Tournament with allCriteria Mock
-        /// </summary>
         private readonly Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock
             = new Mock<IQuery<Tournament, FindByIdCriteria>>();
 
-        /// <summary>
-        /// TimeProvider mock
-        /// </summary>
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
-        /// <summary>
-        /// IoC for tests.
-        /// </summary>
         private IKernel _kernel;
 
         /// <summary>
@@ -119,7 +90,7 @@
                 .WithSeason(2014)
                 .WithRegulationsLink("link")
                 .Build();
-            MockRepositoryFindWhere(new List<Tournament>() { tournament });
+            //// MockRepositoryFindWhere(new List<Tournament>() { tournament });
 
             //// Act
             var actualResult = tournamentService.Get(id);
@@ -135,7 +106,7 @@
         public void FindById_NotExistingTournament_NullReturned()
         {
             // Arrange
-            MockRepositoryFindWhere(new List<Tournament>() { null });
+            //// MockRepositoryFindWhere(new List<Tournament>() { null });
             var tournamentService = _kernel.Get<TournamentService>();
 
             // Act
@@ -155,7 +126,7 @@
             // Arrange
             var testData = _testFixture.TestTournaments()
                                        .Build();
-            MockRepositoryFindAll(testData);
+            //// MockRepositoryFindAll(testData);
             var sut = _kernel.Get<TournamentService>();
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
@@ -228,7 +199,7 @@
                                                         .WithName("Non-Unique Tournament")
                                                         .Build())
                                     .Build();
-            MockRepositoryFindWhere(testData);
+            //// MockRepositoryFindWhere(testData);
 
             Tournament nonUniqueNameTournament = new TournamentBuilder()
                                                         .WithId(2)
@@ -277,7 +248,7 @@
             var tournamentBuilder = new TournamentBuilder();
             var now = TimeProvider.Current.UtcNow;
             var newTournament = tournamentBuilder
-                .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH - 1))
+                .WithGamesStart(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH - 1))
                 .Build();
 
             // Act
@@ -300,12 +271,12 @@
             var now = TimeProvider.Current.UtcNow;
             int tournamentPeriodMonth = TournamentBuilder.TRANSFER_PERIOD_MONTH;
             var newTournament = tournamentBuilder
-                .WithGamesEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + tournamentPeriodMonth))
-                .WithTransferEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + tournamentPeriodMonth + 1))
+                .WithGamesEnd(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH + tournamentPeriodMonth))
+                .WithTransferEnd(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH + tournamentPeriodMonth + 1))
                 .Build();
+            var sut = _kernel.Get<TournamentService>();
 
             // Act
-            var sut = _kernel.Get<TournamentService>();
             sut.Create(newTournament);
 
             // Assert
@@ -323,8 +294,8 @@
             var tournamentBuilder = new TournamentBuilder();
             var now = TimeProvider.Current.UtcNow;
             var newTournament = tournamentBuilder
-                .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH))
-                .WithGamesEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH))
+                .WithGamesStart(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH))
+                .WithGamesEnd(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH))
                 .Build();
 
             // Act
@@ -346,8 +317,8 @@
             var tournamentBuilder = new TournamentBuilder();
             var now = TimeProvider.Current.UtcNow;
             var newTournament = tournamentBuilder
-                .WithTransferStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1))
-                .WithTransferEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
+                .WithTransferStart(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1))
+                .WithTransferEnd(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
                 .Build();
 
             // Act
@@ -369,8 +340,8 @@
             var tournamentBuilder = new TournamentBuilder();
             var now = TimeProvider.Current.UtcNow;
             var newTournament = tournamentBuilder
-                .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
-                .WithTransferStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(-1))
+                .WithGamesStart(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
+                .WithTransferStart(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(-1))
                 .Build();
 
             // Act
@@ -392,8 +363,8 @@
             var tournamentBuilder = new TournamentBuilder();
             var now = TimeProvider.Current.UtcNow;
             var newTournament = tournamentBuilder
-                .WithGamesStart(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1))
-                .WithGamesEnd(now.AddMonths(Domain.Constants.Tournament.MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
+                .WithGamesStart(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH + 1).AddDays(1))
+                .WithGamesEnd(now.AddMonths(MINIMUN_REGISTRATION_PERIOD_MONTH + 1))
                 .Build();
 
             // Act
@@ -417,13 +388,13 @@
             DateTime transferStart = gamesStart.AddDays(1);
             DateTime transferEnd = transferStart.AddDays(1);
             DateTime gamesEnd = transferEnd.AddDays(1);
-           
+
             var newTournament = new TournamentBuilder().WithApplyingPeriodStart(applyingPeriodStart)
-                                                       .WithApplyingPeriodEnd(applyingPeriodEnd)    
+                                                       .WithApplyingPeriodEnd(applyingPeriodEnd)
                                                        .WithGamesStart(gamesStart)
-                                                       .WithGamesEnd(gamesEnd)  
+                                                       .WithGamesEnd(gamesEnd)
                                                        .WithTransferStart(transferStart)
-                                                       .WithTransferEnd(transferEnd)                                 
+                                                       .WithTransferEnd(transferEnd)
                                                        .Build();
 
             // Act
@@ -471,7 +442,7 @@
                                                         .WithName("Tournament 5")
                                                         .Build())
                                     .Build();
-            MockRepositoryFindWhere(testData);
+            //// MockRepositoryFindWhere(testData);
 
             Tournament nonUniqueNameTournament = new TournamentBuilder()
                                                         .WithId(2)
@@ -509,7 +480,7 @@
             var tournamentService = _kernel.Get<TournamentService>();
             var testData = _testFixture.TestTournaments()
                                        .Build();
-            MockRepositoryFindAll(testData);
+            //// MockRepositoryFindAll(testData);
 
             DateTime now = TimeProvider.Current.UtcNow;
             DateTime limitStartDate = now.AddMonths(VolleyManagement.Domain.Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT);
@@ -537,23 +508,6 @@
         {
             TournamentComparer comparer = new TournamentComparer();
             return comparer.Compare(x, y) == 0;
-        }
-
-        /// <summary>
-        /// Mocks Find method.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
-        private void MockRepositoryFindAll(IEnumerable<Tournament> testData)
-        {
-            ////_tournamentRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
-        }
-
-        /// <summary>
-        /// Mocks FindWhere method.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
-        private void MockRepositoryFindWhere(IEnumerable<Tournament> testData)
-        {
         }
     }
 }

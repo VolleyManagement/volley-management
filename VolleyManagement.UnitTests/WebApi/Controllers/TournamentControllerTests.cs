@@ -226,6 +226,7 @@
         /// and returns BadRequest with some info
         /// </summary>
         [TestMethod]
+        [Ignore] // https://volleymanagement.visualstudio.com/DefaultCollection/VolleyManagement%20-%20Backend%20Services/_workitems/edit/408
         public void Post_CatchArgumentExeption_ReturnBadRequest()
         {
             // Arrange

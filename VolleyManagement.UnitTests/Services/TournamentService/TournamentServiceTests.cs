@@ -14,8 +14,6 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
 
@@ -596,5 +594,6 @@
                                             .WithTransferEnd(new DateTime(2015, 09, 10))
                                             .Build())
                             .Build();
+        }
     }
 }

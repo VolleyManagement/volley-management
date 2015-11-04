@@ -1,9 +1,7 @@
 ﻿namespace VolleyManagement.UI
 {
     using System;
-    using System.Net.Mime;
     using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Configuration;
     using System.Web.Mvc;
 
@@ -35,7 +33,7 @@
 
         private void ConfigureAuthentication(IAppBuilder app)
         {
-            var cookieOptions = new CookieAuthenticationOptions { LoginPath = new PathString("/site/Account/Login") };
+            var cookieOptions = new CookieAuthenticationOptions { LoginPath = new PathString("/Account/Login") };
             cookieOptions.AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie;
             cookieOptions.Provider = new CookieAuthenticationProvider { OnValidateIdentity = this.OnValidateIdentity };
 

@@ -43,7 +43,7 @@
             var actual = testViewModel.ToDomain();
 
             // Assert
-            AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual<Tournament>(expected, actual, new TournamentComparer());
         }
     }
 }

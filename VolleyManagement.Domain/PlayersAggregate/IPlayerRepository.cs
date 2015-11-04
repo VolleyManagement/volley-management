@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines specific contract for PlayerRepository
     /// </summary>
-    public interface IPlayerRepository : IRepository<Player>
+    public interface IPlayerRepository : IGenericRepository<Player>
     {
     }
 }

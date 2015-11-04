@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Generic
 {
     /// <summary>
-    /// Represents ViewModel and referer link.
+    /// Represents ViewModel and referrer link.
     /// </summary>
     /// <typeparam name="T">ViewModel type.</typeparam>
     public class RefererViewModel<T>
@@ -10,7 +10,7 @@
         /// Initializes a new instance of the <see cref="RefererViewModel{T}" /> class.
         /// </summary>
         /// <param name="model">View model.</param>
-        /// <param name="referer">Referer controller name.</param>
+        /// <param name="referer">Referrer controller name.</param>
         public RefererViewModel(T model, string referer)
         {
             Model = model;
@@ -23,7 +23,7 @@
         public T Model { get; private set; }
 
         /// <summary>
-        /// Gets referer controller name.
+        /// Gets referrer controller name.
         /// </summary>
         public string Referer { get; private set; }
     }

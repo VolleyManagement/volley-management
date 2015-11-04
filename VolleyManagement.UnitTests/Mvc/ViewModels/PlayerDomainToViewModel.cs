@@ -41,7 +41,7 @@
             var actual = PlayerViewModel.Map(testDomainModel);
 
             // Assert
-            AssertExtensions.AreEqual<PlayerViewModel>(testViewModel, actual, new PlayerViewModelComparer());
+            TestHelper.AreEqual<PlayerViewModel>(testViewModel, actual, new PlayerViewModelComparer());
         }
     }
 }

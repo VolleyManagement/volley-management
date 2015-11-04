@@ -226,13 +226,16 @@
         /// and returns BadRequest with some info
         /// </summary>
         [TestMethod]
+        [Ignore]
+        //// https://volleymanagement.visualstudio.com/DefaultCollection/VolleyManagement%20-%20Backend%20Services/_workitems/edit/408
         public void Post_CatchArgumentExeption_ReturnBadRequest()
         {
             // Arrange
+            const string INCORRECT_SCHEME = "5";
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
-            var result = controller.Post(new TournamentViewModelBuilder().WithScheme("5").Build())
+            var result = controller.Post(new TournamentViewModelBuilder().WithScheme(INCORRECT_SCHEME).Build())
                 as InvalidModelStateResult;
 
             // Assert
@@ -429,10 +432,16 @@
         /// <summary>
         /// GetActual method test. The method should invoke GetActual() method of ITournamentService
         /// </summary>
+        [TestMethod]
         public void GetActual_ActualTournamentsRequest_GetActualCalled()
         {
-            // Act
+            // Arrange
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            MockGetActualTournaments(testData);
             var sut = this._kernel.Get<TournamentsController>();
+
+            // Act
             sut.GetActual();
 
             // Assert
@@ -447,13 +456,18 @@
         {
             // Arrange
             var sut = this._kernel.Get<TournamentsController>();
+            var testData = _testFixture.TestTournaments()
+                                            .Build();
+            MockGetActualTournaments(testData);
 
             // Act
-            var result = sut.GetActual() as JsonResult<IQueryable<TournamentViewModel>>;
-            var actual = result.Content.ToList();
+            var result = sut.GetActual() as JsonResult<IEnumerable<TournamentViewModel>>;
 
             // Assert
             Assert.IsNotNull(result);
+            var actual = result.Content.ToList();
+            Assert.IsNotNull(actual);
+            Assert.AreEqual(actual.Count, testData.Count);
             _tournamentServiceMock.Verify(ts => ts.GetActual(), Times.Once());
         }
 
@@ -464,6 +478,16 @@
         private void MockTournaments(List<Tournament> testData)
         {
             _tournamentServiceMock.Setup(tr => tr.Get())
+                                            .Returns(testData);
+        }
+
+        /// <summary>
+        /// Mock the Get Actual Tournaments
+        /// </summary>
+        /// <param name="testData">Data what will be returned</param>
+        private void MockGetActualTournaments(List<Tournament> testData)
+        {
+            _tournamentServiceMock.Setup(tr => tr.GetActual())
                                             .Returns(testData);
         }
     }

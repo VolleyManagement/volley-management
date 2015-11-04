@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentService
+﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
     using System;
     using System.Collections.Generic;

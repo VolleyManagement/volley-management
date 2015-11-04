@@ -124,7 +124,7 @@
             var actual = ContributorsTeamViewModel.Map(contributor);
 
             // Assert
-            AssertExtensions.AreEqual<ContributorsTeamViewModel>(
+            TestHelper.AreEqual<ContributorsTeamViewModel>(
                 expected,
                 actual,
                 new ContributorTeamViewModelComparer());

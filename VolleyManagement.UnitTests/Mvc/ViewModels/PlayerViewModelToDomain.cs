@@ -43,7 +43,7 @@
             var actual = testViewModel.ToDomain();
 
             // Assert
-            AssertExtensions.AreEqual<Player>(testDomainModel, actual, new PlayerComparer());
+            TestHelper.AreEqual<Player>(testDomainModel, actual, new PlayerComparer());
         }
     }
 }

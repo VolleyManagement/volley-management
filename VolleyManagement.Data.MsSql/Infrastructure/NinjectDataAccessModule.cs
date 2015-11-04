@@ -5,14 +5,17 @@
 
     using Ninject.Activation;
     using Ninject.Extensions.Conventions;
+    using Ninject.Infrastructure;
     using Ninject.Modules;
     using Ninject.Planning.Bindings;
 
+    using VolleyManagement.Crosscutting.Ninject;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Queries;
     using VolleyManagement.Data.MsSql.Repositories;
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Domain.UsersAggregate;
@@ -46,19 +49,18 @@
                      .BindAllInterfaces()
                      .Configure(c => c.InTransientScope()));
 
-            var configs = new List<IBindingConfiguration>
+            var configs = new IHaveBindingConfiguration[]
                               {
-                                  Bind<IUnitOfWork>().To<VolleyUnitOfWork>().BindingConfiguration,
-                                  Bind<ITournamentRepository>().To<TournamentRepository>().BindingConfiguration,
-                                  Bind<IUserRepository>().To<UserRepository>().BindingConfiguration,
-                                  Bind<IPlayerRepository>().To<PlayerRepository>().BindingConfiguration,
-                                  Bind<IContributorTeamRepository>().To<ContributorTeamRepository>().BindingConfiguration,
-                                  Bind<ITeamRepository>().To<TeamRepository>().BindingConfiguration
+                                  Bind<IUnitOfWork>().To<VolleyUnitOfWork>(),
+                                  Bind<ITournamentRepository>().To<TournamentRepository>(),
+                                  Bind<IUserRepository>().To<UserRepository>(),
+                                  Bind<IPlayerRepository>().To<PlayerRepository>(),
+                                  Bind<IContributorTeamRepository>().To<ContributorTeamRepository>(),
+                                  Bind<ITeamRepository>().To<TeamRepository>(),
+                                  Bind<IRoleRepository>().To<RoleRepostitory>()
                               };
-            if (this._scopeCallback != null)
-            {
-                configs.ForEach(bc => bc.ScopeCallback = this._scopeCallback);
-            }
+
+            configs.InScope(_scopeCallback);
         }
     }
 }

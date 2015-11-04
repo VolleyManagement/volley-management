@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -11,7 +12,7 @@
     /// Comparer for contributor team objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class ContributorTeamViewModelComparer : IComparer<ContributorsTeamViewModel>
+    internal class ContributorTeamViewModelComparer : IComparer<ContributorsTeamViewModel>, IComparer
     {
         /// <summary>
         /// Compares two contributor team objects.
@@ -43,6 +44,23 @@
                x.Name == y.Name &&
                x.CourseDirection == y.CourseDirection &&
                x.Contributors.SequenceEqual(y.Contributors, new ContributorEqualityComparer());
+        }
+
+        public int Compare(object x, object y)
+        {
+            ContributorsTeamViewModel firstViewModel = x as ContributorsTeamViewModel;
+            ContributorsTeamViewModel secondViewModel = y as ContributorsTeamViewModel;
+
+            if (firstViewModel == null)
+            {
+                return -1;
+            }
+            else if (secondViewModel == null)
+            {
+                return 1;
+            }
+
+            return Compare(firstViewModel, secondViewModel);
         }
     }
 }

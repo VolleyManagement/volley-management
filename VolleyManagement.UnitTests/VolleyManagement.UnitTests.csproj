@@ -115,7 +115,6 @@
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
     <Compile Include="Mvc\ViewModels\ContributorteamDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamMvcViewModelBuilder.cs" />
-    <Compile Include="Mvc\ViewModels\ContributorTeamViewModelNonGenericComparer.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />

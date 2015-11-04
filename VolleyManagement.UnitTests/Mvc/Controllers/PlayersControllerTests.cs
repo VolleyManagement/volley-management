@@ -227,7 +227,7 @@
             var actual = TestExtensions.GetModel<PlayerRefererViewModel>(controller.Details(SAVED_PLAYER_ID));
 
             // Assert
-            AssertExtensions.AreEqual<PlayerViewModel>(expectedPlayer, actual.Model, new PlayerViewModelComparer());
+            TestHelper.AreEqual<PlayerViewModel>(expectedPlayer, actual.Model, new PlayerViewModelComparer());
             Assert.AreEqual<string>(expectedReferer, actual.Referer);
         }
 
@@ -245,7 +245,7 @@
             var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Create());
 
             // Assert
-            AssertExtensions.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
+            TestHelper.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
         }
 
         /// <summary>
@@ -395,7 +395,7 @@
             var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Edit(player.Id));
 
             // Assert
-            AssertExtensions.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
+            TestHelper.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
         }
 
         /// <summary>

@@ -81,7 +81,7 @@
 
             // Assert
             _playerServiceMock.Verify(ps => ps.Get(), Times.Once());
-            AssertExtensions.AreEqual<PlayerViewModel>(expected, result, new PlayerViewModelComparer());
+            TestHelper.AreEqual<PlayerViewModel>(expected, result, new PlayerViewModelComparer());
         }
 
         /// <summary>
@@ -152,7 +152,7 @@
             var actual = ((CreatedODataResult<PlayerViewModel>)response).Entity;
 
             // Assert
-            AssertExtensions.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
+            TestHelper.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
         }
 
         /// <summary>
@@ -278,7 +278,7 @@
             var actual = ((UpdatedODataResult<PlayerViewModel>)response).Entity;
 
             // Assert
-            AssertExtensions.AreEqual<PlayerViewModel>(expectedPlayerViewModel, actual, new PlayerViewModelComparer());
+            TestHelper.AreEqual<PlayerViewModel>(expectedPlayerViewModel, actual, new PlayerViewModelComparer());
         }
 
         /// <summary>

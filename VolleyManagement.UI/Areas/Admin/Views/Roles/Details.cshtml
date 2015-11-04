@@ -1,0 +1,34 @@
+﻿@model VolleyManagement.UI.Areas.Admin.Models.RoleDetailsViewModel
+
+@{
+    ViewBag.Title = string.Format("Role: {0}", Model.Name);
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <span>Users in @Model.Name role</span>
+        @Html.ActionLink("Edit","Edit", new { id = Model.Id }, new {@class="btn btn-danger btn-xs"})
+        @Html.ActionLink("Back to Roles","Index", null, new {@class="btn btn-success btn-xs"})
+    </div>
+    <table class="table table-striped">
+        <tr>
+            <th>User</th>
+        </tr>
+        @if (Model.Users.Count == 0)
+        {
+            <tr>
+                <td class="text-center">No Users</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var user in Model.Users)
+            {
+            <tr>
+                <td>@user</td>
+            </tr>
+            }
+        }
+    </table>
+</div>
+

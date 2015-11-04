@@ -4,7 +4,7 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Generic;
 
     /// <summary>
-    /// Represents PlayerViewModel and referer link.
+    /// Represents PlayerViewModel and referrer link.
     /// </summary>
     public class PlayerRefererViewModel : RefererViewModel<PlayerViewModel>
     {
@@ -12,7 +12,7 @@
         /// Initializes a new instance of the <see cref="PlayerRefererViewModel" /> class.
         /// </summary>
         /// <param name="player">Domain Player model.</param>
-        /// <param name="referer">Referer controller name.</param>
+        /// <param name="referer">Referrer controller name.</param>
         public PlayerRefererViewModel(Player player, string referer)
             : base(PlayerViewModel.Map(player), referer)
         {

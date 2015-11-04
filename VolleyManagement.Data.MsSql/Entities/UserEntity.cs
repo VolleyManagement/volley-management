@@ -36,5 +36,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Login providers
         /// </summary>
         public virtual ICollection<LoginInfoEntity> LoginProviders { get; set; }
+
+        /// <summary>
+        /// Roles assigned to current user
+        /// </summary>
+        public virtual ICollection<RoleEntity> Roles { get; set; }
     }
 }

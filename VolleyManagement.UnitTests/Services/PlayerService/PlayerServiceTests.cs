@@ -193,10 +193,10 @@
         /// Test for Delete() method. Player we want to delete does not exist.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(MissingEntityException), "Игрок с указанным Id не был найден")]
         public void Delete_InvalidPlayerId_MissingEntityExceptionThrown()
         {
             const int PLAYER_ID = 1;
+            bool gotException = false;
 
             // Arrange
             _playerRepositoryMock.Setup(p => p.Remove(It.IsAny<int>()))
@@ -204,9 +204,18 @@
             var sut = _kernel.Get<PlayerService>();
 
             // Act
-            sut.Delete(PLAYER_ID);
+            try
+            {
+                sut.Delete(PLAYER_ID);
+            }
+            catch (MissingEntityException)
+            {
+                gotException = true;
+            }
 
             // Assert
+            _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(playerId => playerId == PLAYER_ID)), Times.Once());
+            Assert.IsTrue(gotException);
             _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 
@@ -214,10 +223,10 @@
         /// Test for Delete() method. Player we want to delete is captain of existing team.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ValidationException), "Игрок является капитаном другой команды")]
         public void Delete_CaptainOfExistTeam_ValidationExceptionThrown()
         {
             const int PLAYER_ID = 1;
+            bool gotException = false;
 
             // Arrange
             var existTeam = new TeamBuilder().WithCaptain(PLAYER_ID).Build();
@@ -227,9 +236,18 @@
             var sut = _kernel.Get<PlayerService>();
 
             // Act
-            sut.Delete(PLAYER_ID);
+            try
+            {
+                sut.Delete(PLAYER_ID);
+            }
+            catch (ValidationException)
+            {
+                gotException = true;
+            }
 
             // Assert
+            _playerRepositoryMock.Verify(pr => pr.Remove(It.IsAny<int>()), Times.Never);
+            Assert.IsTrue(gotException);
             _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 

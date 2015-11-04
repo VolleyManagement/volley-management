@@ -32,12 +32,12 @@
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.One,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')",
-                    ApplyingPeriodStart = new DateTime(2015, 06, 02),
-                    ApplyingPeriodEnd = new DateTime(2015, 09, 02),
-                    GamesStart = new DateTime(2015, 09, 03),
-                    GamesEnd = new DateTime(2015, 12, 03),
-                    TransferStart = new DateTime(2015, 10, 01),
-                    TransferEnd = new DateTime(2015, 11, 01)
+                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
+                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                    GamesStart = new DateTime(2015, 06, 30),
+                    GamesEnd = new DateTime(2015, 11, 30),
+                    TransferStart = new DateTime(2015, 08, 20),
+                    TransferEnd = new DateTime(2015, 09, 10)
                 });
             _tournaments.Add(new Tournament()
                 {
@@ -47,12 +47,12 @@
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.Two,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')",
-                    ApplyingPeriodStart = new DateTime(2015, 06, 02),
-                    ApplyingPeriodEnd = new DateTime(2015, 09, 02),
-                    GamesStart = new DateTime(2015, 09, 03),
-                    GamesEnd = new DateTime(2015, 12, 03),
-                    TransferStart = new DateTime(2015, 10, 01),
-                    TransferEnd = new DateTime(2015, 11, 01)
+                    ApplyingPeriodStart = new DateTime(2015, 02, 20)
+                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                    GamesStart = new DateTime(2015, 06, 30),
+                    GamesEnd = new DateTime(2015, 11, 30),
+                    TransferStart = new DateTime(2015, 08, 20),
+                    TransferEnd = new DateTime(2015, 09, 10)
                 });
             _tournaments.Add(new Tournament()
                 {
@@ -62,12 +62,12 @@
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.TwoAndHalf,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('3')",
-                    ApplyingPeriodStart = new DateTime(2015, 06, 02),
-                    ApplyingPeriodEnd = new DateTime(2015, 09, 02),
-                    GamesStart = new DateTime(2015, 09, 03),
-                    GamesEnd = new DateTime(2015, 12, 03),
-                    TransferStart = new DateTime(2015, 10, 01),
-                    TransferEnd = new DateTime(2015, 11, 01)
+                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
+                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                    GamesStart = new DateTime(2015, 06, 30),
+                    GamesEnd = new DateTime(2015, 11, 30),
+                    TransferStart = new DateTime(2015, 08, 20),
+                    TransferEnd = new DateTime(2015, 09, 10)
                 });
             return this;
         }

@@ -5,21 +5,15 @@
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Linq.Expressions;
-
+    using Data.Queries.Player;
+    using Data.Queries.Team;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-
     using Ninject;
-
-    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Player;
-    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
@@ -33,23 +27,14 @@
     public class TeamServiceTests
     {
         private const int SPECIFIC_PLAYER_ID = 2;
-
         private const int SPECIFIC_TEAM_ID = 2;
-
         private const int UNASSIGNED_ID = 0;
 
         private const int ANOTHER_TEAM_ID = SPECIFIC_TEAM_ID + 1;
 
         private readonly TeamServiceTestFixture _testFixture = new TeamServiceTestFixture();
-
         private readonly Mock<ITeamRepository> _teamRepositoryMock = new Mock<ITeamRepository>();
-
         private readonly Mock<IPlayerRepository> _playerRepositoryMock = new Mock<IPlayerRepository>();
-
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
-
-        private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
-
         private readonly Mock<IQuery<Team, FindByIdCriteria>> _getTeamByIdQueryMock =
             new Mock<IQuery<Team, FindByIdCriteria>>();
 
@@ -64,6 +49,8 @@
 
         private readonly Mock<IQuery<List<Player>, TeamPlayersCriteria>> _getTeamRosterQueryMock =
             new Mock<IQuery<List<Player>, TeamPlayersCriteria>>();
+
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private IKernel _kernel;
 
@@ -116,13 +103,15 @@
         public void Create_TeamPassed_TeamCreated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithId(UNASSIGNED_ID).Build();
-            _teamRepositoryMock.Setup(tr => tr.Add(It.Is<Team>(t => t.Id == UNASSIGNED_ID)))
+            var newTeam = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();
+            _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
                 .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
 
-            int? captainTeamId = null;
-            var captain = (new PlayerBuilder()).WithId(SPECIFIC_PLAYER_ID).WithTeamId(captainTeamId).Build();
-            MockGetPlayerByIdQuery(captain);
+            var captain = (new PlayerBuilder()).WithId(SPECIFIC_PLAYER_ID).WithNoTeam().Build();
+            _getPlayerByIdQueryMock.Setup(pr =>
+                                          pr.Execute(It.Is<FindByIdCriteria>(cr =>
+                                                                             cr.Id == SPECIFIC_PLAYER_ID)))
+                                    .Returns(captain);
 
             // Act
             var sut = _kernel.Get<TeamService>();
@@ -132,7 +121,7 @@
             _teamRepositoryMock.Verify(
                 tr => tr.Add(It.Is<Team>(t => TeamsAreEqual(t, newTeam))), Times.Once());
             Assert.AreNotEqual(newTeam.Id, UNASSIGNED_ID);
-            _unitOfWorkMock.Verify(u => u.Commit());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Once);
         }
 
         /// <summary>
@@ -144,7 +133,8 @@
         {
             // Arrange
             var newTeam = new TeamBuilder().Build();
-            MockGetPlayerByIdQuery(null);
+            Player testPlayer = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
+            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
 
             // Act
             var sut = _kernel.Get<TeamService>();
@@ -173,13 +163,18 @@
         {
             // Arrange
             var newTeam = new TeamBuilder().Build();
-            var captain = (new PlayerBuilder()).WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
-            MockGetPlayerByIdQuery(captain);
+            var captain = (new PlayerBuilder()).WithTeamId(SPECIFIC_TEAM_ID).Build();
 
-            var captainLedTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
-            var testTeams = new TeamServiceTestFixture().AddTeam(captainLedTeam).Build();
-            ////_teamRepositoryMock.Setup(tr => tr.FindWhere(It.IsAny<Expression<Func<Team, bool>>>()))
-            ////    .Returns(testTeams.AsQueryable());
+            var captainLeadTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var testTeams = new TeamServiceTestFixture().AddTeam(captainLeadTeam).Build();
+            _getPlayerByIdQueryMock.Setup(pr =>
+                            pr.Execute(It.Is<FindByIdCriteria>(cr =>
+                                            cr.Id == captain.Id)))
+                                            .Returns(captain);
+            _getTeamByCaptainQueryMock.Setup(tm =>
+                            tm.Execute(It.Is<FindByCaptainIdCriteria>(cr =>
+                                                                    cr.CaptainId == captain.Id)))
+                            .Returns(testTeams.Where(tm => tm.Id == captain.TeamId).FirstOrDefault());
 
             // Act
             var sut = _kernel.Get<TeamService>();
@@ -207,13 +202,20 @@
         public void Create_TeamPassed_CaptainUpdated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().Build();
+            var newTeam = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();
             _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
                 .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
 
-            int? captainTeamId = null;
-            var captain = (new PlayerBuilder()).WithId(SPECIFIC_PLAYER_ID).WithTeamId(captainTeamId).Build();
-            MockGetPlayerByIdQuery(captain);
+            var captain = (new PlayerBuilder())
+                                        .WithId(SPECIFIC_PLAYER_ID)
+                                        .WithNoTeam()
+                                        .Build();
+
+            _getPlayerByIdQueryMock.Setup(pr =>
+                                          pr.Execute(It.Is<FindByIdCriteria>(
+                                              cr =>
+                                              cr.Id == captain.Id)))
+                                    .Returns(captain);
 
             // Act
             var sut = _kernel.Get<TeamService>();
@@ -353,7 +355,7 @@
         public void UpdatePlayerTeam_InvalidTeamId_MissingEntityExceptionThrown()
         {
             // Arrange
-            MockGetPlayerByIdQuery(new PlayerBuilder().WithTeamId(null).Build());
+            MockGetPlayerByIdQuery(new PlayerBuilder().WithNoTeam().Build());
             var emptyTeamList = new TeamServiceTestFixture().Build().AsQueryable<Team>();
 
             // Act

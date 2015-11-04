@@ -32,20 +32,6 @@
             }
         }
 
-        /// <summary>
-        /// Finds out whether two contributor team objects have the same properties.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given contributor have the same properties.</returns>
-        private bool IsEqual(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
-        {
-            return x.Id == y.Id &&
-               x.Name == y.Name &&
-               x.CourseDirection == y.CourseDirection &&
-               x.Contributors.SequenceEqual(y.Contributors, new ContributorEqualityComparer());
-        }
-
         public int Compare(object x, object y)
         {
             ContributorsTeamViewModel firstViewModel = x as ContributorsTeamViewModel;
@@ -61,6 +47,20 @@
             }
 
             return Compare(firstViewModel, secondViewModel);
+        }
+
+        /// <summary>
+        /// Finds out whether two contributor team objects have the same properties.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>True if given contributor have the same properties.</returns>
+        private bool IsEqual(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
+        {
+            return x.Id == y.Id &&
+               x.Name == y.Name &&
+               x.CourseDirection == y.CourseDirection &&
+               x.Contributors.SequenceEqual(y.Contributors, new ContributorEqualityComparer());
         }
     }
 }

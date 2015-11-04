@@ -436,9 +436,9 @@
             var testData = _testFixture.TestTournaments()
                                             .Build();
             MockGetActualTournaments(testData);
+            var sut = this._kernel.Get<TournamentsController>();
 
             // Act
-            var sut = this._kernel.Get<TournamentsController>();
             sut.GetActual();
 
             // Assert

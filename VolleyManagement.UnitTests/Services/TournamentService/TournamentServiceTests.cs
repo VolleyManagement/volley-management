@@ -98,13 +98,13 @@
         public void FindById_Existing_TournamentFound()
         {
             // Arrange
-            var tournamentService = _kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
 
             var tournament = CreateAnyTournament(FIRST_TOURNAMENT_ID);
             MockGetByIdQuery(tournament);
 
             //// Act
-            var actualResult = tournamentService.Get(FIRST_TOURNAMENT_ID);
+            var actualResult = sut.Get(FIRST_TOURNAMENT_ID);
 
             // Assert
             AssertExtensions.AreEqual<Tournament>(tournament, actualResult, new TournamentComparer());
@@ -118,10 +118,10 @@
         {
             // Arrange
             MockGetByIdQuery(null);
-            var tournamentService = _kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
 
             // Act
-            var tournament = tournamentService.Get(1);
+            var tournament = sut.Get(1);
 
             // Assert
             Assert.IsNull(tournament);
@@ -186,9 +186,9 @@
             // Arrange
             Tournament testTournament = null;
             _tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<NullReferenceException>();
+            var sut = _kernel.Get<TournamentService>();
 
             // Act
-            var sut = _kernel.Get<TournamentService>();
             sut.Edit(testTournament);
 
             // Assert
@@ -215,9 +215,9 @@
                                                         .Build();
 
             MockGetUniqueTournamentQuery(testData);
+            var sut = _kernel.Get<TournamentService>();
 
             // Act
-            var sut = _kernel.Get<TournamentService>();
             sut.Edit(nonUniqueNameTournament);
 
             // Assert
@@ -473,18 +473,15 @@
         public void GetActual_TournamentsExist_ActualTournamentsReturnes()
         {
             // Arrange
-            var tournamentService = _kernel.Get<TournamentService>();
+            var sut = _kernel.Get<TournamentService>();
             var testData = _testFixture.TestTournaments()
                                        .Build();
             MockGetAllQuery(testData);
 
-            DateTime now = TimeProvider.Current.UtcNow;
-            DateTime limitStartDate = now.AddMonths(UPCOMING_TOURNAMENTS_MONTH_LIMIT);
-
             var expected = BuildActualTournamentsList();
 
             // Act
-            var actual = tournamentService.GetActual().ToList();
+            var actual = sut.GetActual().ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());

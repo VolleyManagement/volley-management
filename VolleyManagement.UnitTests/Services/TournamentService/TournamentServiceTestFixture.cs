@@ -47,7 +47,7 @@
                     Season = 2014,
                     Scheme = TournamentSchemeEnum.Two,
                     RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')",
-                    ApplyingPeriodStart = new DateTime(2015, 02, 20)
+                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
                     ApplyingPeriodEnd = new DateTime(2015, 06, 20),
                     GamesStart = new DateTime(2015, 06, 30),
                     GamesEnd = new DateTime(2015, 11, 30),

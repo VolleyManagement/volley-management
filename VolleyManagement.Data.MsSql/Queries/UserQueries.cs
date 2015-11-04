@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Queries
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
@@ -10,6 +11,7 @@
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.User;
+    using VolleyManagement.Domain.Dto;
     using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
@@ -18,7 +20,9 @@
     public class UserQueries : IQueryAsync<User, FindByIdCriteria>,
                              IQueryAsync<User, FindByNameCriteria>,
                              IQueryAsync<User, FindByEmailCriteria>,
-                             IQueryAsync<User, FindByLoginInfoCriteria>
+                             IQueryAsync<User, FindByLoginInfoCriteria>,
+                             IQuery<List<UserInRoleDto>, FindByRoleCriteria>,
+                             IQuery<List<UserInRoleDto>, GetAllCriteria>
     {
         #region Fields
 
@@ -96,6 +100,37 @@
             return query.Select(GetUserMapping()).FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Finds User by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="User"/>. </returns>
+        public List<UserInRoleDto> Execute(FindByRoleCriteria criteria)
+        {
+            // ToDo: refactor it - it might be not optimal
+            var users = _unitOfWork.Context.Roles
+                                           .Where(r => r.Id == criteria.RoleId)
+                                           .SelectMany(r => r.Users)
+                                           .Select(GetUserInRoleMapper())
+                                           .ToList();
+            return users;
+        }
+
+        /// <summary>
+        /// Finds User by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="User"/>. </returns>
+        public List<UserInRoleDto> Execute(GetAllCriteria criteria)
+        {
+            // ToDo: refactor it - it might be not optimal
+            var users = _unitOfWork.Context.Users
+                                           .Select(GetUserInRoleMapper())
+                                           .ToList();
+
+            return users;
+        }
+
         #endregion
 
         #region Mapping
@@ -118,6 +153,17 @@
                                                          LoginProvider = l.LoginProvider
                                                      })
                 };
+        }
+
+        private static Expression<Func<UserEntity, UserInRoleDto>> GetUserInRoleMapper()
+        {
+            return u =>
+                   new UserInRoleDto
+                   {
+                       UserId = u.Id,
+                       UserName = u.UserName,
+                       RoleIds = u.Roles.Select(r => r.Id).ToList()
+                   };
         }
 
         #endregion

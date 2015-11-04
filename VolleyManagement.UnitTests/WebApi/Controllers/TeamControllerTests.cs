@@ -98,7 +98,7 @@
             var actual = ((CreatedODataResult<TeamViewModel>)response).Entity;
 
             // Assert
-            AssertExtensions.AreEqual<TeamViewModel>(expected, actual, new TeamViewModelComparer());
+            TestHelper.AreEqual<TeamViewModel>(expected, actual, new TeamViewModelComparer());
         }
 
         /// <summary>

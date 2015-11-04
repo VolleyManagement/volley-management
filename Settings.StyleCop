@@ -7,8 +7,6 @@
       <Value>Json</Value>
       <Value>JSON</Value>
       <Value>Ninject</Value>
-	  <Value>referer</Value>
-	  <Value>Referer</Value>
       <Value>WebApi</Value>
     </CollectionProperty>
   </GlobalSettings>

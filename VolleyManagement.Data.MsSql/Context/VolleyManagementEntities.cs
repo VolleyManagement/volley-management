@@ -1,6 +1,7 @@
 namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
+    using System.Data.Entity.ModelConfiguration.Conventions;
 
     using VolleyManagement.Data.MsSql.Entities;
 
@@ -42,6 +43,11 @@ namespace VolleyManagement.Data.MsSql.Context
         public DbSet<UserEntity> Users { get; set; }
 
         /// <summary>
+        /// Gets or sets the role table.
+        /// </summary>
+        public DbSet<RoleEntity> Roles { get; set; }
+
+        /// <summary>
         /// Gets or sets the user table.
         /// </summary>
         public DbSet<LoginInfoEntity> LoginProviders { get; set; }
@@ -76,9 +82,15 @@ namespace VolleyManagement.Data.MsSql.Context
         /// <param name="modelBuilder">model builder</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
             ConfigureTournaments(modelBuilder);
+
             ConfigureUsers(modelBuilder);
             ConfigureUserLogins(modelBuilder);
+            ConfigureRoles(modelBuilder);
+            ConfigureUserRoleRelationship(modelBuilder);
+
             ConfigurePlayers(modelBuilder);
             ConfigureTeams(modelBuilder);
             ConfigureContributors(modelBuilder);
@@ -223,6 +235,20 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsVariableLength();
         }
 
+        private static void ConfigureRoles(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RoleEntity>()
+                .ToTable(VolleyDatabaseMetadata.ROLES_TABLE_NAME)
+                .HasKey(r => r.Id);
+
+            modelBuilder.Entity<RoleEntity>()
+                .Property(r => r.Name)
+                .IsRequired()
+                .HasMaxLength(ValidationConstants.Role.MAX_NAME_LENGTH)
+                .IsUnicode()
+                .IsVariableLength();
+        }
+
         private static void ConfigurePlayers(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PlayerEntity>()
@@ -352,6 +378,19 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsUnicode()
                 .IsVariableLength()
                 .HasMaxLength(ValidationConstants.Contributor.MAX_COURSE_NAME_LENGTH);
+        }
+
+        private static void ConfigureUserRoleRelationship(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserEntity>()
+                .HasMany(u => u.Roles)
+                .WithMany(r => r.Users)
+                .Map(m =>
+                        {
+                            m.MapLeftKey(VolleyDatabaseMetadata.ROLE_TO_USER_FK);
+                            m.MapRightKey(VolleyDatabaseMetadata.USER_TO_ROLE_FK);
+                            m.ToTable(VolleyDatabaseMetadata.USERS_TO_ROLES_TABLE_NAME);
+                        });
         }
 
         #endregion

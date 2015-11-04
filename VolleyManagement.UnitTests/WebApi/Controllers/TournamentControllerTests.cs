@@ -95,7 +95,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
+            TestHelper.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -166,7 +166,7 @@
             var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
 
             // Assert
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -391,7 +391,7 @@
             var actual = TournamentViewModel.Map(tournament);
 
             // Assert
-            AssertExtensions.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -423,7 +423,7 @@
             var actual = testViewModel.ToDomain();
 
             // Assert
-            AssertExtensions.AreEqual<Tournament>(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual<Tournament>(expected, actual, new TournamentComparer());
         }
 
         /// <summary>

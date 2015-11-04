@@ -107,7 +107,7 @@
             var actualResult = sut.Get(FIRST_TOURNAMENT_ID);
 
             // Assert
-            AssertExtensions.AreEqual<Tournament>(tournament, actualResult, new TournamentComparer());
+            TestHelper.AreEqual<Tournament>(tournament, actualResult, new TournamentComparer());
         }
 
         /// <summary>

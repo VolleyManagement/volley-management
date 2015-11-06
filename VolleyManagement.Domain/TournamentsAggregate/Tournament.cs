@@ -98,11 +98,11 @@
         /// <summary>
         /// Gets or sets transfer end of a tournament
         /// </summary>
-        public DateTime TransferEnd { get; set; }
+        public DateTime? TransferEnd { get; set; }
 
         /// <summary>
         /// Gets or sets transfer start of a tournament
         /// </summary>
-        public DateTime TransferStart { get; set; }
+        public DateTime? TransferStart { get; set; }
     }
 }

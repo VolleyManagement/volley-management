@@ -132,6 +132,12 @@
   <data name="TournamentNameMustBeUnique" xml:space="preserve">
     <value>Название турнира должно быть уникальным</value>
   </data>
+  <data name="TransferEndMissing" xml:space="preserve">
+    <value>При наличии трансфера необходимо указать дату окончания периода</value>
+  </data>
+  <data name="TransferStartMissing" xml:space="preserve">
+    <value>При наличии трансфера необходимо указать дату начала периода</value>
+  </data>
   <data name="UniqueNameMessage" xml:space="preserve">
     <value>Имя турнира должно быть уникальным</value>
   </data>

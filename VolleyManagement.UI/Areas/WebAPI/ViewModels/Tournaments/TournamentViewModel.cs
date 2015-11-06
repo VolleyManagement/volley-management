@@ -95,6 +95,11 @@
         public DateTime GamesEnd { get; set; }
 
         /// <summary>
+        /// Transfer enabled state
+        /// </summary>
+        public bool TransferEnabled { get; set; }
+
+        /// <summary>
         /// Start of a transfer period
         /// </summary>
         [DataType(DataType.Date)]

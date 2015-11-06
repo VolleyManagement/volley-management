@@ -153,17 +153,26 @@
   <data name="FinishedTournamentsHeader" xml:space="preserve">
     <value>Завершенные</value>
   </data>
+  <data name="RefistrationFieldsTitle" xml:space="preserve">
+    <value>Регистрация на турнир</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
   <data name="TournamentDetailsTitle" xml:space="preserve">
     <value>Подробности турнира</value>
   </data>
+  <data name="TournamentFieldsTitle" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
   <data name="TournamentLegend" xml:space="preserve">
     <value>Турнир</value>
   </data>
   <data name="TournamentsIndexTitle" xml:space="preserve">
     <value>Турниры</value>
+  </data>
+  <data name="TransferFieldsTitle" xml:space="preserve">
+    <value>Трансферный период</value>
   </data>
   <data name="UpcomingTournamentsHeader" xml:space="preserve">
     <value>Ожидаемые</value>

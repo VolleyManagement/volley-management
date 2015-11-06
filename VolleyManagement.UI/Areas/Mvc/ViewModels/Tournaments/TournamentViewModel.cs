@@ -126,20 +126,23 @@
         public DateTime GamesEnd { get; set; }
 
         /// <summary>
+        /// Transfer enabled state
+        /// </summary>
+        public bool TransferEnabled { get; set; }
+
+        /// <summary>
         /// Start of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public DateTime TransferStart { get; set; }
+        public DateTime? TransferStart { get; set; } = null;
 
         /// <summary>
         /// End of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public DateTime TransferEnd { get; set; }
+        public DateTime? TransferEnd { get; set; } = null;
 
         #region Factory Methods
 

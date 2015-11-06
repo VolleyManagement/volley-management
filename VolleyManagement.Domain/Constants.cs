@@ -88,18 +88,6 @@
 
             /// <summary>
             /// Constant defines validation key in tournament controller,
-            /// when transfer period has no end date
-            /// </summary>
-            public const string TRANSFER_END_MISSING = "TransferEndMissing";
-
-            /// <summary>
-            /// Constant defines validation key in tournament controller,
-            /// when transfer period has no start date
-            /// </summary>
-            public const string TRANSFER_START_MISSING = "TransferStartMissing";
-
-            /// <summary>
-            /// Constant defines validation key in tournament controller,
             /// when transfer period is before games start
             /// </summary>
             public const string TRANSFER_PERIOD_BEFORE_GAMES_START = "TransferPeriodBeforeGamesStart";

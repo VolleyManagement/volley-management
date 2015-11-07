@@ -110,6 +110,16 @@
         }
 
         /// <summary>
+        /// Sets player test teamId = null
+        /// </summary>
+        /// <returns>Player builder object</returns>
+        public PlayerBuilder WithNoTeam()
+        {
+            _player.TeamId = null;
+            return this;
+        }
+
+        /// <summary>
         /// Builds test player
         /// </summary>
         /// <returns>Test player</returns>

@@ -15,6 +15,7 @@
     using Ninject;
 
     using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.ContributorService;
 
@@ -36,9 +37,9 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<IContributorTeamService>()
-                   .ToConstant(this._contributorTeamServiceMock.Object);
+            _kernel = new StandardKernel();
+            _kernel.Bind<IContributorTeamService>()
+                   .ToConstant(_contributorTeamServiceMock.Object);
         }
 
         /// <summary>
@@ -50,20 +51,16 @@
             // Arrange
             var testData = _testFixture.TestContributors()
                                        .Build();
-
-            ////this.MockContributors(testData);
+            MockContributorsTeam(testData);
             var sut = this._kernel.Get<ContributorsTeamController>();
 
-            var expected = new ContributorTeamServiceTestFixture()
-                                            .TestContributors()
-                                            .Build()
-                                            .ToList();
+            var expected = CreateContributorsTeamViewModelList();
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<ContributorTeam>>(sut.Index()).ToList();
+            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new ContributorTeamComparer());
+            CollectionAssert.AreEqual(expected, actual, new ContributorTeamViewModelComparer());
         }
 
         /// <summary>
@@ -95,6 +92,21 @@
         {
             this._contributorTeamServiceMock.Setup(cn => cn.Get())
                 .Returns(testData.AsQueryable());
+        }
+
+        /// <summary>
+        /// Creates new list of ContributorsTeamViewModel test data
+        /// </summary>
+        /// <returns>List of ContributorsTeamViewModel</returns>
+        private List<ContributorsTeamViewModel> CreateContributorsTeamViewModelList()
+        {
+            var contributorTeams = _testFixture.TestContributors().Build();
+            return contributorTeams.Select(c => new ContributorTeamMvcViewModelBuilder()
+                                                .WithId(c.Id)
+                                                .WithName(c.Name)
+                                                .WithcourseDirection(c.CourseDirection)
+                                                .Withcontributors(c.Contributors.ToList())
+                                                .Build()).ToList();
         }
     }
 }

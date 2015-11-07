@@ -83,7 +83,38 @@
         [TestMethod]
         public void Map_ContributorAsParam_MappedToViewModelWebApi()
         {
-            var contributors = new List<Contributor>
+            var contributors = CreateContributors();
+
+            // Arrange
+            var contributor =
+                new ContributorTeamBuilder().WithId(1)
+                    .WithName("FirstName")
+                    .WithcourseDirection("Course")
+                    .Withcontributors(contributors)
+                    .Build();
+            var expected =
+                new ContributorTeamViewModelBuilder().WithId(1)
+                    .WithName("FirstName")
+                    .WithcourseDirection("Course")
+                    .Build();
+
+            // Act
+            var actual = ContributorsTeamViewModel.Map(contributor);
+
+            // Assert
+            TestHelper.AreEqual<ContributorsTeamViewModel>(
+                expected,
+                actual,
+                new ContributorTeamViewModelComparer());
+        }
+
+        /// <summary>
+        /// Create new list of tests contributors
+        /// </summary>
+        /// <returns>List of contributors</returns>
+        private IList<Contributor> CreateContributors()
+        {
+            return new List<Contributor>
                                    {
                                        new Contributor
                                            {
@@ -104,30 +135,6 @@
                                                ContributorTeamId = 1
                                            }
                                    };
-            var contributorsViewModel = new List<string> { "FirstNameA", "FirstNameB", "FirstNameC" };
-
-            // Arrange
-            var contributor =
-                new ContributorTeamBuilder().WithId(1)
-                    .WithName("FirstName")
-                    .WithcourseDirection("Course")
-                    .Withcontributors(contributors)
-                    .Build();
-            var expected =
-                new ContributorTeamViewModelBuilder().WithId(1)
-                    .WithName("FirstName")
-                    .WithcourseDirection("Course")
-                    .Withcontributors(contributorsViewModel)
-                    .Build();
-
-            // Act
-            var actual = ContributorsTeamViewModel.Map(contributor);
-
-            // Assert
-            TestHelper.AreEqual<ContributorsTeamViewModel>(
-                expected,
-                actual,
-                new ContributorTeamViewModelComparer());
         }
 
         /// <summary>

@@ -5,11 +5,11 @@
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
-
     using ExceptionParams = VolleyManagement.Domain.Constants.Tournament;
     using MessageList = VolleyManagement.Domain.Properties.Resources;
 
@@ -194,7 +194,7 @@
             // ToDo: Re-factor it - code is hard to read
 
             // if registration dates before now
-            if (DateTime.UtcNow >= tournament.ApplyingPeriodStart)
+            if (TimeProvider.Current.UtcNow >= tournament.ApplyingPeriodStart)
             {
                 throw new TournamentValidationException(
                     MessageList.LateRegistrationDates,

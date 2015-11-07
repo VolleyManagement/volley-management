@@ -2,9 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using Moq;
-    using VolleyManagement.Domain.Tournaments;
-
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>

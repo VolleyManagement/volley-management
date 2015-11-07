@@ -364,6 +364,7 @@
     <Compile Include="Areas\WebApi\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
+    <Compile Include="Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">

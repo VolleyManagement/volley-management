@@ -97,21 +97,21 @@
         /// <summary>
         /// Transfer enabled state
         /// </summary>
-        public bool TransferEnabled { get; set; }
+        public bool IsTransferEnabled { get; set; }
 
         /// <summary>
         /// Start of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
-        public DateTime? TransferStart { get; set; } = null;
+        public DateTime? TransferStart { get; set; }
 
         /// <summary>
         /// End of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
-        public DateTime? TransferEnd { get; set; } = null;
+        public DateTime? TransferEnd { get; set; }
 
         #region Factory Methods
 

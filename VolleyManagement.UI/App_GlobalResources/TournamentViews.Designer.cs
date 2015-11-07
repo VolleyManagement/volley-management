@@ -171,9 +171,9 @@ namespace VolleyManagement.UI.App_GlobalResources {
         /// <summary>
         ///   Looks up a localized string similar to Регистрация на турнир.
         /// </summary>
-        public static string RefistrationFieldsTitle {
+        public static string RegistrationFieldsTitle {
             get {
-                return ResourceManager.GetString("RefistrationFieldsTitle", resourceCulture);
+                return ResourceManager.GetString("RegistrationFieldsTitle", resourceCulture);
             }
         }
         

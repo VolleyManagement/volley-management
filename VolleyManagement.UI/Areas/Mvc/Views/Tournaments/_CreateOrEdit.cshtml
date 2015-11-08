@@ -51,12 +51,21 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#ApplyingPeriodStart").datepicker({ dateFormat: '@Html.jQueryDatePickerFormat()' });
-        $("#ApplyingPeriodEnd").datepicker({ dateFormat: '@Html.jQueryDatePickerFormat()' });
-        $('#GamesStart').datepicker({ dateFormat: '@Html.jQueryDatePickerFormat()' });
-        $("#GamesEnd").datepicker({ dateFormat: '@Html.jQueryDatePickerFormat()' });
-        $("#TransferStart").datepicker({ dateFormat: '@Html.jQueryDatePickerFormat()' });
-        $("#TransferEnd").datepicker({ dateFormat: '@Html.jQueryDatePickerFormat()' });
+        $.datepicker.setDefaults($.datepicker.regional['@Model.Localization'] = {
+            monthNames: @Model.MonthNames,
+            monthNamesShort: @Model.AbbreviatedMonthNames,
+            dayNames: @Model.DayNames, 
+            dayNamesShort: @Model.AbbreviatedDayNames,
+            dayNamesMin: @Model.ShortestDayNames,
+            dateFormat: '@Html.jQueryJqueryuiFormat()'
+        });
+
+        $("#ApplyingPeriodStart").datepicker();
+        $("#ApplyingPeriodEnd").datepicker();
+        $('#GamesStart').datepicker();
+        $("#GamesEnd").datepicker();
+        $("#TransferStart").datepicker();
+        $("#TransferEnd").datepicker();
 
         var transfer_fields = $(".transfer-field");
         $("#transferDatesSwitcher").change(function () {

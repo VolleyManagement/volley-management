@@ -3,11 +3,12 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-
+    using System.Threading;
+    using System.Web;
+    using Newtonsoft.Json;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
-
     using tournConst = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>
@@ -113,6 +114,77 @@
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
         public DateTime? TransferEnd { get; set; }
 
+        /// <summary>
+        /// Gets abbreviated month names of current system culture.
+        /// </summary>
+        public HtmlString AbbreviatedMonthNames
+        {
+            get
+            {
+                return new HtmlString(JsonConvert.SerializeObject(
+                    Thread.CurrentThread.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames, Formatting.None));
+            }
+        }
+
+        /// <summary>
+        /// Gets month names of current system culture.
+        /// </summary>
+        public HtmlString MonthNames
+        {
+            get
+            {
+                return new HtmlString(JsonConvert.SerializeObject(
+                                Thread.CurrentThread.CurrentCulture.DateTimeFormat.MonthGenitiveNames, Formatting.None));
+            }
+        }
+
+        /// <summary>
+        /// Gets day names of current system culture.
+        /// </summary>
+        public HtmlString DayNames
+        {
+            get
+            {
+                return new HtmlString(JsonConvert.SerializeObject(
+                        Thread.CurrentThread.CurrentCulture.DateTimeFormat.DayNames, Formatting.None));
+            }
+        }
+
+        /// <summary>
+        /// Gets abbreviated day names of current system culture.
+        /// </summary>
+        public HtmlString AbbreviatedDayNames
+        {
+            get
+            {
+                return new HtmlString(JsonConvert.SerializeObject(
+                        Thread.CurrentThread.CurrentCulture.DateTimeFormat.AbbreviatedDayNames, Formatting.None));
+            }
+        }
+
+        /// <summary>
+        /// Gets shortest month names of current system culture.
+        /// </summary>
+        public HtmlString ShortestDayNames
+        {
+            get
+            {
+                return new HtmlString(JsonConvert.SerializeObject(
+                        Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortestDayNames, Formatting.None));
+            }
+        }
+
+        /// <summary>
+        /// Gets two letter language name of current system culture.
+        /// </summary>
+        public string Localization
+        {
+            get
+            {
+                return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+            }
+        }
+
         #region Factory Methods
 
         /// <summary>
@@ -161,7 +233,7 @@
             tournament.ApplyingPeriodStart = this.ApplyingPeriodStart;
             tournament.ApplyingPeriodEnd = this.ApplyingPeriodEnd;
             tournament.TransferStart = this.TransferStart;
-            tournament.TransferEnd = this.TransferEnd;
+            tournament.TransferEnd = this.TransferEnd; 
 
             return tournament;
         }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
@@ -9,7 +10,6 @@
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
-
     using ErrorMessages = VolleyManagement.Domain.Properties.Resources;
     using ValidationMessages = App_GlobalResources.ViewModelResources;
 
@@ -94,8 +94,7 @@
                     GamesEnd = DateTime.Now.AddDays(1),
                     TransferStart = DateTime.Now.AddDays(1),
                     TransferEnd = DateTime.Now.AddDays(1)
-                };
-
+                }; 
             return this.View(tournamentViewModel);
         }
 

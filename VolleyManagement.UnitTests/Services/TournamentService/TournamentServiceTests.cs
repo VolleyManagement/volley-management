@@ -226,7 +226,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -251,7 +251,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -274,7 +274,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -282,18 +282,17 @@
         /// Tournament is created successfully.
         /// </summary>
         [TestMethod]
-        public void Create_TournamentTransferStartNullTransferEndNull_TournamentCreated()
+        public void Create_TournamentNoTransferPeriod_TournamentCreated()
         {
             // Arrange
-            var newTournament = new TournamentBuilder().WithTransferStart(null).WithTransferEnd(null).Build();
+            var newTournament = new TournamentBuilder().WithNoTransferPeriod().Build();
             var sut = _kernel.Get<TournamentService>();
 
             // Act
             sut.Create(newTournament);
 
             // Assert
-            _tournamentRepositoryMock.Verify(tr => tr.Add(newTournament), Times.Once());
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+            VerifyCreate(newTournament, Times.Once());
         }
 
         /// <summary>
@@ -303,7 +302,7 @@
         [TestMethod]
         [ExpectedException(typeof(TournamentValidationException),
             "При наличии трансферного периода необходимо указать дату начала периода")]
-        public void Create_TournamentTransferStartNullTransferEndNotNull_ExceptionThrown()
+        public void Create_TournamentNoTransferStart_ExceptionThrown()
         {
             // Arrange
             var newTournament = new TournamentBuilder().WithTransferStart(null).Build();
@@ -313,8 +312,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _tournamentRepositoryMock.Verify(tr => tr.Add(newTournament), Times.Never());
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -324,7 +322,7 @@
         [TestMethod]
         [ExpectedException(typeof(TournamentValidationException),
             "При наличии трансферного периода необходимо указать дату окончания периода")]
-        public void Create_TournamentTransferStartNotNullTransferEndNull_ExceptionThrown()
+        public void Create_TournamentNoTransferEnd_ExceptionThrown()
         {
             // Arrange
             var newTournament = new TournamentBuilder().WithTransferEnd(null).Build();
@@ -334,8 +332,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _tournamentRepositoryMock.Verify(tr => tr.Add(newTournament), Times.Never());
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -363,7 +360,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -386,7 +383,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -414,7 +411,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -441,7 +438,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -469,7 +466,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -542,7 +539,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -685,6 +682,17 @@
                                             .WithTransferEnd(new DateTime(2015, 09, 10))
                                             .Build())
                             .Build();
+        }
+
+        /// <summary>
+        /// Verifies that specified tournament is created required number of times.
+        /// </summary>
+        /// <param name="tournament">Tournament we want to verify.</param>
+        /// <param name="times">Number of times tournament must be created.</param>
+        private void VerifyCreate(Tournament tournament, Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.Add(tournament), times);
+            _unitOfWorkMock.Verify(uw => uw.Commit(), times);
         }
     }
 }

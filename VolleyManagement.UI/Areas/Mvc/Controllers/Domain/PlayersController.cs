@@ -79,7 +79,6 @@
 
             var referer = (string)RouteData.Values["controller"];
             var model = new PlayerRefererViewModel(player, referer);
-            model.Model.TeamId = _playerService.GetPlayerTeam(player).Id;
             return View(model);
         }
 

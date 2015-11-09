@@ -26,5 +26,5 @@
 </fieldset>
 <p>
     @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) |
-    @Html.ActionLink(Resources.PlayerViews.Back, "Index", Model.Referer)
+    @Html.ActionLink(Resources.PlayerViews.Back, null, null, null, new { href = Request.UrlReferrer})
 </p>

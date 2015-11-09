@@ -1,0 +1,34 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+
+@{
+    ViewBag.Title = Resources.TeamViews.TeamDetailsTitle;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<fieldset>
+    <legend>@Resources.TeamViews.TeamLegend+Model.Model.Name</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.Coach)</div>
+    <div class="display-field">@Model.Coach</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Achievements)</div>
+    <div class="display-field">@Model.Achievements</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Captain)</div>
+    @Html.ActionLink(Model.Captain.FullName, "Details", "Players", new {id = Model.Captian.Id})
+
+    <div class="display-label">@Html.LabelFor(model => model.Roster)</div>
+    @foreach (var item in Model.Roster)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.FullName, "Details", "Players", new {id = item.Id})
+            </td>
+        </tr>
+    }
+</fieldset>
+<p>
+    @Html.ActionLink(Resources.TeamViews.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Resources.TeamViews.Back, "Index")
+</p>

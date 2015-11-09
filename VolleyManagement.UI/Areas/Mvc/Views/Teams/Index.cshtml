@@ -29,6 +29,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+                <input type="button" value="@Resources.TeamViews.Details" onclick="location.href='/Teams/Details/@item.Id'" />
                 <input type="button" value="@Resources.TeamViews.Delete" onclick="deleteTeam(@item.Id, '@item.Name')" />
             </td>
         </tr>

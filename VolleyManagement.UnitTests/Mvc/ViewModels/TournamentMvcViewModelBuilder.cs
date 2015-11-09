@@ -150,10 +150,10 @@
         }
 
         /// <summary>
-        /// Sets tournament transfer start date
+        /// Sets tournament transfer end date to a specified date.
         /// </summary>
-        /// <param name="transferStart">Start transfer period</param>
-        /// <returns>Tournament builder object</returns>
+        /// <param name="transferStart">Date of transfer start.</param>
+        /// <returns>Instance of Tournament builder.</returns>
         public TournamentMvcViewModelBuilder WithTransferStart(DateTime? transferStart)
         {
             _tournamentViewModel.TransferStart = transferStart;
@@ -161,13 +161,24 @@
         }
 
         /// <summary>
-        /// Sets tournament transfer end date
+        /// Sets tournament transfer end date to a specified date.
         /// </summary>
-        /// <param name="transferEnd">End transfer period</param>
-        /// <returns>Tournament builder object</returns>
+        /// <param name="transferEnd">Date of transfer end.</param>
+        /// <returns>Instance of Tournament builder.</returns>
         public TournamentMvcViewModelBuilder WithTransferEnd(DateTime? transferEnd)
         {
             _tournamentViewModel.TransferEnd = transferEnd;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament transfer start date and end date to null.
+        /// </summary>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentMvcViewModelBuilder WithNoTransferPeriod()
+        {
+            _tournamentViewModel.TransferStart = null;
+            _tournamentViewModel.TransferEnd = null;
             return this;
         }
 

@@ -1,12 +1,16 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web;
-
-namespace VolleyManagement.UI.Helpers
+﻿namespace VolleyManagement.UI.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Web;
+    using Newtonsoft.Json;
+
+    /// <summary>
+    /// Provides methods and properties to convert system date format to jQuery UI date format.
+    /// Represent properties to get current globalization settings.
+    /// </summary>
     public static class JQueryUIDateFormatConverter
     {
         private const string dotnetDayLongNameMarker = "dddd";
@@ -25,45 +29,6 @@ namespace VolleyManagement.UI.Helpers
         private const string jqueryuiYearFourDigitMarker = "yy";
         private const string dotnetYearTwoDigitMarker = "yy";
         private const string jqueryuiTwoFourDigitMarker = "y";
-
-        /// <summary>
-        /// Convert current .Net Culture to the jQuery format.
-        /// </summary>
-        /// <param name="helper">The HTML helper instance that this method extends.</param>
-        /// <returns>jQuery format of current culture.</returns>
-        public static string JQueryUICurrentDateFormat()
-        {
-            string currentFormat = Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern;
-
-            // Convert the date
-            currentFormat = currentFormat.Replace(dotnetDayLongNameMarker, jqueryuiDayLongNameMarker);
-            currentFormat = currentFormat.Replace(dotnetDayShortNameMarker, jqueryuiDayShortNameMarker);
-
-            // Convert month
-            if (currentFormat.Contains(dotnetMonthLongNameMarker))
-            {
-                currentFormat = currentFormat.Replace(dotnetMonthLongNameMarker, jqueryuiMonthLongNameMarker);
-            }
-            else if (currentFormat.Contains(dotnetMonthShortNameMarker))
-            {
-                currentFormat = currentFormat.Replace(dotnetMonthShortNameMarker, jqueryuiMonthShortNameMarker);
-            }
-            else if (currentFormat.Contains(dotnetMonthOfYearTwoDigitMarker))
-            {
-                currentFormat = currentFormat.Replace(dotnetMonthOfYearTwoDigitMarker, jqueryuiMonthOfYearTwoDigitMarker);
-            }
-            else
-            {
-                currentFormat = currentFormat.Replace(dotnetMonthOfYearOneDigitMarker, jqueryuiMonthOfYearOneDigitMarker);
-            }
-
-            // Convert year
-            currentFormat = currentFormat.Contains(dotnetYearFourDigitMarker) ?
-                currentFormat.Replace(dotnetYearFourDigitMarker, jqueryuiYearFourDigitMarker)
-                : currentFormat.Replace(dotnetYearTwoDigitMarker, jqueryuiTwoFourDigitMarker);
-
-            return currentFormat;
-        }
 
         /// <summary>
         /// Gets abbreviated month names of current system culture.
@@ -134,6 +99,44 @@ namespace VolleyManagement.UI.Helpers
             {
                 return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
             }
+        }
+
+        /// <summary>
+        /// Convert current .Net Culture to the jQuery format.
+        /// </summary>
+        /// <returns>jQuery format of current culture.</returns>
+        public static string JQueryUICurrentDateFormat()
+        {
+            string currentFormat = Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern;
+
+            // Convert the date
+            currentFormat = currentFormat.Replace(dotnetDayLongNameMarker, jqueryuiDayLongNameMarker);
+            currentFormat = currentFormat.Replace(dotnetDayShortNameMarker, jqueryuiDayShortNameMarker);
+
+            // Convert month
+            if (currentFormat.Contains(dotnetMonthLongNameMarker))
+            {
+                currentFormat = currentFormat.Replace(dotnetMonthLongNameMarker, jqueryuiMonthLongNameMarker);
+            }
+            else if (currentFormat.Contains(dotnetMonthShortNameMarker))
+            {
+                currentFormat = currentFormat.Replace(dotnetMonthShortNameMarker, jqueryuiMonthShortNameMarker);
+            }
+            else if (currentFormat.Contains(dotnetMonthOfYearTwoDigitMarker))
+            {
+                currentFormat = currentFormat.Replace(dotnetMonthOfYearTwoDigitMarker, jqueryuiMonthOfYearTwoDigitMarker);
+            }
+            else
+            {
+                currentFormat = currentFormat.Replace(dotnetMonthOfYearOneDigitMarker, jqueryuiMonthOfYearOneDigitMarker);
+            }
+
+            // Convert year
+            currentFormat = currentFormat.Contains(dotnetYearFourDigitMarker) ?
+                currentFormat.Replace(dotnetYearFourDigitMarker, jqueryuiYearFourDigitMarker)
+                : currentFormat.Replace(dotnetYearTwoDigitMarker, jqueryuiTwoFourDigitMarker);
+
+            return currentFormat;
         }
     }
 }

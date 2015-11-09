@@ -1,6 +1,7 @@
 @using VolleyManagement.UI.Areas.Mvc
 @using ValidationKeys = VolleyManagement.Domain.Constants.Tournament;
 @using VolleyManagement.UI.HtmlHelpers
+@using VolleyManagement.UI.Helpers
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
 @* This partial view defines form fields that will appear when creating and editing entities *@
 
@@ -51,13 +52,13 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $.datepicker.setDefaults($.datepicker.regional['@Model.Localization'] = {
-            monthNames: @Model.MonthNames,
-            monthNamesShort: @Model.AbbreviatedMonthNames,
-            dayNames: @Model.DayNames, 
-            dayNamesShort: @Model.AbbreviatedDayNames,
-            dayNamesMin: @Model.ShortestDayNames,
-            dateFormat: '@Html.jQueryJqueryuiFormat()'
+        $.datepicker.setDefaults($.datepicker.regional['@JQueryUIDateFormatConverter.Localization'] = {
+            monthNames: @JQueryUIDateFormatConverter.MonthNames,
+            monthNamesShort: @JQueryUIDateFormatConverter.AbbreviatedMonthNames,
+            dayNames: @JQueryUIDateFormatConverter.DayNames, 
+            dayNamesShort: @JQueryUIDateFormatConverter.AbbreviatedDayNames,
+            dayNamesMin: @JQueryUIDateFormatConverter.ShortestDayNames,
+            dateFormat: '@JQueryUIDateFormatConverter.JQueryUICurrentDateFormat()'
         });
 
         $("#ApplyingPeriodStart").datepicker();
@@ -112,17 +113,17 @@
 <div class="editor-field">
     @Html.Raw(
         Html.TextBoxForShortDate(
-            model => model.TransferStart, 
-            Model.TransferStart, 
-            new { @readonly = "readonly", @class="transfer-field", disabled="disabled" })
+            model => model.TransferStart,
+            Model.TransferStart,
+            new { @readonly = "readonly", @class = "transfer-field", disabled = "disabled" })
         .ToHtmlString()
         .Replace("disabled=\"disabled\"", (Model.IsTransferEnabled ? "" : "disabled=\"disabled\"")))
     -
     @Html.Raw(
         Html.TextBoxForShortDate(
-            model => model.TransferEnd, 
-            Model.TransferEnd, 
-            new { @readonly = "readonly", @class="transfer-field", disabled="disabled" })
+            model => model.TransferEnd,
+            Model.TransferEnd,
+            new { @readonly = "readonly", @class = "transfer-field", disabled = "disabled" })
         .ToHtmlString()
         .Replace("disabled=\"disabled\"", (Model.IsTransferEnabled ? "" : "disabled=\"disabled\"")))
 

@@ -94,7 +94,7 @@
                     GamesEnd = DateTime.Now.AddDays(1),
                     TransferStart = DateTime.Now.AddDays(1),
                     TransferEnd = DateTime.Now.AddDays(1)
-                }; 
+                };
             return this.View(tournamentViewModel);
         }
 

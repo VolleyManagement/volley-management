@@ -154,7 +154,7 @@
         /// </summary>
         /// <param name="transferStart">Start transfer period</param>
         /// <returns>Tournament builder object</returns>
-        public TournamentMvcViewModelBuilder WithTransferStart(DateTime transferStart)
+        public TournamentMvcViewModelBuilder WithTransferStart(DateTime? transferStart)
         {
             _tournamentViewModel.TransferStart = transferStart;
             return this;
@@ -165,7 +165,7 @@
         /// </summary>
         /// <param name="transferEnd">End transfer period</param>
         /// <returns>Tournament builder object</returns>
-        public TournamentMvcViewModelBuilder WithTransferEnd(DateTime transferEnd)
+        public TournamentMvcViewModelBuilder WithTransferEnd(DateTime? transferEnd)
         {
             _tournamentViewModel.TransferEnd = transferEnd;
             return this;

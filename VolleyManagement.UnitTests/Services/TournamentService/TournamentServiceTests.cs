@@ -206,7 +206,32 @@
         }
 
         /// <summary>
+        /// Test for Create() method. Tournament's applying start date comes before current date.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException), "Вы не можете указывать начало периода заявок в прошлом")]
+        public void Create_TournamentApplyingStartDateBeforeCurrentDate_ExceptionThrown()
+        {
+            const int APPLYING_PERIOD_START_DAYS_DELTA = -1;
+
+            // Arrange
+            var now = TimeProvider.Current.UtcNow;
+            var newTournament = new TournamentBuilder()
+                .WithApplyingPeriodStart(now.AddDays(APPLYING_PERIOD_START_DAYS_DELTA))
+                .Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
         /// Test for Create() method. Tournament's applying end date comes before tournament's applying start date.
+        /// Exception is thrown during tournament creation.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(TournamentValidationException), "Начало периода заявок должно быть раньше чем его окончание")]
@@ -249,6 +274,67 @@
             sut.Create(newTournament);
 
             // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's transfer start date is null and tournament's transfer end date is null.
+        /// Tournament is created successfully.
+        /// </summary>
+        [TestMethod]
+        public void Create_TournamentTransferStartNullTransferEndNull_TournamentCreated()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithTransferStart(null).WithTransferEnd(null).Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            _tournamentRepositoryMock.Verify(tr => tr.Add(newTournament), Times.Once());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's transfer start date is null and tournament's transfer end date is not null.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException),
+            "При наличии трансферного периода необходимо указать дату начала периода")]
+        public void Create_TournamentTransferStartNullTransferEndNotNull_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithTransferStart(null).Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            _tournamentRepositoryMock.Verify(tr => tr.Add(newTournament), Times.Never());
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's transfer start date is not null and tournament's transfer end date is null.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException),
+            "При наличии трансферного периода необходимо указать дату окончания периода")]
+        public void Create_TournamentTransferStartNotNullTransferEndNull_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithTransferEnd(null).Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            _tournamentRepositoryMock.Verify(tr => tr.Add(newTournament), Times.Never());
             _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
         }
 
@@ -360,6 +446,7 @@
 
         /// <summary>
         /// Test for Create() method. Tournament's games end date comes before tournament's games start date.
+        /// Exception is thrown during tournament creation.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(TournamentValidationException), "Начальная дата турнира должна следовать перед ее окончанием")]

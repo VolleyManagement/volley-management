@@ -157,7 +157,7 @@
         /// </summary>
         /// <param name="transferStart">Start transfer period</param>
         /// <returns>Tournament builder object</returns>
-        public TournamentBuilder WithTransferStart(DateTime transferStart)
+        public TournamentBuilder WithTransferStart(DateTime? transferStart)
         {
             this._tournament.TransferStart = transferStart;
             return this;
@@ -168,7 +168,7 @@
         /// </summary>
         /// <param name="transferEnd">End transfer period</param>
         /// <returns>Tournament builder object</returns>
-        public TournamentBuilder WithTransferEnd(DateTime transferEnd)
+        public TournamentBuilder WithTransferEnd(DateTime? transferEnd)
         {
             this._tournament.TransferEnd = transferEnd;
             return this;

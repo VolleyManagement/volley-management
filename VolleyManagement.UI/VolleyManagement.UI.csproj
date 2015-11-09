@@ -282,6 +282,7 @@
     <Content Include="Scripts\scripts.js" />
     <Content Include="Scripts\TeamOperationScripts.js" />
     <Content Include="Scripts\UserActions.js" />
+    <Content Include="Scripts\VMScripts.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

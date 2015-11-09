@@ -156,4 +156,10 @@
   <data name="Details" xml:space="preserve">
     <value>Подробно</value>
   </data>
+  <data name="Back" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Редактировать</value>
+  </data>
 </root>

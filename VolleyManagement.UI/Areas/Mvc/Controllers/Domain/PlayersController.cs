@@ -65,7 +65,7 @@
         /// </summary>
         /// <param name="id">Player id.</param>
         /// <returns>View with specific player.</returns>
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, int? refId = null, string referrer = "Players", string refAction = "Index")
         {
             Player player;
             try
@@ -77,8 +77,7 @@
                 return this.HttpNotFound();
             }
 
-            var referer = (string)RouteData.Values["controller"];
-            var model = new PlayerRefererViewModel(player, referer);
+            var model = new PlayerRefererViewModel(player, referrer, refAction, refId);
             return View(model);
         }
 

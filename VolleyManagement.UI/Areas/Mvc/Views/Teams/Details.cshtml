@@ -7,7 +7,7 @@
 <h2>@ViewBag.Title</h2>
 
 <fieldset>
-    <legend>@Resources.TeamViews.TeamLegend+Model.Model.Name</legend>
+    <legend>@Resources.TeamViews.TeamLegend @Model.Name</legend>
 
     <div class="display-label">@Html.LabelFor(model => model.Coach)</div>
     <div class="display-field">@Model.Coach</div>
@@ -16,17 +16,25 @@
     <div class="display-field">@Model.Achievements</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Captain)</div>
-    @Html.ActionLink(Model.Captain.FullName, "Details", "Players", new {id = Model.Captian.Id})
-
+    @Html.ActionLink(Model.Captain.FullName,
+                    "Details",
+                    "Players",
+                    new {id = Model.Captain.Id, refId = Model.Id, referrer = "Teams", refAction = "Details"},
+                    null)
+    
     <div class="display-label">@Html.LabelFor(model => model.Roster)</div>
-    @foreach (var item in Model.Roster)
-    {
-        <tr>
-            <td>
-                @Html.ActionLink(item.FullName, "Details", "Players", new {id = item.Id})
-            </td>
-        </tr>
-    }
+    <ul>
+        @foreach (var item in Model.Roster)
+        {
+            <li>
+                @Html.ActionLink(item.FullName,
+                                "Details",
+                                "Players",
+                                new {id = item.Id, refId = Model.Id, referrer = "Teams", refAction = "Details"},
+                                null)
+            </li>
+        }
+    </ul>
 </fieldset>
 <p>
     @Html.ActionLink(Resources.TeamViews.Edit, "Edit", new { id = Model.Id }) |

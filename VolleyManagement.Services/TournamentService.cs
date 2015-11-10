@@ -113,6 +113,7 @@
 
             IsTournamentNameUnique(tournamentToCreate);
             AreDatesValid(tournamentToCreate);
+            IsTrasferPeriodValid(tournamentToCreate);
 
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
@@ -137,6 +138,7 @@
         {
             IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             AreDatesValid(tournamentToEdit);
+            IsTrasferPeriodValid(tournamentToEdit);
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -241,12 +243,6 @@
                     ExceptionParams.START_GAMES_AFTER_END_GAMES,
                     ExceptionParams.GAMES_END_CAPTURE);
             }
-
-            // if there is transfer period
-            if (tournament.TransferStart.HasValue || tournament.TransferEnd.HasValue)
-            {
-                IsTrasferPeriodValid(tournament);
-            }
         }
 
         /// <summary>
@@ -256,6 +252,12 @@
         /// <exception cref="TournamentValidationException">Tournament Validation Exception</exception>
         private void IsTrasferPeriodValid(Tournament tournament)
         {
+            // if there is no transfer period
+            if (!tournament.TransferStart.HasValue && !tournament.TransferEnd.HasValue)
+            {
+                return;
+            }
+
             // if transfer end missing
             if (tournament.TransferStart.HasValue && !tournament.TransferEnd.HasValue)
             {
@@ -275,7 +277,7 @@
             }
 
             // if games date go after transfer start
-            if (tournament.GamesStart >= tournament.TransferStart.Value)
+            if (tournament.GamesStart >= tournament.TransferStart.GetValueOrDefault())
             {
                 throw new TournamentValidationException(
                     MessageList.WrongTransferStart,
@@ -284,7 +286,7 @@
             }
 
             // if transfer start goes after transfer end
-            if (tournament.TransferStart.Value >= tournament.TransferEnd.Value)
+            if (tournament.TransferStart.GetValueOrDefault() >= tournament.TransferEnd.GetValueOrDefault())
             {
                 throw new TournamentValidationException(
                     MessageList.WrongTransferPeriod,
@@ -293,7 +295,7 @@
             }
 
             // if transfer end is before tournament end date
-            if (tournament.TransferEnd.Value >= tournament.GamesEnd)
+            if (tournament.TransferEnd.GetValueOrDefault() >= tournament.GamesEnd)
             {
                 throw new TournamentValidationException(
                     MessageList.InvalidTransferEndpoint,

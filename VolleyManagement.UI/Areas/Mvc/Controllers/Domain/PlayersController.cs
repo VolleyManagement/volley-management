@@ -66,6 +66,7 @@
         /// Gets details for specific player
         /// </summary>
         /// <param name="id">Player id.</param>
+        /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific player.</returns>
         public ActionResult Details(int id, string returnUrl = DEFAULT_DETAILS_RETURN_URL)
         {

@@ -113,7 +113,6 @@
 
             IsTournamentNameUnique(tournamentToCreate);
             AreDatesValid(tournamentToCreate);
-            IsTrasferPeriodValid(tournamentToCreate);
 
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
@@ -138,7 +137,6 @@
         {
             IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             AreDatesValid(tournamentToEdit);
-            IsTrasferPeriodValid(tournamentToEdit);
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -243,6 +241,7 @@
                     ExceptionParams.START_GAMES_AFTER_END_GAMES,
                     ExceptionParams.GAMES_END_CAPTURE);
             }
+            IsTrasferPeriodValid(tournament);
         }
 
         /// <summary>

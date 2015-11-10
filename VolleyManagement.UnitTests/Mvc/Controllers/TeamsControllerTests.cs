@@ -12,7 +12,9 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
@@ -20,7 +22,6 @@
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.PlayerService;
     using VolleyManagement.UnitTests.Services.TeamService;
-using VolleyManagement.Domain.PlayersAggregate;
 
     /// <summary>
     /// Tests for MVC TeamsController class.
@@ -246,14 +247,14 @@ using VolleyManagement.Domain.PlayersAggregate;
         public void Details_TeamExists_TeamIsReturned()
         {
             // Arrange
-            var team = CreatestTeam();
+            var team = CreateTeam();
             var captain = CreatePlayer(SPECIFIED_PLAYER_ID);
             var roster = new PlayerServiceTestFixture()
                                 .TestPlayers()
                                 .AddPlayer(captain)
                                 .Build();
 
-            _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
+            MockTeamServiceGetTeam(team);
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
 
@@ -275,19 +276,19 @@ using VolleyManagement.Domain.PlayersAggregate;
         public void Details_TeamDoesNotExist_NotFoundResualt()
         {
             // Arrange
-            Team team = null;
-            _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
+            MockTeamServiceGetTeam(null);
             var sut = this._kernel.Get<TeamsController>();
             var expected = (int)HttpStatusCode.NotFound;
 
             // Act
-            var actual = (sut.Details(SPECIFIED_TEAM_ID) as HttpNotFoundResult).StatusCode;
+            var actual = sut.Details(SPECIFIED_TEAM_ID);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+            Assert.AreEqual(expected, ((HttpNotFoundResult)actual).StatusCode);
         }
 
-        private Team CreatestTeam()
+        private Team CreateTeam()
         {
             return new TeamBuilder()
                          .WithId(SPECIFIED_TEAM_ID)
@@ -308,19 +309,34 @@ using VolleyManagement.Domain.PlayersAggregate;
                         .Build();
         }
 
-        private PlayerNameViewModel CreatePlayerNameModel(string firstname, string last, int id)
+        private PlayerNameViewModel CreatePlayerNameModel(string firstname, string lastname, int id)
         {
             return new PlayerNameViewModel()
             {
-                FullName = string.Format("{0} {0}", firstname, firstname),
+                FullName = string.Format("{1} {0}", firstname, lastname),
                 Id = id
             };
         }
-        
+
         private List<PlayerNameViewModel> CreateRoster()
         {
-            var roster = new PlayerServiceTestFixture().TestPlayers().Build().Select(p => PlayerNameViewModel.Map(p)).ToList();
-            roster.Add(CreatePlayerNameModel(PLAYER_FIRSTNAME, PLAYER_LASTNAME, SPECIFIED_PLAYER_ID));
+            const int FIRST_PLAYER_ID = 1;
+            const string FIRST_PLAYER_FIRSTNAME = "FirstNameA";
+            const string FIRST_PLAYER_LASTNAME = "LastNameA";
+            const int SECOND_PLAYER_ID = 2;
+            const string SECOND_PLAYER_FIRSTNAME = "FirstNameB";
+            const string SECOND_PLAYER_LASTNAME = "LastNameB";
+            const int THIRD_PLAYER_ID = 3;
+            const string THIRD_PLAYER_FIRSTNAME = "FirstNameC";
+            const string THIRD_PLAYER_LASTNAME = "LastNameC";
+            var roster = new List<PlayerNameViewModel>()
+            {
+                CreatePlayerNameModel(FIRST_PLAYER_FIRSTNAME, FIRST_PLAYER_LASTNAME, FIRST_PLAYER_ID),
+                CreatePlayerNameModel(SECOND_PLAYER_FIRSTNAME, SECOND_PLAYER_LASTNAME, SECOND_PLAYER_ID),
+                CreatePlayerNameModel(THIRD_PLAYER_FIRSTNAME, THIRD_PLAYER_LASTNAME, THIRD_PLAYER_ID),
+                CreatePlayerNameModel(PLAYER_FIRSTNAME, PLAYER_LASTNAME, SPECIFIED_PLAYER_ID)
+            };
+
             return roster;
         }
 
@@ -336,6 +352,11 @@ using VolleyManagement.Domain.PlayersAggregate;
                           .WithCaptain(cap)
                           .WithRoster(players)
                           .Build();
+        }
+
+        private void MockTeamServiceGetTeam(Team team)
+        {
+            _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
         }
     }
 }

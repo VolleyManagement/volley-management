@@ -153,24 +153,35 @@
         }
 
         /// <summary>
-        /// Sets tournament transfer start date
+        /// Sets tournament transfer start date to a specified date.
         /// </summary>
-        /// <param name="transferStart">Start transfer period</param>
-        /// <returns>Tournament builder object</returns>
-        public TournamentBuilder WithTransferStart(DateTime transferStart)
+        /// <param name="transferStart">Date of transfer start.</param>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentBuilder WithTransferStart(DateTime? transferStart)
         {
             this._tournament.TransferStart = transferStart;
             return this;
         }
 
         /// <summary>
-        /// Sets tournament transfer end date
+        /// Sets tournament transfer end date to a specified date.
         /// </summary>
-        /// <param name="transferEnd">End transfer period</param>
-        /// <returns>Tournament builder object</returns>
-        public TournamentBuilder WithTransferEnd(DateTime transferEnd)
+        /// <param name="transferEnd">Date of transfer end.</param>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentBuilder WithTransferEnd(DateTime? transferEnd)
         {
             this._tournament.TransferEnd = transferEnd;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets tournament transfer start date and end date to null.
+        /// </summary>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentBuilder WithNoTransferPeriod()
+        {
+            this._tournament.TransferStart = null;
+            this._tournament.TransferEnd = null;
             return this;
         }
 

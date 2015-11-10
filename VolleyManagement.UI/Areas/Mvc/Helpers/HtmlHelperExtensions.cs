@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
@@ -29,12 +30,19 @@
                                                                 DateTime? initialValue,
                                                                 object htmlAttributes = null)
         {
-            initialValue = initialValue == null ? DateTime.Now : initialValue;
+            DateTime initialNotNullValue = initialValue == null
+                                            ? DateTime.Now
+                                            : new DateTime(
+                                                initialValue.Value.Year,
+                                                initialValue.Value.Month,
+                                                initialValue.Value.Day);
+
+            string dateStringInCurrentUICulture = initialNotNullValue.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern, CultureInfo.InvariantCulture);
             return new MvcHtmlString(
               System.Web.Mvc.Html.InputExtensions.TextBoxFor<TModel, TProperty>(
                                                                                 helper,
                                                                                 expression,
-                                                                                string.Format("{0:d}", initialValue),
+                                                                                dateStringInCurrentUICulture,
                                                                                 htmlAttributes)
                                                                                 .ToString());
         }

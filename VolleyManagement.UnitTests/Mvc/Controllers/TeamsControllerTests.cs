@@ -20,6 +20,7 @@
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.PlayerService;
     using VolleyManagement.UnitTests.Services.TeamService;
+using VolleyManagement.Domain.PlayersAggregate;
 
     /// <summary>
     /// Tests for MVC TeamsController class.
@@ -33,6 +34,11 @@
         private const int SPECIFIED_PLAYER_ID = 4;
         private const string SPECIFIED_PLAYER_NAME = "Test name";
         private const string SPECIFIED_EXCEPTION_MESSAGE = "Test exception message";
+        private const string ACHIEVEMENTS = "TestAchievements";
+        private const string TEAM_NAME = "TestName";
+        private const string PLAYER_FIRSTNAME = "Test";
+        private const string PLAYER_LASTNAME = "Test";
+        private const string COACH = "TestCoach";
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private IKernel _kernel;
@@ -240,45 +246,18 @@
         public void Details_TeamExists_TeamIsReturned()
         {
             // Arrange
-            const string COACH = "TestCoach";
-            const string ACHIEVEMENTS = "TestAchievements";
-            const string TEAM_NAME = "TestName";
-            const string CAPTAIN_FIRSTNAME = "Test";
-            const string CAPTAIN_LASTNAME = "Test";
-
-            var team = new TeamBuilder()
-                            .WithId(SPECIFIED_TEAM_ID)
-                            .WithCaptain(SPECIFIED_PLAYER_ID)
-                            .WithCoach(COACH)
-                            .WithAchievements(ACHIEVEMENTS)
-                            .WithName(TEAM_NAME)
-                            .Build();
-            var captain = new PlayerBuilder()
-                                .WithId(SPECIFIED_PLAYER_ID)
-                                .WithFirstName(CAPTAIN_FIRSTNAME)
-                                .WithLastName(CAPTAIN_LASTNAME)
-                                .Build();
+            var team = CreatestTeam();
+            var captain = CreatePlayer(SPECIFIED_PLAYER_ID);
             var roster = new PlayerServiceTestFixture()
-                               .AddPlayer(captain)
-                               .Build();
+                                .TestPlayers()
+                                .AddPlayer(captain)
+                                .Build();
+
             _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
 
-            var cap = new PlayerNameViewModel()
-            {
-                FullName = string.Format("{0} {0}", CAPTAIN_FIRSTNAME, CAPTAIN_LASTNAME),
-                Id = SPECIFIED_PLAYER_ID
-            };
-            var players = new List<PlayerNameViewModel> { cap };
-            var expected = new TeamMvcViewModelBuilder()
-                                 .WithId(SPECIFIED_TEAM_ID)
-                                 .WithCoach(COACH)
-                                 .WithAchievements(ACHIEVEMENTS)
-                                 .WithName(TEAM_NAME)
-                                 .WithCaptain(cap)
-                                 .WithRoster(players)
-                                 .Build();
+            var expected = CreateViewModel();
 
             var sut = _kernel.Get<TeamsController>();
 
@@ -306,6 +285,57 @@
 
             // Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        private Team CreatestTeam()
+        {
+            return new TeamBuilder()
+                         .WithId(SPECIFIED_TEAM_ID)
+                         .WithCaptain(SPECIFIED_PLAYER_ID)
+                         .WithCoach(COACH)
+                         .WithAchievements(ACHIEVEMENTS)
+                         .WithName(TEAM_NAME)
+                         .Build();
+        }
+
+        private Player CreatePlayer(int id)
+        {
+            return new PlayerBuilder()
+                        .WithId(id)
+                        .WithFirstName(PLAYER_FIRSTNAME)
+                        .WithLastName(PLAYER_LASTNAME)
+                        .WithTeamId(SPECIFIED_TEAM_ID)
+                        .Build();
+        }
+
+        private PlayerNameViewModel CreatePlayerNameModel(string firstname, string last, int id)
+        {
+            return new PlayerNameViewModel()
+            {
+                FullName = string.Format("{0} {0}", firstname, firstname),
+                Id = id
+            };
+        }
+        
+        private List<PlayerNameViewModel> CreateRoster()
+        {
+            var roster = new PlayerServiceTestFixture().TestPlayers().Build().Select(p => PlayerNameViewModel.Map(p)).ToList();
+            roster.Add(CreatePlayerNameModel(PLAYER_FIRSTNAME, PLAYER_LASTNAME, SPECIFIED_PLAYER_ID));
+            return roster;
+        }
+
+        private TeamViewModel CreateViewModel()
+        {
+            var cap = CreatePlayerNameModel(PLAYER_FIRSTNAME, PLAYER_LASTNAME, SPECIFIED_PLAYER_ID);
+            var players = CreateRoster();
+            return new TeamMvcViewModelBuilder()
+                          .WithId(SPECIFIED_TEAM_ID)
+                          .WithCoach(COACH)
+                          .WithAchievements(ACHIEVEMENTS)
+                          .WithName(TEAM_NAME)
+                          .WithCaptain(cap)
+                          .WithRoster(players)
+                          .Build();
         }
     }
 }

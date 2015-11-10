@@ -221,14 +221,11 @@
                 .WithId(SAVED_PLAYER_ID)
                 .Build();
 
-            var expectedReferer = TEST_CONTROLLER_NAME;
-
             // Act
             var actual = TestExtensions.GetModel<PlayerRefererViewModel>(controller.Details(SAVED_PLAYER_ID));
 
             // Assert
             TestHelper.AreEqual<PlayerViewModel>(expectedPlayer, actual.Model, new PlayerViewModelComparer());
-            Assert.AreEqual<string>(expectedReferer, actual.Referer);
         }
 
         /// <summary>

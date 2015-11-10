@@ -22,6 +22,8 @@
         private const string HTTP_NOT_FOUND_DESCRIPTION = @"При удалении игрока произошла непредвиденная ситуация.
                                                             Пожалуйста, обратитесь к администратору";
 
+        private const string DEFAULT_DETAILS_RETURN_URL = "/Players";
+
         /// <summary>
         /// Holds PlayerService instance
         /// </summary>
@@ -65,7 +67,7 @@
         /// </summary>
         /// <param name="id">Player id.</param>
         /// <returns>View with specific player.</returns>
-        public ActionResult Details(int id, int? refId = null, string referrer = "Players", string refAction = "Index")
+        public ActionResult Details(int id, string returnUrl = DEFAULT_DETAILS_RETURN_URL)
         {
             Player player;
             try
@@ -77,7 +79,7 @@
                 return this.HttpNotFound();
             }
 
-            var model = new PlayerRefererViewModel(player, referrer, refAction, refId);
+            var model = new PlayerRefererViewModel(player, returnUrl);
             return View(model);
         }
 

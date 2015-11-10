@@ -11,12 +11,10 @@
         /// </summary>
         /// <param name="model">View model.</param>
         /// <param name="referer">Referrer controller name.</param>
-        public RefererViewModel(T model, string referer, string referrerAction, int? id)
+        public RefererViewModel(T model, string referer)
         {
             Model = model;
             Referer = referer;
-            ReferrerAction = referrerAction;
-            ReferrerId = id;
         }
 
         /// <summary>
@@ -28,15 +26,5 @@
         /// Gets referrer controller name.
         /// </summary>
         public string Referer { get; private set; }
-
-        /// <summary>
-        /// Gets referrer Action name.
-        /// </summary>
-        public string ReferrerAction { get; private set; }
-
-        /// <summary>
-        /// Gets referrer Id value.
-        /// </summary>
-        public int? ReferrerId { get; private set; }
     }
 }

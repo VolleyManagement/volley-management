@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = Resources.TeamViews.TeamDetailsTitle;
+    ViewBag.ReturnUrl = string.Format("/Teams/Details/{0}", Model.Id);
 }
 
 <h2>@ViewBag.Title</h2>
@@ -19,7 +20,7 @@
     @Html.ActionLink(Model.Captain.FullName,
                     "Details",
                     "Players",
-                    new {id = Model.Captain.Id, refId = Model.Id, referrer = "Teams", refAction = "Details"},
+                    new {id = Model.Captain.Id, returnUrl = ViewBag.ReturnUrl},
                     null)
     
     <div class="display-label">@Html.LabelFor(model => model.Roster)</div>
@@ -30,7 +31,7 @@
                 @Html.ActionLink(item.FullName,
                                 "Details",
                                 "Players",
-                                new {id = item.Id, refId = Model.Id, referrer = "Teams", refAction = "Details"},
+                                new {id = item.Id, returnUrl = ViewBag.ReturnUrl},
                                 null)
             </li>
         }

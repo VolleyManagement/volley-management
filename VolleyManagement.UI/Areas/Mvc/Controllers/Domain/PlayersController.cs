@@ -22,8 +22,6 @@
         private const string HTTP_NOT_FOUND_DESCRIPTION = @"При удалении игрока произошла непредвиденная ситуация.
                                                             Пожалуйста, обратитесь к администратору";
 
-        private const string DEFAULT_DETAILS_RETURN_URL = "/Players";
-
         /// <summary>
         /// Holds PlayerService instance
         /// </summary>
@@ -50,6 +48,7 @@
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
+                ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl.ToString();
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)
@@ -68,7 +67,7 @@
         /// <param name="id">Player id.</param>
         /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific player.</returns>
-        public ActionResult Details(int id, string returnUrl = DEFAULT_DETAILS_RETURN_URL)
+        public ActionResult Details(int id, string returnUrl = "")
         {
             Player player;
             try

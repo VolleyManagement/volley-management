@@ -140,6 +140,7 @@
                 return HttpNotFound();
             }
 
+            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl.ToString();
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             return View(viewModel);
         }

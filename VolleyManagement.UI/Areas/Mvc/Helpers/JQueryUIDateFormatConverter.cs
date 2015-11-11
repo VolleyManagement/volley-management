@@ -14,8 +14,14 @@
     /// </summary>
     public static class JQueryUIDateFormatConverter
     {
-        private static DateMarkers dotNetMarkers = new DateMarkers("dddd", "ddd", "MMMM", "MMM", "MM", "M", "yyyy", "yy");
-        private static DateMarkers jqueryuiMarkers = new DateMarkers("DD", "D", "MM", "M", "mm", "m", "yy", "y");
+        private static DateTimeFormatInfo dateTimeFormat = CultureInfo.CurrentUICulture.DateTimeFormat;
+
+        private static SortedDictionary<string, string> replaceTokens = new SortedDictionary<string, string>(
+                                                            new ReverseComparer<string>(Comparer<string>.Default))
+        {
+            { "dddd", "DD" }, { "ddd", "D" }, { "M", "m" }, { "MM", "mm" },  { "MMMM", "MM" }, { "MMM", "M" },
+            { "yy", "y" }, { "yyyy", "yy" }
+        };
 
         /// <summary>
         /// Gets abbreviated month names of current system culture.
@@ -25,7 +31,7 @@
             get
             {
                 return new HtmlString(JsonConvert.SerializeObject(
-                     CultureInfo.CurrentUICulture.DateTimeFormat.AbbreviatedMonthNames, Formatting.None));
+                     dateTimeFormat.AbbreviatedMonthNames, Formatting.None));
             }
         }
 
@@ -37,7 +43,7 @@
             get
             {
                 return new HtmlString(JsonConvert.SerializeObject(
-                               CultureInfo.CurrentUICulture.DateTimeFormat.MonthGenitiveNames, Formatting.None));
+                               dateTimeFormat.MonthGenitiveNames, Formatting.None));
             }
         }
 
@@ -49,7 +55,7 @@
             get
             {
                 return new HtmlString(JsonConvert.SerializeObject(
-                         CultureInfo.CurrentUICulture.DateTimeFormat.DayNames, Formatting.None));
+                         dateTimeFormat.DayNames, Formatting.None));
             }
         }
 
@@ -61,7 +67,7 @@
             get
             {
                 return new HtmlString(JsonConvert.SerializeObject(
-                         CultureInfo.CurrentUICulture.DateTimeFormat.AbbreviatedDayNames, Formatting.None));
+                         dateTimeFormat.AbbreviatedDayNames, Formatting.None));
             }
         }
 
@@ -73,7 +79,7 @@
             get
             {
                 return new HtmlString(JsonConvert.SerializeObject(
-                         CultureInfo.CurrentUICulture.DateTimeFormat.ShortestDayNames, Formatting.None));
+                         dateTimeFormat.ShortestDayNames, Formatting.None));
             }
         }
 
@@ -95,168 +101,46 @@
         public static string JQueryUICurrentDateFormat()
         {
             string currentFormat = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern;
-
-            // Convert the date
-            currentFormat = currentFormat.Replace(dotNetMarkers.DayLongName, jqueryuiMarkers.DayLongName);
-            currentFormat = currentFormat.Replace(dotNetMarkers.DayShortName, jqueryuiMarkers.DayShortName);
-
-            // Convert month
-            if (currentFormat.Contains(dotNetMarkers.MonthLongName))
+            HashSet<char> changedTypes = new HashSet<char>();
+            foreach (var kvp in replaceTokens)
             {
-                currentFormat = currentFormat.Replace(dotNetMarkers.MonthLongName, jqueryuiMarkers.MonthLongName);
+                char ch = kvp.Key[0];
+                if (!changedTypes.Contains(kvp.Key[0]) && currentFormat.Contains(kvp.Key))
+                {
+                    changedTypes.Add(kvp.Key[0]);
+                    currentFormat = currentFormat.Replace(kvp.Key, kvp.Value);
+                }
             }
-            else if (currentFormat.Contains(dotNetMarkers.MonthShortName))
-            {
-                currentFormat = currentFormat.Replace(dotNetMarkers.MonthShortName, jqueryuiMarkers.MonthShortName);
-            }
-            else if (currentFormat.Contains(dotNetMarkers.MonthTwoDigit))
-            {
-                currentFormat = currentFormat.Replace(dotNetMarkers.MonthTwoDigit, jqueryuiMarkers.MonthTwoDigit);
-            }
-            else
-            {
-                currentFormat = currentFormat.Replace(dotNetMarkers.MonthOneDigit, jqueryuiMarkers.MonthOneDigit);
-            }
-
-            // Convert year
-            currentFormat = currentFormat.Contains(dotNetMarkers.YearFourDigit) ?
-                currentFormat.Replace(dotNetMarkers.YearFourDigit, jqueryuiMarkers.YearFourDigit)
-                : currentFormat.Replace(dotNetMarkers.YearTwoDigit, jqueryuiMarkers.YearTwoDigit);
 
             return currentFormat;
         }
 
         /// <summary>
-        /// An instance of <see cref="DateMarkers"/> represents markers of date format. 
+        /// Represents reverse comparer
         /// </summary>
-        private class DateMarkers
+        /// <typeparam name="T">Type to compare</typeparam>
+        public sealed class ReverseComparer<T> : IComparer<T>
         {
-            private readonly string _dayLongName;
-            private readonly string _dayShortName;
-            private readonly string _monthLongName;
-            private readonly string _monthShortName;
-            private readonly string _monthTwoDigit;
-            private readonly string _monthOneDigit;
-            private readonly string _yearFourDigit;
-            private readonly string _yearTwoDigit;
+            private readonly IComparer<T> original;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="DateMarkers"/> class. 
+            /// Initializes a new instance of the <see cref="ReverseComparer{T}"/> class.
             /// </summary>
-            /// <param name="dayLongName">Long day format</param>
-            /// <param name="dayShortName">Short day format</param>
-            /// <param name="monthLongName">Long month format</param>
-            /// <param name="monthShortName">Short month format</param>
-            /// <param name="monthTwoDigit">Two digit month format</param>
-            /// <param name="monthOneDigit">Month format without leading zero</param>
-            /// <param name="yearFourDigit">Four digit year format</param>
-            /// <param name="yearTwoDigit">Two digit year format</param>
-            public DateMarkers(
-                string dayLongName,
-                string dayShortName,
-                string monthLongName,
-                string monthShortName,
-                string monthTwoDigit,
-                string monthOneDigit,
-                string yearFourDigit,
-                string yearTwoDigit)
+            /// <param name="original">Original comparer</param>
+            public ReverseComparer(IComparer<T> original)
             {
-                _dayLongName = dayLongName;
-                _dayShortName = dayShortName;
-                _monthLongName = monthLongName;
-                _monthShortName = monthShortName;
-                _monthTwoDigit = monthTwoDigit;
-                _monthOneDigit = monthOneDigit;
-                _yearFourDigit = yearFourDigit;
-                _yearTwoDigit = yearTwoDigit;
+                this.original = original;
             }
 
             /// <summary>
-            /// Marker represent long format of day.
+            /// Compare two elements.
             /// </summary>
-            public string DayLongName
+            /// <param name="left">First element</param>
+            /// <param name="right">Second element</param>
+            /// <returns>Integer value of comparison result.</returns>
+            public int Compare(T left, T right)
             {
-                get
-                {
-                    return _dayLongName;
-                }
-            }
-
-            /// <summary>
-            /// Marker represent short format of day.
-            /// </summary>
-            public string DayShortName
-            {
-                get
-                {
-                    return _dayShortName;
-                }
-            }
-
-            /// <summary>
-            /// Marker represent long format of month.
-            /// </summary>
-            public string MonthLongName
-            {
-                get
-                {
-                    return _monthLongName;
-                }
-            }
-
-            /// <summary>
-            /// Marker represent short format of month.
-            /// </summary>
-            public string MonthShortName
-            {
-                get
-                {
-                    return _monthShortName;
-                }
-            }
-
-            /// <summary>
-            /// Marker represent two digit format of month.
-            /// </summary>
-            public string MonthTwoDigit
-            {
-                get
-                {
-                    return _monthTwoDigit;
-                }
-            }
-
-            /// <summary>
-            /// Marker represent one digit format of month.
-            /// </summary>
-            public string MonthOneDigit
-            {
-                get
-                {
-                    return _monthOneDigit;
-                }
-            }
-
-            /// <summary>
-            /// Marker represent two digit format of year.
-            /// </summary>
-            public string YearTwoDigit
-            {
-                get
-                {
-                    return _yearTwoDigit;
-                }
-            }
-
-            /// <summary>
-            /// Marker represent four digit format of year.
-            /// </summary>
-            public string YearFourDigit
-            {
-                get
-                {
-                    return _yearFourDigit;
-                }
+                return original.Compare(right, left);
             }
         }
     }

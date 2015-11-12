@@ -333,7 +333,9 @@
     <Compile Include="Areas\Mvc\Controllers\Domain\PlayersController.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\TeamsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\TournamentsController.cs" />
-    <Compile Include="Areas\Mvc\EnumHtmlHelper.cs" />
+    <Compile Include="Areas\Mvc\Helpers\DateTimeModelBinder.cs" />
+    <Compile Include="Areas\Mvc\Helpers\EnumHtmlHelper.cs" />
+    <Compile Include="Areas\Mvc\Helpers\ReverseComparer.cs" />
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
@@ -345,7 +347,7 @@
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerRefererViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Generic\RefererViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListViewModel.cs" />
-    <Compile Include="Areas\Mvc\TournamentSeasonHtmlHelper.cs" />
+    <Compile Include="Areas\Mvc\Helpers\TournamentSeasonHtmlHelper.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamOperationResultViewModel.cs" />
@@ -364,6 +366,8 @@
     <Compile Include="Areas\WebApi\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\Helpers\HtmlHelperExtensions.cs" />
+    <Compile Include="Areas\Mvc\Helpers\JQueryUIDateFormatConverter.cs" />
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">

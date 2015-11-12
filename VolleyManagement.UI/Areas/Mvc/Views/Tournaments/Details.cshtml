@@ -1,4 +1,4 @@
-@model VolleyManagement.Domain.TournamentsAggregate.Tournament
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
 @using VolleyManagement.Domain.Tournaments
 @using VolleyManagement.UI.Areas.Mvc;
 
@@ -38,15 +38,17 @@
     <div class="display-label">@Html.LabelFor(model => model.GamesEnd)</div>
     <div class="display-field">@Model.GamesEnd.ToShortDateString()</div>
 
-    <div class="display-label">@Html.LabelFor(model => model.TransferStart)</div>
-    <div class="display-field">@Model.TransferStart.ToShortDateString()</div>
+    @if (Model.IsTransferEnabled)
+    {
+        <div class="display-label">@Html.LabelFor(model => model.TransferStart)</div>
+        <div class="display-field">@(((DateTime)Model.TransferStart).ToShortDateString())</div>
 
-    <div class="display-label">@Html.LabelFor(model => model.TransferEnd)</div>
-    <div class="display-field">@Model.TransferEnd.ToShortDateString()</div>
-
+        <div class="display-label">@Html.LabelFor(model => model.TransferEnd)</div>
+        <div class="display-field">@(((DateTime)Model.TransferEnd).ToShortDateString())</div>
+    }
 </fieldset>
 <p>
-    @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id=Model.Id }) |
+    @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id = Model.Id }) |
     @Html.ActionLink(Resources.TournamentViews.BackToList, "Index")
 </p>
 

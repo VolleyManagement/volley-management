@@ -167,7 +167,8 @@
                 ApplyingPeriodStart = tournament.ApplyingPeriodStart,
                 ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
-                TransferEnd = tournament.TransferEnd
+                TransferEnd = tournament.TransferEnd,
+                IsTransferEnabled = tournament.TransferStart == null || tournament.TransferStart == null ? false : true
             };
 
             return tournamentViewModel;

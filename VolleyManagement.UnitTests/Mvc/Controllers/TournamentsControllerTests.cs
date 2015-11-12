@@ -145,7 +145,7 @@
 
             _tournamentServiceMock.Setup(tr => tr.Get(It.IsAny<int>()))
                 .Returns(new TournamentBuilder()
-                .WithId(11)
+                .WithId(searchId)
                 .WithName("Tournament 11")
                 .WithDescription("Tournament 11 description")
                 .WithSeason(2014)
@@ -155,7 +155,7 @@
 
             var controller = this._kernel.Get<TournamentsController>();
 
-            var expected = new TournamentBuilder()
+            var expected = new TournamentMvcViewModelBuilder()
                 .WithId(searchId)
                 .WithName("Tournament 11")
                 .WithDescription("Tournament 11 description")
@@ -165,10 +165,10 @@
                 .Build();
 
             // Act
-            var actual = TestExtensions.GetModel<Tournament>(controller.Details(searchId));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Details(searchId));
 
             // Assert
-            TestHelper.AreEqual<Tournament>(expected, actual, new TournamentComparer());
+            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>

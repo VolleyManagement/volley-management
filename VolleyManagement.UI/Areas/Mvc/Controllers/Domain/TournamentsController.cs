@@ -72,7 +72,8 @@
             try
             {
                 Tournament tournament = this._tournamentService.Get(id);
-                return View(tournament);
+                TournamentViewModel tournamentViewModel = TournamentViewModel.Map(tournament);
+                return View(tournamentViewModel);
             }
             catch (InvalidOperationException)
             {

@@ -44,7 +44,8 @@
                 x.Name == y.Name &&
                 x.RegulationsLink == y.RegulationsLink &&
                 x.Season == y.Season &&
-                x.Scheme == y.Scheme;
+                x.Scheme == y.Scheme &&
+                x.IsTransferEnabled == y.IsTransferEnabled;
         }
     }
 }

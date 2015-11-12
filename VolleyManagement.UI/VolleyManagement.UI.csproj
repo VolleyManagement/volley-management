@@ -335,6 +335,7 @@
     <Compile Include="Areas\Mvc\Controllers\Domain\TournamentsController.cs" />
     <Compile Include="Areas\Mvc\Helpers\DateTimeModelBinder.cs" />
     <Compile Include="Areas\Mvc\Helpers\EnumHtmlHelper.cs" />
+    <Compile Include="Areas\Mvc\Helpers\ReverseComparer.cs" />
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />

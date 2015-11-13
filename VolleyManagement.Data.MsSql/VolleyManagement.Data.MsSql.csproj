@@ -81,6 +81,10 @@
     <Compile Include="Context\Migrations\201510311319565_AddRolesSupport.Designer.cs">
       <DependentUpon>201510311319565_AddRolesSupport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201511081957142_OptionalTransferPeriod.cs" />
+    <Compile Include="Context\Migrations\201511081957142_OptionalTransferPeriod.Designer.cs">
+      <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
@@ -153,6 +157,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201510311319565_AddRolesSupport.resx">
       <DependentUpon>201510311319565_AddRolesSupport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201511081957142_OptionalTransferPeriod.resx">
+      <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

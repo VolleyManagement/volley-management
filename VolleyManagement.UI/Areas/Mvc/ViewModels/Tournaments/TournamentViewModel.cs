@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Web;
     using System.Web.Script.Serialization;
-
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -22,6 +22,7 @@
         {
             this.Scheme = TournamentSchemeEnum.One;
             this.InitializeSeasonsList();
+            this.IsTransferEnabled = true;
         }
 
         /// <summary>
@@ -126,20 +127,23 @@
         public DateTime GamesEnd { get; set; }
 
         /// <summary>
+        /// Transfer enabled state
+        /// </summary>
+        public bool IsTransferEnabled { get; set; }
+
+        /// <summary>
         /// Start of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public DateTime TransferStart { get; set; }
+        public DateTime? TransferStart { get; set; }
 
         /// <summary>
         /// End of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public DateTime TransferEnd { get; set; }
+        public DateTime? TransferEnd { get; set; }
 
         #region Factory Methods
 
@@ -150,7 +154,7 @@
         /// <returns> View model object </returns>
         public static TournamentViewModel Map(Tournament tournament)
         {
-            var tournamentViewModel = new TournamentViewModel
+            var tournamentViewModel = new TournamentViewModel()
             {
                 Id = tournament.Id,
                 Name = tournament.Name,
@@ -163,7 +167,8 @@
                 ApplyingPeriodStart = tournament.ApplyingPeriodStart,
                 ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
-                TransferEnd = tournament.TransferEnd
+                TransferEnd = tournament.TransferEnd,
+                IsTransferEnabled = tournament.TransferStart == null || tournament.TransferStart == null ? false : true
             };
 
             return tournamentViewModel;

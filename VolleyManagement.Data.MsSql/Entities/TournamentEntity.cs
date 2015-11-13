@@ -50,12 +50,12 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// <summary>
         /// Gets or sets start of a transfer period
         /// </summary>
-        public DateTime TransferStart { get; set; }
+        public DateTime? TransferStart { get; set; }
 
         /// <summary>
         /// Gets or sets end of a transfer period
         /// </summary>
-        public DateTime TransferEnd { get; set; }
+        public DateTime? TransferEnd { get; set; }
 
         /// <summary>
         /// Gets or sets start of a tournament

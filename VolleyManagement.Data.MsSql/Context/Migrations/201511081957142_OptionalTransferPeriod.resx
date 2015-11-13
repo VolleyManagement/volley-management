@@ -117,64 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BackToList" xml:space="preserve">
-    <value>Назад к списку</value>
+  <data name="Target" xml:space="preserve">
+    <value>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</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Создать</value>
-  </data>
-  <data name="CreateNewTournament" xml:space="preserve">
-    <value>Создать новый турнир</value>
-  </data>
-  <data name="CreateTournamentTitle" xml:space="preserve">
-    <value>Создание нового турнира</value>
-  </data>
-  <data name="CurrentTournamentsHeader" xml:space="preserve">
-    <value>Текущие</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="DeleteConfirm" xml:space="preserve">
-    <value>Вы уверены, что хотите это удалить?</value>
-  </data>
-  <data name="DeleteTournamentTitle" xml:space="preserve">
-    <value>Удаление турнира</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редактировать</value>
-  </data>
-  <data name="EditTournamentTitle" xml:space="preserve">
-    <value>Редактирование турнира</value>
-  </data>
-  <data name="FinishedTournaments" xml:space="preserve">
-    <value>Показать завершенные</value>
-  </data>
-  <data name="FinishedTournamentsHeader" xml:space="preserve">
-    <value>Завершенные</value>
-  </data>
-  <data name="RegistrationFieldsTitle" xml:space="preserve">
-    <value>Регистрация на турнир</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Сохранить</value>
-  </data>
-  <data name="TournamentDetailsTitle" xml:space="preserve">
-    <value>Подробности турнира</value>
-  </data>
-  <data name="TournamentFieldsTitle" xml:space="preserve">
-    <value>Турнир</value>
-  </data>
-  <data name="TournamentLegend" xml:space="preserve">
-    <value>Турнир</value>
-  </data>
-  <data name="TournamentsIndexTitle" xml:space="preserve">
-    <value>Турниры</value>
-  </data>
-  <data name="TransferFieldsTitle" xml:space="preserve">
-    <value>Трансферный период</value>
-  </data>
-  <data name="UpcomingTournamentsHeader" xml:space="preserve">
-    <value>Ожидаемые</value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>

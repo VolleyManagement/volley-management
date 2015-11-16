@@ -51,6 +51,8 @@
     <Compile Include="ContributorsAggregate\Contributor.cs" />
     <Compile Include="ContributorsAggregate\ContributorTeam.cs" />
     <Compile Include="ContributorsAggregate\IContributorTeamRepository.cs" />
+    <Compile Include="DivisionAggregate\Division.cs" />
+    <Compile Include="DivisionAggregate\IDivisionRepository.cs" />
     <Compile Include="Dto\UserInRoleDto.cs" />
     <Compile Include="PlayersAggregate\IPlayerRepository.cs" />
     <Compile Include="PlayersAggregate\Player.cs" />

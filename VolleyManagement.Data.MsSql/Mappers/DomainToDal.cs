@@ -3,6 +3,7 @@
     using System.Linq;
 
     using VolleyManagement.Data.MsSql.Entities;
+    using VolleyManagement.Domain.DivisionAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -83,6 +84,18 @@
             to.CaptainId = from.CaptainId;
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
+        }
+
+        /// <summary>
+        /// Maps Division model
+        /// </summary>
+        /// <param name="to">Division entity model</param>
+        /// <param name="from">Division domain model</param>
+        public static void Map(DivisionEntity to, Division from)
+        {
+            to.Id = from.Id;
+            to.Name = from.Name;
+            to.TournamentId = from.TournamentId;
         }
     }
 }

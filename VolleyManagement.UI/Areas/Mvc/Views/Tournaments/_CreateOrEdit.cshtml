@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 <script src="//code.jquery.com/jquery-1.8.3.js" type="text/javascript"></script>
 <script src="//code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
+<script src="~/Scripts/TournamentOperationScripts.js"></script>
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
@@ -132,3 +133,32 @@
     @Html.ValidationMessage(ValidationKeys.TRANSFER_END_BEFORE_TRANSFER_START)
     @Html.ValidationMessageFor(model => model.TransferEnd)
 </div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Divisions)
+</div>
+@if (Model.Divisions.Count == 0)
+{
+    <div id="Divisions" class="editor-field">
+        <input type="text" name="Divisions[0].Id" hidden />
+        <br><input type="text" name="Divisions[0].Name">
+    </div>
+    <input  type="button" 
+            value="@Resources.TournamentViews.AddDivision" 
+            onClick="addInput('Divisions', 0, @ValidationKeys.MAX_DIVISIONS_COUNT, '@Resources.TournamentViews.DivisionLimit');">
+}
+else
+{
+    <div id="Divisions" class="editor-field">
+        @for(int i =0; i < Model.Division.Count; i++)
+        {
+            <input type="text" name="Divisions[@i].Id" value="@Model.Division[i].Id" hidden />
+            <br><input type="text" name="Divisions[@i].Name" value="@Model.Division[i].Name">
+        }
+    </div>
+    int limit = ValidationKeys.MAX_DIVISIONS_COUNT + 1 - Model.Divisions.Count;
+    int startIndex = Model.Divisions.Count - 1;
+    <input  type="button" 
+            value="@Resources.TournamentViews.AddDivision" 
+            onClick="addInput('Divisions', @startIndex, @limit, '@Resources.TournamentViews.DivisionLimit');">
+}

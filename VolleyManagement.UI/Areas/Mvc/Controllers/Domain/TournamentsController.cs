@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -105,8 +106,10 @@
         /// <param name="tournamentViewModel">Tournament, which the user wants to create</param>
         /// <returns>Index view if tournament was valid, else - create view</returns>
         [HttpPost]
-        public ActionResult Create(TournamentViewModel tournamentViewModel)
+        public ActionResult Create(TournamentViewModel tournamentViewModel, List<DivisionViewModel> divisions)
         {
+            tournamentViewModel.Divisions = divisions;
+
             try
             {
                 if (this.ModelState.IsValid)
@@ -154,8 +157,9 @@
         /// <param name="tournamentViewModel">Tournament after editing</param>
         /// <returns>Index view if tournament was valid, else - edit view</returns>
         [HttpPost]
-        public ActionResult Edit(TournamentViewModel tournamentViewModel)
+        public ActionResult Edit(TournamentViewModel tournamentViewModel, List<DivisionViewModel> divisions)
         {
+            tournamentViewModel.Divisions = divisions;
             try
             {
                 if (this.ModelState.IsValid)

@@ -138,6 +138,9 @@
   <data name="ConfirmUserPassword" xml:space="preserve">
     <value>FixMe: Confirm password</value>
   </data>
+  <data name="Divisions" xml:space="preserve">
+    <value>Дивизионы</value>
+  </data>
   <data name="EndGamesBeforeStart" xml:space="preserve">
     <value>Конец турнира должен быть после его начала</value>
   </data>

@@ -1,13 +1,14 @@
 ﻿var counter = 1;
 
-function addInput(divName, startIndex, limit, alertMsg) {
+function addInput(startIndex, limit, alertMsg) {
     if (counter == limit) {
         alert(alertMsg);
     }
     else {
-        var newdiv = document.createElement('div');
-        newdiv.innerHTML = "<br><input type='text' name='Divisions[" + (counter + startIndex) + "].Name'>";
-        document.getElementById(divName).appendChild(newdiv);
-        counter++;
+        divisionInput = $("#Divisions_0__Name");
+        divisionName = "Divisions[" + (counter + startIndex) + "].Name";
+        divisionId = "Divisions_" + (counter + startIndex) + "__Name";
+        divisionInput.attr("id", divisionId).attr("name", divisionName);
+        $("#Divisions").appendChild(divisionInput);
     }
 }

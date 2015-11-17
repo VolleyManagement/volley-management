@@ -25,7 +25,7 @@
             this.Scheme = TournamentSchemeEnum.One;
             this.InitializeSeasonsList();
             this.IsTransferEnabled = true;
-            this.Divisions = new List<DivisionViewModel>();
+            this.Divisions = new List<DivisionViewModel>() { new DivisionViewModel() };
         }
 
         /// <summary>
@@ -180,10 +180,14 @@
                 IsTransferEnabled = tournament.TransferStart == null || tournament.TransferStart == null ? false : true
             };
 
-            foreach (var d in tournament.Divisions)
+            if (tournament.Divisions.Count >= 0)
             {
-                DivisionViewModel division = DivisionViewModel.Map(d);
-                tournamentViewModel.Divisions.Add(division);
+                tournamentViewModel.Divisions = new List<DivisionViewModel>();
+                foreach (var d in tournament.Divisions)
+                {
+                    DivisionViewModel division = DivisionViewModel.Map(d);
+                    tournamentViewModel.Divisions.Add(division);
+                }
             }
 
             return tournamentViewModel;

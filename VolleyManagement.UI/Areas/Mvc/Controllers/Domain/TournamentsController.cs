@@ -106,10 +106,8 @@
         /// <param name="tournamentViewModel">Tournament, which the user wants to create</param>
         /// <returns>Index view if tournament was valid, else - create view</returns>
         [HttpPost]
-        public ActionResult Create(TournamentViewModel tournamentViewModel, List<DivisionViewModel> divisions)
+        public ActionResult Create(TournamentViewModel tournamentViewModel)
         {
-            tournamentViewModel.Divisions = divisions;
-
             try
             {
                 if (this.ModelState.IsValid)
@@ -157,17 +155,14 @@
         /// <param name="tournamentViewModel">Tournament after editing</param>
         /// <returns>Index view if tournament was valid, else - edit view</returns>
         [HttpPost]
-        public ActionResult Edit(TournamentViewModel tournamentViewModel, List<DivisionViewModel> divisions)
+        public ActionResult Edit(TournamentViewModel tournamentViewModel)
         {
-            tournamentViewModel.Divisions = divisions;
-            var newDivisions = divisions.Where(d => d.Id == null).Select(d => d.ToDomain()).ToList();
-
             try
             {
                 if (this.ModelState.IsValid)
                 {
                     var tournament = tournamentViewModel.ToDomain();
-                    this._tournamentService.Edit(tournament, newDivisions);
+                    this._tournamentService.Edit(tournament);
                     return this.RedirectToAction("Index");
                 }
 

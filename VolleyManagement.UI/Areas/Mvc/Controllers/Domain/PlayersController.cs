@@ -69,7 +69,7 @@
 
             if (player == null)
             {
-                return View("PageNotFound");
+                return HttpNotFound();
             }
 
             var model = new PlayerRefererViewModel(player, returnUrl);
@@ -153,7 +153,7 @@
 
             if (player == null)
             {
-                return View("PageNotFound");
+                return HttpNotFound();
             }
 
             var playerViewModel = PlayerViewModel.Map(player);

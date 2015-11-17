@@ -140,7 +140,7 @@
 
             if (team == null)
             {
-                return View("PageNotFound");
+                return HttpNotFound();
             }
 
             ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl.ToString();

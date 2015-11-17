@@ -174,7 +174,7 @@
 
             if (tournament == null)
             {
-                return View("PageNotFound");
+                return HttpNotFound();
             }
 
             this._tournamentService.Delete(id);
@@ -186,13 +186,13 @@
         /// </summary>
         /// <param name="id">Identifier of the tournament.</param>
         /// <returns>View for view model of the tournament with specified identifier.</returns>
-        private ViewResult GetTournamentView(int id)
+        private ActionResult GetTournamentView(int id)
         {
             var tournament = _tournamentService.Get(id);
 
             if (tournament == null)
             {
-                return View("PageNotFound");
+                return HttpNotFound();
             }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);

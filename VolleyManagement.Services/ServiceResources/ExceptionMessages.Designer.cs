@@ -61,6 +61,16 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Дивизионы не могут иметь одинаковые названия.
+        /// </summary>
+        internal static string DivisionsAreNotUniq {
+            get {
+                return ResourceManager.GetString("DivisionsAreNotUniq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список двивизионов не может быть пустой.
         ///   Looks up a localized string similar to Игрок является капитаном другой команды.
         /// </summary>
         internal static string PlayerIsCaptainOfAnotherTeam {

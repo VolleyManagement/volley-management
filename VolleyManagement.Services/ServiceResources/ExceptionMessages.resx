@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DivisionsAreNotUniq" xml:space="preserve">
+    <value>Девизионы не могут иметь одинаковые названия</value>
+  </data>
+    <value>Список дивизионов не может быть пустой</value>
   <data name="PlayerIsCaptainOfAnotherTeam" xml:space="preserve">
     <value>Игрок является капитаном другой команды</value>
   </data>

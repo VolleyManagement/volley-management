@@ -44,7 +44,8 @@
 
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
 
-        private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
+        private readonly IQuery<List<Division>, FindByIdCriteria> _getDivisionsByTournamentIdQuery;
+        private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentByIdQuery;
 
         #endregion
 
@@ -61,12 +62,13 @@
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
-            IQuery<Tournament, FindByIdCriteria> getByIdQuery)
+            IQuery<Tournament, FindByIdCriteria> getTournamentByIdQuery,
+            IQuery<List<Division>, FindByIdCriteria> getDivisionsByTournamentIdQuery)
         {
             _tournamentRepository = tournamentRepository;
             this._uniqueTournamentQuery = uniqueTournamentQuery;
             this._getAllQuery = getAllQuery;
-            this._getByIdQuery = getByIdQuery;
+            this._getByTournamentIdQuery = getByTournamentIdQuery;
         }
 
         #endregion
@@ -114,6 +116,7 @@
             IsTournamentNameUnique(tournamentToCreate);
             AreDatesValid(tournamentToCreate);
 
+            AreDivisionsUniq(tournamentToCreate.Divisions);
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -137,6 +140,8 @@
         {
             IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             AreDatesValid(tournamentToEdit);
+            AreDivisionsUniq(tournamentToEdit.Divisions);
+            foreach(Division division in tournamentToEdit.Divisions) {
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -308,6 +313,12 @@
             return this.Get().Where(t => statesFilter.Contains(t.State)).ToList();
         }
 
+            }
+        }
+
+        private void AreDivisionsUniq(IList<Division> divisions) {
+            if (divisions.Count() != divisions.Distinct().Count()) {
+                throw new ArgumentException(ServiceResources.ExceptionMessages.DivisionsAreNotUniq);
         #endregion
     }
 }

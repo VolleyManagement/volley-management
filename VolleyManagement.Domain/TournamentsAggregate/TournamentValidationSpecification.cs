@@ -26,5 +26,10 @@
                 && (string.IsNullOrEmpty(entity.RegulationsLink)
                       || entity.RegulationsLink.Length <= Constants.Tournament.MAX_REGULATION_LENGTH);
         }
+        public static bool IsDivisionCountValid(IList<Division> divisions)
+        {
+            return divisions.Count >= Constants.Tournament.MIN_DIVISIONS_COUNT
+                && divisions.Count <= Constants.Tournament.MAX_DIVISIONS_COUNT;
+        }
     }
 }

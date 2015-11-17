@@ -46,6 +46,14 @@
         <div class="display-label">@Html.LabelFor(model => model.TransferEnd)</div>
         <div class="display-field">@(((DateTime)Model.TransferEnd).ToShortDateString())</div>
     }
+    @if (Model.Divisions.Count > 1)
+    {
+        <div class="display-label">@Html.LabelFor(model => model.Divisions)</div>
+        foreach (var item in Model.Divisions)
+        {
+            <div class="display-field"><br>@Html.DisplayFor(modelItem => item.Name)</div>
+        }
+    }
 </fieldset>
 <p>
     @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id = Model.Id }) |

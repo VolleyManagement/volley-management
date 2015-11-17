@@ -160,12 +160,14 @@
         public ActionResult Edit(TournamentViewModel tournamentViewModel, List<DivisionViewModel> divisions)
         {
             tournamentViewModel.Divisions = divisions;
+            var newDivisions = divisions.Where(d => d.Id == null).Select(d => d.ToDomain()).ToList();
+
             try
             {
                 if (this.ModelState.IsValid)
                 {
                     var tournament = tournamentViewModel.ToDomain();
-                    this._tournamentService.Edit(tournament);
+                    this._tournamentService.Edit(tournament, newDivisions);
                     return this.RedirectToAction("Index");
                 }
 

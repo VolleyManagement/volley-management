@@ -25,6 +25,7 @@
             this.Scheme = TournamentSchemeEnum.One;
             this.InitializeSeasonsList();
             this.IsTransferEnabled = true;
+            this.Divisions = new List<DivisionViewModel>();
         }
 
         /// <summary>

@@ -137,10 +137,9 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Divisions)
 </div>
-@if (Model.Divisions.Count == 0)
+@if (Model.Divisions == null || Model.Divisions.Count == 0)
 {
     <div id="Divisions" class="editor-field">
-        <input type="text" name="Divisions[0].Id" hidden />
         <br><input type="text" name="Divisions[0].Name">
     </div>
     <input  type="button" 
@@ -150,15 +149,18 @@
 else
 {
     <div id="Divisions" class="editor-field">
-        @for(int i =0; i < Model.Division.Count; i++)
+        @for(int i =0; i < Model.Divisions.Count; i++)
         {
-            <input type="text" name="Divisions[@i].Id" value="@Model.Division[i].Id" hidden />
-            <br><input type="text" name="Divisions[@i].Name" value="@Model.Division[i].Name">
+            <input type="text" name="Divisions[@i].Id" value="@Model.Divisions[i].Id" hidden />
+            <br><input type="text" name="Divisions[@i].Name" value="@Model.Divisions[i].Name">
         }
     </div>
-    int limit = ValidationKeys.MAX_DIVISIONS_COUNT + 1 - Model.Divisions.Count;
-    int startIndex = Model.Divisions.Count - 1;
-    <input  type="button" 
-            value="@Resources.TournamentViews.AddDivision" 
-            onClick="addInput('Divisions', @startIndex, @limit, '@Resources.TournamentViews.DivisionLimit');">
+    if (Model.Divisions.Count < ValidationKeys.MAX_DIVISIONS_COUNT)
+    {
+        int limit = ValidationKeys.MAX_DIVISIONS_COUNT + 1 - Model.Divisions.Count;
+        int startIndex = Model.Divisions.Count - 1;
+        <input  type="button" 
+                value="@Resources.TournamentViews.AddDivision" 
+                onClick="addInput('Divisions', @startIndex, @limit, '@Resources.TournamentViews.DivisionLimit');">
+    }
 }

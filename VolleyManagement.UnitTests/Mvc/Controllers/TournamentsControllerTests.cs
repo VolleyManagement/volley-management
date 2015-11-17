@@ -6,18 +6,16 @@
     using System.Linq;
     using System.Net;
     using System.Web.Mvc;
-
     using Contracts;
     using Contracts.Exceptions;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
@@ -266,6 +264,7 @@
         {
             // Arrange
             var tournamentsController = _kernel.Get<TournamentsController>();
+            List<DivisionViewModel> divisions = GetListOfDivisions();
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
                 .WithName("testName")
                 .WithScheme(TournamentSchemeEnum.Two)
@@ -273,7 +272,7 @@
                 .Build();
 
             // Act
-            var result = tournamentsController.Create(tournamentViewModel) as RedirectToRouteResult;
+            var result = tournamentsController.Create(tournamentViewModel, divisions) as RedirectToRouteResult;
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
@@ -289,12 +288,13 @@
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
             controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
+            List<DivisionViewModel> divisions = GetListOfDivisions();
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
                 .WithName(string.Empty)
                 .Build();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create(tournamentViewModel, divisions));
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Never());
@@ -314,13 +314,14 @@
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason(2015)
                 .Build();
+            List<DivisionViewModel> divisions = GetListOfDivisions();
 
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
                 .Throws(new TournamentValidationException("Message", "ValidationKey", "paramName"));
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create(tournamentViewModel, divisions));
 
             // Assert
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
@@ -339,12 +340,13 @@
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason(2015)
                 .Build();
+            List<DivisionViewModel> divisions = GetListOfDivisions();
             _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
                 .Throws(new Exception());
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
-            var actual = controller.Create(tournamentViewModel);
+            var actual = controller.Create(tournamentViewModel, divisions);
 
             // Assert
             Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
@@ -416,12 +418,13 @@
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason(2015)
                 .Build();
+            List<DivisionViewModel> divisions = GetListOfDivisions();
 
             // Act
-            var result = tournamentsController.Edit(tournamentViewModel) as RedirectToRouteResult;
+            var result = tournamentsController.Edit(tournamentViewModel, divisions) as RedirectToRouteResult;
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>(), It.IsAny<List<Division>>()), Times.Once());
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
@@ -437,12 +440,13 @@
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
                 .WithName(string.Empty)
                 .Build();
+            List<DivisionViewModel> divisions = GetListOfDivisions();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel, divisions));
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>(), It.IsAny<List<Division>>()), Times.Never());
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
         }
 
@@ -459,12 +463,13 @@
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason(2015)
                 .Build();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+            List<DivisionViewModel> divisions = GetListOfDivisions();
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>(), It.IsAny<List<Division>>()))
                 .Throws(new TournamentValidationException());
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel, divisions));
 
             // Assert
             Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
@@ -483,12 +488,13 @@
                 .WithScheme(TournamentSchemeEnum.Two)
                 .WithSeason(2015)
                 .Build();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+            List<DivisionViewModel> divisions = GetListOfDivisions();
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>(), It.IsAny<List<Division>>()))
                 .Throws(new Exception());
             var controller = _kernel.Get<TournamentsController>();
 
             // Act
-            var actual = controller.Edit(tournamentViewModel);
+            var actual = controller.Edit(tournamentViewModel, divisions);
 
             // Assert
             Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
@@ -511,6 +517,15 @@
         private void MockSingleTournament(Tournament testData)
         {
             _tournamentServiceMock.Setup(tr => tr.Get(testData.Id)).Returns(testData);
+        }
+
+        private List<DivisionViewModel> GetListOfDivisions()
+        {
+            return new List<DivisionViewModel>()
+            {
+                new DivisionMvcViewModelBuilder().WithId(1).WithName("Division 1").Build(),
+                new DivisionMvcViewModelBuilder().WithId(2).WithName("Division 2").Build()
+            };
         }
     }
 }

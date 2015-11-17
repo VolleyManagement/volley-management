@@ -299,8 +299,10 @@
             // Assert
             var comparer = new TournamentComparer();
             _tournamentServiceMock.Verify(
-                ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)),
-                Times.Once());
+                                    ts => ts.Edit(
+                                                It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0),
+                                                It.IsAny<List<Division>>()),
+                                    Times.Once());
         }
 
         /// <summary>
@@ -320,7 +322,7 @@
                                                                     .Errors.Count(error => error.ErrorMessage == EXCEPTION_MESSAGE);
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>(), It.IsAny<List<Division>>()), Times.Never());
             Assert.IsNotNull(actualResult);
             Assert.AreEqual(1, actualCorrectErrorCount);
         }
@@ -333,7 +335,7 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>(), It.IsAny<List<Division>>()))
                 .Throws(new TournamentValidationException(EXCEPTION_MESSAGE));
 
             // Act
@@ -341,7 +343,7 @@
             var actual = controller.Put(input) as BadRequestErrorMessageResult;
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>(), It.IsAny<List<Division>>()), Times.Once());
             Assert.IsNotNull(actual);
             Assert.AreEqual<string>(actual.Message, EXCEPTION_MESSAGE);
         }
@@ -354,14 +356,14 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>())).Throws(new Exception());
+            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>(), It.IsAny<List<Division>>())).Throws(new Exception());
 
             // Act
             var input = new TournamentViewModelBuilder().Build();
             var actual = controller.Put(input) is InternalServerErrorResult;
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>(), It.IsAny<List<Division>>()), Times.Once());
             Assert.IsTrue(actual);
         }
 

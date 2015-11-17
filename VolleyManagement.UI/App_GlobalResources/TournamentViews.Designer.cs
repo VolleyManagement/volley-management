@@ -61,6 +61,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить дивизион.
+        /// </summary>
+        public static string AddDivision {
+            get {
+                return ResourceManager.GetString("AddDivision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Назад к списку.
         /// </summary>
         public static string BackToList {

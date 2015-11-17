@@ -69,16 +69,7 @@
         /// <returns>View with specific tournament</returns>
         public ActionResult Details(int id)
         {
-            try
-            {
-                Tournament tournament = this._tournamentService.Get(id);
-                TournamentViewModel tournamentViewModel = TournamentViewModel.Map(tournament);
-                return View(tournamentViewModel);
-            }
-            catch (InvalidOperationException)
-            {
-                return this.HttpNotFound();
-            }
+            return GetTournamentView(id);
         }
 
         /// <summary>
@@ -123,10 +114,6 @@
                 this.ModelState.AddModelError(e.ValidationKey, e.Message);
                 return this.View(tournamentViewModel);
             }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
         }
 
         /// <summary>
@@ -136,16 +123,7 @@
         /// <returns>View to edit specific tournament</returns>
         public ActionResult Edit(int id)
         {
-            try
-            {
-                var tournament = this._tournamentService.Get(id);
-                TournamentViewModel tournamentViewModel = TournamentViewModel.Map(tournament);
-                return this.View(tournamentViewModel);
-            }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
+            return GetTournamentView(id);
         }
 
         /// <summary>
@@ -172,10 +150,6 @@
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(tournamentViewModel);
             }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
         }
 
         /// <summary>
@@ -185,9 +159,7 @@
         /// <returns>View to delete specific tournament</returns>
         public ActionResult Delete(int id)
         {
-            Tournament tournament = this._tournamentService.Get(id);
-            TournamentViewModel tournamentViewModel = TournamentViewModel.Map(tournament);
-            return View(tournament);
+            return GetTournamentView(id);
         }
 
         /// <summary>
@@ -198,24 +170,33 @@
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            // This will return "An error occured in VolleyManagement application."
-            // Please contact site administrator." if tournament doesnt exist
-            // this._tournamentService.Delete(id);
-            // return this.RedirectToAction("Index");
+            var tournament = _tournamentService.Get(id);
 
-            // This will return 404
-            ActionResult result;
-            try
+            if (tournament == null)
             {
-                this._tournamentService.Delete(id);
-                result = this.RedirectToAction("Index");
-            }
-            catch (Exception)
-            {
-                result = this.HttpNotFound();
+                return View("PageNotFound");
             }
 
-            return result;
+            this._tournamentService.Delete(id);
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Gets the view for view model of the tournament with specified identifier.
+        /// </summary>
+        /// <param name="id">Identifier of the tournament.</param>
+        /// <returns>View for view model of the tournament with specified identifier.</returns>
+        private ViewResult GetTournamentView(int id)
+        {
+            var tournament = _tournamentService.Get(id);
+
+            if (tournament == null)
+            {
+                return View("PageNotFound");
+            }
+
+            var tournamentViewModel = TournamentViewModel.Map(tournament);
+            return View(tournamentViewModel);
         }
     }
 }

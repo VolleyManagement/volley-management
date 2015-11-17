@@ -3,6 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
@@ -54,31 +55,24 @@
             {
                 return RedirectToAction("Index");
             }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
         }
 
         /// <summary>
         /// Gets details for specific player
         /// </summary>
         /// <param name="id">Player id.</param>
+        /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific player.</returns>
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string returnUrl = "")
         {
-            Player player;
-            try
+            var player = _playerService.Get(id);
+
+            if (player == null)
             {
-                player = _playerService.Get(id);
-            }
-            catch (MissingEntityException)
-            {
-                return this.HttpNotFound();
+                return View("PageNotFound");
             }
 
-            var referer = (string)RouteData.Values["controller"];
-            var model = new PlayerRefererViewModel(player, referer);
+            var model = new PlayerRefererViewModel(player, returnUrl);
             return View(model);
         }
 
@@ -122,10 +116,6 @@
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(playerViewModel);
             }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
         }
 
         /// <summary>
@@ -159,16 +149,15 @@
         /// <returns>View to edit specific player</returns>
         public ActionResult Edit(int id)
         {
-            try
+            var player = _playerService.Get(id);
+
+            if (player == null)
             {
-                var player = this._playerService.Get(id);
-                PlayerViewModel playerViewModel = PlayerViewModel.Map(player);
-                return this.View(playerViewModel);
+                return View("PageNotFound");
             }
-            catch (MissingEntityException)
-            {
-                return this.HttpNotFound();
-            }
+
+            var playerViewModel = PlayerViewModel.Map(player);
+            return this.View(playerViewModel);
         }
 
         /// <summary>
@@ -211,6 +200,7 @@
         public ActionResult ChoosePlayers(int? page, string textToSearch = "")
         {
             textToSearch = textToSearch.Trim();
+
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
@@ -225,10 +215,6 @@
             catch (ArgumentOutOfRangeException)
             {
                 return RedirectToAction("ChoosePlayers");
-            }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
             }
         }
 

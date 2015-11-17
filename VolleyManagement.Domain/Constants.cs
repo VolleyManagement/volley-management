@@ -145,6 +145,24 @@
             /// Constant defines the transfer end capture
             /// </summary>
             public const string TRANSFER_END_CAPTURE = "Transfer end";
+
+            /// <summary>
+            /// Constant defines minimal value of division count
+            /// </summary>
+            public const int MIN_DIVISIONS_COUNT = 1;
+
+            /// <summary>
+            /// Constant defines maximal value of division count
+            /// </summary>
+            public const int MAX_DIVISIONS_COUNT = 10;
+        }
+
+        /// <summary>
+        /// Container for division constants.
+        /// </summary>
+        public static class Division
+        {
+            public const int MAX_NAME_LENGTH = 60;
         }
 
         /// <summary>

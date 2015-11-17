@@ -32,6 +32,13 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
+            to.Divisions.Clear();
+            foreach (Division division in from.Divisions)
+            {
+                DivisionEntity newDivisionEntity = new DivisionEntity();
+                Map(newDivisionEntity, division);
+                to.Divisions.Add(newDivisionEntity);
+            }
         }
 
         /// <summary>
@@ -48,10 +55,10 @@
             to.CellPhone = from.PhoneNumber;
             to.LoginProviders = from.LoginProviders
                 .Select(l => new LoginInfoEntity
-                                     {
-                                         LoginProvider = l.LoginProvider,
-                                         ProviderKey = l.ProviderKey
-                                     })
+                {
+                    LoginProvider = l.LoginProvider,
+                    ProviderKey = l.ProviderKey
+                })
                                      .ToList();
         }
 
@@ -83,6 +90,18 @@
             to.CaptainId = from.CaptainId;
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
+        }
+
+        /// <summary>
+        /// Maps Division model
+        /// </summary>
+        /// <param name="to">Division entity model</param>
+        /// <param name="from">Division domain model</param>
+        public static void Map(DivisionEntity to, Division from)
+        {
+            to.Id = from.Id;
+            to.Name = from.Name;
+            to.TournamentId = from.TournamentId;
         }
     }
 }

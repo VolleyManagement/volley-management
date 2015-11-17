@@ -3,10 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Data.Queries.Division;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -42,9 +44,8 @@
 
         private readonly IQuery<Tournament, UniqueTournamentCriteria> _uniqueTournamentQuery;
 
-        private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
+        private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllTournamentsQuery;
 
-        private readonly IQuery<List<Division>, FindByIdCriteria> _getDivisionsByTournamentIdQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentByIdQuery;
 
         #endregion
@@ -56,19 +57,21 @@
         /// </summary>
         /// <param name="tournamentRepository"> The tournament repository  </param>
         /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
-        /// <param name="getAllQuery"> Get All object query. </param>
-        /// <param name="getByIdQuery"> Get by ID object query.</param>
+        /// <param name="getAllTournamentQuery"> Get All object query. </param>
+        /// <param name="divisionRepository"> The division repository </param>
+        /// <param name="getAllDivisionsQuery">Get All divisions query.</param>
+        /// <param name="getTournamentByIdQuery">Get tournament by id query.</param>
+        /// <param name="getDivisionByIdQuery"> Get Division by id query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
-            IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
-            IQuery<Tournament, FindByIdCriteria> getTournamentByIdQuery,
-            IQuery<List<Division>, FindByIdCriteria> getDivisionsByTournamentIdQuery)
+            IQuery<List<Tournament>, GetAllCriteria> getAllTournamentQuery,
+            IQuery<Tournament, FindByIdCriteria> getTournamentByIdQuery)
         {
             _tournamentRepository = tournamentRepository;
             this._uniqueTournamentQuery = uniqueTournamentQuery;
-            this._getAllQuery = getAllQuery;
-            this._getByTournamentIdQuery = getByTournamentIdQuery;
+            this._getAllTournamentsQuery = getAllTournamentQuery;
+            this._getTournamentByIdQuery = getTournamentByIdQuery;
         }
 
         #endregion
@@ -81,7 +84,7 @@
         /// <returns>All tournaments</returns>
         public List<Tournament> Get()
         {
-            return _getAllQuery.Execute(new GetAllCriteria());
+            return _getAllTournamentsQuery.Execute(new GetAllCriteria());
         }
 
         /// <summary>
@@ -115,8 +118,14 @@
 
             IsTournamentNameUnique(tournamentToCreate);
             AreDatesValid(tournamentToCreate);
-
+            IsDivisionsCountValid(tournamentToCreate.Divisions);
             AreDivisionsUniq(tournamentToCreate.Divisions);
+
+            foreach (Division division in tournamentToCreate.Divisions)
+            {
+                division.TournamentId = tournamentToCreate.Id;
+            }
+
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -129,7 +138,7 @@
         public Tournament Get(int id)
         {
             var criteria = new FindByIdCriteria { Id = id };
-            return _getByIdQuery.Execute(criteria);
+            return _getTournamentByIdQuery.Execute(criteria);
         }
 
         /// <summary>
@@ -140,8 +149,14 @@
         {
             IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             AreDatesValid(tournamentToEdit);
+            IsDivisionsCountValid(tournamentToEdit.Divisions);
             AreDivisionsUniq(tournamentToEdit.Divisions);
-            foreach(Division division in tournamentToEdit.Divisions) {
+
+            foreach (Division division in tournamentToEdit.Divisions)
+            {
+                division.TournamentId = tournamentToEdit.Id;
+            }
+
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -246,6 +261,7 @@
                     ExceptionParams.START_GAMES_AFTER_END_GAMES,
                     ExceptionParams.GAMES_END_CAPTURE);
             }
+
             IsTrasferPeriodValid(tournament);
         }
 
@@ -313,12 +329,26 @@
             return this.Get().Where(t => statesFilter.Contains(t.State)).ToList();
         }
 
+        private void IsDivisionsCountValid(IList<Division> divisions)
+        {
+            if (!TournamentValidationSpecification.IsDivisionCountValid(divisions))
+            {
+                throw new ArgumentOutOfRangeException(
+                    string.Format(
+                        ServiceResources.ExceptionMessages.OutOfDivisionsCountRange,
+                        Domain.Constants.Tournament.MIN_DIVISIONS_COUNT,
+                        Domain.Constants.Tournament.MAX_DIVISIONS_COUNT));
             }
         }
 
-        private void AreDivisionsUniq(IList<Division> divisions) {
-            if (divisions.Count() != divisions.Distinct().Count()) {
+        private void AreDivisionsUniq(IList<Division> divisions)
+        {
+            if (divisions.Count() != divisions.Distinct().Count())
+            {
                 throw new ArgumentException(ServiceResources.ExceptionMessages.DivisionsAreNotUniq);
+            }
+        }
+
         #endregion
     }
 }

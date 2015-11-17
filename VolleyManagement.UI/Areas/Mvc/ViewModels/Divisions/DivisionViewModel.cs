@@ -14,7 +14,7 @@
         /// <summary>
         /// Gets or sets the division's identifier.
         /// </summary>
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the division's name.
@@ -55,7 +55,7 @@
         {
             return new Division()
             {
-                Id = this.Id.HasValue ? this.Id.Value : 0,
+                Id = this.Id,
                 Name = this.Name,
                 TournamentId = this.TournamentId
             };

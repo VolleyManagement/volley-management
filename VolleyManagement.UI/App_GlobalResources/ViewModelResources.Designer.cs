@@ -131,6 +131,32 @@ namespace VolleyManagement.UI.App_GlobalResources {
                 return ResourceManager.GetString("Divisions", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to Название.
+        /// </summary>
+        public static string DivisionName {
+            get {
+                return ResourceManager.GetString("DivisionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может содержать более {1} символов.
+        /// </summary>
+        public static string DivisionNameMaxLengthErrorMessage {
+            get {
+                return ResourceManager.GetString("DivisionNameMaxLengthErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может быть пустым.
+        /// </summary>
+        public static string DivisionNameRequired {
+            get {
+                return ResourceManager.GetString("DivisionNameRequired", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Конец турнира должен быть после его начала.

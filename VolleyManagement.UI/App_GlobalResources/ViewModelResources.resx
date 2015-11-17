@@ -141,6 +141,15 @@
   <data name="Divisions" xml:space="preserve">
     <value>Дивизионы</value>
   </data>
+  <data name="DivisionName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="DivisionNameMaxLengthErrorMessage" xml:space="preserve">
+    <value>{0} не может содержать более {1} символов</value>
+  </data>
+  <data name="DivisionNameRequired" xml:space="preserve">
+    <value>{0} не может быть пустым</value>
+  </data>
   <data name="EndGamesBeforeStart" xml:space="preserve">
     <value>Конец турнира должен быть после его начала</value>
   </data>

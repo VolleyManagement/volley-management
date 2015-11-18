@@ -183,11 +183,7 @@
             if (tournament.Divisions.Count >= 0)
             {
                 tournamentViewModel.Divisions = new List<DivisionViewModel>();
-                foreach (var d in tournament.Divisions)
-                {
-                    DivisionViewModel division = DivisionViewModel.Map(d);
-                    tournamentViewModel.Divisions.Add(division);
-                }
+                tournamentViewModel.Divisions = tournament.Divisions.Select(d => DivisionViewModel.Map(d)).ToList();
             }
 
             return tournamentViewModel;
@@ -215,11 +211,7 @@
                 TransferEnd = this.TransferEnd
             };
 
-            foreach (var d in this.Divisions)
-            {
-                Division division = d.ToDomain();
-                tournament.Divisions.Add(division);
-            }
+            tournament.Divisions = this.Divisions.Select(d => d.ToDomain()).ToList();
 
             return tournament;
         }

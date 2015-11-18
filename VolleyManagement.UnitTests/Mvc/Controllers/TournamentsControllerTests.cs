@@ -300,6 +300,31 @@
         }
 
         /// <summary>
+        /// Test for Create tournament action with invalid divisions (POST)
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_InvalidDivisionViewModel_ReturnsViewModelToView()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            var divisions = CreateInvalidList();
+            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithName("testName")
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason(2015)
+                .WithDivisions(divisions)
+                .Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Never());
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
         /// Test for Create tournament action (POST)
         /// </summary>
         [TestMethod]
@@ -445,6 +470,32 @@
         }
 
         /// <summary>
+        /// Test for Edit tournament action with invalid divisions (POST)
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_InvalidDivisionViewModel_ReturnsViewModelToView()
+        {
+            // Arrange
+            var controller = _kernel.Get<TournamentsController>();
+            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
+            var divisions = CreateInvalidList();
+            var tournamentViewModel = new TournamentMvcViewModelBuilder()
+                .WithId(1)
+                .WithName("testName")
+                .WithScheme(TournamentSchemeEnum.Two)
+                .WithSeason(2015)
+                .WithDivisions(divisions)
+                .Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
+            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+        }
+
+        /// <summary>
         /// Test for Edit tournament action (POST)
         /// </summary>
         [TestMethod]
@@ -509,6 +560,14 @@
         private void MockSingleTournament(Tournament testData)
         {
             _tournamentServiceMock.Setup(tr => tr.Get(testData.Id)).Returns(testData);
+        }
+
+        private List<DivisionViewModel> CreateInvalidList()
+        {
+            return new List<DivisionViewModel>()
+                {
+                    new DivisionViewModel() { Id = 0, Name = string.Empty }
+                };
         }
     }
 }

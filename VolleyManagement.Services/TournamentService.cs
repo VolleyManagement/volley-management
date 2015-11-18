@@ -46,7 +46,7 @@
 
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
 
-        private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentByIdQuery;
+        private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
 
         #endregion
 
@@ -63,12 +63,12 @@
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
-            IQuery<Tournament, FindByIdCriteria> getTournamentByIdQuery)
+            IQuery<Tournament, FindByIdCriteria> getByIdQuery)
         {
             _tournamentRepository = tournamentRepository;
             this._uniqueTournamentQuery = uniqueTournamentQuery;
             this._getAllQuery = getAllQuery;
-            this._getTournamentByIdQuery = getTournamentByIdQuery;
+            this._getByIdQuery = getByIdQuery;
         }
 
         #endregion
@@ -135,7 +135,7 @@
         public Tournament Get(int id)
         {
             var criteria = new FindByIdCriteria { Id = id };
-            return _getTournamentByIdQuery.Execute(criteria);
+            return _getByIdQuery.Execute(criteria);
         }
 
         /// <summary>

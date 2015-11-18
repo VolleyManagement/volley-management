@@ -67,6 +67,7 @@
             }
 
             var domainTeam = teamViewModel.ToDomain();
+
             try
             {
                 this._teamService.Create(domainTeam);
@@ -83,6 +84,7 @@
             }
 
             bool duringRosterUpdateErrors = false;
+
             if (teamViewModel.Roster != null)
             {
                 duringRosterUpdateErrors = !UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
@@ -109,6 +111,7 @@
         public JsonResult Delete(int id)
         {
             TeamOperationResultViewModel result;
+
             try
             {
                 this._teamService.Delete(id);
@@ -124,6 +127,25 @@
             }
 
             return Json(result, JsonRequestBehavior.DenyGet);
+        }
+
+        /// <summary>
+        /// Details action method for specific team.
+        /// </summary>
+        /// <param name="id">Team ID</param>
+        /// <returns>View with specific team.</returns>
+        public ActionResult Details(int id = 0)
+        {
+            var team = _teamService.Get(id);
+
+            if (team == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl.ToString();
+            var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
+            return View(viewModel);
         }
 
         private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)

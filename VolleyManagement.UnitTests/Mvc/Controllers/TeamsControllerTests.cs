@@ -4,6 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Net;
     using System.Web.Mvc;
 
     using Contracts;
@@ -11,11 +12,15 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.PlayerService;
     using VolleyManagement.UnitTests.Services.TeamService;
 
     /// <summary>
@@ -30,6 +35,11 @@
         private const int SPECIFIED_PLAYER_ID = 4;
         private const string SPECIFIED_PLAYER_NAME = "Test name";
         private const string SPECIFIED_EXCEPTION_MESSAGE = "Test exception message";
+        private const string ACHIEVEMENTS = "TestAchievements";
+        private const string TEAM_NAME = "TestName";
+        private const string PLAYER_FIRSTNAME = "Test";
+        private const string PLAYER_LASTNAME = "Test";
+        private const string COACH = "TestCoach";
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private IKernel _kernel;
@@ -228,6 +238,125 @@
                                       It.Is<int>(pId => pId == SPECIFIED_PLAYER_ID),
                                       It.Is<int>(pId => pId == SPECIFIED_TEAM_ID)),
                              Times.Once());
+        }
+
+        /// <summary>
+        /// Details action method test. Team exists
+        /// </summary>
+        [TestMethod]
+        public void Details_TeamExists_TeamIsReturned()
+        {
+            // Arrange
+            var team = CreateTeam();
+            var captain = CreatePlayer(SPECIFIED_PLAYER_ID);
+            var roster = new PlayerServiceTestFixture()
+                                .TestPlayers()
+                                .AddPlayer(captain)
+                                .Build();
+
+            MockTeamServiceGetTeam(team);
+            _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
+            _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
+
+            var expected = CreateViewModel();
+
+            var sut = _kernel.Get<TeamsController>();
+
+            // Act
+            var actual = TestExtensions.GetModel<TeamViewModel>(sut.Details(SPECIFIED_TEAM_ID));
+
+            // Assert
+            TestHelper.AreEqual<TeamViewModel>(expected, actual, new TeamViewModelComparer());
+        }
+
+        /// <summary>
+        /// Details action test. Team with such id does not exist.
+        /// </summary>
+        [TestMethod]
+        public void Details_TeamDoesNotExist_NotFoundResualt()
+        {
+            // Arrange
+            MockTeamServiceGetTeam(null);
+            var sut = this._kernel.Get<TeamsController>();
+            var expected = (int)HttpStatusCode.NotFound;
+
+            // Act
+            var actual = sut.Details(SPECIFIED_TEAM_ID);
+
+            // Assert
+            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+            Assert.AreEqual(expected, ((HttpNotFoundResult)actual).StatusCode);
+        }
+
+        private Team CreateTeam()
+        {
+            return new TeamBuilder()
+                         .WithId(SPECIFIED_TEAM_ID)
+                         .WithCaptain(SPECIFIED_PLAYER_ID)
+                         .WithCoach(COACH)
+                         .WithAchievements(ACHIEVEMENTS)
+                         .WithName(TEAM_NAME)
+                         .Build();
+        }
+
+        private Player CreatePlayer(int id)
+        {
+            return new PlayerBuilder()
+                        .WithId(id)
+                        .WithFirstName(PLAYER_FIRSTNAME)
+                        .WithLastName(PLAYER_LASTNAME)
+                        .WithTeamId(SPECIFIED_TEAM_ID)
+                        .Build();
+        }
+
+        private PlayerNameViewModel CreatePlayerNameModel(string firstname, string lastname, int id)
+        {
+            return new PlayerNameViewModel()
+            {
+                FullName = string.Format("{1} {0}", firstname, lastname),
+                Id = id
+            };
+        }
+
+        private List<PlayerNameViewModel> CreateRoster()
+        {
+            const int FIRST_PLAYER_ID = 1;
+            const string FIRST_PLAYER_FIRSTNAME = "FirstNameA";
+            const string FIRST_PLAYER_LASTNAME = "LastNameA";
+            const int SECOND_PLAYER_ID = 2;
+            const string SECOND_PLAYER_FIRSTNAME = "FirstNameB";
+            const string SECOND_PLAYER_LASTNAME = "LastNameB";
+            const int THIRD_PLAYER_ID = 3;
+            const string THIRD_PLAYER_FIRSTNAME = "FirstNameC";
+            const string THIRD_PLAYER_LASTNAME = "LastNameC";
+            var roster = new List<PlayerNameViewModel>()
+            {
+                CreatePlayerNameModel(FIRST_PLAYER_FIRSTNAME, FIRST_PLAYER_LASTNAME, FIRST_PLAYER_ID),
+                CreatePlayerNameModel(SECOND_PLAYER_FIRSTNAME, SECOND_PLAYER_LASTNAME, SECOND_PLAYER_ID),
+                CreatePlayerNameModel(THIRD_PLAYER_FIRSTNAME, THIRD_PLAYER_LASTNAME, THIRD_PLAYER_ID),
+                CreatePlayerNameModel(PLAYER_FIRSTNAME, PLAYER_LASTNAME, SPECIFIED_PLAYER_ID)
+            };
+
+            return roster;
+        }
+
+        private TeamViewModel CreateViewModel()
+        {
+            var cap = CreatePlayerNameModel(PLAYER_FIRSTNAME, PLAYER_LASTNAME, SPECIFIED_PLAYER_ID);
+            var players = CreateRoster();
+            return new TeamMvcViewModelBuilder()
+                          .WithId(SPECIFIED_TEAM_ID)
+                          .WithCoach(COACH)
+                          .WithAchievements(ACHIEVEMENTS)
+                          .WithName(TEAM_NAME)
+                          .WithCaptain(cap)
+                          .WithRoster(players)
+                          .Build();
+        }
+
+        private void MockTeamServiceGetTeam(Team team)
+        {
+            _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
         }
     }
 }

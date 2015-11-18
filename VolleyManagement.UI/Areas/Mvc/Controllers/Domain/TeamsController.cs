@@ -14,7 +14,7 @@
     /// </summary>
     public class TeamsController : Controller
     {
-        private const string TEAM_DELETED_SUCCESSFULLY_DESCRITPION = "Команда была успешно удалена.";
+        private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Команда была успешно удалена.";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -117,7 +117,7 @@
                 this._teamService.Delete(id);
                 result = new TeamOperationResultViewModel
                 {
-                    Message = TEAM_DELETED_SUCCESSFULLY_DESCRITPION,
+                    Message = TEAM_DELETED_SUCCESSFULLY_DESCRIPTION,
                     OperationSuccessful = true
                 };
             }

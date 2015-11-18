@@ -49,6 +49,7 @@
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
+                ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl.ToString();
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)

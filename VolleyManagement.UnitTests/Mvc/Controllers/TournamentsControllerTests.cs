@@ -307,7 +307,7 @@
         {
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
-            var divisions = CreateInvalidList();
+            var divisions = CreateInvalidDivisionsList();
             controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
                 .WithName("testName")
@@ -478,7 +478,7 @@
             // Arrange
             var controller = _kernel.Get<TournamentsController>();
             controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
-            var divisions = CreateInvalidList();
+            var divisions = CreateInvalidDivisionsList();
             var tournamentViewModel = new TournamentMvcViewModelBuilder()
                 .WithId(1)
                 .WithName("testName")
@@ -562,7 +562,7 @@
             _tournamentServiceMock.Setup(tr => tr.Get(testData.Id)).Returns(testData);
         }
 
-        private List<DivisionViewModel> CreateInvalidList()
+        private List<DivisionViewModel> CreateInvalidDivisionsList()
         {
             return new List<DivisionViewModel>()
                 {

@@ -180,11 +180,7 @@
                 IsTransferEnabled = tournament.TransferStart == null || tournament.TransferStart == null ? false : true
             };
 
-            if (tournament.Divisions.Count >= 0)
-            {
-                tournamentViewModel.Divisions = new List<DivisionViewModel>();
-                tournamentViewModel.Divisions = tournament.Divisions.Select(d => DivisionViewModel.Map(d)).ToList();
-            }
+            tournamentViewModel.Divisions = tournament.Divisions.Select(d => DivisionViewModel.Map(d)).ToList();
 
             return tournamentViewModel;
         }

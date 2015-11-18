@@ -58,7 +58,7 @@
         /// <param name="tournamentRepository"> The tournament repository  </param>
         /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
         /// <param name="getAllQuery"> Get All object query. </param>
-        /// <param name="getTournamentByIdQuery">Get tournament by id query.</param>
+        /// <param name="getByIdQuery">Get tournament by id query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
@@ -116,7 +116,7 @@
             IsTournamentNameUnique(tournamentToCreate);
             AreDatesValid(tournamentToCreate);
             IsDivisionsCountValid(tournamentToCreate.Divisions);
-            AreDivisionsUniq(tournamentToCreate.Divisions);
+            AreDivisionsUnique(tournamentToCreate.Divisions);
 
             foreach (Division division in tournamentToCreate.Divisions)
             {
@@ -147,7 +147,7 @@
             IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             AreDatesValid(tournamentToEdit);
             IsDivisionsCountValid(tournamentToEdit.Divisions);
-            AreDivisionsUniq(tournamentToEdit.Divisions);
+            AreDivisionsUnique(tournamentToEdit.Divisions);
 
             foreach (Division division in tournamentToEdit.Divisions)
             {
@@ -229,6 +229,15 @@
                     ExceptionParams.APPLYING_START_CAPTURE);
             }
 
+            // if registration period is after games start
+            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
+            {
+                throw new TournamentValidationException(
+                    MessageList.WrongRegistrationGames,
+                    ExceptionParams.APPLYING_END_DATE_AFTER_START_GAMES,
+                    ExceptionParams.GAMES_START_CAPTURE);
+            }
+
             // ToDo: Revisit this requirement
             ////double totalApplyingPeriodDays = (tournament.ApplyingPeriodEnd - tournament.ApplyingPeriodStart).TotalDays;
 
@@ -240,15 +249,6 @@
             ////        ExceptionParams.APPLYING_PERIOD_LESS_THREE_MONTH,
             ////        ExceptionParams.APPLYING_END_CAPTURE);
             ////}
-
-            // if registration period is after games start
-            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
-            {
-                throw new TournamentValidationException(
-                    MessageList.WrongRegistrationGames,
-                    ExceptionParams.APPLYING_END_DATE_AFTER_START_GAMES,
-                    ExceptionParams.GAMES_START_CAPTURE);
-            }
 
             // if tournament start dates goes after tournament end
             if (tournament.GamesStart >= tournament.GamesEnd)
@@ -338,7 +338,7 @@
             }
         }
 
-        private void AreDivisionsUniq(IList<Division> divisions)
+        private void AreDivisionsUnique(IList<Division> divisions)
         {
             foreach (Division division in divisions)
             {

@@ -543,6 +543,106 @@
         }
 
         /// <summary>
+        /// Test for Create() method. List of divisions is empty
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException), "Количество дивизионов не должно выходить за установленный диапазон")]
+        public void Create_TournamentDivisionsIsEmpty_ExceptionThrown()
+        {
+            // Arrange
+            Tournament tournament = new TournamentBuilder()
+                                        .Build();
+            tournament.Divisions.Clear();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(tournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. List of divisions has duplicates
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Дивизионы в рамках турнира не могут иметь одинаковых названий")]
+        public void Create_TournamentDivisionsListHasDuplicates_ExceptionThrown()
+        {
+            // Arrange
+            const string DIVISION_NAME = "Simple Division";
+            List<Division> divisions = new List<Division>
+            {
+                new Division { Name = DIVISION_NAME },
+                new Division { Name = "Division" },
+                new Division { Name = DIVISION_NAME }
+            };
+
+            Tournament tournament = new TournamentBuilder()
+                                        .WithId(FIRST_TOURNAMENT_ID)
+                                        .WithDivisions(divisions)
+                                        .Build();
+
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(tournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Edit() method. List of divisions is empty
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException), "Количество дивизионов не должно выходить за установленный диапазон")]
+        public void Edit_TournamentDivisionsIsEmpty_ExceptionThrown()
+        {
+            // Arrange
+            Tournament tournament = new TournamentBuilder()
+                                        .Build();
+            tournament.Divisions.Clear();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Edit(tournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Edit() method. List of divisions has duplicates
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Дивизионы в рамках турнира не могут иметь одинаковых названий")]
+        public void Edit_TournamentDivisionsListHasDuplicates_ExceptionThrown()
+        {
+            // Arrange
+            const string DIVISION_NAME = "Simple Division";
+            List<Division> divisions = new List<Division>
+            {
+                new Division { Name = DIVISION_NAME },
+                new Division { Name = "Division" },
+                new Division { Name = DIVISION_NAME }
+            };
+
+            Tournament tournament = new TournamentBuilder()
+                                        .WithId(FIRST_TOURNAMENT_ID)
+                                        .WithDivisions(divisions)
+                                        .Build();
+
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Edit(tournament);
+
+            // Assert
+            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+        }
+
+        /// <summary>
         /// GetActual method test. The method should invoke Find() method of ITournamentRepository
         /// </summary>
         public void GetActual_ActualTournamentsRequest_FindCalled()

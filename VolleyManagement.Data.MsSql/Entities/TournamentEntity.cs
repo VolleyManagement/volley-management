@@ -1,6 +1,7 @@
 namespace VolleyManagement.Data.MsSql.Entities
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// DAL tournament model
@@ -66,5 +67,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Gets or sets end of a tournament registration
         /// </summary>
         public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets collection of tournaments divisions
+        /// </summary>
+        public virtual ICollection<DivisionEntity> Divisions { get; set; }
     }
 }

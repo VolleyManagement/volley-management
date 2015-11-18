@@ -44,7 +44,7 @@
 
         private readonly IQuery<Tournament, UniqueTournamentCriteria> _uniqueTournamentQuery;
 
-        private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllTournamentsQuery;
+        private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
 
         private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentByIdQuery;
 
@@ -57,20 +57,17 @@
         /// </summary>
         /// <param name="tournamentRepository"> The tournament repository  </param>
         /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
-        /// <param name="getAllTournamentQuery"> Get All object query. </param>
-        /// <param name="divisionRepository"> The division repository </param>
-        /// <param name="getAllDivisionsQuery">Get All divisions query.</param>
+        /// <param name="getAllQuery"> Get All object query. </param>
         /// <param name="getTournamentByIdQuery">Get tournament by id query.</param>
-        /// <param name="getDivisionByIdQuery"> Get Division by id query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
-            IQuery<List<Tournament>, GetAllCriteria> getAllTournamentQuery,
+            IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getTournamentByIdQuery)
         {
             _tournamentRepository = tournamentRepository;
             this._uniqueTournamentQuery = uniqueTournamentQuery;
-            this._getAllTournamentsQuery = getAllTournamentQuery;
+            this._getAllQuery = getAllQuery;
             this._getTournamentByIdQuery = getTournamentByIdQuery;
         }
 
@@ -84,7 +81,7 @@
         /// <returns>All tournaments</returns>
         public List<Tournament> Get()
         {
-            return _getAllTournamentsQuery.Execute(new GetAllCriteria());
+            return _getAllQuery.Execute(new GetAllCriteria());
         }
 
         /// <summary>
@@ -343,9 +340,12 @@
 
         private void AreDivisionsUniq(IList<Division> divisions)
         {
-            if (divisions.Count() != divisions.Distinct().Count())
+            foreach (Division division in divisions)
             {
-                throw new ArgumentException(ServiceResources.ExceptionMessages.DivisionsAreNotUniq);
+                if (divisions.Where(d => d.Name == division.Name).Count() > 1)
+                {
+                    throw new ArgumentException(ServiceResources.ExceptionMessages.DivisionsAreNotUniq);
+                }
             }
         }
 

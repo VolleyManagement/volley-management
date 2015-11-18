@@ -3,7 +3,6 @@
     using System.Linq;
 
     using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Domain.DivisionAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;

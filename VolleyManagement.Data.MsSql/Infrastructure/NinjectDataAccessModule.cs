@@ -57,7 +57,9 @@
                                   Bind<IPlayerRepository>().To<PlayerRepository>(),
                                   Bind<IContributorTeamRepository>().To<ContributorTeamRepository>(),
                                   Bind<ITeamRepository>().To<TeamRepository>(),
-                                  Bind<IRoleRepository>().To<RoleRepostitory>()
+                                  Bind<IRoleRepository>().To<RoleRepostitory>(),
+                                  Bind<IDivisionRepository>().To<DivisionRepository>()
+
                               };
 
             configs.InScope(_scopeCallback);

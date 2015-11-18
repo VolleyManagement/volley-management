@@ -9,7 +9,7 @@
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Division;
-    using VolleyManagement.Domain.DivisionAggregate;
+    using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
     /// Provides Query Object implementation for Division entity

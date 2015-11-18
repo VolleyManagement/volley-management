@@ -6,7 +6,7 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.MsSql.Mappers;
-    using VolleyManagement.Domain.DivisionAggregate;
+    using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
     /// Defines implementation of the IDivisionRepository contract.

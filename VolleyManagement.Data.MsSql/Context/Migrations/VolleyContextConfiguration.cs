@@ -37,13 +37,13 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 r => r.Name,
                 defaultRoles.ToArray());
 
-            context.ContributorTeam.AddOrUpdate(
-                i => i.Name,
+            var contributorTeams = new[]
+            {
                 new ContributorTeamEntity
                 {
                     Name = "Project Management",
                     CourseDirection = "All",
-                    Contributors = 
+                    Contributors = new List<ContributorEntity> 
                     {
                         new ContributorEntity
                         {
@@ -72,15 +72,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Oleg Shvets",
-                        },
+                            Name = "Oleg Shvets"
+                        }
                      }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-042",
                     CourseDirection = ".NET",
-                    Contributors = 
+                    Contributors = new List<ContributorEntity> 
                     {
                         new ContributorEntity
                         {
@@ -104,15 +104,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Evgenij Kozhan",
-                        },
+                            Name = "Evgenij Kozhan"
+                        }
                     }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-052",
                     CourseDirection = ".NET",
-                    Contributors = 
+                    Contributors = new List<ContributorEntity> 
                     {
                         new ContributorEntity
                         {
@@ -141,15 +141,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Pavel Goncharenko",
-                        },
+                            Name = "Pavel Goncharenko"
+                        }
                     }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-061",
                     CourseDirection = ".NET",
-                    Contributors = 
+                    Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity
                         {
@@ -173,15 +173,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Sergii Kuzmin",
-                        },
+                            Name = "Sergii Kuzmin"
+                        }
                     }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-064",
                     CourseDirection = ".NET",
-                    Contributors =
+                    Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity
                         {
@@ -214,15 +214,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Alexandr Maha",
-                        },
+                            Name = "Alexandr Maha"
+                        }
                     }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-064",
                     CourseDirection = "ATQC",
-                    Contributors = 
+                    Contributors = new List<ContributorEntity> 
                     {
                         new ContributorEntity
                         {
@@ -261,15 +261,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 
                         new ContributorEntity
                         {
-                            Name = "Sergey Bondarenko",
-                        },
+                            Name = "Sergey Bondarenko"
+                        }
                     }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-065",
                     CourseDirection = "UI",
-                    Contributors = 
+                    Contributors = new List<ContributorEntity> 
                     {
                         new ContributorEntity
                         {
@@ -293,15 +293,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Yevhen Alf'orov",
-                        },
+                            Name = "Yevhen Alf'orov"
+                        }
                     }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-070",
                     CourseDirection = "UI",
-                    Contributors =
+                    Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity
                         {
@@ -320,15 +320,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Korostienko Daniil",
-                        },
+                            Name = "Korostienko Daniil"
+                        }
                     }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-072",
                     CourseDirection = ".NET",
-                    Contributors =
+                    Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity
                         {
@@ -357,15 +357,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Dmitriy Shapoval",
-                        },
+                            Name = "Dmitriy Shapoval"
+                        }
                     }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-076",
                     CourseDirection = "ATQC",
-                    Contributors =
+                    Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity
                         {
@@ -394,15 +394,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Artem  Pozdeev",
-                        },
+                            Name = "Artem  Pozdeev"
+                        }
                     }
                 },
                 new ContributorTeamEntity
                 {
                     Name = "Dp-085",
                     CourseDirection = ".NET",
-                    Contributors =
+                    Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity
                         {
@@ -431,10 +431,12 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                         new ContributorEntity
                         {
-                            Name = "Oleksii Khloptsev",
-                        },
+                            Name = "Oleksii Khloptsev"
+                        }
                     }
-                });
+                }
+            };
+            context.ContributorTeam.AddOrUpdate(s => s.Name, contributorTeams);
         }
 
         private static RoleEntity CreateRole(string name)

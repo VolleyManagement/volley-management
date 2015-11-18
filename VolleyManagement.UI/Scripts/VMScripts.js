@@ -15,6 +15,8 @@
                 }
                 currentNs = currentNs[currentName];
             }
+
+            return currentNs;
         }
     };
 })();

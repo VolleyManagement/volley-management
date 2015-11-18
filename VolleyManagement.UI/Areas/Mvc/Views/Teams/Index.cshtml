@@ -29,7 +29,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <input type="button" value="@Resources.TeamViews.Delete" onclick="deleteTeam(@item.Id, '@item.Name')" />
+                <input type="button" value="@Resources.TeamViews.Delete" onclick="VM.team.handlers.deleteTeam(@item.Id, '@item.Name')" />
             </td>
         </tr>
     }

@@ -5,10 +5,11 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
-@using (Html.BeginForm())
+<div vmscope="team_edit">
+    @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
+
     <fieldset>
         <legend>@Resources.TeamViews.TeamLegend</legend>
 
@@ -19,8 +20,9 @@
             <input type="submit" value="@Resources.TeamViews.Save" />
         </p>
     </fieldset>
-}
+    }
 
-<div>
-    @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
+    <div>
+        @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
+    </div>
 </div>

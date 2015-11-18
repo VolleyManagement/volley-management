@@ -2,7 +2,7 @@
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
-</div>
+    </div>
 <div class="editor-label">
     @Html.EditorFor(model => model.Name)
     @Html.ValidationMessageFor(model => model.Name)
@@ -31,24 +31,20 @@
 
     <div class="editor-label">
         <input class="text-box single-line"
-               id="captainFullName"
-               name="Captain.FullName"
-               type="text"
-               value="@captainFullName"
-               readonly />
-        <input type="button"
-               name="openChoosingPlayersButton"
-               value="..."
-               onclick="openChoosingPlayersWindow('ChoosingCaptainWindow')" />
+            id="captainFullName"
+            name="Captain.FullName"
+            type="text"
+            value="@captainFullName"
+            readonly />
         <input class="hidden"
-               id="captainId"
-               name="Captain.Id" 
-               value="@captainId"/>
+            id="captainId"
+            name="Captain.Id"
+            value="@captainId" />
     </div>
 }
-<div class="editor-label">
-    @Html.LabelFor(model => model.Achievements)
-</div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Achievements)
+    </div>
 <div class="editor-label">
     @Html.EditorFor(model => model.Achievements)
     @Html.ValidationMessageFor(model => model.Achievements)
@@ -61,14 +57,12 @@
 
     <br />
 
-    <input type="button" value="@Resources.TeamViews.AddPlayersToRoster" onclick="openChoosingPlayersWindow('ChoosingRosterWindow')">
+    <input type="button" value="@Resources.TeamViews.AddPlayersToRoster" class="addPlayerToTeamButton">
     <table id="teamRoster" class="table">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)
+            <th>@Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)
             </th>
-            <th class="hidden">
-            </th>
+            <th class="hidden"></th>
         </tr>
         @if (Model.Roster != null)
         {
@@ -77,7 +71,7 @@
                 var item = Model.Roster[i];
                 if (item.Id != Model.Captain.Id)
                 {
-                    <tr id="player_@item.Id" class="rosterPlayer">
+                    <tr id="player_@item.Id" class="rosterPlayer teamPlayer">
                         <td>
                             <input type="text" name="Roster[@i].FullName" value="@item.FullName" readonly />
                         </td>
@@ -85,8 +79,9 @@
                             <input type="text" name="Roster[@i].Id" value="@item.Id" hidden />
                         </td>
                     </tr>
-                }
+        }
             }
         }
     </table>
 </div>
+

@@ -241,6 +241,7 @@
                     ExceptionParams.START_GAMES_AFTER_END_GAMES,
                     ExceptionParams.GAMES_END_CAPTURE);
             }
+
             IsTrasferPeriodValid(tournament);
         }
 

@@ -570,14 +570,7 @@
         public void Create_TournamentDivisionsListHasDuplicates_ExceptionThrown()
         {
             // Arrange
-            const string DIVISION_NAME = "Simple Division";
-            List<Division> divisions = new List<Division>
-            {
-                new Division { Name = DIVISION_NAME },
-                new Division { Name = "Division" },
-                new Division { Name = DIVISION_NAME }
-            };
-
+            var divisions = CreateDivisionsCollectionWithDuplicates();
             Tournament tournament = new TournamentBuilder()
                                         .WithId(FIRST_TOURNAMENT_ID)
                                         .WithDivisions(divisions)
@@ -620,14 +613,7 @@
         public void Edit_TournamentDivisionsListHasDuplicates_ExceptionThrown()
         {
             // Arrange
-            const string DIVISION_NAME = "Simple Division";
-            List<Division> divisions = new List<Division>
-            {
-                new Division { Name = DIVISION_NAME },
-                new Division { Name = "Division" },
-                new Division { Name = DIVISION_NAME }
-            };
-
+            var divisions = CreateDivisionsCollectionWithDuplicates();
             Tournament tournament = new TournamentBuilder()
                                         .WithId(FIRST_TOURNAMENT_ID)
                                         .WithDivisions(divisions)
@@ -793,6 +779,21 @@
         {
             _tournamentRepositoryMock.Verify(tr => tr.Add(tournament), times);
             _unitOfWorkMock.Verify(uw => uw.Commit(), times);
+        }
+
+        /// <summary>
+        /// Creates list of divisions with duplicates
+        /// </summary>
+        /// <returns>Collection of divisions</returns>
+        private List<Division> CreateDivisionsCollectionWithDuplicates()
+        {
+            const string DIVISION_NAME = "Simple Division";
+            return new List<Division>
+            {
+                new Division { Name = DIVISION_NAME },
+                new Division { Name = "Division" },
+                new Division { Name = DIVISION_NAME }
+            };
         }
     }
 }

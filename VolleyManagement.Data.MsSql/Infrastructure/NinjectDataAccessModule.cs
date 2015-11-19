@@ -59,7 +59,6 @@
                                   Bind<ITeamRepository>().To<TeamRepository>(),
                                   Bind<IRoleRepository>().To<RoleRepostitory>(),
                                   Bind<IDivisionRepository>().To<DivisionRepository>()
-
                               };
 
             configs.InScope(_scopeCallback);

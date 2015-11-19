@@ -100,7 +100,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureTeams(modelBuilder);
             ConfigureContributors(modelBuilder);
             ConfigureContributorTeams(modelBuilder);
-            ConfigurateDivisions(modelBuilder);
+            ConfigureDivisions(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -404,7 +404,7 @@ namespace VolleyManagement.Data.MsSql.Context
                         });
         }
 
-        private static void ConfigurateDivisions(DbModelBuilder modelBuilder)
+        private static void ConfigureDivisions(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DivisionEntity>()
                 .ToTable(VolleyDatabaseMetadata.DIVISION_TABLE_NAME)

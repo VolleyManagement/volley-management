@@ -4,7 +4,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System.Data.Entity.Migrations;
 
     /// <summary>
-    /// Initial DB migration
+    /// Add division entity
     /// </summary>
     public partial class AddDivisions : DbMigration
     {
@@ -22,7 +22,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         TournamentId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Tournaments", t => t.TournamentId, cascadeDelete: true)
+                .ForeignKey("dbo.Tournaments", t => t.TournamentId, cascadeDelete: false)
                 .Index(t => t.TournamentId);
         }
 

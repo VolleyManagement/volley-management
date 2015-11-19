@@ -570,7 +570,7 @@
         public void Create_TournamentDivisionsListHasDuplicates_ExceptionThrown()
         {
             // Arrange
-            var divisions = CreateDivisionsCollectionWithDuplicates();
+            var divisions = CreateDivisionsListNotUnique();
             Tournament tournament = new TournamentBuilder()
                                         .WithId(FIRST_TOURNAMENT_ID)
                                         .WithDivisions(divisions)
@@ -613,7 +613,7 @@
         public void Edit_TournamentDivisionsListHasDuplicates_ExceptionThrown()
         {
             // Arrange
-            var divisions = CreateDivisionsCollectionWithDuplicates();
+            var divisions = CreateDivisionsListNotUnique();
             Tournament tournament = new TournamentBuilder()
                                         .WithId(FIRST_TOURNAMENT_ID)
                                         .WithDivisions(divisions)
@@ -785,7 +785,7 @@
         /// Creates list of divisions with duplicates
         /// </summary>
         /// <returns>Collection of divisions</returns>
-        private List<Division> CreateDivisionsCollectionWithDuplicates()
+        private List<Division> CreateDivisionsListNotUnique()
         {
             const string DIVISION_NAME = "Simple Division";
             return new List<Division>

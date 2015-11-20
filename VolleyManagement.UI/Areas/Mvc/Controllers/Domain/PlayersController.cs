@@ -210,32 +210,30 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// Returns list of free players which are satisfy specified search string, team and exclude list 
         /// </summary>
         /// <param name="searchString">Name of player</param>
-        /// <param name="includeTeam">Team which players should be included in search results</param>
-        /// <param name="excludeIds">Array of players id will be excluded from search results</param>
+        /// <param name="isCaptain">Sign if this player will be a captain</param>
+        /// <param name="selectedPlayers">list of players ids already selected to team</param>
         /// <returns>List of free players</returns>
-        public JsonResult GetFreePlayers(string searchString, int? includeTeam, string excludeIds)
+        public JsonResult GetFreePlayers(string searchString, bool isCaptain, string selectedPlayers)
         {
-            IEnumerable<int> excludeIdsArray = null;
-            if (!string.IsNullOrEmpty(excludeIds))
+            IEnumerable<int> selectedIds = null;
+            if (!string.IsNullOrEmpty(selectedPlayers))
             {
-                excludeIdsArray = this.GetIntCollection(excludeIds);
+                selectedIds = this.GetIntCollection(selectedPlayers);
             }
 
-            searchString = HttpUtility.UrlDecode(searchString)
-                                      .Trim()
-                                      .Replace(" ", string.Empty);
+            searchString = HttpUtility.UrlDecode(searchString);
 
             var query = this._playerService.Get()
                             .Where(p => (p.FirstName + p.LastName).Contains(searchString));
-                      
-            query = includeTeam.HasValue 
-                    ? query.Where(p => p.TeamId == includeTeam || p.TeamId == null) 
-                    : query.Where(p => p.TeamId == null);
 
-            if (excludeIdsArray != null)
+            if (isCaptain)
             {
-                query = query.Where(p => !excludeIdsArray.Contains(p.Id));
-            }                      
+                query = query.Where(p => selectedIds.Contains(p.Id) || p.TeamId == null);
+            }
+            else
+            {
+                query = query.Where(p => !selectedIds.Contains(p.Id) || p.TeamId == null);
+            }                   
             
             return Json(query.OrderBy(p => p.LastName)
                              .ToList()

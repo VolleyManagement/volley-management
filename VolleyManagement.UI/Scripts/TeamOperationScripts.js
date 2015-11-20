@@ -1,33 +1,115 @@
 ﻿$(document).ready(function () {
-
+    'use strict';
+    
     // register namespace
     var editScope = $("div[vmscope='team_edit']"),
         handlers = VM.addNamespace("team.handlers"),
-        teamId = null,
-        selectedPlayers = [],
-        completerSourceFunc;
+        privateScope = {};
 
-    teamId = (function () {
+    // PRIVATE 
+    
+    privateScope.teamId = (function () {
+
         var teamIdField = $("[name='Id']", editScope);
 
         return null;
+
     })();
+    privateScope.selectedPlayers = [];
 
     //Autocompleter
-    completerSourceFunc = function(requestObj, responseHandler) {
-        var searchString,
-            result;
+    privateScope.getAutocompleteUrl = function (config) {
 
-        if (requestObj.term && requestObj.term.length > 1) {         
-            searchString = encodeURI(requestObj.term);
-            result = "/Mvc/Players/GetFreePlayers?searchString=" + searchString;
-            if (selectedPlayers) {
-                
+        var searchString,
+            isCaptain = "false",
+            selectedPlayers = "null",
+            result = "";
+
+        if (config.searchString) {
+            searchString = encodeURI(config.searchString);
+
+            if (config.isCaptain === true) {
+                isCaptain = "true";
+            }
+            
+            if (privateScope.selectedPlayers.length > 0) {
+                selectedPlayers = privateScope.selectedPlayers.join();
+            }
+
+            result = "/Mvc/Players/GetFreePlayers?searchString=" + searchString + "&isCaptain=" + isCaptain + "&selectedPlayers=" + selectedPlayers;
+        }
+
+        return result;
+    };
+
+    privateScope.executeCompleter = function(url, responseHandler) {
+
+        var processedData = [];
+        
+        if (url) {
+            $.getJSON(url, function (data, status, xhr) {
+                $.each(data, function(item) {
+                    processedData.push({
+                        label: item.FullName,
+                        value: item.Id
+                    });
+                });
+            });
+        }
+        
+        responseHandler(processedData);
+    };
+
+    privateScope.playersCompleterFunc = function (requestObj, responseHandler) {
+        
+        var url = privateScope.getAutocompleteUrl({
+            searchString: requestObj.term,
+            isCaptain: false
+        });
+
+        privateScope.executeCompleter(url, responseHandler);
+    };
+
+    privateScope.onCaptainSelect = function (selectedItem) {
+        var selectedId = selectedItem.value;
+        
+        if ($.inArray(selectedId) === -1) {
+            selectedItem.push(selectedId);
+        }
+    };
+    
+    privateScope.onPlayerSelect = function (selectedItem) {
+        var selectedId = selectedItem.value;
+
+        if ($.inArray(selectedId) === -1) {
+            selectedItem.push(selectedId);
+        }
+    };
+
+    privateScope.captainCompleterFunc = function(requestObj, responseHandler) {
+        'use strict';
+
+        var url = privateScope.getAutocompleteUrl({
+            searchString: requestObj.term,
+            isCaptain: true
+        });
+
+        privateScope.executeCompleter(url, responseHandler);
+    };
+
+    privateScope.allPlayersAreSet = function (rows) {
+
+        var result = true;
+        
+        for (var i = 0; i < rows.length; i++) {
+            if (rows[i].value === "") {
+                result = false;
             }
         }
 
-        return false;
+        return result;
     };
+
 
     // Register handlers
     handlers.deleteTeam = function (teamId, teamName) {
@@ -64,94 +146,7 @@
             "html");
     };
 
-    handlers.openChoosingPlayersWindow = function (windowName) {
-        chosingWindow = window.open("/Mvc/Players/ChoosePlayers",
-            windowName,
-            "width=800, height=400, top =200, left=200, status=0, location=0, resizable=1");
-    };
-
-    handlers.chooseCaptain = function () {
-
-    };
-
-    handlers.printPagesBar = function (currentPage, numberOfPages) {
-
-        var innerHtml = "<nav><ul class='pagination'>";
-        var moveToNextPage = "'changePage(" + (currentPage + 1) + ", " + numberOfPages + ")'";
-        var moveToPrevPage = "'changePage(" + (currentPage - 1) + ", " + numberOfPages + ")'";
-        var moveToFirstPage = "'changePage(1, " + numberOfPages + ")'";
-        var moveToLastPage = "'changePage(" + numberOfPages + ", " + numberOfPages + ")'";
-
-        // move previous page, first page
-        if (currentPage == 1) {
-            innerHtml += "<li class='disabled'><a href='#' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li></li>";
-            innerHtml += "<li class='active'><a href='#'>1 <span class='sr-only'>(current)</span></a></li>";
-        } else {
-            innerHtml += "<li><a href='#' aria-label='Previous' onclick = " + moveToPrevPage + ">";
-            innerHtml += "<span aria-hidden='true'>&laquo;</span></a></li></li>";
-
-            innerHtml += "<li><a href='#' onclick = " + moveToFirstPage + ">1</a></li>";
-        }
-
-        // left "..."
-        if (currentPage > 3) {
-            innerHtml += "<li class='disabled'><a href='#' onclick = " + moveToPrevPage + ">...</a></li></li>";
-        }
-
-        // inner three pages
-
-        // prev
-        if (currentPage > 2) {
-            innerHtml += "<li><a href='#' onclick = " + moveToPrevPage + ">" + (currentPage - 1) + "</a></li></li>";
-        }
-
-        //curr
-        if (currentPage != 1 && currentPage != numberOfPages) {
-            innerHtml += "<li class='active'><a href='#'>" + currentPage + " <span class='sr-only'>(current)</span></a></li>";
-        }
-
-        // next
-        if (currentPage < (numberOfPages - 1)) {
-            innerHtml += "<li><a href='#' onclick = " + moveToNextPage + ">" + (currentPage + 1) + "</a></li></li>";
-        }
-
-        // right "..."
-        if (currentPage < (numberOfPages - 2)) {
-            innerHtml += "<li class='disabled'><a href='#'>...</a></li></li>";
-        }
-
-        // move next page, last page
-        if (currentPage == numberOfPages) {
-            innerHtml += "<li class='active'><a href='#'>" + numberOfPages + " <span class='sr-only'>(current)</span></a></li>";
-            innerHtml += "<li class='disabled'><a href='#' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li></li>";
-        } else {
-            innerHtml += "<li><a href='#' onclick = " + moveToLastPage + ">" + numberOfPages + "</a></li>";
-            innerHtml += "<li><a href='#' aria-label='Next' onclick = " + moveToNextPage + ">";
-            innerHtml += "<span aria-hidden='true'>&raquo;</span></a></li></li>";
-        }
-
-        innerHtml += "</ul></nav>";
-
-        var wrapper = $("#pagesBar ul");
-        wrapper.empty();
-        wrapper.html(innerHtml);
-    };
-
-    handlers.allPlayersAreSet = function (rows) {
-        'use strict';
-
-        for (var i = 0; i < rows.length; i++) {
-            if (rows[i].value === "") {
-                return false;
-            }
-        }
-
-        return true;
-    };
-
-
-
-    handlers.addRowToTeamPlayersTable = function () {
+    handlers.addTeamPlayersRow = function () {
         'use strict';
 
         var teamPlayersTable = $("#teamRoster", editScope),
@@ -159,10 +154,15 @@
                 currentCount = rows.length,
                 template;
 
-        if (handlers.allPlayersAreSet(rows)) {
+        if (privateScope.allPlayersAreSet(rows)) {
             template = "<tr><td><input type='text' name='Roster[" + currentCount + "].FullName' class='teamPlayer'/></td><td></td></tr>";
             $('#teamRoster > tbody:last', editScope).append(template);
-            $('#teamRoster > tbody:last', editScope).autocomlete()
+            $('#teamRoster > tbody:last', editScope).autocomlete({
+                minLength: 2,
+                source: privateScope.playersCompleterFunc,
+                select: privateScope.onPlayerSelect,
+                delay: 500
+            });
         }
 
         //var newElementId = "player_" + id;
@@ -183,6 +183,29 @@
         //    window.opener.$("#captainId").val(id);
         //    window.close();
         //}
+    };
+
+    handlers.deleteTeamPlayersRow = function(deletedId) {
+
+        var indexOfItem = $.inArray(deletedId),
+            rows = $('#teamRoster > tbody:tr', editScope),
+            length = rows.length,
+            row,
+            i;
+
+        if (indexOfItem !== -1) {
+            selectedItem.splice(indexOfItem, 1);
+        }
+
+        for (var i = 0; i < length; i++) {
+            row = rows[i];
+            if ($('.idValueInput', row).val() === deletedId) {
+                row.remove();
+                break;
+            }
+        }
+
+        ;
     };
 
     handlers.showCreateTeamErrors = function showCreateTeamErrors() {

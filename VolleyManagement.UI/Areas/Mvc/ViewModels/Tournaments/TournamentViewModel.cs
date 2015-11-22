@@ -9,6 +9,8 @@
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
+    ﻿using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
+
 
     /// <summary>
     /// TournamentViewModel for Create and Edit actions
@@ -23,6 +25,7 @@
             this.Scheme = TournamentSchemeEnum.One;
             this.InitializeSeasonsList();
             this.IsTransferEnabled = true;
+            this.Divisions = new List<DivisionViewModel>() { new DivisionViewModel() };
         }
 
         /// <summary>
@@ -145,6 +148,12 @@
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
         public DateTime? TransferEnd { get; set; }
 
+        /// <summary>
+        /// List of divisions
+        /// </summary>
+        [Display(Name = "Divisions", ResourceType = typeof(ViewModelResources))]
+        public List<DivisionViewModel> Divisions { get; set; }
+
         #region Factory Methods
 
         /// <summary>
@@ -171,6 +180,8 @@
                 IsTransferEnabled = tournament.TransferStart == null || tournament.TransferStart == null ? false : true
             };
 
+            tournamentViewModel.Divisions = tournament.Divisions.Select(d => DivisionViewModel.Map(d)).ToList();
+
             return tournamentViewModel;
         }
 
@@ -180,7 +191,7 @@
         /// <returns> Domain object </returns>
         public Tournament ToDomain()
         {
-            return new Tournament
+            var tournament = new Tournament
             {
                 Id = this.Id,
                 Name = this.Name,
@@ -195,6 +206,10 @@
                 TransferStart = this.TransferStart,
                 TransferEnd = this.TransferEnd
             };
+
+            tournament.Divisions = this.Divisions.Select(d => d.ToDomain()).ToList();
+
+            return tournament;
         }
         #endregion
 

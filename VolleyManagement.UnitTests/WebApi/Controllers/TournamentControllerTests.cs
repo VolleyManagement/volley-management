@@ -299,8 +299,8 @@
             // Assert
             var comparer = new TournamentComparer();
             _tournamentServiceMock.Verify(
-                ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)),
-                Times.Once());
+                                    ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)),
+                                    Times.Once());
         }
 
         /// <summary>

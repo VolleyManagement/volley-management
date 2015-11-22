@@ -45,7 +45,8 @@
                 x.RegulationsLink == y.RegulationsLink &&
                 x.Season == y.Season &&
                 x.Scheme == y.Scheme &&
-                x.IsTransferEnabled == y.IsTransferEnabled;
+                x.IsTransferEnabled == y.IsTransferEnabled &&
+                x.Divisions.SequenceEqual(y.Divisions, new DivisionViewModelEqualityComparer());
         }
     }
 }

@@ -282,6 +282,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\scripts.js" />
     <Content Include="Scripts\TeamOperationScripts.js" />
+    <Content Include="Scripts\TournamentOperationScripts.js" />
     <Content Include="Scripts\UserActions.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

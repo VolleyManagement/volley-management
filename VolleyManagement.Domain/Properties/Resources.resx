@@ -153,6 +153,9 @@
   <data name="ValidationCellPhone" xml:space="preserve">
     <value>Пожалуйста, введите телефон правильно</value>
   </data>
+  <data name="ValidationDivisionName" xml:space="preserve">
+    <value>Пожалуйста, введите название дивизиона правильно</value>
+  </data>
   <data name="ValidationEmail" xml:space="preserve">
     <value>Пожалуйста, введите email правильно</value>
   </data>

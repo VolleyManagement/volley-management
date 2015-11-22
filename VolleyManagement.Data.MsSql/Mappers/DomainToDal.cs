@@ -32,6 +32,7 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
+            to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
         }
 
         /// <summary>
@@ -83,6 +84,21 @@
             to.CaptainId = from.CaptainId;
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
+        }
+
+        /// <summary>
+        /// Maps Team model.
+        /// </summary>
+        /// <param name="to">Team Entity model</param>
+        /// <param name="from">Team Domain model</param>
+        public static DivisionEntity Map(Division from)
+        {
+            return new DivisionEntity
+            {
+                Id = from.Id,
+                Name = from.Name,
+                tournamentId = from.TournamentId
+            };
         }
 
         /// <summary>

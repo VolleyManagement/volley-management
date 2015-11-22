@@ -3,10 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Data.Queries.Division;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -56,7 +58,7 @@
         /// <param name="tournamentRepository"> The tournament repository  </param>
         /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
         /// <param name="getAllQuery"> Get All object query. </param>
-        /// <param name="getByIdQuery"> Get by ID object query.</param>
+        /// <param name="getByIdQuery">Get tournament by id query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
@@ -113,6 +115,13 @@
 
             IsTournamentNameUnique(tournamentToCreate);
             AreDatesValid(tournamentToCreate);
+            IsDivisionsCountValid(tournamentToCreate.Divisions);
+            AreDivisionsUnique(tournamentToCreate.Divisions);
+
+            foreach (Division division in tournamentToCreate.Divisions)
+            {
+                division.TournamentId = tournamentToCreate.Id;
+            }
 
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
@@ -137,6 +146,14 @@
         {
             IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             AreDatesValid(tournamentToEdit);
+            IsDivisionsCountValid(tournamentToEdit.Divisions);
+            AreDivisionsUnique(tournamentToEdit.Divisions);
+
+            foreach (Division division in tournamentToEdit.Divisions)
+            {
+                division.TournamentId = tournamentToEdit.Id;
+            }
+
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -212,6 +229,15 @@
                     ExceptionParams.APPLYING_START_CAPTURE);
             }
 
+            // if registration period is after games start
+            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
+            {
+                throw new TournamentValidationException(
+                    MessageList.WrongRegistrationGames,
+                    ExceptionParams.APPLYING_END_DATE_AFTER_START_GAMES,
+                    ExceptionParams.GAMES_START_CAPTURE);
+            }
+
             // ToDo: Revisit this requirement
             ////double totalApplyingPeriodDays = (tournament.ApplyingPeriodEnd - tournament.ApplyingPeriodStart).TotalDays;
 
@@ -223,15 +249,6 @@
             ////        ExceptionParams.APPLYING_PERIOD_LESS_THREE_MONTH,
             ////        ExceptionParams.APPLYING_END_CAPTURE);
             ////}
-
-            // if registration period is after games start
-            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
-            {
-                throw new TournamentValidationException(
-                    MessageList.WrongRegistrationGames,
-                    ExceptionParams.APPLYING_END_DATE_AFTER_START_GAMES,
-                    ExceptionParams.GAMES_START_CAPTURE);
-            }
 
             // if tournament start dates goes after tournament end
             if (tournament.GamesStart >= tournament.GamesEnd)
@@ -307,6 +324,29 @@
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
         {
             return this.Get().Where(t => statesFilter.Contains(t.State)).ToList();
+        }
+
+        private void IsDivisionsCountValid(IList<Division> divisions)
+        {
+            if (!TournamentValidationSpecification.IsDivisionCountValid(divisions))
+            {
+                throw new ArgumentOutOfRangeException(
+                    string.Format(
+                        ServiceResources.ExceptionMessages.OutOfDivisionsCountRange,
+                        Domain.Constants.Tournament.MIN_DIVISIONS_COUNT,
+                        Domain.Constants.Tournament.MAX_DIVISIONS_COUNT));
+            }
+        }
+
+        private void AreDivisionsUnique(IList<Division> divisions)
+        {
+            foreach (Division division in divisions)
+            {
+                if (divisions.Where(d => d.Name == division.Name).Count() > 1)
+                {
+                    throw new ArgumentException(ServiceResources.ExceptionMessages.DivisionsAreNotUniq);
+                }
+            }
         }
 
         #endregion

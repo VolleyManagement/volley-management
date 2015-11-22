@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -15,6 +16,8 @@
 
         public const int TRANSFER_PERIOD_MONTH = 6;
 
+        public const int TOURNAMENT_DEFAULT_ID = 1;
+
         /// <summary>
         /// Holds test tournament instance
         /// </summary>
@@ -27,7 +30,7 @@
         {
             this._tournament = new Tournament
             {
-                Id = 1,
+                Id = TOURNAMENT_DEFAULT_ID,
                 Name = "Name",
                 Description = "Description 1",
                 Season = 2014,
@@ -38,8 +41,21 @@
                 GamesStart = new DateTime(2015, 09, 03),
                 GamesEnd = new DateTime(2015, 12, 03),
                 TransferStart = new DateTime(2015, 10, 01),
-                TransferEnd = new DateTime(2015, 11, 01)
+                TransferEnd = new DateTime(2015, 11, 01),
+                Divisions = this.Divisions
             };
+        }
+
+        private List<Division> Divisions
+        {
+            get
+            {
+                return new List<Division>
+                {
+                    new Division() { Id = 1, TournamentId = TOURNAMENT_DEFAULT_ID, Name = "Division 1" },
+                    new Division() { Id = 2, TournamentId = TOURNAMENT_DEFAULT_ID, Name = "Division 2" }
+                };
+            }
         }
 
         /// <summary>
@@ -182,6 +198,17 @@
         {
             this._tournament.TransferStart = null;
             this._tournament.TransferEnd = null;
+            return this;
+        }
+
+        /// <summary>
+        /// Set divisions list
+        /// </summary>
+        /// <param name="divisions">Divisions list</param>
+        /// <returns>Test tournament</returns>
+        public TournamentBuilder WithDivisions(List<Division> divisions)
+        {
+            this._tournament.Divisions = divisions;
             return this;
         }
 

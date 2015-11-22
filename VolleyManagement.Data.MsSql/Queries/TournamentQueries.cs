@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
@@ -101,7 +100,14 @@
                         ApplyingPeriodStart = t.ApplyingPeriodStart,
                         ApplyingPeriodEnd = t.ApplyingPeriodEnd,
                         TransferEnd = t.TransferEnd,
-                        TransferStart = t.TransferStart
+                        TransferStart = t.TransferStart,
+                        Divisions = t.Divisions.Select(
+                                            d => new Division
+                                            {
+                                                Id = d.Id,
+                                                Name = d.Name,
+                                                TournamentId = d.TournamentId
+                                            }).ToList()
                     };
         }
 

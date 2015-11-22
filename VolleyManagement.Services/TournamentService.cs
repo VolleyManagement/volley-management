@@ -118,11 +118,6 @@
             IsDivisionsCountValid(tournamentToCreate.Divisions);
             AreDivisionsUnique(tournamentToCreate.Divisions);
 
-            foreach (Division division in tournamentToCreate.Divisions)
-            {
-                division.TournamentId = tournamentToCreate.Id;
-            }
-
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -148,11 +143,6 @@
             AreDatesValid(tournamentToEdit);
             IsDivisionsCountValid(tournamentToEdit.Divisions);
             AreDivisionsUnique(tournamentToEdit.Divisions);
-
-            foreach (Division division in tournamentToEdit.Divisions)
-            {
-                division.TournamentId = tournamentToEdit.Id;
-            }
 
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();

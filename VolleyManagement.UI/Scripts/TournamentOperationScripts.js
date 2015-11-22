@@ -5,10 +5,11 @@ function addInput(startIndex, limit, alertMsg) {
         alert(alertMsg);
     }
     else {
-        divisionInput = $("#Divisions_0__Name");
         divisionName = "Divisions[" + (counter + startIndex) + "].Name";
         divisionId = "Divisions_" + (counter + startIndex) + "__Name";
-        divisionInput.attr("id", divisionId).attr("name", divisionName);
-        $("#Divisions").appendChild(divisionInput);
+        var newElem = $('#Division0').clone().attr('id', 'Division' + (counter + startIndex));
+        newElem.children(':first').attr('id', divisionId).attr('name', divisionName).attr('value', '');
+        $("#Divisions").append(newElem);
+        counter++;
     }
 }

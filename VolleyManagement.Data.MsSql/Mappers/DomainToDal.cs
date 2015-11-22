@@ -32,7 +32,23 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-            to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
+            ////check old divisions to update them
+            foreach (var division in to.Divisions)
+            {
+                if (division.Tournament != null)
+                {
+                    var divisionFrom = from.Divisions.Where(d => d.Id == division.Id).SingleOrDefault();
+                    division.Name = divisionFrom.Name;
+                }
+            }
+            ////add new division entries to the tournament
+            foreach (var divisionFrom in from.Divisions)
+            {
+                if (divisionFrom.Id == 0)
+                {
+                    to.Divisions.Add(Map(divisionFrom));
+                }
+            }
         }
 
         /// <summary>
@@ -87,17 +103,17 @@
         }
 
         /// <summary>
-        /// Maps Team model.
+        /// Maps Division model.
         /// </summary>
-        /// <param name="to">Team Entity model</param>
-        /// <param name="from">Team Domain model</param>
+        /// <param name="from">Division Domain model</param>
+        /// <returns>Division Entity model</returns>
         public static DivisionEntity Map(Division from)
         {
             return new DivisionEntity
             {
                 Id = from.Id,
                 Name = from.Name,
-                tournamentId = from.TournamentId
+                TournamentId = from.TournamentId
             };
         }
 

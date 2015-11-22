@@ -182,7 +182,8 @@ namespace VolleyManagement.Data.MsSql.Context
             modelBuilder.Entity<TournamentEntity>()
                 .HasMany(d => d.Divisions)
                 .WithRequired(d => d.Tournament)
-                .HasForeignKey(d => d.TournamentId);
+                .HasForeignKey(d => d.TournamentId)
+                .WillCascadeOnDelete(false);
         }
 
         private static void ConfigureUsers(DbModelBuilder modelBuilder)

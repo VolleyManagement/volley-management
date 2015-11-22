@@ -1,21 +1,14 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Net;
     using System.Web.Mvc;
-
     using Contracts;
     using Contracts.Exceptions;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
@@ -36,30 +29,17 @@
         private const string ROUTE_VALUES_KEY = "action";
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
-        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
         private IKernel _kernel;
 
         /// <summary>
-        /// Initializes test data
+        /// Initializes test data.
         /// </summary>
         [TestInitialize]
         public void TestInit()
         {
             this._kernel = new StandardKernel();
-            this._kernel.Bind<ITournamentService>()
-                   .ToConstant(this._tournamentServiceMock.Object);
-            this._timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 04, 01));
-            TimeProvider.Current = this._timeMock.Object;
-        }
-
-        /// <summary>
-        /// Cleanup test data
-        /// </summary>
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            TimeProvider.ResetToDefault();
+            this._kernel.Bind<ITournamentService>().ToConstant(this._tournamentServiceMock.Object);
         }
 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
@@ -33,22 +32,15 @@
         /// <returns>View with collection of contributors teams</returns>
         public ActionResult Index()
         {
-            try
-            {
-                var contributors = this._contributorTeamService.Get().ToList();
-                var contributorsTeamView = new List<ContributorsTeamViewModel>();
+            var contributors = this._contributorTeamService.Get().ToList();
+            var contributorsTeamView = new List<ContributorsTeamViewModel>();
 
-                foreach (var item in contributors)
-                {
-                    contributorsTeamView.Add(ContributorsTeamViewModel.Map(item));
-                }
-
-               return View(contributorsTeamView);
-            }
-            catch (Exception)
+            foreach (var item in contributors)
             {
-                return this.HttpNotFound();
+                contributorsTeamView.Add(ContributorsTeamViewModel.Map(item));
             }
+
+            return View(contributorsTeamView);
         }
     }
 }

@@ -1,19 +1,13 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Net;
-    using System.Web.Mvc;
-
     using Contracts;
-    using Contracts.Exceptions;
     using Domain.ContributorsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -26,35 +20,31 @@
     [TestClass]
     public class ContributorsTeamControllerTests
     {
-        private readonly ContributorTeamServiceTestFixture _testFixture = new ContributorTeamServiceTestFixture();
         private readonly Mock<IContributorTeamService> _contributorTeamServiceMock = new Mock<IContributorTeamService>();
 
         private IKernel _kernel;
 
         /// <summary>
-        /// Initializes test data
+        /// Initializes test data.
         /// </summary>
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IContributorTeamService>()
-                   .ToConstant(_contributorTeamServiceMock.Object);
+            this._kernel = new StandardKernel();
+            this._kernel.Bind<IContributorTeamService>().ToConstant(this._contributorTeamServiceMock.Object);
         }
 
         /// <summary>
-        /// Test for Index action. The action should return not empty contributors team list
+        /// Test for Index method. All contributors are requested. All contributors are returned.
         /// </summary>
         [TestMethod]
-        public void Index_ContributorsExist_ContributorsReturned()
+        public void Index_GetAllContributors_AllContributorsAreReturned()
         {
             // Arrange
-            var testData = _testFixture.TestContributors()
-                                       .Build();
-            MockContributorsTeam(testData);
-            var sut = this._kernel.Get<ContributorsTeamController>();
-
-            var expected = CreateContributorsTeamViewModelList();
+            var testData = MakeTestContributorTeams();
+            var expected = MakeTestContributorTeamViewModels();
+            var sut = GetSystemUnderTest();
+            MockSetupGetAll(testData);
 
             // Act
             var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
@@ -64,49 +54,45 @@
         }
 
         /// <summary>
-        /// Test with negative scenario for Index action.
-        /// The action should thrown Argument null exception
+        /// Makes contributor teams filled with test data.
         /// </summary>
-        [TestMethod]
-        public void Index_ContributorsDoNotExist_ExceptionThrown()
+        /// <returns>List of contributor teams with test data.</returns>
+        private List<ContributorTeam> MakeTestContributorTeams()
         {
-            // Arrange
-            this._contributorTeamServiceMock.Setup(tr => tr.Get())
-                .Throws(new ArgumentNullException());
-
-            var sut = this._kernel.Get<ContributorsTeamController>();
-            var expected = (int)HttpStatusCode.NotFound;
-
-            // Act
-            var actual = (sut.Index() as HttpNotFoundResult).StatusCode;
-
-            // Assert
-            Assert.AreEqual(expected, actual);
+            return new ContributorTeamServiceTestFixture().TestContributors().Build();
         }
 
         /// <summary>
-        /// Mocks test data
+        /// Sets up a mock for Get method of ContributorTeam service to return specified contributor teams.
         /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockContributorsTeam(IEnumerable<ContributorTeam> testData)
+        /// <param name="teams">Contributor teams that will be returned by Get method of ContributorTeam service.</param>
+        private void MockSetupGetAll(List<ContributorTeam> teams)
         {
-            this._contributorTeamServiceMock.Setup(cn => cn.Get())
-                .Returns(testData.AsQueryable());
+            this._contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams.AsQueryable());
         }
 
         /// <summary>
-        /// Creates new list of ContributorsTeamViewModel test data
+        /// Makes view models of contributor team filled with test data.
         /// </summary>
-        /// <returns>List of ContributorsTeamViewModel</returns>
-        private List<ContributorsTeamViewModel> CreateContributorsTeamViewModelList()
+        /// <returns>List of view models of contributor team with test data.</returns>
+        private List<ContributorsTeamViewModel> MakeTestContributorTeamViewModels()
         {
-            var contributorTeams = _testFixture.TestContributors().Build();
-            return contributorTeams.Select(c => new ContributorTeamMvcViewModelBuilder()
-                                                .WithId(c.Id)
-                                                .WithName(c.Name)
-                                                .WithcourseDirection(c.CourseDirection)
-                                                .Withcontributors(c.Contributors.ToList())
-                                                .Build()).ToList();
+            return MakeTestContributorTeams().Select(ct => new ContributorTeamMvcViewModelBuilder()
+                .WithId(ct.Id)
+                .WithName(ct.Name)
+                .WithCourseDirection(ct.CourseDirection)
+                .WithContributors(ct.Contributors.ToList())
+                .Build())
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets system being tested by a unit test.
+        /// </summary>
+        /// <returns>System being tested by a unit test.</returns>
+        private ContributorsTeamController GetSystemUnderTest()
+        {
+            return this._kernel.Get<ContributorsTeamController>();
         }
     }
 }

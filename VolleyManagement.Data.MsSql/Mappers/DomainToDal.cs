@@ -84,5 +84,20 @@
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
         }
+
+       /// <summary>
+       /// Maps group model
+       /// </summary>
+       /// <param name="from">Group to map</param>
+       /// <returns>Dal entity</returns>
+        public static GroupEntity Map(Group from)
+        {
+            return new GroupEntity
+            {
+                Id = from.Id,
+                Name = from.Name,
+                DivisionId = from.DivisionId
+            };
+        }
     }
 }

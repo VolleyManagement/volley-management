@@ -80,5 +80,13 @@
         {
             public const int MAX_NAME_LENGTH = 256;
         }
+
+        /// <summary>
+        /// Group entity validation constants
+        /// </summary>
+        public static class Group
+        {
+            public const int MAX_GROUP_NAME_LENGTH = 60;
+        }
     }
 }

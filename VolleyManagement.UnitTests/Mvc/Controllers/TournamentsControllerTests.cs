@@ -30,8 +30,14 @@
     public class TournamentsControllerTests
     {
         private const int TEST_TOURNAMENT_ID = 1;
+        private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
+        private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
+        private const string INDEX_ACTION_NAME = "Index";
+        private const string ROUTE_VALUES_KEY = "action";
+
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+
         private IKernel _kernel;
 
         /// <summary>
@@ -78,6 +84,24 @@
             // Assert
             CollectionAssert.AreEqual(expectedCurrentTournaments, actualCurrentTournaments, new TournamentComparer());
             CollectionAssert.AreEqual(expectedUpcomingTournaments, actualUpcomingTournaments, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// Test for GetFinished method. Finished tournaments are requested. JsonResult with finished tournaments is returned.
+        /// </summary>
+        [TestMethod]
+        public void GetFinished_GetFinishedTournaments_JsonResultIsReturned()
+        {
+            // Arrange
+            var testData = MakeTestTournaments();
+            var sut = GetSystemUnderTest();
+            MockSetupGetFinished(testData);
+
+            // Act
+            var result = sut.GetFinished();
+
+            // Assert
+            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
@@ -149,7 +173,7 @@
 
             // Assert
             VerifyCreate(Times.Once());
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            VerifyRedirect(INDEX_ACTION_NAME, result);
         }
 
         /// <summary>
@@ -169,7 +193,7 @@
 
             // Assert
             VerifyCreate(Times.Once());
-            Assert.IsNotNull(result, "View model must be returned to user.");
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
@@ -182,14 +206,14 @@
             // Arrange
             var testData = MakeTestTournamentViewModel();
             var sut = GetSystemUnderTest();
-            sut.ModelState.AddModelError("Error", "An error occurred");
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create(testData));
 
             // Assert
             VerifyCreate(Times.Never());
-            Assert.IsNotNull(result, "Invalid view model must be returned to user.");
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
@@ -244,7 +268,7 @@
 
             // Assert
             VerifyEdit(Times.Once());
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            VerifyRedirect(INDEX_ACTION_NAME, result);
         }
 
         /// <summary>
@@ -264,7 +288,7 @@
 
             // Assert
             VerifyEdit(Times.Once());
-            Assert.IsNotNull(result, "View model must be returned to user.");
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
@@ -277,14 +301,14 @@
             // Arrange
             var testData = MakeTestTournamentViewModel();
             var sut = GetSystemUnderTest();
-            sut.ModelState.AddModelError("Error", "An error occurred");
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(testData));
 
             // Assert
             VerifyEdit(Times.Never());
-            Assert.IsNotNull(result, "Invalid view model must be returned to user.");
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
@@ -359,7 +383,7 @@
 
             // Assert
             VerifyDelete(Times.Once());
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            VerifyRedirect(INDEX_ACTION_NAME, result);
         }
 
         /// <summary>
@@ -430,6 +454,15 @@
         }
 
         /// <summary>
+        /// Sets up a mock for GetFinished method of Tournament service to return specified tournaments.
+        /// </summary>
+        /// <param name="tournaments">Tournament that will be returned by GetFinished method of Tournament service.</param>
+        private void MockSetupGetFinished(List<Tournament> tournaments)
+        {
+            this._tournamentServiceMock.Setup(tr => tr.GetFinished()).Returns(tournaments);
+        }
+
+        /// <summary>
         /// Sets up a mock for Get method of Tournament service with any parameter to return specified tournament.
         /// </summary>
         /// <param name="tournament">Tournament that will be returned by Get method of Tournament service.</param>
@@ -444,7 +477,7 @@
         private void MockSetupCreateTournamentValidationException()
         {
             this._tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Throws(new TournamentValidationException("Message", "ValidationKey", "ParamName"));
+                .Throws(new TournamentValidationException(string.Empty, string.Empty, string.Empty));
         }
 
         /// <summary>
@@ -453,7 +486,7 @@
         private void MockSetupEditTournamentValidationException()
         {
             this._tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
-                .Throws(new TournamentValidationException("Message", "ValidationKey", "ParamName"));
+                .Throws(new TournamentValidationException(string.Empty, string.Empty, string.Empty));
         }
 
         /// <summary>
@@ -481,6 +514,16 @@
         private void VerifyDelete(Times times)
         {
             this._tournamentServiceMock.Verify(ts => ts.Delete(It.IsAny<int>()), times);
+        }
+
+        /// <summary>
+        /// Verifies that redirect to specified action takes place.
+        /// </summary>
+        /// <param name="actionName">Name of the action where we are supposed to be redirected.</param>
+        /// <param name="result">Actual redirection result.</param>
+        private void VerifyRedirect(string actionName, RedirectToRouteResult result)
+        {
+            Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
         }
     }
 }

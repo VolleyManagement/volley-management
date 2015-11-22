@@ -29,13 +29,9 @@
     [TestClass]
     public class TournamentsControllerTests
     {
-        /// <summary>
-        /// TimeProvider mock
-        /// </summary>
-        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
-
-        private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
+        private const int TEST_TOURNAMENT_ID = 1;
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
         private IKernel _kernel;
 
         /// <summary>
@@ -61,47 +57,17 @@
         }
 
         /// <summary>
-        /// Index action test. The method should invoke GetActual() method of ITournamentService
-        /// </summary>
-        public void Index_ActualTournamentsRequest_GetActualCalled()
-        {
-            // Act
-            var sut = this._kernel.Get<TournamentsController>();
-            sut.Index();
-
-            // Assert
-            _tournamentServiceMock.Verify(m => m.GetActual(), Times.Once());
-        }
-
-        /// <summary>
-        /// Index action test. The action should return TournamentsCollectionsViewModel
-        /// with two correct collections of tournaments: Current and Upcoming
+        /// Test for Index method. Actual tournaments (current and upcoming) are requested. Actual tournaments are returned.
         /// </summary>
         [TestMethod]
-        public void Index_ActualTournamentsRequest_CorrectCollectionsReturned()
+        public void Index_GetActualTournaments_ActualTournamentsAreReturned()
         {
             // Arrange
-            var testData = _testFixture.TestTournaments().Build();
-
-            this._tournamentServiceMock.Setup(tr => tr.GetActual())
-                .Returns(testData);
-
-            var sut = this._kernel.Get<TournamentsController>();
-
-            DateTime now = TimeProvider.Current.UtcNow;
-
-            var expectedCurrentTournaments = new TournamentServiceTestFixture()
-                                            .TestTournaments()
-                                            .Build().Where(tr => tr.GamesStart <= now
-                                                && tr.GamesEnd >= now)
-                                            .ToList();
-
-            var expectedUpcomingTournaments = new TournamentServiceTestFixture()
-                                            .TestTournaments()
-                                            .Build().Where(tr => tr.GamesStart > now
-                                                && tr.GamesStart <= now.AddMonths(
-                                                Constants.Tournament.UPCOMING_TOURNAMENTS_MONTH_LIMIT))
-                                            .ToList();
+            var testData = MakeTestTournaments();
+            var expectedCurrentTournaments = GetTournamentsWithState(testData, TournamentStateEnum.Current);
+            var expectedUpcomingTournaments = GetTournamentsWithState(testData, TournamentStateEnum.Upcoming);
+            var sut = GetSystemUnderTest();
+            MockSetupGetActual(testData);
 
             // Act
             var actualCurrentTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(sut.Index())
@@ -115,402 +81,406 @@
         }
 
         /// <summary>
-        /// Test for Details()
+        /// Test for Details method. Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
         [TestMethod]
-        public void Details_TournamentDoesNotExist_NotFoundResult()
+        public void Details_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            this._tournamentServiceMock.Setup(tr => tr.Get(It.IsAny<int>()))
-                .Throws(new InvalidOperationException());
-
-            var sut = this._kernel.Get<TournamentsController>();
-            var expected = (int)HttpStatusCode.NotFound;
+            var sut = GetSystemUnderTest();
+            MockSetupGet(null as Tournament);
 
             // Act
-            var actual = (sut.Details(It.IsAny<int>()) as HttpNotFoundResult).StatusCode;
+            var result = sut.Details(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
 
         /// <summary>
-        /// Test for Details()
+        /// Test for Details method. Tournament with specified identifier exists. View model of Tournament is returned.
         /// </summary>
         [TestMethod]
-        public void Details_TournamentExists_TournamentIsReturned()
+        public void Details_ExistingTournament_TournamentViewModelIsReturned()
         {
             // Arrange
-            int searchId = 11;
-
-            _tournamentServiceMock.Setup(tr => tr.Get(It.IsAny<int>()))
-                .Returns(new TournamentBuilder()
-                .WithId(searchId)
-                .WithName("Tournament 11")
-                .WithDescription("Tournament 11 description")
-                .WithSeason(2014)
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('11')")
-                .Build());
-
-            var controller = this._kernel.Get<TournamentsController>();
-
-            var expected = new TournamentMvcViewModelBuilder()
-                .WithId(searchId)
-                .WithName("Tournament 11")
-                .WithDescription("Tournament 11 description")
-                .WithSeason(2014)
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('11')")
-                .Build();
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
+            var sut = GetSystemUnderTest();
+            MockSetupGet(testData);
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Details(searchId));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Details(TEST_TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
-        /// Test for Delete tournament action
+        /// Test for Create method (GET action). Tournament view model is requested. Tournament view model is returned.
         /// </summary>
         [TestMethod]
-        public void DeleteGetAction_Tournament_ReturnsToTheView()
+        public void CreateGetAction_GetTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
-            var controller = _kernel.Get<TournamentsController>();
-            var tournament = new TournamentBuilder()
-                            .WithId(1)
-                            .WithName("MyTournament")
-                            .WithDescription("Hello!")
-                            .WithScheme(TournamentSchemeEnum.Two)
-                            .WithSeason(2016)
-                            .WithRegulationsLink("google.com.ua")
-                            .Build();
-            MockSingleTournament(tournament);
-            var expected = new TournamentBuilder()
-                                        .WithId(1)
-                                        .WithName("MyTournament")
-                                        .WithDescription("Hello!")
-                                        .WithScheme(TournamentSchemeEnum.Two)
-                                        .WithSeason(2016)
-                                        .WithRegulationsLink("google.com.ua")
-                                        .Build();
-
-            // Act
-            var actual = TestExtensions.GetModel<Tournament>(controller.Delete(tournament.Id));
-
-            // Assert
-            TestHelper.AreEqual<Tournament>(expected, actual, new TournamentComparer());
-        }
-
-        /// <summary>
-        /// Test for DeleteConfirmed method. The method should invoke Delete() method of ITournamentService
-        /// and redirect to Index.
-        /// </summary>
-        public void DeleteConfirmed_TournamentExists_TournamentIsDeleted()
-        {
-            // Arrange
-            int tournamentIdToDelete = 4;
-
-            // Act
-            var sut = this._kernel.Get<TournamentsController>();
-            var actual = sut.DeleteConfirmed(tournamentIdToDelete) as RedirectToRouteResult;
-
-            // Assert
-            _tournamentServiceMock.Verify(m => m.Delete(It.Is<int>(id => id == tournamentIdToDelete)), Times.Once());
-            Assert.AreEqual("Index", actual.RouteValues["action"]);
-        }
-
-        /// <summary>
-        /// Test for DeleteConfirmed method where input parameter is tournament id, which doesn't exist in database.
-        /// The method should return HttpNotFound.
-        /// </summary>
-        [TestMethod]
-        public void DeleteConfirmed_TournamentDoesntExist_HttpNotFoundReturned()
-        {
-            // Arrange
-            int tournamentIdToDelete = 4;
-            _tournamentServiceMock.Setup(ts => ts.Delete(4)).Throws<InvalidOperationException>();
-
-            // Act
-            var sut = this._kernel.Get<TournamentsController>();
-            var actual = sut.DeleteConfirmed(tournamentIdToDelete);
-
-            // Assert
-            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
-        }
-
-        /// <summary>
-        /// Test for Create tournament action (GET)
-        /// </summary>
-        [TestMethod]
-        public void Create_GetView_ReturnsViewWithDefaultData()
-        {
-            // Arrange
-            var controller = _kernel.Get<TournamentsController>();
             var expected = new TournamentViewModel();
+            var sut = GetSystemUnderTest();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create());
+            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Create());
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
-        /// Test for Create tournament action (POST)
+        /// Test for Create method (POST action). Tournament view model is valid and no exception is thrown during creation.
+        /// Tournament is created successfully and user is redirected to the Index page.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_ValidTournamentViewModel_RedirectToIndex()
+        public void CreatePostAction_ValidTournamentViewModelNoException_TournamentIsCreated()
         {
             // Arrange
-            var tournamentsController = _kernel.Get<TournamentsController>();
-            var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithName("testName")
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason(2015)
-                .Build();
+            var testData = MakeTestTournamentViewModel();
+            var sut = GetSystemUnderTest();
 
             // Act
-            var result = tournamentsController.Create(tournamentViewModel) as RedirectToRouteResult;
+            var result = sut.Create(testData) as RedirectToRouteResult;
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Once());
+            VerifyCreate(Times.Once());
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
         /// <summary>
-        /// Test for Create tournament action with invalid view model (POST)
+        /// Test for Create method (POST action). Tournament view model is valid, but exception is thrown during creation.
+        /// Tournament view model is returned.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_InvalidTournamentViewModel_ReturnsViewModelToView()
+        public void CreatePostAction_ValidTournamentViewModelWithException_TournamentViewModelIsReturned()
         {
             // Arrange
-            var controller = _kernel.Get<TournamentsController>();
-            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
-            var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithName(string.Empty)
-                .Build();
+            var testData = MakeTestTournamentViewModel();
+            var sut = GetSystemUnderTest();
+            MockSetupCreateTournamentValidationException();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create(testData));
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+            VerifyCreate(Times.Once());
+            Assert.IsNotNull(result, "View model must be returned to user.");
         }
 
         /// <summary>
-        /// Test for Create tournament action (POST)
+        /// Test for Create method (POST action). Tournament view model is not valid.
+        /// Tournament is not created and tournament view model is returned.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_ArgumentException_ExceptionThrown()
+        public void CreatePostAction_InvalidTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
-            var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithId(1)
-                .WithName("testName")
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason(2015)
-                .Build();
-
-            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Throws(new TournamentValidationException("Message", "ValidationKey", "paramName"));
-            var controller = _kernel.Get<TournamentsController>();
+            var testData = MakeTestTournamentViewModel();
+            var sut = GetSystemUnderTest();
+            sut.ModelState.AddModelError("Error", "An error occurred");
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Create(tournamentViewModel));
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create(testData));
 
             // Assert
-            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+            VerifyCreate(Times.Never());
+            Assert.IsNotNull(result, "Invalid view model must be returned to user.");
         }
 
         /// <summary>
-        /// Test for Create tournament action (POST)
+        /// Test for Edit method (GET action). Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_GeneralException_ExceptionThrown()
+        public void EditGetAction_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithId(1)
-                .WithName("testName")
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason(2015)
-                .Build();
-            _tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
-                .Throws(new Exception());
-            var controller = _kernel.Get<TournamentsController>();
+            var sut = GetSystemUnderTest();
+            MockSetupGet(null as Tournament);
 
             // Act
-            var actual = controller.Create(tournamentViewModel);
+            var result = sut.Edit(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
 
         /// <summary>
-        /// Test for Edit tournament action (GET)
+        /// Test for Edit method (GET action). Tournament with specified identifier exists. View model of Tournament is returned.
         /// </summary>
         [TestMethod]
-        public void EditGetAction_TournamentViewModel_ReturnsToTheView()
+        public void EditGetAction_ExistingTournament_TournamentViewModelIsReturned()
         {
             // Arrange
-            var controller = _kernel.Get<TournamentsController>();
-            var tournament = new TournamentBuilder()
-                            .WithId(1)
-                            .WithName("test tournament")
-                            .WithDescription("Volley")
-                            .WithScheme(TournamentSchemeEnum.Two)
-                            .WithSeason(2016)
-                            .WithRegulationsLink("volley.dp.ua")
-                            .Build();
-            MockSingleTournament(tournament);
-            var expected = new TournamentMvcViewModelBuilder()
-                                        .WithId(1)
-                                        .WithName("test tournament")
-                                        .WithDescription("Volley")
-                                        .WithScheme(TournamentSchemeEnum.Two)
-                                        .WithSeason(2016)
-                                        .WithRegulationsLink("volley.dp.ua")
-                                        .Build();
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
+            var sut = GetSystemUnderTest();
+            MockSetupGet(testData);
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournament.Id));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
-        /// Test for Edit tournament action (GET)
+        /// Test for Edit method (POST action). Tournament view model is valid and no exception is thrown during editing.
+        /// Tournament is updated successfully and user is redirected to the Index page.
         /// </summary>
         [TestMethod]
-        public void EditGetAction_GeneralException_ExceptionThrown()
+        public void EditPostAction_ValidTournamentViewModelNoException_TournamentIsUpdated()
         {
             // Arrange
-            var tournamentId = 5;
-            _tournamentServiceMock.Setup(ts => ts.Get(tournamentId))
-               .Throws(new Exception());
-            var controller = _kernel.Get<TournamentsController>();
+            var testData = MakeTestTournamentViewModel();
+            var sut = GetSystemUnderTest();
 
             // Act
-            var actual = controller.Edit(tournamentId);
+            var result = sut.Edit(testData) as RedirectToRouteResult;
 
             // Assert
-            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
-        }
-
-        /// <summary>
-        /// Test for Edit tournament action (POST)
-        /// </summary>
-        [TestMethod]
-        public void EditPostAction_ValidTournamentViewModel_RedirectToIndex()
-        {
-            // Arrange
-            var tournamentsController = _kernel.Get<TournamentsController>();
-            var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithId(1)
-                .WithName("testName")
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason(2015)
-                .Build();
-
-            // Act
-            var result = tournamentsController.Edit(tournamentViewModel) as RedirectToRouteResult;
-
-            // Assert
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Once());
+            VerifyEdit(Times.Once());
             Assert.AreEqual("Index", result.RouteValues["action"]);
         }
 
         /// <summary>
-        /// Test for Edit tournament action with invalid model (POST)
+        /// Test for Edit method (POST action). Tournament view model is valid, but exception is thrown during editing.
+        /// Tournament view model is returned.
         /// </summary>
         [TestMethod]
-        public void EditPostAction_InvalidTournamentViewModel_ReturnsViewModelToView()
+        public void EditPostAction_ValidTournamentViewModelWithException_TournamentViewModelIsReturned()
         {
             // Arrange
-            var controller = _kernel.Get<TournamentsController>();
-            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
-            var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithName(string.Empty)
-                .Build();
+            var testData = MakeTestTournamentViewModel();
+            var sut = GetSystemUnderTest();
+            MockSetupEditTournamentValidationException();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(testData));
 
             // Assert
-            _tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), Times.Never());
-            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+            VerifyEdit(Times.Once());
+            Assert.IsNotNull(result, "View model must be returned to user.");
         }
 
         /// <summary>
-        /// Test for Edit tournament action (POST)
+        /// Test for Edit method (POST action). Tournament view model is not valid.
+        /// Tournament is not updated and tournament view model is returned.
         /// </summary>
         [TestMethod]
-        public void EditPostAction_ArgumentException_ExceptionThrown()
+        public void EditPostAction_InvalidTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
-            var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithId(1)
-                .WithName("testName")
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason(2015)
-                .Build();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
-                .Throws(new TournamentValidationException());
-            var controller = _kernel.Get<TournamentsController>();
+            var testData = MakeTestTournamentViewModel();
+            var sut = GetSystemUnderTest();
+            sut.ModelState.AddModelError("Error", "An error occurred");
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(controller.Edit(tournamentViewModel));
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(testData));
 
             // Assert
-            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+            VerifyEdit(Times.Never());
+            Assert.IsNotNull(result, "Invalid view model must be returned to user.");
         }
 
         /// <summary>
-        /// Test for Edit tournament action (POST)
+        /// Test for Delete method (GET action). Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
         [TestMethod]
-        public void EditPostAction_GeneralException_ExceptionThrown()
+        public void DeleteGetAction_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            var tournamentViewModel = new TournamentMvcViewModelBuilder()
-                .WithId(1)
-                .WithName("testName")
-                .WithScheme(TournamentSchemeEnum.Two)
-                .WithSeason(2015)
-                .Build();
-            _tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
-                .Throws(new Exception());
-            var controller = _kernel.Get<TournamentsController>();
+            var sut = GetSystemUnderTest();
+            MockSetupGet(null as Tournament);
 
             // Act
-            var actual = controller.Edit(tournamentViewModel);
+            var result = sut.Delete(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
 
         /// <summary>
-        /// Mocks test data
+        /// Test for Delete method (GET action). Tournament with specified identifier exists. View model of Tournament is returned.
         /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockTournaments(List<Tournament> testData)
+        [TestMethod]
+        public void DeleteGetAction_ExistingTournament_TournamentViewModelIsReturned()
         {
-            this._tournamentServiceMock.Setup(tr => tr.Get())
-                .Returns(testData);
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
+            var sut = GetSystemUnderTest();
+            MockSetupGet(testData);
+
+            // Act
+            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Delete(TEST_TOURNAMENT_ID));
+
+            // Assert
+            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
         /// <summary>
-        /// Mocks test data
+        /// Test for DeleteConfirmed method (delete POST action). Tournament with specified identifier does not exist.
+        /// HttpNotFoundResult is returned.
         /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockSingleTournament(Tournament testData)
+        [TestMethod]
+        public void DeletePostAction_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
-            _tournamentServiceMock.Setup(tr => tr.Get(testData.Id)).Returns(testData);
+            // Arrange
+            var sut = GetSystemUnderTest();
+            MockSetupGet(null as Tournament);
+
+            // Act
+            var result = sut.DeleteConfirmed(TEST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyDelete(Times.Never());
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Test for DeleteConfirmed method (delete POST action). Tournament with specified identifier exists.
+        /// Tournament is deleted successfully and user is redirected to the Index page.
+        /// </summary>
+        [TestMethod]
+        public void DeletePostAction_ExistingTournament_TournamentIsDeleted()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var sut = GetSystemUnderTest();
+            MockSetupGet(testData);
+
+            // Act
+            var result = sut.DeleteConfirmed(TEST_TOURNAMENT_ID) as RedirectToRouteResult;
+
+            // Assert
+            VerifyDelete(Times.Once());
+            Assert.AreEqual("Index", result.RouteValues["action"]);
+        }
+
+        /// <summary>
+        /// Makes tournaments filled with test data.
+        /// </summary>
+        /// <returns>List of tournaments with test data.</returns>
+        private List<Tournament> MakeTestTournaments()
+        {
+            return new TournamentServiceTestFixture().TestTournaments().Build();
+        }
+
+        /// <summary>
+        /// Makes tournament with specified identifier filled with test data.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>Tournament filled with test data.</returns>
+        private Tournament MakeTestTournament(int tournamentId)
+        {
+            return new TournamentBuilder().WithId(tournamentId).Build();
+        }
+
+        /// <summary>
+        /// Makes tournament view model filled with test data.
+        /// </summary>
+        /// <returns>Tournament view model filled with test data.</returns>
+        private TournamentViewModel MakeTestTournamentViewModel()
+        {
+            return new TournamentMvcViewModelBuilder().Build();
+        }
+
+        /// <summary>
+        /// Makes tournament view model with specified tournament identifier filled with test data.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>Tournament view model filled with test data.</returns>
+        private TournamentViewModel MakeTestTournamentViewModel(int tournamentId)
+        {
+            return new TournamentMvcViewModelBuilder().WithId(tournamentId).Build();
+        }
+
+        /// <summary>
+        /// Gets tournaments with specified state.
+        /// </summary>
+        /// <param name="tournaments">List of tournaments to filter.</param>
+        /// <param name="state">Tournament state.</param>
+        /// <returns>List of tournaments with specified state.</returns>
+        private List<Tournament> GetTournamentsWithState(List<Tournament> tournaments, TournamentStateEnum state)
+        {
+            return tournaments.Where(tr => tr.State == state).ToList();
+        }
+
+        /// <summary>
+        /// Gets system being tested by a unit test.
+        /// </summary>
+        /// <returns>System being tested by a unit test.</returns>
+        private TournamentsController GetSystemUnderTest()
+        {
+            return this._kernel.Get<TournamentsController>();
+        }
+
+        /// <summary>
+        /// Sets up a mock for GetActual method of Tournament service to return specified tournaments.
+        /// </summary>
+        /// <param name="tournaments">Tournament that will be returned by GetActual method of Tournament service.</param>
+        private void MockSetupGetActual(List<Tournament> tournaments)
+        {
+            this._tournamentServiceMock.Setup(tr => tr.GetActual()).Returns(tournaments);
+        }
+
+        /// <summary>
+        /// Sets up a mock for Get method of Tournament service with any parameter to return specified tournament.
+        /// </summary>
+        /// <param name="tournament">Tournament that will be returned by Get method of Tournament service.</param>
+        private void MockSetupGet(Tournament tournament)
+        {
+            this._tournamentServiceMock.Setup(tr => tr.Get(It.IsAny<int>())).Returns(tournament);
+        }
+
+        /// <summary>
+        /// Sets up a mock for Create method of Tournament service to throw TournamentValidationException.
+        /// </summary>
+        private void MockSetupCreateTournamentValidationException()
+        {
+            this._tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
+                .Throws(new TournamentValidationException("Message", "ValidationKey", "ParamName"));
+        }
+
+        /// <summary>
+        /// Sets up a mock for Edit method of Tournament service to throw TournamentValidationException.
+        /// </summary>
+        private void MockSetupEditTournamentValidationException()
+        {
+            this._tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+                .Throws(new TournamentValidationException("Message", "ValidationKey", "ParamName"));
+        }
+
+        /// <summary>
+        /// Verifies that tournament is created required number of times.
+        /// </summary>
+        /// <param name="times">Number of times tournament must be created.</param>
+        private void VerifyCreate(Times times)
+        {
+            this._tournamentServiceMock.Verify(ts => ts.Create(It.IsAny<Tournament>()), times);
+        }
+
+        /// <summary>
+        /// Verifies that tournament is updated required number of times.
+        /// </summary>
+        /// <param name="times">Number of times tournament must be updated.</param>
+        private void VerifyEdit(Times times)
+        {
+            this._tournamentServiceMock.Verify(ts => ts.Edit(It.IsAny<Tournament>()), times);
+        }
+
+        /// <summary>
+        /// Verifies that tournament is deleted required number of times.
+        /// </summary>
+        /// <param name="times">Number of times tournament must be deleted.</param>
+        private void VerifyDelete(Times times)
+        {
+            this._tournamentServiceMock.Verify(ts => ts.Delete(It.IsAny<int>()), times);
         }
     }
 }

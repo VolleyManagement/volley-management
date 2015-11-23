@@ -32,7 +32,7 @@
         /// Gets all contributors teams from ContributorService
         /// </summary>
         /// <returns>View with collection of contributors teams</returns>
-        [OutputCache(Duration = 2000, Location = OutputCacheLocation.Any)]
+        [OutputCache(Duration = 100000, Location = OutputCacheLocation.Any)]
         public ActionResult Index()
         {
             try

@@ -28,14 +28,17 @@
         /// </summary>
         private readonly IPlayerService _playerService;
 
+        private readonly IHttpContextService _httpContentService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class
         /// </summary>
-        /// <param name="playerSerivce">Instance of the class that implements
+        /// <param name="playerService">Instance of the class that implements
         /// IPlayerService.</param>
-        public PlayersController(IPlayerService playerSerivce)
+        public PlayersController(IPlayerService playerService, IHttpContextService httpContentService)
         {
-            _playerService = playerSerivce;
+            this._playerService = playerService;
+            this._httpContentService = httpContentService;
         }
 
         /// <summary>
@@ -49,6 +52,7 @@
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
+                ViewBag.ReturnUrl = this._httpContentService.Request.RawUrl;
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)

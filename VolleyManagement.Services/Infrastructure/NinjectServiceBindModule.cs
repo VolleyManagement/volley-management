@@ -44,7 +44,8 @@
                                   Bind<ITeamService>().To<TeamService>(),
                                   Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
                                   Bind<IVolleyUserStore>().To<VolleyUserStore>(),
-                                  Bind<IRolesService>().To<RolesService>()
+                                  Bind<IRolesService>().To<RolesService>(),
+                                  Bind<IHttpContextService>().To<HttpContextService>()
                               };
             configs.InScope(_scopeCallback);
         }

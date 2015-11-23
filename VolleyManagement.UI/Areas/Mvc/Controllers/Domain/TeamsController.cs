@@ -21,14 +21,17 @@
         /// </summary>
         private readonly ITeamService _teamService;
 
+        private readonly IHttpContextService _httpContentService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
         /// <param name="teamService">Instance of the class that implements
         /// ITeamService.</param>
-        public TeamsController(ITeamService teamService)
+        public TeamsController(ITeamService teamService, IHttpContextService httpContentService)
         {
-            _teamService = teamService;
+            this._teamService = teamService;
+            this._httpContentService = httpContentService;
         }
 
         /// <summary>
@@ -143,7 +146,7 @@
                 return HttpNotFound();
             }
 
-            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl.ToString();
+            ViewBag.ReturnUrl = this._httpContentService.Request.RawUrl;
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             return View(viewModel);
         }

@@ -10,8 +10,9 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using ExceptionParams = VolleyManagement.Domain.Constants.Tournament;
-    using MessageList = VolleyManagement.Domain.Properties.Resources;
+    using DivisionConstants = VolleyManagement.Domain.Constants.Division;
+    using TournamentConstants = VolleyManagement.Domain.Constants.Tournament;
+    using TournamentResources = VolleyManagement.Domain.Properties.Resources;
 
     /// <summary>
     /// Defines TournamentService
@@ -56,7 +57,7 @@
         /// <param name="tournamentRepository"> The tournament repository  </param>
         /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
         /// <param name="getAllQuery"> Get All object query. </param>
-        /// <param name="getByIdQuery"> Get by ID object query.</param>
+        /// <param name="getByIdQuery">Get tournament by id query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
@@ -113,6 +114,20 @@
 
             IsTournamentNameUnique(tournamentToCreate);
             AreDatesValid(tournamentToCreate);
+            IsDivisionsCountWithinRange(tournamentToCreate.Divisions.Count);
+            AreDivisionNamesUnique(tournamentToCreate.Divisions);
+
+            foreach (Division division in tournamentToCreate.Divisions)
+            {
+                division.TournamentId = tournamentToCreate.Id;
+                IsGroupsCountWithinRange(division.Groups.Count);
+                AreGroupNamesUnique(division.Groups);
+
+                foreach (Group group in division.Groups)
+                {
+                    group.DivisionId = division.Id;
+                }
+            }
 
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
@@ -137,6 +152,21 @@
         {
             IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             AreDatesValid(tournamentToEdit);
+            IsDivisionsCountWithinRange(tournamentToEdit.Divisions.Count);
+            AreDivisionNamesUnique(tournamentToEdit.Divisions);
+
+            foreach (Division division in tournamentToEdit.Divisions)
+            {
+                division.TournamentId = tournamentToEdit.Id;
+                IsGroupsCountWithinRange(division.Groups.Count);
+                AreGroupNamesUnique(division.Groups);
+
+                foreach (Group group in division.Groups)
+                {
+                    group.DivisionId = division.Id;
+                }
+            }
+
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -180,8 +210,8 @@
             if (tournament != null)
             {
                 throw new TournamentValidationException(
-                    MessageList.TournamentNameMustBeUnique,
-                    ExceptionParams.UNIQUE_NAME_KEY,
+                    TournamentResources.TournamentNameMustBeUnique,
+                    TournamentConstants.UNIQUE_NAME_KEY,
                     "Name");
             }
         }
@@ -198,18 +228,27 @@
             if (TimeProvider.Current.UtcNow >= tournament.ApplyingPeriodStart)
             {
                 throw new TournamentValidationException(
-                    MessageList.LateRegistrationDates,
-                    ExceptionParams.APPLYING_START_BEFORE_NOW,
-                    ExceptionParams.APPLYING_START_CAPTURE);
+                    TournamentResources.LateRegistrationDates,
+                    TournamentConstants.APPLYING_START_BEFORE_NOW,
+                    TournamentConstants.APPLYING_START_CAPTURE);
             }
 
             // if registration start date after end date
             if (tournament.ApplyingPeriodStart >= tournament.ApplyingPeriodEnd)
             {
                 throw new TournamentValidationException(
-                    MessageList.WrongRegistrationDatesPeriod,
-                    ExceptionParams.APPLYING_START_DATE_AFTER_END_DATE,
-                    ExceptionParams.APPLYING_START_CAPTURE);
+                    TournamentResources.WrongRegistrationDatesPeriod,
+                    TournamentConstants.APPLYING_START_DATE_AFTER_END_DATE,
+                    TournamentConstants.APPLYING_START_CAPTURE);
+            }
+
+            // if registration period is after games start
+            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
+            {
+                throw new TournamentValidationException(
+                    TournamentResources.WrongRegistrationGames,
+                    TournamentConstants.APPLYING_END_DATE_AFTER_START_GAMES,
+                    TournamentConstants.GAMES_START_CAPTURE);
             }
 
             // ToDo: Revisit this requirement
@@ -224,23 +263,15 @@
             ////        ExceptionParams.APPLYING_END_CAPTURE);
             ////}
 
-            // if registration period is after games start
-            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
-            {
-                throw new TournamentValidationException(
-                    MessageList.WrongRegistrationGames,
-                    ExceptionParams.APPLYING_END_DATE_AFTER_START_GAMES,
-                    ExceptionParams.GAMES_START_CAPTURE);
-            }
-
             // if tournament start dates goes after tournament end
             if (tournament.GamesStart >= tournament.GamesEnd)
             {
                 throw new TournamentValidationException(
-                    MessageList.WrongStartTournamentDates,
-                    ExceptionParams.START_GAMES_AFTER_END_GAMES,
-                    ExceptionParams.GAMES_END_CAPTURE);
+                    TournamentResources.WrongStartTournamentDates,
+                    TournamentConstants.START_GAMES_AFTER_END_GAMES,
+                    TournamentConstants.GAMES_END_CAPTURE);
             }
+
             IsTrasferPeriodValid(tournament);
         }
 
@@ -261,51 +292,91 @@
             if (tournament.TransferStart.HasValue && !tournament.TransferEnd.HasValue)
             {
                 throw new TournamentValidationException(
-                    MessageList.TransferEndMissing,
-                    ExceptionParams.TRANSFER_END_MISSING,
-                    ExceptionParams.TRANSFER_END_CAPTURE);
+                    TournamentResources.TransferEndMissing,
+                    TournamentConstants.TRANSFER_END_MISSING,
+                    TournamentConstants.TRANSFER_END_CAPTURE);
             }
 
             // if transfer start missing
             if (!tournament.TransferStart.HasValue && tournament.TransferEnd.HasValue)
             {
                 throw new TournamentValidationException(
-                    MessageList.TransferStartMissing,
-                    ExceptionParams.TRANSFER_START_MISSING,
-                    ExceptionParams.TRANSFER_START_CAPTURE);
+                    TournamentResources.TransferStartMissing,
+                    TournamentConstants.TRANSFER_START_MISSING,
+                    TournamentConstants.TRANSFER_START_CAPTURE);
             }
 
             // if games date go after transfer start
             if (tournament.GamesStart >= tournament.TransferStart.GetValueOrDefault())
             {
                 throw new TournamentValidationException(
-                    MessageList.WrongTransferStart,
-                    ExceptionParams.TRANSFER_PERIOD_BEFORE_GAMES_START,
-                    ExceptionParams.TRANSFER_START_CAPTURE);
+                    TournamentResources.WrongTransferStart,
+                    TournamentConstants.TRANSFER_PERIOD_BEFORE_GAMES_START,
+                    TournamentConstants.TRANSFER_START_CAPTURE);
             }
 
             // if transfer start goes after transfer end
             if (tournament.TransferStart.GetValueOrDefault() >= tournament.TransferEnd.GetValueOrDefault())
             {
                 throw new TournamentValidationException(
-                    MessageList.WrongTransferPeriod,
-                    ExceptionParams.TRANSFER_END_BEFORE_TRANSFER_START,
-                    ExceptionParams.TRANSFER_END_CAPTURE);
+                    TournamentResources.WrongTransferPeriod,
+                    TournamentConstants.TRANSFER_END_BEFORE_TRANSFER_START,
+                    TournamentConstants.TRANSFER_END_CAPTURE);
             }
 
             // if transfer end is before tournament end date
             if (tournament.TransferEnd.GetValueOrDefault() >= tournament.GamesEnd)
             {
                 throw new TournamentValidationException(
-                    MessageList.InvalidTransferEndpoint,
-                    ExceptionParams.TRANSFER_END_AFTER_GAMES_END,
-                    ExceptionParams.GAMES_END_CAPTURE);
+                    TournamentResources.InvalidTransferEndpoint,
+                    TournamentConstants.TRANSFER_END_AFTER_GAMES_END,
+                    TournamentConstants.GAMES_END_CAPTURE);
             }
         }
 
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
         {
             return this.Get().Where(t => statesFilter.Contains(t.State)).ToList();
+        }
+
+        private void IsDivisionsCountWithinRange(int count)
+        {
+            if (!TournamentValidationSpecification.IsDivisionCountWithinRange(count))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        TournamentResources.DivisionsCountOutOfRange,
+                        TournamentConstants.MIN_DIVISIONS_COUNT,
+                        TournamentConstants.MAX_DIVISIONS_COUNT));
+            }
+        }
+
+        private void AreDivisionNamesUnique(List<Division> divisions)
+        {
+            if (divisions.Select(d => new { d.Name }).Distinct().Count() != divisions.Count)
+            {
+                throw new ArgumentException(TournamentResources.DivisionNamesNotUnique);
+            }
+        }
+
+        private void IsGroupsCountWithinRange(int count)
+        {
+            if (!DivisionValidation.IsGroupsCountWithinRange(count))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    TournamentResources.GroupsCountOutOfRange,
+                    DivisionConstants.MIN_GROUPS_COUNT,
+                    DivisionConstants.MAX_GROUPS_COUNT));
+            }
+        }
+
+        private void AreGroupNamesUnique(List<Group> groups)
+        {
+            if (groups.Select(g => new { g.Name }).Distinct().Count() != groups.Count)
+            {
+                throw new ArgumentException(TournamentResources.GroupNamesNotUnique);
+            }
         }
 
         #endregion

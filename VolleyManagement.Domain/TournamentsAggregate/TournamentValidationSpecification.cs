@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
+    using System.Collections.Generic;
     using VolleyManagement.Crosscutting.Contracts.Specifications;
 
     /// <summary>
@@ -7,6 +8,16 @@
     /// </summary>
     public class TournamentValidationSpecification : ISpecification<Tournament>
     {
+        /// <summary>
+        /// Checks whether divisions count is within the correct range.
+        /// </summary>
+        /// <param name="count">Divisions count within the tournament.</param>
+        /// <returns>True if divisions count is within the range; otherwise, false.</returns>
+        public static bool IsDivisionCountWithinRange(int count)
+        {
+            return count >= Constants.Tournament.MIN_DIVISIONS_COUNT && count <= Constants.Tournament.MAX_DIVISIONS_COUNT;
+        }
+
         /// <summary>
         /// The is satisfied by.
         /// </summary>

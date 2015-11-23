@@ -49,7 +49,6 @@
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
-                ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl.ToString();
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)
@@ -222,14 +221,11 @@
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
             textToSearch = textToSearch.Trim();
-            IQueryable<Player> allPlayers = this._playerService
-                                                .Get()
-                                                .OrderBy(p => p.LastName);
+            IQueryable<Player> allPlayers = this._playerService.Get().OrderBy(p => p.LastName);
 
             if (textToSearch != string.Empty)
             {
-                allPlayers = allPlayers
-                    .Where(p => (p.FirstName + p.LastName).Contains(textToSearch));
+                allPlayers = allPlayers.Where(p => (p.FirstName + p.LastName).Contains(textToSearch));
             }
 
             return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);

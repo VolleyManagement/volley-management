@@ -5,11 +5,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Net;
     using System.Web.Mvc;
     using System.Web.Routing;
     using Contracts;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -27,24 +25,17 @@
     [TestClass]
     public class PlayersControllerTests
     {
-        private const int NUMBER_OF_PLAYERS_FOR_MOCK = 12;
-        private const int FIRST_ASCII_LETTER = 65;
-        private const int LAST_ASCII_LETTER = 90;
-        private const int MAX_PLAYERS_ON_PAGE = 5;
-        private const int TESTING_PAGE = 1;
-        private const int SAVED_PLAYER_ID = 10;
-        private const int PLAYER_UNEXISTING_ID_TO_DELETE = 4;
-        private const string SUBSTRING_TO_SEARCH = "CLastName";
-        private const string HTTP_NOT_FOUND_DESCRIPTION
-            = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
-
         private const string TEST_CONTROLLER_NAME = "TestController";
         private const string INDEX_ACTION_NAME = "Index";
         private const string ROUTE_VALUES_KEY = "action";
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
+        private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const int TEST_PLAYER_ID = 1;
+        private const int NON_EXISTENT_PAGE_NUMBER = -1;
+        private const string PLAYER_NAME_TO_SEARCH = "Player Name";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
+
         private IKernel _kernel;
         private PlayersController _sut;
 
@@ -60,131 +51,92 @@
         }
 
         /// <summary>
-        /// Delete method test. The method should invoke Delete() method of IPlayerService
-        /// and return result as JavaScript Object Notation.
+        /// Test for Delete method (POST action). Player with specified identifier exists.
+        /// Player is deleted and JsonResult is returned.
         /// </summary>
         [TestMethod]
-        public void Delete_PlayerExists_PlayerIsDeleted()
+        public void DeletePostAction_ExistingPlayer_PlayerIsDeleted()
         {
             // Act
-            var sut = this._kernel.Get<PlayersController>();
-            var actual = sut.Delete(PLAYER_UNEXISTING_ID_TO_DELETE) as JsonResult;
+            var result = this._sut.Delete(TEST_PLAYER_ID);
 
             // Assert
-            _playerServiceMock.Verify(ps => ps.Delete(It.Is<int>(id => id == PLAYER_UNEXISTING_ID_TO_DELETE)), Times.Once());
-            Assert.IsNotNull(actual);
+            VerifyDelete(Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
-        /// Delete method test. Input parameter is player id, which doesn't exist in database.
-        /// The method should return message as JavaScript Object Notation.
+        /// Test for Delete method (POST action). Player with specified identifier does not exist.
+        /// Exception is thrown during player removal and JsonResult is returned.
         /// </summary>
         [TestMethod]
-        public void Delete_PlayerDoesntExist_JsonReturned()
+        public void DeletePostAction_NonExistentPlayer_JsonResultIsReturned()
         {
             // Arrange
-            _playerServiceMock.Setup(ps => ps.Delete(PLAYER_UNEXISTING_ID_TO_DELETE)).Throws<MissingEntityException>();
+            MockSetupDeleteMissingEntityException();
 
             // Act
-            var sut = this._kernel.Get<PlayersController>();
-            var actual = sut.Delete(PLAYER_UNEXISTING_ID_TO_DELETE) as JsonResult;
+            var result = this._sut.Delete(TEST_PLAYER_ID);
 
             // Assert
-            Assert.IsNotNull(actual);
+            VerifyDelete(Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
-        /// Test for Index action. The action should return page of specified players
+        /// Test for Index method. Players from specified existing page are requested and no search text is specified.
+        /// Players from specified page are returned.
         /// </summary>
         [TestMethod]
-        public void Index_PlayersExist_SpecifiedPlayersPageReturned()
+        public void Index_GetPlayersFromExistingPageNoSearchText_PlayersAreReturned()
         {
             // Arrange
-            var listOfPlayers = new List<Player>()
-            {
-                new Player() { Id = 1, FirstName = "FirstNameA", LastName = "LastNameA" },
-                new Player() { Id = 2, FirstName = "FirstNameB", LastName = "LastNameB" },
-                new Player() { Id = 3, FirstName = "FirstNameC", LastName = "LastNameC" },
-                new Player() { Id = 4, FirstName = "FirstNameD", LastName = "LastNameD" }
-            };
-
-            _playerServiceMock.Setup(p => p.Get()).Returns(listOfPlayers.AsQueryable());
-            var sup = this._kernel.Get<PlayersController>();
-
-            var expected = listOfPlayers.OrderBy(p => p.LastName)
-                .Where(p => (p.FirstName + " " + p.LastName).Contains(SUBSTRING_TO_SEARCH))
-                .Skip((TESTING_PAGE - 1) * MAX_PLAYERS_ON_PAGE)
-                .Take(MAX_PLAYERS_ON_PAGE)
-                .Select(p => new PlayerNameViewModel { Id = p.Id, FullName = p.LastName + " " + p.FirstName })
-                .ToList();
+            var testData = MakeTestPlayers();
+            var expected = MakePlayerNameViewModels(testData);
+            MockSetupGetAll(testData);
 
             // Act
-            var actual = TestExtensions.GetModel<PlayersListViewModel>(sup.Index(null, SUBSTRING_TO_SEARCH)).List;
-
-            // Assert
-            CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
-            Assert.AreEqual(expected.Count, actual.Count);
-        }
-
-        /// <summary>
-        /// Test for Index action. The action should return not empty ordering page with players
-        /// </summary>
-        [TestMethod]
-        public void Index_PlayersExist_PlayersPageReturned()
-        {
-            // Arrange
-            List<Player> currectList = new List<Player>();
-            Random rand = new Random();
-
-            for (int i = 0; i < NUMBER_OF_PLAYERS_FOR_MOCK; i++)
-            {
-                char lastName = (char)rand.Next(FIRST_ASCII_LETTER, LAST_ASCII_LETTER + 1);
-                currectList.Add(new PlayerBuilder()
-                    .WithId(i)
-                    .WithLastName(lastName.ToString())
-                    .Build());
-            }
-
-            _playerServiceMock.Setup(tr => tr.Get()).Returns(currectList.AsQueryable());
-
-            var sut = this._kernel.Get<PlayersController>();
-            var expected = currectList.OrderBy(p => p.LastName)
-                .Skip((TESTING_PAGE - 1) * MAX_PLAYERS_ON_PAGE)
-                .Take(MAX_PLAYERS_ON_PAGE)
-                .Select(p =>
-                    new PlayerNameViewModel
-                    {
-                        Id = p.Id,
-                        FullName = p.LastName + " " + p.FirstName
-                    })
-                .ToList();
-
-            // Act
-            var actual = TestExtensions.GetModel<PlayersListViewModel>(sut.Index(TESTING_PAGE)).List;
+            var actual = TestExtensions.GetModel<PlayersListViewModel>(this._sut.Index(null, string.Empty)).List;
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
         }
 
         /// <summary>
-        /// Test with negative scenario for Index action.
-        /// The action should thrown Argument null exception
+        /// Test for Index method. Players from specified existing page are requested and search text is specified.
+        /// Players from specified page are returned.
         /// </summary>
         [TestMethod]
-        public void Index_PlayersDoNotExist_ExceptionThrown()
+        public void Index_GetPlayersFromExistingPageWithSearchText_PlayersAreReturned()
         {
             // Arrange
-            this._playerServiceMock.Setup(tr => tr.Get())
-                .Throws(new ArgumentNullException());
-
-            var sut = this._kernel.Get<PlayersController>();
-            var expected = (int)HttpStatusCode.NotFound;
+            var testData = MakeTestPlayers();
+            var expected = GetPlayerNameViewModelsWithPlayerName(MakePlayerNameViewModels(testData), PLAYER_NAME_TO_SEARCH);
+            MockSetupGetAll(testData);
 
             // Act
-            var actual = (sut.Index(It.IsAny<int>()) as HttpNotFoundResult).StatusCode;
+            var actual = TestExtensions.GetModel<PlayersListViewModel>(this._sut.Index(null, PLAYER_NAME_TO_SEARCH)).List;
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Index method. Players from specified non-existent page are requested.
+        /// Exception is thrown during players retrieval and user is redirected to the Index page.
+        /// </summary>
+        [TestMethod]
+        public void Index_GetPlayersFromNonExistentPage_ExceptionIsThrown()
+        {
+            // Arrange
+            var testData = MakeTestPlayers();
+            MockSetupGetAll(testData);
+
+            // Act
+            var result = this._sut.Index(NON_EXISTENT_PAGE_NUMBER) as RedirectToRouteResult;
+
+            // Assert
+            VerifyRedirect(INDEX_ACTION_NAME, result);
         }
 
         /// <summary>
@@ -314,153 +266,112 @@
         }
 
         /// <summary>
-        /// Test for Edit player action (GET)
+        /// Test for Edit method (GET action). Player with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
         [TestMethod]
-        public void EditGetAction_PlayerViewModel_ReturnsToTheView()
+        public void EditGetAction_NonExistentPlayer_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            var controller = _kernel.Get<PlayersController>();
-            var player = new PlayerBuilder()
-                            .WithId(1)
-                            .WithFirstName("firstName")
-                            .WithLastName("lastName")
-                            .WithBirthYear(1993)
-                            .WithHeight(201)
-                            .WithWeight(80)
-                            .Build();
-            MockSinglePlayer(player);
-            var expected = new PlayerMvcViewModelBuilder()
-                            .WithId(1)
-                            .WithFirstName("firstName")
-                            .WithLastName("lastName")
-                            .WithBirthYear(1993)
-                            .WithHeight(201)
-                            .WithWeight(80)
-                            .Build();
+            MockSetupGet(null);
 
             // Act
-            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Edit(player.Id));
+            var result = this._sut.Edit(TEST_PLAYER_ID);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Test for Edit method (GET action). Player with specified identifier exists. View model of Player is returned.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_ExistingPlayer_PlayerViewModelIsReturned()
+        {
+            // Arrange
+            var testData = MakeTestPlayer(TEST_PLAYER_ID);
+            var expected = MakeTestPlayerViewModel(TEST_PLAYER_ID);
+            MockSetupGet(testData);
+
+            // Act
+            var actual = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(TEST_PLAYER_ID));
 
             // Assert
             TestHelper.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
         }
 
         /// <summary>
-        /// Test for Edit player action (GET)
+        /// Test for Edit method (POST action). Player view model is valid and no exception is thrown during editing.
+        /// Player is updated successfully and user is redirected to the Index page.
         /// </summary>
         [TestMethod]
-        public void EditGetAction_MissingEntityExceptionCatch_NotFoundReturn()
+        public void EditPostAction_ValidPlayerViewModelNoException_PlayerIsUpdated()
         {
             // Arrange
-            var playerId = 5;
-            _playerServiceMock.Setup(ts => ts.Get(playerId))
-               .Throws(new MissingEntityException());
-            var controller = _kernel.Get<PlayersController>();
+            var testData = MakeTestPlayerViewModel();
 
             // Act
-            var actual = controller.Edit(playerId);
+            var result = this._sut.Edit(testData) as RedirectToRouteResult;
 
             // Assert
-            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+            VerifyEdit(Times.Once());
+            VerifyRedirect(INDEX_ACTION_NAME, result);
         }
 
         /// <summary>
-        /// Test for Edit player action (POST)
+        /// Test for Edit method (POST action). Player view model is valid, but exception is thrown during editing.
+        /// Player view model is returned.
         /// </summary>
         [TestMethod]
-        public void EditPostAction_ValidPlayerViewModel_RedirectToIndex()
+        public void EditPostAction_ValidPlayerViewModelWithMissingEntityException_PlayerViewModelIsReturned()
         {
             // Arrange
-            var playersController = _kernel.Get<PlayersController>();
-            var playerViewModel = new PlayerMvcViewModelBuilder()
-                            .WithId(1)
-                            .WithFirstName("firstName")
-                            .WithLastName("lastName")
-                            .WithBirthYear(1993)
-                            .WithHeight(201)
-                            .WithWeight(80)
-                            .Build();
+            var testData = MakeTestPlayerViewModel();
+            MockSetupEditMissingEntityException();
 
             // Act
-            var result = playersController.Edit(playerViewModel) as RedirectToRouteResult;
+            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(testData));
 
             // Assert
-            _playerServiceMock.Verify(ts => ts.Edit(It.IsAny<Player>()), Times.Once());
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            VerifyEdit(Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
-        /// Test for Edit player action with invalid model (POST)
+        /// Test for Edit method (POST action). Player view model is valid, but exception is thrown during editing.
+        /// Player view model is returned.
         /// </summary>
         [TestMethod]
-        public void EditPostAction_InvalidPlayerViewModel_ReturnsViewModelToView()
+        public void EditPostAction_ValidPlayerViewModelWithValidationException_PlayerViewModelIsReturned()
         {
             // Arrange
-            var controller = _kernel.Get<PlayersController>();
-            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
-            var playerViewModel = new PlayerMvcViewModelBuilder()
-                .WithFirstName(string.Empty)
-                .Build();
+            var testData = MakeTestPlayerViewModel();
+            MockSetupEditValidationException();
 
             // Act
-            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Edit(playerViewModel));
+            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(testData));
 
             // Assert
-            _playerServiceMock.Verify(ts => ts.Edit(It.IsAny<Player>()), Times.Never());
-            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+            VerifyEdit(Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
-        /// Test for Edit player action (POST)
+        /// Test for Edit method (POST action). Player view model is not valid.
+        /// Player is not updated and player view model is returned.
         /// </summary>
         [TestMethod]
-        public void EditPostAction_ArgumentException_ExceptionThrown()
+        public void EditPostAction_InvalidPlayerViewModel_PlayerViewModelIsReturned()
         {
             // Arrange
-            var playerViewModel = new PlayerMvcViewModelBuilder()
-                            .WithId(1)
-                            .WithFirstName("firstName")
-                            .WithLastName("lastName")
-                            .WithBirthYear(1993)
-                            .WithHeight(201)
-                            .WithWeight(80)
-                            .Build();
-            _playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
-                .Throws(new ValidationException());
-            var controller = _kernel.Get<PlayersController>();
+            var testData = MakeTestPlayerViewModel();
+            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Edit(playerViewModel));
+            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(testData));
 
             // Assert
-            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
-        }
-
-        /// <summary>
-        /// Test for Edit player action (POST)
-        /// </summary>
-        [TestMethod]
-        public void EditPostAction_MissingEntityExceptionCatch_ViewModelWithErrorReturn()
-        {
-            // Arrange
-            var playerViewModel = new PlayerMvcViewModelBuilder()
-                            .WithId(1)
-                            .WithFirstName("firstName")
-                            .WithLastName("lastName")
-                            .WithBirthYear(1993)
-                            .WithHeight(201)
-                            .WithWeight(80)
-                            .Build();
-            _playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
-                .Throws(new MissingEntityException());
-            var controller = _kernel.Get<PlayersController>();
-
-            // Act
-            controller.Edit(playerViewModel);
-
-            // Assert
-            Assert.AreEqual(1, controller.ModelState.Count);
+            VerifyEdit(Times.Never());
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
@@ -481,6 +392,30 @@
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.RouteData = new RouteData();
             controller.RouteData.Values["controller"] = TEST_CONTROLLER_NAME;
+        }
+
+        /// <summary>
+        /// Makes players filled with test data.
+        /// </summary>
+        /// <returns>List of players with test data.</returns>
+        private List<Player> MakeTestPlayers()
+        {
+            return new PlayerServiceTestFixture().TestPlayers().Build();
+        }
+
+        /// <summary>
+        /// Makes PlayerNameViewModels from Player view models.
+        /// </summary>
+        /// <param name="players">List of Player view models.</param>
+        /// <returns>List of PlayerNameViewModels.</returns>
+        private List<PlayerNameViewModel> MakePlayerNameViewModels(List<Player> players)
+        {
+            return players.Select(p => new PlayerNameViewModel { Id = p.Id, FullName = p.LastName + " " + p.FirstName }).ToList();
+        }
+
+        private List<PlayerNameViewModel> GetPlayerNameViewModelsWithPlayerName(List<PlayerNameViewModel> players, string name)
+        {
+            return players.Where(p => p.FullName.Contains(name)).ToList();
         }
 
         /// <summary>
@@ -522,6 +457,15 @@
         }
 
         /// <summary>
+        /// Sets up a mock for Get method of Player service to return specified players.
+        /// </summary>
+        /// <param name="teams">Players that will be returned by Get method of Player service.</param>
+        private void MockSetupGetAll(List<Player> teams)
+        {
+            this._playerServiceMock.Setup(ps => ps.Get()).Returns(teams.AsQueryable());
+        }
+
+        /// <summary>
         /// Sets up a mock for Get method of Player service with any parameter to return specified player.
         /// </summary>
         /// <param name="player">Player that will be returned by Get method of Player service.</param>
@@ -548,14 +492,32 @@
                 .Throws(new ValidationException(string.Empty));
         }
 
-        ///// <summary>
-        ///// Sets up a mock for Edit method of Tournament service to throw TournamentValidationException.
-        ///// </summary>
-        //private void MockSetupEditTournamentValidationException()
-        //{
-        //    this._tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
-        //        .Throws(new TournamentValidationException(string.Empty, string.Empty, string.Empty));
-        //}
+        /// <summary>
+        /// Sets up a mock for Edit method of Player service to throw MissingEntityException.
+        /// </summary>
+        private void MockSetupEditMissingEntityException()
+        {
+            this._playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
+                .Throws(new MissingEntityException(string.Empty));
+        }
+
+        /// <summary>
+        /// Sets up a mock for Edit method of Player service to throw ValidationException.
+        /// </summary>
+        private void MockSetupEditValidationException()
+        {
+            this._playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
+                .Throws(new ValidationException(string.Empty));
+        }
+
+        /// <summary>
+        /// Sets up a mock for Delete method of Player service to throw MissingEntityException.
+        /// </summary>
+        private void MockSetupDeleteMissingEntityException()
+        {
+            this._playerServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
+                .Throws(new MissingEntityException(string.Empty));
+        }
 
         /// <summary>
         /// Verifies that tournament is created required number of times.

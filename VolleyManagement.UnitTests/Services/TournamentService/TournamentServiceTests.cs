@@ -226,7 +226,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -251,7 +251,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -274,7 +274,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -292,7 +292,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Once());
+            VerifyCreate(Times.Once());
         }
 
         /// <summary>
@@ -312,7 +312,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -332,7 +332,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -360,7 +360,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -383,7 +383,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -411,7 +411,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -438,7 +438,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -466,7 +466,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
         }
 
         /// <summary>
@@ -539,7 +539,155 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreate(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's division count is out of range. Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Количество дивизионов в турнире не должно выходить за установленный диапазон")]
+        public void Create_TournamentDivisionCountOutOfRange_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNoDivisions().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's divisions do not have unique names. Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Дивизионы в рамках турнира не могут иметь одинаковых названий")]
+        public void Create_TournamentDivisionNamesNotUnique_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNonUniqueNameDivisions().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Group count in tournament's divisions is out of range.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Количество групп в дивизионе не должно выходить за установленный диапазон")]
+        public void Create_TournamentDivisionGroupCountOutOfRange_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNoDivisionsGroups().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Groups in tournament's divisions do not have unique names.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Группы в рамках дивизиона не могут иметь одинаковых названий")]
+        public void Create_TournamentDivisionGroupNamesNotUnique_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithDivisionsNonUniqueNameGroups().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Edit() method. Tournament's division count is out of range. Exception is thrown during tournament editing.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Количество дивизионов в турнире не должно выходить за установленный диапазон")]
+        public void Edit_TournamentDivisionCountOutOfRange_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNoDivisions().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Edit(newTournament);
+
+            // Assert
+            VerifyEdit(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Edit() method. Tournament's divisions do not have unique names. Exception is thrown during tournament editing.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Дивизионы в рамках турнира не могут иметь одинаковых названий")]
+        public void Edit_TournamentDivisionNamesNotUnique_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNonUniqueNameDivisions().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Edit(newTournament);
+
+            // Assert
+            VerifyEdit(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Edit() method. Group count in tournament's divisions is out of range.
+        /// Exception is thrown during tournament editing.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Количество групп в дивизионе не должно выходить за установленный диапазон")]
+        public void Edit_TournamentDivisionGroupCountOutOfRange_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNoDivisionsGroups().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Edit(newTournament);
+
+            // Assert
+            VerifyEdit(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Edit() method. Groups in tournament's divisions do not have unique names.
+        /// Exception is thrown during tournament editing.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Группы в рамках дивизиона не могут иметь одинаковых названий")]
+        public void Edit_TournamentDivisionGroupNamesNotUnique_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithDivisionsNonUniqueNameGroups().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Edit(newTournament);
+
+            // Assert
+            VerifyEdit(Times.Never());
         }
 
         /// <summary>
@@ -687,11 +835,20 @@
         /// <summary>
         /// Verifies that specified tournament is created required number of times.
         /// </summary>
-        /// <param name="tournament">Tournament we want to verify.</param>
         /// <param name="times">Number of times tournament must be created.</param>
-        private void VerifyCreate(Tournament tournament, Times times)
+        private void VerifyCreate(Times times)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.Add(tournament), times);
+            _tournamentRepositoryMock.Verify(tr => tr.Add(It.IsAny<Tournament>()), times);
+            _unitOfWorkMock.Verify(uw => uw.Commit(), times);
+        }
+
+        /// <summary>
+        /// Verifies that specified tournament is updated required number of times.
+        /// </summary>
+        /// <param name="times">Number of times tournament must be updated.</param>
+        private void VerifyEdit(Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.Update(It.IsAny<Tournament>()), times);
             _unitOfWorkMock.Verify(uw => uw.Commit(), times);
         }
     }

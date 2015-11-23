@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
+    using System.Collections.Generic;
     using System.Linq;
-
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -32,23 +32,14 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-            ////check old divisions to update them
-            foreach (var division in to.Divisions)
+            ICollection<DivisionEntity> oldDivisions = null;
+            if (to.Divisions != null)
             {
-                if (division.Tournament != null)
-                {
-                    var divisionFrom = from.Divisions.Where(d => d.Id == division.Id).SingleOrDefault();
-                    division.Name = divisionFrom.Name;
-                }
+                oldDivisions = to.Divisions.ToList();
+                to.Divisions.Clear();
             }
-            ////add new division entries to the tournament
-            foreach (var divisionFrom in from.Divisions)
-            {
-                if (divisionFrom.Id == 0)
-                {
-                    to.Divisions.Add(Map(divisionFrom));
-                }
-            }
+
+            to.Divisions = from.Divisions.Select(d => Map(d, oldDivisions)).ToList();
         }
 
         /// <summary>
@@ -106,15 +97,25 @@
         /// Maps Division model.
         /// </summary>
         /// <param name="from">Division Domain model</param>
+        /// <param name="oldDivisions">Divisions which already exists in database</param>
         /// <returns>Division Entity model</returns>
-        public static DivisionEntity Map(Division from)
+        public static DivisionEntity Map(Division from, ICollection<DivisionEntity> oldDivisions)
         {
-            return new DivisionEntity
+            if (from.Id == 0)
             {
-                Id = from.Id,
-                Name = from.Name,
-                TournamentId = from.TournamentId
-            };
+                return new DivisionEntity
+                {
+                    Id = from.Id,
+                    Name = from.Name,
+                    TournamentId = from.TournamentId
+                };
+            }
+            else
+            {
+                var division = oldDivisions.Where(d => d.Id == from.Id).SingleOrDefault();
+                division.Name = from.Name;
+                return division;
+            }
         }
 
         /// <summary>

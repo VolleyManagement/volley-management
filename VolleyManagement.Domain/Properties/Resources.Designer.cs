@@ -61,6 +61,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Количество дивизионов в турнире должно быть в диапазоне от {0} до {1}.
+        /// </summary>
+        public static string DivisionCountOutOfRange {
+            get {
+                return ResourceManager.GetString("DivisionCountOutOfRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дивизионы не могут иметь одинаковые названия.
         /// </summary>
         public static string DivisionNamesNotUnique {
@@ -70,11 +79,11 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Количество дивизионов в турнире должно быть между {0} и {1}.
+        ///   Looks up a localized string similar to Количество групп в дивизионе должно быть в диапазоне от {0} до {1}.
         /// </summary>
-        public static string DivisionsCountOutOfRange {
+        public static string GroupCountOutOfRange {
             get {
-                return ResourceManager.GetString("DivisionsCountOutOfRange", resourceCulture);
+                return ResourceManager.GetString("GroupCountOutOfRange", resourceCulture);
             }
         }
         
@@ -84,15 +93,6 @@ namespace VolleyManagement.Domain.Properties {
         public static string GroupNamesNotUnique {
             get {
                 return ResourceManager.GetString("GroupNamesNotUnique", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Количество групп в дивизионе должно быть между {0} и {1}.
-        /// </summary>
-        public static string GroupsCountOutOfRange {
-            get {
-                return ResourceManager.GetString("GroupsCountOutOfRange", resourceCulture);
             }
         }
         

@@ -22,7 +22,7 @@
         /// </summary>
         /// <param name="count">Groups count within the division.</param>
         /// <returns>True if groups count is within the range; otherwise, false.</returns>
-        public static bool IsGroupsCountWithinRange(int count)
+        public static bool IsGroupCountWithinRange(int count)
         {
             return count >= Constants.Division.MIN_GROUPS_COUNT && count <= Constants.Division.MAX_GROUPS_COUNT;
         }

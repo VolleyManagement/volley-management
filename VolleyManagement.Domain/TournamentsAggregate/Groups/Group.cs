@@ -27,7 +27,7 @@
 
             set
             {
-                if (GroupValidation.ValidateName(value))
+                if (!GroupValidation.ValidateName(value))
                 {
                     throw new ArgumentException(Resources.ValidationGroupName, "Name");
                 }

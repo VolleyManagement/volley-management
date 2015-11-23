@@ -114,13 +114,13 @@
 
             IsTournamentNameUnique(tournamentToCreate);
             AreDatesValid(tournamentToCreate);
-            IsDivisionsCountWithinRange(tournamentToCreate.Divisions.Count);
+            IsDivisionCountWithinRange(tournamentToCreate.Divisions.Count);
             AreDivisionNamesUnique(tournamentToCreate.Divisions);
 
             foreach (Division division in tournamentToCreate.Divisions)
             {
                 division.TournamentId = tournamentToCreate.Id;
-                IsGroupsCountWithinRange(division.Groups.Count);
+                IsGroupCountWithinRange(division.Groups.Count);
                 AreGroupNamesUnique(division.Groups);
 
                 foreach (Group group in division.Groups)
@@ -152,13 +152,13 @@
         {
             IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             AreDatesValid(tournamentToEdit);
-            IsDivisionsCountWithinRange(tournamentToEdit.Divisions.Count);
+            IsDivisionCountWithinRange(tournamentToEdit.Divisions.Count);
             AreDivisionNamesUnique(tournamentToEdit.Divisions);
 
             foreach (Division division in tournamentToEdit.Divisions)
             {
                 division.TournamentId = tournamentToEdit.Id;
-                IsGroupsCountWithinRange(division.Groups.Count);
+                IsGroupCountWithinRange(division.Groups.Count);
                 AreGroupNamesUnique(division.Groups);
 
                 foreach (Group group in division.Groups)
@@ -339,13 +339,13 @@
             return this.Get().Where(t => statesFilter.Contains(t.State)).ToList();
         }
 
-        private void IsDivisionsCountWithinRange(int count)
+        private void IsDivisionCountWithinRange(int count)
         {
             if (!TournamentValidationSpecification.IsDivisionCountWithinRange(count))
             {
                 throw new ArgumentException(
                     string.Format(
-                        TournamentResources.DivisionsCountOutOfRange,
+                        TournamentResources.DivisionCountOutOfRange,
                         TournamentConstants.MIN_DIVISIONS_COUNT,
                         TournamentConstants.MAX_DIVISIONS_COUNT));
             }
@@ -353,19 +353,19 @@
 
         private void AreDivisionNamesUnique(List<Division> divisions)
         {
-            if (divisions.Select(d => new { d.Name }).Distinct().Count() != divisions.Count)
+            if (divisions.Select(d => new { Name = d.Name.ToUpper() }).Distinct().Count() != divisions.Count)
             {
                 throw new ArgumentException(TournamentResources.DivisionNamesNotUnique);
             }
         }
 
-        private void IsGroupsCountWithinRange(int count)
+        private void IsGroupCountWithinRange(int count)
         {
-            if (!DivisionValidation.IsGroupsCountWithinRange(count))
+            if (!DivisionValidation.IsGroupCountWithinRange(count))
             {
                 throw new ArgumentException(
                     string.Format(
-                    TournamentResources.GroupsCountOutOfRange,
+                    TournamentResources.GroupCountOutOfRange,
                     DivisionConstants.MIN_GROUPS_COUNT,
                     DivisionConstants.MAX_GROUPS_COUNT));
             }
@@ -373,7 +373,7 @@
 
         private void AreGroupNamesUnique(List<Group> groups)
         {
-            if (groups.Select(g => new { g.Name }).Distinct().Count() != groups.Count)
+            if (groups.Select(g => new { Name = g.Name.ToUpper() }).Distinct().Count() != groups.Count)
             {
                 throw new ArgumentException(TournamentResources.GroupNamesNotUnique);
             }

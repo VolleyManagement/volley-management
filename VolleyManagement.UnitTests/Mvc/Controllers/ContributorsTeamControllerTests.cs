@@ -23,6 +23,7 @@
         private readonly Mock<IContributorTeamService> _contributorTeamServiceMock = new Mock<IContributorTeamService>();
 
         private IKernel _kernel;
+        private ContributorsTeamController _sut;
 
         /// <summary>
         /// Initializes test data.
@@ -32,6 +33,7 @@
         {
             this._kernel = new StandardKernel();
             this._kernel.Bind<IContributorTeamService>().ToConstant(this._contributorTeamServiceMock.Object);
+            this._sut = this._kernel.Get<ContributorsTeamController>();
         }
 
         /// <summary>
@@ -43,11 +45,10 @@
             // Arrange
             var testData = MakeTestContributorTeams();
             var expected = MakeTestContributorTeamViewModels();
-            var sut = GetSystemUnderTest();
             MockSetupGetAll(testData);
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
+            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(this._sut.Index()).ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamViewModelComparer());
@@ -84,15 +85,6 @@
                 .WithContributors(ct.Contributors.ToList())
                 .Build())
                 .ToList();
-        }
-
-        /// <summary>
-        /// Gets system being tested by a unit test.
-        /// </summary>
-        /// <returns>System being tested by a unit test.</returns>
-        private ContributorsTeamController GetSystemUnderTest()
-        {
-            return this._kernel.Get<ContributorsTeamController>();
         }
     }
 }

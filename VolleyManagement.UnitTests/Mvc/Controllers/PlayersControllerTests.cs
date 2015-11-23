@@ -39,9 +39,14 @@
             = "При удалении игрока произошла непредвиденная ситуация. Пожалуйста, обратитесь к администратору";
 
         private const string TEST_CONTROLLER_NAME = "TestController";
+        private const string INDEX_ACTION_NAME = "Index";
+        private const string ROUTE_VALUES_KEY = "action";
+        private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
+        private const int TEST_PLAYER_ID = 1;
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
         private IKernel _kernel;
+        private PlayersController _sut;
 
         /// <summary>
         /// Initializes test data
@@ -50,8 +55,8 @@
         public void TestInit()
         {
             this._kernel = new StandardKernel();
-            this._kernel.Bind<IPlayerService>()
-                   .ToConstant(this._playerServiceMock.Object);
+            this._kernel.Bind<IPlayerService>().ToConstant(this._playerServiceMock.Object);
+            this._sut = this._kernel.Get<PlayersController>();
         }
 
         /// <summary>
@@ -183,49 +188,37 @@
         }
 
         /// <summary>
-        /// Test for Details(). Requested id does not exist in the database.
+        /// Test for Details method. Player with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
         [TestMethod]
-        public void Details_PlayerDoesNotExist_NotFoundResult()
+        public void Details_NonExistentPlayer_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            this._playerServiceMock.Setup(ps => ps.Get(It.IsAny<int>()))
-                .Throws(new MissingEntityException());
-
-            var sut = this._kernel.Get<PlayersController>();
-            var expected = (int)HttpStatusCode.NotFound;
+            MockSetupGet(null);
 
             // Act
-            var actual = (sut.Details(It.IsAny<int>()) as HttpNotFoundResult).StatusCode;
+            var result = this._sut.Details(TEST_PLAYER_ID);
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
 
         /// <summary>
-        /// Test for Details(). Gets player with requested id.
+        /// Test for Details method. Player with specified identifier exists. View model of Player is returned.
         /// </summary>
         [TestMethod]
-        public void Details_PlayerExists_PlayerIsReturned()
+        public void Details_ExistingPlayer_PlayerViewModelIsReturned()
         {
             // Arrange
-            _playerServiceMock.Setup(tr => tr.Get(It.Is<int>(id => id == SAVED_PLAYER_ID)))
-                .Returns(new PlayerBuilder()
-                .WithId(SAVED_PLAYER_ID)
-                .Build());
-
-            var controller = this._kernel.Get<PlayersController>();
-            SetControllerRouteData(controller);
-
-            var expectedPlayer = new PlayerMvcViewModelBuilder()
-                .WithId(SAVED_PLAYER_ID)
-                .Build();
+            var testData = MakeTestPlayer(TEST_PLAYER_ID);
+            var expected = MakeTestPlayerViewModel(TEST_PLAYER_ID);
+            MockSetupGet(testData);
 
             // Act
-            var actual = TestExtensions.GetModel<PlayerRefererViewModel>(controller.Details(SAVED_PLAYER_ID));
+            var actual = TestExtensions.GetModel<PlayerRefererViewModel>(this._sut.Details(TEST_PLAYER_ID));
 
             // Assert
-            TestHelper.AreEqual<PlayerViewModel>(expectedPlayer, actual.Model, new PlayerViewModelComparer());
+            TestHelper.AreEqual<PlayerViewModel>(expected, actual.Model, new PlayerViewModelComparer());
         }
 
         /// <summary>
@@ -246,120 +239,78 @@
         }
 
         /// <summary>
-        /// Create player action test (POST)
+        /// Test for Create method (POST action). Player view model is not valid.
+        /// Player is not created and player view model is returned.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_ValidPlayerViewModel_RedirectToIndex()
+        public void CreatePostAction_InvalidPlayerViewModel_PlayerViewModelIsReturned()
         {
             // Arrange
-            var playerController = _kernel.Get<PlayersController>();
-            var playerViewModel = new PlayerMvcViewModelBuilder()
-                .WithId(0)
-                .WithFirstName("FirstName")
-                .WithLastName("LastName")
-                .WithBirthYear(1983)
-                .WithHeight(186)
-                .WithWeight(95)
-                .WithTeamId(1)
-                .Build();
-
-            var expected = new PlayerBuilder()
-                .WithId(0)
-                .WithFirstName("FirstName")
-                .WithLastName("LastName")
-                .WithBirthYear(1983)
-                .WithHeight(186)
-                .WithWeight(95)
-                .WithTeamId(1)
-                .Build();
+            var testData = MakeTestPlayerViewModel();
+            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = playerController.Create(playerViewModel) as RedirectToRouteResult;
+            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Create(testData));
 
             // Assert
-            _playerServiceMock.Verify(ts => ts.Create(It.Is<Player>(pl => new PlayerComparer().AreEqual(pl, expected))), Times.Once());
-            Assert.AreEqual("Index", result.RouteValues["action"]);
+            VerifyCreate(Times.Never());
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
-        /// Create player action test (POST)
+        /// Test for Create method (POST action). Player view model is valid and no exception is thrown during creation.
+        /// Player is created successfully and user is redirected to the Index page.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_ValidPlayerViewModel_GotNewIdFromDatabase()
+        public void CreatePostAction_ValidPlayerViewModelNoException_PlayerIsCreated()
         {
             // Arrange
-            var playerController = _kernel.Get<PlayersController>();
-            var playerViewModel = new PlayerMvcViewModelBuilder().Build();
-
-            _playerServiceMock.Setup(ps => ps.Create(It.IsAny<Player>())).Callback<Player>(p => p.Id = SAVED_PLAYER_ID);
+            var testData = MakeTestPlayerViewModel();
 
             // Act
-            playerController.Create(playerViewModel);
+            var result = this._sut.Create(testData) as RedirectToRouteResult;
 
             // Assert
-            Assert.AreEqual(SAVED_PLAYER_ID, playerViewModel.Id, "The player wasn't saved");
+            VerifyCreate(Times.Once());
+            VerifyRedirect(INDEX_ACTION_NAME, result);
         }
 
         /// <summary>
-        /// Create player action test with an invalid view model (POST)
+        /// Test for Create method (POST action). Player view model is valid, but exception is thrown during creation.
+        /// Player view model is returned.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_InvalidPlayerViewModel_ReturnsViewModelToView()
+        public void CreatePostAction_ValidPlayerViewModelWithArgumentException_PlayerViewModelIsReturned()
         {
             // Arrange
-            var controller = _kernel.Get<PlayersController>();
-            controller.ModelState.AddModelError("Key", "ModelIsInvalidNow");
-            var playerViewModel = new PlayerMvcViewModelBuilder()
-                .WithFirstName(string.Empty)
-                .Build();
+            var testData = MakeTestPlayerViewModel();
+            MockSetupCreateArgumentException();
 
             // Act
-            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Create(playerViewModel));
+            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Create(testData));
 
             // Assert
-            _playerServiceMock.Verify(ps => ps.Create(It.IsAny<Player>()), Times.Never());
-            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
+            VerifyCreate(Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
-        /// Create player action test (POST)
+        /// Test for Create method (POST action). Player view model is valid, but exception is thrown during creation.
+        /// Player view model is returned.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_ArgumentException_ExceptionThrown()
+        public void CreatePostAction_ValidPlayerViewModelWithValidationException_PlayerViewModelIsReturned()
         {
             // Arrange
-            var playerViewModel = new PlayerMvcViewModelBuilder().Build();
-
-            _playerServiceMock.Setup(ps => ps.Create(It.IsAny<Player>()))
-                .Throws(new ArgumentException());
-            var controller = _kernel.Get<PlayersController>();
+            var testData = MakeTestPlayerViewModel();
+            MockSetupCreateValidationException();
 
             // Act
-            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Create(playerViewModel));
+            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Create(testData));
 
             // Assert
-            Assert.AreNotEqual(0, controller.ModelState.Count, "Model state should containe some error");
-            Assert.IsNotNull(actual, "Model with incorrect data should be returned to the view.");
-        }
-
-        /// <summary>
-        /// Create player action test (POST)
-        /// </summary>
-        [TestMethod]
-        public void CreatePostAction_GeneralExceptionCatch_ReturnToEditPage()
-        {
-            // Arrange
-            var playerViewModel = new PlayerMvcViewModelBuilder().Build();
-
-            _playerServiceMock.Setup(ps => ps.Create(It.IsAny<Player>()))
-                .Throws(new Exception());
-            var controller = _kernel.Get<PlayersController>();
-
-            // Act
-            var actual = controller.Create(playerViewModel);
-
-            // Assert
-            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
+            VerifyCreate(Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
@@ -530,6 +481,117 @@
             controller.ControllerContext = new ControllerContext();
             controller.ControllerContext.RouteData = new RouteData();
             controller.RouteData.Values["controller"] = TEST_CONTROLLER_NAME;
+        }
+
+        /// <summary>
+        /// Makes player with specified identifier filled with test data.
+        /// </summary>
+        /// <param name="playertId">Identifier of the player.</param>
+        /// <returns>Player filled with test data.</returns>
+        private Player MakeTestPlayer(int playertId)
+        {
+            return new PlayerBuilder().WithId(playertId).Build();
+        }
+
+        /// <summary>
+        /// Makes player view model filled with test data.
+        /// </summary>
+        /// <returns>Player view model filled with test data.</returns>
+        private PlayerViewModel MakeTestPlayerViewModel()
+        {
+            return new PlayerMvcViewModelBuilder().Build();
+        }
+
+        /// <summary>
+        /// Makes player view model with specified player identifier filled with test data.
+        /// </summary>
+        /// <param name="playerId">Identifier of the player.</param>
+        /// <returns>Player view model filled with test data.</returns>
+        private PlayerViewModel MakeTestPlayerViewModel(int playerId)
+        {
+            return new PlayerMvcViewModelBuilder().WithId(playerId).Build();
+        }
+
+        /// <summary>
+        /// Gets system being tested by a unit test.
+        /// </summary>
+        /// <returns>System being tested by a unit test.</returns>
+        private PlayersController GetSystemUnderTest()
+        {
+            return this._kernel.Get<PlayersController>();
+        }
+
+        /// <summary>
+        /// Sets up a mock for Get method of Player service with any parameter to return specified player.
+        /// </summary>
+        /// <param name="player">Player that will be returned by Get method of Player service.</param>
+        private void MockSetupGet(Player player)
+        {
+            this._playerServiceMock.Setup(tr => tr.Get(It.IsAny<int>())).Returns(player);
+        }
+
+        /// <summary>
+        /// Sets up a mock for Create method of Player service to throw ArgumentException.
+        /// </summary>
+        private void MockSetupCreateArgumentException()
+        {
+            this._playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
+                .Throws(new ArgumentException(string.Empty, string.Empty));
+        }
+
+        /// <summary>
+        /// Sets up a mock for Create method of Player service to throw ValidationException.
+        /// </summary>
+        private void MockSetupCreateValidationException()
+        {
+            this._playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
+                .Throws(new ValidationException(string.Empty));
+        }
+
+        ///// <summary>
+        ///// Sets up a mock for Edit method of Tournament service to throw TournamentValidationException.
+        ///// </summary>
+        //private void MockSetupEditTournamentValidationException()
+        //{
+        //    this._tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
+        //        .Throws(new TournamentValidationException(string.Empty, string.Empty, string.Empty));
+        //}
+
+        /// <summary>
+        /// Verifies that tournament is created required number of times.
+        /// </summary>
+        /// <param name="times">Number of times tournament must be created.</param>
+        private void VerifyCreate(Times times)
+        {
+            this._playerServiceMock.Verify(ts => ts.Create(It.IsAny<Player>()), times);
+        }
+
+        /// <summary>
+        /// Verifies that tournament is updated required number of times.
+        /// </summary>
+        /// <param name="times">Number of times tournament must be updated.</param>
+        private void VerifyEdit(Times times)
+        {
+            this._playerServiceMock.Verify(ts => ts.Edit(It.IsAny<Player>()), times);
+        }
+
+        /// <summary>
+        /// Verifies that tournament is deleted required number of times.
+        /// </summary>
+        /// <param name="times">Number of times tournament must be deleted.</param>
+        private void VerifyDelete(Times times)
+        {
+            this._playerServiceMock.Verify(ts => ts.Delete(It.IsAny<int>()), times);
+        }
+
+        /// <summary>
+        /// Verifies that redirect to specified action takes place.
+        /// </summary>
+        /// <param name="actionName">Name of the action where we are supposed to be redirected.</param>
+        /// <param name="result">Actual redirection result.</param>
+        private void VerifyRedirect(string actionName, RedirectToRouteResult result)
+        {
+            Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
         }
     }
 }

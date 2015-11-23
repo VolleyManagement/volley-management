@@ -31,6 +31,7 @@
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
 
         private IKernel _kernel;
+        private TournamentsController _sut;
 
         /// <summary>
         /// Initializes test data.
@@ -40,6 +41,7 @@
         {
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITournamentService>().ToConstant(this._tournamentServiceMock.Object);
+            this._sut = this._kernel.Get<TournamentsController>();
         }
 
         /// <summary>
@@ -52,13 +54,12 @@
             var testData = MakeTestTournaments();
             var expectedCurrentTournaments = GetTournamentsWithState(testData, TournamentStateEnum.Current);
             var expectedUpcomingTournaments = GetTournamentsWithState(testData, TournamentStateEnum.Upcoming);
-            var sut = GetSystemUnderTest();
             MockSetupGetActual(testData);
 
             // Act
-            var actualCurrentTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(sut.Index())
+            var actualCurrentTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(this._sut.Index())
                 .CurrentTournaments.ToList();
-            var actualUpcomingTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(sut.Index())
+            var actualUpcomingTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(this._sut.Index())
                 .UpcomingTournaments.ToList();
 
             // Assert
@@ -74,11 +75,10 @@
         {
             // Arrange
             var testData = MakeTestTournaments();
-            var sut = GetSystemUnderTest();
             MockSetupGetFinished(testData);
 
             // Act
-            var result = sut.GetFinished();
+            var result = this._sut.GetFinished();
 
             // Assert
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
@@ -91,11 +91,10 @@
         public void Details_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            var sut = GetSystemUnderTest();
             MockSetupGet(null as Tournament);
 
             // Act
-            var result = sut.Details(TEST_TOURNAMENT_ID);
+            var result = this._sut.Details(TEST_TOURNAMENT_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -110,11 +109,10 @@
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
-            var sut = GetSystemUnderTest();
             MockSetupGet(testData);
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Details(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Details(TEST_TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -128,10 +126,9 @@
         {
             // Arrange
             var expected = new TournamentViewModel();
-            var sut = GetSystemUnderTest();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Create());
+            var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Create());
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -146,10 +143,9 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
-            var sut = GetSystemUnderTest();
 
             // Act
-            var result = sut.Create(testData) as RedirectToRouteResult;
+            var result = this._sut.Create(testData) as RedirectToRouteResult;
 
             // Assert
             VerifyCreate(Times.Once());
@@ -165,11 +161,10 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
-            var sut = GetSystemUnderTest();
             MockSetupCreateTournamentValidationException();
 
             // Act
-            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create(testData));
+            var result = TestExtensions.GetModel<TournamentViewModel>(this._sut.Create(testData));
 
             // Assert
             VerifyCreate(Times.Once());
@@ -185,11 +180,10 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
-            var sut = GetSystemUnderTest();
-            sut.ModelState.AddModelError(string.Empty, string.Empty);
+            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create(testData));
+            var result = TestExtensions.GetModel<TournamentViewModel>(this._sut.Create(testData));
 
             // Assert
             VerifyCreate(Times.Never());
@@ -203,11 +197,10 @@
         public void EditGetAction_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            var sut = GetSystemUnderTest();
             MockSetupGet(null as Tournament);
 
             // Act
-            var result = sut.Edit(TEST_TOURNAMENT_ID);
+            var result = this._sut.Edit(TEST_TOURNAMENT_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -222,11 +215,10 @@
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
-            var sut = GetSystemUnderTest();
             MockSetupGet(testData);
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -241,10 +233,9 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
-            var sut = GetSystemUnderTest();
 
             // Act
-            var result = sut.Edit(testData) as RedirectToRouteResult;
+            var result = this._sut.Edit(testData) as RedirectToRouteResult;
 
             // Assert
             VerifyEdit(Times.Once());
@@ -260,11 +251,10 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
-            var sut = GetSystemUnderTest();
             MockSetupEditTournamentValidationException();
 
             // Act
-            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(testData));
+            var result = TestExtensions.GetModel<TournamentViewModel>(this._sut.Edit(testData));
 
             // Assert
             VerifyEdit(Times.Once());
@@ -280,11 +270,10 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
-            var sut = GetSystemUnderTest();
-            sut.ModelState.AddModelError(string.Empty, string.Empty);
+            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(testData));
+            var result = TestExtensions.GetModel<TournamentViewModel>(this._sut.Edit(testData));
 
             // Assert
             VerifyEdit(Times.Never());
@@ -298,11 +287,10 @@
         public void DeleteGetAction_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            var sut = GetSystemUnderTest();
             MockSetupGet(null as Tournament);
 
             // Act
-            var result = sut.Delete(TEST_TOURNAMENT_ID);
+            var result = this._sut.Delete(TEST_TOURNAMENT_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -317,11 +305,10 @@
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
-            var sut = GetSystemUnderTest();
             MockSetupGet(testData);
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Delete(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Delete(TEST_TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -335,11 +322,10 @@
         public void DeletePostAction_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            var sut = GetSystemUnderTest();
             MockSetupGet(null as Tournament);
 
             // Act
-            var result = sut.DeleteConfirmed(TEST_TOURNAMENT_ID);
+            var result = this._sut.DeleteConfirmed(TEST_TOURNAMENT_ID);
 
             // Assert
             VerifyDelete(Times.Never());
@@ -355,11 +341,10 @@
         {
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
-            var sut = GetSystemUnderTest();
             MockSetupGet(testData);
 
             // Act
-            var result = sut.DeleteConfirmed(TEST_TOURNAMENT_ID) as RedirectToRouteResult;
+            var result = this._sut.DeleteConfirmed(TEST_TOURNAMENT_ID) as RedirectToRouteResult;
 
             // Assert
             VerifyDelete(Times.Once());
@@ -413,15 +398,6 @@
         private List<Tournament> GetTournamentsWithState(List<Tournament> tournaments, TournamentStateEnum state)
         {
             return tournaments.Where(tr => tr.State == state).ToList();
-        }
-
-        /// <summary>
-        /// Gets system being tested by a unit test.
-        /// </summary>
-        /// <returns>System being tested by a unit test.</returns>
-        private TournamentsController GetSystemUnderTest()
-        {
-            return this._kernel.Get<TournamentsController>();
         }
 
         /// <summary>

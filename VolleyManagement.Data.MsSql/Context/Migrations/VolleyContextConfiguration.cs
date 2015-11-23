@@ -39,72 +39,17 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
             var contributorTeams = new[]
             {
-                new ContributorTeamEntity
-                {
-                    Name = "Project Management",
-                    CourseDirection = "All",
-                    Contributors = ContributorsProMan()
-                },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-042",
-                    CourseDirection = ".NET",
-                    Contributors = Contributors042Net()
-                },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-052",
-                    CourseDirection = ".NET",
-                    Contributors = Contributors052Net()
-                },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-061",
-                    CourseDirection = ".NET",
-                    Contributors = Contributors061Net()
-                },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-064",
-                    CourseDirection = ".NET",
-                    Contributors = Contributors064Net()
-                },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-064",
-                    CourseDirection = "ATQC",
-                    Contributors = Contributors064Atqc() 
-                },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-065",
-                    CourseDirection = "UI",
-                    Contributors = Contributors065Ui()
-                },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-070",
-                    CourseDirection = "UI",
-                    Contributors = Contributors070Ui()
-                 },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-072",
-                    CourseDirection = ".NET",
-                    Contributors = Contributors072Net()
-                },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-076",
-                    CourseDirection = "ATQC",
-                    Contributors = Contributors076Atqc()
-                },
-                new ContributorTeamEntity
-                {
-                    Name = "Dp-085",
-                    CourseDirection = ".NET",
-                    Contributors = Contributors085Net()
-                }
+                ContributorsProMan(),
+                Contributors042Net(),
+                Contributors052Net(),
+                Contributors061Net(),
+                Contributors064Net(),
+                Contributors064Atqc(),
+                Contributors065Ui(),
+                Contributors070Ui(),
+                Contributors072Net(),
+                Contributors076Atqc(),
+                Contributors085Net()
             };
             context.ContributorTeam.AddOrUpdate(s => s.Name, contributorTeams);
         }
@@ -114,157 +59,211 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             return new RoleEntity { Name = name };
         }
 
-        private static List<ContributorEntity> ContributorsProMan()
+        private static ContributorTeamEntity ContributorsProMan()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
+                {
+                    Name = "Project Management",
+                    CourseDirection = "All",
+                    Contributors = new List<ContributorEntity> 
+                    {
+                        new ContributorEntity { Name = "Sergii Diachenko" },
+                        new ContributorEntity { Name = "Iurii Osipchuk" },
+                        new ContributorEntity { Name = "Oleksii Konovalenko" },
+                        new ContributorEntity { Name = "Pavlo Ignatenko" },
+                        new ContributorEntity { Name = "Dmytro Petin" },
+                        new ContributorEntity { Name = "Oleg Shvets" }
+                     }
+                };
+            return contributors;
+        }
+
+        private static ContributorTeamEntity Contributors042Net()
+        {
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                new ContributorEntity { Name = "Sergii Diachenko" },
-                new ContributorEntity { Name = "Iurii Osipchuk" },
-                new ContributorEntity { Name = "Oleksii Konovalenko" },
-                new ContributorEntity { Name = "Pavlo Ignatenko" },
-                new ContributorEntity { Name = "Dmytro Petin" },
-                new ContributorEntity { Name = "Oleg Shvets" }
+                Name = "Dp-042",
+                CourseDirection = ".NET",
+                Contributors = new List<ContributorEntity> 
+                    {
+                        new ContributorEntity { Name = "Igor Leta" },
+                        new ContributorEntity { Name = "Dmytro Balayev"},
+                        new ContributorEntity { Name = "Ielyzaveta Kalinchuk"},
+                        new ContributorEntity { Name = "Oleg Petrushov" },
+                        new ContributorEntity { Name = "Evgenij Kozhan" }
+                    }
             };
             return contributors;
         }
 
-        private static List<ContributorEntity> Contributors042Net()
+        private static ContributorTeamEntity Contributors052Net()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                new ContributorEntity { Name = "Igor Leta" },
-                new ContributorEntity { Name = "Dmytro Balayev"},
-                new ContributorEntity { Name = "Ielyzaveta Kalinchuk"},
-                new ContributorEntity { Name = "Oleg Petrushov" },
-                new ContributorEntity { Name = "Evgenij Kozhan" }
+                Name = "Dp-052",
+                CourseDirection = ".NET",
+                Contributors = new List<ContributorEntity> 
+                    {
+                        new ContributorEntity { Name = "Julia Bukova" },
+                        new ContributorEntity { Name = "Alexandr Marchotko" },
+                        new ContributorEntity { Name = "Pavlo Dragoetskij" },
+                        new ContributorEntity { Name = "Anastacia Necheporenko" },
+                        new ContributorEntity { Name = "Egor Meshcheriakov" },
+                        new ContributorEntity { Name = "Pavel Goncharenko" }
+                    }
             };
             return contributors;
         }
 
-        private static List<ContributorEntity> Contributors052Net()
+        private static ContributorTeamEntity Contributors061Net()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                new ContributorEntity { Name = "Julia Bukova" },
-                new ContributorEntity { Name = "Alexandr Marchotko" },
-                new ContributorEntity { Name = "Pavlo Dragoetskij" },
-                new ContributorEntity { Name = "Anastacia Necheporenko" },
-                new ContributorEntity { Name = "Egor Meshcheriakov" },
-                new ContributorEntity { Name = "Pavel Goncharenko" }
+                Name = "Dp-061",
+                CourseDirection = ".NET",
+                Contributors = new List<ContributorEntity>
+                    {
+                        new ContributorEntity { Name = "Nikita Gordienko" },
+                        new ContributorEntity { Name = "Marina Gaponova" },
+                        new ContributorEntity { Name = "Sofia Shaposhnik" },
+                        new ContributorEntity { Name = "Pavlo Pokhylenko"},
+                        new ContributorEntity { Name = "Sergii Kuzmin" }
+                    }
             };
             return contributors;
         }
 
-        private static List<ContributorEntity> Contributors061Net()
+        private static ContributorTeamEntity Contributors064Net()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                new ContributorEntity { Name = "Nikita Gordienko" },
-                new ContributorEntity { Name = "Marina Gaponova" },
-                new ContributorEntity { Name = "Sofia Shaposhnik" },
-                new ContributorEntity { Name = "Pavlo Pokhylenko"},
-                new ContributorEntity { Name = "Sergii Kuzmin" }
+                Name = "Dp-064",
+                CourseDirection = ".NET",
+                Contributors = new List<ContributorEntity>
+                    { 
+                        new ContributorEntity { Name = "Andrii Zelyk" },
+                        new ContributorEntity { Name = "Viktoriia Ryndina" },
+                        new ContributorEntity { Name = "Alex Lapin" },
+                        new ContributorEntity { Name = "Dmytro Chernyshov"},
+                        new ContributorEntity { Name = "Maria Kochetkova" },
+                        new ContributorEntity { Name = "Oleh Vovkodav" },
+                        new ContributorEntity { Name = "Alexandr Maha" }
+                    }
             };
             return contributors;
         }
 
-        private static List<ContributorEntity> Contributors064Net()
+        private static ContributorTeamEntity Contributors064Atqc()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
-            { 
-                 new ContributorEntity { Name = "Andrii Zelyk" },
-                 new ContributorEntity { Name = "Viktoriia Ryndina" },
-                 new ContributorEntity { Name = "Alex Lapin" },
-                 new ContributorEntity { Name = "Dmytro Chernyshov"},
-                 new ContributorEntity { Name = "Maria Kochetkova" },
-                 new ContributorEntity { Name = "Oleh Vovkodav" },
-                 new ContributorEntity { Name = "Alexandr Maha" }
-            };
-            return contributors;
-        }
-
-        private static List<ContributorEntity> Contributors064Atqc()
-        {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                new ContributorEntity { Name = "Mykola Kolisnyk" },
-                new ContributorEntity { Name = "Maria Tsymbaliuk" },
-                new ContributorEntity { Name = "Ipatov Sergii" },
-                new ContributorEntity { Name = "Dmitriy Otrashevskiy" },
-                new ContributorEntity { Name = "Ruslan Borisenko" },
-                new ContributorEntity { Name = "Zavizion Stanislav" },
-                new ContributorEntity { Name = "Oleksandr Rudyi"},
-                new ContributorEntity { Name = "Sergey Bondarenko" }
+                Name = "Dp-064",
+                CourseDirection = "ATQC",
+                Contributors = new List<ContributorEntity> 
+                    {
+                        new ContributorEntity { Name = "Mykola Kolisnyk" },
+                        new ContributorEntity { Name = "Maria Tsymbaliuk" },
+                        new ContributorEntity { Name = "Ipatov Sergii" },
+                        new ContributorEntity { Name = "Dmitriy Otrashevskiy" },
+                        new ContributorEntity { Name = "Ruslan Borisenko" },
+                        new ContributorEntity { Name = "Zavizion Stanislav" },
+                        new ContributorEntity { Name = "Oleksandr Rudyi"},
+                        new ContributorEntity { Name = "Sergey Bondarenko" }
+                    }
             };
             return contributors;
         }
 
-        private static List<ContributorEntity> Contributors065Ui()
+        private static ContributorTeamEntity Contributors065Ui()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                new ContributorEntity { Name = "Denis Chernysh" },
-                new ContributorEntity { Name = "Oleh Man'kov" },
-                new ContributorEntity { Name = "Kateryna Nikolaieva" },
-                new ContributorEntity { Name = "Stanislav Makhnyts'kyi" },
-                new ContributorEntity { Name = "Yevhen Alf'orov"}
+                Name = "Dp-065",
+                CourseDirection = "UI",
+                Contributors = new List<ContributorEntity> 
+                    {
+                        new ContributorEntity { Name = "Denis Chernysh" },
+                        new ContributorEntity { Name = "Oleh Man'kov" },
+                        new ContributorEntity { Name = "Kateryna Nikolaieva" },
+                        new ContributorEntity { Name = "Stanislav Makhnyts'kyi" },
+                        new ContributorEntity { Name = "Yevhen Alf'orov"}
+                    }
             };
             return contributors;
         }
 
-        private static List<ContributorEntity> Contributors070Ui()
+        private static ContributorTeamEntity Contributors070Ui()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                new ContributorEntity { Name = "Dykhov Egor" },
-                new ContributorEntity { Name = "Shafarenko Ol'ha" },
-                new ContributorEntity { Name = "Ovcharenko Ekateryna" },
-                new ContributorEntity { Name = "Korostienko Daniil" }
+                Name = "Dp-070",
+                CourseDirection = "UI",
+                Contributors = new List<ContributorEntity>
+                    {
+                        new ContributorEntity { Name = "Dykhov Egor" },
+                        new ContributorEntity { Name = "Shafarenko Ol'ha" },
+                        new ContributorEntity { Name = "Ovcharenko Ekateryna" },
+                        new ContributorEntity { Name = "Korostienko Daniil" }
+                    }
             };
             return contributors;
         }
 
-        private static List<ContributorEntity> Contributors072Net()
+        private static ContributorTeamEntity Contributors072Net()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                 new ContributorEntity { Name = "Denis Rudenko" },
-                 new ContributorEntity { Name = "Mykyta Kurchenkov" },
-                 new ContributorEntity { Name = "Elyzaveta Rudakova" },
-                 new ContributorEntity { Name = "Mihail Zazharskiy" },
-                 new ContributorEntity { Name = "Dmitriy Ryndin" },
-                 new ContributorEntity { Name = "Dmitriy Shapoval" }
+                Name = "Dp-072",
+                CourseDirection = ".NET",
+                Contributors = new List<ContributorEntity>
+                    {
+                        new ContributorEntity { Name = "Denis Rudenko" },
+                        new ContributorEntity { Name = "Mykyta Kurchenkov" },
+                        new ContributorEntity { Name = "Elyzaveta Rudakova" },
+                        new ContributorEntity { Name = "Mihail Zazharskiy" },
+                        new ContributorEntity { Name = "Dmitriy Ryndin" },
+                        new ContributorEntity { Name = "Dmitriy Shapoval" }
+                    }
             };
             return contributors;
         }
 
-        private static List<ContributorEntity> Contributors076Atqc()
+        private static ContributorTeamEntity Contributors076Atqc()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                new ContributorEntity { Name = "Alla Prykhodchenko" },
-                new ContributorEntity { Name = "Andriy Lantukh" },
-                new ContributorEntity { Name = "Oleksandr Zaitsev" },
-                new ContributorEntity { Name = "Artem Pychenko" },
-                new ContributorEntity { Name = "Dmytro Maslov" },
-                new ContributorEntity { Name = "Artem  Pozdeev" }
+                Name = "Dp-076",
+                CourseDirection = "ATQC",
+                Contributors = new List<ContributorEntity>
+                    {
+                        new ContributorEntity { Name = "Alla Prykhodchenko" },
+                        new ContributorEntity { Name = "Andriy Lantukh" },
+                        new ContributorEntity { Name = "Oleksandr Zaitsev" },
+                        new ContributorEntity { Name = "Artem Pychenko" },
+                        new ContributorEntity { Name = "Dmytro Maslov" },
+                        new ContributorEntity { Name = "Artem  Pozdeev" }
+                    }
             };
             return contributors;
         }
 
-        private static List<ContributorEntity> Contributors085Net()
+        private static ContributorTeamEntity Contributors085Net()
         {
-            List<ContributorEntity> contributors = new List<ContributorEntity>
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                new ContributorEntity { Name = "Ievgen Oparyshev" },
-                new ContributorEntity { Name = "Mariia Shvets" },
-                new ContributorEntity { Name = "Eugene Gerbut" },
-                new ContributorEntity { Name = "Pavel Novichkhin" },
-                new ContributorEntity { Name = "Artem Kolisnyk" },
-                new ContributorEntity { Name = "Oleksii Khloptsev" }
+                Name = "Dp-085",
+                CourseDirection = ".NET",
+                Contributors = new List<ContributorEntity>
+                    {
+                        new ContributorEntity { Name = "Ievgen Oparyshev" },
+                        new ContributorEntity { Name = "Mariia Shvets" },
+                        new ContributorEntity { Name = "Eugene Gerbut" },
+                        new ContributorEntity { Name = "Pavel Novichkhin" },
+                        new ContributorEntity { Name = "Artem Kolisnyk" },
+                        new ContributorEntity { Name = "Oleksii Khloptsev" }
+                    }
             };
             return contributors;
         }
-
     }
 }

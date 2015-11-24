@@ -26,13 +26,12 @@
     [TestClass]
     public class PlayersControllerTests
     {
-        private const string TEST_CONTROLLER_NAME = "TestController";
+        private const int TEST_PLAYER_ID = 1;
+        private const int NON_EXISTENT_PAGE_NUMBER = -1;
         private const string INDEX_ACTION_NAME = "Index";
         private const string ROUTE_VALUES_KEY = "action";
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
-        private const int TEST_PLAYER_ID = 1;
-        private const int NON_EXISTENT_PAGE_NUMBER = -1;
         private const string PLAYER_NAME_TO_SEARCH = "Player Name";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
@@ -65,7 +64,7 @@
             var result = this._sut.Delete(TEST_PLAYER_ID);
 
             // Assert
-            VerifyDelete(Times.Once());
+            VerifyDelete(TEST_PLAYER_ID, Times.Once());
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
@@ -77,13 +76,13 @@
         public void DeletePostAction_NonExistentPlayer_JsonResultIsReturned()
         {
             // Arrange
-            MockSetupDeleteMissingEntityException();
+            SetupDeleteThrowsMissingEntityException();
 
             // Act
             var result = this._sut.Delete(TEST_PLAYER_ID);
 
             // Assert
-            VerifyDelete(Times.Once());
+            VerifyDelete(TEST_PLAYER_ID, Times.Once());
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
@@ -97,8 +96,8 @@
             // Arrange
             var testData = MakeTestPlayers();
             var expected = MakePlayerNameViewModels(testData);
-            MockSetupGetAll(testData);
-            MockSetupControllerContext();
+            SetupGetAll(testData);
+            SetupControllerContext();
 
             // Act
             var actual = TestExtensions.GetModel<PlayersListViewModel>(this._sut.Index(null, string.Empty)).List;
@@ -117,8 +116,8 @@
             // Arrange
             var testData = MakeTestPlayers();
             var expected = GetPlayerNameViewModelsWithPlayerName(MakePlayerNameViewModels(testData), PLAYER_NAME_TO_SEARCH);
-            MockSetupGetAll(testData);
-            MockSetupControllerContext();
+            SetupGetAll(testData);
+            SetupControllerContext();
 
             // Act
             var actual = TestExtensions.GetModel<PlayersListViewModel>(this._sut.Index(null, PLAYER_NAME_TO_SEARCH)).List;
@@ -136,7 +135,7 @@
         {
             // Arrange
             var testData = MakeTestPlayers();
-            MockSetupGetAll(testData);
+            SetupGetAll(testData);
 
             // Act
             var result = this._sut.Index(NON_EXISTENT_PAGE_NUMBER) as RedirectToRouteResult;
@@ -152,7 +151,7 @@
         public void Details_NonExistentPlayer_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            MockSetupGet(null);
+            SetupGet(TEST_PLAYER_ID, null);
 
             // Act
             var result = this._sut.Details(TEST_PLAYER_ID);
@@ -170,7 +169,7 @@
             // Arrange
             var testData = MakeTestPlayer(TEST_PLAYER_ID);
             var expected = MakeTestPlayerViewModel(TEST_PLAYER_ID);
-            MockSetupGet(testData);
+            SetupGet(TEST_PLAYER_ID, testData);
 
             // Act
             var actual = TestExtensions.GetModel<PlayerRefererViewModel>(this._sut.Details(TEST_PLAYER_ID));
@@ -242,7 +241,7 @@
         {
             // Arrange
             var testData = MakeTestPlayerViewModel();
-            MockSetupCreateArgumentException();
+            SetupCreateThrowsArgumentException();
 
             // Act
             var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Create(testData));
@@ -261,7 +260,7 @@
         {
             // Arrange
             var testData = MakeTestPlayerViewModel();
-            MockSetupCreateValidationException();
+            SetupCreateThrowsValidationException();
 
             // Act
             var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Create(testData));
@@ -278,7 +277,7 @@
         public void EditGetAction_NonExistentPlayer_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            MockSetupGet(null);
+            SetupGet(TEST_PLAYER_ID, null);
 
             // Act
             var result = this._sut.Edit(TEST_PLAYER_ID);
@@ -296,7 +295,7 @@
             // Arrange
             var testData = MakeTestPlayer(TEST_PLAYER_ID);
             var expected = MakeTestPlayerViewModel(TEST_PLAYER_ID);
-            MockSetupGet(testData);
+            SetupGet(TEST_PLAYER_ID, testData);
 
             // Act
             var actual = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(TEST_PLAYER_ID));
@@ -332,7 +331,7 @@
         {
             // Arrange
             var testData = MakeTestPlayerViewModel();
-            MockSetupEditMissingEntityException();
+            SetupEditThrowsMissingEntityException();
 
             // Act
             var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(testData));
@@ -351,7 +350,7 @@
         {
             // Arrange
             var testData = MakeTestPlayerViewModel();
-            MockSetupEditValidationException();
+            SetupEditThrowsValidationException();
 
             // Act
             var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(testData));
@@ -380,40 +379,11 @@
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
-        /// <summary>
-        /// Mocks test data
-        /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockSinglePlayer(Player testData)
-        {
-            _playerServiceMock.Setup(tr => tr.Get(testData.Id)).Returns(testData);
-        }
-
-        /// <summary>
-        /// Set test route data to the ControllerContext.
-        /// </summary>
-        /// <param name="controller">Controller to set the route data of.</param>
-        private void SetControllerRouteData(PlayersController controller)
-        {
-            controller.ControllerContext = new ControllerContext();
-            controller.ControllerContext.RouteData = new RouteData();
-            controller.RouteData.Values["controller"] = TEST_CONTROLLER_NAME;
-        }
-
-        /// <summary>
-        /// Makes players filled with test data.
-        /// </summary>
-        /// <returns>List of players with test data.</returns>
         private List<Player> MakeTestPlayers()
         {
             return new PlayerServiceTestFixture().TestPlayers().Build();
         }
 
-        /// <summary>
-        /// Makes PlayerNameViewModels from Player view models.
-        /// </summary>
-        /// <param name="players">List of Player view models.</param>
-        /// <returns>List of PlayerNameViewModels.</returns>
         private List<PlayerNameViewModel> MakePlayerNameViewModels(List<Player> players)
         {
             return players.Select(p => new PlayerNameViewModel { Id = p.Id, FullName = p.LastName + " " + p.FirstName }).ToList();
@@ -424,150 +394,84 @@
             return players.Where(p => p.FullName.Contains(name)).ToList();
         }
 
-        /// <summary>
-        /// Makes player with specified identifier filled with test data.
-        /// </summary>
-        /// <param name="playertId">Identifier of the player.</param>
-        /// <returns>Player filled with test data.</returns>
-        private Player MakeTestPlayer(int playertId)
+        private Player MakeTestPlayer(int playerId)
         {
-            return new PlayerBuilder().WithId(playertId).Build();
+            return new PlayerBuilder().WithId(playerId).Build();
         }
 
-        /// <summary>
-        /// Makes player view model filled with test data.
-        /// </summary>
-        /// <returns>Player view model filled with test data.</returns>
         private PlayerViewModel MakeTestPlayerViewModel()
         {
             return new PlayerMvcViewModelBuilder().Build();
         }
 
-        /// <summary>
-        /// Makes player view model with specified player identifier filled with test data.
-        /// </summary>
-        /// <param name="playerId">Identifier of the player.</param>
-        /// <returns>Player view model filled with test data.</returns>
         private PlayerViewModel MakeTestPlayerViewModel(int playerId)
         {
             return new PlayerMvcViewModelBuilder().WithId(playerId).Build();
         }
 
-        /// <summary>
-        /// Gets system being tested by a unit test.
-        /// </summary>
-        /// <returns>System being tested by a unit test.</returns>
-        private PlayersController GetSystemUnderTest()
-        {
-            return this._kernel.Get<PlayersController>();
-        }
-
-        /// <summary>
-        /// Sets up a mock for Get method of Player service to return specified players.
-        /// </summary>
-        /// <param name="teams">Players that will be returned by Get method of Player service.</param>
-        private void MockSetupGetAll(List<Player> teams)
+        private void SetupGetAll(List<Player> teams)
         {
             this._playerServiceMock.Setup(ps => ps.Get()).Returns(teams.AsQueryable());
         }
 
-        /// <summary>
-        /// Sets up a mock for Get method of Player service with any parameter to return specified player.
-        /// </summary>
-        /// <param name="player">Player that will be returned by Get method of Player service.</param>
-        private void MockSetupGet(Player player)
+        private void SetupGet(int playerId, Player player)
         {
-            this._playerServiceMock.Setup(tr => tr.Get(It.IsAny<int>())).Returns(player);
+            this._playerServiceMock.Setup(tr => tr.Get(playerId)).Returns(player);
         }
 
-        /// <summary>
-        /// Sets up a mock for Create method of Player service to throw ArgumentException.
-        /// </summary>
-        private void MockSetupCreateArgumentException()
+        private void SetupCreateThrowsArgumentException()
         {
             this._playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
                 .Throws(new ArgumentException(string.Empty, string.Empty));
         }
 
-        /// <summary>
-        /// Sets up a mock for Create method of Player service to throw ValidationException.
-        /// </summary>
-        private void MockSetupCreateValidationException()
+        private void SetupCreateThrowsValidationException()
         {
             this._playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
                 .Throws(new ValidationException(string.Empty));
         }
 
-        /// <summary>
-        /// Sets up a mock for Edit method of Player service to throw MissingEntityException.
-        /// </summary>
-        private void MockSetupEditMissingEntityException()
+        private void SetupEditThrowsMissingEntityException()
         {
             this._playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
                 .Throws(new MissingEntityException(string.Empty));
         }
 
-        /// <summary>
-        /// Sets up a mock for Edit method of Player service to throw ValidationException.
-        /// </summary>
-        private void MockSetupEditValidationException()
+        private void SetupEditThrowsValidationException()
         {
             this._playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
                 .Throws(new ValidationException(string.Empty));
         }
 
-        /// <summary>
-        /// Sets up a mock for Delete method of Player service to throw MissingEntityException.
-        /// </summary>
-        private void MockSetupDeleteMissingEntityException()
+        private void SetupDeleteThrowsMissingEntityException()
         {
             this._playerServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
                 .Throws(new MissingEntityException(string.Empty));
         }
 
-        /// <summary>
-        /// Verifies that tournament is created required number of times.
-        /// </summary>
-        /// <param name="times">Number of times tournament must be created.</param>
-        private void VerifyCreate(Times times)
+        private void SetupControllerContext()
         {
-            this._playerServiceMock.Verify(ts => ts.Create(It.IsAny<Player>()), times);
+            this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
         }
 
-        /// <summary>
-        /// Verifies that tournament is updated required number of times.
-        /// </summary>
-        /// <param name="times">Number of times tournament must be updated.</param>
+        private void VerifyCreate(Times times)
+        {
+            this._playerServiceMock.Verify(ps => ps.Create(It.IsAny<Player>()), times);
+        }
+
         private void VerifyEdit(Times times)
         {
             this._playerServiceMock.Verify(ts => ts.Edit(It.IsAny<Player>()), times);
         }
 
-        /// <summary>
-        /// Verifies that tournament is deleted required number of times.
-        /// </summary>
-        /// <param name="times">Number of times tournament must be deleted.</param>
-        private void VerifyDelete(Times times)
+        private void VerifyDelete(int playerId, Times times)
         {
-            this._playerServiceMock.Verify(ts => ts.Delete(It.IsAny<int>()), times);
+            this._playerServiceMock.Verify(ts => ts.Delete(It.Is<int>(id => id == playerId)), times);
         }
 
-        /// <summary>
-        /// Verifies that redirect to specified action takes place.
-        /// </summary>
-        /// <param name="actionName">Name of the action where we are supposed to be redirected.</param>
-        /// <param name="result">Actual redirection result.</param>
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)
         {
             Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
-        }
-
-        /// <summary>
-        /// Sets up a mock for ControllerContext property of the controller.
-        /// </summary>
-        private void MockSetupControllerContext()
-        {
-            this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
         }
     }
 }

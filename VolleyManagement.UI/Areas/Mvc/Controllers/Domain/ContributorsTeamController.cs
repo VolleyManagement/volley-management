@@ -32,15 +32,15 @@
         /// <returns>View with collection of contributors teams</returns>
         public ActionResult Index()
         {
-            var contributors = this._contributorTeamService.Get().ToList();
-            var contributorsTeamView = new List<ContributorsTeamViewModel>();
+            var contributorsTeam = this._contributorTeamService.Get().ToList();
+            var contributorsTeamViewModel = new List<ContributorsTeamViewModel>();
 
-            foreach (var item in contributors)
+            foreach (var item in contributorsTeam)
             {
-                contributorsTeamView.Add(ContributorsTeamViewModel.Map(item));
+                contributorsTeamViewModel.Add(ContributorsTeamViewModel.Map(item));
             }
 
-            return View(contributorsTeamView);
+            return View(contributorsTeamViewModel);
         }
     }
 }

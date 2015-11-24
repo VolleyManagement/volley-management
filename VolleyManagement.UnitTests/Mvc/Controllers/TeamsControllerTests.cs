@@ -251,7 +251,7 @@
         public void Details_NonExistentTeam_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            MockSetupGet(null);
+            SetupGet(TEST_TEAM_ID, null);
 
             // Act
             var result = this._sut.Details(TEST_TEAM_ID);
@@ -277,7 +277,7 @@
             MockTeamServiceGetTeam(team);
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
-            MockSetupControllerContext();
+            SetupControllerContext();
 
             var expected = CreateViewModel();
 
@@ -359,39 +359,12 @@
             _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
         }
 
-        /// <summary>
-        /// Makes team with specified identifier filled with test data.
-        /// </summary>
-        /// <param name="teamId">Identifier of the team.</param>
-        /// <returns>Team filled with test data.</returns>
-        private Team MakeTestTeam(int teamId)
+        private void SetupGet(int teamId, Team team)
         {
-            return new TeamBuilder().WithId(teamId).Build();
+            this._teamServiceMock.Setup(tr => tr.Get(teamId)).Returns(team);
         }
 
-        /// <summary>
-        /// Makes team view model filled with test data.
-        /// </summary>
-        /// <param name="teamId">Identifier of the team.</param>
-        /// <returns>Team view model filled with test data.</returns>
-        private TeamViewModel MakeTestTeamViewModel(int teamId)
-        {
-            return new TeamMvcViewModelBuilder().WithId(teamId).Build();
-        }
-
-        /// <summary>
-        /// Sets up a mock for Get method of Team service with any parameter to return specified team.
-        /// </summary>
-        /// <param name="team">Team that will be returned by Get method of Team service.</param>
-        private void MockSetupGet(Team team)
-        {
-            this._teamServiceMock.Setup(tr => tr.Get(It.IsAny<int>())).Returns(team);
-        }
-
-        /// <summary>
-        /// Sets up a mock for ControllerContext property of the controller.
-        /// </summary>
-        private void MockSetupControllerContext()
+        private void SetupControllerContext()
         {
             this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
         }

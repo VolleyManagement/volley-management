@@ -44,8 +44,8 @@
         {
             // Arrange
             var testData = MakeTestContributorTeams();
-            var expected = MakeTestContributorTeamViewModels();
-            MockSetupGetAll(testData);
+            var expected = MakeTestContributorTeamViewModels(testData);
+            SetupGetAll(testData);
 
             // Act
             var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(this._sut.Index()).ToList();
@@ -54,37 +54,25 @@
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamViewModelComparer());
         }
 
-        /// <summary>
-        /// Makes contributor teams filled with test data.
-        /// </summary>
-        /// <returns>List of contributor teams with test data.</returns>
         private List<ContributorTeam> MakeTestContributorTeams()
         {
             return new ContributorTeamServiceTestFixture().TestContributors().Build();
         }
 
-        /// <summary>
-        /// Sets up a mock for Get method of ContributorTeam service to return specified contributor teams.
-        /// </summary>
-        /// <param name="teams">Contributor teams that will be returned by Get method of ContributorTeam service.</param>
-        private void MockSetupGetAll(List<ContributorTeam> teams)
+        private List<ContributorsTeamViewModel> MakeTestContributorTeamViewModels(List<ContributorTeam> contributorTeams)
         {
-            this._contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams.AsQueryable());
-        }
-
-        /// <summary>
-        /// Makes view models of contributor team filled with test data.
-        /// </summary>
-        /// <returns>List of view models of contributor team with test data.</returns>
-        private List<ContributorsTeamViewModel> MakeTestContributorTeamViewModels()
-        {
-            return MakeTestContributorTeams().Select(ct => new ContributorTeamMvcViewModelBuilder()
+            return contributorTeams.Select(ct => new ContributorTeamMvcViewModelBuilder()
                 .WithId(ct.Id)
                 .WithName(ct.Name)
                 .WithCourseDirection(ct.CourseDirection)
                 .WithContributors(ct.Contributors.ToList())
                 .Build())
                 .ToList();
+        }
+
+        private void SetupGetAll(List<ContributorTeam> teams)
+        {
+            this._contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams.AsQueryable());
         }
     }
 }

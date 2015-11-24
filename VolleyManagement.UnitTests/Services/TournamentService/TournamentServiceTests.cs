@@ -153,7 +153,6 @@
             _tournamentRepositoryMock.Verify(
                 tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, testTournament))),
                 Times.Once());
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
 
         /// <summary>
@@ -173,7 +172,7 @@
             sut.Edit(testTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyEdit(testTournament, Times.Never());
         }
 
         /// <summary>
@@ -202,7 +201,7 @@
             sut.Edit(nonUniqueNameTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyEdit(nonUniqueNameTournament, Times.Never());
         }
 
         /// <summary>
@@ -226,7 +225,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -251,7 +250,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -274,7 +273,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -292,7 +291,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Once());
+            VerifyCreate(newTournament, Times.Once());
         }
 
         /// <summary>
@@ -312,7 +311,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -332,7 +331,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -360,7 +359,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -383,7 +382,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -411,7 +410,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -438,7 +437,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -466,7 +465,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -498,7 +497,6 @@
             // Assert
             _tournamentRepositoryMock.Verify(
                 tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, newTournament))));
-            _unitOfWorkMock.Verify(u => u.Commit());
         }
 
         /// <summary>
@@ -518,7 +516,7 @@
             sut.Create(testTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(testTournament, Times.Never());
         }
 
         /// <summary>
@@ -539,7 +537,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -557,7 +555,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -575,7 +573,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -594,7 +592,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -613,81 +611,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Edit() method. Tournament's division count is out of range. Exception is thrown during tournament editing.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Количество дивизионов в турнире не должно выходить за установленный диапазон")]
-        public void Edit_TournamentDivisionCountOutOfRange_ExceptionThrown()
-        {
-            // Arrange
-            var newTournament = new TournamentBuilder().WithNoDivisions().Build();
-            var sut = _kernel.Get<TournamentService>();
-
-            // Act
-            sut.Edit(newTournament);
-
-            // Assert
-            VerifyEdit(Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Edit() method. Tournament's divisions do not have unique names. Exception is thrown during tournament editing.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Дивизионы в рамках турнира не могут иметь одинаковых названий")]
-        public void Edit_TournamentDivisionNamesNotUnique_ExceptionThrown()
-        {
-            // Arrange
-            var newTournament = new TournamentBuilder().WithNonUniqueNameDivisions().Build();
-            var sut = _kernel.Get<TournamentService>();
-
-            // Act
-            sut.Edit(newTournament);
-
-            // Assert
-            VerifyEdit(Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Edit() method. Group count in tournament's divisions is out of range.
-        /// Exception is thrown during tournament editing.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Количество групп в дивизионе не должно выходить за установленный диапазон")]
-        public void Edit_TournamentDivisionGroupCountOutOfRange_ExceptionThrown()
-        {
-            // Arrange
-            var newTournament = new TournamentBuilder().WithNoDivisionsGroups().Build();
-            var sut = _kernel.Get<TournamentService>();
-
-            // Act
-            sut.Edit(newTournament);
-
-            // Assert
-            VerifyEdit(Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Edit() method. Groups in tournament's divisions do not have unique names.
-        /// Exception is thrown during tournament editing.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException), "Группы в рамках дивизиона не могут иметь одинаковых названий")]
-        public void Edit_TournamentDivisionGroupNamesNotUnique_ExceptionThrown()
-        {
-            // Arrange
-            var newTournament = new TournamentBuilder().WithDivisionsNonUniqueNameGroups().Build();
-            var sut = _kernel.Get<TournamentService>();
-
-            // Act
-            sut.Edit(newTournament);
-
-            // Assert
-            VerifyEdit(Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -832,24 +756,14 @@
                             .Build();
         }
 
-        /// <summary>
-        /// Verifies that specified tournament is created required number of times.
-        /// </summary>
-        /// <param name="times">Number of times tournament must be created.</param>
-        private void VerifyCreate(Times times)
+        private void VerifyCreate(Tournament tournament, Times times)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.Add(It.IsAny<Tournament>()), times);
-            _unitOfWorkMock.Verify(uw => uw.Commit(), times);
+            _tournamentRepositoryMock.Verify(tr => tr.Add(tournament), times);
         }
 
-        /// <summary>
-        /// Verifies that specified tournament is updated required number of times.
-        /// </summary>
-        /// <param name="times">Number of times tournament must be updated.</param>
-        private void VerifyEdit(Times times)
+        private void VerifyEdit(Tournament tournament, Times times)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.Update(It.IsAny<Tournament>()), times);
-            _unitOfWorkMock.Verify(uw => uw.Commit(), times);
+            _tournamentRepositoryMock.Verify(tr => tr.Update(tournament), times);
         }
     }
 }

@@ -72,6 +72,16 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<TeamEntity> Teams { get; set; }
 
+        /// <summary>
+        /// Gets or sets the group table.
+        /// </summary>
+        public DbSet<GroupEntity> Groups { get; set; }
+
+        /// <summary>
+        /// Gets or sets the divisions table.
+        /// </summary>
+        public DbSet<DivisionEntity> Divisions { get; set; }
+
         #endregion
 
         #region Mapping Configuration
@@ -95,6 +105,8 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureTeams(modelBuilder);
             ConfigureContributors(modelBuilder);
             ConfigureContributorTeams(modelBuilder);
+            ConfigureGroups(modelBuilder);
+            ConfigureDivisions(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -172,6 +184,12 @@ namespace VolleyManagement.Data.MsSql.Context
             modelBuilder.Entity<TournamentEntity>()
                 .Property(t => t.TransferEnd)
                 .HasColumnType(VolleyDatabaseMetadata.DATE_COLUMN_TYPE);
+
+            modelBuilder.Entity<TournamentEntity>()
+                .HasMany(d => d.Divisions)
+                .WithRequired(d => d.Tournament)
+                .HasForeignKey(d => d.TournamentId)
+                .WillCascadeOnDelete(false);
         }
 
         private static void ConfigureUsers(DbModelBuilder modelBuilder)
@@ -391,6 +409,42 @@ namespace VolleyManagement.Data.MsSql.Context
                             m.MapRightKey(VolleyDatabaseMetadata.USER_TO_ROLE_FK);
                             m.ToTable(VolleyDatabaseMetadata.USERS_TO_ROLES_TABLE_NAME);
                         });
+        }
+
+        private static void ConfigureGroups(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<GroupEntity>()
+                .ToTable(VolleyDatabaseMetadata.GROUPS_TABLE_NAME)
+                .HasKey(g => g.Id);
+
+            // Name
+            modelBuilder.Entity<GroupEntity>()
+                .Property(g => g.Name)
+                .IsRequired()
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.Group.MAX_GROUP_NAME_LENGTH);
+
+            // FK Group - Division
+            modelBuilder.Entity<GroupEntity>()
+                .HasRequired(g => g.Division)
+                .WithMany(d => d.Groups)
+                .HasForeignKey(g => g.DivisionId)
+                .WillCascadeOnDelete(false);
+        }
+
+        private static void ConfigureDivisions(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DivisionEntity>()
+                .ToTable(VolleyDatabaseMetadata.DIVISION_TABLE_NAME)
+                .HasKey(d => d.Id);
+
+            modelBuilder.Entity<DivisionEntity>()
+                .Property(d => d.Name)
+                .IsRequired()
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.Division.MAX_DIVISION_NAME_LENGTH);
         }
 
         #endregion

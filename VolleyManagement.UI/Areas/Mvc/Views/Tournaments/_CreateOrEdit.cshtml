@@ -150,7 +150,7 @@
                 <input  type="button"
                         value="@Resources.TournamentViews.AddGroup" 
                         data-division =@i
-                        onClick="addGroup(this, 10, '@Resources.TournamentViews.GroupLimit');">
+                        onClick="addGroup(this, @ValidationKeys.MAX_GROUPS_COUNT, '@Resources.TournamentViews.GroupLimit');">
             </div>
         </div>
         string groupsId = "Group" + i.ToString();

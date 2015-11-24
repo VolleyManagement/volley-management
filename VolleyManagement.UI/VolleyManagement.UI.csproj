@@ -355,6 +355,7 @@
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamOperationResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentsCollectionsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
+	<Compile Include="Areas\Mvc\ViewModels\Groups\GroupViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\ContributorsTeamController.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\PlayersController.cs" />

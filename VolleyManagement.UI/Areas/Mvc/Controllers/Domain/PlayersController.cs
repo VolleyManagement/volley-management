@@ -215,30 +215,28 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <returns>List of free players</returns>
         public JsonResult GetFreePlayers(string searchString, bool isCaptain, string selectedPlayers)
         {
-            IEnumerable<int> selectedIds = null;
-            if (!string.IsNullOrEmpty(selectedPlayers))
-            {
-                selectedIds = this.GetIntCollection(selectedPlayers);
-            }
-
             searchString = HttpUtility.UrlDecode(searchString);
-
             var query = this._playerService.Get()
                             .Where(p => (p.FirstName + p.LastName).Contains(searchString));
 
-            if (isCaptain)
+            if (!string.IsNullOrEmpty(selectedPlayers))
             {
-                query = query.Where(p => selectedIds.Contains(p.Id) || p.TeamId == null);
+                var selectedIds = this.GetIntCollection(selectedPlayers);
+                query = isCaptain
+                        ? query.Where(p => selectedIds.Contains(p.Id) || p.TeamId == null)
+                        : query.Where(p => !selectedIds.Contains(p.Id) || p.TeamId == null);
+
             }
-            else
+            else 
             {
-                query = query.Where(p => !selectedIds.Contains(p.Id) || p.TeamId == null);
-            }                   
+                query = query.Where(p => p.TeamId == null);
+            }
             
-            return Json(query.OrderBy(p => p.LastName)
-                             .ToList()
-                             .Select(p => PlayerNameViewModel.Map(p)),
-                        JsonRequestBehavior.AllowGet);
+            var result = query.OrderBy(p => p.LastName)
+                              .ToList()
+                              .Select(p => PlayerNameViewModel.Map(p));
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")

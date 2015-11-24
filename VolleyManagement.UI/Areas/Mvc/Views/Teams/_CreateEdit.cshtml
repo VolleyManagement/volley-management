@@ -1,8 +1,9 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+@using System.Web.Script.Serialization;
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
-    </div>
+</div>
 <div class="editor-label">
     @Html.EditorFor(model => model.Name)
     @Html.ValidationMessageFor(model => model.Name)
@@ -17,25 +18,29 @@
 </div>
 
 <div class="editor-label">
-    <label for="Captain_FullNameText">Капитан</label>
+    <label for="Captain_FullNameText">Captain</label>
 </div>
 
 @{
     string captainFullName = string.Empty;
+    string teamPlayersJson = string.Empty;
     int? captainId = null;
     if (Model.Captain != null)
     {
         captainFullName = Model.Captain.FullName;
         captainId = Model.Captain.Id;
     }
-
+    
+    if(Model.Roster != null)
+    {
+        teamPlayersJson = new JavaScriptSerializer().Serialize(Model.Roster);   
+    }
     <div class="editor-label">
         <input class="text-box single-line"
             id="captainFullName"
             name="Captain.FullName"
             type="text"
-            value="@captainFullName"
-            readonly />
+            value="@captainFullName" />
         <input class="hidden"
             id="captainId"
             name="Captain.Id"
@@ -55,33 +60,17 @@
 <div>
     <h4>@Resources.TeamViews.RosterTitle</h4>
 
-    <br />
+    <br />  
+    
+    <div class="dataForTeamPlayersTable" hidden>@teamPlayersJson</div>
 
-    <input type="button" value="@Resources.TeamViews.AddPlayersToRoster" class="addPlayerToTeamButton">
+    <button class="addPlayerToTeamButton">@Resources.TeamViews.AddTeamPlayer</button>
     <table id="teamRoster" class="table">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)
-            </th>
+            <th>@Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)</th>
+            <th class="hidden"></th>
             <th class="hidden"></th>
         </tr>
-        @if (Model.Roster != null)
-        {
-            for (int i = 0; i < Model.Roster.Count(); i++)
-            {
-                var item = Model.Roster[i];
-                if (item.Id != Model.Captain.Id)
-                {
-                    <tr id="player_@item.Id" class="rosterPlayer teamPlayer">
-                        <td>
-                            <input type="text" name="Roster[@i].FullName" value="@item.FullName" readonly />
-                        </td>
-                        <td class="hidden idValueInput">
-                            <input type="text" name="Roster[@i].Id" value="@item.Id" hidden />
-                        </td>
-                    </tr>
-        }
-            }
-        }
     </table>
 </div>
 

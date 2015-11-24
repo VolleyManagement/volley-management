@@ -63,9 +63,9 @@ namespace VolleyManagement.UI.App_GlobalResources {
         /// <summary>
         ///   Looks up a localized string similar to Добавить игроков в команду.
         /// </summary>
-        public static string AddPlayersToRoster {
+        public static string AddTeamPlayer {
             get {
-                return ResourceManager.GetString("AddPlayersToRoster", resourceCulture);
+                return ResourceManager.GetString("AddTeamPlayer", resourceCulture);
             }
         }
         

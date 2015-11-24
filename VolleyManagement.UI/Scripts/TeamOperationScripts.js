@@ -1,28 +1,88 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     'use strict';
-    
+
     // register namespace
     var editScope = $("div[vmscope='team_edit']"),
         handlers = VM.addNamespace("team.handlers"),
-        privateScope = {};
+        privates = {};
 
-    // PRIVATE 
-    
-    privateScope.teamId = (function () {
+
+    privates.teamId = (function() {
 
         var teamIdField = $("[name='Id']", editScope);
 
         return null;
-
     })();
-    privateScope.selectedPlayers = [];
+    privates.selectedPlayers = [];
+    privates.captainNameInput = $("#captainFullName", editScope);
+    privates.teamPlayersTable = $("#teamRoster", editScope);
 
-    //Autocompleter
-    privateScope.getAutocompleteUrl = function (config) {
+    // HELPERS
+    privates.updateSelectedPlayers = function() {
+        privates.selectedPlayers = [];
+        $('input .teamPlayerId', privates.teamPlayersTable).each(function(item) {
+            var value = item.val();
+            if (value) {
+                privates.selectedPlayers.push(value);
+            }
+        });
+    };
+
+    privates.allPlayersAreSet = function() {
+
+        var rows = $('tr .teamPlayer', privates.teamPlayersTable),
+            result = true,
+            item,
+            i;
+
+        for (i = 0; i < rows.length; i++) {
+            item = rows[i];
+            if (!item.hasClass('captain')) {
+                if (item.value === "") {
+                    result = false;
+                    break;
+                }
+            }
+        }
+
+        return result;
+    };
+
+    privates.getTeamPlayerRowMarkup = function(config) {
+        var rowNumber = config.rowNumber,
+            playerName = config.playerName || "",
+            playerId = config.playerId || "",
+            isCaptain = config.isCaptain || false,
+            hiddenRow = "",
+            rowClass = "teamPlayer",
+            playerNameInput = "",
+            playerIdInput = "<input type='text name='Roster[" + rowNumber + "].Id' value='" + playerId + "' class='teamPlayerId' hidden />",
+            deleteButton = '';
+
+        if (config.isHidden) {
+            hiddenRow = "hidden";
+        }
+
+        if (isCaptain) {
+            rowClass += " captain";
+            playerNameInput = "<input type='text' name='Roster[" + rowNumber + "].FullName' class='teamPlayerName' value='" + playerName + "' readonly/>";
+        } else {
+            playerNameInput = "<input type='text' name='Roster[" + rowNumber + "].FullName' class='teamPlayerName' value='" + playerName + "'/>";
+            buttonTemplate = "<button class='deleteTeamPlayerButton>Delete</button>'";
+        }
+
+        return "<tr class='" + rowClass + "' "+ hiddenRow + ">" +
+               "<td>" + playerNameInput + "</td>" +
+               "<td>" + playerIdInput + "</td>" +
+               "<td>" + deleteButton + "</td></tr>";
+    };
+
+    // AUTOCOMPLETE
+    privates.getAutocompleteUrl = function(config) {
 
         var searchString,
             isCaptain = "false",
-            selectedPlayers = "null",
+            selectedPlayers = "",
             result = "";
 
         if (config.searchString) {
@@ -31,97 +91,101 @@
             if (config.isCaptain === true) {
                 isCaptain = "true";
             }
-            
-            if (privateScope.selectedPlayers.length > 0) {
-                selectedPlayers = privateScope.selectedPlayers.join();
+
+            if (privates.selectedPlayers.length > 0) {
+                selectedPlayers = "&selectedPlayers=" + privates.selectedPlayers.join();
             }
 
-            result = "/Mvc/Players/GetFreePlayers?searchString=" + searchString + "&isCaptain=" + isCaptain + "&selectedPlayers=" + selectedPlayers;
+            result = "/Players/GetFreePlayers?searchString=" + searchString + "&isCaptain=" + isCaptain + selectedPlayers;
         }
 
         return result;
     };
 
-    privateScope.executeCompleter = function(url, responseHandler) {
+    privates.executeCompleter = function(url, responseHandler) {
 
         var processedData = [];
-        
+
         if (url) {
-            $.getJSON(url, function (data, status, xhr) {
-                $.each(data, function(item) {
+            $.getJSON(url, function(data, status, xhr) {
+                $.each(data, function(key, value) {
                     processedData.push({
-                        label: item.FullName,
-                        value: item.Id
+                        id: value.Id,
+                        value: value.FullName
                     });
                 });
+
+                responseHandler(processedData);
             });
         }
-        
-        responseHandler(processedData);
     };
 
-    privateScope.playersCompleterFunc = function (requestObj, responseHandler) {
-        
-        var url = privateScope.getAutocompleteUrl({
+    privates.playersCompleter = function(requestObj, responseHandler) {
+
+        var url = privates.getAutocompleteUrl({
             searchString: requestObj.term,
             isCaptain: false
         });
 
-        privateScope.executeCompleter(url, responseHandler);
+        privates.executeCompleter(url, responseHandler);
     };
 
-    privateScope.onCaptainSelect = function (selectedItem) {
-        var selectedId = selectedItem.value;
-        
-        if ($.inArray(selectedId) === -1) {
-            selectedItem.push(selectedId);
-        }
-    };
-    
-    privateScope.onPlayerSelect = function (selectedItem) {
-        var selectedId = selectedItem.value;
+    privates.captainCompleter = function(requestObj, responseHandler) {
 
-        if ($.inArray(selectedId) === -1) {
-            selectedItem.push(selectedId);
-        }
-    };
-
-    privateScope.captainCompleterFunc = function(requestObj, responseHandler) {
-        'use strict';
-
-        var url = privateScope.getAutocompleteUrl({
+        var url = privates.getAutocompleteUrl({
             searchString: requestObj.term,
             isCaptain: true
         });
 
-        privateScope.executeCompleter(url, responseHandler);
+        privates.executeCompleter(url, responseHandler);
     };
 
-    privateScope.allPlayersAreSet = function (rows) {
+    privates.onPlayerSelect = function(eventObj, selectedItem) {
+        var selectedId = selectedItem.item.id,
+            selectedName = selectedItem.item.value;
 
-        var result = true;
-        
-        for (var i = 0; i < rows.length; i++) {
-            if (rows[i].value === "") {
-                result = false;
-            }
-        }
+        // TODO: id update logic
 
-        return result;
+        privates.updateSelectedPlayers();
+    };
+
+    privates.onCaptainSelect = function(eventObj, selectedItem) {
+        var selectedId = selectedItem.item.id,
+            selectedName = selectedItem.item.value;
+
+        // TODO: id update logic
+
+        privates.updateSelectedPlayers();
     };
 
 
-    // Register handlers
-    handlers.deleteTeam = function (teamId, teamName) {
+
+    // HANDLERS
+
+    handlers.onCaptainChange = function(obj) {
+        console.log(obj);
+        // TODO: check if player was chosen correctly
+        // TODO: Hide first row if captain empty
+        $('tr .captain > input .teamPlayerName', privates.teamPlayersTable).val("TEST");
+    };
+
+    handlers.onPlayerChange = function(obj) {
+        console.log(obj);
+        // TODO: check if player was chosen correctly
+    };
+
+    handlers.deleteTeam = function(teamId, teamName) {
         var message = $("#DeleteConfirmationMessage").val();
         var confirmation = confirm(message + ' "' + teamName + '" ?');
         if (confirmation) {
             $.ajax({
                 url: 'Teams/Delete',
                 type: 'POST',
-                data: { id: teamId },
+                data: {
+                    id: teamId
+                },
                 dataType: 'json',
-                success: function (resultJson) {
+                success: function(resultJson) {
                     alert(resultJson.Message);
                     if (resultJson.OperationSuccessful) {
                         $("#team" + teamId).remove();
@@ -133,89 +197,67 @@
         }
     };
 
-    handlers.changePage = function (newPage, numberOfPages) {
-        ajaxPlayersRefresh(newPage);
-        printPagesBar(newPage, numberOfPages);
-    };
+    handlers.addTeamPlayersRow = function(config) {
+        if (privates.allPlayersAreSet()) {
 
-    handlers.ajaxPlayersRefresh = function (pageNumber) {
+            config.rowNumber = privates.getTeamPlayerRowMarkup(privates.selectedPlayers.length + 1);
+            config.isCaptain = config.isCaptain || false;
 
-        $.get("ChoosePlayers",
-            { page: pageNumber },
-            function (data) { $("#currentPlayersPage").html(data); },
-            "html");
-    };
+            $('tbody:last', privates.teamPlayersTable).append(config);
 
-    handlers.addTeamPlayersRow = function () {
-        'use strict';
+            // TODO: check if append returns value, so it is possible to increase perfomance
 
-        var teamPlayersTable = $("#teamRoster", editScope),
-                rows = $('.teamPlayer', teamPlayersTable),
-                currentCount = rows.length,
-                template;
-
-        if (privateScope.allPlayersAreSet(rows)) {
-            template = "<tr><td><input type='text' name='Roster[" + currentCount + "].FullName' class='teamPlayer'/></td><td></td></tr>";
-            $('#teamRoster > tbody:last', editScope).append(template);
-            $('#teamRoster > tbody:last', editScope).autocomlete({
+            $('tbody:last', privates.teamPlayersTable).autocomlete({
                 minLength: 2,
-                source: privateScope.playersCompleterFunc,
-                select: privateScope.onPlayerSelect,
+                source: privates.playersCompleter,
+                select: privates.onPlayerSelect,
                 delay: 500
             });
         }
-
-        //var newElementId = "player_" + id;
-        //$("#" + newElementId).hide();
-
-        //var indexOfNewPlayer = window.opener.$("#teamRoster tr.rosterPlayer").length;
-
-        //if (window.name == "ChoosingRosterWindow") {
-        //    if (!(window.opener.$("#" + newElementId).get(0))) {
-        //        var fullNameInput = "<input type='text' name='Roster[" + indexOfNewPlayer + "].FullName' value='" + fullName + "' readonly />";
-        //        var idInput = "<input id='" + newElementId + "' type='text' name='Roster[" + indexOfNewPlayer + "].Id' value='" + id + "' hidden />";
-
-        //        var newPlayer = "<tr class='rosterPlayer'><td>" + fullNameInput + "</td><td>" + idInput + "<td></tr>";
-        //        window.opener.$("#teamRoster").children().append(newPlayer);
-        //    }
-        //} else {
-        //    window.opener.$("#captainFullName").val(fullName);
-        //    window.opener.$("#captainId").val(id);
-        //    window.close();
-        //}
     };
 
-    handlers.deleteTeamPlayersRow = function(deletedId) {
+    handlers.deleteTeamPlayersRow = function(obj) {
+        console.log(obj);
+        // TODO: delete parent row
+    };
 
-        var indexOfItem = $.inArray(deletedId),
-            rows = $('#teamRoster > tbody:tr', editScope),
-            length = rows.length,
-            row,
-            i;
+    handlers.showCreateTeamErrors = function() {};
 
-        if (indexOfItem !== -1) {
-            selectedItem.splice(indexOfItem, 1);
-        }
 
-        for (var i = 0; i < length; i++) {
-            row = rows[i];
-            if ($('.idValueInput', row).val() === deletedId) {
-                row.remove();
-                break;
+    // RENDER TEAM PLAYERS
+    (function () {
+        var captainRowIsHidden = false,
+            teamPlayersJson = $(".dataForTeamPlayersTable").val(),
+            playersData = [];
+
+        $('tbody:first-child', privates.teamPlayersTable).prepend(privates.getTeamPlayerRowMarkup({
+            rowNumber: 1,
+            isHidden: captainRowIsHidden,
+            isCaptain: true
+        }));
+
+        if (teamPlayersJson) {
+            playersData = JSON.stringify(teamPlayersJson);
+            if (playersData) {
+                handlers.addTeamPlayersRow({
+                    playerName: playersData.fullName,
+                    playerid: playersData.Id,
+                });
             }
         }
 
-        ;
-    };
+        privates.updateSelectedPlayers();
 
-    handlers.showCreateTeamErrors = function showCreateTeamErrors() {
-    };
+    })();
+
 
     /// Bindings
     $(".addPlayerToTeamButton", editScope).bind('click', handlers.addRowToTeamPlayersTable);
+    privates.captainNameInput.bind('change', handlers.onCaptainChange);
+    privates.captainNameInput.autocomplete({
+                minLength: 2,
+                source: privates.captainCompleter,
+                select: privates.onCaptainSelect,
+                delay: 500
+    });
 })
-
-
-
-
-

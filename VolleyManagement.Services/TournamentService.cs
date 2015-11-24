@@ -114,20 +114,7 @@
 
             IsTournamentNameUnique(tournamentToCreate);
             AreDatesValid(tournamentToCreate);
-            IsDivisionCountWithinRange(tournamentToCreate.Divisions.Count);
-            AreDivisionNamesUnique(tournamentToCreate.Divisions);
-
-            foreach (Division division in tournamentToCreate.Divisions)
-            {
-                division.TournamentId = tournamentToCreate.Id;
-                IsGroupCountWithinRange(division.Groups.Count);
-                AreGroupNamesUnique(division.Groups);
-
-                foreach (Group group in division.Groups)
-                {
-                    group.DivisionId = division.Id;
-                }
-            }
+            ValidateTournament(tournamentToCreate);
 
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
@@ -152,20 +139,7 @@
         {
             IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
             AreDatesValid(tournamentToEdit);
-            IsDivisionCountWithinRange(tournamentToEdit.Divisions.Count);
-            AreDivisionNamesUnique(tournamentToEdit.Divisions);
-
-            foreach (Division division in tournamentToEdit.Divisions)
-            {
-                division.TournamentId = tournamentToEdit.Id;
-                IsGroupCountWithinRange(division.Groups.Count);
-                AreGroupNamesUnique(division.Groups);
-
-                foreach (Group group in division.Groups)
-                {
-                    group.DivisionId = division.Id;
-                }
-            }
+            ValidateTournament(tournamentToEdit);
 
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();
@@ -379,6 +353,42 @@
             }
         }
 
+        private void ValidateTournament(Tournament tournament)
+        {
+            AreDatesValid(tournament);
+            ValidateDivisions(tournament.Divisions);
+            SetDivisionsTournamentId(tournament.Divisions, tournament.Id);
+        }
+
+        private void ValidateDivisions(List<Division> divisions)
+        {
+            IsDivisionCountWithinRange(divisions.Count);
+            AreDivisionNamesUnique(divisions);
+        }
+
+        private void SetDivisionsTournamentId(List<Division> divisions, int tournamentId)
+        {
+            foreach (Division division in divisions)
+            {
+                division.TournamentId = tournamentId;
+                ValidateGroups(division.Groups);
+                SetGroupsDivisionId(division.Groups, division.Id);
+            }
+        }
+
+        private void ValidateGroups(List<Group> groups)
+        {
+            IsGroupCountWithinRange(groups.Count);
+            AreGroupNamesUnique(groups);
+        }
+
+        private void SetGroupsDivisionId(List<Group> groups, int divisionId)
+        {
+            foreach (Group group in groups)
+            {
+                group.DivisionId = divisionId;
+            }
+        }
         #endregion
     }
 }

@@ -88,6 +88,7 @@
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
+    <Compile Include="Entities\GroupEntity.cs" />
     <Compile Include="Entities\LoginInfoEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />

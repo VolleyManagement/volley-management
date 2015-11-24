@@ -32,13 +32,8 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-            ICollection<DivisionEntity> oldDivisions = null;
-            if (to.Divisions != null)
-            {
-                oldDivisions = to.Divisions.ToList();
-                to.Divisions.Clear();
-            }
-
+            ICollection<DivisionEntity> oldDivisions = to.Divisions.ToList();
+            to.Divisions.Clear();
             to.Divisions = from.Divisions.Select(d => Map(d, oldDivisions)).ToList();
         }
 

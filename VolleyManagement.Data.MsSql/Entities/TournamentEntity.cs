@@ -9,6 +9,14 @@ namespace VolleyManagement.Data.MsSql.Entities
     public class TournamentEntity
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="TournamentEntity"/> class.
+        /// </summary>
+        public TournamentEntity()
+        {
+            this.Divisions = new List<DivisionEntity>();
+        }
+        
+        /// <summary>
         /// Gets or sets the tournament id
         /// </summary>
         public int Id { get; set; }

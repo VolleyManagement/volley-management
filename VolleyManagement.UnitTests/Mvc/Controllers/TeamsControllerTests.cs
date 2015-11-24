@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
@@ -40,7 +41,8 @@
         private const int TEST_TEAM_ID = 1;
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
-        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
+        private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
 
         private IKernel _kernel;
         private TeamsController _sut;
@@ -53,7 +55,7 @@
         {
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
-            this._kernel.Bind<IHttpContextService>().ToConstant(this._httpContextServiceMock.Object);
+            this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<TeamsController>();
         }
 
@@ -275,7 +277,7 @@
             MockTeamServiceGetTeam(team);
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
-            MockSetupHttpRequest();
+            MockSetupControllerContext();
 
             var expected = CreateViewModel();
 
@@ -386,10 +388,12 @@
             this._teamServiceMock.Setup(tr => tr.Get(It.IsAny<int>())).Returns(team);
         }
 
-        private void MockSetupHttpRequest()
+        /// <summary>
+        /// Sets up a mock for ControllerContext property of the controller.
+        /// </summary>
+        private void MockSetupControllerContext()
         {
-            this._httpContextServiceMock.SetupGet(hcs => hcs.Request)
-                           .Returns(new HttpRequest(string.Empty, "https://localhost:44300/Players/Details/", string.Empty));
+            this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
         }
     }
 }

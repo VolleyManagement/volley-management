@@ -63,7 +63,6 @@
     <Compile Include="Authorization\RolesService.cs" />
     <Compile Include="Constantscs.cs" />
     <Compile Include="ContributorTeamService.cs" />
-    <Compile Include="HttpContextService.cs" />
     <Compile Include="ServiceResources\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -60,7 +60,6 @@
     <Compile Include="Authorization\IRolesService.cs" />
     <Compile Include="Exceptions\MissingEntityException.cs" />
     <Compile Include="IContributorTeamService.cs" />
-    <Compile Include="IHttpContextService.cs" />
     <Compile Include="IPlayerService.cs" />
     <Compile Include="ITeamService.cs" />
     <Compile Include="ITournamentService.cs" />

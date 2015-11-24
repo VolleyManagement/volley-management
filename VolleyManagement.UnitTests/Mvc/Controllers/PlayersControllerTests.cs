@@ -36,7 +36,8 @@
         private const string PLAYER_NAME_TO_SEARCH = "Player Name";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
-        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
+        private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
 
         private IKernel _kernel;
         private PlayersController _sut;
@@ -49,7 +50,7 @@
         {
             this._kernel = new StandardKernel();
             this._kernel.Bind<IPlayerService>().ToConstant(this._playerServiceMock.Object);
-            this._kernel.Bind<IHttpContextService>().ToConstant(this._httpContextServiceMock.Object);
+            this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<PlayersController>();
         }
 
@@ -97,7 +98,7 @@
             var testData = MakeTestPlayers();
             var expected = MakePlayerNameViewModels(testData);
             MockSetupGetAll(testData);
-            MockSetupHttpRequest();
+            MockSetupControllerContext();
 
             // Act
             var actual = TestExtensions.GetModel<PlayersListViewModel>(this._sut.Index(null, string.Empty)).List;
@@ -117,7 +118,7 @@
             var testData = MakeTestPlayers();
             var expected = GetPlayerNameViewModelsWithPlayerName(MakePlayerNameViewModels(testData), PLAYER_NAME_TO_SEARCH);
             MockSetupGetAll(testData);
-            MockSetupHttpRequest();
+            MockSetupControllerContext();
 
             // Act
             var actual = TestExtensions.GetModel<PlayersListViewModel>(this._sut.Index(null, PLAYER_NAME_TO_SEARCH)).List;
@@ -561,10 +562,12 @@
             Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
         }
 
-        private void MockSetupHttpRequest()
+        /// <summary>
+        /// Sets up a mock for ControllerContext property of the controller.
+        /// </summary>
+        private void MockSetupControllerContext()
         {
-            this._httpContextServiceMock.SetupGet(hcs => hcs.Request)
-                           .Returns(new HttpRequest(string.Empty, "https://localhost:44300/Players/Details/", string.Empty));
+            this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
         }
     }
 }

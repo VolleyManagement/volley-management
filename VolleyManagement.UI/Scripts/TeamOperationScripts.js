@@ -16,6 +16,7 @@
     privates.selectedPlayers = [];
     privates.captainNameInput = $("#captainFullName", editScope);
     privates.teamPlayersTable = $("#teamRoster", editScope);
+    privates.captainRow = null; // set on render
 
     // HELPERS
     privates.updateSelectedPlayers = function() {
@@ -235,6 +236,8 @@
             isHidden: captainRowIsHidden,
             isCaptain: true
         }));
+
+        privates.captainRow = $('tbody:first-child', privates.teamPlayersTable);
 
         if (teamPlayersJson) {
             playersData = JSON.stringify(teamPlayersJson);

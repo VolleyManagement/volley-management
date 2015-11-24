@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
+    using System.Collections.Generic;
     using System.Linq;
-
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -32,6 +32,8 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
+            to.Divisions.Clear();
+            to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
         }
 
         /// <summary>
@@ -83,6 +85,37 @@
             to.CaptainId = from.CaptainId;
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
+        }
+
+        /// <summary>
+        /// Maps Division model
+        /// </summary>
+        /// <param name="from">Division domain model</param>
+        /// <returns>Dal division model</returns>
+        public static DivisionEntity Map(Division from)
+        {
+            return new DivisionEntity()
+            {
+                Id = from.Id,
+                Name = from.Name,
+                TournamentId = from.TournamentId,
+                Groups = from.Groups.Select(g => Map(g)).ToList()
+            };
+        }
+
+        /// <summary>
+        /// Maps group model
+        /// </summary>
+        /// <param name="from">Group to map</param>
+        /// <returns>Dal entity</returns>
+        public static GroupEntity Map(Group from)
+        {
+            return new GroupEntity
+            {
+                Id = from.Id,
+                Name = from.Name,
+                DivisionId = from.DivisionId
+            };
         }
     }
 }

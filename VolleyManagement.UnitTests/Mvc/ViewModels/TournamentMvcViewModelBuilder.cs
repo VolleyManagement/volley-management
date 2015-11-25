@@ -1,9 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
     using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
@@ -12,6 +13,11 @@
     [ExcludeFromCodeCoverage]
     internal class TournamentMvcViewModelBuilder
     {
+        /// <summary>
+        /// Holds default id for tournament
+        /// </summary>
+        public const int TOURNAMENT_DEFAULT_ID = 1;
+
         /// <summary>
         /// Holds test tournament view model instance
         /// </summary>
@@ -24,7 +30,7 @@
         {
             _tournamentViewModel = new TournamentViewModel()
             {
-                Id = 1,
+                Id = TOURNAMENT_DEFAULT_ID,
                 Name = "Name",
                 Description = "Description 1",
                 Season = 2014,
@@ -35,7 +41,29 @@
                 GamesStart = new DateTime(2015, 09, 03),
                 GamesEnd = new DateTime(2015, 12, 03),
                 TransferStart = new DateTime(2015, 10, 01),
-                TransferEnd = new DateTime(2015, 11, 01)
+                TransferEnd = new DateTime(2015, 11, 01),
+                Divisions = new List<DivisionViewModel>()
+                {
+                    new DivisionViewModel() { 
+                                                Id = 1, 
+                                                Name = "Division 1",
+                                                Groups = new List<GroupViewModel>() 
+                                                {
+                                                    new GroupViewModel() {Id = 1, Name = "Group 1-1"},
+                                                    new GroupViewModel() {Id = 1, Name = "Group 1-2"}
+                                                }
+                                            },
+                    new DivisionViewModel() { 
+                                                Id = 2, 
+                                                Name = "Division 2",
+                                                Groups = new List<GroupViewModel>() 
+                                                {
+                                                    new GroupViewModel() {Id = 1, Name = "Group 2-1"},
+                                                    new GroupViewModel() {Id = 1, Name = "Group 2-2"},
+                                                    new GroupViewModel() {Id = 1, Name = "Group 2-3"}
+                                                }
+                                            }
+                }
             };
         }
 
@@ -179,6 +207,17 @@
         {
             _tournamentViewModel.TransferStart = null;
             _tournamentViewModel.TransferEnd = null;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets divisions of test tournament view model
+        /// </summary>
+        /// <param name="divisions">Divisions for test tournament view model</param>
+        /// <returns>Tournament view model builder object</returns>
+        public TournamentMvcViewModelBuilder WithDivisions(List<DivisionViewModel> divisions)
+        {
+            _tournamentViewModel.Divisions = divisions;
             return this;
         }
 

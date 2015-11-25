@@ -61,7 +61,7 @@
             /// when user typed not unique name
             /// </summary>
             public const int MAX_GROUPS_COUNT = 60;
-            
+
             /// <summary>
             /// Constant defines validation key in tournament controller,
             /// when applying date starts before now

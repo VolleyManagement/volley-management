@@ -4,14 +4,11 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Web;
     using System.Web.Script.Serialization;
     using VolleyManagement.Domain;
-    using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
-    ﻿using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
-
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
 
     /// <summary>
     /// TournamentViewModel for Create and Edit actions

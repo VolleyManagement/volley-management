@@ -2,9 +2,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
+    /// <summary>
+    /// Add groups for divisions
+    /// </summary>
     public partial class Addgroups : DbMigration
     {
+        /// <summary>
+        /// Migrates up
+        /// </summary>
         public override void Up()
         {
             CreateTable(
@@ -18,9 +24,11 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Divisions", t => t.DivisionId)
                 .Index(t => t.DivisionId);
-            
         }
-        
+
+        /// <summary>
+        /// Migrates up
+        /// </summary>
         public override void Down()
         {
             DropForeignKey("dbo.Groups", "DivisionId", "dbo.Divisions");

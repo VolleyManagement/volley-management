@@ -44,25 +44,27 @@
                 TransferEnd = new DateTime(2015, 11, 01),
                 Divisions = new List<DivisionViewModel>()
                 {
-                    new DivisionViewModel() { 
-                                                Id = 1, 
-                                                Name = "Division 1",
-                                                Groups = new List<GroupViewModel>() 
-                                                {
-                                                    new GroupViewModel() {Id = 1, Name = "Group 1-1"},
-                                                    new GroupViewModel() {Id = 1, Name = "Group 1-2"}
-                                                }
-                                            },
-                    new DivisionViewModel() { 
-                                                Id = 2, 
-                                                Name = "Division 2",
-                                                Groups = new List<GroupViewModel>() 
-                                                {
-                                                    new GroupViewModel() {Id = 1, Name = "Group 2-1"},
-                                                    new GroupViewModel() {Id = 1, Name = "Group 2-2"},
-                                                    new GroupViewModel() {Id = 1, Name = "Group 2-3"}
-                                                }
-                                            }
+                    new DivisionViewModel()
+                    {
+                        Id = 1,
+                        Name = "Division 1",
+                        Groups = new List<GroupViewModel>()
+                        {
+                            new GroupViewModel() { Id = 1, Name = "Group 1-1" },
+                            new GroupViewModel() { Id = 2, Name = "Group 1-2" }
+                        }
+                    },
+                    new DivisionViewModel()
+                    {
+                        Id = 2,
+                        Name = "Division 2",
+                        Groups = new List<GroupViewModel>()
+                        {
+                            new GroupViewModel() { Id = 3, Name = "Group 2-1" },
+                            new GroupViewModel() { Id = 4, Name = "Group 2-2" },
+                            new GroupViewModel() { Id = 1, Name = "Group 2-3" }
+                        }
+                    }
                 }
             };
         }

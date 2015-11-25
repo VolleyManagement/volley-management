@@ -13,7 +13,7 @@
         /// <summary>
         /// Holds collection of contributors team
         /// </summary>
-        private IList<ContributorTeam> _contributorsTeam = new List<ContributorTeam>();
+        private List<ContributorTeam> _contributorsTeam = new List<ContributorTeam>();
 
         /// <summary>
         /// Adds contributors to collection team
@@ -82,7 +82,7 @@
         /// Builds test data
         /// </summary>
         /// <returns>Contributors team collection</returns>
-        public IList<ContributorTeam> Build()
+        public List<ContributorTeam> Build()
         {
             return _contributorsTeam;
         }

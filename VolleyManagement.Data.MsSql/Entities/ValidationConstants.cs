@@ -96,13 +96,5 @@
         {
             public const int MAX_GROUP_NAME_LENGTH = 60;
         }
-
-        /// <summary>
-        /// Division entity validation constants
-        /// </summary>
-        public static class Division
-        {
-            public const int MAX_DIVISION_NAME_LENGTH = 60;
-        }
     }
 }

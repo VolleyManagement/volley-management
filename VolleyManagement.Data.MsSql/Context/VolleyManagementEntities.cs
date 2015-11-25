@@ -82,11 +82,6 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<GroupEntity> Groups { get; set; }
 
-        /// <summary>
-        /// Gets or sets the divisions table.
-        /// </summary>
-        public DbSet<DivisionEntity> Divisions { get; set; }
-
         #endregion
 
         #region Mapping Configuration
@@ -437,20 +432,6 @@ namespace VolleyManagement.Data.MsSql.Context
                 .WithMany(d => d.Groups)
                 .HasForeignKey(g => g.DivisionId)
                 .WillCascadeOnDelete(false);
-        }
-
-        private static void ConfigureDivisions(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<DivisionEntity>()
-                .ToTable(VolleyDatabaseMetadata.DIVISION_TABLE_NAME)
-                .HasKey(d => d.Id);
-
-            modelBuilder.Entity<DivisionEntity>()
-                .Property(d => d.Name)
-                .IsRequired()
-                .IsUnicode()
-                .IsVariableLength()
-                .HasMaxLength(ValidationConstants.Division.MAX_DIVISION_NAME_LENGTH);
         }
 
         private static void ConfigureDivisions(DbModelBuilder modelBuilder)

@@ -56,7 +56,7 @@
         $.datepicker.setDefaults($.datepicker.regional['@JQueryUIDateFormatConverter.Localization'] = {
             monthNames: @JQueryUIDateFormatConverter.MonthNames,
             monthNamesShort: @JQueryUIDateFormatConverter.AbbreviatedMonthNames,
-            dayNames: @JQueryUIDateFormatConverter.DayNames, 
+            dayNames: @JQueryUIDateFormatConverter.DayNames,
             dayNamesShort: @JQueryUIDateFormatConverter.AbbreviatedDayNames,
             dayNamesMin: @JQueryUIDateFormatConverter.ShortestDayNames,
             dateFormat: '@JQueryUIDateFormatConverter.JQueryUICurrentDateFormat()'
@@ -138,29 +138,29 @@
     @Html.LabelFor(model => model.Divisions)
 </div>
 <div id="Divisions">
-    @for(int i = 0; i < Model.Divisions.Count; i++)
+    @for (int i = 0; i < Model.Divisions.Count; i++)
     {
-        <input type="hidden" name="Divisions[@i].Id" value="@Model.Divisions[i].Id"/>
+        <input type="hidden" name="Divisions[@i].Id" value="@Model.Divisions[i].Id" />
         string divId = "Division" + i.ToString();
         <div id=@divId class="editor-field">
-            @Html.EditorFor(model => model.Divisions[i].Name, new {name = "Divisions[@i].Name" })
+            @Html.EditorFor(model => model.Divisions[i].Name, new { name = "Divisions[@i].Name" })
             @Html.ValidationMessageFor(model => model.Divisions[i].Name)
             <div class="editor-label">
                 &nbsp;&nbsp;&nbsp;@Html.LabelFor(model => model.Divisions[i].Groups)
-                <input  type="button"
-                        value="@Resources.TournamentViews.AddGroup" 
-                        data-division =@i
-                        onClick="addGroup(this, @ValidationKeys.MAX_GROUPS_COUNT, '@Resources.TournamentViews.GroupLimit');">
+                <input type="button"
+                       value="@Resources.TournamentViews.AddGroup"
+                       data-division=@i
+                       onClick="addGroup(this, @ValidationKeys.MAX_GROUPS_COUNT, '@Resources.TournamentViews.GroupLimit');">
             </div>
         </div>
         string groupsId = "Group" + i.ToString();
         <div id=@groupsId>
-            @for(int j = 0; j < Model.Divisions[i].Groups.Count; j++)
+            @for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
             {
-                <input type="hidden" name="Divisions[@i].Groups[@j].Id" value="@Model.Divisions[i].Groups[@j].Id"/>
+                <input type="hidden" name="Divisions[@i].Groups[@j].Id" value="@Model.Divisions[i].Groups[@j].Id" />
                 string grId = "Group" + i.ToString() + j.ToString();
                 <div id=@grId class="editor-field">
-                    &nbsp;&nbsp;&nbsp;@Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new {name = "Divisions[@i].Groups[@j].Name" })
+                    &nbsp;&nbsp;&nbsp;@Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new { name = "Divisions[@i].Groups[@j].Name" })
                     @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
                 </div>
             }
@@ -168,10 +168,10 @@
     }
 </div>
 @if (Model.Divisions.Count < ValidationKeys.MAX_DIVISIONS_COUNT)
-{ 
-    int startIndex = Model.Divisions.Count - 1; 
+{
+    int startIndex = Model.Divisions.Count - 1;
 
-    <input  type="button" 
-            value="@Resources.TournamentViews.AddDivision" 
-            onClick="addInput(@startIndex, @ValidationKeys.MAX_DIVISIONS_COUNT, '@Resources.TournamentViews.DivisionLimit');">
+    <input type="button"
+           value="@Resources.TournamentViews.AddDivision"
+           onClick="addInput(@startIndex, @ValidationKeys.MAX_DIVISIONS_COUNT, '@Resources.TournamentViews.DivisionLimit');">
 }

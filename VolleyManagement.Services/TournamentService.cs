@@ -3,12 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Data.Queries.Division;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -117,7 +115,6 @@
             ValidateTournament(tournamentToCreate);
             ValidateDivisions(tournamentToCreate.Divisions);
             ValidateGroups(tournamentToCreate.Divisions);
-            AreDivisionsUnique(tournamentToCreate.Divisions);
             _tournamentRepository.Add(tournamentToCreate);
         }
 
@@ -139,9 +136,6 @@
         public void Edit(Tournament tournamentToEdit)
         {
             ValidateTournament(tournamentToEdit, isUpdate: true);
-            IsDivisionsCountValid(tournamentToEdit.Divisions);
-            AreDivisionsUnique(tournamentToEdit.Divisions);
-
             _tournamentRepository.Update(tournamentToEdit);
         }
 
@@ -230,15 +224,6 @@
                     TournamentConstants.GAMES_START_CAPTURE);
             }
 
-            // if registration period is after games start
-            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
-            {
-                throw new TournamentValidationException(
-                    MessageList.WrongRegistrationGames,
-                    ExceptionParams.APPLYING_END_DATE_AFTER_START_GAMES,
-                    ExceptionParams.GAMES_START_CAPTURE);
-            }
-
             // ToDo: Revisit this requirement
             ////double totalApplyingPeriodDays = (tournament.ApplyingPeriodEnd - tournament.ApplyingPeriodStart).TotalDays;
 
@@ -251,6 +236,7 @@
             ////        ExceptionParams.APPLYING_END_CAPTURE);
             ////}
         }
+
         private void ValidateTournamentGamesPeriod(Tournament tournament)
         {
             // if games start date comes after end date
@@ -261,7 +247,6 @@
                     TournamentConstants.START_GAMES_AFTER_END_GAMES,
                     TournamentConstants.GAMES_END_CAPTURE);
             }
-
         }
 
         private void ValidateTournamentTrasferPeriod(Tournament tournament)

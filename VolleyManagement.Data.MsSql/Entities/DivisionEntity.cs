@@ -1,10 +1,20 @@
 ﻿namespace VolleyManagement.Data.MsSql.Entities
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// DAL Division model
     /// </summary>
     public class DivisionEntity
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DivisionEntity"/> class.
+        /// </summary>
+        public DivisionEntity()
+        {
+            Groups = new List<GroupEntity>();
+        }
+
         /// <summary>
         /// Gets or sets division Id
         /// </summary>
@@ -24,5 +34,10 @@
         /// Gets or sets division's tournament
         /// </summary>
         public virtual TournamentEntity Tournament { get; set; }
+
+        /// <summary>
+        /// Gets or sets division's groups
+        /// </summary>
+        public virtual List<GroupEntity> Groups { get; set; }
     }
 }

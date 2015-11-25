@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.App_GlobalResources;

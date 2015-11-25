@@ -82,7 +82,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-042",
+                Name = "Dp-042 .NET",
                 CourseDirection = ".NET",
                 Contributors = new List<ContributorEntity>
                     {
@@ -100,7 +100,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-052",
+                Name = "Dp-052 .NET",
                 CourseDirection = ".NET",
                 Contributors = new List<ContributorEntity>
                     {
@@ -119,7 +119,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-061",
+                Name = "Dp-061 .NET",
                 CourseDirection = ".NET",
                 Contributors = new List<ContributorEntity>
                     {
@@ -137,7 +137,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-064",
+                Name = "Dp-064 .NET",
                 CourseDirection = ".NET",
                 Contributors = new List<ContributorEntity>
                     {
@@ -157,7 +157,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-064",
+                Name = "Dp-064 ATQC",
                 CourseDirection = "ATQC",
                 Contributors = new List<ContributorEntity>
                     {
@@ -178,7 +178,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-065",
+                Name = "Dp-065 UI",
                 CourseDirection = "UI",
                 Contributors = new List<ContributorEntity>
                     {
@@ -196,7 +196,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-070",
+                Name = "Dp-070 UI",
                 CourseDirection = "UI",
                 Contributors = new List<ContributorEntity>
                     {
@@ -213,7 +213,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-072",
+                Name = "Dp-072 .NET",
                 CourseDirection = ".NET",
                 Contributors = new List<ContributorEntity>
                     {
@@ -232,7 +232,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-076",
+                Name = "Dp-076 ATQC",
                 CourseDirection = "ATQC",
                 Contributors = new List<ContributorEntity>
                     {
@@ -251,7 +251,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {
-                Name = "Dp-085",
+                Name = "Dp-085 .NET",
                 CourseDirection = ".NET",
                 Contributors = new List<ContributorEntity>
                     {

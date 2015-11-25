@@ -284,6 +284,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\scripts.js" />
     <Content Include="Scripts\TeamOperationScripts.js" />
+    <Content Include="Scripts\TournamentOperationScripts.js" />
     <Content Include="Scripts\UserActions.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -343,6 +344,8 @@
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Account\AuthenticationStatusViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Divisions\DivisionViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Divisions\GroupViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerDeleteResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerNameViewModel.cs" />

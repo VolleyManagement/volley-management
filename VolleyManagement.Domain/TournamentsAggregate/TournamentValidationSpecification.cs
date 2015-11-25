@@ -9,6 +9,17 @@
     public class TournamentValidationSpecification : ISpecification<Tournament>
     {
         /// <summary>
+        /// Check divisions count is in correct range.
+        /// </summary>
+        /// <param name="divisions">List of divisions</param>
+        /// <returns>Value indicates divisions count is correct or not</returns>
+        public static bool IsDivisionCountValid(IList<Division> divisions)
+        {
+            return divisions.Count >= Constants.Tournament.MIN_DIVISIONS_COUNT
+                && divisions.Count <= Constants.Tournament.MAX_DIVISIONS_COUNT;
+        }
+
+        /// <summary>
         /// Checks whether divisions count is within the correct range.
         /// </summary>
         /// <param name="count">Divisions count within the tournament.</param>

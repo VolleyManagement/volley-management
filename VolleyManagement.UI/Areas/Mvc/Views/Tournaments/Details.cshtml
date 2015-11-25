@@ -46,10 +46,21 @@
         <div class="display-label">@Html.LabelFor(model => model.TransferEnd)</div>
         <div class="display-field">@(((DateTime)Model.TransferEnd).ToShortDateString())</div>
     }
+    @if (Model.Divisions.Count > 1 || Model.Divisions[0].Groups.Count > 1)
+    {
+        <div class="display-label">@Html.LabelFor(model => model.Divisions)</div>
+        for (int i = 0; i < Model.Divisions.Count; i++)
+        {
+            <div class="display-field">@Html.DisplayFor(model => model.Divisions[i].Name)</div>
+            <div class="display-label">&nbsp;&nbsp;&nbsp;@Html.LabelFor(model => model.Divisions[i].Groups)</div>
+            for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
+            {
+                <div class="display-field">&nbsp;&nbsp;&nbsp;@Html.DisplayFor(model => model.Divisions[i].Groups[j].Name)</div>
+            }
+        }
+    }
 </fieldset>
 <p>
     @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id = Model.Id }) |
     @Html.ActionLink(Resources.TournamentViews.BackToList, "Index")
 </p>
-
-

@@ -101,7 +101,11 @@
                     ApplyingPeriodEnd = t.ApplyingPeriodEnd,
                     TransferEnd = t.TransferEnd,
                     TransferStart = t.TransferStart,
-                    Divisions = t.Divisions.Where(d => d.TournamentId = t.Id).Select(GetDivisionMapping()).ToList()
+                    Divisions = t.Divisions
+                                    .AsQueryable()
+                                    .Where(d => d.TournamentId == t.Id)
+                                    .Select(GetDivisionMapping())
+                                    .ToList()
                 };
         }
 
@@ -114,7 +118,11 @@
                     Id = d.Id,
                     Name = d.Name,
                     TournamentId = d.TournamentId,
-                    Groups = d.Groups.Where(g => g.DivisionId == d.Id).Select(GetGroupMapping())
+                    Groups = d.Groups
+                                .AsQueryable()
+                                .Where(g => g.DivisionId == d.Id)
+                                .Select(GetGroupMapping())
+                                .ToList()
                 };
         }
 

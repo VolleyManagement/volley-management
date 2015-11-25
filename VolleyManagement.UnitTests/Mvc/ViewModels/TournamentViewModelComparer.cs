@@ -61,7 +61,8 @@
                 && x.SeasonsList.SequenceEqual(y.SeasonsList)
                 && x.Scheme == y.Scheme
                 && x.RegulationsLink == y.RegulationsLink
-                && x.IsTransferEnabled == y.IsTransferEnabled;
+                && x.IsTransferEnabled == y.IsTransferEnabled
+                && x.Divisions.SequenceEqual(y.Divisions, new DivisionViewModelEqualityComparer());
         }
     }
 }

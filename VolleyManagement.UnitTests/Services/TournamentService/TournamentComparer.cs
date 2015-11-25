@@ -52,40 +52,14 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given tournaments have the same properties.</returns>
-        private bool AreEqual(Tournament x, Tournament y)
+        internal bool AreEqual(Tournament x, Tournament y)
         {
-            bool result = x.Id == y.Id
+            return x.Id == y.Id
                 && x.Name == y.Name
                 && x.Description == y.Description
                 && x.Season == y.Season
                 && x.Scheme == y.Scheme
                 && x.RegulationsLink == y.RegulationsLink;
-
-            if (result)
-            {
-                var divisionComparer = new DivisionComparer();
-
-                foreach (var xDivision in x.Divisions)
-                {
-                    bool divisionFound = false;
-
-                    foreach (var yDivision in y.Divisions)
-                    {
-                        if (divisionComparer.AreEqual(xDivision, yDivision))
-                        {
-                            divisionFound = true;
-                        }
-                    }
-
-                    if (!divisionFound)
-                    {
-                        result = false;
-                        break;
-                    }
-                }
-            }
-
-            return result;
         }
     }
 }

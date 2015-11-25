@@ -12,7 +12,7 @@
     [ExcludeFromCodeCoverage]
     internal class TournamentBuilder
     {
-        public const int TOURNAMENT_DEFAULT_ID = 1;
+        private const int TOURNAMENT_DEFAULT_ID = 1;
 
         /// <summary>
         /// Holds test tournament instance
@@ -45,7 +45,7 @@
                         Id = 1,
                         Name = "Division 1",
                         TournamentId = TOURNAMENT_DEFAULT_ID,
-                        Groups = new List<Groups>
+                        Groups = new List<Group>
                         {
                             new Group { Id = 1, Name = "Group 1", DivisionId = 1 },
                             new Group { Id = 2, Name = "Group 2", DivisionId = 1 }
@@ -56,7 +56,7 @@
                         Id = 2,
                         Name = "Division 2",
                         TournamentId = TOURNAMENT_DEFAULT_ID,
-                        Groups = new List<Groups>
+                        Groups = new List<Group>
                         {
                             new Group { Id = 3, Name = "Group 1", DivisionId = 2 }
                         }
@@ -281,7 +281,7 @@
 
             for (int i = 1; i <= this._tournament.Divisions.Count; i++)
             {
-                division.Groups = new List<Group>
+                this._tournament.Divisions[i - 1].Groups = new List<Group>
                 {
                     new Group { Id = startId++, Name = "Group 1", DivisionId = i },
                     new Group { Id = startId++, Name = "Group 2", DivisionId = i },
@@ -293,9 +293,9 @@
         }
 
         /// <summary>
-        /// Builds test tournament
+        /// Builds test tournament.
         /// </summary>
-        /// <returns>Test tournament</returns>
+        /// <returns>Instance of test tournament.</returns>
         public Tournament Build()
         {
             return this._tournament;

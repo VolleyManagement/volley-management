@@ -16,6 +16,7 @@
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -764,6 +765,21 @@
         private void VerifyEdit(Tournament tournament, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Update(tournament), times);
+        }
+
+        /// <summary>
+        /// Creates list of divisions with duplicates
+        /// </summary>
+        /// <returns>Collection of divisions</returns>
+        private List<Division> CreateDivisionsListNotUnique()
+        {
+            const string DIVISION_NAME = "Simple Division";
+            return new List<Division>
+            {
+                new Division { Name = DIVISION_NAME },
+                new Division { Name = "Division" },
+                new Division { Name = DIVISION_NAME }
+            };
         }
     }
 }

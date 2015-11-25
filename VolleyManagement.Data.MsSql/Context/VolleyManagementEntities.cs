@@ -73,14 +73,14 @@ namespace VolleyManagement.Data.MsSql.Context
         public DbSet<TeamEntity> Teams { get; set; }
 
         /// <summary>
-        /// Gets or sets the group table.
-        /// </summary>
-        public DbSet<GroupEntity> Groups { get; set; }
-
-        /// <summary>
         /// Gets or sets the divisions table.
         /// </summary>
         public DbSet<DivisionEntity> Divisions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the group table.
+        /// </summary>
+        public DbSet<GroupEntity> Groups { get; set; }
 
         #endregion
 
@@ -106,6 +106,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureContributors(modelBuilder);
             ConfigureContributorTeams(modelBuilder);
             ConfigureGroups(modelBuilder);
+            ConfigureDivisions(modelBuilder);
             ConfigureDivisions(modelBuilder);
 
             base.OnModelCreating(modelBuilder);

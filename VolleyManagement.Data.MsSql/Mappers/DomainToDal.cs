@@ -88,6 +88,43 @@
         }
 
         /// <summary>
+        /// Maps Division model.
+        /// </summary>
+        /// <param name="from">Division Domain model</param>
+        /// <param name="oldDivisions">Divisions which already exists in database</param>
+        /// <returns>Division Entity model</returns>
+        public static DivisionEntity Map(Division from, ICollection<DivisionEntity> oldDivisions)
+        {
+            if (from.Id == 0)
+            {
+                return new DivisionEntity
+                {
+                    Id = from.Id,
+                    Name = from.Name,
+                    TournamentId = from.TournamentId
+                };
+            }
+            else
+            {
+                var division = oldDivisions.Where(d => d.Id == from.Id).SingleOrDefault();
+                division.Name = from.Name;
+                return division;
+            }
+        }
+
+        /// <summary>
+        /// Maps Division model
+        /// </summary>
+        /// <param name="to">Division entity model</param>
+        /// <param name="from">Division domain model</param>
+        public static void Map(DivisionEntity to, Division from)
+        {
+            to.Id = from.Id;
+            to.Name = from.Name;
+            to.TournamentId = from.TournamentId;
+        }
+
+        /// <summary>
         /// Maps Division model
         /// </summary>
         /// <param name="from">Division domain model</param>

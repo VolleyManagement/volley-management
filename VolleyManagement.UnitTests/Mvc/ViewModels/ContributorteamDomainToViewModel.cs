@@ -45,8 +45,8 @@
             var testViewModel = new ContributorTeamMvcViewModelBuilder()
                 .WithId(1)
                 .WithName("FirstName")
-                .WithcourseDirection("Course")
-                .Withcontributors(contributors)
+                .WithCourseDirection("Course")
+                .WithContributors(contributors)
                 .Build();
 
             var testDomainModel = new ContributorTeamBuilder()

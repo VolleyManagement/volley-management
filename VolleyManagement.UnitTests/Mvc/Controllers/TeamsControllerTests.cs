@@ -4,15 +4,13 @@
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Net;
+    using System.Web;
     using System.Web.Mvc;
-
+    using System.Web.Routing;
     using Contracts;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -40,9 +38,14 @@
         private const string PLAYER_FIRSTNAME = "Test";
         private const string PLAYER_LASTNAME = "Test";
         private const string COACH = "TestCoach";
+        private const int TEST_TEAM_ID = 1;
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
+        private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
+        private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
+
         private IKernel _kernel;
+        private TeamsController _sut;
 
         /// <summary>
         /// Initializes test data
@@ -51,8 +54,9 @@
         public void TestInit()
         {
             this._kernel = new StandardKernel();
-            this._kernel.Bind<ITeamService>()
-                   .ToConstant(this._teamServiceMock.Object);
+            this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
+            this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
+            this._sut = this._kernel.Get<TeamsController>();
         }
 
         /// <summary>
@@ -241,10 +245,26 @@
         }
 
         /// <summary>
-        /// Details action method test. Team exists
+        /// Test for Details method. Team with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
         [TestMethod]
-        public void Details_TeamExists_TeamIsReturned()
+        public void Details_NonExistentTeam_HttpNotFoundResultIsReturned()
+        {
+            // Arrange
+            SetupGet(TEST_TEAM_ID, null);
+
+            // Act
+            var result = this._sut.Details(TEST_TEAM_ID);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Test for Details method. Team with specified identifier exists. View model of Team is returned.
+        /// </summary>
+        [TestMethod]
+        public void Details_ExistingTeam_TeamViewModelIsReturned()
         {
             // Arrange
             var team = CreateTeam();
@@ -257,35 +277,15 @@
             MockTeamServiceGetTeam(team);
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
+            SetupControllerContext();
 
             var expected = CreateViewModel();
 
-            var sut = _kernel.Get<TeamsController>();
-
             // Act
-            var actual = TestExtensions.GetModel<TeamViewModel>(sut.Details(SPECIFIED_TEAM_ID));
+            var actual = TestExtensions.GetModel<TeamViewModel>(this._sut.Details(SPECIFIED_TEAM_ID));
 
             // Assert
             TestHelper.AreEqual<TeamViewModel>(expected, actual, new TeamViewModelComparer());
-        }
-
-        /// <summary>
-        /// Details action test. Team with such id does not exist.
-        /// </summary>
-        [TestMethod]
-        public void Details_TeamDoesNotExist_NotFoundResualt()
-        {
-            // Arrange
-            MockTeamServiceGetTeam(null);
-            var sut = this._kernel.Get<TeamsController>();
-            var expected = (int)HttpStatusCode.NotFound;
-
-            // Act
-            var actual = sut.Details(SPECIFIED_TEAM_ID);
-
-            // Assert
-            Assert.IsInstanceOfType(actual, typeof(HttpNotFoundResult));
-            Assert.AreEqual(expected, ((HttpNotFoundResult)actual).StatusCode);
         }
 
         private Team CreateTeam()
@@ -357,6 +357,16 @@
         private void MockTeamServiceGetTeam(Team team)
         {
             _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
+        }
+
+        private void SetupGet(int teamId, Team team)
+        {
+            this._teamServiceMock.Setup(tr => tr.Get(teamId)).Returns(team);
+        }
+
+        private void SetupControllerContext()
+        {
+            this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
         }
     }
 }

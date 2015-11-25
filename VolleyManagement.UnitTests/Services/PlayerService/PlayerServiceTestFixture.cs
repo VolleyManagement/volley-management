@@ -14,7 +14,7 @@
         /// <summary>
         /// Holds collection of players
         /// </summary>
-        private IList<Player> _players = new List<Player>();
+        private List<Player> _players = new List<Player>();
 
         /// <summary>
         /// Adds players to collection
@@ -67,7 +67,7 @@
         /// Builds test data
         /// </summary>
         /// <returns>Player collection</returns>
-        public IList<Player> Build()
+        public List<Player> Build()
         {
             return _players;
         }

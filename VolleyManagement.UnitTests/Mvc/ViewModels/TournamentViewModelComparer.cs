@@ -54,7 +54,7 @@
         /// <returns>True if given tournaments have the same properties.</returns>
         private bool AreEqual(TournamentViewModel x, TournamentViewModel y)
         {
-            bool result = x.Id == y.Id
+            return x.Id == y.Id
                 && x.Name == y.Name
                 && x.Description == y.Description
                 && x.Season == y.Season
@@ -62,32 +62,6 @@
                 && x.Scheme == y.Scheme
                 && x.RegulationsLink == y.RegulationsLink
                 && x.IsTransferEnabled == y.IsTransferEnabled;
-
-            if (result)
-            {
-                var divisionComparer = new DivisionViewModelComparer();
-
-                foreach (var xDivision in x.Divisions)
-                {
-                    bool divisionFound = false;
-
-                    foreach (var yDivision in y.Divisions)
-                    {
-                        if (divisionComparer.AreEqual(xDivision, yDivision))
-                        {
-                            divisionFound = true;
-                        }
-                    }
-
-                    if (!divisionFound)
-                    {
-                        result = false;
-                        break;
-                    }
-                }
-            }
-
-            return result;
         }
     }
 }

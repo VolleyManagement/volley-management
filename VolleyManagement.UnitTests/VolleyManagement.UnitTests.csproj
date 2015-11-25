@@ -118,8 +118,6 @@
     <Compile Include="Mvc\ViewModels\ContributorteamDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\DivisionViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\GroupViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />

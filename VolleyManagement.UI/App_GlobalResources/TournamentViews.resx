@@ -150,6 +150,9 @@
   <data name="DivisionLimit" xml:space="preserve">
     <value>Вы достигли максимального количества дивизионов в турнире.</value>
   </data>
+  <data name="DivisionLimit" xml:space="preserve">
+    <value>Вы достигли максимального количества дивизионов в турнире.</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>

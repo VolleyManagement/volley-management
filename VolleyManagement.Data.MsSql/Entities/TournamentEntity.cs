@@ -13,7 +13,7 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// </summary>
         public TournamentEntity()
         {
-            Divisions = new List<DivisionEntity>();
+            this.Divisions = new List<DivisionEntity>();
         }
 
         /// <summary>

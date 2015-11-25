@@ -73,6 +73,11 @@ namespace VolleyManagement.Data.MsSql.Context
         public DbSet<TeamEntity> Teams { get; set; }
 
         /// <summary>
+        /// Gets or sets the divisions table.
+        /// </summary>
+        public DbSet<DivisionEntity> Divisions { get; set; }
+
+        /// <summary>
         /// Gets or sets the group table.
         /// </summary>
         public DbSet<GroupEntity> Groups { get; set; }
@@ -106,6 +111,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureContributors(modelBuilder);
             ConfigureContributorTeams(modelBuilder);
             ConfigureGroups(modelBuilder);
+            ConfigureDivisions(modelBuilder);
             ConfigureDivisions(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
@@ -431,6 +437,20 @@ namespace VolleyManagement.Data.MsSql.Context
                 .WithMany(d => d.Groups)
                 .HasForeignKey(g => g.DivisionId)
                 .WillCascadeOnDelete(false);
+        }
+
+        private static void ConfigureDivisions(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DivisionEntity>()
+                .ToTable(VolleyDatabaseMetadata.DIVISION_TABLE_NAME)
+                .HasKey(d => d.Id);
+
+            modelBuilder.Entity<DivisionEntity>()
+                .Property(d => d.Name)
+                .IsRequired()
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.Division.MAX_DIVISION_NAME_LENGTH);
         }
 
         private static void ConfigureDivisions(DbModelBuilder modelBuilder)

@@ -51,9 +51,9 @@
         <div class="display-label">@Html.LabelFor(model => model.Divisions)</div>
         for (int i = 0; i < Model.Divisions.Count; i++)
         {
-            <div class="display-field">@Html.DisplayFor(model => model.Divisions[i].Name)</div>
-            if (Model.Divisions[i].Groups.Count > 1)
-            {
+            <div class="display-field">@Html.DisplayFor(modelItem => item.Name)</div>
+        }
+    }
                 <div class="display-label">&nbsp;&nbsp;&nbsp;@Html.LabelFor(model => model.Divisions[i].Groups)</div>
                 for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
                 {

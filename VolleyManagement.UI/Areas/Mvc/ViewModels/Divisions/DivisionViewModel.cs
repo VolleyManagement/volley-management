@@ -49,6 +49,7 @@
 
         /// <summary>
         /// Maps domain model of <see cref="Division"/> to view model of <see cref="Division"/>.
+        /// Maps view model of <see cref="Division"/> to domain model of <see cref="Division"/>.
         /// </summary>
         /// <param name="division">Domain model of <see cref="Division"/>.</param>
         /// <returns>View model of <see cref="Division"/>.</returns>

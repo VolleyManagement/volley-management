@@ -160,6 +160,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вы достигли максимального количества дивизионов в турнире..
+        /// </summary>
+        public static string DivisionLimit {
+            get {
+                return ResourceManager.GetString("DivisionLimit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Редактировать.
         /// </summary>
         public static string Edit {

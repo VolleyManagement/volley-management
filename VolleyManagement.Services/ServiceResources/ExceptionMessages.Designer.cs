@@ -61,6 +61,33 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Дивизионы не могут иметь одинаковые названия.
+        /// </summary>
+        internal static string DivisionsAreNotUniq {
+            get {
+                return ResourceManager.GetString("DivisionsAreNotUniq", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список дивизионов пуст.
+        /// </summary>
+        internal static string DivisionsListIsEmpty {
+            get {
+                return ResourceManager.GetString("DivisionsListIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Количество дивизионов в турнире должно быть между {0} и {1}.
+        /// </summary>
+        internal static string OutOfDivisionsCountRange {
+            get {
+                return ResourceManager.GetString("OutOfDivisionsCountRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Игрок является капитаном другой команды.
         /// </summary>
         internal static string PlayerIsCaptainOfAnotherTeam {

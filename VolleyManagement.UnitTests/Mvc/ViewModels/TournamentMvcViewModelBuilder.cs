@@ -2,7 +2,6 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
@@ -12,6 +11,8 @@
     [ExcludeFromCodeCoverage]
     internal class TournamentMvcViewModelBuilder
     {
+        public const int TOURNAMENT_DEFAULT_ID = 1;
+
         /// <summary>
         /// Holds test tournament view model instance
         /// </summary>
@@ -24,7 +25,7 @@
         {
             _tournamentViewModel = new TournamentViewModel()
             {
-                Id = 1,
+                Id = TOURNAMENT_DEFAULT_ID,
                 Name = "Name",
                 Description = "Description 1",
                 Season = 2014,
@@ -35,7 +36,31 @@
                 GamesStart = new DateTime(2015, 09, 03),
                 GamesEnd = new DateTime(2015, 12, 03),
                 TransferStart = new DateTime(2015, 10, 01),
-                TransferEnd = new DateTime(2015, 11, 01)
+                TransferEnd = new DateTime(2015, 11, 01),
+                Divisions = new List<DivisionViewModel>
+                {
+                    new DivisionViewModel()
+                    {
+                        Id = 1,
+                        Name = "Division 1",
+                        TournamentId = TOURNAMENT_DEFAULT_ID,
+                        Groups = new List<GroupViewModel>
+                        {
+                            new GroupViewModel { Id = 1, Name = "Group 1", DivisionId = 1 },
+                            new GroupViewModel { Id = 2, Name = "Group 2", DivisionId = 1 }
+                        }
+                    },
+                    new DivisionViewModel()
+                    {
+                        Id = 2,
+                        Name = "Division 2",
+                        TournamentId = TOURNAMENT_DEFAULT_ID,
+                        Groups = new List<GroupViewModel>
+                        {
+                            new GroupViewModel { Id = 3, Name = "Group 1", DivisionId = 2 }
+                        }
+                    }
+                }
             };
         }
 
@@ -179,6 +204,90 @@
         {
             _tournamentViewModel.TransferStart = null;
             _tournamentViewModel.TransferEnd = null;
+            return this;
+        }
+
+        /// <summary>
+        /// Set divisions list
+        /// </summary>
+        /// <param name="divisions">Divisions list</param>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentMvcViewModelBuilder WithDivisions(List<DivisionViewModel> divisions)
+        {
+            _tournamentViewModel.Divisions = divisions;
+            return this;
+        }
+
+        /// <summary>
+        /// Clears all tournament's divisions.
+        /// </summary>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentMvcViewModelBuilder WithNoDivisions()
+        {
+            _tournamentViewModel.Divisions.Clear();
+            return this;
+        }
+
+        /// <summary>
+        /// Sets divisions list to divisions with non-unique names.
+        /// </summary>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentMvcViewModelBuilder WithNonUniqueNameDivisions()
+        {
+            _tournamentViewModel.Divisions = new List<DivisionViewModel>
+            {
+                new DivisionViewModel { Id = 1, Name = "Division 1", TournamentId = TOURNAMENT_DEFAULT_ID },
+                new DivisionViewModel { Id = 2, Name = "Division 2", TournamentId = TOURNAMENT_DEFAULT_ID },
+                new DivisionViewModel { Id = 3, Name = "Division 1", TournamentId = TOURNAMENT_DEFAULT_ID }
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Set group list for division specified by index.
+        /// </summary>
+        /// <param name="divisionIdx">Index of the division in tournament divisions.</param>
+        /// <param name="groups">Groups list.</param>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentMvcViewModelBuilder WithDivisionGroups(int divisionIdx, List<GroupViewModel> groups)
+        {
+            _tournamentViewModel.Divisions[divisionIdx].Groups = groups;
+            return this;
+        }
+
+        /// <summary>
+        /// Clears all groups in tournament's divisions.
+        /// </summary>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentMvcViewModelBuilder WithNoDivisionsGroups()
+        {
+            foreach (var division in _tournamentViewModel.Divisions)
+            {
+                division.Groups.Clear();
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets group lists for all divisions to groups with non-unique names.
+        /// </summary>
+        /// <returns>Instance of Tournament builder.</returns>
+        public TournamentMvcViewModelBuilder WithDivisionsNonUniqueNameGroups()
+        {
+            int startId = 1;
+
+            for (int i = 1; i <= _tournamentViewModel.Divisions.Count; i++)
+            {
+                division.Groups = new List<GroupViewModel>
+                {
+                    new GroupViewModel { Id = startId++, Name = "Group 1", DivisionId = i },
+                    new GroupViewModel { Id = startId++, Name = "Group 2", DivisionId = i },
+                    new GroupViewModel { Id = startId++, Name = "Group 1", DivisionId = i }
+                };
+            }
+
             return this;
         }
 

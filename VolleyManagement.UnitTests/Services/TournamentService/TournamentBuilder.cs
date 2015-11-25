@@ -12,10 +12,6 @@
     [ExcludeFromCodeCoverage]
     internal class TournamentBuilder
     {
-        public const int TRANSFER_PERIOD_DAYS = 10;
-
-        public const int TRANSFER_PERIOD_MONTH = 6;
-
         public const int TOURNAMENT_DEFAULT_ID = 1;
 
         /// <summary>
@@ -216,7 +212,7 @@
         /// Set divisions list
         /// </summary>
         /// <param name="divisions">Divisions list</param>
-        /// <returns>Test tournament</returns>
+        /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithDivisions(List<Division> divisions)
         {
             this._tournament.Divisions = divisions;

@@ -24,7 +24,12 @@
     <div class="display-field">@Model.Scheme.ToDescription()</div>
 
     <div class="display-label">@Html.LabelFor(model => model.RegulationsLink)</div>
-    <div class="display-field"><a href="@Html.DisplayFor(model => model.RegulationsLink)" target="_blank">@Model.Name</a></div>
+    @if (!string.IsNullOrEmpty(Model.RegulationsLink))
+    {
+        <div class="display-field">
+            <a href=@Model.RegulationsLink target="_blank">@Model.RegulationsLink</a>
+        </div>
+    }
 
     <div class="display-label">@Html.LabelFor(model => model.ApplyingPeriodStart)</div>
     <div class="display-field">@Model.ApplyingPeriodStart.ToShortDateString()</div>

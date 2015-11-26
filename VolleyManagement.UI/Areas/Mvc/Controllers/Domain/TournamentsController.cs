@@ -1,24 +1,26 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.Tournaments;
+    using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Mappers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
-    using ErrorMessages = VolleyManagement.Domain.Properties.Resources;
-    using ValidationMessages = App_GlobalResources.ViewModelResources;
 
     /// <summary>
     /// Defines TournamentsController
     /// </summary>
     public class TournamentsController : Controller
     {
+        private const int DAYS_TO_APPLYING_PERIOD_START = 1;
+        private const int DAYS_FOR_APPLYING_PERIOD = Constants.Tournament.DAYS_BETWEEN_START_AND_END_APPLYING_DATE;
+        private const int DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START = 1;
+        private const int DAYS_FOR_GAMES_PERIOD = 120;
+        private const int DAYS_FROM_GAMES_START_TO_TRANSFER_START = 1;
+        private const int DAYS_FOR_TRANSFER_PERIOD = 20;
+
         /// <summary>
         /// Holds TournamentService instance
         /// </summary>
@@ -80,14 +82,19 @@
         public ActionResult Create()
         {
             var tournamentViewModel = new TournamentViewModel()
-                {
-                    ApplyingPeriodStart = DateTime.Now.AddDays(1),
-                    ApplyingPeriodEnd = DateTime.Now.AddDays(1),
-                    GamesStart = DateTime.Now.AddDays(1),
-                    GamesEnd = DateTime.Now.AddDays(1),
-                    TransferStart = DateTime.Now.AddDays(1),
-                    TransferEnd = DateTime.Now.AddDays(1)
-                };
+            {
+                ApplyingPeriodStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
+                ApplyingPeriodEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD),
+                GamesStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
+                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
+                GamesEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
+                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FOR_GAMES_PERIOD),
+                TransferStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
+                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
+                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
+                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START + DAYS_FOR_TRANSFER_PERIOD)
+            };
+
             return this.View(tournamentViewModel);
         }
 

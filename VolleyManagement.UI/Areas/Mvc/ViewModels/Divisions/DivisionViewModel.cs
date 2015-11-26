@@ -17,9 +17,10 @@
         /// </summary>
         public DivisionViewModel()
         {
+            this.Name = ViewModelResources.DivisionDefaultName;
             this.Groups = new List<GroupViewModel>() { new GroupViewModel() };
         }
-        
+
         /// <summary>
         /// Gets or sets the division's identifier.
         /// </summary>

@@ -312,4 +312,10 @@
   <data name="Groups" xml:space="preserve">
     <value>Группы</value>
   </data>
+  <data name="DivisionDefaultName" xml:space="preserve">
+    <value>Дивизион 1</value>
+  </data>
+  <data name="GroupDefaultName" xml:space="preserve">
+    <value>Группа А</value>
+  </data>
 </root>

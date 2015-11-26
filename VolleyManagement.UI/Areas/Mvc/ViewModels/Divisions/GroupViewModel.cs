@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Division
 {
     using System.ComponentModel.DataAnnotations;
-
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
@@ -11,6 +10,14 @@
     /// </summary>
     public class GroupViewModel
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GroupViewModel"/> class.
+        /// </summary>
+        public GroupViewModel()
+        {
+            this.Name = ViewModelResources.GroupDefaultName;
+        }
+
         /// <summary>
         /// Gets or sets the group's identifier.
         /// </summary>

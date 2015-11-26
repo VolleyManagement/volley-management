@@ -10,7 +10,6 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using DivisionConstants = VolleyManagement.Domain.Constants.Division;
     using TournamentConstants = VolleyManagement.Domain.Constants.Tournament;
     using TournamentResources = VolleyManagement.Domain.Properties.Resources;
 
@@ -345,8 +344,8 @@
                 throw new ArgumentException(
                     string.Format(
                     TournamentResources.GroupCountOutOfRange,
-                    DivisionConstants.MIN_GROUPS_COUNT,
-                    DivisionConstants.MAX_GROUPS_COUNT));
+                    TournamentConstants.MIN_GROUPS_COUNT,
+                    TournamentConstants.MAX_GROUPS_COUNT));
             }
         }
 

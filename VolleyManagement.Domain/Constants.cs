@@ -57,12 +57,6 @@
             public const string UNIQUE_NAME_KEY = "uniqueName";
 
             /// <summary>
-            /// Constant defines max groups count in division,
-            /// when user typed not unique name
-            /// </summary>
-            public const int MAX_GROUPS_COUNT = 60;
-
-            /// <summary>
             /// Constant defines validation key in tournament controller,
             /// when applying date starts before now
             /// </summary>
@@ -161,6 +155,16 @@
             /// Constant defines maximal value of division count
             /// </summary>
             public const int MAX_DIVISIONS_COUNT = 10;
+
+            /// <summary>
+            /// Constant defines minimal value of group count
+            /// </summary>
+            public const int MIN_GROUPS_COUNT = 1;
+
+            /// <summary>
+            /// Constant defines maximal value of group count
+            /// </summary>
+            public const int MAX_GROUPS_COUNT = 10;
         }
 
         /// <summary>
@@ -169,10 +173,6 @@
         public static class Division
         {
             public const int MAX_NAME_LENGTH = 60;
-
-            public const int MIN_GROUPS_COUNT = 1;
-
-            public const int MAX_GROUPS_COUNT = 10;
         }
 
         /// <summary>

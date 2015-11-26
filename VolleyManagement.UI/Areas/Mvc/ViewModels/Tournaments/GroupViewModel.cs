@@ -29,7 +29,7 @@
         [Display(Name = "GroupName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "GroupNameRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [MaxLength(Constants.Division.MAX_NAME_LENGTH, ErrorMessageResourceName = "GroupNameMaxLengthErrorMessage",
+        [MaxLength(Constants.Group.MAX_NAME_LENGTH, ErrorMessageResourceName = "GroupNameMaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 

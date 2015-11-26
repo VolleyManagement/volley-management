@@ -344,8 +344,8 @@
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Account\AuthenticationStatusViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
-    <Compile Include="Areas\Mvc\ViewModels\Divisions\DivisionViewModel.cs" />
-    <Compile Include="Areas\Mvc\ViewModels\Divisions\GroupViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\GroupViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerDeleteResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerNameViewModel.cs" />
@@ -358,7 +358,6 @@
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamOperationResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentsCollectionsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
-	<Compile Include="Areas\Mvc\ViewModels\Groups\GroupViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\ContributorsTeamController.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\PlayersController.cs" />

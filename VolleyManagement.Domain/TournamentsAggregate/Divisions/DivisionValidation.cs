@@ -1,7 +1,5 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Division validation class.
     /// </summary>
@@ -24,7 +22,7 @@
         /// <returns>True if groups count is within the range; otherwise, false.</returns>
         public static bool IsGroupCountWithinRange(int count)
         {
-            return count >= Constants.Division.MIN_GROUPS_COUNT && count <= Constants.Division.MAX_GROUPS_COUNT;
+            return count >= Constants.Tournament.MIN_GROUPS_COUNT && count <= Constants.Tournament.MAX_GROUPS_COUNT;
         }
     }
 }

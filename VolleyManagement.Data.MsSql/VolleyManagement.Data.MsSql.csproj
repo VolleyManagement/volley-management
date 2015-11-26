@@ -89,9 +89,9 @@
     <Compile Include="Context\Migrations\201511160416337_AddDivisions.Designer.cs">
       <DependentUpon>201511160416337_AddDivisions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201511251502002_Add-groups.cs" />
-    <Compile Include="Context\Migrations\201511251502002_Add-groups.Designer.cs">
-      <DependentUpon>201511251502002_Add-groups.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201511251502002_AddGroups.cs" />
+    <Compile Include="Context\Migrations\201511251502002_AddGroups.Designer.cs">
+      <DependentUpon>201511251502002_AddGroups.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -174,8 +174,8 @@
     <EmbeddedResource Include="Context\Migrations\201511160416337_AddDivisions.resx">
       <DependentUpon>201511160416337_AddDivisions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201511251502002_Add-groups.resx">
-      <DependentUpon>201511251502002_Add-groups.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201511251502002_AddGroups.resx">
+      <DependentUpon>201511251502002_AddGroups.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

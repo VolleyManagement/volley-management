@@ -1,12 +1,11 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
 
     /// <summary>
     /// Add groups for divisions
     /// </summary>
-    public partial class Addgroups : DbMigration
+    public partial class AddGroups : DbMigration
     {
         /// <summary>
         /// Migrates up

@@ -9,6 +9,14 @@ namespace VolleyManagement.Data.MsSql.Entities
     public class TournamentEntity
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="TournamentEntity"/> class.
+        /// </summary>
+        public TournamentEntity()
+        {
+            this.Divisions = new List<DivisionEntity>();
+        }
+
+        /// <summary>
         /// Gets or sets the tournament id
         /// </summary>
         public int Id { get; set; }
@@ -67,6 +75,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Gets or sets end of a tournament registration
         /// </summary>
         public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// Gets or sets collection of tournaments divisions
+        /// </summary>
+        public virtual List<DivisionEntity> Divisions { get; set; }
 
         /// <summary>
         /// Gets or sets game results of the tournament.

@@ -7,9 +7,7 @@
     using System.Net;
     using System.Web.Http.Results;
     using System.Web.OData.Results;
-
     using Contracts;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -18,6 +16,7 @@
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.ODataControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
 
     /// <summary>
@@ -95,7 +94,10 @@
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            TestHelper.AreEqual<TournamentViewModel>(expected, result, new TournamentViewModelComparer());
+            TestHelper.AreEqual<TournamentViewModel>(
+                expected,
+                result,
+                new VolleyManagement.UnitTests.WebApi.ViewModels.TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -121,7 +123,10 @@
 
             //// Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
-            CollectionAssert.AreEqual(expected, actual, new TournamentViewModelComparer());
+            CollectionAssert.AreEqual(
+                expected,
+                actual,
+                new VolleyManagement.UnitTests.WebApi.ViewModels.TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -166,7 +171,10 @@
             var actual = ((CreatedODataResult<TournamentViewModel>)response).Entity;
 
             // Assert
-            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TestHelper.AreEqual<TournamentViewModel>(
+                expected,
+                actual,
+                new VolleyManagement.UnitTests.WebApi.ViewModels.TournamentViewModelComparer());
         }
 
         /// <summary>
@@ -217,7 +225,7 @@
 
             // Assert
             _tournamentServiceMock.Verify(
-                trServ => trServ.Create(It.Is<Tournament>(t => new TournamentComparer().IsEqual(t, expectedDomain))),
+                trServ => trServ.Create(It.Is<Tournament>(t => new TournamentComparer().AreEqual(t, expectedDomain))),
                 Times.Once());
         }
 
@@ -299,8 +307,8 @@
             // Assert
             var comparer = new TournamentComparer();
             _tournamentServiceMock.Verify(
-                ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)),
-                Times.Once());
+                                    ts => ts.Edit(It.Is<Tournament>(t => comparer.Compare(t, expectedDomainTournament) == 0)),
+                                    Times.Once());
         }
 
         /// <summary>
@@ -394,7 +402,10 @@
             var actual = TournamentViewModel.Map(tournament);
 
             // Assert
-            TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            TestHelper.AreEqual<TournamentViewModel>(
+                expected,
+                actual,
+                new VolleyManagement.UnitTests.WebApi.ViewModels.TournamentViewModelComparer());
         }
 
         /// <summary>

@@ -37,6 +37,10 @@
 
         public const string ROLE_TO_USER_FK = "UserId";
 
+        public const string GROUPS_TABLE_NAME = "Groups";
+
+        public const string DIVISION_TABLE_NAME = "Divisions";
+
         public const string GAME_RESULTS_TABLE_NAME = "GameResults";
     }
 }

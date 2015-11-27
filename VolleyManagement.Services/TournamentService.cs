@@ -10,8 +10,8 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using ExceptionParams = VolleyManagement.Domain.Constants.Tournament;
-    using MessageList = VolleyManagement.Domain.Properties.Resources;
+    using TournamentConstants = VolleyManagement.Domain.Constants.Tournament;
+    using TournamentResources = VolleyManagement.Domain.Properties.Resources;
 
     /// <summary>
     /// Defines TournamentService
@@ -56,7 +56,7 @@
         /// <param name="tournamentRepository"> The tournament repository  </param>
         /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
         /// <param name="getAllQuery"> Get All object query. </param>
-        /// <param name="getByIdQuery"> Get by ID object query.</param>
+        /// <param name="getByIdQuery">Get tournament by id query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
@@ -111,11 +111,10 @@
                 throw new ArgumentNullException("tournamentToCreate");
             }
 
-            IsTournamentNameUnique(tournamentToCreate);
-            AreDatesValid(tournamentToCreate);
-
+            ValidateTournament(tournamentToCreate);
+            ValidateDivisions(tournamentToCreate.Divisions);
+            ValidateGroups(tournamentToCreate.Divisions);
             _tournamentRepository.Add(tournamentToCreate);
-            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -135,10 +134,8 @@
         /// <param name="tournamentToEdit">Tournament to edit</param>
         public void Edit(Tournament tournamentToEdit)
         {
-            IsTournamentNameUnique(tournamentToEdit, isUpdate: true);
-            AreDatesValid(tournamentToEdit);
+            ValidateTournament(tournamentToEdit, isUpdate: true);
             _tournamentRepository.Update(tournamentToEdit);
-            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -148,7 +145,6 @@
         public void Delete(int id)
         {
             _tournamentRepository.Remove(id);
-            _tournamentRepository.UnitOfWork.Commit();
         }
 
         #endregion
@@ -166,50 +162,65 @@
             return criteria;
         }
 
-        /// <summary>
-        /// Checks whether tournament name is unique or not.
-        /// </summary>
-        /// <param name="newTournament">tournament to edit or create</param>
-        /// <param name="isUpdate">Specifies operation</param>
-        private void IsTournamentNameUnique(Tournament newTournament, bool isUpdate = false)
+        private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
+        {
+            return this.Get().Where(t => statesFilter.Contains(t.State)).ToList();
+        }
+
+        private void ValidateTournament(Tournament tournament, bool isUpdate = false)
+        {
+            ValidateUniqueTournamentName(tournament, isUpdate);
+            ValidateTournamentDates(tournament);
+        }
+
+        private void ValidateUniqueTournamentName(Tournament newTournament, bool isUpdate = false)
         {
             var criteria = BuildUniqueTournamentCriteria(newTournament, isUpdate);
-
             var tournament = this._uniqueTournamentQuery.Execute(criteria);
 
             if (tournament != null)
             {
                 throw new TournamentValidationException(
-                    MessageList.TournamentNameMustBeUnique,
-                    ExceptionParams.UNIQUE_NAME_KEY,
+                    TournamentResources.TournamentNameMustBeUnique,
+                    TournamentConstants.UNIQUE_NAME_KEY,
                     "Name");
             }
         }
 
-        /// <summary>
-        /// Checks the tournament dates
-        /// </summary>
-        /// <param name="tournament">Tournament to check</param>
-        private void AreDatesValid(Tournament tournament)
+        private void ValidateTournamentDates(Tournament tournament)
         {
-            // ToDo: Re-factor it - code is hard to read
+            ValidateTournamentApplyingPeriod(tournament);
+            ValidateTournamentGamesPeriod(tournament);
+            ValidateTournamentTrasferPeriod(tournament);
+        }
 
-            // if registration dates before now
+        private void ValidateTournamentApplyingPeriod(Tournament tournament)
+        {
+            // if registration dates comes before current date
             if (TimeProvider.Current.UtcNow >= tournament.ApplyingPeriodStart)
             {
                 throw new TournamentValidationException(
-                    MessageList.LateRegistrationDates,
-                    ExceptionParams.APPLYING_START_BEFORE_NOW,
-                    ExceptionParams.APPLYING_START_CAPTURE);
+                    TournamentResources.LateRegistrationDates,
+                    TournamentConstants.APPLYING_START_BEFORE_NOW,
+                    TournamentConstants.APPLYING_START_CAPTURE);
             }
 
-            // if registration start date after end date
+            // if registration start date comes after end date
             if (tournament.ApplyingPeriodStart >= tournament.ApplyingPeriodEnd)
             {
                 throw new TournamentValidationException(
-                    MessageList.WrongRegistrationDatesPeriod,
-                    ExceptionParams.APPLYING_START_DATE_AFTER_END_DATE,
-                    ExceptionParams.APPLYING_START_CAPTURE);
+                    TournamentResources.WrongRegistrationDatesPeriod,
+                    TournamentConstants.APPLYING_START_DATE_AFTER_END_DATE,
+                    TournamentConstants.APPLYING_START_CAPTURE);
+            }
+
+            // if registration end date comes after games start date
+            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
+            {
+                throw new TournamentValidationException(
+                    TournamentResources.WrongRegistrationGames,
+                    TournamentConstants.APPLYING_END_DATE_AFTER_START_GAMES,
+                    TournamentConstants.GAMES_START_CAPTURE);
             }
 
             // ToDo: Revisit this requirement
@@ -223,34 +234,21 @@
             ////        ExceptionParams.APPLYING_PERIOD_LESS_THREE_MONTH,
             ////        ExceptionParams.APPLYING_END_CAPTURE);
             ////}
+        }
 
-            // if registration period is after games start
-            if (tournament.ApplyingPeriodEnd >= tournament.GamesStart)
-            {
-                throw new TournamentValidationException(
-                    MessageList.WrongRegistrationGames,
-                    ExceptionParams.APPLYING_END_DATE_AFTER_START_GAMES,
-                    ExceptionParams.GAMES_START_CAPTURE);
-            }
-
-            // if tournament start dates goes after tournament end
+        private void ValidateTournamentGamesPeriod(Tournament tournament)
+        {
+            // if games start date comes after end date
             if (tournament.GamesStart >= tournament.GamesEnd)
             {
                 throw new TournamentValidationException(
-                    MessageList.WrongStartTournamentDates,
-                    ExceptionParams.START_GAMES_AFTER_END_GAMES,
-                    ExceptionParams.GAMES_END_CAPTURE);
+                    TournamentResources.WrongStartTournamentDates,
+                    TournamentConstants.START_GAMES_AFTER_END_GAMES,
+                    TournamentConstants.GAMES_END_CAPTURE);
             }
-
-            IsTrasferPeriodValid(tournament);
         }
 
-        /// <summary>
-        /// Check whether transfer period is valid
-        /// </summary>
-        /// <param name="tournament">Tournament to validate</param>
-        /// <exception cref="TournamentValidationException">Tournament Validation Exception</exception>
-        private void IsTrasferPeriodValid(Tournament tournament)
+        private void ValidateTournamentTrasferPeriod(Tournament tournament)
         {
             // if there is no transfer period
             if (!tournament.TransferStart.HasValue && !tournament.TransferEnd.HasValue)
@@ -258,55 +256,105 @@
                 return;
             }
 
-            // if transfer end missing
-            if (tournament.TransferStart.HasValue && !tournament.TransferEnd.HasValue)
-            {
-                throw new TournamentValidationException(
-                    MessageList.TransferEndMissing,
-                    ExceptionParams.TRANSFER_END_MISSING,
-                    ExceptionParams.TRANSFER_END_CAPTURE);
-            }
-
-            // if transfer start missing
+            // if transfer start is not specified
             if (!tournament.TransferStart.HasValue && tournament.TransferEnd.HasValue)
             {
                 throw new TournamentValidationException(
-                    MessageList.TransferStartMissing,
-                    ExceptionParams.TRANSFER_START_MISSING,
-                    ExceptionParams.TRANSFER_START_CAPTURE);
+                    TournamentResources.TransferStartMissing,
+                    TournamentConstants.TRANSFER_START_MISSING,
+                    TournamentConstants.TRANSFER_START_CAPTURE);
             }
 
-            // if games date go after transfer start
+            // if transfer end is not specified
+            if (tournament.TransferStart.HasValue && !tournament.TransferEnd.HasValue)
+            {
+                throw new TournamentValidationException(
+                    TournamentResources.TransferEndMissing,
+                    TournamentConstants.TRANSFER_END_MISSING,
+                    TournamentConstants.TRANSFER_END_CAPTURE);
+            }
+
+            // if games start date comes after transfer start date
             if (tournament.GamesStart >= tournament.TransferStart.GetValueOrDefault())
             {
                 throw new TournamentValidationException(
-                    MessageList.WrongTransferStart,
-                    ExceptionParams.TRANSFER_PERIOD_BEFORE_GAMES_START,
-                    ExceptionParams.TRANSFER_START_CAPTURE);
+                    TournamentResources.WrongTransferStart,
+                    TournamentConstants.TRANSFER_PERIOD_BEFORE_GAMES_START,
+                    TournamentConstants.TRANSFER_START_CAPTURE);
             }
 
-            // if transfer start goes after transfer end
+            // if transfer start date comes after end date
             if (tournament.TransferStart.GetValueOrDefault() >= tournament.TransferEnd.GetValueOrDefault())
             {
                 throw new TournamentValidationException(
-                    MessageList.WrongTransferPeriod,
-                    ExceptionParams.TRANSFER_END_BEFORE_TRANSFER_START,
-                    ExceptionParams.TRANSFER_END_CAPTURE);
+                    TournamentResources.WrongTransferPeriod,
+                    TournamentConstants.TRANSFER_END_BEFORE_TRANSFER_START,
+                    TournamentConstants.TRANSFER_END_CAPTURE);
             }
 
-            // if transfer end is before tournament end date
+            // if transfer end date comes before games end date
             if (tournament.TransferEnd.GetValueOrDefault() >= tournament.GamesEnd)
             {
                 throw new TournamentValidationException(
-                    MessageList.InvalidTransferEndpoint,
-                    ExceptionParams.TRANSFER_END_AFTER_GAMES_END,
-                    ExceptionParams.GAMES_END_CAPTURE);
+                    TournamentResources.InvalidTransferEndpoint,
+                    TournamentConstants.TRANSFER_END_AFTER_GAMES_END,
+                    TournamentConstants.GAMES_END_CAPTURE);
             }
         }
 
-        private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
+        private void ValidateDivisions(List<Division> divisions)
         {
-            return this.Get().Where(t => statesFilter.Contains(t.State)).ToList();
+            ValidateDivisionCount(divisions.Count);
+            ValidateUniqueDivisionNames(divisions);
+        }
+
+        private void ValidateDivisionCount(int count)
+        {
+            if (!TournamentValidationSpecification.IsDivisionCountWithinRange(count))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        TournamentResources.DivisionCountOutOfRange,
+                        TournamentConstants.MIN_DIVISIONS_COUNT,
+                        TournamentConstants.MAX_DIVISIONS_COUNT));
+            }
+        }
+
+        private void ValidateUniqueDivisionNames(List<Division> divisions)
+        {
+            if (divisions.Select(d => new { Name = d.Name.ToUpper() }).Distinct().Count() != divisions.Count)
+            {
+                throw new ArgumentException(TournamentResources.DivisionNamesNotUnique);
+            }
+        }
+
+        private void ValidateGroups(List<Division> divisions)
+        {
+            foreach (var division in divisions)
+            {
+                ValidateGroupCount(division.Groups.Count);
+                ValidateUniqueGroupNames(division.Groups);
+            }
+        }
+
+        private void ValidateGroupCount(int count)
+        {
+            if (!DivisionValidation.IsGroupCountWithinRange(count))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    TournamentResources.GroupCountOutOfRange,
+                    TournamentConstants.MIN_GROUPS_COUNT,
+                    TournamentConstants.MAX_GROUPS_COUNT));
+            }
+        }
+
+        private void ValidateUniqueGroupNames(List<Group> groups)
+        {
+            if (groups.Select(g => new { Name = g.Name.ToUpper() }).Distinct().Count() != groups.Count)
+            {
+                throw new ArgumentException(TournamentResources.GroupNamesNotUnique);
+            }
         }
 
         #endregion

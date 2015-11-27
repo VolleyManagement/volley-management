@@ -138,6 +138,18 @@
   <data name="ConfirmUserPassword" xml:space="preserve">
     <value>FixMe: Confirm password</value>
   </data>
+  <data name="Divisions" xml:space="preserve">
+    <value>Дивизионы</value>
+  </data>
+  <data name="DivisionName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="DivisionNameMaxLengthErrorMessage" xml:space="preserve">
+    <value>{0} не может содержать более {1} символов</value>
+  </data>
+  <data name="DivisionNameRequired" xml:space="preserve">
+    <value>{0} не может быть пустым</value>
+  </data>
   <data name="EndGamesBeforeStart" xml:space="preserve">
     <value>Конец турнира должен быть после его начала</value>
   </data>
@@ -287,5 +299,23 @@
   </data>
   <data name="UserPassword" xml:space="preserve">
     <value>Пароль</value>
+  </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="GroupNameMaxLengthErrorMessage" xml:space="preserve">
+    <value>{0} не может содержать более {1} символов</value>
+  </data>
+  <data name="GroupNameRequired" xml:space="preserve">
+    <value>{0} не может быть пустым</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Группы</value>
+  </data>
+  <data name="DivisionDefaultName" xml:space="preserve">
+    <value>Дивизион 1</value>
+  </data>
+  <data name="GroupDefaultName" xml:space="preserve">
+    <value>Группа А</value>
   </data>
 </root>

@@ -36,5 +36,7 @@
         public const string USER_TO_ROLE_FK = "RoleId";
 
         public const string ROLE_TO_USER_FK = "UserId";
+
+        public const string GAME_RESULTS_TABLE_NAME = "GameResults";
     }
 }

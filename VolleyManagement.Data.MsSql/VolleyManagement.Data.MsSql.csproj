@@ -85,9 +85,14 @@
     <Compile Include="Context\Migrations\201511081957142_OptionalTransferPeriod.Designer.cs">
       <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201511271310560_AddGameResults.cs" />
+    <Compile Include="Context\Migrations\201511271310560_AddGameResults.Designer.cs">
+      <DependentUpon>201511271310560_AddGameResults.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
+    <Compile Include="Entities\GameResultEntity.cs" />
     <Compile Include="Entities\LoginInfoEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
@@ -96,12 +101,14 @@
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GameResultQueries.cs" />
     <Compile Include="Queries\PlayerQueries.cs" />
     <Compile Include="Queries\RolesQueries.cs" />
     <Compile Include="Queries\TeamQueries.cs" />
     <Compile Include="Queries\TournamentQueries.cs" />
     <Compile Include="Queries\UserQueries.cs" />
     <Compile Include="Repositories\ContributorTeamRepository.cs" />
+    <Compile Include="Repositories\GameResultRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\RoleRepostitory.cs" />
     <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
@@ -160,6 +167,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201511081957142_OptionalTransferPeriod.resx">
       <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201511271310560_AddGameResults.resx">
+      <DependentUpon>201511271310560_AddGameResults.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

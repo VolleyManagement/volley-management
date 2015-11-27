@@ -10,14 +10,14 @@
         /// <summary>
         /// Adds the T type element to the store.
         /// </summary>
-        /// <param name="newEntity">Element to add.</param>
-        void Add(T newEntity);
+        /// <param name="newModel">Element to add.</param>
+        void Add(T newModel);
 
         /// <summary>
         /// Update the T type element to the DB.
         /// </summary>
-        /// <param name="oldEntity">Element to update.</param>
-        void Update(T oldEntity);
+        /// <param name="updatedModel">Updated element.</param>
+        void Update(T updatedModel);
 
         /// <summary>
         /// Deletes the element by id from the store.

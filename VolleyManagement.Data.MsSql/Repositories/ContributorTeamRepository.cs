@@ -82,8 +82,8 @@
         /// <summary>
         /// Adds new contributor.
         /// </summary>
-        /// <param name="newEntity">The contributor team for adding.</param>
-        public void Add(ContributorTeam newEntity)
+        /// <param name="newModel">The contributor team for adding.</param>
+        public void Add(ContributorTeam newModel)
         {
             throw new NotImplementedException();
         }
@@ -91,8 +91,8 @@
         /// <summary>
         /// Updates specified contributor.
         /// </summary>
-        /// <param name="oldEntity">The contributor team to update.</param>
-        public void Update(ContributorTeam oldEntity)
+        /// <param name="updatedModel">Updated contributor team.</param>
+        public void Update(ContributorTeam updatedModel)
         {
             throw new NotImplementedException();
         }

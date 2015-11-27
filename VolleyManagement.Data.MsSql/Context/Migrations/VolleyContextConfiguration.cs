@@ -33,9 +33,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             defaultRoles.Add(CreateRole("TournamentAdministrator"));
             defaultRoles.Add(CreateRole("User"));
 
-            context.Roles.AddOrUpdate(
-                r => r.Name,
-                defaultRoles.ToArray());
+            context.Roles.AddOrUpdate(r => r.Name, defaultRoles.ToArray());
 
             var contributorTeams = new[]
             {
@@ -51,7 +49,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Contributors076Atqc(),
                 Contributors085Net()
             };
-            context.ContributorTeam.AddOrUpdate(s => s.Name, contributorTeams);
+
+            context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
         }
 
         private static RoleEntity CreateRole(string name)
@@ -65,7 +64,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 {
                     Name = "Project Management",
                     CourseDirection = "All",
-                    Contributors = new List<ContributorEntity> 
+                    Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity { Name = "Sergii Diachenko" },
                         new ContributorEntity { Name = "Iurii Osipchuk" },
@@ -84,7 +83,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             {
                 Name = "Dp-042",
                 CourseDirection = ".NET",
-                Contributors = new List<ContributorEntity> 
+                Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity { Name = "Igor Leta" },
                         new ContributorEntity { Name = "Dmytro Balayev"},
@@ -102,7 +101,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             {
                 Name = "Dp-052",
                 CourseDirection = ".NET",
-                Contributors = new List<ContributorEntity> 
+                Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity { Name = "Julia Bukova" },
                         new ContributorEntity { Name = "Alexandr Marchotko" },
@@ -140,7 +139,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Name = "Dp-064",
                 CourseDirection = ".NET",
                 Contributors = new List<ContributorEntity>
-                    { 
+                    {
                         new ContributorEntity { Name = "Andrii Zelyk" },
                         new ContributorEntity { Name = "Viktoriia Ryndina" },
                         new ContributorEntity { Name = "Alex Lapin" },
@@ -159,7 +158,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             {
                 Name = "Dp-064",
                 CourseDirection = "ATQC",
-                Contributors = new List<ContributorEntity> 
+                Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity { Name = "Mykola Kolisnyk" },
                         new ContributorEntity { Name = "Maria Tsymbaliuk" },
@@ -180,7 +179,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             {
                 Name = "Dp-065",
                 CourseDirection = "UI",
-                Contributors = new List<ContributorEntity> 
+                Contributors = new List<ContributorEntity>
                     {
                         new ContributorEntity { Name = "Denis Chernysh" },
                         new ContributorEntity { Name = "Oleh Man'kov" },

@@ -81,11 +81,11 @@
         /// <summary>
         /// Adds new tournament.
         /// </summary>
-        /// <param name="newEntity">The tournament for adding.</param>
-        public void Add(Tournament newEntity)
+        /// <param name="newModel">The tournament for adding.</param>
+        public void Add(Tournament newModel)
         {
             var tournament = new TournamentEntity();
-            DomainToDal.Map(tournament, newEntity);
+            DomainToDal.Map(tournament, newModel);
             if (!_dbStorageSpecification.IsSatisfiedBy(tournament))
             {
                 throw new InvalidEntityException();
@@ -93,17 +93,17 @@
 
             this._dalTournaments.Add(tournament);
             this._unitOfWork.Commit();
-            newEntity.Id = tournament.Id;
+            newModel.Id = tournament.Id;
         }
 
         /// <summary>
         /// Updates specified tournament.
         /// </summary>
-        /// <param name="oldEntity">The tournament to update.</param>
-        public void Update(Tournament oldEntity)
+        /// <param name="updatedModel">Updated tournament.</param>
+        public void Update(Tournament updatedModel)
         {
-            var tournamentToUpdate = this._dalTournaments.Single(t => t.Id == oldEntity.Id);
-            DomainToDal.Map(tournamentToUpdate, oldEntity);
+            var tournamentToUpdate = this._dalTournaments.Single(t => t.Id == updatedModel.Id);
+            DomainToDal.Map(tournamentToUpdate, updatedModel);
 
             // ToDo: Check Do we really need this?
             //// this._dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);

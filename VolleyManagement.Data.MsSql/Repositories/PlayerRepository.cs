@@ -46,11 +46,11 @@
         /// <summary>
         /// Adds new player.
         /// </summary>
-        /// <param name="newEntity">The player for adding.</param>
-        public void Add(Player newEntity)
+        /// <param name="newModel">The player for adding.</param>
+        public void Add(Player newModel)
         {
             var newPlayer = new PlayerEntity();
-            DomainToDal.Map(newPlayer, newEntity);
+            DomainToDal.Map(newPlayer, newModel);
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newPlayer))
             {
@@ -59,30 +59,30 @@
 
             this._dalPlayers.Add(newPlayer);
             this._unitOfWork.Commit();
-            newEntity.Id = newPlayer.Id;
+            newModel.Id = newPlayer.Id;
         }
 
         /// <summary>
         /// Updates specified player.
         /// </summary>
-        /// <param name="oldEntity">The player to update.</param>
-        public void Update(Player oldEntity)
+        /// <param name="updatedModel">Updated player.</param>
+        public void Update(Player updatedModel)
         {
-            if (oldEntity.Id < START_DATABASE_ID_VALUE)
+            if (updatedModel.Id < START_DATABASE_ID_VALUE)
             {
                 var exc = new InvalidKeyValueException("Id is invalid for this Entity");
-                exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
+                exc.Data[Constants.ENTITY_ID_KEY] = updatedModel.Id;
                 throw exc;
             }
 
-            var playerToUpdate = this._dalPlayers.SingleOrDefault(t => t.Id == oldEntity.Id);
+            var playerToUpdate = this._dalPlayers.SingleOrDefault(t => t.Id == updatedModel.Id);
 
             if (playerToUpdate == null)
             {
                 throw new ConcurrencyException();
             }
 
-            DomainToDal.Map(playerToUpdate, oldEntity);
+            DomainToDal.Map(playerToUpdate, updatedModel);
         }
 
         /// <summary>

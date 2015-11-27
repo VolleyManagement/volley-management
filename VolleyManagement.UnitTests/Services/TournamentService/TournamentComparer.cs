@@ -1,8 +1,9 @@
-﻿namespace VolleyManagement.UnitTests.Services.TournamentService
+﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
@@ -19,14 +20,7 @@
         /// <returns>A signed integer that indicates the relative values of tournaments.</returns>
         public int Compare(Tournament x, Tournament y)
         {
-            if (IsEqual(x, y))
-            {
-                return 0;
-            }
-            else
-            {
-                return 1;
-            }
+            return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
@@ -58,14 +52,14 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given tournaments have the same properties.</returns>
-        public bool IsEqual(Tournament x, Tournament y)
+        internal bool AreEqual(Tournament x, Tournament y)
         {
-            return x.Description.Equals(y.Description) &&
-                x.Name.Equals(y.Name) &&
-                x.Id.Equals(y.Id) &&
-                x.RegulationsLink.Equals(y.RegulationsLink) &&
-                x.Scheme.Equals(y.Scheme) &&
-                x.Season.Equals(y.Season);
+            return x.Id == y.Id
+                && x.Name == y.Name
+                && x.Description == y.Description
+                && x.Season == y.Season
+                && x.Scheme == y.Scheme
+                && x.RegulationsLink == y.RegulationsLink;
         }
     }
 }

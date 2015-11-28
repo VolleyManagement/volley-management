@@ -79,6 +79,42 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to В партии количество очков у одной команды должно составлять как минимум {0} и разница очков должна быть равна {1}. При техническом поражении счет в необязательной партии должен быть {2}:{3}.
+        /// </summary>
+        public static string GameResultOptionalSetScores {
+            get {
+                return ResourceManager.GetString("GameResultOptionalSetScores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to В партии количество очков у одной команды должно составлять как минимум {0} и разница очков должна быть равна {1}. При техническом поражении счет в обязательной партии должен быть {2}:{3} или {3}:{2}.
+        /// </summary>
+        public static string GameResultRequiredSetScores {
+            get {
+                return ResourceManager.GetString("GameResultRequiredSetScores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Счет по партиям в сумме не может быть меньше, чем минимальное количество партий ({0}), и больше, чем максимальное количество партий ({1}). При техническом поражении счет по партиям должен быть {2}:{3} или {3}:{2}.
+        /// </summary>
+        public static string GameResultSetsScoreInvalid {
+            get {
+                return ResourceManager.GetString("GameResultSetsScoreInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Счет по партиям не соответствует результатам партий.
+        /// </summary>
+        public static string GameResultSetsScoreNoMatchSetScores {
+            get {
+                return ResourceManager.GetString("GameResultSetsScoreNoMatchSetScores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Количество групп в дивизионе должно быть в диапазоне от {0} до {1}.
         /// </summary>
         public static string GroupCountOutOfRange {

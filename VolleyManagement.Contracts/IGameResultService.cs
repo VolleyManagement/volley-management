@@ -4,7 +4,7 @@
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
-    /// Interface for GameResultService
+    /// Defines a contract for GameResultService.
     /// </summary>
     public interface IGameResultService
     {
@@ -34,7 +34,7 @@
         void Edit(GameResult gameResult);
 
         /// <summary>
-        /// Delete game result by specified identifier.
+        /// Deletes game result by specified identifier.
         /// </summary>
         /// <param name="id">Identifier of game result.</param>
         void Delete(int id);

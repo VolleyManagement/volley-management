@@ -123,6 +123,18 @@
   <data name="DivisionNamesNotUnique" xml:space="preserve">
     <value>Дивизионы не могут иметь одинаковые названия</value>
   </data>
+  <data name="GameResultOptionalSetScores" xml:space="preserve">
+    <value>В партии количество очков у одной команды должно составлять как минимум {0} и разница очков должна быть равна {1}. При техническом поражении счет в необязательной партии должен быть {2}:{3}</value>
+  </data>
+  <data name="GameResultRequiredSetScores" xml:space="preserve">
+    <value>В партии количество очков у одной команды должно составлять как минимум {0} и разница очков должна быть равна {1}. При техническом поражении счет в обязательной партии должен быть {2}:{3} или {3}:{2}</value>
+  </data>
+  <data name="GameResultSetsScoreInvalid" xml:space="preserve">
+    <value>Счет по партиям в сумме не может быть меньше, чем минимальное количество партий ({0}), и больше, чем максимальное количество партий ({1}). При техническом поражении счет по партиям должен быть {2}:{3} или {3}:{2}</value>
+  </data>
+  <data name="GameResultSetsScoreNoMatchSetScores" xml:space="preserve">
+    <value>Счет по партиям не соответствует результатам партий</value>
+  </data>
   <data name="GroupCountOutOfRange" xml:space="preserve">
     <value>Количество групп в дивизионе должно быть в диапазоне от {0} до {1}</value>
   </data>

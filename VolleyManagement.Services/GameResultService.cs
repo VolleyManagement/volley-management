@@ -116,13 +116,30 @@
 
         private void ValidateGameResult(GameResult gameResult)
         {
-            ValidateSetsScoreMatchesSetScores(
-                gameResult.HomeSetsScore,
-                gameResult.AwaySetsScore,
-                gameResult.HomeSetScores,
-                gameResult.AwaySetScores);
+            var homeSetScores = new[]
+            {
+                gameResult.HomeSet1Score,
+                gameResult.HomeSet2Score,
+                gameResult.HomeSet3Score,
+                gameResult.HomeSet4Score,
+                gameResult.HomeSet5Score
+            };
+            var awaySetScores = new[]
+            {
+                gameResult.AwaySet1Score,
+                gameResult.AwaySet2Score,
+                gameResult.AwaySet3Score,
+                gameResult.AwaySet4Score,
+                gameResult.AwaySet5Score
+            };
+
+            ValidateSetsScoreMatchesSetScores(gameResult.HomeSetsScore, gameResult.AwaySetsScore, homeSetScores, awaySetScores);
             ValidateSetsScore(gameResult.HomeSetsScore, gameResult.AwaySetsScore, gameResult.IsTechnicalDefeat);
-            ValidateSetScores(gameResult.HomeSetScores, gameResult.AwaySetScores, gameResult.IsTechnicalDefeat);
+            ValidateRequiredSetScore(gameResult.HomeSet1Score, gameResult.AwaySet1Score, gameResult.IsTechnicalDefeat);
+            ValidateRequiredSetScore(gameResult.HomeSet2Score, gameResult.AwaySet2Score, gameResult.IsTechnicalDefeat);
+            ValidateRequiredSetScore(gameResult.HomeSet3Score, gameResult.AwaySet3Score, gameResult.IsTechnicalDefeat);
+            ValidateOptionalSetScore(gameResult.HomeSet4Score, gameResult.AwaySet4Score, gameResult.IsTechnicalDefeat);
+            ValidateOptionalSetScore(gameResult.HomeSet5Score, gameResult.AwaySet5Score, gameResult.IsTechnicalDefeat);
         }
 
         private void ValidateSetsScoreMatchesSetScores(byte homeSetsScore, byte awaySetsScore, byte[] homeSetScores, byte[] awaySetScores)
@@ -147,36 +164,31 @@
             }
         }
 
-        private void ValidateSetScores(byte[] homeSetScores, byte[] awaySetScores, bool isTechnicalDefeat)
+        private void ValidateRequiredSetScore(byte homeSetsScore, byte awaySetsScore, bool isTechnicalDefeat)
         {
-            for (int i = 0; i < homeSetScores.Length; i++)
+            if (!GameResultValidation.IsRequiredSetScoreValid(homeSetsScore, awaySetsScore, isTechnicalDefeat))
             {
-                if (i <= GameResultConstants.MIN_SETS_COUNT)
-                {
-                    if (!GameResultValidation.IsRequiredSetScoreValid(homeSetScores[i], awaySetScores[i], isTechnicalDefeat))
-                    {
-                        throw new ArgumentException(
-                            string.Format(
-                            Resources.GameResultRequiredSetScores,
-                            GameResultConstants.MARGIN_SET_POINTS,
-                            GameResultConstants.POINTS_DELTA_TO_WIN,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
-                    }
-                }
-                else
-                {
-                    if (!GameResultValidation.IsOptionalSetScoreValid(homeSetScores[i], awaySetScores[i], isTechnicalDefeat))
-                    {
-                        throw new ArgumentException(
-                            string.Format(
-                            Resources.GameResultOptionalSetScores,
-                            GameResultConstants.MARGIN_SET_POINTS,
-                            GameResultConstants.POINTS_DELTA_TO_WIN,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
-                    }
-                }
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.GameResultRequiredSetScores,
+                    GameResultConstants.MARGIN_SET_POINTS,
+                    GameResultConstants.POINTS_DELTA_TO_WIN,
+                    GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
+                    GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
+            }
+        }
+
+        private void ValidateOptionalSetScore(byte homeSetsScore, byte awaySetsScore, bool isTechnicalDefeat)
+        {
+            if (!GameResultValidation.IsOptionalSetScoreValid(homeSetsScore, awaySetsScore, isTechnicalDefeat))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.GameResultOptionalSetScores,
+                    GameResultConstants.MARGIN_SET_POINTS,
+                    GameResultConstants.POINTS_DELTA_TO_WIN,
+                    GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
+                    GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
             }
         }
 

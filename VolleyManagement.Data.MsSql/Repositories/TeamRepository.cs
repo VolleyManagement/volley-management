@@ -43,11 +43,11 @@
         /// <summary>
         /// Adds new team.
         /// </summary>
-        /// <param name="newModel">The team for adding.</param>
-        public void Add(Team newModel)
+        /// <param name="newEntity">The team for adding.</param>
+        public void Add(Team newEntity)
         {
             var newTeam = new TeamEntity();
-            DomainToDal.Map(newTeam, newModel);
+            DomainToDal.Map(newTeam, newEntity);
 
             if (!_dbStorageSpecification.IsSatisfiedBy(newTeam))
             {
@@ -57,14 +57,14 @@
             this._dalTeams.Add(newTeam);
             this._unitOfWork.Commit();
 
-            newModel.Id = newTeam.Id;
+            newEntity.Id = newTeam.Id;
         }
 
         /// <summary>
         /// Updates specified team.
         /// </summary>
-        /// <param name="updatedModel">Updated team.</param>
-        public void Update(Team updatedModel)
+        /// <param name="updatedEntity">Updated team.</param>
+        public void Update(Team updatedEntity)
         {
             throw new NotImplementedException();
         }

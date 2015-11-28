@@ -2,12 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.GameResultsAggregate;
 
+    /// <summary>
+    /// Provides Query Object implementation for GameResult entity
+    /// </summary>
     public class GameResultQueries : IQuery<GameResult, FindByIdCriteria>,
                                      IQuery<List<GameResult>, GetAllCriteria>
     {

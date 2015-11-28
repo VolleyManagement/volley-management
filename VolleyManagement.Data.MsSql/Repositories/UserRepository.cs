@@ -45,24 +45,24 @@
         /// <summary>
         /// Adds new user.
         /// </summary>
-        /// <param name="newModel">The user for adding.</param>
-        public void Add(User newModel)
+        /// <param name="newEntity">The user for adding.</param>
+        public void Add(User newEntity)
         {
             var newUser = new UserEntity();
-            DomainToDal.Map(newUser, newModel);
+            DomainToDal.Map(newUser, newEntity);
             this._dalUsers.Add(newUser);
             this._unitOfWork.Commit();
-            newModel.Id = newUser.Id;
+            newEntity.Id = newUser.Id;
         }
 
         /// <summary>
         /// Updates specified user.
         /// </summary>
-        /// <param name="updatedModel">Updated user.</param>
-        public void Update(User updatedModel)
+        /// <param name="updatedEntity">Updated user.</param>
+        public void Update(User updatedEntity)
         {
-            var userToUpdate = this._dalUsers.Single(t => t.Id == updatedModel.Id);
-            DomainToDal.Map(userToUpdate, updatedModel);
+            var userToUpdate = this._dalUsers.Single(t => t.Id == updatedEntity.Id);
+            DomainToDal.Map(userToUpdate, updatedEntity);
         }
 
         /// <summary>

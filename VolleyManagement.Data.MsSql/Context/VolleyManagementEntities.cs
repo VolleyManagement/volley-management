@@ -71,6 +71,7 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<TeamEntity> Teams { get; set; }
 
+        /// <summary>
         /// Gets or sets the divisions table.
         /// </summary>
         public DbSet<DivisionEntity> Divisions { get; set; }

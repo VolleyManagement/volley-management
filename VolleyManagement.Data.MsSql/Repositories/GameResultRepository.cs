@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System.Data.Entity;
+    using System.Linq;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.MsSql.Entities;
@@ -37,31 +38,30 @@
         /// <summary>
         /// Adds new game result.
         /// </summary>
-        /// <param name="newModel">Game result to add.</param>
-        public void Add(GameResult newModel)
+        /// <param name="newEntity">Game result to add.</param>
+        public void Add(GameResult newEntity)
         {
-            var newEntity = new GameResultEntity();
-            DomainToDal.Map(newEntity, newModel);
-            _dalGameResults.Add(newEntity);
+            var newGameResult = new GameResultEntity();
+            DomainToDal.Map(newGameResult, newEntity);
+            _dalGameResults.Add(newGameResult);
             _unitOfWork.Commit();
-            newModel.Id = newEntity.Id;
+            newEntity.Id = newGameResult.Id;
         }
 
         /// <summary>
         /// Updates specified game result.
         /// </summary>
-        /// <param name="updatedModel">Updated game result.</param>
-        public void Update(GameResult updatedModel)
+        /// <param name="updatedEntity">Updated game result.</param>
+        public void Update(GameResult updatedEntity)
         {
-            var oldEntity = _dalGameResults.SingleOrDefault(gr => gr.Id == updatedModel.Id);
+            var gameResultToUpdate = _dalGameResults.SingleOrDefault(gr => gr.Id == updatedEntity.Id);
 
-            if (oldEntity == null)
+            if (gameResultToUpdate == null)
             {
                 throw new ConcurrencyException();
             }
 
-            DomainToDal.Map(oldEntity, updatedModel);
-            _unitOfWork.Commit();
+            DomainToDal.Map(gameResultToUpdate, updatedEntity);
         }
 
         /// <summary>
@@ -70,16 +70,15 @@
         /// <param name="id">Identifier of the game result.</param>
         public void Remove(int id)
         {
-            var entity = new GameResultEntity { Id = id };
+            var gameResultToRemove = new GameResultEntity { Id = id };
 
-            if (entity == null)
+            if (gameResultToRemove == null)
             {
                 throw new ConcurrencyException();
             }
 
-            _dalGameResults.Attach(entity);
-            _dalGameResults.Remove(entity);
-            _unitOfWork.Commit();
+            _dalGameResults.Attach(gameResultToRemove);
+            _dalGameResults.Remove(gameResultToRemove);
         }
     }
 }

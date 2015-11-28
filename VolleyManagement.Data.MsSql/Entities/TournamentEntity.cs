@@ -76,6 +76,7 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// </summary>
         public DateTime ApplyingPeriodEnd { get; set; }
 
+        /// <summary>
         /// Gets or sets collection of tournaments divisions
         /// </summary>
         public virtual List<DivisionEntity> Divisions { get; set; }

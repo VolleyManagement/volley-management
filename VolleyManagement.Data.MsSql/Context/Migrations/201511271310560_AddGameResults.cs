@@ -3,8 +3,14 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System;
     using System.Data.Entity.Migrations;
 
+    /// <summary>
+    /// Add game results for tournaments
+    /// </summary>
     public partial class AddGameResults : DbMigration
     {
+        /// <summary>
+        /// Migrates up
+        /// </summary>
         public override void Up()
         {
             CreateTable(
@@ -32,20 +38,17 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Teams", t => t.AwayTeamId)
                 .ForeignKey("dbo.Teams", t => t.HomeTeamId)
-                .ForeignKey("dbo.Tournaments", t => t.TournamentId, cascadeDelete: true)
-                .Index(t => t.TournamentId)
-                .Index(t => t.HomeTeamId)
-                .Index(t => t.AwayTeamId);
+                .ForeignKey("dbo.Tournaments", t => t.TournamentId, cascadeDelete: true);
         }
 
+        /// <summary>
+        /// Migrates down
+        /// </summary>
         public override void Down()
         {
             DropForeignKey("dbo.GameResults", "TournamentId", "dbo.Tournaments");
             DropForeignKey("dbo.GameResults", "HomeTeamId", "dbo.Teams");
             DropForeignKey("dbo.GameResults", "AwayTeamId", "dbo.Teams");
-            DropIndex("dbo.GameResults", new[] { "AwayTeamId" });
-            DropIndex("dbo.GameResults", new[] { "HomeTeamId" });
-            DropIndex("dbo.GameResults", new[] { "TournamentId" });
             DropTable("dbo.GameResults");
         }
     }

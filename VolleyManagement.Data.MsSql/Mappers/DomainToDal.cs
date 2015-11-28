@@ -88,6 +88,7 @@
             to.Achievements = from.Achievements;
         }
 
+        /// <summary>
         /// Maps Division model.
         /// </summary>
         /// <param name="from">Division Domain model</param>

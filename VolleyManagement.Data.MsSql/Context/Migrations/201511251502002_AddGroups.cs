@@ -26,7 +26,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         }
 
         /// <summary>
-        /// Migrates up
+        /// Migrates down
         /// </summary>
         public override void Down()
         {

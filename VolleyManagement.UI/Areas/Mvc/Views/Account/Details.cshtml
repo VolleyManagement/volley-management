@@ -1,0 +1,20 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Users.UserViewModel
+
+@{
+    ViewBag.Title = "Profile info";
+}
+
+<h1 class="well">Profile info</h1>
+
+@Html.LabelFor(u => Model.UserName) : @Html.DisplayFor(u => Model.UserName)
+<br />
+@Html.LabelFor(u => Model.Email) : @Html.DisplayFor(u => Model.Email)
+<br />
+@Html.LabelFor(u => Model.CellPhone) : @Html.DisplayFor(u => Model.CellPhone)
+<br />
+@Html.LabelFor(u => Model.FullName) : @Html.DisplayFor(u => Model.FullName)
+<br />
+@Html.LabelFor(u => Model.LoginProviders) : @foreach (string provider in Model.LoginProviders) {
+    <span>@provider</span> <br />
+}
+@Html.ActionLink(Resources.UserViews.Edit, "Edit", "Account", new { @class="btn btn-warning"})

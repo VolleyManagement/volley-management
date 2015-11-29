@@ -87,7 +87,6 @@
                 .Returns(testData);
 
             var sut = this._kernel.Get<TournamentsController>();
-
             DateTime now = TimeProvider.Current.UtcNow;
 
             var expectedCurrentTournaments = new TournamentServiceTestFixture()

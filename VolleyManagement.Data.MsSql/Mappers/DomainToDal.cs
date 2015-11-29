@@ -1,7 +1,8 @@
 ﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
+    using System.Data.Entity;
     using System.Linq;
-
+    using Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -11,8 +12,19 @@
     /// <summary>
     /// Maps Domain models to Dal.
     /// </summary>
-    public static class DomainToDal
+    internal class DomainToDal
     {
+        private VolleyUnitOfWork _unitOfWork;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DomainToDal"/> class.
+        /// </summary>
+        /// <param name="unitOfWork">The unit of work.</param>
+        public DomainToDal(IUnitOfWork unitOfWork)
+        {
+            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+        }
+
         /// <summary>
         /// Maps Tournament model.
         /// </summary>
@@ -32,27 +44,6 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-        }
-
-        /// <summary>
-        /// Maps User model.
-        /// </summary>
-        /// <param name="to">User Entity model</param>
-        /// <param name="from">User Domain model</param>
-        public static void Map(UserEntity to, User from)
-        {
-            to.Id = from.Id;
-            to.FullName = from.PersonName;
-            to.UserName = from.UserName;
-            to.Email = from.Email;
-            to.CellPhone = from.PhoneNumber;
-            to.LoginProviders = from.LoginProviders
-                .Select(l => new LoginInfoEntity
-                                     {
-                                         LoginProvider = l.LoginProvider,
-                                         ProviderKey = l.ProviderKey
-                                     })
-                                     .ToList();
         }
 
         /// <summary>
@@ -83,6 +74,40 @@
             to.CaptainId = from.CaptainId;
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
+        }
+
+        /// <summary>
+        /// Maps User model.
+        /// </summary>
+        /// <param name="to">User Entity model</param>
+        /// <param name="from">User Domain model</param>
+        public void Map(UserEntity to, User from)
+        {
+            to.Id = from.Id;
+            to.FullName = from.PersonName;
+            to.UserName = from.UserName;
+            to.Email = from.Email;
+            to.CellPhone = from.PhoneNumber;
+            to.LoginProviders.Clear();
+            to.LoginProviders = from.LoginProviders
+                .Select(l =>
+                {
+                    var provider = _unitOfWork.Context.LoginProviders
+                        .Where(p => p.LoginProvider == l.LoginProvider && p.ProviderKey == l.ProviderKey)
+                        .SingleOrDefault();
+
+                    if (provider != null)
+                    {
+                        return provider;
+                    }
+
+                    return new LoginInfoEntity
+                    {
+                        LoginProvider = l.LoginProvider,
+                        ProviderKey = l.ProviderKey
+                    };
+                })
+                .ToList();
         }
     }
 }

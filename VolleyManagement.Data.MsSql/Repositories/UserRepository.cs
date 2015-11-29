@@ -49,7 +49,7 @@
         public void Add(User newEntity)
         {
             var newUser = new UserEntity();
-            DomainToDal.Map(newUser, newEntity);
+            new DomainToDal(_unitOfWork).Map(newUser, newEntity);
             this._dalUsers.Add(newUser);
             this._unitOfWork.Commit();
             newEntity.Id = newUser.Id;
@@ -62,7 +62,7 @@
         public void Update(User oldEntity)
         {
             var userToUpdate = this._dalUsers.Single(t => t.Id == oldEntity.Id);
-            DomainToDal.Map(userToUpdate, oldEntity);
+            new DomainToDal(_unitOfWork).Map(userToUpdate, oldEntity);
         }
 
         /// <summary>

@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Authentication\VolleyUserManager.cs" />
     <Compile Include="Authentication\VolleyUserStore.cs" />
+    <Compile Include="Authorization\RolesIds.cs" />
     <Compile Include="Authorization\RolesService.cs" />
     <Compile Include="Constantscs.cs" />
     <Compile Include="ContributorTeamService.cs" />

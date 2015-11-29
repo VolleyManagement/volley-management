@@ -24,11 +24,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
-        /// <param name="teamService">Instance of the class that implements
-        /// ITeamService.</param>
+        /// <param name="teamService">Instance of the class that implements ITeamService.</param>
         public TeamsController(ITeamService teamService)
         {
-            _teamService = teamService;
+            this._teamService = teamService;
         }
 
         /// <summary>
@@ -143,7 +142,7 @@
                 return HttpNotFound();
             }
 
-            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl.ToString();
+            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             return View(viewModel);
         }

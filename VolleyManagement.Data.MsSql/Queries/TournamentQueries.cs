@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
@@ -89,20 +88,54 @@
             return
                 t =>
                 new Tournament
-                    {
-                        Id = t.Id,
-                        Name = t.Name,
-                        Description = t.Description,
-                        RegulationsLink = t.RegulationsLink,
-                        Scheme = (TournamentSchemeEnum)t.Scheme,
-                        Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
-                        GamesStart = t.GamesStart,
-                        GamesEnd = t.GamesEnd,
-                        ApplyingPeriodStart = t.ApplyingPeriodStart,
-                        ApplyingPeriodEnd = t.ApplyingPeriodEnd,
-                        TransferEnd = t.TransferEnd,
-                        TransferStart = t.TransferStart
-                    };
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Description = t.Description,
+                    RegulationsLink = t.RegulationsLink,
+                    Scheme = (TournamentSchemeEnum)t.Scheme,
+                    Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
+                    GamesStart = t.GamesStart,
+                    GamesEnd = t.GamesEnd,
+                    ApplyingPeriodStart = t.ApplyingPeriodStart,
+                    ApplyingPeriodEnd = t.ApplyingPeriodEnd,
+                    TransferEnd = t.TransferEnd,
+                    TransferStart = t.TransferStart,
+                    Divisions = t.Divisions
+                                    .AsQueryable()
+                                    .Where(d => d.TournamentId == t.Id)
+                                    .Select(GetDivisionMapping())
+                                    .ToList()
+                };
+        }
+
+        private static Expression<Func<DivisionEntity, Division>> GetDivisionMapping()
+        {
+            return
+                d =>
+                new Division
+                {
+                    Id = d.Id,
+                    Name = d.Name,
+                    TournamentId = d.TournamentId,
+                    Groups = d.Groups
+                                .AsQueryable()
+                                .Where(g => g.DivisionId == d.Id)
+                                .Select(GetGroupMapping())
+                                .ToList()
+                };
+        }
+
+        private static Expression<Func<GroupEntity, Group>> GetGroupMapping()
+        {
+            return
+                g =>
+                new Group
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    DivisionId = g.DivisionId,
+                };
         }
 
         #endregion

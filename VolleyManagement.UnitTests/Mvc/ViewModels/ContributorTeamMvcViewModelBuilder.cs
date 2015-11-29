@@ -77,7 +77,7 @@
         /// </summary>
         /// <param name="courseDirection">CourseDirection for test contributor team view model</param>
         /// <returns>Contributor view model builder object</returns>
-        public ContributorTeamMvcViewModelBuilder WithcourseDirection(string courseDirection)
+        public ContributorTeamMvcViewModelBuilder WithCourseDirection(string courseDirection)
         {
             this._contributorTeamViewModel.CourseDirection = courseDirection;
             return this;
@@ -88,7 +88,7 @@
         /// </summary>
         /// <param name="contributors">Collection of contributors for test contributor team view model</param>
         /// <returns>Contributor view model builder object</returns>
-        public ContributorTeamMvcViewModelBuilder Withcontributors(IList<Contributor> contributors)
+        public ContributorTeamMvcViewModelBuilder WithContributors(List<Contributor> contributors)
         {
             this._contributorTeamViewModel.Contributors = contributors;
             return this;

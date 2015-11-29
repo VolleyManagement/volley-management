@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DivisionCountOutOfRange" xml:space="preserve">
+    <value>Количество дивизионов в турнире должно быть в диапазоне от {0} до {1}</value>
+  </data>
+  <data name="DivisionNamesNotUnique" xml:space="preserve">
+    <value>Дивизионы не могут иметь одинаковые названия</value>
+  </data>
+  <data name="GroupCountOutOfRange" xml:space="preserve">
+    <value>Количество групп в дивизионе должно быть в диапазоне от {0} до {1}</value>
+  </data>
+  <data name="GroupNamesNotUnique" xml:space="preserve">
+    <value>Группы не могут иметь одинаковые названия</value>
+  </data>
   <data name="InvalidPeriodTransfer" xml:space="preserve">
     <value>Трансфер должен начинаться до начала турнира</value>
   </data>
@@ -153,11 +165,17 @@
   <data name="ValidationCellPhone" xml:space="preserve">
     <value>Пожалуйста, введите телефон правильно</value>
   </data>
+  <data name="ValidationDivisionName" xml:space="preserve">
+    <value>Пожалуйста, введите название дивизиона правильно</value>
+  </data>
   <data name="ValidationEmail" xml:space="preserve">
     <value>Пожалуйста, введите email правильно</value>
   </data>
   <data name="ValidationFullName" xml:space="preserve">
     <value>Пожалуйста, введите имя правильно</value>
+  </data>
+  <data name="ValidationGroupName" xml:space="preserve">
+    <value>Пожалуйста, введите название группы правильно</value>
   </data>
   <data name="ValidationPassword" xml:space="preserve">
     <value>Пароль не может быть пустым</value>

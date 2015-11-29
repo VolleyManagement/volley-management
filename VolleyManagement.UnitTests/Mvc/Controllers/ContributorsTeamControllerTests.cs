@@ -1,19 +1,13 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Net;
-    using System.Web.Mvc;
-
     using Contracts;
-    using Contracts.Exceptions;
     using Domain.ContributorsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -26,87 +20,59 @@
     [TestClass]
     public class ContributorsTeamControllerTests
     {
-        private readonly ContributorTeamServiceTestFixture _testFixture = new ContributorTeamServiceTestFixture();
         private readonly Mock<IContributorTeamService> _contributorTeamServiceMock = new Mock<IContributorTeamService>();
 
         private IKernel _kernel;
+        private ContributorsTeamController _sut;
 
         /// <summary>
-        /// Initializes test data
+        /// Initializes test data.
         /// </summary>
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IContributorTeamService>()
-                   .ToConstant(_contributorTeamServiceMock.Object);
+            this._kernel = new StandardKernel();
+            this._kernel.Bind<IContributorTeamService>().ToConstant(this._contributorTeamServiceMock.Object);
+            this._sut = this._kernel.Get<ContributorsTeamController>();
         }
 
         /// <summary>
-        /// Test for Index action. The action should return not empty contributors team list
+        /// Test for Index method. All contributors are requested. All contributors are returned.
         /// </summary>
         [TestMethod]
-        public void Index_ContributorsExist_ContributorsReturned()
+        public void Index_GetAllContributors_AllContributorsAreReturned()
         {
             // Arrange
-            var testData = _testFixture.TestContributors()
-                                       .Build();
-            MockContributorsTeam(testData);
-            var sut = this._kernel.Get<ContributorsTeamController>();
-
-            var expected = CreateContributorsTeamViewModelList();
+            var testData = MakeTestContributorTeams();
+            var expected = MakeTestContributorTeamViewModels(testData);
+            SetupGetAll(testData);
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
+            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(this._sut.Index()).ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamViewModelComparer());
         }
 
-        /// <summary>
-        /// Test with negative scenario for Index action.
-        /// The action should thrown Argument null exception
-        /// </summary>
-        [TestMethod]
-        public void Index_ContributorsDoNotExist_ExceptionThrown()
+        private List<ContributorTeam> MakeTestContributorTeams()
         {
-            // Arrange
-            this._contributorTeamServiceMock.Setup(tr => tr.Get())
-                .Throws(new ArgumentNullException());
-
-            var sut = this._kernel.Get<ContributorsTeamController>();
-            var expected = (int)HttpStatusCode.NotFound;
-
-            // Act
-            var actual = (sut.Index() as HttpNotFoundResult).StatusCode;
-
-            // Assert
-            Assert.AreEqual(expected, actual);
+            return new ContributorTeamServiceTestFixture().TestContributors().Build();
         }
 
-        /// <summary>
-        /// Mocks test data
-        /// </summary>
-        /// <param name="testData">Data to mock</param>
-        private void MockContributorsTeam(IEnumerable<ContributorTeam> testData)
+        private List<ContributorsTeamViewModel> MakeTestContributorTeamViewModels(List<ContributorTeam> contributorTeams)
         {
-            this._contributorTeamServiceMock.Setup(cn => cn.Get())
-                .Returns(testData.AsQueryable());
+            return contributorTeams.Select(ct => new ContributorTeamMvcViewModelBuilder()
+                .WithId(ct.Id)
+                .WithName(ct.Name)
+                .WithCourseDirection(ct.CourseDirection)
+                .WithContributors(ct.Contributors.ToList())
+                .Build())
+                .ToList();
         }
 
-        /// <summary>
-        /// Creates new list of ContributorsTeamViewModel test data
-        /// </summary>
-        /// <returns>List of ContributorsTeamViewModel</returns>
-        private List<ContributorsTeamViewModel> CreateContributorsTeamViewModelList()
+        private void SetupGetAll(List<ContributorTeam> teams)
         {
-            var contributorTeams = _testFixture.TestContributors().Build();
-            return contributorTeams.Select(c => new ContributorTeamMvcViewModelBuilder()
-                                                .WithId(c.Id)
-                                                .WithName(c.Name)
-                                                .WithcourseDirection(c.CourseDirection)
-                                                .Withcontributors(c.Contributors.ToList())
-                                                .Build()).ToList();
+            this._contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams.AsQueryable());
         }
     }
 }

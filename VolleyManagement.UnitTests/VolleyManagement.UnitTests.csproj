@@ -129,6 +129,9 @@
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
+    <Compile Include="Services\GameResultService\GameResultBuilder.cs" />
+    <Compile Include="Services\GameResultService\GameResultComparer.cs" />
+    <Compile Include="Services\GameResultService\GameResultServiceTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelToDomain.cs" />

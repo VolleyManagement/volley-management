@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
+    using System;
     using System.Data.Entity;
     using System.Linq;
     using VolleyManagement.Data.Contracts;
@@ -54,14 +55,7 @@
         /// <param name="updatedEntity">Updated game result.</param>
         public void Update(GameResult updatedEntity)
         {
-            var gameResultToUpdate = _dalGameResults.SingleOrDefault(gr => gr.Id == updatedEntity.Id);
-
-            if (gameResultToUpdate == null)
-            {
-                throw new ConcurrencyException();
-            }
-
-            DomainToDal.Map(gameResultToUpdate, updatedEntity);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -70,15 +64,7 @@
         /// <param name="id">Identifier of the game result.</param>
         public void Remove(int id)
         {
-            var gameResultToRemove = new GameResultEntity { Id = id };
-
-            if (gameResultToRemove == null)
-            {
-                throw new ConcurrencyException();
-            }
-
-            _dalGameResults.Attach(gameResultToRemove);
-            _dalGameResults.Remove(gameResultToRemove);
+            throw new NotImplementedException();
         }
     }
 }

@@ -85,7 +85,7 @@
     <Compile Include="Context\Migrations\201511081957142_OptionalTransferPeriod.Designer.cs">
       <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
     </Compile>
-	<Compile Include="Context\Migrations\201511160416337_AddDivisions.cs" />
+    <Compile Include="Context\Migrations\201511160416337_AddDivisions.cs" />
     <Compile Include="Context\Migrations\201511160416337_AddDivisions.Designer.cs">
       <DependentUpon>201511160416337_AddDivisions.cs</DependentUpon>
     </Compile>
@@ -96,7 +96,7 @@
     <Compile Include="Context\Migrations\201511271310560_AddGameResults.cs" />
     <Compile Include="Context\Migrations\201511271310560_AddGameResults.Designer.cs">
       <DependentUpon>201511271310560_AddGameResults.cs</DependentUpon>
-	</Compile>
+    </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
@@ -111,7 +111,6 @@
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\GameResultQueries.cs" />
     <Compile Include="Queries\PlayerQueries.cs" />
     <Compile Include="Queries\RolesQueries.cs" />
     <Compile Include="Queries\TeamQueries.cs" />
@@ -178,7 +177,7 @@
     <EmbeddedResource Include="Context\Migrations\201511081957142_OptionalTransferPeriod.resx">
       <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
     </EmbeddedResource>
-	<EmbeddedResource Include="Context\Migrations\201511160416337_AddDivisions.resx">
+    <EmbeddedResource Include="Context\Migrations\201511160416337_AddDivisions.resx">
       <DependentUpon>201511160416337_AddDivisions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201511251502002_AddGroups.resx">

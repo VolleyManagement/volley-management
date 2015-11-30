@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Data.MsSql.Entities;
+    using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -153,6 +154,32 @@
                 Name = from.Name,
                 DivisionId = from.DivisionId
             };
+        }
+
+        /// <summary>
+        /// Maps DAL model of game result to domain model of game result.
+        /// </summary>
+        /// <param name="to">DAL model of game result.</param>
+        /// <param name="from">Domain model of game result.</param>
+        public static void Map(GameResultEntity to, GameResult from)
+        {
+            to.Id = from.Id;
+            to.TournamentId = from.TournamentId;
+            to.HomeTeamId = from.HomeTeamId;
+            to.AwayTeamId = from.AwayTeamId;
+            to.HomeSetsScore = from.HomeSetsScore;
+            to.AwaySetsScore = from.AwaySetsScore;
+            to.IsTechnicalDefeat = from.IsTechnicalDefeat;
+            to.HomeSet1Score = from.HomeSet1Score;
+            to.AwaySet1Score = from.AwaySet1Score;
+            to.HomeSet2Score = from.HomeSet2Score;
+            to.AwaySet2Score = from.AwaySet2Score;
+            to.HomeSet3Score = from.HomeSet3Score;
+            to.AwaySet3Score = from.AwaySet3Score;
+            to.HomeSet4Score = from.HomeSet4Score;
+            to.AwaySet4Score = from.AwaySet4Score;
+            to.HomeSet5Score = from.HomeSet5Score;
+            to.AwaySet5Score = from.AwaySet5Score;
         }
     }
 }

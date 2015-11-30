@@ -99,11 +99,11 @@
         /// <summary>
         /// Updates specified tournament.
         /// </summary>
-        /// <param name="oldEntity">The tournament to update.</param>
-        public void Update(Tournament oldEntity)
+        /// <param name="updatedEntity">Updated tournament.</param>
+        public void Update(Tournament updatedEntity)
         {
-            var tournamentToUpdate = this._dalTournaments.Single(t => t.Id == oldEntity.Id);
-            DomainToDal.Map(tournamentToUpdate, oldEntity);
+            var tournamentToUpdate = this._dalTournaments.Single(t => t.Id == updatedEntity.Id);
+            DomainToDal.Map(tournamentToUpdate, updatedEntity);
 
             // ToDo: Check Do we really need this?
             //// this._dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
@@ -123,11 +123,13 @@
         private void MapIdentifiers(Tournament to, TournamentEntity from)
         {
             to.Id = from.Id;
+
             foreach (DivisionEntity divisionEntity in from.Divisions)
             {
                 Division divisionDomain = to.Divisions.Where(d => d.Name == divisionEntity.Name).First();
                 divisionDomain.Id = divisionEntity.Id;
                 divisionDomain.TournamentId = divisionEntity.TournamentId;
+
                 foreach (GroupEntity groupEntity in divisionEntity.Groups)
                 {
                     Group groupDomain = divisionDomain.Groups.Where(g => g.Name == groupEntity.Name).First();

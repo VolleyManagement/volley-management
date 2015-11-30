@@ -2,7 +2,6 @@ namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
-
     using VolleyManagement.Data.MsSql.Entities;
 
     /// <summary>
@@ -65,7 +64,7 @@ namespace VolleyManagement.Data.MsSql.Context
         /// <summary>
         /// Gets or sets the contributor team table.
         /// </summary>
-        public DbSet<ContributorTeamEntity> ContributorTeam { get; set; }
+        public DbSet<ContributorTeamEntity> ContributorTeams { get; set; }
 
         /// <summary>
         /// Gets or sets the team table.
@@ -82,6 +81,11 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<GroupEntity> Groups { get; set; }
 
+        /// <summary>
+        /// Gets or sets the game results table.
+        /// </summary>
+        public DbSet<GameResultEntity> GameResults { get; set; }
+
         #endregion
 
         #region Mapping Configuration
@@ -95,19 +99,17 @@ namespace VolleyManagement.Data.MsSql.Context
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
 
             ConfigureTournaments(modelBuilder);
-
             ConfigureUsers(modelBuilder);
             ConfigureUserLogins(modelBuilder);
             ConfigureRoles(modelBuilder);
             ConfigureUserRoleRelationship(modelBuilder);
-
             ConfigurePlayers(modelBuilder);
             ConfigureTeams(modelBuilder);
             ConfigureContributors(modelBuilder);
             ConfigureContributorTeams(modelBuilder);
+            ConfigureDivisions(modelBuilder);
             ConfigureGroups(modelBuilder);
-            ConfigureDivisions(modelBuilder);
-            ConfigureDivisions(modelBuilder);
+            ConfigureGameResults(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -446,6 +448,34 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsUnicode()
                 .IsVariableLength()
                 .HasMaxLength(ValidationConstants.Division.MAX_DIVISION_NAME_LENGTH);
+        }
+
+        private static void ConfigureGameResults(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<GameResultEntity>()
+                .ToTable(VolleyDatabaseMetadata.GAME_RESULTS_TABLE_NAME)
+                .HasKey(gr => gr.Id);
+
+            // FK GameResult -> Tournament
+            modelBuilder.Entity<GameResultEntity>()
+                .HasRequired(gr => gr.Tournament)
+                .WithMany(t => t.GameResults)
+                .HasForeignKey(gr => gr.TournamentId)
+                .WillCascadeOnDelete(false);
+
+            // FK GameResult -> HomeTeam
+            modelBuilder.Entity<GameResultEntity>()
+                .HasRequired(gr => gr.HomeTeam)
+                .WithMany(t => t.HomeGameResults)
+                .HasForeignKey(gr => gr.HomeTeamId)
+                .WillCascadeOnDelete(false);
+
+            // FK GameResult -> AwayTeam
+            modelBuilder.Entity<GameResultEntity>()
+                .HasRequired(gr => gr.AwayTeam)
+                .WithMany(t => t.AwayGameResults)
+                .HasForeignKey(gr => gr.AwayTeamId)
+                .WillCascadeOnDelete(false);
         }
 
         #endregion

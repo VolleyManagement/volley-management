@@ -65,24 +65,24 @@
         /// <summary>
         /// Updates specified player.
         /// </summary>
-        /// <param name="oldEntity">The player to update.</param>
-        public void Update(Player oldEntity)
+        /// <param name="updatedEntity">Updated player.</param>
+        public void Update(Player updatedEntity)
         {
-            if (oldEntity.Id < START_DATABASE_ID_VALUE)
+            if (updatedEntity.Id < START_DATABASE_ID_VALUE)
             {
                 var exc = new InvalidKeyValueException("Id is invalid for this Entity");
-                exc.Data[Constants.ENTITY_ID_KEY] = oldEntity.Id;
+                exc.Data[Constants.ENTITY_ID_KEY] = updatedEntity.Id;
                 throw exc;
             }
 
-            var playerToUpdate = this._dalPlayers.SingleOrDefault(t => t.Id == oldEntity.Id);
+            var playerToUpdate = this._dalPlayers.SingleOrDefault(t => t.Id == updatedEntity.Id);
 
             if (playerToUpdate == null)
             {
                 throw new ConcurrencyException();
             }
 
-            DomainToDal.Map(playerToUpdate, oldEntity);
+            DomainToDal.Map(playerToUpdate, updatedEntity);
         }
 
         /// <summary>

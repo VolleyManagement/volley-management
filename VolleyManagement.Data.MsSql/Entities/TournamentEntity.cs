@@ -80,5 +80,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Gets or sets collection of tournaments divisions
         /// </summary>
         public virtual List<DivisionEntity> Divisions { get; set; }
+
+        /// <summary>
+        /// Gets or sets game results of the tournament.
+        /// </summary>
+        public virtual ICollection<GameResultEntity> GameResults { get; set; }
     }
 }

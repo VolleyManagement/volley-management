@@ -28,7 +28,7 @@
         /// <returns>True if sets score and scores of every set match; otherwise, false.</returns>
         public static bool AreSetScoresMatched(byte homeSetsScore, byte awaySetsScore, byte[] homeSetScores, byte[] awaySetScores)
         {
-            if (homeSetScores.Length != awaySetScores.Length)
+            if (homeSetScores == null || awaySetScores == null || homeSetScores.Length != awaySetScores.Length)
             {
                 return false;
             }

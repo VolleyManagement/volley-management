@@ -26,8 +26,7 @@
         /// Initializes a new instance of the <see cref="GameResultService"/> class.
         /// </summary>
         /// <param name="gameResultRepository">Instance of class that implements <see cref="IGameResultRepository"/>.</param>
-        public GameResultService(
-            IGameResultRepository gameResultRepository)
+        public GameResultService(IGameResultRepository gameResultRepository)
         {
             _gameResultRepository = gameResultRepository;
         }

@@ -4,12 +4,12 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System.Data.Entity.Migrations;
 
     /// <summary>
-    /// Add game results for tournaments
+    /// Adds game results for tournaments.
     /// </summary>
     public partial class AddGameResults : DbMigration
     {
         /// <summary>
-        /// Migrates up
+        /// Migrates up.
         /// </summary>
         public override void Up()
         {
@@ -42,7 +42,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         }
 
         /// <summary>
-        /// Migrates down
+        /// Migrates down.
         /// </summary>
         public override void Down()
         {

@@ -4,36 +4,34 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System.Data.Entity.Migrations;
 
     /// <summary>
-    /// Add divisions for tournaments
+    /// Adds groups for divisions.
     /// </summary>
-    public partial class AddDivisions : DbMigration
+    public partial class AddGroups : DbMigration
     {
         /// <summary>
-        /// Migrates up
+        /// Migrates up.
         /// </summary>
         public override void Up()
         {
             CreateTable(
-                "dbo.Divisions",
+                "dbo.Groups",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 60),
-                        TournamentId = c.Int(nullable: false),
+                        DivisionId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Tournaments", t => t.TournamentId)
-                .Index(t => t.TournamentId);
+                .ForeignKey("dbo.Divisions", t => t.DivisionId);
         }
 
         /// <summary>
-        /// Migrates down
+        /// Migrates down.
         /// </summary>
         public override void Down()
         {
-            DropForeignKey("dbo.Divisions", "TournamentId", "dbo.Tournaments");
-            DropIndex("dbo.Divisions", new[] { "TournamentId" });
-            DropTable("dbo.Divisions");
+            DropForeignKey("dbo.Groups", "DivisionId", "dbo.Divisions");
+            DropTable("dbo.Groups");
         }
     }
 }

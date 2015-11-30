@@ -85,17 +85,17 @@
     <Compile Include="Context\Migrations\201511081957142_OptionalTransferPeriod.Designer.cs">
       <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201511160416337_AddDivisions.cs" />
-    <Compile Include="Context\Migrations\201511160416337_AddDivisions.Designer.cs">
-      <DependentUpon>201511160416337_AddDivisions.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201511301922059_AddDivisions.cs" />
+    <Compile Include="Context\Migrations\201511301922059_AddDivisions.Designer.cs">
+      <DependentUpon>201511301922059_AddDivisions.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201511251502002_AddGroups.cs" />
-    <Compile Include="Context\Migrations\201511251502002_AddGroups.Designer.cs">
-      <DependentUpon>201511251502002_AddGroups.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201511301927551_AddGroups.cs" />
+    <Compile Include="Context\Migrations\201511301927551_AddGroups.Designer.cs">
+      <DependentUpon>201511301927551_AddGroups.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201511271310560_AddGameResults.cs" />
-    <Compile Include="Context\Migrations\201511271310560_AddGameResults.Designer.cs">
-      <DependentUpon>201511271310560_AddGameResults.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201511301931070_AddGameResults.cs" />
+    <Compile Include="Context\Migrations\201511301931070_AddGameResults.Designer.cs">
+      <DependentUpon>201511301931070_AddGameResults.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -177,14 +177,14 @@
     <EmbeddedResource Include="Context\Migrations\201511081957142_OptionalTransferPeriod.resx">
       <DependentUpon>201511081957142_OptionalTransferPeriod.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201511160416337_AddDivisions.resx">
-      <DependentUpon>201511160416337_AddDivisions.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201511301922059_AddDivisions.resx">
+      <DependentUpon>201511301922059_AddDivisions.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201511251502002_AddGroups.resx">
-      <DependentUpon>201511251502002_AddGroups.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201511301927551_AddGroups.resx">
+      <DependentUpon>201511301927551_AddGroups.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201511271310560_AddGameResults.resx">
-      <DependentUpon>201511271310560_AddGameResults.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201511301931070_AddGameResults.resx">
+      <DependentUpon>201511301931070_AddGameResults.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,6 +8,17 @@
     public static class GameResultValidation
     {
         /// <summary>
+        /// Determines whether the home team and the away team are the same.
+        /// </summary>
+        /// <param name="homeTeamId">Identifier of the home team.</param>
+        /// <param name="awayTeamId">Identifier of the away team.</param>
+        /// <returns>True team are the same; otherwise, false.</returns>
+        public static bool AreTheSameTeams(int homeTeamId, int awayTeamId)
+        {
+            return homeTeamId == awayTeamId;
+        }
+
+        /// <summary>
         /// Determines whether the sets score and the scores of every set match one another.
         /// </summary>
         /// <param name="homeSetsScore">Sets score of the home team.</param>
@@ -17,6 +28,11 @@
         /// <returns>True if sets score and scores of every set match; otherwise, false.</returns>
         public static bool AreSetScoresMatched(byte homeSetsScore, byte awaySetsScore, byte[] homeSetScores, byte[] awaySetScores)
         {
+            if (homeSetScores.Length != awaySetScores.Length)
+            {
+                return false;
+            }
+
             byte homeScore = 0;
             byte awayScore = 0;
 
@@ -26,7 +42,7 @@
                 {
                     homeScore++;
                 }
-                else
+                else if (homeSetScores[i] < awaySetScores[i])
                 {
                     awayScore++;
                 }
@@ -107,9 +123,20 @@
 
         private static bool IsOrdinarySetScoreValid(byte homeSetScore, byte awaySetScore)
         {
-            return (homeSetScore >= Constants.GameResult.MARGIN_SET_POINTS
-                    || awaySetScore >= Constants.GameResult.MARGIN_SET_POINTS)
-                    && Math.Abs(awaySetScore - homeSetScore) == Constants.GameResult.POINTS_DELTA_TO_WIN;
+            bool isValid = false;
+
+            if (homeSetScore == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
+                    || awaySetScore == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN)
+            {
+                isValid = Math.Abs(awaySetScore - homeSetScore) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+            }
+            else if (homeSetScore > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
+                || awaySetScore > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN)
+            {
+                isValid = Math.Abs(awaySetScore - homeSetScore) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+            }
+
+            return isValid;
         }
     }
 }

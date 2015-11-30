@@ -246,7 +246,6 @@
                     TournamentConstants.START_GAMES_AFTER_END_GAMES,
                     TournamentConstants.GAMES_END_CAPTURE);
             }
-
         }
 
         private void ValidateTournamentTrasferPeriod(Tournament tournament)

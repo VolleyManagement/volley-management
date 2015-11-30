@@ -2,7 +2,6 @@ namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
-    using System.Linq;
     using VolleyManagement.Data.MsSql.Entities;
 
     /// <summary>

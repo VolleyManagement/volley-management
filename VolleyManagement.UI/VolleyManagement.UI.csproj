@@ -298,6 +298,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AccountController.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\AuthorizationRoles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthorizationRoles.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\PlayerViews.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -402,6 +407,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Views\Shared\AccessDenied.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -433,17 +439,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\PlayerViews.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PlayerViews.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\TeamViews.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TeamViews.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\AccountController.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+    <EmbeddedResource Include="App_GlobalResources\AccountController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AccountController.Designer.cs</LastGenOutput>
-    </Content>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\AuthorizationRoles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TournamentViews.designer.cs</LastGenOutput>

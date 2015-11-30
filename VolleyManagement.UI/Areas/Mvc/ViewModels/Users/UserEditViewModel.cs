@@ -77,21 +77,6 @@
                 Email = user.Email
             };
         }
-
-        /// <summary>
-        /// Maps presentation entity to domain
-        /// </summary>
-        /// <returns> Domain object </returns>
-        public User ToDomain()
-        {
-            return new User
-            {
-                Id = this.Id,
-                PhoneNumber = this.CellPhone,
-                Email = this.Email
-            };
-        }
-
         #endregion
     }
 }

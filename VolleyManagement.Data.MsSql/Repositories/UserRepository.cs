@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
 
@@ -20,6 +21,11 @@
         private readonly DbSet<UserEntity> _dalUsers;
 
         /// <summary>
+        /// Holds object set of DAL login providers.
+        /// </summary>
+        private readonly DbSet<LoginInfoEntity> _dalLoginProviders;
+
+        /// <summary>
         /// Holds UnitOfWork instance.
         /// </summary>
         private readonly VolleyUnitOfWork _unitOfWork;
@@ -32,6 +38,7 @@
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalUsers = _unitOfWork.Context.Users;
+            _dalLoginProviders = _unitOfWork.Context.LoginProviders;
         }
 
         /// <summary>
@@ -49,7 +56,7 @@
         public void Add(User newEntity)
         {
             var newUser = new UserEntity();
-            new DomainToDal(_unitOfWork).Map(newUser, newEntity);
+            DomainToDal.Map(newUser, newEntity);
             this._dalUsers.Add(newUser);
             this._unitOfWork.Commit();
             newEntity.Id = newUser.Id;
@@ -62,7 +69,8 @@
         public void Update(User oldEntity)
         {
             var userToUpdate = this._dalUsers.Single(t => t.Id == oldEntity.Id);
-            new DomainToDal(_unitOfWork).Map(userToUpdate, oldEntity);
+            DomainToDal.Map(userToUpdate, oldEntity);
+            UpdateUserProviders((List<LoginInfoEntity>)userToUpdate.LoginProviders);
         }
 
         /// <summary>
@@ -72,6 +80,24 @@
         public void Remove(int id)
         {
             throw new NotImplementedException();
+        }
+
+        private void UpdateUserProviders(List<LoginInfoEntity> providers)
+        {
+            for (int i = 0; i < providers.Count; i++)
+            {
+                string loginProviderName = providers[i].LoginProvider;
+                string providerKey = providers[i].ProviderKey;
+                var existProvider = _dalLoginProviders.Where(
+                                                            dlp =>
+                                                            dlp.LoginProvider == loginProviderName
+                                                            && dlp.ProviderKey == providerKey)
+                                                           .FirstOrDefault();
+                if (existProvider != null)
+                {
+                    providers[i] = existProvider;
+                }
+            }
         }
     }
 }

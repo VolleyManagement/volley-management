@@ -1,9 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Linq;
-    using Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -13,19 +11,8 @@
     /// <summary>
     /// Maps Domain models to Dal.
     /// </summary>
-    internal class DomainToDal
+    internal static class DomainToDal
     {
-        private VolleyUnitOfWork _unitOfWork;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DomainToDal"/> class.
-        /// </summary>
-        /// <param name="unitOfWork">The unit of work.</param>
-        public DomainToDal(IUnitOfWork unitOfWork)
-        {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
-        }
-
         /// <summary>
         /// Maps Tournament model.
         /// </summary>
@@ -84,7 +71,7 @@
         /// </summary>
         /// <param name="to">User Entity model</param>
         /// <param name="from">User Domain model</param>
-        public void Map(UserEntity to, User from)
+        public static void Map(UserEntity to, User from)
         {
             to.Id = from.Id;
             to.FullName = from.PersonName;
@@ -95,15 +82,6 @@
             to.LoginProviders = from.LoginProviders
                 .Select(l =>
                 {
-                    var provider = _unitOfWork.Context.LoginProviders
-                        .Where(p => p.LoginProvider == l.LoginProvider && p.ProviderKey == l.ProviderKey)
-                        .SingleOrDefault();
-
-                    if (provider != null)
-                    {
-                        return provider;
-                    }
-
                     return new LoginInfoEntity
                     {
                         LoginProvider = l.LoginProvider,

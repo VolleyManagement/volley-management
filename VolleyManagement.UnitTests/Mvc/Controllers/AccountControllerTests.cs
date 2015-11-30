@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -46,8 +45,7 @@
 
         private Mock<VolleyExceptionFilterAttribute> _exceptionFilter = new Mock<VolleyExceptionFilterAttribute>();
 
-        private ControllerContext _controllerContext;
-
+        private AccountController _sut;
         #endregion
 
         #region Init
@@ -62,7 +60,8 @@
             this._kernel.Bind<IRolesService>()
                    .ToConstant(this._rolesServiceMock.Object);
 
-            _controllerContext = GetControllerContext();
+            _sut = this._kernel.Get<AccountController>();
+            _sut.ControllerContext = GetControllerContext();
         }
 
         #endregion
@@ -76,11 +75,8 @@
         public void Details_UserExists_UserIsReturned()
         {
             // Arrange
-            CustomFindByIdDefault();
-            CustomRolesService();
-
-            var sut = this._kernel.Get<AccountController>();
-            sut.ControllerContext = _controllerContext;
+            CustomizeFindByIdDefault();
+            CustomizeRolesService();
 
             var expected = new UserMvcViewModelBuilder()
                     .WithId(USER_ID)
@@ -88,7 +84,7 @@
                     .Build();
 
             // Act
-            var actual = TestExtensions.GetModelAsync<UserViewModel>(sut.Details());
+            var actual = TestExtensions.GetModelAsync<UserViewModel>(_sut.Details());
 
             // Assert
             TestHelper.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
@@ -102,8 +98,8 @@
         public async Task EditPostAction_UserExists_UserUpdated()
         {
             // Arrange
-            CustomFindByIdDefault();
-            CustomRolesService();
+            CustomizeFindByIdDefault();
+            CustomizeRolesService();
 
             var userEditViewModel = new UserEditMvcViewModelBuilder()
                 .WithId(USER_ID)
@@ -112,11 +108,8 @@
                 .WithName("Vasya Petichkin")
                 .Build();
 
-            var sut = this._kernel.Get<AccountController>();
-            sut.ControllerContext = _controllerContext;
-
             // Act
-            await sut.Edit(userEditViewModel);
+            await _sut.Edit(userEditViewModel);
 
             // Assert
             _userManagerMock.Verify(um => um.UpdateAsync(It.IsAny<UserModel>()), Times.Once());
@@ -132,22 +125,21 @@
             // Arrange
             _userManagerMock.Setup(um => um.FindByIdAsync(USER_ID))
                             .Returns(Task.FromResult<UserModel>(null));
-            CustomRolesService();
+            CustomizeRolesService();
 
             var userEditViewModel = new UserEditMvcViewModelBuilder()
                 .Build();
 
-            var sut = this._kernel.Get<AccountController>();
-            sut.ControllerContext = _controllerContext;
-
             // Act
-            await sut.Edit(userEditViewModel);
+            await _sut.Edit(userEditViewModel);
 
             // Assert
             _userManagerMock.Verify(um => um.UpdateAsync(It.IsAny<UserModel>()), Times.Never());
         }
 
         #endregion
+
+        #region Additional methods
 
         private ControllerContext GetControllerContext()
         {
@@ -157,7 +149,7 @@
             return mockContext;
         }
 
-        private void CustomFindByIdDefault()
+        private void CustomizeFindByIdDefault()
         {
             _userManagerMock.Setup(um => um.FindByIdAsync(USER_ID))
                             .Returns(Task.FromResult(
@@ -167,10 +159,12 @@
                                 .Build()));
         }
 
-        private void CustomRolesService()
+        private void CustomizeRolesService()
         {
             _rolesServiceMock.Setup(rs => rs.GetRole(It.IsAny<int>()))
                 .Returns(_adminRole);
         }
+
+        #endregion
     }
 }

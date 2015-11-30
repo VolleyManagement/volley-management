@@ -15,7 +15,6 @@
     using Microsoft.Owin.Security;
 
     using Services.Authorization;
-
     using ViewModels.Account;
     using ViewModels.Users;
 
@@ -27,8 +26,6 @@
     {
         private readonly IVolleyUserManager<UserModel> _userManager;
         private readonly IRolesService _rolesService;
-        private readonly string ADMIN_ROLE;
-        private readonly Lazy<int> CURRENT_USER_ID;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
@@ -41,8 +38,14 @@
         {
             this._userManager = userManager;
             this._rolesService = rolesService;
-            ADMIN_ROLE = _rolesService.GetRole((int)RolesIds.Admin).Name;
-            CURRENT_USER_ID = new Lazy<int>(() => System.Convert.ToInt32(User.Identity.GetUserId()));
+        }
+
+        private int currentUserId
+        {
+            get
+            {
+                return System.Convert.ToInt32(User.Identity.GetUserId());
+            }
         }
 
         private IAuthenticationManager AuthManager
@@ -108,7 +111,7 @@
         [Authorize]
         public async Task<ActionResult> Details()
         {
-            var user = await _userManager.FindByIdAsync(CURRENT_USER_ID.Value);
+            var user = await _userManager.FindByIdAsync(currentUserId);
             UserViewModel userViewModel = UserViewModel.Map(user);
             return View(userViewModel);
         }
@@ -120,7 +123,7 @@
         [Authorize]
         public async Task<ActionResult> Edit()
         {
-            var user = await _userManager.FindByIdAsync(CURRENT_USER_ID.Value);
+            var user = await _userManager.FindByIdAsync(currentUserId);
             UserEditViewModel userEditViewModel = UserEditViewModel.Map(user);
             return View(userEditViewModel);
         }
@@ -134,9 +137,9 @@
         [Authorize]
         public async Task<ActionResult> Edit(UserEditViewModel editViewModel)
         {
-            if (CURRENT_USER_ID.Value != editViewModel.Id && !User.IsInRole(ADMIN_ROLE))
+            if (currentUserId != editViewModel.Id && !User.IsInRole(Resources.AuthorizationRoles.Admin))
             {
-                return HttpNotFound();
+                return View("AccessDenied");
             }
 
             if (this.ModelState.IsValid)

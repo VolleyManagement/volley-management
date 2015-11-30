@@ -69,7 +69,7 @@
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultSameTeam_ExceptionThrown()
+        public void Create_GameResultSameTeams_ExceptionThrown()
         {
             // Arrange
             var newGameResult = new GameResultBuilder().WithTheSameTeams().Build();

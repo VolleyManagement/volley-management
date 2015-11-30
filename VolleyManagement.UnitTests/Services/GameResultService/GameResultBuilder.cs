@@ -406,8 +406,7 @@
         /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
         public GameResultBuilder WithInvalidSet1Score()
         {
-            _gameResult.HomeSet1Score = 10;
-            _gameResult.AwaySet1Score = 0;
+            SetInvalidSetScore();
             return this;
         }
 
@@ -417,8 +416,7 @@
         /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
         public GameResultBuilder WithInvalidSet2Score()
         {
-            _gameResult.HomeSet2Score = 10;
-            _gameResult.AwaySet2Score = 0;
+            SetInvalidSetScore();
             return this;
         }
 
@@ -428,8 +426,7 @@
         /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
         public GameResultBuilder WithInvalidSet3Score()
         {
-            _gameResult.HomeSet3Score = 10;
-            _gameResult.AwaySet3Score = 0;
+            SetInvalidSetScore();
             return this;
         }
 
@@ -439,8 +436,7 @@
         /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
         public GameResultBuilder WithInvalidSet4Score()
         {
-            _gameResult.HomeSet4Score = 10;
-            _gameResult.AwaySet4Score = 0;
+            SetInvalidSetScore();
             return this;
         }
 
@@ -450,8 +446,7 @@
         /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
         public GameResultBuilder WithInvalidSet5Score()
         {
-            _gameResult.HomeSet5Score = 10;
-            _gameResult.AwaySet5Score = 0;
+            SetInvalidSetScore();
             return this;
         }
 
@@ -497,6 +492,12 @@
                     _gameResult.AwaySet5Score = awayScores[4];
                 }
             }
+        }
+
+        private void SetInvalidSetScore()
+        {
+            _gameResult.HomeSet1Score = 10;
+            _gameResult.AwaySet1Score = 0;
         }
 
         #endregion

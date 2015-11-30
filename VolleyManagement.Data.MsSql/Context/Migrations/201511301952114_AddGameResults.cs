@@ -38,7 +38,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Teams", t => t.AwayTeamId)
                 .ForeignKey("dbo.Teams", t => t.HomeTeamId)
-                .ForeignKey("dbo.Tournaments", t => t.TournamentId, cascadeDelete: true);
+                .ForeignKey("dbo.Tournaments", t => t.TournamentId);
         }
 
         /// <summary>

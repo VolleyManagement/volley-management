@@ -461,7 +461,7 @@
 
         private void SetHomeSetScores(byte[] homeScores)
         {
-            if (homeScores.Length >= Constants.GameResult.MIN_SETS_COUNT)
+            if (homeScores != null && homeScores.Length >= Constants.GameResult.MIN_SETS_COUNT)
             {
                 _gameResult.HomeSet1Score = homeScores[0];
                 _gameResult.HomeSet2Score = homeScores[1];
@@ -481,7 +481,7 @@
 
         private void SetAwaySetScores(byte[] awayScores)
         {
-            if (awayScores.Length >= Constants.GameResult.MIN_SETS_COUNT)
+            if (awayScores != null && awayScores.Length >= Constants.GameResult.MIN_SETS_COUNT)
             {
                 _gameResult.AwaySet1Score = awayScores[0];
                 _gameResult.AwaySet2Score = awayScores[1];

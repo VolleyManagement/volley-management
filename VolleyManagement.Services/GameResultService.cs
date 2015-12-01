@@ -3,8 +3,6 @@
     using System;
     using System.Collections.Generic;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Domain.Properties;
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
@@ -57,31 +55,9 @@
         private void ValidateGameResult(GameResult gameResult)
         {
             ValidateTeams(gameResult.HomeTeamId, gameResult.AwayTeamId);
-
-            var homeSetScores = new[]
-            {
-                gameResult.HomeSet1Score,
-                gameResult.HomeSet2Score,
-                gameResult.HomeSet3Score,
-                gameResult.HomeSet4Score,
-                gameResult.HomeSet5Score
-            };
-            var awaySetScores = new[]
-            {
-                gameResult.AwaySet1Score,
-                gameResult.AwaySet2Score,
-                gameResult.AwaySet3Score,
-                gameResult.AwaySet4Score,
-                gameResult.AwaySet5Score
-            };
-
-            ValidateSetsScoreMatchesSetScores(gameResult.HomeSetsScore, gameResult.AwaySetsScore, homeSetScores, awaySetScores);
-            ValidateSetsScore(gameResult.HomeSetsScore, gameResult.AwaySetsScore, gameResult.IsTechnicalDefeat);
-            ValidateRequiredSetScore(gameResult.HomeSet1Score, gameResult.AwaySet1Score, gameResult.IsTechnicalDefeat);
-            ValidateRequiredSetScore(gameResult.HomeSet2Score, gameResult.AwaySet2Score, gameResult.IsTechnicalDefeat);
-            ValidateRequiredSetScore(gameResult.HomeSet3Score, gameResult.AwaySet3Score, gameResult.IsTechnicalDefeat);
-            ValidateOptionalSetScore(gameResult.HomeSet4Score, gameResult.AwaySet4Score, gameResult.IsTechnicalDefeat);
-            ValidateOptionalSetScore(gameResult.HomeSet5Score, gameResult.AwaySet5Score, gameResult.IsTechnicalDefeat);
+            ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
+            ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
+            ValidateSetScores(gameResult.SetScores, gameResult.IsTechnicalDefeat);
         }
 
         private void ValidateTeams(int homeTeamId, int awayTeamId)
@@ -92,17 +68,17 @@
             }
         }
 
-        private void ValidateSetsScoreMatchesSetScores(byte homeSetsScore, byte awaySetsScore, byte[] homeSetScores, byte[] awaySetScores)
+        private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
         {
-            if (!GameResultValidation.AreSetScoresMatched(homeSetsScore, awaySetsScore, homeSetScores, awaySetScores))
+            if (!GameResultValidation.AreSetScoresMatched(setsScore, setScores))
             {
                 throw new ArgumentException(Resources.GameResultSetsScoreNoMatchSetScores);
             }
         }
 
-        private void ValidateSetsScore(byte homeSetsScore, byte awaySetsScore, bool isTechnicalDefeat)
+        private void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
         {
-            if (!GameResultValidation.IsSetsScoreValid(homeSetsScore, awaySetsScore, isTechnicalDefeat))
+            if (!GameResultValidation.IsSetsScoreValid(setsScore, isTechnicalDefeat))
             {
                 throw new ArgumentException(
                     string.Format(
@@ -114,31 +90,36 @@
             }
         }
 
-        private void ValidateRequiredSetScore(byte homeSetsScore, byte awaySetsScore, bool isTechnicalDefeat)
+        private void ValidateSetScores(IList<Score> setScores, bool isTechnicalDefeat)
         {
-            if (!GameResultValidation.IsRequiredSetScoreValid(homeSetsScore, awaySetsScore, isTechnicalDefeat))
+            for (int i = 0; i < setScores.Count; i++)
             {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.GameResultRequiredSetScores,
-                    GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                    GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
-                    GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
-            }
-        }
-
-        private void ValidateOptionalSetScore(byte homeSetsScore, byte awaySetsScore, bool isTechnicalDefeat)
-        {
-            if (!GameResultValidation.IsOptionalSetScoreValid(homeSetsScore, awaySetsScore, isTechnicalDefeat))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.GameResultOptionalSetScores,
-                    GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-                    GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                    GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
-                    GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
+                if (i <= GameResultConstants.MIN_SETS_COUNT)
+                {
+                    if (!GameResultValidation.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat))
+                    {
+                        throw new ArgumentException(
+                            string.Format(
+                            Resources.GameResultRequiredSetScores,
+                            GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                            GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
+                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
+                    }
+                }
+                else
+                {
+                    if (!GameResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat))
+                    {
+                        throw new ArgumentException(
+                            string.Format(
+                            Resources.GameResultOptionalSetScores,
+                            GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
+                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
+                    }
+                }
             }
         }
 

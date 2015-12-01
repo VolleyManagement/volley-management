@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Domain.GameResultsAggregate
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Game result validation class.
@@ -21,127 +22,131 @@
         /// <summary>
         /// Determines whether the sets score and the scores of every set match one another.
         /// </summary>
-        /// <param name="homeSetsScore">Sets score of the home team.</param>
-        /// <param name="awaySetsScore">Sets score of the away team.</param>
-        /// <param name="homeSetScores">Scores of every set home team played.</param>
-        /// <param name="awaySetScores">Scores of every set home away played.</param>
+        /// <param name="setsScore">Sets score (final score) of the game.</param>
+        /// <param name="setScores">Scores of every set of the game.</param>
         /// <returns>True if sets score and scores of every set match; otherwise, false.</returns>
-        public static bool AreSetScoresMatched(byte homeSetsScore, byte awaySetsScore, byte[] homeSetScores, byte[] awaySetScores)
+        public static bool AreSetScoresMatched(Score setsScore, IList<Score> setScores)
         {
-            if (homeSetScores == null || awaySetScores == null || homeSetScores.Length != awaySetScores.Length)
+            if (setScores == null)
             {
                 return false;
             }
 
-            byte homeScore = 0;
-            byte awayScore = 0;
+            Score score = new Score();
 
-            for (int i = 0; i < homeSetScores.Length; i++)
+            foreach (var setScore in setScores)
             {
-                if (homeSetScores[i] > awaySetScores[i])
+                if (setScore.Home > setScore.Away)
                 {
-                    homeScore++;
+                    score.Home++;
                 }
-                else if (homeSetScores[i] < awaySetScores[i])
+                else if (setScore.Home < setScore.Away)
                 {
-                    awayScore++;
+                    score.Away++;
                 }
             }
 
-            return homeSetsScore == homeScore && awaySetsScore == awayScore;
+            return setsScore.Equals(score);
         }
 
         /// <summary>
         /// Determines whether the sets score is valid.
         /// </summary>
-        /// <param name="homeSetsScore">Sets score of the home team.</param>
-        /// <param name="awaySetsScore">Sets score of the away team.</param>
+        /// <param name="setsScore">Sets score (final score) of the game.</param>
         /// <param name="isTechnicalDefeat">Value indicating whether the technical defeat has taken place.</param>
         /// <returns>True if sets score is valid; otherwise, false.</returns>
-        public static bool IsSetsScoreValid(byte homeSetsScore, byte awaySetsScore, bool isTechnicalDefeat)
+        public static bool IsSetsScoreValid(Score setsScore, bool isTechnicalDefeat)
         {
-            return isTechnicalDefeat
-                ? IsTechnicalDefeatSetsScoreValid(homeSetsScore, awaySetsScore)
-                : IsOrdinarySetsScoreValid(homeSetsScore, awaySetsScore);
+            return isTechnicalDefeat ? IsTechnicalDefeatSetsScoreValid(setsScore) : IsOrdinarySetsScoreValid(setsScore);
         }
 
         /// <summary>
         /// Determines whether the score of a required set is valid.
         /// </summary>
-        /// <param name="homeSetScore">Set score of the home team.</param>
-        /// <param name="awaySetScore">Set score of the away team.</param>
+        /// <param name="setScore">Score of the set.</param>
         /// <param name="isTechnicalDefeat">Value indicating whether the technical defeat has taken place.</param>
         /// <returns>True if required set score is valid; otherwise, false.</returns>
-        public static bool IsRequiredSetScoreValid(byte homeSetScore, byte awaySetScore, bool isTechnicalDefeat)
+        public static bool IsRequiredSetScoreValid(Score setScore, bool isTechnicalDefeat)
         {
-            return isTechnicalDefeat
-                ? IsTechnicalDefeatRequiredSetScoreValid(homeSetScore, awaySetScore)
-                : IsOrdinarySetScoreValid(homeSetScore, awaySetScore);
+            return isTechnicalDefeat ? IsTechnicalDefeatRequiredSetScoreValid(setScore) : IsOrdinaryRequiredSetScoreValid(setScore);
         }
 
         /// <summary>
         /// Determines whether the score of an optional set is valid.
         /// </summary>
-        /// <param name="homeSetScore">Set score of the home team.</param>
-        /// <param name="awaySetScore">Set score of the away team.</param>
+        /// <param name="setScore">Score of the set.</param>
         /// <param name="isTechnicalDefeat">Value indicating whether the technical defeat has taken place.</param>
         /// <returns>True if optional set score is valid; otherwise, false.</returns>
-        public static bool IsOptionalSetScoreValid(byte homeSetScore, byte awaySetScore, bool isTechnicalDefeat)
+        public static bool IsOptionalSetScoreValid(Score setScore, bool isTechnicalDefeat)
         {
-            return isTechnicalDefeat
-                ? IsTechnicalDefeatOptionalSetScoreValid(homeSetScore, awaySetScore)
-                : IsOrdinarySetScoreValid(homeSetScore, awaySetScore);
+            return isTechnicalDefeat ? IsTechnicalDefeatOptionalSetScoreValid(setScore) : IsOrdinaryOptionalSetScoreValid(setScore);
         }
 
-        private static bool IsTechnicalDefeatSetsScoreValid(byte homeSetsScore, byte awaySetsScore)
+        private static bool IsTechnicalDefeatSetsScoreValid(Score setsScore)
         {
-            return (homeSetsScore == Constants.GameResult.TECHNICAL_DEFEAT_SETS_WINNER_SCORE
-                && awaySetsScore == Constants.GameResult.TECHNICAL_DEFEAT_SETS_LOSER_SCORE)
-                || (homeSetsScore == Constants.GameResult.TECHNICAL_DEFEAT_SETS_LOSER_SCORE
-                && awaySetsScore == Constants.GameResult.TECHNICAL_DEFEAT_SETS_WINNER_SCORE);
+            return (setsScore.Home == Constants.GameResult.TECHNICAL_DEFEAT_SETS_WINNER_SCORE
+                && setsScore.Away == Constants.GameResult.TECHNICAL_DEFEAT_SETS_LOSER_SCORE)
+                || (setsScore.Home == Constants.GameResult.TECHNICAL_DEFEAT_SETS_LOSER_SCORE
+                && setsScore.Away == Constants.GameResult.TECHNICAL_DEFEAT_SETS_WINNER_SCORE);
         }
 
-        private static bool IsOrdinarySetsScoreValid(byte homeSetsScore, byte awaySetsScore)
+        private static bool IsOrdinarySetsScoreValid(Score setsScore)
         {
-            return homeSetsScore + awaySetsScore >= Constants.GameResult.MIN_SETS_COUNT
-                && homeSetsScore + awaySetsScore <= Constants.GameResult.MAX_SETS_COUNT;
+            return setsScore.Home + setsScore.Away >= Constants.GameResult.MIN_SETS_COUNT
+                && setsScore.Home + setsScore.Away <= Constants.GameResult.MAX_SETS_COUNT;
         }
 
-        private static bool IsTechnicalDefeatRequiredSetScoreValid(byte homeSetScore, byte awaySetScore)
+        private static bool IsTechnicalDefeatRequiredSetScoreValid(Score setScore)
         {
-            return (homeSetScore == Constants.GameResult.TECHNICAL_DEFEAT_SET_WINNER_SCORE
-                && awaySetScore == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE)
-                || (homeSetScore == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE
-                && awaySetScore == Constants.GameResult.TECHNICAL_DEFEAT_SET_WINNER_SCORE);
+            return (setScore.Home == Constants.GameResult.TECHNICAL_DEFEAT_SET_WINNER_SCORE
+                && setScore.Away == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE)
+                || (setScore.Home == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE
+                && setScore.Away == Constants.GameResult.TECHNICAL_DEFEAT_SET_WINNER_SCORE);
         }
 
-        private static bool IsTechnicalDefeatOptionalSetScoreValid(byte homeSetScore, byte awaySetScore)
+        private static bool IsTechnicalDefeatOptionalSetScoreValid(Score setScore)
         {
-            return homeSetScore == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE
-                && awaySetScore == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE;
+            return setScore.Home == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE
+                && setScore.Away == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE;
         }
 
-        private static bool IsOrdinarySetScoreValid(byte homeSetScore, byte awaySetScore)
+        private static bool IsOrdinaryRequiredSetScoreValid(Score setScore)
         {
             bool isValid = false;
 
-            if (homeSetScore == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
-                    || awaySetScore == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN)
+            if (IsSetScoreGreaterThanMin(setScore))
             {
-                isValid = Math.Abs(awaySetScore - homeSetScore) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+                isValid = Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
             }
-            else if (homeSetScore > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
-                || awaySetScore > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN)
+            else if (IsSetScoreEqualToMin(setScore))
             {
-                isValid = Math.Abs(awaySetScore - homeSetScore) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
-            }
-            else
-            {
-                isValid = homeSetScore == Constants.GameResult.UNPLAYED_SET_HOME_SCORE
-                    && awaySetScore == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
+                isValid = Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
             }
 
             return isValid;
+        }
+
+        private static bool IsOrdinaryOptionalSetScoreValid(Score setScore)
+        {
+            return IsOrdinaryRequiredSetScoreValid(setScore) || IsSetUnplayed(setScore);
+        }
+
+        private static bool IsSetScoreEqualToMin(Score setScore)
+        {
+            return setScore.Home == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
+                || setScore.Away == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
+        }
+
+        private static bool IsSetScoreGreaterThanMin(Score setScore)
+        {
+            return setScore.Home > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
+                || setScore.Away > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
+        }
+
+        private static bool IsSetUnplayed(Score setScore)
+        {
+            return setScore.Home == Constants.GameResult.UNPLAYED_SET_HOME_SCORE
+                && setScore.Away == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
         }
     }
 }

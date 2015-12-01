@@ -55,6 +55,7 @@
     <Compile Include="GameResultsAggregate\GameResult.cs" />
     <Compile Include="GameResultsAggregate\GameResultValidation.cs" />
     <Compile Include="GameResultsAggregate\IGameResultRepository.cs" />
+    <Compile Include="GameResultsAggregate\Score.cs" />
     <Compile Include="PlayersAggregate\IPlayerRepository.cs" />
     <Compile Include="PlayersAggregate\Player.cs" />
     <Compile Include="PlayersAggregate\PlayerValidation.cs" />

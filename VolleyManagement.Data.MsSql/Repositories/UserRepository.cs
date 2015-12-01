@@ -16,16 +16,6 @@
     internal class UserRepository : IUserRepository
     {
         /// <summary>
-        /// Holds object set of DAL users.
-        /// </summary>
-        private readonly DbSet<UserEntity> _dalUsers;
-
-        /// <summary>
-        /// Holds object set of DAL login providers.
-        /// </summary>
-        private readonly DbSet<LoginInfoEntity> _dalLoginProviders;
-
-        /// <summary>
         /// Holds UnitOfWork instance.
         /// </summary>
         private readonly VolleyUnitOfWork _unitOfWork;
@@ -37,8 +27,6 @@
         public UserRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            _dalUsers = _unitOfWork.Context.Users;
-            _dalLoginProviders = _unitOfWork.Context.LoginProviders;
         }
 
         /// <summary>
@@ -57,7 +45,7 @@
         {
             var newUser = new UserEntity();
             DomainToDal.Map(newUser, newEntity);
-            this._dalUsers.Add(newUser);
+            this._unitOfWork.Context.Users.Add(newUser);
             this._unitOfWork.Commit();
             newEntity.Id = newUser.Id;
         }
@@ -68,7 +56,7 @@
         /// <param name="oldEntity">The user to update.</param>
         public void Update(User oldEntity)
         {
-            var userToUpdate = this._dalUsers.Single(t => t.Id == oldEntity.Id);
+            var userToUpdate = this._unitOfWork.Context.Users.Single(t => t.Id == oldEntity.Id);
             DomainToDal.Map(userToUpdate, oldEntity);
             UpdateUserProviders((List<LoginInfoEntity>)userToUpdate.LoginProviders);
         }
@@ -88,7 +76,7 @@
             {
                 string loginProviderName = providers[i].LoginProvider;
                 string providerKey = providers[i].ProviderKey;
-                var existProvider = _dalLoginProviders.Where(
+                var existProvider = _unitOfWork.Context.LoginProviders.Where(
                                                             dlp =>
                                                             dlp.LoginProvider == loginProviderName
                                                             && dlp.ProviderKey == providerKey)

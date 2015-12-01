@@ -462,14 +462,15 @@
                 _gameResult.HomeSet2Score = homeScores[1];
                 _gameResult.HomeSet3Score = homeScores[2];
 
-                if (homeScores.Length == Constants.GameResult.MAX_SETS_COUNT - 1)
+                switch (homeScores.Length)
                 {
-                    _gameResult.HomeSet4Score = homeScores[3];
-                }
-
-                if (homeScores.Length == Constants.GameResult.MAX_SETS_COUNT)
-                {
-                    _gameResult.HomeSet5Score = homeScores[4];
+                    case Constants.GameResult.MIN_SETS_COUNT + 1:
+                        _gameResult.HomeSet4Score = homeScores[3];
+                        break;
+                    default:
+                        _gameResult.HomeSet4Score = homeScores[3];
+                        _gameResult.HomeSet5Score = homeScores[4];
+                        break;
                 }
             }
         }
@@ -482,14 +483,15 @@
                 _gameResult.AwaySet2Score = awayScores[1];
                 _gameResult.AwaySet3Score = awayScores[2];
 
-                if (awayScores.Length == Constants.GameResult.MAX_SETS_COUNT - 1)
+                switch (awayScores.Length)
                 {
-                    _gameResult.AwaySet4Score = awayScores[3];
-                }
-
-                if (awayScores.Length == Constants.GameResult.MAX_SETS_COUNT)
-                {
-                    _gameResult.AwaySet5Score = awayScores[4];
+                    case Constants.GameResult.MIN_SETS_COUNT + 1:
+                        _gameResult.AwaySet4Score = awayScores[3];
+                        break;
+                    default:
+                        _gameResult.AwaySet4Score = awayScores[3];
+                        _gameResult.AwaySet5Score = awayScores[4];
+                        break;
                 }
             }
         }

@@ -1,22 +1,28 @@
-﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
+namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
+
+    using Contracts;
+    using Domain.GameResultsAggregate;
+    using Domain.TeamsAggregate;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
 
-    using UI.Areas.Mvc.Controllers;
-    using ViewModels;
-    using Contracts;
-    using Domain.GameResultsAggregate;
-    using System.Collections.Generic;
-    using Domain.TeamsAggregate;
-    using UI.Areas.Mvc.ViewModels.GameResults;
     using Services.TeamService;
 
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.GameResults;
+
+    using ViewModels;
+
+    /// <summary>
+    /// Tests for MVC <see cref="GameResultsControllerTests"/> class.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class GameResultsControllerTests
@@ -43,6 +49,9 @@
 
         #region Init
 
+        /// <summary>
+        /// Initializes test data.
+        /// </summary>
         [TestInitialize]
         public void TestInit()
         {
@@ -57,12 +66,9 @@
 
         #region Tests
 
-
-
-        #endregion
-
-        #region Additional methods
-
+        /// <summary>
+        /// Test for Create POST methos. Valid model passed. Games result created.
+        /// </summary>
         [TestMethod]
         public void CreatePostAction_ValidModel_Created()
         {
@@ -80,6 +86,9 @@
             Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
         }
 
+        /// <summary>
+        /// Test for Create POST methos. Invalid model passed. Redirect to page of create view.
+        /// </summary>
         [TestMethod]
         public void CreatePostAction_InvalidModel_ExceptionThrown()
         {
@@ -101,6 +110,9 @@
             Assert.AreEqual(result.GetType(), typeof(ViewResult));
         }
 
+        /// <summary>
+        /// Test for Details methos. Id passed - details view returned.
+        /// </summary>
         [TestMethod]
         public void DetailsAction_IdPassed_ViewReturned()
         {
@@ -116,7 +128,7 @@
             _gameResultServiceMock.Setup(grs => grs.Get(It.IsAny<int>())).Returns(gameResultDomainModel);
 
             MockTeams();
-            
+
             var sut = this._kernel.Get<GameResultsController>();
 
             // Act

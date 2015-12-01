@@ -40,7 +40,7 @@
             this._rolesService = rolesService;
         }
 
-        private int currentUserId
+        private int CurrentUserId
         {
             get
             {
@@ -111,7 +111,7 @@
         [Authorize]
         public async Task<ActionResult> Details()
         {
-            var user = await _userManager.FindByIdAsync(currentUserId);
+            var user = await _userManager.FindByIdAsync(CurrentUserId);
             UserViewModel userViewModel = UserViewModel.Map(user);
             return View(userViewModel);
         }
@@ -123,7 +123,7 @@
         [Authorize]
         public async Task<ActionResult> Edit()
         {
-            var user = await _userManager.FindByIdAsync(currentUserId);
+            var user = await _userManager.FindByIdAsync(CurrentUserId);
             UserEditViewModel userEditViewModel = UserEditViewModel.Map(user);
             return View(userEditViewModel);
         }
@@ -137,7 +137,7 @@
         [Authorize]
         public async Task<ActionResult> Edit(UserEditViewModel editViewModel)
         {
-            if (currentUserId != editViewModel.Id && !User.IsInRole(Resources.AuthorizationRoles.Admin))
+            if (CurrentUserId != editViewModel.Id && !User.IsInRole(Resources.AuthorizationRoles.Admin))
             {
                 return View("AccessDenied");
             }

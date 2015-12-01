@@ -167,19 +167,19 @@
             to.TournamentId = from.TournamentId;
             to.HomeTeamId = from.HomeTeamId;
             to.AwayTeamId = from.AwayTeamId;
-            to.HomeSetsScore = from.HomeSetsScore;
-            to.AwaySetsScore = from.AwaySetsScore;
+            to.HomeSetsScore = from.SetsScore.Home;
+            to.AwaySetsScore = from.SetsScore.Away;
             to.IsTechnicalDefeat = from.IsTechnicalDefeat;
-            to.HomeSet1Score = from.HomeSet1Score;
-            to.AwaySet1Score = from.AwaySet1Score;
-            to.HomeSet2Score = from.HomeSet2Score;
-            to.AwaySet2Score = from.AwaySet2Score;
-            to.HomeSet3Score = from.HomeSet3Score;
-            to.AwaySet3Score = from.AwaySet3Score;
-            to.HomeSet4Score = from.HomeSet4Score;
-            to.AwaySet4Score = from.AwaySet4Score;
-            to.HomeSet5Score = from.HomeSet5Score;
-            to.AwaySet5Score = from.AwaySet5Score;
+            to.HomeSet1Score = from.SetScores[0].Home;
+            to.AwaySet1Score = from.SetScores[0].Away;
+            to.HomeSet2Score = from.SetScores[1].Home;
+            to.AwaySet2Score = from.SetScores[1].Away;
+            to.HomeSet3Score = from.SetScores[2].Home;
+            to.AwaySet3Score = from.SetScores[2].Away;
+            to.HomeSet4Score = from.SetScores[3].Home;
+            to.AwaySet4Score = from.SetScores[3].Away;
+            to.HomeSet5Score = from.SetScores[4].Home;
+            to.AwaySet5Score = from.SetScores[4].Away;
         }
     }
 }

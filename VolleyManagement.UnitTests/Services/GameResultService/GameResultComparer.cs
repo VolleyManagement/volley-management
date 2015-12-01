@@ -53,23 +53,47 @@
         /// <returns>True if given <see cref="GameResult"/> objects are equal.</returns>
         internal bool AreEqual(GameResult x, GameResult y)
         {
-            return x.Id == y.Id
+            ScoreComparer scoreComparer = new ScoreComparer();
+            bool areEqual = x.Id == y.Id
                 && x.TournamentId == y.TournamentId
                 && x.HomeTeamId == y.HomeTeamId
                 && x.AwayTeamId == y.AwayTeamId
-                && x.HomeSetsScore == y.HomeSetsScore
-                && x.AwaySetsScore == y.AwaySetsScore
-                && x.IsTechnicalDefeat == y.IsTechnicalDefeat
-                && x.HomeSet1Score == y.HomeSet1Score
-                && x.AwaySet1Score == y.AwaySet1Score
-                && x.HomeSet2Score == y.HomeSet2Score
-                && x.AwaySet2Score == y.AwaySet2Score
-                && x.HomeSet3Score == y.HomeSet3Score
-                && x.AwaySet3Score == y.AwaySet3Score
-                && x.HomeSet4Score == y.HomeSet4Score
-                && x.AwaySet4Score == y.AwaySet4Score
-                && x.HomeSet5Score == y.HomeSet5Score
-                && x.AwaySet5Score == y.AwaySet5Score;
+                && scoreComparer.AreEqual(x.SetsScore, y.SetsScore)
+                && x.IsTechnicalDefeat == y.IsTechnicalDefeat;
+
+            if (areEqual)
+            {
+                if ((x.SetScores == null && y.SetScores != null)
+                    || (x.SetScores != null && y.SetScores == null)
+                    || (x.SetScores.Count != y.SetScores.Count))
+                {
+                    areEqual = false;
+                }
+            }
+
+            if (areEqual && x.SetScores != null)
+            {
+                foreach (var xScore in x.SetScores)
+                {
+                    bool scoreEquals = false;
+
+                    foreach (var yScore in y.SetScores)
+                    {
+                        if (scoreComparer.AreEqual(xScore, yScore))
+                        {
+                            scoreEquals = true;
+                        }
+                    }
+
+                    if (!scoreEquals)
+                    {
+                        areEqual = false;
+                        break;
+                    }
+                }
+            }
+
+            return areEqual;
         }
     }
 }

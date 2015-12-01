@@ -228,5 +228,31 @@
 
             public const int MAX_ACHIEVEMENTS_LENGTH = 4000;
         }
+
+        /// <summary>
+        /// Container for game result constants.
+        /// </summary>
+        public static class GameResult
+        {
+            public const int MIN_SETS_COUNT = 3;
+
+            public const int MAX_SETS_COUNT = 5;
+
+            public const int SET_POINTS_MIN_DELTA_TO_WIN = 2;
+
+            public const int SET_POINTS_MIN_VALUE_TO_WIN = 25;
+
+            public const int TECHNICAL_DEFEAT_SETS_WINNER_SCORE = 3;
+
+            public const int TECHNICAL_DEFEAT_SETS_LOSER_SCORE = 0;
+
+            public const int TECHNICAL_DEFEAT_SET_WINNER_SCORE = 25;
+
+            public const int TECHNICAL_DEFEAT_SET_LOSER_SCORE = 0;
+
+            public const int UNPLAYED_SET_HOME_SCORE = 0;
+
+            public const int UNPLAYED_SET_AWAY_SCORE = 0;
+        }
     }
 }

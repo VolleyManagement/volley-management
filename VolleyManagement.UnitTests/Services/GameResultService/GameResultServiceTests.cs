@@ -1,11 +1,13 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameResultService
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Services;
 
@@ -17,7 +19,15 @@
     public class GameResultServiceTests
     {
         private readonly Mock<IGameResultRepository> _gameResultRepositoryMock = new Mock<IGameResultRepository>();
+
+        private readonly Mock<IQuery<GameResult, FindByIdCriteria>> _getByIdQueryMock
+            = new Mock<IQuery<GameResult, FindByIdCriteria>>();
+
+        private readonly Mock<IQuery<List<GameResult>, GetAllCriteria>> _getAllQueryMock
+            = new Mock<IQuery<List<GameResult>, GetAllCriteria>>();
+
         private GameResultService _sut;
+
         private IKernel _kernel;
 
         /// <summary>
@@ -28,6 +38,8 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IGameResultRepository>().ToConstant(_gameResultRepositoryMock.Object);
+            _kernel.Bind<IQuery<List<GameResult>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
+            _kernel.Bind<IQuery<GameResult, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
             _sut = _kernel.Get<GameResultService>();
         }
 
@@ -118,82 +130,14 @@
         }
 
         /// <summary>
-        /// Test for Create method. The score of the first set is invalid. Exception is thrown during creation.
+        /// Test for Create method. The set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultInvalidSet1Score_ExceptionThrown()
+        public void Create_GameResultInvalidSetScores_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().WithInvalidSet1Score().Build();
-
-            // Act
-            _sut.Create(newGameResult);
-
-            // Assert
-            VerifyCreate(newGameResult, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Create method. The score of the second set is invalid. Exception is thrown during creation.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultInvalidSet2Score_ExceptionThrown()
-        {
-            // Arrange
-            var newGameResult = new GameResultBuilder().WithInvalidSet2Score().Build();
-
-            // Act
-            _sut.Create(newGameResult);
-
-            // Assert
-            VerifyCreate(newGameResult, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Create method. The score of the third set is invalid. Exception is thrown during creation.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultInvalidSet3Score_ExceptionThrown()
-        {
-            // Arrange
-            var newGameResult = new GameResultBuilder().WithInvalidSet3Score().Build();
-
-            // Act
-            _sut.Create(newGameResult);
-
-            // Assert
-            VerifyCreate(newGameResult, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Create method. The score of the fourth set is invalid. Exception is thrown during creation.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultInvalidSet4Score_ExceptionThrown()
-        {
-            // Arrange
-            var newGameResult = new GameResultBuilder().WithInvalidSet4Score().Build();
-
-            // Act
-            _sut.Create(newGameResult);
-
-            // Assert
-            VerifyCreate(newGameResult, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Create method. The score of the fifth set is invalid. Exception is thrown during creation.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultInvalidSet5Score_ExceptionThrown()
-        {
-            // Arrange
-            var newGameResult = new GameResultBuilder().WithInvalidSet5Score().Build();
+            var newGameResult = new GameResultBuilder().WithInvalidSetScores().Build();
 
             // Act
             _sut.Create(newGameResult);

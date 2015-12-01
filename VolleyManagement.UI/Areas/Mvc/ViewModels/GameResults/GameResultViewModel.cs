@@ -116,19 +116,19 @@
                 TournamentId = domainEntity.TournamentId,
                 HomeTeamId = domainEntity.HomeTeamId,
                 AwayTeamId = domainEntity.AwayTeamId,
-                HomeSetsScore = domainEntity.HomeSetsScore,
-                AwaySetsScore = domainEntity.AwaySetsScore,
+                HomeSetsScore = domainEntity.SetsScore.Home,
+                AwaySetsScore = domainEntity.SetsScore.Away,
                 IsTechnicalDefeat = domainEntity.IsTechnicalDefeat,
-                HomeSet1Score = domainEntity.HomeSet1Score,
-                AwaySet1Score = domainEntity.AwaySet1Score,
-                HomeSet2Score = domainEntity.HomeSet2Score,
-                AwaySet2Score = domainEntity.AwaySet2Score,
-                HomeSet3Score = domainEntity.HomeSet3Score,
-                AwaySet3Score = domainEntity.AwaySet3Score,
-                HomeSet4Score = domainEntity.HomeSet4Score,
-                AwaySet4Score = domainEntity.AwaySet4Score,
-                HomeSet5Score = domainEntity.HomeSet5Score,
-                AwaySet5Score = domainEntity.AwaySet5Score
+                HomeSet1Score = domainEntity.SetScores[0].Home,
+                AwaySet1Score = domainEntity.SetScores[0].Away,
+                HomeSet2Score = domainEntity.SetScores[1].Home,
+                AwaySet2Score = domainEntity.SetScores[1].Away,
+                HomeSet3Score = domainEntity.SetScores[2].Home,
+                AwaySet3Score = domainEntity.SetScores[2].Away,
+                HomeSet4Score = domainEntity.SetScores[3].Home,
+                AwaySet4Score = domainEntity.SetScores[3].Away,
+                HomeSet5Score = domainEntity.SetScores[4].Home,
+                AwaySet5Score = domainEntity.SetScores[4].Away
             };
         }
 
@@ -143,19 +143,16 @@
                 TournamentId = this.TournamentId,
                 HomeTeamId = this.HomeTeamId,
                 AwayTeamId = this.AwayTeamId,
-                HomeSetsScore = this.HomeSetsScore,
-                AwaySetsScore = this.AwaySetsScore,
+                SetsScore = new Score(this.HomeSetsScore, this.AwaySetsScore),
                 IsTechnicalDefeat = this.IsTechnicalDefeat,
-                HomeSet1Score = this.HomeSet1Score,
-                AwaySet1Score = this.AwaySet1Score,
-                HomeSet2Score = this.HomeSet2Score,
-                AwaySet2Score = this.AwaySet2Score,
-                HomeSet3Score = this.HomeSet3Score,
-                AwaySet3Score = this.AwaySet3Score,
-                HomeSet4Score = this.HomeSet4Score,
-                AwaySet4Score = this.AwaySet4Score,
-                HomeSet5Score = this.HomeSet5Score,
-                AwaySet5Score = this.AwaySet5Score
+                SetScores = new List<Score>
+                {
+                    new Score(this.HomeSet1Score, this.AwaySet1Score),
+                    new Score(this.HomeSet2Score, this.AwaySet2Score),
+                    new Score(this.HomeSet3Score, this.AwaySet3Score),
+                    new Score(this.HomeSet4Score, this.AwaySet4Score),
+                    new Score(this.HomeSet5Score, this.AwaySet5Score)
+                }
             };
         }
     }

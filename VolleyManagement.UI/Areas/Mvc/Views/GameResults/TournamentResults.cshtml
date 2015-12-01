@@ -1,0 +1,19 @@
+﻿@model IEnumerable<VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel>
+
+@{
+    ViewBag.Title = "TournamentResults";
+}
+
+<h2>Tournament results</h2>
+<hr />
+@foreach (VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel gameResult in Model) {
+    <div>
+        @gameResult.HomeTeamName vs @gameResult.AwayTeamName || @gameResult.HomeSetsScore : @gameResult.AwaySetsScore
+        @if (gameResult.IsTechnicalDefeat)
+        {
+            <span style="color: red">Technical defeat</span>
+        } 
+        @Html.ActionLink("Details", "Details", new { id = gameResult.Id.ToString() }, null)
+    </div>    
+}
+

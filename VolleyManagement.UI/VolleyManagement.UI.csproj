@@ -272,6 +272,7 @@
     <Content Include="Areas\Admin\Views\Roles\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\Create.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -331,6 +332,7 @@
     <Compile Include="Areas\Admin\Models\UserViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\AccountController.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\ContributorsTeamController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\GameResultsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
     <Compile Include="Areas\Mvc\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\PlayersController.cs" />
@@ -344,6 +346,8 @@
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Account\AuthenticationStatusViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\ShortTeamViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\GroupViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />

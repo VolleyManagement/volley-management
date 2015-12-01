@@ -49,3 +49,8 @@ div#menu a{font: bold 1.1em "Arial Narrow","Franklin Gothic Medium", Arial; disp
 div#menu a.selected {background-color: #666; color: white;}
 div#menu a:hover {background-color: #CCC; }
 div#menu a.selected:hover{background-color: #666}
+
+.form-control {
+    display: inline-block;
+    width: auto;
+}

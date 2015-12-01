@@ -3,18 +3,24 @@
     /// <summary>
     /// Represents a game score.
     /// </summary>
-    public struct Score
+    public class Score
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Score"/> structure.
+        /// Initializes a new instance of the <see cref="Score"/> class that contains default score.
+        /// </summary>
+        public Score()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Score"/> class that contains specified score.
         /// </summary>
         /// <param name="home">Score of the home team.</param>
         /// <param name="away">Score of the away team.</param>
         public Score(byte home, byte away)
-            : this()
         {
-            this.Home = home;
-            this.Away = away;
+            Home = home;
+            Away = away;
         }
 
         /// <summary>

@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Domain.Properties;
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
@@ -18,15 +20,30 @@
 
         #endregion
 
+        #region Query Objects
+
+        private readonly IQuery<GameResult, FindByIdCriteria> _getByIdQuery;
+
+        private readonly IQuery<List<GameResult>, GetAllCriteria> _getAllQuery;
+
+        #endregion
+
         #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameResultService"/> class.
         /// </summary>
         /// <param name="gameResultRepository">Instance of class that implements <see cref="IGameResultRepository"/>.</param>
-        public GameResultService(IGameResultRepository gameResultRepository)
+        /// <param name="getByIdQuery">Query which gets <see cref="GameResult"/> object by its identifier.</param>
+        /// <param name="getAllQuery">Query which gets all <see cref="GameResult"/> objects.</param>
+        public GameResultService(
+            IGameResultRepository gameResultRepository,
+            IQuery<GameResult, FindByIdCriteria> getByIdQuery,
+            IQuery<List<GameResult>, GetAllCriteria> getAllQuery)
         {
             _gameResultRepository = gameResultRepository;
+            _getByIdQuery = getByIdQuery;
+            _getAllQuery = getAllQuery;
         }
 
         #endregion
@@ -46,6 +63,43 @@
 
             ValidateGameResult(gameResult);
             _gameResultRepository.Add(gameResult);
+        }
+
+        /// <summary>
+        /// Gets all game results.
+        /// </summary>
+        /// <returns>List of all game results.</returns>
+        public List<GameResult> Get()
+        {
+            return _getAllQuery.Execute(new GetAllCriteria());
+        }
+
+        /// <summary>
+        /// Gets game result by specified identifier.
+        /// </summary>
+        /// <param name="id">Identifier of game result.</param>
+        /// <returns>Instance of <see cref="GameResult"/> or null if nothing is found.</returns>
+        public GameResult Get(int id)
+        {
+            return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        /// <summary>
+        /// Edits specified game result.
+        /// </summary>
+        /// <param name="gameResult">Updated game result.</param>
+        public void Edit(GameResult gameResult)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Deletes game result by specified identifier.
+        /// </summary>
+        /// <param name="id">Identifier of game result.</param>
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

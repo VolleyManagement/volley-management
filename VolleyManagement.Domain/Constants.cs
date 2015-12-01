@@ -249,6 +249,10 @@
             public const int TECHNICAL_DEFEAT_SET_WINNER_SCORE = 25;
 
             public const int TECHNICAL_DEFEAT_SET_LOSER_SCORE = 0;
+
+            public const int UNPLAYED_SET_HOME_SCORE = 0;
+
+            public const int UNPLAYED_SET_AWAY_SCORE = 0;
         }
     }
 }

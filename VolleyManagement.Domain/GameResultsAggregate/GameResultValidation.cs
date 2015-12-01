@@ -135,6 +135,11 @@
             {
                 isValid = Math.Abs(awaySetScore - homeSetScore) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
             }
+            else
+            {
+                isValid = homeSetScore == Constants.GameResult.UNPLAYED_SET_HOME_SCORE
+                    && awaySetScore == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
+            }
 
             return isValid;
         }

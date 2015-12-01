@@ -130,7 +130,7 @@
         {
             for (int i = 0; i < setScores.Count; i++)
             {
-                if (i <= GameResultConstants.MIN_SETS_COUNT)
+                if (i < GameResultConstants.MIN_SETS_COUNT)
                 {
                     if (!GameResultValidation.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat))
                     {

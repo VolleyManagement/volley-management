@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -18,6 +19,8 @@
     [TestClass]
     public class GameResultServiceTests
     {
+        private const int GAME_RESULT_ID = 1;
+
         private readonly Mock<IGameResultRepository> _gameResultRepositoryMock = new Mock<IGameResultRepository>();
 
         private readonly Mock<IQuery<GameResult, FindByIdCriteria>> _getByIdQueryMock
@@ -130,20 +133,71 @@
         }
 
         /// <summary>
-        /// Test for Create method. The set scores are invalid. Exception is thrown during creation.
+        /// Test for Create method. The required set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultInvalidSetScores_ExceptionThrown()
+        public void Create_GameResultInvalidRequiredSetScores_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().WithInvalidSetScores().Build();
+            var newGameResult = new GameResultBuilder().WithInvalidRequiredSetScores().Build();
 
             // Act
             _sut.Create(newGameResult);
 
             // Assert
             VerifyCreate(newGameResult, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create method. The optional set scores are invalid. Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameResultInvalidOptionalSetScores_ExceptionThrown()
+        {
+            // Arrange
+            var newGameResult = new GameResultBuilder().WithInvalidOptionalSetScores().Build();
+
+            // Act
+            _sut.Create(newGameResult);
+
+            // Assert
+            VerifyCreate(newGameResult, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Get method. All game results are requested. All game results are returned.
+        /// </summary>
+        [TestMethod]
+        public void Get_AllGameResults_GameResultsReturned()
+        {
+            // Arrange
+            var expected = new GameResultTestFixture().TestGameResults().Build();
+            SetupGetAll(expected);
+
+            // Act
+            var actual = _sut.Get();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new GameResultComparer());
+        }
+
+        /// <summary>
+        /// Test for Get method. Existing game result is requested. Game result is returned.
+        /// </summary>
+        [TestMethod]
+        public void Get_ExistingGameResult_GameResultReturned()
+        {
+            // Arrange
+            var expected = new GameResultBuilder().WithId(GAME_RESULT_ID).Build();
+            SetupGet(expected);
+
+            // Act
+            var actual = _sut.Get(GAME_RESULT_ID);
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new GameResultComparer());
         }
 
         private void VerifyCreate(GameResult gameResult, Times times)
@@ -155,6 +209,16 @@
         {
             var comparer = new GameResultComparer();
             return comparer.Compare(x, y) == 0;
+        }
+
+        private void SetupGetAll(IEnumerable<GameResult> gameResults)
+        {
+            _getAllQueryMock.Setup(gaq => gaq.Execute(It.IsAny<GetAllCriteria>())).Returns(gameResults.ToList());
+        }
+
+        private void SetupGet(GameResult gameResult)
+        {
+            _getByIdQueryMock.Setup(gbiq => gbiq.Execute(It.Is<FindByIdCriteria>(c => c.Id == gameResult.Id))).Returns(gameResult);
         }
     }
 }

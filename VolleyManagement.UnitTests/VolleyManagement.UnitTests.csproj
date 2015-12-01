@@ -131,6 +131,7 @@
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Services\GameResultService\GameResultBuilder.cs" />
     <Compile Include="Services\GameResultService\GameResultComparer.cs" />
+    <Compile Include="Services\GameResultService\GameResultTestFixture.cs" />
     <Compile Include="Services\GameResultService\GameResultServiceTests.cs" />
     <Compile Include="Services\GameResultService\ScoreComparer.cs" />
     <Compile Include="TestHelper.cs" />

@@ -208,17 +208,36 @@
         }
 
         /// <summary>
-        /// Sets the set scores in a way that they are invalid.
+        /// Sets the required set scores in a way that they are invalid.
         /// </summary>
         /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithInvalidSetScores()
+        public GameResultBuilder WithInvalidRequiredSetScores()
         {
-            _gameResult.SetsScore = new Score(3, 2);
+            _gameResult.SetsScore = new Score(1, 2);
             _gameResult.SetScores = new List<Score>
             {
                 new Score(10, 0),
                 new Score(0, 10),
                 new Score(0, 10),
+                new Score(0, 0),
+                new Score(0, 0)
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the optional set scores in a way that they are invalid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        public GameResultBuilder WithInvalidOptionalSetScores()
+        {
+            _gameResult.SetsScore = new Score(3, 2);
+            _gameResult.SetScores = new List<Score>
+            {
+                new Score(25, 20),
+                new Score(24, 26),
+                new Score(28, 30),
                 new Score(10, 0),
                 new Score(10, 0)
             };

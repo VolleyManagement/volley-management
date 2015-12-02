@@ -21,8 +21,12 @@
                                 "~/Scripts/jquery-{version}.js",
                                 "~/Scripts/bootstrap.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/uivalidation")
+            bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
+                      .Include("~/Scripts/UserActions.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryvalidation")
                        .Include(
+                               "~/Scripts/jquery-{version}.js",
                                "~/Scripts/jquery.validate.js",
                                "~/Scripts/jquery.validate.unobtrusive.js"));
         }

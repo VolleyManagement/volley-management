@@ -117,22 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BackToList" xml:space="preserve">
-    <value>Назад к списку</value>
+  <data name="AttemptToEditSomeoneElseAccount" xml:space="preserve">
+    <value>Попытка редактировать чужой аккаунт</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Создать</value>
-  </data>
-  <data name="CreateUserTitle" xml:space="preserve">
-    <value>Создание нового пользователя</value>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редактировать</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Сохранить</value>
-  </data>
-  <data name="UserLegend" xml:space="preserve">
-    <value>Пользователь</value>
+  <data name="InvalidEditEntityId" xml:space="preserve">
+    <value>Пользователь с таким id не найден</value>
   </data>
 </root>

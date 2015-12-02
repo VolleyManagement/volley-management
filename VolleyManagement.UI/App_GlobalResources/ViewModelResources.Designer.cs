@@ -277,6 +277,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Провайдеры авторизации.
+        /// </summary>
+        public static string LoginProviders {
+            get {
+                return ResourceManager.GetString("LoginProviders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Поле &quot;{0}&quot; не может содержать более &quot;{1}&quot; символов.
         /// </summary>
         public static string MaxLengthErrorMessage {

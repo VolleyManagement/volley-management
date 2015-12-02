@@ -272,6 +272,8 @@
     <Content Include="Areas\Admin\Views\Roles\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\Account\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\Account\Edit.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -291,6 +293,16 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\AccountController.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AccountController.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\AuthorizationRoles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthorizationRoles.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\PlayerViews.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -358,6 +370,7 @@
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamOperationResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentsCollectionsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Users\UserEditViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\ContributorsTeamController.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\PlayersController.cs" />
@@ -394,6 +407,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\PageNotFound.cshtml" />
+    <Content Include="Views\Shared\AccessDenied.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -425,13 +439,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\PlayerViews.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PlayerViews.Designer.cs</LastGenOutput>
     </Content>
     <Content Include="App_GlobalResources\TeamViews.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TeamViews.Designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="App_GlobalResources\AccountController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AccountController.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\AuthorizationRoles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TournamentViews.designer.cs</LastGenOutput>

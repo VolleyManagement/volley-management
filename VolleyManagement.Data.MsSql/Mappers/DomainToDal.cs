@@ -11,7 +11,7 @@
     /// <summary>
     /// Maps Domain models to Dal.
     /// </summary>
-    public static class DomainToDal
+    internal static class DomainToDal
     {
         /// <summary>
         /// Maps Tournament model.
@@ -34,27 +34,6 @@
             to.TransferEnd = from.TransferEnd;
             to.Divisions.Clear();
             to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
-        }
-
-        /// <summary>
-        /// Maps User model.
-        /// </summary>
-        /// <param name="to">User Entity model</param>
-        /// <param name="from">User Domain model</param>
-        public static void Map(UserEntity to, User from)
-        {
-            to.Id = from.Id;
-            to.FullName = from.PersonName;
-            to.UserName = from.UserName;
-            to.Email = from.Email;
-            to.CellPhone = from.PhoneNumber;
-            to.LoginProviders = from.LoginProviders
-                .Select(l => new LoginInfoEntity
-                                     {
-                                         LoginProvider = l.LoginProvider,
-                                         ProviderKey = l.ProviderKey
-                                     })
-                                     .ToList();
         }
 
         /// <summary>
@@ -85,6 +64,31 @@
             to.CaptainId = from.CaptainId;
             to.Coach = from.Coach;
             to.Achievements = from.Achievements;
+        }
+
+        /// <summary>
+        /// Maps User model.
+        /// </summary>
+        /// <param name="to">User Entity model</param>
+        /// <param name="from">User Domain model</param>
+        public static void Map(UserEntity to, User from)
+        {
+            to.Id = from.Id;
+            to.FullName = from.PersonName;
+            to.UserName = from.UserName;
+            to.Email = from.Email;
+            to.CellPhone = from.PhoneNumber;
+            to.LoginProviders.Clear();
+            to.LoginProviders = from.LoginProviders
+                .Select(l =>
+                {
+                    return new LoginInfoEntity
+                    {
+                        LoginProvider = l.LoginProvider,
+                        ProviderKey = l.ProviderKey
+                    };
+                })
+                .ToList();
         }
 
         /// <summary>

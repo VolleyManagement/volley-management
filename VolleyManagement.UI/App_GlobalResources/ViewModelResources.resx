@@ -171,6 +171,9 @@
   <data name="InvalidTournamentId" xml:space="preserve">
     <value>Неверный идентификатор турнира</value>
   </data>
+  <data name="LoginProviders" xml:space="preserve">
+    <value>Провайдеры авторизации</value>
+  </data>
   <data name="MaxLengthErrorMessage" xml:space="preserve">
     <value>Поле "{0}" не может содержать более "{1}" символов</value>
   </data>

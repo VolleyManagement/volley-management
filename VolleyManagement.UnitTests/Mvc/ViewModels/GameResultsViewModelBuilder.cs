@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using Domain.GameResultsAggregate;
     using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
@@ -24,18 +25,16 @@
             {
                 HomeTeamId = 1,
                 AwayTeamId = 2,
-                HomeSetsScore = 2,
-                AwaySetsScore = 1,
-                HomeSet1Score = 27,
-                AwaySet1Score = 25,
-                HomeSet2Score = 33,
-                AwaySet2Score = 31,
-                HomeSet3Score = 23,
-                AwaySet3Score = 25,
-                HomeSet4Score = 0,
-                AwaySet4Score = 0,
-                HomeSet5Score = 0,
-                AwaySet5Score = 0,
+                SetsScore = new Score(2, 1),
+                SetScores = new List<Score>()
+                {
+                    new Score(27, 25),
+                    new Score(33, 31),
+                    new Score(23, 25),
+                    new Score(),
+                    new Score()
+                },
+
                 IsTechnicalDefeat = false
             };
         }
@@ -98,7 +97,7 @@
         /// <summary>
         /// Sets home team name of test game results view model
         /// </summary>
-        /// <param name="homeTeamId">Value indicates home team name</param>
+        /// <param name="homeTeamName">Value indicates home team name</param>
         /// <returns>Game result view model builder object</returns>
         public GameResultViewModelBuilder WithHomeTeamName(string homeTeamName)
         {
@@ -109,7 +108,7 @@
         /// <summary>
         /// Sets away team name of test game results view model
         /// </summary>
-        /// <param name="awayTeamId">Value indicates away team name</param>
+        /// <param name="awayTeamName">Value indicates away team name</param>
         /// <returns>Game result view model builder object</returns>
         public GameResultViewModelBuilder WithAwayTeamName(string awayTeamName)
         {

@@ -55,19 +55,19 @@
         /// <returns>True if given team have the same properties.</returns>
         public bool AreEqual(GameResultViewModel x, GameResultViewModel y)
         {
-            return x.AwaySet1Score == y.AwaySet1Score
-                && x.AwaySet2Score == y.AwaySet2Score
-                && x.AwaySet3Score == y.AwaySet3Score
-                && x.AwaySet4Score == y.AwaySet4Score
-                && x.AwaySet5Score == y.AwaySet5Score
-                && x.AwaySetsScore == y.AwaySetsScore
+            return x.SetScores[0].Home == y.SetScores[0].Home
+                && x.SetScores[1].Home == y.SetScores[1].Home
+                && x.SetScores[2].Home == y.SetScores[2].Home
+                && x.SetScores[3].Home == y.SetScores[3].Home
+                && x.SetScores[4].Home == y.SetScores[4].Home
+                && x.SetScores[0].Away == y.SetScores[0].Away
+                && x.SetScores[1].Away == y.SetScores[1].Away
+                && x.SetScores[2].Away == y.SetScores[2].Away
+                && x.SetScores[3].Away == y.SetScores[3].Away
+                && x.SetScores[4].Away == y.SetScores[4].Away
                 && x.AwayTeamId == y.AwayTeamId
-                && x.HomeSet1Score == y.HomeSet1Score
-                && x.HomeSet2Score == y.HomeSet2Score
-                && x.HomeSet3Score == y.HomeSet3Score
-                && x.HomeSet4Score == y.HomeSet4Score
-                && x.HomeSet5Score == y.HomeSet5Score
-                && x.HomeSetsScore == y.HomeSetsScore
+                && x.SetsScore.Home == y.SetsScore.Home
+                && x.SetsScore.Away == y.SetsScore.Away
                 && x.HomeTeamId == y.HomeTeamId
                 && x.Id == y.Id
                 && x.IsTechnicalDefeat == y.IsTechnicalDefeat

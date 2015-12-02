@@ -1,4 +1,4 @@
-namespace VolleyManagement.UnitTests.Mvc.Controllers
+﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -67,7 +67,7 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
         #region Tests
 
         /// <summary>
-        /// Test for Create POST methos. Valid model passed. Games result created.
+        /// Test for Create POST method. Valid model passed. Games result created.
         /// </summary>
         [TestMethod]
         public void CreatePostAction_ValidModel_Created()
@@ -87,7 +87,7 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
         }
 
         /// <summary>
-        /// Test for Create POST methos. Invalid model passed. Redirect to page of create view.
+        /// Test for Create POST method. Invalid model passed. Redirect to page of create view.
         /// </summary>
         [TestMethod]
         public void CreatePostAction_InvalidModel_ExceptionThrown()
@@ -111,7 +111,7 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
         }
 
         /// <summary>
-        /// Test for Details methos. Id passed - details view returned.
+        /// Test for Details method. Id passed - details view returned.
         /// </summary>
         [TestMethod]
         public void DetailsAction_IdPassed_ViewReturned()
@@ -119,7 +119,7 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
             // Arrange
             var expectedResultViewModel = new GameResultViewModelBuilder()
                                         .WithHomeTeamId(HOME_TEAM_ID)
-                                        .WithAwayTeamId(HOME_TEAM_ID)
+                                        .WithAwayTeamId(AWAY_TEAM_ID)
                                         .WithHomeTeamName(HOME_TEAM_NAME)
                                         .WithAwayTeamName(AWAY_TEAM_NAME)
                                         .Build();

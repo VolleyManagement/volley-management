@@ -6,6 +6,7 @@
     using System.Web;
     using System.Web.Mvc;
     using Contracts;
+    using Domain.GameResultsAggregate;
     using ViewModels.GameResults;
     using ViewModels.Teams;
 

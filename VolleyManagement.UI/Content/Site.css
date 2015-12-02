@@ -54,3 +54,7 @@ div#menu a.selected:hover{background-color: #666}
     display: inline-block;
     width: auto;
 }
+
+.color_red {
+    color: red;
+}

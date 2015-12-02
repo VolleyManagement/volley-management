@@ -273,6 +273,8 @@
     <Content Include="Areas\Admin\Views\Roles\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\Details.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\TournamentResults.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

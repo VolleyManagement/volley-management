@@ -26,11 +26,9 @@
 
     <div class="form-group">
         Sets score:
-        @Html.EditorFor(model => model.HomeSetsScore, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.HomeSetsScore, "", new { @class = "text-danger" })
+        @Html.EditorFor(model => model.SetsScore.Home, new { htmlAttributes = new { @class = "form-control" } })
 
-        @Html.EditorFor(model => model.AwaySetsScore, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.AwaySetsScore, "", new { @class = "text-danger" })
+        @Html.EditorFor(model => model.SetsScore.Away, new { htmlAttributes = new { @class = "form-control" } })
     </div>
 
     <div class="form-group">
@@ -41,57 +39,19 @@
         </label>
     </div>
 
+    for (int i = 0; i < Model.SetScores.Count; i++)
+    {
+        <div class="form-group">
+            Set #@(i + 1):
+            @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control" } })
+
+            @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    }
+
     <div class="form-group">
-        Set #1:
-        @Html.EditorFor(model => model.HomeSet1Score, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.HomeSet1Score, "", new { @class = "text-danger" })
-
-        @Html.EditorFor(model => model.AwaySet1Score, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.AwaySet1Score, "", new { @class = "text-danger" })
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
     </div>
-
-        <div class="form-group">
-            Set #2:
-
-            @Html.EditorFor(model => model.HomeSet2Score, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.HomeSet2Score, "", new { @class = "text-danger" })
-
-            @Html.EditorFor(model => model.AwaySet2Score, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.AwaySet2Score, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            Set #3:
-            @Html.EditorFor(model => model.HomeSet3Score, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.HomeSet3Score, "", new { @class = "text-danger" })
-
-            @Html.EditorFor(model => model.AwaySet3Score, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.AwaySet3Score, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            Set #4:
-
-            @Html.EditorFor(model => model.HomeSet4Score, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.HomeSet4Score, "", new { @class = "text-danger" })
-
-            @Html.EditorFor(model => model.AwaySet4Score, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.AwaySet4Score, "", new { @class = "text-danger" })
-        </div>
-
-        <div class="form-group">
-            Set #5:
-            @Html.EditorFor(model => model.HomeSet5Score, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.HomeSet5Score, "", new { @class = "text-danger" })
-
-            @Html.EditorFor(model => model.AwaySet5Score, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.AwaySet5Score, "", new { @class = "text-danger" })
-
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
 }

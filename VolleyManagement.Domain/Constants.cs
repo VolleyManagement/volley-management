@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Domain
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>

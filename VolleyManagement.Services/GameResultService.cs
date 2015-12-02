@@ -91,9 +91,9 @@
         private void ValidateGameResult(GameResult gameResult)
         {
             ValidateTeams(gameResult.HomeTeamId, gameResult.AwayTeamId);
-            ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
             ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
             ValidateSetScores(gameResult.SetScores, gameResult.IsTechnicalDefeat);
+            ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
         }
 
         private void ValidateTeams(int homeTeamId, int awayTeamId)
@@ -101,14 +101,6 @@
             if (GameResultValidation.AreTheSameTeams(homeTeamId, awayTeamId))
             {
                 throw new ArgumentException(Resources.GameResultSameTeam);
-            }
-        }
-
-        private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
-        {
-            if (!GameResultValidation.AreSetScoresMatched(setsScore, setScores))
-            {
-                throw new ArgumentException(Resources.GameResultSetsScoreNoMatchSetScores);
             }
         }
 
@@ -152,10 +144,18 @@
                             Resources.GameResultOptionalSetScores,
                             GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
                             GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
+                            GameResultConstants.UNPLAYED_SET_HOME_SCORE,
+                            GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
                     }
                 }
+            }
+        }
+
+        private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
+        {
+            if (!GameResultValidation.AreSetScoresMatched(setsScore, setScores))
+            {
+                throw new ArgumentException(Resources.GameResultSetsScoreNoMatchSetScores);
             }
         }
 

@@ -106,8 +106,8 @@
 
         private static bool IsTechnicalDefeatOptionalSetScoreValid(Score setScore)
         {
-            return setScore.Home == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE
-                && setScore.Away == Constants.GameResult.TECHNICAL_DEFEAT_SET_LOSER_SCORE;
+            return setScore.Home == Constants.GameResult.UNPLAYED_SET_HOME_SCORE
+                && setScore.Away == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
         }
 
         private static bool IsOrdinaryRequiredSetScoreValid(Score setScore)

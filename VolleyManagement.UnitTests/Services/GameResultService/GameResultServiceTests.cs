@@ -97,24 +97,6 @@
         }
 
         /// <summary>
-        /// Test for Create method. The final score of the game (sets score) does not match set scores.
-        /// Exception is thrown during creation.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultSetsScoreNoMatchSetScores_ExceptionThrown()
-        {
-            // Arrange
-            var newGameResult = new GameResultBuilder().WithSetsScoreNoMatchSetScores().Build();
-
-            // Act
-            _sut.Create(newGameResult);
-
-            // Assert
-            VerifyCreate(newGameResult, Times.Never());
-        }
-
-        /// <summary>
         /// Test for Create method. The final score of the game (sets score) is invalid.
         /// Exception is thrown during creation.
         /// </summary>
@@ -158,6 +140,24 @@
         {
             // Arrange
             var newGameResult = new GameResultBuilder().WithInvalidOptionalSetScores().Build();
+
+            // Act
+            _sut.Create(newGameResult);
+
+            // Assert
+            VerifyCreate(newGameResult, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create method. The final score of the game (sets score) does not match set scores.
+        /// Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameResultSetsScoreNoMatchSetScores_ExceptionThrown()
+        {
+            // Arrange
+            var newGameResult = new GameResultBuilder().WithSetsScoreNoMatchSetScores().Build();
 
             // Act
             _sut.Create(newGameResult);

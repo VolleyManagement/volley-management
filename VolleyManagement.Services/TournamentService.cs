@@ -136,6 +136,7 @@
         {
             ValidateTournament(tournamentToEdit, isUpdate: true);
             _tournamentRepository.Update(tournamentToEdit);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -145,6 +146,7 @@
         public void Delete(int id)
         {
             _tournamentRepository.Remove(id);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         #endregion

@@ -15,7 +15,7 @@
     public class TournamentsController : Controller
     {
         private const int DAYS_TO_APPLYING_PERIOD_START = 1;
-        private const int DAYS_FOR_APPLYING_PERIOD = Constants.Tournament.DAYS_BETWEEN_START_AND_END_APPLYING_DATE;
+        private const int DAYS_FOR_APPLYING_PERIOD = 30;
         private const int DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START = 1;
         private const int DAYS_FOR_GAMES_PERIOD = 120;
         private const int DAYS_FROM_GAMES_START_TO_TRANSFER_START = 1;

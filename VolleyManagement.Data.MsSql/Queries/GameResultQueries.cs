@@ -71,15 +71,15 @@
                 TournamentId = gr.TournamentId,
                 HomeTeamId = gr.HomeTeamId,
                 AwayTeamId = gr.AwayTeamId,
-                SetsScore = new Score(gr.HomeSetsScore, gr.AwaySetsScore),
+                SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore },
                 IsTechnicalDefeat = gr.IsTechnicalDefeat,
                 SetScores = new List<Score>
                 {
-                    new Score(gr.HomeSet1Score, gr.AwaySet1Score),
-                    new Score(gr.HomeSet2Score, gr.AwaySet2Score),
-                    new Score(gr.HomeSet3Score, gr.AwaySet3Score),
-                    new Score(gr.HomeSet4Score, gr.AwaySet4Score),
-                    new Score(gr.HomeSet5Score, gr.AwaySet5Score)
+                    new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score },
+                    new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score },
+                    new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score },
+                    new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score },
+                    new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score }
                 }
             };
         }

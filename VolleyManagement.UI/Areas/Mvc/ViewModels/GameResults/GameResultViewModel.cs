@@ -15,7 +15,7 @@
         /// </summary>
         public GameResultViewModel()
         {
-            this.SetScores = Enumerable.Repeat(new Score(), 5).ToList();
+            this.SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
         }
 
         /// <summary>

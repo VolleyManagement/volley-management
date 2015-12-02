@@ -20,6 +20,11 @@
                         .Include(
                                 "~/Scripts/jquery-{version}.js",
                                 "~/Scripts/bootstrap.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/uivalidation")
+                       .Include(
+                               "~/Scripts/jquery.validate.js",
+                               "~/Scripts/jquery.validate.unobtrusive.js"));
         }
     }
 }

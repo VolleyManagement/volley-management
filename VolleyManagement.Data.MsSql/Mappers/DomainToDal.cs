@@ -32,7 +32,6 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-            to.Divisions.Clear();
             to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
         }
 

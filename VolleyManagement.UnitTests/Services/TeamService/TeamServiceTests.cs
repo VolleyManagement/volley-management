@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
@@ -68,7 +67,6 @@
             _kernel.Bind<IQuery<Team, FindByCaptainIdCriteria>>().ToConstant(_getTeamByCaptainQueryMock.Object);
             _kernel.Bind<IQuery<List<Team>, GetAllCriteria>>().ToConstant(_getAllTeamsQueryMock.Object);
             _kernel.Bind<IQuery<List<Player>, TeamPlayersCriteria>>().ToConstant(_getTeamRosterQueryMock.Object);
-
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _playerRepositoryMock.Setup(pr => pr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
@@ -118,10 +116,8 @@
             sut.Create(newTeam);
 
             // Assert
-            _teamRepositoryMock.Verify(
-                tr => tr.Add(It.Is<Team>(t => TeamsAreEqual(t, newTeam))), Times.Once());
             Assert.AreNotEqual(newTeam.Id, UNASSIGNED_ID);
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Once);
+            VerifyCreateTeam(newTeam, Times.Once());
         }
 
         /// <summary>
@@ -139,6 +135,7 @@
             // Act
             var sut = _kernel.Get<TeamService>();
             bool gotException = false;
+
             try
             {
                 sut.Create(newTeam);
@@ -149,9 +146,8 @@
             }
 
             // Assert
-            _teamRepositoryMock.Verify(tr => tr.Add(It.IsAny<Team>()), Times.Never());
             Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreateTeam(newTeam, Times.Never());
         }
 
         /// <summary>
@@ -179,6 +175,7 @@
             // Act
             var sut = _kernel.Get<TeamService>();
             bool gotException = false;
+
             try
             {
                 sut.Create(newTeam);
@@ -189,9 +186,8 @@
             }
 
             // Assert
-            _teamRepositoryMock.Verify(tr => tr.Add(It.IsAny<Team>()), Times.Never());
             Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreateTeam(newTeam, Times.Never());
         }
 
         /// <summary>
@@ -222,9 +218,8 @@
             sut.Create(newTeam);
 
             // Assert
-            _teamRepositoryMock.Verify(tr => tr.Add(It.IsAny<Team>()), Times.Once());
-            _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => p.Id == SPECIFIC_PLAYER_ID)), Times.Once());
             Assert.AreEqual(captain.TeamId, SPECIFIC_TEAM_ID);
+            VerifyCreateTeam(newTeam, Times.Once());
         }
 
         /// <summary>
@@ -243,8 +238,7 @@
             ts.Delete(SPECIFIC_TEAM_ID);
 
             // Assert
-            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(teamId => teamId == SPECIFIC_TEAM_ID)), Times.Once());
-            _unitOfWorkMock.Verify(tr => tr.Commit());
+            VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once());
         }
 
         /// <summary>
@@ -261,6 +255,7 @@
             // Act
             var ts = _kernel.Get<TeamService>();
             bool gotException = false;
+
             try
             {
                 ts.Delete(SPECIFIC_TEAM_ID);
@@ -271,9 +266,8 @@
             }
 
             // Assert
-            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(teamId => teamId == SPECIFIC_TEAM_ID)), Times.Once());
             Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Never());
+            VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once(), Times.Never());
         }
 
         /// <summary>
@@ -292,8 +286,7 @@
             ts.Delete(SPECIFIC_TEAM_ID);
 
             // Assert
-            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(teamId => teamId == SPECIFIC_TEAM_ID)), Times.Once());
-            _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Once());
+            VerifyDeleteTeam(SPECIFIC_TEAM_ID, Times.Once());
         }
 
         /// <summary>
@@ -332,6 +325,7 @@
             // Act
             var ts = _kernel.Get<TeamService>();
             bool gotException = false;
+
             try
             {
                 ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID);
@@ -342,9 +336,8 @@
             }
 
             // Assert
-            _playerRepositoryMock.Verify(pr => pr.Update(It.IsAny<Player>()), Times.Never());
             Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Never());
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Never());
         }
 
         /// <summary>
@@ -361,6 +354,7 @@
             // Act
             var ts = _kernel.Get<TeamService>();
             bool gotException = false;
+
             try
             {
                 ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID);
@@ -371,11 +365,8 @@
             }
 
             // Assert
-            _playerRepositoryMock.Verify(
-                                         pr => pr.Update(It.Is<Player>(player => player.Id == SPECIFIC_PLAYER_ID)),
-                                         Times.Never());
             Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Never());
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Never());
         }
 
         /// <summary>
@@ -402,6 +393,7 @@
             // Act
             var ts = _kernel.Get<TeamService>();
             bool gotException = false;
+
             try
             {
                 ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, ANOTHER_TEAM_ID);
@@ -412,9 +404,8 @@
             }
 
             // Assert
-            _playerRepositoryMock.Verify(pr => pr.Update(It.IsAny<Player>()), Times.Never());
             Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Never());
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, ANOTHER_TEAM_ID, Times.Never());
         }
 
         /// <summary>
@@ -434,11 +425,7 @@
             ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID);
 
             // Assert
-            _playerRepositoryMock.Verify(
-                    pr => pr.Update(It.Is<Player>(p => p.Id == SPECIFIC_PLAYER_ID && p.TeamId == SPECIFIC_TEAM_ID)),
-                    Times.Once());
-
-            _unitOfWorkMock.Verify(tr => tr.Commit(), Times.Once());
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Once());
         }
 
         private bool TeamsAreEqual(Team x, Team y)
@@ -459,6 +446,30 @@
         private void MockGetTeamRosterQuery(List<Player> players)
         {
             _getTeamRosterQueryMock.Setup(tr => tr.Execute(It.IsAny<TeamPlayersCriteria>())).Returns(players);
+        }
+
+        private void VerifyCreateTeam(Team team, Times times)
+        {
+            _teamRepositoryMock.Verify(tr => tr.Add(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyEditPlayer(int playerId, int teamId, Times times)
+        {
+            _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => p.Id == playerId && p.TeamId == teamId)), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyDeleteTeam(int teamId, Times times)
+        {
+            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == teamId)), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyDeleteTeam(int teamId, Times repositoryTimes, Times unitOfWorkTimes)
+        {
+            _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == teamId)), repositoryTimes);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
         }
     }
 }

@@ -4,11 +4,9 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Linq.Expressions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
@@ -151,9 +149,7 @@
             sut.Edit(testTournament);
 
             // Assert
-            _tournamentRepositoryMock.Verify(
-                tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, testTournament))),
-                Times.Once());
+            VerifyEditTournament(testTournament, Times.Once());
         }
 
         /// <summary>
@@ -173,7 +169,7 @@
             sut.Edit(testTournament);
 
             // Assert
-            VerifyEdit(testTournament, Times.Never());
+            VerifyEditTournament(testTournament, Times.Never());
         }
 
         /// <summary>
@@ -202,7 +198,7 @@
             sut.Edit(nonUniqueNameTournament);
 
             // Assert
-            VerifyEdit(nonUniqueNameTournament, Times.Never());
+            VerifyEditTournament(nonUniqueNameTournament, Times.Never());
         }
 
         /// <summary>
@@ -226,7 +222,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -251,7 +247,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -274,7 +270,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -292,7 +288,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Once());
+            VerifyCreateTournament(newTournament, Times.Once());
         }
 
         /// <summary>
@@ -312,7 +308,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -332,7 +328,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -360,7 +356,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -383,7 +379,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -411,7 +407,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -438,7 +434,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -466,7 +462,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -496,8 +492,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _tournamentRepositoryMock.Verify(
-                tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, newTournament))));
+            VerifyCreateTournament(newTournament, Times.Once());
         }
 
         /// <summary>
@@ -517,7 +512,7 @@
             sut.Create(testTournament);
 
             // Assert
-            VerifyCreate(testTournament, Times.Never());
+            VerifyCreateTournament(testTournament, Times.Never());
         }
 
         /// <summary>
@@ -538,7 +533,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -556,7 +551,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -574,7 +569,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -593,7 +588,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -612,7 +607,7 @@
             sut.Create(newTournament);
 
             // Assert
-            VerifyCreate(newTournament, Times.Never());
+            VerifyCreateTournament(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -649,50 +644,26 @@
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
 
-        /// <summary>
-        /// Find out whether two tournament objects have the same properties.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given tournaments have the same properties.</returns>
         private bool TournamentsAreEqual(Tournament x, Tournament y)
         {
-            TournamentComparer comparer = new TournamentComparer();
-            return comparer.Compare(x, y) == 0;
+            return new TournamentComparer().Compare(x, y) == 0;
         }
 
-        /// <summary>
-        /// Mocks get all tournaments query.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
         private void MockGetAllTournamentsQuery(IEnumerable<Tournament> testData)
         {
             _getAllQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
         }
 
-        /// <summary>
-        /// Mocks Execute method for get by ID.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
         private void MockGetByIdQuery(Tournament testData)
         {
             _getByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
         }
 
-        /// <summary>
-        /// Mocks Execute method for get by unique criteria.
-        /// </summary>
-        /// <param name="testData">Test data to mock.</param>
         private void MockGetUniqueTournamentQuery(Tournament testData)
         {
             _uniqueTournamentQueryMock.Setup(tr => tr.Execute(It.IsAny<UniqueTournamentCriteria>())).Returns(testData);
         }
 
-        /// <summary>
-        /// Creating any tournament with required ID
-        /// </summary>
-        /// <param name="id">Required ID</param>
-        /// <returns>Created tournament</returns>
         private Tournament CreateAnyTournament(int id)
         {
             return new TournamentBuilder()
@@ -705,10 +676,6 @@
                 .Build();
         }
 
-        /// <summary>
-        /// Builds a list of actual tournaments
-        /// </summary>
-        /// <returns>List of actual tournaments</returns>
         private List<Tournament> BuildActualTournamentsList()
         {
             return new TournamentServiceTestFixture()
@@ -757,29 +724,15 @@
                             .Build();
         }
 
-        private void VerifyCreate(Tournament tournament, Times times)
+        private void VerifyCreateTournament(Tournament tournament, Times times)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.Add(tournament), times);
+            _tournamentRepositoryMock.Verify(tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
         }
 
-        private void VerifyEdit(Tournament tournament, Times times)
+        private void VerifyEditTournament(Tournament tournament, Times times)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.Update(tournament), times);
-        }
-
-        /// <summary>
-        /// Creates list of divisions with duplicates
-        /// </summary>
-        /// <returns>Collection of divisions</returns>
-        private List<Division> CreateDivisionsListNotUnique()
-        {
-            const string DIVISION_NAME = "Simple Division";
-            return new List<Division>
-            {
-                new Division { Name = DIVISION_NAME },
-                new Division { Name = "Division" },
-                new Division { Name = DIVISION_NAME }
-            };
+            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
     }
 }

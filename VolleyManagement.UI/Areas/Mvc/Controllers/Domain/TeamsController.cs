@@ -96,6 +96,10 @@
             }
             else
             {
+                if (this.Request.IsAjaxRequest())
+                {
+                    return this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                }
                 return this.RedirectToAction("Index");
             }
         }

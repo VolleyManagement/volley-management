@@ -215,16 +215,17 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <returns>List of free players</returns>
         public JsonResult GetFreePlayers(string searchString, bool isCaptain, string selectedPlayers)
         {
-            searchString = HttpUtility.UrlDecode(searchString);
+            searchString = HttpUtility.UrlDecode(searchString).Replace(" ", "");
+
             var query = this._playerService.Get()
-                            .Where(p => (p.FirstName + p.LastName).Contains(searchString));
+                            .Where(p => (p.FirstName + p.LastName).Contains(searchString) || (p.LastName + p.FirstName).Contains(searchString));
 
             if (!string.IsNullOrEmpty(selectedPlayers))
             {
                 var selectedIds = this.GetIntCollection(selectedPlayers);
                 query = isCaptain
                         ? query.Where(p => selectedIds.Contains(p.Id) || p.TeamId == null)
-                        : query.Where(p => !selectedIds.Contains(p.Id) || p.TeamId == null);
+                        : query.Where(p => !selectedIds.Contains(p.Id) && p.TeamId == null);
 
             }
             else 

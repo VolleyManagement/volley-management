@@ -1,13 +1,12 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+﻿@using System.Web.Optimization
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
 
 @{
     ViewBag.Title = Resources.TeamViews.CreateTeamTitle;
 }
 
-<script src="~/Scripts/TeamOperationScripts.js"></script>
-
 <h2>@ViewBag.Title</h2>
-<div vmscope="team_edit">
+<div vm_scope="team_edit">
     @using (Html.BeginForm())
     {
         @Html.ValidationSummary(true)
@@ -18,7 +17,7 @@
         @Html.Partial("_CreateEdit", Model)
 
         <p>
-            <input type="submit" value="@Resources.TeamViews.Create" />
+            <button id="createTeamButton">@Resources.TeamViews.Create</button>
         </p>
     </fieldset>
 

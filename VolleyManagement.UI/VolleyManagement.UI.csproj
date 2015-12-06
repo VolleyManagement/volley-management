@@ -315,9 +315,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\scripts.js" />
-    <Content Include="Scripts\TeamOperationScripts.js" />
+    <Content Include="Scripts\VMScripts\TeamOperations\List.js" />
+    <Content Include="Scripts\VMScripts\TeamOperations\CreateEdit.js" />
     <Content Include="Scripts\UserActions.js" />
-    <Content Include="Scripts\VMScripts.js" />
+    <Content Include="Scripts\VMScripts\VMScripts.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

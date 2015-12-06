@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Optimization
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -7,11 +8,9 @@
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/themes/base/all.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    @Scripts.Render("~/bundles/bootstrapscripts")
+    @Scripts.Render("~/bundles/jqueryui")
     <script src="~/Scripts/UserActions.js"></script>
-    <script src="~/Scripts/VMScripts.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">

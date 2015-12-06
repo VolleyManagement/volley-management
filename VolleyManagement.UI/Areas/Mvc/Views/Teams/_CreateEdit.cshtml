@@ -1,6 +1,24 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+@using System.Web.Optimization
 @using System.Web.Script.Serialization;
+@using VolleyManagement.UI.App_GlobalResources
 
+@{
+    string captainFullName = string.Empty;
+    string teamPlayersJson = string.Empty;
+    string teamCaptainRequiredMessage = ViewModelResources.TeamCaptainRequired;
+    int captainId = 0;
+    if (Model.Captain != null)
+    {
+        captainFullName = Model.Captain.FullName;
+        captainId = Model.Captain.Id;
+    }
+    
+    if(Model.Roster != null)
+    {
+        teamPlayersJson = new JavaScriptSerializer().Serialize(Model.Roster);   
+    }
+}
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
 </div>
@@ -18,38 +36,24 @@
 </div>
 
 <div class="editor-label">
-    <label for="Captain_FullNameText">Captain</label>
+    @Html.LabelFor(model => model.Captain)
+</div>
+<div class="editor-label">
+    <input class="text-box single-line"
+           id="Captain_FullName"
+           name="Captain.FullName"
+           type="text"
+           value="@captainFullName"
+           data-val="true"
+           data-val-required= '@teamCaptainRequiredMessage'
+           vm_playerid="@captainId"/>
+<span class="field-validation-valid" data-valmsg-for="Captain.FullName" data-valmsg-replace="true"></span>
 </div>
 
-@{
-    string captainFullName = string.Empty;
-    string teamPlayersJson = string.Empty;
-    int? captainId = null;
-    if (Model.Captain != null)
-    {
-        captainFullName = Model.Captain.FullName;
-        captainId = Model.Captain.Id;
-    }
-    
-    if(Model.Roster != null)
-    {
-        teamPlayersJson = new JavaScriptSerializer().Serialize(Model.Roster);   
-    }
-    <div class="editor-label">
-        <input class="text-box single-line"
-            id="captainFullName"
-            name="Captain.FullName"
-            type="text"
-            value="@captainFullName" />
-        <input class="hidden"
-            id="captainId"
-            name="Captain.Id"
-            value="@captainId" />
-    </div>
-}
-    <div class="editor-label">
-        @Html.LabelFor(model => model.Achievements)
-    </div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Achievements)
+</div>
 <div class="editor-label">
     @Html.EditorFor(model => model.Achievements)
     @Html.ValidationMessageFor(model => model.Achievements)
@@ -60,17 +64,18 @@
 <div>
     <h4>@Resources.TeamViews.RosterTitle</h4>
 
-    <br />  
-    
+    <br />
+
     <div class="dataForTeamPlayersTable" hidden>@teamPlayersJson</div>
 
-    <button class="addPlayerToTeamButton">@Resources.TeamViews.AddTeamPlayer</button>
     <table id="teamRoster" class="table">
         <tr>
             <th>@Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)</th>
             <th class="hidden"></th>
-            <th class="hidden"></th>
         </tr>
     </table>
 </div>
+
+@Scripts.Render("~/bundles/jqueryvalidate")
+@Scripts.Render("~/bundles/teameditscripts")
 

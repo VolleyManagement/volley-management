@@ -1,4 +1,5 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+﻿@using System.Web.Optimization
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
 
 @{
     ViewBag.Title = Resources.TeamViews.EditTeamTitle;
@@ -17,7 +18,7 @@
         @Html.Partial("_CreateEdit", Model)
 
         <p>
-            <input type="submit" value="@Resources.TeamViews.Save" />
+            <button id="saveTeamButton">@Resources.TeamViews.Save</button> 
         </p>
     </fieldset>
     }

@@ -8,6 +8,14 @@ namespace VolleyManagement.Data.MsSql.Entities
     public class UserEntity
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="UserEntity"/> class.
+        /// </summary>
+        public UserEntity()
+        {
+            LoginProviders = new List<LoginInfoEntity>();
+        }
+
+        /// <summary>
         /// Gets or sets id of user
         /// </summary>
         public int Id { get; set; }

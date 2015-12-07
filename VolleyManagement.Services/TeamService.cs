@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
@@ -19,17 +18,11 @@
     public class TeamService : ITeamService
     {
         private readonly ITeamRepository _teamRepository;
-
         private readonly IPlayerRepository _playerRepository;
-
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
-
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
-
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
-
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
-
         private readonly IQuery<List<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
 
         /// <summary>
@@ -56,8 +49,8 @@
             _getTeamByIdQuery = getTeamByIdQuery;
             _getPlayerByIdQuery = getPlayerByIdQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
-            this._getAllTeamsQuery = getAllTeamsQuery;
-            this._getTeamRosterQuery = getTeamRosterQuery;
+            _getAllTeamsQuery = getAllTeamsQuery;
+            _getTeamRosterQuery = getTeamRosterQuery;
         }
 
         /// <summary>
@@ -75,7 +68,8 @@
         /// <param name="teamToCreate">A Team to create.</param>
         public void Create(Team teamToCreate)
         {
-            Player captain = this.GetPlayerById(teamToCreate.CaptainId);
+            Player captain = GetPlayerById(teamToCreate.CaptainId);
+
             if (captain == null)
             {
                 // ToDo: Revisit this case
@@ -122,6 +116,7 @@
             }
 
             IEnumerable<Player> roster = GetTeamRoster(teamId);
+
             foreach (var player in roster)
             {
                 player.TeamId = null;
@@ -138,7 +133,7 @@
         /// <returns>Team's captain</returns>
         public Player GetTeamCaptain(Team team)
         {
-            return this.GetPlayerById(team.CaptainId);
+            return GetPlayerById(team.CaptainId);
         }
 
         /// <summary>
@@ -148,8 +143,7 @@
         /// <returns>Collection of team's players</returns>
         public List<Player> GetTeamRoster(int teamId)
         {
-            var criteria = new TeamPlayersCriteria { TeamId = teamId };
-            return _getTeamRosterQuery.Execute(criteria);
+            return _getTeamRosterQuery.Execute(new TeamPlayersCriteria { TeamId = teamId });
         }
 
         /// <summary>
@@ -159,7 +153,8 @@
         /// <param name="teamId">Id of team which should be set to player</param>
         public void UpdatePlayerTeam(int playerId, int teamId)
         {
-            Player player = this.GetPlayerById(playerId);
+            Player player = GetPlayerById(playerId);
+
             if (player == null)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
@@ -169,6 +164,7 @@
             if (player.TeamId != null)
             {
                 var existingTeam = GetPlayerLedTeam(player.Id);
+
                 if (existingTeam != null && teamId != existingTeam.Id)
                 {
                     var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
@@ -178,6 +174,7 @@
             }
 
             Team team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
+
             if (team == null)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamId);
@@ -200,14 +197,12 @@
 
         private Team GetPlayerLedTeam(int playerId)
         {
-            var criteria = new FindByCaptainIdCriteria { CaptainId = playerId };
-            return _getTeamByCaptainQuery.Execute(criteria);
+            return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
         }
 
         private Player GetPlayerById(int id)
         {
-            var criteria = new FindByIdCriteria { Id = id };
-            return _getPlayerByIdQuery.Execute(criteria);
+            return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
     }
 }

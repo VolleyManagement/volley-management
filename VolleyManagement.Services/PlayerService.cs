@@ -18,13 +18,9 @@
     public class PlayerService : IPlayerService
     {
         private readonly IPlayerRepository _playerRepository;
-
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
-
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
-
         private readonly IQuery<IQueryable<Player>, GetAllCriteria> _getAllPlayersQuery;
-
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
 
         /// <summary>
@@ -70,7 +66,6 @@
             }
 
             _playerRepository.Add(playerToCreate);
-            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -80,8 +75,7 @@
         /// <returns>A found Player.</returns>
         public Player Get(int id)
         {
-            var criteria = new FindByIdCriteria { Id = id };
-            return _getPlayerByIdQuery.Execute(criteria);
+            return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
         /// <summary>
@@ -101,7 +95,7 @@
             ////}
 
             ////if (playerToEdit.TeamId != null
-            ////    && this._teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
+            ////    && _teamRepository.FindWhere(t => t.Id == playerToEdit.TeamId).SingleOrDefault() == null)
             ////{
             ////    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToEdit.TeamId);
             ////}
@@ -125,6 +119,7 @@
         public void Delete(int id)
         {
             Team playerTeam = GetPlayerLedTeam(id);
+
             if (playerTeam != null)
             {
                 var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
@@ -155,19 +150,17 @@
                 return null;
             }
 
-            return this.GetTeamById(player.TeamId.GetValueOrDefault());
+            return GetTeamById(player.TeamId.GetValueOrDefault());
         }
 
         private Team GetPlayerLedTeam(int playerId)
         {
-            var criteria = new FindByCaptainIdCriteria { CaptainId = playerId };
-            return _getTeamByCaptainQuery.Execute(criteria);
+            return _getTeamByCaptainQuery.Execute(new FindByCaptainIdCriteria { CaptainId = playerId });
         }
 
         private Team GetTeamById(int id)
         {
-            var criteria = new FindByIdCriteria { Id = id };
-            return _getTeamByIdQuery.Execute(criteria);
+            return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
     }
 }

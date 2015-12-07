@@ -20,7 +20,7 @@
 }
 
 function openChoosingPlayersWindow(windowName) {
-    chosingWindow = window.open("/Mvc/Players/ChoosePlayers",
+    chosingWindow = window.open("/Players/ChoosePlayers",
                                 windowName,
                                 "width=800, height=400, top =200, left=200, status=0, location=0, resizable=1");
 }

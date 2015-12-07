@@ -77,7 +77,6 @@
             to.UserName = from.UserName;
             to.Email = from.Email;
             to.CellPhone = from.PhoneNumber;
-            to.LoginProviders.Clear();
             to.LoginProviders = from.LoginProviders
                 .Select(l =>
                 {

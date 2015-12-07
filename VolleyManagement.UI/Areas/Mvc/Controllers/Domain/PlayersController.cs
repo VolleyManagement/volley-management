@@ -205,8 +205,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         public JsonResult GetFreePlayers(string searchString, bool isCaptain, string selectedPlayers)
         {
             searchString = HttpUtility.UrlDecode(searchString).Replace(" ", "");
-            textToSearch = textToSearch.Trim();
-
             var query = this._playerService.Get()
                             .Where(p => (p.FirstName + p.LastName).Contains(searchString) || (p.LastName + p.FirstName).Contains(searchString));
 

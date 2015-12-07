@@ -20,15 +20,15 @@
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrapscripts")
                         .Include("~/Scripts/jquery-{version}.js",
-                                "~/Scripts/bootstrap.min.js",
-                                "~/Scripts/VmScripts/VmScripts.js"));
+                                 "~/Scripts/bootstrap.min.js",
+                                 "~/Scripts/VmScripts/VmScripts.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui")
                         .Include("~/Scripts/jquery-ui-{version}.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryvalidate")
+            bundles.Add(new ScriptBundle("~/bundles/jqueryvalidation")
                         .Include("~/Scripts/jquery.validate.min.js",
-                                "~/Scripts/jquery.validate.unobtrusive.min.js")); 
+                                 "~/Scripts/jquery.validate.unobtrusive.min.js")); 
 
 			bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
                       .Include("~/Scripts/UserActions.js"));								

@@ -32,7 +32,6 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-            to.Divisions.Clear();
             to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
         }
 
@@ -78,7 +77,6 @@
             to.UserName = from.UserName;
             to.Email = from.Email;
             to.CellPhone = from.PhoneNumber;
-            to.LoginProviders.Clear();
             to.LoginProviders = from.LoginProviders
                 .Select(l =>
                 {

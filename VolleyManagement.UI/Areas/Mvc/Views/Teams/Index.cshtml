@@ -29,7 +29,12 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
+<<<<<<< HEAD
                 <button class='deleteTeamButton' >@Resources.TeamViews.Delete</button>
+=======
+                @Html.ActionLink(@Resources.TeamViews.Details, "Details", new { id = item.Id })
+                <input type="button" value="@Resources.TeamViews.Delete" onclick="deleteTeam(@item.Id, '@item.Name')" />
+>>>>>>> master
             </td>
         </tr>
     }

@@ -1,17 +1,22 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
+    using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
 
+    using Contracts.Authentication;
+    using Contracts.Authentication.Models;
+    using Contracts.Authorization;
+
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
 
-    using VolleyManagement.Contracts.Authentication;
-    using VolleyManagement.Contracts.Authentication.Models;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Account;
+    using Services.Authorization;
+    using ViewModels.Account;
+    using ViewModels.Users;
 
     /// <summary>
     /// Manages Sign In/Out process
@@ -20,14 +25,27 @@
     public class AccountController : Controller
     {
         private readonly IVolleyUserManager<UserModel> _userManager;
+        private readonly IRolesService _rolesService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
         /// </summary>
         /// <param name="userManager"> User Manager </param>
-        public AccountController(IVolleyUserManager<UserModel> userManager)
+        /// <param name="rolesService"> Roles service </param>
+        public AccountController(
+                    IVolleyUserManager<UserModel> userManager,
+                    IRolesService rolesService)
         {
             this._userManager = userManager;
+            this._rolesService = rolesService;
+        }
+
+        private int CurrentUserId
+        {
+            get
+            {
+                return System.Convert.ToInt32(User.Identity.GetUserId());
+            }
         }
 
         private IAuthenticationManager AuthManager
@@ -84,6 +102,63 @@
 
             ViewBag.returnUrl = returnUrl;
             return View();
+        }
+
+        /// <summary>
+        /// Return view represents account information.
+        /// </summary>
+        /// <returns>View to represent</returns>
+        [Authorize]
+        public async Task<ActionResult> Details()
+        {
+            var user = await _userManager.FindByIdAsync(CurrentUserId);
+            UserViewModel userViewModel = UserViewModel.Map(user);
+            return View(userViewModel);
+        }
+
+        /// <summary>
+        /// Return edit view.
+        /// </summary>
+        /// <returns> The <see cref="ActionResult"/>. </returns>
+        [Authorize]
+        public async Task<ActionResult> Edit()
+        {
+            var user = await _userManager.FindByIdAsync(CurrentUserId);
+            UserEditViewModel userEditViewModel = UserEditViewModel.Map(user);
+            return View(userEditViewModel);
+        }
+
+        /// <summary>
+        /// Post edit method
+        /// </summary>
+        /// <param name="editViewModel">Edit view model.</param>
+        /// <returns>Details action result</returns>
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> Edit(UserEditViewModel editViewModel)
+        {
+            if (CurrentUserId != editViewModel.Id && !User.IsInRole(Resources.AuthorizationRoles.Admin))
+            {
+                return View("AccessDenied");
+            }
+
+            if (this.ModelState.IsValid)
+            {
+                var userModel = await _userManager.FindByIdAsync(editViewModel.Id);
+                if (userModel == null)
+                {
+                    throw new ArgumentNullException(Resources.AccountController.InvalidEditEntityId);
+                }
+
+                userModel.PersonName = editViewModel.FullName;
+                userModel.PhoneNumber = editViewModel.CellPhone;
+                userModel.Email = editViewModel.Email;
+                await _userManager.UpdateAsync(userModel);
+
+                return RedirectToAction("Details");
+            }
+
+            return View(editViewModel);
         }
 
         /// <summary>

@@ -8,9 +8,7 @@
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/themes/base/all.css" rel="stylesheet" type="text/css" />
-    @Scripts.Render("~/bundles/bootstrapscripts")
-    @Scripts.Render("~/bundles/jqueryui")
-    <script src="~/Scripts/UserActions.js"></script>
+    
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -34,5 +32,10 @@
     <div id="content">
         @RenderBody()
     </div>
+
+    @Scripts.Render("~/bundles/bootstrapscripts")
+	@Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/jqueryvalidation")
+    @Scripts.Render("~/bundles/useractionscripts")
 </body>
 </html>

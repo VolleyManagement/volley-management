@@ -1,13 +1,23 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
     using System;
+    using System.Collections.Generic;
     using VolleyManagement.Crosscutting.Contracts.Providers;
+    using VolleyManagement.Domain.Properties;
 
     /// <summary>
     /// Tournament domain class.
     /// </summary>
     public class Tournament
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Tournament"/> class.
+        /// </summary>
+        public Tournament()
+        {
+            this.Divisions = new List<Division>();
+        }
+
         /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
@@ -98,11 +108,16 @@
         /// <summary>
         /// Gets or sets transfer end of a tournament
         /// </summary>
-        public DateTime TransferEnd { get; set; }
+        public DateTime? TransferEnd { get; set; }
 
         /// <summary>
         /// Gets or sets transfer start of a tournament
         /// </summary>
-        public DateTime TransferStart { get; set; }
+        public DateTime? TransferStart { get; set; }
+
+        /// <summary>
+        /// Divisions of the tournament
+        /// </summary>
+        public List<Division> Divisions { get; set; }
     }
 }

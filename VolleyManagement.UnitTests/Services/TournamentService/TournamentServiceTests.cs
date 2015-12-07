@@ -16,6 +16,7 @@
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -153,7 +154,6 @@
             _tournamentRepositoryMock.Verify(
                 tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, testTournament))),
                 Times.Once());
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
         }
 
         /// <summary>
@@ -173,7 +173,7 @@
             sut.Edit(testTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyEdit(testTournament, Times.Never());
         }
 
         /// <summary>
@@ -202,11 +202,36 @@
             sut.Edit(nonUniqueNameTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyEdit(nonUniqueNameTournament, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's applying start date comes before current date.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException), "Вы не можете указывать начало периода заявок в прошлом")]
+        public void Create_TournamentApplyingStartDateBeforeCurrentDate_ExceptionThrown()
+        {
+            const int APPLYING_PERIOD_START_DAYS_DELTA = -1;
+
+            // Arrange
+            var now = TimeProvider.Current.UtcNow;
+            var newTournament = new TournamentBuilder()
+                .WithApplyingPeriodStart(now.AddDays(APPLYING_PERIOD_START_DAYS_DELTA))
+                .Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
         /// Test for Create() method. Tournament's applying end date comes before tournament's applying start date.
+        /// Exception is thrown during tournament creation.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(TournamentValidationException), "Начало периода заявок должно быть раньше чем его окончание")]
@@ -226,7 +251,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -249,7 +274,65 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's transfer start date is null and tournament's transfer end date is null.
+        /// Tournament is created successfully.
+        /// </summary>
+        [TestMethod]
+        public void Create_TournamentNoTransferPeriod_TournamentCreated()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNoTransferPeriod().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(newTournament, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's transfer start date is null and tournament's transfer end date is not null.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException),
+            "При наличии трансферного периода необходимо указать дату начала периода")]
+        public void Create_TournamentNoTransferStart_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithTransferStart(null).Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(newTournament, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's transfer start date is not null and tournament's transfer end date is null.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(TournamentValidationException),
+            "При наличии трансферного периода необходимо указать дату окончания периода")]
+        public void Create_TournamentNoTransferEnd_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithTransferEnd(null).Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -277,7 +360,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -300,7 +383,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -328,7 +411,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -355,11 +438,12 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
         /// Test for Create() method. Tournament's games end date comes before tournament's games start date.
+        /// Exception is thrown during tournament creation.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(TournamentValidationException), "Начальная дата турнира должна следовать перед ее окончанием")]
@@ -382,7 +466,7 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -414,7 +498,6 @@
             // Assert
             _tournamentRepositoryMock.Verify(
                 tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, newTournament))));
-            _unitOfWorkMock.Verify(u => u.Commit());
         }
 
         /// <summary>
@@ -434,7 +517,7 @@
             sut.Create(testTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(testTournament, Times.Never());
         }
 
         /// <summary>
@@ -455,7 +538,81 @@
             sut.Create(newTournament);
 
             // Assert
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyCreate(newTournament, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's division count is out of range. Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Количество дивизионов в турнире не должно выходить за установленный диапазон")]
+        public void Create_TournamentDivisionCountOutOfRange_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNoDivisions().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(newTournament, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Tournament's divisions do not have unique names. Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Дивизионы в рамках турнира не могут иметь одинаковых названий")]
+        public void Create_TournamentDivisionNamesNotUnique_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNonUniqueNameDivisions().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(newTournament, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Group count in tournament's divisions is out of range.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Количество групп в дивизионе не должно выходить за установленный диапазон")]
+        public void Create_TournamentDivisionGroupCountOutOfRange_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithNoDivisionsGroups().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(newTournament, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. Groups in tournament's divisions do not have unique names.
+        /// Exception is thrown during tournament creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "Группы в рамках дивизиона не могут иметь одинаковых названий")]
+        public void Create_TournamentDivisionGroupNamesNotUnique_ExceptionThrown()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder().WithDivisionsNonUniqueNameGroups().Build();
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(newTournament);
+
+            // Assert
+            VerifyCreate(newTournament, Times.Never());
         }
 
         /// <summary>
@@ -598,6 +755,31 @@
                                             .WithTransferEnd(new DateTime(2015, 09, 10))
                                             .Build())
                             .Build();
+        }
+
+        private void VerifyCreate(Tournament tournament, Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.Add(tournament), times);
+        }
+
+        private void VerifyEdit(Tournament tournament, Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.Update(tournament), times);
+        }
+
+        /// <summary>
+        /// Creates list of divisions with duplicates
+        /// </summary>
+        /// <returns>Collection of divisions</returns>
+        private List<Division> CreateDivisionsListNotUnique()
+        {
+            const string DIVISION_NAME = "Simple Division";
+            return new List<Division>
+            {
+                new Division { Name = DIVISION_NAME },
+                new Division { Name = "Division" },
+                new Division { Name = DIVISION_NAME }
+            };
         }
     }
 }

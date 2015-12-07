@@ -51,20 +51,20 @@
         public IQueryable<Tournament> Find()
         {
             return this._dalTournaments.Select(t => new Tournament
-                {
-                    Id = t.Id,
-                    Name = t.Name,
-                    Description = t.Description,
-                    RegulationsLink = t.RegulationsLink,
-                    Scheme = (TournamentSchemeEnum)t.Scheme,
-                    Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
-                    GamesStart = t.GamesStart,
-                    GamesEnd = t.GamesEnd,
-                    ApplyingPeriodStart = t.ApplyingPeriodStart,
-                    ApplyingPeriodEnd = t.ApplyingPeriodEnd,
-                    TransferEnd = t.TransferEnd,
-                    TransferStart = t.TransferStart
-                }).ToArray().AsQueryable();
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Description = t.Description,
+                RegulationsLink = t.RegulationsLink,
+                Scheme = (TournamentSchemeEnum)t.Scheme,
+                Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
+                GamesStart = t.GamesStart,
+                GamesEnd = t.GamesEnd,
+                ApplyingPeriodStart = t.ApplyingPeriodStart,
+                ApplyingPeriodEnd = t.ApplyingPeriodEnd,
+                TransferEnd = t.TransferEnd,
+                TransferStart = t.TransferStart
+            }).ToArray().AsQueryable();
         }
 
         /// <summary>
@@ -93,7 +93,7 @@
 
             this._dalTournaments.Add(tournament);
             this._unitOfWork.Commit();
-            newEntity.Id = tournament.Id;
+            MapIdentifiers(newEntity, tournament);
         }
 
         /// <summary>
@@ -118,6 +118,23 @@
             var dalToRemove = new Entities.TournamentEntity { Id = id };
             this._dalTournaments.Attach(dalToRemove);
             this._dalTournaments.Remove(dalToRemove);
+        }
+
+        private void MapIdentifiers(Tournament to, TournamentEntity from)
+        {
+            to.Id = from.Id;
+            foreach (DivisionEntity divisionEntity in from.Divisions)
+            {
+                Division divisionDomain = to.Divisions.Where(d => d.Name == divisionEntity.Name).First();
+                divisionDomain.Id = divisionEntity.Id;
+                divisionDomain.TournamentId = divisionEntity.TournamentId;
+                foreach (GroupEntity groupEntity in divisionEntity.Groups)
+                {
+                    Group groupDomain = divisionDomain.Groups.Where(g => g.Name == groupEntity.Name).First();
+                    groupDomain.Id = groupEntity.Id;
+                    groupDomain.DivisionId = divisionEntity.Id;
+                }
+            }
         }
     }
 }

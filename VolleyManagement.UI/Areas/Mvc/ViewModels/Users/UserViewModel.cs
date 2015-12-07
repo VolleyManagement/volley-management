@@ -1,7 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Users
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using System.Linq;
+    using Contracts.Authentication.Models;
     using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.UI.App_GlobalResources;
 
@@ -74,6 +76,12 @@
         [StringLength(80)]
         public string Email { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Login Provider info list.
+        /// </summary>
+        [Display(Name = "LoginProviders", ResourceType = typeof(ViewModelResources))]
+        public List<string> LoginProviders { get; set; }
+
         #region Factory Methods
 
         /// <summary>
@@ -91,6 +99,25 @@
                 FullName = user.PersonName,
                 CellPhone = user.PhoneNumber,
                 Email = user.Email
+            };
+        }
+
+        /// <summary>
+        /// Maps contract entity to presentation
+        /// </summary>
+        /// <param name="user"> Contract object </param>
+        /// <returns> View model object </returns>
+        public static UserViewModel Map(VolleyManagement.Contracts.Authentication.Models.UserModel user)
+        {
+            return new UserViewModel
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Password = string.Empty,
+                FullName = user.PersonName,
+                CellPhone = user.PhoneNumber,
+                Email = user.Email,
+                LoginProviders = user.Logins.Select(p => p.LoginProvider).ToList()
             };
         }
 

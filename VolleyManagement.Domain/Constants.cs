@@ -88,6 +88,18 @@
 
             /// <summary>
             /// Constant defines validation key in tournament controller,
+            /// when transfer period has no end date
+            /// </summary>
+            public const string TRANSFER_END_MISSING = "TransferEndMissing";
+
+            /// <summary>
+            /// Constant defines validation key in tournament controller,
+            /// when transfer period has no start date
+            /// </summary>
+            public const string TRANSFER_START_MISSING = "TransferStartMissing";
+
+            /// <summary>
+            /// Constant defines validation key in tournament controller,
             /// when transfer period is before games start
             /// </summary>
             public const string TRANSFER_PERIOD_BEFORE_GAMES_START = "TransferPeriodBeforeGamesStart";
@@ -133,6 +145,42 @@
             /// Constant defines the transfer end capture
             /// </summary>
             public const string TRANSFER_END_CAPTURE = "Transfer end";
+
+            /// <summary>
+            /// Constant defines minimal value of division count
+            /// </summary>
+            public const int MIN_DIVISIONS_COUNT = 1;
+
+            /// <summary>
+            /// Constant defines maximal value of division count
+            /// </summary>
+            public const int MAX_DIVISIONS_COUNT = 10;
+
+            /// <summary>
+            /// Constant defines minimal value of group count
+            /// </summary>
+            public const int MIN_GROUPS_COUNT = 1;
+
+            /// <summary>
+            /// Constant defines maximal value of group count
+            /// </summary>
+            public const int MAX_GROUPS_COUNT = 10;
+        }
+
+        /// <summary>
+        /// Container for division constants.
+        /// </summary>
+        public static class Division
+        {
+            public const int MAX_NAME_LENGTH = 60;
+        }
+
+        /// <summary>
+        /// Container for group constants.
+        /// </summary>
+        public static class Group
+        {
+            public const int MAX_NAME_LENGTH = 60;
         }
 
         /// <summary>

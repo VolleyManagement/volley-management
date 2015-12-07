@@ -1,0 +1,31 @@
+(function (This) {
+	This.summaryHeaderTpl = _.template([
+'    <tr class="summaryHeader">',
+'        <th colspan="2">По состоянию на <%= date%></th>',
+'        <th></th>',
+'        <th colspan="9">Матчи</th>',
+'        <th colspan="3">Партии</th>',
+'        <th colspan="3">Мячи в партии</th>',
+'    </tr>',
+'    <tr class="summaryHeader">',
+'        <th class="summarySeparatedTd">Место</th>',
+'        <th class="summarySeparatedTd">Команда</th>',
+'		 <th class="summarySeparatedTd">Очки</th>',
+'        <th>всего</th>',
+'        <th>выигр.</th>',
+'        <th>проигр.</th>',
+'        <th>3-0</th>',
+'        <th>3-1</th>',
+'        <th>3-2</th>',
+'        <th>2-3</th>',
+'        <th>1-3</th>',
+'        <th class="summarySeparatedTd">0-3</th>',
+'        <th>выигр.</th>',
+'        <th>проигр.</th>',
+'        <th class="summarySeparatedTd">коэф.</th>',
+'        <th>выигр.</th>',
+'        <th class="summarySeparatedTd">проигр.</th>',
+'        <th>коэф.</th>',
+'    </tr>'].join(''));
+
+})(summary);

@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddDivision" xml:space="preserve">
+    <value>Добавить дивизион</value>
+  </data>
+  <data name="AddGroup" xml:space="preserve">
+    <value>Добавить группу</value>
+  </data>
   <data name="BackToList" xml:space="preserve">
     <value>Назад к списку</value>
   </data>
@@ -141,6 +147,12 @@
   <data name="DeleteTournamentTitle" xml:space="preserve">
     <value>Удаление турнира</value>
   </data>
+  <data name="DivisionLimit" xml:space="preserve">
+    <value>Вы достигли максимального количества дивизионов в турнире.</value>
+  </data>
+  <data name="DivisionLimit" xml:space="preserve">
+    <value>Вы достигли максимального количества дивизионов в турнире.</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>
@@ -153,17 +165,29 @@
   <data name="FinishedTournamentsHeader" xml:space="preserve">
     <value>Завершенные</value>
   </data>
+  <data name="GroupLimit" xml:space="preserve">
+    <value>Вы достигли максимального количества групп в дивизионе.</value>
+  </data>
+  <data name="RegistrationFieldsTitle" xml:space="preserve">
+    <value>Регистрация на турнир</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
   <data name="TournamentDetailsTitle" xml:space="preserve">
     <value>Подробности турнира</value>
   </data>
+  <data name="TournamentFieldsTitle" xml:space="preserve">
+    <value>Турнир</value>
+  </data>
   <data name="TournamentLegend" xml:space="preserve">
     <value>Турнир</value>
   </data>
   <data name="TournamentsIndexTitle" xml:space="preserve">
     <value>Турниры</value>
+  </data>
+  <data name="TransferFieldsTitle" xml:space="preserve">
+    <value>Трансферный период</value>
   </data>
   <data name="UpcomingTournamentsHeader" xml:space="preserve">
     <value>Ожидаемые</value>

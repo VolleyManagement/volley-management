@@ -36,6 +36,22 @@
         }
 
         /// <summary>
+        /// Get generic T model by ViewResult async from action view
+        /// </summary>
+        /// <typeparam name="T">model type</typeparam>
+        /// <param name="task"><see cref="Task"/> Task result</param>
+        /// <returns>T result by ViewResult from action view</returns>
+        public static T GetModelAsync<T>(System.Threading.Tasks.Task<ActionResult> task) where T : class
+        {
+            if (task.Status == System.Threading.Tasks.TaskStatus.Faulted)
+            {
+                return null;
+            }
+
+            return (T)(task.Result as ViewResult).ViewData.Model;
+        }
+
+        /// <summary>
         /// The get model from single result.
         /// </summary>
         /// <param name="response"> Single result object </param>

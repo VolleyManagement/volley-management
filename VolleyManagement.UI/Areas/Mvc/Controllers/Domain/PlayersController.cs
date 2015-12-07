@@ -7,6 +7,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
@@ -34,11 +35,10 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class
         /// </summary>
-        /// <param name="playerSerivce">Instance of the class that implements
-        /// IPlayerService.</param>
-        public PlayersController(IPlayerService playerSerivce)
+        /// <param name="playerService">Instance of the class that implements IPlayerService.</param>
+        public PlayersController(IPlayerService playerService)
         {
-            _playerService = playerSerivce;
+            this._playerService = playerService;
         }
 
         /// <summary>
@@ -52,15 +52,12 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
+                ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
                 return View(playersOnPage);
             }
             catch (ArgumentOutOfRangeException)
             {
                 return RedirectToAction("Index");
-            }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
             }
         }
 
@@ -68,21 +65,18 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// Gets details for specific player
         /// </summary>
         /// <param name="id">Player id.</param>
+        /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific player.</returns>
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string returnUrl = "")
         {
-            Player player;
-            try
+            var player = _playerService.Get(id);
+
+            if (player == null)
             {
-                player = _playerService.Get(id);
-            }
-            catch (MissingEntityException)
-            {
-                return this.HttpNotFound();
+                return HttpNotFound();
             }
 
-            var referer = (string)RouteData.Values["controller"];
-            var model = new PlayerRefererViewModel(player, referer);
+            var model = new PlayerRefererViewModel(player, returnUrl);
             return View(model);
         }
 
@@ -126,10 +120,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 this.ModelState.AddModelError(string.Empty, ex.Message);
                 return this.View(playerViewModel);
             }
-            catch (Exception)
-            {
-                return this.HttpNotFound();
-            }
         }
 
         /// <summary>
@@ -163,16 +153,15 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <returns>View to edit specific player</returns>
         public ActionResult Edit(int id)
         {
-            try
+            var player = _playerService.Get(id);
+
+            if (player == null)
             {
-                var player = this._playerService.Get(id);
-                PlayerViewModel playerViewModel = PlayerViewModel.Map(player);
-                return this.View(playerViewModel);
+                return HttpNotFound();
             }
-            catch (MissingEntityException)
-            {
-                return this.HttpNotFound();
-            }
+
+            var playerViewModel = PlayerViewModel.Map(player);
+            return this.View(playerViewModel);
         }
 
         /// <summary>
@@ -216,6 +205,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         public JsonResult GetFreePlayers(string searchString, bool isCaptain, string selectedPlayers)
         {
             searchString = HttpUtility.UrlDecode(searchString).Replace(" ", "");
+            textToSearch = textToSearch.Trim();
 
             var query = this._playerService.Get()
                             .Where(p => (p.FirstName + p.LastName).Contains(searchString) || (p.LastName + p.FirstName).Contains(searchString));
@@ -226,7 +216,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 query = isCaptain
                         ? query.Where(p => selectedIds.Contains(p.Id) || p.TeamId == null)
                         : query.Where(p => !selectedIds.Contains(p.Id) && p.TeamId == null);
-
             }
             else 
             {
@@ -243,14 +232,11 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
             textToSearch = textToSearch.Trim();
-            IQueryable<Player> allPlayers = this._playerService
-                                                .Get()
-                                                .OrderBy(p => p.LastName);
+            IQueryable<Player> allPlayers = this._playerService.Get().OrderBy(p => p.LastName);
 
             if (textToSearch != string.Empty)
             {
-                allPlayers = allPlayers
-                    .Where(p => (p.FirstName + p.LastName).Contains(textToSearch));
+                allPlayers = allPlayers.Where(p => (p.FirstName + p.LastName).Contains(textToSearch));
             }
 
             return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);

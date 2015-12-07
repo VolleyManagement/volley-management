@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
 
-    using VolleyManagement.UI.Areas.Admin.Models;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
 
     /// <summary>
     /// Compares User instances
@@ -45,7 +45,7 @@
                 return result;
             }
 
-            result = string.CompareOrdinal(x.Name, y.Name);
+            result = string.CompareOrdinal(x.UserName, y.UserName);
             return result;
         }
     }

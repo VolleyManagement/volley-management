@@ -1,11 +1,14 @@
 @using VolleyManagement.UI.Areas.Mvc
 @using ValidationKeys = VolleyManagement.Domain.Constants.Tournament;
+@using VolleyManagement.UI.HtmlHelpers
+@using VolleyManagement.UI.Helpers
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
 @* This partial view defines form fields that will appear when creating and editing entities *@
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.8.3.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script src="//code.jquery.com/jquery-1.8.3.js" type="text/javascript"></script>
+<script src="//code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
+<script src="~/Scripts/TournamentOperationScripts.js"></script>
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
@@ -49,62 +52,126 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
+    $(document).ready(function () {
+        $.datepicker.setDefaults($.datepicker.regional['@JQueryUIDateFormatConverter.Localization'] = {
+            monthNames: @JQueryUIDateFormatConverter.MonthNames,
+            monthNamesShort: @JQueryUIDateFormatConverter.AbbreviatedMonthNames,
+            dayNames: @JQueryUIDateFormatConverter.DayNames,
+            dayNamesShort: @JQueryUIDateFormatConverter.AbbreviatedDayNames,
+            dayNamesMin: @JQueryUIDateFormatConverter.ShortestDayNames,
+            dateFormat: '@JQueryUIDateFormatConverter.JQueryUICurrentDateFormat()'
+        });
+
         $("#ApplyingPeriodStart").datepicker();
         $("#ApplyingPeriodEnd").datepicker();
         $('#GamesStart').datepicker();
         $("#GamesEnd").datepicker();
         $("#TransferStart").datepicker();
         $("#TransferEnd").datepicker();
+
+        var transfer_fields = $(".transfer-field");
+        $("#transferDatesSwitcher").change(function () {
+            transfer_fields.attr("disabled", !this.checked);
+            if (!this.checked) {
+                transfer_fields.attr("value", "");
+            }
+        });
     });
 </script>
 <div class="editor-label">
-    @Html.LabelFor(model => model.ApplyingPeriodStart)
+    @Html.Label(Resources.TournamentViews.RegistrationFieldsTitle)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.ApplyingPeriodStart, new { @readonly = "readonly" })
+    @Html.TextBoxForShortDate(model => model.ApplyingPeriodStart, Model.ApplyingPeriodStart, new { @readonly = "readonly" })
+    -
+    @Html.TextBoxForShortDate(model => model.ApplyingPeriodEnd, Model.ApplyingPeriodEnd, new { @readonly = "readonly" })
+
     @Html.ValidationMessage(ValidationKeys.APPLYING_START_DATE_AFTER_END_DATE)
     @Html.ValidationMessage(ValidationKeys.APPLYING_START_BEFORE_NOW)
     @Html.ValidationMessageFor(model => model.ApplyingPeriodStart)
-</div>
-<div class="editor-label">
-    @Html.LabelFor(model => model.ApplyingPeriodEnd)
-</div>
-<div class="editor-field">
-    @Html.TextBoxFor(model => model.ApplyingPeriodEnd, new { @readonly = "readonly" })
     @Html.ValidationMessage(ValidationKeys.APPLYING_PERIOD_LESS_THREE_MONTH)
     @Html.ValidationMessageFor(model => model.ApplyingPeriodEnd)
 </div>
+
 <div class="editor-label">
-    @Html.LabelFor(model => model.GamesStart)
+    @Html.Label(Resources.TournamentViews.TournamentFieldsTitle)
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.GamesStart, new { @readonly = "readonly" })
+    @Html.TextBoxForShortDate(model => model.GamesStart, Model.GamesStart, new { @readonly = "readonly" })
+    -
+    @Html.TextBoxForShortDate(model => model.GamesEnd, Model.GamesEnd, new { @readonly = "readonly" })
+
     @Html.ValidationMessage(ValidationKeys.APPLYING_END_DATE_AFTER_START_GAMES)
     @Html.ValidationMessageFor(model => model.GamesStart)
-</div>
-<div class="editor-label">
-    @Html.LabelFor(model => model.GamesEnd)
-</div>
-<div class="editor-field">
-    @Html.TextBoxFor(model => model.GamesEnd, new { @readonly = "readonly" })
     @Html.ValidationMessage(ValidationKeys.START_GAMES_AFTER_END_GAMES)
     @Html.ValidationMessage(ValidationKeys.TRANSFER_END_AFTER_GAMES_END)
     @Html.ValidationMessageFor(model => model.GamesEnd)
 </div>
-<div class="editor-label">
-    @Html.LabelFor(model => model.TransferStart)
+<div class="checkbox_transfer">
+    @Html.CheckBoxFor(model => model.IsTransferEnabled, new { id = "transferDatesSwitcher" })
+    @Html.Label(Resources.TournamentViews.TransferFieldsTitle, new { @for = "transferDatesSwitcher" })
 </div>
 <div class="editor-field">
-    @Html.TextBoxFor(model => model.TransferStart, new { @readonly = "readonly" })
+    @Html.Raw(
+        Html.TextBoxForShortDate(
+            model => model.TransferStart,
+            Model.TransferStart,
+            new { @readonly = "readonly", @class = "transfer-field", disabled = "disabled" })
+        .ToHtmlString()
+        .Replace("disabled=\"disabled\"", (Model.IsTransferEnabled ? "" : "disabled=\"disabled\"")))
+    -
+    @Html.Raw(
+        Html.TextBoxForShortDate(
+            model => model.TransferEnd,
+            Model.TransferEnd,
+            new { @readonly = "readonly", @class = "transfer-field", disabled = "disabled" })
+        .ToHtmlString()
+        .Replace("disabled=\"disabled\"", (Model.IsTransferEnabled ? "" : "disabled=\"disabled\"")))
+
     @Html.ValidationMessage(ValidationKeys.TRANSFER_PERIOD_BEFORE_GAMES_START)
     @Html.ValidationMessageFor(model => model.TransferStart)
-</div>
-<div class="editor-label">
-    @Html.LabelFor(model => model.TransferEnd)
-</div>
-<div class="editor-field">
-    @Html.TextBoxFor(model => model.TransferEnd, new { @readonly = "readonly" })
     @Html.ValidationMessage(ValidationKeys.TRANSFER_END_BEFORE_TRANSFER_START)
     @Html.ValidationMessageFor(model => model.TransferEnd)
 </div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Divisions)
+</div>
+<div id="Divisions">
+    @for (int i = 0; i < Model.Divisions.Count; i++)
+    {
+        <input type="hidden" name="Divisions[@i].Id" value="@Model.Divisions[i].Id" />
+        string divId = "Division" + i.ToString();
+        <div id=@divId class="editor-field">
+            @Html.EditorFor(model => model.Divisions[i].Name, new { name = "Divisions[@i].Name" })
+            @Html.ValidationMessageFor(model => model.Divisions[i].Name)
+            <div class="editor-label">
+                &nbsp;&nbsp;&nbsp;@Html.LabelFor(model => model.Divisions[i].Groups)
+                <input type="button"
+                       value="@Resources.TournamentViews.AddGroup"
+                       data-division=@i
+                       onClick="addGroup(this, @ValidationKeys.MAX_GROUPS_COUNT, '@Resources.TournamentViews.GroupLimit');">
+            </div>
+        </div>
+        string groupsId = "Group" + i.ToString();
+        <div id=@groupsId>
+            @for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
+            {
+                <input type="hidden" name="Divisions[@i].Groups[@j].Id" value="@Model.Divisions[i].Groups[@j].Id" />
+                string grId = "Group" + i.ToString() + j.ToString();
+                <div id=@grId class="editor-field">
+                    &nbsp;&nbsp;&nbsp;@Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new { name = "Divisions[@i].Groups[@j].Name" })
+                    @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
+                </div>
+            }
+        </div>
+    }
+</div>
+@if (Model.Divisions.Count < ValidationKeys.MAX_DIVISIONS_COUNT)
+{
+    int startIndex = Model.Divisions.Count - 1;
+
+    <input type="button"
+           value="@Resources.TournamentViews.AddDivision"
+           onClick="addInput(@startIndex, @ValidationKeys.MAX_DIVISIONS_COUNT, '@Resources.TournamentViews.DivisionLimit');">
+}

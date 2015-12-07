@@ -3,11 +3,10 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-
+    using System.Web;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
-
     using tournConst = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>
@@ -95,20 +94,23 @@
         public DateTime GamesEnd { get; set; }
 
         /// <summary>
+        /// Transfer enabled state
+        /// </summary>
+        public bool IsTransferEnabled { get; set; }
+
+        /// <summary>
         /// Start of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public DateTime TransferStart { get; set; }
+        public DateTime? TransferStart { get; set; }
 
         /// <summary>
         /// End of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        public DateTime TransferEnd { get; set; }
+        public DateTime? TransferEnd { get; set; }
 
         #region Factory Methods
 
@@ -158,7 +160,7 @@
             tournament.ApplyingPeriodStart = this.ApplyingPeriodStart;
             tournament.ApplyingPeriodEnd = this.ApplyingPeriodEnd;
             tournament.TransferStart = this.TransferStart;
-            tournament.TransferEnd = this.TransferEnd;
+            tournament.TransferEnd = this.TransferEnd; 
 
             return tournament;
         }

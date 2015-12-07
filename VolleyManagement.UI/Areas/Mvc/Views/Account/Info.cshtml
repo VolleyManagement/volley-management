@@ -2,7 +2,7 @@
 
 @if (Model.IsAuthenticated)
 {
-    <span>Hi, @Model.UserName</span>
+    <span>Hi,@Html.ActionLink(@Model.UserName, "Details", "Account") </span>
     @Html.ActionLink("Log Out", "Logout", new { returnUrl = Model.ReturnUrl })
 }
 else

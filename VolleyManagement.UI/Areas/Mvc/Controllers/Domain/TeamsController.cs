@@ -14,7 +14,7 @@
     /// </summary>
     public class TeamsController : Controller
     {
-        private const string TEAM_DELETED_SUCCESSFULLY_DESCRITPION = "Команда была успешно удалена.";
+        private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Команда была успешно удалена.";
 
         /// <summary>
         /// Holds PlayerService instance
@@ -24,11 +24,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
-        /// <param name="teamService">Instance of the class that implements
-        /// ITeamService.</param>
+        /// <param name="teamService">Instance of the class that implements ITeamService.</param>
         public TeamsController(ITeamService teamService)
         {
-            _teamService = teamService;
+            this._teamService = teamService;
         }
 
         /// <summary>
@@ -67,6 +66,7 @@
             }
 
             var domainTeam = teamViewModel.ToDomain();
+
             try
             {
                 this._teamService.Create(domainTeam);
@@ -83,6 +83,7 @@
             }
 
             bool duringRosterUpdateErrors = false;
+
             if (teamViewModel.Roster != null)
             {
                 duringRosterUpdateErrors = !UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
@@ -113,12 +114,13 @@
         public JsonResult Delete(int id)
         {
             TeamOperationResultViewModel result;
+
             try
             {
                 this._teamService.Delete(id);
                 result = new TeamOperationResultViewModel
                 {
-                    Message = TEAM_DELETED_SUCCESSFULLY_DESCRITPION,
+                    Message = TEAM_DELETED_SUCCESSFULLY_DESCRIPTION,
                     OperationSuccessful = true
                 };
             }
@@ -128,6 +130,25 @@
             }
 
             return Json(result, JsonRequestBehavior.DenyGet);
+        }
+
+        /// <summary>
+        /// Details action method for specific team.
+        /// </summary>
+        /// <param name="id">Team ID</param>
+        /// <returns>View with specific team.</returns>
+        public ActionResult Details(int id = 0)
+        {
+            var team = _teamService.Get(id);
+
+            if (team == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
+            var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
+            return View(viewModel);
         }
 
         private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)

@@ -1,12 +1,21 @@
 namespace VolleyManagement.Data.MsSql.Entities
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// DAL tournament model
     /// </summary>
     public class TournamentEntity
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TournamentEntity"/> class.
+        /// </summary>
+        public TournamentEntity()
+        {
+            this.Divisions = new List<DivisionEntity>();
+        }
+
         /// <summary>
         /// Gets or sets the tournament id
         /// </summary>
@@ -50,12 +59,12 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// <summary>
         /// Gets or sets start of a transfer period
         /// </summary>
-        public DateTime TransferStart { get; set; }
+        public DateTime? TransferStart { get; set; }
 
         /// <summary>
         /// Gets or sets end of a transfer period
         /// </summary>
-        public DateTime TransferEnd { get; set; }
+        public DateTime? TransferEnd { get; set; }
 
         /// <summary>
         /// Gets or sets start of a tournament
@@ -66,5 +75,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Gets or sets end of a tournament registration
         /// </summary>
         public DateTime ApplyingPeriodEnd { get; set; }
+
+        /// <summary>
+        /// Gets or sets collection of tournaments divisions
+        /// </summary>
+        public virtual List<DivisionEntity> Divisions { get; set; }
     }
 }

@@ -124,6 +124,51 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Дивизион 1.
+        /// </summary>
+        public static string DivisionDefaultName {
+            get {
+                return ResourceManager.GetString("DivisionDefaultName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Название.
+        /// </summary>
+        public static string DivisionName {
+            get {
+                return ResourceManager.GetString("DivisionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может содержать более {1} символов.
+        /// </summary>
+        public static string DivisionNameMaxLengthErrorMessage {
+            get {
+                return ResourceManager.GetString("DivisionNameMaxLengthErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может быть пустым.
+        /// </summary>
+        public static string DivisionNameRequired {
+            get {
+                return ResourceManager.GetString("DivisionNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Дивизионы.
+        /// </summary>
+        public static string Divisions {
+            get {
+                return ResourceManager.GetString("Divisions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Конец турнира должен быть после его начала.
         /// </summary>
         public static string EndGamesBeforeStart {
@@ -169,6 +214,51 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Группа А.
+        /// </summary>
+        public static string GroupDefaultName {
+            get {
+                return ResourceManager.GetString("GroupDefaultName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Название.
+        /// </summary>
+        public static string GroupName {
+            get {
+                return ResourceManager.GetString("GroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может содержать более {1} символов.
+        /// </summary>
+        public static string GroupNameMaxLengthErrorMessage {
+            get {
+                return ResourceManager.GetString("GroupNameMaxLengthErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} не может быть пустым.
+        /// </summary>
+        public static string GroupNameRequired {
+            get {
+                return ResourceManager.GetString("GroupNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Группы.
+        /// </summary>
+        public static string Groups {
+            get {
+                return ResourceManager.GetString("Groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Поле {0} должно содержать только печатаемые символы.
         /// </summary>
         public static string InvalidEntriesError {
@@ -183,6 +273,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string InvalidTournamentId {
             get {
                 return ResourceManager.GetString("InvalidTournamentId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Провайдеры авторизации.
+        /// </summary>
+        public static string LoginProviders {
+            get {
+                return ResourceManager.GetString("LoginProviders", resourceCulture);
             }
         }
         

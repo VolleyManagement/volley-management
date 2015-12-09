@@ -1,22 +1,68 @@
-﻿var VM = (function () {
+﻿var VM = (function() {
 
-    return {
+    'use strict';
 
-        addNamespace: function (namespaceName) {
+    var localizationResources = {},
+        privates = {};
 
-            var nsNames = namespaceName.split('.'),
-                currentNs = VM,
-                currentName;
+    privates.getNamespace = function(namespace, createIfNotExist, basicNamespace) {
 
-            for (var i = 0; i < nsNames.length; i++) {
+        var create = createIfNotExist || false,
+            currentNs,
+            nsNames,
+            currentName,
+            i;
+
+        if (namespace) {
+            nsNames = namespace.split('.');
+            currentNs = basicNamespace || VM;
+
+            for (i = 0; i < nsNames.length; i++) {
                 currentName = nsNames[i];
                 if (!currentNs[currentName]) {
-                    currentNs[currentName] = {};
+                    if (create) {
+                        currentNs[currentName] = {};
+                    } else {
+                        currentNs = undefined;
+                        break;
+                    }
                 }
                 currentNs = currentNs[currentName];
             }
-
-            return currentNs;
         }
-    }
+
+        return currentNs;
+    };
+
+    return {
+
+        addNamespace: function(namespace) {
+            return privates.getNamespace(namespace, true);
+        },
+
+        addTranslation: function(key, value, namespace) {
+            var currentNs = localizationResources;
+
+            if (namespace) {
+                currentNs = privates.getNamespace(namespace, true, localizationResources);
+            }
+
+            currentNs[key] = value;
+        },
+
+        TR: function(key, namespace) {
+            var currentNs = localizationResources,
+                result;
+
+            if (key) {
+                if (namespace) {
+                    currentNs = privates.getNamespace(namespace, false, currentNs);
+                }
+                result = currentNs[key];
+            }
+
+            return result;
+        }
+    };
+
 })();

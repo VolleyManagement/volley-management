@@ -13,7 +13,7 @@
 {
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.ValidationMessage("ValidationError", new { @class = "text-danger" })
+    @Html.ValidationMessage("ValidationMessage", new { @class = "text-danger", name = "ValidationMessage" })
     @Html.HiddenFor(model => model.TournamentId)
 
     <div class="form-group">

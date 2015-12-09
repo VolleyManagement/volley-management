@@ -161,12 +161,9 @@ function ValidateSetsScore(setsScore, isTechnicalDefeat) {
 }
 
 function ValidateSetScores(setScores, isTechnicalDefeat) {
-    for (i = 0; i < setScores.length; i++)
-    {
-        if (i < gameResultConstants.MIN_SETS_COUNT)
-        {
-            if (!IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat))
-            {
+    for (i = 0; i < setScores.length; i++) {
+        if (i < gameResultConstants.MIN_SETS_COUNT) {
+            if (!IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat)) {
                 var template = jQuery.validator.format(resourceMessages.GameResultRequiredSetScores);
                 throw template(
                     gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
@@ -175,10 +172,8 @@ function ValidateSetScores(setScores, isTechnicalDefeat) {
                     gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE);
             }
         }
-        else
-        {
-            if (!IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat))
-            {
+        else {
+            if (!IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat)) {
                 var template = jQuery.validator.format(resourceMessages.GameResultOptionalSetScores);
                 throw template(
                     gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
@@ -191,7 +186,7 @@ function ValidateSetScores(setScores, isTechnicalDefeat) {
 }
 
 $("#createForm").submit(function (e) {
-    e.preventDefault();
+   e.preventDefault();
 }).validate({
     submitHandler: function (form) {
         try {
@@ -200,15 +195,9 @@ $("#createForm").submit(function (e) {
             form.submit();
         }
         catch (message) {
-            showError("ValidationError", message);
+            errors = { ValidationMessage: message };
+            this.showErrors(errors);
             return false;
         }
     }
 });
-
- function ShowError(errorElement, message) {
-    var element = $("span[data-valmsg-for='" + errorElement + "']");
-    element.text(message);
-    element.removeClass("field-validation-valid");
-    element.addClass("field-validation-error");
-}

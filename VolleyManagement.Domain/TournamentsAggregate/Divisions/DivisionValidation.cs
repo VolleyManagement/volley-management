@@ -16,13 +16,13 @@
         }
 
         /// <summary>
-        /// Checks whether groups count is within the correct range.
+        /// Checks whether divisions count is within the correct range.
         /// </summary>
-        /// <param name="count">Groups count within the division.</param>
-        /// <returns>True if groups count is within the range; otherwise, false.</returns>
-        public static bool IsGroupCountWithinRange(int count)
+        /// <param name="count">Divisions count within the tournament.</param>
+        /// <returns>True if divisions count is within the range; otherwise, false.</returns>
+        public static bool IsDivisionCountWithinRange(int count)
         {
-            return count >= Constants.Tournament.MIN_GROUPS_COUNT && count <= Constants.Tournament.MAX_GROUPS_COUNT;
+            return count >= Constants.Division.MIN_DIVISIONS_COUNT && count <= Constants.Division.MAX_DIVISIONS_COUNT;
         }
     }
 }

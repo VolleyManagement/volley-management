@@ -316,9 +316,9 @@
     <value>Группы</value>
   </data>
   <data name="DivisionDefaultName" xml:space="preserve">
-    <value>Дивизион 1</value>
+    <value>Дивизион</value>
   </data>
   <data name="GroupDefaultName" xml:space="preserve">
-    <value>Группа А</value>
+    <value>Группа</value>
   </data>
 </root>

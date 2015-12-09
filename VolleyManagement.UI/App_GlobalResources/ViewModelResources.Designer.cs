@@ -124,7 +124,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Дивизион 1.
+        ///   Looks up a localized string similar to Дивизион.
         /// </summary>
         public static string DivisionDefaultName {
             get {
@@ -214,7 +214,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Группа А.
+        ///   Looks up a localized string similar to Группа.
         /// </summary>
         public static string GroupDefaultName {
             get {

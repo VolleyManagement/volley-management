@@ -49,3 +49,24 @@ div#menu a{font: bold 1.1em "Arial Narrow","Franklin Gothic Medium", Arial; disp
 div#menu a.selected {background-color: #666; color: white;}
 div#menu a:hover {background-color: #CCC; }
 div#menu a.selected:hover{background-color: #666}
+
+div .division-groups-wrapper {
+    padding-left: 25px;
+}
+
+div .group-editor {
+    padding-bottom: 5px;
+}
+
+
+div .add-group-button {
+    padding-bottom: 5px;
+}
+
+div .add-division-button {
+    margin-bottom: 10px;
+}
+
+.link-button {
+    cursor: pointer;
+}

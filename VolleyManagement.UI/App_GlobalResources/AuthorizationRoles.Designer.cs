@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VolleyManagement.UI.App_GlobalResources {
+namespace Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace VolleyManagement.UI.App_GlobalResources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class UserViews {
+    public class AuthorizationRoles {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal UserViews() {
+        internal AuthorizationRoles() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VolleyManagement.UI.App_GlobalResources.UserViews", typeof(UserViews).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VolleyManagement.UI.App_GlobalResources.AuthorizationRoles", typeof(AuthorizationRoles).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,56 +61,11 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Назад к списку.
+        ///   Looks up a localized string similar to Администратор.
         /// </summary>
-        public static string BackToList {
+        public static string Admin {
             get {
-                return ResourceManager.GetString("BackToList", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Создать.
-        /// </summary>
-        public static string Create {
-            get {
-                return ResourceManager.GetString("Create", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Создание нового пользователя.
-        /// </summary>
-        public static string CreateUserTitle {
-            get {
-                return ResourceManager.GetString("CreateUserTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Редактировать.
-        /// </summary>
-        public static string Edit {
-            get {
-                return ResourceManager.GetString("Edit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Сохранить.
-        /// </summary>
-        public static string Save {
-            get {
-                return ResourceManager.GetString("Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Пользователь.
-        /// </summary>
-        public static string UserLegend {
-            get {
-                return ResourceManager.GetString("UserLegend", resourceCulture);
+                return ResourceManager.GetString("Admin", resourceCulture);
             }
         }
     }

@@ -41,7 +41,7 @@ input[type="checkbox"].input-validation-error {
 }
 
 
-div#content { padding: 1em; }
+div#content { padding: 1em; float: left; width: 88em; }
 div#menu {float: left; width: 8em; padding: .3em; }
 div#menu a{font: bold 1.1em "Arial Narrow","Franklin Gothic Medium", Arial; display: block;
            text-decoration: none; padding: .6em; color: black; border-bottom: 1px solid silver;

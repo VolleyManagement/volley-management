@@ -10,9 +10,9 @@
     /// Compares User instances
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class UserViewModelComparer : IComparer<UserViewModel>, IComparer
+    public class UserEditViewModelComparer : IComparer<UserEditViewModel>, IComparer
     {
-        public int Compare(UserViewModel x, UserViewModel y)
+        public int Compare(UserEditViewModel x, UserEditViewModel y)
         {
             if (x == null && y == null)
             {
@@ -34,10 +34,10 @@
 
         public int Compare(object x, object y)
         {
-            return this.Compare(x as UserViewModel, y as UserViewModel);
+            return this.Compare(x as UserEditViewModel, y as UserEditViewModel);
         }
 
-        private int CompareInternal(UserViewModel x, UserViewModel y)
+        private int CompareInternal(UserEditViewModel x, UserEditViewModel y)
         {
             var result = y.Id - x.Id;
             if (result != 0)
@@ -45,8 +45,14 @@
                 return result;
             }
 
-            result = string.CompareOrdinal(x.UserName, y.UserName);
-            return result;
+            if (string.CompareOrdinal(x.CellPhone, y.CellPhone) != 0
+                || string.CompareOrdinal(x.FullName, y.FullName) != 0
+                || string.CompareOrdinal(x.Email, y.Email) != 0)
+            {
+                return result;
+            }
+
+            return 0;
         }
     }
 }

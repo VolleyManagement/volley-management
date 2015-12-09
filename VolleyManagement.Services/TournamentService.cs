@@ -41,9 +41,7 @@
         #region Query Objects
 
         private readonly IQuery<Tournament, UniqueTournamentCriteria> _uniqueTournamentQuery;
-
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
-
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
 
         #endregion
@@ -64,9 +62,9 @@
             IQuery<Tournament, FindByIdCriteria> getByIdQuery)
         {
             _tournamentRepository = tournamentRepository;
-            this._uniqueTournamentQuery = uniqueTournamentQuery;
-            this._getAllQuery = getAllQuery;
-            this._getByIdQuery = getByIdQuery;
+            _uniqueTournamentQuery = uniqueTournamentQuery;
+            _getAllQuery = getAllQuery;
+            _getByIdQuery = getByIdQuery;
         }
 
         #endregion
@@ -88,7 +86,7 @@
         /// <returns>actual tournaments</returns>
         public List<Tournament> GetActual()
         {
-            return this.GetFilteredTournaments(_actualStates);
+            return GetFilteredTournaments(_actualStates);
         }
 
         /// <summary>
@@ -97,7 +95,7 @@
         /// <returns>Finished tournaments</returns>
         public List<Tournament> GetFinished()
         {
-            return this.GetFilteredTournaments(_finishedStates);
+            return GetFilteredTournaments(_finishedStates);
         }
 
         /// <summary>
@@ -114,6 +112,7 @@
             ValidateTournament(tournamentToCreate);
             ValidateDivisions(tournamentToCreate.Divisions);
             ValidateGroups(tournamentToCreate.Divisions);
+
             _tournamentRepository.Add(tournamentToCreate);
         }
 
@@ -124,8 +123,7 @@
         /// <returns>A found Tournament</returns>
         public Tournament Get(int id)
         {
-            var criteria = new FindByIdCriteria { Id = id };
-            return _getByIdQuery.Execute(criteria);
+            return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
         /// <summary>
@@ -135,6 +133,7 @@
         public void Edit(Tournament tournamentToEdit)
         {
             ValidateTournament(tournamentToEdit, isUpdate: true);
+
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -156,6 +155,7 @@
         private static UniqueTournamentCriteria BuildUniqueTournamentCriteria(Tournament newTournament, bool isUpdate)
         {
             var criteria = new UniqueTournamentCriteria { Name = newTournament.Name };
+
             if (isUpdate)
             {
                 criteria.EntityId = newTournament.Id;
@@ -166,7 +166,7 @@
 
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
         {
-            return this.Get().Where(t => statesFilter.Contains(t.State)).ToList();
+            return Get().Where(t => statesFilter.Contains(t.State)).ToList();
         }
 
         private void ValidateTournament(Tournament tournament, bool isUpdate = false)
@@ -178,7 +178,7 @@
         private void ValidateUniqueTournamentName(Tournament newTournament, bool isUpdate = false)
         {
             var criteria = BuildUniqueTournamentCriteria(newTournament, isUpdate);
-            var tournament = this._uniqueTournamentQuery.Execute(criteria);
+            var tournament = _uniqueTournamentQuery.Execute(criteria);
 
             if (tournament != null)
             {

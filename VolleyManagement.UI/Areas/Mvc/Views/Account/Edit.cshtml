@@ -1,0 +1,33 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Users.UserEditViewModel
+
+@{
+    ViewBag.Title = "Edit profile";
+}
+
+<h1 class="well">Profile info</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset class="bs-example">
+        @Html.HiddenFor(u => Model.Id)
+        <div class="form-group">
+            @Html.LabelFor(u => Model.Email) 
+            @Html.TextBoxFor(u => Model.Email, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(u => Model.CellPhone)
+            @Html.TextBoxFor(u => Model.CellPhone, new { @class = "form-control" })
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(u => Model.FullName)
+            @Html.TextBoxFor(u => Model.FullName, new { @class = "form-control" })
+        </div>
+
+        <p>
+            <input type="submit" class="btn btn-default" value="@Resources.UserViews.Save" />
+        </p>
+    </fieldset>
+}

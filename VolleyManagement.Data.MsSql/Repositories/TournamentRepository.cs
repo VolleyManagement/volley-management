@@ -2,12 +2,9 @@
 {
     using System;
     using System.Data.Entity;
-    using System.Data.Entity.Core.Objects;
     using System.Linq;
     using System.Linq.Expressions;
-
     using VolleyManagement.Crosscutting.Contracts.Specifications;
-    using VolleyManagement.Crosscutting.Specifications;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.MsSql.Entities;
@@ -22,9 +19,7 @@
     {
         private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly VolleyUnitOfWork _unitOfWork;
-
-        private readonly ISpecification<TournamentEntity> _dbStorageSpecification
-            = new TournamentsStorageSpecification();
+        private readonly ISpecification<TournamentEntity> _dbStorageSpecification = new TournamentsStorageSpecification();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentRepository"/> class.
@@ -32,8 +27,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public TournamentRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            this._dalTournaments = _unitOfWork.Context.Tournaments;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalTournaments = _unitOfWork.Context.Tournaments;
         }
 
         /// <summary>
@@ -41,7 +36,7 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return this._unitOfWork; }
+            get { return _unitOfWork; }
         }
 
         /// <summary>
@@ -50,7 +45,7 @@
         /// <returns>Collection of domain tournaments.</returns>
         public IQueryable<Tournament> Find()
         {
-            return this._dalTournaments.Select(t => new Tournament
+            return _dalTournaments.Select(t => new Tournament
             {
                 Id = t.Id,
                 Name = t.Name,
@@ -72,10 +67,9 @@
         /// </summary>
         /// <param name="predicate">Condition to find tournaments.</param>
         /// <returns>Collection of domain tournaments.</returns>
-        public IQueryable<Tournament> FindWhere(
-            Expression<Func<Tournament, bool>> predicate)
+        public IQueryable<Tournament> FindWhere(Expression<Func<Tournament, bool>> predicate)
         {
-            return this.Find().Where(predicate);
+            return Find().Where(predicate);
         }
 
         /// <summary>
@@ -86,13 +80,14 @@
         {
             var tournament = new TournamentEntity();
             DomainToDal.Map(tournament, newEntity);
+
             if (!_dbStorageSpecification.IsSatisfiedBy(tournament))
             {
                 throw new InvalidEntityException();
             }
 
-            this._dalTournaments.Add(tournament);
-            this._unitOfWork.Commit();
+            _dalTournaments.Add(tournament);
+            _unitOfWork.Commit();
             MapIdentifiers(newEntity, tournament);
         }
 
@@ -102,11 +97,12 @@
         /// <param name="updatedEntity">Updated tournament.</param>
         public void Update(Tournament updatedEntity)
         {
-            var tournamentToUpdate = this._dalTournaments.Single(t => t.Id == updatedEntity.Id);
+            var tournamentToUpdate = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
+            updatedEntity.Divisions.Clear();
             DomainToDal.Map(tournamentToUpdate, updatedEntity);
 
             // ToDo: Check Do we really need this?
-            //// this._dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
+            //// _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 
         /// <summary>

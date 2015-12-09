@@ -105,9 +105,7 @@
             sut.Create(newPlayer);
 
             // Assert
-            _playerRepositoryMock.Verify(
-                ur => ur.Add(It.Is<Player>(u => PlayersAreEqual(u, newPlayer))));
-            _unitOfWorkMock.Verify(u => u.Commit());
+            VerifyCreatePlayer(newPlayer, Times.Once());
         }
 
         /// <summary>
@@ -124,8 +122,7 @@
             ps.Delete(SPECIFIC_PLAYER_ID);
 
             // Assert
-            _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(playerId => playerId == SPECIFIC_PLAYER_ID)), Times.Once());
-            _unitOfWorkMock.Verify(pr => pr.Commit());
+            VerifyDeletePlayer(SPECIFIC_PLAYER_ID, Times.Once());
         }
 
         /// <summary>
@@ -153,9 +150,8 @@
             }
 
             // Assert
-            _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(playerId => playerId == PLAYER_ID)), Times.Once());
             Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyDeletePlayer(PLAYER_ID, Times.Once(), Times.Never());
         }
 
         /// <summary>
@@ -183,9 +179,8 @@
             }
 
             // Assert
-            _playerRepositoryMock.Verify(pr => pr.Remove(It.IsAny<int>()), Times.Never);
             Assert.IsTrue(gotException);
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Never());
+            VerifyDeletePlayer(PLAYER_ID, Times.Never());
         }
 
         /// <summary>
@@ -221,8 +216,7 @@
             sut.Edit(playerToEdit);
 
             // Assert
-            _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => PlayersAreEqual(playerToEdit, expectedPlayer))), Times.Once());
-            _unitOfWorkMock.Verify(u => u.Commit(), Times.Once());
+            VerifyEditPlayer(playerToEdit, Times.Once());
         }
 
         private void MockGetAllQuery(IEnumerable<Player> testData)
@@ -235,14 +229,32 @@
             return new PlayerComparer().Compare(x, y) == 0;
         }
 
-        private void MockGetTeamByIdQuery(Team team)
-        {
-            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(team);
-        }
-
         private void MockGetTeamByCaptainIdQuery(Team team)
         {
             _getTeamByCaptainQueryMock.Setup(t => t.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(team);
+        }
+
+        private void VerifyCreatePlayer(Player player, Times times)
+        {
+            _playerRepositoryMock.Verify(pr => pr.Add(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
+        }
+
+        private void VerifyEditPlayer(Player player, Times times)
+        {
+            _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyDeletePlayer(int playerId, Times times)
+        {
+            _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(id => id == playerId)), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyDeletePlayer(int playerId, Times repositoryTimes, Times unitOfWorkTimes)
+        {
+            _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(id => id == playerId)), repositoryTimes);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
         }
     }
 }

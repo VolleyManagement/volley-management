@@ -56,7 +56,7 @@
         /// <param name="updatedEntity">Updated user.</param>
         public void Update(User updatedEntity)
         {
-            var userToUpdate = this._unitOfWork.Context.Users.Single(t => t.Id == oldEntity.Id);
+            var userToUpdate = this._unitOfWork.Context.Users.Single(t => t.Id == updatedEntity.Id);
             DomainToDal.Map(userToUpdate, updatedEntity);
             UpdateUserProviders((List<LoginInfoEntity>)userToUpdate.LoginProviders);
         }

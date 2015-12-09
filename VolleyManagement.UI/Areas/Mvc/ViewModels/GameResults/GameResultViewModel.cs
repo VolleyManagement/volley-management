@@ -3,8 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Domain;
     using Domain.GameResultsAggregate;
-    
+
     /// <summary>
     /// Game result view model.
     /// </summary>

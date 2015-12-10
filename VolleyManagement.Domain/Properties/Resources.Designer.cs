@@ -133,6 +133,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Невозможно получить турнирную таблицу для несуществующего турнира.
+        /// </summary>
+        public static string NonexistentTournamentStanding {
+            get {
+                return ResourceManager.GetString("NonexistentTournamentStanding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Название турнира должно быть уникальным.
         /// </summary>
         public static string TournamentNameMustBeUnique {

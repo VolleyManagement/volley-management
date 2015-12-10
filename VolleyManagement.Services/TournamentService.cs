@@ -8,10 +8,12 @@
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Tournaments;
+    using VolleyManagement.Data.Queries.GameResult;
+    using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using DivisionConstants = VolleyManagement.Domain.Constants.Division;
-    using GroupConstants = VolleyManagement.Domain.Constants.Group;
+    using VolleyManagement.Domain.TournamentsAggregate.Standings;
     using TournamentConstants = VolleyManagement.Domain.Constants.Tournament;
     using TournamentResources = VolleyManagement.Domain.Properties.Resources;
 
@@ -44,7 +46,9 @@
 
         private readonly IQuery<Tournament, UniqueTournamentCriteria> _uniqueTournamentQuery;
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
-        private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
+        private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentByIdQuery;
+        private readonly IQuery<List<GameResult>, TournamentGameResultsCriteria> _getTournamentGameResultsQuery;
+        private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
 
         #endregion
 
@@ -57,16 +61,22 @@
         /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
         /// <param name="getAllQuery"> Get All object query. </param>
         /// <param name="getByIdQuery">Get tournament by id query.</param>
+        /// <param name="getTournamentGameResultsQuery">Get tournament's game results query.</param>
+        /// <param name="getTeamByIdQuery">Get team by its identifier query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
-            IQuery<Tournament, FindByIdCriteria> getByIdQuery)
+            IQuery<Tournament, FindByIdCriteria> getByIdQuery,
+            IQuery<List<GameResult>, TournamentGameResultsCriteria> getTournamentGameResultsQuery,
+            IQuery<Team, FindByIdCriteria> getTeamByIdQuery)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
-            _getByIdQuery = getByIdQuery;
+            _getTournamentByIdQuery = getByIdQuery;
+            _getTournamentGameResultsQuery = getTournamentGameResultsQuery;
+            _getTeamByIdQuery = getTeamByIdQuery;
         }
 
         #endregion
@@ -125,7 +135,7 @@
         /// <returns>A found Tournament</returns>
         public Tournament Get(int id)
         {
-            return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
+            return _getTournamentByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
         /// <summary>
@@ -148,6 +158,66 @@
         {
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Gets standings of the tournament specified by identifier.
+        /// </summary>
+        /// <param name="id">Identifier of the tournament.</param>
+        /// <returns>Standings of the tournament with specified identifier.</returns>
+        public Standings GetStandings(int id)
+        {
+            var gameResults = _getTournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = id });
+
+            if (gameResults == null)
+            {
+                throw new ArgumentException(TournamentResources.NonexistentTournamentStanding);
+            }
+
+            var standing = new Standings();
+
+            foreach (var gameResult in gameResults)
+            {
+                bool addHomeTeamEntry = false;
+                bool addAwayTeamEntry = false;
+                var standingHomeTeamEntry = standing.Entries.SingleOrDefault(tse => tse.TeamId == gameResult.HomeTeamId);
+                var standingAwayTeamEntry = standing.Entries.SingleOrDefault(tse => tse.TeamId == gameResult.AwayTeamId);
+
+                if (standingHomeTeamEntry == null)
+                {
+                    if (CreateStandingEntryForTeam(gameResult.HomeTeamId) == null)
+                    {
+                        continue;
+                    }
+
+                    addHomeTeamEntry = true;
+                }
+
+                if (standingAwayTeamEntry == null)
+                {
+                    if (CreateStandingEntryForTeam(gameResult.AwayTeamId) == null)
+                    {
+                        continue;
+                    }
+
+                    addAwayTeamEntry = true;
+                }
+
+                GetGamesStats(standingHomeTeamEntry, standingAwayTeamEntry, gameResult.SetsScore);
+                GetSetsStats(standingHomeTeamEntry, standingAwayTeamEntry, gameResult.SetScores);
+
+                if (addHomeTeamEntry)
+                {
+                    standing.AddEntry(standingHomeTeamEntry);
+                }
+
+                if (addAwayTeamEntry)
+                {
+                    standing.AddEntry(standingAwayTeamEntry);
+                }
+            }
+
+            return standing.Rebuild();
         }
 
         #endregion
@@ -314,13 +384,13 @@
 
         private void ValidateDivisionCount(int count)
         {
-            if (!DivisionValidation.IsDivisionCountWithinRange(count))
+            if (!TournamentValidationSpecification.IsDivisionCountWithinRange(count))
             {
                 throw new ArgumentException(
                     string.Format(
                         TournamentResources.DivisionCountOutOfRange,
-                        DivisionConstants.MIN_DIVISIONS_COUNT,
-                        DivisionConstants.MAX_DIVISIONS_COUNT));
+                        TournamentConstants.MIN_DIVISIONS_COUNT,
+                        TournamentConstants.MAX_DIVISIONS_COUNT));
             }
         }
 
@@ -343,13 +413,13 @@
 
         private void ValidateGroupCount(int count)
         {
-            if (!GroupValidation.IsGroupCountWithinRange(count))
+            if (!DivisionValidation.IsGroupCountWithinRange(count))
             {
                 throw new ArgumentException(
                     string.Format(
                     TournamentResources.GroupCountOutOfRange,
-                    GroupConstants.MIN_GROUPS_COUNT,
-                    GroupConstants.MAX_GROUPS_COUNT));
+                    TournamentConstants.MIN_GROUPS_COUNT,
+                    TournamentConstants.MAX_GROUPS_COUNT));
             }
         }
 
@@ -358,6 +428,124 @@
             if (groups.Select(g => new { Name = g.Name.ToUpper() }).Distinct().Count() != groups.Count)
             {
                 throw new ArgumentException(TournamentResources.GroupNamesNotUnique);
+            }
+        }
+
+        private StandingsEntry CreateStandingEntryForTeam(int id)
+        {
+            var team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
+
+            if (team == null)
+            {
+                return null;
+            }
+
+            return new StandingsEntry
+            {
+                TeamId = team.Id,
+                TeamName = team.Name
+            };
+        }
+
+        private void GetGamesStats(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, Score setsScore)
+        {
+            homeTeamEntry.GamesTotal++;
+            awayTeamEntry.GamesTotal++;
+
+            switch (setsScore.Home - setsScore.Away)
+            {
+                case 3: // sets score - 3:0
+                    homeTeamEntry.Points += 3;
+                    homeTeamEntry.GamesWon++;
+                    homeTeamEntry.GamesWithScoreThreeNil++;
+
+                    awayTeamEntry.GamesLost++;
+                    awayTeamEntry.GamesWithScoreNilThree++;
+                    break;
+                case 2: // sets score - 3:1
+                    homeTeamEntry.Points += 3;
+                    homeTeamEntry.GamesWon++;
+                    homeTeamEntry.GamesWithScoreThreeOne++;
+
+                    awayTeamEntry.GamesLost++;
+                    awayTeamEntry.GamesWithScoreOneThree++;
+                    break;
+                case 1: // sets score - 3:2
+                    homeTeamEntry.Points += 2;
+                    homeTeamEntry.GamesWon++;
+                    homeTeamEntry.GamesWithScoreThreeTwo++;
+
+                    awayTeamEntry.Points++;
+                    awayTeamEntry.GamesLost++;
+                    awayTeamEntry.GamesWithScoreTwoThree++;
+                    break;
+                case -1: // sets score - 2:3
+                    homeTeamEntry.Points++;
+                    homeTeamEntry.GamesLost++;
+                    homeTeamEntry.GamesWithScoreTwoThree++;
+
+                    awayTeamEntry.Points += 2;
+                    awayTeamEntry.GamesWon++;
+                    awayTeamEntry.GamesWithScoreThreeTwo++;
+                    break;
+                case -2: // sets score - 1:3
+                    homeTeamEntry.GamesLost++;
+                    homeTeamEntry.GamesWithScoreOneThree++;
+
+                    awayTeamEntry.Points += 3;
+                    awayTeamEntry.GamesWon++;
+                    awayTeamEntry.GamesWithScoreThreeOne++;
+                    break;
+                case -3: // sets score - 0:3
+                    homeTeamEntry.GamesLost++;
+                    homeTeamEntry.GamesWithScoreNilThree++;
+
+                    awayTeamEntry.Points += 3;
+                    awayTeamEntry.GamesWon++;
+                    awayTeamEntry.GamesWithScoreThreeNil++;
+                    break;
+            }
+        }
+
+        private void GetSetsStats(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, List<Score> setScores)
+        {
+            foreach (var setScore in setScores)
+            {
+                if (setScore.Home > setScore.Away)
+                {
+                    homeTeamEntry.SetsWon++;
+                    awayTeamEntry.SetsLost++;
+                }
+                else if (setScore.Home < setScore.Away)
+                {
+                    homeTeamEntry.SetsLost++;
+                    awayTeamEntry.SetsWon++;
+                }
+
+                homeTeamEntry.BallsWon += setScore.Home;
+                homeTeamEntry.BallsLost += setScore.Away;
+                awayTeamEntry.BallsWon += setScore.Away;
+                awayTeamEntry.BallsLost += setScore.Home;
+            }
+
+            if (homeTeamEntry.SetsLost != 0)
+            {
+                homeTeamEntry.SetsRatio = (float)homeTeamEntry.SetsWon / homeTeamEntry.SetsLost;
+            }
+
+            if (awayTeamEntry.SetsLost != 0)
+            {
+                awayTeamEntry.SetsRatio = (float)awayTeamEntry.SetsWon / awayTeamEntry.SetsLost;
+            }
+
+            if (homeTeamEntry.BallsLost != 0)
+            {
+                homeTeamEntry.BallsRatio = (float)homeTeamEntry.BallsWon / homeTeamEntry.BallsLost;
+            }
+
+            if (awayTeamEntry.BallsLost != 0)
+            {
+                awayTeamEntry.BallsRatio = (float)awayTeamEntry.BallsWon / awayTeamEntry.BallsLost;
             }
         }
 

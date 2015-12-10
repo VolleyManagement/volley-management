@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Contracts.Exceptions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -29,6 +30,8 @@
         private readonly Mock<IQuery<List<GameResult>, GetAllCriteria>> _getAllQueryMock
             = new Mock<IQuery<List<GameResult>, GetAllCriteria>>();
 
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
+
         private GameResultService _sut;
 
         private IKernel _kernel;
@@ -43,6 +46,7 @@
             _kernel.Bind<IGameResultRepository>().ToConstant(_gameResultRepositoryMock.Object);
             _kernel.Bind<IQuery<List<GameResult>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
             _kernel.Bind<IQuery<GameResult, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
+            _gameResultRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _sut = _kernel.Get<GameResultService>();
         }
 
@@ -200,6 +204,62 @@
             TestHelper.AreEqual(expected, actual, new GameResultComparer());
         }
 
+        /// <summary>
+        /// Test for Edit method. Entity is valid - updated.
+        /// </summary>
+        [TestMethod]
+        public void Edit_ValidEntity_Updated()
+        {
+            // Arrange
+            var gameResult = new GameResultBuilder().Build();
+
+            // Act
+            _sut.Edit(gameResult);
+
+            // Assert
+            VerifyEditGameResult(gameResult, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Edit method. Invalid entity - missing exception thrown.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(MissingEntityException))]
+        public void Edit_InvalidEntity_MissingExceptionThrown()
+        {
+            // Arrange
+            var gameResult = new GameResultBuilder().Build();
+
+            _gameResultRepositoryMock.Setup(grr => grr.Update(gameResult))
+                                     .Throws(new InvalidOperationException());
+
+            // Act
+            _sut.Edit(gameResult);
+
+            // Assert
+            _gameResultRepositoryMock.Verify(
+                tr =>
+                tr.Update(It.Is<GameResult>(gr => GameResultsAreEqual(gr, gameResult))),
+                Times.Once);
+
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never);
+        }
+
+        /// <summary>
+        /// Test for Delete method. Exists id - deleted.
+        /// </summary>
+        [TestMethod]
+        public void Delete_ExsistsId_Deleted()
+        {
+            // Arrange
+
+            // Act
+            _sut.Delete(GAME_RESULT_ID);
+
+            // Assert
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once);
+        }
+
         private void VerifyCreate(GameResult gameResult, Times times)
         {
             _gameResultRepositoryMock.Verify(grr => grr.Add(It.Is<GameResult>(gr => AreEqualGameResults(gr, gameResult))), times);
@@ -219,6 +279,20 @@
         private void SetupGet(GameResult gameResult)
         {
             _getByIdQueryMock.Setup(gbiq => gbiq.Execute(It.Is<FindByIdCriteria>(c => c.Id == gameResult.Id))).Returns(gameResult);
+        }
+
+        private bool GameResultsAreEqual(GameResult x, GameResult y)
+        {
+            return new GameResultComparer().Compare(x, y) == 0;
+        }
+
+        private void VerifyEditGameResult(GameResult gameResult, Times times)
+        {
+            _gameResultRepositoryMock.Verify(
+                tr =>
+                tr.Update(It.Is<GameResult>(gr => GameResultsAreEqual(gr, gameResult))),
+                times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
     }
 }

@@ -117,25 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DivisionsAreNotUniq" xml:space="preserve">
-    <value>Дивизионы не могут иметь одинаковые названия</value>
-  </data>
-  <data name="DivisionsListIsEmpty" xml:space="preserve">
-    <value>Список дивизионов пуст</value>
-  </data>
-  <data name="GameResultsNotFound" xml:space="preserve">
-    <value>Релзультат игры по указаному id не был найден</value>
-  </data>
-  <data name="OutOfDivisionsCountRange" xml:space="preserve">
-    <value>Количество дивизионов в турнире должно быть между {0} и {1}</value>
-  </data>
-  <data name="PlayerIsCaptainOfAnotherTeam" xml:space="preserve">
-    <value>Игрок является капитаном другой команды</value>
-  </data>
-  <data name="PlayerNotFound" xml:space="preserve">
-    <value>Игрок с указанным Id не был найден</value>
-  </data>
-  <data name="TeamNotFound" xml:space="preserve">
-    <value>Команда с указанным Id не была найдена</value>
+  <data name="GameResultsWasDeleted" xml:space="preserve">
+    <value>Данная игра не найдена, т.к. был удалена. Операция редактирования невозможна.</value>
   </data>
 </root>

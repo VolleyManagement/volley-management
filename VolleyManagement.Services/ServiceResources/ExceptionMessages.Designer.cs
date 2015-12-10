@@ -79,6 +79,15 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Релзультат игры по указаному id не был найден.
+        /// </summary>
+        internal static string GameResultsNotFound {
+            get {
+                return ResourceManager.GetString("GameResultsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Количество дивизионов в турнире должно быть между {0} и {1}.
         /// </summary>
         internal static string OutOfDivisionsCountRange {

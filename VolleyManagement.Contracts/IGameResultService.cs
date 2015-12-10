@@ -26,5 +26,17 @@
         /// </summary>
         /// <param name="gameResult">Domain model of game result.</param>
         void Create(GameResult gameResult);
+
+         /// <summary>
+         /// Edits specified instance of game result.
+         /// </summary>
+         /// <param name="gameResult">Domain model of game result.</param>
+         void Edit(GameResult gameResult);
+
+         /// <summary>
+         /// Deletes game result by specified identifier.
+         /// </summary>
+         /// <param name="id">Identifier of game result.</param>
+         void Delete(int id);
     }
 }

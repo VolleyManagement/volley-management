@@ -277,6 +277,10 @@
     <Content Include="Areas\Mvc\Views\Account\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Account\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\TournamentResults.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\Delete.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameResults\_Details.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -306,6 +310,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthorizationRoles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\GameResultsController.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GameResultsController.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\PlayerViews.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -459,6 +468,10 @@
     <EmbeddedResource Include="App_GlobalResources\AuthorizationRoles.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\GameResultsController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameResultsController.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

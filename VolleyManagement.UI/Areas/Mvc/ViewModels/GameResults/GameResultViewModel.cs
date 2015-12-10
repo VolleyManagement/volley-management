@@ -93,6 +93,7 @@
         {
             var gameResult = new GameResult()
             {
+                Id = this.Id,
                 TournamentId = this.TournamentId,
                 HomeTeamId = this.HomeTeamId,
                 AwayTeamId = this.AwayTeamId,

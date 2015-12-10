@@ -6,6 +6,7 @@
     using System.Web;
     using System.Web.Mvc;
     using Contracts;
+    using Contracts.Exceptions;
     using Domain.GameResultsAggregate;
     using ViewModels.GameResults;
     using ViewModels.Teams;
@@ -56,7 +57,7 @@
         /// <returns>Create view.</returns>
         public ActionResult Create(int Id)
         {
-            ViewBag.Teams = _teamService.Get().Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+            ViewBag.Teams = GetTeams();
             GameResultViewModel gameResultViewModel = new GameResultViewModel() { TournamentId = Id };
             return View(gameResultViewModel);
         }
@@ -85,6 +86,77 @@
         }
 
         /// <summary>
+        /// Edit game results action (GET)
+        /// </summary>
+        /// <param name="id">Game results id</param>
+        /// <returns>View to edit specific game results</returns>
+        public ActionResult Edit(int id)
+        {
+            return GetGameResultsView(id);
+        }
+
+        /// <summary>
+        /// Edit game results action (POST)
+        /// </summary>
+        /// <param name="gameResultViewModel">Game results after editing</param>
+        /// <returns>Index view if game results was valid, otherwise - edit view</returns>
+        [HttpPost]
+        public ActionResult Edit(GameResultViewModel gameResultViewModel)
+        {
+            try
+            {
+                if (this.ModelState.IsValid)
+                {
+                    var gameResult = gameResultViewModel.ToDomain();
+                    this._gameResultsService.Edit(gameResult);
+                    return this.RedirectToAction(
+                                        "TournamentResults", 
+                                        new { id = gameResult.TournamentId });
+                }
+            }
+            catch (MissingEntityException)
+            {
+                this.ModelState.AddModelError(
+                                string.Empty,
+                                Resources.GameResultsController.GameResultsWasDeleted);
+            }
+
+            ViewBag.Teams = GetTeams();
+            return this.View(gameResultViewModel);
+        }
+
+        /// <summary>
+        /// Delete tournament action (GET)
+        /// </summary>
+        /// <param name="id">Tournament id</param>
+        /// <returns>View to delete specific tournament</returns>
+        public ActionResult Delete(int id)
+        {
+            return GetGameResultsView(id);
+        }
+
+        /// <summary>
+        /// Delete game result action (POST)
+        /// </summary>
+        /// <param name="id">Game result id</param>
+        /// <returns>Index view</returns>
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var gameResult = _gameResultsService.Get(id);
+
+            if (gameResult == null)
+            {
+                return HttpNotFound();
+            }
+
+            this._gameResultsService.Delete(id);
+            return RedirectToAction(
+                                    "TournamentResults",
+                                    new { id = gameResult.TournamentId });
+        }
+
+        /// <summary>
         /// Represents all game results of specified tournament
         /// </summary>
         /// <param name="id">Id of tournament</param>
@@ -105,6 +177,27 @@
                    .ToList();
 
             return View(gameResults);
+        }
+
+        private ActionResult GetGameResultsView(int id)
+        {
+            var gameResults = _gameResultsService.Get(id);
+
+            if (gameResults == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Teams = GetTeams();
+            var gameResultsViewModel = GameResultViewModel.Map(gameResults);
+            gameResultsViewModel.HomeTeamName = _teamService.Get(gameResults.HomeTeamId).Name;
+            gameResultsViewModel.AwayTeamName = _teamService.Get(gameResults.AwayTeamId).Name;
+            return View(gameResultsViewModel);
+        }
+
+        private List<SelectListItem> GetTeams()
+        {
+            return _teamService.Get().Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
         }
     }
 }

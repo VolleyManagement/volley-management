@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Contracts.Exceptions;
     using VolleyManagement.Contracts;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
@@ -82,6 +83,33 @@
         public GameResult Get(int id)
         {
             return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        /// <summary>
+        /// Edit method for game result
+        /// </summary>
+        /// <param name="gameResult">Updated game result. </param>
+        public void Edit(GameResult gameResult)
+        {
+            try
+            {
+                _gameResultRepository.Update(gameResult);
+                _gameResultRepository.UnitOfWork.Commit();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.GameResultsNotFound, ex);
+            }
+        }
+
+        /// <summary>
+        /// Delete method for game result
+        /// </summary>
+        /// <param name="id">Identifier of game result.</param>
+        public void Delete(int id)
+        {
+            _gameResultRepository.Remove(id);
+            _gameResultRepository.UnitOfWork.Commit();
         }
 
         #endregion

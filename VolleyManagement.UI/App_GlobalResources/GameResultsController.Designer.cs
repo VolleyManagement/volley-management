@@ -23,14 +23,14 @@ namespace VolleyManagement.UI.Resources
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class AuthorizationRoles {
+    public class GameResultsController {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AuthorizationRoles() {
+        internal GameResultsController() {
         }
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace VolleyManagement.UI.Resources
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VolleyManagement.UI.App_GlobalResources.AuthorizationRoles", typeof(AuthorizationRoles).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VolleyManagement.UI.App_GlobalResources.GameResultsController", typeof(GameResultsController).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,11 +62,11 @@ namespace VolleyManagement.UI.Resources
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Администратор.
+        ///   Looks up a localized string similar to Данная игра не найдена, т.к. был удалена. Операция редактирования невозможна..
         /// </summary>
-        public static string Admin {
+        public static string GameResultsWasDeleted {
             get {
-                return ResourceManager.GetString("Admin", resourceCulture);
+                return ResourceManager.GetString("GameResultsWasDeleted", resourceCulture);
             }
         }
     }

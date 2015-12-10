@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Linq;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.MsSql.Mappers;
@@ -53,7 +54,8 @@
         /// <param name="updatedEntity">Updated game result.</param>
         public void Update(GameResult updatedEntity)
         {
-            throw new NotImplementedException();
+            var gameResultToUpdate = _dalGameResults.Single(gr => gr.Id == updatedEntity.Id);
+            DomainToDal.Map(gameResultToUpdate, updatedEntity);
         }
 
         /// <summary>
@@ -62,7 +64,9 @@
         /// <param name="id">Identifier of the game result.</param>
         public void Remove(int id)
         {
-            throw new NotImplementedException();
+            var dalToRemove = new GameResultEntity { Id = id };
+            this._dalGameResults.Attach(dalToRemove);
+            this._dalGameResults.Remove(dalToRemove);
         }
     }
 }

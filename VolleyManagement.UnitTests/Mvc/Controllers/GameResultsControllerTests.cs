@@ -6,6 +6,7 @@
     using System.Web.Mvc;
 
     using Contracts;
+    using Contracts.Exceptions;
     using Domain.GameResultsAggregate;
     using Domain.TeamsAggregate;
 
@@ -13,6 +14,7 @@
     using Moq;
     using Ninject;
 
+    using Services.GameResultService;
     using Services.TeamService;
 
     using UI.Areas.Mvc.Controllers;
@@ -136,6 +138,87 @@
 
             // Assert
             TestHelper.AreEqual(actual, expectedResultViewModel, new GameResultViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for edit post method. Invalid game results Id - redirect to  the edit view.
+        /// </summary>
+        [TestMethod]
+        public void EditPost_MissingEntityException_RedirectToEditView()
+        {
+            // Arrange
+            var gameResultViewModel = new GameResultViewModelBuilder().Build();
+
+            _gameResultServiceMock.Setup(grs => grs.Edit(It.IsAny<GameResult>()))
+                                  .Throws(new MissingEntityException());
+
+            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
+            var sut = this._kernel.Get<GameResultsController>();
+
+            // Act
+            var result = sut.Edit(gameResultViewModel);
+
+            // Assert
+            Assert.AreEqual(result.GetType(), typeof(ViewResult));
+        }
+
+        /// <summary>
+        /// Test for edit post method. Valid game results - redirect to  the tournament results.
+        /// </summary>
+        [TestMethod]
+        public void EditPost_ValidEntity_RedirectToResultsList()
+        {
+            // Arrange
+            var gameResultViewModel = new GameResultViewModelBuilder().Build();
+
+            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
+            var sut = this._kernel.Get<GameResultsController>();
+
+            // Act
+            var result = sut.Edit(gameResultViewModel);
+
+            // Assert
+            Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
+        }
+
+        /// <summary>
+        /// Test for delete post method. Valid game result id - redirect to  the tournament results.
+        /// </summary>
+        [TestMethod]
+        public void DeletePost_ValidId_RedirectToResultsList()
+        {
+            // Arrange
+            var gameResult = new GameResultBuilder().Build();
+
+            _gameResultServiceMock.Setup(grs => grs.Get(It.IsAny<int>()))
+                .Returns(gameResult);
+
+            var sut = this._kernel.Get<GameResultsController>();
+
+            // Act
+            var result = sut.DeleteConfirmed(GAME_RESULT_ID);
+
+            // Assert
+            Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
+        }
+
+        /// <summary>
+        /// Test for delete post method. Invalid game result id - Http not found.
+        /// </summary>
+        [TestMethod]
+        public void DeletePost_InvalidId_HttpNotFound()
+        {
+            // Arrange
+            _gameResultServiceMock.Setup(grs => grs.Get(It.IsAny<int>()))
+                .Returns((GameResult)null);
+
+            var sut = this._kernel.Get<GameResultsController>();
+
+            // Act
+            var result = sut.DeleteConfirmed(GAME_RESULT_ID);
+
+            // Assert
+            Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
         }
 
         #endregion

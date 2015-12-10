@@ -111,8 +111,7 @@
                 throw new ArgumentException(
                     string.Format(
                     Resources.GameResultSetsScoreInvalid,
-                    GameResultConstants.MIN_SETS_COUNT,
-                    GameResultConstants.MAX_SETS_COUNT,
+                    GameResultConstants.VALID_SETS_SCORES,
                     GameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE,
                     GameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE));
             }
@@ -122,7 +121,7 @@
         {
             for (int i = 0; i < setScores.Count; i++)
             {
-                if (i < GameResultConstants.MIN_SETS_COUNT)
+                if (i < GameResultConstants.SETS_COUNT_TO_WIN)
                 {
                     if (!GameResultValidation.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat))
                     {

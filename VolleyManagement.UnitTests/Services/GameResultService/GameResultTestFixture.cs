@@ -41,14 +41,14 @@
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 3,
-                SetsScore = new Score(2, 1),
+                SetsScore = new Score(3, 1),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
                 {
                     new Score(26, 28),
                     new Score(25, 15),
                     new Score(25, 21),
-                    new Score(0, 0),
+                    new Score(29, 27),
                     new Score(0, 0)
                 }
             });

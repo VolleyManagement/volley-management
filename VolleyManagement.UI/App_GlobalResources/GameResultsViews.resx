@@ -141,6 +141,9 @@
   <data name="TeamsFields" xml:space="preserve">
     <value>Команды:</value>
   </data>
+  <data name="TechnicalDefeat" xml:space="preserve">
+    <value>Техническое поражение</value>
+  </data>
   <data name="TechnicalDefeatField" xml:space="preserve">
     <value>Техническое поражение:</value>
   </data>

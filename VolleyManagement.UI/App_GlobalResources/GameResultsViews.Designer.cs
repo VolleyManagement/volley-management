@@ -133,6 +133,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Техническое поражение.
+        /// </summary>
+        public static string TechnicalDefeat {
+            get {
+                return ResourceManager.GetString("TechnicalDefeat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Техническое поражение:.
         /// </summary>
         public static string TechnicalDefeatField {

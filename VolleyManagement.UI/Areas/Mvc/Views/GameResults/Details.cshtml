@@ -9,7 +9,7 @@
 @Html.HiddenFor(model => model.TournamentId)
 
 <div class="form-group">
-    Teams:
+    @Resources.GameResultsViews.TeamsFields
     @Html.EditorFor(model => model.HomeTeamName, new { htmlAttributes = new { @class = "form-control", disabled = "" } })
     : @Html.EditorFor(model => model.AwayTeamName, new { htmlAttributes = new { @class = "form-control", disabled = "" } })
 </div>

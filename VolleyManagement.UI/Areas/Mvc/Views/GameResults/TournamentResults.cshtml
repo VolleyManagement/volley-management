@@ -11,16 +11,11 @@
         @gameResult.HomeTeamName vs @gameResult.AwayTeamName || @gameResult.SetsScore.Home : @gameResult.SetsScore.Away
         @if (gameResult.IsTechnicalDefeat)
         {
-            <span class="color_red">Technical defeat</span>
+            <span class="color_red">@Resources.GameResultsViews.TechnicalDefeat</span>
         }
 
-<<<<<<< HEAD
-        @Html.ActionLink("Details", "Details", new { id = gameResult.Id.ToString() }, null) | 
-        @Html.ActionLink("Edit", "Edit", new { id = gameResult.Id.ToString() }, null) | 
-        @Html.ActionLink("Delete", "Delete", new { id = gameResult.Id.ToString() }, null)
-=======
-        @Html.ActionLink(Resources.GameResultsViews.Details, "Details", new { id = gameResult.Id.ToString() }, null)
->>>>>>> Game_results
+        @Html.ActionLink(Resources.GameResultsViews.Details, "Details", new { id = gameResult.Id.ToString() }, null) |
+        @Html.ActionLink(Resources.GameResultsViews.Edit, "Edit", new { id = gameResult.Id.ToString() }, null) |
+        @Html.ActionLink(Resources.GameResultsViews.Delete, "Delete", new { id = gameResult.Id.ToString() }, null)
     </div>    
 }
-

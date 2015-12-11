@@ -1,13 +1,13 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
 
 <div class="form-group">
-    Teams:
+    @Resources.GameResultsViews.TeamsFields
     @Html.EditorFor(model => model.HomeTeamName, new { htmlAttributes = new { @class = "form-control", disabled = "" } })
     : @Html.EditorFor(model => model.AwayTeamName, new { htmlAttributes = new { @class = "form-control", disabled = "" } })
 </div>
 
 <div class="form-group">
-    Sets score:
+    @Resources.GameResultsViews.SetsScoreFields
     @Html.EditorFor(model => model.SetsScore.Home, new { htmlAttributes = new { @class = "form-control", disabled = "" } })
 
     @Html.EditorFor(model => model.SetsScore.Away, new { htmlAttributes = new { @class = "form-control", disabled = "" } })
@@ -15,7 +15,7 @@
 
 <div class="form-group">
     <label for="@Model.IsTechnicalDefeat">
-        Technical defeat:
+        @Resources.GameResultsViews.TechnicalDefeatField
         <span>@Html.EditorFor(model => model.IsTechnicalDefeat, new { htmlAttributes = new { disabled = "" } })</span>
     </label>
 </div>
@@ -23,10 +23,9 @@
 @for (int i = 0; i < Model.SetScores.Count; i++)
 {
     <div class="form-group">
-        Set #@(i + 1):
+        @string.Format(Resources.GameResultsViews.SetFields, i + 1);
         @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control", disabled = "" } })
 
         @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control", disabled = "" } })
     </div>
 }
-

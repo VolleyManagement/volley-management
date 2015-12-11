@@ -123,6 +123,12 @@
   <data name="CreateTitle" xml:space="preserve">
     <value>Добавить результат игры</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="DeleteTitle" xml:space="preserve">
+    <value>Удалить игру</value>
+  </data>
   <data name="Details" xml:space="preserve">
     <value>Подробно</value>
   </data>
@@ -132,6 +138,9 @@
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>
+  <data name="EditTitle" xml:space="preserve">
+    <value>Редактировать результат</value>
+  </data>
   <data name="SetFields" xml:space="preserve">
     <value>Партия #{0}</value>
   </data>
@@ -140,6 +149,9 @@
   </data>
   <data name="TeamsFields" xml:space="preserve">
     <value>Команды:</value>
+  </data>
+  <data name="TechnicalDefeat" xml:space="preserve">
+    <value>Техническое поражение</value>
   </data>
   <data name="TechnicalDefeatField" xml:space="preserve">
     <value>Техническое поражение:</value>

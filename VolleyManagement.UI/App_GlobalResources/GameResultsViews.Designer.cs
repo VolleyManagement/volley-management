@@ -79,6 +79,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Удалить.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Удалить игру.
+        /// </summary>
+        public static string DeleteTitle {
+            get {
+                return ResourceManager.GetString("DeleteTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Подробно.
         /// </summary>
         public static string Details {
@@ -106,6 +124,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Редактировать результат.
+        /// </summary>
+        public static string EditTitle {
+            get {
+                return ResourceManager.GetString("EditTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Партия #{0}.
         /// </summary>
         public static string SetFields {
@@ -129,6 +156,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string TeamsFields {
             get {
                 return ResourceManager.GetString("TeamsFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Техническое поражение.
+        /// </summary>
+        public static string TechnicalDefeat {
+            get {
+                return ResourceManager.GetString("TechnicalDefeat", resourceCulture);
             }
         }
         

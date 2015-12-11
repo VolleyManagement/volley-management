@@ -1,14 +1,10 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using Contracts;
-    using Domain.GameResultsAggregate;
     using ViewModels.GameResults;
-    using ViewModels.Teams;
 
     /// <summary>
     /// Defines GameResultsController
@@ -32,8 +28,8 @@
         /// <param name="gameResultsService">The game result service</param>
         public GameResultsController(ITeamService teamService, IGameResultService gameResultsService)
         {
-            this._teamService = teamService;
-            this._gameResultsService = gameResultsService;
+            _teamService = teamService;
+            _gameResultsService = gameResultsService;
         }
 
         /// <summary>

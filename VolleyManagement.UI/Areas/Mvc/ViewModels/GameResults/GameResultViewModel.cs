@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Domain;
@@ -17,6 +16,7 @@
         public GameResultViewModel()
         {
             this.SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+            this.SetsScore = new Score();
         }
 
         /// <summary>

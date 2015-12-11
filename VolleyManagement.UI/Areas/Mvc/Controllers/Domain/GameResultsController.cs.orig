@@ -4,7 +4,11 @@
     using System.Linq;
     using System.Web.Mvc;
     using Contracts;
+<<<<<<< HEAD
     using Contracts.Exceptions;
+    using Domain.GameResultsAggregate;
+=======
+>>>>>>> Game_results
     using ViewModels.GameResults;
 
     /// <summary>

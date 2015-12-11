@@ -80,8 +80,10 @@ function IsTechnicalDefeatSetsScoreValid(setsScore) {
 }
 
 function IsOrdinarySetsScoreValid(setsScore) {
-    return +setsScore.Home + +setsScore.Away >= gameResultConstants.MIN_SETS_COUNT
-        && +setsScore.Home + +setsScore.Away <= gameResultConstants.MAX_SETS_COUNT;
+    return (setsScore.Home == gameResultConstants.SETS_COUNT_TO_WIN
+        && setsScore.Away < gameResultConstants.SETS_COUNT_TO_WIN)
+        || (setsScore.Home < gameResultConstants.SETS_COUNT_TO_WIN
+        && setsScore.Away == gameResultConstants.SETS_COUNT_TO_WIN);
 }
 
 function IsTechnicalDefeatRequiredSetScoreValid(setScore) {
@@ -132,9 +134,9 @@ function IsSetUnplayed(setScore) {
 
 function ValidateGameResult(gameResult) {
     ValidateTeams(gameResult.Teams.Home, gameResult.Teams.Away);
-    ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
     ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
     ValidateSetScores(gameResult.SetScores, gameResult.IsTechnicalDefeat);
+    ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
 }
 
 function ValidateTeams(homeTeamId, awayTeamId) {
@@ -143,26 +145,19 @@ function ValidateTeams(homeTeamId, awayTeamId) {
     }
 }
 
-function ValidateSetsScoreMatchesSetScores(setsScore, setScores) {
-    if (!AreSetScoresMatched(setsScore, setScores)) {
-        throw resourceMessages.GameResultSetsScoreNoMatchSetScores;
-    }
-}
-
 function ValidateSetsScore(setsScore, isTechnicalDefeat) {
     if (!IsSetsScoreValid(setsScore, isTechnicalDefeat)) {
         var template = jQuery.validator.format(resourceMessages.GameResultSetsScoreInvalid);
         throw template(
-        gameResultConstants.MIN_SETS_COUNT,
-        gameResultConstants.MAX_SETS_COUNT,
-        gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE,
-        gameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE);
+            gameResultConstants.VALID_SETS_SCORES,
+            gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE,
+            gameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE);
     }
 }
 
 function ValidateSetScores(setScores, isTechnicalDefeat) {
     for (i = 0; i < setScores.length; i++) {
-        if (i < gameResultConstants.MIN_SETS_COUNT) {
+        if (i < gameResultConstants.SETS_COUNT_TO_WIN) {
             if (!IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat)) {
                 var template = jQuery.validator.format(resourceMessages.GameResultRequiredSetScores);
                 throw template(
@@ -182,6 +177,12 @@ function ValidateSetScores(setScores, isTechnicalDefeat) {
                     gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE);
             }
         }
+    }
+}
+
+function ValidateSetsScoreMatchesSetScores(setsScore, setScores) {
+    if (!AreSetScoresMatched(setsScore, setScores)) {
+        throw resourceMessages.GameResultSetsScoreNoMatchSetScores;
     }
 }
 

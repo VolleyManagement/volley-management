@@ -25,13 +25,13 @@
             {
                 HomeTeamId = 1,
                 AwayTeamId = 2,
-                SetsScore = new Score(2, 1),
+                SetsScore = new Score(3, 1),
                 SetScores = new List<Score>()
                 {
                     new Score(27, 25),
                     new Score(33, 31),
-                    new Score(23, 25),
-                    new Score(),
+                    new Score(27, 25),
+                    new Score(24, 26),
                     new Score()
                 },
 

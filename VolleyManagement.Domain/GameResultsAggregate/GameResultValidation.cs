@@ -92,8 +92,10 @@
 
         private static bool IsOrdinarySetsScoreValid(Score setsScore)
         {
-            return setsScore.Home + setsScore.Away >= Constants.GameResult.MIN_SETS_COUNT
-                && setsScore.Home + setsScore.Away <= Constants.GameResult.MAX_SETS_COUNT;
+            return (setsScore.Home == Constants.GameResult.SETS_COUNT_TO_WIN
+                && setsScore.Away < Constants.GameResult.SETS_COUNT_TO_WIN)
+                || (setsScore.Home < Constants.GameResult.SETS_COUNT_TO_WIN
+                && setsScore.Away == Constants.GameResult.SETS_COUNT_TO_WIN);
         }
 
         private static bool IsTechnicalDefeatRequiredSetScoreValid(Score setScore)

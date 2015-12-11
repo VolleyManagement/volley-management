@@ -233,7 +233,9 @@
         /// </summary>
         public static class GameResult
         {
-            public const int MIN_SETS_COUNT = 3;
+            public const string VALID_SETS_SCORES = "3:0, 3:1, 3:2, 2:3, 1:3, 0:3";
+
+            public const int SETS_COUNT_TO_WIN = 3;
 
             public const int MAX_SETS_COUNT = 5;
 

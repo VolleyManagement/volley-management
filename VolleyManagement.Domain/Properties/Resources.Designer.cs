@@ -106,7 +106,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Счет по партиям в сумме не может быть меньше, чем минимальное количество партий ({0}), и больше, чем максимальное количество партий ({1}). При техническом поражении счет по партиям должен быть {2}:{3} или {3}:{2}.
+        ///   Looks up a localized string similar to Счет по партиям может быть одним из следующих: {0}. При техническом поражении счет по партиям должен быть {1}:{2} или {2}:{1}.
         /// </summary>
         public static string GameResultSetsScoreInvalid {
             get {

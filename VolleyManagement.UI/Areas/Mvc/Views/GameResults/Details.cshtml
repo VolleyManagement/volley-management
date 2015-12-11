@@ -1,10 +1,10 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
 
 @{
-    ViewBag.Title = "Game result";
+    ViewBag.Title = Resources.GameResultsViews.DetailsTitle;
 }
 
-<h2>Details</h2>
+<h2>@Resources.GameResultsViews.Details</h2>
 <hr />
 
 @Html.Partial("_Details", Model)

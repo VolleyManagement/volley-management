@@ -66,10 +66,10 @@
     }
 
     <div>
-        @Html.ActionLink("Add Game result", "Create", "GameResults", new { Id = Model.Id }, null) 
+        @Html.ActionLink(Resources.TournamentViews.AddGameResult, "Create", "GameResults", new { Id = Model.Id }, null) 
     </div>
     <div>
-        @Html.ActionLink("Show game results", "TournamentResults", "GameResults", new { Id = Model.Id }, null)
+        @Html.ActionLink(Resources.TournamentViews.ShowGameResults, "TournamentResults", "GameResults", new { Id = Model.Id }, null)
     </div>
 </fieldset>
 <p>

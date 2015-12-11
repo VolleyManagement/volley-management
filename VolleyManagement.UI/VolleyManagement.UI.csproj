@@ -311,10 +311,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthorizationRoles.resx</DependentUpon>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="App_GlobalResources\GameResultsController.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>GameResultsController.resx</DependentUpon>
+=======
+    <Compile Include="App_GlobalResources\GameResultsViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GameResultsViews.resx</DependentUpon>
+>>>>>>> Game_results
     </Compile>
     <Compile Include="App_GlobalResources\PlayerViews.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -469,9 +476,15 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+<<<<<<< HEAD
     <EmbeddedResource Include="App_GlobalResources\GameResultsController.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameResultsController.Designer.cs</LastGenOutput>
+=======
+    <EmbeddedResource Include="App_GlobalResources\GameResultsViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameResultsViews.Designer.cs</LastGenOutput>
+>>>>>>> Game_results
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

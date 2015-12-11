@@ -29,15 +29,15 @@
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 2,
-                SetsScore = new Score(3, 2),
+                SetsScore = new Score(3, 0),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
                 {
                     new Score(25, 20),
-                    new Score(24, 26),
-                    new Score(28, 30),
-                    new Score(25, 22),
-                    new Score(27, 25)
+                    new Score(26, 24),
+                    new Score(30, 28),
+                    new Score(0, 0),
+                    new Score(0, 0)
                 }
             };
         }
@@ -216,12 +216,30 @@
         }
 
         /// <summary>
+        /// Sets the previous optional set score to 0:0.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        public GameResultBuilder WithPreviousOptionalSetUnplayed()
+        {
+            _gameResult.SetScores = new List<Score>
+            {
+                new Score(25, 23),
+                new Score(25, 23),
+                new Score(25, 23),
+                new Score(0, 0),
+                new Score(23, 25)
+            };
+
+            return this;
+        }
+
+        /// <summary>
         /// Sets the final score of the game in a way that it does not match set scores.
         /// </summary>
         /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
         public GameResultBuilder WithSetsScoreNoMatchSetScores()
         {
-            _gameResult.SetsScore = new Score(4, 1);
+            _gameResult.SetsScore = new Score(3, 1);
             _gameResult.SetScores = new List<Score>
             {
                 new Score(25, 20),

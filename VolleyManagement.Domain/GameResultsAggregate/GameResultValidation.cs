@@ -82,6 +82,17 @@
             return isTechnicalDefeat ? IsTechnicalDefeatOptionalSetScoreValid(setScore) : IsOrdinaryOptionalSetScoreValid(setScore);
         }
 
+        /// <summary>
+        /// Determines whether the set is not played.
+        /// </summary>
+        /// <param name="setScore">Score of the set.</param>
+        /// <returns>True if set is not played; otherwise, false.</returns>
+        public static bool IsSetUnplayed(Score setScore)
+        {
+            return setScore.Home == Constants.GameResult.UNPLAYED_SET_HOME_SCORE
+                && setScore.Away == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
+        }
+
         private static bool IsTechnicalDefeatSetsScoreValid(Score setsScore)
         {
             return (setsScore.Home == Constants.GameResult.TECHNICAL_DEFEAT_SETS_WINNER_SCORE
@@ -143,12 +154,6 @@
         {
             return setScore.Home > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
                 || setScore.Away > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
-        }
-
-        private static bool IsSetUnplayed(Score setScore)
-        {
-            return setScore.Home == Constants.GameResult.UNPLAYED_SET_HOME_SCORE
-                && setScore.Away == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
         }
     }
 }

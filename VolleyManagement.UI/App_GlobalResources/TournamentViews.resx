@@ -121,7 +121,7 @@
     <value>Добавить дивизион</value>
   </data>
   <data name="AddGameResult" xml:space="preserve">
-    <value>Добавить игру</value>
+    <value>Добавить результат игры</value>
   </data>
   <data name="AddGroup" xml:space="preserve">
     <value>Добавить группу</value>
@@ -175,7 +175,7 @@
     <value>Сохранить</value>
   </data>
   <data name="ShowGameResults" xml:space="preserve">
-    <value>Показать результаты</value>
+    <value>Показать результаты игр</value>
   </data>
   <data name="TournamentDetailsTitle" xml:space="preserve">
     <value>Подробности турнира</value>

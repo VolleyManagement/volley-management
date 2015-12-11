@@ -119,6 +119,8 @@
 
         private void ValidateSetScores(IList<Score> setScores, bool isTechnicalDefeat)
         {
+            bool isPreviousOptionalSetUnplayed = false;
+
             for (int i = 0; i < setScores.Count; i++)
             {
                 if (i < GameResultConstants.SETS_COUNT_TO_WIN)
@@ -146,6 +148,16 @@
                             GameResultConstants.UNPLAYED_SET_HOME_SCORE,
                             GameResultConstants.UNPLAYED_SET_AWAY_SCORE));
                     }
+
+                    if (isPreviousOptionalSetUnplayed)
+                    {
+                        if (!GameResultValidation.IsSetUnplayed(setScores[i]))
+                        {
+                            throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
+                        }
+                    }
+
+                    isPreviousOptionalSetUnplayed = GameResultValidation.IsSetUnplayed(setScores[i]);
                 }
             }
         }

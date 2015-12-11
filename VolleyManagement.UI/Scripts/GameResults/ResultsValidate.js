@@ -156,6 +156,8 @@ function ValidateSetsScore(setsScore, isTechnicalDefeat) {
 }
 
 function ValidateSetScores(setScores, isTechnicalDefeat) {
+    var isPreviousOptionalSetUnplayed = false;
+
     for (i = 0; i < setScores.length; i++) {
         if (i < gameResultConstants.SETS_COUNT_TO_WIN) {
             if (!IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat)) {
@@ -176,6 +178,15 @@ function ValidateSetScores(setScores, isTechnicalDefeat) {
                     gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
                     gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE);
             }
+
+            if (isPreviousOptionalSetUnplayed) {
+                if (!IsSetUnplayed(setScores[i])) {
+                    var template = jQuery.validator.format(resourceMessages.GameResultPreviousOptionalSetUnplayed);
+                    throw resourceMessages.GameResultPreviousOptionalSetUnplayed;
+                }
+            }
+
+            isPreviousOptionalSetUnplayed = IsSetUnplayed(setScores[i]);
         }
     }
 }

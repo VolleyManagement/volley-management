@@ -88,6 +88,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Укажите счет предыдущей необязательной партии.
+        /// </summary>
+        public static string GameResultPreviousOptionalSetUnplayed {
+            get {
+                return ResourceManager.GetString("GameResultPreviousOptionalSetUnplayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to В партии количество очков у одной команды должно составлять как минимум {0} и разница очков должна быть как минимум {1}. Если количество очков превышает {0}, разница очков должна быть равна {1}. При техническом поражении счет в обязательной партии должен быть {2}:{3} или {3}:{2}.
         /// </summary>
         public static string GameResultRequiredSetScores {

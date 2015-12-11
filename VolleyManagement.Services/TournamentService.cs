@@ -171,21 +171,21 @@
 
             if (gameResults == null)
             {
-                throw new ArgumentException(TournamentResources.NonexistentTournamentStanding);
+                throw new ArgumentException(TournamentResources.NonexistentTournamentStandings);
             }
 
-            var standing = new Standings();
+            var standings = new Standings();
 
             foreach (var gameResult in gameResults)
             {
                 bool addHomeTeamEntry = false;
                 bool addAwayTeamEntry = false;
-                var standingHomeTeamEntry = standing.Entries.SingleOrDefault(tse => tse.TeamId == gameResult.HomeTeamId);
-                var standingAwayTeamEntry = standing.Entries.SingleOrDefault(tse => tse.TeamId == gameResult.AwayTeamId);
+                var standingsHomeTeamEntry = standings.Entries.SingleOrDefault(tse => tse.TeamId == gameResult.HomeTeamId);
+                var standingsAwayTeamEntry = standings.Entries.SingleOrDefault(tse => tse.TeamId == gameResult.AwayTeamId);
 
-                if (standingHomeTeamEntry == null)
+                if (standingsHomeTeamEntry == null)
                 {
-                    if (CreateStandingEntryForTeam(gameResult.HomeTeamId) == null)
+                    if (CreateStandingsEntryForTeam(gameResult.HomeTeamId) == null)
                     {
                         continue;
                     }
@@ -193,9 +193,9 @@
                     addHomeTeamEntry = true;
                 }
 
-                if (standingAwayTeamEntry == null)
+                if (standingsAwayTeamEntry == null)
                 {
-                    if (CreateStandingEntryForTeam(gameResult.AwayTeamId) == null)
+                    if (CreateStandingsEntryForTeam(gameResult.AwayTeamId) == null)
                     {
                         continue;
                     }
@@ -203,21 +203,21 @@
                     addAwayTeamEntry = true;
                 }
 
-                GetGamesStats(standingHomeTeamEntry, standingAwayTeamEntry, gameResult.SetsScore);
-                GetSetsStats(standingHomeTeamEntry, standingAwayTeamEntry, gameResult.SetScores);
+                GetGamesStats(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult.SetsScore);
+                GetSetsStats(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult.SetScores);
 
                 if (addHomeTeamEntry)
                 {
-                    standing.AddEntry(standingHomeTeamEntry);
+                    standings.AddEntry(standingsHomeTeamEntry);
                 }
 
                 if (addAwayTeamEntry)
                 {
-                    standing.AddEntry(standingAwayTeamEntry);
+                    standings.AddEntry(standingsAwayTeamEntry);
                 }
             }
 
-            return standing.Rebuild();
+            return standings.Rebuild();
         }
 
         #endregion
@@ -431,7 +431,7 @@
             }
         }
 
-        private StandingsEntry CreateStandingEntryForTeam(int id)
+        private StandingsEntry CreateStandingsEntryForTeam(int id)
         {
             var team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
 

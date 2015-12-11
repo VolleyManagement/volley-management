@@ -141,7 +141,7 @@
   <data name="LateRegistrationDates" xml:space="preserve">
     <value>Вы не можете указывать начало периода заявок в прошлом</value>
   </data>
-  <data name="NonexistentTournamentStanding" xml:space="preserve">
+  <data name="NonexistentTournamentStandings" xml:space="preserve">
     <value>Невозможно получить турнирную таблицу для несуществующего турнира</value>
   </data>
   <data name="TournamentNameMustBeUnique" xml:space="preserve">

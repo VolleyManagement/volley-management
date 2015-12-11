@@ -61,7 +61,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить дивизион.
+        ///   Looks up a localized string similar to + Добавить дивизион.
         /// </summary>
         public static string AddDivision {
             get {
@@ -70,7 +70,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить игру.
+        ///   Looks up a localized string similar to + Добавить группу.
         /// </summary>
         public static string AddGameResult {
             get {
@@ -79,7 +79,6 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить группу.
         /// </summary>
         public static string AddGroup {
             get {
@@ -160,15 +159,6 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вы достигли максимального количества дивизионов в турнире..
-        /// </summary>
-        public static string DivisionLimit {
-            get {
-                return ResourceManager.GetString("DivisionLimit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Редактировать.
         /// </summary>
         public static string Edit {
@@ -205,15 +195,6 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вы достигли максимального количества групп в дивизионе..
-        /// </summary>
-        public static string GroupLimit {
-            get {
-                return ResourceManager.GetString("GroupLimit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Регистрация на турнир.
         /// </summary>
         public static string RegistrationFieldsTitle {
@@ -232,7 +213,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Показать результаты.
+        ///   Looks up a localized string similar to Показать результаты игр.
         /// </summary>
         public static string ShowGameResults {
             get {

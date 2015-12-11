@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddDivision" xml:space="preserve">
-    <value>Добавить дивизион</value>
+    <value>+ Добавить дивизион</value>
   </data>
   <data name="AddGameResult" xml:space="preserve">
-    <value>Добавить игру</value>
+    <value>Добавить результат игры</value>
   </data>
   <data name="AddGroup" xml:space="preserve">
-    <value>Добавить группу</value>
+    <value>+ Добавить группу</value>
   </data>
   <data name="BackToList" xml:space="preserve">
     <value>Назад к списку</value>
@@ -150,9 +150,6 @@
   <data name="DeleteTournamentTitle" xml:space="preserve">
     <value>Удаление турнира</value>
   </data>
-  <data name="DivisionLimit" xml:space="preserve">
-    <value>Вы достигли максимального количества дивизионов в турнире.</value>
-  </data>
   <data name="Edit" xml:space="preserve">
     <value>Редактировать</value>
   </data>
@@ -165,9 +162,6 @@
   <data name="FinishedTournamentsHeader" xml:space="preserve">
     <value>Завершенные</value>
   </data>
-  <data name="GroupLimit" xml:space="preserve">
-    <value>Вы достигли максимального количества групп в дивизионе.</value>
-  </data>
   <data name="RegistrationFieldsTitle" xml:space="preserve">
     <value>Регистрация на турнир</value>
   </data>
@@ -175,7 +169,7 @@
     <value>Сохранить</value>
   </data>
   <data name="ShowGameResults" xml:space="preserve">
-    <value>Показать результаты</value>
+    <value>Показать результаты игр</value>
   </data>
   <data name="TournamentDetailsTitle" xml:space="preserve">
     <value>Подробности турнира</value>

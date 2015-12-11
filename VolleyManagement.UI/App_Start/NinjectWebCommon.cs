@@ -97,7 +97,7 @@ namespace VolleyManagement.UI
 
         private static void RegisterInfrastructure(IKernel kernel)
         {
-          //  kernel.BindFilter<VolleyExceptionFilterAttribute>(FilterScope.Global, 0);
+            kernel.BindFilter<VolleyExceptionFilterAttribute>(FilterScope.Global, 0);
         }
     }
 }

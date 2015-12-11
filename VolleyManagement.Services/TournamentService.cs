@@ -10,6 +10,8 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
+    using DivisionConstants = VolleyManagement.Domain.Constants.Division;
+    using GroupConstants = VolleyManagement.Domain.Constants.Group;
     using TournamentConstants = VolleyManagement.Domain.Constants.Tournament;
     using TournamentResources = VolleyManagement.Domain.Properties.Resources;
 
@@ -312,13 +314,13 @@
 
         private void ValidateDivisionCount(int count)
         {
-            if (!TournamentValidationSpecification.IsDivisionCountWithinRange(count))
+            if (!DivisionValidation.IsDivisionCountWithinRange(count))
             {
                 throw new ArgumentException(
                     string.Format(
                         TournamentResources.DivisionCountOutOfRange,
-                        TournamentConstants.MIN_DIVISIONS_COUNT,
-                        TournamentConstants.MAX_DIVISIONS_COUNT));
+                        DivisionConstants.MIN_DIVISIONS_COUNT,
+                        DivisionConstants.MAX_DIVISIONS_COUNT));
             }
         }
 
@@ -341,13 +343,13 @@
 
         private void ValidateGroupCount(int count)
         {
-            if (!DivisionValidation.IsGroupCountWithinRange(count))
+            if (!GroupValidation.IsGroupCountWithinRange(count))
             {
                 throw new ArgumentException(
                     string.Format(
                     TournamentResources.GroupCountOutOfRange,
-                    TournamentConstants.MIN_GROUPS_COUNT,
-                    TournamentConstants.MAX_GROUPS_COUNT));
+                    GroupConstants.MIN_GROUPS_COUNT,
+                    GroupConstants.MAX_GROUPS_COUNT));
             }
         }
 

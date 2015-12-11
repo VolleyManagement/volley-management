@@ -15,7 +15,10 @@
         /// </summary>
         public GroupViewModel()
         {
-            this.Name = ViewModelResources.GroupDefaultName;
+            this.Name = string.Format(
+                "{0} {1}",
+                ViewModelResources.GroupDefaultName,
+                Constants.Group.MIN_GROUPS_COUNT);
         }
 
         /// <summary>

@@ -17,7 +17,10 @@
         /// </summary>
         public DivisionViewModel()
         {
-            this.Name = ViewModelResources.DivisionDefaultName;
+            this.Name = string.Format(
+                "{0} {1}",
+                ViewModelResources.DivisionDefaultName,
+                Constants.Division.MIN_DIVISIONS_COUNT);
             this.Groups = new List<GroupViewModel>() { new GroupViewModel() };
         }
 

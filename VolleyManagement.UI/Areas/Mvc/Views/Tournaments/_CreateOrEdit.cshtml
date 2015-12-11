@@ -1,7 +1,9 @@
 @using VolleyManagement.UI.Areas.Mvc
-@using ValidationKeys = VolleyManagement.Domain.Constants.Tournament;
-@using VolleyManagement.UI.HtmlHelpers
 @using VolleyManagement.UI.Helpers
+@using VolleyManagement.UI.HtmlHelpers
+@using DivisionConstants = VolleyManagement.Domain.Constants.Division
+@using GroupConstants = VolleyManagement.Domain.Constants.Group
+@using TournamentConstants = VolleyManagement.Domain.Constants.Tournament
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
 @* This partial view defines form fields that will appear when creating and editing entities *@
 
@@ -15,7 +17,7 @@
 </div>
 <div class="editor-field">
     @Html.EditorFor(model => model.Name)
-    @Html.ValidationMessage(ValidationKeys.UNIQUE_NAME_KEY)
+    @Html.ValidationMessage(TournamentConstants.UNIQUE_NAME_KEY)
     @Html.ValidationMessageFor(model => model.Name)
 </div>
 
@@ -86,10 +88,10 @@
     -
     @Html.TextBoxForShortDate(model => model.ApplyingPeriodEnd, Model.ApplyingPeriodEnd, new { @readonly = "readonly" })
 
-    @Html.ValidationMessage(ValidationKeys.APPLYING_START_DATE_AFTER_END_DATE)
-    @Html.ValidationMessage(ValidationKeys.APPLYING_START_BEFORE_NOW)
+    @Html.ValidationMessage(TournamentConstants.APPLYING_START_DATE_AFTER_END_DATE)
+    @Html.ValidationMessage(TournamentConstants.APPLYING_START_BEFORE_NOW)
     @Html.ValidationMessageFor(model => model.ApplyingPeriodStart)
-    @Html.ValidationMessage(ValidationKeys.APPLYING_PERIOD_LESS_THREE_MONTH)
+    @Html.ValidationMessage(TournamentConstants.APPLYING_PERIOD_LESS_THREE_MONTH)
     @Html.ValidationMessageFor(model => model.ApplyingPeriodEnd)
 </div>
 
@@ -101,10 +103,10 @@
     -
     @Html.TextBoxForShortDate(model => model.GamesEnd, Model.GamesEnd, new { @readonly = "readonly" })
 
-    @Html.ValidationMessage(ValidationKeys.APPLYING_END_DATE_AFTER_START_GAMES)
+    @Html.ValidationMessage(TournamentConstants.APPLYING_END_DATE_AFTER_START_GAMES)
     @Html.ValidationMessageFor(model => model.GamesStart)
-    @Html.ValidationMessage(ValidationKeys.START_GAMES_AFTER_END_GAMES)
-    @Html.ValidationMessage(ValidationKeys.TRANSFER_END_AFTER_GAMES_END)
+    @Html.ValidationMessage(TournamentConstants.START_GAMES_AFTER_END_GAMES)
+    @Html.ValidationMessage(TournamentConstants.TRANSFER_END_AFTER_GAMES_END)
     @Html.ValidationMessageFor(model => model.GamesEnd)
 </div>
 <div class="checkbox_transfer">
@@ -128,50 +130,64 @@
         .ToHtmlString()
         .Replace("disabled=\"disabled\"", (Model.IsTransferEnabled ? "" : "disabled=\"disabled\"")))
 
-    @Html.ValidationMessage(ValidationKeys.TRANSFER_PERIOD_BEFORE_GAMES_START)
+    @Html.ValidationMessage(TournamentConstants.TRANSFER_PERIOD_BEFORE_GAMES_START)
     @Html.ValidationMessageFor(model => model.TransferStart)
-    @Html.ValidationMessage(ValidationKeys.TRANSFER_END_BEFORE_TRANSFER_START)
+    @Html.ValidationMessage(TournamentConstants.TRANSFER_END_BEFORE_TRANSFER_START)
     @Html.ValidationMessageFor(model => model.TransferEnd)
 </div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.Divisions)
-</div>
+<div class="editor-label">@Html.LabelFor(model => model.Divisions)</div>
 <div id="Divisions">
     @for (int i = 0; i < Model.Divisions.Count; i++)
     {
-        <input type="hidden" name="Divisions[@i].Id" value="@Model.Divisions[i].Id" />
-        string divId = "Division" + i.ToString();
-        <div id=@divId class="editor-field">
-            @Html.EditorFor(model => model.Divisions[i].Name, new { name = "Divisions[@i].Name" })
-            @Html.ValidationMessageFor(model => model.Divisions[i].Name)
-            <div class="editor-label">
-                &nbsp;&nbsp;&nbsp;@Html.LabelFor(model => model.Divisions[i].Groups)
-                <input type="button"
-                       value="@Resources.TournamentViews.AddGroup"
-                       data-division=@i
-                       onClick="addGroup(this, @ValidationKeys.MAX_GROUPS_COUNT, '@Resources.TournamentViews.GroupLimit');">
+        string divisionWrapperId = "Division_" + i.ToString();
+        string divisionGroupsListWrapperId = "Division_" + i.ToString() + "_Groups";
+
+        <div id=@divisionWrapperId>
+            @Html.HiddenFor(model => model.Divisions[i].Id)
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Divisions[i].Name, new { Name = "Divisions[@i].Name" })
+                @Html.ValidationMessageFor(model => model.Divisions[i].Name)
             </div>
-        </div>
-        string groupsId = "Group" + i.ToString();
-        <div id=@groupsId>
-            @for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
-            {
-                <input type="hidden" name="Divisions[@i].Groups[@j].Id" value="@Model.Divisions[i].Groups[@j].Id" />
-                string grId = "Group" + i.ToString() + j.ToString();
-                <div id=@grId class="editor-field">
-                    &nbsp;&nbsp;&nbsp;@Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new { name = "Divisions[@i].Groups[@j].Name" })
-                    @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
+            <div class="division-groups-wrapper">
+                <div class="editor-label">@Html.LabelFor(model => model.Divisions[i].Groups)</div>
+                <div id=@divisionGroupsListWrapperId>
+                    @for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
+                    {
+                        string groupWrapperId = "Division_" + i.ToString() + "_Group_" + j.ToString();
+
+                        <div id=@groupWrapperId class="editor-field group-editor">
+                            @Html.HiddenFor(model => model.Divisions[i].Groups[j].Id)
+                            @Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new { name = "Divisions[@i].Groups[@j].Name" })
+                            @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
+                        </div>
+                    }
                 </div>
-            }
+                @if (Model.Divisions[i].Groups.Count < GroupConstants.MAX_GROUPS_COUNT)
+                {
+                    string addGroupButtonId = "Add_Division_" + i.ToString() + "_Group";
+
+                    <div class="add-group-button">
+                        <a id=@addGroupButtonId class="link-button"
+                            onClick="addGroup(@i, @GroupConstants.MAX_GROUPS_COUNT, '@Resources.ViewModelResources.GroupDefaultName')">
+                            @Resources.TournamentViews.AddGroup
+                        </a>
+                    </div>
+                }
+            </div>
         </div>
     }
 </div>
-@if (Model.Divisions.Count < ValidationKeys.MAX_DIVISIONS_COUNT)
+@if (Model.Divisions.Count < DivisionConstants.MAX_DIVISIONS_COUNT)
 {
-    int startIndex = Model.Divisions.Count - 1;
-
-    <input type="button"
-           value="@Resources.TournamentViews.AddDivision"
-           onClick="addInput(@startIndex, @ValidationKeys.MAX_DIVISIONS_COUNT, '@Resources.TournamentViews.DivisionLimit');">
+    <div class="add-division-button">
+        <a id="Add_Division" class="link-button"
+            onClick="addDivision(
+                @DivisionConstants.MAX_DIVISIONS_COUNT,
+                '@Resources.ViewModelResources.DivisionDefaultName',
+                '@Resources.ViewModelResources.Groups',
+                '@Resources.ViewModelResources.GroupDefaultName')">
+            @Resources.TournamentViews.AddDivision
+        </a>
+    </div>
 }

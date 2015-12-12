@@ -50,7 +50,7 @@
         /// Test for GetStandings() method. Tournament standings are requested. Tournament standings are returned.
         /// </summary>
         [TestMethod]
-        public void Create_StandingsRequested_StandingsReturned()
+        public void GetStandings_StandingsRequested_StandingsReturned()
         {
             // Arrange
             var gameResultsTestData = new GameResultTestFixture().TestGameResults().Build();

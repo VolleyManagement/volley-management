@@ -1,0 +1,105 @@
+﻿namespace VolleyManagement.UnitTests.Services.GameReportService
+{
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using VolleyManagement.Domain.GameReportsAggregate;
+
+    /// <summary>
+    /// Generates <see cref="StandingsEntry"/> test data for unit tests for <see cref="GameReportService"/>.
+    /// </summary>
+    [ExcludeFromCodeCoverage]
+    internal class StandingsTestFixture
+    {
+        private List<StandingsEntry> _standings = new List<StandingsEntry>();
+
+        /// <summary>
+        /// Generates <see cref="StandingsEntry"/> objects filled with test data.
+        /// </summary>
+        /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
+        public StandingsTestFixture TestStandings()
+        {
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameA",
+                Points = 5,
+                GamesTotal = 2,
+                GamesWon = 2,
+                GamesLost = 0,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 1,
+                GamesWithScoreThreeTwo = 1,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 6,
+                SetsLost = 3,
+                SetsRatio = 6.0f / 3,
+                BallsWon = 234,
+                BallsLost = 214,
+                BallsRatio = 234.0f / 214
+            });
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameC",
+                Points = 3,
+                GamesTotal = 2,
+                GamesWon = 1,
+                GamesLost = 1,
+                GamesWithScoreThreeNil = 1,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 1,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 4,
+                SetsLost = 3,
+                SetsRatio = 4.0f / 3,
+                BallsWon = 166,
+                BallsLost = 105,
+                BallsRatio = 166.0f / 105
+            });
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameB",
+                Points = 1,
+                GamesTotal = 2,
+                GamesWon = 0,
+                GamesLost = 2,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 1,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 1,
+                SetsWon = 2,
+                SetsLost = 6,
+                SetsRatio = 2.0f / 6,
+                BallsWon = 123,
+                BallsLost = 204,
+                BallsRatio = 123.0f / 204
+            });
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds <see cref="StandingsEntry"/> object to collection.
+        /// </summary>
+        /// <param name="newStandingEntry"><see cref="StandingsEntry"/> object to add.</param>
+        /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
+        public StandingsTestFixture Add(StandingsEntry newStandingEntry)
+        {
+            _standings.Add(newStandingEntry);
+            return this;
+        }
+
+        /// <summary>
+        /// Builds instance of <see cref="StandingsTestFixture"/>.
+        /// </summary>
+        /// <returns>Collection of <see cref="StandingsEntry"/> objects filled with test data.</returns>
+        public List<StandingsEntry> Build()
+        {
+            return _standings;
+        }
+    }
+}

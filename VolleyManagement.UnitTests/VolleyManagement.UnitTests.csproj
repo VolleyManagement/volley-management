@@ -132,6 +132,9 @@
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\UserEditMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
+    <Compile Include="Services\GameReportService\GameReportServiceTests.cs" />
+    <Compile Include="Services\GameReportService\StandingsEntryComparer.cs" />
+    <Compile Include="Services\GameReportService\StandingsTestFixture.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />

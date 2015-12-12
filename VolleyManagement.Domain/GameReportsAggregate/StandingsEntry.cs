@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Domain.TournamentsAggregate.Standings
+﻿namespace VolleyManagement.Domain.GameReportsAggregate
 {
     /// <summary>
     /// Represents a single entry in tournament's standings.

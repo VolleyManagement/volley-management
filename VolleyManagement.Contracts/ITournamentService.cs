@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate.Standings;
 
     /// <summary>
     /// Interface for TournamentService
@@ -51,12 +50,5 @@
         /// </summary>
         /// <param name="id">Tournament id</param>
         void Delete(int id);
-
-        /// <summary>
-        /// Gets standings of the tournament specified by identifier.
-        /// </summary>
-        /// <param name="id">Identifier of the tournament.</param>
-        /// <returns>Standings of the tournament with specified identifier.</returns>
-        Standings GetStandings(int id);
     }
 }

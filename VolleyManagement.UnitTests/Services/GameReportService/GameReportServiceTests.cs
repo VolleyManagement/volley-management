@@ -27,8 +27,8 @@
         private readonly Mock<IQuery<List<GameResult>, TournamentGameResultsCriteria>> _getTournamentGameResultsQueryMock =
             new Mock<IQuery<List<GameResult>, TournamentGameResultsCriteria>>();
 
-        private readonly Mock<IQuery<Team, FindByIdCriteria>> _getTeamByIdQueryMock =
-            new Mock<IQuery<Team, FindByIdCriteria>>();
+        private readonly Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQueryMock =
+            new Mock<IQuery<List<Team>, GetAllCriteria>>();
 
         private GameReportService _sut;
 
@@ -42,7 +42,7 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IQuery<List<GameResult>, TournamentGameResultsCriteria>>().ToConstant(_getTournamentGameResultsQueryMock.Object);
-            _kernel.Bind<IQuery<Team, FindByIdCriteria>>().ToConstant(_getTeamByIdQueryMock.Object);
+            _kernel.Bind<IQuery<List<Team>, GetAllCriteria>>().ToConstant(_getAllTeamsQueryMock.Object);
             _sut = _kernel.Get<GameReportService>();
         }
 
@@ -55,11 +55,10 @@
             // Arrange
             var gameResultsTestData = new GameResultTestFixture().TestGameResults().Build();
             var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
-            var teamIds = teamsTestData.Select(t => t.Id);
             var expected = new StandingsTestFixture().TestStandings().Build();
 
             SetupGetTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupGetTeamByIdQuery(teamIds, teamsTestData);
+            SetupGetAllTeamsQuery(teamsTestData);
 
             // Act
             var actual = _sut.GetStandings(TOURNAMENT_ID);
@@ -70,15 +69,14 @@
 
         private void SetupGetTournamentGameResultsQuery(int tournamentId, List<GameResult> testData)
         {
-            _getTournamentGameResultsQueryMock.Setup(m =>
-                m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
+            _getTournamentGameResultsQueryMock.Setup(q =>
+                q.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
                 .Returns(testData);
         }
 
-        private void SetupGetTeamByIdQuery(IEnumerable<int> teamIds, List<Team> testData)
+        private void SetupGetAllTeamsQuery(List<Team> testData)
         {
-            _getTeamByIdQueryMock.Setup(m => m.Execute(It.Is<FindByIdCriteria>(c => teamIds.Contains(c.Id))))
-                .Returns<FindByIdCriteria>(c => testData.SingleOrDefault(td => td.Id == c.Id));
+            _getAllTeamsQueryMock.Setup(q => q.Execute(It.IsAny<GetAllCriteria>())).Returns(testData);
         }
     }
 }

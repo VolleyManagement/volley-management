@@ -64,6 +64,15 @@
             }
         }
     }
+
+    <div>
+        @Html.ActionLink(
+            Resources.TournamentViews.ShowTournamentStandings,
+            "TournamentStandings",
+            "GameReports",
+            new { tournamentId = Model.Id },
+            null)
+    </div>
 </fieldset>
 <p>
     @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id = Model.Id }) |

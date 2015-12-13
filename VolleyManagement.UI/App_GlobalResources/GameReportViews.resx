@@ -117,73 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddDivision" xml:space="preserve">
-    <value>+ Добавить дивизион</value>
+  <data name="BackToTournament" xml:space="preserve">
+    <value>К подробностям турнира</value>
   </data>
-  <data name="AddGroup" xml:space="preserve">
-    <value>+ Добавить группу</value>
+  <data name="BallsGroupHeader" xml:space="preserve">
+    <value>Мячи в партии</value>
   </data>
-  <data name="BackToList" xml:space="preserve">
-    <value>Назад к списку</value>
+  <data name="BallsLostHeader" xml:space="preserve">
+    <value>Проигранные</value>
   </data>
-  <data name="Create" xml:space="preserve">
-    <value>Создать</value>
+  <data name="BallsRatioHeader" xml:space="preserve">
+    <value>Соотношение</value>
   </data>
-  <data name="CreateNewTournament" xml:space="preserve">
-    <value>Создать новый турнир</value>
+  <data name="BallsWonHeader" xml:space="preserve">
+    <value>Выигранные</value>
   </data>
-  <data name="CreateTournamentTitle" xml:space="preserve">
-    <value>Создание нового турнира</value>
+  <data name="GamesGroupHeader" xml:space="preserve">
+    <value>Матчи</value>
   </data>
-  <data name="CurrentTournamentsHeader" xml:space="preserve">
-    <value>Текущие</value>
+  <data name="GamesLostHeader" xml:space="preserve">
+    <value>Проигранные</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
+  <data name="GamesTotalHeader" xml:space="preserve">
+    <value>Всего</value>
   </data>
-  <data name="DeleteConfirm" xml:space="preserve">
-    <value>Вы уверены, что хотите это удалить?</value>
+  <data name="GamesWithScoreNilThreeHeader" xml:space="preserve">
+    <value>0:3</value>
   </data>
-  <data name="DeleteTournamentTitle" xml:space="preserve">
-    <value>Удаление турнира</value>
+  <data name="GamesWithScoreOneThreeHeader" xml:space="preserve">
+    <value>1:3</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Редактировать</value>
+  <data name="GamesWithScoreThreeNilHeader" xml:space="preserve">
+    <value>3:0</value>
   </data>
-  <data name="EditTournamentTitle" xml:space="preserve">
-    <value>Редактирование турнира</value>
+  <data name="GamesWithScoreThreeOneHeader" xml:space="preserve">
+    <value>3:1</value>
   </data>
-  <data name="FinishedTournaments" xml:space="preserve">
-    <value>Показать завершенные</value>
+  <data name="GamesWithScoreThreeTwoHeader" xml:space="preserve">
+    <value>3:2</value>
   </data>
-  <data name="FinishedTournamentsHeader" xml:space="preserve">
-    <value>Завершенные</value>
+  <data name="GamesWithScoreTwoThreeHeader" xml:space="preserve">
+    <value>2:3</value>
   </data>
-  <data name="RegistrationFieldsTitle" xml:space="preserve">
-    <value>Регистрация на турнир</value>
+  <data name="GamesWonHeader" xml:space="preserve">
+    <value>Выигранные</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Сохранить</value>
+  <data name="LastUpdated" xml:space="preserve">
+    <value>По состоянию на {0:dd.MM.yyyy}</value>
   </data>
-  <data name="ShowTournamentStandings" xml:space="preserve">
-    <value>Показать результаты турнира</value>
+  <data name="PointsHeader" xml:space="preserve">
+    <value>Очки</value>
   </data>
-  <data name="TournamentDetailsTitle" xml:space="preserve">
-    <value>Подробности турнира</value>
+  <data name="PositionHeader" xml:space="preserve">
+    <value>Место</value>
   </data>
-  <data name="TournamentFieldsTitle" xml:space="preserve">
-    <value>Турнир</value>
+  <data name="SetsGroupHeader" xml:space="preserve">
+    <value>Партии</value>
   </data>
-  <data name="TournamentLegend" xml:space="preserve">
-    <value>Турнир</value>
+  <data name="SetsLostHeader" xml:space="preserve">
+    <value>Проигранные</value>
   </data>
-  <data name="TournamentsIndexTitle" xml:space="preserve">
-    <value>Турниры</value>
+  <data name="SetsRatioHeader" xml:space="preserve">
+    <value>Соотношение</value>
   </data>
-  <data name="TransferFieldsTitle" xml:space="preserve">
-    <value>Трансферный период</value>
+  <data name="SetsWonHeader" xml:space="preserve">
+    <value>Выигранные</value>
   </data>
-  <data name="UpcomingTournamentsHeader" xml:space="preserve">
-    <value>Ожидаемые</value>
+  <data name="TeamHeader" xml:space="preserve">
+    <value>Команда</value>
+  </data>
+  <data name="TournamentStandingsLegend" xml:space="preserve">
+    <value>Турнир "{0}"</value>
+  </data>
+  <data name="TournamentStandingsTitle" xml:space="preserve">
+    <value>Турнирная таблица</value>
   </data>
 </root>

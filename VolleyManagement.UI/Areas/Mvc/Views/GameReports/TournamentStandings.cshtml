@@ -13,6 +13,7 @@
         string legendText = string.Format(Resources.GameReportViews.TournamentStandingsLegend, Model.TournamentName);
         string rowClassName = string.Empty;
         string teamCellClassName = string.Empty;
+        string teamLastCellClassName = string.Empty;
         int position = 0;
     }
 
@@ -66,13 +67,15 @@
                     rowClassName = "standings-table-row";
                 }
 
-                if (position != Model.Entries.Count)
+                if (position + 1 != Model.Entries.Count)
                 {
                     teamCellClassName = "standings-table-cell right-border bottom-border";
+                    teamLastCellClassName = "standings-table-cell bottom-border";
                 }
                 else
                 {
-                    teamCellClassName = "standings-table-cell";
+                    teamCellClassName = "standings-table-cell right-border";
+                    teamLastCellClassName = "standings-table-cell";
                 }
 
                 <tr class="@rowClassName">
@@ -93,7 +96,7 @@
                     <td class="@teamCellClassName">@string.Format("{0:g3}", entry.SetsRatio)</td>
                     <td class="@teamCellClassName">@entry.BallsWon</td>
                     <td class="@teamCellClassName">@entry.BallsLost</td>
-                    <td class="@teamCellClassName">@string.Format("{0:g3}", entry.BallsRatio)</td>
+                    <td class="@teamLastCellClassName">@string.Format("{0:g3}", entry.BallsRatio)</td>
                 </tr>
             }
         </tbody>

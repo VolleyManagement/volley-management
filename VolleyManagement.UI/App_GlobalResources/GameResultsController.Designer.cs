@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VolleyManagement.UI.Resources
-{
+namespace VolleyManagement.UI.App_GlobalResources {
     using System;
     
     
@@ -62,11 +61,11 @@ namespace VolleyManagement.UI.Resources
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Данная игра не найдена, т.к. был удалена. Операция редактирования невозможна..
+        ///   Looks up a localized string similar to Данная игра не найдена, т.к. была удалена. Операция редактирования невозможна..
         /// </summary>
-        public static string GameResultsWasDeleted {
+        public static string GameResultWasDeleted {
             get {
-                return ResourceManager.GetString("GameResultsWasDeleted", resourceCulture);
+                return ResourceManager.GetString("GameResultWasDeleted", resourceCulture);
             }
         }
     }

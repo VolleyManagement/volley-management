@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Web.Mvc;
     using Domain;
     using Domain.GameResultsAggregate;
 
@@ -35,9 +36,15 @@
         public int HomeTeamId { get; set; }
 
         /// <summary>
-        /// Gets or sets name of the home team which played the game.
+        /// Gets name of the home team which played the game.
         /// </summary>
-        public string HomeTeamName { get; set; }
+        public string HomeTeamName
+        {
+            get
+            {
+                return TournamentTeams.Where(tm => tm.Value == HomeTeamId.ToString()).Select(tm => tm.Text).Single();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the identifier of the away team which played the game.
@@ -45,9 +52,15 @@
         public int AwayTeamId { get; set; }
 
         /// <summary>
-        /// Gets or sets name of the away team which played the game.
+        /// Gets name of the away team which played the game.
         /// </summary>
-        public string AwayTeamName { get; set; }
+        public string AwayTeamName
+        {
+            get
+            {
+                return TournamentTeams.Where(tm => tm.Value == AwayTeamId.ToString()).Select(tm => tm.Text).Single();
+            }
+        }
 
         /// <summary>
         /// Gets or sets the final score of the game.
@@ -63,6 +76,11 @@
         /// Gets or sets the set scores.
         /// </summary>
         public List<Score> SetScores { get; set; }
+
+        /// <summary>
+        /// Gets or sets teams participating in tournament.
+        /// </summary>
+        public List<SelectListItem> TournamentTeams { get; set; }
 
         /// <summary>
         /// Maps domain entity to <see cref="GameResultViewModel"/>.

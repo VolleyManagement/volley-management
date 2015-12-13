@@ -79,7 +79,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Релзультат игры по указаному id не был найден.
+        ///   Looks up a localized string similar to Невозможно обновить несуществующий результат игры.
         /// </summary>
         internal static string GameResultsNotFound {
             get {

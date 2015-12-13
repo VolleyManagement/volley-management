@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
-    using System;
     using System.Data.Entity;
     using System.Linq;
     using VolleyManagement.Data.Contracts;
@@ -65,8 +64,8 @@
         public void Remove(int id)
         {
             var dalToRemove = new GameResultEntity { Id = id };
-            this._dalGameResults.Attach(dalToRemove);
-            this._dalGameResults.Remove(dalToRemove);
+            _dalGameResults.Attach(dalToRemove);
+            _dalGameResults.Remove(dalToRemove);
         }
     }
 }

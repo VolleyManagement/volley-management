@@ -249,7 +249,7 @@
         /// Test for Delete method. Exists id - deleted.
         /// </summary>
         [TestMethod]
-        public void Delete_ExsistsId_Deleted()
+        public void Delete_ExistsId_Deleted()
         {
             // Arrange
 
@@ -257,6 +257,7 @@
             _sut.Delete(GAME_RESULT_ID);
 
             // Assert
+            _gameResultRepositoryMock.Verify(grr => grr.Remove(GAME_RESULT_ID), Times.Once);
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once);
         }
 

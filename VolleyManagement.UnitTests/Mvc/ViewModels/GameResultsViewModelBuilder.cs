@@ -95,28 +95,6 @@
         }
 
         /// <summary>
-        /// Sets home team name of test game results view model
-        /// </summary>
-        /// <param name="homeTeamName">Value indicates home team name</param>
-        /// <returns>Game result view model builder object</returns>
-        public GameResultViewModelBuilder WithHomeTeamName(string homeTeamName)
-        {
-            _gameResultsViewModel.HomeTeamName = homeTeamName;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets away team name of test game results view model
-        /// </summary>
-        /// <param name="awayTeamName">Value indicates away team name</param>
-        /// <returns>Game result view model builder object</returns>
-        public GameResultViewModelBuilder WithAwayTeamName(string awayTeamName)
-        {
-            _gameResultsViewModel.AwayTeamName = awayTeamName;
-            return this;
-        }
-
-        /// <summary>
         /// Builds test game results view model
         /// </summary>
         /// <returns>test game results view model</returns>

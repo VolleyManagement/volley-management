@@ -133,7 +133,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Партия #{0}.
+        ///   Looks up a localized string similar to Партия #{0}:.
         /// </summary>
         public static string SetFields {
             get {

@@ -42,20 +42,23 @@
         public ActionResult Details(int id)
         {
             var gameResult = GameResultViewModel.Map(_gameResultsService.Get(id));
-            gameResult.HomeTeamName = _teamService.Get(gameResult.HomeTeamId).Name;
-            gameResult.AwayTeamName = _teamService.Get(gameResult.AwayTeamId).Name;
+            gameResult.TournamentTeams = GetTeams();
             return View(gameResult);
         }
 
         /// <summary>
         /// Create GET method.
         /// </summary>
-        /// <param name="Id">Id of tournament</param>
+        /// <param name="id">Id of tournament</param>
         /// <returns>Create view.</returns>
-        public ActionResult Create(int Id)
+        public ActionResult Create(int id)
         {
-            ViewBag.Teams = GetTeams();
-            GameResultViewModel gameResultViewModel = new GameResultViewModel() { TournamentId = Id };
+            GameResultViewModel gameResultViewModel = new GameResultViewModel()
+            {
+                TournamentId = id,
+                TournamentTeams = GetTeams()
+            };
+
             return View(gameResultViewModel);
         }
 
@@ -77,7 +80,6 @@
             {
                 ModelState.AddModelError("ValidationError", ex.Message);
                 var teams = _teamService.Get().Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
-                ViewBag.Teams = teams;
                 return View(gameResultViewModel);
             }
         }
@@ -105,7 +107,7 @@
                 if (this.ModelState.IsValid)
                 {
                     var gameResult = gameResultViewModel.ToDomain();
-                    this._gameResultsService.Edit(gameResult);
+                    _gameResultsService.Edit(gameResult);
                     return this.RedirectToAction(
                                         "TournamentResults", 
                                         new { id = gameResult.TournamentId });
@@ -115,10 +117,9 @@
             {
                 this.ModelState.AddModelError(
                                 string.Empty,
-                                Resources.GameResultsController.GameResultsWasDeleted);
+                                App_GlobalResources.GameResultsController.GameResultWasDeleted);
             }
 
-            ViewBag.Teams = GetTeams();
             return this.View(gameResultViewModel);
         }
 
@@ -147,7 +148,7 @@
                 return HttpNotFound();
             }
 
-            this._gameResultsService.Delete(id);
+            _gameResultsService.Delete(id);
             return RedirectToAction(
                                     "TournamentResults",
                                     new { id = gameResult.TournamentId });
@@ -160,6 +161,7 @@
         /// <returns>View represents results list</returns>
         public ActionResult TournamentResults(int id)
         {
+            List<SelectListItem> tournamentTeams = GetTeams();
             var gameResults = _gameResultsService.Get().Where(
                                                             gr =>
                                                             gr.TournamentId == id)
@@ -167,8 +169,7 @@
                 gr =>
                 {
                     var gameResult = GameResultViewModel.Map(gr);
-                    gameResult.HomeTeamName = _teamService.Get(gameResult.HomeTeamId).Name;
-                    gameResult.AwayTeamName = _teamService.Get(gameResult.AwayTeamId).Name;
+                    gameResult.TournamentTeams = tournamentTeams;
                     return gameResult;
                 })
                    .ToList();
@@ -178,17 +179,15 @@
 
         private ActionResult GetGameResultsView(int id)
         {
-            var gameResults = _gameResultsService.Get(id);
+            var gameResult = _gameResultsService.Get(id);
 
-            if (gameResults == null)
+            if (gameResult == null)
             {
                 return HttpNotFound();
             }
-
-            ViewBag.Teams = GetTeams();
-            var gameResultsViewModel = GameResultViewModel.Map(gameResults);
-            gameResultsViewModel.HomeTeamName = _teamService.Get(gameResults.HomeTeamId).Name;
-            gameResultsViewModel.AwayTeamName = _teamService.Get(gameResults.AwayTeamId).Name;
+                        
+            var gameResultsViewModel = GameResultViewModel.Map(gameResult);
+            gameResultsViewModel.TournamentTeams = GetTeams();
             return View(gameResultsViewModel);
         }
 

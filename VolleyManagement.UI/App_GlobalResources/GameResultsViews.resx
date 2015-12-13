@@ -142,7 +142,7 @@
     <value>Редактировать результат</value>
   </data>
   <data name="SetFields" xml:space="preserve">
-    <value>Партия #{0}</value>
+    <value>Партия #{0}:</value>
   </data>
   <data name="SetsScoreFields" xml:space="preserve">
     <value>Счет по партиям:</value>

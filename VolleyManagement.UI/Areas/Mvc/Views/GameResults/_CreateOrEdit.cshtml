@@ -1,24 +1,24 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
 
 @using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
-@using Resources = VolleyManagement.Domain.Properties.Resources;
+@using DomainResources = VolleyManagement.Domain.Properties.Resources;
 
 @Html.ValidationMessage("ValidationMessage", new { @class = "text-danger", name = "ValidationMessage" })
 @Html.HiddenFor(model => model.TournamentId)
 
 <div class="form-group">
-    Teams:
+    @Resources.GameResultsViews.TeamsFields
     @Html.DropDownListFor(
             x => x.HomeTeamId,
-            new SelectList(ViewBag.Teams, "Value", "Text"))
+            new SelectList(Model.TournamentTeams, "Value", "Text"))
 
     @Html.DropDownListFor(
             x => x.AwayTeamId,
-            new SelectList(ViewBag.Teams, "Value", "Text"))
+            new SelectList(Model.TournamentTeams, "Value", "Text"))
 </div>
 
 <div class="form-group">
-    Sets score:
+    @Resources.GameResultsViews.SetsScoreFields
     @Html.EditorFor(model => model.SetsScore.Home, new { htmlAttributes = new { @class = "form-control" } })
 
     @Html.EditorFor(model => model.SetsScore.Away, new { htmlAttributes = new { @class = "form-control" } })
@@ -26,21 +26,21 @@
 
 <div class="form-group">
     <label for="@Model.IsTechnicalDefeat">
-        Technical defeat:
+        @Resources.GameResultsViews.TechnicalDefeatField
         @Html.EditorFor(model => model.IsTechnicalDefeat)
         @Html.ValidationMessageFor(model => model.IsTechnicalDefeat, "", new { @class = "text-danger" })
     </label>
 </div>
 
-    @for (int i = 0; i < Model.SetScores.Count; i++)
-    {
-<div class="form-group">
-    Set #@(i + 1):
-    @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control" } })
+@for (int i = 0; i < Model.SetScores.Count; i++)
+{
+    <div class="form-group">
+        @string.Format(Resources.GameResultsViews.SetFields, i + 1)
+        @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control" } })
 
-    @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control" } })
-</div>
-    }
+        @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+}
 
 
 <script>
@@ -55,15 +55,14 @@
         "TECHNICAL_DEFEAT_SET_WINNER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
         "TECHNICAL_DEFEAT_SET_LOSER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
         "UNPLAYED_SET_HOME_SCORE": @GameResultConstants.UNPLAYED_SET_HOME_SCORE,
-        "UNPLAYED_SET_AWAY_SCORE": @GameResultConstants.UNPLAYED_SET_AWAY_SCORE
     };
 
     var resourceMessages = {
-        "GameResultSameTeam" : "@Resources.GameResultSameTeam",
-        "GameResultSetsScoreNoMatchSetScores" : "@Resources.GameResultSetsScoreNoMatchSetScores",
-        "GameResultSetsScoreInvalid" : "@Resources.GameResultSetsScoreInvalid",
-        "GameResultRequiredSetScores" : "@Resources.GameResultRequiredSetScores",
-        "GameResultOptionalSetScores" : "@Resources.GameResultOptionalSetScores"
+        "GameResultSameTeam" : "@DomainResources.GameResultSameTeam",
+        "GameResultSetsScoreNoMatchSetScores" : "@DomainResources.GameResultSetsScoreNoMatchSetScores",
+        "GameResultSetsScoreInvalid" : "@DomainResources.GameResultSetsScoreInvalid",
+        "GameResultRequiredSetScores" : "@DomainResources.GameResultRequiredSetScores",
+        "GameResultOptionalSetScores" : "@DomainResources.GameResultOptionalSetScores"
     };
 
 </script>

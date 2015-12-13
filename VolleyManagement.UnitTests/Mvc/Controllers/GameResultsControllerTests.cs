@@ -122,8 +122,6 @@
             var expectedResultViewModel = new GameResultViewModelBuilder()
                                         .WithHomeTeamId(HOME_TEAM_ID)
                                         .WithAwayTeamId(AWAY_TEAM_ID)
-                                        .WithHomeTeamName(HOME_TEAM_NAME)
-                                        .WithAwayTeamName(AWAY_TEAM_NAME)
                                         .Build();
 
             GameResult gameResultDomainModel = expectedResultViewModel.ToDomain();
@@ -239,6 +237,7 @@
 
             _teamServiceMock.Setup(ts => ts.Get(HOME_TEAM_ID)).Returns(homeTeam);
             _teamServiceMock.Setup(ts => ts.Get(AWAY_TEAM_ID)).Returns(awayTeam);
+            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>() { homeTeam, awayTeam });
         }
 
         #endregion

@@ -79,7 +79,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Проигранные.
+        ///   Looks up a localized string similar to Проигранных.
         /// </summary>
         public static string BallsLostHeader {
             get {
@@ -97,7 +97,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Выигранные.
+        ///   Looks up a localized string similar to Выигранных.
         /// </summary>
         public static string BallsWonHeader {
             get {
@@ -115,7 +115,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Проигранные.
+        ///   Looks up a localized string similar to Проигранных.
         /// </summary>
         public static string GamesLostHeader {
             get {
@@ -187,7 +187,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Выигранные.
+        ///   Looks up a localized string similar to Выигранных.
         /// </summary>
         public static string GamesWonHeader {
             get {
@@ -232,7 +232,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Проигранные.
+        ///   Looks up a localized string similar to Проигранных.
         /// </summary>
         public static string SetsLostHeader {
             get {
@@ -250,7 +250,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Выигранные.
+        ///   Looks up a localized string similar to Выигранных.
         /// </summary>
         public static string SetsWonHeader {
             get {

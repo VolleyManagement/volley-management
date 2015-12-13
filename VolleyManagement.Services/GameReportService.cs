@@ -18,7 +18,7 @@
         #region Queries
 
         private readonly IQuery<List<GameResult>, TournamentGameResultsCriteria> _getTournamentGameResultsQuery;
-        private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
+        private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
 
         #endregion
 
@@ -28,13 +28,13 @@
         /// Initializes a new instance of the <see cref="GameReportService"/> class.
         /// </summary>
         /// <param name="getTournamentGameResultsQuery">Query for getting tournament's game results.</param>
-        /// <param name="getTeamByIdQuery">Query for getting team by its identifier.</param>
+        /// <param name="getAllTeamsQuery">Query for getting all teams.</param>
         public GameReportService(
             IQuery<List<GameResult>, TournamentGameResultsCriteria> getTournamentGameResultsQuery,
-            IQuery<Team, FindByIdCriteria> getTeamByIdQuery)
+            IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery)
         {
             _getTournamentGameResultsQuery = getTournamentGameResultsQuery;
-            _getTeamByIdQuery = getTeamByIdQuery;
+            _getAllTeamsQuery = getAllTeamsQuery;
         }
 
         #endregion
@@ -49,41 +49,15 @@
         public List<StandingsEntry> GetStandings(int tournamentId)
         {
             var gameResults = _getTournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var standings = new List<StandingsEntry>();
+            var standings = CreateStandingsEntriesForAllTeams();
 
             foreach (var gameResult in gameResults)
             {
-                bool addHomeTeamEntry = false;
-                bool addAwayTeamEntry = false;
-                StandingsEntry standingsHomeTeamEntry = standings.SingleOrDefault(se => se.TeamId == gameResult.HomeTeamId);
-                StandingsEntry standingsAwayTeamEntry = standings.SingleOrDefault(se => se.TeamId == gameResult.AwayTeamId);
-
-                if (standingsHomeTeamEntry == null)
-                {
-                    // standings entry for the home team does not exist, so we need to create one
-                    standingsHomeTeamEntry = CreateStandingsEntryForTeam(gameResult.HomeTeamId);
-                    addHomeTeamEntry = true;
-                }
-
-                if (standingsAwayTeamEntry == null)
-                {
-                    // standings entry for the away team does not exist, so we need to create one
-                    standingsAwayTeamEntry = CreateStandingsEntryForTeam(gameResult.AwayTeamId);
-                    addAwayTeamEntry = true;
-                }
+                StandingsEntry standingsHomeTeamEntry = standings.Single(se => se.TeamId == gameResult.HomeTeamId);
+                StandingsEntry standingsAwayTeamEntry = standings.Single(se => se.TeamId == gameResult.AwayTeamId);
 
                 CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult.SetsScore);
                 CalculateSetsStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult.SetsScore, gameResult.SetScores);
-
-                if (addHomeTeamEntry)
-                {
-                    standings.Add(standingsHomeTeamEntry);
-                }
-
-                if (addAwayTeamEntry)
-                {
-                    standings.Add(standingsAwayTeamEntry);
-                }
             }
 
             // order all standings entries by points, then by sets ratio and then by balls ratio in descending order
@@ -99,15 +73,21 @@
 
         #region Private methods
 
-        private StandingsEntry CreateStandingsEntryForTeam(int teamId)
+        private List<StandingsEntry> CreateStandingsEntriesForAllTeams()
         {
-            var team = _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = teamId });
+            var teams = _getAllTeamsQuery.Execute(new GetAllCriteria());
+            var entries = new List<StandingsEntry>();
 
-            return new StandingsEntry
+            foreach (var team in teams)
             {
-                TeamId = team.Id,
-                TeamName = team.Name
-            };
+                entries.Add(new StandingsEntry
+                {
+                    TeamId = team.Id,
+                    TeamName = team.Name
+                });
+            }
+
+            return entries;
         }
 
         private void CalculateGamesStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, Score setsScore)

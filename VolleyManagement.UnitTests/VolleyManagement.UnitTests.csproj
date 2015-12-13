@@ -112,6 +112,7 @@
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />
     <Compile Include="Mvc\Controllers\ContributorsTeamControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\GameReportsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\PlayersControllerTests.cs" />
     <Compile Include="Mvc\Controllers\RolesControllerTests.cs" />
     <Compile Include="Mvc\Controllers\TeamsControllerTests.cs" />
@@ -123,6 +124,9 @@
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\StandingsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />

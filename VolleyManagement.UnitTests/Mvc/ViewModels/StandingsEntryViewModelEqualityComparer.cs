@@ -40,7 +40,7 @@
         }
 
         /// <summary>
-        /// Get hash code for the specified <see cref="StandingsEntryViewModel"/> object.
+        /// Gets hash code for the specified <see cref="StandingsEntryViewModel"/> object.
         /// </summary>
         /// <param name="obj"><see cref="StandingsEntryViewModel"/> object.</param>
         /// <returns>Hash code for the specified <see cref="StandingsEntryViewModel"/>.</returns>

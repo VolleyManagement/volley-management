@@ -66,7 +66,9 @@
             }
 
             ValidateGameResult(gameResult);
+
             _gameResultRepository.Add(gameResult);
+            _gameResultRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -143,7 +145,6 @@
                 throw new ArgumentException(
                     string.Format(
                     Resources.GameResultSetsScoreInvalid,
-                    GameResultConstants.VALID_SETS_SCORES,
                     GameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE,
                     GameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE));
             }

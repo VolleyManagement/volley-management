@@ -49,7 +49,7 @@
         public List<StandingsEntry> GetStandings(int tournamentId)
         {
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var standings = CreateEntriesForTeams(gameResults.Select(gr => gr.HomeTeamId).Union(gameResults.Select(gr => gr.AwayTeamId)));
+            var standings = CreateEntriesForTeams(gameResults);
 
             foreach (var gameResult in gameResults)
             {
@@ -61,22 +61,23 @@
             }
 
             // order all standings entries by points, then by sets ratio and then by balls ratio in descending order
-            standings = standings.OrderByDescending(ts => ts.Points)
+            return standings.OrderByDescending(ts => ts.Points)
                 .ThenByDescending(ts => ts.SetsRatio)
                 .ThenByDescending(ts => ts.BallsRatio)
                 .ToList();
-
-            return standings;
         }
 
         #endregion
 
         #region Private methods
 
-        private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<int> teamIds)
+        private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<GameResult> gameResults)
         {
-            var teams = _gameResultsTeamsQuery.Execute(new GameResultsTeamsCriteria { TeamIds = teamIds });
             var entries = new List<StandingsEntry>();
+            var teams = _gameResultsTeamsQuery.Execute(new GameResultsTeamsCriteria
+            {
+                TeamIds = gameResults.Select(gr => gr.HomeTeamId).Union(gameResults.Select(gr => gr.AwayTeamId))
+            });
 
             foreach (var team in teams)
             {

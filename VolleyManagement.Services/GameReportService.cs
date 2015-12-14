@@ -4,8 +4,8 @@
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.GameResult;
+    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.GameReportsAggregate;
     using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -17,8 +17,8 @@
     {
         #region Queries
 
-        private readonly IQuery<List<GameResult>, TournamentGameResultsCriteria> _getTournamentGameResultsQuery;
-        private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
+        private readonly IQuery<List<GameResult>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<IEnumerable<Team>, GameResultsTeamsCriteria> _gameResultsTeamsQuery;
 
         #endregion
 
@@ -27,14 +27,14 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="GameReportService"/> class.
         /// </summary>
-        /// <param name="getTournamentGameResultsQuery">Query for getting tournament's game results.</param>
-        /// <param name="getAllTeamsQuery">Query for getting all teams.</param>
+        /// <param name="tournamentGameResultsQuery">Query for getting tournament's game results.</param>
+        /// <param name="gameResultsTeamsQuery">Query for getting teams from game results.</param>
         public GameReportService(
-            IQuery<List<GameResult>, TournamentGameResultsCriteria> getTournamentGameResultsQuery,
-            IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery)
+            IQuery<List<GameResult>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
+            IQuery<IEnumerable<Team>, GameResultsTeamsCriteria> gameResultsTeamsQuery)
         {
-            _getTournamentGameResultsQuery = getTournamentGameResultsQuery;
-            _getAllTeamsQuery = getAllTeamsQuery;
+            _tournamentGameResultsQuery = tournamentGameResultsQuery;
+            _gameResultsTeamsQuery = gameResultsTeamsQuery;
         }
 
         #endregion
@@ -48,8 +48,8 @@
         /// <returns>Standings of the tournament with specified identifier.</returns>
         public List<StandingsEntry> GetStandings(int tournamentId)
         {
-            var gameResults = _getTournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var standings = CreateStandingsEntriesForAllTeams();
+            var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
+            var standings = CreateEntriesForTeams(gameResults.Select(gr => gr.HomeTeamId).Union(gameResults.Select(gr => gr.AwayTeamId)));
 
             foreach (var gameResult in gameResults)
             {
@@ -73,9 +73,9 @@
 
         #region Private methods
 
-        private List<StandingsEntry> CreateStandingsEntriesForAllTeams()
+        private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<int> teamIds)
         {
-            var teams = _getAllTeamsQuery.Execute(new GetAllCriteria());
+            var teams = _gameResultsTeamsQuery.Execute(new GameResultsTeamsCriteria { TeamIds = teamIds });
             var entries = new List<StandingsEntry>();
 
             foreach (var team in teams)

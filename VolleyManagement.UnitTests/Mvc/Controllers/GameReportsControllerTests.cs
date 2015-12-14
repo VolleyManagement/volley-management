@@ -29,8 +29,6 @@
         private readonly Mock<ITournamentService> _tournamentServiceMock =
             new Mock<ITournamentService>();
 
-        private GameReportsController _sut;
-
         private IKernel _kernel;
 
         /// <summary>
@@ -42,25 +40,25 @@
             _kernel = new StandardKernel();
             _kernel.Bind<IGameReportService>().ToConstant(_gameReportServiceMock.Object);
             _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
-            _sut = _kernel.Get<GameReportsController>();
         }
 
         /// <summary>
-        /// Test for TournamentStandings() method. Tournament standings are requested. Tournament standings are returned.
+        /// Test for Standings() method. Tournament standings are requested. Tournament standings are returned.
         /// </summary>
         [TestMethod]
-        public void TournamentStandings_StandingsRequested_StandingsReturned()
+        public void Standings_StandingsRequested_StandingsReturned()
         {
             // Arrange
             var testTournament = new TournamentBuilder().Build();
             var testStandings = new StandingsTestFixture().TestStandings().Build();
             var expected = new StandingsViewModelBuilder().Build();
+            var sut = _kernel.Get<GameReportsController>();
 
             SetupTournamentGet(TOURNAMENT_ID, testTournament);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
 
             // Act
-            var actual = TestExtensions.GetModel<StandingsViewModel>(_sut.TournamentStandings(TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());

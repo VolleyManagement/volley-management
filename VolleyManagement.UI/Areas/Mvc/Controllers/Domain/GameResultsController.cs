@@ -52,7 +52,10 @@
         /// <returns>Create view.</returns>
         public ActionResult Create(int Id)
         {
-            ViewBag.Teams = _teamService.Get().Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+            ViewBag.Teams = _teamService
+                            .Get()
+                            .Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+
             GameResultViewModel gameResultViewModel = new GameResultViewModel() { TournamentId = Id };
             return View(gameResultViewModel);
         }
@@ -74,7 +77,10 @@
             catch (ArgumentException ex)
             {
                 ModelState.AddModelError("ValidationError", ex.Message);
-                var teams = _teamService.Get().Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+                var teams = _teamService
+                            .Get()
+                            .Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+
                 ViewBag.Teams = teams;
                 return View(gameResultViewModel);
             }

@@ -19,6 +19,7 @@
     using UI.Areas.Mvc.ViewModels.GameResults;
 
     using ViewModels;
+    using Services.GameResultService;
 
     /// <summary>
     /// Tests for MVC <see cref="GameResultsControllerTests"/> class.
@@ -35,7 +36,7 @@
         private const int AWAY_TEAM_ID = 11;
         private const string HOME_TEAM_NAME = "Home";
         private const string AWAY_TEAM_NAME = "Away";
-
+        private const string DETAILS_ACTION_NAME = "Details";
         #endregion
 
         #region Fields
@@ -77,13 +78,20 @@
                                 .WithTournamentId(TOURNAMENT_ID)
                                 .Build();
 
+            GameResult expectedGameResult = gameResult.ToDomain();
+            GameResult actualGameResult = null;
+
+            _gameResultServiceMock.Setup(h => h.Create(It.IsAny<GameResult>()))
+                .Callback<GameResult>(r => actualGameResult = r);
+
             var sut = this._kernel.Get<GameResultsController>();
 
             // Act
-            var result = sut.Create(gameResult);
+            var result = sut.Create(gameResult) as RedirectToRouteResult;
 
             // Assert
-            Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
+            Assert.AreEqual(DETAILS_ACTION_NAME, result.RouteValues["action"]);
+            TestHelper.AreEqual<GameResult>(expectedGameResult, actualGameResult, new GameResultComparer());
         }
 
         /// <summary>
@@ -104,10 +112,10 @@
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
 
             // Act
-            var result = sut.Create(gameResult);
+            var actual = TestExtensions.GetModel<GameResultViewModel>(sut.Create(gameResult));
 
             // Assert
-            Assert.AreEqual(result.GetType(), typeof(ViewResult));
+            TestHelper.AreEqual(actual, gameResult, new GameResultViewModelComparer());
         }
 
         /// <summary>

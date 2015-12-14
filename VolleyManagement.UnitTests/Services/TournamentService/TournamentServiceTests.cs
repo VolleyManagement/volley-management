@@ -727,6 +727,7 @@
         private void VerifyCreateTournament(Tournament tournament, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyEditTournament(Tournament tournament, Times times)

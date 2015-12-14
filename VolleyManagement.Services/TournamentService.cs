@@ -116,6 +116,7 @@
             ValidateGroups(tournamentToCreate.Divisions);
 
             _tournamentRepository.Add(tournamentToCreate);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

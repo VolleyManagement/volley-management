@@ -237,6 +237,7 @@
         private void VerifyCreatePlayer(Player player, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Add(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyEditPlayer(Player player, Times times)

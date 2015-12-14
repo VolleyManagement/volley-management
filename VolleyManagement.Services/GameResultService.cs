@@ -62,7 +62,9 @@
             }
 
             ValidateGameResult(gameResult);
+
             _gameResultRepository.Add(gameResult);
+            _gameResultRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

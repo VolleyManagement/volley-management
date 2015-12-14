@@ -29,7 +29,7 @@
         private readonly Mock<IQuery<List<GameResult>, GetAllCriteria>> _getAllQueryMock
             = new Mock<IQuery<List<GameResult>, GetAllCriteria>>();
 
-        private GameResultService _sut;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private IKernel _kernel;
 
@@ -43,7 +43,7 @@
             _kernel.Bind<IGameResultRepository>().ToConstant(_gameResultRepositoryMock.Object);
             _kernel.Bind<IQuery<List<GameResult>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
             _kernel.Bind<IQuery<GameResult, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
-            _sut = _kernel.Get<GameResultService>();
+            _gameResultRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
         /// <summary>
@@ -54,9 +54,10 @@
         {
             // Arrange
             var newGameResult = new GameResultBuilder().Build();
+            var sut = _kernel.Get<GameResultService>();
 
             // Act
-            _sut.Create(newGameResult);
+            sut.Create(newGameResult);
 
             // Assert
             VerifyCreate(newGameResult, Times.Once());
@@ -71,9 +72,10 @@
         {
             // Arrange
             var newGameResult = null as GameResult;
+            var sut = _kernel.Get<GameResultService>();
 
             // Act
-            _sut.Create(newGameResult);
+            sut.Create(newGameResult);
 
             // Assert
             VerifyCreate(newGameResult, Times.Never());
@@ -88,9 +90,10 @@
         {
             // Arrange
             var newGameResult = new GameResultBuilder().WithTheSameTeams().Build();
+            var sut = _kernel.Get<GameResultService>();
 
             // Act
-            _sut.Create(newGameResult);
+            sut.Create(newGameResult);
 
             // Assert
             VerifyCreate(newGameResult, Times.Never());
@@ -106,9 +109,10 @@
         {
             // Arrange
             var newGameResult = new GameResultBuilder().WithInvalidSetsScore().Build();
+            var sut = _kernel.Get<GameResultService>();
 
             // Act
-            _sut.Create(newGameResult);
+            sut.Create(newGameResult);
 
             // Assert
             VerifyCreate(newGameResult, Times.Never());
@@ -123,9 +127,10 @@
         {
             // Arrange
             var newGameResult = new GameResultBuilder().WithInvalidRequiredSetScores().Build();
+            var sut = _kernel.Get<GameResultService>();
 
             // Act
-            _sut.Create(newGameResult);
+            sut.Create(newGameResult);
 
             // Assert
             VerifyCreate(newGameResult, Times.Never());
@@ -140,9 +145,10 @@
         {
             // Arrange
             var newGameResult = new GameResultBuilder().WithInvalidOptionalSetScores().Build();
+            var sut = _kernel.Get<GameResultService>();
 
             // Act
-            _sut.Create(newGameResult);
+            sut.Create(newGameResult);
 
             // Assert
             VerifyCreate(newGameResult, Times.Never());
@@ -157,9 +163,10 @@
         {
             // Arrange
             var newGameResult = new GameResultBuilder().WithPreviousOptionalSetUnplayed().Build();
+            var sut = _kernel.Get<GameResultService>();
 
             // Act
-            _sut.Create(newGameResult);
+            sut.Create(newGameResult);
 
             // Assert
             VerifyCreate(newGameResult, Times.Never());
@@ -175,9 +182,10 @@
         {
             // Arrange
             var newGameResult = new GameResultBuilder().WithSetsScoreNoMatchSetScores().Build();
+            var sut = _kernel.Get<GameResultService>();
 
             // Act
-            _sut.Create(newGameResult);
+            sut.Create(newGameResult);
 
             // Assert
             VerifyCreate(newGameResult, Times.Never());
@@ -191,10 +199,12 @@
         {
             // Arrange
             var expected = new GameResultTestFixture().TestGameResults().Build();
+            var sut = _kernel.Get<GameResultService>();
+
             SetupGetAll(expected);
 
             // Act
-            var actual = _sut.Get();
+            var actual = sut.Get();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new GameResultComparer());
@@ -208,10 +218,12 @@
         {
             // Arrange
             var expected = new GameResultBuilder().WithId(GAME_RESULT_ID).Build();
+            var sut = _kernel.Get<GameResultService>();
+
             SetupGet(expected);
 
             // Act
-            var actual = _sut.Get(GAME_RESULT_ID);
+            var actual = sut.Get(GAME_RESULT_ID);
 
             // Assert
             TestHelper.AreEqual(expected, actual, new GameResultComparer());
@@ -220,6 +232,7 @@
         private void VerifyCreate(GameResult gameResult, Times times)
         {
             _gameResultRepositoryMock.Verify(grr => grr.Add(It.Is<GameResult>(gr => AreEqualGameResults(gr, gameResult))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private bool AreEqualGameResults(GameResult x, GameResult y)

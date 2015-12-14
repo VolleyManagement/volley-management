@@ -149,7 +149,6 @@ function ValidateSetsScore(setsScore, isTechnicalDefeat) {
     if (!IsSetsScoreValid(setsScore, isTechnicalDefeat)) {
         var template = jQuery.validator.format(resourceMessages.GameResultSetsScoreInvalid);
         throw template(
-            gameResultConstants.VALID_SETS_SCORES,
             gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE,
             gameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE);
     }

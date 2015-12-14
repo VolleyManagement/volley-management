@@ -115,7 +115,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Счет по партиям может быть одним из следующих: {0}. При техническом поражении счет по партиям должен быть {1}:{2} или {2}:{1}.
+        ///   Looks up a localized string similar to Счет по партиям может быть одним из следующих: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. При техническом поражении счет по партиям должен быть {0}:{1} или {1}:{0}.
         /// </summary>
         public static string GameResultSetsScoreInvalid {
             get {

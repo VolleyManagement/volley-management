@@ -45,8 +45,8 @@
         {
             // Arrange
             var testStandings = new StandingsTestFixture().TestStandings().Build();
-            var expected = new StandingsViewModelBuilder().Build();
             var sut = _kernel.Get<GameReportsController>();
+            var expected = new StandingsViewModelBuilder().Build();
 
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
 

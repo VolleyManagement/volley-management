@@ -165,6 +165,9 @@
   <data name="LastUpdated" xml:space="preserve">
     <value>По состоянию на {0:dd.MM.yyyy}</value>
   </data>
+  <data name="NoGameResults" xml:space="preserve">
+    <value>В рамках данного турнира еще не было сыграно ни одной игры.</value>
+  </data>
   <data name="PointsHeader" xml:space="preserve">
     <value>Очки</value>
   </data>

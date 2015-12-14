@@ -205,6 +205,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to В рамках данного турнира еще не было сыграно ни одной игры..
+        /// </summary>
+        public static string NoGameResults {
+            get {
+                return ResourceManager.GetString("NoGameResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Очки.
         /// </summary>
         public static string PointsHeader {

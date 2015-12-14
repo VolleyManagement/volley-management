@@ -7,12 +7,10 @@
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.GameReportService;
-    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Tests for <see cref="GameReportsController"/> class.
@@ -23,11 +21,9 @@
     {
         private const int TOURNAMENT_ID = 1;
 
-        private readonly Mock<IGameReportService> _gameReportServiceMock =
-            new Mock<IGameReportService>();
+        private const string TOURNAMENT_NAME = "Name";
 
-        private readonly Mock<ITournamentService> _tournamentServiceMock =
-            new Mock<ITournamentService>();
+        private readonly Mock<IGameReportService> _gameReportServiceMock = new Mock<IGameReportService>();
 
         private IKernel _kernel;
 
@@ -39,7 +35,6 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IGameReportService>().ToConstant(_gameReportServiceMock.Object);
-            _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
         }
 
         /// <summary>
@@ -49,24 +44,17 @@
         public void Standings_StandingsRequested_StandingsReturned()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
             var testStandings = new StandingsTestFixture().TestStandings().Build();
             var expected = new StandingsViewModelBuilder().Build();
             var sut = _kernel.Get<GameReportsController>();
 
-            SetupTournamentGet(TOURNAMENT_ID, testTournament);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
 
             // Act
-            var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
 
             // Assert
             TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
-        }
-
-        private void SetupTournamentGet(int tournamentId, Tournament tournament)
-        {
-            _tournamentServiceMock.Setup(m => m.Get(It.Is<int>(id => id == tournamentId))).Returns(tournament);
         }
 
         private void SetupGameReportGetStandings(int tournamentId, List<StandingsEntry> testData)

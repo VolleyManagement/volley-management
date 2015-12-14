@@ -153,6 +153,23 @@
         }
 
         /// <summary>
+        /// Test for Create method. Previous optional set is not played (set score is 0:0). Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameResultPreviousOptionalSetUnplayed_ExceptionThrown()
+        {
+            // Arrange
+            var newGameResult = new GameResultBuilder().WithPreviousOptionalSetUnplayed().Build();
+
+            // Act
+            _sut.Create(newGameResult);
+
+            // Assert
+            VerifyCreate(newGameResult, Times.Never());
+        }
+
+        /// <summary>
         /// Test for Create method. The final score of the game (sets score) does not match set scores.
         /// Exception is thrown during creation.
         /// </summary>

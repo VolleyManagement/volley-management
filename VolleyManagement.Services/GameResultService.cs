@@ -2,12 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Contracts.Exceptions;
     using VolleyManagement.Contracts;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.TeamsAggregate;
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 
     /// <summary>
@@ -94,12 +97,13 @@
             try
             {
                 _gameResultRepository.Update(gameResult);
-                _gameResultRepository.UnitOfWork.Commit();
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidKeyValueException ex)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.GameResultsNotFound, ex);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.GameResultNotFound, ex);
             }
+
+            _gameResultRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -114,7 +118,7 @@
 
         #endregion
 
-        #region Private methods
+        #region Validate methods
 
         private void ValidateGameResult(GameResult gameResult)
         {

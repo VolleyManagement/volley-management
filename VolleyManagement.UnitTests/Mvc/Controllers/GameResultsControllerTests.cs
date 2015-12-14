@@ -183,7 +183,7 @@
         /// Test for delete post method. Valid game result id - redirect to  the tournament results.
         /// </summary>
         [TestMethod]
-        public void DeletePost_ValidId_RedirectToResultsList()
+        public void DeletePost_ValidId_Deleted()
         {
             // Arrange
             var gameResult = new GameResultBuilder().Build();
@@ -194,17 +194,18 @@
             var sut = this._kernel.Get<GameResultsController>();
 
             // Act
-            var result = sut.DeleteConfirmed(GAME_RESULT_ID);
+            sut.Delete(GAME_RESULT_ID);
 
             // Assert
-            Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
+            _gameResultServiceMock.Verify(grs => grs.Delete(GAME_RESULT_ID), Times.Once);
         }
 
         /// <summary>
-        /// Test for delete post method. Invalid game result id - Http not found.
+        /// Test for delete post method. Invalid game result id - Missing entity exception.
         /// </summary>
         [TestMethod]
-        public void DeletePost_InvalidId_HttpNotFound()
+        [ExpectedException(typeof(MissingEntityException))]
+        public void DeletePost_InvalidId_MissingEntityExceptionThrows()
         {
             // Arrange
             _gameResultServiceMock.Setup(grs => grs.Get(It.IsAny<int>()))
@@ -213,10 +214,10 @@
             var sut = this._kernel.Get<GameResultsController>();
 
             // Act
-            var result = sut.DeleteConfirmed(GAME_RESULT_ID);
+            sut.Delete(GAME_RESULT_ID);
 
             // Assert
-            Assert.AreEqual(result.GetType(), typeof(HttpNotFoundResult));
+            _gameResultServiceMock.Verify(grs => grs.Delete(GAME_RESULT_ID), Times.Never);
         }
 
         #endregion

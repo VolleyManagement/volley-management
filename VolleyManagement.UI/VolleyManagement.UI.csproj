@@ -278,7 +278,6 @@
     <Content Include="Areas\Mvc\Views\Account\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\TournamentResults.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\Edit.cshtml" />
-    <Content Include="Areas\Mvc\Views\GameResults\Delete.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\_CreateOrEdit.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\_Details.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />

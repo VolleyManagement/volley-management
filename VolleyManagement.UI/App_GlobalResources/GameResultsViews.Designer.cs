@@ -88,6 +88,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Вы уверены, что хотите удалить результат игры?.
+        /// </summary>
+        public static string DeleteConfirmationText {
+            get {
+                return ResourceManager.GetString("DeleteConfirmationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Удалить игру.
         /// </summary>
         public static string DeleteTitle {

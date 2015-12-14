@@ -123,8 +123,8 @@
   <data name="DivisionsListIsEmpty" xml:space="preserve">
     <value>Список дивизионов пуст</value>
   </data>
-  <data name="GameResultsNotFound" xml:space="preserve">
-    <value>Невозможно обновить несуществующий результат игры</value>
+  <data name="GameResultNotFound" xml:space="preserve">
+    <value>Результат игры с указаным идентификатором не был найден</value>
   </data>
   <data name="OutOfDivisionsCountRange" xml:space="preserve">
     <value>Количество дивизионов в турнире должно быть между {0} и {1}</value>
@@ -133,9 +133,9 @@
     <value>Игрок является капитаном другой команды</value>
   </data>
   <data name="PlayerNotFound" xml:space="preserve">
-    <value>Игрок с указанным Id не был найден</value>
+    <value>Игрок с указанным идентификатором не был найден</value>
   </data>
   <data name="TeamNotFound" xml:space="preserve">
-    <value>Команда с указанным Id не была найдена</value>
+    <value>Команда с указанным идентификатором не была найдена</value>
   </data>
 </root>

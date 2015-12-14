@@ -9,6 +9,7 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Services;
@@ -248,7 +249,7 @@
             var gameResult = new GameResultBuilder().Build();
 
             _gameResultRepositoryMock.Setup(grr => grr.Update(gameResult))
-                                     .Throws(new InvalidOperationException());
+                                     .Throws(new InvalidKeyValueException());
 
             // Act
             _sut.Edit(gameResult);

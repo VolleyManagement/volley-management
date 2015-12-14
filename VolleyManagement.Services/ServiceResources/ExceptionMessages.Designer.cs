@@ -79,11 +79,11 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Невозможно обновить несуществующий результат игры.
+        ///   Looks up a localized string similar to Результат игры с указаным идентификатором не был найден.
         /// </summary>
-        internal static string GameResultsNotFound {
+        internal static string GameResultNotFound {
             get {
-                return ResourceManager.GetString("GameResultsNotFound", resourceCulture);
+                return ResourceManager.GetString("GameResultNotFound", resourceCulture);
             }
         }
         
@@ -106,7 +106,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Игрок с указанным Id не был найден.
+        ///   Looks up a localized string similar to Игрок с указанным идентификатором не был найден.
         /// </summary>
         internal static string PlayerNotFound {
             get {
@@ -115,7 +115,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Команда с указанным Id не была найдена.
+        ///   Looks up a localized string similar to Команда с указанным идентификатором не была найдена.
         /// </summary>
         internal static string TeamNotFound {
             get {

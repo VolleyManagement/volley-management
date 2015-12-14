@@ -91,7 +91,16 @@
         /// <returns>View to edit specific game results</returns>
         public ActionResult Edit(int id)
         {
-            return GetGameResultsView(id);
+            var gameResult = _gameResultsService.Get(id);
+
+            if (gameResult == null)
+            {
+                return HttpNotFound();
+            }
+
+            var gameResultsViewModel = GameResultViewModel.Map(gameResult);
+            gameResultsViewModel.TournamentTeams = GetTeams();
+            return View(gameResultsViewModel);
         }
 
         /// <summary>
@@ -108,9 +117,7 @@
                 {
                     var gameResult = gameResultViewModel.ToDomain();
                     _gameResultsService.Edit(gameResult);
-                    return this.RedirectToAction(
-                                        "TournamentResults", 
-                                        new { id = gameResult.TournamentId });
+                    return this.RedirectToAction("TournamentResults", new { id = gameResult.TournamentId });
                 }
             }
             catch (MissingEntityException)
@@ -124,34 +131,20 @@
         }
 
         /// <summary>
-        /// Delete tournament action (GET)
-        /// </summary>
-        /// <param name="id">Tournament id</param>
-        /// <returns>View to delete specific tournament</returns>
-        public ActionResult Delete(int id)
-        {
-            return GetGameResultsView(id);
-        }
-
-        /// <summary>
         /// Delete game result action (POST)
         /// </summary>
         /// <param name="id">Game result id</param>
-        /// <returns>Index view</returns>
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
+        [HttpPost]
+        public void Delete(int id)
         {
             var gameResult = _gameResultsService.Get(id);
 
             if (gameResult == null)
             {
-                return HttpNotFound();
+                throw new MissingEntityException(App_GlobalResources.GameResultsController.GameResultNotFound);
             }
 
             _gameResultsService.Delete(id);
-            return RedirectToAction(
-                                    "TournamentResults",
-                                    new { id = gameResult.TournamentId });
         }
 
         /// <summary>
@@ -175,20 +168,6 @@
                    .ToList();
 
             return View(gameResults);
-        }
-
-        private ActionResult GetGameResultsView(int id)
-        {
-            var gameResult = _gameResultsService.Get(id);
-
-            if (gameResult == null)
-            {
-                return HttpNotFound();
-            }
-                        
-            var gameResultsViewModel = GameResultViewModel.Map(gameResult);
-            gameResultsViewModel.TournamentTeams = GetTeams();
-            return View(gameResultsViewModel);
         }
 
         private List<SelectListItem> GetTeams()

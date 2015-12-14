@@ -3,6 +3,7 @@
     using System.Data.Entity;
     using System.Linq;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.MsSql.Mappers;
     using VolleyManagement.Domain.GameResultsAggregate;
@@ -53,7 +54,20 @@
         /// <param name="updatedEntity">Updated game result.</param>
         public void Update(GameResult updatedEntity)
         {
-            var gameResultToUpdate = _dalGameResults.Single(gr => gr.Id == updatedEntity.Id);
+            if (updatedEntity.Id < Constants.START_DATABASE_ID_VALUE)
+            {
+                var exc = new InvalidKeyValueException(Properties.Resources.InvalidEntityId);
+                exc.Data[Constants.ENTITY_ID_KEY] = updatedEntity.Id;
+                throw exc;
+            }
+
+            var gameResultToUpdate = _dalGameResults.SingleOrDefault(t => t.Id == updatedEntity.Id);
+
+            if (gameResultToUpdate == null)
+            {
+                throw new ConcurrencyException();
+            }
+
             DomainToDal.Map(gameResultToUpdate, updatedEntity);
         }
 

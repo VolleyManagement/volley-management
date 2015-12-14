@@ -55,7 +55,7 @@ div#menu a.selected:hover{background-color: #666}
     width: auto;
 }
 
-.color_red {
+.color-red {
     color: red;
 }
 
@@ -97,12 +97,6 @@ div .add-division-button {
 .standings-table-row {
     display: table-row;
     background: #f5f5f5;
-}
-
-.standings-table-header-cell {
-    display: table-cell;
-    padding: 3px 5px;
-    text-align: center;
 }
 
 .standings-table-cell {

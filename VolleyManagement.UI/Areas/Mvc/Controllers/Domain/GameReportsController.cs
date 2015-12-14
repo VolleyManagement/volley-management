@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>View with standings of the tournament.</returns>
-        public ActionResult TournamentStandings(int tournamentId)
+        public ActionResult Standings(int tournamentId)
         {
             var standingsViewModel = new StandingsViewModel
             {

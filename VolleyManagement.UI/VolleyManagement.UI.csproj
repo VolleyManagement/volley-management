@@ -274,7 +274,7 @@
     <Content Include="Areas\Mvc\Views\Teams\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Account\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Account\Edit.cshtml" />
-    <Content Include="Areas\Mvc\Views\GameReports\TournamentStandings.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameReports\Standings.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

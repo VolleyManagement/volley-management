@@ -124,19 +124,19 @@
     <value>Мячи в партии</value>
   </data>
   <data name="BallsLostHeader" xml:space="preserve">
-    <value>Проигранных</value>
+    <value>Проигранные</value>
   </data>
   <data name="BallsRatioHeader" xml:space="preserve">
     <value>Соотношение</value>
   </data>
   <data name="BallsWonHeader" xml:space="preserve">
-    <value>Выигранных</value>
+    <value>Выигранные</value>
   </data>
   <data name="GamesGroupHeader" xml:space="preserve">
     <value>Матчи</value>
   </data>
   <data name="GamesLostHeader" xml:space="preserve">
-    <value>Проигранных</value>
+    <value>Проигранные</value>
   </data>
   <data name="GamesTotalHeader" xml:space="preserve">
     <value>Всего</value>
@@ -160,7 +160,7 @@
     <value>2:3</value>
   </data>
   <data name="GamesWonHeader" xml:space="preserve">
-    <value>Выигранных</value>
+    <value>Выигранные</value>
   </data>
   <data name="LastUpdated" xml:space="preserve">
     <value>По состоянию на {0:dd.MM.yyyy}</value>
@@ -175,13 +175,13 @@
     <value>Партии</value>
   </data>
   <data name="SetsLostHeader" xml:space="preserve">
-    <value>Проигранных</value>
+    <value>Проигранные</value>
   </data>
   <data name="SetsRatioHeader" xml:space="preserve">
     <value>Соотношение</value>
   </data>
   <data name="SetsWonHeader" xml:space="preserve">
-    <value>Выигранных</value>
+    <value>Выигранные</value>
   </data>
   <data name="TeamHeader" xml:space="preserve">
     <value>Команда</value>

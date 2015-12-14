@@ -13,13 +13,13 @@
     using Moq;
     using Ninject;
 
+    using Services.GameResultService;
     using Services.TeamService;
 
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.GameResults;
 
     using ViewModels;
-    using Services.GameResultService;
 
     /// <summary>
     /// Tests for MVC <see cref="GameResultsControllerTests"/> class.

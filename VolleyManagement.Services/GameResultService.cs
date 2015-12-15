@@ -96,6 +96,7 @@
             ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
             ValidateSetScores(gameResult.SetScores, gameResult.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
+            ValidateSetScoresOrder(gameResult.SetScores);
         }
 
         private void ValidateTeams(int homeTeamId, int awayTeamId)
@@ -168,6 +169,14 @@
             if (!GameResultValidation.AreSetScoresMatched(setsScore, setScores))
             {
                 throw new ArgumentException(Resources.GameResultSetsScoreNoMatchSetScores);
+            }
+        }
+
+        private void ValidateSetScoresOrder(IList<Score> setScores)
+        {
+            if (!GameResultValidation.AreSetScoresOrdered(setScores))
+            {
+                throw new ArgumentException(Resources.GameResultSetScoresNotOrdered);
             }
         }
 

@@ -115,6 +115,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Счета партий указаны в неверном порядке.
+        /// </summary>
+        public static string GameResultSetScoresNotOrdered {
+            get {
+                return ResourceManager.GetString("GameResultSetScoresNotOrdered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Счет по партиям может быть одним из следующих: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. При техническом поражении счет по партиям должен быть {0}:{1} или {1}:{0}.
         /// </summary>
         public static string GameResultSetsScoreInvalid {

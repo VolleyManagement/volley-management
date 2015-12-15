@@ -42,6 +42,23 @@ function AreTheSameTeams(HomeId, AwayId) {
     return HomeId == AwayId;
 }
 
+function IsSetsScoreValid(setsScore, isTechnicalDefeat) {
+    return isTechnicalDefeat ? IsTechnicalDefeatSetsScoreValid(setsScore) : IsOrdinarySetsScoreValid(setsScore);
+}
+
+function IsRequiredSetScoreValid(setScore, isTechnicalDefeat) {
+    return isTechnicalDefeat ? IsTechnicalDefeatRequiredSetScoreValid(setScore) : IsOrdinaryRequiredSetScoreValid(setScore);
+}
+
+function IsOptionalSetScoreValid(setScore, isTechnicalDefeat) {
+    return isTechnicalDefeat ? IsTechnicalDefeatOptionalSetScoreValid(setScore) : IsOrdinaryOptionalSetScoreValid(setScore);
+}
+
+function IsSetUnplayed(setScore) {
+    return setScore.Home == gameResultConstants.UNPLAYED_SET_HOME_SCORE
+        && setScore.Away == gameResultConstants.UNPLAYED_SET_AWAY_SCORE;
+}
+
 function AreSetScoresMatched(setsScore, setScores) {
     var score = {
         "Home": 0,
@@ -60,16 +77,39 @@ function AreSetScoresMatched(setsScore, setScores) {
     return score.Home == setsScore.Home && score.Away == setsScore.Away;
 }
 
-function IsSetsScoreValid(setsScore, isTechnicalDefeat) {
-    return isTechnicalDefeat ? IsTechnicalDefeatSetsScoreValid(setsScore) : IsOrdinarySetsScoreValid(setsScore);
-}
+function AreSetScoresOrdered(setScores) {
+    var hasMatchEnded = false;
+    var score = {
+        "Home": 0,
+        "Away": 0
+    }
 
-function IsRequiredSetScoreValid(setScore, isTechnicalDefeat) {
-    return isTechnicalDefeat ? IsTechnicalDefeatRequiredSetScoreValid(setScore) : IsOrdinaryRequiredSetScoreValid(setScore);
-}
+    for (i = 0; i < setScores.length; i++) {
+        if (setScores[i].Home > setScores[i].Away) {
+            if (hasMatchEnded) {
+                return false;
+            }
 
-function IsOptionalSetScoreValid(setScore, isTechnicalDefeat) {
-    return isTechnicalDefeat ? IsTechnicalDefeatOptionalSetScoreValid(setScore) : IsOrdinaryOptionalSetScoreValid(setScore);
+            score.Home++;
+
+            if (score.Home == gameResultConstants.SETS_COUNT_TO_WIN) {
+                hasMatchEnded = true;
+            }
+        }
+        else if (setScores[i].Home < setScores[i].Away) {
+            if (hasMatchEnded) {
+                return false;
+            }
+
+            score.Away++;
+
+            if (score.Away == gameResultConstants.SETS_COUNT_TO_WIN) {
+                hasMatchEnded = true;
+            }
+        }
+    }
+
+    return true;
 }
 
 function IsTechnicalDefeatSetsScoreValid(setsScore) {
@@ -125,10 +165,6 @@ function IsSetScoreGreaterThanMin(setScore) {
         || setScore.Away > gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN;
 }
 
-function IsSetUnplayed(setScore) {
-    return setScore.Home == gameResultConstants.UNPLAYED_SET_HOME_SCORE
-        && setScore.Away == gameResultConstants.UNPLAYED_SET_AWAY_SCORE;
-}
 
 // Methods to validate.
 
@@ -137,6 +173,7 @@ function ValidateGameResult(gameResult) {
     ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
     ValidateSetScores(gameResult.SetScores, gameResult.IsTechnicalDefeat);
     ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
+    ValidateSetScoresOrder(gameResult.SetScores);
 }
 
 function ValidateTeams(homeTeamId, awayTeamId) {
@@ -193,6 +230,12 @@ function ValidateSetScores(setScores, isTechnicalDefeat) {
 function ValidateSetsScoreMatchesSetScores(setsScore, setScores) {
     if (!AreSetScoresMatched(setsScore, setScores)) {
         throw resourceMessages.GameResultSetsScoreNoMatchSetScores;
+    }
+}
+
+function ValidateSetScoresOrder(setScores) {
+    if (!AreSetScoresOrdered(setScores)) {
+        throw resourceMessages.GameResultSetScoresNotOrdered;
     }
 }
 

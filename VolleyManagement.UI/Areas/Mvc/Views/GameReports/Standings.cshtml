@@ -81,8 +81,8 @@
                         teamLastCellClass = "standings-table-cell";
                     }
 
-                    setsRatioText = entry.SetsRatio != 0.0f ? string.Format("{0:g3}", entry.SetsRatio) : "MAX";
-                    ballsRatioText = entry.BallsRatio != 0.0f ? string.Format("{0:g3}", entry.BallsRatio) : "MAX";
+                    setsRatioText = entry.SetsRatio != float.PositiveInfinity ? string.Format("{0:g3}", entry.SetsRatio) : "MAX";
+                    ballsRatioText = entry.BallsRatio != float.PositiveInfinity ? string.Format("{0:g3}", entry.BallsRatio) : "MAX";
 
                     <tr class="@rowClass">
                         <td class="@teamCellClass">@(++position)</td>
@@ -102,7 +102,7 @@
                         <td class="@teamCellClass">@setsRatioText</td>
                         <td class="@teamCellClass">@entry.BallsWon</td>
                         <td class="@teamCellClass">@entry.BallsLost</td>
-                        <td class="@teamLastCellClass">@ballsRatioText</td>
+                        <td class="@teamLastCellClass">@setsRatioText</td>
                     </tr>
                 }
             </tbody>

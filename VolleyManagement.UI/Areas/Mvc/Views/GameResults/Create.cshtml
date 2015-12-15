@@ -20,11 +20,11 @@
         @Resources.GameResultsViews.TeamsFields
         @Html.DropDownListFor(
             x => x.HomeTeamId,
-            new SelectList(ViewBag.Teams, "Value", "Text"))
+            new SelectList(Model.Teams, "Value", "Text"))
 
         @Html.DropDownListFor(
             x => x.AwayTeamId,
-            new SelectList(ViewBag.Teams, "Value", "Text"))
+            new SelectList(Model.Teams, "Value", "Text"))
     </div>
 
     <div class="form-group">

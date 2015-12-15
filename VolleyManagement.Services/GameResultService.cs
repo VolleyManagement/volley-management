@@ -94,8 +94,8 @@
         {
             ValidateTeams(gameResult.HomeTeamId, gameResult.AwayTeamId);
             ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
-            ValidateSetScores(gameResult.SetScores, gameResult.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
+            ValidateSetScoresValues(gameResult.SetScores, gameResult.IsTechnicalDefeat);
             ValidateSetScoresOrder(gameResult.SetScores);
         }
 
@@ -119,7 +119,15 @@
             }
         }
 
-        private void ValidateSetScores(IList<Score> setScores, bool isTechnicalDefeat)
+        private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
+        {
+            if (!GameResultValidation.AreSetScoresMatched(setsScore, setScores))
+            {
+                throw new ArgumentException(Resources.GameResultSetsScoreNoMatchSetScores);
+            }
+        }
+
+        private void ValidateSetScoresValues(IList<Score> setScores, bool isTechnicalDefeat)
         {
             bool isPreviousOptionalSetUnplayed = false;
 
@@ -161,14 +169,6 @@
 
                     isPreviousOptionalSetUnplayed = GameResultValidation.IsSetUnplayed(setScores[i]);
                 }
-            }
-        }
-
-        private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
-        {
-            if (!GameResultValidation.AreSetScoresMatched(setsScore, setScores))
-            {
-                throw new ArgumentException(Resources.GameResultSetsScoreNoMatchSetScores);
             }
         }
 

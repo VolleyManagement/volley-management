@@ -31,6 +31,36 @@
         }
 
         /// <summary>
+        /// Determines whether the sets score and the scores of every set match one another.
+        /// </summary>
+        /// <param name="setsScore">Sets score (final score) of the game.</param>
+        /// <param name="setScores">Scores of every set of the game.</param>
+        /// <returns>True if sets score and scores of every set match; otherwise, false.</returns>
+        public static bool AreSetScoresMatched(Score setsScore, IList<Score> setScores)
+        {
+            if (setScores == null)
+            {
+                return false;
+            }
+
+            Score score = new Score();
+
+            foreach (var setScore in setScores)
+            {
+                if (setScore.Home > setScore.Away)
+                {
+                    score.Home++;
+                }
+                else if (setScore.Home < setScore.Away)
+                {
+                    score.Away++;
+                }
+            }
+
+            return score.Home == setsScore.Home && score.Away == setsScore.Away;
+        }
+
+        /// <summary>
         /// Determines whether the score of a required set is valid.
         /// </summary>
         /// <param name="setScore">Score of the set.</param>
@@ -61,36 +91,6 @@
         {
             return setScore.Home == Constants.GameResult.UNPLAYED_SET_HOME_SCORE
                 && setScore.Away == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
-        }
-
-        /// <summary>
-        /// Determines whether the sets score and the scores of every set match one another.
-        /// </summary>
-        /// <param name="setsScore">Sets score (final score) of the game.</param>
-        /// <param name="setScores">Scores of every set of the game.</param>
-        /// <returns>True if sets score and scores of every set match; otherwise, false.</returns>
-        public static bool AreSetScoresMatched(Score setsScore, IList<Score> setScores)
-        {
-            if (setScores == null)
-            {
-                return false;
-            }
-
-            Score score = new Score();
-
-            foreach (var setScore in setScores)
-            {
-                if (setScore.Home > setScore.Away)
-                {
-                    score.Home++;
-                }
-                else if (setScore.Home < setScore.Away)
-                {
-                    score.Away++;
-                }
-            }
-
-            return score.Home == setsScore.Home && score.Away == setsScore.Away;
         }
 
         /// <summary>

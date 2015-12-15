@@ -180,6 +180,25 @@
         }
 
         /// <summary>
+        /// Sets the final score of the game in a way that it does not match set scores.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        public GameResultBuilder WithSetsScoreNoMatchSetScores()
+        {
+            _gameResult.SetsScore = new Score(3, 1);
+            _gameResult.SetScores = new List<Score>
+            {
+                new Score(25, 20),
+                new Score(24, 26),
+                new Score(28, 30),
+                new Score(25, 22),
+                new Score(27, 25)
+            };
+
+            return this;
+        }
+
+        /// <summary>
         /// Sets the required set scores in a way that they are invalid.
         /// </summary>
         /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
@@ -229,25 +248,6 @@
                 new Score(25, 21),
                 new Score(0, 0),
                 new Score(25, 17)
-            };
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the final score of the game in a way that it does not match set scores.
-        /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithSetsScoreNoMatchSetScores()
-        {
-            _gameResult.SetsScore = new Score(3, 1);
-            _gameResult.SetScores = new List<Score>
-            {
-                new Score(25, 20),
-                new Score(24, 26),
-                new Score(28, 30),
-                new Score(25, 22),
-                new Score(27, 25)
             };
 
             return this;

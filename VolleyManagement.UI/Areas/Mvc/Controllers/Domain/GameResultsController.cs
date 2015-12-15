@@ -3,8 +3,8 @@
     using System;
     using System.Linq;
     using System.Web.Mvc;
-    using Contracts;
-    using ViewModels.GameResults;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// Defines GameResultsController
@@ -40,23 +40,22 @@
         public ActionResult Details(int id)
         {
             var gameResult = GameResultViewModel.Map(_gameResultsService.Get(id));
-            gameResult.HomeTeamName = _teamService.Get(gameResult.HomeTeamId).Name;
-            gameResult.AwayTeamName = _teamService.Get(gameResult.AwayTeamId).Name;
             return View(gameResult);
         }
 
         /// <summary>
         /// Create GET method.
         /// </summary>
-        /// <param name="Id">Id of tournament</param>
+        /// <param name="id">Id of tournament</param>
         /// <returns>Create view.</returns>
-        public ActionResult Create(int Id)
+        public ActionResult Create(int id)
         {
-            ViewBag.Teams = _teamService
-                            .Get()
-                            .Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+            GameResultViewModel gameResultViewModel = new GameResultViewModel
+            {
+                TournamentId = id,
+                Teams = _teamService.Get().Select(team => new SelectListItem { Value = team.Id.ToString(), Text = team.Name }).ToList()
+            };
 
-            GameResultViewModel gameResultViewModel = new GameResultViewModel() { TournamentId = Id };
             return View(gameResultViewModel);
         }
 
@@ -69,6 +68,7 @@
         public ActionResult Create(GameResultViewModel gameResultViewModel)
         {
             var gameResult = gameResultViewModel.ToDomain();
+
             try
             {
                 _gameResultsService.Create(gameResult);
@@ -77,11 +77,10 @@
             catch (ArgumentException ex)
             {
                 ModelState.AddModelError("ValidationError", ex.Message);
-                var teams = _teamService
-                            .Get()
-                            .Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+                gameResultViewModel.Teams = _teamService.Get()
+                    .Select(team => new SelectListItem { Value = team.Id.ToString(), Text = team.Name })
+                    .ToList();
 
-                ViewBag.Teams = teams;
                 return View(gameResultViewModel);
             }
         }
@@ -93,18 +92,10 @@
         /// <returns>View represents results list</returns>
         public ActionResult TournamentResults(int id)
         {
-            var gameResults = _gameResultsService.Get().Where(
-                                                            gr =>
-                                                            gr.TournamentId == id)
-                                                            .Select(
-                gr =>
-                {
-                    var gameResult = GameResultViewModel.Map(gr);
-                    gameResult.HomeTeamName = _teamService.Get(gameResult.HomeTeamId).Name;
-                    gameResult.AwayTeamName = _teamService.Get(gameResult.AwayTeamId).Name;
-                    return gameResult;
-                })
-                   .ToList();
+            var gameResults = _gameResultsService.Get()
+                .Where(gr => gr.TournamentId == id)
+                .Select(gr => GameResultViewModel.Map(gr))
+                .ToList();
 
             return View(gameResults);
         }

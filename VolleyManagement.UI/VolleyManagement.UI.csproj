@@ -274,6 +274,7 @@
     <Content Include="Areas\Mvc\Views\Teams\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Account\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Account\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameReports\Standings.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -302,6 +303,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthorizationRoles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\GameReportViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GameReportViews.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\PlayerViews.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -343,6 +349,7 @@
     <Compile Include="Areas\Admin\Models\UserViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\AccountController.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\ContributorsTeamController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\GameReportsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
     <Compile Include="Areas\Mvc\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\PlayersController.cs" />
@@ -356,6 +363,8 @@
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Account\AuthenticationStatusViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsEntryViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\GroupViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />
@@ -453,6 +462,10 @@
     <EmbeddedResource Include="App_GlobalResources\AuthorizationRoles.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\GameReportViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameReportViews.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

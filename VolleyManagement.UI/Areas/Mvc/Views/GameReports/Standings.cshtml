@@ -1,0 +1,113 @@
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports.StandingsViewModel
+
+@using VolleyManagement.Crosscutting.Contracts.Providers
+
+@{
+    ViewBag.Title = Resources.GameReportViews.TournamentStandingsTitle;
+}
+
+<h2>@ViewBag.Title</h2>
+
+<fieldset>
+    @{
+        string legendText = string.Format(Resources.GameReportViews.TournamentStandingsLegend, Model.TournamentName);
+        string rowClass = string.Empty;
+        string teamCellClass = string.Empty;
+        string teamLastCellClass = string.Empty;
+        string setsRatioText = string.Empty;
+        string ballsRatioText = string.Empty;
+        int position = 0;
+    }
+
+    <legend>@legendText</legend>
+    @if (Model.Entries.Count == 0)
+    {
+        <p>@Resources.GameReportViews.NoGameResults</p>
+    }
+    else
+    {
+        <table class="standings-table">
+            <thead>
+                <tr class="standings-table-header">
+                    <th colspan="3" class="standings-table-cell right-border bottom-border">
+                        @string.Format(Resources.GameReportViews.LastUpdated, TimeProvider.Current.UtcNow)
+                    </th>
+                    <th colspan="9" class="standings-table-cell right-border bottom-border">
+                        @Resources.GameReportViews.GamesGroupHeader
+                    </th>
+                    <th colspan="3" class="standings-table-cell right-border bottom-border">
+                        @Resources.GameReportViews.SetsGroupHeader
+                    </th>
+                    <th colspan="3" class="standings-table-cell bottom-border">
+                        @Resources.GameReportViews.BallsGroupHeader
+                    </th>
+                </tr>
+                <tr class="standings-table-header">
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.PositionHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.TeamHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.PointsHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesTotalHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWonHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesLostHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreThreeNilHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreThreeOneHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreThreeTwoHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreTwoThreeHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreOneThreeHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreNilThreeHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.SetsWonHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.SetsLostHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.SetsRatioHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.BallsWonHeader</th>
+                <th class="standings-table-cell right-border">@Resources.GameReportViews.BallsLostHeader</th>
+                <th class="standings-table-cell">@Resources.GameReportViews.BallsRatioHeader</th>
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (var entry in Model.Entries)
+                {
+                    rowClass = position < ViewModelConstants.NUMBER_OF_TOP_TEAMS
+                        ? "standings-table-row team-top-position"
+                        : "standings-table-row";
+
+                    if (position + 1 != Model.Entries.Count)
+                    {
+                        teamCellClass = "standings-table-cell right-border bottom-border";
+                        teamLastCellClass = "standings-table-cell bottom-border";
+                    }
+                    else
+                    {
+                        teamCellClass = "standings-table-cell right-border";
+                        teamLastCellClass = "standings-table-cell";
+                    }
+
+                    setsRatioText = entry.SetsRatio != float.PositiveInfinity ? string.Format("{0:g3}", entry.SetsRatio) : "MAX";
+                    ballsRatioText = entry.BallsRatio != float.PositiveInfinity ? string.Format("{0:g3}", entry.BallsRatio) : "MAX";
+
+                    <tr class="@rowClass">
+                        <td class="@teamCellClass">@(++position)</td>
+                        <td class="@teamCellClass">@entry.TeamName</td>
+                        <td class="@teamCellClass">@entry.Points</td>
+                        <td class="@teamCellClass">@entry.GamesTotal</td>
+                        <td class="@teamCellClass">@entry.GamesWon</td>
+                        <td class="@teamCellClass">@entry.GamesLost</td>
+                        <td class="@teamCellClass">@entry.GamesWithScoreThreeNil</td>
+                        <td class="@teamCellClass">@entry.GamesWithScoreThreeOne</td>
+                        <td class="@teamCellClass">@entry.GamesWithScoreThreeTwo</td>
+                        <td class="@teamCellClass">@entry.GamesWithScoreTwoThree</td>
+                        <td class="@teamCellClass">@entry.GamesWithScoreOneThree</td>
+                        <td class="@teamCellClass">@entry.GamesWithScoreNilThree</td>
+                        <td class="@teamCellClass">@entry.SetsWon</td>
+                        <td class="@teamCellClass">@entry.SetsLost</td>
+                        <td class="@teamCellClass">@setsRatioText</td>
+                        <td class="@teamCellClass">@entry.BallsWon</td>
+                        <td class="@teamCellClass">@entry.BallsLost</td>
+                        <td class="@teamLastCellClass">@setsRatioText</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</fieldset>
+
+<p>@Html.ActionLink(Resources.GameReportViews.BackToTournament, "Details", "Tournaments", new { id = Model.TournamentId }, null)</p>

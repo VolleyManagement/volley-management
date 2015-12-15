@@ -50,6 +50,15 @@ div#menu a.selected {background-color: #666; color: white;}
 div#menu a:hover {background-color: #CCC; }
 div#menu a.selected:hover{background-color: #666}
 
+.form-control {
+    display: inline-block;
+    width: auto;
+}
+
+.color-red {
+    color: red;
+}
+
 div .division-groups-wrapper {
     padding-left: 25px;
 }
@@ -69,4 +78,42 @@ div .add-division-button {
 
 .link-button {
     cursor: pointer;
+}
+
+.standings-table {
+    display: table;
+    margin: 0 0 20px 0;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    font-size: 12.5px;
+}
+
+.standings-table-header {
+    display: table-row;
+    font-weight: 700;
+    color: #fff;
+    background: #2980b9;
+}
+
+.standings-table-row {
+    display: table-row;
+    background: #f5f5f5;
+}
+
+.standings-table-cell {
+    display: table-cell;
+    padding: 3px 5px;
+    text-align: center;
+}
+
+.right-border {
+    border-right: 1px solid #fff;
+}
+
+.bottom-border {
+    border-bottom: 1px solid #fff;
+}
+
+.team-top-position {
+    background-color: #00ff7f;
+    font-weight: 700;
 }

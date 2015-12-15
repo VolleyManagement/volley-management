@@ -188,8 +188,8 @@
             _gameResult.SetScores = new List<Score>
             {
                 new Score(10, 0),
-                new Score(0, 10),
-                new Score(0, 10),
+                new Score(10, 0),
+                new Score(10, 0),
                 new Score(0, 0),
                 new Score(0, 0)
             };
@@ -221,13 +221,14 @@
         /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
         public GameResultBuilder WithPreviousOptionalSetUnplayed()
         {
+            _gameResult.SetsScore = new Score(3, 1);
             _gameResult.SetScores = new List<Score>
             {
                 new Score(25, 23),
-                new Score(25, 23),
-                new Score(25, 23),
+                new Score(20, 25),
+                new Score(25, 21),
                 new Score(0, 0),
-                new Score(23, 25)
+                new Score(25, 17)
             };
 
             return this;
@@ -247,6 +248,25 @@
                 new Score(28, 30),
                 new Score(25, 22),
                 new Score(27, 25)
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the set scores in a way that they are not listed in the correct order.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        public GameResultBuilder WithSetScoresUnordered()
+        {
+            _gameResult.SetsScore = new Score(3, 1);
+            _gameResult.SetScores = new List<Score>
+            {
+                new Score(25, 20),
+                new Score(25, 21),
+                new Score(25, 18),
+                new Score(23, 25),
+                new Score(0, 0)
             };
 
             return this;

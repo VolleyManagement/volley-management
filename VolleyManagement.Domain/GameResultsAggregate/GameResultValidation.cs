@@ -20,36 +20,6 @@
         }
 
         /// <summary>
-        /// Determines whether the sets score and the scores of every set match one another.
-        /// </summary>
-        /// <param name="setsScore">Sets score (final score) of the game.</param>
-        /// <param name="setScores">Scores of every set of the game.</param>
-        /// <returns>True if sets score and scores of every set match; otherwise, false.</returns>
-        public static bool AreSetScoresMatched(Score setsScore, IList<Score> setScores)
-        {
-            if (setScores == null)
-            {
-                return false;
-            }
-
-            Score score = new Score();
-
-            foreach (var setScore in setScores)
-            {
-                if (setScore.Home > setScore.Away)
-                {
-                    score.Home++;
-                }
-                else if (setScore.Home < setScore.Away)
-                {
-                    score.Away++;
-                }
-            }
-
-            return score.Home == setsScore.Home && score.Away == setsScore.Away;
-        }
-
-        /// <summary>
         /// Determines whether the sets score is valid.
         /// </summary>
         /// <param name="setsScore">Sets score (final score) of the game.</param>
@@ -91,6 +61,86 @@
         {
             return setScore.Home == Constants.GameResult.UNPLAYED_SET_HOME_SCORE
                 && setScore.Away == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
+        }
+
+        /// <summary>
+        /// Determines whether the sets score and the scores of every set match one another.
+        /// </summary>
+        /// <param name="setsScore">Sets score (final score) of the game.</param>
+        /// <param name="setScores">Scores of every set of the game.</param>
+        /// <returns>True if sets score and scores of every set match; otherwise, false.</returns>
+        public static bool AreSetScoresMatched(Score setsScore, IList<Score> setScores)
+        {
+            if (setScores == null)
+            {
+                return false;
+            }
+
+            Score score = new Score();
+
+            foreach (var setScore in setScores)
+            {
+                if (setScore.Home > setScore.Away)
+                {
+                    score.Home++;
+                }
+                else if (setScore.Home < setScore.Away)
+                {
+                    score.Away++;
+                }
+            }
+
+            return score.Home == setsScore.Home && score.Away == setsScore.Away;
+        }
+
+        /// <summary>
+        /// Determines whether the set scores are listed in the correct order.
+        /// </summary>
+        /// <param name="setScores">Scores of every set of the game.</param>
+        /// <returns>True if set scores are listed in the correct order; otherwise, false.</returns>
+        public static bool AreSetScoresOrdered(IList<Score> setScores)
+        {
+            if (setScores == null)
+            {
+                return true;
+            }
+
+            Score score = new Score();
+            bool hasMatchEnded = false;
+
+            foreach (var setScore in setScores)
+            {
+                if (setScore.Home > setScore.Away)
+                {
+                    if (hasMatchEnded)
+                    {
+                        return false;
+                    }
+
+                    score.Home++;
+
+                    if (score.Home == Constants.GameResult.SETS_COUNT_TO_WIN)
+                    {
+                        hasMatchEnded = true;
+                    }
+                }
+                else if (setScore.Home < setScore.Away)
+                {
+                    if (hasMatchEnded)
+                    {
+                        return false;
+                    }
+
+                    score.Away++;
+
+                    if (score.Away == Constants.GameResult.SETS_COUNT_TO_WIN)
+                    {
+                        hasMatchEnded = true;
+                    }
+                }
+            }
+
+            return true;
         }
 
         private static bool IsTechnicalDefeatSetsScoreValid(Score setsScore)

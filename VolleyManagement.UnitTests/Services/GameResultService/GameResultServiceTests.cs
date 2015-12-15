@@ -192,6 +192,24 @@
         }
 
         /// <summary>
+        /// Test for Create method. Set scores are not listed in the correct order. Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameResultSetScoresUnordered_ExceptionThrown()
+        {
+            // Arrange
+            var newGameResult = new GameResultBuilder().WithSetScoresUnordered().Build();
+            var sut = _kernel.Get<GameResultService>();
+
+            // Act
+            sut.Create(newGameResult);
+
+            // Assert
+            VerifyCreate(newGameResult, Times.Never());
+        }
+
+        /// <summary>
         /// Test for Get method. All game results are requested. All game results are returned.
         /// </summary>
         [TestMethod]

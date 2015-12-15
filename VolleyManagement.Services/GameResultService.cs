@@ -100,7 +100,7 @@
             {
                 _gameResultRepository.Update(gameResult);
             }
-            catch (InvalidKeyValueException ex)
+            catch (ConcurrencyException ex)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameResultNotFound, ex);
             }

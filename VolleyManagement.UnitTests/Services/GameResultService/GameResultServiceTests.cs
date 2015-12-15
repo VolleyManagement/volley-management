@@ -277,7 +277,7 @@
             var gameResult = new GameResultBuilder().Build();
 
             _gameResultRepositoryMock.Setup(grr => grr.Update(gameResult))
-                                     .Throws(new InvalidKeyValueException());
+                                     .Throws(new ConcurrencyException());
             var sut = _kernel.Get<GameResultService>();
 
             // Act

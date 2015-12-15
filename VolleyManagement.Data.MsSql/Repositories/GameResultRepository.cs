@@ -54,13 +54,6 @@
         /// <param name="updatedEntity">Updated game result.</param>
         public void Update(GameResult updatedEntity)
         {
-            if (updatedEntity.Id < Constants.START_DATABASE_ID_VALUE)
-            {
-                var exc = new InvalidKeyValueException(Properties.Resources.InvalidEntityId);
-                exc.Data[Constants.ENTITY_ID_KEY] = updatedEntity.Id;
-                throw exc;
-            }
-
             var gameResultToUpdate = _dalGameResults.SingleOrDefault(t => t.Id == updatedEntity.Id);
 
             if (gameResultToUpdate == null)

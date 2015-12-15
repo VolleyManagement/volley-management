@@ -78,10 +78,34 @@
             var gameResult = new GameResultViewModelBuilder()
                                 .WithTournamentId(TOURNAMENT_ID)
                                 .Build();
-
             GameResult expectedGameResult = gameResult.ToDomain();
-            GameResult actualGameResult = null;
 
+            GameResult actualGameResult = null;
+            _gameResultServiceMock.Setup(h => h.Create(It.IsAny<GameResult>()))
+                .Callback<GameResult>(r => actualGameResult = r);
+
+            var sut = this._kernel.Get<GameResultsController>();
+
+            // Act
+            var result = sut.Create(gameResult) as RedirectToRouteResult;
+
+            // Assert
+            TestHelper.AreEqual<GameResult>(expectedGameResult, actualGameResult, new GameResultComparer());
+        }
+
+        /// <summary>
+        /// Test for Create POST method. Valid model passed. Redirected to Details view.
+        /// </summary>
+        [TestMethod]
+        public void CreatePostAction_ValidModel_RedirectedToDetailsView()
+        {
+            // Arrange
+            var gameResult = new GameResultViewModelBuilder()
+                                .WithTournamentId(TOURNAMENT_ID)
+                                .Build();
+            GameResult expectedGameResult = gameResult.ToDomain();
+
+            GameResult actualGameResult = null;
             _gameResultServiceMock.Setup(h => h.Create(It.IsAny<GameResult>()))
                 .Callback<GameResult>(r => actualGameResult = r);
 
@@ -92,7 +116,6 @@
 
             // Assert
             Assert.AreEqual(DETAILS_ACTION_NAME, result.RouteValues["action"]);
-            TestHelper.AreEqual<GameResult>(expectedGameResult, actualGameResult, new GameResultComparer());
         }
 
         /// <summary>

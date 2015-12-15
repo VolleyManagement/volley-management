@@ -78,11 +78,8 @@
             }
             catch (ArgumentException ex)
             {
-                ModelState.AddModelError("ValidationError", ex.Message);
-                var teams = _teamService
-                            .Get()
-                            .Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
-
+                ModelState.AddModelError("ValidationMessage", ex.Message);
+                gameResultViewModel.TournamentTeams = GetTeams();
                 return View(gameResultViewModel);
             }
         }

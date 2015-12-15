@@ -97,6 +97,8 @@
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
                 SetsScore = new Score(3, 0),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -114,6 +116,8 @@
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 3,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameC",
                 SetsScore = new Score(3, 1),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -131,6 +135,8 @@
                 TournamentId = 1,
                 HomeTeamId = 2,
                 AwayTeamId = 3,
+                HomeTeamName = "TeamNameB",
+                AwayTeamName = "TeamNameC",
                 SetsScore = new Score(3, 2),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -148,6 +154,8 @@
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
                 SetsScore = new Score(2, 3),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -165,6 +173,8 @@
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 3,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameC",
                 SetsScore = new Score(1, 3),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -182,6 +192,8 @@
                 TournamentId = 1,
                 HomeTeamId = 2,
                 AwayTeamId = 3,
+                HomeTeamName = "TeamNameB",
+                AwayTeamName = "TeamNameC",
                 SetsScore = new Score(0, 3),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -189,118 +201,6 @@
                     new Score(14, 25),
                     new Score(27, 39),
                     new Score(22, 25),
-                    new Score(0, 0),
-                    new Score(0, 0)
-                }
-            });
-
-            return this;
-        }
-
-        /// <summary>
-        /// Adds game result with zero lost sets for the home team to collection of <see cref="GameResult"/> objects.
-        /// </summary>
-        /// <returns>Instance of <see cref="GameResultTestFixture"/>.</returns>
-        public GameResultTestFixture WithNoLostSetsForHomeTeam()
-        {
-            _gameResults.Clear();
-            _gameResults.Add(new GameResult
-            {
-                Id = 1,
-                TournamentId = 1,
-                HomeTeamId = 1,
-                AwayTeamId = 2,
-                SetsScore = new Score(3, 0),
-                IsTechnicalDefeat = false,
-                SetScores = new List<Score>
-                {
-                    new Score(25, 20),
-                    new Score(24, 26),
-                    new Score(28, 30),
-                    new Score(0, 0),
-                    new Score(0, 0)
-                }
-            });
-
-            return this;
-        }
-
-        /// <summary>
-        /// Adds game result with zero lost sets for the away team to collection of <see cref="GameResult"/> objects.
-        /// </summary>
-        /// <returns>Instance of <see cref="GameResultTestFixture"/>.</returns>
-        public GameResultTestFixture WithNoLostSetsForAwayTeam()
-        {
-            _gameResults.Clear();
-            _gameResults.Add(new GameResult
-            {
-                Id = 1,
-                TournamentId = 1,
-                HomeTeamId = 1,
-                AwayTeamId = 2,
-                SetsScore = new Score(0, 3),
-                IsTechnicalDefeat = false,
-                SetScores = new List<Score>
-                {
-                    new Score(14, 25),
-                    new Score(27, 39),
-                    new Score(22, 25),
-                    new Score(0, 0),
-                    new Score(0, 0)
-                }
-            });
-
-            return this;
-        }
-
-        /// <summary>
-        /// Adds game result with zero lost balls for the home team to collection of <see cref="GameResult"/> objects.
-        /// </summary>
-        /// <returns>Instance of <see cref="GameResultTestFixture"/>.</returns>
-        public GameResultTestFixture WithNoLostBallsForHomeTeam()
-        {
-            _gameResults.Clear();
-            _gameResults.Add(new GameResult
-            {
-                Id = 1,
-                TournamentId = 1,
-                HomeTeamId = 1,
-                AwayTeamId = 2,
-                SetsScore = new Score(3, 0),
-                IsTechnicalDefeat = true,
-                SetScores = new List<Score>
-                {
-                    new Score(25, 0),
-                    new Score(25, 0),
-                    new Score(25, 0),
-                    new Score(0, 0),
-                    new Score(0, 0)
-                }
-            });
-
-            return this;
-        }
-
-        /// <summary>
-        /// Adds game result with zero lost balls for the away team to collection of <see cref="GameResult"/> objects.
-        /// </summary>
-        /// <returns>Instance of <see cref="GameResultTestFixture"/>.</returns>
-        public GameResultTestFixture WithNoLostBallsForAwayTeam()
-        {
-            _gameResults.Clear();
-            _gameResults.Add(new GameResult
-            {
-                Id = 1,
-                TournamentId = 1,
-                HomeTeamId = 1,
-                AwayTeamId = 2,
-                SetsScore = new Score(0, 3),
-                IsTechnicalDefeat = true,
-                SetScores = new List<Score>
-                {
-                    new Score(0, 25),
-                    new Score(0, 25),
-                    new Score(0, 25),
                     new Score(0, 0),
                     new Score(0, 0)
                 }
@@ -321,6 +221,8 @@
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
                 SetsScore = new Score(3, 1),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -338,6 +240,8 @@
                 TournamentId = 1,
                 HomeTeamId = 2,
                 AwayTeamId = 1,
+                HomeTeamName = "TeamNameB",
+                AwayTeamName = "TeamNameA",
                 SetsScore = new Score(3, 0),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -366,6 +270,8 @@
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
                 SetsScore = new Score(3, 0),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -383,6 +289,8 @@
                 TournamentId = 1,
                 HomeTeamId = 2,
                 AwayTeamId = 1,
+                HomeTeamName = "TeamNameB",
+                AwayTeamName = "TeamNameA",
                 SetsScore = new Score(3, 0),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>

@@ -73,7 +73,7 @@ $(".deleteResult_btn").click(function (e) {
                 location.reload();
         },
         error: function () {
-            alert("Error");
+            alert(DELETE_FAILED_MESSAGE);
         }
     });
 });

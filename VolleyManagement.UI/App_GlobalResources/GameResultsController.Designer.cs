@@ -61,11 +61,20 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Результат игры с указанным идентификатором не найден. Операция удаления невозможно..
+        ///   Looks up a localized string similar to Результат игры с указанным идентификатором не найден. Операция удаления невозможна..
         /// </summary>
         public static string GameResultNotFound {
             get {
                 return ResourceManager.GetString("GameResultNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Операция удаления для данного объекта завершилась сбоем. Пожалуйста, обратитесь к администрации..
+        /// </summary>
+        public static string GameResultNotFoundView {
+            get {
+                return ResourceManager.GetString("GameResultNotFoundView", resourceCulture);
             }
         }
         

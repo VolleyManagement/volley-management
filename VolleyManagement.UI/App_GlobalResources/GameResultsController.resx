@@ -118,7 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="GameResultNotFound" xml:space="preserve">
-    <value>Результат игры с указанным идентификатором не найден. Операция удаления невозможно.</value>
+    <value>Результат игры с указанным идентификатором не найден. Операция удаления невозможна.</value>
+  </data>
+  <data name="GameResultNotFoundView" xml:space="preserve">
+    <value>Операция удаления для данного объекта завершилась сбоем. Пожалуйста, обратитесь к администрации.</value>
   </data>
   <data name="GameResultWasDeleted" xml:space="preserve">
     <value>Данная игра не найдена, т.к. была удалена. Операция редактирования невозможна.</value>

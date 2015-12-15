@@ -153,20 +153,20 @@
         {
             homeTeamEntry.SetsWon += setsScore.Home;
             homeTeamEntry.SetsLost += setsScore.Away;
-            homeTeamEntry.SetsRatio = homeTeamEntry.SetsLost != 0 ? (float)homeTeamEntry.SetsWon / homeTeamEntry.SetsLost : 0.0f;
+            homeTeamEntry.SetsRatio = (float)homeTeamEntry.SetsWon / homeTeamEntry.SetsLost;
             awayTeamEntry.SetsWon += setsScore.Away;
             awayTeamEntry.SetsLost += setsScore.Home;
-            awayTeamEntry.SetsRatio = awayTeamEntry.SetsLost != 0 ? (float)awayTeamEntry.SetsWon / awayTeamEntry.SetsLost : 0.0f;
+            awayTeamEntry.SetsRatio = (float)awayTeamEntry.SetsWon / awayTeamEntry.SetsLost;
 
             var homeBallsTotal = setScores.Aggregate(0, (sum, e) => sum + e.Home);
             var awayBallsTotal = setScores.Aggregate(0, (sum, e) => sum + e.Away);
 
             homeTeamEntry.BallsWon += homeBallsTotal;
             homeTeamEntry.BallsLost += awayBallsTotal;
-            homeTeamEntry.BallsRatio = homeTeamEntry.BallsLost != 0 ? (float)homeTeamEntry.BallsWon / homeTeamEntry.BallsLost : 0.0f;
+            homeTeamEntry.BallsRatio = (float)homeTeamEntry.BallsWon / homeTeamEntry.BallsLost;
             awayTeamEntry.BallsWon += awayBallsTotal;
             awayTeamEntry.BallsLost += homeBallsTotal;
-            awayTeamEntry.BallsRatio = awayTeamEntry.BallsLost != 0 ? (float)awayTeamEntry.BallsWon / awayTeamEntry.BallsLost : 0.0f;
+            awayTeamEntry.BallsRatio = (float)awayTeamEntry.BallsWon / awayTeamEntry.BallsLost;
         }
 
         #endregion

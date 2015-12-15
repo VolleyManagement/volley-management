@@ -7,15 +7,13 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.GameResult;
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
     /// Provides Query Object implementation for GameResult entity
     /// </summary>
     public class GameResultQueries : IQuery<GameResult, FindByIdCriteria>,
-                                     IQuery<List<GameResult>, GetAllCriteria>,
-                                     IQuery<List<GameResult>, TournamentGameResultsCriteria>
+                                     IQuery<List<GameResult>, GetAllCriteria>
     {
         #region Fields
 
@@ -45,33 +43,17 @@
         /// <returns>Domain model of game result.</returns>
         public GameResult Execute(FindByIdCriteria criteria)
         {
-            return _unitOfWork.Context.GameResults
-                .Where(gr => gr.Id == criteria.Id)
-                .Select(GetGameResultMapping())
-                .SingleOrDefault();
+            return _unitOfWork.Context.GameResults.Where(gr => gr.Id == criteria.Id).Select(GetGameResultMapping()).SingleOrDefault();
         }
 
         /// <summary>
-        /// Gets all game results.
+        /// Get all game results.
         /// </summary>
         /// <param name="criteria">Get all results criteria.</param>
         /// <returns>List of domain models of game result.</returns>
         public List<GameResult> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.GameResults.Select(GetGameResultMapping()).ToList();
-        }
-
-        /// <summary>
-        /// Gets game results of the tournament by specified criteria.
-        /// </summary>
-        /// <param name="criteria">Tournament's game results criteria.</param>
-        /// <returns>List of domain models of game result.</returns>
-        public List<GameResult> Execute(TournamentGameResultsCriteria criteria)
-        {
-            return _unitOfWork.Context.GameResults
-                .Where(gr => gr.TournamentId == criteria.TournamentId)
-                .Select(GetGameResultMapping())
-                .ToList();
         }
 
         #endregion
@@ -86,6 +68,8 @@
                 TournamentId = gr.TournamentId,
                 HomeTeamId = gr.HomeTeamId,
                 AwayTeamId = gr.AwayTeamId,
+                HomeTeamName = gr.HomeTeam.Name,
+                AwayTeamName = gr.AwayTeam.Name,
                 SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore },
                 IsTechnicalDefeat = gr.IsTechnicalDefeat,
                 SetScores = new List<Score>

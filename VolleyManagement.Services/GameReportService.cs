@@ -5,10 +5,8 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.GameReportsAggregate;
     using VolleyManagement.Domain.GameResultsAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
     /// Represents an implementation of IGameReportService contract.
@@ -18,7 +16,6 @@
         #region Queries
 
         private readonly IQuery<List<GameResult>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
-        private readonly IQuery<IEnumerable<Team>, GameResultsTeamsCriteria> _gameResultsTeamsQuery;
 
         #endregion
 
@@ -28,13 +25,9 @@
         /// Initializes a new instance of the <see cref="GameReportService"/> class.
         /// </summary>
         /// <param name="tournamentGameResultsQuery">Query for getting tournament's game results.</param>
-        /// <param name="gameResultsTeamsQuery">Query for getting teams from game results.</param>
-        public GameReportService(
-            IQuery<List<GameResult>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
-            IQuery<IEnumerable<Team>, GameResultsTeamsCriteria> gameResultsTeamsQuery)
+        public GameReportService(IQuery<List<GameResult>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
         {
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
-            _gameResultsTeamsQuery = gameResultsTeamsQuery;
         }
 
         #endregion
@@ -74,10 +67,8 @@
         private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<GameResult> gameResults)
         {
             var entries = new List<StandingsEntry>();
-            var teams = _gameResultsTeamsQuery.Execute(new GameResultsTeamsCriteria
-            {
-                TeamIds = gameResults.Select(gr => gr.HomeTeamId).Union(gameResults.Select(gr => gr.AwayTeamId))
-            });
+            var teams = gameResults.Select(gr => new { Id = gr.HomeTeamId, Name = gr.HomeTeamName })
+                .Union(gameResults.Select(gr => new { Id = gr.AwayTeamId, Name = gr.AwayTeamName }));
 
             foreach (var team in teams)
             {

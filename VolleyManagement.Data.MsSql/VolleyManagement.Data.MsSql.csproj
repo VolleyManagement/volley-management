@@ -113,6 +113,7 @@
     <Compile Include="Queries\TournamentQueries.cs" />
     <Compile Include="Queries\UserQueries.cs" />
     <Compile Include="Repositories\ContributorTeamRepository.cs" />
+    <Compile Include="Repositories\GameResultRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\RoleRepostitory.cs" />
     <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />

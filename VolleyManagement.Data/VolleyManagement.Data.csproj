@@ -71,9 +71,8 @@
     <Compile Include="Queries\GameResult\TournamentGameResultsCriteria.cs" />
     <Compile Include="Queries\Player\TeamPlayersCriteria.cs" />
     <Compile Include="Queries\Team\FindByCaptainIdCriteria.cs" />
-    <Compile Include="Queries\Team\GameResultsTeamsCriteria.cs" />
-    <Compile Include="Queries\Tournaments\UniqueTournamentCriteria.cs" />
     <Compile Include="Queries\Common\GetAllCriteria.cs" />
+    <Compile Include="Queries\Tournament\UniqueTournamentCriteria.cs" />
     <Compile Include="Queries\User\FindByEmailCriteria.cs" />
     <Compile Include="Queries\User\FindByLoginInfoCriteria.cs" />
     <Compile Include="Queries\User\FindByNameCriteria.cs" />

@@ -16,8 +16,7 @@
     /// </summary>
     public class TeamQueries : IQuery<Team, FindByIdCriteria>,
                                IQuery<List<Team>, GetAllCriteria>,
-                               IQuery<Team, FindByCaptainIdCriteria>,
-                               IQuery<IEnumerable<Team>, GameResultsTeamsCriteria>
+                               IQuery<Team, FindByCaptainIdCriteria>
     {
         #region Fields
 
@@ -68,16 +67,6 @@
         public Team Execute(FindByCaptainIdCriteria criteria)
         {
             return _unitOfWork.Context.Teams.Where(t => t.CaptainId == criteria.CaptainId).Select(GetTeamMapping()).SingleOrDefault();
-        }
-
-        /// <summary>
-        /// Gets teams of the game results by specified criteria.
-        /// </summary>
-        /// <param name="criteria">Game results' teams criteria.</param>
-        /// <returns>Collection of domain models of <see cref="Team"/>.</returns>
-        public IEnumerable<Team> Execute(GameResultsTeamsCriteria criteria)
-        {
-            return _unitOfWork.Context.Teams.Where(t => criteria.TeamIds.Contains(t.Id)).Select(GetTeamMapping());
         }
 
         #endregion

@@ -79,7 +79,10 @@
             catch (ArgumentException ex)
             {
                 ModelState.AddModelError("ValidationError", ex.Message);
-                var teams = _teamService.Get().Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+                var teams = _teamService
+                            .Get()
+                            .Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+
                 return View(gameResultViewModel);
             }
         }

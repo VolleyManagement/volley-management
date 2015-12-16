@@ -17,6 +17,7 @@
         string setsRatioText = string.Empty;
         string ballsRatioText = string.Empty;
         int position = 0;
+        bool backlightTopTeams = Model.Entries.Count > ViewModelConstants.NUMBER_OF_TOP_TEAMS;
     }
 
     <legend>@legendText</legend>
@@ -66,9 +67,21 @@
             <tbody>
                 @foreach (var entry in Model.Entries)
                 {
-                    rowClass = position < ViewModelConstants.NUMBER_OF_TOP_TEAMS
-                        ? "standings-table-row team-top-position"
-                        : "standings-table-row";
+                    if (backlightTopTeams)
+                    {
+                        if (position < ViewModelConstants.NUMBER_OF_TOP_TEAMS)
+                        {
+                            rowClass = "standings-table-row team-top-position";
+                        }
+                        else
+                        {
+                            rowClass = "standings-table-row";
+                        }
+                    }
+                    else
+                    {
+                        rowClass = "standings-table-row";
+                    }
 
                     if (position + 1 != Model.Entries.Count)
                     {
@@ -81,8 +94,8 @@
                         teamLastCellClass = "standings-table-cell";
                     }
 
-                    setsRatioText = entry.SetsRatio != float.PositiveInfinity ? string.Format("{0:g3}", entry.SetsRatio) : "MAX";
-                    ballsRatioText = entry.BallsRatio != float.PositiveInfinity ? string.Format("{0:g3}", entry.BallsRatio) : "MAX";
+                    setsRatioText = entry.SetsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", entry.SetsRatio) : "MAX";
+                    ballsRatioText = entry.BallsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", entry.BallsRatio) : "MAX";
 
                     <tr class="@rowClass">
                         <td class="@teamCellClass">@(++position)</td>

@@ -1,11 +1,9 @@
 ﻿namespace VolleyManagement.Services.Infrastructure
 {
     using System;
-
     using Ninject.Activation;
     using Ninject.Infrastructure;
     using Ninject.Modules;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authentication;
     using VolleyManagement.Contracts.Authentication.Models;
@@ -45,7 +43,8 @@
                                   Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
                                   Bind<IVolleyUserStore>().To<VolleyUserStore>(),
                                   Bind<IRolesService>().To<RolesService>(),
-                                  Bind<IGameResultService>().To<GameResultService>()
+                                  Bind<IGameResultService>().To<GameResultService>(),
+                                  Bind<IGameReportService>().To<GameReportService>()
                               };
             configs.InScope(_scopeCallback);
         }

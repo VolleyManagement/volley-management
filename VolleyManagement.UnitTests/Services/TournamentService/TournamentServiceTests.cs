@@ -11,7 +11,7 @@
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Tournaments;
+    using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Mvc.ViewModels;

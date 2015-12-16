@@ -1,8 +1,6 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Collections.Generic;
-    using System.Linq;
-
     using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>

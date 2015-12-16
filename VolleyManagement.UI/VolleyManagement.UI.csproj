@@ -444,7 +444,7 @@
       <Name>VolleyManagement.Crosscutting.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Data.MsSql\VolleyManagement.Data.MsSql.csproj">
-      <Project>{F82FF279-9D06-4494-BC61-1B7AC88A737D}</Project>
+      <Project>{f82ff279-9d06-4494-bc61-1b7ac88a737d}</Project>
       <Name>VolleyManagement.Data.MsSql</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">

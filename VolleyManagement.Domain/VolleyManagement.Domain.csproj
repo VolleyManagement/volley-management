@@ -52,6 +52,7 @@
     <Compile Include="ContributorsAggregate\ContributorTeam.cs" />
     <Compile Include="ContributorsAggregate\IContributorTeamRepository.cs" />
     <Compile Include="Dto\UserInRoleDto.cs" />
+    <Compile Include="GameReportsAggregate\StandingsEntry.cs" />
     <Compile Include="GameResultsAggregate\GameResult.cs" />
     <Compile Include="GameResultsAggregate\GameResultValidation.cs" />
     <Compile Include="GameResultsAggregate\IGameResultRepository.cs" />

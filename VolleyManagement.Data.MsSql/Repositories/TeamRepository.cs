@@ -61,6 +61,15 @@
         }
 
         /// <summary>
+        /// Updates specified team.
+        /// </summary>
+        /// <param name="updatedEntity">Updated team.</param>
+        public void Update(Team updatedEntity)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Removes team by id.
         /// </summary>
         /// <param name="id">The id of team to remove.</param>
@@ -69,15 +78,6 @@
             var dalToRemove = new TeamEntity { Id = id };
             this._dalTeams.Attach(dalToRemove);
             this._dalTeams.Remove(dalToRemove);
-        }
-
-        /// <summary>
-        /// Updates specified team.
-        /// </summary>
-        /// <param name="oldEntity">The team to update</param>
-        public void Update(Team oldEntity)
-        {
-            throw new NotImplementedException();
         }
     }
 }

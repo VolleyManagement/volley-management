@@ -16,8 +16,8 @@
         /// <summary>
         /// Update the T type element to the DB.
         /// </summary>
-        /// <param name="oldEntity">Element to update.</param>
-        void Update(T oldEntity);
+        /// <param name="updatedEntity">Updated element.</param>
+        void Update(T updatedEntity);
 
         /// <summary>
         /// Deletes the element by id from the store.

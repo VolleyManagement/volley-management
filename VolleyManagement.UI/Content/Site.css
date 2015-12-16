@@ -50,6 +50,15 @@ div#menu a.selected {background-color: #666; color: white;}
 div#menu a:hover {background-color: #CCC; }
 div#menu a.selected:hover{background-color: #666}
 
+.form-control {
+    display: inline-block;
+    width: auto;
+}
+
+.color_red {
+    color: red;
+}
+
 div .division-groups-wrapper {
     padding-left: 25px;
 }

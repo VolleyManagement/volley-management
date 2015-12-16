@@ -72,6 +72,14 @@ namespace VolleyManagement.UI.App_GlobalResources {
         /// <summary>
         ///   Looks up a localized string similar to + Добавить группу.
         /// </summary>
+        public static string AddGameResult {
+            get {
+                return ResourceManager.GetString("AddGameResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        /// </summary>
         public static string AddGroup {
             get {
                 return ResourceManager.GetString("AddGroup", resourceCulture);
@@ -201,6 +209,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Показать результаты игр.
+        /// </summary>
+        public static string ShowGameResults {
+            get {
+                return ResourceManager.GetString("ShowGameResults", resourceCulture);
             }
         }
         

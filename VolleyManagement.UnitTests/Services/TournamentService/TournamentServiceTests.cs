@@ -11,7 +11,7 @@
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Tournaments;
+    using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -727,6 +727,7 @@
         private void VerifyCreateTournament(Tournament tournament, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
         private void VerifyEditTournament(Tournament tournament, Times times)

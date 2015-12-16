@@ -79,6 +79,69 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to В партии количество очков у одной команды должно составлять как минимум {0} и разница очков должна быть как минимум {1}. Если количество очков превышает {0}, разница очков должна быть равна {1}. При техническом поражении счет в необязательной партии должен быть {2}:{3}.
+        /// </summary>
+        public static string GameResultOptionalSetScores {
+            get {
+                return ResourceManager.GetString("GameResultOptionalSetScores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Укажите счет предыдущей необязательной партии.
+        /// </summary>
+        public static string GameResultPreviousOptionalSetUnplayed {
+            get {
+                return ResourceManager.GetString("GameResultPreviousOptionalSetUnplayed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to В партии количество очков у одной команды должно составлять как минимум {0} и разница очков должна быть как минимум {1}. Если количество очков превышает {0}, разница очков должна быть равна {1}. При техническом поражении счет в обязательной партии должен быть {2}:{3} или {3}:{2}.
+        /// </summary>
+        public static string GameResultRequiredSetScores {
+            get {
+                return ResourceManager.GetString("GameResultRequiredSetScores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Команда не может играть сама с собой.
+        /// </summary>
+        public static string GameResultSameTeam {
+            get {
+                return ResourceManager.GetString("GameResultSameTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Счета партий указаны в неверном порядке.
+        /// </summary>
+        public static string GameResultSetScoresNotOrdered {
+            get {
+                return ResourceManager.GetString("GameResultSetScoresNotOrdered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Счет по партиям может быть одним из следующих: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. При техническом поражении счет по партиям должен быть {0}:{1} или {1}:{0}.
+        /// </summary>
+        public static string GameResultSetsScoreInvalid {
+            get {
+                return ResourceManager.GetString("GameResultSetsScoreInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Счет по партиям не соответствует результатам партий.
+        /// </summary>
+        public static string GameResultSetsScoreNoMatchSetScores {
+            get {
+                return ResourceManager.GetString("GameResultSetsScoreNoMatchSetScores", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Количество групп в дивизионе должно быть в диапазоне от {0} до {1}.
         /// </summary>
         public static string GroupCountOutOfRange {

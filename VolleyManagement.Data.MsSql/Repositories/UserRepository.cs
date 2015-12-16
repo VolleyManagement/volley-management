@@ -53,11 +53,11 @@
         /// <summary>
         /// Updates specified user.
         /// </summary>
-        /// <param name="oldEntity">The user to update.</param>
-        public void Update(User oldEntity)
+        /// <param name="updatedEntity">Updated user.</param>
+        public void Update(User updatedEntity)
         {
-            var userToUpdate = this._unitOfWork.Context.Users.Single(t => t.Id == oldEntity.Id);
-            DomainToDal.Map(userToUpdate, oldEntity);
+            var userToUpdate = this._unitOfWork.Context.Users.Single(t => t.Id == updatedEntity.Id);
+            DomainToDal.Map(userToUpdate, updatedEntity);
             UpdateUserProviders((List<LoginInfoEntity>)userToUpdate.LoginProviders);
         }
 

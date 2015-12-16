@@ -5,9 +5,8 @@
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
-    using Contracts.Exceptions;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
-    using ViewModels.GameResults;
 
     /// <summary>
     /// Defines GameResultsController

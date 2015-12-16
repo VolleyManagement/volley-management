@@ -166,7 +166,7 @@
     <value>Сохранить</value>
   </data>
   <data name="ShowTournamentStandings" xml:space="preserve">
-    <value>Показать результаты турнира</value>
+    <value>Показать турнирную таблицу</value>
   </data>
   <data name="TournamentDetailsTitle" xml:space="preserve">
     <value>Подробности турнира</value>

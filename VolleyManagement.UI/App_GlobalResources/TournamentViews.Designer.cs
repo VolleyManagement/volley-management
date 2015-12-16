@@ -205,7 +205,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Показать результаты турнира.
+        ///   Looks up a localized string similar to Показать турнирную таблицу.
         /// </summary>
         public static string ShowTournamentStandings {
             get {

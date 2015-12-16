@@ -43,10 +43,7 @@
         /// <returns>Domain model of game result.</returns>
         public GameResult Execute(FindByIdCriteria criteria)
         {
-            return _unitOfWork.Context.GameResults
-                .Where(gr => gr.Id == criteria.Id)
-                .Select(GetGameResultMapping())
-                .SingleOrDefault();
+            return _unitOfWork.Context.GameResults.Where(gr => gr.Id == criteria.Id).Select(GetGameResultMapping()).SingleOrDefault();
         }
 
         /// <summary>
@@ -71,6 +68,8 @@
                 TournamentId = gr.TournamentId,
                 HomeTeamId = gr.HomeTeamId,
                 AwayTeamId = gr.AwayTeamId,
+                HomeTeamName = gr.HomeTeam.Name,
+                AwayTeamName = gr.AwayTeam.Name,
                 SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore },
                 IsTechnicalDefeat = gr.IsTechnicalDefeat,
                 SetScores = new List<Score>

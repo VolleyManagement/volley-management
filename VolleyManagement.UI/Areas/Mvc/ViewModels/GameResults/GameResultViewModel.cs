@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using Domain;
-    using Domain.GameResultsAggregate;
+    using VolleyManagement.Domain;
+    using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
     /// Game result view model.
@@ -16,8 +16,9 @@
         /// </summary>
         public GameResultViewModel()
         {
-            this.SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
             this.SetsScore = new Score();
+            this.SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+            this.TournamentTeams = new List<SelectListItem>();
         }
 
         /// <summary>
@@ -36,15 +37,9 @@
         public int HomeTeamId { get; set; }
 
         /// <summary>
-        /// Gets name of the home team which played the game.
+        /// Gets or sets the name of the home team which played the game.
         /// </summary>
-        public string HomeTeamName
-        {
-            get
-            {
-                return TournamentTeams.Where(tm => tm.Value == HomeTeamId.ToString()).Select(tm => tm.Text).Single();
-            }
-        }
+        public string HomeTeamName { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the away team which played the game.
@@ -52,15 +47,9 @@
         public int AwayTeamId { get; set; }
 
         /// <summary>
-        /// Gets name of the away team which played the game.
+        /// Gets or Sets name of the away team which played the game.
         /// </summary>
-        public string AwayTeamName
-        {
-            get
-            {
-                return TournamentTeams.Where(tm => tm.Value == AwayTeamId.ToString()).Select(tm => tm.Text).Single();
-            }
-        }
+        public string AwayTeamName { get; set; }
 
         /// <summary>
         /// Gets or sets the final score of the game.
@@ -95,9 +84,12 @@
                 TournamentId = domainEntity.TournamentId,
                 HomeTeamId = domainEntity.HomeTeamId,
                 AwayTeamId = domainEntity.AwayTeamId,
+                HomeTeamName = domainEntity.HomeTeamName,
+                AwayTeamName = domainEntity.AwayTeamName,
                 SetsScore = new Score(domainEntity.SetsScore.Home, domainEntity.SetsScore.Away),
-                IsTechnicalDefeat = domainEntity.IsTechnicalDefeat,
+                IsTechnicalDefeat = domainEntity.IsTechnicalDefeat
             };
+
             gameResultViewModel.SetScores.Clear();
             domainEntity.SetScores.ForEach(sc => gameResultViewModel.SetScores.Add(new Score(sc.Home, sc.Away)));
             return gameResultViewModel;

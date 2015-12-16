@@ -46,19 +46,6 @@ function IsSetsScoreValid(setsScore, isTechnicalDefeat) {
     return isTechnicalDefeat ? IsTechnicalDefeatSetsScoreValid(setsScore) : IsOrdinarySetsScoreValid(setsScore);
 }
 
-function IsRequiredSetScoreValid(setScore, isTechnicalDefeat) {
-    return isTechnicalDefeat ? IsTechnicalDefeatRequiredSetScoreValid(setScore) : IsOrdinaryRequiredSetScoreValid(setScore);
-}
-
-function IsOptionalSetScoreValid(setScore, isTechnicalDefeat) {
-    return isTechnicalDefeat ? IsTechnicalDefeatOptionalSetScoreValid(setScore) : IsOrdinaryOptionalSetScoreValid(setScore);
-}
-
-function IsSetUnplayed(setScore) {
-    return setScore.Home == gameResultConstants.UNPLAYED_SET_HOME_SCORE
-        && setScore.Away == gameResultConstants.UNPLAYED_SET_AWAY_SCORE;
-}
-
 function AreSetScoresMatched(setsScore, setScores) {
     var score = {
         "Home": 0,
@@ -75,6 +62,19 @@ function AreSetScoresMatched(setsScore, setScores) {
     }
 
     return score.Home == setsScore.Home && score.Away == setsScore.Away;
+}
+
+function IsRequiredSetScoreValid(setScore, isTechnicalDefeat) {
+    return isTechnicalDefeat ? IsTechnicalDefeatRequiredSetScoreValid(setScore) : IsOrdinaryRequiredSetScoreValid(setScore);
+}
+
+function IsOptionalSetScoreValid(setScore, isTechnicalDefeat) {
+    return isTechnicalDefeat ? IsTechnicalDefeatOptionalSetScoreValid(setScore) : IsOrdinaryOptionalSetScoreValid(setScore);
+}
+
+function IsSetUnplayed(setScore) {
+    return setScore.Home == gameResultConstants.UNPLAYED_SET_HOME_SCORE
+        && setScore.Away == gameResultConstants.UNPLAYED_SET_AWAY_SCORE;
 }
 
 function AreSetScoresOrdered(setScores) {
@@ -171,8 +171,8 @@ function IsSetScoreGreaterThanMin(setScore) {
 function ValidateGameResult(gameResult) {
     ValidateTeams(gameResult.Teams.Home, gameResult.Teams.Away);
     ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
-    ValidateSetScores(gameResult.SetScores, gameResult.IsTechnicalDefeat);
     ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
+    ValidateSetScoresValues(gameResult.SetScores, gameResult.IsTechnicalDefeat);
     ValidateSetScoresOrder(gameResult.SetScores);
 }
 
@@ -191,7 +191,13 @@ function ValidateSetsScore(setsScore, isTechnicalDefeat) {
     }
 }
 
-function ValidateSetScores(setScores, isTechnicalDefeat) {
+function ValidateSetsScoreMatchesSetScores(setsScore, setScores) {
+    if (!AreSetScoresMatched(setsScore, setScores)) {
+        throw resourceMessages.GameResultSetsScoreNoMatchSetScores;
+    }
+}
+
+function ValidateSetScoresValues(setScores, isTechnicalDefeat) {
     var isPreviousOptionalSetUnplayed = false;
 
     for (i = 0; i < setScores.length; i++) {
@@ -224,12 +230,6 @@ function ValidateSetScores(setScores, isTechnicalDefeat) {
 
             isPreviousOptionalSetUnplayed = IsSetUnplayed(setScores[i]);
         }
-    }
-}
-
-function ValidateSetsScoreMatchesSetScores(setsScore, setScores) {
-    if (!AreSetScoresMatched(setsScore, setScores)) {
-        throw resourceMessages.GameResultSetsScoreNoMatchSetScores;
     }
 }
 

@@ -4,8 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using Contracts;
+    using VolleyManagement.Contracts;
     using Contracts.Exceptions;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using ViewModels.GameResults;
 
     /// <summary>
@@ -42,7 +43,6 @@
         public ActionResult Details(int id)
         {
             var gameResult = GameResultViewModel.Map(_gameResultsService.Get(id));
-            gameResult.TournamentTeams = GetTeams();
             return View(gameResult);
         }
 
@@ -53,7 +53,7 @@
         /// <returns>Create view.</returns>
         public ActionResult Create(int id)
         {
-            GameResultViewModel gameResultViewModel = new GameResultViewModel()
+            GameResultViewModel gameResultViewModel = new GameResultViewModel
             {
                 TournamentId = id,
                 TournamentTeams = GetTeams()
@@ -71,6 +71,7 @@
         public ActionResult Create(GameResultViewModel gameResultViewModel)
         {
             var gameResult = gameResultViewModel.ToDomain();
+
             try
             {
                 _gameResultsService.Create(gameResult);
@@ -154,18 +155,10 @@
         /// <returns>View represents results list</returns>
         public ActionResult TournamentResults(int id)
         {
-            List<SelectListItem> tournamentTeams = GetTeams();
-            var gameResults = _gameResultsService.Get().Where(
-                                                            gr =>
-                                                            gr.TournamentId == id)
-                                                            .Select(
-                gr =>
-                {
-                    var gameResult = GameResultViewModel.Map(gr);
-                    gameResult.TournamentTeams = tournamentTeams;
-                    return gameResult;
-                })
-                   .ToList();
+            var gameResults = _gameResultsService.Get()
+                .Where(gr => gr.TournamentId == id)
+                .Select(gr => GameResultViewModel.Map(gr))
+                .ToList();
 
             return View(gameResults);
         }

@@ -7,13 +7,15 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.GameResult;
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
     /// Provides Query Object implementation for GameResult entity
     /// </summary>
     public class GameResultQueries : IQuery<GameResult, FindByIdCriteria>,
-                                     IQuery<List<GameResult>, GetAllCriteria>
+                                     IQuery<List<GameResult>, GetAllCriteria>,
+                                     IQuery<List<GameResult>, TournamentGameResultsCriteria>,
     {
         #region Fields
 
@@ -47,13 +49,27 @@
         }
 
         /// <summary>
-        /// Get all game results.
+        /// Gets all game results.
         /// </summary>
         /// <param name="criteria">Get all results criteria.</param>
         /// <returns>List of domain models of game result.</returns>
         public List<GameResult> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.GameResults.Select(GetGameResultMapping()).ToList();
+        }
+
+        /// <summary>
+        /// Gets game results of the tournament by specified criteria.
+        /// </summary>
+        /// <param name="criteria">Tournament's game results criteria.</param>
+        /// <returns>List of domain models of game result.</returns>
+        public List<GameResult> Execute(TournamentGameResultsCriteria criteria)
+        {
+
+            return _unitOfWork.Context.GameResults
+                .Where(gr => gr.TournamentId == criteria.TournamentId)
+                .Select(GetGameResultMapping())
+                .ToList();
         }
 
         #endregion

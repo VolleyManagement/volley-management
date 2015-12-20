@@ -15,7 +15,7 @@
     {
         #region Queries
 
-        private readonly IQuery<List<GameResult>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<List<GameResultRetrievable>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
 
         #endregion
 
@@ -25,7 +25,7 @@
         /// Initializes a new instance of the <see cref="GameReportService"/> class.
         /// </summary>
         /// <param name="tournamentGameResultsQuery">Query for getting tournament's game results.</param>
-        public GameReportService(IQuery<List<GameResult>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
+        public GameReportService(IQuery<List<GameResultRetrievable>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
         {
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
         }
@@ -49,8 +49,8 @@
                 StandingsEntry standingsHomeTeamEntry = standings.Single(se => se.TeamId == gameResult.HomeTeamId);
                 StandingsEntry standingsAwayTeamEntry = standings.Single(se => se.TeamId == gameResult.AwayTeamId);
 
-                CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult.SetsScore);
-                CalculateSetsStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult.SetsScore, gameResult.SetScores);
+                CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
+                CalculateSetsStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
             }
 
             // order all standings entries by points, then by sets ratio and then by balls ratio in descending order
@@ -64,7 +64,7 @@
 
         #region Private methods
 
-        private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<GameResult> gameResults)
+        private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<GameResultRetrievable> gameResults)
         {
             var entries = new List<StandingsEntry>();
             var teams = gameResults.Select(gr => new { Id = gr.HomeTeamId, Name = gr.HomeTeamName })
@@ -82,12 +82,12 @@
             return entries;
         }
 
-        private void CalculateGamesStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, Score setsScore)
+        private void CalculateGamesStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultRetrievable gameResult)
         {
             homeTeamEntry.GamesTotal++;
             awayTeamEntry.GamesTotal++;
 
-            switch (setsScore.Home - setsScore.Away)
+            switch (gameResult.HomeSetsScore - gameResult.AwaySetsScore)
             {
                 case 3: // sets score - 3:0
                     homeTeamEntry.Points += 3;
@@ -136,21 +136,19 @@
             }
         }
 
-        private void CalculateSetsStatistics(
-            StandingsEntry homeTeamEntry,
-            StandingsEntry awayTeamEntry,
-            Score setsScore,
-            List<Score> setScores)
+        private void CalculateSetsStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultRetrievable gameResult)
         {
-            homeTeamEntry.SetsWon += setsScore.Home;
-            homeTeamEntry.SetsLost += setsScore.Away;
+            homeTeamEntry.SetsWon += gameResult.HomeSetsScore;
+            homeTeamEntry.SetsLost += gameResult.AwaySetsScore;
             homeTeamEntry.SetsRatio = (float)homeTeamEntry.SetsWon / homeTeamEntry.SetsLost;
-            awayTeamEntry.SetsWon += setsScore.Away;
-            awayTeamEntry.SetsLost += setsScore.Home;
+            awayTeamEntry.SetsWon += gameResult.AwaySetsScore;
+            awayTeamEntry.SetsLost += gameResult.HomeSetsScore;
             awayTeamEntry.SetsRatio = (float)awayTeamEntry.SetsWon / awayTeamEntry.SetsLost;
 
-            var homeBallsTotal = setScores.Aggregate(0, (sum, e) => sum + e.Home);
-            var awayBallsTotal = setScores.Aggregate(0, (sum, e) => sum + e.Away);
+            var homeBallsTotal = gameResult.HomeSet1Score + gameResult.HomeSet2Score + gameResult.HomeSet3Score
+                + gameResult.HomeSet4Score + gameResult.HomeSet5Score;
+            var awayBallsTotal = gameResult.AwaySet1Score + gameResult.AwaySet2Score + gameResult.AwaySet3Score
+                + gameResult.AwaySet4Score + gameResult.AwaySet5Score;
 
             homeTeamEntry.BallsWon += homeBallsTotal;
             homeTeamEntry.BallsLost += awayBallsTotal;

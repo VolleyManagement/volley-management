@@ -135,7 +135,6 @@
     <Compile Include="Services\GameReportService\GameReportServiceTests.cs" />
     <Compile Include="Services\GameReportService\StandingsEntryComparer.cs" />
     <Compile Include="Services\GameReportService\StandingsTestFixture.cs" />
-    <Compile Include="Services\GameResultService\GameResultTestFixture.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />

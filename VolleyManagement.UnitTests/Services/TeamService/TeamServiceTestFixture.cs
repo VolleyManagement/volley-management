@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using PlayerService;
+
     using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
@@ -10,7 +12,15 @@
     [ExcludeFromCodeCoverage]
     public class TeamServiceTestFixture
     {
+        /// <summary>
+        /// Holds collection of teams
+        /// </summary>
         private List<Team> _teams = new List<Team>();
+
+        /// <summary>
+        /// Holds collection of teams
+        /// </summary>
+        private PlayerBuilder _playerBuilder;
 
         /// <summary>
         /// Return test collection of teams
@@ -18,6 +28,8 @@
         /// <returns>Builder object with collection of teams</returns>
         public TeamServiceTestFixture TestTeams()
         {
+            _playerBuilder = new PlayerBuilder();
+
             _teams.Add(new Team()
             {
                 Id = 1,

@@ -5,32 +5,30 @@
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
-    /// Represents builder for unit tests for <see cref="GameResult"/>.
+    /// Represents builder for unit tests for <see cref="GameResultStorable"/>.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class GameResultBuilder
+    public class GameResultStorableBuilder
     {
         #region Fields
 
-        private GameResult _gameResult;
+        private GameResultStorable _gameResult;
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameResultBuilder"/> class.
+        /// Initializes a new instance of the <see cref="GameResultStorableBuilder"/> class.
         /// </summary>
-        public GameResultBuilder()
+        public GameResultStorableBuilder()
         {
-            _gameResult = new GameResult
+            _gameResult = new GameResultStorable
             {
                 Id = 1,
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 2,
-                HomeTeamName = "TeamNameA",
-                AwayTeamName = "TeamNameB",
                 SetsScore = new Score(3, 0),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -52,8 +50,8 @@
         /// Sets the identifier of the game result.
         /// </summary>
         /// <param name="id">Identifier of the game result.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithId(int id)
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithId(int id)
         {
             _gameResult.Id = id;
             return this;
@@ -63,8 +61,8 @@
         /// Sets the identifier of the tournament where game result belongs.
         /// </summary>
         /// <param name="id">Identifier of the tournament.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithTournamentId(int id)
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithTournamentId(int id)
         {
             _gameResult.TournamentId = id;
             return this;
@@ -74,8 +72,8 @@
         /// Sets the identifier of the home team which played the game.
         /// </summary>
         /// <param name="id">Identifier of the home team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithHomeTeamId(int id)
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithHomeTeamId(int id)
         {
             _gameResult.HomeTeamId = id;
             return this;
@@ -85,32 +83,10 @@
         /// Sets the identifier of the away team which played the game.
         /// </summary>
         /// <param name="id">Identifier of the away team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithAwayTeamId(int id)
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithAwayTeamId(int id)
         {
             _gameResult.AwayTeamId = id;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the name of the home team which played the game.
-        /// </summary>
-        /// <param name="name">Name of the home team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithHomeTeamName(string name)
-        {
-            _gameResult.HomeTeamName = name;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the name of the away team which played the game.
-        /// </summary>
-        /// <param name="name">Name of the away team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithAwayTeamName(string name)
-        {
-            _gameResult.AwayTeamName = name;
             return this;
         }
 
@@ -118,8 +94,8 @@
         /// Sets the final score of the game.
         /// </summary>
         /// <param name="score">Final score of the game.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithSetsScore(Score score)
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithSetsScore(Score score)
         {
             _gameResult.SetsScore = score;
             return this;
@@ -128,8 +104,8 @@
         /// <summary>
         /// Sets a value of technical defeat to true.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithTechnicalDefeat()
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithTechnicalDefeat()
         {
             _gameResult.IsTechnicalDefeat = true;
             return this;
@@ -138,8 +114,8 @@
         /// <summary>
         /// Sets a value of technical defeat to false.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithNoTechnicalDefeat()
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithNoTechnicalDefeat()
         {
             _gameResult.IsTechnicalDefeat = false;
             return this;
@@ -150,8 +126,8 @@
         /// </summary>
         /// <param name="setNumber">Set number.</param>
         /// <param name="score">Set score.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithSetScore(byte setNumber, Score score)
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithSetScore(byte setNumber, Score score)
         {
             _gameResult.SetScores[setNumber - 1] = score;
             return this;
@@ -161,8 +137,8 @@
         /// Sets the set scores of the game.
         /// </summary>
         /// <param name="scores">Set scores.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithSetScores(IEnumerable<Score> scores)
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithSetScores(IEnumerable<Score> scores)
         {
             _gameResult.SetScores.Clear();
             _gameResult.SetScores.AddRange(scores);
@@ -170,10 +146,10 @@
         }
 
         /// <summary>
-        /// Builds instance of <see cref="GameResultBuilder"/>.
+        /// Builds instance of <see cref="GameResultStorableBuilder"/>.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResult"/>.</returns>
-        public GameResult Build()
+        /// <returns>Instance of <see cref="GameResultStorable"/>.</returns>
+        public GameResultStorable Build()
         {
             return _gameResult;
         }
@@ -185,8 +161,8 @@
         /// <summary>
         /// Sets the same home and away teams.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithTheSameTeams()
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithTheSameTeams()
         {
             _gameResult.HomeTeamId = 1;
             _gameResult.AwayTeamId = 1;
@@ -196,8 +172,8 @@
         /// <summary>
         /// Sets the final score of the game in a way that it is invalid.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithInvalidSetsScore()
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithInvalidSetsScore()
         {
             _gameResult.SetsScore = new Score(1, 0);
             return this;
@@ -206,8 +182,8 @@
         /// <summary>
         /// Sets the final score of the game in a way that it does not match set scores.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithSetsScoreNoMatchSetScores()
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithSetsScoreNoMatchSetScores()
         {
             _gameResult.SetsScore = new Score(3, 1);
             _gameResult.SetScores = new List<Score>
@@ -225,8 +201,8 @@
         /// <summary>
         /// Sets the required set scores in a way that they are invalid.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithInvalidRequiredSetScores()
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithInvalidRequiredSetScores()
         {
             _gameResult.SetScores = new List<Score>
             {
@@ -243,8 +219,8 @@
         /// <summary>
         /// Sets the optional set scores in a way that they are invalid.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithInvalidOptionalSetScores()
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithInvalidOptionalSetScores()
         {
             _gameResult.SetsScore = new Score(3, 2);
             _gameResult.SetScores = new List<Score>
@@ -262,8 +238,8 @@
         /// <summary>
         /// Sets the previous optional set score to 0:0.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithPreviousOptionalSetUnplayed()
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithPreviousOptionalSetUnplayed()
         {
             _gameResult.SetsScore = new Score(3, 1);
             _gameResult.SetScores = new List<Score>
@@ -281,8 +257,8 @@
         /// <summary>
         /// Sets the set scores in a way that they are not listed in the correct order.
         /// </summary>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithSetScoresUnordered()
+        /// <returns>Instance of <see cref="GameResultStorableBuilder"/>.</returns>
+        public GameResultStorableBuilder WithSetScoresUnordered()
         {
             _gameResult.SetsScore = new Score(3, 1);
             _gameResult.SetScores = new List<Score>

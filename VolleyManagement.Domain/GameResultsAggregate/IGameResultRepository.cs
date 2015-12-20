@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines a contract for GameResultRepository.
     /// </summary>
-    public interface IGameResultRepository : IGenericRepository<GameResult>
+    public interface IGameResultRepository : IGenericRepository<GameResultStorable>
     {
     }
 }

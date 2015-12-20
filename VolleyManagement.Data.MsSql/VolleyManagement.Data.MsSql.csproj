@@ -93,9 +93,9 @@
     <Compile Include="Context\Migrations\201511301927551_AddGroups.Designer.cs">
       <DependentUpon>201511301927551_AddGroups.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201511301952114_AddGameResults.cs" />
-    <Compile Include="Context\Migrations\201511301952114_AddGameResults.Designer.cs">
-      <DependentUpon>201511301952114_AddGameResults.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201512171559020_AddGameResults.cs" />
+    <Compile Include="Context\Migrations\201512171559020_AddGameResults.Designer.cs">
+      <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -189,8 +189,8 @@
     <EmbeddedResource Include="Context\Migrations\201511301927551_AddGroups.resx">
       <DependentUpon>201511301927551_AddGroups.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201511301952114_AddGameResults.resx">
-      <DependentUpon>201511301952114_AddGameResults.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201512171559020_AddGameResults.resx">
+      <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -62,7 +62,6 @@
     <Compile Include="Authorization\RolesService.cs" />
     <Compile Include="ContributorTeamService.cs" />
     <Compile Include="GameResultService.cs" />
-    <Compile Include="GameReportService.cs" />
     <Compile Include="ServiceResources\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

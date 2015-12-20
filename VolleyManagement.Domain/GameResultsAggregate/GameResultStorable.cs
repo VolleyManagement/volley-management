@@ -3,16 +3,16 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Game result domain class.
+    /// Represents a storable game result.
     /// </summary>
-    public class GameResult
+    public class GameResultStorable
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameResult"/> class.
+        /// Initializes a new instance of the <see cref="GameResultStorable"/> class.
         /// </summary>
-        public GameResult()
+        public GameResultStorable()
         {
-            this.SetScores = new List<Score>();
+            SetScores = new List<Score>();
         }
 
         /// <summary>
@@ -34,16 +34,6 @@
         /// Gets or sets the identifier of the away team which played the game.
         /// </summary>
         public int AwayTeamId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the home team which played the game.
-        /// </summary>
-        public string HomeTeamName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the away team which played the game.
-        /// </summary>
-        public string AwayTeamName { get; set; }
 
         /// <summary>
         /// Gets or sets the final score of the game.

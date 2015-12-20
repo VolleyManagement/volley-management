@@ -9,63 +9,64 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
-    /// Defines GameResultsController
+    /// Represents a controller that contains game results actions.
     /// </summary>
     public class GameResultsController : Controller
     {
-        /// <summary>
-        /// Holds TournamentService instance
-        /// </summary>
+        private readonly IGameResultService _gameResultService;
         private readonly ITeamService _teamService;
 
         /// <summary>
-        /// Holds TournamentService instance
+        /// Initializes a new instance of the <see cref="GameResultsController"/> class.
         /// </summary>
-        private readonly IGameResultService _gameResultsService;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameResultsController"/> class
-        /// </summary>
-        /// <param name="teamService">The team service</param>
-        /// <param name="gameResultsService">The game result service</param>
-        public GameResultsController(ITeamService teamService, IGameResultService gameResultsService)
+        /// <param name="gameResultService">Instance of a class which implements <see cref="IGameResultService"/>.</param>
+        /// <param name="teamService">Instance of a class which implements <see cref="ITeamService"/>.</param>
+        public GameResultsController(IGameResultService gameResultService, ITeamService teamService)
         {
+            _gameResultService = gameResultService;
             _teamService = teamService;
-            _gameResultsService = gameResultsService;
         }
 
         /// <summary>
-        /// Details method.
+        /// Renders a view with game results of the specified tournament.
         /// </summary>
-        /// <param name="id">Id of game result</param>
-        /// <returns>Details view</returns>
-        public ActionResult Details(int id)
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <param name="tournamentName">Name of the tournament.</param>
+        /// <returns>View with game results of the specified tournament.</returns>
+        public ActionResult TournamentResults(int tournamentId, string tournamentName)
         {
-            var gameResult = GameResultViewModel.Map(_gameResultsService.Get(id));
-            return View(gameResult);
-        }
-
-        /// <summary>
-        /// Create GET method.
-        /// </summary>
-        /// <param name="id">Id of tournament</param>
-        /// <returns>Create view.</returns>
-        public ActionResult Create(int id)
-        {
-            GameResultViewModel gameResultViewModel = new GameResultViewModel
+            var tournamentResults = new TournamentResultsViewModel
             {
-                TournamentId = id,
-                TournamentTeams = GetTeams()
+                Id = tournamentId,
+                Name = tournamentName,
+                GameResults = _gameResultService.GetTournamentResults(tournamentId).Select(gr => GameResultViewModel.Map(gr)).ToList()
+            };
+
+            return View(tournamentResults);
+        }
+
+        /// <summary>
+        /// Renders a view with empty fields of game result for create operation.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament where game result belongs.</param>
+        /// <returns>View with empty fields of game result.</returns>
+        public ActionResult Create(int tournamentId)
+        {
+            var gameResultViewModel = new GameResultViewModel
+            {
+                TournamentId = tournamentId,
+                TeamsList = GetTeamsList()
             };
 
             return View(gameResultViewModel);
         }
 
         /// <summary>
-        /// Create POST method
+        /// Creates a new game result if fields data is valid and redirects to the specified page.
         /// </summary>
-        /// <param name="gameResultViewModel">Game result view model</param>
-        /// <returns>View of tournament details</returns>
+        /// <param name="gameResultViewModel">View model of game result.</param>
+        /// <returns>View with empty fields of game result if fields data is not valid;
+        /// otherwise, view of the specified page.</returns>
         [HttpPost]
         public ActionResult Create(GameResultViewModel gameResultViewModel)
         {
@@ -73,25 +74,25 @@
 
             try
             {
-                _gameResultsService.Create(gameResult);
-                return RedirectToAction("Details", "Tournaments", new { id = gameResult.TournamentId });
+                _gameResultService.Create(gameResult);
+                return RedirectToAction("Details", "Tournaments", new { id = gameResultViewModel.TournamentId });
             }
             catch (ArgumentException ex)
             {
                 ModelState.AddModelError("ValidationMessage", ex.Message);
-                gameResultViewModel.TournamentTeams = GetTeams();
+                gameResultViewModel.TeamsList = GetTeamsList();
                 return View(gameResultViewModel);
             }
         }
 
         /// <summary>
-        /// Edit game results action (GET)
+        /// Renders a view with filled in fields of game result for edit operation.
         /// </summary>
-        /// <param name="id">Game results id</param>
-        /// <returns>View to edit specific game results</returns>
+        /// <param name="id">Identifier of the game result.</param>
+        /// <returns>View with filled in fields of game result.</returns>
         public ActionResult Edit(int id)
         {
-            var gameResult = _gameResultsService.Get(id);
+            var gameResult = _gameResultService.Get(id);
 
             if (gameResult == null)
             {
@@ -99,72 +100,56 @@
             }
 
             var gameResultsViewModel = GameResultViewModel.Map(gameResult);
-            gameResultsViewModel.TournamentTeams = GetTeams();
+            gameResultsViewModel.TeamsList = GetTeamsList();
             return View(gameResultsViewModel);
         }
 
         /// <summary>
-        /// Edit game results action (POST)
+        /// Edit an existing game result if fields data is valid and redirects to the specified page.
         /// </summary>
-        /// <param name="gameResultViewModel">Game results after editing</param>
-        /// <returns>Index view if game results was valid, otherwise - edit view</returns>
+        /// <param name="gameResultViewModel">View model of game result.</param>
+        /// <returns>View with filled in fields of game result if fields data is not valid;
+        /// otherwise, view of the specified page.</returns>
         [HttpPost]
         public ActionResult Edit(GameResultViewModel gameResultViewModel)
         {
             try
             {
-                if (this.ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var gameResult = gameResultViewModel.ToDomain();
-                    _gameResultsService.Edit(gameResult);
-                    return this.RedirectToAction("TournamentResults", new { id = gameResult.TournamentId });
+                    _gameResultService.Edit(gameResult);
+                    return RedirectToAction("Details", "Tournaments", new { id = gameResultViewModel.TournamentId });
                 }
             }
             catch (MissingEntityException)
             {
-                this.ModelState.AddModelError(
-                                string.Empty,
-                                App_GlobalResources.GameResultsController.GameResultWasDeleted);
+                ModelState.AddModelError(string.Empty, App_GlobalResources.GameResultsController.GameResultWasDeleted);
             }
 
-            return this.View(gameResultViewModel);
+            return View(gameResultViewModel);
         }
 
         /// <summary>
-        /// Delete game result action (POST)
+        /// Deletes an existing game result by its identifier.
         /// </summary>
-        /// <param name="id">Game result id</param>
+        /// <param name="id">Identifier of the game result.</param>
         [HttpPost]
         public void Delete(int id)
         {
-            var gameResult = _gameResultsService.Get(id);
+            var gameResult = _gameResultService.Get(id);
 
             if (gameResult == null)
             {
                 throw new MissingEntityException(App_GlobalResources.GameResultsController.GameResultNotFound);
             }
 
-            _gameResultsService.Delete(id);
+            _gameResultService.Delete(id);
         }
 
-        /// <summary>
-        /// Represents all game results of specified tournament
-        /// </summary>
-        /// <param name="id">Id of tournament</param>
-        /// <returns>View represents results list</returns>
-        public ActionResult TournamentResults(int id)
+        private List<SelectListItem> GetTeamsList()
         {
-            var gameResults = _gameResultsService.Get()
-                .Where(gr => gr.TournamentId == id)
-                .Select(gr => GameResultViewModel.Map(gr))
-                .ToList();
-
-            return View(gameResults);
-        }
-
-        private List<SelectListItem> GetTeams()
-        {
-            return _teamService.Get().Select(team => new SelectListItem() { Value = team.Id.ToString(), Text = team.Name }).ToList();
+            return _teamService.Get().Select(team => new SelectListItem { Value = team.Id.ToString(), Text = team.Name }).ToList();
         }
     }
 }

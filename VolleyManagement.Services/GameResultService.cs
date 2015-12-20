@@ -2,19 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using Contracts.Exceptions;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.GameResult;
     using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.TeamsAggregate;
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 
     /// <summary>
-    /// Represents game result service.
+    /// Defines an implementation of <see cref="IGameResultService"/> contract.
     /// </summary>
     public class GameResultService : IGameResultService
     {
@@ -24,11 +23,10 @@
 
         #endregion
 
-        #region Query Objects
+        #region Query objects
 
-        private readonly IQuery<GameResult, FindByIdCriteria> _getByIdQuery;
-
-        private readonly IQuery<List<GameResult>, GetAllCriteria> _getAllQuery;
+        private readonly IQuery<GameResultRetrievable, FindByIdCriteria> _getByIdQuery;
+        private readonly IQuery<List<GameResultRetrievable>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
 
         #endregion
 
@@ -37,17 +35,18 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="GameResultService"/> class.
         /// </summary>
-        /// <param name="gameResultRepository">Instance of class that implements <see cref="IGameResultRepository"/>.</param>
-        /// <param name="getByIdQuery">Query which gets <see cref="GameResult"/> object by its identifier.</param>
-        /// <param name="getAllQuery">Query which gets all <see cref="GameResult"/> objects.</param>
+        /// <param name="gameResultRepository">Instance of class which implements <see cref="IGameResultRepository"/>.</param>
+        /// <param name="getByIdQuery">Query which gets <see cref="GameResultRetrievable"/> object by its identifier.</param>
+        /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultRetrievable"/> objects
+        /// of the specified tournament.</param>
         public GameResultService(
             IGameResultRepository gameResultRepository,
-            IQuery<GameResult, FindByIdCriteria> getByIdQuery,
-            IQuery<List<GameResult>, GetAllCriteria> getAllQuery)
+            IQuery<GameResultRetrievable, FindByIdCriteria> getByIdQuery,
+            IQuery<List<GameResultRetrievable>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
         {
             _gameResultRepository = gameResultRepository;
             _getByIdQuery = getByIdQuery;
-            _getAllQuery = getAllQuery;
+            _tournamentGameResultsQuery = tournamentGameResultsQuery;
         }
 
         #endregion
@@ -55,10 +54,10 @@
         #region Implementation
 
         /// <summary>
-        /// Creates new game result.
+        /// Creates a new game result.
         /// </summary>
         /// <param name="gameResult">Game result to create.</param>
-        public void Create(GameResult gameResult)
+        public void Create(GameResultStorable gameResult)
         {
             if (gameResult == null)
             {
@@ -72,29 +71,30 @@
         }
 
         /// <summary>
-        /// Gets all game results.
-        /// </summary>
-        /// <returns>List of all game results.</returns>
-        public List<GameResult> Get()
-        {
-            return _getAllQuery.Execute(new GetAllCriteria());
-        }
-
-        /// <summary>
-        /// Gets game result by specified identifier.
+        /// Gets game result by its identifier.
         /// </summary>
         /// <param name="id">Identifier of game result.</param>
-        /// <returns>Instance of <see cref="GameResult"/> or null if nothing is found.</returns>
-        public GameResult Get(int id)
+        /// <returns>Instance of <see cref="GameResultRetrievable"/> or null if nothing is obtained.</returns>
+        public GameResultRetrievable Get(int id)
         {
             return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
         /// <summary>
-        /// Edit method for game result
+        /// Gets game results of the tournament specified by its identifier.
         /// </summary>
-        /// <param name="gameResult">Updated game result. </param>
-        public void Edit(GameResult gameResult)
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>List of game results of specified tournament.</returns>
+        public List<GameResultRetrievable> GetTournamentResults(int tournamentId)
+        {
+            return _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
+        }
+
+        /// <summary>
+        /// Edits specified instance of game result.
+        /// </summary>
+        /// <param name="gameResult">Game result to update.</param>
+        public void Edit(GameResultStorable gameResult)
         {
             try
             {
@@ -109,7 +109,7 @@
         }
 
         /// <summary>
-        /// Delete method for game result
+        /// Deletes game result by its identifier.
         /// </summary>
         /// <param name="id">Identifier of game result.</param>
         public void Delete(int id)
@@ -120,9 +120,9 @@
 
         #endregion
 
-        #region Validate methods
+        #region Validation methods
 
-        private void ValidateGameResult(GameResult gameResult)
+        private void ValidateGameResult(GameResultStorable gameResult)
         {
             ValidateTeams(gameResult.HomeTeamId, gameResult.AwayTeamId);
             ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);

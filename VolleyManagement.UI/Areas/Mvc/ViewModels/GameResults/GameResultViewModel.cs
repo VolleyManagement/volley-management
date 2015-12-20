@@ -7,7 +7,7 @@
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
-    /// Game result view model.
+    /// Represents a view model for game result.
     /// </summary>
     public class GameResultViewModel
     {
@@ -16,9 +16,9 @@
         /// </summary>
         public GameResultViewModel()
         {
-            this.SetsScore = new Score();
-            this.SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
-            this.TournamentTeams = new List<SelectListItem>();
+            SetsScore = new Score();
+            SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+            TeamsList = new List<SelectListItem>();
         }
 
         /// <summary>
@@ -37,17 +37,17 @@
         public int HomeTeamId { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the home team which played the game.
-        /// </summary>
-        public string HomeTeamName { get; set; }
-
-        /// <summary>
         /// Gets or sets the identifier of the away team which played the game.
         /// </summary>
         public int AwayTeamId { get; set; }
 
         /// <summary>
-        /// Gets or Sets name of the away team which played the game.
+        /// Gets or sets the name of the home team which played the game.
+        /// </summary>
+        public string HomeTeamName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the away team which played the game.
         /// </summary>
         public string AwayTeamName { get; set; }
 
@@ -67,51 +67,54 @@
         public List<Score> SetScores { get; set; }
 
         /// <summary>
-        /// Gets or sets teams participating in tournament.
+        /// Gets or sets the list of teams of a tournament where game result belongs.
         /// </summary>
-        public List<SelectListItem> TournamentTeams { get; set; }
+        public List<SelectListItem> TeamsList { get; set; }
 
         /// <summary>
-        /// Maps domain entity to <see cref="GameResultViewModel"/>.
+        /// Maps domain model of game result to view model of game result.
         /// </summary>
-        /// <param name="domainEntity">Domain entity</param>
-        /// <returns><see cref="GameResultViewModel"/> entity.</returns>
-        public static GameResultViewModel Map(GameResult domainEntity)
+        /// <param name="gameResult">Domain model of game result.</param>
+        /// <returns>View model of game result.</returns>
+        public static GameResultViewModel Map(GameResultRetrievable gameResult)
         {
-            var gameResultViewModel = new GameResultViewModel()
+            return new GameResultViewModel
             {
-                Id = domainEntity.Id,
-                TournamentId = domainEntity.TournamentId,
-                HomeTeamId = domainEntity.HomeTeamId,
-                AwayTeamId = domainEntity.AwayTeamId,
-                HomeTeamName = domainEntity.HomeTeamName,
-                AwayTeamName = domainEntity.AwayTeamName,
-                SetsScore = new Score(domainEntity.SetsScore.Home, domainEntity.SetsScore.Away),
-                IsTechnicalDefeat = domainEntity.IsTechnicalDefeat
+                Id = gameResult.Id,
+                TournamentId = gameResult.TournamentId,
+                HomeTeamId = gameResult.HomeTeamId,
+                AwayTeamId = gameResult.AwayTeamId,
+                HomeTeamName = gameResult.HomeTeamName,
+                AwayTeamName = gameResult.AwayTeamName,
+                SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
+                IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
+                SetScores = new List<Score>
+                {
+                    new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },
+                    new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score },
+                    new Score { Home = gameResult.HomeSet3Score, Away = gameResult.AwaySet3Score },
+                    new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score },
+                    new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score }
+                }
             };
-
-            gameResultViewModel.SetScores.Clear();
-            domainEntity.SetScores.ForEach(sc => gameResultViewModel.SetScores.Add(new Score(sc.Home, sc.Away)));
-            return gameResultViewModel;
         }
 
         /// <summary>
-        /// Convert to domain model
+        /// Maps view model of game result to domain model of game result.
         /// </summary>
-        /// <returns>Domain <see cref="GameResult"/> entity.</returns>
-        public GameResult ToDomain()
+        /// <returns>Domain model of game result.</returns>
+        public GameResultStorable ToDomain()
         {
-            var gameResult = new GameResult()
+            return new GameResultStorable
             {
                 Id = this.Id,
                 TournamentId = this.TournamentId,
                 HomeTeamId = this.HomeTeamId,
                 AwayTeamId = this.AwayTeamId,
-                SetsScore = new Score(this.SetsScore.Home, this.SetsScore.Away),
+                SetsScore = this.SetsScore,
                 IsTechnicalDefeat = this.IsTechnicalDefeat,
+                SetScores = this.SetScores
             };
-            SetScores.ForEach(sc => gameResult.SetScores.Add(new Score(sc.Home, sc.Away)));
-            return gameResult;
         }
     }
 }

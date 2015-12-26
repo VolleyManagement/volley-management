@@ -380,43 +380,46 @@
         }
 
         /// <summary>
+        /// Orders standings by points in descending order.
+        /// </summary>
+        /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
+        public StandingsTestFixture OrderByPoints()
+        {
+            _standings = _standings.OrderByDescending(ts => ts.Points).ToList();
+            return this;
+        }
+
+        /// <summary>
+        /// Orders standings by points, then by sets ratio in descending order.
+        /// </summary>
+        /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
+        public StandingsTestFixture OrderByPointsAndSets()
+        {
+            _standings = _standings.OrderByDescending(ts => ts.Points).ThenByDescending(ts => ts.SetsRatio).ToList();
+            return this;
+        }
+
+        /// <summary>
+        /// Orders standings by points, then by sets ratio and then by balls ratio in descending order.
+        /// </summary>
+        /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
+        public StandingsTestFixture OrderByPointsAndSetsAndBalls()
+        {
+            _standings = _standings.OrderByDescending(ts => ts.Points)
+                .ThenByDescending(ts => ts.SetsRatio)
+                .ThenByDescending(ts => ts.BallsRatio)
+                .ToList();
+
+            return this;
+        }
+
+        /// <summary>
         /// Builds instance of <see cref="StandingsTestFixture"/>.
         /// </summary>
         /// <returns>Collection of <see cref="StandingsEntry"/> objects filled with test data.</returns>
         public List<StandingsEntry> Build()
         {
             return _standings;
-        }
-
-        /// <summary>
-        /// Builds instance of <see cref="StandingsTestFixture"/> ordering standings by points in descending order.
-        /// </summary>
-        /// <returns>Collection of <see cref="StandingsEntry"/> objects filled with test data.</returns>
-        public List<StandingsEntry> BuildOrderingByPoints()
-        {
-            return _standings.OrderByDescending(ts => ts.Points).ToList();
-        }
-
-        /// <summary>
-        /// Builds instance of <see cref="StandingsTestFixture"/> ordering standings by points, then by sets ratio in descending order.
-        /// </summary>
-        /// <returns>Collection of <see cref="StandingsEntry"/> objects filled with test data.</returns>
-        public List<StandingsEntry> BuildOrderingByPointsAndSets()
-        {
-            return _standings.OrderByDescending(ts => ts.Points).ThenByDescending(ts => ts.SetsRatio).ToList();
-        }
-
-        /// <summary>
-        /// Builds instance of <see cref="StandingsTestFixture"/> ordering standings by points, then by sets ratio and
-        /// then by balls ratio in descending order.
-        /// </summary>
-        /// <returns>Collection of <see cref="StandingsEntry"/> objects filled with test data.</returns>
-        public List<StandingsEntry> BuildOrderingByPointsAndSetsAndBalls()
-        {
-            return _standings.OrderByDescending(ts => ts.Points)
-                .ThenByDescending(ts => ts.SetsRatio)
-                .ThenByDescending(ts => ts.BallsRatio)
-                .ToList();
         }
     }
 }

@@ -7,18 +7,18 @@
 @Html.HiddenFor(model => model.TournamentId)
 
 <div class="form-group">
-    @Resources.GameResultsViews.TeamsFields
+    @Resources.GameResultViews.TeamsFields
     @Html.DropDownListFor(
             x => x.HomeTeamId,
-            new SelectList(Model.TournamentTeams, "Value", "Text"))
+            new SelectList(Model.TeamsList, "Value", "Text"))
 
     @Html.DropDownListFor(
             x => x.AwayTeamId,
-            new SelectList(Model.TournamentTeams, "Value", "Text"))
+            new SelectList(Model.TeamsList, "Value", "Text"))
 </div>
 
 <div class="form-group">
-    @Resources.GameResultsViews.SetsScoreFields
+    @Resources.GameResultViews.SetsScoreFields
     @Html.EditorFor(model => model.SetsScore.Home, new { htmlAttributes = new { @class = "form-control" } })
 
     @Html.EditorFor(model => model.SetsScore.Away, new { htmlAttributes = new { @class = "form-control" } })
@@ -26,7 +26,7 @@
 
 <div class="form-group">
     <label for="@Model.IsTechnicalDefeat">
-        @Resources.GameResultsViews.TechnicalDefeatField
+        @Resources.GameResultViews.TechnicalDefeatField
         @Html.EditorFor(model => model.IsTechnicalDefeat)
         @Html.ValidationMessageFor(model => model.IsTechnicalDefeat, "", new { @class = "text-danger" })
     </label>
@@ -35,7 +35,7 @@
 @for (int i = 0; i < Model.SetScores.Count; i++)
 {
     <div class="form-group">
-        @string.Format(Resources.GameResultsViews.SetFields, i + 1)
+        @string.Format(Resources.GameResultViews.SetFields, i + 1)
         @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control" } })
 
         @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control" } })
@@ -59,12 +59,12 @@
 
     var resourceMessages = {
         "GameResultSameTeam" : "@DomainResources.GameResultSameTeam",
-        "GameResultSetScoresNotOrdered" : "@DomainResources.GameResultSetScoresNotOrdered",
         "GameResultSetsScoreInvalid" : "@DomainResources.GameResultSetsScoreInvalid",
+        "GameResultSetsScoreNoMatchSetScores" : "@DomainResources.GameResultSetsScoreNoMatchSetScores",
         "GameResultRequiredSetScores" : "@DomainResources.GameResultRequiredSetScores",
         "GameResultOptionalSetScores" : "@DomainResources.GameResultOptionalSetScores",
         "GameResultPreviousOptionalSetUnplayed" : "@DomainResources.GameResultPreviousOptionalSetUnplayed",
-        "GameResultSetsScoreNoMatchSetScores" : "@DomainResources.GameResultSetsScoreNoMatchSetScores",
+        "GameResultSetScoresNotOrdered" : "@DomainResources.GameResultSetScoresNotOrdered"
     };
 
 </script>

@@ -9,18 +9,17 @@
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
-    /// Defines implementation of the IGameResultRepository contract.
+    /// Defines implementation of the <see cref="IGameResultRepository"/> contract.
     /// </summary>
     internal class GameResultRepository : IGameResultRepository
     {
-        private readonly DbSet<GameResultEntity> _dalGameResults;
-
         private readonly VolleyUnitOfWork _unitOfWork;
+        private readonly DbSet<GameResultEntity> _dalGameResults;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameResultRepository"/> class.
         /// </summary>
-        /// <param name="unitOfWork">The unit of work.</param>
+        /// <param name="unitOfWork">Instance of class which implements <see cref="IUnitOfWork"/>.</param>
         public GameResultRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
@@ -32,7 +31,10 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return _unitOfWork; }
+            get
+            {
+                return _unitOfWork;
+            }
         }
 
         /// <summary>
@@ -42,6 +44,7 @@
         public void Add(GameResult newEntity)
         {
             var newGameResult = new GameResultEntity();
+
             DomainToDal.Map(newGameResult, newEntity);
             _dalGameResults.Add(newGameResult);
             _unitOfWork.Commit();
@@ -65,12 +68,13 @@
         }
 
         /// <summary>
-        /// Removes game result by specified identifier.
+        /// Removes game result by its identifier.
         /// </summary>
         /// <param name="id">Identifier of the game result.</param>
         public void Remove(int id)
         {
             var dalToRemove = new GameResultEntity { Id = id };
+
             _dalGameResults.Attach(dalToRemove);
             _dalGameResults.Remove(dalToRemove);
         }

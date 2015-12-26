@@ -3,7 +3,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Game result domain class.
+    /// Represents a domain model of game result.
     /// </summary>
     public class GameResult
     {
@@ -12,7 +12,7 @@
         /// </summary>
         public GameResult()
         {
-            this.SetScores = new List<Score>();
+            SetScores = new List<Score>();
         }
 
         /// <summary>
@@ -34,16 +34,6 @@
         /// Gets or sets the identifier of the away team which played the game.
         /// </summary>
         public int AwayTeamId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the home team which played the game.
-        /// </summary>
-        public string HomeTeamName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the away team which played the game.
-        /// </summary>
-        public string AwayTeamName { get; set; }
 
         /// <summary>
         /// Gets or sets the final score of the game.

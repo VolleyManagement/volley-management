@@ -1,6 +1,5 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
 
     /// <summary>
@@ -38,7 +37,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Teams", t => t.AwayTeamId)
                 .ForeignKey("dbo.Teams", t => t.HomeTeamId)
-                .ForeignKey("dbo.Tournaments", t => t.TournamentId);
+                .ForeignKey("dbo.Tournaments", t => t.TournamentId)
+                .Index(t => t.TournamentId);
         }
 
         /// <summary>
@@ -49,6 +49,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             DropForeignKey("dbo.GameResults", "TournamentId", "dbo.Tournaments");
             DropForeignKey("dbo.GameResults", "HomeTeamId", "dbo.Teams");
             DropForeignKey("dbo.GameResults", "AwayTeamId", "dbo.Teams");
+            DropIndex("dbo.GameResults", new[] { "TournamentId" });
             DropTable("dbo.GameResults");
         }
     }

@@ -5,7 +5,7 @@
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
-    /// Represents builder for unit tests for <see cref="GameResult"/>.
+    /// Represents a builder of <see cref="GameResult"/> objects for unit tests for <see cref="GameResultService"/>.
     /// </summary>
     [ExcludeFromCodeCoverage]
     public class GameResultBuilder
@@ -29,8 +29,6 @@
                 TournamentId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 2,
-                HomeTeamName = "TeamNameA",
-                AwayTeamName = "TeamNameB",
                 SetsScore = new Score(3, 0),
                 IsTechnicalDefeat = false,
                 SetScores = new List<Score>
@@ -89,28 +87,6 @@
         public GameResultBuilder WithAwayTeamId(int id)
         {
             _gameResult.AwayTeamId = id;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the name of the home team which played the game.
-        /// </summary>
-        /// <param name="name">Name of the home team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithHomeTeamName(string name)
-        {
-            _gameResult.HomeTeamName = name;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the name of the away team which played the game.
-        /// </summary>
-        /// <param name="name">Name of the away team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
-        public GameResultBuilder WithAwayTeamName(string name)
-        {
-            _gameResult.AwayTeamName = name;
             return this;
         }
 

@@ -273,13 +273,11 @@
     <Content Include="Areas\Admin\Views\Roles\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\Teams\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\Create.cshtml" />
-    <Content Include="Areas\Mvc\Views\GameResults\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Account\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Account\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\TournamentResults.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\_CreateOrEdit.cshtml" />
-    <Content Include="Areas\Mvc\Views\GameResults\_Details.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -315,10 +313,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GameResultsController.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\GameResultsViews.Designer.cs">
+    <Compile Include="App_GlobalResources\GameResultViews.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GameResultsViews.resx</DependentUpon>
+      <DependentUpon>GameResultViews.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\PlayerViews.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -375,6 +373,7 @@
     <Compile Include="Areas\Mvc\ViewModels\Account\AuthenticationStatusViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\GroupViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />
@@ -477,9 +476,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameResultsController.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_GlobalResources\GameResultsViews.resx">
+    <EmbeddedResource Include="App_GlobalResources\GameResultViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>GameResultsViews.Designer.cs</LastGenOutput>
+      <LastGenOutput>GameResultViews.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

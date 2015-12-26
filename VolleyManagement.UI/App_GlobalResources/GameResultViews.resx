@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BackToTournament" xml:space="preserve">
+    <value>К подробностям турнира</value>
+  </data>
   <data name="Create" xml:space="preserve">
     <value>Добавить</value>
   </data>
@@ -144,6 +147,30 @@
   <data name="EditTitle" xml:space="preserve">
     <value>Редактировать результат</value>
   </data>
+  <data name="GameResultHeader" xml:space="preserve">
+    <value>Результат матча</value>
+  </data>
+  <data name="NoGameResults" xml:space="preserve">
+    <value>В рамках данного турнира еще не было сыграно ни одной игры.</value>
+  </data>
+  <data name="ResultNumberHeader" xml:space="preserve">
+    <value>№ п/п</value>
+  </data>
+  <data name="Set1ScoreHeader" xml:space="preserve">
+    <value>Партия 1</value>
+  </data>
+  <data name="Set2ScoreHeader" xml:space="preserve">
+    <value>Партия 2</value>
+  </data>
+  <data name="Set3ScoreHeader" xml:space="preserve">
+    <value>Партия 3</value>
+  </data>
+  <data name="Set4ScoreHeader" xml:space="preserve">
+    <value>Партия 4</value>
+  </data>
+  <data name="Set5ScoreHeader" xml:space="preserve">
+    <value>Партия 5</value>
+  </data>
   <data name="SetFields" xml:space="preserve">
     <value>Партия #{0}:</value>
   </data>
@@ -159,7 +186,10 @@
   <data name="TechnicalDefeatField" xml:space="preserve">
     <value>Техническое поражение:</value>
   </data>
+  <data name="TournamentResultsLegend" xml:space="preserve">
+    <value>Турнир "{0}"</value>
+  </data>
   <data name="TournamentResultsTitle" xml:space="preserve">
-    <value>Результаты игр в турнире</value>
+    <value>Результаты игр</value>
   </data>
 </root>

@@ -3,14 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using Contracts.Exceptions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.GameResult;
     using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Services;
 
@@ -23,13 +23,15 @@
     {
         private const int GAME_RESULT_ID = 1;
 
+        private const int TOURNAMENT_ID = 1;
+
         private readonly Mock<IGameResultRepository> _gameResultRepositoryMock = new Mock<IGameResultRepository>();
 
-        private readonly Mock<IQuery<GameResult, FindByIdCriteria>> _getByIdQueryMock
-            = new Mock<IQuery<GameResult, FindByIdCriteria>>();
+        private readonly Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock
+            = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
 
-        private readonly Mock<IQuery<List<GameResult>, GetAllCriteria>> _getAllQueryMock
-            = new Mock<IQuery<List<GameResult>, GetAllCriteria>>();
+        private readonly Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock
+            = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -43,8 +45,9 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IGameResultRepository>().ToConstant(_gameResultRepositoryMock.Object);
-            _kernel.Bind<IQuery<List<GameResult>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
-            _kernel.Bind<IQuery<GameResult, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
+            _kernel.Bind<IQuery<GameResultDto, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
+            _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
+                .ToConstant(_tournamentGameResultsQueryMock.Object);
             _gameResultRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
@@ -62,7 +65,7 @@
             sut.Create(newGameResult);
 
             // Assert
-            VerifyCreate(newGameResult, Times.Once());
+            VerifyCreateGameResult(newGameResult, Times.Once());
         }
 
         /// <summary>
@@ -80,7 +83,7 @@
             sut.Create(newGameResult);
 
             // Assert
-            VerifyCreate(newGameResult, Times.Never());
+            VerifyCreateGameResult(newGameResult, Times.Never());
         }
 
         /// <summary>
@@ -98,7 +101,7 @@
             sut.Create(newGameResult);
 
             // Assert
-            VerifyCreate(newGameResult, Times.Never());
+            VerifyCreateGameResult(newGameResult, Times.Never());
         }
 
         /// <summary>
@@ -117,7 +120,7 @@
             sut.Create(newGameResult);
 
             // Assert
-            VerifyCreate(newGameResult, Times.Never());
+            VerifyCreateGameResult(newGameResult, Times.Never());
         }
 
         /// <summary>
@@ -136,7 +139,7 @@
             sut.Create(newGameResult);
 
             // Assert
-            VerifyCreate(newGameResult, Times.Never());
+            VerifyCreateGameResult(newGameResult, Times.Never());
         }
 
         /// <summary>
@@ -154,7 +157,7 @@
             sut.Create(newGameResult);
 
             // Assert
-            VerifyCreate(newGameResult, Times.Never());
+            VerifyCreateGameResult(newGameResult, Times.Never());
         }
 
         /// <summary>
@@ -172,7 +175,7 @@
             sut.Create(newGameResult);
 
             // Assert
-            VerifyCreate(newGameResult, Times.Never());
+            VerifyCreateGameResult(newGameResult, Times.Never());
         }
 
         /// <summary>
@@ -190,7 +193,7 @@
             sut.Create(newGameResult);
 
             // Assert
-            VerifyCreate(newGameResult, Times.Never());
+            VerifyCreateGameResult(newGameResult, Times.Never());
         }
 
         /// <summary>
@@ -208,26 +211,7 @@
             sut.Create(newGameResult);
 
             // Assert
-            VerifyCreate(newGameResult, Times.Never());
-        }
-
-        /// <summary>
-        /// Test for Get method. All game results are requested. All game results are returned.
-        /// </summary>
-        [TestMethod]
-        public void Get_AllGameResults_GameResultsReturned()
-        {
-            // Arrange
-            var expected = new GameResultTestFixture().TestGameResults().Build();
-            var sut = _kernel.Get<GameResultService>();
-
-            SetupGetAll(expected);
-
-            // Act
-            var actual = sut.Get();
-
-            // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultComparer());
+            VerifyCreateGameResult(newGameResult, Times.Never());
         }
 
         /// <summary>
@@ -237,7 +221,7 @@
         public void Get_ExistingGameResult_GameResultReturned()
         {
             // Arrange
-            var expected = new GameResultBuilder().WithId(GAME_RESULT_ID).Build();
+            var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
             var sut = _kernel.Get<GameResultService>();
 
             SetupGet(expected);
@@ -246,14 +230,33 @@
             var actual = sut.Get(GAME_RESULT_ID);
 
             // Assert
-            TestHelper.AreEqual(expected, actual, new GameResultComparer());
+            TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
         }
 
         /// <summary>
-        /// Test for Edit method. Entity is valid - updated.
+        /// Test for GetTournamentResults method. Game results of specified tournament are requested. Game results are returned.
         /// </summary>
         [TestMethod]
-        public void Edit_ValidEntity_Updated()
+        public void GetTournamentResults_GameResultsRequsted_GameResultsReturned()
+        {
+            // Arrange
+            var expected = new GameResultTestFixture().TestGameResults().Build();
+            var sut = _kernel.Get<GameResultService>();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, expected);
+
+            // Act
+            var actual = sut.GetTournamentResults(TOURNAMENT_ID);
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+        }
+
+        /// <summary>
+        /// Test for Edit method. GameResult object contains valid data. Game result is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_GameResultValid_GameResultEdited()
         {
             // Arrange
             var gameResult = new GameResultBuilder().Build();
@@ -267,36 +270,30 @@
         }
 
         /// <summary>
-        /// Test for Edit method. Invalid entity - missing exception thrown.
+        /// Test for Edit method. Game result is missing and cannot be edited. Exception is thrown during editing.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(MissingEntityException))]
-        public void Edit_InvalidEntity_MissingExceptionThrown()
+        public void Edit_MissingGameResult_ExceptionThrown()
         {
             // Arrange
             var gameResult = new GameResultBuilder().Build();
-
-            _gameResultRepositoryMock.Setup(grr => grr.Update(gameResult))
-                                     .Throws(new ConcurrencyException());
             var sut = _kernel.Get<GameResultService>();
+
+            SetupEditMissingEntityException(gameResult);
 
             // Act
             sut.Edit(gameResult);
 
             // Assert
-            _gameResultRepositoryMock.Verify(
-                tr =>
-                tr.Update(It.Is<GameResult>(gr => GameResultsAreEqual(gr, gameResult))),
-                Times.Once);
-
-            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never);
+            VerifyEditGameResult(gameResult, Times.Once(), Times.Never());
         }
 
         /// <summary>
-        /// Test for Delete method. Exists id - deleted.
+        /// Test for Delete method. Existing game result has to be deleted. Game result is deleted.
         /// </summary>
         [TestMethod]
-        public void Delete_ExistsId_Deleted()
+        public void Delete_ExistingGameResult_GameResultDeleted()
         {
             // Arrange
             var sut = _kernel.Get<GameResultService>();
@@ -305,44 +302,58 @@
             sut.Delete(GAME_RESULT_ID);
 
             // Assert
-            _gameResultRepositoryMock.Verify(grr => grr.Remove(GAME_RESULT_ID), Times.Once);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once);
+            VerifyDeleteGameResult(GAME_RESULT_ID, Times.Once());
         }
 
-        private void VerifyCreate(GameResult gameResult, Times times)
-        {
-            _gameResultRepositoryMock.Verify(grr => grr.Add(It.Is<GameResult>(gr => AreEqualGameResults(gr, gameResult))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
-        }
-
-        private bool AreEqualGameResults(GameResult x, GameResult y)
-        {
-            var comparer = new GameResultComparer();
-            return comparer.Compare(x, y) == 0;
-        }
-
-        private void SetupGetAll(IEnumerable<GameResult> gameResults)
-        {
-            _getAllQueryMock.Setup(gaq => gaq.Execute(It.IsAny<GetAllCriteria>())).Returns(gameResults.ToList());
-        }
-
-        private void SetupGet(GameResult gameResult)
-        {
-            _getByIdQueryMock.Setup(gbiq => gbiq.Execute(It.Is<FindByIdCriteria>(c => c.Id == gameResult.Id))).Returns(gameResult);
-        }
-
-        private bool GameResultsAreEqual(GameResult x, GameResult y)
+        private bool AreGameResultsEqual(GameResult x, GameResult y)
         {
             return new GameResultComparer().Compare(x, y) == 0;
+        }
+
+        private void SetupGet(GameResultDto gameResult)
+        {
+            _getByIdQueryMock.Setup(m => m.Execute(It.Is<FindByIdCriteria>(c => c.Id == gameResult.Id))).Returns(gameResult);
+        }
+
+        private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> gameResults)
+        {
+            _tournamentGameResultsQueryMock.Setup(m =>
+                m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
+                .Returns(gameResults);
+        }
+
+        private void SetupEditMissingEntityException(GameResult gameResult)
+        {
+            _gameResultRepositoryMock.Setup(m =>
+                m.Update(It.Is<GameResult>(grs => AreGameResultsEqual(grs, gameResult))))
+                .Throws(new ConcurrencyException());
+        }
+
+        private void VerifyCreateGameResult(GameResult gameResult, Times times)
+        {
+            _gameResultRepositoryMock.Verify(
+                m => m.Add(It.Is<GameResult>(grs => AreGameResultsEqual(grs, gameResult))), times);
+            _unitOfWorkMock.Verify(m => m.Commit(), times);
         }
 
         private void VerifyEditGameResult(GameResult gameResult, Times times)
         {
             _gameResultRepositoryMock.Verify(
-                tr =>
-                tr.Update(It.Is<GameResult>(gr => GameResultsAreEqual(gr, gameResult))),
-                times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+                m => m.Update(It.Is<GameResult>(grs => AreGameResultsEqual(grs, gameResult))), times);
+            _unitOfWorkMock.Verify(m => m.Commit(), times);
+        }
+
+        private void VerifyEditGameResult(GameResult gameResult, Times repositoryTimes, Times unitOfWorkTimes)
+        {
+            _gameResultRepositoryMock.Verify(
+                m => m.Update(It.Is<GameResult>(grs => AreGameResultsEqual(grs, gameResult))), repositoryTimes);
+            _unitOfWorkMock.Verify(m => m.Commit(), unitOfWorkTimes);
+        }
+
+        private void VerifyDeleteGameResult(int gameResultId, Times times)
+        {
+            _gameResultRepositoryMock.Verify(m => m.Remove(It.Is<int>(id => id == gameResultId)), times);
+            _unitOfWorkMock.Verify(m => m.Commit(), times);
         }
     }
 }

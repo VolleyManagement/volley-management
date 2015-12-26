@@ -15,7 +15,7 @@
     {
         #region Queries
 
-        private readonly IQuery<List<GameResultRetrievable>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
 
         #endregion
 
@@ -25,7 +25,7 @@
         /// Initializes a new instance of the <see cref="GameReportService"/> class.
         /// </summary>
         /// <param name="tournamentGameResultsQuery">Query for getting tournament's game results.</param>
-        public GameReportService(IQuery<List<GameResultRetrievable>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
+        public GameReportService(IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
         {
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
         }
@@ -64,7 +64,7 @@
 
         #region Private methods
 
-        private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<GameResultRetrievable> gameResults)
+        private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<GameResultDto> gameResults)
         {
             var entries = new List<StandingsEntry>();
             var teams = gameResults.Select(gr => new { Id = gr.HomeTeamId, Name = gr.HomeTeamName })
@@ -82,7 +82,7 @@
             return entries;
         }
 
-        private void CalculateGamesStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultRetrievable gameResult)
+        private void CalculateGamesStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultDto gameResult)
         {
             homeTeamEntry.GamesTotal++;
             awayTeamEntry.GamesTotal++;
@@ -136,7 +136,7 @@
             }
         }
 
-        private void CalculateSetsStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultRetrievable gameResult)
+        private void CalculateSetsStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultDto gameResult)
         {
             homeTeamEntry.SetsWon += gameResult.HomeSetsScore;
             homeTeamEntry.SetsLost += gameResult.AwaySetsScore;

@@ -2,18 +2,17 @@
 {
     using System;
     using System.Collections.Generic;
-
     using Ninject.Activation;
     using Ninject.Extensions.Conventions;
     using Ninject.Infrastructure;
     using Ninject.Modules;
     using Ninject.Planning.Bindings;
-
     using VolleyManagement.Crosscutting.Ninject;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Queries;
     using VolleyManagement.Data.MsSql.Repositories;
     using VolleyManagement.Domain.ContributorsAggregate;
+    using VolleyManagement.Domain.GameResultsAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -57,7 +56,8 @@
                                   Bind<IPlayerRepository>().To<PlayerRepository>(),
                                   Bind<IContributorTeamRepository>().To<ContributorTeamRepository>(),
                                   Bind<ITeamRepository>().To<TeamRepository>(),
-                                  Bind<IRoleRepository>().To<RoleRepostitory>()
+                                  Bind<IRoleRepository>().To<RoleRepostitory>(),
+                                  Bind<IGameResultRepository>().To<GameResultRepository>()
                               };
 
             configs.InScope(_scopeCallback);

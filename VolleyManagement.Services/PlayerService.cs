@@ -66,6 +66,7 @@
             }
 
             _playerRepository.Add(playerToCreate);
+            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

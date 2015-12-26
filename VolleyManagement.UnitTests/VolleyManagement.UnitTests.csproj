@@ -113,6 +113,7 @@
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />
     <Compile Include="Mvc\Controllers\ContributorsTeamControllerTests.cs" />
     <Compile Include="Mvc\Controllers\GameReportsControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\GameResultsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\PlayersControllerTests.cs" />
     <Compile Include="Mvc\Controllers\RolesControllerTests.cs" />
     <Compile Include="Mvc\Controllers\TeamsControllerTests.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Mvc\ViewModels\ContributorTeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\DivisionViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GameResultViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
@@ -134,12 +136,18 @@
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
+    <Compile Include="Services\GameResultService\GameResultBuilder.cs" />
+    <Compile Include="Services\GameResultService\GameResultComparer.cs" />
     <Compile Include="Mvc\ViewModels\UserEditMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
     <Compile Include="Services\GameReportService\GameReportServiceTests.cs" />
     <Compile Include="Services\GameReportService\StandingsEntryComparer.cs" />
     <Compile Include="Services\GameReportService\StandingsTestFixture.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />
+    <Compile Include="Services\GameResultService\GameResultTestFixture.cs" />
+    <Compile Include="Services\GameResultService\GameResultServiceTests.cs" />
+    <Compile Include="Services\GameResultService\ScoreComparer.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelToDomain.cs" />

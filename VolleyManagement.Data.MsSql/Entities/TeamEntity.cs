@@ -41,5 +41,15 @@
         /// Gets or sets players of the team
         /// </summary>
         public virtual ICollection<PlayerEntity> Players { get; set; }
+
+        /// <summary>
+        /// Gets or sets home game results of the team.
+        /// </summary>
+        public virtual ICollection<GameResultEntity> HomeGameResults { get; set; }
+
+        /// <summary>
+        /// Gets or sets away game results of the team.
+        /// </summary>
+        public virtual ICollection<GameResultEntity> AwayGameResults { get; set; }
     }
 }

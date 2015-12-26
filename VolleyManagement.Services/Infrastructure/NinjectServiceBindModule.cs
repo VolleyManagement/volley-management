@@ -35,17 +35,17 @@
         public override void Load()
         {
             var configs = new IHaveBindingConfiguration[]
-            {
-                Bind<ITournamentService>().To<TournamentService>(),
-                Bind<IPlayerService>().To<PlayerService>(),
-                Bind<IContributorTeamService>().To<ContributorTeamService>(),
-                Bind<ITeamService>().To<TeamService>(),
-                Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
-                Bind<IVolleyUserStore>().To<VolleyUserStore>(),
-                Bind<IRolesService>().To<RolesService>(),
-                Bind<IGameReportService>().To<GameReportService>()
-            };
-
+                              {
+                                  Bind<ITournamentService>().To<TournamentService>(),
+                                  Bind<IPlayerService>().To<PlayerService>(),
+                                  Bind<IContributorTeamService>().To<ContributorTeamService>(),
+                                  Bind<ITeamService>().To<TeamService>(),
+                                  Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
+                                  Bind<IVolleyUserStore>().To<VolleyUserStore>(),
+                                  Bind<IRolesService>().To<RolesService>(),
+                                  Bind<IGameResultService>().To<GameResultService>(),
+                                  Bind<IGameReportService>().To<GameReportService>()
+                              };
             configs.InScope(_scopeCallback);
         }
     }

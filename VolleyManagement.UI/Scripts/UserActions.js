@@ -54,3 +54,26 @@ function OnShowFinishedTournamentsClick(e) {
 function DisplaySeason(season) {
     return season + "/" + (season + 1);
 }
+
+$(".deleteResult_btn").click(function (e) {
+    
+    var confirmation = confirm(DELETE_CONFIRMATION_MESSAGE);
+
+    if (!confirmation) {
+        return;
+    }
+    
+    $.ajax({
+        type: "POST",
+        url: "/GameResults/Delete",
+        data: {
+            id: $(this).data("id")
+        },
+        success: function (result) {
+                location.reload();
+        },
+        error: function () {
+            alert(DELETE_FAILED_MESSAGE);
+        }
+    });
+});

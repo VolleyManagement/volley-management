@@ -91,8 +91,8 @@
         /// <summary>
         /// Updates specified contributor.
         /// </summary>
-        /// <param name="oldEntity">The contributor team to update.</param>
-        public void Update(ContributorTeam oldEntity)
+        /// <param name="updatedEntity">Updated contributor team.</param>
+        public void Update(ContributorTeam updatedEntity)
         {
             throw new NotImplementedException();
         }

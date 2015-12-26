@@ -120,6 +120,9 @@
   <data name="AddDivision" xml:space="preserve">
     <value>+ Добавить дивизион</value>
   </data>
+  <data name="AddGameResult" xml:space="preserve">
+    <value>Добавить результат игры</value>
+  </data>
   <data name="AddGroup" xml:space="preserve">
     <value>+ Добавить группу</value>
   </data>
@@ -167,6 +170,9 @@
   </data>
   <data name="ShowTournamentStandings" xml:space="preserve">
     <value>Показать турнирную таблицу</value>
+  </data>
+  <data name="ShowGameResults" xml:space="preserve">
+    <value>Показать результаты игр</value>
   </data>
   <data name="TournamentDetailsTitle" xml:space="preserve">
     <value>Подробности турнира</value>

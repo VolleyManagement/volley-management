@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
@@ -33,7 +32,7 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public TeamQueries(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
         }
 
         #endregion
@@ -47,10 +46,7 @@
         /// <returns> The <see cref="Player"/>. </returns>
         public Team Execute(FindByIdCriteria criteria)
         {
-            return this._unitOfWork.Context.Teams
-                .Where(t => t.Id == criteria.Id)
-                .Select(GetTeamMapping())
-                .SingleOrDefault();
+            return _unitOfWork.Context.Teams.Where(t => t.Id == criteria.Id).Select(GetTeamMapping()).SingleOrDefault();
         }
 
         /// <summary>
@@ -70,10 +66,7 @@
         /// <returns> The <see cref="Team"/>. </returns>
         public Team Execute(FindByCaptainIdCriteria criteria)
         {
-            return _unitOfWork.Context.Teams
-                                      .Where(t => t.CaptainId == criteria.CaptainId)
-                                      .Select(GetTeamMapping())
-                                      .SingleOrDefault();
+            return _unitOfWork.Context.Teams.Where(t => t.CaptainId == criteria.CaptainId).Select(GetTeamMapping()).SingleOrDefault();
         }
 
         #endregion
@@ -83,13 +76,13 @@
         private static Expression<Func<TeamEntity, Team>> GetTeamMapping()
         {
             return t => new Team
-                            {
-                                Id = t.Id,
-                                Name = t.Name,
-                                Coach = t.Coach,
-                                CaptainId = t.CaptainId,
-                                Achievements = t.Achievements
-                            };
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Coach = t.Coach,
+                CaptainId = t.CaptainId,
+                Achievements = t.Achievements
+            };
         }
 
         #endregion

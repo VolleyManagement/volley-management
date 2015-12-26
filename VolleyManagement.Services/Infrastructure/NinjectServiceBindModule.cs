@@ -1,11 +1,9 @@
 ﻿namespace VolleyManagement.Services.Infrastructure
 {
     using System;
-
     using Ninject.Activation;
     using Ninject.Infrastructure;
     using Ninject.Modules;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authentication;
     using VolleyManagement.Contracts.Authentication.Models;
@@ -28,7 +26,7 @@
         /// <param name="scopeCallback"> The scope callback. </param>
         public NinjectServiceBindModule(Func<IContext, object> scopeCallback)
         {
-            this._scopeCallback = scopeCallback;
+            _scopeCallback = scopeCallback;
         }
 
         /// <summary>
@@ -37,15 +35,17 @@
         public override void Load()
         {
             var configs = new IHaveBindingConfiguration[]
-                              {
-                                  Bind<ITournamentService>().To<TournamentService>(),
-                                  Bind<IPlayerService>().To<PlayerService>(),
-                                  Bind<IContributorTeamService>().To<ContributorTeamService>(),
-                                  Bind<ITeamService>().To<TeamService>(),
-                                  Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
-                                  Bind<IVolleyUserStore>().To<VolleyUserStore>(),
-                                  Bind<IRolesService>().To<RolesService>()
-                              };
+            {
+                Bind<ITournamentService>().To<TournamentService>(),
+                Bind<IPlayerService>().To<PlayerService>(),
+                Bind<IContributorTeamService>().To<ContributorTeamService>(),
+                Bind<ITeamService>().To<TeamService>(),
+                Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
+                Bind<IVolleyUserStore>().To<VolleyUserStore>(),
+                Bind<IRolesService>().To<RolesService>(),
+                Bind<IGameReportService>().To<GameReportService>()
+            };
+
             configs.InScope(_scopeCallback);
         }
     }

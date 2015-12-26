@@ -41,7 +41,7 @@
         /// Adds new game result.
         /// </summary>
         /// <param name="newEntity">Game result to add.</param>
-        public void Add(GameResultStorable newEntity)
+        public void Add(GameResult newEntity)
         {
             var newGameResult = new GameResultEntity();
 
@@ -55,7 +55,7 @@
         /// Updates specified game result.
         /// </summary>
         /// <param name="updatedEntity">Updated game result.</param>
-        public void Update(GameResultStorable updatedEntity)
+        public void Update(GameResult updatedEntity)
         {
             var gameResultToUpdate = _dalGameResults.SingleOrDefault(t => t.Id == updatedEntity.Id);
 

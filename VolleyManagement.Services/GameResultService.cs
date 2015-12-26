@@ -25,8 +25,8 @@
 
         #region Query objects
 
-        private readonly IQuery<GameResultRetrievable, FindByIdCriteria> _getByIdQuery;
-        private readonly IQuery<List<GameResultRetrievable>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
+        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
 
         #endregion
 
@@ -36,13 +36,13 @@
         /// Initializes a new instance of the <see cref="GameResultService"/> class.
         /// </summary>
         /// <param name="gameResultRepository">Instance of class which implements <see cref="IGameResultRepository"/>.</param>
-        /// <param name="getByIdQuery">Query which gets <see cref="GameResultRetrievable"/> object by its identifier.</param>
-        /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultRetrievable"/> objects
+        /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
+        /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
         /// of the specified tournament.</param>
         public GameResultService(
             IGameResultRepository gameResultRepository,
-            IQuery<GameResultRetrievable, FindByIdCriteria> getByIdQuery,
-            IQuery<List<GameResultRetrievable>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
+            IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
+            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
         {
             _gameResultRepository = gameResultRepository;
             _getByIdQuery = getByIdQuery;
@@ -57,7 +57,7 @@
         /// Creates a new game result.
         /// </summary>
         /// <param name="gameResult">Game result to create.</param>
-        public void Create(GameResultStorable gameResult)
+        public void Create(GameResult gameResult)
         {
             if (gameResult == null)
             {
@@ -74,8 +74,8 @@
         /// Gets game result by its identifier.
         /// </summary>
         /// <param name="id">Identifier of game result.</param>
-        /// <returns>Instance of <see cref="GameResultRetrievable"/> or null if nothing is obtained.</returns>
-        public GameResultRetrievable Get(int id)
+        /// <returns>Instance of <see cref="GameResultDto"/> or null if nothing is obtained.</returns>
+        public GameResultDto Get(int id)
         {
             return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
@@ -85,7 +85,7 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>List of game results of specified tournament.</returns>
-        public List<GameResultRetrievable> GetTournamentResults(int tournamentId)
+        public List<GameResultDto> GetTournamentResults(int tournamentId)
         {
             return _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
         }
@@ -94,7 +94,7 @@
         /// Edits specified instance of game result.
         /// </summary>
         /// <param name="gameResult">Game result to update.</param>
-        public void Edit(GameResultStorable gameResult)
+        public void Edit(GameResult gameResult)
         {
             try
             {
@@ -122,7 +122,7 @@
 
         #region Validation methods
 
-        private void ValidateGameResult(GameResultStorable gameResult)
+        private void ValidateGameResult(GameResult gameResult)
         {
             ValidateTeams(gameResult.HomeTeamId, gameResult.AwayTeamId);
             ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);

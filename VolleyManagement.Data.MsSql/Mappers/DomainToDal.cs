@@ -163,7 +163,7 @@
         /// </summary>
         /// <param name="to">DAL model of game result.</param>
         /// <param name="from">Domain model of game result.</param>
-        public static void Map(GameResultEntity to, GameResultStorable from)
+        public static void Map(GameResultEntity to, GameResult from)
         {
             to.Id = from.Id;
             to.TournamentId = from.TournamentId;

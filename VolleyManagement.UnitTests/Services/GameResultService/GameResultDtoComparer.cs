@@ -6,32 +6,32 @@
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
-    /// Represents a comparer for <see cref="GameResultRetrievable"/> objects.
+    /// Represents a comparer for <see cref="GameResultDto"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class GameResultRetrievableComparer : IComparer<GameResultRetrievable>, IComparer
+    internal class GameResultDtoComparer : IComparer<GameResultDto>, IComparer
     {
         /// <summary>
-        /// Compares two <see cref="GameResultRetrievable"/> objects.
+        /// Compares two <see cref="GameResultDto"/> objects.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of <see cref="GameResultRetrievable"/> x and y.</returns>
-        public int Compare(GameResultRetrievable x, GameResultRetrievable y)
+        /// <returns>A signed integer that indicates the relative values of <see cref="GameResultDto"/> x and y.</returns>
+        public int Compare(GameResultDto x, GameResultDto y)
         {
             return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
-        /// Compares two <see cref="GameResultRetrievable"/> objects (non-generic implementation).
+        /// Compares two <see cref="GameResultDto"/> objects (non-generic implementation).
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of <see cref="GameResultRetrievable"/> x and y.</returns>
+        /// <returns>A signed integer that indicates the relative values of <see cref="GameResultDto"/> x and y.</returns>
         public int Compare(object x, object y)
         {
-            GameResultRetrievable firstGameResult = x as GameResultRetrievable;
-            GameResultRetrievable secondGameResult = y as GameResultRetrievable;
+            GameResultDto firstGameResult = x as GameResultDto;
+            GameResultDto secondGameResult = y as GameResultDto;
 
             if (firstGameResult == null)
             {
@@ -46,12 +46,12 @@
         }
 
         /// <summary>
-        /// Finds out whether two <see cref="GameResultRetrievable"/> objects are equal.
+        /// Finds out whether two <see cref="GameResultDto"/> objects are equal.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given <see cref="GameResultRetrievable"/> objects are equal.</returns>
-        internal bool AreEqual(GameResultRetrievable x, GameResultRetrievable y)
+        /// <returns>True if given <see cref="GameResultDto"/> objects are equal.</returns>
+        internal bool AreEqual(GameResultDto x, GameResultDto y)
         {
             return x.Id == y.Id
                 && x.TournamentId == y.TournamentId

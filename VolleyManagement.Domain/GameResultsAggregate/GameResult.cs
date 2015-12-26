@@ -3,14 +3,14 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a storable game result.
+    /// Represents a domain model of game result.
     /// </summary>
-    public class GameResultStorable
+    public class GameResult
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameResultStorable"/> class.
+        /// Initializes a new instance of the <see cref="GameResult"/> class.
         /// </summary>
-        public GameResultStorable()
+        public GameResult()
         {
             SetScores = new List<Score>();
         }

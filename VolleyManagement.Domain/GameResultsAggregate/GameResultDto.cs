@@ -3,9 +3,9 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a retrievable game result.
+    /// Represents a data transfer object of game result with home and away team names.
     /// </summary>
-    public class GameResultRetrievable
+    public class GameResultDto
     {
         /// <summary>
         /// Gets or sets the identifier of game result.

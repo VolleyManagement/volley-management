@@ -14,8 +14,8 @@
     /// <summary>
     /// Provides implementation of game result queries.
     /// </summary>
-    public class GameResultQueries : IQuery<GameResultRetrievable, FindByIdCriteria>,
-                                     IQuery<List<GameResultRetrievable>, TournamentGameResultsCriteria>
+    public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
+                                     IQuery<List<GameResultDto>, TournamentGameResultsCriteria>
     {
         #region Fields
 
@@ -45,7 +45,7 @@
         /// </summary>
         /// <param name="criteria">Identifier criteria.</param>
         /// <returns>Domain model of game result.</returns>
-        public GameResultRetrievable Execute(FindByIdCriteria criteria)
+        public GameResultDto Execute(FindByIdCriteria criteria)
         {
             return _dalGameResults.Where(gr => gr.Id == criteria.Id).Select(GetGameResultWithTeamNamesMapping()).SingleOrDefault();
         }
@@ -55,7 +55,7 @@
         /// </summary>
         /// <param name="criteria">Tournament's game results criteria.</param>
         /// <returns>List of domain models of game result.</returns>
-        public List<GameResultRetrievable> Execute(TournamentGameResultsCriteria criteria)
+        public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
             return _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
                 .Select(GetGameResultWithTeamNamesMapping())
@@ -66,9 +66,9 @@
 
         #region Mapping
 
-        private static Expression<Func<GameResultEntity, GameResultRetrievable>> GetGameResultWithTeamNamesMapping()
+        private static Expression<Func<GameResultEntity, GameResultDto>> GetGameResultWithTeamNamesMapping()
         {
-            return gr => new GameResultRetrievable
+            return gr => new GameResultDto
             {
                 Id = gr.Id,
                 TournamentId = gr.TournamentId,

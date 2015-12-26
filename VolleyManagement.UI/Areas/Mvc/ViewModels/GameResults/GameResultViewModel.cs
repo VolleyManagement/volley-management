@@ -76,7 +76,7 @@
         /// </summary>
         /// <param name="gameResult">Domain model of game result.</param>
         /// <returns>View model of game result.</returns>
-        public static GameResultViewModel Map(GameResultRetrievable gameResult)
+        public static GameResultViewModel Map(GameResultDto gameResult)
         {
             return new GameResultViewModel
             {
@@ -103,9 +103,9 @@
         /// Maps view model of game result to domain model of game result.
         /// </summary>
         /// <returns>Domain model of game result.</returns>
-        public GameResultStorable ToDomain()
+        public GameResult ToDomain()
         {
-            return new GameResultStorable
+            return new GameResult
             {
                 Id = this.Id,
                 TournamentId = this.TournamentId,

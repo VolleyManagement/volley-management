@@ -7,32 +7,32 @@
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
-    /// Represents a comparer for <see cref="GameResultStorable"/> objects.
+    /// Represents a comparer for <see cref="GameResult"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class GameResultStorableComparer : IComparer<GameResultStorable>, IComparer
+    internal class GameResultComparer : IComparer<GameResult>, IComparer
     {
         /// <summary>
-        /// Compares two <see cref="GameResultStorable"/> objects.
+        /// Compares two <see cref="GameResult"/> objects.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of <see cref="GameResultStorable"/> x and y.</returns>
-        public int Compare(GameResultStorable x, GameResultStorable y)
+        /// <returns>A signed integer that indicates the relative values of <see cref="GameResult"/> x and y.</returns>
+        public int Compare(GameResult x, GameResult y)
         {
             return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>
-        /// Compares two <see cref="GameResultStorable"/> objects (non-generic implementation).
+        /// Compares two <see cref="GameResult"/> objects (non-generic implementation).
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of <see cref="GameResultStorable"/> x and y.</returns>
+        /// <returns>A signed integer that indicates the relative values of <see cref="GameResult"/> x and y.</returns>
         public int Compare(object x, object y)
         {
-            GameResultStorable firstGameResult = x as GameResultStorable;
-            GameResultStorable secondGameResult = y as GameResultStorable;
+            GameResult firstGameResult = x as GameResult;
+            GameResult secondGameResult = y as GameResult;
 
             if (firstGameResult == null)
             {
@@ -47,12 +47,12 @@
         }
 
         /// <summary>
-        /// Finds out whether two <see cref="GameResultStorable"/> objects are equal.
+        /// Finds out whether two <see cref="GameResult"/> objects are equal.
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given <see cref="GameResultStorable"/> objects are equal.</returns>
-        internal bool AreEqual(GameResultStorable x, GameResultStorable y)
+        /// <returns>True if given <see cref="GameResult"/> objects are equal.</returns>
+        internal bool AreEqual(GameResult x, GameResult y)
         {
             return x.Id == y.Id
                 && x.TournamentId == y.TournamentId

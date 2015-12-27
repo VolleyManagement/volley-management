@@ -1,7 +1,5 @@
 ﻿namespace VolleyManagement.Domain.GameResultsAggregate
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Represents a data transfer object of game result with home and away team names.
     /// </summary>

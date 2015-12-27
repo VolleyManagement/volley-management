@@ -70,7 +70,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to + Добавить группу.
+        ///   Looks up a localized string similar to Добавить результат игры.
         /// </summary>
         public static string AddGameResult {
             get {
@@ -79,6 +79,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to + Добавить группу.
         /// </summary>
         public static string AddGroup {
             get {
@@ -218,6 +219,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string ShowGameResults {
             get {
                 return ResourceManager.GetString("ShowGameResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Показать турнирную таблицу.
+        /// </summary>
+        public static string ShowTournamentStandings {
+            get {
+                return ResourceManager.GetString("ShowTournamentStandings", resourceCulture);
             }
         }
         

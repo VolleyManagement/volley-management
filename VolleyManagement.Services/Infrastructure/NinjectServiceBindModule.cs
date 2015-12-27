@@ -26,7 +26,7 @@
         /// <param name="scopeCallback"> The scope callback. </param>
         public NinjectServiceBindModule(Func<IContext, object> scopeCallback)
         {
-            this._scopeCallback = scopeCallback;
+            _scopeCallback = scopeCallback;
         }
 
         /// <summary>
@@ -43,7 +43,8 @@
                                   Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
                                   Bind<IVolleyUserStore>().To<VolleyUserStore>(),
                                   Bind<IRolesService>().To<RolesService>(),
-                                  Bind<IGameResultService>().To<GameResultService>()
+                                  Bind<IGameResultService>().To<GameResultService>(),
+                                  Bind<IGameReportService>().To<GameReportService>()
                               };
             configs.InScope(_scopeCallback);
         }

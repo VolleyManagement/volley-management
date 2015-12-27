@@ -64,7 +64,7 @@
             }
         }
     }
-
+	
     <div>
         @Html.ActionLink(Resources.TournamentViews.AddGameResult, "Create", "GameResults", new { tournamentId = Model.Id }, null)
     </div>
@@ -76,6 +76,14 @@
             new { tournamentId = Model.Id, tournamentName = Model.Name },
             null)
     </div>
+	<div>
+        @Html.ActionLink(
+            Resources.TournamentViews.ShowTournamentStandings,
+            "Standings",
+            "GameReports",
+            new { tournamentId = Model.Id, tournamentName = Model.Name },
+            null)
+	</div>
 </fieldset>
 <p>
     @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id = Model.Id }) |

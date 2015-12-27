@@ -275,6 +275,7 @@
     <Content Include="Areas\Mvc\Views\GameResults\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Account\Details.cshtml" />
     <Content Include="Areas\Mvc\Views\Account\Edit.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameReports\Standings.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\TournamentResults.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\_CreateOrEdit.cshtml" />
@@ -307,6 +308,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthorizationRoles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\GameReportViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GameReportViews.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\GameResultsController.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -358,6 +364,7 @@
     <Compile Include="Areas\Admin\Models\UserViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\AccountController.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\ContributorsTeamController.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\GameReportsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\GameResultsController.cs" />
     <Compile Include="Areas\Mvc\Controllers\HomeController.cs" />
     <Compile Include="Areas\Mvc\Controllers\NavigationController.cs" />
@@ -372,6 +379,8 @@
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Account\AuthenticationStatusViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsEntryViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />
@@ -472,6 +481,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\GameReportViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameReportViews.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\GameResultsController.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameResultsController.Designer.cs</LastGenOutput>
@@ -483,6 +496,7 @@
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TournamentViews.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\UserViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

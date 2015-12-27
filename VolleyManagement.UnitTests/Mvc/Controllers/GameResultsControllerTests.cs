@@ -4,23 +4,18 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
-
-    using Contracts;
-    using Contracts.Exceptions;
-    using Domain.GameResultsAggregate;
-    using Domain.TeamsAggregate;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-
-    using Services.GameResultService;
-    using Services.TeamService;
-
-    using UI.Areas.Mvc.Controllers;
-    using UI.Areas.Mvc.ViewModels.GameResults;
-
-    using ViewModels;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.GameResultService;
+    using VolleyManagement.UnitTests.Services.TeamService;
 
     /// <summary>
     /// Tests for MVC <see cref="GameResultsControllerTests"/> class.
@@ -90,7 +85,7 @@
             var result = sut.Create(gameResult) as RedirectToRouteResult;
 
             // Assert
-            TestHelper.AreEqual<GameResult>(expectedGameResult, actualGameResult, new GameResultComparer());
+            TestHelper.AreEqual(expectedGameResult, actualGameResult, new GameResultComparer());
         }
 
         /// <summary>
@@ -143,32 +138,6 @@
         }
 
         /// <summary>
-        /// Test for Details method. Id passed - details view returned.
-        /// </summary>
-        [TestMethod]
-        public void DetailsAction_IdPassed_ViewReturned()
-        {
-            // Arrange
-            var expectedResultViewModel = new GameResultViewModelBuilder()
-                                        .WithHomeTeamId(HOME_TEAM_ID)
-                                        .WithAwayTeamId(AWAY_TEAM_ID)
-                                        .Build();
-
-            GameResult gameResultDomainModel = expectedResultViewModel.ToDomain();
-            _gameResultServiceMock.Setup(grs => grs.Get(It.IsAny<int>())).Returns(gameResultDomainModel);
-
-            MockTeams();
-
-            var sut = this._kernel.Get<GameResultsController>();
-
-            // Act
-            var actual = TestExtensions.GetModel<GameResultViewModel>(sut.Details(GAME_RESULT_ID));
-
-            // Assert
-            TestHelper.AreEqual(actual, expectedResultViewModel, new GameResultViewModelComparer());
-        }
-
-        /// <summary>
         /// Test for edit post method. Invalid game results Id - redirect to  the edit view.
         /// </summary>
         [TestMethod]
@@ -216,10 +185,9 @@
         public void DeletePost_ValidId_Deleted()
         {
             // Arrange
-            var gameResult = new GameResultBuilder().Build();
+            var gameResult = new GameResultDtoBuilder().Build();
 
-            _gameResultServiceMock.Setup(grs => grs.Get(It.IsAny<int>()))
-                .Returns(gameResult);
+            _gameResultServiceMock.Setup(grs => grs.Get(It.IsAny<int>())).Returns(gameResult);
 
             var sut = this._kernel.Get<GameResultsController>();
 
@@ -239,7 +207,7 @@
         {
             // Arrange
             _gameResultServiceMock.Setup(grs => grs.Get(It.IsAny<int>()))
-                .Returns((GameResult)null);
+                .Returns((GameResultDto)null);
 
             var sut = this._kernel.Get<GameResultsController>();
 

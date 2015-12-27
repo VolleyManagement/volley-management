@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
     using VolleyManagement.Data.Contracts;
@@ -11,15 +12,15 @@
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
-    /// Provides Query Object implementation for GameResult entity
+    /// Provides implementation of game result queries.
     /// </summary>
-    public class GameResultQueries : IQuery<GameResult, FindByIdCriteria>,
-                                     IQuery<List<GameResult>, GetAllCriteria>,
-                                     IQuery<List<GameResult>, TournamentGameResultsCriteria>
+    public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
+                                     IQuery<List<GameResultDto>, TournamentGameResultsCriteria>
     {
         #region Fields
 
         private readonly VolleyUnitOfWork _unitOfWork;
+        private readonly DbSet<GameResultEntity> _dalGameResults;
 
         #endregion
 
@@ -28,10 +29,11 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="GameResultQueries"/> class.
         /// </summary>
-        /// <param name="unitOfWork">The unit of work.</param>
+        /// <param name="unitOfWork">Instance of class which implements <see cref="IUnitOfWork"/>.</param>
         public GameResultQueries(IUnitOfWork unitOfWork)
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalGameResults = _unitOfWork.Context.GameResults;
         }
 
         #endregion
@@ -43,19 +45,9 @@
         /// </summary>
         /// <param name="criteria">Identifier criteria.</param>
         /// <returns>Domain model of game result.</returns>
-        public GameResult Execute(FindByIdCriteria criteria)
+        public GameResultDto Execute(FindByIdCriteria criteria)
         {
-            return _unitOfWork.Context.GameResults.Where(gr => gr.Id == criteria.Id).Select(GetGameResultMapping()).SingleOrDefault();
-        }
-
-        /// <summary>
-        /// Gets all game results.
-        /// </summary>
-        /// <param name="criteria">Get all results criteria.</param>
-        /// <returns>List of domain models of game result.</returns>
-        public List<GameResult> Execute(GetAllCriteria criteria)
-        {
-            return _unitOfWork.Context.GameResults.Select(GetGameResultMapping()).ToList();
+            return _dalGameResults.Where(gr => gr.Id == criteria.Id).Select(GetGameResultWithTeamNamesMapping()).SingleOrDefault();
         }
 
         /// <summary>
@@ -63,11 +55,10 @@
         /// </summary>
         /// <param name="criteria">Tournament's game results criteria.</param>
         /// <returns>List of domain models of game result.</returns>
-        public List<GameResult> Execute(TournamentGameResultsCriteria criteria)
+        public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
-            return _unitOfWork.Context.GameResults
-                .Where(gr => gr.TournamentId == criteria.TournamentId)
-                .Select(GetGameResultMapping())
+            return _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
+                .Select(GetGameResultWithTeamNamesMapping())
                 .ToList();
         }
 
@@ -75,9 +66,9 @@
 
         #region Mapping
 
-        private static Expression<Func<GameResultEntity, GameResult>> GetGameResultMapping()
+        private static Expression<Func<GameResultEntity, GameResultDto>> GetGameResultWithTeamNamesMapping()
         {
-            return gr => new GameResult
+            return gr => new GameResultDto
             {
                 Id = gr.Id,
                 TournamentId = gr.TournamentId,
@@ -85,16 +76,19 @@
                 AwayTeamId = gr.AwayTeamId,
                 HomeTeamName = gr.HomeTeam.Name,
                 AwayTeamName = gr.AwayTeam.Name,
-                SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore },
+                HomeSetsScore = gr.HomeSetsScore,
+                AwaySetsScore = gr.AwaySetsScore,
                 IsTechnicalDefeat = gr.IsTechnicalDefeat,
-                SetScores = new List<Score>
-                {
-                    new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score },
-                    new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score },
-                    new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score },
-                    new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score },
-                    new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score }
-                }
+                HomeSet1Score = gr.HomeSet1Score,
+                AwaySet1Score = gr.AwaySet1Score,
+                HomeSet2Score = gr.HomeSet2Score,
+                AwaySet2Score = gr.AwaySet2Score,
+                HomeSet3Score = gr.HomeSet3Score,
+                AwaySet3Score = gr.AwaySet3Score,
+                HomeSet4Score = gr.HomeSet4Score,
+                AwaySet4Score = gr.AwaySet4Score,
+                HomeSet5Score = gr.HomeSet5Score,
+                AwaySet5Score = gr.AwaySet5Score
             };
         }
 

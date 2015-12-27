@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using VolleyManagement.Domain.GameResultsAggregate;
 
     /// <summary>
@@ -53,47 +54,13 @@
         /// <returns>True if given <see cref="GameResult"/> objects are equal.</returns>
         internal bool AreEqual(GameResult x, GameResult y)
         {
-            ScoreComparer scoreComparer = new ScoreComparer();
-            bool areEqual = x.Id == y.Id
+            return x.Id == y.Id
                 && x.TournamentId == y.TournamentId
                 && x.HomeTeamId == y.HomeTeamId
                 && x.AwayTeamId == y.AwayTeamId
-                && scoreComparer.AreEqual(x.SetsScore, y.SetsScore)
-                && x.IsTechnicalDefeat == y.IsTechnicalDefeat;
-
-            if (areEqual)
-            {
-                if ((x.SetScores == null && y.SetScores != null)
-                    || (x.SetScores != null && y.SetScores == null)
-                    || (x.SetScores.Count != y.SetScores.Count))
-                {
-                    areEqual = false;
-                }
-            }
-
-            if (areEqual && x.SetScores != null)
-            {
-                foreach (var xScore in x.SetScores)
-                {
-                    bool scoreEquals = false;
-
-                    foreach (var yScore in y.SetScores)
-                    {
-                        if (scoreComparer.AreEqual(xScore, yScore))
-                        {
-                            scoreEquals = true;
-                        }
-                    }
-
-                    if (!scoreEquals)
-                    {
-                        areEqual = false;
-                        break;
-                    }
-                }
-            }
-
-            return areEqual;
+                && new ScoreComparer().Equals(x.SetsScore, y.SetsScore)
+                && x.IsTechnicalDefeat == y.IsTechnicalDefeat
+                && x.SetScores.SequenceEqual(y.SetScores, new ScoreComparer());
         }
     }
 }

@@ -11,13 +11,9 @@
 <fieldset>
     @{
         string legendText = string.Format(Resources.GameReportViews.TournamentStandingsLegend, Model.TournamentName);
-        string rowClass = string.Empty;
-        string teamCellClass = string.Empty;
-        string teamLastCellClass = string.Empty;
         string setsRatioText = string.Empty;
         string ballsRatioText = string.Empty;
         int position = 0;
-        bool backlightTopTeams = Model.Entries.Count > ViewModelConstants.NUMBER_OF_TOP_TEAMS;
     }
 
     <legend>@legendText</legend>
@@ -27,95 +23,62 @@
     }
     else
     {
-        <table class="standings-table">
+        <table class="standings">
             <thead>
-                <tr class="standings-table-header">
-                    <th colspan="3" class="standings-table-cell right-border bottom-border">
+                <tr class="standings-header-row">
+                    <th colspan="3" class="standings-header-cell">
                         @string.Format(Resources.GameReportViews.LastUpdated, TimeProvider.Current.UtcNow)
                     </th>
-                    <th colspan="9" class="standings-table-cell right-border bottom-border">
-                        @Resources.GameReportViews.GamesGroupHeader
-                    </th>
-                    <th colspan="3" class="standings-table-cell right-border bottom-border">
-                        @Resources.GameReportViews.SetsGroupHeader
-                    </th>
-                    <th colspan="3" class="standings-table-cell bottom-border">
-                        @Resources.GameReportViews.BallsGroupHeader
-                    </th>
+                    <th colspan="9" class="standings-header-cell">@Resources.GameReportViews.GamesGroupHeader</th>
+                    <th colspan="3" class="standings-header-cell">@Resources.GameReportViews.SetsGroupHeader</th>
+                    <th colspan="3" class="standings-header-cell">@Resources.GameReportViews.BallsGroupHeader</th>
                 </tr>
-                <tr class="standings-table-header">
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.PositionHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.TeamHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.PointsHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesTotalHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWonHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesLostHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreThreeNilHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreThreeOneHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreThreeTwoHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreTwoThreeHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreOneThreeHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.GamesWithScoreNilThreeHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.SetsWonHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.SetsLostHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.SetsRatioHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.BallsWonHeader</th>
-                <th class="standings-table-cell right-border">@Resources.GameReportViews.BallsLostHeader</th>
-                <th class="standings-table-cell">@Resources.GameReportViews.BallsRatioHeader</th>
-            </tr>
+                <tr class="standings-header-row">
+                    <th class="standings-header-cell">@Resources.GameReportViews.PositionHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.TeamHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.PointsHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.GamesTotalHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.GamesWonHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.GamesLostHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.GamesWithScoreThreeNilHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.GamesWithScoreThreeOneHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.GamesWithScoreThreeTwoHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.GamesWithScoreTwoThreeHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.GamesWithScoreOneThreeHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.GamesWithScoreNilThreeHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.SetsWonHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.SetsLostHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.SetsRatioHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.BallsWonHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.BallsLostHeader</th>
+                    <th class="standings-header-cell">@Resources.GameReportViews.BallsRatioHeader</th>
+                </tr>
             </thead>
             <tbody>
                 @foreach (var entry in Model.Entries)
                 {
-                    if (backlightTopTeams)
-                    {
-                        if (position < ViewModelConstants.NUMBER_OF_TOP_TEAMS)
-                        {
-                            rowClass = "standings-table-row team-top-position";
-                        }
-                        else
-                        {
-                            rowClass = "standings-table-row";
-                        }
-                    }
-                    else
-                    {
-                        rowClass = "standings-table-row";
-                    }
-
-                    if (position + 1 != Model.Entries.Count)
-                    {
-                        teamCellClass = "standings-table-cell right-border bottom-border";
-                        teamLastCellClass = "standings-table-cell bottom-border";
-                    }
-                    else
-                    {
-                        teamCellClass = "standings-table-cell right-border";
-                        teamLastCellClass = "standings-table-cell";
-                    }
-
                     setsRatioText = entry.SetsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", entry.SetsRatio) : "MAX";
                     ballsRatioText = entry.BallsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", entry.BallsRatio) : "MAX";
 
-                    <tr class="@rowClass">
-                        <td class="@teamCellClass">@(++position)</td>
-                        <td class="@teamCellClass">@entry.TeamName</td>
-                        <td class="@teamCellClass">@entry.Points</td>
-                        <td class="@teamCellClass">@entry.GamesTotal</td>
-                        <td class="@teamCellClass">@entry.GamesWon</td>
-                        <td class="@teamCellClass">@entry.GamesLost</td>
-                        <td class="@teamCellClass">@entry.GamesWithScoreThreeNil</td>
-                        <td class="@teamCellClass">@entry.GamesWithScoreThreeOne</td>
-                        <td class="@teamCellClass">@entry.GamesWithScoreThreeTwo</td>
-                        <td class="@teamCellClass">@entry.GamesWithScoreTwoThree</td>
-                        <td class="@teamCellClass">@entry.GamesWithScoreOneThree</td>
-                        <td class="@teamCellClass">@entry.GamesWithScoreNilThree</td>
-                        <td class="@teamCellClass">@entry.SetsWon</td>
-                        <td class="@teamCellClass">@entry.SetsLost</td>
-                        <td class="@teamCellClass">@setsRatioText</td>
-                        <td class="@teamCellClass">@entry.BallsWon</td>
-                        <td class="@teamCellClass">@entry.BallsLost</td>
-                        <td class="@teamLastCellClass">@ballsRatioText</td>
+                    <tr class="standings-row">
+                        <td class="standings-cell">@(++position)</td>
+                        <td class="standings-cell">@entry.TeamName</td>
+                        <td class="standings-cell">@entry.Points</td>
+                        <td class="standings-cell">@entry.GamesTotal</td>
+                        <td class="standings-cell">@entry.GamesWon</td>
+                        <td class="standings-cell">@entry.GamesLost</td>
+                        <td class="standings-cell">@entry.GamesWithScoreThreeNil</td>
+                        <td class="standings-cell">@entry.GamesWithScoreThreeOne</td>
+                        <td class="standings-cell">@entry.GamesWithScoreThreeTwo</td>
+                        <td class="standings-cell">@entry.GamesWithScoreTwoThree</td>
+                        <td class="standings-cell">@entry.GamesWithScoreOneThree</td>
+                        <td class="standings-cell">@entry.GamesWithScoreNilThree</td>
+                        <td class="standings-cell">@entry.SetsWon</td>
+                        <td class="standings-cell">@entry.SetsLost</td>
+                        <td class="standings-cell">@setsRatioText</td>
+                        <td class="standings-cell">@entry.BallsWon</td>
+                        <td class="standings-cell">@entry.BallsLost</td>
+                        <td class="standings-cell">@ballsRatioText</td>
                     </tr>
                 }
             </tbody>

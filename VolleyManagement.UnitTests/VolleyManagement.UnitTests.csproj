@@ -137,13 +137,15 @@
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
-    <Compile Include="Services\GameResultService\GameResultBuilder.cs" />
-    <Compile Include="Services\GameResultService\GameResultComparer.cs" />
+    <Compile Include="Services\GameResultService\GameResultDtoBuilder.cs" />
+    <Compile Include="Services\GameResultService\GameResultDtoComparer.cs" />
     <Compile Include="Mvc\ViewModels\UserEditMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
     <Compile Include="Services\GameReportService\GameReportServiceTests.cs" />
     <Compile Include="Services\GameReportService\StandingsEntryComparer.cs" />
     <Compile Include="Services\GameReportService\StandingsTestFixture.cs" />
+    <Compile Include="Services\GameResultService\GameResultBuilder.cs" />
+    <Compile Include="Services\GameResultService\GameResultComparer.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />
     <Compile Include="Services\GameResultService\GameResultTestFixture.cs" />
     <Compile Include="Services\GameResultService\GameResultServiceTests.cs" />

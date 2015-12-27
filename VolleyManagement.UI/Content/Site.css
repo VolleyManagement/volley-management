@@ -40,7 +40,6 @@ input[type="checkbox"].input-validation-error {
     display: none;
 }
 
-
 div#content { padding: 1em; float: left; width: 88em; }
 div#menu {float: left; width: 8em; padding: .3em; }
 div#menu a{font: bold 1.1em "Arial Narrow","Franklin Gothic Medium", Arial; display: block;
@@ -67,7 +66,6 @@ div .group-editor {
     padding-bottom: 5px;
 }
 
-
 div .add-group-button {
     padding-bottom: 5px;
 }
@@ -80,40 +78,83 @@ div .add-division-button {
     cursor: pointer;
 }
 
-.standings-table {
-    display: table;
+table.results {
     margin: 0 0 20px 0;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-    font-size: 12.5px;
 }
 
-.standings-table-header {
-    display: table-row;
-    font-weight: 700;
+tr.results-header-row, tr.standings-header-row {
+    background-color: #222;
     color: #fff;
-    background: #2980b9;
+    font-weight: bold;
 }
 
-.standings-table-row {
-    display: table-row;
-    background: #f5f5f5;
-}
-
-.standings-table-cell {
-    display: table-cell;
+th.results-header-cell, th.standings-header-cell {
     padding: 3px 5px;
+    border: 1px solid #fff;
     text-align: center;
 }
 
-.right-border {
-    border-right: 1px solid #fff;
+th.results-operation-header-cell {
+    border: none;
+    background-color: #fff;
 }
 
-.bottom-border {
-    border-bottom: 1px solid #fff;
+tr.results-row:nth-child(odd), tr.standings-row:nth-child(odd) {
+    background-color: #e5e5e5;
 }
 
-.team-top-position {
-    background-color: #00ff7f;
-    font-weight: 700;
+tr.results-row:nth-child(even), tr.standings-row:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+td.results-cell, td.standings-cell {
+    padding: 3px 5px;
+    border: 1px solid #fff;
+    text-align: center;
+    vertical-align: middle;
+}
+
+td.game-score-cell {
+    width: 400px;
+    text-align: left;
+}
+
+td.results-first-operation-cell {
+    padding: 3px 5px 3px 25px;
+    border: none;
+    background-color: #fff;
+    color: #000;
+}
+
+td.results-operation-cell {
+    padding: 3px 5px;
+    border: none;
+    background-color: #fff;
+    color: #000;
+}
+
+div.game-home-team {
+    display: inline-block;
+    padding-right: 3px;
+    text-align: right;
+    width: 174px;
+}
+
+div.game-score {
+    display: inline-block;
+    padding: 0 3px;
+    font-weight: bold;
+    text-align: center;
+    width: 40px;
+}
+
+div.game-away-team {
+    display: inline-block;
+    padding-left: 3px;
+    text-align: left;
+}
+
+table.standings {
+    margin: 0 0 20px 0;
+    font-size: 13px;
 }

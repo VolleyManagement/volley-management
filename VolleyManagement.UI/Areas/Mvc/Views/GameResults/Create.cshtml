@@ -1,10 +1,10 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
 
 @{
-    ViewBag.Title = Resources.GameResultsViews.CreateTitle;
+    ViewBag.Title = Resources.GameResultViews.CreateTitle;
 }
 
-<h2>Create</h2>
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("Create", "GameResults", FormMethod.Post, new { id = "createForm", name = "createForm" }))
 {
@@ -15,7 +15,7 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="@Resources.GameResultsViews.Create" class="btn btn-default" />
+            <input type="submit" value="@Resources.GameResultViews.Create" class="btn btn-default" />
         </div>
     </div>
 

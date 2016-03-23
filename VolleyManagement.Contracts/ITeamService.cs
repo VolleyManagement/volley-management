@@ -30,6 +30,12 @@
         void Create(Team team);
 
         /// <summary>
+        /// Edit team.
+        /// </summary>
+        /// <param name="team">Team to edit.</param>
+        void Edit(Team team);
+
+        /// <summary>
         /// Delete team by id.
         /// </summary>
         /// <param name="id">Team id.</param>

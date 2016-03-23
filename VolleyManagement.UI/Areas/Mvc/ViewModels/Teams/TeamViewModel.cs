@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -56,6 +55,7 @@
         /// </summary>
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
         public List<PlayerNameViewModel> Roster { get; set; }
+
 
         #region Factory Methods
 

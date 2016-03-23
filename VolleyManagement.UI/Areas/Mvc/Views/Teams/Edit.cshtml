@@ -1,13 +1,14 @@
-﻿@using System.Web.Optimization
-@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+
+@using System.Web.Optimization
 
 @{
     ViewBag.Title = Resources.TeamViews.EditTeamTitle;
 }
 
 <h2>@ViewBag.Title</h2>
-<div vmscope="team_edit">
-    @using (Html.BeginForm())
+
+@using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
 
@@ -18,12 +19,12 @@
         @Html.Partial("_CreateEdit", Model)
 
         <p>
-            <button id="saveTeamButton">@Resources.TeamViews.Save</button> 
+            <button id="saveTeamButton">@Resources.TeamViews.Save</button>
         </p>
     </fieldset>
-    }
+}
 
-    <div>
-        @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
-    </div>
+<div>
+    @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
 </div>
+

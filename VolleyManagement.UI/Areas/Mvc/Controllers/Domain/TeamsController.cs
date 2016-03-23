@@ -58,51 +58,114 @@
         /// <param name="teamViewModel">Team view model</param>
         /// <returns>Redirect to team index page</returns>
         [HttpPost]
-        public ActionResult Create(TeamViewModel teamViewModel)
+        public JsonResult Create(TeamViewModel teamViewModel)
         {
+            JsonResult result = null;
+
             if (!this.ModelState.IsValid)
             {
-                return this.View(teamViewModel);
-            }
-
-            var domainTeam = teamViewModel.ToDomain();
-
-            try
-            {
-                this._teamService.Create(domainTeam);
-            }
-            catch (MissingEntityException ex)
-            {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                return this.View(teamViewModel);
-            }
-            catch (ValidationException ex)
-            {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                return this.View(teamViewModel);
-            }
-
-            bool duringRosterUpdateErrors = false;
-
-            if (teamViewModel.Roster != null)
-            {
-                duringRosterUpdateErrors = !UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
-            }
-
-            teamViewModel.Id = domainTeam.Id;
-
-            if (duringRosterUpdateErrors)
-            {
-                return View("Edit", teamViewModel);
+                result = this.Json(this.ModelState);
             }
             else
             {
-                if (this.Request.IsAjaxRequest())
+                var domainTeam = teamViewModel.ToDomain();
+
+                try
                 {
-                    return this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                    this._teamService.Create(domainTeam);
                 }
-                return this.RedirectToAction("Index");
+                catch (MissingEntityException ex)
+                {
+                    this.ModelState.AddModelError(string.Empty, ex.Message);
+                    result = this.Json(this.ModelState);
+                }
+                catch (ValidationException ex)
+                {
+                    this.ModelState.AddModelError(string.Empty, ex.Message);
+                    result = this.Json(this.ModelState);
+                }
+
+                bool duringRosterUpdateErrors = false;
+                if (teamViewModel.Roster != null)
+                {
+                    duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
+                    result = this.Json(this.ModelState);
+                }
+
+                teamViewModel.Id = domainTeam.Id;
+                if (!duringRosterUpdateErrors)
+                {
+                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                }
+            }            
+
+            return result;
+        }
+
+        /// <summary>
+        /// Edit team action POST
+        /// </summary>
+        /// <param name="teamViewModel">Team view model</param>
+        /// <returns>Redirect to team index page</returns>
+        public ActionResult Edit(int id)
+        {
+            var team = _teamService.Get(id);
+            if (team == null)
+            {
+                return HttpNotFound();
             }
+            var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
+            return View(viewModel);
+        }
+
+        /// <summary>
+        /// Edit team action POST
+        /// </summary>
+        /// <param name="teamViewModel">Team view model</param>
+        /// <returns>Redirect to team index page</returns>
+        [HttpPost]
+        public JsonResult Edit(TeamViewModel teamViewModel)
+        {
+            JsonResult result = null;
+
+            if (!this.ModelState.IsValid)
+            {
+                result = this.Json(this.ModelState);
+            }
+            else
+            {
+                var domainTeam = teamViewModel.ToDomain();
+
+                try
+                {
+                    this._teamService.Edit(domainTeam);
+                }
+                catch (MissingEntityException ex)
+                {
+                    this.ModelState.AddModelError(string.Empty, ex.Message);
+                    result = this.Json(this.ModelState);
+                }
+                catch (ValidationException ex)
+                {
+                    this.ModelState.AddModelError(string.Empty, ex.Message);
+                    result = this.Json(this.ModelState);
+                }
+
+                bool duringRosterUpdateErrors = false;
+                if (teamViewModel.Roster != null)
+                {
+                    duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
+                    result = this.Json(this.ModelState);
+                }
+
+                teamViewModel.Id = domainTeam.Id;
+                if (!duringRosterUpdateErrors)
+                {
+                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -153,6 +216,8 @@
 
         private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)
         {
+            // TODO: manage case when player was deleted from the team
+
             bool clearUpdate = true;
 
             List<PlayerNameViewModel> playersToRemoveFromViewModel = new List<PlayerNameViewModel>();

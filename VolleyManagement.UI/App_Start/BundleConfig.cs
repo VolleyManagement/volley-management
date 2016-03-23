@@ -13,8 +13,10 @@
         /// <param name="bundles">Collection of bundles</param>
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new StyleBundle("~/Content/css")
-                        .Include("~/Content/*.css"));
+            bundles.Add(new StyleBundle("~/bundles/css")
+                        .Include("~/Content/bootstrap.min.css",
+                                 "~/Content/Site.css",
+                                 "~/Content/themes/base/all.css"));
 
             // Remember: Bundles {version} parameters doesn't work correctly with min files
 

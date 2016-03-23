@@ -199,25 +199,41 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// Returns list of free players which are satisfy specified search string, team and exclude list 
         /// </summary>
         /// <param name="searchString">Name of player</param>
-        /// <param name="isCaptain">Sign if this player will be a captain</param>
-        /// <param name="selectedPlayers">list of players ids already selected to team</param>
+        /// <param name="excludeList">list of players ids should be excluded from result</param>
+        /// <param name="includeList">list of players ids should be included to result</param>
         /// <returns>List of free players</returns>
-        public JsonResult GetFreePlayers(string searchString, bool isCaptain, string selectedPlayers)
+        public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
         {
             searchString = HttpUtility.UrlDecode(searchString).Replace(" ", "");
             var query = this._playerService.Get()
-                            .Where(p => (p.FirstName + p.LastName).Contains(searchString) || (p.LastName + p.FirstName).Contains(searchString));
+                            .Where(p => (p.FirstName + p.LastName).Contains(searchString) 
+                                   || (p.LastName + p.FirstName).Contains(searchString));
 
-            if (!string.IsNullOrEmpty(selectedPlayers))
+            if (includeTeam.HasValue)
             {
-                var selectedIds = this.GetIntCollection(selectedPlayers);
-                query = isCaptain
-                        ? query.Where(p => selectedIds.Contains(p.Id) || p.TeamId == null)
-                        : query.Where(p => !selectedIds.Contains(p.Id) && p.TeamId == null);
-            }
-            else 
+                if (string.IsNullOrEmpty(includeList))
+                {
+                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value);
+                }
+                else
+                {
+                    var selectedIds = this.ParseIntList(includeList);
+                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
+                }
+            } else if (string.IsNullOrEmpty(includeList))
             {
                 query = query.Where(p => p.TeamId == null);
+            }
+            else
+            {
+                var selectedIds = this.ParseIntList(includeList);
+                query = query.Where(p => p.TeamId == null || selectedIds.Contains(p.Id));
+            }
+
+            if (!string.IsNullOrEmpty(excludeList))
+            {
+                var selectedIds = this.ParseIntList(excludeList);
+                query = query.Where(p => !selectedIds.Contains(p.Id));
             }
             
             var result = query.OrderBy(p => p.LastName)
@@ -239,8 +255,8 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
             return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
         }
-    
-        private List<int> GetIntCollection(string source)
+
+        private List<int> ParseIntList(string source)
         {
             var splitted = source.Split(',');
             var result = new List<int>();

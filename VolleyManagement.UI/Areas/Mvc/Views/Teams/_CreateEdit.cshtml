@@ -1,23 +1,6 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
-@using System.Web.Script.Serialization;
 @using VolleyManagement.UI.App_GlobalResources
 
-@{
-    string captainFullName = string.Empty;
-    string teamPlayersJson = string.Empty;
-    string teamCaptainRequiredMessage = ViewModelResources.TeamCaptainRequired;
-    int captainId = 0;
-    if (Model.Captain != null)
-    {
-        captainFullName = Model.Captain.FullName;
-        captainId = Model.Captain.Id;
-    }
-    
-    if(Model.Roster != null)
-    {
-        teamPlayersJson = new JavaScriptSerializer().Serialize(Model.Roster);   
-    }
-}
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
 </div>
@@ -37,6 +20,17 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Captain)
 </div>
+
+@{
+    string captainFullName = string.Empty;
+    int captainId = 0;
+    if (Model.Captain != null)
+    {
+        captainFullName = Model.Captain.FullName;
+        captainId = Model.Captain.Id;
+    }
+}
+
 <div class="editor-label">
     <input class="text-box single-line"
         id="Captain_FullName"
@@ -44,11 +38,10 @@
         type="text"
         value="@captainFullName"
         data-val="true"
-        data-val-required='@teamCaptainRequiredMessage'
-        vm_playerid="@captainId" />
+        data-val-required='@ViewModelResources.TeamCaptainRequired'
+        data-vm-playerid="@captainId" />
     <span class="field-validation-valid" data-valmsg-for="Captain.FullName" data-valmsg-replace="true"></span>
 </div>
-
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Achievements)
@@ -61,12 +54,29 @@
 <br />
 
 <div>
-    <h4>@Resources.TeamViews.RosterTitle</h4>
+    <h4>@ViewModelResources.TeamRoster</h4>
 
     <br />
+        <script type="text/javascript">
+        (function(){
+            "use strict";
+            
+            var ns = VM.addNamespace("team.createEdit");
+            ns.teamRoster = [];
+                       
+            @foreach (var item in Model.Roster) {
+                <text>
+                    ns.teamRoster.push({
+                        name: '@(item.FullName)',
+                        id: "@(item.Id)",
+                        isCaptain: @(item.Id == captainId? "true" : "false")
+                    });
+                </text>
+            }
+        })();            
+        </script>
 
-    <div class="dataForTeamPlayersTable" hidden>@teamPlayersJson</div>
-
+    <button id='addPlayerToTeamButton'>Add player to team</button>
     <table id="teamRoster" class="table">
         <tr>
             <th>@Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)</th>

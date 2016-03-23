@@ -6,10 +6,10 @@
 }
 
 <h2>@ViewBag.Title</h2>
-<div vm_scope="team_edit">
-    @using (Html.BeginForm())
-    {
-        @Html.ValidationSummary(true)
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>@Resources.TeamViews.TeamLegend</legend>
@@ -24,5 +24,4 @@
     <div>
         @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
     </div>
-    }
-</div>
+}

@@ -25,6 +25,9 @@
                                  "~/Scripts/bootstrap.min.js",
                                  "~/Scripts/VmScripts/VmScripts.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/vmscripts")
+                        .Include("~/Scripts/VmScripts/VmScripts.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryui")
                         .Include("~/Scripts/jquery-ui-{version}.js"));
 

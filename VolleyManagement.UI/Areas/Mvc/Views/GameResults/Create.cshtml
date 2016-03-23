@@ -1,0 +1,24 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
+
+@{
+    ViewBag.Title = Resources.GameResultViews.CreateTitle;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Create", "GameResults", FormMethod.Post, new { id = "createForm", name = "createForm" }))
+{
+    <hr />
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.Partial("_CreateOrEdit", Model)
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="@Resources.GameResultViews.Create" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+
+<script src="~/Scripts/GameResults/ResultsValidate.js" type="text/javascript"></script>

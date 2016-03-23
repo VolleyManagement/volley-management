@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Data.Queries.Tournaments
+﻿namespace VolleyManagement.Data.Queries.Tournament
 {
     using VolleyManagement.Data.Contracts;
 

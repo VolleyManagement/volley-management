@@ -1,0 +1,70 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
+
+@using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
+@using DomainResources = VolleyManagement.Domain.Properties.Resources;
+
+@Html.ValidationMessage("ValidationMessage", new { @class = "text-danger", name = "ValidationMessage" })
+@Html.HiddenFor(model => model.TournamentId)
+
+<div class="form-group">
+    @Resources.GameResultViews.TeamsFields
+    @Html.DropDownListFor(
+            x => x.HomeTeamId,
+            new SelectList(Model.TeamsList, "Value", "Text"))
+
+    @Html.DropDownListFor(
+            x => x.AwayTeamId,
+            new SelectList(Model.TeamsList, "Value", "Text"))
+</div>
+
+<div class="form-group">
+    @Resources.GameResultViews.SetsScoreFields
+    @Html.EditorFor(model => model.SetsScore.Home, new { htmlAttributes = new { @class = "form-control" } })
+
+    @Html.EditorFor(model => model.SetsScore.Away, new { htmlAttributes = new { @class = "form-control" } })
+</div>
+
+<div class="form-group">
+    <label for="@Model.IsTechnicalDefeat">
+        @Resources.GameResultViews.TechnicalDefeatField
+        @Html.EditorFor(model => model.IsTechnicalDefeat)
+        @Html.ValidationMessageFor(model => model.IsTechnicalDefeat, "", new { @class = "text-danger" })
+    </label>
+</div>
+
+@for (int i = 0; i < Model.SetScores.Count; i++)
+{
+    <div class="form-group">
+        @string.Format(Resources.GameResultViews.SetFields, i + 1)
+        @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control" } })
+
+        @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control" } })
+    </div>
+}
+
+
+<script>
+
+    var gameResultConstants = {
+        "SETS_COUNT_TO_WIN" : @GameResultConstants.SETS_COUNT_TO_WIN,
+        "SET_POINTS_MIN_DELTA_TO_WIN": @GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+        "SET_POINTS_MIN_VALUE_TO_WIN": @GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+        "TECHNICAL_DEFEAT_SETS_WINNER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE,
+        "TECHNICAL_DEFEAT_SETS_LOSER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE,
+        "TECHNICAL_DEFEAT_SET_WINNER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
+        "TECHNICAL_DEFEAT_SET_LOSER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
+        "UNPLAYED_SET_HOME_SCORE": @GameResultConstants.UNPLAYED_SET_HOME_SCORE,
+        "UNPLAYED_SET_AWAY_SCORE": @GameResultConstants.UNPLAYED_SET_AWAY_SCORE
+        };
+
+    var resourceMessages = {
+        "GameResultSameTeam" : "@DomainResources.GameResultSameTeam",
+        "GameResultSetsScoreInvalid" : "@DomainResources.GameResultSetsScoreInvalid",
+        "GameResultSetsScoreNoMatchSetScores" : "@DomainResources.GameResultSetsScoreNoMatchSetScores",
+        "GameResultRequiredSetScores" : "@DomainResources.GameResultRequiredSetScores",
+        "GameResultOptionalSetScores" : "@DomainResources.GameResultOptionalSetScores",
+        "GameResultPreviousOptionalSetUnplayed" : "@DomainResources.GameResultPreviousOptionalSetUnplayed",
+        "GameResultSetScoresNotOrdered" : "@DomainResources.GameResultSetScoresNotOrdered"
+    };
+
+</script>

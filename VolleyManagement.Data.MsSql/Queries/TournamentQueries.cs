@@ -7,7 +7,7 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Tournaments;
+    using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>

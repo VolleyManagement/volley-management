@@ -8,7 +8,7 @@
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Tournaments;
+    using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.TournamentsAggregate;
     using DivisionConstants = VolleyManagement.Domain.Constants.Division;
     using GroupConstants = VolleyManagement.Domain.Constants.Group;
@@ -116,6 +116,7 @@
             ValidateGroups(tournamentToCreate.Divisions);
 
             _tournamentRepository.Add(tournamentToCreate);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

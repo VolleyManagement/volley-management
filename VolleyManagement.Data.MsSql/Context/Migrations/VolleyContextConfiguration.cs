@@ -33,9 +33,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             defaultRoles.Add(CreateRole("TournamentAdministrator"));
             defaultRoles.Add(CreateRole("User"));
 
-            context.Roles.AddOrUpdate(
-                r => r.Name,
-                defaultRoles.ToArray());
+            context.Roles.AddOrUpdate(r => r.Name, defaultRoles.ToArray());
 
             var contributorTeams = new[]
             {
@@ -51,7 +49,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Contributors076Atqc(),
                 Contributors085Net()
             };
-            context.ContributorTeam.AddOrUpdate(s => s.Name, contributorTeams);
+
+            context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
         }
 
         private static RoleEntity CreateRole(string name)

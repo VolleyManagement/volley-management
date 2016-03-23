@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources {
+namespace VolleyManagement.UI.Resources
+{
     using System;
     
     

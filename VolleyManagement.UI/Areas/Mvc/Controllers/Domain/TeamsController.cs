@@ -73,6 +73,18 @@
                 try
                 {
                     this._teamService.Create(domainTeam);
+                    bool duringRosterUpdateErrors = false;
+                    if (teamViewModel.Roster != null)
+                    {
+                        duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
+                        result = this.Json(this.ModelState);
+                    }
+
+                    teamViewModel.Id = domainTeam.Id;
+                    if (!duringRosterUpdateErrors)
+                    {
+                        result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                    }
                 }
                 catch (MissingEntityException ex)
                 {
@@ -83,19 +95,6 @@
                 {
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
-                }
-
-                bool duringRosterUpdateErrors = false;
-                if (teamViewModel.Roster != null)
-                {
-                    duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
-                    result = this.Json(this.ModelState);
-                }
-
-                teamViewModel.Id = domainTeam.Id;
-                if (!duringRosterUpdateErrors)
-                {
-                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
             }            
 

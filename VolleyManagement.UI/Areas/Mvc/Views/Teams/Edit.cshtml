@@ -1,5 +1,7 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
 
+@using System.Web.Optimization
+
 @{
     ViewBag.Title = Resources.TeamViews.EditTeamTitle;
 }
@@ -9,6 +11,7 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
+
     <fieldset>
         <legend>@Resources.TeamViews.TeamLegend</legend>
 
@@ -16,7 +19,7 @@
         @Html.Partial("_CreateEdit", Model)
 
         <p>
-            <input type="submit" value="@Resources.TeamViews.Save" />
+            <button id="saveTeamButton">@Resources.TeamViews.Save</button>
         </p>
     </fieldset>
 }
@@ -24,3 +27,4 @@
 <div>
     @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
 </div>
+

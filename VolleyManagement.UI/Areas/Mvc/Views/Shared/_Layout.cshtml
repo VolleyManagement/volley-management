@@ -1,15 +1,18 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Optimization
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
 
+    @Styles.Render("~/bundles/css")
     @Scripts.Render("~/bundles/bootstrapscripts")
+	@Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/jqueryvalidation")
     @Scripts.Render("~/bundles/useractionscripts")
+    @Scripts.Render("~/bundles/vmscripts")
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -34,8 +37,6 @@
         @RenderBody()
     </div>
 
-    @Scripts.Render("~/bundles/bootstrapscripts")
-    @Scripts.Render("~/bundles/jqueryvalidation")
-    @Scripts.Render("~/bundles/useractionscripts")
+    
 </body>
 </html>

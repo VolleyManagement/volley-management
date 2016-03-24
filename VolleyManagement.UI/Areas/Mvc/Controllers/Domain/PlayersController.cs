@@ -1,4 +1,8 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿using System.Collections.Generic;
+using System.Text;
+using System.Web;
+
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -192,30 +196,51 @@
         }
 
         /// <summary>
-        /// Open window with form which allow to choose player or players
+        /// Returns list of free players which are satisfy specified search string, team and exclude list 
         /// </summary>
-        /// <param name="page">Number of the page</param>
-        /// <param name="textToSearch">Text to filter results.</param>
-        /// <returns>View with choosing form</returns>
-        public ActionResult ChoosePlayers(int? page, string textToSearch = "")
+        /// <param name="searchString">Name of player</param>
+        /// <param name="excludeList">list of players ids should be excluded from result</param>
+        /// <param name="includeList">list of players ids should be included to result</param>
+        /// <returns>List of free players</returns>
+        public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
         {
-            textToSearch = textToSearch.Trim();
+            searchString = HttpUtility.UrlDecode(searchString).Replace(" ", "");
+            var query = this._playerService.Get()
+                            .Where(p => (p.FirstName + p.LastName).Contains(searchString) 
+                                   || (p.LastName + p.FirstName).Contains(searchString));
 
-            try
+            if (includeTeam.HasValue)
             {
-                PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
-
-                if (Request.IsAjaxRequest())
+                if (string.IsNullOrEmpty(includeList))
                 {
-                    return PartialView("_PartialNameViewModelCollection", playersOnPage.List);
+                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value);
                 }
-
-                return View(playersOnPage);
-            }
-            catch (ArgumentOutOfRangeException)
+                else
+                {
+                    var selectedIds = this.ParseIntList(includeList);
+                    query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
+                }
+            } else if (string.IsNullOrEmpty(includeList))
             {
-                return RedirectToAction("ChoosePlayers");
+                query = query.Where(p => p.TeamId == null);
             }
+            else
+            {
+                var selectedIds = this.ParseIntList(includeList);
+                query = query.Where(p => p.TeamId == null || selectedIds.Contains(p.Id));
+            }
+
+            if (!string.IsNullOrEmpty(excludeList))
+            {
+                var selectedIds = this.ParseIntList(excludeList);
+                query = query.Where(p => !selectedIds.Contains(p.Id));
+            }
+            
+            var result = query.OrderBy(p => p.LastName)
+                              .ToList()
+                              .Select(p => PlayerNameViewModel.Map(p));
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
@@ -229,6 +254,22 @@
             }
 
             return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);
+        }
+
+        private List<int> ParseIntList(string source)
+        {
+            var splitted = source.Split(',');
+            var result = new List<int>();
+            int parsed;
+            foreach (var i in splitted)
+            {
+                if (int.TryParse(i, out parsed))
+                {
+                    result.Add(parsed);
+                }
+            }
+
+            return result;
         }
     }
 }

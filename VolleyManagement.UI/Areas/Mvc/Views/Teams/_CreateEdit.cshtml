@@ -1,4 +1,5 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+@using VolleyManagement.UI.App_GlobalResources
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
@@ -17,35 +18,31 @@
 </div>
 
 <div class="editor-label">
-    <label for="Captain_FullNameText">Капитан</label>
+    @Html.LabelFor(model => model.Captain)
 </div>
 
 @{
     string captainFullName = string.Empty;
-    int? captainId = null;
+    int captainId = 0;
     if (Model.Captain != null)
     {
         captainFullName = Model.Captain.FullName;
         captainId = Model.Captain.Id;
     }
-
-    <div class="editor-label">
-        <input class="text-box single-line"
-               id="captainFullName"
-               name="Captain.FullName"
-               type="text"
-               value="@captainFullName"
-               readonly />
-        <input type="button"
-               name="openChoosingPlayersButton"
-               value="..."
-               onclick="openChoosingPlayersWindow('ChoosingCaptainWindow')" />
-        <input class="hidden"
-               id="captainId"
-               name="Captain.Id" 
-               value="@captainId"/>
-    </div>
 }
+
+<div class="editor-label">
+    <input class="text-box single-line"
+        id="Captain_FullName"
+        name="Captain.FullName"
+        type="text"
+        value="@captainFullName"
+        data-val="true"
+        data-val-required='@ViewModelResources.TeamCaptainRequired'
+        data-vm-playerid="@captainId" />
+    <span class="field-validation-valid" data-valmsg-for="Captain.FullName" data-valmsg-replace="true"></span>
+</div>
+
 <div class="editor-label">
     @Html.LabelFor(model => model.Achievements)
 </div>
@@ -57,36 +54,42 @@
 <br />
 
 <div>
-    <h4>@Resources.TeamViews.RosterTitle</h4>
+    <h4>@ViewModelResources.TeamRoster</h4>
 
     <br />
+    <script type="text/javascript">
+        (function(){
+            "use strict";
+            
+            var ns = VM.addNamespace("team.createEdit");
+            ns.teamRoster = [];
+            @{
+                if (Model.Roster != null)
+                {
+                    foreach (var item in Model.Roster)
+                    {
+            <text>
+            ns.teamRoster.push({
+                name: '@(item.FullName)',
+                id: "@(item.Id)",
+                isCaptain: @(item.Id == captainId ? "true" : "false")
+            });
+            </text>
+                    }
+                }
+            }            
+            
+        })();            
+    </script>
 
-    <input type="button" value="@Resources.TeamViews.AddPlayersToRoster" onclick="openChoosingPlayersWindow('ChoosingRosterWindow')">
+    <button id='addPlayerToTeamButton'>Add player to team</button>
     <table id="teamRoster" class="table">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)
-            </th>
-            <th class="hidden">
-            </th>
+            <th>@Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)</th>
+            <th class="hidden"></th>
         </tr>
-        @if (Model.Roster != null)
-        {
-            for (int i = 0; i < Model.Roster.Count(); i++)
-            {
-                var item = Model.Roster[i];
-                if (item.Id != Model.Captain.Id)
-                {
-                    <tr id="player_@item.Id" class="rosterPlayer">
-                        <td>
-                            <input type="text" name="Roster[@i].FullName" value="@item.FullName" readonly />
-                        </td>
-                        <td class="hidden rosterPlayerId">
-                            <input type="text" name="Roster[@i].Id" value="@item.Id" hidden />
-                        </td>
-                    </tr>
-                }
-            }
-        }
     </table>
 </div>
+
+@Scripts.Render("~/bundles/teameditscripts")
+

@@ -91,6 +91,15 @@
         }
 
         /// <summary>
+        /// Edit team.
+        /// </summary>
+        /// <param name="team">Team to edit.</param>
+        public void Edit(Team team)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
         /// Finds a Team by id.
         /// </summary>
         /// <param name="id">id for search.</param>

@@ -235,7 +235,7 @@
     <value>Капитан</value>
   </data>
   <data name="TeamCaptainRequired" xml:space="preserve">
-    <value>{0} не может быть пустым</value>
+    <value>Необходимо указать капитана команды</value>
   </data>
   <data name="TeamCoach" xml:space="preserve">
     <value>Тренер</value>

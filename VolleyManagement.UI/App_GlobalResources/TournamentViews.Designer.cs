@@ -61,7 +61,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to + Добавить дивизион.
+        ///   Looks up a localized string similar to + Add division.
         /// </summary>
         public static string AddDivision {
             get {
@@ -70,7 +70,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить результат игры.
+        ///   Looks up a localized string similar to Add game result.
         /// </summary>
         public static string AddGameResult {
             get {
@@ -79,7 +79,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to + Добавить группу.
+        ///   Looks up a localized string similar to + Add group.
         /// </summary>
         public static string AddGroup {
             get {
@@ -88,7 +88,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Назад к списку.
+        ///   Looks up a localized string similar to Back to list.
         /// </summary>
         public static string BackToList {
             get {
@@ -97,7 +97,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Создать.
+        ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string Create {
             get {
@@ -106,7 +106,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Создать новый турнир.
+        ///   Looks up a localized string similar to Create new tournament.
         /// </summary>
         public static string CreateNewTournament {
             get {
@@ -115,7 +115,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Создание нового турнира.
+        ///   Looks up a localized string similar to Creating new tournament.
         /// </summary>
         public static string CreateTournamentTitle {
             get {
@@ -124,7 +124,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Текущие.
+        ///   Looks up a localized string similar to Current.
         /// </summary>
         public static string CurrentTournamentsHeader {
             get {
@@ -133,7 +133,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Удалить.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
@@ -142,7 +142,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вы уверены, что хотите это удалить?.
+        ///   Looks up a localized string similar to Are you sure you want to delete this?.
         /// </summary>
         public static string DeleteConfirm {
             get {
@@ -151,7 +151,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Удаление турнира.
+        ///   Looks up a localized string similar to Deleting tournament.
         /// </summary>
         public static string DeleteTournamentTitle {
             get {
@@ -160,7 +160,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Редактировать.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
@@ -169,7 +169,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Редактирование турнира.
+        ///   Looks up a localized string similar to Editing tournament.
         /// </summary>
         public static string EditTournamentTitle {
             get {
@@ -178,7 +178,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Показать завершенные.
+        ///   Looks up a localized string similar to Show finished.
         /// </summary>
         public static string FinishedTournaments {
             get {
@@ -187,7 +187,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Завершенные.
+        ///   Looks up a localized string similar to Finished.
         /// </summary>
         public static string FinishedTournamentsHeader {
             get {
@@ -196,7 +196,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Регистрация на турнир.
+        ///   Looks up a localized string similar to Applying period.
         /// </summary>
         public static string RegistrationFieldsTitle {
             get {
@@ -205,7 +205,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Сохранить.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
@@ -214,7 +214,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Показать результаты игр.
+        ///   Looks up a localized string similar to Show game results.
         /// </summary>
         public static string ShowGameResults {
             get {
@@ -223,7 +223,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Показать турнирную таблицу.
+        ///   Looks up a localized string similar to Show tournament table.
         /// </summary>
         public static string ShowTournamentStandings {
             get {
@@ -232,7 +232,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Подробности турнира.
+        ///   Looks up a localized string similar to Tournament details.
         /// </summary>
         public static string TournamentDetailsTitle {
             get {
@@ -241,7 +241,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Турнир.
+        ///   Looks up a localized string similar to Tournament.
         /// </summary>
         public static string TournamentFieldsTitle {
             get {
@@ -250,7 +250,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Турнир.
+        ///   Looks up a localized string similar to Tournament.
         /// </summary>
         public static string TournamentLegend {
             get {
@@ -259,7 +259,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Турниры.
+        ///   Looks up a localized string similar to Tournaments.
         /// </summary>
         public static string TournamentsIndexTitle {
             get {
@@ -268,7 +268,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Трансферный период.
+        ///   Looks up a localized string similar to Transfer period.
         /// </summary>
         public static string TransferFieldsTitle {
             get {
@@ -277,7 +277,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ожидаемые.
+        ///   Looks up a localized string similar to Upcoming.
         /// </summary>
         public static string UpcomingTournamentsHeader {
             get {

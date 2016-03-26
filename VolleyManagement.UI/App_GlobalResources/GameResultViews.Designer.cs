@@ -61,7 +61,16 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить.
+        ///   Looks up a localized string similar to Back to tournament details.
+        /// </summary>
+        public static string BackToTournament {
+            get {
+                return ResourceManager.GetString("BackToTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add.
         /// </summary>
         public static string Create {
             get {
@@ -70,7 +79,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить результат игры.
+        ///   Looks up a localized string similar to Add game result.
         /// </summary>
         public static string CreateTitle {
             get {
@@ -79,7 +88,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Удалить.
+        ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
@@ -88,7 +97,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вы уверены, что хотите удалить результат игры?.
+        ///   Looks up a localized string similar to Are you sure you want to delete game result?.
         /// </summary>
         public static string DeleteConfirmationText {
             get {
@@ -97,7 +106,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Удалить игру.
+        ///   Looks up a localized string similar to Delete game.
         /// </summary>
         public static string DeleteTitle {
             get {
@@ -106,7 +115,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Подробно.
+        ///   Looks up a localized string similar to Details.
         /// </summary>
         public static string Details {
             get {
@@ -115,7 +124,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Информация по игре.
+        ///   Looks up a localized string similar to Game info.
         /// </summary>
         public static string DetailsTitle {
             get {
@@ -124,7 +133,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Редактировать.
+        ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string Edit {
             get {
@@ -133,7 +142,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Редактировать результат.
+        ///   Looks up a localized string similar to Edit result.
         /// </summary>
         public static string EditTitle {
             get {
@@ -142,7 +151,79 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Партия #{0}:.
+        ///   Looks up a localized string similar to Game result.
+        /// </summary>
+        public static string GameResultHeader {
+            get {
+                return ResourceManager.GetString("GameResultHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no complete games for today.
+        /// </summary>
+        public static string NoGameResults {
+            get {
+                return ResourceManager.GetString("NoGameResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to № s/s.
+        /// </summary>
+        public static string ResultNumberHeader {
+            get {
+                return ResourceManager.GetString("ResultNumberHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set 1.
+        /// </summary>
+        public static string Set1ScoreHeader {
+            get {
+                return ResourceManager.GetString("Set1ScoreHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set 2.
+        /// </summary>
+        public static string Set2ScoreHeader {
+            get {
+                return ResourceManager.GetString("Set2ScoreHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set 3.
+        /// </summary>
+        public static string Set3ScoreHeader {
+            get {
+                return ResourceManager.GetString("Set3ScoreHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set 4.
+        /// </summary>
+        public static string Set4ScoreHeader {
+            get {
+                return ResourceManager.GetString("Set4ScoreHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set 5.
+        /// </summary>
+        public static string Set5ScoreHeader {
+            get {
+                return ResourceManager.GetString("Set5ScoreHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set #{0}:.
         /// </summary>
         public static string SetFields {
             get {
@@ -151,7 +232,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Счет по партиям:.
+        ///   Looks up a localized string similar to Set score:.
         /// </summary>
         public static string SetsScoreFields {
             get {
@@ -160,7 +241,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Команды:.
+        ///   Looks up a localized string similar to Teams:.
         /// </summary>
         public static string TeamsFields {
             get {
@@ -169,7 +250,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Техническое поражение.
+        ///   Looks up a localized string similar to Technical defeat.
         /// </summary>
         public static string TechnicalDefeat {
             get {
@@ -178,7 +259,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Техническое поражение:.
+        ///   Looks up a localized string similar to Technical defeat:.
         /// </summary>
         public static string TechnicalDefeatField {
             get {
@@ -187,7 +268,16 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Результаты игр в турнире.
+        ///   Looks up a localized string similar to Tournament &quot;{0}&quot;.
+        /// </summary>
+        public static string TournamentResultsLegend {
+            get {
+                return ResourceManager.GetString("TournamentResultsLegend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game results.
         /// </summary>
         public static string TournamentResultsTitle {
             get {

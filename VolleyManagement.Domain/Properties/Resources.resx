@@ -118,70 +118,70 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DivisionCountOutOfRange" xml:space="preserve">
-    <value>Количество дивизионов в турнире должно быть в диапазоне от {0} до {1}</value>
+    <value>The number of divisions in the tournament must be in the range of {0} to {1}</value>
   </data>
   <data name="DivisionNamesNotUnique" xml:space="preserve">
-    <value>Дивизионы не могут иметь одинаковые названия</value>
+    <value>Divisions can have the same name</value>
   </data>
   <data name="GameResultOptionalSetScores" xml:space="preserve">
-    <value>В партии количество очков у одной команды должно составлять как минимум {0} и разница очков должна быть как минимум {1}. Если количество очков превышает {0}, разница очков должна быть равна {1}. При техническом поражении счет в необязательной партии должен быть {2}:{3}</value>
+    <value>In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3}</value>
   </data>
   <data name="GameResultPreviousOptionalSetUnplayed" xml:space="preserve">
-    <value>Укажите счет предыдущей необязательной партии</value>
+    <value>Enter score of previous optional game</value>
   </data>
   <data name="GameResultRequiredSetScores" xml:space="preserve">
-    <value>В партии количество очков у одной команды должно составлять как минимум {0} и разница очков должна быть как минимум {1}. Если количество очков превышает {0}, разница очков должна быть равна {1}. При техническом поражении счет в обязательной партии должен быть {2}:{3} или {3}:{2}</value>
+    <value>In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3} or {3}: {2}</value>
   </data>
   <data name="GameResultSameTeam" xml:space="preserve">
-    <value>Команда не может играть сама с собой</value>
+    <value>The team can not play with itself</value>
   </data>
   <data name="GameResultSetScoresNotOrdered" xml:space="preserve">
-    <value>Счета партий указаны в неверном порядке</value>
+    <value>The set scores are listed in the wrong order</value>
   </data>
   <data name="GameResultSetsScoreInvalid" xml:space="preserve">
-    <value>Счет по партиям может быть одним из следующих: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. При техническом поражении счет по партиям должен быть {0}:{1} или {1}:{0}</value>
+    <value>The set score can be one of the following:: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. In case of a technical defeat set score must be {0}:{1} or {1}:{0}</value>
   </data>
   <data name="GameResultSetsScoreNoMatchSetScores" xml:space="preserve">
-    <value>Счет по партиям не соответствует результатам партий</value>
+    <value>Set score does not match set scores</value>
   </data>
   <data name="GroupCountOutOfRange" xml:space="preserve">
-    <value>Количество групп в дивизионе должно быть в диапазоне от {0} до {1}</value>
+    <value>An amount of groups in division should be in a range {0} - {1}</value>
   </data>
   <data name="GroupNamesNotUnique" xml:space="preserve">
-    <value>Группы не могут иметь одинаковые названия</value>
+    <value>Group names should be unique</value>
   </data>
   <data name="InvalidPeriodTransfer" xml:space="preserve">
-    <value>Трансфер должен начинаться до начала турнира</value>
+    <value>Transfer should start before the games start</value>
   </data>
   <data name="InvalidTransferEndpoint" xml:space="preserve">
-    <value>Окончание трансферного периода должно быть раньше окончания игр</value>
+    <value>End of the transfer period should be before the end of the tournament</value>
   </data>
   <data name="InvelidPeriodTournament" xml:space="preserve">
-    <value>Регистрация на турнир должна быть раньше чем его начало</value>
+    <value>Start of the applying period must be earlier than its end</value>
   </data>
   <data name="LateRegistrationDates" xml:space="preserve">
-    <value>Вы не можете указывать начало периода заявок в прошлом</value>
+    <value>Start of the applying period must be later than today</value>
   </data>
   <data name="TournamentNameMustBeUnique" xml:space="preserve">
-    <value>Название турнира должно быть уникальным</value>
+    <value>Tournament name should be unique</value>
   </data>
   <data name="TransferEndMissing" xml:space="preserve">
-    <value>При наличии трансфера необходимо указать дату окончания периода</value>
+    <value>If there is a transfer, it's necessary to specify the end date of the transfer period</value>
   </data>
   <data name="TransferStartMissing" xml:space="preserve">
-    <value>При наличии трансфера необходимо указать дату начала периода</value>
+    <value>If there is a transfer, it's necessary to specify the start date of the transfer period</value>
   </data>
   <data name="UniqueNameMessage" xml:space="preserve">
-    <value>Имя турнира должно быть уникальным</value>
+    <value>Tournament name should be unique</value>
   </data>
   <data name="UserEmailMustBeUnique" xml:space="preserve">
-    <value>Email пользователя должен быть уникальным</value>
+    <value>User email should be unique</value>
   </data>
   <data name="UserNameAndEmailMustBeUnique" xml:space="preserve">
-    <value>Имя пользователя и email должны быть уникальны</value>
+    <value>User name and email should be unique</value>
   </data>
   <data name="UserNameMustBeUnique" xml:space="preserve">
-    <value>Имя пользователя должно быть уникально</value>
+    <value>User name should be unique</value>
   </data>
   <data name="ValidationCellPhone" xml:space="preserve">
     <value>Пожалуйста, введите телефон правильно</value>
@@ -217,45 +217,45 @@
     <value>Пожалуйта, введите вес корректно</value>
   </data>
   <data name="ValidationResultDescription" xml:space="preserve">
-    <value>Пожалуйста, уменьшите текст описания</value>
+    <value>Please, reduce the description text</value>
   </data>
   <data name="ValidationResultName" xml:space="preserve">
-    <value>Пожалуйста, введите название турнира</value>
+    <value>Please, input the tournament name</value>
   </data>
   <data name="ValidationResultRegLink" xml:space="preserve">
-    <value>Увеличен размер email</value>
+    <value>Please, reduce the email</value>
   </data>
   <data name="ValidationResultScheme" xml:space="preserve">
-    <value>Пожалуйста, введите схему корректно</value>
+    <value>Please, input the correct scheme</value>
   </data>
   <data name="ValidationResultSeason" xml:space="preserve">
-    <value>Пожалуйста, введите данные в поле сезон корректно</value>
+    <value>Please, input correct data in the field season</value>
   </data>
   <data name="ValidationTournamentSeason" xml:space="preserve">
-    <value>Пожалуйста, введите дату начала сезна корректно</value>
+    <value>Please, input correct date of the season start</value>
   </data>
   <data name="ValidationUserName" xml:space="preserve">
-    <value>Пожалуйста, введите имя пользователя корректно</value>
+    <value>Please, enter correct user name</value>
   </data>
   <data name="WrongRegistrationDatesPeriod" xml:space="preserve">
-    <value>Начало периода заявок должно быть раньше чем его окончание</value>
+    <value>Start of the applying period must be earlier than its end</value>
   </data>
   <data name="WrongRegistrationGames" xml:space="preserve">
-    <value>Период заявок должен следовать перед началом игр</value>
+    <value>Games should start after the end of the applying period</value>
   </data>
   <data name="WrongStartTournamentDates" xml:space="preserve">
-    <value>Начальная дата турнира должна следовать перед ее окончанием</value>
+    <value>Start of the tournament must be eariler than its end</value>
   </data>
   <data name="WrongStartTransferDates" xml:space="preserve">
-    <value>Начало трансфера должно быть после начала турнира</value>
+    <value>Start of the transfer period should be later than the tournament start </value>
   </data>
   <data name="WrongThreeMonthRule" xml:space="preserve">
-    <value>Период регистрации менее чем 3 месяца</value>
+    <value>Applying period is less than 3 months</value>
   </data>
   <data name="WrongTransferPeriod" xml:space="preserve">
-    <value>Начало трансферного периода должно быть раньше чем его окончание</value>
+    <value>Start of the transfer period must be earlier than its end</value>
   </data>
   <data name="WrongTransferStart" xml:space="preserve">
-    <value>Начало трансферного окна должно быть после начала игр</value>
+    <value>Start of the transfer window should be later than the games start</value>
   </data>
 </root>

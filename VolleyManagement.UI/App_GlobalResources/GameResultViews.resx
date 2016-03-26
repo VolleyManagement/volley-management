@@ -118,78 +118,78 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BackToTournament" xml:space="preserve">
-    <value>К подробностям турнира</value>
+    <value>Back to tournament details</value>
   </data>
   <data name="Create" xml:space="preserve">
-    <value>Добавить</value>
+    <value>Add</value>
   </data>
   <data name="CreateTitle" xml:space="preserve">
-    <value>Добавить результат игры</value>
+    <value>Add game result</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
+    <value>Delete</value>
   </data>
   <data name="DeleteConfirmationText" xml:space="preserve">
-    <value>Вы уверены, что хотите удалить результат игры?</value>
+    <value>Are you sure you want to delete game result?</value>
   </data>
   <data name="DeleteTitle" xml:space="preserve">
-    <value>Удалить игру</value>
+    <value>Delete game</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Подробно</value>
+    <value>Details</value>
   </data>
   <data name="DetailsTitle" xml:space="preserve">
-    <value>Информация по игре</value>
+    <value>Game info</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Редактировать</value>
+    <value>Edit</value>
   </data>
   <data name="EditTitle" xml:space="preserve">
-    <value>Редактировать результат</value>
+    <value>Edit result</value>
   </data>
   <data name="GameResultHeader" xml:space="preserve">
-    <value>Результат матча</value>
+    <value>Game result</value>
   </data>
   <data name="NoGameResults" xml:space="preserve">
-    <value>В рамках данного турнира еще не было сыграно ни одной игры.</value>
+    <value>There are no complete games for today</value>
   </data>
   <data name="ResultNumberHeader" xml:space="preserve">
-    <value>№ п/п</value>
+    <value>№ s/s</value>
   </data>
   <data name="Set1ScoreHeader" xml:space="preserve">
-    <value>Партия 1</value>
+    <value>Set 1</value>
   </data>
   <data name="Set2ScoreHeader" xml:space="preserve">
-    <value>Партия 2</value>
+    <value>Set 2</value>
   </data>
   <data name="Set3ScoreHeader" xml:space="preserve">
-    <value>Партия 3</value>
+    <value>Set 3</value>
   </data>
   <data name="Set4ScoreHeader" xml:space="preserve">
-    <value>Партия 4</value>
+    <value>Set 4</value>
   </data>
   <data name="Set5ScoreHeader" xml:space="preserve">
-    <value>Партия 5</value>
+    <value>Set 5</value>
   </data>
   <data name="SetFields" xml:space="preserve">
-    <value>Партия #{0}:</value>
+    <value>Set #{0}:</value>
   </data>
   <data name="SetsScoreFields" xml:space="preserve">
-    <value>Счет по партиям:</value>
+    <value>Set score:</value>
   </data>
   <data name="TeamsFields" xml:space="preserve">
-    <value>Команды:</value>
+    <value>Teams:</value>
   </data>
   <data name="TechnicalDefeat" xml:space="preserve">
-    <value>Техническое поражение</value>
+    <value>Technical defeat</value>
   </data>
   <data name="TechnicalDefeatField" xml:space="preserve">
-    <value>Техническое поражение:</value>
+    <value>Technical defeat:</value>
   </data>
   <data name="TournamentResultsLegend" xml:space="preserve">
-    <value>Турнир "{0}"</value>
+    <value>Tournament "{0}"</value>
   </data>
   <data name="TournamentResultsTitle" xml:space="preserve">
-    <value>Результаты игр</value>
+    <value>Game results</value>
   </data>
 </root>

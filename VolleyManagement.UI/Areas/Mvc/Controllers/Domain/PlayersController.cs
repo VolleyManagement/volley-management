@@ -138,6 +138,10 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 return Json(new PlayerDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
             }
+            catch (ValidationException ex)
+            {
+                return Json(new PlayerDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
+            }
 
             return Json(new PlayerDeleteResultViewModel
             {

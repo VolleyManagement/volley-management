@@ -33,7 +33,8 @@
             }
 
             List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
-                            .Where(p => (p.LastName + " " + p.FirstName).Contains(textToSearch))
+                            .Where(p => (p.LastName + " " + p.FirstName).Contains(textToSearch)
+                            || (p.FirstName + " " + p.LastName).Contains(textToSearch))
                             .Take(Size)
                             .ToList()
                             .Select(p => PlayerViewModel.Map(p)));

@@ -199,7 +199,7 @@
     <value>{0} не может быть пустым</value>
   </data>
   <data name="PlayerFullName" xml:space="preserve">
-    <value>Фамилия Имя</value>
+    <value>Surname Name</value>
   </data>
   <data name="PlayerHeight" xml:space="preserve">
     <value>Рост</value>
@@ -229,28 +229,28 @@
     <value>Указан неверный вес</value>
   </data>
   <data name="TeamAchievements" xml:space="preserve">
-    <value>Достижения</value>
+    <value>Achievements</value>
   </data>
   <data name="TeamCaptain" xml:space="preserve">
-    <value>Капитан</value>
+    <value>Captain</value>
   </data>
   <data name="TeamCaptainRequired" xml:space="preserve">
-    <value>Необходимо указать капитана команды</value>
+    <value>You must specify the team captain</value>
   </data>
   <data name="TeamCoach" xml:space="preserve">
-    <value>Тренер</value>
+    <value>Coach</value>
   </data>
   <data name="TeamMaxLengthErrorMessage" xml:space="preserve">
-    <value>{0} не может содержать более {1} символов</value>
+    <value>{0} can not contain more than {1} symbols</value>
   </data>
   <data name="TeamName" xml:space="preserve">
-    <value>Имя</value>
+    <value>Name</value>
   </data>
   <data name="TeamNameRequired" xml:space="preserve">
-    <value>{0} не может быть пустым</value>
+    <value>{0}  can not be empty</value>
   </data>
   <data name="TeamRoster" xml:space="preserve">
-    <value>Состав</value>
+    <value>Roster</value>
   </data>
   <data name="TournamentDescription" xml:space="preserve">
     <value>Описание</value>

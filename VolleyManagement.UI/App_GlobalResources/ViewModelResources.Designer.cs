@@ -466,7 +466,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team captain is required..
+        ///   Looks up a localized string similar to Team captain is required.
         /// </summary>
         public static string TeamCaptainRequired {
             get {

@@ -14,7 +14,7 @@
     /// </summary>
     public class TeamsController : Controller
     {
-        private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "A team was deleted successfully.";
+        private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
 
         /// <summary>
         /// Holds PlayerService instance

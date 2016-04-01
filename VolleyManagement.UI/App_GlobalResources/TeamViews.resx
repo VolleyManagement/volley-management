@@ -118,48 +118,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddTeamPlayer" xml:space="preserve">
-    <value>Добавить игроков в команду</value>
+    <value>Add players to team</value>
   </data>
   <data name="BackToList" xml:space="preserve">
-    <value>Назад к списку</value>
+    <value>Back to list</value>
   </data>
   <data name="Create" xml:space="preserve">
-    <value>Создать команду</value>
+    <value>Create team</value>
   </data>
   <data name="CreateTeamTitle" xml:space="preserve">
-    <value>Создать новую команду</value>
+    <value>Create new team</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Удалить команду</value>
+    <value>Delete team</value>
   </data>
   <data name="RosterTitle" xml:space="preserve">
-    <value>Игроки команды</value>
+    <value>Team players</value>
   </data>
   <data name="TeamLegend" xml:space="preserve">
-    <value>Команда</value>
+    <value>Team</value>
   </data>
   <data name="TeamsIndexTitle" xml:space="preserve">
-    <value>Команды</value>
+    <value>Teams</value>
   </data>
   <data name="DeleteConfirmationMessage" xml:space="preserve">
-    <value>Вы действительно хотите удалить команду</value>
+    <value>Are you sure you want to delete a team?</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Сохранить</value>
+    <value>Save</value>
   </data>
   <data name="EditTeamTitle" xml:space="preserve">
-    <value>Редактирование команды</value>
+    <value>Edit team</value>
   </data>
   <data name="TeamDetailsTitle" xml:space="preserve">
-    <value>Подробно о команде</value>
+    <value>Details about team</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Подробно</value>
+    <value>Details</value>
   </data>
   <data name="Back" xml:space="preserve">
-    <value>Назад</value>
+    <value>Back</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Редактировать</value>
+    <value>Edit</value>
   </data>
 </root>

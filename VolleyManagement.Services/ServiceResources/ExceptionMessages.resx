@@ -136,6 +136,6 @@
     <value>Игрок с указанным идентификатором не был найден</value>
   </data>
   <data name="TeamNotFound" xml:space="preserve">
-    <value>Команда с указанным идентификатором не была найдена</value>
+    <value>A team with specified identifier was not found</value>
   </data>
 </root>

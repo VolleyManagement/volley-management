@@ -20,12 +20,12 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     public class PlayersController : Controller
     {
         private const int MAX_PLAYERS_ON_PAGE = 5;
-        private const string PLAYER_WAS_DELETED_DESCRIPTION = @"Данный игрок не найден, т.к. был удален.
-                                                                Операция редактирования невозможна.
-                                                                Для создания игрока воспользуйтесь соответствующей ссылкой.";
+        private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
+                                                                Editing operation is impossible.
+                                                                To create a player use the link.";
 
-        private const string HTTP_NOT_FOUND_DESCRIPTION = @"При удалении игрока произошла непредвиденная ситуация.
-                                                            Пожалуйста, обратитесь к администратору";
+        private const string HTTP_NOT_FOUND_DESCRIPTION = @"While removing the player unexpected error occurred.
+                                                            Please contact the administrator";
 
         /// <summary>
         /// Holds PlayerService instance

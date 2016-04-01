@@ -121,7 +121,7 @@
     <value>Back to the tournament details</value>
   </data>
   <data name="BallsGroupHeader" xml:space="preserve">
-    <value>Balls ia the game</value>
+    <value>Points in the set</value>
   </data>
   <data name="BallsLostHeader" xml:space="preserve">
     <value>Lost</value>
@@ -193,6 +193,6 @@
     <value>Tournament "{0}"</value>
   </data>
   <data name="TournamentStandingsTitle" xml:space="preserve">
-    <value>Tournament table</value>
+    <value>Standings table</value>
   </data>
 </root>

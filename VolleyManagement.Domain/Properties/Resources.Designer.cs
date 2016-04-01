@@ -61,7 +61,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The number of divisions in the tournament must be in the range of {0} to {1}.
+        ///   Looks up a localized string similar to The number of divisions in the tournament must be between {0} and {1}.
         /// </summary>
         public static string DivisionCountOutOfRange {
             get {
@@ -124,7 +124,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The set score can be one of the following:: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. In case of a technical defeat set score must be {0}:{1} or {1}:{0}.
+        ///   Looks up a localized string similar to The set score can be one of the following: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. In case of a technical defeat set score must be {0}:{1} or {1}:{0}.
         /// </summary>
         public static string GameResultSetsScoreInvalid {
             get {
@@ -133,7 +133,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Score by sets does not match the set scores.
+        ///   Looks up a localized string similar to Game score does not match set scores.
         /// </summary>
         public static string GameResultSetsScoreNoMatchSetScores {
             get {
@@ -142,7 +142,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An amount of groups in division should be in a range {0} - {1}.
+        ///   Looks up a localized string similar to An amount of groups in division should be between {0} and {1}.
         /// </summary>
         public static string GroupCountOutOfRange {
             get {
@@ -160,29 +160,11 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transfer should start before the games start.
-        /// </summary>
-        public static string InvalidPeriodTransfer {
-            get {
-                return ResourceManager.GetString("InvalidPeriodTransfer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to End of the transfer period should be before the end of the tournament.
         /// </summary>
         public static string InvalidTransferEndpoint {
             get {
                 return ResourceManager.GetString("InvalidTransferEndpoint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The applying period must be earlier than the start of the tournament.
-        /// </summary>
-        public static string InvelidPeriodTournament {
-            get {
-                return ResourceManager.GetString("InvelidPeriodTournament", resourceCulture);
             }
         }
         
@@ -232,42 +214,6 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User email should be unique.
-        /// </summary>
-        public static string UserEmailMustBeUnique {
-            get {
-                return ResourceManager.GetString("UserEmailMustBeUnique", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User name and email should be unique.
-        /// </summary>
-        public static string UserNameAndEmailMustBeUnique {
-            get {
-                return ResourceManager.GetString("UserNameAndEmailMustBeUnique", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User name should be unique.
-        /// </summary>
-        public static string UserNameMustBeUnique {
-            get {
-                return ResourceManager.GetString("UserNameMustBeUnique", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, введите телефон правильно.
-        /// </summary>
-        public static string ValidationCellPhone {
-            get {
-                return ResourceManager.GetString("ValidationCellPhone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Пожалуйста, введите название дивизиона правильно.
         /// </summary>
         public static string ValidationDivisionName {
@@ -277,38 +223,11 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, введите email правильно.
-        /// </summary>
-        public static string ValidationEmail {
-            get {
-                return ResourceManager.GetString("ValidationEmail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, введите имя правильно.
-        /// </summary>
-        public static string ValidationFullName {
-            get {
-                return ResourceManager.GetString("ValidationFullName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Пожалуйста, введите название группы правильно.
         /// </summary>
         public static string ValidationGroupName {
             get {
                 return ResourceManager.GetString("ValidationGroupName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Пароль не может быть пустым.
-        /// </summary>
-        public static string ValidationPassword {
-            get {
-                return ResourceManager.GetString("ValidationPassword", resourceCulture);
             }
         }
         
@@ -358,69 +277,6 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, reduce the description text.
-        /// </summary>
-        public static string ValidationResultDescription {
-            get {
-                return ResourceManager.GetString("ValidationResultDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please, input the tournament name.
-        /// </summary>
-        public static string ValidationResultName {
-            get {
-                return ResourceManager.GetString("ValidationResultName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please, reduce the email.
-        /// </summary>
-        public static string ValidationResultRegLink {
-            get {
-                return ResourceManager.GetString("ValidationResultRegLink", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please, input the correct scheme.
-        /// </summary>
-        public static string ValidationResultScheme {
-            get {
-                return ResourceManager.GetString("ValidationResultScheme", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please, input correct data in the field season.
-        /// </summary>
-        public static string ValidationResultSeason {
-            get {
-                return ResourceManager.GetString("ValidationResultSeason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please, input correct date of the season start.
-        /// </summary>
-        public static string ValidationTournamentSeason {
-            get {
-                return ResourceManager.GetString("ValidationTournamentSeason", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Please, enter correct user name.
-        /// </summary>
-        public static string ValidationUserName {
-            get {
-                return ResourceManager.GetString("ValidationUserName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Start of the applying period must be earlier than its end.
         /// </summary>
         public static string WrongRegistrationDatesPeriod {
@@ -444,15 +300,6 @@ namespace VolleyManagement.Domain.Properties {
         public static string WrongStartTournamentDates {
             get {
                 return ResourceManager.GetString("WrongStartTournamentDates", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start of the transfer period should be later than the tournament start .
-        /// </summary>
-        public static string WrongStartTransferDates {
-            get {
-                return ResourceManager.GetString("WrongStartTransferDates", resourceCulture);
             }
         }
         

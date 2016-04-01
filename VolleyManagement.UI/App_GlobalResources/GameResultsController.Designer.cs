@@ -70,7 +70,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The delete operation for this object has failed. Please refer to the administration..
+        ///   Looks up a localized string similar to The delete operation for this object has failed. Please contact the administration..
         /// </summary>
         public static string GameResultNotFoundView {
             get {

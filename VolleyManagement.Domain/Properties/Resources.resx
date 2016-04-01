@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DivisionCountOutOfRange" xml:space="preserve">
-    <value>The number of divisions in the tournament must be in the range of {0} to {1}</value>
+    <value>The number of divisions in the tournament must be between {0} and {1}</value>
   </data>
   <data name="DivisionNamesNotUnique" xml:space="preserve">
     <value>Divisions can not have the same name</value>
@@ -139,25 +139,19 @@
     <value>The set scores are listed in the wrong order</value>
   </data>
   <data name="GameResultSetsScoreInvalid" xml:space="preserve">
-    <value>The set score can be one of the following:: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. In case of a technical defeat set score must be {0}:{1} or {1}:{0}</value>
+    <value>The set score can be one of the following: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. In case of a technical defeat set score must be {0}:{1} or {1}:{0}</value>
   </data>
   <data name="GameResultSetsScoreNoMatchSetScores" xml:space="preserve">
-    <value>Score by sets does not match the set scores</value>
+    <value>Game score does not match set scores</value>
   </data>
   <data name="GroupCountOutOfRange" xml:space="preserve">
-    <value>An amount of groups in division should be in a range {0} - {1}</value>
+    <value>An amount of groups in division should be between {0} and {1}</value>
   </data>
   <data name="GroupNamesNotUnique" xml:space="preserve">
     <value>Group names should be unique</value>
   </data>
-  <data name="InvalidPeriodTransfer" xml:space="preserve">
-    <value>Transfer should start before the games start</value>
-  </data>
   <data name="InvalidTransferEndpoint" xml:space="preserve">
     <value>End of the transfer period should be before the end of the tournament</value>
-  </data>
-  <data name="InvelidPeriodTournament" xml:space="preserve">
-    <value>The applying period must be earlier than the start of the tournament</value>
   </data>
   <data name="LateRegistrationDates" xml:space="preserve">
     <value>Start of the applying period must be later than today</value>
@@ -174,32 +168,11 @@
   <data name="UniqueNameMessage" xml:space="preserve">
     <value>Tournament name should be unique</value>
   </data>
-  <data name="UserEmailMustBeUnique" xml:space="preserve">
-    <value>User email should be unique</value>
-  </data>
-  <data name="UserNameAndEmailMustBeUnique" xml:space="preserve">
-    <value>User name and email should be unique</value>
-  </data>
-  <data name="UserNameMustBeUnique" xml:space="preserve">
-    <value>User name should be unique</value>
-  </data>
-  <data name="ValidationCellPhone" xml:space="preserve">
-    <value>Пожалуйста, введите телефон правильно</value>
-  </data>
   <data name="ValidationDivisionName" xml:space="preserve">
     <value>Пожалуйста, введите название дивизиона правильно</value>
   </data>
-  <data name="ValidationEmail" xml:space="preserve">
-    <value>Пожалуйста, введите email правильно</value>
-  </data>
-  <data name="ValidationFullName" xml:space="preserve">
-    <value>Пожалуйста, введите имя правильно</value>
-  </data>
   <data name="ValidationGroupName" xml:space="preserve">
     <value>Пожалуйста, введите название группы правильно</value>
-  </data>
-  <data name="ValidationPassword" xml:space="preserve">
-    <value>Пароль не может быть пустым</value>
   </data>
   <data name="ValidationPlayerBirthYear" xml:space="preserve">
     <value>Пожалуйста, введите дату рождения верно</value>
@@ -216,27 +189,6 @@
   <data name="ValidationPlayerWeight" xml:space="preserve">
     <value>Пожалуйта, введите вес корректно</value>
   </data>
-  <data name="ValidationResultDescription" xml:space="preserve">
-    <value>Please, reduce the description text</value>
-  </data>
-  <data name="ValidationResultName" xml:space="preserve">
-    <value>Please, input the tournament name</value>
-  </data>
-  <data name="ValidationResultRegLink" xml:space="preserve">
-    <value>Please, reduce the email</value>
-  </data>
-  <data name="ValidationResultScheme" xml:space="preserve">
-    <value>Please, input the correct scheme</value>
-  </data>
-  <data name="ValidationResultSeason" xml:space="preserve">
-    <value>Please, input correct data in the field season</value>
-  </data>
-  <data name="ValidationTournamentSeason" xml:space="preserve">
-    <value>Please, input correct date of the season start</value>
-  </data>
-  <data name="ValidationUserName" xml:space="preserve">
-    <value>Please, enter correct user name</value>
-  </data>
   <data name="WrongRegistrationDatesPeriod" xml:space="preserve">
     <value>Start of the applying period must be earlier than its end</value>
   </data>
@@ -245,9 +197,6 @@
   </data>
   <data name="WrongStartTournamentDates" xml:space="preserve">
     <value>Start of the tournament must be eariler than its end</value>
-  </data>
-  <data name="WrongStartTransferDates" xml:space="preserve">
-    <value>Start of the transfer period should be later than the tournament start </value>
   </data>
   <data name="WrongThreeMonthRule" xml:space="preserve">
     <value>Applying period is less than 3 months</value>

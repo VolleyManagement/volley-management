@@ -154,7 +154,7 @@
     <value>End of the tournament must be later than its start</value>
   </data>
   <data name="FieldRange" xml:space="preserve">
-    <value>Field "{0}" must be in a range {1} - {2}</value>
+    <value>Field "{0}" value must be between {1} and {2}</value>
   </data>
   <data name="FieldRequired" xml:space="preserve">
     <value>Field "{0}" is required</value>

@@ -70,7 +70,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Balls ia the game.
+        ///   Looks up a localized string similar to Points in the set.
         /// </summary>
         public static string BallsGroupHeader {
             get {
@@ -286,7 +286,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tournament table.
+        ///   Looks up a localized string similar to Standings table.
         /// </summary>
         public static string TournamentStandingsTitle {
             get {

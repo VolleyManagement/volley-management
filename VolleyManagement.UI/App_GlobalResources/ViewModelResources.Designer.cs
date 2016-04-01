@@ -178,7 +178,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field &quot;{0}&quot; must be in a range {1} - {2}.
+        ///   Looks up a localized string similar to Field &quot;{0}&quot; value must be between {1} and {2}.
         /// </summary>
         public static string FieldRange {
             get {

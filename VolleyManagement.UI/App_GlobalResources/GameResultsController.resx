@@ -121,7 +121,7 @@
     <value>The result of the game with the specified ID is not found. Delete operation can not be applied.</value>
   </data>
   <data name="GameResultNotFoundView" xml:space="preserve">
-    <value>The delete operation for this object has failed. Please refer to the administration.</value>
+    <value>The delete operation for this object has failed. Please contact the administration.</value>
   </data>
   <data name="GameResultWasDeleted" xml:space="preserve">
     <value>This game can not be found, because it was deleted. Edit operation can not be applied.</value>

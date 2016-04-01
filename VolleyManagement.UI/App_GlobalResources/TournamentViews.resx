@@ -118,78 +118,78 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddDivision" xml:space="preserve">
-    <value>+ Добавить дивизион</value>
+    <value>+ Add division</value>
   </data>
   <data name="AddGameResult" xml:space="preserve">
-    <value>Добавить результат игры</value>
+    <value>Add game result</value>
   </data>
   <data name="AddGroup" xml:space="preserve">
-    <value>+ Добавить группу</value>
+    <value>+ Add group</value>
   </data>
   <data name="BackToList" xml:space="preserve">
-    <value>Назад к списку</value>
+    <value>Back to list</value>
   </data>
   <data name="Create" xml:space="preserve">
-    <value>Создать</value>
+    <value>Create</value>
   </data>
   <data name="CreateNewTournament" xml:space="preserve">
-    <value>Создать новый турнир</value>
+    <value>Create new tournament</value>
   </data>
   <data name="CreateTournamentTitle" xml:space="preserve">
-    <value>Создание нового турнира</value>
+    <value>Creating new tournament</value>
   </data>
   <data name="CurrentTournamentsHeader" xml:space="preserve">
-    <value>Текущие</value>
+    <value>Current</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Удалить</value>
+    <value>Delete</value>
   </data>
   <data name="DeleteConfirm" xml:space="preserve">
-    <value>Вы уверены, что хотите это удалить?</value>
+    <value>Are you sure you want to delete this?</value>
   </data>
   <data name="DeleteTournamentTitle" xml:space="preserve">
-    <value>Удаление турнира</value>
+    <value>Deleting tournament</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Редактировать</value>
+    <value>Edit</value>
   </data>
   <data name="EditTournamentTitle" xml:space="preserve">
-    <value>Редактирование турнира</value>
+    <value>Editing tournament</value>
   </data>
   <data name="FinishedTournaments" xml:space="preserve">
-    <value>Показать завершенные</value>
+    <value>Show finished</value>
   </data>
   <data name="FinishedTournamentsHeader" xml:space="preserve">
-    <value>Завершенные</value>
+    <value>Finished</value>
   </data>
   <data name="RegistrationFieldsTitle" xml:space="preserve">
-    <value>Регистрация на турнир</value>
+    <value>Applying period</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Сохранить</value>
+    <value>Save</value>
   </data>
   <data name="ShowTournamentStandings" xml:space="preserve">
-    <value>Показать турнирную таблицу</value>
+    <value>Show tournament table</value>
   </data>
   <data name="ShowGameResults" xml:space="preserve">
-    <value>Показать результаты игр</value>
+    <value>Show game results</value>
   </data>
   <data name="TournamentDetailsTitle" xml:space="preserve">
-    <value>Подробности турнира</value>
+    <value>Tournament details</value>
   </data>
   <data name="TournamentFieldsTitle" xml:space="preserve">
-    <value>Турнир</value>
+    <value>Tournament</value>
   </data>
   <data name="TournamentLegend" xml:space="preserve">
-    <value>Турнир</value>
+    <value>Tournament</value>
   </data>
   <data name="TournamentsIndexTitle" xml:space="preserve">
-    <value>Турниры</value>
+    <value>Tournaments</value>
   </data>
   <data name="TransferFieldsTitle" xml:space="preserve">
-    <value>Трансферный период</value>
+    <value>Transfer period</value>
   </data>
   <data name="UpcomingTournamentsHeader" xml:space="preserve">
-    <value>Ожидаемые</value>
+    <value>Upcoming</value>
   </data>
 </root>

@@ -61,7 +61,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Результат игры с указанным идентификатором не найден. Операция удаления невозможна..
+        ///   Looks up a localized string similar to The result of the game with the specified ID is not found. Delete operation can not be applied..
         /// </summary>
         public static string GameResultNotFound {
             get {
@@ -70,7 +70,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Операция удаления для данного объекта завершилась сбоем. Пожалуйста, обратитесь к администрации..
+        ///   Looks up a localized string similar to The delete operation for this object has failed. Please contact the administration..
         /// </summary>
         public static string GameResultNotFoundView {
             get {
@@ -79,7 +79,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Данная игра не найдена, т.к. была удалена. Операция редактирования невозможна..
+        ///   Looks up a localized string similar to This game can not be found, because it was deleted. Edit operation can not be applied..
         /// </summary>
         public static string GameResultWasDeleted {
             get {

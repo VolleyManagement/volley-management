@@ -118,207 +118,207 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplyingDateThreeMonth" xml:space="preserve">
-    <value>Период регистрации должен быть минимум 3 месяца</value>
+    <value>The applying period should be at least 3 months</value>
   </data>
   <data name="ApplyingPeriodBeforeGamesStart" xml:space="preserve">
-    <value>Начало турнира должно следовать после завершения периода регистрации</value>
+    <value>The tournament should start after the applying period end</value>
   </data>
   <data name="ApplyingPeriodEnd" xml:space="preserve">
-    <value>Конец регистрации на турнир</value>
+    <value>End of the applying period</value>
   </data>
   <data name="ApplyingPeriodStart" xml:space="preserve">
-    <value>Начало регистрации на турнир</value>
+    <value>Start of the applying period</value>
   </data>
   <data name="ApplyingStartBeforeEnd" xml:space="preserve">
-    <value>Начало периода регистрации на турнир должно быть раннее чем его окончание</value>
+    <value>Start of the applying period must be earlier than its end</value>
   </data>
   <data name="ApplyingStartBeforeNow" xml:space="preserve">
-    <value>Начало регистрации турнира должно быть позже чем сегодня</value>
+    <value>Start of the applying period must be later than today</value>
   </data>
   <data name="ConfirmUserPassword" xml:space="preserve">
     <value>FixMe: Confirm password</value>
   </data>
   <data name="Divisions" xml:space="preserve">
-    <value>Дивизионы</value>
+    <value>Divisions</value>
   </data>
   <data name="DivisionName" xml:space="preserve">
-    <value>Название</value>
+    <value>Division Name</value>
   </data>
   <data name="DivisionNameMaxLengthErrorMessage" xml:space="preserve">
-    <value>{0} не может содержать более {1} символов</value>
+    <value>{0} can not contain more than {1} symbols</value>
   </data>
   <data name="DivisionNameRequired" xml:space="preserve">
-    <value>{0} не может быть пустым</value>
+    <value>{0} can not be empty</value>
   </data>
   <data name="EndGamesBeforeStart" xml:space="preserve">
-    <value>Конец турнира должен быть после его начала</value>
+    <value>End of the tournament must be later than its start</value>
   </data>
   <data name="FieldRange" xml:space="preserve">
-    <value>Поле {0} должно быть заполнено в диапазоне {1} - {2}</value>
+    <value>Field "{0}" value must be between {1} and {2}</value>
   </data>
   <data name="FieldRequired" xml:space="preserve">
-    <value>Поле "{0}" является обязательным.</value>
+    <value>Field "{0}" is required</value>
   </data>
   <data name="GamesEnd" xml:space="preserve">
-    <value>Дата окончания турнира</value>
+    <value>End date of the tournament</value>
   </data>
   <data name="GamesStart" xml:space="preserve">
-    <value>Дата начала турнира</value>
+    <value>Start date of the tournament</value>
   </data>
   <data name="InvalidEntriesError" xml:space="preserve">
-    <value>Поле {0} должно содержать только печатаемые символы</value>
+    <value>Field {0} must contain only printable characters</value>
   </data>
   <data name="InvalidTournamentId" xml:space="preserve">
-    <value>Неверный идентификатор турнира</value>
+    <value>Invalid tournament id</value>
   </data>
   <data name="LoginProviders" xml:space="preserve">
-    <value>Провайдеры авторизации</value>
+    <value>Login providers</value>
   </data>
   <data name="MaxLengthErrorMessage" xml:space="preserve">
-    <value>Поле "{0}" не может содержать более "{1}" символов</value>
+    <value>Field "{0}" can not contain more than {1} symbols</value>
   </data>
   <data name="NotInRange" xml:space="preserve">
-    <value>Поле "{0}" должно быть в диапазоне "{1}" - "{2}"</value>
+    <value>Field "{0}" must be in a range {1} - {2}</value>
   </data>
   <data name="PasswordDidNotMatch" xml:space="preserve">
     <value>FixMe: Password didn't match</value>
   </data>
   <data name="PlayerBirthFieldRange" xml:space="preserve">
-    <value>Указан неверный год рождения</value>
+    <value>Invalid date of birth</value>
   </data>
   <data name="PlayerBirthYear" xml:space="preserve">
-    <value>Год рождения</value>
+    <value>Date of birth</value>
   </data>
   <data name="PlayerFirstName" xml:space="preserve">
-    <value>Имя</value>
+    <value>Name</value>
   </data>
   <data name="PlayerFirstNameInvalidEntriesError" xml:space="preserve">
-    <value>{0} должно содержать только буквы и пробелы или символы " - ", " ' "(не более одного подряд). {0} не должно заканчиваться спецсимволом.</value>
+    <value>{0} should contain only letters and spaces, or " - ", " ' " characters (no more than one consecutive). {0} must not end with a special character.</value>
   </data>
   <data name="PlayerFirstNameRequired" xml:space="preserve">
-    <value>{0} не может быть пустым</value>
+    <value>{0} can not be empty</value>
   </data>
   <data name="PlayerFullName" xml:space="preserve">
-    <value>Фамилия Имя</value>
+    <value>Full name</value>
   </data>
   <data name="PlayerHeight" xml:space="preserve">
-    <value>Рост</value>
+    <value>Height</value>
   </data>
   <data name="PlayerHeightFieldRange" xml:space="preserve">
-    <value>Указан неверный рост</value>
+    <value>Invalid height</value>
   </data>
   <data name="PlayerLastName" xml:space="preserve">
-    <value>Фамилия</value>
+    <value>Last name</value>
   </data>
   <data name="PlayerLastNameInvalidEntriesError" xml:space="preserve">
-    <value>{0} должна содержать только буквы и пробелы или символы " - ", " ' "(не более одного подряд). {0} не должна заканчиваться спецсимволом.</value>
+    <value>{0} should contain only letters and spaces, or " - ", " ' " characters (no more than one consecutive). {0} must not end with a special character.</value>
   </data>
   <data name="PlayerLastNameRequired" xml:space="preserve">
-    <value>{0} не может быть пустой</value>
+    <value>{0} can not be empty</value>
   </data>
   <data name="PlayerMaxLengthErrorMessage" xml:space="preserve">
-    <value>{0} не может содержать более {1} символов</value>
+    <value>{0} can not contain more than {1} symbols</value>
   </data>
   <data name="PlayerWasDeletedSuccessfully" xml:space="preserve">
-    <value>Игрок был удален успешно</value>
+    <value>Player was deleted successfully</value>
   </data>
   <data name="PlayerWeight" xml:space="preserve">
-    <value>Вес</value>
+    <value>Weight</value>
   </data>
   <data name="PlayerWeightFieldRange" xml:space="preserve">
-    <value>Указан неверный вес</value>
+    <value>Invalid weight</value>
   </data>
   <data name="TeamAchievements" xml:space="preserve">
-    <value>Достижения</value>
+    <value>Achievements</value>
   </data>
   <data name="TeamCaptain" xml:space="preserve">
-    <value>Капитан</value>
+    <value>Captain</value>
   </data>
   <data name="TeamCaptainRequired" xml:space="preserve">
-    <value>Необходимо указать капитана команды</value>
+    <value>Team captain is required</value>
   </data>
   <data name="TeamCoach" xml:space="preserve">
-    <value>Тренер</value>
+    <value>Coach</value>
   </data>
   <data name="TeamMaxLengthErrorMessage" xml:space="preserve">
-    <value>{0} не может содержать более {1} символов</value>
+    <value>{0} can not contain more than {1} symbols</value>
   </data>
   <data name="TeamName" xml:space="preserve">
-    <value>Имя</value>
+    <value>Name</value>
   </data>
   <data name="TeamNameRequired" xml:space="preserve">
-    <value>{0} не может быть пустым</value>
+    <value>{0} can not be empty</value>
   </data>
   <data name="TeamRoster" xml:space="preserve">
-    <value>Состав</value>
+    <value>Roster</value>
   </data>
   <data name="TournamentDescription" xml:space="preserve">
-    <value>Описание</value>
+    <value>Description</value>
   </data>
   <data name="TournamentName" xml:space="preserve">
-    <value>Название турнира</value>
+    <value>Tournament name</value>
   </data>
   <data name="TournamentRegulationsLink" xml:space="preserve">
-    <value>Ссылка на регламент</value>
+    <value>Tournament regulations link</value>
   </data>
   <data name="TournamentScheme" xml:space="preserve">
-    <value>Схема</value>
+    <value>Scheme</value>
   </data>
   <data name="TournamentSeason" xml:space="preserve">
-    <value>Сезон</value>
+    <value>Season</value>
   </data>
   <data name="TransferEnd" xml:space="preserve">
-    <value>Дата окончания трансферного окна</value>
+    <value>End date of the transfer window</value>
   </data>
   <data name="TransferEndAfterStart" xml:space="preserve">
-    <value>Начало трансфера должно быть перед его окончанием</value>
+    <value>Start of the transfer must be earlier than its end</value>
   </data>
   <data name="TransferEndBeforeGamesEnd" xml:space="preserve">
-    <value>Окончание трасферного периода должно быть перед окончанием турнира</value>
+    <value>End of the transfer period must be earlier than the tournament end</value>
   </data>
   <data name="TransferStart" xml:space="preserve">
-    <value>Дата начала трансферного окна</value>
+    <value>Start date of the transfer window</value>
   </data>
   <data name="TransferStartBeforeGamesStart" xml:space="preserve">
-    <value>Начало трансферного периода должно быть в течении турнира</value>
+    <value>Start of the transfer period should be within the tournament</value>
   </data>
   <data name="UniqueNameMessage" xml:space="preserve">
-    <value>Имя турнира должно быть уникальным</value>
+    <value>The tournament name should be unique</value>
   </data>
   <data name="UserCellPhone" xml:space="preserve">
-    <value>Телефон</value>
+    <value>Phone number</value>
   </data>
   <data name="UserDescription" xml:space="preserve">
-    <value>Описание</value>
+    <value>Description</value>
   </data>
   <data name="UserEmail" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="UserFullName" xml:space="preserve">
-    <value>Имя</value>
+    <value>Full name</value>
   </data>
   <data name="UserName" xml:space="preserve">
-    <value>Логин</value>
+    <value>Login</value>
   </data>
   <data name="UserPassword" xml:space="preserve">
-    <value>Пароль</value>
+    <value>Password</value>
   </data>
   <data name="GroupName" xml:space="preserve">
-    <value>Название</value>
+    <value>Group name</value>
   </data>
   <data name="GroupNameMaxLengthErrorMessage" xml:space="preserve">
-    <value>{0} не может содержать более {1} символов</value>
+    <value>{0} can not contain more than {1} symbols</value>
   </data>
   <data name="GroupNameRequired" xml:space="preserve">
-    <value>{0} не может быть пустым</value>
+    <value>{0} can not be empty</value>
   </data>
   <data name="Groups" xml:space="preserve">
-    <value>Группы</value>
+    <value>Groups</value>
   </data>
   <data name="DivisionDefaultName" xml:space="preserve">
-    <value>Дивизион</value>
+    <value>Division</value>
   </data>
   <data name="GroupDefaultName" xml:space="preserve">
-    <value>Группа</value>
+    <value>Group</value>
   </data>
 </root>

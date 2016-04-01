@@ -199,7 +199,7 @@
     <value>{0} не может быть пустым</value>
   </data>
   <data name="PlayerFullName" xml:space="preserve">
-    <value>Surname Name</value>
+    <value>Full Name</value>
   </data>
   <data name="PlayerHeight" xml:space="preserve">
     <value>Рост</value>

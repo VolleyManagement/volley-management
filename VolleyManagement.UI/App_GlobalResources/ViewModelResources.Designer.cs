@@ -358,7 +358,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Surname Name.
+        ///   Looks up a localized string similar to Full Name.
         /// </summary>
         public static string PlayerFullName {
             get {

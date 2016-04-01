@@ -72,7 +72,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
-        public static string Back {
+        internal static string Back {
             get {
                 return ResourceManager.GetString("Back", resourceCulture);
             }
@@ -88,7 +88,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a team.
+        ///   Looks up a localized string similar to Create team.
         /// </summary>
         public static string Create {
             get {
@@ -97,7 +97,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new team.
+        ///   Looks up a localized string similar to Create new team.
         /// </summary>
         public static string CreateTeamTitle {
             get {
@@ -106,7 +106,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete a team.
+        ///   Looks up a localized string similar to Delete team.
         /// </summary>
         public static string Delete {
             get {
@@ -115,7 +115,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to delete a team.
+        ///   Looks up a localized string similar to Are you sure you want to delete a team?.
         /// </summary>
         public static string DeleteConfirmationMessage {
             get {
@@ -142,7 +142,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit a team.
+        ///   Looks up a localized string similar to Edit team.
         /// </summary>
         public static string EditTeamTitle {
             get {
@@ -169,7 +169,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Details about a team.
+        ///   Looks up a localized string similar to Details about team.
         /// </summary>
         public static string TeamDetailsTitle {
             get {
@@ -178,7 +178,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A team.
+        ///   Looks up a localized string similar to Team.
         /// </summary>
         public static string TeamLegend {
             get {

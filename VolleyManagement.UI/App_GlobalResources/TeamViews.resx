@@ -124,34 +124,34 @@
     <value>Back to list</value>
   </data>
   <data name="Create" xml:space="preserve">
-    <value>Create a team</value>
+    <value>Create team</value>
   </data>
   <data name="CreateTeamTitle" xml:space="preserve">
-    <value>Create a new team</value>
+    <value>Create new team</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete a team</value>
+    <value>Delete team</value>
   </data>
   <data name="RosterTitle" xml:space="preserve">
     <value>Team players</value>
   </data>
   <data name="TeamLegend" xml:space="preserve">
-    <value>A team</value>
+    <value>Team</value>
   </data>
   <data name="TeamsIndexTitle" xml:space="preserve">
     <value>Teams</value>
   </data>
   <data name="DeleteConfirmationMessage" xml:space="preserve">
-    <value>Are you sure you want to delete a team</value>
+    <value>Are you sure you want to delete a team?</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="EditTeamTitle" xml:space="preserve">
-    <value>Edit a team</value>
+    <value>Edit team</value>
   </data>
   <data name="TeamDetailsTitle" xml:space="preserve">
-    <value>Details about a team</value>
+    <value>Details about team</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>

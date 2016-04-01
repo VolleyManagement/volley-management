@@ -79,7 +79,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End of applying period.
+        ///   Looks up a localized string similar to End of the applying period.
         /// </summary>
         public static string ApplyingPeriodEnd {
             get {
@@ -88,7 +88,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start of applying period.
+        ///   Looks up a localized string similar to Start of the applying period.
         /// </summary>
         public static string ApplyingPeriodStart {
             get {
@@ -592,7 +592,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start date of the  transfer window.
+        ///   Looks up a localized string similar to Start date of the transfer window.
         /// </summary>
         public static string TransferStart {
             get {

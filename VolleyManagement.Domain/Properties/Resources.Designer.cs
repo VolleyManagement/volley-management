@@ -70,7 +70,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Divisions can have the same name.
+        ///   Looks up a localized string similar to Divisions can not have the same name.
         /// </summary>
         public static string DivisionNamesNotUnique {
             get {
@@ -88,7 +88,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter score of previous optional game.
+        ///   Looks up a localized string similar to Enter a score of the previous optional game.
         /// </summary>
         public static string GameResultPreviousOptionalSetUnplayed {
             get {
@@ -133,7 +133,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set score does not match set scores.
+        ///   Looks up a localized string similar to Score by sets does not match the set scores.
         /// </summary>
         public static string GameResultSetsScoreNoMatchSetScores {
             get {
@@ -178,7 +178,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start of the applying period must be earlier than its end.
+        ///   Looks up a localized string similar to The applying period must be earlier than the start of the tournament.
         /// </summary>
         public static string InvelidPeriodTournament {
             get {

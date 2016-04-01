@@ -121,13 +121,13 @@
     <value>The number of divisions in the tournament must be in the range of {0} to {1}</value>
   </data>
   <data name="DivisionNamesNotUnique" xml:space="preserve">
-    <value>Divisions can have the same name</value>
+    <value>Divisions can not have the same name</value>
   </data>
   <data name="GameResultOptionalSetScores" xml:space="preserve">
     <value>In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3}</value>
   </data>
   <data name="GameResultPreviousOptionalSetUnplayed" xml:space="preserve">
-    <value>Enter score of previous optional game</value>
+    <value>Enter a score of the previous optional game</value>
   </data>
   <data name="GameResultRequiredSetScores" xml:space="preserve">
     <value>In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3} or {3}: {2}</value>
@@ -142,7 +142,7 @@
     <value>The set score can be one of the following:: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. In case of a technical defeat set score must be {0}:{1} or {1}:{0}</value>
   </data>
   <data name="GameResultSetsScoreNoMatchSetScores" xml:space="preserve">
-    <value>Set score does not match set scores</value>
+    <value>Score by sets does not match the set scores</value>
   </data>
   <data name="GroupCountOutOfRange" xml:space="preserve">
     <value>An amount of groups in division should be in a range {0} - {1}</value>
@@ -157,7 +157,7 @@
     <value>End of the transfer period should be before the end of the tournament</value>
   </data>
   <data name="InvelidPeriodTournament" xml:space="preserve">
-    <value>Start of the applying period must be earlier than its end</value>
+    <value>The applying period must be earlier than the start of the tournament</value>
   </data>
   <data name="LateRegistrationDates" xml:space="preserve">
     <value>Start of the applying period must be later than today</value>

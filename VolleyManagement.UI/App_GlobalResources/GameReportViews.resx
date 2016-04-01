@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BackToTournament" xml:space="preserve">
-    <value>Back to tournament details</value>
+    <value>Back to the tournament details</value>
   </data>
   <data name="BallsGroupHeader" xml:space="preserve">
-    <value>Balls ia a game</value>
+    <value>Balls ia the game</value>
   </data>
   <data name="BallsLostHeader" xml:space="preserve">
     <value>Lost</value>

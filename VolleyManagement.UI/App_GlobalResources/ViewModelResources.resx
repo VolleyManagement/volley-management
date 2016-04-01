@@ -124,10 +124,10 @@
     <value>The tournament should start after the applying period end</value>
   </data>
   <data name="ApplyingPeriodEnd" xml:space="preserve">
-    <value>End of applying period</value>
+    <value>End of the applying period</value>
   </data>
   <data name="ApplyingPeriodStart" xml:space="preserve">
-    <value>Start of applying period</value>
+    <value>Start of the applying period</value>
   </data>
   <data name="ApplyingStartBeforeEnd" xml:space="preserve">
     <value>Start of the applying period must be earlier than its end</value>
@@ -277,7 +277,7 @@
     <value>End of the transfer period must be earlier than the tournament end</value>
   </data>
   <data name="TransferStart" xml:space="preserve">
-    <value>Start date of the  transfer window</value>
+    <value>Start date of the transfer window</value>
   </data>
   <data name="TransferStartBeforeGamesStart" xml:space="preserve">
     <value>Start of the transfer period should be within the tournament</value>

@@ -79,7 +79,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Данная игра не найдена, т.к. была удалена. Операция редактирования невозможна. This game can not be found, because it was deleted. Edit operation can not be applied..
+        ///   Looks up a localized string similar to This game can not be found, because it was deleted. Edit operation can not be applied..
         /// </summary>
         public static string GameResultWasDeleted {
             get {

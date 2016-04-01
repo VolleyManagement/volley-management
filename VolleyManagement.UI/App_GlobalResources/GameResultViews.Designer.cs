@@ -61,7 +61,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back to tournament details.
+        ///   Looks up a localized string similar to Back to the tournament details.
         /// </summary>
         public static string BackToTournament {
             get {
@@ -232,7 +232,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set score:.
+        ///   Looks up a localized string similar to Score by sets:.
         /// </summary>
         public static string SetsScoreFields {
             get {

@@ -124,6 +124,6 @@
     <value>The delete operation for this object has failed. Please refer to the administration.</value>
   </data>
   <data name="GameResultWasDeleted" xml:space="preserve">
-    <value>Данная игра не найдена, т.к. была удалена. Операция редактирования невозможна. This game can not be found, because it was deleted. Edit operation can not be applied.</value>
+    <value>This game can not be found, because it was deleted. Edit operation can not be applied.</value>
   </data>
 </root>

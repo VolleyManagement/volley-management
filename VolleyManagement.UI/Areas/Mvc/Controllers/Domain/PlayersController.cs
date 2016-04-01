@@ -254,7 +254,8 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
             if (textToSearch != string.Empty)
             {
-                allPlayers = allPlayers.Where(p => (p.FirstName + p.LastName).Contains(textToSearch));
+                allPlayers = allPlayers.Where(p => (p.LastName + " " + p.FirstName).Contains(textToSearch)
+                    || (p.FirstName + " " + p.LastName).Contains(textToSearch));
             }
 
             return new PlayersListViewModel(allPlayers, page, MAX_PLAYERS_ON_PAGE, textToSearch);

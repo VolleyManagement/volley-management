@@ -199,7 +199,7 @@
     <value>{0} не может быть пустым</value>
   </data>
   <data name="PlayerFullName" xml:space="preserve">
-    <value>Full Name</value>
+    <value>Full name</value>
   </data>
   <data name="PlayerHeight" xml:space="preserve">
     <value>Рост</value>
@@ -235,7 +235,7 @@
     <value>Captain</value>
   </data>
   <data name="TeamCaptainRequired" xml:space="preserve">
-    <value>You must specify the team captain</value>
+    <value>Team captain is required</value>
   </data>
   <data name="TeamCoach" xml:space="preserve">
     <value>Coach</value>
@@ -247,7 +247,7 @@
     <value>Name</value>
   </data>
   <data name="TeamNameRequired" xml:space="preserve">
-    <value>{0}  can not be empty</value>
+    <value>{0} can not be empty</value>
   </data>
   <data name="TeamRoster" xml:space="preserve">
     <value>Roster</value>

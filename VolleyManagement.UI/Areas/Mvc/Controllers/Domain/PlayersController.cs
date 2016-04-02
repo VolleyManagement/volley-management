@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using System.Web;
-
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Text;
+    using System.Web;
     using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
@@ -205,10 +204,11 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <param name="searchString">Name of player</param>
         /// <param name="excludeList">list of players ids should be excluded from result</param>
         /// <param name="includeList">list of players ids should be included to result</param>
+        /// <param name="includeTeam">Id of team which players should be included to the search result</param>
         /// <returns>List of free players</returns>
         public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
         {
-            searchString = HttpUtility.UrlDecode(searchString).Replace(" ", "");
+            searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
             var query = this._playerService.Get()
                             .Where(p => (p.FirstName + p.LastName).Contains(searchString) 
                                    || (p.LastName + p.FirstName).Contains(searchString));
@@ -224,7 +224,8 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                     var selectedIds = this.ParseIntList(includeList);
                     query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
                 }
-            } else if (string.IsNullOrEmpty(includeList))
+            } 
+            else if (string.IsNullOrEmpty(includeList))
             {
                 query = query.Where(p => p.TeamId == null);
             }

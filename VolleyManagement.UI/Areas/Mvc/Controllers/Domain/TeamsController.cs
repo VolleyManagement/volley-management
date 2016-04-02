@@ -104,7 +104,7 @@
         /// <summary>
         /// Edit team action POST
         /// </summary>
-        /// <param name="teamViewModel">Team view model</param>
+        /// <param name="id">Id of the team which is needed to be edited</param>
         /// <returns>Redirect to team index page</returns>
         public ActionResult Edit(int id)
         {
@@ -113,6 +113,7 @@
             {
                 return HttpNotFound();
             }
+
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             return View(viewModel);
         }
@@ -215,7 +216,7 @@
 
         private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)
         {
-            // TODO: manage case when player was deleted from the team
+            //// TODO: manage case when player was deleted from the team
 
             bool clearUpdate = true;
 

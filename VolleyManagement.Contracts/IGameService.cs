@@ -1,18 +1,18 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Collections.Generic;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Defines a contract for GameResultService.
     /// </summary>
-    public interface IGameResultService
+    public interface IGameService
     {
         /// <summary>
-        /// Creates a new game result.
+        /// Creates a new game.
         /// </summary>
-        /// <param name="gameResult">Game result to create.</param>
-        void Create(GameResult gameResult);
+        /// <param name="game">Game to create.</param>
+        void Create(Game game);
 
         /// <summary>
         /// Gets game result by its identifier.
@@ -29,15 +29,15 @@
         List<GameResultDto> GetTournamentResults(int tournamentId);
 
         /// <summary>
-        /// Edits specified instance of game result.
+        /// Edits specified instance of game.
         /// </summary>
-        /// <param name="gameResult">Game result to update.</param>
-        void Edit(GameResult gameResult);
+        /// <param name="game">Game to update.</param>
+        void Edit(Game game);
 
         /// <summary>
-        /// Deletes game result by its identifier.
+        /// Deletes game by its identifier.
         /// </summary>
-        /// <param name="id">Identifier of game result.</param>
+        /// <param name="id">Identifier of game.</param>
         void Delete(int id);
     }
 }

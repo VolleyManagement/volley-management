@@ -6,7 +6,7 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.GameResult;
     using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Represents an implementation of IGameReportService contract.

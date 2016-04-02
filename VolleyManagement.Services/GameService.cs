@@ -8,18 +8,18 @@
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.Properties;
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 
     /// <summary>
-    /// Defines an implementation of <see cref="IGameResultService"/> contract.
+    /// Defines an implementation of <see cref="IGameService"/> contract.
     /// </summary>
-    public class GameResultService : IGameResultService
+    public class GameService : IGameService
     {
         #region Fields
 
-        private readonly IGameResultRepository _gameResultRepository;
+        private readonly IGameRepository _gameResultRepository;
 
         #endregion
 
@@ -27,6 +27,7 @@
 
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria> _gamesInTournamentByRoundQuery;
 
         #endregion
 
@@ -39,14 +40,16 @@
         /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
         /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
         /// of the specified tournament.</param>
-        public GameResultService(
-            IGameResultRepository gameResultRepository,
+        public GameService(
+            IGameRepository gameResultRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
-            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
+            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
+            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> gameInTournamentByRoundQuery)
         {
             _gameResultRepository = gameResultRepository;
             _getByIdQuery = getByIdQuery;
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
+            _gamesInTournamentByRoundQuery = gameInTournamentByRoundQuery;
         }
 
         #endregion
@@ -56,17 +59,17 @@
         /// <summary>
         /// Creates a new game result.
         /// </summary>
-        /// <param name="gameResult">Game result to create.</param>
-        public void Create(GameResult gameResult)
+        /// <param name="game">Game result to create.</param>
+        public void Create(Game game)
         {
-            if (gameResult == null)
+            if (game == null)
             {
-                throw new ArgumentNullException("gameResult");
+                throw new ArgumentNullException("game");
             }
 
-            ValidateGameResult(gameResult);
+            ValidateGame(game);
 
-            _gameResultRepository.Add(gameResult);
+            _gameResultRepository.Add(game);
             _gameResultRepository.UnitOfWork.Commit();
         }
 
@@ -93,12 +96,12 @@
         /// <summary>
         /// Edits specified instance of game result.
         /// </summary>
-        /// <param name="gameResult">Game result to update.</param>
-        public void Edit(GameResult gameResult)
+        /// <param name="game">Game result to update.</param>
+        public void Edit(Game game)
         {
             try
             {
-                _gameResultRepository.Update(gameResult);
+                _gameResultRepository.Update(game);
             }
             catch (ConcurrencyException ex)
             {
@@ -118,22 +121,33 @@
             _gameResultRepository.UnitOfWork.Commit();
         }
 
+        /// <summary>
+        /// Gets games in the tournament specified by its identifier and in round specified by its number
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <param name="roundNumber">Number of the round.</param>
+        /// <returns>List of games of specified tournament in specified round.</returns>
+        public List<GameResultDto> GetGamesInTournamentByRound(int tournamentId, int roundNumber)
+        {
+            return _gamesInTournamentByRoundQuery.Execute(new GamesInTournamentByRoundCriteria { TournamentId = tournamentId, RoundNumber = roundNumber });
+        }
+
         #endregion
 
         #region Validation methods
 
-        private void ValidateGameResult(GameResult gameResult)
+        private void ValidateGame(Game game)
         {
-            ValidateTeams(gameResult.HomeTeamId, gameResult.AwayTeamId);
-            ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
-            ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
-            ValidateSetScoresValues(gameResult.SetScores, gameResult.IsTechnicalDefeat);
-            ValidateSetScoresOrder(gameResult.SetScores);
+            ValidateTeams(game.HomeTeamId, game.AwayTeamId);
+            ValidateSetsScore(game.Result.SetsScore, game.Result.IsTechnicalDefeat);
+            ValidateSetsScoreMatchesSetScores(game.Result.SetsScore, game.Result.SetScores);
+            ValidateSetScoresValues(game.Result.SetScores, game.Result.IsTechnicalDefeat);
+            ValidateSetScoresOrder(game.Result.SetScores);
         }
 
         private void ValidateTeams(int homeTeamId, int awayTeamId)
         {
-            if (GameResultValidation.AreTheSameTeams(homeTeamId, awayTeamId))
+            if (GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
             {
                 throw new ArgumentException(Resources.GameResultSameTeam);
             }
@@ -141,7 +155,7 @@
 
         private void ValidateSetsScore(Score setsScore, bool isTechnicalDefeat)
         {
-            if (!GameResultValidation.IsSetsScoreValid(setsScore, isTechnicalDefeat))
+            if (!ResultValidation.IsSetsScoreValid(setsScore, isTechnicalDefeat))
             {
                 throw new ArgumentException(
                     string.Format(
@@ -153,7 +167,7 @@
 
         private void ValidateSetsScoreMatchesSetScores(Score setsScore, IList<Score> setScores)
         {
-            if (!GameResultValidation.AreSetScoresMatched(setsScore, setScores))
+            if (!ResultValidation.AreSetScoresMatched(setsScore, setScores))
             {
                 throw new ArgumentException(Resources.GameResultSetsScoreNoMatchSetScores);
             }
@@ -167,7 +181,7 @@
             {
                 if (i < GameResultConstants.SETS_COUNT_TO_WIN)
                 {
-                    if (!GameResultValidation.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat))
+                    if (!ResultValidation.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat))
                     {
                         throw new ArgumentException(
                             string.Format(
@@ -180,7 +194,7 @@
                 }
                 else
                 {
-                    if (!GameResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat))
+                    if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat))
                     {
                         throw new ArgumentException(
                             string.Format(
@@ -193,20 +207,20 @@
 
                     if (isPreviousOptionalSetUnplayed)
                     {
-                        if (!GameResultValidation.IsSetUnplayed(setScores[i]))
+                        if (!ResultValidation.IsSetUnplayed(setScores[i]))
                         {
                             throw new ArgumentException(Resources.GameResultPreviousOptionalSetUnplayed);
                         }
                     }
 
-                    isPreviousOptionalSetUnplayed = GameResultValidation.IsSetUnplayed(setScores[i]);
+                    isPreviousOptionalSetUnplayed = ResultValidation.IsSetUnplayed(setScores[i]);
                 }
             }
         }
 
         private void ValidateSetScoresOrder(IList<Score> setScores)
         {
-            if (!GameResultValidation.AreSetScoresOrdered(setScores))
+            if (!ResultValidation.AreSetScoresOrdered(setScores))
             {
                 throw new ArgumentException(Resources.GameResultSetScoresNotOrdered);
             }

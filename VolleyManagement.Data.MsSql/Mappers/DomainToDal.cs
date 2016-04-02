@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -159,29 +159,31 @@
         }
 
         /// <summary>
-        /// Maps DAL model of game result to domain model of game result.
+        /// Maps DAL model of game to domain model of game result.
         /// </summary>
         /// <param name="to">DAL model of game result.</param>
-        /// <param name="from">Domain model of game result.</param>
-        public static void Map(GameResultEntity to, GameResult from)
+        /// <param name="from">Domain model of game.</param>
+        public static void Map(GameResultEntity to, Game from)
         {
             to.Id = from.Id;
             to.TournamentId = from.TournamentId;
             to.HomeTeamId = from.HomeTeamId;
             to.AwayTeamId = from.AwayTeamId;
-            to.HomeSetsScore = from.SetsScore.Home;
-            to.AwaySetsScore = from.SetsScore.Away;
-            to.IsTechnicalDefeat = from.IsTechnicalDefeat;
-            to.HomeSet1Score = from.SetScores[0].Home;
-            to.AwaySet1Score = from.SetScores[0].Away;
-            to.HomeSet2Score = from.SetScores[1].Home;
-            to.AwaySet2Score = from.SetScores[1].Away;
-            to.HomeSet3Score = from.SetScores[2].Home;
-            to.AwaySet3Score = from.SetScores[2].Away;
-            to.HomeSet4Score = from.SetScores[3].Home;
-            to.AwaySet4Score = from.SetScores[3].Away;
-            to.HomeSet5Score = from.SetScores[4].Home;
-            to.AwaySet5Score = from.SetScores[4].Away;
+            to.HomeSetsScore = from.Result.SetsScore.Home;
+            to.AwaySetsScore = from.Result.SetsScore.Away;
+            to.IsTechnicalDefeat = from.Result.IsTechnicalDefeat;
+            to.HomeSet1Score = from.Result.SetScores[0].Home;
+            to.AwaySet1Score = from.Result.SetScores[0].Away;
+            to.HomeSet2Score = from.Result.SetScores[1].Home;
+            to.AwaySet2Score = from.Result.SetScores[1].Away;
+            to.HomeSet3Score = from.Result.SetScores[2].Home;
+            to.AwaySet3Score = from.Result.SetScores[2].Away;
+            to.HomeSet4Score = from.Result.SetScores[3].Home;
+            to.AwaySet4Score = from.Result.SetScores[3].Away;
+            to.HomeSet5Score = from.Result.SetScores[4].Home;
+            to.AwaySet5Score = from.Result.SetScores[4].Away;
+            to.StartTime = from.GameDate;
+            to.RoundNumber = from.Round;
         }
     }
 }

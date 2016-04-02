@@ -459,7 +459,11 @@ namespace VolleyManagement.Data.MsSql.Context
             modelBuilder.Entity<GameResultEntity>()
                 .Property(gr => gr.StartTime)
                 .IsRequired()
-                .HasColumnType(VolleyDatabaseMetadata.DATE_COLUMN_TYPE); 
+                .HasColumnType(VolleyDatabaseMetadata.DATETIME_COLUMN_TYPE);
+
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.RoundNumber)
+                .IsRequired(); 
 
             // FK GameResult -> Tournament
             modelBuilder.Entity<GameResultEntity>()

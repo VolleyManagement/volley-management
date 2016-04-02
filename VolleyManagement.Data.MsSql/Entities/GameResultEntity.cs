@@ -100,7 +100,7 @@
         /// <summary>
         /// Gets or sets the number of the round for the game 
         /// </summary>
-        public byte RoundNumber { get; set; }
+        public int RoundNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament where game result belongs.

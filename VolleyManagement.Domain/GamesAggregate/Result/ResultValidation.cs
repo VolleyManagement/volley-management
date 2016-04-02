@@ -1,10 +1,10 @@
-﻿namespace VolleyManagement.Domain.ResultsAggregate
+﻿namespace VolleyManagement.Domain.GamesAggregate
 {
     using System;
     using System.Collections.Generic;
 
     /// <summary>
-    /// Game result validation class.
+    /// Result validation class.
     /// </summary>
     public static class ResultValidation
     {

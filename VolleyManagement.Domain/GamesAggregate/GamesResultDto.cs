@@ -1,9 +1,11 @@
-﻿namespace VolleyManagement.Domain.ResultsAggregate
+﻿namespace VolleyManagement.Domain.GamesAggregate
 {
+    using System;
+
     /// <summary>
     /// Represents a data transfer object of game result with home and away team names.
     /// </summary>
-    public class ResultDto
+    public class GameResultDto
     {
         /// <summary>
         /// Gets or sets the identifier of game result.
@@ -99,5 +101,15 @@
         /// Gets or sets the score of the fifth set for the away team.
         /// </summary>
         public byte AwaySet5Score { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and time of the game.
+        /// </summary>
+        public DateTime GameDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the round of the game in the tournament.
+        /// </summary>
+        public int Round { get; set; }
     }
 }

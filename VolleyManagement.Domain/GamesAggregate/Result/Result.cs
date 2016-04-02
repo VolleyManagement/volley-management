@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Domain.ResultsAggregate
+﻿namespace VolleyManagement.Domain.GamesAggregate
 {
     using System.Collections.Generic;
 

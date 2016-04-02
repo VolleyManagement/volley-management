@@ -54,12 +54,12 @@
     <Compile Include="Dto\UserInRoleDto.cs" />
     <Compile Include="GamesAggregate\Game.cs" />
     <Compile Include="GameReportsAggregate\StandingsEntry.cs" />
+    <Compile Include="GamesAggregate\GamesResultDto.cs" />
     <Compile Include="GamesAggregate\GameValidation.cs" />
-    <Compile Include="GamesAggregate\IGameResultRepository.cs" />
-    <Compile Include="ResultsAggregate\Result.cs" />
-    <Compile Include="ResultsAggregate\ResultDto.cs" />
-    <Compile Include="ResultsAggregate\ResultValidation.cs" />
-    <Compile Include="ResultsAggregate\Score.cs" />
+    <Compile Include="GamesAggregate\IGameRepository.cs" />
+    <Compile Include="GamesAggregate\Result.cs" />
+    <Compile Include="GamesAggregate\ResultValidation.cs" />
+    <Compile Include="GamesAggregate\Score.cs" />
     <Compile Include="PlayersAggregate\IPlayerRepository.cs" />
     <Compile Include="PlayersAggregate\Player.cs" />
     <Compile Include="PlayersAggregate\PlayerValidation.cs" />

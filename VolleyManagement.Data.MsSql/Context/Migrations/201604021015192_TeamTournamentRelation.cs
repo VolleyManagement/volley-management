@@ -22,8 +22,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 .PrimaryKey(t => new { t.TournamentId, t.TeamId })
                 .ForeignKey("dbo.Tournaments", t => t.TournamentId)
                 .ForeignKey("dbo.Teams", t => t.TeamId)
-                .Index(t => t.TournamentId)
-                .Index(t => t.TeamId);
+                .Index(t => t.TournamentId);
         }
 
         /// <summary>

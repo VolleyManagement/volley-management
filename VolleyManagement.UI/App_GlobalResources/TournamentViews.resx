@@ -192,4 +192,7 @@
   <data name="UpcomingTournamentsHeader" xml:space="preserve">
     <value>Upcoming</value>
   </data>
+  <data name="ManageTeams" xml:space="preserve">
+    <value>Manage Teams</value>
+  </data>
 </root>

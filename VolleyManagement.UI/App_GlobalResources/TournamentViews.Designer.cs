@@ -196,6 +196,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage Teams.
+        /// </summary>
+        public static string ManageTeams {
+            get {
+                return ResourceManager.GetString("ManageTeams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Applying period.
         /// </summary>
         public static string RegistrationFieldsTitle {

@@ -130,7 +130,9 @@
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TeamNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentTeamsListViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />

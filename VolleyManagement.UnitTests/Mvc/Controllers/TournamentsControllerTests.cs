@@ -14,6 +14,9 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
+    using Services.TeamService;
+    using Domain.TeamsAggregate;
+    using UI.Areas.Mvc.ViewModels.Teams;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -65,6 +68,49 @@
             // Assert
             CollectionAssert.AreEqual(expectedCurrentTournaments, actualCurrentTournaments, new TournamentComparer());
             CollectionAssert.AreEqual(expectedUpcomingTournaments, actualUpcomingTournaments, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// Test for ManageTournamentTeams. 
+        /// Actual tournament teams are requested. Actual tournament teams are returned.
+        /// </summary>
+        [TestMethod]
+        public void ManageTournamentTeams_GetTournamentTeams_TeamsInCurrentTournament()
+        {
+            //Arrange
+            var testData = MakeTestTeams();
+            SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
+            var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
+
+            //Act
+            var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListViewModel>(
+                this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
+
+            //Assert
+            Assert.IsTrue(new TournamentTeamsListViewModelComparer()
+                .AreEqual(expectedTeamsList, returnedTeamsList));
+        }
+
+        /// <summary>
+        /// Test for AddTeamsToTournament. 
+        /// Tournament teams list view model is valid and no exception is thrown during adding
+        /// Teams are added successfully and json result is returned
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_TeamsAdded_JsonResultIsReturned()
+        {
+            //Arrange
+            var testData = MakeTestTeams();
+            var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
+
+            //Act
+            var jsonResult = this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
+            var returnedDataResult = jsonResult.Data as TournamentTeamsListViewModel;
+
+            //Assert
+            Assert.AreEqual(jsonResult.JsonRequestBehavior, JsonRequestBehavior.AllowGet);
+            Assert.IsTrue(new TournamentTeamsListViewModelComparer()
+                .AreEqual(returnedDataResult, expectedDataResult));
         }
 
         /// <summary>
@@ -356,6 +402,11 @@
             return new TournamentServiceTestFixture().TestTournaments().Build();
         }
 
+        private List<Team> MakeTestTeams()
+        {
+            return new TeamServiceTestFixture().TestTeams().Build();
+        }
+
         private Tournament MakeTestTournament(int tournamentId)
         {
             return new TournamentBuilder().WithId(tournamentId).Build();
@@ -379,6 +430,13 @@
         private void SetupGetActual(List<Tournament> tournaments)
         {
             this._tournamentServiceMock.Setup(tr => tr.GetActual()).Returns(tournaments);
+        }
+
+        private void SetupGetTournamentTeams(List<Team> teams, int tournamentId)
+        {
+            this._tournamentServiceMock.
+                Setup(tr => tr.GetAllTornamentTeams(tournamentId))
+                .Returns(teams);
         }
 
         private void SetupGetFinished(List<Tournament> tournaments)

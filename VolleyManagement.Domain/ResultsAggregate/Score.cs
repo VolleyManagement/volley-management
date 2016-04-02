@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Domain.GameResultsAggregate
+﻿namespace VolleyManagement.Domain.ResultsAggregate
 {
     /// <summary>
     /// Represents a game score.

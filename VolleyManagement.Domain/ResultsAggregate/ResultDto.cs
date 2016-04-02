@@ -1,9 +1,9 @@
-﻿namespace VolleyManagement.Domain.GameResultsAggregate
+﻿namespace VolleyManagement.Domain.ResultsAggregate
 {
     /// <summary>
     /// Represents a data transfer object of game result with home and away team names.
     /// </summary>
-    public class GameResultDto
+    public class ResultDto
     {
         /// <summary>
         /// Gets or sets the identifier of game result.

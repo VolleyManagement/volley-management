@@ -1,15 +1,9 @@
 ﻿namespace VolleyManagement.Domain.GamesAggregate
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Game validation class.
     /// </summary>
-    class GameValidation
+    public static class GameValidation
     {
         /// <summary>
         /// Determines whether the home team and the away team are the same.

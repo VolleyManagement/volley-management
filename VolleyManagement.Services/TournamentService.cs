@@ -9,6 +9,7 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using DivisionConstants = VolleyManagement.Domain.Constants.Division;
     using GroupConstants = VolleyManagement.Domain.Constants.Group;
@@ -149,6 +150,21 @@
         {
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
+        }
+
+        public List<Team> GetAllTornamentTeams(int tournamentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteTeamFromTournament(int teamId, int tournamentId)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

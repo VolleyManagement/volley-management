@@ -51,5 +51,10 @@
         /// Gets or sets away game results of the team.
         /// </summary>
         public virtual ICollection<GameResultEntity> AwayGameResults { get; set; }
+
+        /// <summary>
+        /// Gets or sets tournaments in which team takes part.
+        /// </summary>
+        public virtual ICollection<TournamentEntity> Tournaments { get; set; }
     }
 }

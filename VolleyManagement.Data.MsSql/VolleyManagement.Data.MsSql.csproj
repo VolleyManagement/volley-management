@@ -97,6 +97,10 @@
     <Compile Include="Context\Migrations\201512171559020_AddGameResults.Designer.cs">
       <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.cs" />
+    <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.Designer.cs">
+      <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
@@ -110,6 +114,7 @@
     <Compile Include="Infrastructure\NinjectDataAccessModule.cs" />
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Entities\PlayerEntity.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GameResultQueries.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -191,6 +196,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201512171559020_AddGameResults.resx">
       <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201604021015192_TeamTournamentRelation.resx">
+      <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -156,6 +156,9 @@
   <data name="LateRegistrationDates" xml:space="preserve">
     <value>Start of the applying period must be later than today</value>
   </data>
+  <data name="TeamNameInTournamentNotUnique" xml:space="preserve">
+    <value>Team with such name already exists in tournament</value>
+  </data>
   <data name="TournamentNameMustBeUnique" xml:space="preserve">
     <value>Tournament name should be unique</value>
   </data>

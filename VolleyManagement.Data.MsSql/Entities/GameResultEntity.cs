@@ -1,5 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Entities
 {
+    using System; 
+
     /// <summary>
     /// Represents DAL game result entity.
     /// </summary>
@@ -89,6 +91,16 @@
         /// Gets or sets the score of the fifth set for the away team.
         /// </summary>
         public byte AwaySet5Score { get; set; }
+
+        /// <summary>
+        /// Gets or sets date and time when the game starts 
+        /// </summary>
+        public DateTime StartTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of the round for the game 
+        /// </summary>
+        public byte RoundNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament where game result belongs.

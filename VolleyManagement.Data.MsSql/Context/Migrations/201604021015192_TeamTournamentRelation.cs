@@ -1,10 +1,15 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
+    /// <summary>
+    /// Add teams to tournaments
+    /// </summary>
     public partial class TeamTournamentRelation : DbMigration
     {
+        /// <summary>
+        /// Migrates up
+        /// </summary>
         public override void Up()
         {
             CreateTable(
@@ -17,9 +22,13 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 .PrimaryKey(t => new { t.TournamentId, t.TeamId })
                 .ForeignKey("dbo.Tournaments", t => t.TournamentId)
                 .ForeignKey("dbo.Teams", t => t.TeamId)
-                .Index(t => t.TournamentId);            
+                .Index(t => t.TournamentId)
+                .Index(t => t.TeamId);
         }
-        
+
+        /// <summary>
+        /// Migrates down
+        /// </summary>
         public override void Down()
         {
             DropForeignKey("dbo.TournamentTeam", "TeamId", "dbo.Teams");

@@ -17,6 +17,7 @@
     using Services.TeamService;
     using Domain.TeamsAggregate;
     using UI.Areas.Mvc.ViewModels.Teams;
+    using System;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -26,6 +27,7 @@
     public class TournamentsControllerTests
     {
         private const int TEST_TOURNAMENT_ID = 1;
+        private const int TEST_TEAM_ID = 1;
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string INDEX_ACTION_NAME = "Index";
@@ -111,6 +113,27 @@
             Assert.AreEqual(jsonResult.JsonRequestBehavior, JsonRequestBehavior.AllowGet);
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
                 .AreEqual(returnedDataResult, expectedDataResult));
+        }
+
+        /// <summary>
+        /// Test for AddTeamsToTournament. 
+        /// Tournament teams list view model is invalid and Argument exception is thrown during adding
+        /// Teams are not added and json result  whith model error is returned
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_TeamsAreNotAdded_JsonModelErrorReturned()
+        {
+            //Arrange
+            var testData = MakeTestTeams();
+            this._tournamentServiceMock
+                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>()))
+                .Throws(new ArgumentException(string.Empty));                
+
+            //Act            
+            var jsonResult = this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
+
+            //Assert            
+            Assert.AreEqual(jsonResult.JsonRequestBehavior, JsonRequestBehavior.DenyGet);
         }
 
         /// <summary>
@@ -340,6 +363,24 @@
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
+        /// Test for Delete team from tournament method (POST action)
+        /// </summary>
+        [TestMethod]
+        public void DeleteTeamFromTournament_ExistingTeamAndTournament_TeamDeleted()
+        {
+            //Arrange
+            this._tournamentServiceMock
+                .Setup(ts=>ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()));
+
+            //Act
+            var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
+
+            //Assert
+            Assert.IsTrue(result.HasDeleted);
         }
 
         /// <summary>

@@ -426,6 +426,7 @@
     <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamDeleteFromTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamNameViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />

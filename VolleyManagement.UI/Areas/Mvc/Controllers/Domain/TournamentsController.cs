@@ -241,9 +241,13 @@
             }
             catch (Exception ex)
             {
-                return Json(new { Message = ex.Message, HasDeleted = false });
+                return Json(new TeamDeleteFromTournamentViewModel
+                {
+                    Message = ex.Message,
+                    HasDeleted = false
+                });
             }
-            return Json(new
+            return Json(new TeamDeleteFromTournamentViewModel
             {
                 Message = "Team was deleted",
                 HasDeleted = true

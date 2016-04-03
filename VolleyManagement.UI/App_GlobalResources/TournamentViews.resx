@@ -195,4 +195,7 @@
   <data name="ManageTeams" xml:space="preserve">
     <value>Manage Teams</value>
   </data>
+  <data name="DeleteTournamentTeamConfirm" xml:space="preserve">
+    <value>Are you sure you want to delete this team?</value>
+  </data>
 </root>

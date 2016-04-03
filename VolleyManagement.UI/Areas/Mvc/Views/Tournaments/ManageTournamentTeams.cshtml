@@ -12,126 +12,130 @@
 {
     <p>
         @Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id }, null)
-        <button class='deleteTeamFromTournamentButton' id="@item.Id">Delete</button>
+        <button class="deleteTeamFromTournamentButton" id="@item.Id">Delete</button>
     </p>
 }
 
 <div>
     @Html.HiddenFor(model => model.TournamentId)
-    <button id='addTeamToTournamentButton'>Add team to tournament</button>
+    <button id="addTeamToTournamentButton">Add team to tournament</button>
     <table id="tornamentRoster" class="table">
         <tr>
             <th>@Html.DisplayNameFor(model => model.List.FirstOrDefault().Name)</th>
             <th class="hidden"></th>
         </tr>
     </table>
-    <button id='addTeamsButton'>Add teams</button>
+    <button id="addTeamsButton">Add teams</button>
 
     <script type="text/javascript">
-        var currNs = {};
-        var privates = {};
-        privates.tornamentTeamsTable = $("#tornamentRoster");
+        (function(){
+            "use strict";
 
-        privates.getAllTeamsOptions = function (callback) {
-            $.getJSON("/Teams/GetAllTeams", callback);
-        }
+            var currNs = {};
+            var privates = {};
+            privates.tornamentTeamsTable = $("#tornamentRoster");
 
-        privates.handleTeamsAddSuccess = function (data, status, xhr) {
-            alert(data);
-            location.reload();
-        };
-
-        privates.handleTeamsAddFail = function (data, status, xhr) {
-            alert("Team adding failed");
-        };
-
-        privates.getJsonForTournamentTeamsSave = function () {
-            var result = {
-                TournamentId: $("[name='TournamentId']").val(),
-                List: []
+            privates.getAllTeamsOptions = function (callback) {
+                $.getJSON("/Teams/GetAllTeams", callback);
             }
-            var selectedTeams = $("select :selected");
 
-            for (var i = 0; i < selectedTeams.length; i++) {
-                if (selectedTeams[i].value != 0) {
-                    result.List.push({
+            privates.handleTeamsAddSuccess = function (data, status, xhr) {
+                alert(data);
+                location.reload();
+            };
 
-                        Id: selectedTeams[i].value,
-                        Name: selectedTeams[i].text
+            privates.handleTeamsAddFail = function (data, status, xhr) {
+                alert("Team adding failed");
+            };
 
+            privates.getJsonForTournamentTeamsSave = function () {
+                var result = {
+                    TournamentId: $("[name='TournamentId']").val(),
+                    List: []
+                }
+                var selectedTeams = $("select :selected");
+
+                for (var i = 0; i < selectedTeams.length; i++) {
+                    if (selectedTeams[i].value != 0) {
+                        result.List.push({
+
+                            Id: selectedTeams[i].value,
+                            Name: selectedTeams[i].text
+
+                        });
+                    }
+                }
+
+                return result;
+            }
+
+            privates.getTornamentTeamsRowMarkup = function (responseOptions) {
+                var result = "<tr class='" + "'>" +
+                "<td><select>" + responseOptions + "</select></td>" +
+                "<td>" + "<button class='deleteTeamButton'>Delete</button>" + "</td></tr>";
+                return result;
+            }
+
+            privates.renderNewTournamentTeamsRow = function (responseOptions) {
+                $("tr:last", privates.tornamentTeamsTable).after(privates.getTornamentTeamsRowMarkup(responseOptions));
+            }
+
+            privates.addTournamentTeamsRow = function () {
+                var context = $("tr:last", privates.tornamentTeamsTable);
+                var elem = $("select :selected", context);
+                if (elem.val() !== "0") {
+                    privates.getAllTeamsOptions(function (options) {
+                        var responseOptions = "<option value = '0'> No team selected</option>";
+                        $.each(options, function (key, value) {
+                            responseOptions += '<option value="' + value.Id + '">' + value.Name + '</option>';
+                        })
+                        privates.renderNewTournamentTeamsRow(responseOptions);
+                        $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
+                    });
+                }
+                return false;
+            }
+
+            currNs.onAddTeamToTournamentButtonClick = function () {
+                privates.addTournamentTeamsRow();
+            }
+
+            currNs.onAddTeamsButtonButtonClick = function () {
+                var data = privates.getJsonForTournamentTeamsSave();
+                if (data.List.length > 0) {
+                    $.post("/Tournaments/AddTeamsToTournament", data)
+                        .done(privates.handleTeamsAddSuccess)
+                        .fail(privates.handleTeamsAddFail);
+                }
+            }
+
+            currNs.onDeleteTeamButtonClick = function (eventData) {
+                var currentRow = eventData.target.parentElement.parentElement;
+                currentRow.remove();
+            }
+
+            currNs.onDeleteTeamFromTournamentButtonClick = function (eventData) {
+                var teamId = eventData.target.id;
+                var tournamentId = $("[name='TournamentId']").val();
+                var flag = confirm("@TournamentViews.DeleteTournamentTeamConfirm");
+                if (flag) {
+                    $.post("/Tournaments/DeleteTeamFromTournament",
+                        {
+                            teamId: teamId,
+                            tournamentId: tournamentId
+                        })
+                    .done(function (data) {
+                        alert(data.Message);
+                        if (data.HasDeleted) {
+                            $("#" + teamId).parent().remove();
+                        }
                     });
                 }
             }
 
-            return result;
-        }
-
-        privates.getTornamentTeamsRowMarkup = function (responceOptions) {
-            var result = "<tr class='" + "'>" +
-            "<td><select>" + responceOptions + "</select></td>" +
-            "<td>" + "<button class='deleteTeamButton'>Delete</button>" + "</td></tr>";
-            return result;
-        }
-
-        privates.renderNewTournamentTeamsRow = function (responceOptions) {
-            $('tr:last', privates.tornamentTeamsTable).after(privates.getTornamentTeamsRowMarkup(responceOptions));
-        }
-
-        privates.addTournamentTeamsRow = function () {
-            var context = $('tr:last', privates.tornamentTeamsTable);
-            var elem = $('select :selected', context);
-            if (elem.val() !== "0") {
-                privates.getAllTeamsOptions(function (options) {
-                    var responceOptions = "<option value = '0'> No team selected</option>";
-                    $.each(options, function (key, value) {
-                        responceOptions += '<option value="' + value.Id + '">' + value.Name + '</option>';
-                    })
-                    privates.renderNewTournamentTeamsRow(responceOptions);
-                    $(".deleteTeamButton").bind('click', currNs.onDeleteTeamButtonClick);
-                });
-            }
-            return false;
-        }
-
-        currNs.onAddTeamToTournamentButtonClick = function () {
-            privates.addTournamentTeamsRow();
-        }
-
-        currNs.onAddTeamsButtonButtonClick = function () {
-            var data = privates.getJsonForTournamentTeamsSave();
-            if (data.List.length > 0) {
-                $.post("/Tournaments/AddTeamsToTournament", data)
-                    .done(privates.handleTeamsAddSuccess)
-                    .fail(privates.handleTeamsAddFail);
-            }
-        }
-
-        currNs.onDeleteTeamButtonClick = function (eventData) {
-            var currentRow = eventData.target.parentElement.parentElement;
-            currentRow.remove();
-        }
-
-        currNs.onDeleteTeamFromTournamentButtonClick = function (eventData) {
-            var teamId = eventData.target.id;
-            var tournamentId = $("[name='TournamentId']").val();
-            var flag = confirm("Are you sure you want delete team ?");
-            if (flag) {
-                $.post("/Tournaments/DeleteTeamFromTournament",
-                    {
-                        teamId: teamId,
-                        tournamentId: tournamentId
-                    })
-                .done(function (data) {
-                    alert(data.Message);
-                    if (data.HasDeleted) {
-                        $("#" + teamId).parent().remove();
-                    }
-                });
-            }
-        }
-
-        $("#addTeamToTournamentButton").bind('click', currNs.onAddTeamToTournamentButtonClick);
-        $("#addTeamsButton").bind('click', currNs.onAddTeamsButtonButtonClick);
-        $(".deleteTeamFromTournamentButton").bind('click', currNs.onDeleteTeamFromTournamentButtonClick);
+            $("#addTeamToTournamentButton").bind("click", currNs.onAddTeamToTournamentButtonClick);
+            $("#addTeamsButton").bind("click", currNs.onAddTeamsButtonButtonClick);
+            $(".deleteTeamFromTournamentButton").bind("click", currNs.onDeleteTeamFromTournamentButtonClick);
+        })();
     </script>
 </div>

@@ -8,6 +8,7 @@
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -46,6 +47,7 @@
         private readonly IQuery<Tournament, UniqueTournamentCriteria> _uniqueTournamentQuery;
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
+        private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTeamsQuery;
 
         #endregion
 
@@ -62,12 +64,14 @@
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
-            IQuery<Tournament, FindByIdCriteria> getByIdQuery)
+            IQuery<Tournament, FindByIdCriteria> getByIdQuery,
+            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
+            _getAllTeamsQuery = getAllTeamsQuery;
         }
 
         #endregion
@@ -99,6 +103,15 @@
         public List<Tournament> GetFinished()
         {
             return GetFilteredTournaments(_finishedStates);
+        }
+
+        /// Returns all teams for specific tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of Tournament for getting teams</param>
+        /// <returns>Tournament teams</returns>
+        public List<Team> GetAllTournamentTeams(int tournamentId)
+        {
+            return _getAllTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>
@@ -152,22 +165,43 @@
             _tournamentRepository.UnitOfWork.Commit();
         }
 
-        public List<Team> GetAllTornamentTeams(int tournamentId)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Adds team to tournament
+        /// </summary>
+        /// <param name="teamId">Team to add</param>
+        /// <param name="tournamentId">Tournament to assign team</param>
         public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId)
         {
-            throw new NotImplementedException();
+            var allTeams = GetAllTournamentTeams(tournamentId);
+
+            foreach (var team in teams)
+            {
+                if (!allTeams.Contains(team))
+                {
+                    _tournamentRepository.AddTeamToTournament(team.Id, tournamentId);
+                }
+                else
+                {
+                    throw new ArgumentException(TournamentResources.TeamNameInTournamentNotUnique);
+                }
+            }
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
+        /// <summary>
+        /// Deletes team from tournament
+        /// </summary>
+        /// <param name="teamId">Team to delete</param>
+        /// <param name="tournamentId">Tournament to un assign team</param>
         public void DeleteTeamFromTournament(int teamId, int tournamentId)
         {
-            throw new NotImplementedException();
+            _tournamentRepository.RemoveTeamFromTournament(teamId, tournamentId);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         #endregion
+
+
 
         #region Private
 

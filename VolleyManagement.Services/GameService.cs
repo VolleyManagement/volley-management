@@ -19,7 +19,7 @@
     {
         #region Fields
 
-        private readonly IGameRepository _gameResultRepository;
+        private readonly IGameRepository _gameRepository;
 
         #endregion
 
@@ -34,22 +34,22 @@
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameResultService"/> class.
+        /// Initializes a new instance of the <see cref="GameService"/> class.
         /// </summary>
-        /// <param name="gameResultRepository">Instance of class which implements <see cref="IGameResultRepository"/>.</param>
+        /// <param name="gameRepository">Instance of class which implements <see cref="IGameRepository"/>.</param>
         /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
         /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
         /// of the specified tournament.</param>
         public GameService(
-            IGameRepository gameResultRepository,
+            IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
-            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> gameInTournamentByRoundQuery)
+            IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria> gamesInTournamentByRoundQuery)
         {
-            _gameResultRepository = gameResultRepository;
+            _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
-            _gamesInTournamentByRoundQuery = gameInTournamentByRoundQuery;
+            _gamesInTournamentByRoundQuery = gamesInTournamentByRoundQuery;
         }
 
         #endregion
@@ -57,9 +57,9 @@
         #region Implementation
 
         /// <summary>
-        /// Creates a new game result.
+        /// Creates a new game.
         /// </summary>
-        /// <param name="game">Game result to create.</param>
+        /// <param name="game">Game to create.</param>
         public void Create(Game game)
         {
             if (game == null)
@@ -69,8 +69,8 @@
 
             ValidateGame(game);
 
-            _gameResultRepository.Add(game);
-            _gameResultRepository.UnitOfWork.Commit();
+            _gameRepository.Add(game);
+            _gameRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -94,35 +94,35 @@
         }
 
         /// <summary>
-        /// Edits specified instance of game result.
+        /// Edits specified instance of game.
         /// </summary>
-        /// <param name="game">Game result to update.</param>
+        /// <param name="game">Game to update.</param>
         public void Edit(Game game)
         {
             try
             {
-                _gameResultRepository.Update(game);
+                _gameRepository.Update(game);
             }
             catch (ConcurrencyException ex)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.GameResultNotFound, ex);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
 
-            _gameResultRepository.UnitOfWork.Commit();
+            _gameRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
-        /// Deletes game result by its identifier.
+        /// Deletes game by its identifier.
         /// </summary>
-        /// <param name="id">Identifier of game result.</param>
+        /// <param name="id">Identifier of game.</param>
         public void Delete(int id)
         {
-            _gameResultRepository.Remove(id);
-            _gameResultRepository.UnitOfWork.Commit();
+            _gameRepository.Remove(id);
+            _gameRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
-        /// Gets games in the tournament specified by its identifier and in round specified by its number
+        /// Gets game results in the tournament specified by its identifier and in round specified by its number
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <param name="roundNumber">Number of the round.</param>

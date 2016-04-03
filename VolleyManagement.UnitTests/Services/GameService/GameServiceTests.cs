@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.Services.GameResultService
+﻿namespace VolleyManagement.UnitTests.Services.GameService
 {
     using System;
     using System.Collections.Generic;
@@ -11,21 +11,21 @@
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Services;
 
     /// <summary>
-    /// Tests for <see cref="GameResultService"/> class.
+    /// Tests for <see cref="GameService"/> class.
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
-    public class GameResultServiceTests
+    public class GameServiceTests
     {
         private const int GAME_RESULT_ID = 1;
 
         private const int TOURNAMENT_ID = 1;
 
-        private readonly Mock<IGameResultRepository> _gameResultRepositoryMock = new Mock<IGameResultRepository>();
+        private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
         private readonly Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock
             = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
@@ -44,28 +44,28 @@
         public void TestInit()
         {
             _kernel = new StandardKernel();
-            _kernel.Bind<IGameResultRepository>().ToConstant(_gameResultRepositoryMock.Object);
+            _kernel.Bind<IGameRepository>().ToConstant(_gameRepositoryMock.Object);
             _kernel.Bind<IQuery<GameResultDto, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
                 .ToConstant(_tournamentGameResultsQueryMock.Object);
-            _gameResultRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
         /// <summary>
         /// Test for Create method. GameResult object contains valid data. Game result is created successfully.
         /// </summary>
         [TestMethod]
-        public void Create_GameResultValid_GameResultCreated()
+        public void Create_GameValid_GameCreated()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var newGame = new GameBuilder().Build();
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGameResult);
+            sut.Create(newGame);
 
             // Assert
-            VerifyCreateGameResult(newGameResult, Times.Once());
+            VerifyCreateGame(newGame, Times.Once());
         }
 
         /// <summary>
@@ -73,17 +73,17 @@
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Create_GameResultNull_ExceptionThrown()
+        public void Create_GameNull_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = null as GameResult;
-            var sut = _kernel.Get<GameResultService>();
+            var newGame = null as Game;
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGameResult);
+            sut.Create(newGame);
 
             // Assert
-            VerifyCreateGameResult(newGameResult, Times.Never());
+            VerifyCreateGame(newGame, Times.Never());
         }
 
         /// <summary>
@@ -91,17 +91,17 @@
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultSameTeams_ExceptionThrown()
+        public void Create_GameSameTeams_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().WithTheSameTeams().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var newGame = new GameBuilder().WithTheSameTeams().Build();
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGameResult);
+            sut.Create(newGame);
 
             // Assert
-            VerifyCreateGameResult(newGameResult, Times.Never());
+            VerifyCreateGame(newGame, Times.Never());
         }
 
         /// <summary>
@@ -110,17 +110,17 @@
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultInvalidSetsScore_ExceptionThrown()
+        public void Create_GameInvalidSetsScore_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().WithInvalidSetsScore().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var newGame = new GameBuilder().WithInvalidSetsScore().Build();
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGameResult);
+            sut.Create(newGame);
 
             // Assert
-            VerifyCreateGameResult(newGameResult, Times.Never());
+            VerifyCreateGame(newGame, Times.Never());
         }
 
         /// <summary>
@@ -129,17 +129,17 @@
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultSetsScoreNoMatchSetScores_ExceptionThrown()
+        public void Create_GameSetsScoreNoMatchSetScores_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().WithSetsScoreNoMatchSetScores().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var newGame = new GameBuilder().WithSetsScoreNoMatchSetScores().Build();
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGameResult);
+            sut.Create(newGame);
 
             // Assert
-            VerifyCreateGameResult(newGameResult, Times.Never());
+            VerifyCreateGame(newGame, Times.Never());
         }
 
         /// <summary>
@@ -150,14 +150,14 @@
         public void Create_GameResultInvalidRequiredSetScores_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().WithInvalidRequiredSetScores().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var newGame = new GameBuilder().WithInvalidRequiredSetScores().Build();
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGameResult);
+            sut.Create(newGame);
 
             // Assert
-            VerifyCreateGameResult(newGameResult, Times.Never());
+            VerifyCreateGame(newGame, Times.Never());
         }
 
         /// <summary>
@@ -165,17 +165,17 @@
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultInvalidOptionalSetScores_ExceptionThrown()
+        public void Create_GameInvalidOptionalSetScores_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().WithInvalidOptionalSetScores().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var newGame = new GameBuilder().WithInvalidOptionalSetScores().Build();
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGameResult);
+            sut.Create(newGame);
 
             // Assert
-            VerifyCreateGameResult(newGameResult, Times.Never());
+            VerifyCreateGame(newGame, Times.Never());
         }
 
         /// <summary>
@@ -183,17 +183,17 @@
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultPreviousOptionalSetUnplayed_ExceptionThrown()
+        public void Create_GamePreviousOptionalSetUnplayed_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().WithPreviousOptionalSetUnplayed().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var newGame = new GameBuilder().WithPreviousOptionalSetUnplayed().Build();
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGameResult);
+            sut.Create(newGame);
 
             // Assert
-            VerifyCreateGameResult(newGameResult, Times.Never());
+            VerifyCreateGame(newGame, Times.Never());
         }
 
         /// <summary>
@@ -201,28 +201,28 @@
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameResultSetScoresUnordered_ExceptionThrown()
+        public void Create_GameSetScoresUnordered_ExceptionThrown()
         {
             // Arrange
-            var newGameResult = new GameResultBuilder().WithSetScoresUnordered().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var newGame = new GameBuilder().WithSetScoresUnordered().Build();
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGameResult);
+            sut.Create(newGame);
 
             // Assert
-            VerifyCreateGameResult(newGameResult, Times.Never());
+            VerifyCreateGame(newGame, Times.Never());
         }
 
         /// <summary>
-        /// Test for Get method. Existing game result is requested. Game result is returned.
+        /// Test for Get method. Existing game is requested. Game is returned.
         /// </summary>
         [TestMethod]
-        public void Get_ExistingGameResult_GameResultReturned()
+        public void Get_ExistingGame_GameReturned()
         {
             // Arrange
             var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
-            var sut = _kernel.Get<GameResultService>();
+            var sut = _kernel.Get<GameService>();
 
             SetupGet(expected);
 
@@ -240,8 +240,8 @@
         public void GetTournamentResults_GameResultsRequsted_GameResultsReturned()
         {
             // Arrange
-            var expected = new GameResultTestFixture().TestGameResults().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var expected = new GameServiceTestFixture().TestGameResults().Build();
+            var sut = _kernel.Get<GameService>();
 
             SetupGetTournamentResults(TOURNAMENT_ID, expected);
 
@@ -253,61 +253,61 @@
         }
 
         /// <summary>
-        /// Test for Edit method. GameResult object contains valid data. Game result is edited successfully.
+        /// Test for Edit method. Game object contains valid data. Game is edited successfully.
         /// </summary>
         [TestMethod]
-        public void Edit_GameResultValid_GameResultEdited()
+        public void Edit_GameValid_GameEdited()
         {
             // Arrange
-            var gameResult = new GameResultBuilder().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var game = new GameBuilder().Build();
+            var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Edit(gameResult);
+            sut.Edit(game);
 
             // Assert
-            VerifyEditGameResult(gameResult, Times.Once());
+            VerifyEditGame(game, Times.Once());
         }
 
         /// <summary>
-        /// Test for Edit method. Game result is missing and cannot be edited. Exception is thrown during editing.
+        /// Test for Edit method. Game is missing and cannot be edited. Exception is thrown during editing.
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(MissingEntityException))]
-        public void Edit_MissingGameResult_ExceptionThrown()
+        public void Edit_MissingGame_ExceptionThrown()
         {
             // Arrange
-            var gameResult = new GameResultBuilder().Build();
-            var sut = _kernel.Get<GameResultService>();
+            var game = new GameBuilder().Build();
+            var sut = _kernel.Get<GameService>();
 
-            SetupEditMissingEntityException(gameResult);
+            SetupEditMissingEntityException(game);
 
             // Act
-            sut.Edit(gameResult);
+            sut.Edit(game);
 
             // Assert
-            VerifyEditGameResult(gameResult, Times.Once(), Times.Never());
+            VerifyEditGame(game, Times.Once(), Times.Never());
         }
 
         /// <summary>
-        /// Test for Delete method. Existing game result has to be deleted. Game result is deleted.
+        /// Test for Delete method. Existing game has to be deleted. Game is deleted.
         /// </summary>
         [TestMethod]
-        public void Delete_ExistingGameResult_GameResultDeleted()
+        public void Delete_ExistingGame_GameDeleted()
         {
             // Arrange
-            var sut = _kernel.Get<GameResultService>();
+            var sut = _kernel.Get<GameService>();
 
             // Act
             sut.Delete(GAME_RESULT_ID);
 
             // Assert
-            VerifyDeleteGameResult(GAME_RESULT_ID, Times.Once());
+            VerifyDeleteGame(GAME_RESULT_ID, Times.Once());
         }
 
-        private bool AreGameResultsEqual(GameResult x, GameResult y)
+        private bool AreGamesEqual(Game x, Game y)
         {
-            return new GameResultComparer().Compare(x, y) == 0;
+            return new GameComparer().Compare(x, y) == 0;
         }
 
         private void SetupGet(GameResultDto gameResult)
@@ -322,37 +322,37 @@
                 .Returns(gameResults);
         }
 
-        private void SetupEditMissingEntityException(GameResult gameResult)
+        private void SetupEditMissingEntityException(Game game)
         {
-            _gameResultRepositoryMock.Setup(m =>
-                m.Update(It.Is<GameResult>(grs => AreGameResultsEqual(grs, gameResult))))
+            _gameRepositoryMock.Setup(m =>
+                m.Update(It.Is<Game>(grs => AreGamesEqual(grs, game))))
                 .Throws(new ConcurrencyException());
         }
 
-        private void VerifyCreateGameResult(GameResult gameResult, Times times)
+        private void VerifyCreateGame(Game game, Times times)
         {
-            _gameResultRepositoryMock.Verify(
-                m => m.Add(It.Is<GameResult>(grs => AreGameResultsEqual(grs, gameResult))), times);
+            _gameRepositoryMock.Verify(
+                m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
             _unitOfWorkMock.Verify(m => m.Commit(), times);
         }
 
-        private void VerifyEditGameResult(GameResult gameResult, Times times)
+        private void VerifyEditGame(Game game, Times times)
         {
-            _gameResultRepositoryMock.Verify(
-                m => m.Update(It.Is<GameResult>(grs => AreGameResultsEqual(grs, gameResult))), times);
+            _gameRepositoryMock.Verify(
+                m => m.Update(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
             _unitOfWorkMock.Verify(m => m.Commit(), times);
         }
 
-        private void VerifyEditGameResult(GameResult gameResult, Times repositoryTimes, Times unitOfWorkTimes)
+        private void VerifyEditGame(Game game, Times repositoryTimes, Times unitOfWorkTimes)
         {
-            _gameResultRepositoryMock.Verify(
-                m => m.Update(It.Is<GameResult>(grs => AreGameResultsEqual(grs, gameResult))), repositoryTimes);
+            _gameRepositoryMock.Verify(
+                m => m.Update(It.Is<Game>(grs => AreGamesEqual(grs, game))), repositoryTimes);
             _unitOfWorkMock.Verify(m => m.Commit(), unitOfWorkTimes);
         }
 
-        private void VerifyDeleteGameResult(int gameResultId, Times times)
+        private void VerifyDeleteGame(int gameResultId, Times times)
         {
-            _gameResultRepositoryMock.Verify(m => m.Remove(It.Is<int>(id => id == gameResultId)), times);
+            _gameRepositoryMock.Verify(m => m.Remove(It.Is<int>(id => id == gameResultId)), times);
             _unitOfWorkMock.Verify(m => m.Commit(), times);
         }
     }

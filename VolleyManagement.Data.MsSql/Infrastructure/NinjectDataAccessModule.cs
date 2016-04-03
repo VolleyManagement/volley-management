@@ -12,7 +12,7 @@
     using VolleyManagement.Data.MsSql.Queries;
     using VolleyManagement.Data.MsSql.Repositories;
     using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -57,7 +57,7 @@
                                   Bind<IContributorTeamRepository>().To<ContributorTeamRepository>(),
                                   Bind<ITeamRepository>().To<TeamRepository>(),
                                   Bind<IRoleRepository>().To<RoleRepostitory>(),
-                                  Bind<IGameResultRepository>().To<GameResultRepository>()
+                                  Bind<IGameRepository>().To<GameRepository>()
                               };
 
             configs.InScope(_scopeCallback);

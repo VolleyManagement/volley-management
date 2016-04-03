@@ -19,11 +19,7 @@
         public TournamentTeamsListViewModel(List<Team> source, int tournamentId)
         {
             this.TournamentId = tournamentId;
-            this.List = new List<TeamNameViewModel>();
-            foreach (var team in source)
-            {
-                this.List.Add(TeamNameViewModel.Map(team));
-            }
+            this.List = source.Select(t => TeamNameViewModel.Map(t)).ToList();
         }
 
         /// <summary>
@@ -49,13 +45,7 @@
         /// <returns>Domain list of teams</returns>
         public List<Team> ToDomainList()
         {
-            var result = new List<Team>();
-            foreach (var teamNameViewModel in this.List)
-            {
-                result.Add(teamNameViewModel.ToDomain());
-            }
-
-            return result;
+            return List.Select(t => t.ToDomain()).ToList();            
         }
     }
 }

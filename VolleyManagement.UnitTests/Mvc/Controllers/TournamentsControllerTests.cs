@@ -77,7 +77,7 @@
         /// Actual tournament teams are requested. Actual tournament teams are returned.
         /// </summary>
         [TestMethod]
-        public void ManageTournamentTeams_GetTournamentTeams_TeamsInCurrentTournament()
+        public void ManageTournamentTeams_TournamentTeamsExist_TeamsInCurrentTournamentAreReturned()
         {
             //Arrange
             var testData = MakeTestTeams();
@@ -99,7 +99,7 @@
         /// Teams are added successfully and json result is returned
         /// </summary>
         [TestMethod]
-        public void AddTeamsToTournament_TeamsAdded_JsonResultIsReturned()
+        public void AddTeamsToTournament_ValidTeamListViewModelNoException_JsonResultIsReturned()
         {
             //Arrange
             var testData = MakeTestTeams();
@@ -121,13 +121,13 @@
         /// Teams are not added and json result  whith model error is returned
         /// </summary>
         [TestMethod]
-        public void AddTeamsToTournament_TeamsAreNotAdded_JsonModelErrorReturned()
+        public void AddTeamsToTournament_InValidTeamListViewModelWithException_JsonModelErrorReturned()
         {
             //Arrange
             var testData = MakeTestTeams();
             this._tournamentServiceMock
                 .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>()))
-                .Throws(new ArgumentException(string.Empty));                
+                .Throws(new ArgumentException(string.Empty));
 
             //Act            
             var jsonResult = this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
@@ -369,11 +369,11 @@
         /// Test for Delete team from tournament method (POST action)
         /// </summary>
         [TestMethod]
-        public void DeleteTeamFromTournament_ExistingTeamAndTournament_TeamDeleted()
+        public void DeleteTeamFromTournament_TeamExists_TeamDeleted()
         {
             //Arrange
             this._tournamentServiceMock
-                .Setup(ts=>ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()));
+                .Setup(ts => ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()));
 
             //Act
             var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);

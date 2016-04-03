@@ -151,6 +151,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this team?.
+        /// </summary>
+        public static string DeleteTournamentTeamConfirm {
+            get {
+                return ResourceManager.GetString("DeleteTournamentTeamConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deleting tournament.
         /// </summary>
         public static string DeleteTournamentTitle {

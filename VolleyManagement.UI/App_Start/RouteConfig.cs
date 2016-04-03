@@ -10,7 +10,7 @@
     {
         /// <summary>
         /// Registers all routes needed to be Ignored.
-        /// It should go before any route mappings(e.g. before RegiterAllAreas)
+        /// It should go before any route mappings(e.g. before RegisterAllAreas)
         /// </summary>
         /// <param name="routes"> The routes collection. </param>
         public static void RegisterIgnoreRoutes(RouteCollection routes)

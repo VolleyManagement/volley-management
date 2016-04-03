@@ -1,9 +1,9 @@
-﻿namespace VolleyManagement.UnitTests.Services.GameResultService
+﻿namespace VolleyManagement.UnitTests.Services.GameService
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Represents a comparer for <see cref="GameResultDto"/> objects.
@@ -71,7 +71,9 @@
                 && x.HomeSet4Score == y.HomeSet4Score
                 && x.AwaySet4Score == y.AwaySet4Score
                 && x.HomeSet5Score == y.HomeSet5Score
-                && x.AwaySet5Score == y.AwaySet5Score;
+                && x.AwaySet5Score == y.AwaySet5Score
+                && x.GameDate == y.GameDate
+                && x.Round == y.Round;
         }
     }
 }

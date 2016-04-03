@@ -384,6 +384,89 @@
         }
 
         /// <summary>
+        /// Adds games in same tournament and same round to collection of <see cref="GameResultDto"/> objects.
+        /// </summary>
+        /// <param name="roundNumber">Sets round number for games in tournament</param>
+        /// <returns>Instance of <see cref="GameServiceTestFixture"/>.</returns>
+        public GameServiceTestFixture WithGamesInOneRound(int roundNumber)
+        {
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
+                HomeSetsScore = 3,
+                AwaySetsScore = 2,
+                IsTechnicalDefeat = false,
+                HomeSet1Score = 25,
+                AwaySet1Score = 20,
+                HomeSet2Score = 24,
+                AwaySet2Score = 26,
+                HomeSet3Score = 28,
+                AwaySet3Score = 30,
+                HomeSet4Score = 25,
+                AwaySet4Score = 22,
+                HomeSet5Score = 27,
+                AwaySet5Score = 25,
+                GameDate = DateTime.Parse(dateA),
+                Round = roundNumber
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeTeamName = "TeamNameD",
+                AwayTeamName = "TeamNameC",
+                HomeSetsScore = 3,
+                AwaySetsScore = 1,
+                IsTechnicalDefeat = false,
+                HomeSet1Score = 26,
+                AwaySet1Score = 28,
+                HomeSet2Score = 25,
+                AwaySet2Score = 15,
+                HomeSet3Score = 25,
+                AwaySet3Score = 21,
+                HomeSet4Score = 29,
+                AwaySet4Score = 27,
+                HomeSet5Score = 0,
+                AwaySet5Score = 0,
+                GameDate = DateTime.Parse(dateA),
+                Round = roundNumber
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeTeamName = "TeamNameE",
+                AwayTeamName = "TeamNameF",
+                HomeSetsScore = 0,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = true,
+                HomeSet1Score = 0,
+                AwaySet1Score = 25,
+                HomeSet2Score = 0,
+                AwaySet2Score = 25,
+                HomeSet3Score = 0,
+                AwaySet3Score = 25,
+                HomeSet4Score = 0,
+                AwaySet4Score = 0,
+                HomeSet5Score = 0,
+                AwaySet5Score = 0,
+                GameDate = DateTime.Parse(dateA),
+                Round = roundNumber
+            });
+
+            return this;
+        }
+
+        /// <summary>
         /// Builds instance of <see cref="GameServiceTestFixture"/>.
         /// </summary>
         /// <returns>Collection of <see cref="GameResultDto"/> objects filled with test data.</returns>

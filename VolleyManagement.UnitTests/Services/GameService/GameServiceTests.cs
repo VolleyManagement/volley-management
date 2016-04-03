@@ -25,6 +25,8 @@
 
         private const int TOURNAMENT_ID = 1;
 
+        private const int ROUND_NUMBER = 1;
+
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
         private readonly Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock
@@ -32,6 +34,9 @@
 
         private readonly Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock
             = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
+
+        private readonly Mock<IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria>> _gamesInTournamentByRoundQueryMock
+            = new Mock<IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria>>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -48,6 +53,8 @@
             _kernel.Bind<IQuery<GameResultDto, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
                 .ToConstant(_tournamentGameResultsQueryMock.Object);
+            _kernel.Bind<IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria>>()
+                .ToConstant(_gamesInTournamentByRoundQueryMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
@@ -253,6 +260,25 @@
         }
 
         /// <summary>
+        /// Test for GetGamesInTournamentByRound method. Game results of specified tournament and specified round are requested. Game results are returned.
+        /// </summary>
+        [TestMethod]
+        public void GetTournamentGamesByRound_GamesRequsted_GamesReturned()
+        {
+            // Arrange
+            var expected = new GameServiceTestFixture().WithGamesInOneRound(ROUND_NUMBER).Build();
+            var sut = _kernel.Get<GameService>();
+
+            SetupGetGamesInTournamentByRound(TOURNAMENT_ID, ROUND_NUMBER, expected);
+
+            // Act
+            var actual = sut.GetGamesInTournamentByRound(TOURNAMENT_ID, ROUND_NUMBER);
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+        }
+
+        /// <summary>
         /// Test for Edit method. Game object contains valid data. Game is edited successfully.
         /// </summary>
         [TestMethod]
@@ -320,6 +346,14 @@
             _tournamentGameResultsQueryMock.Setup(m =>
                 m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
                 .Returns(gameResults);
+        }
+
+        private void SetupGetGamesInTournamentByRound(int tournamentId, int roundNumber, List<GameResultDto> gameResults)
+        {
+            _gamesInTournamentByRoundQueryMock
+                .Setup(m => m.Execute(It.Is<GamesInTournamentByRoundCriteria>
+                    (c => c.TournamentId == tournamentId && c.RoundNumber == roundNumber)))
+                    .Returns(gameResults);
         }
 
         private void SetupEditMissingEntityException(Game game)

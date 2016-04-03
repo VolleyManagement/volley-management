@@ -12,6 +12,7 @@
 {
     <p>
         @Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id }, null)
+        <button class='deleteTeamFromTournamentButton' id="@item.Id">Delete</button>
     </p>
 }
 
@@ -52,10 +53,14 @@
             var selectedTeams = $("select :selected");
 
             for (var i = 0; i < selectedTeams.length; i++) {
-                result.List.push({
-                    Id: selectedTeams[i].value,
-                    Name: selectedTeams[i].text
-                });
+                if (selectedTeams[i].value != 0) {
+                    result.List.push({
+
+                        Id: selectedTeams[i].value,
+                        Name: selectedTeams[i].text
+
+                    });
+                }
             }
 
             return result;
@@ -64,7 +69,7 @@
         privates.getTornamentTeamsRowMarkup = function (responceOptions) {
             var result = "<tr class='" + "'>" +
             "<td><select>" + responceOptions + "</select></td>" +
-            "<td>" + "<button class='deleteTeamButton'>Delete</button>" + "</td></tr>";            
+            "<td>" + "<button class='deleteTeamButton'>Delete</button>" + "</td></tr>";
             return result;
         }
 
@@ -94,9 +99,11 @@
 
         currNs.onAddTeamsButtonButtonClick = function () {
             var data = privates.getJsonForTournamentTeamsSave();
-            $.post("/Tournaments/AddTeamsToTournament", data)
-                .done(privates.handleTeamsAddSuccess)
-                .fail(privates.handleTeamsAddFail);
+            if (data.List.length > 0) {
+                $.post("/Tournaments/AddTeamsToTournament", data)
+                    .done(privates.handleTeamsAddSuccess)
+                    .fail(privates.handleTeamsAddFail);
+            }
         }
 
         currNs.onDeleteTeamButtonClick = function (eventData) {
@@ -104,8 +111,27 @@
             currentRow.remove();
         }
 
+        currNs.onDeleteTeamFromTournamentButtonClick = function (eventData) {
+            var teamId = eventData.target.id;
+            var tournamentId = $("[name='TournamentId']").val();
+            var flag = confirm("Are you sure you want delete team ?");
+            if (flag) {
+                $.post("/Tournaments/DeleteTeamFromTournament",
+                    {
+                        teamId: teamId,
+                        tournamentId: tournamentId
+                    })
+                .done(function (data) {
+                    alert(data.Message);
+                    if (data.HasDeleted) {
+                        $("#" + teamId).parent().remove();
+                    }
+                });
+            }
+        }
+
         $("#addTeamToTournamentButton").bind('click', currNs.onAddTeamToTournamentButtonClick);
         $("#addTeamsButton").bind('click', currNs.onAddTeamsButtonButtonClick);
-
+        $(".deleteTeamFromTournamentButton").bind('click', currNs.onDeleteTeamFromTournamentButtonClick);
     </script>
 </div>

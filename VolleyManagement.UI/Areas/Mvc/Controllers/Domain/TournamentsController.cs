@@ -35,7 +35,7 @@
         /// <param name="tournamentService">The tournament service</param>
         public TournamentsController(ITournamentService tournamentService)
         {
-            this._tournamentService = tournamentService;            
+            this._tournamentService = tournamentService;
         }
 
         /// <summary>
@@ -199,35 +199,15 @@
         /// <returns>View with list of excistiong teams and adding team form</returns>
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
-            //var resultTeams = this._tournamentService.GetAllTornamentTeams(tournamentId);
-            var resultTeams = new List<Team>();
-            resultTeams.Add(new Team()
-            {
-                Id = 4,
-                Name = "TeamNameA",
-                CaptainId = 1,
-                Coach = "TeamCoachA",
-                Achievements = "TeamAchievementsA"
-            });
-            resultTeams.Add(new Team()
-            {
-                Id = 5,
-                Name = "TeamNameB",
-                CaptainId = 2,
-                Coach = "TeamCoachB",
-                Achievements = "TeamAchievementsB"
-            });
-            resultTeams.Add(new Team()
-            {
-                Id = 6,
-                Name = "TeamNameC",
-                CaptainId = 3,
-                Coach = "TeamCoachC",
-                Achievements = "TeamAchievementsC"
-            });
+            var resultTeams = this._tournamentService.GetAllTornamentTeams(tournamentId);
             return View(new TournamentTeamsListViewModel(resultTeams, tournamentId));
         }
 
+        /// <summary>
+        /// Adds list of teams to tournament
+        /// </summary>
+        /// <param name="teams">Object with list of teams and tournament id</param>
+        /// <returns>json result with operation data</returns>
         [HttpPost]
         public JsonResult AddTeamsToTournament(TournamentTeamsListViewModel teams)
         {
@@ -246,10 +226,23 @@
             return result;
         }
 
+        /// <summary>
+        /// Deletes team from tournament
+        /// </summary>
+        /// <param name="teamId">team to delete</param>
+        /// <param name="tournamentId">tournament for team deleting</param>
+        /// <returns>json result with operation data</returns>
         [HttpPost]
         public JsonResult DeleteTeamFromTournament(int teamId, int tournamentId)
         {
-            this._tournamentService.DeleteTeamFromTournament(teamId, tournamentId);
+            try
+            {
+                this._tournamentService.DeleteTeamFromTournament(teamId, tournamentId);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Message = ex.Message, HasDeleted = false });
+            }
             return Json(new
             {
                 Message = "Team was deleted",

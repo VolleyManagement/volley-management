@@ -7,18 +7,10 @@
     using Domain.TeamsAggregate;
 
     /// <summary>
-    /// Tournamnent teams list view model.
+    /// Tournament teams list view model.
     /// </summary>
     public class TournamentTeamsListViewModel
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentTeamsListViewModel"/> class
-        /// </summary>
-        public TournamentTeamsListViewModel()
-        {
-
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentTeamsListViewModel"/> class
         /// </summary>
@@ -32,6 +24,13 @@
             {
                 this.List.Add(TeamNameViewModel.Map(team));
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TournamentTeamsListViewModel"/> class
+        /// </summary>
+        public TournamentTeamsListViewModel()
+        {
         }
 
         /// <summary>

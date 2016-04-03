@@ -8,9 +8,9 @@
     using Ninject;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.GameResultService;
+    using VolleyManagement.UnitTests.Services.GameService;
 
     /// <summary>
     /// Tests for <see cref="GameReportService"/> class.

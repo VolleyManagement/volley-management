@@ -27,7 +27,6 @@
 
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
-        private readonly IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria> _gamesInTournamentByRoundQuery;
 
         #endregion
 
@@ -43,13 +42,11 @@
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
-            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
-            IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria> gamesInTournamentByRoundQuery)
+            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
-            _gamesInTournamentByRoundQuery = gamesInTournamentByRoundQuery;
         }
 
         #endregion
@@ -122,14 +119,22 @@
         }
 
         /// <summary>
-        /// Gets game results in the tournament specified by its identifier and in round specified by its number
+        /// Gets game results in the tournament specified by its identifier and split by rounds
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
-        /// <param name="roundNumber">Number of the round.</param>
-        /// <returns>List of games of specified tournament in specified round.</returns>
-        public List<GameResultDto> GetGamesInTournamentByRound(int tournamentId, int roundNumber)
+        /// <param name="countOfRounds">Number of the rounds in tournament.</param>
+        /// <returns>List of games of specified tournament split in lists by rounds.</returns>
+        public List<List<GameResultDto>> GetGamesInTournamentByRound(int tournamentId, int countOfRounds)
         {
-            return _gamesInTournamentByRoundQuery.Execute(new GamesInTournamentByRoundCriteria { TournamentId = tournamentId, RoundNumber = roundNumber });
+            var allGamesInTournament = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
+            List<List<GameResultDto>> gamesByRounds = new List<List<GameResultDto>>();
+            for (int i = 1; i <= countOfRounds; i++)
+            {
+                var roundGames = allGamesInTournament.FindAll(gm => gm.Round == i);
+                gamesByRounds.Add(roundGames);
+            }
+
+            return gamesByRounds;
         }
 
         #endregion

@@ -43,7 +43,7 @@
         /// Maps presentation list to domain list
         /// </summary>
         /// <returns>Domain list of teams</returns>
-        public List<Team> ToDomainList()
+        public List<Team> ToDomain()
         {
             return List.Select(t => t.ToDomain()).ToList();            
         }

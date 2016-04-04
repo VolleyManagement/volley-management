@@ -321,4 +321,7 @@
   <data name="GroupDefaultName" xml:space="preserve">
     <value>Group</value>
   </data>
+  <data name="TeamWasDeletedSuccessfully" xml:space="preserve">
+    <value>Team was deleted successfully</value>
+  </data>
 </root>

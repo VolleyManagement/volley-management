@@ -11,6 +11,7 @@
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using ViewModels.Teams;
+    using App_GlobalResources;
 
     /// <summary>
     /// Defines TournamentsController
@@ -214,7 +215,7 @@
             JsonResult result = null;
             try
             {
-                this._tournamentService.AddTeamsToTournament(teams.ToDomainList(), teams.TournamentId);
+                this._tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId);
                 result = this.Json(teams, JsonRequestBehavior.AllowGet);
             }
             catch (ArgumentException ex)
@@ -235,23 +236,26 @@
         [HttpPost]
         public JsonResult DeleteTeamFromTournament(int teamId, int tournamentId)
         {
+            JsonResult result = null;
             try
             {
                 this._tournamentService.DeleteTeamFromTournament(teamId, tournamentId);
+                result = Json(new TeamDeleteFromTournamentViewModel
+                {
+                    Message = ViewModelResources.TeamWasDeletedSuccessfully,
+                    HasDeleted = true
+                });
             }
             catch (Exception ex)
             {
-                return Json(new TeamDeleteFromTournamentViewModel
+                result = Json(new TeamDeleteFromTournamentViewModel
                 {
                     Message = ex.Message,
                     HasDeleted = false
                 });
             }
-            return Json(new TeamDeleteFromTournamentViewModel
-            {
-                Message = "Team was deleted",
-                HasDeleted = true
-            });
+
+            return result;
         }
 
         /// <summary>

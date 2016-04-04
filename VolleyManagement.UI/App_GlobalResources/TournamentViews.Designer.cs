@@ -286,6 +286,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No team is selected.
+        /// </summary>
+        public static string TournamentTeamIsNotSelected {
+            get {
+                return ResourceManager.GetString("TournamentTeamIsNotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transfer period.
         /// </summary>
         public static string TransferFieldsTitle {

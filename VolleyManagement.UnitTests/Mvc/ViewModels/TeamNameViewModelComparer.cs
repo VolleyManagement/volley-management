@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Text;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
 
 
@@ -12,7 +13,7 @@
     /// Comparer for team name view model objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class TeamNameViewModelComparer : IComparer<TeamNameViewModel>, IComparer
+    internal class TeamNameViewModelComparer : IComparer<TeamNameViewModel>, IComparer, IEqualityComparer<TeamNameViewModel>
     {
         /// <summary>
         /// Compares two team objects (non-generic implementation).
@@ -58,6 +59,32 @@
         {
             return x.Id == y.Id &&
                    x.Name == y.Name;
+        }
+
+        /// <summary>
+        /// Finds out whether two team objects have the same properties.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>True if given team have the same properties.</returns>
+        public bool Equals(TeamNameViewModel x, TeamNameViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        /// <summary>
+        /// Get objects hash code
+        /// </summary>
+        /// <param name="obj">object for getting hash code</param>
+        /// <returns>integer hash code</returns>
+        public int GetHashCode(TeamNameViewModel obj)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            builder.Append(obj.Id);
+            builder.Append(obj.Name);
+
+            return builder.ToString().GetHashCode();
         }
     }
 }

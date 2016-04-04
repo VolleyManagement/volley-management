@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
@@ -122,19 +123,13 @@
         /// Gets game results in the tournament specified by its identifier and split by rounds
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
-        /// <param name="countOfRounds">Number of the rounds in tournament.</param>
-        /// <returns>List of games of specified tournament split in lists by rounds.</returns>
-        public List<List<GameResultDto>> GetGamesInTournamentByRound(int tournamentId, int countOfRounds)
+        /// <returns>Dictionary of games of specified tournament with round number as key and list of games in round as value.</returns>
+        public Dictionary<int, List<GameResultDto>> GetGamesInTournamentByRound(int tournamentId)
         {
-            var allGamesInTournament = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            List<List<GameResultDto>> gamesByRounds = new List<List<GameResultDto>>();
-            for (int i = 1; i <= countOfRounds; i++)
-            {
-                var roundGames = allGamesInTournament.FindAll(gm => gm.Round == i);
-                gamesByRounds.Add(roundGames);
-            }
-
-            return gamesByRounds;
+            var allGamesInTournament = _tournamentGameResultsQuery
+                .Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
+            return allGamesInTournament.GroupBy(d => d.Round)
+                .ToDictionary(d => d.Key, d => d.ToList());
         }
 
         #endregion

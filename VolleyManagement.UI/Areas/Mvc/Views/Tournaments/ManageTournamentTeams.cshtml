@@ -8,14 +8,6 @@
 
 <h2>@TournamentViews.ManageTeams</h2>
 
-@foreach (var item in Model.List)
-{
-    <p>
-        @Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id }, null)
-        <button class="deleteTeamFromTournamentButton" id="@item.Id">Delete</button>
-    </p>
-}
-
 <div>
     @Html.HiddenFor(model => model.TournamentId)
     <button id="addTeamToTournamentButton">Add team to tournament</button>
@@ -24,11 +16,18 @@
             <th>@Html.DisplayNameFor(model => model.List.FirstOrDefault().Name)</th>
             <th class="hidden"></th>
         </tr>
+        @foreach (var item in Model.List)
+        {
+            <tr>
+                <td>@Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id }, null)</td>
+                <td><button class="deleteTeamFromTournamentButton" id="@item.Id">Delete</button></td>
+            </tr>
+        }
     </table>
     <button id="addTeamsButton">Add teams</button>
 
     <script type="text/javascript">
-        (function(){
+        (function () {
             "use strict";
 
             var currNs = VM.addNamespace("tournament.addTeams");

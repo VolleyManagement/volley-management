@@ -28,7 +28,7 @@
     {
         private const int TEST_TOURNAMENT_ID = 1;
         private const int TEST_TEAM_ID = 1;
-        private const int EMPTY_TEAMLIST_COUNT = 0; 
+        private const int EMPTY_TEAMLIST_COUNT = 0;
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string INDEX_ACTION_NAME = "Index";
@@ -110,7 +110,7 @@
                 this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             //Assert
-            Assert.IsTrue(returnedTeamsList.List.Count == EMPTY_TEAMLIST_COUNT);
+            Assert.AreEqual(returnedTeamsList.List.Count, EMPTY_TEAMLIST_COUNT);
         }
 
         /// <summary>

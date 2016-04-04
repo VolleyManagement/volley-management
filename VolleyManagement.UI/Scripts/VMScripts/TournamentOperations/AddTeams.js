@@ -84,8 +84,8 @@
     currNs.onDeleteTeamFromTournamentButtonClick = function (eventData) {
         var teamId = eventData.target.id;
         var tournamentId = $("[name='TournamentId']").val();
-        var flag = confirm(currNs.deleteConfirmMessage);
-        if (flag) {
+        var confirmDeleteTeamResult = confirm(currNs.deleteConfirmMessage);
+        if (confirmDeleteTeamResult) {
             $.post("/Tournaments/DeleteTeamFromTournament",
                 {
                     teamId: teamId,

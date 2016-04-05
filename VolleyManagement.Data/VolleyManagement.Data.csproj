@@ -68,8 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\Common\FindByIdCriteria.cs" />
     <Compile Include="Queries\Division\TournamentDivisionsCriteria.cs" />
-    <Compile Include="Queries\GameResult\AllTournamentGamesInRound.cs" />
-    <Compile Include="Queries\GameResult\AllTournamentRoundsCriteria.cs" />
     <Compile Include="Queries\GameResult\TournamentGameResultsCriteria.cs" />
     <Compile Include="Queries\Player\TeamPlayersCriteria.cs" />
     <Compile Include="Queries\Team\FindByCaptainIdCriteria.cs" />

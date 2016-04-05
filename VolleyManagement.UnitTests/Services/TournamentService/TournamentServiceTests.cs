@@ -15,6 +15,10 @@
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using TeamService;
+    using Domain.TeamsAggregate;
+    using Data.Queries.Team;
+    using Data.Exceptions;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -26,6 +30,10 @@
         private const int MINIMUM_REGISTRATION_PERIOD_MONTH = 3;
 
         private const int FIRST_TOURNAMENT_ID = 1;
+
+        private const int SPECIFIC_TEAM_ID = 2;
+
+        private const int EMPTY_TEAM_LIST_COUNT = 0;
 
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
 
@@ -39,6 +47,9 @@
 
         private readonly Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock =
             new Mock<IQuery<Tournament, FindByIdCriteria>>();
+
+        private readonly Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getAllTeamsQuery =
+            new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -57,6 +68,7 @@
             _kernel.Bind<IQuery<Tournament, UniqueTournamentCriteria>>().ToConstant(_uniqueTournamentQueryMock.Object);
             _kernel.Bind<IQuery<List<Tournament>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
             _kernel.Bind<IQuery<Tournament, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
+            _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>().ToConstant(_getAllTeamsQuery.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;
@@ -129,6 +141,46 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// Test for GetAllTournamentTeams method. 
+        /// The method should return existing teams in specific tournament
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentTeams_TeamsExist_TeamsReturned()
+        {
+            //Arrange
+            var testData = new TeamServiceTestFixture().TestTeams().Build();
+            MockGetAllTournamentTeamsQuery(testData);
+            var sut = _kernel.Get<TournamentService>();
+            var expected = new TeamServiceTestFixture().TestTeams().Build();
+
+            //Act
+            var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
+
+            //Assert
+            CollectionAssert.AreEqual(expected, actual, new TeamComparer());
+        }
+
+        /// <summary>
+        /// Test for GetAllTournamentTeams method. 
+        /// No teams exists in tournament.
+        /// The method should return empty team list.
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentTeams_TeamsNotExist_EmptyTeamListReturned()
+        {
+            //Arrange
+            var testData = new TeamServiceTestFixture().Build();
+            MockGetAllTournamentTeamsQuery(testData);
+            var sut = _kernel.Get<TournamentService>();
+
+            //Act
+            var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
+
+            //Assert
+            Assert.AreEqual(actual.Count, EMPTY_TEAM_LIST_COUNT);
         }
 
         /// <summary>
@@ -611,6 +663,103 @@
         }
 
         /// <summary>
+        /// Test for AddTeamsToTournament method.
+        /// Valid teams have to be added.
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_ValidTeamList_TeamsAreAdded()
+        {
+            //Arrange
+            var testData = new TeamServiceTestFixture().TestTeams().Build();
+            MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
+            var sut = _kernel.Get<TournamentService>();
+
+            //Act
+            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
+
+            //Assert
+            VerifyTeamsAdded(FIRST_TOURNAMENT_ID, Times.Exactly(testData.Count), Times.Once());
+        }
+
+        /// <summary>
+        /// Test for AddTeamsToTournament method.
+        /// InValid teams must not be added. 
+        /// Method have to throw ArgumentException        
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_InValidTeamList_ArgumentExceptionThrown()
+        {
+            bool gotException = false;
+
+            //Arrange
+            var testData = new TeamServiceTestFixture().TestTeams().Build();
+            MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().TestTeams().Build());
+            var sut = _kernel.Get<TournamentService>();
+
+            //Act
+            try
+            {
+                sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
+            }
+            catch (ArgumentException)
+            {
+                gotException = true;
+            }
+
+            //Assert
+            Assert.IsTrue(gotException);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+        }
+
+        /// <summary>
+        /// Test for DeleteTeamFromTournament method.
+        /// Team have to be removed from tournament
+        /// </summary>
+        [TestMethod]
+        public void DeleteTeamFromTournament_TeamExist_TeamDeleted()
+        {
+            //Arrange
+            var sut = _kernel.Get<TournamentService>();
+
+            //Act
+            sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
+
+            //Assert
+            VerifyTeamDeleted(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for DeleteTeamFromTournament method.
+        /// Team is not exist in tournament
+        /// Missing Entity Exception have to be thrown
+        /// </summary>
+        [TestMethod]
+        public void DeleteTeamFromTournament_TeamNotExist_MissingEntityExceptionThrown()
+        {
+            bool gotException = false;
+
+            //Arrange
+            var sut = _kernel.Get<TournamentService>();
+            _tournamentRepositoryMock
+                .Setup(tr => tr.RemoveTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()))
+                .Throws(new ConcurrencyException());
+
+            //Act
+            try
+            {
+                sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
+            }
+            catch(MissingEntityException)
+            {
+                gotException = true;
+            }
+
+            //Assert
+            Assert.IsTrue(gotException);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+        }
+
+        /// <summary>
         /// GetActual method test. The method should invoke Find() method of ITournamentRepository
         /// </summary>
         public void GetActual_ActualTournamentsRequest_FindCalled()
@@ -662,6 +811,11 @@
         private void MockGetUniqueTournamentQuery(Tournament testData)
         {
             _uniqueTournamentQueryMock.Setup(tr => tr.Execute(It.IsAny<UniqueTournamentCriteria>())).Returns(testData);
+        }
+
+        private void MockGetAllTournamentTeamsQuery(List<Team> testData)
+        {
+            _getAllTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>())).Returns(testData);
         }
 
         private Tournament CreateAnyTournament(int id)
@@ -727,6 +881,18 @@
         private void VerifyCreateTournament(Tournament tournament, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyTeamsAdded(int tourmanentId, Times repositoryTimes, Times uowTimes)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(It.IsAny<int>(), tourmanentId), repositoryTimes);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
+        }
+
+        private void VerifyTeamDeleted(int teamId, int tourmanentId, Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.RemoveTeamFromTournament(teamId, tourmanentId), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 

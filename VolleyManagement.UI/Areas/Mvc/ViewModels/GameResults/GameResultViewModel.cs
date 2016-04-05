@@ -1,10 +1,11 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Domain;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Represents a view model for game result.
@@ -16,8 +17,8 @@
         /// </summary>
         public GameResultViewModel()
         {
-            SetsScore = new Score();
-            SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+            Result.SetsScore = new Score();
+            Result.SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
             TeamsList = new List<SelectListItem>();
         }
 
@@ -52,19 +53,19 @@
         public string AwayTeamName { get; set; }
 
         /// <summary>
-        /// Gets or sets the final score of the game.
+        /// Gets or sets the result of the game.
         /// </summary>
-        public Score SetsScore { get; set; }
+        public Result Result { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// Gets or sets the date and time of the game.
         /// </summary>
-        public bool IsTechnicalDefeat { get; set; }
+        public DateTime GameDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the set scores.
+        /// Gets or sets the round of the game in the tournament.
         /// </summary>
-        public List<Score> SetScores { get; set; }
+        public int Round { get; set; }
 
         /// <summary>
         /// Gets or sets the list of teams of a tournament where game result belongs.
@@ -86,34 +87,42 @@
                 AwayTeamId = gameResult.AwayTeamId,
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
-                SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
-                IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
-                SetScores = new List<Score>
+                GameDate = gameResult.GameDate,
+                Round = gameResult.Round,
+                Result = new Result
                 {
-                    new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },
-                    new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score },
-                    new Score { Home = gameResult.HomeSet3Score, Away = gameResult.AwaySet3Score },
-                    new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score },
-                    new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score }
+                    SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
+                    IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
+                    SetScores = new List<Score>
+                    {
+                        new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },
+                        new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score },
+                        new Score { Home = gameResult.HomeSet3Score, Away = gameResult.AwaySet3Score },
+                        new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score },
+                        new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score }
+                    }
                 }
             };
         }
 
         /// <summary>
-        /// Maps view model of game result to domain model of game result.
+        /// Maps view model of game result to domain model of game.
         /// </summary>
-        /// <returns>Domain model of game result.</returns>
-        public GameResult ToDomain()
+        /// <returns>Domain model of game.</returns>
+        public Game ToDomain()
         {
-            return new GameResult
+            return new Game
             {
                 Id = this.Id,
                 TournamentId = this.TournamentId,
                 HomeTeamId = this.HomeTeamId,
                 AwayTeamId = this.AwayTeamId,
-                SetsScore = this.SetsScore,
-                IsTechnicalDefeat = this.IsTechnicalDefeat,
-                SetScores = this.SetScores
+                Result = new Result
+                {
+                    SetsScore = this.Result.SetsScore,
+                    IsTechnicalDefeat = this.Result.IsTechnicalDefeat,
+                    SetScores = this.Result.SetScores
+                }
             };
         }
     }

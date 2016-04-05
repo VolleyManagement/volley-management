@@ -130,7 +130,6 @@
             var returnedDataResult = jsonResult.Data as TournamentTeamsListViewModel;
 
             //Assert
-            Assert.AreEqual(jsonResult.JsonRequestBehavior, JsonRequestBehavior.AllowGet);
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
                 .AreEqual(returnedDataResult, expectedDataResult));
         }

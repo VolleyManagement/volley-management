@@ -97,9 +97,9 @@
     <Compile Include="Context\Migrations\201512171559020_AddGameResults.Designer.cs">
       <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201604021954578_ModifyGameResult.cs" />
-    <Compile Include="Context\Migrations\201604021954578_ModifyGameResult.Designer.cs">
-      <DependentUpon>201604021954578_ModifyGameResult.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201604052021382_ModifyGameResult.cs" />
+    <Compile Include="Context\Migrations\201604052021382_ModifyGameResult.Designer.cs">
+      <DependentUpon>201604052021382_ModifyGameResult.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -196,8 +196,8 @@
     <EmbeddedResource Include="Context\Migrations\201512171559020_AddGameResults.resx">
       <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201604021954578_ModifyGameResult.resx">
-      <DependentUpon>201604021954578_ModifyGameResult.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201604052021382_ModifyGameResult.resx">
+      <DependentUpon>201604052021382_ModifyGameResult.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

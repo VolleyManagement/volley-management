@@ -151,9 +151,10 @@
 
             //Act            
             var jsonResult = this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
+            var modelStateResult = jsonResult.Data as ModelStateDictionary;
 
             //Assert            
-            Assert.AreEqual(jsonResult.JsonRequestBehavior, JsonRequestBehavior.DenyGet);
+            Assert.IsTrue(modelStateResult.Count > 0);
         }
 
         /// <summary>
@@ -401,6 +402,26 @@
 
             //Assert
             Assert.IsTrue(result.HasDeleted);
+        }
+
+        /// <summary>
+        /// Test for Delete team from tournament method (POST action)
+        /// team is not exists
+        /// </summary>
+        [TestMethod]
+        public void DeleteTeamFromTournament_NonExistTeam_TeamIsNotDeleted()
+        {
+            //Arrange
+            this._tournamentServiceMock
+                .Setup(ts => ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()))
+                .Throws(new MissingEntityException());
+
+            //Act
+            var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
+
+            //Assert
+            Assert.IsFalse(result.HasDeleted);
         }
 
         /// <summary>

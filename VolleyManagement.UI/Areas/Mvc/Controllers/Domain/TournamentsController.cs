@@ -246,7 +246,7 @@
                     HasDeleted = true
                 });
             }
-            catch (Exception ex)
+            catch (MissingEntityException ex)
             {
                 result = Json(new TeamDeleteFromTournamentViewModel
                 {

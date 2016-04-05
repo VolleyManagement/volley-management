@@ -16,7 +16,7 @@
     };
 
     privates.handleTeamsAddFail = function (data, status, xhr) {
-        alert("Team adding failed");
+        alert(data);
     };
 
     privates.getJsonForTournamentTeamsSave = function () {

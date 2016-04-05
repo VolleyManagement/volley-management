@@ -17,8 +17,11 @@
         /// </summary>
         public GameResultViewModel()
         {
-            Result.SetsScore = new Score();
-            Result.SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+            Result = new Result
+            {
+                SetsScore = new Score(),
+                SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList()
+            };
             TeamsList = new List<SelectListItem>();
         }
 

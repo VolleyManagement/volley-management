@@ -39,6 +39,7 @@
                       .Include("~/Scripts/UserActions.js"));								
 
             RegisterTeamScripts(bundles);
+            RegisterTornamentScripts(bundles);
         }
 
         private static void RegisterTeamScripts(BundleCollection bundles)
@@ -48,6 +49,11 @@
 
             bundles.Add(new ScriptBundle("~/bundles/teamlistscripts")
                         .Include("~/Scripts/VmScripts/TeamOperations/List.js"));
+        }
+        private static void RegisterTornamentScripts(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/bundles/tournamentteamsscripts")
+                        .Include("~/Scripts/VmScripts/TournamentOperations/AddTeams.js"));           
         }
     }
 }

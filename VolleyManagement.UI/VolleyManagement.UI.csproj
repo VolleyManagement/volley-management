@@ -316,6 +316,7 @@
     <Content Include="Areas\Mvc\Views\GameResults\TournamentResults.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\GameResults\_CreateOrEdit.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\ManageTournamentTeams.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -334,6 +335,7 @@
     <Content Include="Scripts\VMScripts\TeamOperations\CreateEdit.js" />
     <Content Include="Scripts\TournamentOperationScripts.js" />
     <Content Include="Scripts\UserActions.js" />
+    <Content Include="Scripts\VMScripts\TournamentOperations\AddTeams.js" />
     <Content Include="Scripts\VMScripts\VMScripts.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -424,6 +426,9 @@
     <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamDeleteFromTournamentViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamNameViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\GroupViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />

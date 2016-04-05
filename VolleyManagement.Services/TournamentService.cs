@@ -177,7 +177,8 @@
 
             foreach (var team in teams)
             {
-                if (!allTeams.Contains(team))
+                var tournamentTeam = allTeams.Where(t => t.Id == team.Id).FirstOrDefault();
+                if (tournamentTeam == null)
                 {
                     _tournamentRepository.AddTeamToTournament(team.Id, tournamentId);
                 }

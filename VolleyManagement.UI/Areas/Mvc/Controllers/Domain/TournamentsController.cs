@@ -219,9 +219,8 @@
                 result = this.Json(teams, JsonRequestBehavior.AllowGet);
             }
             catch (ArgumentException ex)
-            {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                result = this.Json(this.ModelState);
+            {                
+                result = this.Json(new { Message = ex.Message});
             }
 
             return result;

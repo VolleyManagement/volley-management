@@ -11,12 +11,11 @@
     }
 
     privates.handleTeamsAddSuccess = function (data, status, xhr) {
-        alert(data);
+        if (data.Message) {
+            alert(data.Message);
+            return false;
+        }
         location.reload();
-    };
-
-    privates.handleTeamsAddFail = function (data, status, xhr) {
-        alert(data);
     };
 
     privates.getJsonForTournamentTeamsSave = function () {
@@ -71,8 +70,7 @@
         var data = privates.getJsonForTournamentTeamsSave();
         if (data.List.length > 0) {
             $.post("/Tournaments/AddTeamsToTournament", data)
-                .done(privates.handleTeamsAddSuccess)
-                .fail(privates.handleTeamsAddFail);
+                .done(privates.handleTeamsAddSuccess);
         }
     }
 
@@ -94,7 +92,7 @@
             .done(function (data) {
                 alert(data.Message);
                 if (data.HasDeleted) {
-                    $("#" + teamId).parent().remove();
+                    $("#" + teamId).parent().parent().remove();
                 }
             });
         }

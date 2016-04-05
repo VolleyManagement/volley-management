@@ -125,7 +125,7 @@
         public void RemoveTeamFromTournament(int teamId, int tournamentId)
         {
             var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
-            var teamEntity = _unitOfWork.Context.Teams.Find(teamId);
+            var teamEntity = tournamentEntity.Teams.Where(t => t.Id == teamId).FirstOrDefault();
 
             if (teamEntity == null)
             {

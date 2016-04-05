@@ -127,6 +127,11 @@
             var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
             var teamEntity = _unitOfWork.Context.Teams.Find(teamId);
 
+            if (teamEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
+
             tournamentEntity.Teams.Remove(teamEntity);
         }
     }

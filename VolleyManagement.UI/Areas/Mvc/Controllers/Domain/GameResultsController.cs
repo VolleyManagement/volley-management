@@ -13,7 +13,7 @@
     /// </summary>
     public class GameResultsController : Controller
     {
-        private readonly IGameResultService _gameResultService;
+        private readonly IGameService _gameService;
         private readonly ITeamService _teamService;
 
         /// <summary>
@@ -21,9 +21,9 @@
         /// </summary>
         /// <param name="gameResultService">Instance of a class which implements <see cref="IGameResultService"/>.</param>
         /// <param name="teamService">Instance of a class which implements <see cref="ITeamService"/>.</param>
-        public GameResultsController(IGameResultService gameResultService, ITeamService teamService)
+        public GameResultsController(IGameService gameResultService, ITeamService teamService)
         {
-            _gameResultService = gameResultService;
+            _gameService = gameResultService;
             _teamService = teamService;
         }
 
@@ -39,7 +39,7 @@
             {
                 Id = tournamentId,
                 Name = tournamentName,
-                GameResults = _gameResultService.GetTournamentResults(tournamentId).Select(gr => GameResultViewModel.Map(gr)).ToList()
+                GameResults = _gameService.GetTournamentResults(tournamentId).Select(gr => GameResultViewModel.Map(gr)).ToList()
             };
 
             return View(tournamentResults);
@@ -74,7 +74,7 @@
 
             try
             {
-                _gameResultService.Create(gameResult);
+                _gameService.Create(gameResult);
                 return RedirectToAction("Details", "Tournaments", new { id = gameResultViewModel.TournamentId });
             }
             catch (ArgumentException ex)
@@ -92,7 +92,7 @@
         /// <returns>View with filled in fields of game result.</returns>
         public ActionResult Edit(int id)
         {
-            var gameResult = _gameResultService.Get(id);
+            var gameResult = _gameService.Get(id);
 
             if (gameResult == null)
             {
@@ -118,7 +118,7 @@
                 if (ModelState.IsValid)
                 {
                     var gameResult = gameResultViewModel.ToDomain();
-                    _gameResultService.Edit(gameResult);
+                    _gameService.Edit(gameResult);
                     return RedirectToAction("Details", "Tournaments", new { id = gameResultViewModel.TournamentId });
                 }
             }
@@ -137,14 +137,14 @@
         [HttpPost]
         public void Delete(int id)
         {
-            var gameResult = _gameResultService.Get(id);
+            var gameResult = _gameService.Get(id);
 
             if (gameResult == null)
             {
                 throw new MissingEntityException(App_GlobalResources.GameResultsController.GameResultNotFound);
             }
 
-            _gameResultService.Delete(id);
+            _gameService.Delete(id);
         }
 
         private List<SelectListItem> GetTeamsList()

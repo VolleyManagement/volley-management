@@ -7,6 +7,7 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
@@ -195,7 +196,14 @@
         /// <param name="tournamentId">Tournament to un assign team</param>
         public void DeleteTeamFromTournament(int teamId, int tournamentId)
         {
-            _tournamentRepository.RemoveTeamFromTournament(teamId, tournamentId);
+            try
+            {
+                _tournamentRepository.RemoveTeamFromTournament(teamId, tournamentId);
+            }
+            catch (ConcurrencyException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamInTournamentNotFound, ex);
+            }
             _tournamentRepository.UnitOfWork.Commit();
         }
 

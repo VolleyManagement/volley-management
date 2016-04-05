@@ -12,9 +12,9 @@
     {
         #region Fields
 
-        private GameResultDto _gameResult;
+        private const string DATE = "2016-04-03 10:00";
 
-        private const string date = "2016-04-03 10:00";
+        private GameResultDto _gameResult;
 
         #endregion
 
@@ -38,7 +38,7 @@
                 HomeSet3Score = 30, AwaySet3Score = 28,
                 HomeSet4Score = 0, AwaySet4Score = 0,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(date),
+                GameDate = DateTime.Parse(DATE),
                 Round = 1
             };
         }

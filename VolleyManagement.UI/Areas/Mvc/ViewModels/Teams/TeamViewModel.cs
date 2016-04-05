@@ -56,7 +56,6 @@
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
         public List<PlayerNameViewModel> Roster { get; set; }
 
-
         #region Factory Methods
 
         /// <summary>

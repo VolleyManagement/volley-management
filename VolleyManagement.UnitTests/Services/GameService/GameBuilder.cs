@@ -13,9 +13,9 @@
     {
         #region Fields
 
-        private Game _game;
-
         private const string DATE = "2016-04-03 10:00";
+
+        private Game _game;
 
         #endregion
 

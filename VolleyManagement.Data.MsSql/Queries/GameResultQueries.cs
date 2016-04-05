@@ -89,8 +89,8 @@
                 AwaySet4Score = gr.AwaySet4Score,
                 HomeSet5Score = gr.HomeSet5Score,
                 AwaySet5Score = gr.AwaySet5Score,
-                //GameDate = gr.StartTime,
-                //Round = gr.RoundNumber
+                ////GameDate = gr.StartTime,
+                ////Round = gr.RoundNumber
             };
         }
 

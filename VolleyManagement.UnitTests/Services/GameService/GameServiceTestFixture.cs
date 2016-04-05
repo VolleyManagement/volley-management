@@ -13,17 +13,17 @@
     {
         private List<GameResultDto> _gameResults = new List<GameResultDto>();
 
-        private const string dateA = "2016-04-03 10:00";
+        private const string DATE_A = "2016-04-03 10:00";
 
-        private const string dateB = "2016-04-07 10:00";
+        private const string DATE_B = "2016-04-07 10:00";
 
-        private const string dateC = "2016-04-10 10:00";
+        private const string DATE_C = "2016-04-10 10:00";
 
-        private const string dateD = "2016-04-13 10:00";
+        private const string DATE_D = "2016-04-13 10:00";
 
-        private const string dateE = "2016-04-16 10:00";
+        private const string DATE_E = "2016-04-16 10:00";
 
-        private const string dateF = "2016-04-19 10:00";
+        private const string DATE_F = "2016-04-19 10:00";
 
         /// <summary>
         /// Generates <see cref="GameResultDto"/> objects filled with test data.
@@ -44,7 +44,7 @@
                 HomeSet3Score = 28, AwaySet3Score = 30,
                 HomeSet4Score = 25, AwaySet4Score = 22,
                 HomeSet5Score = 27, AwaySet5Score = 25,
-                GameDate = DateTime.Parse(dateA),
+                GameDate = DateTime.Parse(DATE_A),
                 Round = 1
             });
             _gameResults.Add(new GameResultDto
@@ -60,7 +60,7 @@
                 HomeSet3Score = 25, AwaySet3Score = 21,
                 HomeSet4Score = 29, AwaySet4Score = 27,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateB),
+                GameDate = DateTime.Parse(DATE_B),
                 Round = 2
             });
             _gameResults.Add(new GameResultDto
@@ -76,7 +76,7 @@
                 HomeSet3Score = 0, AwaySet3Score = 25,
                 HomeSet4Score = 0, AwaySet4Score = 0,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateC),
+                GameDate = DateTime.Parse(DATE_C),
                 Round = 3
             });
 
@@ -113,7 +113,7 @@
                 HomeSet3Score = 25, AwaySet3Score = 19,
                 HomeSet4Score = 0, AwaySet4Score = 0,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateA),
+                GameDate = DateTime.Parse(DATE_A),
                 Round = 1
             });
             _gameResults.Add(new GameResultDto
@@ -128,7 +128,7 @@
                 HomeSet3Score = 25, AwaySet3Score = 18,
                 HomeSet4Score = 25, AwaySet4Score = 23,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateB),
+                GameDate = DateTime.Parse(DATE_B),
                 Round = 2
             });
             _gameResults.Add(new GameResultDto
@@ -143,7 +143,7 @@
                 HomeSet3Score = 22, AwaySet3Score = 25,
                 HomeSet4Score = 25, AwaySet4Score = 15,
                 HomeSet5Score = 25, AwaySet5Score = 12,
-                GameDate = DateTime.Parse(dateC),
+                GameDate = DateTime.Parse(DATE_C),
                 Round = 3
             });
             _gameResults.Add(new GameResultDto
@@ -158,7 +158,7 @@
                 HomeSet3Score = 23, AwaySet3Score = 25,
                 HomeSet4Score = 17, AwaySet4Score = 25,
                 HomeSet5Score = 13, AwaySet5Score = 25,
-                GameDate = DateTime.Parse(dateD),
+                GameDate = DateTime.Parse(DATE_D),
                 Round = 4
             });
             _gameResults.Add(new GameResultDto
@@ -173,7 +173,7 @@
                 HomeSet3Score = 23, AwaySet3Score = 25,
                 HomeSet4Score = 13, AwaySet4Score = 25,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateE),
+                GameDate = DateTime.Parse(DATE_E),
                 Round = 5
             });
             _gameResults.Add(new GameResultDto
@@ -188,7 +188,7 @@
                 HomeSet3Score = 22, AwaySet3Score = 25,
                 HomeSet4Score = 0, AwaySet4Score = 0,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateF),
+                GameDate = DateTime.Parse(DATE_F),
                 Round = 6
             });
 
@@ -214,7 +214,7 @@
                 HomeSet3Score = 30, AwaySet3Score = 28,
                 HomeSet4Score = 0, AwaySet4Score = 0,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateA),
+                GameDate = DateTime.Parse(DATE_A),
                 Round = 1
             });
 
@@ -247,7 +247,7 @@
                 AwaySet4Score = 0,
                 HomeSet5Score = 0, 
                 AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateA),
+                GameDate = DateTime.Parse(DATE_A),
                 Round = 1
             });
 
@@ -274,7 +274,7 @@
                 HomeSet3Score = 28, AwaySet3Score = 26,
                 HomeSet4Score = 25, AwaySet4Score = 23,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateA),
+                GameDate = DateTime.Parse(DATE_A),
                 Round = 1
             });
             _gameResults.Add(new GameResultDto
@@ -290,7 +290,7 @@
                 HomeSet3Score = 29, AwaySet3Score = 27,
                 HomeSet4Score = 25, AwaySet4Score = 22,
                 HomeSet5Score = 25, AwaySet5Score = 23,
-                GameDate = DateTime.Parse(dateB),
+                GameDate = DateTime.Parse(DATE_B),
                 Round = 2
             });
 
@@ -317,7 +317,7 @@
                 HomeSet3Score = 25, AwaySet3Score = 23,
                 HomeSet4Score = 0, AwaySet4Score = 0,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateA),
+                GameDate = DateTime.Parse(DATE_A),
                 Round = 1
             });
             _gameResults.Add(new GameResultDto
@@ -333,7 +333,7 @@
                 HomeSet3Score = 25, AwaySet3Score = 22,
                 HomeSet4Score = 25, AwaySet4Score = 23,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateB),
+                GameDate = DateTime.Parse(DATE_B),
                 Round = 2
             });
 
@@ -360,7 +360,7 @@
                 HomeSet3Score = 28, AwaySet3Score = 26,
                 HomeSet4Score = 25, AwaySet4Score = 23,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateA),
+                GameDate = DateTime.Parse(DATE_A),
                 Round = 1
             });
             _gameResults.Add(new GameResultDto
@@ -376,7 +376,7 @@
                 HomeSet3Score = 25, AwaySet3Score = 22,
                 HomeSet4Score = 25, AwaySet4Score = 23,
                 HomeSet5Score = 0, AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateB),
+                GameDate = DateTime.Parse(DATE_B),
                 Round = 2
             });
 
@@ -384,11 +384,10 @@
         }
 
         /// <summary>
-        /// Adds games in same tournament and same round to collection of <see cref="GameResultDto"/> objects.
+        /// Adds games in same tournament and rounds to collection of <see cref="GameResultDto"/> objects.
         /// </summary>
-        /// <param name="roundNumber">Sets round number for games in tournament</param>
         /// <returns>Instance of <see cref="GameServiceTestFixture"/>.</returns>
-        public GameServiceTestFixture WithGamesInOneRound(int roundNumber)
+        public GameServiceTestFixture WithGamesInRounds()
         {
             _gameResults.Add(new GameResultDto
             {
@@ -411,8 +410,8 @@
                 AwaySet4Score = 22,
                 HomeSet5Score = 27,
                 AwaySet5Score = 25,
-                GameDate = DateTime.Parse(dateA),
-                Round = roundNumber
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1
             });
             _gameResults.Add(new GameResultDto
             {
@@ -435,8 +434,8 @@
                 AwaySet4Score = 27,
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateA),
-                Round = roundNumber
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1
             });
             _gameResults.Add(new GameResultDto
             {
@@ -459,8 +458,80 @@
                 AwaySet4Score = 0,
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
-                GameDate = DateTime.Parse(dateA),
-                Round = roundNumber
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 4,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameC",
+                HomeSetsScore = 3,
+                AwaySetsScore = 2,
+                IsTechnicalDefeat = false,
+                HomeSet1Score = 25,
+                AwaySet1Score = 20,
+                HomeSet2Score = 24,
+                AwaySet2Score = 26,
+                HomeSet3Score = 28,
+                AwaySet3Score = 30,
+                HomeSet4Score = 25,
+                AwaySet4Score = 22,
+                HomeSet5Score = 27,
+                AwaySet5Score = 25,
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 2
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 5,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeTeamName = "TeamNameE",
+                AwayTeamName = "TeamNameD",
+                HomeSetsScore = 3,
+                AwaySetsScore = 1,
+                IsTechnicalDefeat = false,
+                HomeSet1Score = 26,
+                AwaySet1Score = 28,
+                HomeSet2Score = 25,
+                AwaySet2Score = 15,
+                HomeSet3Score = 25,
+                AwaySet3Score = 21,
+                HomeSet4Score = 29,
+                AwaySet4Score = 27,
+                HomeSet5Score = 0,
+                AwaySet5Score = 0,
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 2
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 6,
+                TournamentId = 1,
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeTeamName = "TeamNameB",
+                AwayTeamName = "TeamNameF",
+                HomeSetsScore = 0,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = true,
+                HomeSet1Score = 0,
+                AwaySet1Score = 25,
+                HomeSet2Score = 0,
+                AwaySet2Score = 25,
+                HomeSet3Score = 0,
+                AwaySet3Score = 25,
+                HomeSet4Score = 0,
+                AwaySet4Score = 0,
+                HomeSet5Score = 0,
+                AwaySet5Score = 0,
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 2
             });
 
             return this;

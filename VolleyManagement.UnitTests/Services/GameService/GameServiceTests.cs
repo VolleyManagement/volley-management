@@ -3,9 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
@@ -25,18 +27,15 @@
 
         private const int TOURNAMENT_ID = 1;
 
-        private const int ROUND_NUMBER = 1;
-
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
+
+        private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
 
         private readonly Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock
             = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
 
         private readonly Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock
             = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
-
-        private readonly Mock<IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria>> _gamesInTournamentByRoundQueryMock
-            = new Mock<IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria>>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -53,8 +52,7 @@
             _kernel.Bind<IQuery<GameResultDto, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
                 .ToConstant(_tournamentGameResultsQueryMock.Object);
-            _kernel.Bind<IQuery<List<GameResultDto>, GamesInTournamentByRoundCriteria>>()
-                .ToConstant(_gamesInTournamentByRoundQueryMock.Object);
+            _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
 
@@ -266,16 +264,17 @@
         public void GetTournamentGamesByRound_GamesRequsted_GamesReturned()
         {
             // Arrange
-            var expected = new GameServiceTestFixture().WithGamesInOneRound(ROUND_NUMBER).Build();
+            var allGamesInTournament = new GameServiceTestFixture().WithGamesInRounds().Build();
+            var expected = GetGamesByRound(allGamesInTournament);
             var sut = _kernel.Get<GameService>();
 
-            SetupGetGamesInTournamentByRound(TOURNAMENT_ID, ROUND_NUMBER, expected);
+            SetupGetGamesInTournamentByRound(TOURNAMENT_ID, expected, allGamesInTournament);
 
             // Act
-            var actual = sut.GetGamesInTournamentByRound(TOURNAMENT_ID, ROUND_NUMBER);
+            var actual = sut.GetGamesInTournamentByRound(TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
+            // TODO Implement checking equality of 2 dictionaries
         }
 
         /// <summary>
@@ -348,11 +347,13 @@
                 .Returns(gameResults);
         }
 
-        private void SetupGetGamesInTournamentByRound(int tournamentId, int roundNumber, List<GameResultDto> gameResults)
+        private void SetupGetGamesInTournamentByRound(int tournamentId, Dictionary<int,List<GameResultDto>> gameResults, List<GameResultDto> games)
         {
-            _gamesInTournamentByRoundQueryMock
-                .Setup(m => m.Execute(It.Is<GamesInTournamentByRoundCriteria>
-                    (c => c.TournamentId == tournamentId && c.RoundNumber == roundNumber)))
+            _tournamentGameResultsQueryMock.Setup(m =>
+                m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
+                .Returns(games);
+            _gameServiceMock
+                .Setup(m => m.GetGamesInTournamentByRound(It.IsAny<int>()))
                     .Returns(gameResults);
         }
 
@@ -388,6 +389,12 @@
         {
             _gameRepositoryMock.Verify(m => m.Remove(It.Is<int>(id => id == gameResultId)), times);
             _unitOfWorkMock.Verify(m => m.Commit(), times);
+        }
+
+        private Dictionary<int, List<GameResultDto>> GetGamesByRound(List<GameResultDto> allGamesInTournament)
+        {
+            return allGamesInTournament.GroupBy(d => d.Round)
+               .ToDictionary(d => d.Key, d => d.ToList());
         }
     }
 }

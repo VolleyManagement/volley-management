@@ -15,7 +15,7 @@
 
         private Game _game;
 
-        private const string date = "2016-04-03 10:00";
+        private const string DATE = "2016-04-03 10:00";
 
         #endregion
 
@@ -45,7 +45,7 @@
                         new Score(0, 0)
                     }
                 },
-                GameDate = DateTime.Parse(date),
+                GameDate = DateTime.Parse(DATE),
                 Round = 1
             };
         }

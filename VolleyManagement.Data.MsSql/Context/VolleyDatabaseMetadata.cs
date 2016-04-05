@@ -19,6 +19,12 @@
 
         public const string TEAMS_TABLE_NAME = "Teams";
 
+        public const string TOURNAMENTS_TO_TEAMS_TABLE_NAME = "TournamentTeam";
+
+        public const string TOURNAMENT_TO_TEAM_FK = "TeamId";
+
+        public const string TEAM_TO_TOURNAMENT_FK = "TournamentId";
+
         public const string CONTRIBUTORS_TABLE_NAME = "Contributors";
 
         public const string CONTRIBUTOR_TEAMS_TABLE_NAME = "ContributorTeams";

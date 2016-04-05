@@ -200,7 +200,7 @@
         /// <returns>View with list of excistiong teams and adding team form</returns>
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
-            var resultTeams = this._tournamentService.GetAllTornamentTeams(tournamentId);
+            var resultTeams = this._tournamentService.GetAllTournamentTeams(tournamentId);
             return View(new TournamentTeamsListViewModel(resultTeams, tournamentId));
         }
 

@@ -516,7 +516,7 @@
         private void SetupGetTournamentTeams(List<Team> teams, int tournamentId)
         {
             this._tournamentServiceMock.
-                Setup(tr => tr.GetAllTornamentTeams(tournamentId))
+                Setup(tr => tr.GetAllTournamentTeams(tournamentId))
                 .Returns(teams);
         }
 

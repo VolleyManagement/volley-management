@@ -7,7 +7,9 @@
     {
         public const string DATE_COLUMN_TYPE = "date";
 
-        public const string DATETIME_COLUMN_TYPE = "datetime";
+        public const string DATETIME2_COLUMN_TYPE = "datetime2";
+
+        public const string TINYINT_COLUMN_TYPE = "tinyint";
 
         public const string SMALL_INT_COLUMN_TYPE = "smallint";
 

@@ -413,5 +413,11 @@
         }
 
         #endregion
+
+
+        public List<Team> GetAllTornamentTeams(int tournamentId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

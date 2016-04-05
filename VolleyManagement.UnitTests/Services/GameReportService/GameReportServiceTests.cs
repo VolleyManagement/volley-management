@@ -8,9 +8,9 @@
     using Ninject;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.GameResultService;
+    using VolleyManagement.UnitTests.Services.GameService;
 
     /// <summary>
     /// Tests for <see cref="GameReportService"/> class.
@@ -47,7 +47,7 @@
         public void GetStandings_NoGameResults_StandingsNoEntries()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().Build();
+            var gameResultsTestData = new GameServiceTestFixture().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = 0;
 
@@ -68,7 +68,7 @@
         public void GetStandings_GameResultsAllPossibleScores_CorrectPointsStats()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().WithAllPossibleScores().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
                 .OrderByPointsAndSetsAndBalls()
@@ -93,7 +93,7 @@
         public void GetStandings_GameResultsAllPossibleScores_CorrectGamesStats()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().WithAllPossibleScores().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
                 .OrderByPointsAndSetsAndBalls()
@@ -142,7 +142,7 @@
         public void GetStandings_GameResultsAllPossibleScores_CorrectSetsStats()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().WithAllPossibleScores().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
                 .OrderByPointsAndSetsAndBalls()
@@ -179,7 +179,7 @@
         public void GetStandings_GameResultsAllPossibleScores_CorrectBallsStats()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().WithAllPossibleScores().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
                 .OrderByPointsAndSetsAndBalls()
@@ -216,7 +216,7 @@
         public void GetStandings_GameResultOneTeamNoLostSets_TopTeamNoLostSets()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().WithNoLostSetsForOneTeam().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithNoLostSetsForOneTeam().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = float.PositiveInfinity;
 
@@ -237,7 +237,7 @@
         public void GetStandings_GameResultOneTeamNoLostSetsNoLostBalls_TopTeamNoLostSetsNoLostBalls()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().WithNoLostSetsNoLostBallsForOneTeam().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithNoLostSetsNoLostBallsForOneTeam().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = new { SetsRatio = float.PositiveInfinity, BallsRatio = float.PositiveInfinity };
 
@@ -259,7 +259,7 @@
         public void GetStandings_EntriesNotOrdered_NotTopTeamMaxPoints()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().WithResultsForUniquePoints().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithResultsForUniquePoints().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = new StandingsTestFixture().WithUniquePoints().Build()[TOP_TEAM_INDEX].Points;
 
@@ -280,7 +280,7 @@
         public void GetStandings_EntriesOrderedByPoints_NotTopTeamMaxSetsRatio()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().WithResultsForRepetitivePoints().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithResultsForRepetitivePoints().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = new StandingsTestFixture().WithRepetitivePoints().OrderByPoints().Build()[TOP_TEAM_INDEX].SetsRatio;
 
@@ -301,7 +301,7 @@
         public void GetStandings_EntriesOrderedByPointsSetsRatio_NotTopTeamMaxBallsRatio()
         {
             // Arrange
-            var gameResultsTestData = new GameResultTestFixture().WithResultsForRepetitivePointsAndSetsRatio().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithResultsForRepetitivePointsAndSetsRatio().Build();
             var sut = _kernel.Get<GameReportService>();
             var expected = new StandingsTestFixture().WithRepetitivePointsAndSetsRatio()
                 .OrderByPointsAndSets()

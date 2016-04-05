@@ -258,26 +258,6 @@
         }
 
         /// <summary>
-        /// Test for GetGamesInTournamentByRound method. Game results of specified tournament and specified round are requested. Game results are returned.
-        /// </summary>
-        [TestMethod]
-        public void GetTournamentGamesByRound_GamesRequsted_GamesReturned()
-        {
-            // Arrange
-            var allGamesInTournament = new GameServiceTestFixture().WithGamesInRounds().Build();
-            var expected = GetGamesByRound(allGamesInTournament);
-            var sut = _kernel.Get<GameService>();
-
-            SetupGetGamesInTournamentByRound(TOURNAMENT_ID, expected, allGamesInTournament);
-
-            // Act
-            var actual = sut.GetGamesInTournamentByRound(TOURNAMENT_ID);
-
-            // Assert
-            // TODO Implement checking equality of 2 dictionaries
-        }
-
-        /// <summary>
         /// Test for Edit method. Game object contains valid data. Game is edited successfully.
         /// </summary>
         [TestMethod]
@@ -347,16 +327,6 @@
                 .Returns(gameResults);
         }
 
-        private void SetupGetGamesInTournamentByRound(int tournamentId, Dictionary<int,List<GameResultDto>> gameResults, List<GameResultDto> games)
-        {
-            _tournamentGameResultsQueryMock.Setup(m =>
-                m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
-                .Returns(games);
-            _gameServiceMock
-                .Setup(m => m.GetGamesInTournamentByRound(It.IsAny<int>()))
-                    .Returns(gameResults);
-        }
-
         private void SetupEditMissingEntityException(Game game)
         {
             _gameRepositoryMock.Setup(m =>
@@ -389,12 +359,6 @@
         {
             _gameRepositoryMock.Verify(m => m.Remove(It.Is<int>(id => id == gameResultId)), times);
             _unitOfWorkMock.Verify(m => m.Commit(), times);
-        }
-
-        private Dictionary<int, List<GameResultDto>> GetGamesByRound(List<GameResultDto> allGamesInTournament)
-        {
-            return allGamesInTournament.GroupBy(d => d.Round)
-               .ToDictionary(d => d.Key, d => d.ToList());
         }
     }
 }

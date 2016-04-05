@@ -29,13 +29,6 @@
         List<GameResultDto> GetTournamentResults(int tournamentId);
 
         /// <summary>
-        /// Gets game results in the tournament specified by its identifier and split by rounds
-        /// </summary>
-        /// <param name="tournamentId">Identifier of the tournament.</param>
-        /// <returns>Dictionary of games of specified tournament with round number as key and list of games in round as value.</returns>
-        Dictionary<int, List<GameResultDto>> GetGamesInTournamentByRound(int tournamentId);
-
-        /// <summary>
         /// Edits specified instance of game.
         /// </summary>
         /// <param name="game">Game to update.</param>

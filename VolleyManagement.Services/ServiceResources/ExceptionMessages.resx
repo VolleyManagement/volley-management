@@ -135,6 +135,9 @@
   <data name="PlayerNotFound" xml:space="preserve">
     <value>Игрок с указанным идентификатором не был найден</value>
   </data>
+  <data name="TeamInTournamentNotFound" xml:space="preserve">
+    <value>A team with specified inentifier was not found in this tournament</value>
+  </data>
   <data name="TeamNotFound" xml:space="preserve">
     <value>A team with specified identifier was not found</value>
   </data>

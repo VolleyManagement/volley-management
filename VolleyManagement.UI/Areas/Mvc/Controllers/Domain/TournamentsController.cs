@@ -4,11 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using App_GlobalResources;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
@@ -197,6 +200,70 @@
 
             this._tournamentService.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Manage tournament teams action
+        /// </summary>
+        /// <param name="tournamentId">Tournaments id</param>
+        /// <returns>View with list of existing teams and adding team form</returns>
+        public ActionResult ManageTournamentTeams(int tournamentId)
+        {
+            var resultTeams = this._tournamentService.GetAllTournamentTeams(tournamentId);
+            return View(new TournamentTeamsListViewModel(resultTeams, tournamentId));
+        }
+
+        /// <summary>
+        /// Adds list of teams to tournament
+        /// </summary>
+        /// <param name="teams">Object with list of teams and tournament id</param>
+        /// <returns>json result with operation data</returns>
+        [HttpPost]
+        public JsonResult AddTeamsToTournament(TournamentTeamsListViewModel teams)
+        {
+            JsonResult result = null;
+            try
+            {
+                this._tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId);
+                result = this.Json(teams, JsonRequestBehavior.AllowGet);
+            }
+            catch (ArgumentException ex)
+            {
+                result = this.Json(new TeamsAddToTournamentViewModel { Message = ex.Message });
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Deletes team from tournament
+        /// </summary>
+        /// <param name="teamId">team to delete</param>
+        /// <param name="tournamentId">tournament for team deleting</param>
+        /// <returns>json result with operation data</returns>
+        [HttpPost]
+        public JsonResult DeleteTeamFromTournament(int teamId, int tournamentId)
+        {
+            JsonResult result = null;
+            try
+            {
+                this._tournamentService.DeleteTeamFromTournament(teamId, tournamentId);
+                result = Json(new TeamDeleteFromTournamentViewModel
+                {
+                    Message = ViewModelResources.TeamWasDeletedSuccessfully,
+                    HasDeleted = true
+                });
+            }
+            catch (MissingEntityException ex)
+            {
+                result = Json(new TeamDeleteFromTournamentViewModel
+                {
+                    Message = ex.Message,
+                    HasDeleted = false
+                });
+            }
+
+            return result;
         }
 
         /// <summary>

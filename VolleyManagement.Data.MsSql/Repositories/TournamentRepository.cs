@@ -1,9 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
-    using System;
     using System.Data.Entity;
     using System.Linq;
-    using System.Linq.Expressions;
     using VolleyManagement.Crosscutting.Contracts.Specifications;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
@@ -85,25 +83,6 @@
             this._dalTournaments.Remove(dalToRemove);
         }
 
-        private void MapIdentifiers(Tournament to, TournamentEntity from)
-        {
-            to.Id = from.Id;
-
-            foreach (DivisionEntity divisionEntity in from.Divisions)
-            {
-                Division divisionDomain = to.Divisions.Where(d => d.Name == divisionEntity.Name).First();
-                divisionDomain.Id = divisionEntity.Id;
-                divisionDomain.TournamentId = divisionEntity.TournamentId;
-
-                foreach (GroupEntity groupEntity in divisionEntity.Groups)
-                {
-                    Group groupDomain = divisionDomain.Groups.Where(g => g.Name == groupEntity.Name).First();
-                    groupDomain.Id = groupEntity.Id;
-                    groupDomain.DivisionId = divisionEntity.Id;
-                }
-            }
-        }
-
         /// <summary>
         /// Adds team to the tournament
         /// </summary>
@@ -125,9 +104,33 @@
         public void RemoveTeamFromTournament(int teamId, int tournamentId)
         {
             var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
-            var teamEntity = _unitOfWork.Context.Teams.Find(teamId);
+            var teamEntity = tournamentEntity.Teams.SingleOrDefault(t => t.Id == teamId);
+
+            if (teamEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
 
             tournamentEntity.Teams.Remove(teamEntity);
+        }
+
+        private void MapIdentifiers(Tournament to, TournamentEntity from)
+        {
+            to.Id = from.Id;
+
+            foreach (DivisionEntity divisionEntity in from.Divisions)
+            {
+                Division divisionDomain = to.Divisions.Where(d => d.Name == divisionEntity.Name).First();
+                divisionDomain.Id = divisionEntity.Id;
+                divisionDomain.TournamentId = divisionEntity.TournamentId;
+
+                foreach (GroupEntity groupEntity in divisionEntity.Groups)
+                {
+                    Group groupDomain = divisionDomain.Groups.Where(g => g.Name == groupEntity.Name).First();
+                    groupDomain.Id = groupEntity.Id;
+                    groupDomain.DivisionId = divisionEntity.Id;
+                }
+            }
         }
     }
 }

@@ -104,7 +104,7 @@
         /// <summary>
         /// Edit team action POST
         /// </summary>
-        /// <param name="id">Id of a team to edit</param>
+        /// <param name="id">Id of the team which is needed to be edited</param>
         /// <returns>Redirect to team index page</returns>
         public ActionResult Edit(int id)
         {
@@ -212,6 +212,18 @@
             ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             return View(viewModel);
+        }
+
+        /// <summary>
+        /// Returns list of all teams  
+        /// </summary>
+        /// <returns>Json list of teams</returns>
+        public JsonResult GetAllTeams()
+        {
+            var teams = this._teamService.Get()
+                                         .ToList()
+                                         .Select(t => TeamNameViewModel.Map(t));
+            return Json(teams, JsonRequestBehavior.AllowGet);
         }
 
         private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)

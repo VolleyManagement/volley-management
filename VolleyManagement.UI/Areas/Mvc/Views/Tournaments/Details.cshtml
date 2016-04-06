@@ -86,6 +86,14 @@
 	</div>
     <div>
         @Html.ActionLink(
+            Resources.TournamentViews.ManageTeams,
+            "ManageTournamentTeams",
+            "Tournaments",
+            new { tournamentId = Model.Id },
+            null)
+    </div>
+    <div>
+        @Html.ActionLink(
            Resources.TournamentViews.Schedule, 
            "ShowSchedule", 
            new { tournamentId = Model.Id })

@@ -39,7 +39,7 @@
         /// </summary>
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
         /// <returns>Tournament teams</returns>
-        List<Team> GetAllTornamentTeams(int tournamentId);
+        List<Team> GetAllTournamentTeams(int tournamentId);
 
         /// <summary>
         /// Create new tournament.

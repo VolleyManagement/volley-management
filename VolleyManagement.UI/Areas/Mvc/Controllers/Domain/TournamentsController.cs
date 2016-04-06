@@ -302,7 +302,7 @@
             scheduleViewModel.tournamentId = tournament.Id;
             scheduleViewModel.tournamentName = tournament.Name;
 
-            int countTeams = _tournamentService.GetAllTornamentTeams(tournamentId).ToList().Count;
+            int countTeams = _tournamentService.GetAllTournamentTeams(tournamentId).ToList().Count;
             switch (tournament.Scheme)
             {
                 case TournamentSchemeEnum.One:

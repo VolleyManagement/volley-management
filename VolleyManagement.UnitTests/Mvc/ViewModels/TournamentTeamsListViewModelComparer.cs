@@ -57,8 +57,7 @@
         {
             var teamComparer = new TeamNameViewModelComparer();
 
-            bool result = x.TournamentId == y.TournamentId;           
-
+            bool result = x.TournamentId == y.TournamentId;
             if (result && x.List != null)
             {
                 x.List.SequenceEqual(y.List, teamComparer);

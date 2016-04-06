@@ -4,14 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using App_GlobalResources;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain;
-    using Domain.TeamsAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
-    using ViewModels.Teams;
-    using App_GlobalResources;
 
     /// <summary>
     /// Defines TournamentsController
@@ -196,8 +196,8 @@
         /// <summary>
         /// Manage tournament teams action
         /// </summary>
-        /// <param name="id">Tournamnets id</param>
-        /// <returns>View with list of excistiong teams and adding team form</returns>
+        /// <param name="tournamentId">Tournaments id</param>
+        /// <returns>View with list of existing teams and adding team form</returns>
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = this._tournamentService.GetAllTournamentTeams(tournamentId);
@@ -219,8 +219,8 @@
                 result = this.Json(teams, JsonRequestBehavior.AllowGet);
             }
             catch (ArgumentException ex)
-            {                
-                result = this.Json(new { Message = ex.Message});
+            {
+                result = this.Json(new TeamsAddToTournamentViewModel { Message = ex.Message });
             }
 
             return result;

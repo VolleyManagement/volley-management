@@ -85,25 +85,6 @@
             this._dalTournaments.Remove(dalToRemove);
         }
 
-        private void MapIdentifiers(Tournament to, TournamentEntity from)
-        {
-            to.Id = from.Id;
-
-            foreach (DivisionEntity divisionEntity in from.Divisions)
-            {
-                Division divisionDomain = to.Divisions.Where(d => d.Name == divisionEntity.Name).First();
-                divisionDomain.Id = divisionEntity.Id;
-                divisionDomain.TournamentId = divisionEntity.TournamentId;
-
-                foreach (GroupEntity groupEntity in divisionEntity.Groups)
-                {
-                    Group groupDomain = divisionDomain.Groups.Where(g => g.Name == groupEntity.Name).First();
-                    groupDomain.Id = groupEntity.Id;
-                    groupDomain.DivisionId = divisionEntity.Id;
-                }
-            }
-        }
-
         /// <summary>
         /// Adds team to the tournament
         /// </summary>
@@ -133,6 +114,25 @@
             }
 
             tournamentEntity.Teams.Remove(teamEntity);
+        }
+
+        private void MapIdentifiers(Tournament to, TournamentEntity from)
+        {
+            to.Id = from.Id;
+
+            foreach (DivisionEntity divisionEntity in from.Divisions)
+            {
+                Division divisionDomain = to.Divisions.Where(d => d.Name == divisionEntity.Name).First();
+                divisionDomain.Id = divisionEntity.Id;
+                divisionDomain.TournamentId = divisionEntity.TournamentId;
+
+                foreach (GroupEntity groupEntity in divisionEntity.Groups)
+                {
+                    Group groupDomain = divisionDomain.Groups.Where(g => g.Name == groupEntity.Name).First();
+                    groupDomain.Id = groupEntity.Id;
+                    groupDomain.DivisionId = divisionEntity.Id;
+                }
+            }
         }
     }
 }

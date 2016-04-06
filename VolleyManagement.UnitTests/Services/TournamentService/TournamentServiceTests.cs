@@ -10,15 +10,15 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using TeamService;
-    using Domain.TeamsAggregate;
-    using Data.Queries.Team;
-    using Data.Exceptions;
+    using VolleyManagement.UnitTests.Services.TeamService;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -144,42 +144,42 @@
         }
 
         /// <summary>
-        /// Test for GetAllTournamentTeams method. 
+        /// Test for GetAllTournamentTeams method.
         /// The method should return existing teams in specific tournament
         /// </summary>
         [TestMethod]
         public void GetAllTournamentTeams_TeamsExist_TeamsReturned()
         {
-            //Arrange
+            // Arrange
             var testData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQuery(testData);
             var sut = _kernel.Get<TournamentService>();
             var expected = new TeamServiceTestFixture().TestTeams().Build();
 
-            //Act
+            // Act
             var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
 
-            //Assert
+            // Assert
             CollectionAssert.AreEqual(expected, actual, new TeamComparer());
         }
 
         /// <summary>
-        /// Test for GetAllTournamentTeams method. 
+        /// Test for GetAllTournamentTeams method.
         /// No teams exists in tournament.
         /// The method should return empty team list.
         /// </summary>
         [TestMethod]
         public void GetAllTournamentTeams_TeamsNotExist_EmptyTeamListReturned()
         {
-            //Arrange
+            // Arrange
             var testData = new TeamServiceTestFixture().Build();
             MockGetAllTournamentTeamsQuery(testData);
             var sut = _kernel.Get<TournamentService>();
 
-            //Act
+            // Act
             var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
 
-            //Assert
+            // Assert
             Assert.AreEqual(actual.Count, EMPTY_TEAM_LIST_COUNT);
         }
 
@@ -669,34 +669,34 @@
         [TestMethod]
         public void AddTeamsToTournament_ValidTeamList_TeamsAreAdded()
         {
-            //Arrange
+            // Arrange
             var testData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
             var sut = _kernel.Get<TournamentService>();
 
-            //Act
+            // Act
             sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
 
-            //Assert
+            // Assert
             VerifyTeamsAdded(FIRST_TOURNAMENT_ID, Times.Exactly(testData.Count), Times.Once());
         }
 
         /// <summary>
         /// Test for AddTeamsToTournament method.
-        /// InValid teams must not be added. 
-        /// Method have to throw ArgumentException        
+        /// InValid teams must not be added.
+        /// Method have to throw ArgumentException
         /// </summary>
         [TestMethod]
         public void AddTeamsToTournament_InValidTeamList_ArgumentExceptionThrown()
         {
             bool gotException = false;
 
-            //Arrange
+            // Arrange
             var testData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().TestTeams().Build());
             var sut = _kernel.Get<TournamentService>();
 
-            //Act
+            // Act
             try
             {
                 sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
@@ -706,7 +706,7 @@
                 gotException = true;
             }
 
-            //Assert
+            // Assert
             Assert.IsTrue(gotException);
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
         }
@@ -718,13 +718,13 @@
         [TestMethod]
         public void DeleteTeamFromTournament_TeamExist_TeamDeleted()
         {
-            //Arrange
+            // Arrange
             var sut = _kernel.Get<TournamentService>();
 
-            //Act
+            // Act
             sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
 
-            //Assert
+            // Assert
             VerifyTeamDeleted(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID, Times.Once());
         }
 
@@ -738,23 +738,23 @@
         {
             bool gotException = false;
 
-            //Arrange
+            // Arrange
             var sut = _kernel.Get<TournamentService>();
             _tournamentRepositoryMock
                 .Setup(tr => tr.RemoveTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()))
                 .Throws(new ConcurrencyException());
 
-            //Act
+            // Act
             try
             {
                 sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
             }
-            catch(MissingEntityException)
+            catch (MissingEntityException)
             {
                 gotException = true;
             }
 
-            //Assert
+            // Assert
             Assert.IsTrue(gotException);
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
         }

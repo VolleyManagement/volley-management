@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -9,15 +10,14 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.TeamService;
     using VolleyManagement.UnitTests.Services.TournamentService;
-    using Services.TeamService;
-    using Domain.TeamsAggregate;
-    using UI.Areas.Mvc.ViewModels.Teams;
-    using System;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -74,86 +74,86 @@
         }
 
         /// <summary>
-        /// Test for ManageTournamentTeams. 
+        /// Test for ManageTournamentTeams.
         /// Actual tournament teams are requested. Actual tournament teams are returned.
         /// </summary>
         [TestMethod]
         public void ManageTournamentTeams_TournamentTeamsExist_TeamsInCurrentTournamentAreReturned()
         {
-            //Arrange
+            // Arrange
             var testData = MakeTestTeams();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
 
-            //Act
+            // Act
             var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListViewModel>(
                 this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
-            //Assert
+            // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
                 .AreEqual(expectedTeamsList, returnedTeamsList));
         }
 
         /// <summary>
-        /// Test for ManageTournamentTeams while there are no teams. 
+        /// Test for ManageTournamentTeams while there are no teams.
         /// Actual tournament teams are requested. Empty teams list is returned.
         /// </summary>
         [TestMethod]
         public void ManageTournamentTeams_NonExistTournamentTeams_EmptyTeamListIsReturned()
         {
-            //Arrange
+            // Arrange
             var testData = new TeamServiceTestFixture().Build();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
 
-            //Act
+            // Act
             var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListViewModel>(
                 this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
-            //Assert
+            // Assert
             Assert.AreEqual(returnedTeamsList.List.Count, EMPTY_TEAMLIST_COUNT);
         }
 
         /// <summary>
-        /// Test for AddTeamsToTournament. 
+        /// Test for AddTeamsToTournament.
         /// Tournament teams list view model is valid and no exception is thrown during adding
         /// Teams are added successfully and json result is returned
         /// </summary>
         [TestMethod]
         public void AddTeamsToTournament_ValidTeamListViewModelNoException_JsonResultIsReturned()
         {
-            //Arrange
+            // Arrange
             var testData = MakeTestTeams();
             var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
 
-            //Act
+            // Act
             var jsonResult = this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
             var returnedDataResult = jsonResult.Data as TournamentTeamsListViewModel;
 
-            //Assert
+            // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
                 .AreEqual(returnedDataResult, expectedDataResult));
         }
 
         /// <summary>
-        /// Test for AddTeamsToTournament. 
+        /// Test for AddTeamsToTournament.
         /// Tournament teams list view model is invalid and Argument exception is thrown during adding
-        /// Teams are not added and json result  whith model error is returned
+        /// Teams are not added and json result  with model error is returned
         /// </summary>
         [TestMethod]
         public void AddTeamsToTournament_InValidTeamListViewModelWithException_JsonModelErrorReturned()
         {
-            //Arrange
+            // Arrange
             var testData = MakeTestTeams();
             this._tournamentServiceMock
                 .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>()))
                 .Throws(new ArgumentException(string.Empty));
 
-            //Act            
+            // Act
             var jsonResult = this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
-            var modelStateResult = jsonResult.Data as ModelStateDictionary;
+            var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
 
-            //Assert            
-            Assert.IsTrue(modelStateResult.Count > 0);
+            // Assert
+            Assert.IsNotNull(modelResult.Message);
         }
 
         /// <summary>
@@ -391,15 +391,15 @@
         [TestMethod]
         public void DeleteTeamFromTournament_TeamExists_TeamDeleted()
         {
-            //Arrange
+            // Arrange
             this._tournamentServiceMock
                 .Setup(ts => ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()));
 
-            //Act
+            // Act
             var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
             var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
 
-            //Assert
+            // Assert
             Assert.IsTrue(result.HasDeleted);
         }
 
@@ -410,16 +410,16 @@
         [TestMethod]
         public void DeleteTeamFromTournament_NonExistTeam_TeamIsNotDeleted()
         {
-            //Arrange
+            // Arrange
             this._tournamentServiceMock
                 .Setup(ts => ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()))
                 .Throws(new MissingEntityException());
 
-            //Act
+            // Act
             var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
             var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
 
-            //Assert
+            // Assert
             Assert.IsFalse(result.HasDeleted);
         }
 
@@ -515,8 +515,8 @@
 
         private void SetupGetTournamentTeams(List<Team> teams, int tournamentId)
         {
-            this._tournamentServiceMock.
-                Setup(tr => tr.GetAllTournamentTeams(tournamentId))
+            this._tournamentServiceMock
+                .Setup(tr => tr.GetAllTournamentTeams(tournamentId))
                 .Returns(teams);
         }
 

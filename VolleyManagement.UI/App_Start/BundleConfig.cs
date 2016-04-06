@@ -33,10 +33,10 @@
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryvalidation")
                         .Include("~/Scripts/jquery.validate.min.js",
-                                 "~/Scripts/jquery.validate.unobtrusive.min.js")); 
+                                 "~/Scripts/jquery.validate.unobtrusive.min.js"));
 
-			bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
-                      .Include("~/Scripts/UserActions.js"));								
+            bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
+                      .Include("~/Scripts/UserActions.js"));
 
             RegisterTeamScripts(bundles);
             RegisterTornamentScripts(bundles);
@@ -50,10 +50,11 @@
             bundles.Add(new ScriptBundle("~/bundles/teamlistscripts")
                         .Include("~/Scripts/VmScripts/TeamOperations/List.js"));
         }
+
         private static void RegisterTornamentScripts(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/tournamentteamsscripts")
-                        .Include("~/Scripts/VmScripts/TournamentOperations/AddTeams.js"));           
+                        .Include("~/Scripts/VmScripts/TournamentOperations/AddTeams.js"));
         }
     }
 }

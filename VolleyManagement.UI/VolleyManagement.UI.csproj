@@ -23,6 +23,7 @@
     <RestorePackages>true</RestorePackages>
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <NuGetPackageImportStamp>d7e67eaf</NuGetPackageImportStamp>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -427,6 +428,7 @@
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamDeleteFromTournamentViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamsAddToTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamNameViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />

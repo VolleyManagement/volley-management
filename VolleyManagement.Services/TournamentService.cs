@@ -61,6 +61,7 @@
         /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
         /// <param name="getAllQuery"> Get All object query. </param>
         /// <param name="getByIdQuery">Get tournament by id query.</param>
+        /// <param name="getAllTeamsQuery">Get All Tournament Teams query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
@@ -106,6 +107,7 @@
             return GetFilteredTournaments(_finishedStates);
         }
 
+        /// <summary>
         /// Returns all teams for specific tournament
         /// </summary>
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
@@ -167,10 +169,10 @@
         }
 
         /// <summary>
-        /// Adds team to tournament
+        /// Adds teams to tournament
         /// </summary>
-        /// <param name="teamId">Team to add</param>
-        /// <param name="tournamentId">Tournament to assign team</param>
+        /// <param name="teams">Teams for adding to tournament.</param>
+        /// <param name="tournamentId">Tournament to assign team.</param>
         public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId)
         {
             var allTeams = GetAllTournamentTeams(tournamentId);
@@ -184,9 +186,11 @@
                 }
                 else
                 {
-                    throw new ArgumentException(TournamentResources.TeamNameInTournamentNotUnique);
+                    throw new ArgumentException(
+                        TournamentResources.TeamNameInTournamentNotUnique, tournamentTeam.Name);
                 }
             }
+
             _tournamentRepository.UnitOfWork.Commit();
         }
 
@@ -205,12 +209,11 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamInTournamentNotFound, ex);
             }
+
             _tournamentRepository.UnitOfWork.Commit();
         }
 
         #endregion
-
-
 
         #region Private
 

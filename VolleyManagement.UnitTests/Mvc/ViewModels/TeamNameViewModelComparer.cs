@@ -8,7 +8,6 @@
     using System.Text;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
 
-
     /// <summary>
     /// Comparer for team name view model objects.
     /// </summary>
@@ -38,7 +37,7 @@
             return Compare(firstTeam, secondTeam);
         }
 
-        // <summary>
+        /// <summary>
         /// Compares two teams objects.
         /// </summary>
         /// <param name="x">The first object to compare.</param>

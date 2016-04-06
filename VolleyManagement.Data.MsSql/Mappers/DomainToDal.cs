@@ -184,7 +184,7 @@
             to.HomeSet5Score = from.Result.SetScores[4].Home;
             to.AwaySet5Score = from.Result.SetScores[4].Away;
             to.StartTime = from.GameDate;
-            to.RoundNumber = Convert.ToByte(from.Round);
+            to.RoundNumber = from.Round;
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
-    using System;
     using System.Data.Entity;
     using System.Linq;
-    using System.Linq.Expressions;
     using VolleyManagement.Crosscutting.Contracts.Specifications;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
@@ -106,7 +104,7 @@
         public void RemoveTeamFromTournament(int teamId, int tournamentId)
         {
             var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
-            var teamEntity = tournamentEntity.Teams.Where(t => t.Id == teamId).FirstOrDefault();
+            var teamEntity = tournamentEntity.Teams.SingleOrDefault(t => t.Id == teamId);
 
             if (teamEntity == null)
             {

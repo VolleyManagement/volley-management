@@ -32,11 +32,12 @@
                         .Include("~/Scripts/jquery-ui-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryvalidation")
-                        .Include("~/Scripts/jquery.validate.min.js",
-                                 "~/Scripts/jquery.validate.unobtrusive.min.js"));
+                        .Include(
+                             "~/Scripts/jquery.validate.min.js",
+                             "~/Scripts/jquery.validate.unobtrusive.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
-                      .Include("~/Scripts/UserActions.js"));
+                .Include("~/Scripts/UserActions.js"));
 
             RegisterTeamScripts(bundles);
             RegisterTornamentScripts(bundles);

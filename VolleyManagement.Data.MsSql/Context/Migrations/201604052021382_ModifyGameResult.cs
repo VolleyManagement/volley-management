@@ -13,7 +13,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         /// </summary>
         public override void Up()
         {
-            AddColumn("dbo.GameResults", "StartTime", c => c.DateTime(nullable: false, precision: 7, storeType: "datetime2"));
+            AddColumn("dbo.GameResults", "StartTime", c => c.DateTime(nullable: false, precision: 0, storeType: "datetime2"));
             AddColumn("dbo.GameResults", "RoundNumber", c => c.Byte(nullable: false));
         }
         

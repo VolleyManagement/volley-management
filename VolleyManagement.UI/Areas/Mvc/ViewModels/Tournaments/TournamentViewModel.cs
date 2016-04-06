@@ -1,15 +1,14 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
     using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web.Script.Serialization;
-using System.Web.WebPages.Html;
-using VolleyManagement.Domain;
-using VolleyManagement.Domain.TournamentsAggregate;
-using VolleyManagement.UI.App_GlobalResources;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Web.Script.Serialization;
+    using VolleyManagement.Domain;
+    using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.UI.App_GlobalResources;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
 
     /// <summary>
     /// TournamentViewModel for Create and Edit actions
@@ -21,6 +20,7 @@ using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
         /// </summary>
         public TournamentViewModel()
         {
+            this.Scheme = TournamentSchemeEnum.One;
             this.InitializeSeasonsList();
             this.InitializeTournamentSchemeList();
             this.IsTransferEnabled = true;
@@ -38,7 +38,6 @@ using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
         /// Gets or sets the list of possible tournament schemes.
         /// </summary>
         /// <value>The list of tournament schemes.</value>
-        [ScriptIgnore]
         public Dictionary<int, TournamentSchemeEnum> TournamentSchemeList { get; set; }
 
         /// <summary>
@@ -246,9 +245,13 @@ using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
         private void InitializeTournamentSchemeList()
         {
             this.TournamentSchemeList = new Dictionary<int, TournamentSchemeEnum>();
-            for (int i=(int)TournamentSchemeEnum.One;i<(int)TournamentSchemeEnum.TwoAndHalf;++i)
+
+            foreach (TournamentSchemeEnum scheme in Enum.GetValues(typeof(TournamentSchemeEnum)))
             {
-                this.TournamentSchemeList.Add(i, (TournamentSchemeEnum)i);
+                if (scheme != TournamentSchemeEnum.TwoAndHalf)
+                {
+                    this.TournamentSchemeList.Add((int)scheme, scheme);
+                }
             }
         }
     }

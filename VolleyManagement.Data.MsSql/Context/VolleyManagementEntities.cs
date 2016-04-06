@@ -456,6 +456,16 @@ namespace VolleyManagement.Data.MsSql.Context
                 .ToTable(VolleyDatabaseMetadata.GAME_RESULTS_TABLE_NAME)
                 .HasKey(gr => gr.Id);
 
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.StartTime)
+                .IsRequired()
+                .HasColumnType(VolleyDatabaseMetadata.DATETIME2_COLUMN_TYPE);
+
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.RoundNumber)
+                .IsRequired()
+                .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);  
+
             // FK GameResult -> Tournament
             modelBuilder.Entity<GameResultEntity>()
                 .HasRequired(gr => gr.Tournament)

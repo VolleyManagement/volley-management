@@ -464,7 +464,7 @@ namespace VolleyManagement.Data.MsSql.Context
             modelBuilder.Entity<GameResultEntity>()
                 .Property(gr => gr.RoundNumber)
                 .IsRequired()
-                .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);  
+                .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);
 
             // FK GameResult -> Tournament
             modelBuilder.Entity<GameResultEntity>()

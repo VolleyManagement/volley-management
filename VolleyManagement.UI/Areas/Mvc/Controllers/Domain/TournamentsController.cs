@@ -8,6 +8,7 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
@@ -31,12 +32,20 @@
         private readonly ITournamentService _tournamentService;
 
         /// <summary>
+        /// Holds GameService instance
+        /// </summary>
+        private readonly IGameService _gameService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class
         /// </summary>
         /// <param name="tournamentService">The tournament service</param>
-        public TournamentsController(ITournamentService tournamentService)
+        /// <param name="gameService">The game service</param>
+        public TournamentsController(ITournamentService tournamentService,
+                                    IGameService gameService)
         {
             this._tournamentService = tournamentService;
+            this._gameService = gameService;
         }
 
         /// <summary>
@@ -273,6 +282,66 @@
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
             return View(tournamentViewModel);
+        }
+
+        /// <summary>
+        /// Gets the view for view model of the schedule with specified identifier.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>View for view model of the schedule with specified identifier.</returns>    
+        public ActionResult ShowSchedule(int tournamentId)
+        {  
+            var tournament = _tournamentService.Get(tournamentId);
+
+            if (tournament == null)
+            {
+                return HttpNotFound();
+            }
+  
+            var scheduleViewModel = new ScheduleViewModel();
+            scheduleViewModel.tournamentId = tournament.Id;
+            scheduleViewModel.tournamentName = tournament.Name;
+
+            int countTeams = _tournamentService.GetAllTournamentTeams(tournamentId).ToList().Count;
+            switch (tournament.Scheme)
+            {
+                case TournamentSchemeEnum.One:
+                    {
+                        scheduleViewModel.CountRound = GetCountRoundByScheme1(countTeams);
+                        break;
+                    }
+
+                case TournamentSchemeEnum.Two:
+                    {
+                        scheduleViewModel.CountRound = GetCountRoundByScheme2(countTeams);
+                        break;
+                    }
+            }
+
+            scheduleViewModel.Rounds = _gameService.GetTournamentResults(tournamentId).GroupBy(d => d.Round)
+               .ToDictionary(d => d.Key, d => d.OrderBy(t => t.GameDate).ToList());
+            
+            return View(scheduleViewModel);
+        }
+
+        /// <summary>
+        /// Calculate number of rounds in tournament by scheme 1.
+        /// </summary>
+        /// <param name="countTeams">Number of teams.</param>
+        /// <returns>Number of rounds.</returns>
+        private int GetCountRoundByScheme1(int countTeams)
+        {
+            return countTeams % 2 == 0 ? countTeams : countTeams - 1;
+        }
+
+        /// <summary>
+        /// Calculate number of rounds in tournament by scheme 2.
+        /// </summary>
+        /// <param name="countTeams">Number of teams.</param>
+        /// <returns>Number of rounds.</returns>
+        private int GetCountRoundByScheme2(int countTeams)
+        {
+            return 2 * (countTeams % 2 == 0 ? countTeams : countTeams - 1);
         }
     }
 }

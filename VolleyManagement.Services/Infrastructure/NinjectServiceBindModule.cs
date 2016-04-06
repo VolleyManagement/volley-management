@@ -43,7 +43,7 @@
                                   Bind<IVolleyUserManager<UserModel>>().To<VolleyUserManager>(),
                                   Bind<IVolleyUserStore>().To<VolleyUserStore>(),
                                   Bind<IRolesService>().To<RolesService>(),
-                                  Bind<IGameResultService>().To<GameResultService>(),
+                                  Bind<IGameService>().To<GameService>(),
                                   Bind<IGameReportService>().To<GameReportService>()
                               };
             configs.InScope(_scopeCallback);

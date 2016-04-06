@@ -97,6 +97,10 @@
     <Compile Include="Context\Migrations\201512171559020_AddGameResults.Designer.cs">
       <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201604052021382_ModifyGameResult.cs" />
+    <Compile Include="Context\Migrations\201604052021382_ModifyGameResult.Designer.cs">
+      <DependentUpon>201604052021382_ModifyGameResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.cs" />
     <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.Designer.cs">
       <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>
@@ -127,7 +131,7 @@
     <Compile Include="Queries\TournamentQueries.cs" />
     <Compile Include="Queries\UserQueries.cs" />
     <Compile Include="Repositories\ContributorTeamRepository.cs" />
-    <Compile Include="Repositories\GameResultRepository.cs" />
+    <Compile Include="Repositories\GameRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\RoleRepostitory.cs" />
     <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
@@ -195,6 +199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201512171559020_AddGameResults.resx">
       <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201604052021382_ModifyGameResult.resx">
+      <DependentUpon>201604052021382_ModifyGameResult.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201604021015192_TeamTournamentRelation.resx">
       <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>

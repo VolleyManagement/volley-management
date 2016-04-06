@@ -9,7 +9,7 @@
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Provides implementation of game result queries.
@@ -88,7 +88,9 @@
                 HomeSet4Score = gr.HomeSet4Score,
                 AwaySet4Score = gr.AwaySet4Score,
                 HomeSet5Score = gr.HomeSet5Score,
-                AwaySet5Score = gr.AwaySet5Score
+                AwaySet5Score = gr.AwaySet5Score,
+                GameDate = gr.StartTime,
+                Round = Convert.ToInt32(gr.RoundNumber)
             };
         }
 

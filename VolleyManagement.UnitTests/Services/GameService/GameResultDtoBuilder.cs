@@ -1,15 +1,18 @@
-﻿namespace VolleyManagement.UnitTests.Services.GameResultService
+﻿namespace VolleyManagement.UnitTests.Services.GameService
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
-    /// Represents a builder of <see cref="GameResultDto"/> objects for unit tests for <see cref="GameResultService"/>.
+    /// Represents a builder of <see cref="GameResultDto"/> objects for unit tests for <see cref="GameService"/>.
     /// </summary>
     [ExcludeFromCodeCoverage]
     public class GameResultDtoBuilder
     {
         #region Fields
+
+        private const string DATE = "2016-04-03 10:00";
 
         private GameResultDto _gameResult;
 
@@ -35,6 +38,8 @@
                 HomeSet3Score = 30, AwaySet3Score = 28,
                 HomeSet4Score = 0, AwaySet4Score = 0,
                 HomeSet5Score = 0, AwaySet5Score = 0,
+                GameDate = DateTime.Parse(DATE),
+                Round = 1
             };
         }
 
@@ -112,7 +117,7 @@
         /// Sets the final score of the game (sets score) for the home team.
         /// </summary>
         /// <param name="score">Final score of the game for the home team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSetsScore(byte score)
         {
             _gameResult.HomeSetsScore = score;
@@ -123,7 +128,7 @@
         /// Sets the final score of the game (sets score) for the away team.
         /// </summary>
         /// <param name="score">Final score of the game for the away team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySetsScore(byte score)
         {
             _gameResult.AwaySetsScore = score;
@@ -154,7 +159,7 @@
         /// Sets the score of the first set for the home team.
         /// </summary>
         /// <param name="score">Set score of the home team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet1Score(byte score)
         {
             _gameResult.HomeSet1Score = score;
@@ -164,8 +169,8 @@
         /// <summary>
         /// Sets the score of the first set for the away team.
         /// </summary>
-        /// <param name="score">Set score of the the away team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <param name="score">Set score of the away team.</param>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet1Score(byte score)
         {
             _gameResult.AwaySet1Score = score;
@@ -176,7 +181,7 @@
         /// Sets the score of the second set for the home team.
         /// </summary>
         /// <param name="score">Set score of the home team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet2Score(byte score)
         {
             _gameResult.HomeSet2Score = score;
@@ -187,7 +192,7 @@
         /// Sets the score of the second set for the away team.
         /// </summary>
         /// <param name="score">Set score of the away team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet2Score(byte score)
         {
             _gameResult.AwaySet2Score = score;
@@ -198,7 +203,7 @@
         /// Sets the score of the third set for the home team.
         /// </summary>
         /// <param name="score">Set score of the home team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet3Score(byte score)
         {
             _gameResult.HomeSet3Score = score;
@@ -209,7 +214,7 @@
         /// Sets the score of the third set for the away team.
         /// </summary>
         /// <param name="score">Set score of the away team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet3Score(byte score)
         {
             _gameResult.AwaySet3Score = score;
@@ -220,7 +225,7 @@
         /// Sets the score of the fourth set for the home team.
         /// </summary>
         /// <param name="score">Set score of the home team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet4Score(byte score)
         {
             _gameResult.HomeSet4Score = score;
@@ -231,7 +236,7 @@
         /// Sets the score of the fourth set for the away team.
         /// </summary>
         /// <param name="score">Set score of the away team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet4Score(byte score)
         {
             _gameResult.AwaySet4Score = score;
@@ -242,7 +247,7 @@
         /// Sets the score of the fifth set for the home team.
         /// </summary>
         /// <param name="score">Set score of the home team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet5Score(byte score)
         {
             _gameResult.HomeSet5Score = score;
@@ -253,7 +258,7 @@
         /// Sets the score of the fifth set for the away team.
         /// </summary>
         /// <param name="score">Set score of the away team.</param>
-        /// <returns>Instance of <see cref="GameResultBuilder"/>.</returns>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet5Score(byte score)
         {
             _gameResult.AwaySet5Score = score;

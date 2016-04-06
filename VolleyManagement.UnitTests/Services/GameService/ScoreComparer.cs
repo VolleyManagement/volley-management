@@ -1,9 +1,9 @@
-﻿namespace VolleyManagement.UnitTests.Services.GameResultService
+﻿namespace VolleyManagement.UnitTests.Services.GameService
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
-    using VolleyManagement.Domain.GameResultsAggregate;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Represents a comparer for <see cref="Score"/> objects.

@@ -192,6 +192,21 @@
   <data name="UpcomingTournamentsHeader" xml:space="preserve">
     <value>Upcoming</value>
   </data>
+  <data name="NoGamesScheduled" xml:space="preserve">
+    <value>No games scheduled yet</value>
+  </data>
+  <data name="Round" xml:space="preserve">
+    <value>Round</value>
+  </data>
+  <data name="Schedule" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="ScheduleGame" xml:space="preserve">
+    <value>Schedule game</value>
+  </data>
+  <data name="ScheduleTitle" xml:space="preserve">
+    <value>Schedule for</value>
+  </data>
   <data name="ManageTeams" xml:space="preserve">
     <value>Manage Teams</value>
   </data>

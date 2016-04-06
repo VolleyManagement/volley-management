@@ -18,6 +18,7 @@
     internal class TournamentRepository : ITournamentRepository
     {
         private readonly DbSet<TournamentEntity> _dalTournaments;
+        private readonly DbSet<TeamEntity> _dalTeams;
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly ISpecification<TournamentEntity> _dbStorageSpecification = new TournamentsStorageSpecification();
 
@@ -29,6 +30,7 @@
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalTournaments = _unitOfWork.Context.Tournaments;
+            _dalTeams = _unitOfWork.Context.Teams;
         }
 
         /// <summary>
@@ -37,39 +39,6 @@
         public IUnitOfWork UnitOfWork
         {
             get { return _unitOfWork; }
-        }
-
-        /// <summary>
-        /// Gets all tournaments.
-        /// </summary>
-        /// <returns>Collection of domain tournaments.</returns>
-        public IQueryable<Tournament> Find()
-        {
-            return _dalTournaments.Select(t => new Tournament
-            {
-                Id = t.Id,
-                Name = t.Name,
-                Description = t.Description,
-                RegulationsLink = t.RegulationsLink,
-                Scheme = (TournamentSchemeEnum)t.Scheme,
-                Season = (short)(ValidationConstants.Tournament.SCHEMA_STORAGE_OFFSET + t.Season),
-                GamesStart = t.GamesStart,
-                GamesEnd = t.GamesEnd,
-                ApplyingPeriodStart = t.ApplyingPeriodStart,
-                ApplyingPeriodEnd = t.ApplyingPeriodEnd,
-                TransferEnd = t.TransferEnd,
-                TransferStart = t.TransferStart
-            }).ToArray().AsQueryable();
-        }
-
-        /// <summary>
-        /// Gets specified collection of tournaments.
-        /// </summary>
-        /// <param name="predicate">Condition to find tournaments.</param>
-        /// <returns>Collection of domain tournaments.</returns>
-        public IQueryable<Tournament> FindWhere(Expression<Func<Tournament, bool>> predicate)
-        {
-            return Find().Where(predicate);
         }
 
         /// <summary>
@@ -133,6 +102,32 @@
                     groupDomain.DivisionId = divisionEntity.Id;
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds team to the tournament
+        /// </summary>
+        /// <param name="teamId">Team id to add</param>
+        /// <param name="tournamentId">Tournament id, where team is going to play</param>
+        public void AddTeamToTournament(int teamId, int tournamentId)
+        {
+            var tournamentEntity = _dalTournaments.Find(tournamentId);
+            var teamEntity = _dalTeams.Find(teamId);
+
+            tournamentEntity.Teams.Add(teamEntity);
+        }
+
+        /// <summary>
+        /// Removes team from the tournament
+        /// </summary>
+        /// <param name="teamId">Team to be removed id</param>
+        /// <param name="tournamentId">Tournament id from which remove team</param>
+        public void RemoveTeamFromTournament(int teamId, int tournamentId)
+        {
+            var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
+            var teamEntity = _unitOfWork.Context.Teams.Find(teamId);
+
+            tournamentEntity.Teams.Remove(teamEntity);
         }
     }
 }

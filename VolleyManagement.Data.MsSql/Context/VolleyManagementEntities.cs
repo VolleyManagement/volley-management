@@ -105,6 +105,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureUserRoleRelationship(modelBuilder);
             ConfigurePlayers(modelBuilder);
             ConfigureTeams(modelBuilder);
+            ConfigureTournamentTeamRelationship(modelBuilder);
             ConfigureContributors(modelBuilder);
             ConfigureContributorTeams(modelBuilder);
             ConfigureDivisions(modelBuilder);
@@ -412,6 +413,19 @@ namespace VolleyManagement.Data.MsSql.Context
                             m.MapRightKey(VolleyDatabaseMetadata.USER_TO_ROLE_FK);
                             m.ToTable(VolleyDatabaseMetadata.USERS_TO_ROLES_TABLE_NAME);
                         });
+        }
+
+        private static void ConfigureTournamentTeamRelationship(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TournamentEntity>()
+                .HasMany<TeamEntity>(t => t.Teams)
+                .WithMany(t => t.Tournaments)
+                .Map(tt =>
+                {
+                    tt.MapLeftKey(VolleyDatabaseMetadata.TEAM_TO_TOURNAMENT_FK);
+                    tt.MapRightKey(VolleyDatabaseMetadata.TOURNAMENT_TO_TEAM_FK);
+                    tt.ToTable(VolleyDatabaseMetadata.TOURNAMENTS_TO_TEAMS_TABLE_NAME);
+                });
         }
 
         private static void ConfigureDivisions(DbModelBuilder modelBuilder)

@@ -196,6 +196,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No games scheduled yet.
+        /// </summary>
+        public static string NoGamesScheduled {
+            get {
+                return ResourceManager.GetString("NoGamesScheduled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Applying period.
         /// </summary>
         public static string RegistrationFieldsTitle {
@@ -205,11 +214,47 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Round.
+        /// </summary>
+        public static string Round {
+            get {
+                return ResourceManager.GetString("Round", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule.
+        /// </summary>
+        public static string Schedule {
+            get {
+                return ResourceManager.GetString("Schedule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule game.
+        /// </summary>
+        public static string ScheduleGame {
+            get {
+                return ResourceManager.GetString("ScheduleGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule for.
+        /// </summary>
+        public static string ScheduleTitle {
+            get {
+                return ResourceManager.GetString("ScheduleTitle", resourceCulture);
             }
         }
         

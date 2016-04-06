@@ -7,8 +7,11 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using DivisionConstants = VolleyManagement.Domain.Constants.Division;
     using GroupConstants = VolleyManagement.Domain.Constants.Group;
@@ -45,6 +48,7 @@
         private readonly IQuery<Tournament, UniqueTournamentCriteria> _uniqueTournamentQuery;
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
+        private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTeamsQuery;
 
         #endregion
 
@@ -57,16 +61,19 @@
         /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
         /// <param name="getAllQuery"> Get All object query. </param>
         /// <param name="getByIdQuery">Get tournament by id query.</param>
+        /// <param name="getAllTeamsQuery">Get All Tournament Teams query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
-            IQuery<Tournament, FindByIdCriteria> getByIdQuery)
+            IQuery<Tournament, FindByIdCriteria> getByIdQuery,
+            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
+            _getAllTeamsQuery = getAllTeamsQuery;
         }
 
         #endregion
@@ -98,6 +105,16 @@
         public List<Tournament> GetFinished()
         {
             return GetFilteredTournaments(_finishedStates);
+        }
+
+        /// <summary>
+        /// Returns all teams for specific tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of Tournament for getting teams</param>
+        /// <returns>Tournament teams</returns>
+        public List<Team> GetAllTournamentTeams(int tournamentId)
+        {
+            return _getAllTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>
@@ -148,6 +165,51 @@
         public void Delete(int id)
         {
             _tournamentRepository.Remove(id);
+            _tournamentRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Adds teams to tournament
+        /// </summary>
+        /// <param name="teams">Teams for adding to tournament.</param>
+        /// <param name="tournamentId">Tournament to assign team.</param>
+        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId)
+        {
+            var allTeams = GetAllTournamentTeams(tournamentId);
+
+            foreach (var team in teams)
+            {
+                var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == team.Id);
+                if (tournamentTeam == null)
+                {
+                    _tournamentRepository.AddTeamToTournament(team.Id, tournamentId);
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        TournamentResources.TeamNameInTournamentNotUnique, tournamentTeam.Name);
+                }
+            }
+
+            _tournamentRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Deletes team from tournament
+        /// </summary>
+        /// <param name="teamId">Team to delete</param>
+        /// <param name="tournamentId">Tournament to un assign team</param>
+        public void DeleteTeamFromTournament(int teamId, int tournamentId)
+        {
+            try
+            {
+                _tournamentRepository.RemoveTeamFromTournament(teamId, tournamentId);
+            }
+            catch (ConcurrencyException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamInTournamentNotFound, ex);
+            }
+
             _tournamentRepository.UnitOfWork.Commit();
         }
 

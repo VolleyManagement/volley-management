@@ -214,6 +214,18 @@
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Returns list of all teams  
+        /// </summary>
+        /// <returns>Json list of teams</returns>
+        public JsonResult GetAllTeams()
+        {
+            var teams = this._teamService.Get()
+                                         .ToList()
+                                         .Select(t => TeamNameViewModel.Map(t));
+            return Json(teams, JsonRequestBehavior.AllowGet);
+        }
+
         private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)
         {
             //// TODO: manage case when player was deleted from the team

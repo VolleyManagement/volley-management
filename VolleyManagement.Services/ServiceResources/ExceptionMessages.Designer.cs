@@ -115,6 +115,15 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A team with specified inentifier was not found in this tournament.
+        /// </summary>
+        internal static string TeamInTournamentNotFound {
+            get {
+                return ResourceManager.GetString("TeamInTournamentNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A team with specified identifier was not found.
         /// </summary>
         internal static string TeamNotFound {

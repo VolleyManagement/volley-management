@@ -14,6 +14,7 @@ namespace VolleyManagement.Data.MsSql.Entities
         public TournamentEntity()
         {
             this.Divisions = new List<DivisionEntity>();
+            this.Teams = new List<TeamEntity>();
         }
 
         /// <summary>
@@ -85,5 +86,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Gets or sets game results of the tournament.
         /// </summary>
         public virtual ICollection<GameResultEntity> GameResults { get; set; }
+
+        /// <summary>
+        /// Gets or sets collection of tournaments teams
+        /// </summary>
+        public virtual List<TeamEntity> Teams { get; set; }
     }
 }

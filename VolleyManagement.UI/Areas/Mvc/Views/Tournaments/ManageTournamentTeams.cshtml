@@ -1,0 +1,40 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TournamentTeamsListViewModel
+@using VolleyManagement.UI.App_GlobalResources
+
+@{
+    ViewBag.Title = "ManageTournamentTeams";
+    Layout = "~/Areas/Mvc/Views/Shared/_MenuLayout.cshtml";
+}
+
+<h2>@TournamentViews.ManageTeams</h2>
+
+<div>
+    @Html.HiddenFor(model => model.TournamentId)
+    <button id="addTeamToTournamentButton">Add team to tournament</button>
+    <table id="tornamentRoster" class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.List.FirstOrDefault().Name)</th>
+            <th class="hidden"></th>
+        </tr>
+        @foreach (var item in Model.List)
+        {
+            <tr>
+                <td>@Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id }, null)</td>
+                <td><button class="deleteTeamFromTournamentButton" id="@item.Id">Delete</button></td>
+            </tr>
+        }
+    </table>
+    <button id="addTeamsButton">Add teams</button>
+
+    <script type="text/javascript">
+        (function () {
+            "use strict";
+
+            var currNs = VM.addNamespace("tournament.addTeams");
+            currNs.deleteConfirmMessage = "@TournamentViews.DeleteTournamentTeamConfirm";
+            currNs.teamIsNotSelectedMessage = "@TournamentViews.TournamentTeamIsNotSelected";
+
+        })();
+    </script>
+</div>
+@Scripts.Render("~/bundles/tournamentteamsscripts")

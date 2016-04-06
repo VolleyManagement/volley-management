@@ -192,4 +192,13 @@
   <data name="UpcomingTournamentsHeader" xml:space="preserve">
     <value>Upcoming</value>
   </data>
+  <data name="ManageTeams" xml:space="preserve">
+    <value>Manage Teams</value>
+  </data>
+  <data name="DeleteTournamentTeamConfirm" xml:space="preserve">
+    <value>Are you sure you want to delete this team?</value>
+  </data>
+  <data name="TournamentTeamIsNotSelected" xml:space="preserve">
+    <value>No team is selected</value>
+  </data>
 </root>

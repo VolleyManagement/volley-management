@@ -520,6 +520,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Team was deleted successfully.
+        /// </summary>
+        public static string TeamWasDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("TeamWasDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string TournamentDescription {

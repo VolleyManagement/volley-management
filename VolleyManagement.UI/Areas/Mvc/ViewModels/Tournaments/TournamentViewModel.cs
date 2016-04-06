@@ -1,14 +1,15 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Linq;
-    using System.Web.Script.Serialization;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web.Script.Serialization;
+using System.Web.WebPages.Html;
+using VolleyManagement.Domain;
+using VolleyManagement.Domain.TournamentsAggregate;
+using VolleyManagement.UI.App_GlobalResources;
+using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
 
     /// <summary>
     /// TournamentViewModel for Create and Edit actions
@@ -20,8 +21,8 @@
         /// </summary>
         public TournamentViewModel()
         {
-            this.Scheme = TournamentSchemeEnum.One;
             this.InitializeSeasonsList();
+            this.InitializeTournamentSchemeList();
             this.IsTransferEnabled = true;
             this.Divisions = new List<DivisionViewModel>() { new DivisionViewModel() };
         }
@@ -32,6 +33,13 @@
         /// <value>The list of seasons.</value>
         [ScriptIgnore]
         public Dictionary<short, string> SeasonsList { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of possible tournament schemes.
+        /// </summary>
+        /// <value>The list of tournament schemes.</value>
+        [ScriptIgnore]
+        public Dictionary<int, TournamentSchemeEnum> TournamentSchemeList { get; set; }
 
         /// <summary>
         /// Gets or sets the default season
@@ -229,6 +237,18 @@
                 }
 
                 this.SeasonsList.Add(year, str);
+            }
+        }
+
+        /// <summary>
+        /// Initializes schemes of tournament. Right now we don't want to have 2,5 variant
+        /// </summary>
+        private void InitializeTournamentSchemeList()
+        {
+            this.TournamentSchemeList = new Dictionary<int, TournamentSchemeEnum>();
+            for (int i=(int)TournamentSchemeEnum.One;i<(int)TournamentSchemeEnum.TwoAndHalf;++i)
+            {
+                this.TournamentSchemeList.Add(i, (TournamentSchemeEnum)i);
             }
         }
     }

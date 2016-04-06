@@ -97,15 +97,13 @@
     <Compile Include="Context\Migrations\201512171559020_AddGameResults.Designer.cs">
       <DependentUpon>201512171559020_AddGameResults.cs</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Context\Migrations\201604052021382_ModifyGameResult.cs" />
     <Compile Include="Context\Migrations\201604052021382_ModifyGameResult.Designer.cs">
       <DependentUpon>201604052021382_ModifyGameResult.cs</DependentUpon>
-=======
+    </Compile>
     <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.cs" />
     <Compile Include="Context\Migrations\201604021015192_TeamTournamentRelation.Designer.cs">
       <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>
->>>>>>> UI_for_schedule
     </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -204,6 +202,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201604052021382_ModifyGameResult.resx">
       <DependentUpon>201604052021382_ModifyGameResult.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201604021015192_TeamTournamentRelation.resx">
       <DependentUpon>201604021015192_TeamTournamentRelation.cs</DependentUpon>
     </EmbeddedResource>

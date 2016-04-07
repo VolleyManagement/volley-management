@@ -30,11 +30,11 @@
         /// <summary>
         /// Gets or sets id of tournament
         /// </summary>
-        public int tournamentId { get; set; }
+        public int TournamentId { get; set; }
 
         /// <summary>
         /// Gets or sets name of tournament
         /// </summary>
-        public string tournamentName { get; set; }
+        public string TournamentName { get; set; }
     }
 }

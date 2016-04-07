@@ -282,23 +282,18 @@
             }
 
             var scheduleViewModel = new ScheduleViewModel();
-            scheduleViewModel.tournamentId = tournament.Id;
-            scheduleViewModel.tournamentName = tournament.Name;
+            scheduleViewModel.TournamentId = tournament.Id;
+            scheduleViewModel.TournamentName = tournament.Name;
 
             int countTeams = _tournamentService.GetAllTournamentTeams(tournamentId).ToList().Count;
             switch (tournament.Scheme)
             {
                 case TournamentSchemeEnum.One:
-                    {
-                        scheduleViewModel.CountRound = Convert.ToByte(GetCountRoundByScheme1(countTeams));
-                        break;
-                    }
-
+                    scheduleViewModel.CountRound = GetCountRoundByScheme1(countTeams);
+                    break;
                 case TournamentSchemeEnum.Two:
-                    {
-                        scheduleViewModel.CountRound = Convert.ToByte(GetCountRoundByScheme2(countTeams));
-                        break;
-                    }
+                    scheduleViewModel.CountRound = GetCountRoundByScheme2(countTeams);
+                    break;
             }
 
             scheduleViewModel.Rounds = _gameService.GetTournamentResults(tournamentId).GroupBy(d => d.Round)
@@ -330,9 +325,9 @@
         /// </summary>
         /// <param name="countTeams">Number of teams.</param>
         /// <returns>Number of rounds.</returns>
-        private int GetCountRoundByScheme1(int countTeams)
+        private byte GetCountRoundByScheme1(int countTeams)
         {
-            return (countTeams % 2 == 0) && (countTeams != 0) ? countTeams - 1 : countTeams;
+            return Convert.ToByte((countTeams % 2 == 0) && (countTeams != 0) ? countTeams - 1 : countTeams);
         }
 
         /// <summary>
@@ -340,9 +335,10 @@
         /// </summary>
         /// <param name="countTeams">Number of teams.</param>
         /// <returns>Number of rounds.</returns>
-        private int GetCountRoundByScheme2(int countTeams)
+        private byte GetCountRoundByScheme2(int countTeams)
         {
-            return 2 * ((countTeams % 2 == 0) && (countTeams != 0) ? countTeams - 1 : countTeams);
+            return Convert.ToByte(2 * GetCountRoundByScheme1(countTeams));
         }
+
     }
 }

@@ -25,10 +25,9 @@
             {
                 HomeTeamId = 1,
                 AwayTeamId = 2,
-                Result = new Result
-                {
-                    SetsScore = new Score(3, 1),
-                    SetScores = new List<Score>()
+
+                SetsScore = new Score(3, 1),
+                SetScores = new List<Score>()
                     {
                         new Score(27, 25),
                         new Score(33, 31),
@@ -37,8 +36,7 @@
                         new Score()
                     },
 
-                    IsTechnicalDefeat = false
-                }
+                IsTechnicalDefeat = false
             };
         }
 
@@ -71,7 +69,7 @@
         /// <returns>Game result view model builder object</returns>
         public GameResultViewModelBuilder WithTechnicalDefeat(bool technicalDefeat)
         {
-            _gameResultsViewModel.Result.IsTechnicalDefeat = technicalDefeat;
+            _gameResultsViewModel.IsTechnicalDefeat = technicalDefeat;
             return this;
         }
 

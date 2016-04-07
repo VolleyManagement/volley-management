@@ -53,22 +53,22 @@
         /// <returns>True if given team have the same properties.</returns>
         public bool AreEqual(GameResultViewModel x, GameResultViewModel y)
         {
-            return x.Result.SetScores[0].Home == y.Result.SetScores[0].Home
-                && x.Result.SetScores[1].Home == y.Result.SetScores[1].Home
-                && x.Result.SetScores[2].Home == y.Result.SetScores[2].Home
-                && x.Result.SetScores[3].Home == y.Result.SetScores[3].Home
-                && x.Result.SetScores[4].Home == y.Result.SetScores[4].Home
-                && x.Result.SetScores[0].Away == y.Result.SetScores[0].Away
-                && x.Result.SetScores[1].Away == y.Result.SetScores[1].Away
-                && x.Result.SetScores[2].Away == y.Result.SetScores[2].Away
-                && x.Result.SetScores[3].Away == y.Result.SetScores[3].Away
-                && x.Result.SetScores[4].Away == y.Result.SetScores[4].Away
+            return x.SetScores[0].Home == y.SetScores[0].Home
+                && x.SetScores[1].Home == y.SetScores[1].Home
+                && x.SetScores[2].Home == y.SetScores[2].Home
+                && x.SetScores[3].Home == y.SetScores[3].Home
+                && x.SetScores[4].Home == y.SetScores[4].Home
+                && x.SetScores[0].Away == y.SetScores[0].Away
+                && x.SetScores[1].Away == y.SetScores[1].Away
+                && x.SetScores[2].Away == y.SetScores[2].Away
+                && x.SetScores[3].Away == y.SetScores[3].Away
+                && x.SetScores[4].Away == y.SetScores[4].Away
                 && x.AwayTeamId == y.AwayTeamId
-                && x.Result.SetsScore.Home == y.Result.SetsScore.Home
-                && x.Result.SetsScore.Away == y.Result.SetsScore.Away
+                && x.SetsScore.Home == y.SetsScore.Home
+                && x.SetsScore.Away == y.SetsScore.Away
                 && x.HomeTeamId == y.HomeTeamId
                 && x.Id == y.Id
-                && x.Result.IsTechnicalDefeat == y.Result.IsTechnicalDefeat
+                && x.IsTechnicalDefeat == y.IsTechnicalDefeat
                 && x.TournamentId == y.TournamentId;
         }
     }

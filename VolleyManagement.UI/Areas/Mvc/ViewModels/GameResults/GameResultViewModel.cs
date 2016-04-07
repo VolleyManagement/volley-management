@@ -110,7 +110,6 @@
                         new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score },
                         new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score }
                     }
-
             };
         }
 
@@ -126,7 +125,7 @@
                 TournamentId = this.TournamentId,
                 HomeTeamId = this.HomeTeamId,
                 AwayTeamId = this.AwayTeamId,
-                Round = Convert.ToByte( this.Round),
+                Round = Convert.ToByte(this.Round),
                 GameDate = this.GameDate,
                 Result = new Result
                 {

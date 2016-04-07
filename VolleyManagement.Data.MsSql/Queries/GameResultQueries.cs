@@ -57,10 +57,10 @@
         /// <returns>List of domain models of game result.</returns>
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
-           var gameResults = _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
-                    .Select(GetGameResultWithTeamNamesMapping());
-            
-            return gameResults.Any()? gameResults.ToList(): new List<GameResultDto>(); 
+            var gameResults = _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
+                     .Select(GetGameResultWithTeamNamesMapping());
+
+            return gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
         }
 
         #endregion

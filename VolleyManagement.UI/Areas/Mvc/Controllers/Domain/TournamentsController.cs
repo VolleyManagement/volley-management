@@ -301,15 +301,8 @@
                     }
             }
 
-            try
-            {
-                scheduleViewModel.Rounds = _gameService.GetTournamentResults(tournamentId).GroupBy(d => d.Round)
-                   .ToDictionary(d => d.Key, d => d.OrderBy(t => t.GameDate).ToList()); 
-            }
-            catch (NotSupportedException)
-            {
-                scheduleViewModel.Rounds = null; 
-            }
+            scheduleViewModel.Rounds = _gameService.GetTournamentResults(tournamentId).GroupBy(d => d.Round)
+               .ToDictionary(d => d.Key, d => d.OrderBy(t => t.GameDate).ToList());
 
             return View(scheduleViewModel);
         }
@@ -339,7 +332,7 @@
         /// <returns>Number of rounds.</returns>
         private int GetCountRoundByScheme1(int countTeams)
         {
-            return countTeams % 2 == 0 ? countTeams - 1 : countTeams;
+            return (countTeams % 2 == 0) && (countTeams != 0) ? countTeams - 1 : countTeams;
         }
 
         /// <summary>
@@ -349,7 +342,7 @@
         /// <returns>Number of rounds.</returns>
         private int GetCountRoundByScheme2(int countTeams)
         {
-            return 2 * (countTeams % 2 == 0 ? countTeams - 1 : countTeams);
+            return 2 * ((countTeams % 2 == 0) && (countTeams != 0) ? countTeams - 1 : countTeams);
         }
     }
 }

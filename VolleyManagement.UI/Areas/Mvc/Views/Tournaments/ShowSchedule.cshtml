@@ -11,15 +11,15 @@
 <hr>
 <fieldset>
 
+  
+
     @for (byte i = 1; i <= Model.CountRound; i++)
 {
         <text> @Resources.TournamentViews.Round @i </text>
     <table>
         <tbody>
 
-            @if (Model.Rounds != null)
-            {
-                if (Model.Rounds.ContainsKey(i))
+                @if (Model.Rounds.ContainsKey(i))
                 {
                     foreach (var item in Model.Rounds[i])
                     {
@@ -34,18 +34,11 @@
                     <tr>
                         <td> @Resources.TournamentViews.NoGamesScheduled</td>
                     </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td> @Resources.TournamentViews.NoGamesScheduled</td>
-                </tr>
-            }
-
+                }           
         </tbody>
 
     </table>
     <br>
+
 }
 </fieldset>

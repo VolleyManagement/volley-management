@@ -88,14 +88,8 @@
         /// <returns>List of game results of specified tournament.</returns>
         public List<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            try
-            {
-                return _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            }
-            catch (NotSupportedException)
-            {
-                throw new NotSupportedException("No Game found");
-            }
+
+            return _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>

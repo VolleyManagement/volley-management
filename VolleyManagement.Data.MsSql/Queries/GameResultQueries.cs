@@ -60,12 +60,7 @@
            var gameResults = _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
                     .Select(GetGameResultWithTeamNamesMapping());
             
-            if (gameResults.GetEnumerator().Current == null)
-            {
-                throw new NotSupportedException("Game results not found");
-            }
-
-            return gameResults.ToList(); 
+            return gameResults.Any()? gameResults.ToList(): new List<GameResultDto>(); 
         }
 
         #endregion

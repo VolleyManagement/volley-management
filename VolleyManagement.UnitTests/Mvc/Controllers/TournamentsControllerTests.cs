@@ -35,6 +35,7 @@
         private const string ROUTE_VALUES_KEY = "action";
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+        private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
 
         private IKernel _kernel;
         private TournamentsController _sut;
@@ -47,6 +48,7 @@
         {
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITournamentService>().ToConstant(this._tournamentServiceMock.Object);
+            this._kernel.Bind<IGameService>().ToConstant(this._gameServiceMock.Object);
             this._sut = this._kernel.Get<TournamentsController>();
         }
 

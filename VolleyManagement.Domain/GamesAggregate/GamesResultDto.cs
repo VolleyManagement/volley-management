@@ -110,6 +110,6 @@
         /// <summary>
         /// Gets or sets the round of the game in the tournament.
         /// </summary>
-        public int Round { get; set; }
+        public byte Round { get; set; }
     }
 }

@@ -4,12 +4,12 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System.Data.Entity.Migrations;
 
     /// <summary>
-    /// Adds round number and start time to game result
+    /// Added round number and start time
     /// </summary>
     public partial class ModifyGameResult : DbMigration
     {
         /// <summary>
-        /// Migrates up
+        /// Migrate up
         /// </summary>
         public override void Up()
         {
@@ -18,7 +18,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         }
 
         /// <summary>
-        /// Migrates down
+        /// Migrate down
         /// </summary>
         public override void Down()
         {

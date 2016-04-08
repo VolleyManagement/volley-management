@@ -9,29 +9,32 @@
     /// </summary>
     public class ScheduleViewModel
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScheduleViewModel"/> class
+        /// </summary>
         public ScheduleViewModel()
         {
-            Rounds = new Dictionary<int, List<GameResultDto>>();            
+            Rounds = new Dictionary<byte, List<GameResultDto>>();
         }
-
-        /// <summary>
-        /// Gets or sets id of tournament
-        /// </summary>
-        public int tournamentId { get; set; }
-
-        /// <summary>
-        /// Gets or sets name of tournament
-        /// </summary>
-        public string tournamentName { get; set; }
 
         /// <summary>
         /// Gets or sets number of rounds in tournament
         /// </summary>
-        public int CountRound { get; set; }
-        
+        public byte CountRound { get; set; }
+
         /// <summary>
         /// Gets or sets current rounds collection
         /// </summary>
-        public Dictionary<int, List<GameResultDto>> Rounds { get; set; }
+        public Dictionary<byte, List<GameResultDto>> Rounds { get; set; }
+
+        /// <summary>
+        /// Gets or sets id of tournament
+        /// </summary>
+        public int TournamentId { get; set; }
+
+        /// <summary>
+        /// Gets or sets name of tournament
+        /// </summary>
+        public string TournamentName { get; set; }
     }
 }

@@ -57,9 +57,10 @@
         /// <returns>List of domain models of game result.</returns>
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
-            return _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
-                .Select(GetGameResultWithTeamNamesMapping())
-                .ToList();
+            var gameResults = _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
+                     .Select(GetGameResultWithTeamNamesMapping());
+
+            return gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
         }
 
         #endregion
@@ -90,7 +91,7 @@
                 HomeSet5Score = gr.HomeSet5Score,
                 AwaySet5Score = gr.AwaySet5Score,
                 GameDate = gr.StartTime,
-                Round = Convert.ToInt32(gr.RoundNumber)
+                Round = gr.RoundNumber
             };
         }
 

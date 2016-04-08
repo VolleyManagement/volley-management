@@ -108,6 +108,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Domain\GameAggregate\ResultValidationTest.cs" />
+    <Compile Include="Domain\GameAggregate\SetScoresTestFixture.cs" />
+    <Compile Include="Domain\GameAggregate\SetsScoreBuilder.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />

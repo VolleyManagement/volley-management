@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Domain.GamesAggregate;
     using UI.Areas.Mvc.ViewModels.GameResults;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Builder for test MVC user view models

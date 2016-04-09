@@ -339,6 +339,5 @@
         {
             return Convert.ToByte(2 * GetCountRoundByScheme1(countTeams));
         }
-
     }
 }

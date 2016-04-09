@@ -108,6 +108,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Domain\TournamentsAggregate\DivisionTest.cs" />
+    <Compile Include="Domain\TournamentsAggregate\DivisionValidationTest.cs" />
+    <Compile Include="Domain\TournamentsAggregate\GroupTest.cs" />
+    <Compile Include="Domain\TournamentsAggregate\GroupValidationTest.cs" />
+    <Compile Include="Domain\TournamentsAggregate\TournamentBuilder.cs" />
+    <Compile Include="Domain\TournamentsAggregate\TournamentTest.cs" />
+    <Compile Include="Domain\TournamentsAggregate\TournamentValidationSpecificationTest.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />

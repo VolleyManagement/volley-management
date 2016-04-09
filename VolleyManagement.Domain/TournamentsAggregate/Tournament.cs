@@ -74,7 +74,7 @@
                 {
                     return TournamentStateEnum.Upcoming;
                 }
-                else if (GamesStart <= now && GamesEnd >= now)
+                else if (GamesEnd >= now)
                 {
                     return TournamentStateEnum.Current;
                 }

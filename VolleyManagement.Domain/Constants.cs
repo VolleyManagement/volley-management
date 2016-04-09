@@ -240,6 +240,10 @@
             public const int UNPLAYED_SET_HOME_SCORE = 0;
 
             public const int UNPLAYED_SET_AWAY_SCORE = 0;
+
+            public const byte EMPTY_SCORE_INITIAL_VALUE = 0;
+
+            public const bool EMPTY_TECHNICAL_DEFEAT_INITIAL_VALUE = false;
         }
     }
 }

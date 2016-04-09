@@ -15,6 +15,8 @@
 
         private const string DATE = "2016-04-03 10:00";
 
+        private const int MAX_SETS_COUNT = 5;
+
         private Game _game;
 
         #endregion
@@ -95,6 +97,33 @@
         public GameBuilder WithAwayTeamId(int id)
         {
             _game.AwayTeamId = id;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets empty null result in game.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithNullResult()
+        {
+            _game.Result = null;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets empty initialized result in game.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithInitializedResult()
+        {
+            _game.Result.SetsScore = new Score(0, 0);
+            _game.Result.IsTechnicalDefeat = false;
+            foreach (var score in _game.Result.SetScores)
+            {
+                score.Away = 0;
+                score.Home = 0;
+            }
+
             return this;
         }
 

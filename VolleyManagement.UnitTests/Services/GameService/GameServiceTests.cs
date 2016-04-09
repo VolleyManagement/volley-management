@@ -220,6 +220,27 @@
         }
 
         /// <summary>
+        /// Test for Create method.
+        /// Game object contains null result data.
+        /// Game object is created successfully.
+        /// Result of this game have to be initialized
+        /// </summary>
+        [TestMethod]
+        public void Create_GameWithNullResult_GameCreated()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithNullResult().Build();
+            var sut = _kernel.Get<GameService>();
+            var expectedGameToCreate = new GameBuilder().WithInitializedResult().Build();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyCreateGame(expectedGameToCreate, Times.Once());
+        }
+
+        /// <summary>
         /// Test for Get method. Existing game is requested. Game is returned.
         /// </summary>
         [TestMethod]

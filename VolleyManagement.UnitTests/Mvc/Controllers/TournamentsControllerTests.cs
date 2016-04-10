@@ -18,6 +18,8 @@
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TeamService;
     using VolleyManagement.UnitTests.Services.TournamentService;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -32,6 +34,8 @@
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string INDEX_ACTION_NAME = "Index";
+        private const string SHOW_SCHEDULE_ACTION_NAME = "ShowSchedule";
+        private const string SCHEDULE_GAME_ACTION_NAME = "ScheduleGame";
         private const string ROUTE_VALUES_KEY = "action";
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
@@ -156,6 +160,163 @@
 
             // Assert
             Assert.IsNotNull(modelResult.Message);
+        }
+
+        /// <summary>
+        /// Test for ScheduleGame method (GET action). Wrong tournament Id passed. View with error message is returned.
+        /// </summary>
+        [TestMethod]
+        public void ScheduleGameGetAction_NonExistentTournament_ErrorViewIsReturned()
+        {
+            // Arrange
+            SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+
+            // Act
+            var result = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsNull(result);
+        }
+
+        /// <summary>
+        /// Test for ScheduleGame method (GET action). Tournament with scheme 1 and no teams passed. View with error message is returned.
+        /// </summary>
+        [TestMethod]
+        public void ScheduleGameGetAction_TournamentWithoutTeams_TournamentScheme1_ErrorViewIsReturned()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID, TournamentSchemeEnum.One);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentTeams(new List<Team>(), TEST_TOURNAMENT_ID);
+
+            // Act
+            var result = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsNull(result);
+        }
+
+        /// <summary>
+        /// Test for ScheduleGame method (GET action). Tournament with scheme 2 and no teams passed. View with error message is returned.
+        /// </summary>
+        [TestMethod]
+        public void ScheduleGameGetAction_TournamentWithoutTeams_TournamentScheme2_ErrorViewIsReturned()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID, TournamentSchemeEnum.Two);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentTeams(new List<Team>(), TEST_TOURNAMENT_ID);
+
+            // Act
+            var result = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsNull(result);
+        }
+
+        /// <summary>
+        /// Test for ScheduleGame method (GET action). Tournament with scheme 1 and 3 teams passed. View with GameViewModel is returned.
+        /// </summary>
+        [TestMethod]
+        public void ScheduleGameGetAction_TournamentWithoutTeams_TournamentScheme1_GameViewModelIsReturned()
+        {
+            // Arrange
+            const int MIN_ROUND_NUMBER = 1;
+            const int TEST_ROUND_COUNT = 3;
+
+            var testTournament = MakeTestTournament(TEST_TOURNAMENT_ID, TournamentSchemeEnum.One);
+            SetupGet(TEST_TOURNAMENT_ID, testTournament);
+            SetupGetTournamentTeams(MakeTestTeams(), TEST_TOURNAMENT_ID);
+
+            var expected = new GameViewModel
+            {
+                TournamentId = TEST_TOURNAMENT_ID,
+                Teams = new SelectList(_tournamentServiceMock.Object.GetAllTournamentTeams(TEST_TOURNAMENT_ID)),
+                Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, TEST_ROUND_COUNT))
+            };
+
+            // Act
+            var actual = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsTrue(new GameViewModelComparer().AreEqual(actual, expected));
+        }
+
+        /// <summary>
+        /// Test for ScheduleGame method (POST action). Valid game is passed, no exception occures. Game is created & browser redirected to ShowSchedule action
+        /// </summary>
+        [TestMethod]
+        public void ScheduleGamePostAction_ValidGameViewModelNoException_GameIsCreated_RedirectToSchedule()
+        {
+            // Arrange
+            var testData = MakeTestGameViewModel();
+            var redirect = true;
+
+            // Act
+            var result = this._sut.ScheduleGame(testData, redirect) as RedirectToRouteResult;
+
+            // Assert
+            VerifyCreateGame(Times.Once());
+            VerifyRedirect(SHOW_SCHEDULE_ACTION_NAME, result);
+        }
+
+        /// <summary>
+        /// Test for ScheduleGame method (POST action). Valid game is passed, no exception occures. Game is created. Browser is not redirected
+        /// </summary>
+        [TestMethod]
+        public void ScheduleGamePostAction_ValidGameViewModelNoException_GameIsCreated_NoRedirect()
+        {
+            // Arrange
+            var testData = MakeTestGameViewModel();
+            var redirect = false;
+
+            // Act
+            var result = this._sut.ScheduleGame(testData, redirect) as RedirectToRouteResult;
+
+            // Assert
+            VerifyCreateGame(Times.Once());
+            VerifyRedirect(SCHEDULE_GAME_ACTION_NAME, result);
+        }
+
+        /// <summary>
+        /// Test for ScheduleGame method (POST action). Valid game is passed, but ArgumentException occures. Game is not created. Browser is redirected to ScheduleGame action
+        /// </summary>
+        [TestMethod]
+        public void ScheduleGamePostAction_ValidGameViewModel_ArgumentExceptionThrown_GameIsNotCreated_RedirectBack()
+        {
+            // Arrange
+            var testData = MakeTestGameViewModel();
+            var redirect = false;
+            this._gameServiceMock.Setup(ts => ts.Create(It.IsAny<Game>()))
+                            .Throws(new ArgumentException(string.Empty));
+            // Act
+            var result = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(testData, redirect));
+
+            // Assert
+            Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsNull(result);
+        }
+
+        /// <summary>
+        /// Test for ScheduleGame method (POST action). Invalid game view model is passed, HttpNotFound returned
+        /// </summary>
+        [TestMethod]
+        public void ScheduleGamePostAction_InvalidGameViewModel_HttpNotFoundIsReturned()
+        {
+            // Arrange
+            var testData = MakeTestGameViewModel();
+            var redirect = false;
+            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
+
+            // Act
+            var result = this._sut.ScheduleGame(testData, redirect);
+
+            // Assert
+            VerifyCreateGame(Times.Never());
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
 
         /// <summary>
@@ -495,9 +656,19 @@
             return new TournamentBuilder().WithId(tournamentId).Build();
         }
 
+        private Tournament MakeTestTournament(int tournamentId, TournamentSchemeEnum scheme) 
+        {
+            return new TournamentBuilder().WithId(tournamentId).WithScheme(scheme).Build();
+        }
+
         private TournamentViewModel MakeTestTournamentViewModel()
         {
             return new TournamentMvcViewModelBuilder().Build();
+        }
+
+        private GameViewModel MakeTestGameViewModel()
+        {
+            return new GameViewModelBuilder().Build();
         }
 
         private TournamentViewModel MakeTestTournamentViewModel(int tournamentId)
@@ -562,6 +733,11 @@
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)
         {
             Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
+        }
+
+        private void VerifyCreateGame(Times times) 
+        {
+            this._gameServiceMock.Verify(gs => gs.Create(It.IsAny<Game>()), times);
         }
     }
 }

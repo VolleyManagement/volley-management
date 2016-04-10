@@ -18,7 +18,7 @@
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of players.</returns>
+        /// <returns>A signed integer that indicates the relative values of teams lists.</returns>
         public int Compare(TournamentTeamsListViewModel x, TournamentTeamsListViewModel y)
         {
             return AreEqual(x, y) ? 0 : 1;
@@ -29,7 +29,7 @@
         /// </summary>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of players.</returns>
+        /// <returns>A signed integer that indicates the relative values of teams lists.</returns>
         public int Compare(object x, object y)
         {
             TournamentTeamsListViewModel firstTeamList = x as TournamentTeamsListViewModel;
@@ -60,7 +60,7 @@
             bool result = x.TournamentId == y.TournamentId;
             if (result && x.List != null)
             {
-                x.List.SequenceEqual(y.List, teamComparer);
+                result &= x.List.SequenceEqual(y.List, teamComparer);
             }
 
             return result;

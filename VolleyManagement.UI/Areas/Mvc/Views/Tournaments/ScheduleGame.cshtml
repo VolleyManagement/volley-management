@@ -52,12 +52,13 @@ else
         </div>
         //Html.TextBoxForShortDate(model => model.ApplyingPeriodStart, Model.ApplyingPeriodStart, new { @readonly = "readonly" })
 
+        @Html.Hidden("redirectBack");
         <div class="row">
             <div class="col-md-1">
-                <input type="submit" value=@Resources.TournamentViews.Create class="btn btn-default" />
+                <input id="create" class="btn btn-default" type="submit" value="@Resources.TournamentViews.Create" />
             </div>
-            <div class="col-md-1">
-                <div class="btn btn-default">@Resources.TournamentViews.CreateOneMore</div>
+            <div class="col-md-2">
+                <input id="createOneMore" class="btn btn-default" type="submit" value="@Resources.TournamentViews.CreateOneMore" />
             </div>
         </div>
     }
@@ -65,4 +66,17 @@ else
 
 <br/>
 @*@Html.ActionLink(@Resources.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })*@
-<a href='javascript:history.go(-1)'>@Resources.TournamentViews.Cancel</a>
+<a onclick="history.back()" href="#">@Resources.TournamentViews.Cancel</a>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#create').click(OnCreateClick);
+        $('#createOneMore').click(OnCreateOneMoreClick);
+    });
+    function OnCreateClick() {        
+        $('#redirectBack').val(true);
+    }
+    function OnCreateOneMoreClick() {
+        $('#redirectBack').val(false);
+    }
+</script>

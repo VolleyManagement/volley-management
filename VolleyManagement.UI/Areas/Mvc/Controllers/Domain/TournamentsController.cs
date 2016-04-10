@@ -333,14 +333,15 @@
         /// <param name="game">Submitted game to be scheduled</param>
         /// <returns>Appropriate view</returns>
         [HttpPost]
-        public ActionResult ScheduleGame(GameViewModel game)
+        public ActionResult ScheduleGame(GameViewModel game, bool redirectBack)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     _gameService.Create(game.ToDomain());
-                    return RedirectToAction("ShowSchedule", new { tournamentId = game.TournamentId });
+                    var action = redirectBack ? "ShowSchedule" : "ScheduleGame";
+                    return RedirectToAction(action, new { tournamentId = game.TournamentId });
                 }
             }
             catch (ArgumentException e)

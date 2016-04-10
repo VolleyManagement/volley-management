@@ -324,4 +324,16 @@
   <data name="TeamWasDeletedSuccessfully" xml:space="preserve">
     <value>Team was deleted successfully</value>
   </data>
+  <data name="AwayTeam" xml:space="preserve">
+    <value>Away team</value>
+  </data>
+  <data name="HomeTeam" xml:space="preserve">
+    <value>Home team</value>
+  </data>
+  <data name="Round" xml:space="preserve">
+    <value>Round</value>
+  </data>
+  <data name="GameDateTime" xml:space="preserve">
+    <value>Date and time</value>
+  </data>
 </root>

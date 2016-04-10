@@ -339,6 +339,7 @@
     <Content Include="Areas\Mvc\Views\GameResults\_CreateOrEdit.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\ManageTournamentTeams.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\ShowSchedule.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\ScheduleGame.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -399,6 +400,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TeamViews.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\TournamentController.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TournamentController.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_GlobalResources\TournamentViews.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -448,6 +454,7 @@
     <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\GameViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamDeleteFromTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamsAddToTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListViewModel.cs" />
@@ -564,6 +571,10 @@
     <EmbeddedResource Include="App_GlobalResources\GameResultViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameResultViews.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\TournamentController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TournamentController.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

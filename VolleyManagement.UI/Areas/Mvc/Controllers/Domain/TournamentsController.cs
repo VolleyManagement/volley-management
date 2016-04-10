@@ -11,8 +11,9 @@
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;    
 
     /// <summary>
     /// Defines TournamentsController
@@ -25,6 +26,7 @@
         private const int DAYS_FOR_GAMES_PERIOD = 120;
         private const int DAYS_FROM_GAMES_START_TO_TRANSFER_START = 1;
         private const int DAYS_FOR_TRANSFER_PERIOD = 21;
+        private const int MIN_ROUND_NUMBER = 1;
 
         /// <summary>
         /// Holds TournamentService instance
@@ -281,25 +283,73 @@
                 return HttpNotFound();
             }
 
-            var scheduleViewModel = new ScheduleViewModel();
-            scheduleViewModel.TournamentId = tournament.Id;
-            scheduleViewModel.TournamentName = tournament.Name;
-
-            int countTeams = _tournamentService.GetAllTournamentTeams(tournamentId).ToList().Count;
-            switch (tournament.Scheme)
+            var scheduleViewModel = new ScheduleViewModel
             {
-                case TournamentSchemeEnum.One:
-                    scheduleViewModel.CountRound = GetCountRoundByScheme1(countTeams);
-                    break;
-                case TournamentSchemeEnum.Two:
-                    scheduleViewModel.CountRound = GetCountRoundByScheme2(countTeams);
-                    break;
-            }
-
-            scheduleViewModel.Rounds = _gameService.GetTournamentResults(tournamentId).GroupBy(d => d.Round)
-               .ToDictionary(d => d.Key, d => d.OrderBy(t => t.GameDate).ToList());
+                TournamentId = tournament.Id,
+                TournamentName = tournament.Name,
+                CountRound = CountRound(tournament),
+                Rounds = _gameService.GetTournamentResults(tournamentId)
+                                     .GroupBy(d => d.Round)
+                                     .ToDictionary(d => d.Key, d => d.OrderBy(t => t.GameDate).ToList())
+            };
 
             return View(scheduleViewModel);
+        }
+
+        /// <summary>
+        /// Schedule game action (GET)
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>View to schedule a game in tournament</returns>
+        public ActionResult ScheduleGame(int tournamentId)
+        {
+            var tournament = _tournamentService.Get(tournamentId);
+
+            if (tournament == null)
+            {
+                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                return View();
+            }
+
+            if (CountRound(tournament) <= 0)
+            {
+                this.ModelState.AddModelError("LoadError", TournamentController.SchedulingError);
+                return View();
+            }
+
+            var scheduleGameViewModel = new GameViewModel
+            {
+                TournamentId = tournamentId,
+                Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, CountRound(tournament))),
+                Teams = new SelectList(_tournamentService.GetAllTournamentTeams(tournamentId), "Id", "Name")
+            };
+
+            return View(scheduleGameViewModel);
+        }
+
+        /// <summary>
+        /// Schedule game action (POST)
+        /// </summary>
+        /// <param name="game">Submitted game to be scheduled</param>
+        /// <returns>Appropriate view</returns>
+        [HttpPost]
+        public ActionResult ScheduleGame(GameViewModel game)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _gameService.Create(game.ToDomain());
+                    return RedirectToAction("ShowSchedule", new { tournamentId = game.TournamentId });
+                }
+            }
+            catch (ArgumentException e)
+            {
+                this.ModelState.AddModelError("ValidationError", e.Message);
+                return ScheduleGame(game.TournamentId);
+            }
+
+            return HttpNotFound();
         }
 
         /// <summary>
@@ -321,6 +371,29 @@
         }
 
         /// <summary>
+        /// Calculate number of rounds in tournament.
+        /// </summary>
+        /// <param name="tournament">Tournament to count rounds</param>
+        /// <returns>Count of rounds for specified tournament</returns>
+        private byte CountRound(Tournament tournament)
+        {
+            byte countRound = 0;
+            var countTeams = _tournamentService.GetAllTournamentTeams(tournament.Id).ToList().Count;
+
+            switch (tournament.Scheme)
+            {
+                case TournamentSchemeEnum.One:
+                    countRound = GetCountRoundByScheme1(countTeams);
+                    break;
+                case TournamentSchemeEnum.Two:
+                    countRound = GetCountRoundByScheme2(countTeams);
+                    break;
+            }
+
+            return countRound;
+        }
+
+        /// <summary>
         /// Calculate number of rounds in tournament by scheme 1.
         /// </summary>
         /// <param name="countTeams">Number of teams.</param>
@@ -339,6 +412,5 @@
         {
             return Convert.ToByte(2 * GetCountRoundByScheme1(countTeams));
         }
-
     }
 }

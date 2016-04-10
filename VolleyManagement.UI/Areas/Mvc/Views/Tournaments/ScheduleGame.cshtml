@@ -1,0 +1,68 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameViewModel
+
+@{
+    ViewBag.Title = @Resources.TournamentViews.ScheduleGameTitle;
+    Layout = "~/Areas/Mvc/Views/Shared/_MenuLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model == null)
+{
+    @Html.ValidationMessage("LoadError")
+}
+else
+{
+    using (Html.BeginForm())
+    {
+        <legend>@Resources.TournamentViews.ScheduleGameLegend</legend>
+        
+        @Html.ValidationMessage("ValidationError", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.TournamentId)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Round)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Round, Model.Rounds, new { @class = "form-control" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.HomeTeamId)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.HomeTeamId, Model.Teams, new { @class = "form-control" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AwayTeamId)
+        </div>
+        <div class="editor-field">
+            @{ 
+                var teamsWithFreeDay = Model.Teams.Concat(new SelectListItem[] { new SelectListItem { Value = "0", Text = @Resources.TournamentViews.FreeDay } }); 
+            }
+            @Html.DropDownListFor(model => model.AwayTeamId, teamsWithFreeDay, new { @class = "form-control" })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GameDate)
+        </div>
+        <div class="form-group editor-field">
+            @Html.EditorFor(model => model.GameDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.GameDate, "", new { @class = "text-danger" })
+        </div>
+        //Html.TextBoxForShortDate(model => model.ApplyingPeriodStart, Model.ApplyingPeriodStart, new { @readonly = "readonly" })
+
+        <div class="row">
+            <div class="col-md-1">
+                <input type="submit" value=@Resources.TournamentViews.Create class="btn btn-default" />
+            </div>
+            <div class="col-md-1">
+                <div class="btn btn-default">@Resources.TournamentViews.CreateOneMore</div>
+            </div>
+        </div>
+    }
+}
+
+<br/>
+@*@Html.ActionLink(@Resources.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })*@
+<a href='javascript:history.go(-1)'>@Resources.TournamentViews.Cancel</a>

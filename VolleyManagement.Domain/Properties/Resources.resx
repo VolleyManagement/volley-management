@@ -156,6 +156,9 @@
   <data name="LateRegistrationDates" xml:space="preserve">
     <value>Start of the applying period must be later than today</value>
   </data>
+  <data name="NoTeamsInGame" xml:space="preserve">
+    <value>No teams are specified for current game in round {0}</value>
+  </data>
   <data name="SameGameInRound" xml:space="preserve">
     <value>"Game between {0} and {1} has already been scheduled for round number {2}"</value>
   </data>

@@ -178,6 +178,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No teams are specified for current game in round {0}.
+        /// </summary>
+        public static string NoTeamsInGame {
+            get {
+                return ResourceManager.GetString("NoTeamsInGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;Game between {0} and {1} has already been scheduled for round number {2}&quot;.
         /// </summary>
         public static string SameGameInRound {

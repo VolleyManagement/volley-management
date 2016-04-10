@@ -226,7 +226,7 @@
 
             foreach (GameResultDto game in gamesInRound)
             {
-                 if (GameValidation.AreTheSameTeamsInGame(game, newGame))
+                 if (GameValidation.AreTheSameTeamsInGames(game, newGame))
                  {
                      throw new ArgumentException(
                         string.Format(
@@ -259,7 +259,7 @@
 
             foreach (GameResultDto game in games)
             {
-                if (GameValidation.AreTheSameTeamsInGame(game, newGame))
+                if (GameValidation.AreTheSameTeamsInGames(game, newGame))
                 {
                    if (tournament.Scheme == TournamentSchemeEnum.One)
                    {
@@ -271,12 +271,21 @@
                    }
                    else if (tournament.Scheme == TournamentSchemeEnum.Two)
                    {
+                       if (GameValidation.IsFreeDayGame(newGame))
+                       {
+                           throw new ArgumentException(
+                                   string.Format(
+                                   Resources.SameGameInTorunamentSchemaTwo,
+                                   newGame.HomeTeamName,
+                                   newGame.AwayTeamName));
+                       }
+
                        SwitchTeamsOrder(newGame); 
 
                        // check if reversed teams' game has already been added 
                        foreach (GameResultDto gameToCheck in games)
                        {
-                           if (GameValidation.AreTheSameTeamsInGame(gameToCheck, newGame))
+                           if (GameValidation.AreTheSameTeamsInGames(gameToCheck, newGame))
                            {
                                throw new ArgumentException(
                                    string.Format(
@@ -292,12 +301,28 @@
             }
         } 
 
+        /// <summary>
+        /// Validate free day game 
+        /// </summary>
+        /// <param name="game">Game where team has a free day</param>
+        private void ValidateFreeDayGame(GameResultDto game)
+        {
+            if (game.HomeTeamId == GameValidation.FREE_DAY_TEAM_ID && game.AwayTeamId == GameValidation.FREE_DAY_TEAM_ID)
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.NoTeamsInGame, game.Round));
+            }
+            else if (game.HomeTeamId == 0)
+            {
+                SwitchTeamsOrder(game); 
+            }
+        }
 
         private void ValidateGameDate(GameResultDto game)
         {
 
         }
-
 
         /// <summary>
         /// Switches order of teams in the game 

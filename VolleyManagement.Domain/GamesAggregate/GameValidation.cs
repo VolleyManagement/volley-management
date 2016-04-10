@@ -5,6 +5,8 @@
     /// </summary>
     public static class GameValidation
     {
+        public const int FREE_DAY_TEAM_ID = 0; 
+
         /// <summary>
         /// Determines whether the home team and the away team are the same.
         /// </summary>
@@ -22,7 +24,7 @@
         /// <param name="firstGame">First game in tournament</param>
         /// <param name="secondGame">Second game in tournament</param>
         /// <returns>True if gamse contain same home and away teams accordingly</returns>
-        public static bool AreTheSameTeamsInGame(GameResultDto firstGame, GameResultDto secondGame)
+        public static bool AreTheSameTeamsInGames(GameResultDto firstGame, GameResultDto secondGame)
         {
             return AreTheSameTeams(firstGame.AwayTeamId, secondGame.AwayTeamId)
                 && AreTheSameTeams(firstGame.HomeTeamId, secondGame.HomeTeamId);
@@ -40,6 +42,11 @@
                 || originalGame.HomeTeamId == newGame.AwayTeamId
                 || originalGame.AwayTeamId == newGame.HomeTeamId
                 || originalGame.AwayTeamId == newGame.AwayTeamId; 
+        }
+
+        public static bool IsFreeDayGame(GameResultDto game)
+        {
+            return game.HomeTeamId == FREE_DAY_TEAM_ID; 
         }
     }
 }

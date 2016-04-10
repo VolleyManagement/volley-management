@@ -760,6 +760,41 @@
         }
 
         /// <summary>
+        /// Test for Delete Tournament method.
+        [TestMethod]
+        public void Delete_TournamentExist_TournamentRemoved()
+        {
+            // Arrange
+            var sut = _kernel.Get<TournamentService>();
+
+            //Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            //Assert
+            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// GetActual method test. The method should invoke Find() method of ITournamentRepository
+        /// </summary>
+        [TestMethod]
+        public void GetFinished_FinishTournamentsExist_FinishedTournamentsReturned()
+        {
+            // Arrange
+            var sut = _kernel.Get<TournamentService>();
+            var testData = _testFixture.WithFinishedTournaments().Build();
+            MockGetAllTournamentsQuery(testData);
+
+            var expected = new TournamentServiceTestFixture().WithFinishedTournaments().Build();
+
+            // Act
+            var actual = sut.GetFinished().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
         /// GetActual method test. The method should invoke Find() method of ITournamentRepository
         /// </summary>
         public void GetActual_ActualTournamentsRequest_FindCalled()
@@ -881,6 +916,12 @@
         private void VerifyCreateTournament(Tournament tournament, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyDeleteTournament(int tournamentId, Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.Remove(tournamentId), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 

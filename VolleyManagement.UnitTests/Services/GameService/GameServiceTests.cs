@@ -209,7 +209,7 @@
         public void Create_GameSetScoresUnordered_ExceptionThrown()
         {
             // Arrange
-            var newGame = new GameBuilder().WithSetScoresUnordered().Build();
+            var newGame = new GameBuilder().WithSetScoresUnorderedForHomeTeam().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
@@ -217,6 +217,130 @@
 
             // Assert
             VerifyCreateGame(newGame, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create method. Set scores are not listed in the correct order. Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameSetScoresUnorderedForAwayTeam_ExceptionThrown()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithSetScoresUnorderedForAwayTeam().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+        }
+
+        /// <summary>
+        /// Test for Create method. Game object contains valid data for technical win of away team. Game is created successfully.
+        /// </summary>
+        [TestMethod]
+        public void Create_GameHomeTeamTechnicalWinValidData_GameCreated()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyCreateGame(newGame, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create method. Game object contains valid data for technical win of away team. Game is created successfully.
+        /// </summary>
+        [TestMethod]
+        public void Create_GameAwayTeamTechnicalWinValidData_GameCreated()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresAwayTeamWin().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyCreateGame(newGame, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create method. Sets score are invalid. Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_TechnicalDefeatInvalidSetsScore_ExceptionThrown()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetsScore().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+        }
+
+        /// <summary>
+        /// Test for Create method. Set scores are invalid. Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameTechnicalDefeatInvalidSetScores_ExceptionThrown()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetScores().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+        }
+
+        /// <summary>
+        /// Test for Create method. Set scores are set to optional. Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameTechnicalDefeatOptionalSetScore_ExceptionThrown()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithTechnicalDefeatValidOptional().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+        }
+
+        /// <summary>
+        /// Test for Create method. Set scores are null. Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameSetScoresNull_ExceptionThrown()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithSetScoresNull().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+        }
+
+        /// <summary>
+        /// Test for Create method. Set scores are invalid. Exception is thrown during creation.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameSetsScoreInvalid_ExceptionThrown()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithOrdinarySetsScoreInvalid().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
         }
 
         /// <summary>

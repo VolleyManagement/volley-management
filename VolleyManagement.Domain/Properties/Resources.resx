@@ -156,6 +156,18 @@
   <data name="LateRegistrationDates" xml:space="preserve">
     <value>Start of the applying period must be later than today</value>
   </data>
+  <data name="SameGameInRound" xml:space="preserve">
+    <value>"Game between {0} and {1} has already been scheduled for round number {2}"</value>
+  </data>
+  <data name="SameGameInTorunamentSchemaOne" xml:space="preserve">
+    <value>Game between {0} and {1} has already been scheduled in another round. Same teams cannot play twice in one round tournament</value>
+  </data>
+  <data name="SameGameInTorunamentSchemaTwo" xml:space="preserve">
+    <value>Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round torunament</value>
+  </data>
+  <data name="SameTeamInRound" xml:space="preserve">
+    <value>Team {0} or {1} has game scheduled already in this round</value>
+  </data>
   <data name="TeamNameInTournamentNotUnique" xml:space="preserve">
     <value>Team with such name already exists in tournament</value>
   </data>
@@ -172,25 +184,25 @@
     <value>Tournament name should be unique</value>
   </data>
   <data name="ValidationDivisionName" xml:space="preserve">
-    <value>Пожалуйста, введите название дивизиона правильно</value>
+    <value>Please, enter the valid name of the division</value>
   </data>
   <data name="ValidationGroupName" xml:space="preserve">
-    <value>Пожалуйста, введите название группы правильно</value>
+    <value>Please, enter the valid name of the group</value>
   </data>
   <data name="ValidationPlayerBirthYear" xml:space="preserve">
-    <value>Пожалуйста, введите дату рождения верно</value>
+    <value>Please enter the valid birth date</value>
   </data>
   <data name="ValidationPlayerFirstName" xml:space="preserve">
-    <value>Пожалуйста, введите имя корректно</value>
+    <value>Please, enter the valid first name</value>
   </data>
   <data name="ValidationPlayerHeight" xml:space="preserve">
-    <value>Пожалуйста, введите рост корректно</value>
+    <value>Please, enter the valid height</value>
   </data>
   <data name="ValidationPlayerLastName" xml:space="preserve">
-    <value>Пожалуйста, введите фамилию корректно</value>
+    <value>Please, enter the valid last name</value>
   </data>
   <data name="ValidationPlayerWeight" xml:space="preserve">
-    <value>Пожалуйта, введите вес корректно</value>
+    <value>Please, enter the valid weight</value>
   </data>
   <data name="WrongRegistrationDatesPeriod" xml:space="preserve">
     <value>Start of the applying period must be earlier than its end</value>

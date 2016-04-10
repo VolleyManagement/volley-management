@@ -11,6 +11,7 @@
     using VolleyManagement.Data.Queries.GameResult;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.TournamentsAggregate; 
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 
     /// <summary>
@@ -211,6 +212,107 @@
             {
                 throw new ArgumentException(Resources.GameResultSetScoresNotOrdered);
             }
+        }
+
+        private void ValidateGamesInTournamet(Tournament tournament)
+        {
+
+        }
+
+        private void ValidateGamesInRound(int tourunmentId, GameResultDto newGame)
+        {
+            List<GameResultDto> gamesInRound = this.GetTournamentResults(tourunmentId)
+                .Where(gr => gr.Round == newGame.Round).ToList(); 
+
+            foreach (GameResultDto game in gamesInRound)
+            {
+                 if (GameValidation.AreTheSameTeamsInGame(game, newGame))
+                 {
+                     throw new ArgumentException(
+                        string.Format(
+                        Resources.SameGameInRound,
+                        game.HomeTeamName,
+                        game.AwayTeamName,
+                        game.Round.ToString()));
+                 }
+
+                if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
+                {
+                    throw new ArgumentException(
+                      string.Format(
+                      Resources.SameTeamInRound,
+                       newGame.HomeTeamName,
+                       newGame.AwayTeamName));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Validates that same game is not added to one torunament in accordance with schema 
+        /// </summary>
+        /// <param name="tournament">Current tournament</param>
+        /// <param name="newGame">Gameto create </param>
+        private void ValidateGamesInTorunament(Tournament tournament, GameResultDto newGame)
+        {
+            List<GameResultDto> games = this.GetTournamentResults(tournament.Id)
+                .Where(gr => gr.Round != newGame.Round).ToList(); 
+
+            foreach (GameResultDto game in games)
+            {
+                if (GameValidation.AreTheSameTeamsInGame(game, newGame))
+                {
+                   if (tournament.Scheme == TournamentSchemeEnum.One)
+                   {
+                       throw new ArgumentException(
+                        string.Format(
+                        Resources.SameGameInTorunamentSchemaOne,
+                        game.HomeTeamName,
+                        game.AwayTeamName)); 
+                   }
+                   else if (tournament.Scheme == TournamentSchemeEnum.Two)
+                   {
+                       SwitchTeamsOrder(newGame); 
+
+                       // check if reversed teams' game has already been added 
+                       foreach (GameResultDto gameToCheck in games)
+                       {
+                           if (GameValidation.AreTheSameTeamsInGame(gameToCheck, newGame))
+                           {
+                               throw new ArgumentException(
+                                   string.Format(
+                                   Resources.SameGameInTorunamentSchemaTwo,
+                                   newGame.HomeTeamName, 
+                                   newGame.AwayTeamName));
+                           }
+                       }
+                       // No game with reversed teams has been added, game is valid then 
+                       break; 
+                   }
+                } 
+            }
+        } 
+
+
+        private void ValidateGameDate(GameResultDto game)
+        {
+
+        }
+
+
+        /// <summary>
+        /// Switches order of teams in the game 
+        /// </summary>
+        /// <param name="game">Game inwhich team order should be switched</param>
+        private void SwitchTeamsOrder(GameResultDto game)
+        {
+            int tempHomeId = game.HomeTeamId;
+            string tempHomeName = game.HomeTeamName;
+
+            game.HomeTeamId = game.AwayTeamId;
+            game.HomeTeamName = game.AwayTeamName;
+
+            game.AwayTeamId = tempHomeId;
+            game.AwayTeamName = tempHomeName;
         }
 
         #endregion

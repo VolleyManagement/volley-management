@@ -178,6 +178,42 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;Game between {0} and {1} has already been scheduled for round number {2}&quot;.
+        /// </summary>
+        public static string SameGameInRound {
+            get {
+                return ResourceManager.GetString("SameGameInRound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled in another round. Same teams cannot play twice in one round tournament.
+        /// </summary>
+        public static string SameGameInTorunamentSchemaOne {
+            get {
+                return ResourceManager.GetString("SameGameInTorunamentSchemaOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round torunament.
+        /// </summary>
+        public static string SameGameInTorunamentSchemaTwo {
+            get {
+                return ResourceManager.GetString("SameGameInTorunamentSchemaTwo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Team {0} or {1} has game scheduled already in this round.
+        /// </summary>
+        public static string SameTeamInRound {
+            get {
+                return ResourceManager.GetString("SameTeamInRound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team with such name already exists in tournament.
         /// </summary>
         public static string TeamNameInTournamentNotUnique {
@@ -223,7 +259,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, введите название дивизиона правильно.
+        ///   Looks up a localized string similar to Please, enter the valid name of the division.
         /// </summary>
         public static string ValidationDivisionName {
             get {
@@ -232,7 +268,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, введите название группы правильно.
+        ///   Looks up a localized string similar to Please, enter the valid name of the group.
         /// </summary>
         public static string ValidationGroupName {
             get {
@@ -241,7 +277,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, введите дату рождения верно.
+        ///   Looks up a localized string similar to Please enter the valid birth date.
         /// </summary>
         public static string ValidationPlayerBirthYear {
             get {
@@ -250,7 +286,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, введите имя корректно.
+        ///   Looks up a localized string similar to Please, enter the valid first name.
         /// </summary>
         public static string ValidationPlayerFirstName {
             get {
@@ -259,7 +295,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, введите рост корректно.
+        ///   Looks up a localized string similar to Please, enter the valid height.
         /// </summary>
         public static string ValidationPlayerHeight {
             get {
@@ -268,7 +304,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, введите фамилию корректно.
+        ///   Looks up a localized string similar to Please, enter the valid last name.
         /// </summary>
         public static string ValidationPlayerLastName {
             get {
@@ -277,7 +313,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пожалуйта, введите вес корректно.
+        ///   Looks up a localized string similar to Please, enter the valid weight.
         /// </summary>
         public static string ValidationPlayerWeight {
             get {

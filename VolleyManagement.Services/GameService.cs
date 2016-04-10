@@ -128,7 +128,8 @@
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
             if (game.Result == null)
             {
-                InitializeEmptyResult(game);
+                game.Result = new Result();
+                game.Result.InitializeEmptyResult();
                 return;
             }
 
@@ -136,22 +137,6 @@
             ValidateSetsScoreMatchesSetScores(game.Result.SetsScore, game.Result.SetScores);
             ValidateSetScoresValues(game.Result.SetScores, game.Result.IsTechnicalDefeat);
             ValidateSetScoresOrder(game.Result.SetScores);
-        }
-
-        private void InitializeEmptyResult(Game game)
-        {
-            game.Result = new Result();
-            game.Result.SetsScore = new Score(
-                GameResultConstants.EMPTY_SCORE_INITIAL_VALUE,
-                GameResultConstants.EMPTY_SCORE_INITIAL_VALUE);
-            game.Result.IsTechnicalDefeat = GameResultConstants.EMPTY_TECHNICAL_DEFEAT_INITIAL_VALUE;
-            for (int i = 0; i < GameResultConstants.MAX_SETS_COUNT; i++)
-            {
-                game.Result.SetScores.Add(
-                    new Score(
-                        GameResultConstants.EMPTY_SCORE_INITIAL_VALUE,
-                        GameResultConstants.EMPTY_SCORE_INITIAL_VALUE));
-            }
         }
 
         private void ValidateTeams(int homeTeamId, int awayTeamId)

@@ -114,7 +114,7 @@
         /// Sets empty initialized result in game.
         /// </summary>
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
-        public GameBuilder WithInitializedResult()
+        public GameBuilder WithDefaultResult()
         {
             _game.Result.SetsScore = new Score(0, 0);
             _game.Result.IsTechnicalDefeat = false;

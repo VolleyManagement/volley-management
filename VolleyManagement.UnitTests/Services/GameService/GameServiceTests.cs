@@ -226,12 +226,12 @@
         /// Result of this game have to be initialized
         /// </summary>
         [TestMethod]
-        public void Create_GameWithNullResult_GameCreated()
+        public void Create_GameWithNoResult_GameCreatedWithDefaultResult()
         {
             // Arrange
             var newGame = new GameBuilder().WithNullResult().Build();
             var sut = _kernel.Get<GameService>();
-            var expectedGameToCreate = new GameBuilder().WithInitializedResult().Build();
+            var expectedGameToCreate = new GameBuilder().WithDefaultResult().Build();
 
             // Act
             sut.Create(newGame);

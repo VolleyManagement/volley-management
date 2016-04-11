@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
+    using System;
     using System.Collections.Generic;
-    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
@@ -14,7 +14,7 @@
         /// </summary>
         public ScheduleViewModel()
         {
-            Rounds = new Dictionary<byte, List<GameResultDto>>();
+            Rounds = new Dictionary<byte, List<GameResultViewModel>>();
         }
 
         /// <summary>
@@ -25,7 +25,7 @@
         /// <summary>
         /// Gets or sets current rounds collection
         /// </summary>
-        public Dictionary<byte, List<GameResultDto>> Rounds { get; set; }
+        public Dictionary<byte, List<GameResultViewModel>> Rounds { get; set; }
 
         /// <summary>
         /// Gets or sets id of tournament

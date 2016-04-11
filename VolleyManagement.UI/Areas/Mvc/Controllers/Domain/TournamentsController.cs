@@ -274,23 +274,26 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>View for view model of the schedule with specified identifier.</returns>    
+   
         public ActionResult ShowSchedule(int tournamentId)
         {
             var tournament = _tournamentService.Get(tournamentId);
 
             if (tournament == null)
             {
-                return HttpNotFound();
+                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                return View();
             }
 
-            var scheduleViewModel = new ScheduleViewModel
+            var scheduleViewModel = new ScheduleViewModel 
             {
                 TournamentId = tournament.Id,
                 TournamentName = tournament.Name,
                 CountRound = CountRound(tournament),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                                      .GroupBy(d => d.Round)
-                                     .ToDictionary(d => d.Key, d => d.OrderBy(t => t.GameDate).ToList())
+                                     .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)
+                                     .Select(x => GameResultViewModel.Map(x)).ToList())
             };
 
             return View(scheduleViewModel);

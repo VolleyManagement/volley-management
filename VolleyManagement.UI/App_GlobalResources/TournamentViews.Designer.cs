@@ -340,6 +340,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Day off.
+        /// </summary>
+        public static string TeamDayOff {
+            get {
+                return ResourceManager.GetString("TeamDayOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tournament details.
         /// </summary>
         public static string TournamentDetailsTitle {

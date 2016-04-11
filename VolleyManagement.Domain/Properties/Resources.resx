@@ -160,13 +160,13 @@
     <value>No teams are specified for current game in round {0}</value>
   </data>
   <data name="SameGameInRound" xml:space="preserve">
-    <value>"Game between {0} and {1} has already been scheduled for round number {2}"</value>
+    <value>Game between {0} and {1} has already been scheduled for round number {2}</value>
   </data>
-  <data name="SameGameInTorunamentSchemaOne" xml:space="preserve">
+  <data name="SameGameInTournamentSchemeOne" xml:space="preserve">
     <value>Game between {0} and {1} has already been scheduled in another round. Same teams cannot play twice in one round tournament</value>
   </data>
-  <data name="SameGameInTorunamentSchemaTwo" xml:space="preserve">
-    <value>Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round torunament</value>
+  <data name="SameGameInTournamentSchemeTwo" xml:space="preserve">
+    <value>Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round tournament</value>
   </data>
   <data name="SameTeamInRound" xml:space="preserve">
     <value>Team {0} or {1} has game scheduled already in this round</value>
@@ -212,6 +212,9 @@
   </data>
   <data name="WrongRegistrationGames" xml:space="preserve">
     <value>Games should start after the end of the applying period</value>
+  </data>
+  <data name="WrongRoundDate" xml:space="preserve">
+    <value>Start of the round should not be earlier than the start of the tournament or later than the end of the tournament</value>
   </data>
   <data name="WrongStartTournamentDates" xml:space="preserve">
     <value>Start of the tournament must be eariler than its end</value>

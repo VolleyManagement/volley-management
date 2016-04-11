@@ -187,7 +187,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Game between {0} and {1} has already been scheduled for round number {2}&quot;.
+        ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled for round number {2}.
         /// </summary>
         public static string SameGameInRound {
             get {
@@ -198,18 +198,18 @@ namespace VolleyManagement.Domain.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled in another round. Same teams cannot play twice in one round tournament.
         /// </summary>
-        public static string SameGameInTorunamentSchemaOne {
+        public static string SameGameInTournamentSchemeOne {
             get {
-                return ResourceManager.GetString("SameGameInTorunamentSchemaOne", resourceCulture);
+                return ResourceManager.GetString("SameGameInTournamentSchemeOne", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round torunament.
+        ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round tournament.
         /// </summary>
-        public static string SameGameInTorunamentSchemaTwo {
+        public static string SameGameInTournamentSchemeTwo {
             get {
-                return ResourceManager.GetString("SameGameInTorunamentSchemaTwo", resourceCulture);
+                return ResourceManager.GetString("SameGameInTournamentSchemeTwo", resourceCulture);
             }
         }
         
@@ -345,6 +345,15 @@ namespace VolleyManagement.Domain.Properties {
         public static string WrongRegistrationGames {
             get {
                 return ResourceManager.GetString("WrongRegistrationGames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start of the round should not be earlier than the start of the tournament or later than the end of the tournament.
+        /// </summary>
+        public static string WrongRoundDate {
+            get {
+                return ResourceManager.GetString("WrongRoundDate", resourceCulture);
             }
         }
         

@@ -29,6 +29,7 @@
 
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<Tournament, FindByIdCriteria> _tournamentByIdQuery; 
 
         #endregion
 
@@ -44,11 +45,13 @@
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
-            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
+            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
+            IQuery<Tournament, FindByIdCriteria> getTournamentByIdQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
+            _tournamentByIdQuery = getTournamentByIdQuery; 
         }
 
         #endregion
@@ -127,6 +130,12 @@
         private void ValidateGame(Game game)
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
+
+            // Validate teams in rounds 
+            ValidateGameInTorunament(game);
+
+            // Validate result 
+
             ValidateSetsScore(game.Result.SetsScore, game.Result.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(game.Result.SetsScore, game.Result.SetScores);
             ValidateSetScoresValues(game.Result.SetScores, game.Result.IsTechnicalDefeat);
@@ -214,19 +223,32 @@
             }
         }
 
-        private void ValidateGamesInTournamet(Tournament tournament)
+        private void ValidateGameInTorunament(Game game)
         {
+            Tournament tournament = _tournamentByIdQuery
+                .Execute(new FindByIdCriteria { Id = game.TournamentId });
 
+            ValidateFreeDayGame(game);
+            ValidateGameDate(tournament, game);
+            ValidateGamesInRound(tournament.Id, game);             
+            if (tournament.Scheme == TournamentSchemeEnum.One)
+            {
+                ValidateGamesInTournamentSchemeOne(tournament.Id, game);
+            }
+            else if (tournament.Scheme == TournamentSchemeEnum.Two)
+            {
+                ValidateGamesInTournamentSchemeTwo(tournament.Id, game); 
+            }
         }
 
-        private void ValidateGamesInRound(int tourunmentId, GameResultDto newGame)
+        private void ValidateGamesInRound(int tourunmentId, Game newGame)
         {
             List<GameResultDto> gamesInRound = this.GetTournamentResults(tourunmentId)
-                .Where(gr => gr.Round == newGame.Round).ToList(); 
+                .Where(gr => gr.Round == newGame.Round).ToList();
 
             foreach (GameResultDto game in gamesInRound)
             {
-                 if (GameValidation.AreTheSameTeamsInGames(game, newGame))
+                 if (GameValidation.AreDuplicateTeamsInGames(game, newGame))
                  {
                      throw new ArgumentException(
                         string.Format(
@@ -241,105 +263,106 @@
                     throw new ArgumentException(
                       string.Format(
                       Resources.SameTeamInRound,
-                       newGame.HomeTeamName,
-                       newGame.AwayTeamName));
+                       game.HomeTeamName,
+                       game.AwayTeamName));
                 }
             }
         }
 
-        /// <summary>
-        /// Validates that same game is not added to one torunament in accordance with schema 
-        /// </summary>
-        /// <param name="tournament">Current tournament</param>
-        /// <param name="newGame">Gameto create </param>
-        private void ValidateGamesInTorunament(Tournament tournament, GameResultDto newGame)
+        private void ValidateGamesInTournamentSchemeTwo(int tournamentId, Game newGame)
         {
-            List<GameResultDto> games = this.GetTournamentResults(tournament.Id)
-                .Where(gr => gr.Round != newGame.Round).ToList(); 
+            var games = this.GetTournamentResults(tournamentId)
+                .Where(gr => gr.Round != newGame.Round)
+                .ToList();
 
-            foreach (GameResultDto game in games)
+            var duplicates = games
+                .Where(x => GameValidation.AreDuplicateTeamsInGames(x, newGame))
+                .ToList(); 
+
+            if (GameValidation.IsFreeDayGame(newGame))
             {
-                if (GameValidation.AreTheSameTeamsInGames(game, newGame))
+                if (duplicates.Count == GameValidation.MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO)
                 {
-                   if (tournament.Scheme == TournamentSchemeEnum.One)
-                   {
-                       throw new ArgumentException(
+                    throw new ArgumentException(
                         string.Format(
-                        Resources.SameGameInTorunamentSchemaOne,
-                        game.HomeTeamName,
-                        game.AwayTeamName)); 
-                   }
-                   else if (tournament.Scheme == TournamentSchemeEnum.Two)
-                   {
-                       if (GameValidation.IsFreeDayGame(newGame))
-                       {
-                           throw new ArgumentException(
-                                   string.Format(
-                                   Resources.SameGameInTorunamentSchemaTwo,
-                                   newGame.HomeTeamName,
-                                   newGame.AwayTeamName));
-                       }
-
-                       SwitchTeamsOrder(newGame); 
-
-                       // check if reversed teams' game has already been added 
-                       foreach (GameResultDto gameToCheck in games)
-                       {
-                           if (GameValidation.AreTheSameTeamsInGames(gameToCheck, newGame))
-                           {
-                               throw new ArgumentException(
-                                   string.Format(
-                                   Resources.SameGameInTorunamentSchemaTwo,
-                                   newGame.HomeTeamName, 
-                                   newGame.AwayTeamName));
-                           }
-                       }
-                       // No game with reversed teams has been added, game is valid then 
-                       break; 
-                   }
-                } 
+                        Resources.SameGameInTournamentSchemeTwo,
+                        duplicates.First().HomeTeamName,
+                        duplicates.First().AwayTeamName));
+                }
             }
-        } 
+            else
+            {
+                if (duplicates.Count > 0)
+                {
+                    SwitchTeamsOrder(newGame);
 
-        /// <summary>
-        /// Validate free day game 
-        /// </summary>
-        /// <param name="game">Game where team has a free day</param>
-        private void ValidateFreeDayGame(GameResultDto game)
+                    int switchedDuplicatesCount = games
+                        .Where(x => GameValidation.AreDuplicateTeamsInGames(x, newGame))
+                        .Count(); 
+
+                    if (switchedDuplicatesCount > 0)
+                    {
+                        throw new ArgumentException(
+                        string.Format(
+                        Resources.SameGameInTournamentSchemeTwo,
+                        duplicates.First().HomeTeamName,
+                        duplicates.First().AwayTeamName));
+                    }
+                }
+            }
+        }
+
+        private void ValidateGamesInTournamentSchemeOne(int tournamentId, Game newGame)
         {
-            if (game.HomeTeamId == GameValidation.FREE_DAY_TEAM_ID && game.AwayTeamId == GameValidation.FREE_DAY_TEAM_ID)
+            var queryGames = this.GetTournamentResults(tournamentId);
+
+            List<GameResultDto> games = queryGames == null
+                ? new List<GameResultDto>() : queryGames.ToList();
+
+            var duplicates = games
+                .Where(x => GameValidation.AreDuplicateTeamsInGames(x, newGame))
+                .ToList(); 
+
+            if (duplicates.Count > 0)
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.SameGameInTournamentSchemeOne,
+                    duplicates.First().HomeTeamName,
+                    duplicates.First().AwayTeamName));
+            }
+        }
+
+        private void ValidateFreeDayGame(Game game)
+        {
+            if (GameValidation.IsFreeDayTeam(game.HomeTeamId) 
+                && GameValidation.IsFreeDayTeam(game.AwayTeamId))
             {
                 throw new ArgumentException(
                     string.Format(
                     Resources.NoTeamsInGame, game.Round));
             }
-            else if (game.HomeTeamId == 0)
+            else if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
             {
-                SwitchTeamsOrder(game); 
+                SwitchTeamsOrder(game);
             }
         }
 
-        private void ValidateGameDate(GameResultDto game)
+        private void ValidateGameDate(Tournament tournament, Game game)
         {
-
+            if (DateTime.Compare(tournament.GamesStart, game.GameDate) > 0
+                || DateTime.Compare(tournament.GamesEnd, game.GameDate) < 0)
+            {
+                throw new ArgumentException(Resources.WrongRoundDate);
+            }
         }
 
-        /// <summary>
-        /// Switches order of teams in the game 
-        /// </summary>
-        /// <param name="game">Game inwhich team order should be switched</param>
-        private void SwitchTeamsOrder(GameResultDto game)
+        private void SwitchTeamsOrder(Game game)
         {
-            int tempHomeId = game.HomeTeamId;
-            string tempHomeName = game.HomeTeamName;
-
-            game.HomeTeamId = game.AwayTeamId;
-            game.HomeTeamName = game.AwayTeamName;
-
-            game.AwayTeamId = tempHomeId;
-            game.AwayTeamName = tempHomeName;
+            int tempHomeId = game.HomeTeamId; 
+            game.HomeTeamId = game.AwayTeamId; 
+            game.AwayTeamId = tempHomeId; 
         }
-
         #endregion
     }
 }

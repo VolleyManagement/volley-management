@@ -1,7 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.UI.App_GlobalResources;
@@ -21,7 +23,18 @@
         /// <summary>
         /// Gets or sets list of teams to be selected
         /// </summary>
-        public SelectList Teams { get; set; }
+        public IEnumerable<SelectListItem> Teams { get; set; }
+
+        /// <summary>
+        /// Gets or sets list of teams to be selected with last item "free day"
+        /// </summary>
+        public IEnumerable<SelectListItem> TeamsWithFreeDay 
+        { 
+            get 
+            {
+                return Teams.Concat(new SelectListItem[] { new SelectListItem { Value = "0", Text = App_GlobalResources.TournamentViews.FreeDay } }); 
+            }
+        }
 
         /// <summary>
         /// Gets or sets list of rounds to be selected

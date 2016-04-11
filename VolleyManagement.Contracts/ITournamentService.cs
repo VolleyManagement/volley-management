@@ -72,5 +72,13 @@
         /// <param name="teamId">Team to delete</param>
         /// <param name="tournamentId">Tournament to un assign team</param>
         void DeleteTeamFromTournament(int teamId, int tournamentId);
+
+        /// <summary>
+        /// Counts number of rounds for specified tournament
+        /// </summary>
+        /// <param name="tournament">Tournament for which we count rounds</param>
+        /// <param name="teamCount">Count of teams in tournament</param>
+        /// <returns>Number of rounds</returns>
+        byte NumberOfRounds(Tournament tournament, int teamCount);
     }
 }

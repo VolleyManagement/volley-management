@@ -63,8 +63,8 @@
 
             if (result && x.Teams != null)
             {
-                result &= (x.Teams.Items as IEnumerable<Team>).Select(team => team.Id).SequenceEqual(
-                          (y.Teams.Items as IEnumerable<Team>).Select(team => team.Id));
+                result &= x.Teams.Select(team => team.Value).SequenceEqual(
+                          y.Teams.Select(team => team.Value));
             }
 
             if (result && x.Rounds != null)

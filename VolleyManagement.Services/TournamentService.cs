@@ -213,9 +213,52 @@
             _tournamentRepository.UnitOfWork.Commit();
         }
 
+        /// <summary>
+        /// Counts number of rounds for specified tournament
+        /// </summary>
+        /// <param name="tournament">Tournament for which we count rounds</param>
+        /// <param name="teamCount">Count of teams in tournament</param>
+        /// <returns>Number of rounds</returns>
+        public byte NumberOfRounds(Tournament tournament, int teamCount)
+        {
+            byte countRound = 0;
+
+            switch (tournament.Scheme)
+            {
+                case TournamentSchemeEnum.One:
+                    countRound = GetCountRoundByScheme1(teamCount);
+                    break;
+                case TournamentSchemeEnum.Two:
+                    countRound = GetCountRoundByScheme2(teamCount);
+                    break;
+            }
+
+            return countRound;
+        }
+
         #endregion
 
         #region Private
+
+        /// <summary>
+        /// Calculate number of rounds in tournament by scheme 1.
+        /// </summary>
+        /// <param name="teamCount">Number of teams.</param>
+        /// <returns>Number of rounds.</returns>
+        private byte GetCountRoundByScheme1(int teamCount)
+        {
+            return Convert.ToByte((teamCount % 2 == 0) && (teamCount != 0) ? teamCount - 1 : teamCount);
+        }
+
+        /// <summary>
+        /// Calculate number of rounds in tournament by scheme 2.
+        /// </summary>
+        /// <param name="teamCount">Number of teams.</param>
+        /// <returns>Number of rounds.</returns>
+        private byte GetCountRoundByScheme2(int teamCount)
+        {
+            return Convert.ToByte(2 * GetCountRoundByScheme1(teamCount));
+        }
 
         private static UniqueTournamentCriteria BuildUniqueTournamentCriteria(Tournament newTournament, bool isUpdate)
         {

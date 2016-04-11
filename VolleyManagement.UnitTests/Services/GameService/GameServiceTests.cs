@@ -77,7 +77,8 @@
         /// Test for Create method. The game result instance is null. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [ExpectedException(typeof(ArgumentNullException),
+            ExpectedExceptionMessages.GAME)]
         public void Create_GameNull_ExceptionThrown()
         {
             // Arrange
@@ -95,7 +96,8 @@
         /// Test for Create method. The home team and the away team are the same. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+            ExpectedExceptionMessages.GAME_SAME_TEAM)]
         public void Create_GameSameTeams_ExceptionThrown()
         {
             // Arrange
@@ -114,7 +116,8 @@
         /// Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+            ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID)]
         public void Create_GameInvalidSetsScore_ExceptionThrown()
         {
             // Arrange
@@ -133,7 +136,8 @@
         /// Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+            ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES)]
         public void Create_GameSetsScoreNoMatchSetScores_ExceptionThrown()
         {
             // Arrange
@@ -151,7 +155,8 @@
         /// Test for Create method. The required set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+            ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES)]
         public void Create_GameResultInvalidRequiredSetScores_ExceptionThrown()
         {
             // Arrange
@@ -169,7 +174,8 @@
         /// Test for Create method. The optional set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+            ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES)]
         public void Create_GameInvalidOptionalSetScores_ExceptionThrown()
         {
             // Arrange
@@ -187,7 +193,8 @@
         /// Test for Create method. Previous optional set is not played (set score is 0:0). Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+            ExpectedExceptionMessages.GAME_PREVIOUS_OPTIONAL_SET_UNPLAYED)]
         public void Create_GamePreviousOptionalSetUnplayed_ExceptionThrown()
         {
             // Arrange
@@ -205,7 +212,8 @@
         /// Test for Create method. Set scores are not listed in the correct order. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+            ExpectedExceptionMessages.GAME_PREVIOUS_OPTIONAL_SET_UNPLAYED)]
         public void Create_GameSetScoresUnordered_ExceptionThrown()
         {
             // Arrange
@@ -223,7 +231,8 @@
         /// Test for Create method. Set scores are not listed in the correct order. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+            ExpectedExceptionMessages.GAME_PREVIOUS_OPTIONAL_SET_UNPLAYED)]
         public void Create_GameSetScoresUnorderedForAwayTeam_ExceptionThrown()
         {
             // Arrange
@@ -272,7 +281,7 @@
         /// Test for Create method. Sets score are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException), ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID)]
         public void Create_TechnicalDefeatInvalidSetsScore_ExceptionThrown()
         {
             // Arrange
@@ -287,7 +296,8 @@
         /// Test for Create method. Set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+            ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES)]
         public void Create_GameTechnicalDefeatInvalidSetScores_ExceptionThrown()
         {
             // Arrange
@@ -302,7 +312,8 @@
         /// Test for Create method. Set scores are set to optional. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+             ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES)]
         public void Create_GameTechnicalDefeatOptionalSetScore_ExceptionThrown()
         {
             // Arrange
@@ -317,7 +328,8 @@
         /// Test for Create method. Set scores are null. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException),
+             ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES)]
         public void Create_GameSetScoresNull_ExceptionThrown()
         {
             // Arrange
@@ -332,7 +344,7 @@
         /// Test for Create method. Set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentException), ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID)]
         public void Create_GameSetsScoreInvalid_ExceptionThrown()
         {
             // Arrange
@@ -402,7 +414,8 @@
         /// Test for Edit method. Game is missing and cannot be edited. Exception is thrown during editing.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(MissingEntityException))]
+        [ExpectedException(typeof(MissingEntityException),
+            ExpectedExceptionMessages.CONCURRENCY_EXCEPTION)]
         public void Edit_MissingGame_ExceptionThrown()
         {
             // Arrange

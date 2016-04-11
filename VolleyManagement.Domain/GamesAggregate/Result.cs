@@ -13,6 +13,7 @@
         public Result()
         {
             SetScores = new List<Score>();
+            InitializeEmptyResult();
         }
 
         /// <summary>

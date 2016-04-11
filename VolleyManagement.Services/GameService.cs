@@ -129,7 +129,6 @@
             if (game.Result == null)
             {
                 game.Result = new Result();
-                game.Result.InitializeEmptyResult();
                 return;
             }
 

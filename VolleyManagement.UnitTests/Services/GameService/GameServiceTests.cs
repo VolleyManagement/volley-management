@@ -77,38 +77,52 @@
         /// Test for Create method. The game result instance is null. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException),
-            ExpectedExceptionMessages.GAME)]
         public void Create_GameNull_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = null as Game;
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyCreateGame(newGame, Times.Never());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
         }
 
         /// <summary>
         /// Test for Create method. The home team and the away team are the same. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-            ExpectedExceptionMessages.GAME_SAME_TEAM)]
         public void Create_GameSameTeams_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithTheSameTeams().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyCreateGame(newGame, Times.Never());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SAME_TEAM);
         }
 
         /// <summary>
@@ -116,19 +130,26 @@
         /// Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-            ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID)]
         public void Create_GameInvalidSetsScore_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithInvalidSetsScore().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyCreateGame(newGame, Times.Never());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID);
         }
 
         /// <summary>
@@ -136,111 +157,156 @@
         /// Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-            ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES)]
         public void Create_GameSetsScoreNoMatchSetScores_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithSetsScoreNoMatchSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyCreateGame(newGame, Times.Never());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES);
         }
 
         /// <summary>
         /// Test for Create method. The required set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-            ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES)]
         public void Create_GameResultInvalidRequiredSetScores_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithInvalidRequiredSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyCreateGame(newGame, Times.Never());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_25_0);
         }
 
         /// <summary>
         /// Test for Create method. The optional set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-            ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES)]
         public void Create_GameInvalidOptionalSetScores_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithInvalidOptionalSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyCreateGame(newGame, Times.Never());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_0_0);
         }
 
         /// <summary>
         /// Test for Create method. Previous optional set is not played (set score is 0:0). Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-            ExpectedExceptionMessages.GAME_PREVIOUS_OPTIONAL_SET_UNPLAYED)]
         public void Create_GamePreviousOptionalSetUnplayed_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithPreviousOptionalSetUnplayed().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyCreateGame(newGame, Times.Never());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_PREVIOUS_OPTIONAL_SET_UNPLAYED);
         }
 
         /// <summary>
         /// Test for Create method. Set scores are not listed in the correct order. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-            ExpectedExceptionMessages.GAME_PREVIOUS_OPTIONAL_SET_UNPLAYED)]
         public void Create_GameSetScoresUnordered_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithSetScoresUnorderedForHomeTeam().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyCreateGame(newGame, Times.Never());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SET_SCORES_NOT_ORDERED);
         }
 
         /// <summary>
         /// Test for Create method. Set scores are not listed in the correct order. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-            ExpectedExceptionMessages.GAME_PREVIOUS_OPTIONAL_SET_UNPLAYED)]
         public void Create_GameSetScoresUnorderedForAwayTeam_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithSetScoresUnorderedForAwayTeam().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SET_SCORES_NOT_ORDERED);
         }
 
         /// <summary>
@@ -281,78 +347,130 @@
         /// Test for Create method. Sets score are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID)]
         public void Create_TechnicalDefeatInvalidSetsScore_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetsScore().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID);
         }
 
         /// <summary>
         /// Test for Create method. Set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-            ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES)]
         public void Create_GameTechnicalDefeatInvalidSetScores_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_25_0);
         }
 
         /// <summary>
         /// Test for Create method. Set scores are set to optional. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-             ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES)]
         public void Create_GameTechnicalDefeatOptionalSetScore_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithTechnicalDefeatValidOptional().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES);
         }
 
         /// <summary>
         /// Test for Create method. Set scores are null. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),
-             ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES)]
         public void Create_GameSetScoresNull_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithSetScoresNull().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES);
         }
 
         /// <summary>
         /// Test for Create method. Set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException), ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID)]
         public void Create_GameSetsScoreInvalid_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var newGame = new GameBuilder().WithOrdinarySetsScoreInvalid().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
-            sut.Create(newGame);
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID);
         }
 
         /// <summary>
@@ -414,10 +532,10 @@
         /// Test for Edit method. Game is missing and cannot be edited. Exception is thrown during editing.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(MissingEntityException),
-            ExpectedExceptionMessages.CONCURRENCY_EXCEPTION)]
         public void Edit_MissingGame_ExceptionThrown()
         {
+            Exception exception = null;
+
             // Arrange
             var game = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
@@ -425,10 +543,17 @@
             SetupEditMissingEntityException(game);
 
             // Act
-            sut.Edit(game);
+            try
+            {
+                sut.Edit(game);
+            }
+            catch (MissingEntityException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyEditGame(game, Times.Once(), Times.Never());
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
         }
 
         /// <summary>
@@ -496,6 +621,12 @@
         {
             _gameRepositoryMock.Verify(m => m.Remove(It.Is<int>(id => id == gameResultId)), times);
             _unitOfWorkMock.Verify(m => m.Commit(), times);
+        }
+
+        private void VerifyExceptionThrown(Exception exception, string expectedMessage)
+        {
+            Assert.IsNotNull(exception);
+            Assert.IsTrue(exception.Message.Equals(expectedMessage));
         }
     }
 }

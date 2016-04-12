@@ -156,6 +156,9 @@
   <data name="LateRegistrationDates" xml:space="preserve">
     <value>Start of the applying period must be later than today</value>
   </data>
+  <data name="NoSuchToruanment" xml:space="preserve">
+    <value>Game cannot be added to the tournament that doesn't exist</value>
+  </data>
   <data name="NoTeamsInGame" xml:space="preserve">
     <value>No teams are specified for current game in round {0}</value>
   </data>

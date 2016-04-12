@@ -26,10 +26,18 @@
         /// <param name="firstGame">First game in tournament</param>
         /// <param name="secondGame">Second game in tournament</param>
         /// <returns>True if games contain same home and away teams accordingly</returns>
-        public static bool AreDuplicateTeamsInGames(GameResultDto firstGame, Game secondGame)
+        public static bool AreSameOrderTeamsInGames(GameResultDto firstGame, Game secondGame)
         {
             return AreTheSameTeams(firstGame.AwayTeamId, secondGame.AwayTeamId)
                 && AreTheSameTeams(firstGame.HomeTeamId, secondGame.HomeTeamId);
+        }
+
+        public static bool AreSameTeamsInGames(GameResultDto firstGame, Game secondGame)
+        {
+            return (AreTheSameTeams(firstGame.AwayTeamId, secondGame.AwayTeamId)
+                   && AreTheSameTeams(firstGame.HomeTeamId, secondGame.HomeTeamId)
+                   || AreTheSameTeams(firstGame.AwayTeamId, secondGame.HomeTeamId)
+                   && AreTheSameTeams(firstGame.HomeTeamId, secondGame.AwayTeamId));
         }
 
         /// <summary>

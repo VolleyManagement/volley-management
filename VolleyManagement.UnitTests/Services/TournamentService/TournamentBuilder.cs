@@ -292,6 +292,13 @@
             return this;
         }
 
+        public TournamentBuilder TestTournament()
+        {
+            this._tournament.GamesStart = DateTime.Parse("2016-04-02 10:00");
+            this._tournament.GamesEnd = DateTime.Parse("2016-04-05 10:00");
+            return this; 
+        }
+
         /// <summary>
         /// Builds test tournament.
         /// </summary>

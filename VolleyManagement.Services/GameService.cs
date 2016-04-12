@@ -92,7 +92,16 @@
         /// <returns>List of game results of specified tournament.</returns>
         public List<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            return _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
+            var gameResults = _tournamentGameResultsQuery
+                .Execute(
+                new TournamentGameResultsCriteria { TournamentId = tournamentId });
+
+            return gameResults == null ? new List<GameResultDto>() : gameResults.ToList(); 
+        }
+
+        public Tournament GetTournamentById(int tournamentId)
+        {
+            return _tournamentByIdQuery.Execute(new FindByIdCriteria { Id = tournamentId}); 
         }
 
         /// <summary>
@@ -132,7 +141,7 @@
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
 
             // Validate teams in rounds 
-            ValidateGameInTorunament(game);
+            ValidateGameInTournament(game);
 
             // Validate result 
 
@@ -223,10 +232,14 @@
             }
         }
 
-        private void ValidateGameInTorunament(Game game)
+        private void ValidateGameInTournament(Game game)
         {
-            Tournament tournament = _tournamentByIdQuery
-                .Execute(new FindByIdCriteria { Id = game.TournamentId });
+            Tournament tournament = GetTournamentById(game.TournamentId);
+
+            if (tournament == null)
+            {
+                throw new ArgumentException(Resources.NoSuchToruanment); 
+            }
 
             ValidateFreeDayGame(game);
             ValidateGameDate(tournament, game);
@@ -248,7 +261,7 @@
 
             foreach (GameResultDto game in gamesInRound)
             {
-                 if (GameValidation.AreDuplicateTeamsInGames(game, newGame))
+                 if (GameValidation.AreSameOrderTeamsInGames(game, newGame))
                  {
                      throw new ArgumentException(
                         string.Format(
@@ -276,7 +289,7 @@
                 .ToList();
 
             var duplicates = games
-                .Where(x => GameValidation.AreDuplicateTeamsInGames(x, newGame))
+                .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
                 .ToList(); 
 
             if (GameValidation.IsFreeDayGame(newGame))
@@ -297,7 +310,7 @@
                     SwitchTeamsOrder(newGame);
 
                     int switchedDuplicatesCount = games
-                        .Where(x => GameValidation.AreDuplicateTeamsInGames(x, newGame))
+                        .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
                         .Count(); 
 
                     if (switchedDuplicatesCount > 0)
@@ -320,7 +333,7 @@
                 ? new List<GameResultDto>() : queryGames.ToList();
 
             var duplicates = games
-                .Where(x => GameValidation.AreDuplicateTeamsInGames(x, newGame))
+                .Where(x => GameValidation.AreSameTeamsInGames(x, newGame))
                 .ToList(); 
 
             if (duplicates.Count > 0)
@@ -330,7 +343,7 @@
                     Resources.SameGameInTournamentSchemeOne,
                     duplicates.First().HomeTeamName,
                     duplicates.First().AwayTeamName));
-            }
+            } 
         }
 
         private void ValidateFreeDayGame(Game game)

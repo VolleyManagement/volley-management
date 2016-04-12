@@ -178,6 +178,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game cannot be added to the tournament that doesn&apos;t exist.
+        /// </summary>
+        public static string NoSuchToruanment {
+            get {
+                return ResourceManager.GetString("NoSuchToruanment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No teams are specified for current game in round {0}.
         /// </summary>
         public static string NoTeamsInGame {

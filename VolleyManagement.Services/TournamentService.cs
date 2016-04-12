@@ -240,6 +240,18 @@
 
         #region Private
 
+        private static UniqueTournamentCriteria BuildUniqueTournamentCriteria(Tournament newTournament, bool isUpdate)
+        {
+            var criteria = new UniqueTournamentCriteria { Name = newTournament.Name };
+
+            if (isUpdate)
+            {
+                criteria.EntityId = newTournament.Id;
+            }
+
+            return criteria;
+        }
+
         /// <summary>
         /// Calculate number of rounds in tournament by scheme 1.
         /// </summary>
@@ -258,18 +270,6 @@
         private byte GetCountRoundByScheme2(int teamCount)
         {
             return Convert.ToByte(2 * GetCountRoundByScheme1(teamCount));
-        }
-
-        private static UniqueTournamentCriteria BuildUniqueTournamentCriteria(Tournament newTournament, bool isUpdate)
-        {
-            var criteria = new UniqueTournamentCriteria { Name = newTournament.Name };
-
-            if (isUpdate)
-            {
-                criteria.EntityId = newTournament.Id;
-            }
-
-            return criteria;
         }
 
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)

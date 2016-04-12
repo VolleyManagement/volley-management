@@ -334,6 +334,7 @@
         /// Schedule game action (POST)
         /// </summary>
         /// <param name="gameViewModel">Submitted game to be scheduled</param>
+        /// <param name="redirectToSchedule">Defines whether it's necessary to redirect to Schedule action, after game was created</param>
         /// <returns>Appropriate view</returns>
         [HttpPost]
         public ActionResult ScheduleGame(GameViewModel gameViewModel, bool redirectToSchedule)

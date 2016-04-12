@@ -16,7 +16,6 @@
         private const int AWAY_TEAM_DEFAULT_ID = 1;
         private const int DEFAULT_ROUND = 1;
 
-
         /// <summary>
         /// Holds test game view model instance
         /// </summary>

@@ -53,7 +53,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given games have the same properties.</returns>
-        public bool AreEqual(GameViewModel x, GameViewModel y) 
+        public bool AreEqual(GameViewModel x, GameViewModel y)
         {
             bool result = x.TournamentId == y.TournamentId &&
                           x.HomeTeamId == y.HomeTeamId &&
@@ -67,10 +67,16 @@
                           y.Teams.Select(team => team.Value));
             }
 
+            if (result && x.TeamsWithFreeDay != null)
+            {
+                result &= x.TeamsWithFreeDay.Select(team => team.Value).SequenceEqual(
+                          y.TeamsWithFreeDay.Select(team => team.Value));
+            }
+
             if (result && x.Rounds != null)
             {
                 result &= (x.Rounds.Items as IEnumerable<int>).SequenceEqual(
-                          (y.Rounds.Items as IEnumerable<int>));
+                           y.Rounds.Items as IEnumerable<int>);
             }
 
             return result;

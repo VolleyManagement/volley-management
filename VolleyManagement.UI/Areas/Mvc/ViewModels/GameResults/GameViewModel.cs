@@ -26,7 +26,7 @@
         public IEnumerable<SelectListItem> Teams { get; set; }
 
         /// <summary>
-        /// Gets or sets list of teams to be selected with last item "free day"
+        /// Gets a list of teams to be selected with last item "free day"
         /// </summary>
         public IEnumerable<SelectListItem> TeamsWithFreeDay 
         { 

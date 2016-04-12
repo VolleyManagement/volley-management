@@ -1,26 +1,22 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
-    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-
     using Comparers;
     using Contracts.Authentication;
     using Contracts.Authentication.Models;
     using Contracts.Authorization;
-    using Domain.RolesAggregate;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-
     using Services.UserManager;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.Users;
     using UI.Infrastructure;
     using ViewModels;
+    using VolleyManagement.Domain.RolesAggregate;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

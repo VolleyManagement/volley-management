@@ -146,6 +146,12 @@
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
             ValidateGameInTournament(game); 
+            if (game.Result == null)
+            {
+                game.Result = new Result();
+                return;
+            }
+
             ValidateSetsScore(game.Result.SetsScore, game.Result.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(game.Result.SetsScore, game.Result.SetScores);
             ValidateSetScoresValues(game.Result.SetScores, game.Result.IsTechnicalDefeat);

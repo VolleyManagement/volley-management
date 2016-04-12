@@ -46,7 +46,7 @@
         private readonly Mock<IQuery<Tournament, FindByIdCriteria>> _tournamentByIdQueryMock
             = new Mock<IQuery<Tournament, FindByIdCriteria>>();
 
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>(); 
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private IKernel _kernel;
 
@@ -74,7 +74,7 @@
         {
             // Arrange
             var newGame = new GameBuilder().Build();
-            var sut = _kernel.Get<GameService>(); 
+            var sut = _kernel.Get<GameService>();
 
             Tournament tournament = new TournamentBuilder().TestTournament().Build();
             SetupGetTournamentById(tournament.Id, tournament); 
@@ -230,6 +230,27 @@
 
             // Assert
             VerifyCreateGame(newGame, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create method.
+        /// Game object contains null result data.
+        /// Game object is created successfully.
+        /// Result of this game have to be initialized
+        /// </summary>
+        [TestMethod]
+        public void Create_GameWithNoResult_GameCreatedWithDefaultResult()
+        {
+            // Arrange
+            var newGame = new GameBuilder().WithNullResult().Build();
+            var sut = _kernel.Get<GameService>();
+            var expectedGameToCreate = new GameBuilder().WithDefaultResult().Build();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyCreateGame(expectedGameToCreate, Times.Once());
         }
 
         /// <summary>

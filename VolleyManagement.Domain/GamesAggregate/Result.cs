@@ -13,6 +13,7 @@
         public Result()
         {
             SetScores = new List<Score>();
+            InitializeEmptyResult();
         }
 
         /// <summary>
@@ -29,5 +30,23 @@
         /// Gets or sets the set scores.
         /// </summary>
         public List<Score> SetScores { get; set; }
+
+        /// <summary>
+        /// Initialize Result object with default scores
+        /// </summary>       
+        private void InitializeEmptyResult()
+        {
+            this.SetsScore = new Score(
+                Constants.GameResult.EMPTY_SCORE,
+                Constants.GameResult.EMPTY_SCORE);
+            this.IsTechnicalDefeat = Constants.GameResult.DEFAULT_TECHNICAL_DEFEAT;
+            for (int i = 0; i < Constants.GameResult.MAX_SETS_COUNT; i++)
+            {
+                this.SetScores.Add(
+                    new Score(
+                       Constants.GameResult.EMPTY_SCORE,
+                       Constants.GameResult.EMPTY_SCORE));
+            }
+        }
     }
 }

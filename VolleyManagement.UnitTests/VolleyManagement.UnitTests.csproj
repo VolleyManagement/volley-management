@@ -128,6 +128,8 @@
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\ScheduleViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\ScheduleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelComparer.cs" />

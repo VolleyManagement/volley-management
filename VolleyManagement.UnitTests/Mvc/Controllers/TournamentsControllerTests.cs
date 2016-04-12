@@ -1,25 +1,26 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Web.Mvc;
     using Contracts;
     using Contracts.Exceptions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Web.Mvc;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.Services.TeamService;
     using VolleyManagement.UnitTests.Services.TournamentService;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
-    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -180,6 +181,48 @@
         }
 
         /// <summary>
+        /// Test for ShowSchedule method (POST action). 
+        /// Wrong tournament Id passed. View with error message is returned.
+        /// </summary>
+        [TestMethod]
+        public void ShowScheduleGetAction_NonExistentTournament_ErrorViewIsReturned()
+        {
+            // Arrange
+            SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+
+            // Act
+            var result = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsNull(result);
+        }
+
+        /// <summary>
+        /// Test for ShowSchedule method (POST action). 
+        /// Valid schedule is passed, no exception occures.
+        /// </summary>
+        [TestMethod]
+        public void ShowSchedule_ScheduleViewModelIsReturned()
+        {
+            // Arrange
+            var tour = new TournamentBuilder().WithScheme(TournamentSchemeEnum.One).Build();
+            var expectedGames = new GameServiceTestFixture().TestGameResults().Build();
+            var teams = new TeamServiceTestFixture().TestTeams().Build();
+            var expected = new ScheduleViewModelBuilder().Build();
+
+            _tournamentServiceMock.Setup(t => t.Get(It.IsAny<int>())).Returns(tour);
+            _tournamentServiceMock.Setup(t => t.GetAllTournamentTeams(It.IsAny<int>())).Returns(teams);
+            _gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
+
+            // Act
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsTrue(new ScheduleViewModelComparer().AreEqual(actual, expected));
+        }
+
+        /// <summary>
         /// Test for ScheduleGame method (GET action). Tournament with scheme 1 and no teams passed. View with error message is returned.
         /// </summary>
         [TestMethod]
@@ -292,6 +335,7 @@
             var redirect = false;
             this._gameServiceMock.Setup(ts => ts.Create(It.IsAny<Game>()))
                             .Throws(new ArgumentException(string.Empty));
+
             // Act
             var result = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(testData, redirect));
 

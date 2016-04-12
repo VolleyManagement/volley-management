@@ -1,100 +1,41 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.ScheduleViewModel
 
 
-<h2>@Resources.TournamentViews.ScheduleTitle
+<h2>
+    @Resources.TournamentViews.ScheduleTitle
+
     @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })
 </h2>
 
-<div>
-    @Html.ActionLink(@Resources.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
-</div>
-
-<hr>
-@for (byte i = 1; i <= Model.CountRound; i++)
+@if (Model.CountRound == 0)
 {
-     <text> @Resources.TournamentViews.Round @i </text>
+    <div class="col-md-2">@Resources.TournamentViews.TournamentTeamIsNotSelected</div>
+}
+else
+{
+    <div>
+        @Html.ActionLink(@Resources.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
+    </div>
 
-    <table class="table">
-        @if (Model.Rounds.ContainsKey(i))
-        {
-            foreach (var game in Model.Rounds[i])
+    <hr>
+    for (byte i = 1; i <= Model.CountRound; i++)
+    {
+        <h4> @Resources.TournamentViews.Round @i </h4>
+
+        <div class="table-bordered">
+            @if (Model.Rounds.ContainsKey(i))
             {
-                <tr>
-                    <td>
-                        <table>
-                           
-                            @if (game.AwayTeamId == 0)
-                            {
-                                <tr>
-                                    <td> @game.HomeTeamName </td>
-                                </tr>
-                                <tr>
-                                    <td> @Resources.TournamentViews.TeamDayOff </td>
-                                </tr>
-                            }
-                            else
-                            {
-                                if (game.IsTechnicalDefeat)
-                                {
-                                    <tr>
-                                        <td> @game.HomeTeamName </td>
-                                        <td> @game.SetsScore.Home </td>
-                                    </tr>
-                                    <tr>
-                                        <td> @game.AwayTeamName </td>
-                                        <td> @game.SetsScore.Away </td>
-                                    </tr>
-                                
-                                    <tr>
-                                        <td> @Resources.GameResultViews.TechnicalDefeat </td>
-                                    </tr>
-                                }
-                                else if ((game.SetsScore.Home != 0) && (game.SetsScore.Away != 0))
-                                {
-                                    <tr>
-                                        <td> @game.HomeTeamName </td>
-                                        <td> @game.SetsScore.Home </td>
-                                    </tr>
-                                    <tr>
-                                        <td> @game.AwayTeamName </td>
-                                        <td> @game.SetsScore.Away </td>
-                                    </tr>
-                                
-                                    <tr>
-                                        <td>
-                                        @foreach (var score in game.SetScores)
-                                        {
-                                          <text>  @score.Home : @score.Away | </text>
-                                        }
-                                        </td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td> @game.HomeTeamName </td>
-                                    </tr>
-                                    <tr>
-                                        <td> @game.AwayTeamName </td>
-                                    </tr>
-                                    
-                                <tr>
-                                        <td> @game.GameDate</td>
-                                    </tr>
-                                }
-                            }
-
-                        </table>
-                    </td>
-                </tr> 
+                foreach (var game in Model.Rounds[i])
+                {
+                    @Html.Partial("_ScheduledGameResult", game);
+                }
             }
-        }
-        else
-        {
-            <tr>
-                <td>@Resources.TournamentViews.NoGamesScheduled</td>
-            </tr>
-        }
-
-</table>
+            else
+            {
+                <div class="row">
+                    <div class="col-md-2">@Resources.TournamentViews.NoGamesScheduled</div>
+                </div>
+            }
+        </div>
+    }
 }

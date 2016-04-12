@@ -273,8 +273,7 @@
         /// Gets the view for view model of the schedule with specified identifier.
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
-        /// <returns>View for view model of the schedule with specified identifier.</returns>    
-   
+        /// <returns>View for view model of the schedule with specified identifier.</returns>      
         public ActionResult ShowSchedule(int tournamentId)
         {
             var tournament = _tournamentService.Get(tournamentId);

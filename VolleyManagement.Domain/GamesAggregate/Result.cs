@@ -34,7 +34,7 @@
         /// <summary>
         /// Initialize Result object with default scores
         /// </summary>       
-        public void InitializeEmptyResult()
+        private void InitializeEmptyResult()
         {
             this.SetsScore = new Score(
                 Constants.GameResult.EMPTY_SCORE,

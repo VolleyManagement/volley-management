@@ -793,6 +793,71 @@
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
 
+        /// <summary>
+        /// GetActual method test. The method should return actual tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetActual_TournamentsExist_CurrentTournamentsReturned()
+        {
+            // Arrange
+            _timeMock.Setup(c => c.UtcNow).Returns(new DateTime(2015, 09, 30));
+            var sut = _kernel.Get<TournamentService>();
+            var testData = _testFixture.TestTournaments()
+                                       .Build();
+            MockGetAllTournamentsQuery(testData);
+
+            var expected = BuildActualTournamentsList();
+
+            // Act
+            var actual = sut.GetActual().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// GetFinished method test. The method should return finished tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetFinished_TournamentsExist_FinishedTournamentsReturned()
+        {
+            // Arrange
+            _timeMock.Setup(c => c.UtcNow).Returns(new DateTime(2016, 09, 30));
+            var sut = _kernel.Get<TournamentService>();
+            var testData = _testFixture.TestTournaments()
+                                       .Build();
+            MockGetAllTournamentsQuery(testData);
+
+            var expected = BuildActualTournamentsList();
+
+            // Act
+            var actual = sut.GetFinished().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// Get method test. The method returns all tournaments.
+        /// Then select all not started tournaments
+        /// </summary>
+        [TestMethod]
+        public void Get_TournamentsExist_NotStartedTournamentsReturned()
+        {
+            // Arrange
+            _timeMock.Setup(c => c.UtcNow).Returns(new DateTime(2015, 02, 28));
+            var sut = _kernel.Get<TournamentService>();
+            var testData = _testFixture.TestTournaments().Build();
+            MockGetAllTournamentsQuery(testData);
+
+            // Act
+            var actual = sut.Get().ToList();
+
+            // Assert
+            int count = actual.Count(t => t.State == TournamentStateEnum.NotStarted);
+            Assert.AreEqual(count, actual.Count);
+        }
+
         private bool TournamentsAreEqual(Tournament x, Tournament y)
         {
             return new TournamentComparer().Compare(x, y) == 0;

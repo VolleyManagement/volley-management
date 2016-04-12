@@ -232,6 +232,9 @@
             VerifyCreateGame(newGame, Times.Never());
         }
 
+        /// <summary>
+        /// Tests creation of the game with invalid date 
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Create_GameSetEarlyDateTime_ExceptionThrown()
@@ -256,6 +259,9 @@
             VerifyCreateGame(game, Times.Never()); 
         }
 
+        /// <summary>
+        /// Tests creation of the game with invalid date 
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Create_GameSetLateDateTime_ExceptionThrown()
@@ -280,6 +286,9 @@
             VerifyCreateGame(game, Times.Never());
         }
 
+        /// <summary>
+        /// Tests creation of same game in same round 
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Create_SameGameInRound_ExceptionThrown()
@@ -315,6 +324,9 @@
             Assert.IsTrue(excaptionWasThrown); 
         } 
 
+        /// <summary>
+        /// Tests creation of the duplicate free day game
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Create_SameFreeDayInRound_ExceptionThrown()
@@ -343,7 +355,7 @@
             {
                 excaptionWasThrown = true; 
             }
-
+            
             // Assert 
             Assert.IsTrue(excaptionWasThrown); 
         }
@@ -664,9 +676,9 @@
         }
 
         /// <summary>
-        /// Verifes if ecxeption was thrown and has appropriate message 
+        /// Checks if exception was thrown and has appropriate message 
         /// </summary>
-        /// <param name="exception">Excaption that has been thrown</param>
+        /// <param name="exception">Exception that has been thrown</param>
         /// <param name="expectedMessage">Message to compare with</param>
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)
         {

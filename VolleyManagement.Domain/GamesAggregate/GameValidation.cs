@@ -32,12 +32,18 @@
                 && AreTheSameTeams(firstGame.HomeTeamId, secondGame.HomeTeamId);
         }
 
+        /// <summary>
+        /// Verifies if teams are same in two different games ignoring order 
+        /// </summary>
+        /// <param name="firstGame">First game to check</param>
+        /// <param name="secondGame">Second game to check</param>
+        /// <returns>true if teams are the same in games</returns>
         public static bool AreSameTeamsInGames(GameResultDto firstGame, Game secondGame)
         {
             return (AreTheSameTeams(firstGame.AwayTeamId, secondGame.AwayTeamId)
-                   && AreTheSameTeams(firstGame.HomeTeamId, secondGame.HomeTeamId)
-                   || AreTheSameTeams(firstGame.AwayTeamId, secondGame.HomeTeamId)
-                   && AreTheSameTeams(firstGame.HomeTeamId, secondGame.AwayTeamId));
+                && AreTheSameTeams(firstGame.HomeTeamId, secondGame.HomeTeamId))
+                || (AreTheSameTeams(firstGame.AwayTeamId, secondGame.HomeTeamId)
+                && AreTheSameTeams(firstGame.HomeTeamId, secondGame.AwayTeamId));
         }
 
         /// <summary>
@@ -51,14 +57,14 @@
             return originalGame.HomeTeamId == newGame.HomeTeamId
                 || originalGame.HomeTeamId == newGame.AwayTeamId
                 || originalGame.AwayTeamId == newGame.HomeTeamId
-                || originalGame.AwayTeamId == newGame.AwayTeamId; 
+                || originalGame.AwayTeamId == newGame.AwayTeamId;
         }
 
         /// <summary>
         /// Checks if team is scheduled to a free day 
         /// </summary>
         /// <param name="teamId">Id of the team</param>
-        /// <returns>True </returns>
+        /// <returns>True if game is scheduled free day</returns>
         public static bool IsFreeDayTeam(int teamId)
         {
             return teamId == FREE_DAY_TEAM_ID; 

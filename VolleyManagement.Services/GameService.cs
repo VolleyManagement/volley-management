@@ -42,6 +42,7 @@
         /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
         /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
         /// of the specified tournament.</param>
+        /// /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
@@ -99,9 +100,14 @@
             return gameResults == null ? new List<GameResultDto>() : gameResults.ToList(); 
         }
 
+        /// <summary>
+        /// Gets the tournament by game tournament id
+        /// </summary>
+        /// <param name="tournamentId">id of the tournament</param>
+        /// <returns>Matching tournament</returns>
         public Tournament GetTournamentById(int tournamentId)
         {
-            return _tournamentByIdQuery.Execute(new FindByIdCriteria { Id = tournamentId}); 
+            return _tournamentByIdQuery.Execute(new FindByIdCriteria { Id = tournamentId }); 
         }
 
         /// <summary>
@@ -139,12 +145,7 @@
         private void ValidateGame(Game game)
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
-
-            // Validate teams in rounds 
-            ValidateGameInTournament(game);
-
-            // Validate result 
-
+            ValidateGameInTournament(game); 
             ValidateSetsScore(game.Result.SetsScore, game.Result.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(game.Result.SetsScore, game.Result.SetScores);
             ValidateSetScoresValues(game.Result.SetScores, game.Result.IsTechnicalDefeat);

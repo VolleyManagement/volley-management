@@ -38,7 +38,7 @@
         /// Gets or sets the list of possible tournament schemes.
         /// </summary>
         /// <value>The list of tournament schemes.</value>
-        public Dictionary<int, TournamentSchemeEnum> TournamentSchemeList { get; set; }
+        public List<int> TournamentSchemeList { get; set; }
 
         /// <summary>
         /// Gets or sets the default season
@@ -244,13 +244,13 @@
         /// </summary>
         private void InitializeTournamentSchemeList()
         {
-            this.TournamentSchemeList = new Dictionary<int, TournamentSchemeEnum>();
+            this.TournamentSchemeList = new List<int>();
 
             foreach (TournamentSchemeEnum scheme in Enum.GetValues(typeof(TournamentSchemeEnum)))
             {
                 if (scheme != TournamentSchemeEnum.TwoAndHalf)
                 {
-                    this.TournamentSchemeList.Add((int)scheme, scheme);
+                    this.TournamentSchemeList.Add((int)scheme);
                 }
             }
         }

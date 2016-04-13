@@ -55,7 +55,6 @@
             this._sut = this._kernel.Get<TournamentsController>();
         }
 
-        #region Tests
         #region Index
         /// <summary>
         /// Test for Index method. Actual tournaments (current and upcoming) are requested. Actual tournaments are returned.
@@ -654,7 +653,6 @@
             VerifyDelete(TEST_TOURNAMENT_ID, Times.Once());
             VerifyRedirect(INDEX_ACTION_NAME, result);
         }
-        #endregion
         #endregion
 
         #region Private

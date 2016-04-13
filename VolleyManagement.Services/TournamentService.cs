@@ -49,6 +49,7 @@
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTeamsQuery;
+        private readonly IQuery<TournamentDto, TournamentDtoCriteria> _getTournamentDtoQuery; 
 
         #endregion
 
@@ -57,23 +58,26 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentService"/> class
         /// </summary>
-        /// <param name="tournamentRepository"> The tournament repository  </param>
-        /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
+        /// <param name="tournamentRepository"> The tournament repository.</param>
+        /// <param name="uniqueTournamentQuery"> First By Name object query.</param>
         /// <param name="getAllQuery"> Get All object query. </param>
         /// <param name="getByIdQuery">Get tournament by id query.</param>
         /// <param name="getAllTeamsQuery">Get All Tournament Teams query.</param>
+        /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
-            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery)
+            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
+            IQuery<TournamentDto, TournamentDtoCriteria> getTournamentDtoQuery)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
+            _getTournamentDtoQuery = getTournamentDtoQuery;
         }
 
         #endregion
@@ -115,6 +119,17 @@
         public List<Team> GetAllTournamentTeams(int tournamentId)
         {
             return _getAllTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+        }
+
+        /// <summary>
+        /// Finds tournament data transfer object by torunament id
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>The <see cref="TournamentDto"/></returns>
+        public TournamentDto GetTournamentScheduleInfo(int tournamentId)
+        {
+            return _getTournamentDtoQuery
+                .Execute(new TournamentDtoCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>

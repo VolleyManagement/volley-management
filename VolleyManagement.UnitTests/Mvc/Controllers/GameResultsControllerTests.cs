@@ -146,7 +146,7 @@
         /// Test for Create method (GET action). Game result view model is requested.  Game result view model is returned.
         /// </summary>
         [TestMethod]
-        public void CreateGetAction_GetGameResultViewModel_GameResultViewModelIsReturned()
+        public void CreateGetAction_GameResultViewModelRequested_GameResultViewModelIsReturned()
         {
             // Arrange
             var controller = _kernel.Get<GameResultsController>();

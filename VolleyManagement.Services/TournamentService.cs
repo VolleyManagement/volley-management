@@ -219,21 +219,21 @@
         /// <param name="tournament">Tournament for which we count rounds</param>
         /// <param name="teamCount">Count of teams in tournament</param>
         /// <returns>Number of rounds</returns>
-        public byte NumberOfRounds(Tournament tournament, int teamCount)
+        public byte GetNumberOfRounds(Tournament tournament, int teamCount)
         {
-            byte countRound = 0;
+            byte numberOfRounds = 0;
 
             switch (tournament.Scheme)
             {
                 case TournamentSchemeEnum.One:
-                    countRound = GetCountRoundByScheme1(teamCount);
+                    numberOfRounds = GetNumberOfRoundsByScheme1(teamCount);
                     break;
                 case TournamentSchemeEnum.Two:
-                    countRound = GetCountRoundByScheme2(teamCount);
+                    numberOfRounds = GetNumberOfRoundsByScheme2(teamCount);
                     break;
             }
 
-            return countRound;
+            return numberOfRounds;
         }
 
         #endregion
@@ -257,7 +257,7 @@
         /// </summary>
         /// <param name="teamCount">Number of teams.</param>
         /// <returns>Number of rounds.</returns>
-        private byte GetCountRoundByScheme1(int teamCount)
+        private byte GetNumberOfRoundsByScheme1(int teamCount)
         {
             return Convert.ToByte((teamCount % 2 == 0) && (teamCount != 0) ? teamCount - 1 : teamCount);
         }
@@ -267,9 +267,9 @@
         /// </summary>
         /// <param name="teamCount">Number of teams.</param>
         /// <returns>Number of rounds.</returns>
-        private byte GetCountRoundByScheme2(int teamCount)
+        private byte GetNumberOfRoundsByScheme2(int teamCount)
         {
-            return Convert.ToByte(2 * GetCountRoundByScheme1(teamCount));
+            return Convert.ToByte(2 * GetNumberOfRoundsByScheme1(teamCount));
         }
 
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)

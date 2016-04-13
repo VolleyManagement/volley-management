@@ -56,7 +56,7 @@
         {
             return x.TournamentId == y.TournamentId &&
                 x.TournamentName == y.TournamentName &&
-                x.CountRound == y.CountRound;
+                x.NumberOfRounds == y.NumberOfRounds;
         }
     }
 }

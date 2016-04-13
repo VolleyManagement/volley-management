@@ -79,6 +79,6 @@
         /// <param name="tournament">Tournament for which we count rounds</param>
         /// <param name="teamCount">Count of teams in tournament</param>
         /// <returns>Number of rounds</returns>
-        byte NumberOfRounds(Tournament tournament, int teamCount);
+        byte GetNumberOfRounds(Tournament tournament, int teamCount);
     }
 }

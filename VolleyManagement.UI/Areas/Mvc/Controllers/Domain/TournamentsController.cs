@@ -289,7 +289,7 @@
             {
                 TournamentId = tournament.Id,
                 TournamentName = tournament.Name,
-                CountRound = _tournamentService.NumberOfRounds(tournament, tournamentTeamsCount),
+                NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament, tournamentTeamsCount),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                                      .GroupBy(d => d.Round)
                                      .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)
@@ -315,7 +315,7 @@
             }
 
             var tournamentTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var roundsNumber = _tournamentService.NumberOfRounds(tournament, tournamentTeams.Count);
+            var roundsNumber = _tournamentService.GetNumberOfRounds(tournament, tournamentTeams.Count);
             if (roundsNumber <= 0)
             {
                 this.ModelState.AddModelError("LoadError", TournamentController.SchedulingError);

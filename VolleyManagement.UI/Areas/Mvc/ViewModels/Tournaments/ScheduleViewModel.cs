@@ -20,7 +20,7 @@
         /// <summary>
         /// Gets or sets number of rounds in tournament
         /// </summary>
-        public byte CountRound { get; set; }
+        public byte NumberOfRounds { get; set; }
 
         /// <summary>
         /// Gets or sets current rounds collection

@@ -28,7 +28,7 @@
             {
                 TournamentId = 1,
                 TournamentName = "Name",
-                CountRound = 1,
+                NumberOfRounds = 1,
                 Rounds = new GameServiceTestFixture().TestGameResults()
                                      .Build().GroupBy(d => d.Round)
                                      .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)
@@ -59,13 +59,13 @@
         }
 
         /// <summary>
-        /// Sets the schedule view model CountRound
+        /// Sets the schedule view model NumberOfRounds
         /// </summary>
-        /// <param name="countRound">Tournament view model CountRound</param>
+        /// <param name="numberOfRounds">Tournament view model NumberOfRounds</param>
         /// <returns>Schedule view model builder object</returns>
-        public ScheduleViewModelBuilder WithCountRound(byte countRound)
+        public ScheduleViewModelBuilder WithNumberOfRounds(byte numberOfRounds)
         {
-            _scheduleViewModel.CountRound = countRound;
+            _scheduleViewModel.NumberOfRounds = numberOfRounds;
             return this;
         }
 

@@ -7,7 +7,7 @@
     @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })
 </h2>
 
-@if (Model.CountRound == 0)
+@if (Model.NumberOfRounds == 0)
 {
     <div class="col-md-2">@Resources.TournamentViews.TournamentTeamIsNotSelected</div>
 }
@@ -18,7 +18,7 @@ else
     </div>
 
     <hr>
-    for (byte i = 1; i <= Model.CountRound; i++)
+    for (byte i = 1; i <= Model.NumberOfRounds; i++)
     {
         <h4> @Resources.TournamentViews.Round @i </h4>
 

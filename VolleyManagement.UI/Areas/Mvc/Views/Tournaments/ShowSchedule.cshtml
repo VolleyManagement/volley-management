@@ -1,44 +1,41 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.ScheduleViewModel
 
 
-<h2>@Resources.TournamentViews.ScheduleTitle
-    @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })</h2>
+<h2>
+    @Resources.TournamentViews.ScheduleTitle
 
-<div>
-    @Html.ActionLink(@Resources.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
-</div>
+    @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })
+</h2>
 
-<hr>
-<fieldset>
-
-  
-
-    @for (byte i = 1; i <= Model.CountRound; i++)
+@if (Model.CountRound == 0)
 {
-        <text> @Resources.TournamentViews.Round @i </text>
-    <table>
-        <tbody>
-
-                @if (Model.Rounds.ContainsKey(i))
-                {
-                    foreach (var item in Model.Rounds[i])
-                    {
-                        <tr>
-                            <td> @item.HomeTeamName </td>
-                            <td> @item.AwayTeamName </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td> @Resources.TournamentViews.NoGamesScheduled</td>
-                    </tr>
-                }           
-        </tbody>
-
-    </table>
-    <br>
-
+    <div class="col-md-2">@Resources.TournamentViews.TournamentTeamIsNotSelected</div>
 }
-</fieldset>
+else
+{
+    <div>
+        @Html.ActionLink(@Resources.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
+    </div>
+
+    <hr>
+    for (byte i = 1; i <= Model.CountRound; i++)
+    {
+        <h4> @Resources.TournamentViews.Round @i </h4>
+
+        <div class="table-bordered">
+            @if (Model.Rounds.ContainsKey(i))
+            {
+                foreach (var game in Model.Rounds[i])
+                {
+                    @Html.Partial("_ScheduledGameResult", game);
+                }
+            }
+            else
+            {
+                <div class="row">
+                    <div class="col-md-2">@Resources.TournamentViews.NoGamesScheduled</div>
+                </div>
+            }
+        </div>
+    }
+}

@@ -32,8 +32,8 @@
         public List<Score> SetScores { get; set; }
 
         /// <summary>
-        /// Initialize Result object with default scores
-        /// </summary>       
+        /// Initialize Result object with default scores.
+        /// </summary>
         private void InitializeEmptyResult()
         {
             this.SetsScore = new Score(

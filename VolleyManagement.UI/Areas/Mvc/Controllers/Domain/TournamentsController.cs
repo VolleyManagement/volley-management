@@ -280,7 +280,8 @@
 
             if (tournament == null)
             {
-                return HttpNotFound();
+                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                return View();
             }
 
             var tournamentTeamsCount = _tournamentService.GetAllTournamentTeams(tournamentId).Count;
@@ -291,7 +292,8 @@
                 CountRound = _tournamentService.NumberOfRounds(tournament, tournamentTeamsCount),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                                      .GroupBy(d => d.Round)
-                                     .ToDictionary(d => d.Key, d => d.OrderBy(t => t.GameDate).ToList())
+                                     .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)
+                                     .Select(x => GameResultViewModel.Map(x)).ToList())
             };
 
             return View(scheduleViewModel);
@@ -348,11 +350,11 @@
                     if (redirectToSchedule)
                     {
                         return RedirectToAction("ShowSchedule", new { tournamentId = gameViewModel.TournamentId });                       
-                    }
+                }
                     else
                     {
                         ModelState.Clear();
-                    }
+            }
                 }
             }
             catch (ArgumentException e)

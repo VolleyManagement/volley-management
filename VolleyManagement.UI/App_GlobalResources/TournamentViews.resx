@@ -231,4 +231,7 @@
   <data name="ScheduleGameTitle" xml:space="preserve">
     <value>Schedule game</value>
   </data>
+  <data name="TeamDayOff" xml:space="preserve">
+    <value>Day off</value>
+  </data>
 </root>

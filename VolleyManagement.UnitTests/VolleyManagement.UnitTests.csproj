@@ -127,9 +127,7 @@
     <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
-    <Compile Include="Mvc\ViewModels\PlayerNameMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\PlayerNameViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />

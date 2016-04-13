@@ -375,9 +375,9 @@
             var tournament = _tournamentService.Get(id);
 
             if (tournament == null)
-        {
-                return HttpNotFound(); 
-        }
+            {
+                return HttpNotFound();
+            }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
             return View(tournamentViewModel);

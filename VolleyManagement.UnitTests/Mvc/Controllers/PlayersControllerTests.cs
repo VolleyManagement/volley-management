@@ -87,6 +87,24 @@
         }
 
         /// <summary>
+        /// Test for Delete method (POST action). Player id is valid, but exception
+        /// is thrown during deleting. JsonResult is returned.
+        /// </summary>
+        [TestMethod]
+        public void DeletePostAction_ValidPlayerIdWithValidationException_JsonResultIsReturned()
+        {
+            // Arrange
+            SetupDeleteThrowsValidationException();
+
+            // Act
+            var result = this._sut.Delete(TEST_PLAYER_ID);
+
+            // Assert
+            VerifyDelete(TEST_PLAYER_ID, Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+        }
+
+        /// <summary>
         /// Test for Index method. Players from specified existing page are requested and no search text is specified.
         /// Players from specified page are returned.
         /// </summary>
@@ -447,6 +465,12 @@
         {
             this._playerServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
                 .Throws(new MissingEntityException(string.Empty));
+        }
+
+        private void SetupDeleteThrowsValidationException()
+        {
+            this._playerServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
+                .Throws(new ValidationException(string.Empty));
         }
 
         private void SetupControllerContext()

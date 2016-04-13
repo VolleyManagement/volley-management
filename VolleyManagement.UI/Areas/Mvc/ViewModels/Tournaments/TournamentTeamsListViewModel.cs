@@ -23,13 +23,6 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentTeamsListViewModel"/> class
-        /// </summary>
-        public TournamentTeamsListViewModel()
-        {
-        }
-
-        /// <summary>
         /// Tournament Id
         /// </summary>
         public int TournamentId { get; set; }

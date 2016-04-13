@@ -32,6 +32,12 @@
             }
         }
 
+        /// <summary>
+        /// Compares two objects.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>A signed integer that indicates the relative values of objects.</returns>
         public int Compare(object x, object y)
         {
             ContributorsTeamViewModel firstViewModel = x as ContributorsTeamViewModel;

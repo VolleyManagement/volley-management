@@ -69,7 +69,11 @@
                 && x.HomeTeamId == y.HomeTeamId
                 && x.Id == y.Id
                 && x.IsTechnicalDefeat == y.IsTechnicalDefeat
-                && x.TournamentId == y.TournamentId;
+                && x.TournamentId == y.TournamentId
+                && x.GameDate == y.GameDate
+                && x.Round == y.Round
+                && x.HomeTeamName == y.HomeTeamName
+                && y.AwayTeamName == y.AwayTeamName;
         }
     }
 }

@@ -266,6 +266,28 @@
         }
 
         /// <summary>
+        /// Sets the date of game.
+        /// </summary>
+        /// <param name="date">Game's date.</param>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
+        public GameResultDtoBuilder WithDate(DateTime date)
+        {
+            _gameResult.GameDate = date;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the round of game.
+        /// </summary>
+        /// <param name="round">Game's round.</param>
+        /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
+        public GameResultDtoBuilder WithRound(byte round)
+        {
+            _gameResult.Round = round;
+            return this;
+        }
+
+        /// <summary>
         /// Builds instance of <see cref="GameResultDtoBuilder"/>.
         /// </summary>
         /// <returns>Instance of <see cref="GameResultDto"/>.</returns>

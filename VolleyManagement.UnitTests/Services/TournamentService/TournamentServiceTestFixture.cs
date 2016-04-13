@@ -84,6 +84,47 @@
         }
 
         /// <summary>
+        /// Add tournament to collection.
+        /// </summary>
+        /// <param name="newTournament">Tournament to add.</param>
+        /// <returns>Builder object with collection of tournaments.</returns>
+        public TournamentServiceTestFixture WithFinishedTournaments()
+        {
+            _tournaments.Add(new Tournament()
+            {
+                Id = 1,
+                Name = "Tournament 1",
+                Description = "Tournament 1 description",
+                Season = 2014,
+                Scheme = TournamentSchemeEnum.One,
+                RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('1')",
+                ApplyingPeriodStart = new DateTime(2014, 02, 20),
+                ApplyingPeriodEnd = new DateTime(2014, 06, 20),
+                GamesStart = new DateTime(2014, 06, 30),
+                GamesEnd = new DateTime(2014, 11, 30),
+                TransferStart = new DateTime(2014, 08, 20),
+                TransferEnd = new DateTime(2014, 09, 10)
+            });
+
+            _tournaments.Add(new Tournament()
+            {
+                Id = 2,
+                Name = "Tournament 2",
+                Description = "Tournament 2 description",
+                Season = 2014,
+                Scheme = TournamentSchemeEnum.Two,
+                RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('2')",
+                ApplyingPeriodStart = new DateTime(2014, 02, 20),
+                ApplyingPeriodEnd = new DateTime(2014, 06, 20),
+                GamesStart = new DateTime(2014, 06, 30),
+                GamesEnd = new DateTime(2014, 11, 30),
+                TransferStart = new DateTime(2014, 08, 20),
+                TransferEnd = new DateTime(2014, 09, 10)
+            });
+            return this;
+        }
+
+        /// <summary>
         /// Builds test data
         /// </summary>
         /// <returns>Tournament collection</returns>

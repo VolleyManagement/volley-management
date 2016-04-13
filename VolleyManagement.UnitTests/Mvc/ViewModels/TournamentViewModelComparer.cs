@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -62,6 +63,12 @@
                 && x.Scheme == y.Scheme
                 && x.RegulationsLink == y.RegulationsLink
                 && x.IsTransferEnabled == y.IsTransferEnabled
+                && x.ApplyingPeriodEnd.Date == y.ApplyingPeriodEnd.Date
+                && x.ApplyingPeriodStart.Date == y.ApplyingPeriodStart.Date
+                && x.GamesEnd.Date == x.GamesEnd.Date
+                && x.GamesStart.Date == x.GamesStart.Date
+                && x.TransferEnd.Value.Date == y.TransferEnd.Value.Date
+                && x.TransferStart.Value.Date == y.TransferStart.Value.Date
                 && x.Divisions.SequenceEqual(y.Divisions, new DivisionViewModelEqualityComparer());
         }
     }

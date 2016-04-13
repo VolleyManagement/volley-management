@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Web.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
@@ -27,12 +28,15 @@
         #region Consts
 
         private const int TOURNAMENT_ID = 1;
+        private const string TOURNAMENT_NAME = "Name";
         private const int GAME_RESULT_ID = 2;
+        private const int GAME_RESULTS_ID = 1;
         private const int HOME_TEAM_ID = 10;
         private const int AWAY_TEAM_ID = 11;
         private const string HOME_TEAM_NAME = "Home";
         private const string AWAY_TEAM_NAME = "Away";
         private const string DETAILS_ACTION_NAME = "Details";
+        private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         #endregion
 
         #region Fields
@@ -42,6 +46,7 @@
         private Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
 
         private Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
+        private Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         #endregion
 
         #region Init
@@ -138,10 +143,82 @@
         }
 
         /// <summary>
+        /// Test for Create method (GET action). Game result view model is requested.  Game result view model is returned.
+        /// </summary>
+        [TestMethod]
+        public void CreateGetAction_GameResultViewModelRequested_GameResultViewModelIsReturned()
+        {
+            // Arrange
+            var controller = _kernel.Get<GameResultsController>();
+            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
+            var expected = new GameResultViewModel
+            {
+                TournamentId = TOURNAMENT_ID
+            };
+
+            // Act
+            var actual = TestExtensions.GetModel<GameResultViewModel>(controller.Create(TOURNAMENT_ID));
+
+            // Assert
+            TestHelper.AreEqual<GameResultViewModel>(expected, actual, new GameResultViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Edit method (GET action). Valid game result id.  Game result view model is returned.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_ValidGameResultId_GameResultViewModelIsReturned()
+        {
+            // Arrange
+            var controller = _kernel.Get<GameResultsController>();
+            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
+            var testData = new GameServiceTestFixture().TestGameResults().Build();
+            var expected = new GameResultViewModelBuilder()
+                .WithTournamentId(TOURNAMENT_ID)
+                .WithAwayTeamName("TeamNameB")
+                .WithHomeTeamName("TeamNameA")
+                .WithId(GAME_RESULTS_ID)
+                .WithSetsScore(3, 2)
+                .WithSetScores(new List<Score>
+                    {
+                        new Score(25, 20),
+                        new Score(24, 26),
+                        new Score(28, 30),
+                        new Score(25, 22),
+                        new Score(27, 25)
+                    })
+                .Build();
+            SetupGet(TOURNAMENT_ID, testData.ElementAt(0));
+
+            // Act
+            var actual = TestExtensions.GetModel<GameResultViewModel>(controller.Edit(TOURNAMENT_ID));
+
+            // Assert
+            TestHelper.AreEqual<GameResultViewModel>(expected, actual, new GameResultViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Edit method. GameResult with specified identifier does not exist. HttpNotFoundResult is returned.
+        /// </summary>
+        [TestMethod]
+        public void Edit_NotExistedGameResult_HttpNotFoundResultIsReturned()
+        {
+            // Arrange
+            SetupGet(GAME_RESULT_ID, null as GameResultDto);
+
+            // Act
+            var controller = _kernel.Get<GameResultsController>();
+            var result = controller.Edit(GAME_RESULT_ID);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+        }
+
+        /// <summary>
         /// Test for edit post method. Invalid game results Id - redirect to  the edit view.
         /// </summary>
         [TestMethod]
-        public void EditPost_MissingEntityException_RedirectToEditView()
+        public void EditPost_MissingEntityException_RedirectToGameResultViewModel()
         {
             // Arrange
             var gameResultViewModel = new GameResultViewModelBuilder().Build();
@@ -149,14 +226,32 @@
             _gameServiceMock.Setup(grs => grs.Edit(It.IsAny<Game>()))
                                   .Throws(new MissingEntityException());
 
-            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
             var sut = this._kernel.Get<GameResultsController>();
 
             // Act
-            var result = sut.Edit(gameResultViewModel);
+            var result = TestExtensions.GetModel<GameResultViewModel>(sut.Edit(gameResultViewModel));
 
             // Assert
-            Assert.AreEqual(result.GetType(), typeof(ViewResult));
+            VerifyEdit(Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+        }
+
+        /// <summary>
+        /// Test for edit post method. Invalid game results Id - redirect to  the edit view.
+        /// </summary>
+        [TestMethod]
+        public void EditPost_ValidEntity_GameResultViewModelIsReturned()
+        {
+            var controller = _kernel.Get<GameResultsController>();
+            var testData = new GameResultViewModelBuilder().Build();
+            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
+
+            // Act
+            var result = controller.Edit(testData);
+
+            // Assert
+            VerifyEdit(Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
@@ -167,15 +262,34 @@
         {
             // Arrange
             var gameResultViewModel = new GameResultViewModelBuilder().Build();
-
-            _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
             var sut = this._kernel.Get<GameResultsController>();
 
             // Act
             var result = sut.Edit(gameResultViewModel);
 
             // Assert
+            VerifyEdit(Times.Once());
             Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
+        }
+
+        /// <summary>
+        /// Test for Edit method (POST action). Game Result  view model is not valid.
+        /// Game Result is not updated and Game Result view model is returned.
+        /// </summary>
+        [TestMethod]
+        public void EditPostAction_InvalidGameResultViewModel_GameResultViewModelIsReturned()
+        {
+            // Arrange
+            var testData = new GameResultViewModelBuilder().Build();
+            var sut = this._kernel.Get<GameResultsController>();
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
+
+            // Act
+            var result = TestExtensions.GetModel<GameResultViewModel>(sut.Edit(testData));
+
+            // Assert
+            VerifyEdit(Times.Never());
+            Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
         /// <summary>
@@ -218,9 +332,44 @@
             _gameServiceMock.Verify(grs => grs.Delete(GAME_RESULT_ID), Times.Never);
         }
 
+        /// <summary>
+        /// Test for TournamentResults method. Tournament results are requested. Tournament results are returned.
+        /// </summary>
+        [TestMethod]
+        public void TournamentResults_TournamentResultsRequested_TournamentResultsReturned()
+        {
+            // Arrange
+            var testTournamentResults = new GameServiceTestFixture().TestGameResults().Build();
+            var sut = this._kernel.Get<GameResultsController>();
+            var expected = new TournamentResultsViewModelBuilder().Build();
+
+            SetupGameResultsGetTournamentResults(TOURNAMENT_ID, testTournamentResults);
+
+            // Act
+            var actual = TestExtensions.GetModel<TournamentResultsViewModel>(sut.TournamentResults(TOURNAMENT_ID, TOURNAMENT_NAME));
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new TournamentResultsViewModelComparer());
+        }
+
         #endregion
 
         #region Additional Methods
+
+        private void VerifyEdit(Times times)
+        {
+            this._gameServiceMock.Verify(ts => ts.Edit(It.IsAny<Game>()), times);
+        }
+
+        private void SetupGet(int gameResultId, GameResultDto gameResult)
+        {
+            this._gameServiceMock.Setup(tr => tr.Get(gameResultId)).Returns(gameResult);
+        }
+
+        private void SetupGameResultsGetTournamentResults(int tournamentId, List<GameResultDto> testData)
+        {
+            _gameServiceMock.Setup(m => m.GetTournamentResults(It.Is<int>(id => id == tournamentId))).Returns(testData);
+        }
 
         private void MockTeams()
         {

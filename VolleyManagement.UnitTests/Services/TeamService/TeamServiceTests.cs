@@ -95,6 +95,49 @@
         }
 
         /// <summary>
+        /// Test for Get() method. The method should return existing team
+        /// </summary>
+        [TestMethod]
+        public void GetById_TeamExist_TeamReturned()
+        {
+            // Arrange
+            var testData = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockGetTeamByIdQuery(testData);
+            var expected = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            var actual = sut.Get(SPECIFIC_TEAM_ID);
+
+            // Assert
+            TestHelper.AreEqual<Team>(expected, actual, new TeamComparer());            
+        }
+
+        /// <summary>
+        /// Test for GetTeamCaptain() method.
+        /// The method should return existing captain
+        /// </summary>
+        [TestMethod]
+        public void GetTeamCaptain_CaptainExist_PlayerReturned()
+        {
+            // Arrange
+            var captain = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
+            var team = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();
+            _getPlayerByIdQueryMock.Setup(pr =>
+                                          pr.Execute(It.Is<FindByIdCriteria>(cr =>
+                                                                             cr.Id == SPECIFIC_PLAYER_ID)))
+                                    .Returns(captain);
+            var expected = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            var actual = sut.GetTeamCaptain(team);
+
+            // Assert
+            TestHelper.AreEqual<Player>(expected, actual, new PlayerComparer());
+        }
+
+        /// <summary>
         /// Test for Create() method. The method should create a new team.
         /// </summary>
         [TestMethod]
@@ -188,6 +231,29 @@
             // Assert
             Assert.IsTrue(gotException);
             VerifyCreateTeam(newTeam, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. 
+        /// The method check case when captain is player of another team.
+        /// The method should create a new team.
+        /// </summary>
+        [TestMethod]
+        public void Create_PlayerIsNotCaptainOfExistingTeam_TeamCreated()
+        {
+            // Arrange
+            var newTeam = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();            
+            var captain = (new PlayerBuilder()).WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.IsAny<FindByIdCriteria>())).Returns(captain);
+            _getTeamByCaptainQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(null as Team);
+
+            // Act
+            var sut = _kernel.Get<TeamService>();
+            sut.Create(newTeam);
+
+            // Assert
+            Assert.AreEqual(newTeam.Id, captain.TeamId);
+            VerifyCreateTeam(newTeam, Times.Once());
         }
 
         /// <summary>
@@ -410,6 +476,29 @@
 
         /// <summary>
         /// Successful Test for SetPlayerTeam() method.
+        /// Case when edited player's is player of existing team but
+        /// player is not captain
+        /// </summary>
+        [TestMethod]
+        public void UpdatePlayerTeam_PlayerIsNotCaptainOfExistingTeam_PlayerUpdated()
+        {
+            // Arrange
+            MockGetPlayerByIdQuery(new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(ANOTHER_TEAM_ID).Build());
+            var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+
+            _getTeamByCaptainQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(null as Team);
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
+
+            // Act
+            var ts = _kernel.Get<TeamService>();
+            ts.UpdatePlayerTeam(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID);
+
+            // Assert
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Successful Test for SetPlayerTeam() method.
         /// </summary>
         [TestMethod]
         public void UpdatePlayerTeam_PlayerAndTeamPassed_PlayerUpdated()
@@ -436,6 +525,11 @@
         private void MockGetAllTeamsQuery(IEnumerable<Team> testData)
         {
             _getAllTeamsQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
+        }
+
+        private void MockGetTeamByIdQuery(Team testData)
+        {
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
         }
 
         private void MockGetPlayerByIdQuery(Player player)

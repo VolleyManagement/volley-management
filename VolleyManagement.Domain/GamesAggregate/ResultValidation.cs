@@ -89,11 +89,6 @@
         /// <returns>True if set scores are listed in the correct order; otherwise, false.</returns>
         public static bool AreSetScoresOrdered(IList<Score> setScores)
         {
-            if (setScores == null)
-            {
-                return true;
-            }
-
             Score score = new Score();
             bool hasMatchEnded = false;
 

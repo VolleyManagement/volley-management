@@ -13,7 +13,7 @@
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;    
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Defines TournamentsController
@@ -358,7 +358,7 @@
                 }
             }
             catch (ArgumentException e)
-            {
+        {
                 this.ModelState.AddModelError("ValidationError", e.Message);
             }
 
@@ -375,9 +375,9 @@
             var tournament = _tournamentService.Get(id);
 
             if (tournament == null)
-            {
+        {
                 return HttpNotFound();
-            }
+        }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
             return View(tournamentViewModel);

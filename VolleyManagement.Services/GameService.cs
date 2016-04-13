@@ -11,6 +11,7 @@
     using VolleyManagement.Data.Queries.GameResult;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.TournamentsAggregate; 
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 
     /// <summary>
@@ -28,6 +29,7 @@
 
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<Tournament, FindByIdCriteria> _tournamentByIdQuery; 
 
         #endregion
 
@@ -40,14 +42,17 @@
         /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
         /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
         /// of the specified tournament.</param>
+        /// /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
-            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
+            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
+            IQuery<Tournament, FindByIdCriteria> getTournamentByIdQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
+            _tournamentByIdQuery = getTournamentByIdQuery; 
         }
 
         #endregion
@@ -88,7 +93,11 @@
         /// <returns>List of game results of specified tournament.</returns>
         public List<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            return _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
+            var gameResults = _tournamentGameResultsQuery
+                .Execute(
+                new TournamentGameResultsCriteria { TournamentId = tournamentId });
+
+            return gameResults == null ? null : gameResults.ToList(); 
         }
 
         /// <summary>
@@ -126,6 +135,7 @@
         private void ValidateGame(Game game)
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
+            ValidateGameInTournament(game); 
             if (game.Result == null)
             {
                 game.Result = new Result();
@@ -219,6 +229,158 @@
             }
         }
 
+        private void ValidateGameInTournament(Game game)
+        {
+            Tournament tournament = _tournamentByIdQuery
+                .Execute(new FindByIdCriteria { Id = game.TournamentId });
+
+            if (tournament == null)
+            {
+                throw new ArgumentException(Resources.NoSuchToruanment); 
+            }
+
+            ValidateFreeDayGame(game);
+            ValidateGameDate(tournament, game);
+            ValidateGamesInRound(tournament.Id, game);             
+            if (tournament.Scheme == TournamentSchemeEnum.One)
+            {
+                ValidateGamesInTournamentSchemeOne(tournament.Id, game);
+            }
+            else if (tournament.Scheme == TournamentSchemeEnum.Two)
+            {
+                ValidateGamesInTournamentSchemeTwo(tournament.Id, game); 
+            }
+        }
+
+        private void ValidateGamesInRound(int tourunmentId, Game newGame)
+        {
+            var games = this.GetTournamentResults(tourunmentId);
+
+            if (games != null)
+            {
+                List<GameResultDto> gamesInRound = games.Where(gr => gr.Round == newGame.Round).ToList();
+
+                foreach (GameResultDto game in gamesInRound)
+                {
+                    if (GameValidation.AreSameOrderTeamsInGames(game, newGame))
+                    {
+                        throw new ArgumentException(
+                           string.Format(
+                           Resources.SameGameInRound,
+                           game.HomeTeamName,
+                           game.AwayTeamName,
+                           game.Round.ToString()));
+                    }
+
+                    if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
+                    {
+                        throw new ArgumentException(
+                          string.Format(
+                          Resources.SameTeamInRound,
+                           game.HomeTeamName,
+                           game.AwayTeamName));
+                    }
+                }
+            }
+        }
+
+        private void ValidateGamesInTournamentSchemeTwo(int tournamentId, Game newGame)
+        {
+            var allGames = this.GetTournamentResults(tournamentId);
+
+            if (allGames != null)
+            {
+                var games = allGames.Where(gr => gr.Round != newGame.Round).ToList(); 
+
+                var duplicates = games
+                    .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
+                    .ToList();
+
+                if (GameValidation.IsFreeDayGame(newGame))
+                {
+                    if (duplicates.Count == GameValidation.MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO)
+                    {
+                        throw new ArgumentException(
+                            string.Format(
+                            Resources.SameGameInTournamentSchemeTwo,
+                            duplicates.First().HomeTeamName,
+                            duplicates.First().AwayTeamName));
+                    }
+                }
+                else
+                {
+                    if (duplicates.Count > 0)
+                    {
+                        SwitchTeamsOrder(newGame);
+
+                        int switchedDuplicatesCount = games
+                            .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
+                            .Count();
+
+                        if (switchedDuplicatesCount > 0)
+                        {
+                            throw new ArgumentException(
+                            string.Format(
+                            Resources.SameGameInTournamentSchemeTwo,
+                            duplicates.First().HomeTeamName,
+                            duplicates.First().AwayTeamName));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ValidateGamesInTournamentSchemeOne(int tournamentId, Game newGame)
+        {
+            var queryGames = this.GetTournamentResults(tournamentId);
+
+            List<GameResultDto> games = queryGames == null
+                ? new List<GameResultDto>() : queryGames.ToList();
+
+            var duplicates = games
+                .Where(x => GameValidation.AreSameTeamsInGames(x, newGame))
+                .ToList(); 
+
+            if (duplicates.Count > 0)
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.SameGameInTournamentSchemeOne,
+                    duplicates.First().HomeTeamName,
+                    duplicates.First().AwayTeamName));
+            } 
+        }
+
+        private void ValidateFreeDayGame(Game game)
+        {
+            if (GameValidation.IsFreeDayTeam(game.HomeTeamId) 
+                && GameValidation.IsFreeDayTeam(game.AwayTeamId))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.NoTeamsInGame, game.Round));
+            }
+            else if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
+            {
+                SwitchTeamsOrder(game);
+            }
+        }
+
+        private void ValidateGameDate(Tournament tournament, Game game)
+        {
+            if (DateTime.Compare(tournament.GamesStart, game.GameDate) > 0
+                || DateTime.Compare(tournament.GamesEnd, game.GameDate) < 0)
+            {
+                throw new ArgumentException(Resources.WrongRoundDate);
+            }
+        }
+
+        private void SwitchTeamsOrder(Game game)
+        {
+            int tempHomeId = game.HomeTeamId; 
+            game.HomeTeamId = game.AwayTeamId; 
+            game.AwayTeamId = tempHomeId; 
+        }
         #endregion
     }
 }

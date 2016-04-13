@@ -106,6 +106,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithNullResult()
         {
+            _game.GameDate = DateTime.Parse(DATE);
             _game.Result = null;
             return this;
         }
@@ -180,6 +181,17 @@
             _game.Result.SetScores.Clear();
             _game.Result.SetScores.AddRange(scores);
             return this;
+        }
+
+        /// <summary>
+        /// Sets the game date to given date
+        /// </summary>
+        /// <param name="date">Date to set</param>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithStartDate(DateTime date)
+        {
+            this._game.GameDate = date;
+            return this; 
         }
 
         /// <summary>
@@ -308,6 +320,46 @@
             };
 
             return this;
+        }
+
+        /// <summary>
+        /// Sets the round number for game
+        /// </summary>
+        /// <param name="roundNumber">number of the round</param>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithRound(byte roundNumber)
+        {
+            this._game.Round = roundNumber;
+            return this; 
+        } 
+
+        public GameBuilder TestRoundGame()
+        {
+            this._game.TournamentId = 1;
+            this._game.HomeTeamId = 1;
+            this._game.AwayTeamId = 2;
+            this._game.Round = 1; 
+
+            return this; 
+        }
+
+        public GameBuilder TestRoundGameSwithedTeams()
+        {
+            this._game.TournamentId = 1;
+            this._game.HomeTeamId = 2;
+            this._game.AwayTeamId = 1;
+            this._game.Round = 1;
+
+            return this;
+        }
+
+        public GameBuilder TestFreeDayGame()
+        {
+            this._game.HomeTeamId = 1;
+            this._game.AwayTeamId = 0;
+            this._game.Round = 1; 
+
+            return this; 
         }
 
         #endregion

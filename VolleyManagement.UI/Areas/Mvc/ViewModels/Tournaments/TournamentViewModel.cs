@@ -22,6 +22,7 @@
         {
             this.Scheme = TournamentSchemeEnum.One;
             this.InitializeSeasonsList();
+            this.InitializeTournamentSchemeList();
             this.IsTransferEnabled = true;
             this.Divisions = new List<DivisionViewModel>() { new DivisionViewModel() };
         }
@@ -32,6 +33,12 @@
         /// <value>The list of seasons.</value>
         [ScriptIgnore]
         public Dictionary<short, string> SeasonsList { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of possible tournament schemes.
+        /// </summary>
+        /// <value>The list of tournament schemes.</value>
+        public Dictionary<int, TournamentSchemeEnum> TournamentSchemeList { get; set; }
 
         /// <summary>
         /// Gets or sets the default season
@@ -175,7 +182,7 @@
                 ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
                 TransferEnd = tournament.TransferEnd,
-                IsTransferEnabled = tournament.TransferStart == null || tournament.TransferStart == null ? false : true
+                IsTransferEnabled = tournament.TransferStart == null || tournament.TransferEnd == null ? false : true
             };
 
             tournamentViewModel.Divisions = tournament.Divisions.Select(d => DivisionViewModel.Map(d)).ToList();
@@ -229,6 +236,22 @@
                 }
 
                 this.SeasonsList.Add(year, str);
+            }
+        }
+
+        /// <summary>
+        /// Initializes schemes of tournament. Right now we don't want to have 2,5 variant
+        /// </summary>
+        private void InitializeTournamentSchemeList()
+        {
+            this.TournamentSchemeList = new Dictionary<int, TournamentSchemeEnum>();
+
+            foreach (TournamentSchemeEnum scheme in Enum.GetValues(typeof(TournamentSchemeEnum)))
+            {
+                if (scheme != TournamentSchemeEnum.TwoAndHalf)
+                {
+                    this.TournamentSchemeList.Add((int)scheme, scheme);
+                }
             }
         }
     }

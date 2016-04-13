@@ -112,7 +112,7 @@
         /// <summary>
         /// Builds a test player view model
         /// </summary>
-        /// <returns>test tournament view model</returns>
+        /// <returns>test player view view model</returns>
         public PlayerViewModel Build()
         {
             return _playerViewModel;

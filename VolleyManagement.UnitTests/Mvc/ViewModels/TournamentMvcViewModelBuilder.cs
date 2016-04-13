@@ -39,6 +39,7 @@
                 GamesEnd = new DateTime(2015, 12, 03),
                 TransferStart = new DateTime(2015, 10, 01),
                 TransferEnd = new DateTime(2015, 11, 01),
+                IsTransferEnabled = true,
                 Divisions = new List<DivisionViewModel>
                 {
                     new DivisionViewModel()

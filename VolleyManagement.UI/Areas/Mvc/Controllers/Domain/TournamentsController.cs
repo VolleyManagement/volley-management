@@ -1,15 +1,11 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using App_GlobalResources;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
@@ -339,6 +335,5 @@
         {
             return Convert.ToByte(2 * GetCountRoundByScheme1(countTeams));
         }
-
     }
 }

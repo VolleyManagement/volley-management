@@ -1,12 +1,13 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.GamesAggregate;
     using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
-    /// Builder for test MVC user view models
+    /// Builder for test MVC game result view models
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class GameResultViewModelBuilder
@@ -25,7 +26,10 @@
             {
                 HomeTeamId = 1,
                 AwayTeamId = 2,
-
+                HomeTeamName = "HomeTeam",
+                AwayTeamName = "AwayTeam",
+                GameDate = DateTime.Parse("2016-04-03 10:00"),
+                Round = 1,
                 SetsScore = new Score(3, 1),
                 SetScores = new List<Score>()
                     {
@@ -35,8 +39,8 @@
                         new Score(24, 26),
                         new Score()
                     },
-
-                IsTechnicalDefeat = false
+                IsTechnicalDefeat = false,
+                TournamentId = 1
             };
         }
 
@@ -92,6 +96,73 @@
         public GameResultViewModelBuilder WithAwayTeamId(int awayTeamId)
         {
             _gameResultsViewModel.AwayTeamId = awayTeamId;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets away team name of test game results view model
+        /// </summary>
+        /// <param name="awayTeamName">Value indicates away team name</param>
+        /// <returns>Game result view model builder object</returns>
+        public GameResultViewModelBuilder WithAwayTeamName(string awayTeamName)
+        {
+            _gameResultsViewModel.AwayTeamName = awayTeamName;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets home team name of test game results view model
+        /// </summary>
+        /// <param name="homeTeamName">Value indicates home team name</param>
+        /// <returns>Game result view model builder object</returns>
+        public GameResultViewModelBuilder WithHomeTeamName(string homeTeamName)
+        {
+            _gameResultsViewModel.HomeTeamName = homeTeamName;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets date of game
+        /// </summary>
+        /// <param name="date">Value indicates game's date</param>
+        /// <returns>Game result view model builder object</returns>
+        public GameResultViewModelBuilder WithDate(DateTime date)
+        {
+            _gameResultsViewModel.GameDate = date;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets round for game
+        /// </summary>
+        /// <param name="round">Value indicates round for particular game</param>
+        /// <returns>Game result view model builder object</returns>
+        public GameResultViewModelBuilder WithRound(int round)
+        {
+            _gameResultsViewModel.Round = round;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets home and away sets score for game
+        /// </summary>
+        /// <param name="homeSetScore">Value indicates sets score for home team</param>
+        /// <param name="awaySetsScore">Value indicates sets score for away team</param>
+        /// <returns>Game result view model builder object</returns>
+        public GameResultViewModelBuilder WithSetsScore(byte homeSetScore, byte awaySetsScore)
+        {
+            _gameResultsViewModel.SetsScore = new Score(homeSetScore, awaySetsScore);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets home and away set scores for game
+        /// </summary>
+        /// <param name="setScores">Value indicates set scores of game results</param>
+        /// <returns>Game result view model builder object</returns>
+        public GameResultViewModelBuilder WithSetScores(List<Score> setScores)
+        {
+            _gameResultsViewModel.SetScores = setScores;
             return this;
         }
 

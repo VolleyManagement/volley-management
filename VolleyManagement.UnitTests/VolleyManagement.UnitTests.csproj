@@ -121,10 +121,15 @@
     <Compile Include="Mvc\ViewModels\ContributorteamDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\ContributorTeamViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\DivisionViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerNameMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerNameViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
@@ -132,6 +137,8 @@
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TeamNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentResultsViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentResultsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentTeamsListViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />

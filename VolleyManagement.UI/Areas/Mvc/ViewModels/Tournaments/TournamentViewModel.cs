@@ -182,7 +182,7 @@
                 ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
                 TransferStart = tournament.TransferStart,
                 TransferEnd = tournament.TransferEnd,
-                IsTransferEnabled = tournament.TransferStart == null || tournament.TransferStart == null ? false : true
+                IsTransferEnabled = tournament.TransferStart == null || tournament.TransferEnd == null ? false : true
             };
 
             tournamentViewModel.Divisions = tournament.Divisions.Select(d => DivisionViewModel.Map(d)).ToList();

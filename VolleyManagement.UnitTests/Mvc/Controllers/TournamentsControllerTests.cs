@@ -37,6 +37,12 @@
         private const string INDEX_ACTION_NAME = "Index";
         private const string SHOW_SCHEDULE_ACTION_NAME = "ShowSchedule";
         private const string ROUTE_VALUES_KEY = "action";
+        private const int DAYS_TO_APPLYING_PERIOD_START = 14;
+        private const int DAYS_FOR_APPLYING_PERIOD = 14;
+        private const int DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START = 7;
+        private const int DAYS_FOR_GAMES_PERIOD = 120;
+        private const int DAYS_FROM_GAMES_START_TO_TRANSFER_START = 1;
+        private const int DAYS_FOR_TRANSFER_PERIOD = 21;
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -428,7 +434,19 @@
         public void CreateGetAction_GetTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
-            var expected = new TournamentViewModel();
+            var expected = new TournamentViewModel()
+            {
+                ApplyingPeriodStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
+                ApplyingPeriodEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD),
+                GamesStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
+                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
+                GamesEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
+                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FOR_GAMES_PERIOD),
+                TransferStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
+                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
+                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
+                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START + DAYS_FOR_TRANSFER_PERIOD)
+            };
 
             // Act
             var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Create());

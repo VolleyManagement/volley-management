@@ -121,10 +121,13 @@
     <Compile Include="Mvc\ViewModels\ContributorteamDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\ContributorTeamViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\DivisionViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\GameViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
@@ -136,6 +139,8 @@
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TeamNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentResultsViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentResultsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentTeamsListViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />
@@ -143,6 +148,7 @@
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
+    <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
     <Compile Include="Services\GameService\GameResultDtoBuilder.cs" />
     <Compile Include="Services\GameService\GameResultDtoComparer.cs" />
     <Compile Include="Mvc\ViewModels\UserEditMvcViewModelBuilder.cs" />

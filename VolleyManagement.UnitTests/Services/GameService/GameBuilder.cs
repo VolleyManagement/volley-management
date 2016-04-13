@@ -307,7 +307,7 @@
         /// Sets the set scores in a way that they are not listed in the correct order.
         /// </summary>
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
-        public GameBuilder WithSetScoresUnordered()
+        public GameBuilder WithSetScoresUnorderedForHomeTeam()
         {
             _game.Result.SetsScore = new Score(3, 1);
             _game.Result.SetScores = new List<Score>
@@ -360,6 +360,157 @@
             this._game.Round = 1; 
 
             return this; 
+        }
+
+        /// <summary>
+        /// Sets the set scores in a way that they are not listed in the correct order.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithSetScoresUnorderedForAwayTeam()
+        {
+            _game.Result.SetsScore = new Score(2, 3);
+            _game.Result.SetScores = new List<Score>
+            {
+                new Score(0, 25),
+                new Score(0, 25),
+                new Score(0, 25),
+                new Score(25, 0),
+                new Score(25, 0),
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the set scores for home team win with a technical win in a way that they are valid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithTechnicalDefeatValidSetScoresHomeTeamWin()
+        {
+            _game.Result.IsTechnicalDefeat = true;
+            _game.Result.SetsScore = new Score(3, 0);
+            _game.Result.SetScores = new List<Score>
+            {
+                new Score(25, 0),
+                new Score(25, 0),
+                new Score(25, 0),
+                new Score(0, 0),
+                new Score(0, 0)
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the set scores for away team win with a technical win in a way that they are valid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithTechnicalDefeatValidSetScoresAwayTeamWin()
+        {
+            _game.Result.IsTechnicalDefeat = true;
+            _game.Result.SetsScore = new Score(0, 3);
+            _game.Result.SetScores = new List<Score>
+            {
+                new Score(0, 25),
+                new Score(0, 25),
+                new Score(0, 25),
+                new Score(0, 0),
+                new Score(0, 0)
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the sets score for home team win with a technical win in a way that they are invalid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithTechnicalDefeatInvalidSetsScore()
+        {
+            _game.Result.IsTechnicalDefeat = true;
+            _game.Result.SetsScore = new Score(2, 0);
+            _game.Result.SetScores = new List<Score>
+            {
+                new Score(25, 0),
+                new Score(25, 0),
+                new Score(0, 0),
+                new Score(0, 0),
+                new Score(0, 0)
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the set scores for home team win with a technical win in a way that they are invalid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithTechnicalDefeatInvalidSetScores()
+        {
+            _game.Result.IsTechnicalDefeat = true;
+            _game.Result.SetsScore = new Score(3, 0);
+            _game.Result.SetScores = new List<Score>
+            {
+                new Score(25, 0),
+                new Score(25, 0),
+                new Score(24, 0),
+                new Score(0, 0),
+                new Score(0, 0)
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the set scores for home team win with a technical win in a way that they are valid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithTechnicalDefeatValidOptional()
+        {
+            _game.Result.IsTechnicalDefeat = true;
+            _game.Result.SetsScore = new Score(3, 0);
+            _game.Result.SetScores = new List<Score>
+            {
+                new Score(0, 0),
+                new Score(0, 0),
+                new Score(0, 0),
+                new Score(0, 0),
+                new Score(0, 0)
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the set scores for away team win in a way that they are invalid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithSetScoresNull()
+        {
+            _game.Result.IsTechnicalDefeat = true;
+            _game.Result.SetsScore = new Score(0, 3);
+            _game.Result.SetScores = null;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the set scores in a way that they are invalid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithOrdinarySetsScoreInvalid()
+        {
+            _game.Result.SetsScore = new Score(4, 1);
+            _game.Result.SetScores = new List<Score>
+            {
+                new Score(0, 25),
+                new Score(0, 25),
+                new Score(0, 25),
+                new Score(0, 25),
+                new Score(25, 0)
+            };
+
+            return this;
         }
 
         #endregion

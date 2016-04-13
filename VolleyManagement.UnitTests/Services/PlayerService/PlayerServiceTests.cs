@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.PlayerService
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
@@ -92,6 +93,62 @@
         }
 
         /// <summary>
+        /// Test for Get() method. The method should return existing player by id
+        /// </summary>
+        [TestMethod]
+        public void Get_PlayerExist_PlayerReturned()
+        {
+            // Arrange
+            var testData = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
+            MockGetByIdQuery(testData);
+            var sut = _kernel.Get<PlayerService>();
+            var expected = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
+
+            // Act
+            var actual = sut.Get(SPECIFIC_PLAYER_ID);
+
+            // Assert        
+            TestHelper.AreEqual<Player>(expected, actual, new PlayerComparer());
+        }
+
+        /// <summary>
+        /// Test for GetPlayerTeam() method. The method should return existing player team by player object
+        /// </summary>
+        [TestMethod]
+        public void GetPlayerTeam_TeamExist_TeamReturned()
+        {
+            // Arrange
+            var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var testPlayer = new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build();
+            MockGetTeamByIdQuery(testTeam);
+            var sut = _kernel.Get<PlayerService>();
+            var expected = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+
+            // Act
+            var actual = sut.GetPlayerTeam(testPlayer);
+
+            // Assert        
+            TestHelper.AreEqual<Team>(expected, actual, new TeamComparer());
+        }
+
+        /// <summary>
+        /// Test for GetPlayerTeam() method. The method should return null by player object with no team
+        /// </summary>
+        [TestMethod]
+        public void GetPlayerTeam_PlayerWithNoTeam_NullReturned()
+        {
+            // Arrange
+            var testPlayer = new PlayerBuilder().WithNoTeam().Build();
+            var sut = _kernel.Get<PlayerService>();
+
+            // Act
+            var actual = sut.GetPlayerTeam(testPlayer);
+
+            // Assert        
+            Assert.IsNull(actual);
+        }
+
+        /// <summary>
         /// Test for Create() method. The method should create a new player.
         /// </summary>
         [TestMethod]
@@ -106,6 +163,34 @@
 
             // Assert
             VerifyCreatePlayer(newPlayer, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method should throw ArgumentNullException.
+        /// Player must not be created
+        /// </summary>
+        [TestMethod]
+        public void Create_InvalidNullPlayer_ArgumentNullExceptionIsThrown()
+        {
+            bool gotException = false;
+
+            // Arrange
+            Player newPlayer = null;
+            var sut = _kernel.Get<PlayerService>();
+
+            // Act
+            try
+            {
+                sut.Create(newPlayer);
+            }
+            catch (ArgumentNullException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyCreatePlayer(newPlayer, Times.Never());
         }
 
         /// <summary>
@@ -219,19 +304,29 @@
             VerifyEditPlayer(playerToEdit, Times.Once());
         }
 
+        private void MockGetByIdQuery(Player player)
+        {
+            _getPlayerByIdQueryMock.Setup(pq => pq.Execute(It.IsAny<FindByIdCriteria>())).Returns(player);
+        }
+
+        private void MockGetTeamByIdQuery(Team team)
+        {
+            _getTeamByIdQueryMock.Setup(pq => pq.Execute(It.IsAny<FindByIdCriteria>())).Returns(team);
+        }
+
         private void MockGetAllQuery(IEnumerable<Player> testData)
         {
             _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.AsQueryable());
         }
 
-        private bool PlayersAreEqual(Player x, Player y)
-        {
-            return new PlayerComparer().Compare(x, y) == 0;
-        }
-
         private void MockGetTeamByCaptainIdQuery(Team team)
         {
             _getTeamByCaptainQueryMock.Setup(t => t.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(team);
+        }
+
+        private bool PlayersAreEqual(Player x, Player y)
+        {
+            return new PlayerComparer().Compare(x, y) == 0;
         }
 
         private void VerifyCreatePlayer(Player player, Times times)

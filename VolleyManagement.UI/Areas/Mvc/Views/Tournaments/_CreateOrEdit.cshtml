@@ -41,7 +41,7 @@
     @Html.LabelFor(model => model.Scheme)
 </div>
 <div class="editor-field">
-    @Html.DropDownListFor(model => model.Scheme)
+    @Html.DropDownListFor(model => model.Scheme, new SelectList(Model.TournamentSchemeList, "Key", "Value", Model.Scheme))
     @Html.ValidationMessageFor(model => model.Scheme)
 </div>
 

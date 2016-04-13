@@ -4,10 +4,10 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Contracts;
-    using Domain.ContributorsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
     using VolleyManagement.UnitTests.Mvc.ViewModels;

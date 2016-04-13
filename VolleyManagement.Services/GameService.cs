@@ -97,17 +97,7 @@
                 .Execute(
                 new TournamentGameResultsCriteria { TournamentId = tournamentId });
 
-            return gameResults == null ? new List<GameResultDto>() : gameResults.ToList(); 
-        }
-
-        /// <summary>
-        /// Gets the tournament by game tournament id
-        /// </summary>
-        /// <param name="tournamentId">id of the tournament</param>
-        /// <returns>Matching tournament</returns>
-        public Tournament GetTournamentById(int tournamentId)
-        {
-            return _tournamentByIdQuery.Execute(new FindByIdCriteria { Id = tournamentId }); 
+            return gameResults == null ? null : gameResults.ToList(); 
         }
 
         /// <summary>
@@ -241,7 +231,8 @@
 
         private void ValidateGameInTournament(Game game)
         {
-            Tournament tournament = GetTournamentById(game.TournamentId);
+            Tournament tournament = _tournamentByIdQuery
+                .Execute(new FindByIdCriteria { Id = game.TournamentId });
 
             if (tournament == null)
             {
@@ -263,70 +254,77 @@
 
         private void ValidateGamesInRound(int tourunmentId, Game newGame)
         {
-            List<GameResultDto> gamesInRound = this.GetTournamentResults(tourunmentId)
-                .Where(gr => gr.Round == newGame.Round).ToList();
+            var games = this.GetTournamentResults(tourunmentId);
 
-            foreach (GameResultDto game in gamesInRound)
+            if (games != null)
             {
-                 if (GameValidation.AreSameOrderTeamsInGames(game, newGame))
-                 {
-                     throw new ArgumentException(
-                        string.Format(
-                        Resources.SameGameInRound,
-                        game.HomeTeamName,
-                        game.AwayTeamName,
-                        game.Round.ToString()));
-                 }
+                List<GameResultDto> gamesInRound = games.Where(gr => gr.Round == newGame.Round).ToList();
 
-                if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
+                foreach (GameResultDto game in gamesInRound)
                 {
-                    throw new ArgumentException(
-                      string.Format(
-                      Resources.SameTeamInRound,
-                       game.HomeTeamName,
-                       game.AwayTeamName));
+                    if (GameValidation.AreSameOrderTeamsInGames(game, newGame))
+                    {
+                        throw new ArgumentException(
+                           string.Format(
+                           Resources.SameGameInRound,
+                           game.HomeTeamName,
+                           game.AwayTeamName,
+                           game.Round.ToString()));
+                    }
+
+                    if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
+                    {
+                        throw new ArgumentException(
+                          string.Format(
+                          Resources.SameTeamInRound,
+                           game.HomeTeamName,
+                           game.AwayTeamName));
+                    }
                 }
             }
         }
 
         private void ValidateGamesInTournamentSchemeTwo(int tournamentId, Game newGame)
         {
-            var games = this.GetTournamentResults(tournamentId)
-                .Where(gr => gr.Round != newGame.Round)
-                .ToList();
+            var allGames = this.GetTournamentResults(tournamentId);
 
-            var duplicates = games
-                .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
-                .ToList(); 
-
-            if (GameValidation.IsFreeDayGame(newGame))
+            if (allGames != null)
             {
-                if (duplicates.Count == GameValidation.MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO)
-                {
-                    throw new ArgumentException(
-                        string.Format(
-                        Resources.SameGameInTournamentSchemeTwo,
-                        duplicates.First().HomeTeamName,
-                        duplicates.First().AwayTeamName));
-                }
-            }
-            else
-            {
-                if (duplicates.Count > 0)
-                {
-                    SwitchTeamsOrder(newGame);
+                var games = allGames.Where(gr => gr.Round != newGame.Round).ToList(); 
 
-                    int switchedDuplicatesCount = games
-                        .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
-                        .Count(); 
+                var duplicates = games
+                    .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
+                    .ToList();
 
-                    if (switchedDuplicatesCount > 0)
+                if (GameValidation.IsFreeDayGame(newGame))
+                {
+                    if (duplicates.Count == GameValidation.MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO)
                     {
                         throw new ArgumentException(
-                        string.Format(
-                        Resources.SameGameInTournamentSchemeTwo,
-                        duplicates.First().HomeTeamName,
-                        duplicates.First().AwayTeamName));
+                            string.Format(
+                            Resources.SameGameInTournamentSchemeTwo,
+                            duplicates.First().HomeTeamName,
+                            duplicates.First().AwayTeamName));
+                    }
+                }
+                else
+                {
+                    if (duplicates.Count > 0)
+                    {
+                        SwitchTeamsOrder(newGame);
+
+                        int switchedDuplicatesCount = games
+                            .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
+                            .Count();
+
+                        if (switchedDuplicatesCount > 0)
+                        {
+                            throw new ArgumentException(
+                            string.Format(
+                            Resources.SameGameInTournamentSchemeTwo,
+                            duplicates.First().HomeTeamName,
+                            duplicates.First().AwayTeamName));
+                        }
                     }
                 }
             }

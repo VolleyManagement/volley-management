@@ -48,6 +48,12 @@
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
+        private readonly string NoTeamsInGame
+            = "No teams are specified for current game in round {0}";
+
+        private readonly string WrongRoundDate
+            = "Start of the round should not be earlier than the start of the tournament or later than the end of the tournament";
+        
         private IKernel _kernel;
 
         /// <summary>
@@ -242,10 +248,23 @@
         public void Create_GameWithNoResult_GameCreatedWithDefaultResult()
         {
             // Arrange
-            var newGame = new GameBuilder().WithNullResult().Build();
-            var sut = _kernel.Get<GameService>();
-            var expectedGameToCreate = new GameBuilder().WithDefaultResult().Build();
+            var tournament = new TournamentBuilder()
+                .TestTournament()
+                .WithScheme(TournamentSchemeEnum.One)
+                .Build();
 
+            SetupGetTournamentById(tournament.Id, tournament); 
+
+            var newGame = new GameBuilder()
+                .WithNullResult()
+                .WithTournamentId(tournament.Id)
+                .Build();
+            var sut = _kernel.Get<GameService>();
+            var expectedGameToCreate = new GameBuilder()
+                .WithDefaultResult()
+                .WithTournamentId(tournament.Id)
+                .Build();
+            
             // Act
             sut.Create(newGame);
 
@@ -257,14 +276,17 @@
         /// Tests creation of the game with invalid date 
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Create_GameSetEarlyDateTime_ExceptionThrown()
+        public void Create_GameBeforeTournamentStarts_ExceptionThrown()
         {
             // Arrange
+            Exception exception = null; 
+            
             Tournament tournament = new TournamentBuilder()
                 .WithApplyingPeriodStart(DateTime.Parse(TOURNAMENT_DATE_START))
                 .WithApplyingPeriodEnd(DateTime.Parse(TOURNAMENT_DATE_END))
                 .Build();
+
+            SetupGetTournamentById(tournament.Id, tournament); 
 
             Game game = new GameBuilder()
                 .WithTournamentId(tournament.Id)
@@ -274,10 +296,18 @@
             var sut = _kernel.Get<GameService>(); 
 
             // Act 
-            sut.Create(game); 
+            try
+            {
+                sut.Create(game);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
 
             // Assert 
-            VerifyCreateGame(game, Times.Never()); 
+            VerifyCreateGame(game, Times.Never());
+            VerifyExceptionThrown(exception, WrongRoundDate); 
         }
 
         /// <summary>
@@ -350,10 +380,10 @@
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_SameFreeDayInRound_ExceptionThrown()
+        public void Create_SecondFreeDayInRound_ExceptionThrown()
         {
             // Arrange
-            bool excaptionWasThrown = false; 
+           Exception exception = null; 
 
             var freeDayGame = new GameBuilder()
                 .TestFreeDayGame()
@@ -372,13 +402,15 @@
             {
                 sut.Create(duplicateFreeDayGame); 
             }
-            catch (ArgumentException)
+            catch (ArgumentException ex)
             {
-                excaptionWasThrown = true; 
+                exception = ex; 
             }
             
             // Assert 
-            Assert.IsTrue(excaptionWasThrown); 
+            VerifyExceptionThrown(
+                exception,
+                string.Format(NoTeamsInGame, duplicateFreeDayGame.Round));
         }
 
         [TestMethod] 
@@ -458,7 +490,7 @@
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void Create_SameGameSwithedTeamsTournamentSchemeOne_ExceptionThrown()
+        public void Create_SameGameSwitchedTeamsTournamentSchemeOne_ExceptionThrown()
         {
             // Arrange 
             bool exceptionThrown = false;

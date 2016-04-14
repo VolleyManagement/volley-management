@@ -49,7 +49,7 @@
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTeamsQuery;
-        private readonly IQuery<TournamentDto, TournamentDtoCriteria> _getTournamentDtoQuery; 
+        private readonly IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria> _getTournamentDtoQuery; 
 
         #endregion
 
@@ -70,7 +70,7 @@
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
-            IQuery<TournamentDto, TournamentDtoCriteria> getTournamentDtoQuery)
+            IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria> getTournamentDtoQuery)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
@@ -125,11 +125,11 @@
         /// Finds tournament data transfer object by torunament id
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
-        /// <returns>The <see cref="TournamentDto"/></returns>
-        public TournamentDto GetTournamentScheduleInfo(int tournamentId)
+        /// <returns>The <see cref="TournamentScheduleDto"/></returns>
+        public TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId)
         {
             return _getTournamentDtoQuery
-                .Execute(new TournamentDtoCriteria { TournamentId = tournamentId });
+                .Execute(new TournamentScheduleDtoCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>

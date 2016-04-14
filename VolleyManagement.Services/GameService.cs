@@ -104,6 +104,8 @@
         /// <param name="game">Game to update.</param>
         public void Edit(Game game)
         {
+            ValidateGame(game);
+
             try
             {
                 _gameRepository.Update(game);

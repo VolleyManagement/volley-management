@@ -33,6 +33,10 @@
 
         private const string TOURNAMENT_DATE_END = "2016-04-04 10:00";
 
+        private const string BEFORE_TOURNAMENT_DATE = "2016-04-02 07:00";
+
+        private const string LATE_TOURNAMENT_DATE = "2016-04-06 10:00"; 
+
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -553,7 +557,7 @@
 
             Game game = new GameBuilder()
                 .WithTournamentId(tournament.Id)
-                .WithStartDate(DateTime.Parse("2016-04-02 07:00"))
+                .WithStartDate(DateTime.Parse(BEFORE_TOURNAMENT_DATE))
                 .Build();
 
             var sut = _kernel.Get<GameService>(); 
@@ -588,7 +592,7 @@
 
             Game game = new GameBuilder()
                 .WithTournamentId(tournament.Id)
-                .WithStartDate(DateTime.Parse("2016-04-06 10:00"))
+                .WithStartDate(DateTime.Parse(LATE_TOURNAMENT_DATE))
                 .Build();
 
             var sut = _kernel.Get<GameService>();
@@ -887,6 +891,7 @@
         public void Edit_GameValid_GameEdited()
         {
             // Arrange
+            AddTestTournament(); 
             var game = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -906,6 +911,7 @@
             Exception exception = null;
 
             // Arrange
+            AddTestTournament(); 
             var game = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 

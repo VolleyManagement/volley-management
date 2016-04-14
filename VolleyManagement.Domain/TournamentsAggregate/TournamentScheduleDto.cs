@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents tournament data transfer object 
     /// </summary>
-    public class TournamentDto
+    public class TournamentScheduleDto
     {
         /// <summary>
         /// Gets or sets id of the tournament data transfer object

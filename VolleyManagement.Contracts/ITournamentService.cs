@@ -45,8 +45,8 @@
         /// Finds tournament data transfer object by torunament id
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
-        /// <returns>The <see cref="TournamentDto"/></returns>
-        TournamentDto GetTournamentScheduleInfo(int tournamentId);
+        /// <returns>The <see cref="TournamentScheduleDto"/></returns>
+        TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId);
 
         /// <summary>
         /// Create new tournament.

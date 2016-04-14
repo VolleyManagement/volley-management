@@ -59,8 +59,8 @@
         private readonly Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getAllTeamsQuery =
             new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
 
-        private readonly Mock<IQuery<TournamentDto, TournamentDtoCriteria>> _getTorunamentDto =
-            new Mock<IQuery<TournamentDto, TournamentDtoCriteria>>(); 
+        private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria>> _getTorunamentDto =
+            new Mock<IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria>>(); 
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -80,7 +80,7 @@
             _kernel.Bind<IQuery<List<Tournament>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
             _kernel.Bind<IQuery<Tournament, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>().ToConstant(_getAllTeamsQuery.Object);
-            _kernel.Bind<IQuery<TournamentDto, TournamentDtoCriteria>>().ToConstant(_getTorunamentDto.Object); 
+            _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria>>().ToConstant(_getTorunamentDto.Object); 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;

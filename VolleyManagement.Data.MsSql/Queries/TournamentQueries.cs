@@ -84,7 +84,7 @@
         /// Finds tournament data transfer object by tournament id 
         /// </summary>
         /// <param name="criteria">Tournament id criteria</param>
-        /// <returns>Tournament data transfer object</returns>
+        /// <returns>The <see cref="TournamentDto"/></returns>
         public TournamentDto Execute(TournamentDtoCriteria criteria)
         {
             return this._unitOfWork.Context.Tournaments.Where(t => t.Id == criteria.TournamentId)

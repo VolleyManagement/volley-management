@@ -42,6 +42,13 @@
         List<Team> GetAllTournamentTeams(int tournamentId);
 
         /// <summary>
+        /// Finds tournament data transfer object by torunament id
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>The <see cref="TournamentDto"/></returns>
+        public TournamentDto GetTournamentScheduleInfo(int tournamentId);
+
+        /// <summary>
         /// Create new tournament.
         /// </summary>
         /// <param name="tournament">New tournament</param>

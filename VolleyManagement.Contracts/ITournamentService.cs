@@ -74,11 +74,17 @@
         void DeleteTeamFromTournament(int teamId, int tournamentId);
 
         /// <summary>
+        /// Finds tournament data transfer object by torunament id
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>The <see cref="TournamentDto"/></returns>
+        TournamentDto GetTournamentScheduleInfo(int tournamentId);
+
+        /// <summary>
         /// Counts number of rounds for specified tournament
         /// </summary>
         /// <param name="tournament">Tournament for which we count rounds</param>
-        /// <param name="teamCount">Count of teams in tournament</param>
         /// <returns>Number of rounds</returns>
-        byte GetNumberOfRounds(Tournament tournament, int teamCount);
+        byte GetNumberOfRounds(TournamentDto tournament);
     }
 }

@@ -15,6 +15,7 @@
         private const int TOURNAMENT_DEFAULT_ID = 1;
 
         private const string TEST_START_DATE  = "2016-04-02 10:00";
+
         private const string TEST_END_DATE = "2016-04-05 10:00"; 
 
         /// <summary>

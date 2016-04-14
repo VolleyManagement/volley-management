@@ -276,7 +276,7 @@
         /// <returns>View for view model of the schedule with specified identifier.</returns>    
         public ActionResult ShowSchedule(int tournamentId)
         {
-            var tournament = _tournamentService.Get(tournamentId);
+            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
 
             if (tournament == null)
             {
@@ -284,12 +284,11 @@
                 return View();
             }
 
-            var tournamentTeamsCount = _tournamentService.GetAllTournamentTeams(tournamentId).Count;
             var scheduleViewModel = new ScheduleViewModel
             {
                 TournamentId = tournament.Id,
                 TournamentName = tournament.Name,
-                NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament, tournamentTeamsCount),
+                NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                                      .GroupBy(d => d.Round)
                                      .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)
@@ -306,7 +305,7 @@
         /// <returns>View to schedule a game in tournament</returns>
         public ActionResult ScheduleGame(int tournamentId)
         {
-            var tournament = _tournamentService.Get(tournamentId);
+            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
 
             if (tournament == null)
             {
@@ -315,7 +314,7 @@
             }
 
             var tournamentTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var roundsNumber = _tournamentService.GetNumberOfRounds(tournament, tournamentTeams.Count);
+            var roundsNumber = _tournamentService.GetNumberOfRounds(tournament);
             if (roundsNumber <= 0)
             {
                 this.ModelState.AddModelError("LoadError", TournamentController.SchedulingError);
@@ -325,6 +324,7 @@
             var scheduleGameViewModel = new GameViewModel
             {
                 TournamentId = tournamentId,
+                GameDate = tournament.StartDate,
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
@@ -349,16 +349,16 @@
 
                     if (redirectToSchedule)
                     {
-                        return RedirectToAction("ShowSchedule", new { tournamentId = gameViewModel.TournamentId });                       
-                }
+                        return RedirectToAction("ShowSchedule", new { tournamentId = gameViewModel.TournamentId });
+                    }
                     else
                     {
                         ModelState.Clear();
-            }
+                    }
                 }
             }
             catch (ArgumentException e)
-        {
+            {
                 this.ModelState.AddModelError("ValidationError", e.Message);
             }
 
@@ -375,9 +375,9 @@
             var tournament = _tournamentService.Get(id);
 
             if (tournament == null)
-        {
+            {
                 return HttpNotFound();
-        }
+            }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
             return View(tournamentViewModel);

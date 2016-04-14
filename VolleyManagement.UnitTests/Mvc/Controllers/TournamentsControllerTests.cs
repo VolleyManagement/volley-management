@@ -779,7 +779,7 @@
         private void SetupGetTournamentNumberOfRounds(Tournament tournament, byte numberOfRounds)
         {
             this._tournamentServiceMock
-                .Setup(tr => tr.GetNumberOfRounds(tournament, It.IsAny<int>()))
+                .Setup(tr => tr.GetNumberOfRounds(It.IsAny<TournamentDto>()))
                 .Returns(numberOfRounds);
         }
 

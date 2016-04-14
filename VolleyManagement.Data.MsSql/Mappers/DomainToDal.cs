@@ -169,7 +169,7 @@
             to.Id = from.Id;
             to.TournamentId = from.TournamentId;
             to.HomeTeamId = from.HomeTeamId;
-            to.AwayTeamId = from.AwayTeamId;
+            to.AwayTeamId = (from.AwayTeamId == 0) ? (int?)null : from.AwayTeamId;
             to.HomeSetsScore = from.Result.SetsScore.Home;
             to.AwaySetsScore = from.Result.SetsScore.Away;
             to.IsTechnicalDefeat = from.Result.IsTechnicalDefeat;

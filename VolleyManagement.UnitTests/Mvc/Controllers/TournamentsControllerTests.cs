@@ -30,6 +30,7 @@
     public class TournamentsControllerTests
     {
         private const int TEST_TOURNAMENT_ID = 1;
+        private const string TEST_TOURNAMENT_NAME = "Name";
         private const int TEST_TEAM_ID = 1;
         private const int EMPTY_TEAMLIST_COUNT = 0;
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
@@ -43,6 +44,7 @@
         private const int DAYS_FOR_GAMES_PERIOD = 120;
         private const int DAYS_FROM_GAMES_START_TO_TRANSFER_START = 1;
         private const int DAYS_FOR_TRANSFER_PERIOD = 21;
+        private static readonly DateTime TEST_DATE = new DateTime(2016, 07, 25);
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -157,15 +159,18 @@
         public void ShowScheduleGetAction_TournamentExists_ScheduleViewModelIsReturned()
         {
             // Arrange
-            const int TEST_ROUND_COUNT = 1;
-            var tournament = new TournamentBuilder().WithScheme(TournamentSchemeEnum.One).Build();
+            const int TEST_ROUND_COUNT = 3;
+            var tournament = new TournamentDto 
+            {
+                Id = TEST_TOURNAMENT_ID, 
+                Name = TEST_TOURNAMENT_NAME, 
+                Scheme = TournamentSchemeEnum.One 
+            };
             var expectedGames = new GameServiceTestFixture().TestGameResults().Build();
-            var teams = new TeamServiceTestFixture().TestTeams().Build();
             var expected = new ScheduleViewModelBuilder().Build();
 
             SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
-            _tournamentServiceMock.Setup(t => t.Get(It.IsAny<int>())).Returns(tournament);
-            _tournamentServiceMock.Setup(t => t.GetAllTournamentTeams(It.IsAny<int>())).Returns(teams);
+            _tournamentServiceMock.Setup(t => t.GetTournamentScheduleInfo(TEST_TOURNAMENT_ID)).Returns(tournament);
             _gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
 
             // Act
@@ -268,15 +273,16 @@
             const int MIN_ROUND_NUMBER = 1;
             const int TEST_ROUND_COUNT = 3;
 
-            var testTournament = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var testTournament = new TournamentDto { Id = TEST_TOURNAMENT_ID, StartDate = TEST_DATE };
             var testTeams = MakeTestTeams();
-            SetupGet(TEST_TOURNAMENT_ID, testTournament);
+            SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
             SetupGetTournamentNumberOfRounds(testTournament, TEST_ROUND_COUNT);
 
             var expected = new GameViewModel
             {
                 TournamentId = TEST_TOURNAMENT_ID,
+                GameDate = TEST_DATE,
                 Teams = new SelectList(testTeams, "Id", "Name"),
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, TEST_ROUND_COUNT))
             };
@@ -776,16 +782,21 @@
                 .Returns(teams);
         }
 
-        private void SetupGetTournamentNumberOfRounds(Tournament tournament, byte numberOfRounds)
+        private void SetupGetTournamentNumberOfRounds(TournamentDto tournament, byte numberOfRounds)
         {
             this._tournamentServiceMock
-                .Setup(tr => tr.GetNumberOfRounds(tournament, It.IsAny<int>()))
+                .Setup(tr => tr.GetNumberOfRounds(tournament))
                 .Returns(numberOfRounds);
         }
 
         private void SetupGet(int tournamentId, Tournament tournament)
         {
             this._tournamentServiceMock.Setup(tr => tr.Get(tournamentId)).Returns(tournament);
+        }
+
+        private void SetupGetScheduleInfo(int tournamentId, TournamentDto tournament)
+        {
+            this._tournamentServiceMock.Setup(tr => tr.GetTournamentScheduleInfo(tournamentId)).Returns(tournament);
         }
 
         private void SetupCreateThrowsTournamentValidationException()

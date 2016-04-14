@@ -94,7 +94,7 @@
                     Name = tr.Name,
                     StartDate = tr.GamesStart,
                     Scheme = (TournamentSchemeEnum)tr.Scheme,
-                    TeamCount = Convert.ToByte(tr.Teams.Count())
+                    TeamCount = (byte)tr.Teams.Count()
                 })
                 .SingleOrDefault();
         }

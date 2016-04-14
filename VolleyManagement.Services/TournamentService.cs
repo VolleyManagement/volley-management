@@ -232,19 +232,18 @@
         /// Counts number of rounds for specified tournament
         /// </summary>
         /// <param name="tournament">Tournament for which we count rounds</param>
-        /// <param name="teamCount">Count of teams in tournament</param>
         /// <returns>Number of rounds</returns>
-        public byte GetNumberOfRounds(Tournament tournament, int teamCount)
+        public byte GetNumberOfRounds(TournamentDto tournament)
         {
             byte numberOfRounds = 0;
 
             switch (tournament.Scheme)
             {
                 case TournamentSchemeEnum.One:
-                    numberOfRounds = GetNumberOfRoundsByScheme1(teamCount);
+                    numberOfRounds = GetNumberOfRoundsByScheme1(tournament.TeamCount);
                     break;
                 case TournamentSchemeEnum.Two:
-                    numberOfRounds = GetNumberOfRoundsByScheme2(teamCount);
+                    numberOfRounds = GetNumberOfRoundsByScheme2(tournament.TeamCount);
                     break;
             }
 

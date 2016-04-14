@@ -28,7 +28,7 @@
             {
                 TournamentId = 1,
                 TournamentName = "Name",
-                NumberOfRounds = 1,
+                NumberOfRounds = 3,
                 Rounds = new GameServiceTestFixture().TestGameResults()
                                      .Build().GroupBy(d => d.Round)
                                      .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)

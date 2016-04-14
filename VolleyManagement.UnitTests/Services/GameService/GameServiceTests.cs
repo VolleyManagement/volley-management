@@ -79,11 +79,9 @@
         public void Create_GameValid_GameCreated()
         {
             // Arrange
+            AddTestTournament(); 
             var newGame = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
-
-            Tournament tournament = new TournamentBuilder().TestTournament().Build();
-            SetupGetTournamentById(tournament.Id, tournament); 
 
             // Act
             sut.Create(newGame);
@@ -161,7 +159,7 @@
             // Act
             try
             {
-            sut.Create(newGame);
+                sut.Create(newGame);
             }
             catch (ArgumentException ex)
             {
@@ -360,17 +358,13 @@
         public void Create_GameAwayTeamTechnicalWinValidData_GameCreated()
         {
             // Arrange
-            var tournament = new TournamentBuilder()
-                .TestTournament()
-                .WithScheme(TournamentSchemeEnum.One)
+            AddTestTournament(); 
+
+            var newGame = new GameBuilder()
+                .WithTechnicalDefeatValidSetScoresAwayTeamWin()
+                .WithTournamentId(1)
                 .Build();
-
-            SetupGetTournamentById(tournament.Id, tournament); 
-
-            var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresAwayTeamWin().Build();
             var sut = _kernel.Get<GameService>();
-
-
 
             // Act
             sut.Create(newGame);
@@ -524,21 +518,14 @@
         public void Create_GameWithNoResult_GameCreatedWithDefaultResult()
         {
             // Arrange
-            var tournament = new TournamentBuilder()
-                .TestTournament()
-                .WithScheme(TournamentSchemeEnum.One)
-                .Build();
-
-            SetupGetTournamentById(tournament.Id, tournament); 
+            AddTestTournament(); 
 
             var newGame = new GameBuilder()
                 .WithNullResult()
-                .WithTournamentId(tournament.Id)
                 .Build();
             var sut = _kernel.Get<GameService>();
             var expectedGameToCreate = new GameBuilder()
                 .WithDefaultResult()
-                .WithTournamentId(tournament.Id)
                 .Build();
             
             // Act
@@ -961,7 +948,9 @@
 
         private void SetupGet(GameResultDto gameResult)
         {
-            _getByIdQueryMock.Setup(m => m.Execute(It.Is<FindByIdCriteria>(c => c.Id == gameResult.Id))).Returns(gameResult);
+            _getByIdQueryMock
+                .Setup(m => m.Execute(It.Is<FindByIdCriteria>(c => c.Id == gameResult.Id)))
+                .Returns(gameResult);
         }
 
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> gameResults)
@@ -1030,7 +1019,8 @@
                 .WithScheme(TournamentSchemeEnum.One)
                 .Build();
 
-            SetupGetTournamentById(tournament.Id, tournament); 
+            SetupGetTournamentById(tournament.Id, tournament);
+            SetupGetTournamentResults(tournament.Id, new List<GameResultDto>()); 
         }
     }
 }

@@ -93,11 +93,9 @@
         /// <returns>List of game results of specified tournament.</returns>
         public List<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            var gameResults = _tournamentGameResultsQuery
+            return _tournamentGameResultsQuery
                 .Execute(
                 new TournamentGameResultsCriteria { TournamentId = tournamentId });
-
-            return gameResults == null ? null : gameResults.ToList(); 
         }
 
         /// <summary>
@@ -239,105 +237,107 @@
                 throw new ArgumentException(Resources.NoSuchToruanment); 
             }
 
+            List<GameResultDto> allGames = this.GetTournamentResults(tournament.Id); 
+
             ValidateFreeDayGame(game);
             ValidateGameDate(tournament, game);
-            ValidateGamesInRound(tournament.Id, game);             
+            ValidateGamesInRound(game, allGames);             
             if (tournament.Scheme == TournamentSchemeEnum.One)
             {
-                ValidateGamesInTournamentSchemeOne(tournament.Id, game);
+                ValidateGamesInTournamentSchemeOne(game, allGames);
             }
             else if (tournament.Scheme == TournamentSchemeEnum.Two)
             {
-                ValidateGamesInTournamentSchemeTwo(tournament.Id, game); 
+                ValidateGamesInTournamentSchemeTwo(game, allGames); 
             }
         }
 
-        private void ValidateGamesInRound(int tourunmentId, Game newGame)
+        private void ValidateGamesInRound(Game newGame, List<GameResultDto> games)
         {
-            var games = this.GetTournamentResults(tourunmentId);
+            GameResultDto existingGame = games.Where(gr => gr.Id == newGame.Id).SingleOrDefault(); 
 
-            if (games != null)
+            List<GameResultDto> gamesInRound = games
+                .Where(gr => gr.Round == newGame.Round)
+                .ToList();
+
+            foreach (GameResultDto game in gamesInRound)
             {
-                List<GameResultDto> gamesInRound = games.Where(gr => gr.Round == newGame.Round).ToList();
-
-                foreach (GameResultDto game in gamesInRound)
+                if (IsEditedGame(game, newGame))
                 {
-                    if (GameValidation.AreSameOrderTeamsInGames(game, newGame))
-                    {
-                        throw new ArgumentException(
-                           string.Format(
-                           Resources.SameGameInRound,
-                           game.HomeTeamName,
-                           game.AwayTeamName,
-                           game.Round.ToString()));
-                    }
+                    continue; // this game is edited and exists
+                }
 
-                    if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
-                    {
-                        throw new ArgumentException(
-                          string.Format(
-                          Resources.SameTeamInRound,
-                           game.HomeTeamName,
-                           game.AwayTeamName));
-                    }
+                if (GameValidation.AreSameOrderTeamsInGames(game, newGame))
+                {
+                    throw new ArgumentException(
+                       string.Format(
+                       Resources.SameGameInRound,
+                       game.HomeTeamName,
+                       game.AwayTeamName,
+                       game.Round.ToString()));
+                }
+
+                if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
+                {
+                    throw new ArgumentException(
+                      string.Format(
+                      Resources.SameTeamInRound,
+                       game.HomeTeamName,
+                       game.AwayTeamName));
                 }
             }
         }
 
-        private void ValidateGamesInTournamentSchemeTwo(int tournamentId, Game newGame)
+        private void ValidateGamesInTournamentSchemeTwo(Game newGame, List<GameResultDto> games)
         {
-            var allGames = this.GetTournamentResults(tournamentId);
+            var tournamentGames = games
+                .Where(gr => gr.Round != newGame.Round)
+                .ToList();
 
-            if (allGames != null)
+            var duplicates = tournamentGames
+                .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
+                .ToList();
+
+            if (GameValidation.IsFreeDayGame(newGame))
             {
-                var games = allGames.Where(gr => gr.Round != newGame.Round).ToList(); 
-
-                var duplicates = games
-                    .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
-                    .ToList();
-
-                if (GameValidation.IsFreeDayGame(newGame))
+                if (duplicates.Count == GameValidation.MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO)
                 {
-                    if (duplicates.Count == GameValidation.MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO)
+                    throw new ArgumentException(
+                        string.Format(
+                        Resources.SameGameInTournamentSchemeTwo,
+                        duplicates.First().HomeTeamName,
+                        duplicates.First().AwayTeamName));
+                }
+            }
+            else
+            {
+                if (duplicates.Count > 0)
+                {
+                    SwitchTeamsOrder(newGame);
+
+                    int switchedDuplicatesCount = tournamentGames
+                        .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
+                        .Count();
+
+                    if (switchedDuplicatesCount > 0)
                     {
                         throw new ArgumentException(
-                            string.Format(
-                            Resources.SameGameInTournamentSchemeTwo,
-                            duplicates.First().HomeTeamName,
-                            duplicates.First().AwayTeamName));
-                    }
-                }
-                else
-                {
-                    if (duplicates.Count > 0)
-                    {
-                        SwitchTeamsOrder(newGame);
-
-                        int switchedDuplicatesCount = games
-                            .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
-                            .Count();
-
-                        if (switchedDuplicatesCount > 0)
-                        {
-                            throw new ArgumentException(
-                            string.Format(
-                            Resources.SameGameInTournamentSchemeTwo,
-                            duplicates.First().HomeTeamName,
-                            duplicates.First().AwayTeamName));
-                        }
+                        string.Format(
+                        Resources.SameGameInTournamentSchemeTwo,
+                        duplicates.First().HomeTeamName,
+                        duplicates.First().AwayTeamName));
                     }
                 }
             }
         }
 
-        private void ValidateGamesInTournamentSchemeOne(int tournamentId, Game newGame)
+        private void ValidateGamesInTournamentSchemeOne(Game newGame, List<GameResultDto> games)
         {
-            var queryGames = this.GetTournamentResults(tournamentId);
+            List<GameResultDto> tournamentGames = games
+                .Where(gr => gr.Round != newGame.Round)
+                .ToList();
 
-            List<GameResultDto> games = queryGames == null
-                ? new List<GameResultDto>() : queryGames.ToList();
-
-            var duplicates = games
+            var duplicates = tournamentGames
                 .Where(x => GameValidation.AreSameTeamsInGames(x, newGame))
                 .ToList(); 
 
@@ -381,6 +381,14 @@
             game.HomeTeamId = game.AwayTeamId; 
             game.AwayTeamId = tempHomeId; 
         }
+
+        private bool IsEditedGame(GameResultDto gameFromList, Game gameToCheck)
+        {
+            return gameFromList.Id == gameToCheck.Id
+                && gameFromList.HomeTeamId == gameToCheck.HomeTeamId
+                && gameFromList.AwayTeamId == gameToCheck.AwayTeamId; 
+        }
+
         #endregion
     }
 }

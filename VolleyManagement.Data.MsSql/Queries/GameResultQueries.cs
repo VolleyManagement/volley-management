@@ -47,7 +47,10 @@
         /// <returns>Domain model of game result.</returns>
         public GameResultDto Execute(FindByIdCriteria criteria)
         {
-            return _dalGameResults.Where(gr => gr.Id == criteria.Id).Select(GetGameResultWithTeamNamesMapping()).SingleOrDefault();
+            return _dalGameResults
+                .Where(gr => gr.Id == criteria.Id)
+                .Select(GetGameResultWithTeamNamesMapping())
+                .SingleOrDefault();
         }
 
         /// <summary>
@@ -57,8 +60,9 @@
         /// <returns>List of domain models of game result.</returns>
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
-            var gameResults = _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
-                     .Select(GetGameResultWithTeamNamesMapping());
+            var gameResults = _dalGameResults
+                .Where(gr => gr.TournamentId == criteria.TournamentId)
+                .Select(GetGameResultWithTeamNamesMapping());
 
             return gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
         }

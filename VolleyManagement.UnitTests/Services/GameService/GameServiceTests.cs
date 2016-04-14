@@ -154,6 +154,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithInvalidSetsScore().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -181,6 +182,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithSetsScoreNoMatchSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -207,6 +209,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithInvalidRequiredSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -233,6 +236,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithInvalidOptionalSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -259,6 +263,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithPreviousOptionalSetUnplayed().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -285,6 +290,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithSetScoresUnorderedForHomeTeam().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -311,6 +317,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithSetScoresUnorderedForAwayTeam().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -335,6 +342,7 @@
         public void Create_GameHomeTeamTechnicalWinValidData_GameCreated()
         {
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -352,8 +360,17 @@
         public void Create_GameAwayTeamTechnicalWinValidData_GameCreated()
         {
             // Arrange
+            var tournament = new TournamentBuilder()
+                .TestTournament()
+                .WithScheme(TournamentSchemeEnum.One)
+                .Build();
+
+            SetupGetTournamentById(tournament.Id, tournament); 
+
             var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresAwayTeamWin().Build();
             var sut = _kernel.Get<GameService>();
+
+
 
             // Act
             sut.Create(newGame);
@@ -371,6 +388,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetsScore().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -397,6 +415,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -423,6 +442,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatValidOptional().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -449,6 +469,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithSetScoresNull().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -475,6 +496,7 @@
             Exception exception = null;
 
             // Arrange
+            ApplyValidTournament();
             var newGame = new GameBuilder().WithOrdinarySetsScoreInvalid().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -999,6 +1021,16 @@
         {
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
+        }
+
+        private void ApplyValidTournament()
+        {
+            var tournament = new TournamentBuilder()
+                .TestTournament()
+                .WithScheme(TournamentSchemeEnum.One)
+                .Build();
+
+            SetupGetTournamentById(tournament.Id, tournament); 
         }
     }
 }

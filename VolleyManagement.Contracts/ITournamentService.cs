@@ -46,7 +46,7 @@
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
         /// <returns>The <see cref="TournamentDto"/></returns>
-        public TournamentDto GetTournamentScheduleInfo(int tournamentId);
+        TournamentDto GetTournamentScheduleInfo(int tournamentId);
 
         /// <summary>
         /// Create new tournament.

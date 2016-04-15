@@ -270,7 +270,7 @@
                     continue; // this game is edited and exists
                 }
 
-                if (GameValidation.AreSameOrderTeamsInGames(game, newGame))
+                if (GameValidation.AreSameTeamsInGames(game, newGame))
                 {
                     if (GameValidation.IsFreeDayGame(newGame))
                     {

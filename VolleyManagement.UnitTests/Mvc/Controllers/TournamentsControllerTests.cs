@@ -291,7 +291,7 @@
             var actual = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(new GameViewModelComparer().AreEqual(actual, expected));
+            VerifyEquality(actual, expected);
         }
         #endregion
 
@@ -841,6 +841,33 @@
             Assert.IsFalse(_sut.ModelState.IsValid);
             Assert.IsTrue(_sut.ModelState.ContainsKey(expectedKey));
             Assert.IsNull(gameViewModel);
+        }
+
+        private void VerifyEquality(GameViewModel x, GameViewModel y) 
+        {
+            const string WRONG_TOURNAMENT_ID = "In recieved GameViewModel tournament Id is not like expected";
+            const string WRONG_HOME_TEAM_ID = "In recieved GameViewModel home team Id is not like expected";
+            const string WRONG_AWAY_TEAM_ID = "In recieved GameViewModel away team Id is not like expected";
+            const string WRONG_ROUND = "In recieved GameViewModel round is not like expected";
+            const string WRONG_GAME_DATE = "In recieved GameViewModel game date is not like expected";
+            const string WRONG_TEAMS = "In recieved GameViewModel teams are not like expected";
+            const string WRONG_ROUNDS = "In recieved GameViewModel rounds are not like expected";
+            
+            Assert.AreEqual(x.TournamentId, y.TournamentId, WRONG_TOURNAMENT_ID);
+            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, WRONG_HOME_TEAM_ID);
+            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, WRONG_AWAY_TEAM_ID);
+            Assert.AreEqual(x.Round, y.Round, WRONG_ROUND);
+            Assert.AreEqual(x.GameDate, y.GameDate, WRONG_GAME_DATE);
+
+            Assert.IsTrue(x.Teams != null &&
+                          y.Teams != null &&
+                          x.Teams.Select(team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
+                          y.Teams.Select(team => new { Text = team.Text, Value = team.Value })), WRONG_TEAMS);
+            
+            Assert.IsTrue(x.Rounds != null &&
+                          y.Rounds != null &&
+                         (x.Rounds.Items as IEnumerable<int>).SequenceEqual(
+                          y.Rounds.Items as IEnumerable<int>), WRONG_ROUNDS);            
         }
         #endregion
     }

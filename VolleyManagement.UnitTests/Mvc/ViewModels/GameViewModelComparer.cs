@@ -63,14 +63,8 @@
 
             if (result && x.Teams != null)
             {
-                result &= x.Teams.Select(team => team.Value).SequenceEqual(
-                          y.Teams.Select(team => team.Value));
-            }
-
-            if (result && x.TeamsWithFreeDay != null)
-            {
-                result &= x.TeamsWithFreeDay.Select(team => team.Value).SequenceEqual(
-                          y.TeamsWithFreeDay.Select(team => team.Value));
+                result &= x.Teams.Select(team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
+                          y.Teams.Select(team => new { Text = team.Text, Value = team.Value }));
             }
 
             if (result && x.Rounds != null)

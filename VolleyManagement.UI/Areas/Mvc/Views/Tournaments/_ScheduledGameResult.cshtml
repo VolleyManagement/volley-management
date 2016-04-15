@@ -2,7 +2,7 @@
 
 <div class="table-bordered">
 
-    @if (Model.AwayTeamId == 0)
+    @if (!Model.AwayTeamId.HasValue)
     {
         <div class="row">
             <div class="col-md-2">

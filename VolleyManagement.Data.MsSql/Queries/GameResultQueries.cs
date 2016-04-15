@@ -74,7 +74,7 @@
                 Id = gr.Id,
                 TournamentId = gr.TournamentId,
                 HomeTeamId = gr.HomeTeamId,
-                AwayTeamId = gr.AwayTeamId.HasValue ? gr.AwayTeamId.Value : 0,
+                AwayTeamId = gr.AwayTeamId,
                 HomeTeamName = gr.HomeTeam.Name,
                 AwayTeamName = gr.AwayTeam.Name,
                 HomeSetsScore = gr.HomeSetsScore,

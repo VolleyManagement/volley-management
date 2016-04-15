@@ -37,7 +37,7 @@ else
             @Html.LabelFor(model => model.AwayTeamId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.AwayTeamId, Model.TeamsWithFreeDay, new { @class = "form-control" })
+            @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, @Resources.TournamentViews.FreeDay , new { @class = "form-control" })
         </div>
 
         <div class="editor-label">

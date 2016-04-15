@@ -131,14 +131,14 @@
         }
         #endregion
 
-        #region ShowScheduleGetAction
+        #region ShowSchedule
 
         /// <summary>
-        /// Test for ShowSchedule method (POST action).
+        /// Test for ShowSchedule method.
         /// Wrong tournament Id passed. View with error message is returned.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_NonExistentTournament_ErrorViewIsReturned()
+        public void ShowSchedule_NonExistentTournament_ErrorViewIsReturned()
         {
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
@@ -152,11 +152,11 @@
         }
 
         /// <summary>
-        /// Test for ShowSchedule method (POST action).
+        /// Test for ShowSchedule method.
         /// Valid schedule is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_TournamentExists_ScheduleViewModelIsReturned()
+        public void ShowSchedule_TournamentExists_ScheduleViewModelIsReturned()
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;

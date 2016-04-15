@@ -134,7 +134,7 @@
         #region ShowScheduleGetAction
 
         /// <summary>
-        /// Test for ShowSchedule method (POST action).
+        /// Test for ShowSchedule method (GET action).
         /// Wrong tournament Id passed. View with error message is returned.
         /// </summary>
         [TestMethod]
@@ -148,30 +148,68 @@
 
             // Assert
             Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
             Assert.IsNull(result);
         }
 
         /// <summary>
-        /// Test for ShowSchedule method (POST action).
-        /// Valid schedule is passed, no exception occurred.
+        /// Test for ShowSchedule method (GET action).
+        /// Valid rounds is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_TournamentExists_ScheduleViewModelIsReturned()
+        public void ShowScheduleGetAction_ValidRounds_ScheduleViewModelIsReturned()
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;
+
             var tournament = new TournamentDto 
             {
-                Id = TEST_TOURNAMENT_ID, 
-                Name = TEST_TOURNAMENT_NAME, 
-                Scheme = TournamentSchemeEnum.One 
+                Id = TEST_TOURNAMENT_ID,
+                Name = TEST_TOURNAMENT_NAME,
+                Scheme = TournamentSchemeEnum.One
             };
-            var expectedGames = new GameServiceTestFixture().TestGameResults().Build();
+
             var expected = new ScheduleViewModelBuilder().Build();
 
             SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
-            _tournamentServiceMock.Setup(t => t.GetTournamentScheduleInfo(TEST_TOURNAMENT_ID)).Returns(tournament);
-            _gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
+            SetupGetScheduleInfo(TEST_TOURNAMENT_ID, tournament);
+            SetupGetTournamentResults(
+                TEST_TOURNAMENT_ID,
+                new GameServiceTestFixture().TestGameResults().Build());
+
+            // Act
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsTrue(new ScheduleViewModelComparer().AreRoundsEqual(actual.Rounds, expected.Rounds));
+        }
+
+        /// <summary>
+        /// Test for ShowSchedule method (GET action).
+        /// Valid schedule is passed, no exception occurred.
+        /// </summary>
+        [TestMethod]
+        public void ShowScheduleGetAction_ValidScheduleViewModel_ScheduleViewModelIsReturned()
+        {
+            // Arrange
+            const int TEST_ROUND_COUNT = 3;
+
+            var tournament = new TournamentDto 
+            {
+                Id = TEST_TOURNAMENT_ID,
+                Name = TEST_TOURNAMENT_NAME,
+                Scheme = TournamentSchemeEnum.One
+            };
+
+            SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
+            SetupGetScheduleInfo(
+                TEST_TOURNAMENT_ID,
+                tournament);
+            SetupGetTournamentResults(
+                TEST_TOURNAMENT_ID,
+                new GameServiceTestFixture().TestGameResults().Build());
+            
+            var expected = new ScheduleViewModelBuilder().Build();
 
             // Act
             var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
@@ -797,6 +835,11 @@
         private void SetupGetScheduleInfo(int tournamentId, TournamentDto tournament)
         {
             this._tournamentServiceMock.Setup(tr => tr.GetTournamentScheduleInfo(tournamentId)).Returns(tournament);
+        }
+
+        private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
+        {       
+            this._gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
         }
 
         private void SetupCreateThrowsTournamentValidationException()

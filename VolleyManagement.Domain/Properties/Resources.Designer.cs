@@ -196,6 +196,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Free day game has already been scheduled in this round.
+        /// </summary>
+        public static string SameFreeDayGameInRound {
+            get {
+                return ResourceManager.GetString("SameFreeDayGameInRound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled for round number {2}.
         /// </summary>
         public static string SameGameInRound {
@@ -223,7 +232,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team {0} or {1} has game scheduled already in this round.
+        ///   Looks up a localized string similar to Team {0} has game scheduled already in this round.
         /// </summary>
         public static string SameTeamInRound {
             get {

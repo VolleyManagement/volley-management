@@ -11,7 +11,8 @@
     using VolleyManagement.Data.Queries.GameResult;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.TournamentsAggregate; 
+    using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.Data.Queries.Tournament; 
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 
     /// <summary>
@@ -29,7 +30,7 @@
 
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
-        private readonly IQuery<Tournament, FindByIdCriteria> _tournamentByIdQuery; 
+        private readonly IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria> _tournamentScheduleDtoByIdQuery; 
 
         #endregion
 
@@ -47,12 +48,12 @@
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
-            IQuery<Tournament, FindByIdCriteria> getTournamentByIdQuery)
+            IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria> getTournamentByIdQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
-            _tournamentByIdQuery = getTournamentByIdQuery; 
+            _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery; 
         }
 
         #endregion
@@ -231,24 +232,24 @@
 
         private void ValidateGameInTournament(Game game)
         {
-            Tournament tournament = _tournamentByIdQuery
-                .Execute(new FindByIdCriteria { Id = game.TournamentId });
+            TournamentScheduleDto tournamentDto = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleDtoCriteria { TournamentId = game.TournamentId });
 
-            if (tournament == null)
+            if (tournamentDto == null)
             {
                 throw new ArgumentException(Resources.NoSuchToruanment); 
             }
 
-            List<GameResultDto> allGames = this.GetTournamentResults(tournament.Id); 
+            List<GameResultDto> allGames = this.GetTournamentResults(tournamentDto.Id); 
 
             ValidateFreeDayGame(game);
-            ValidateGameDate(tournament, game);
+            ValidateGameDate(tournamentDto, game);
             ValidateGamesInRound(game, allGames);             
-            if (tournament.Scheme == TournamentSchemeEnum.One)
+            if (tournamentDto.Scheme == TournamentSchemeEnum.One)
             {
                 ValidateGamesInTournamentSchemeOne(game, allGames);
             }
-            else if (tournament.Scheme == TournamentSchemeEnum.Two)
+            else if (tournamentDto.Scheme == TournamentSchemeEnum.Two)
             {
                 ValidateGamesInTournamentSchemeTwo(game, allGames); 
             }
@@ -271,6 +272,11 @@
 
                 if (GameValidation.AreSameOrderTeamsInGames(game, newGame))
                 {
+                    if (GameValidation.IsFreeDayGame(newGame))
+                    {
+                        throw new ArgumentException(Resources.SameFreeDayGameInRound);
+                    }
+
                     throw new ArgumentException(
                        string.Format(
                        Resources.SameGameInRound,
@@ -281,11 +287,27 @@
 
                 if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
                 {
+                    if (GameValidation.IsFreeDayGame(newGame))
+                    {
+                        throw new ArgumentException(Resources.SameFreeDayGameInRound);
+                    }
+
+                    string coinsidedTeamName = string.Empty; 
+
+                    if (game.HomeTeamId == newGame.HomeTeamId 
+                        || game.HomeTeamId == newGame.AwayTeamId)
+                    {
+                        coinsidedTeamName = game.HomeTeamName; 
+                    }
+                    else 
+                    {
+                        coinsidedTeamName = game.AwayTeamName; 
+                    }
+
                     throw new ArgumentException(
-                      string.Format(
-                      Resources.SameTeamInRound,
-                       game.HomeTeamName,
-                       game.AwayTeamName));
+                             string.Format(
+                             Resources.SameTeamInRound,
+                             coinsidedTeamName));
                 }
             }
         }
@@ -345,11 +367,21 @@
 
             if (duplicates.Count > 0)
             {
+                string awayTeamName = string.Empty; 
+                if (GameValidation.IsFreeDayGame(newGame))
+                {
+                    awayTeamName = GameResultConstants.FREE_DAY_TEAM_NAME;   
+                }
+                else
+                {
+                    awayTeamName = duplicates.First().AwayTeamName;
+                }
+
                 throw new ArgumentException(
                     string.Format(
                     Resources.SameGameInTournamentSchemeOne,
                     duplicates.First().HomeTeamName,
-                    duplicates.First().AwayTeamName));
+                    awayTeamName));
             } 
         }
 
@@ -368,10 +400,10 @@
             }
         }
 
-        private void ValidateGameDate(Tournament tournament, Game game)
+        private void ValidateGameDate(TournamentScheduleDto tournament, Game game)
         {
-            if (DateTime.Compare(tournament.GamesStart, game.GameDate) > 0
-                || DateTime.Compare(tournament.GamesEnd, game.GameDate) < 0)
+            if (DateTime.Compare(tournament.StartDate, game.GameDate) > 0
+                || DateTime.Compare(tournament.EndDate, game.GameDate) < 0)
             {
                 throw new ArgumentException(Resources.WrongRoundDate);
             }
@@ -386,9 +418,8 @@
 
         private bool IsEditedGame(GameResultDto gameFromList, Game gameToCheck)
         {
-            return gameFromList.Id == gameToCheck.Id
-                && gameFromList.HomeTeamId == gameToCheck.HomeTeamId
-                && gameFromList.AwayTeamId == gameToCheck.AwayTeamId; 
+            return gameFromList.Id == gameToCheck.Id 
+                && GameValidation.AreSameTeamsInGames(gameFromList, gameToCheck);  
         }
 
         #endregion

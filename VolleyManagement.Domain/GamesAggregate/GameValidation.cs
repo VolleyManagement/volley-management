@@ -7,7 +7,7 @@
     {
         public const int FREE_DAY_TEAM_ID = 0;
 
-        public const int MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO = 2; 
+        public const int MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO = 2;
 
         /// <summary>
         /// Determines whether the home team and the away team are the same.

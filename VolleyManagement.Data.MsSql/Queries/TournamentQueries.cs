@@ -93,6 +93,7 @@
                     Id = tr.Id,
                     Name = tr.Name,
                     StartDate = tr.GamesStart,
+                    EndDate = tr.GamesEnd, 
                     Scheme = (TournamentSchemeEnum)tr.Scheme,
                     TeamCount = (byte)tr.Teams.Count()
                 })

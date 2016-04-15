@@ -233,7 +233,7 @@
         /// </summary>
         /// <param name="tournament">Tournament for which we count rounds</param>
         /// <returns>Number of rounds</returns>
-        public byte GetNumberOfRounds(TournamentDto tournament)
+        public byte GetNumberOfRounds(TournamentScheduleDto tournament)
         {
             byte numberOfRounds = 0;
 

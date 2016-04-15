@@ -23,6 +23,11 @@
         public DateTime StartDate { get; set; }
 
         /// <summary>
+        /// Gets or sets date of the tournament data transfer object 
+        /// </summary>
+        public DateTime EndDate { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of the teams in tournament 
         /// </summary>
         public byte TeamCount { get; set; }

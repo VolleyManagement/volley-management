@@ -11,7 +11,7 @@ else
         @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })
     </h2>
     
-    @if (Model.NumberOfRounds == 0)
+    if (Model.NumberOfRounds == 0)
     {
         <div class="col-md-2">@Resources.TournamentViews.TournamentTeamIsNotSelected</div>
     }

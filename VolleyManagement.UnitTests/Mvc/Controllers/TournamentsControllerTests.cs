@@ -157,7 +157,7 @@
         /// Valid rounds is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_ValidRounds_ScheduleViewModelIsReturned()
+        public void ShowScheduleGetAction_TournamentHasGamesScheduled_RoundsCreatedCorrectly()
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;

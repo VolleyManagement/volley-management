@@ -2,7 +2,7 @@
 
 <div class="table-bordered">
 
-    @if (Model.AwayTeamId == 0)
+    @if (!Model.AwayTeamId.HasValue)
     {
         <div class="row">
             <div class="col-md-2">
@@ -88,7 +88,7 @@
 
             <div class="row">
                 <div class="col-md-2">
-                    @Model.GameDate.ToString("d MMM dddd H:mm")
+                    @Model.ShortGameDate
                 </div>
             </div>
         }

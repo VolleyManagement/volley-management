@@ -12,7 +12,7 @@
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.Properties;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Data.Queries.Tournament; 
+    using VolleyManagement.Data.Queries.Tournament;
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 
     /// <summary>
@@ -30,7 +30,7 @@
 
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
-        private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery; 
+        private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
 
         #endregion
 
@@ -53,7 +53,7 @@
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
-            _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery; 
+            _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
         }
 
         #endregion
@@ -136,7 +136,7 @@
         private void ValidateGame(Game game)
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
-            ValidateGameInTournament(game); 
+            ValidateGameInTournament(game);
             if (game.Result == null)
             {
                 game.Result = new Result();
@@ -149,7 +149,7 @@
             ValidateSetScoresOrder(game.Result.SetScores);
         }
 
-        private void ValidateTeams(int homeTeamId, int awayTeamId)
+        private void ValidateTeams(int homeTeamId, int? awayTeamId)
         {
             if (GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
             {
@@ -237,21 +237,21 @@
 
             if (tournamentDto == null)
             {
-                throw new ArgumentException(Resources.NoSuchToruanment); 
+                throw new ArgumentException(Resources.NoSuchToruanment);
             }
 
-            List<GameResultDto> allGames = this.GetTournamentResults(tournamentDto.Id); 
+            List<GameResultDto> allGames = this.GetTournamentResults(tournamentDto.Id);
 
             ValidateFreeDayGame(game);
             ValidateGameDate(tournamentDto, game);
-            ValidateGameInRound(game, allGames);             
+            ValidateGameInRound(game, allGames);
             if (tournamentDto.Scheme == TournamentSchemeEnum.One)
             {
                 ValidateGamesInTournamentSchemeOne(game, allGames);
             }
             else if (tournamentDto.Scheme == TournamentSchemeEnum.Two)
             {
-                ValidateGamesInTournamentSchemeTwo(game, allGames); 
+                ValidateGamesInTournamentSchemeTwo(game, allGames);
             }
         }
 
@@ -261,8 +261,8 @@
                .Where(gr => gr.Round == newGame.Round)
                .ToList();
 
-            GameResultDto oldGameToUpdate = gamesInRound.Where(gr => gr.Id == newGame.Id).SingleOrDefault(); 
-            
+            GameResultDto oldGameToUpdate = gamesInRound.Where(gr => gr.Id == newGame.Id).SingleOrDefault();
+
             if (oldGameToUpdate == null)
             {
                 ValidateGameInRoundOnCreate(newGame, gamesInRound);
@@ -276,7 +276,7 @@
         private void ValidateGameInRoundOnCreate(Game newGame, List<GameResultDto> gamesInRound)
         {
             // We are sure that newGame is been created, not edited 
-           
+
             foreach (GameResultDto game in gamesInRound)
             {
                 if (GameValidation.AreSameTeamsInGames(game, newGame))
@@ -290,11 +290,11 @@
                     else
                     {
                         throw new ArgumentException(
-                            string.Format(
-                            Resources.SameGameInRound,
-                            game.HomeTeamName,
-                            game.AwayTeamName,
-                            game.Round.ToString()));
+                           string.Format(
+                           Resources.SameGameInRound,
+                           game.HomeTeamName,
+                           game.AwayTeamName,
+                           game.Round.ToString()));
                     }
                 }
                 else if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
@@ -320,8 +320,8 @@
                         }
 
                         throw new ArgumentException(
-                                 string.Format(
-                                 Resources.SameTeamInRound,
+                          string.Format(
+                          Resources.SameTeamInRound,
                                  opositeTeam));
                     }
                 }
@@ -336,7 +336,7 @@
             if (!GameValidation.AreSameTeamsInGames(oldGameToUpdate, newGame)
                 && GameValidation.IsTheSameTeamInTwoGames(oldGameToUpdate, newGame))
             {
-                int remainedTeamId = 0;
+                int? remainedTeamId = 0;
 
                 if (oldGameToUpdate.HomeTeamId != newGame.HomeTeamId
                     && oldGameToUpdate.HomeTeamId != newGame.AwayTeamId)
@@ -350,8 +350,8 @@
 
                 foreach (GameResultDto game in gamesInRound)
                 {
-                    if (GameValidation.IsTheSameTeamInTwoGames(game, newGame) 
-                        && game.HomeTeamId != remainedTeamId 
+                    if (GameValidation.IsTheSameTeamInTwoGames(game, newGame)
+                        && game.HomeTeamId != remainedTeamId
                         && game.AwayTeamId != remainedTeamId)
                     {
                         string opositeTeam = game.HomeTeamId != remainedTeamId ?
@@ -360,14 +360,14 @@
                         throw new ArgumentException(
                                  string.Format(
                                  Resources.SameTeamInRound,
-                                 opositeTeam)); 
+                                 opositeTeam));
                     }
                 }
             }
             else if (!GameValidation.AreSameTeamsInGames(oldGameToUpdate, newGame))
             {
                 // Both teams in new game are different fro old game 
-                ValidateGameInRoundOnCreate(newGame, gamesInRound); 
+                ValidateGameInRoundOnCreate(newGame, gamesInRound);
             }
         }
 
@@ -378,8 +378,8 @@
                 .ToList();
 
             var duplicates = tournamentGames
-                .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
-                .ToList();
+                    .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
+                    .ToList();
 
             if (GameValidation.IsFreeDayGame(newGame))
             {
@@ -399,8 +399,8 @@
                     SwitchTeamsOrder(newGame);
 
                     int switchedDuplicatesCount = tournamentGames
-                        .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
-                        .Count();
+                            .Where(x => GameValidation.AreSameOrderTeamsInGames(x, newGame))
+                            .Count();
 
                     if (switchedDuplicatesCount > 0)
                     {
@@ -422,14 +422,14 @@
 
             var duplicates = tournamentGames
                 .Where(x => GameValidation.AreSameTeamsInGames(x, newGame))
-                .ToList(); 
+                .ToList();
 
             if (duplicates.Count > 0)
             {
-                string awayTeamName = string.Empty; 
+                string awayTeamName = string.Empty;
                 if (GameValidation.IsFreeDayGame(newGame))
                 {
-                    awayTeamName = GameResultConstants.FREE_DAY_TEAM_NAME;   
+                    awayTeamName = GameResultConstants.FREE_DAY_TEAM_NAME;
                 }
                 else
                 {
@@ -441,12 +441,12 @@
                     Resources.SameGameInTournamentSchemeOne,
                     duplicates.First().HomeTeamName,
                     awayTeamName));
-            } 
+            }
         }
 
         private void ValidateFreeDayGame(Game game)
         {
-            if (GameValidation.IsFreeDayTeam(game.HomeTeamId) 
+            if (GameValidation.IsFreeDayTeam(game.HomeTeamId)
                 && GameValidation.IsFreeDayTeam(game.AwayTeamId))
             {
                 throw new ArgumentException(
@@ -470,11 +470,17 @@
 
         private void SwitchTeamsOrder(Game game)
         {
-            int tempHomeId = game.HomeTeamId; 
-            game.HomeTeamId = game.AwayTeamId; 
-            game.AwayTeamId = tempHomeId; 
-        } 
-
+            if (!GameValidation.IsFreeDayGame(game))
+            {
+                int tempHomeId = game.HomeTeamId;
+                game.HomeTeamId = game.AwayTeamId.Value;
+                game.AwayTeamId = tempHomeId;
+            }
+            else
+            {
+                throw new ArgumentException(Resources.HomeTeamNullId);
+            }
+        }
         #endregion
     }
 }

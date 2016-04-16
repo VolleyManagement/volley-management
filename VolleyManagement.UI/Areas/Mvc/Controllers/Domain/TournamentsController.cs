@@ -290,9 +290,9 @@
                 TournamentName = tournament.Name,
                 NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
-                                     .GroupBy(d => d.Round)
-                                     .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)
-                                     .Select(x => GameResultViewModel.Map(x)).ToList())
+                .GroupBy(d => d.Round)
+                .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)
+                    .Select(x => GameResultViewModel.Map(x)).ToList())
             };
 
             return View(scheduleViewModel);
@@ -366,10 +366,10 @@
         }
 
         /// <summary>
-        /// Gets the view for view model of the tournament with specified identifier.
+        /// Gets info about the tournament with a specified identifier.
         /// </summary>
         /// <param name="id">Identifier of the tournament.</param>
-        /// <returns>View for view model of the tournament with specified identifier.</returns>
+        /// <returns>View with the TournamentViewModel.</returns>
         private ActionResult GetTournamentView(int id)
         {
             var tournament = _tournamentService.Get(id);

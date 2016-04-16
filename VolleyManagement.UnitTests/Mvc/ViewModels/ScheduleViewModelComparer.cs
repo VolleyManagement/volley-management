@@ -1,10 +1,11 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for schedule objects.
@@ -56,7 +57,39 @@
         {
             return x.TournamentId == y.TournamentId &&
                 x.TournamentName == y.TournamentName &&
-                x.NumberOfRounds == y.NumberOfRounds;
+                x.NumberOfRounds == y.NumberOfRounds &&
+                AreRoundsEqual(x.Rounds, y.Rounds);
+        }
+
+        /// <summary>
+        /// Finds out whether two rounds objects have the same properties.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>True if given rounds have the same properties.</returns>
+        public bool AreRoundsEqual(
+                       Dictionary<byte, List<GameResultViewModel>> x,
+                       Dictionary<byte, List<GameResultViewModel>> y)
+        {
+            {
+                if (x.Keys.Count != y.Keys.Count)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < x.Count; i++)
+                {
+                    if (!Enumerable.SequenceEqual(
+                                        x[x.Keys.ElementAt(i)],
+                                        y[y.Keys.ElementAt(i)],
+                                        new GameResultViewModelEqualityComparer()))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }            
         }
     }
 }

@@ -770,19 +770,20 @@
             Assert.IsTrue(gotException);
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
         }
-
+        
         /// <summary>
         /// Test for Delete Tournament method.
+        /// </summary>
         [TestMethod]
         public void Delete_TournamentExist_TournamentRemoved()
         {
             // Arrange
             var sut = _kernel.Get<TournamentService>();
-
-            //Act
+            
+            // Act
             sut.Delete(FIRST_TOURNAMENT_ID);
-
-            //Assert
+            
+            // Assert
             VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
         }
 

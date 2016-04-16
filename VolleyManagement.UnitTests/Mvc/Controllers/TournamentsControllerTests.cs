@@ -291,7 +291,7 @@
             var actual = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
 
             // Assert
-            VerifyEquality(actual, expected);
+            AssertEqual(actual, expected);
         }
         #endregion
 
@@ -843,15 +843,15 @@
             Assert.IsNull(gameViewModel);
         }
 
-        private void VerifyEquality(GameViewModel x, GameViewModel y) 
+        private void AssertEqual(GameViewModel x, GameViewModel y) 
         {
-            const string WRONG_TOURNAMENT_ID = "In recieved GameViewModel tournament Id is not like expected";
-            const string WRONG_HOME_TEAM_ID = "In recieved GameViewModel home team Id is not like expected";
-            const string WRONG_AWAY_TEAM_ID = "In recieved GameViewModel away team Id is not like expected";
-            const string WRONG_ROUND = "In recieved GameViewModel round is not like expected";
-            const string WRONG_GAME_DATE = "In recieved GameViewModel game date is not like expected";
-            const string WRONG_TEAMS = "In recieved GameViewModel teams are not like expected";
-            const string WRONG_ROUNDS = "In recieved GameViewModel rounds are not like expected";
+            string WRONG_TOURNAMENT_ID = "Actual TournamentId doesn't match expected";
+            string WRONG_HOME_TEAM_ID = "Actual HomeTeamId doesn't match expected";
+            string WRONG_AWAY_TEAM_ID = "Actual AwayTeamId doesn't match expected";
+            string WRONG_ROUND = "Actual Round number doesn't match expected";
+            string WRONG_GAME_DATE = "Actual GameDate doesn't match expected";
+            string WRONG_TEAMS = "Actual Teams list doesn't match expected";
+            string WRONG_ROUNDS = "Actual Rounds list doesn't match expected";
             
             Assert.AreEqual(x.TournamentId, y.TournamentId, WRONG_TOURNAMENT_ID);
             Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, WRONG_HOME_TEAM_ID);

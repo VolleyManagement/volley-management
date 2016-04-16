@@ -49,7 +49,7 @@
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTeamsQuery;
-        private readonly IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria> _getTournamentDtoQuery; 
+        private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery; 
 
         #endregion
 
@@ -70,7 +70,7 @@
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
-            IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria> getTournamentDtoQuery)
+            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
@@ -129,7 +129,7 @@
         public TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId)
         {
             return _getTournamentDtoQuery
-                .Execute(new TournamentScheduleDtoCriteria { TournamentId = tournamentId });
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>

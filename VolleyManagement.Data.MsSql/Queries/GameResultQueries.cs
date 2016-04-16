@@ -49,7 +49,7 @@
         {
             return _dalGameResults
                 .Where(gr => gr.Id == criteria.Id)
-                .Select(GetGameResultWithTeamNamesMapping())
+                .Select(GetGameResultDtoMapping())
                 .SingleOrDefault();
         }
 
@@ -62,7 +62,7 @@
         {
             var gameResults = _dalGameResults
                 .Where(gr => gr.TournamentId == criteria.TournamentId)
-                .Select(GetGameResultWithTeamNamesMapping());
+                .Select(GetGameResultDtoMapping());
 
             return gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
         }
@@ -71,7 +71,7 @@
 
         #region Mapping
 
-        private static Expression<Func<GameResultEntity, GameResultDto>> GetGameResultWithTeamNamesMapping()
+        private static Expression<Func<GameResultEntity, GameResultDto>> GetGameResultDtoMapping()
         {
             return gr => new GameResultDto
             {

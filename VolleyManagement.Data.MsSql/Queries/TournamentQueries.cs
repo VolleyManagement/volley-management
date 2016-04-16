@@ -16,7 +16,7 @@
     public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
                                      IQuery<List<Tournament>, GetAllCriteria>,
                                      IQuery<Tournament, FindByIdCriteria>,
-                                     IQuery<TournamentScheduleDto, TournamentScheduleDtoCriteria>
+                                     IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>
     {
         #region Fields
 
@@ -85,7 +85,7 @@
         /// </summary>
         /// <param name="criteria">Tournament id criteria</param>
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
-        public TournamentScheduleDto Execute(TournamentScheduleDtoCriteria criteria)
+        public TournamentScheduleDto Execute(TournamentScheduleInfoCriteria criteria)
         {
             return this._unitOfWork.Context.Tournaments.Where(t => t.Id == criteria.TournamentId)
                 .Select(tr => new TournamentScheduleDto()

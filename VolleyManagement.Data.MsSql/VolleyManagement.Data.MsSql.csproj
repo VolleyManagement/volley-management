@@ -113,6 +113,7 @@
     <Compile Include="Entities\DivisionEntity.cs" />
     <Compile Include="Entities\LoginInfoEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
+    <Compile Include="Entities\RoleToOperationEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
     <Compile Include="Entities\ContributorEntity.cs" />
     <Compile Include="Infrastructure\NinjectDataAccessModule.cs" />

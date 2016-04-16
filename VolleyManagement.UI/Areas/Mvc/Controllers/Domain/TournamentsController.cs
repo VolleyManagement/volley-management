@@ -9,6 +9,7 @@
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using VolleyManagement.Contracts.Authorization;
 
     /// <summary>
     /// Defines TournamentsController
@@ -33,16 +34,23 @@
         private readonly IGameService _gameService;
 
         /// <summary>
+        /// Holds AuthorizationService instance
+        /// </summary>
+        private readonly IAuthorizationService _authService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class
         /// </summary>
         /// <param name="tournamentService">The tournament service</param>
         /// <param name="gameService">The game service</param>
         public TournamentsController(
             ITournamentService tournamentService,
-            IGameService gameService)
+            IGameService gameService,
+            IAuthorizationService authService)
         {
             this._tournamentService = tournamentService;
             this._gameService = gameService;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -91,6 +99,12 @@
         /// <returns>View to create a tournament</returns>
         public ActionResult Create()
         {
+            this._authService.SetUser(System.Convert.ToInt32(User.Identity.GetUserId()));
+            if (!_authService.CheckAccess(AppOperations.TournamentCreate))
+            {
+                throw new AccessViolationException("TournamentCreate");
+            }
+
             var tournamentViewModel = new TournamentViewModel()
             {
                 ApplyingPeriodStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START),

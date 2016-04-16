@@ -69,6 +69,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RolesAggregate\AppOperations.cs" />
     <Compile Include="RolesAggregate\IRoleRepository.cs" />
     <Compile Include="RolesAggregate\Role.cs" />
     <Compile Include="TeamsAggregate\ITeamRepository.cs" />

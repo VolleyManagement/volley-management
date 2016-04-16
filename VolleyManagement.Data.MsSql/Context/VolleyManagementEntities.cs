@@ -47,6 +47,11 @@ namespace VolleyManagement.Data.MsSql.Context
         public DbSet<RoleEntity> Roles { get; set; }
 
         /// <summary>
+        /// Gets or sets the roles to features table.
+        /// </summary>
+        public DbSet<RoleToOperationEntity> RolesToFeatures { get; set; }
+
+        /// <summary>
         /// Gets or sets the user table.
         /// </summary>
         public DbSet<LoginInfoEntity> LoginProviders { get; set; }
@@ -103,6 +108,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureUserLogins(modelBuilder);
             ConfigureRoles(modelBuilder);
             ConfigureUserRoleRelationship(modelBuilder);
+            ConfigureRoleToFeatures(modelBuilder);
             ConfigurePlayers(modelBuilder);
             ConfigureTeams(modelBuilder);
             ConfigureTournamentTeamRelationship(modelBuilder);
@@ -269,6 +275,21 @@ namespace VolleyManagement.Data.MsSql.Context
                 .HasMaxLength(ValidationConstants.Role.MAX_NAME_LENGTH)
                 .IsUnicode()
                 .IsVariableLength();
+        }
+
+        private static void ConfigureRoleToFeatures(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RoleToOperationEntity>()
+                .ToTable(VolleyDatabaseMetadata.ROLES_TO_OPERATIONS_TABLE_NAME)
+                .HasKey(r => r.Id);
+
+            modelBuilder.Entity<RoleToOperationEntity>()
+                .Property(r => r.OperationId)
+                .IsRequired();
+
+            modelBuilder.Entity<RoleToOperationEntity>()
+                .Property(r => r.RoleId)
+                .IsRequired();
         }
 
         private static void ConfigurePlayers(DbModelBuilder modelBuilder)

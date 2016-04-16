@@ -1,5 +1,6 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
+    using System; 
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -51,7 +52,219 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
-        }
+
+            PlayerEntity player1 = new PlayerEntity
+                {
+                    BirthYear = 70,
+                    FirstName = "John",
+                    LastName = "Smith",
+                    Height = 180,
+                    Weight = 70
+                };
+            PlayerEntity player2 = new PlayerEntity
+                {
+                    BirthYear = 86,
+                    FirstName = "Lex",
+                    LastName = "Luthor",
+                    Height = 175,
+                    Weight = 75
+                };
+            PlayerEntity player3 = new PlayerEntity
+              {
+                    BirthYear = 77,
+                    FirstName = "Darth",
+                    LastName = "Vader",
+                    Height = 181,
+                    Weight = 80
+              }; 
+            PlayerEntity player4 = new PlayerEntity
+              {
+                  BirthYear = 88,
+                  FirstName = "Kylo",
+                  LastName = "Ren",
+                  Height = 176,
+                  Weight = 80
+              }; 
+            PlayerEntity player5 = new PlayerEntity
+                {
+                    BirthYear = 85,
+                    FirstName = "Han",
+                    LastName = "Solo",
+                    Height = 180,
+                    Weight = 75
+                };
+            PlayerEntity player6 = new PlayerEntity
+            {
+                BirthYear = 68,
+                FirstName = "Luke",
+                LastName = "Skywalker",
+                Height = 165,
+                Weight = 6
+            };
+            PlayerEntity player7 = new PlayerEntity
+            {
+                BirthYear = 90,
+                FirstName = "Obivan",
+                LastName = "Kenobi",
+                Height = 190,
+                Weight = 120
+            };
+            PlayerEntity player8 = new PlayerEntity
+            {
+                BirthYear = 105,
+                FirstName = "Mighty",
+                LastName = "Thor",
+                Height = 250,
+                Weight = 400
+            };
+            PlayerEntity player9 = new PlayerEntity
+            {
+                BirthYear = 45, 
+                FirstName = "Tony",
+                LastName = "Stark",
+                Height = 150,
+                Weight = 50
+            };
+            PlayerEntity player10 = new PlayerEntity
+            {
+                BirthYear = 20, 
+                FirstName = "Incredible",
+                LastName = "Hulk",
+                Height = 250,
+                Weight = 500
+            };
+            PlayerEntity player11 = new PlayerEntity
+            {
+                BirthYear = 55,
+                FirstName = "Ant",
+                LastName = "Man",
+                Height = 10,
+                Weight = 10
+            };
+            PlayerEntity player12 = new PlayerEntity
+            {
+                BirthYear = 100,
+                FirstName = "Clark",
+                LastName = "Kent",
+                Height = 200,
+                Weight = 300
+            };
+
+            var players = new PlayerEntity[]
+            {
+                player1, 
+                player2,
+                player3,
+                player4,
+                player5,
+                player6,
+                player7,
+                player8,
+                player9,
+                player10,
+                player11,
+                player12
+            };
+
+            context.Players.AddRange(players);
+            context.SaveChanges();
+            
+            TeamEntity team1 = new TeamEntity
+            {
+                Captain = player1,
+                Name = "First Order",
+                Coach = "Coach1",
+                Players = new List<PlayerEntity> { player2 }
+            };
+            TeamEntity team2 = new TeamEntity
+                {
+                    Captain = player3,
+                    Name = "Empire",
+                    Coach = "Coach2",
+                    Players = new List<PlayerEntity> { player4 }
+                };
+            TeamEntity team3 = new TeamEntity
+            {
+                Captain = player5,
+                Name = "Rebelion",
+                Coach = "Coach3",
+                Players = new List<PlayerEntity> { player6, player7 }
+            };
+            TeamEntity team4 = new TeamEntity
+            {
+                Captain = player8, 
+                Name = "Avengers",
+                Coach = "Coach4",
+                Players = new List<PlayerEntity> { player9 }
+            };
+            TeamEntity team5 = new TeamEntity
+            {
+                Captain = player10,
+                Name = "Team Cap",
+                Coach = "Coach5",
+                Players = new List<PlayerEntity> { player11 }
+            };
+            TeamEntity team6 = new TeamEntity
+            {
+                Captain = player11,
+                Name = "DC",
+                Coach = "Coach6",
+                Players = new List<PlayerEntity> { player12 }
+            };
+
+            context.Teams.AddRange(new TeamEntity[]
+                {
+                    team1, 
+                    team2, 
+                    team3, 
+                    team4, 
+                    team5, 
+                    team6 
+                });
+
+            // Past torunament, scheme 1
+            TournamentEntity tour1 = new TournamentEntity 
+            {
+                Name = "Clone Wars",
+                ApplyingPeriodStart = new DateTime(2010, 4, 4),
+                ApplyingPeriodEnd = new DateTime(2010, 8, 7),
+                GamesStart = new DateTime(2010, 8, 8, 10, 30, 0),
+                GamesEnd = new DateTime(2010, 8, 10, 20, 30, 0),
+                TransferStart = new DateTime(2010, 8, 11),
+                TransferEnd = new DateTime(2010, 8, 19),
+                Scheme = 1,
+                Season = 110,
+                Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5, team6}
+            };
+
+            // Current tournament, shceme 1
+            TournamentEntity tour2 = new TournamentEntity
+            {
+                Name = "New Hope",
+                ApplyingPeriodStart = new DateTime(
+                    DateTime.Now.Year,
+                    DateTime.Now.Month - 5,
+                    DateTime.Now.Day),
+                    ApplyingPeriodEnd = new DateTime(
+                        DateTime.Now.Year,
+                        DateTime.Now.Month,
+                        DateTime.Now.Day - 1),
+                GamesStart = DateTime.Now,
+                GamesEnd = new DateTime(
+                    DateTime.Now.Year,
+                    DateTime.Now.Month,
+                    DateTime.Now.Day + 5),
+                    TransferStart = DateTime.Now,
+                    TransferEnd = new DateTime(
+                        DateTime.Now.Year, 
+                        DateTime.Now.Month,
+                        DateTime.Now.Day + 4),
+                Scheme = 1,
+                Season = Convert.ToByte(DateTime.Now.Year - 1900),
+                Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5}
+            };
+            // Future tournament scheme 1
+        } 
 
         private static RoleEntity CreateRole(string name)
         {

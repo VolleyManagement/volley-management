@@ -148,30 +148,68 @@
 
             // Assert
             Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
             Assert.IsNull(result);
         }
 
         /// <summary>
-        /// Test for ShowSchedule method.
-        /// Valid schedule is passed, no exception occurred.
+        /// Test for ShowSchedule method (GET action).
+        /// Valid rounds is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowSchedule_TournamentExists_ScheduleViewModelIsReturned()
+        public void ShowScheduleGetAction_TournamentHasGamesScheduled_RoundsCreatedCorrectly()
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;
+
+            var tournament = new TournamentDto 
+            {
+                Id = TEST_TOURNAMENT_ID,
+                Name = TEST_TOURNAMENT_NAME,
+                Scheme = TournamentSchemeEnum.One
+            };
+
+            var expected = new ScheduleViewModelBuilder().Build();
+
+            SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
+            SetupGetScheduleInfo(TEST_TOURNAMENT_ID, tournament);
+            SetupGetTournamentResults(
+                TEST_TOURNAMENT_ID,
+                new GameServiceTestFixture().TestGameResults().Build());
+
+            // Act
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsTrue(new ScheduleViewModelComparer().AreRoundsEqual(actual.Rounds, expected.Rounds));
+        }
+
+        /// <summary>
+        /// Test for ShowSchedule method (GET action).
+        /// Valid schedule is passed, no exception occurred.
+        /// </summary>
+        [TestMethod]
+        public void ShowScheduleGetAction_ValidScheduleViewModel_ScheduleViewModelIsReturned()
+        {
+            // Arrange
+            const int TEST_ROUND_COUNT = 3;
+
             var tournament = new TournamentDto 
             {
                 Id = TEST_TOURNAMENT_ID, 
                 Name = TEST_TOURNAMENT_NAME, 
                 Scheme = TournamentSchemeEnum.One 
             };
-            var expectedGames = new GameServiceTestFixture().TestGameResults().Build();
-            var expected = new ScheduleViewModelBuilder().Build();
 
             SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
-            _tournamentServiceMock.Setup(t => t.GetTournamentScheduleInfo(TEST_TOURNAMENT_ID)).Returns(tournament);
-            _gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
+            SetupGetScheduleInfo(
+                TEST_TOURNAMENT_ID,
+                tournament);
+            SetupGetTournamentResults(
+                TEST_TOURNAMENT_ID,
+                new GameServiceTestFixture().TestGameResults().Build());
+            
+            var expected = new ScheduleViewModelBuilder().Build();
 
             // Act
             var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
@@ -799,6 +837,11 @@
             this._tournamentServiceMock.Setup(tr => tr.GetTournamentScheduleInfo(tournamentId)).Returns(tournament);
         }
 
+        private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
+        {       
+            this._gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
+        }
+
         private void SetupCreateThrowsTournamentValidationException()
         {
             this._tournamentServiceMock.Setup(ts => ts.Create(It.IsAny<Tournament>()))
@@ -859,10 +902,11 @@
             Assert.AreEqual(x.Round, y.Round, WRONG_ROUND);
             Assert.AreEqual(x.GameDate, y.GameDate, WRONG_GAME_DATE);
 
-            Assert.IsTrue(x.Teams != null &&
-                          y.Teams != null &&
-                          x.Teams.Select(team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
-                          y.Teams.Select(team => new { Text = team.Text, Value = team.Value })), WRONG_TEAMS);
+            Assert.IsTrue(
+                x.Teams != null &&
+                y.Teams != null &&
+                x.Teams.Select(team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
+                    y.Teams.Select(team => new { Text = team.Text, Value = team.Value })), WRONG_TEAMS);
             
             Assert.IsTrue(x.Rounds != null &&
                           y.Rounds != null &&

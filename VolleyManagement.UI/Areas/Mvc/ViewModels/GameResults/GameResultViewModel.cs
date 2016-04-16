@@ -11,7 +11,7 @@
     /// Represents a view model for game result.
     /// </summary>
     public class GameResultViewModel
-    {
+    {       
         /// <summary>
         /// Initializes a new instance of the <see cref="GameResultViewModel"/> class.
         /// </summary>
@@ -81,6 +81,17 @@
         /// Gets or sets the list of teams of a tournament where game result belongs.
         /// </summary>
         public List<SelectListItem> TeamsList { get; set; }
+
+        /// <summary>
+        /// Gets or sets the format of game date
+        /// </summary>
+        public string ShortGameDate
+        {
+            get
+            {
+                return GameDate.ToString("d MMM dddd H:mm");
+            }
+        }
 
         /// <summary>
         /// Maps domain model of game result to view model of game result.

@@ -366,10 +366,10 @@
         }
 
         /// <summary>
-        /// Gets the view for view model of the tournament with specified identifier.
+        /// Gets info about the tournament with a specified identifier.
         /// </summary>
         /// <param name="id">Identifier of the tournament.</param>
-        /// <returns>View for view model of the tournament with specified identifier.</returns>
+        /// <returns>View with the TournamentViewModel.</returns>
         private ActionResult GetTournamentView(int id)
         {
             var tournament = _tournamentService.Get(id);

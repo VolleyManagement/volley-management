@@ -131,14 +131,14 @@
         }
         #endregion
 
-        #region ShowScheduleGetAction
+        #region ShowSchedule
 
         /// <summary>
-        /// Test for ShowSchedule method (POST action).
+        /// Test for ShowSchedule method.
         /// Wrong tournament Id passed. View with error message is returned.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_NonExistentTournament_ErrorViewIsReturned()
+        public void ShowSchedule_NonExistentTournament_ErrorViewIsReturned()
         {
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
@@ -152,11 +152,11 @@
         }
 
         /// <summary>
-        /// Test for ShowSchedule method (POST action).
+        /// Test for ShowSchedule method.
         /// Valid schedule is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_TournamentExists_ScheduleViewModelIsReturned()
+        public void ShowSchedule_TournamentExists_ScheduleViewModelIsReturned()
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;
@@ -291,7 +291,7 @@
             var actual = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(new GameViewModelComparer().AreEqual(actual, expected));
+            AssertEqual(actual, expected);
         }
         #endregion
 
@@ -841,6 +841,33 @@
             Assert.IsFalse(_sut.ModelState.IsValid);
             Assert.IsTrue(_sut.ModelState.ContainsKey(expectedKey));
             Assert.IsNull(gameViewModel);
+        }
+
+        private void AssertEqual(GameViewModel x, GameViewModel y) 
+        {
+            string WRONG_TOURNAMENT_ID = "Actual TournamentId doesn't match expected";
+            string WRONG_HOME_TEAM_ID = "Actual HomeTeamId doesn't match expected";
+            string WRONG_AWAY_TEAM_ID = "Actual AwayTeamId doesn't match expected";
+            string WRONG_ROUND = "Actual Round number doesn't match expected";
+            string WRONG_GAME_DATE = "Actual GameDate doesn't match expected";
+            string WRONG_TEAMS = "Actual Teams list doesn't match expected";
+            string WRONG_ROUNDS = "Actual Rounds list doesn't match expected";
+            
+            Assert.AreEqual(x.TournamentId, y.TournamentId, WRONG_TOURNAMENT_ID);
+            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, WRONG_HOME_TEAM_ID);
+            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, WRONG_AWAY_TEAM_ID);
+            Assert.AreEqual(x.Round, y.Round, WRONG_ROUND);
+            Assert.AreEqual(x.GameDate, y.GameDate, WRONG_GAME_DATE);
+
+            Assert.IsTrue(x.Teams != null &&
+                          y.Teams != null &&
+                          x.Teams.Select(team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
+                          y.Teams.Select(team => new { Text = team.Text, Value = team.Value })), WRONG_TEAMS);
+            
+            Assert.IsTrue(x.Rounds != null &&
+                          y.Rounds != null &&
+                         (x.Rounds.Items as IEnumerable<int>).SequenceEqual(
+                          y.Rounds.Items as IEnumerable<int>), WRONG_ROUNDS);            
         }
         #endregion
     }

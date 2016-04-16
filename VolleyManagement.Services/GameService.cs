@@ -148,7 +148,7 @@
             ValidateSetScoresOrder(game.Result.SetScores);
         }
 
-        private void ValidateTeams(int homeTeamId, int awayTeamId)
+        private void ValidateTeams(int homeTeamId, int? awayTeamId)
         {
             if (GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
             {
@@ -239,7 +239,6 @@
                 throw new ArgumentException(Resources.NoSuchToruanment); 
             }
 
-            ValidateFreeDayGame(game);
             ValidateGameDate(tournament, game);
             ValidateGamesInRound(tournament.Id, game);             
             if (tournament.Scheme == TournamentSchemeEnum.One)
@@ -350,22 +349,7 @@
                     duplicates.First().AwayTeamName));
             } 
         }
-
-        private void ValidateFreeDayGame(Game game)
-        {
-            if (GameValidation.IsFreeDayTeam(game.HomeTeamId) 
-                && GameValidation.IsFreeDayTeam(game.AwayTeamId))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.NoTeamsInGame, game.Round));
-            }
-            else if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
-            {
-                SwitchTeamsOrder(game);
-            }
-        }
-
+        
         private void ValidateGameDate(Tournament tournament, Game game)
         {
             if (DateTime.Compare(tournament.GamesStart, game.GameDate) > 0
@@ -377,9 +361,16 @@
 
         private void SwitchTeamsOrder(Game game)
         {
-            int tempHomeId = game.HomeTeamId; 
-            game.HomeTeamId = game.AwayTeamId; 
-            game.AwayTeamId = tempHomeId; 
+            if (!GameValidation.IsFreeDayGame(game))
+            {
+                int tempHomeId = game.HomeTeamId;
+                game.HomeTeamId = game.AwayTeamId.Value;
+                game.AwayTeamId = tempHomeId;
+            }
+            else
+            {
+                throw new ArgumentException(Resources.HomeTeamNullId);
+            }
         }
         #endregion
     }

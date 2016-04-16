@@ -26,17 +26,6 @@
         public IEnumerable<SelectListItem> Teams { get; set; }
 
         /// <summary>
-        /// Gets a list of teams to be selected with last item "free day"
-        /// </summary>
-        public IEnumerable<SelectListItem> TeamsWithFreeDay 
-        { 
-            get 
-            {
-                return Teams.Concat(new SelectListItem[] { new SelectListItem { Value = "0", Text = App_GlobalResources.TournamentViews.FreeDay } }); 
-            }
-        }
-
-        /// <summary>
         /// Gets or sets list of rounds to be selected
         /// </summary>
         public SelectList Rounds { get; set; }
@@ -62,7 +51,7 @@
         /// Gets or sets the identifier of the away team.
         /// </summary>
         [Display(Name = "AwayTeam", ResourceType = typeof(ViewModelResources))]
-        public int AwayTeamId { get; set; }
+        public int? AwayTeamId { get; set; }
 
         /// <summary>
         /// Gets or sets date of the game.

@@ -150,6 +150,9 @@
   <data name="GroupNamesNotUnique" xml:space="preserve">
     <value>Group names should be unique</value>
   </data>
+  <data name="HomeTeamNullId" xml:space="preserve">
+    <value>Home team can't be set to freeday</value>
+  </data>
   <data name="InvalidTransferEndpoint" xml:space="preserve">
     <value>End of the transfer period should be before the end of the tournament</value>
   </data>

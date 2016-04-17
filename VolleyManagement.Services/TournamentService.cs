@@ -49,7 +49,7 @@
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTeamsQuery;
-        private readonly IQuery<TournamentDto, TournamentDtoCriteria> _getTournamentDtoQuery; 
+        private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery; 
 
         #endregion
 
@@ -70,7 +70,7 @@
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
-            IQuery<TournamentDto, TournamentDtoCriteria> getTournamentDtoQuery)
+            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
@@ -125,11 +125,11 @@
         /// Finds tournament data transfer object by torunament id
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
-        /// <returns>The <see cref="TournamentDto"/></returns>
-        public TournamentDto GetTournamentScheduleInfo(int tournamentId)
+        /// <returns>The <see cref="TournamentScheduleDto"/></returns>
+        public TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId)
         {
             return _getTournamentDtoQuery
-                .Execute(new TournamentDtoCriteria { TournamentId = tournamentId });
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>
@@ -233,7 +233,7 @@
         /// </summary>
         /// <param name="tournament">Tournament for which we count rounds</param>
         /// <returns>Number of rounds</returns>
-        public byte GetNumberOfRounds(TournamentDto tournament)
+        public byte GetNumberOfRounds(TournamentScheduleDto tournament)
         {
             byte numberOfRounds = 0;
 

@@ -165,6 +165,9 @@
   <data name="NoTeamsInGame" xml:space="preserve">
     <value>No teams are specified for current game in round {0}</value>
   </data>
+  <data name="SameFreeDayGameInRound" xml:space="preserve">
+    <value>Free day game has already been scheduled in this round</value>
+  </data>
   <data name="SameGameInRound" xml:space="preserve">
     <value>Game between {0} and {1} has already been scheduled for round number {2}</value>
   </data>
@@ -175,7 +178,7 @@
     <value>Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round tournament</value>
   </data>
   <data name="SameTeamInRound" xml:space="preserve">
-    <value>Team {0} or {1} has game scheduled already in this round</value>
+    <value>Team {0} has game scheduled already in this round</value>
   </data>
   <data name="TeamNameInTournamentNotUnique" xml:space="preserve">
     <value>Team with such name already exists in tournament</value>

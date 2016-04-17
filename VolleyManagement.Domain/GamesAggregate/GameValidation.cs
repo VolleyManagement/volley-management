@@ -5,17 +5,17 @@
     /// </summary>
     public static class GameValidation
     {
-        public const int MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO = 2; 
+        public const int MAX_DUPLICATE_GAMES_IN_SCHEMA_TWO = 2;
 
         /// <summary>
         /// Determines whether the home team and the away team are the same.
         /// </summary>
-        /// <param name="firstTeamId">Identifier of the first team to compare.</param>
-        /// <param name="secondTeamId">Identifier of the second team to compare.</param>
+        /// <param name="firsTeamId">Identifier of the home team.</param>
+        /// <param name="secondTeamId">Identifier of the away team.</param>
         /// <returns>True team are the same; otherwise, false.</returns>
-        public static bool AreTheSameTeams(int? firstTeamId, int? secondTeamId)
+        public static bool AreTheSameTeams(int? firsTeamId, int? secondTeamId)
         {
-            return firstTeamId == secondTeamId;
+            return firsTeamId == secondTeamId;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@
         /// <returns>True if game is scheduled free day</returns>
         public static bool IsFreeDayTeam(int? teamId)
         {
-            return !teamId.HasValue; 
+            return teamId == null; 
         } 
 
         /// <summary>
@@ -75,7 +75,7 @@
         /// <returns>True if team in game is scheduled in free day</returns>
         public static bool IsFreeDayGame(Game game)
         {
-            return !game.AwayTeamId.HasValue;
+            return !game.AwayTeamId.HasValue; 
         }
     }
 }

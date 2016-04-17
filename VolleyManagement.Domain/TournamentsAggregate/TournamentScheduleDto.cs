@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents tournament data transfer object 
     /// </summary>
-    public class TournamentDto
+    public class TournamentScheduleDto
     {
         /// <summary>
         /// Gets or sets id of the tournament data transfer object
@@ -21,6 +21,11 @@
         /// Gets or sets start date of the tournament data transfer object 
         /// </summary>
         public DateTime StartDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets date of the tournament data transfer object 
+        /// </summary>
+        public DateTime EndDate { get; set; }
 
         /// <summary>
         /// Gets or sets the number of the teams in tournament 

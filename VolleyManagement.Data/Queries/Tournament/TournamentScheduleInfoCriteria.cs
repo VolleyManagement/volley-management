@@ -5,7 +5,7 @@
     /// <summary>
     /// Represents criteria for finding tournament data transfer object 
     /// </summary>
-    public class TournamentDtoCriteria : IQueryCriteria 
+    public class TournamentScheduleInfoCriteria : IQueryCriteria 
     {
         /// <summary>
         /// Gets or sets tournament id criteria 

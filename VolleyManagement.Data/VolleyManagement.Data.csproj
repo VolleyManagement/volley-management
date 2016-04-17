@@ -73,7 +73,7 @@
     <Compile Include="Queries\Team\FindByCaptainIdCriteria.cs" />
     <Compile Include="Queries\Common\GetAllCriteria.cs" />
     <Compile Include="Queries\Team\FindByTournamentIdCriteria.cs" />
-    <Compile Include="Queries\Tournament\TournamentDtoCriteria.cs" />
+    <Compile Include="Queries\Tournament\TournamentScheduleInfoCriteria.cs" />
     <Compile Include="Queries\Tournament\UniqueTournamentCriteria.cs" />
     <Compile Include="Queries\User\FindByEmailCriteria.cs" />
     <Compile Include="Queries\User\FindByLoginInfoCriteria.cs" />

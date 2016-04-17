@@ -77,7 +77,7 @@
     <Compile Include="TournamentsAggregate\Groups\Group.cs" />
     <Compile Include="TournamentsAggregate\Groups\GroupValidation.cs" />
     <Compile Include="TournamentsAggregate\ITournamentRepository.cs" />
-    <Compile Include="TournamentsAggregate\TournamentDto.cs" />
+    <Compile Include="TournamentsAggregate\TournamentScheduleDto.cs" />
     <Compile Include="TournamentsAggregate\TournamentSchemeEnum.cs" />
     <Compile Include="TournamentsAggregate\Tournament.cs" />
     <Compile Include="TournamentsAggregate\TournamentStateEnum.cs" />

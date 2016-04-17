@@ -162,7 +162,7 @@
             // Arrange
             const int TEST_ROUND_COUNT = 3;
 
-            var tournament = new TournamentDto 
+            var tournament = new TournamentScheduleDto
             {
                 Id = TEST_TOURNAMENT_ID,
                 Name = TEST_TOURNAMENT_NAME,
@@ -193,12 +193,11 @@
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;
-
-            var tournament = new TournamentDto 
+            var tournament = new TournamentScheduleDto
             {
-                Id = TEST_TOURNAMENT_ID, 
-                Name = TEST_TOURNAMENT_NAME, 
-                Scheme = TournamentSchemeEnum.One 
+                Id = TEST_TOURNAMENT_ID,
+                Name = TEST_TOURNAMENT_NAME,
+                Scheme = TournamentSchemeEnum.One
             };
 
             SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
@@ -208,7 +207,7 @@
             SetupGetTournamentResults(
                 TEST_TOURNAMENT_ID,
                 new GameServiceTestFixture().TestGameResults().Build());
-            
+
             var expected = new ScheduleViewModelBuilder().Build();
 
             // Act
@@ -311,7 +310,7 @@
             const int MIN_ROUND_NUMBER = 1;
             const int TEST_ROUND_COUNT = 3;
 
-            var testTournament = new TournamentDto { Id = TEST_TOURNAMENT_ID, StartDate = TEST_DATE };
+            var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = TEST_DATE };
             var testTeams = MakeTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
@@ -820,7 +819,7 @@
                 .Returns(teams);
         }
 
-        private void SetupGetTournamentNumberOfRounds(TournamentDto tournament, byte numberOfRounds)
+        private void SetupGetTournamentNumberOfRounds(TournamentScheduleDto tournament, byte numberOfRounds)
         {
             this._tournamentServiceMock
                 .Setup(tr => tr.GetNumberOfRounds(tournament))
@@ -832,13 +831,13 @@
             this._tournamentServiceMock.Setup(tr => tr.Get(tournamentId)).Returns(tournament);
         }
 
-        private void SetupGetScheduleInfo(int tournamentId, TournamentDto tournament)
+        private void SetupGetScheduleInfo(int tournamentId, TournamentScheduleDto tournament)
         {
             this._tournamentServiceMock.Setup(tr => tr.GetTournamentScheduleInfo(tournamentId)).Returns(tournament);
         }
 
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
-        {       
+        {
             this._gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
         }
 
@@ -886,7 +885,7 @@
             Assert.IsNull(gameViewModel);
         }
 
-        private void AssertEqual(GameViewModel x, GameViewModel y) 
+        private void AssertEqual(GameViewModel x, GameViewModel y)
         {
             string WRONG_TOURNAMENT_ID = "Actual TournamentId doesn't match expected";
             string WRONG_HOME_TEAM_ID = "Actual HomeTeamId doesn't match expected";
@@ -895,7 +894,7 @@
             string WRONG_GAME_DATE = "Actual GameDate doesn't match expected";
             string WRONG_TEAMS = "Actual Teams list doesn't match expected";
             string WRONG_ROUNDS = "Actual Rounds list doesn't match expected";
-            
+
             Assert.AreEqual(x.TournamentId, y.TournamentId, WRONG_TOURNAMENT_ID);
             Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, WRONG_HOME_TEAM_ID);
             Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, WRONG_AWAY_TEAM_ID);
@@ -907,11 +906,11 @@
                 y.Teams != null &&
                 x.Teams.Select(team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
                     y.Teams.Select(team => new { Text = team.Text, Value = team.Value })), WRONG_TEAMS);
-            
+
             Assert.IsTrue(x.Rounds != null &&
                           y.Rounds != null &&
                          (x.Rounds.Items as IEnumerable<int>).SequenceEqual(
-                          y.Rounds.Items as IEnumerable<int>), WRONG_ROUNDS);            
+                          y.Rounds.Items as IEnumerable<int>), WRONG_ROUNDS);
         }
         #endregion
     }

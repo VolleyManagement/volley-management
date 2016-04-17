@@ -28,9 +28,9 @@
         public int Points { get; set; }
 
         /// <summary>
-        /// Gets or sets team result set scores.
+        /// Gets or sets list of team result set scores.
         /// </summary>
-        public List<Result> ResultSetScores { get; set; }
+        public List<List<TotalResultDto>> ResultSetScores { get; set; }
 
         /// <summary>
         /// Gets or sets the ratio of number of sets the team won to number of sets the team lost.

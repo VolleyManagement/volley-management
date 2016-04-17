@@ -53,6 +53,7 @@
     <Compile Include="ContributorsAggregate\IContributorTeamRepository.cs" />
     <Compile Include="Dto\UserInRoleDto.cs" />
     <Compile Include="GameReportsAggregate\PivotStandingsEntry.cs" />
+    <Compile Include="GameReportsAggregate\TotalResultDto.cs" />
     <Compile Include="GamesAggregate\Game.cs" />
     <Compile Include="GameReportsAggregate\StandingsEntry.cs" />
     <Compile Include="GamesAggregate\GamesResultDto.cs" />

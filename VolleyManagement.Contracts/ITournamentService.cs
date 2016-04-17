@@ -42,6 +42,13 @@
         List<Team> GetAllTournamentTeams(int tournamentId);
 
         /// <summary>
+        /// Finds tournament data transfer object by torunament id
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>The <see cref="TournamentScheduleDto"/></returns>
+        TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId);
+
+        /// <summary>
         /// Create new tournament.
         /// </summary>
         /// <param name="tournament">New tournament</param>
@@ -71,6 +78,13 @@
         /// </summary>
         /// <param name="teamId">Team to delete</param>
         /// <param name="tournamentId">Tournament to un assign team</param>
-        void DeleteTeamFromTournament(int teamId, int tournamentId);
+        void DeleteTeamFromTournament(int teamId, int tournamentId); 
+
+        /// <summary>
+        /// Counts number of rounds for specified tournament
+        /// </summary>
+        /// <param name="tournament">Tournament for which we count rounds</param>
+        /// <returns>Number of rounds</returns>
+        byte GetNumberOfRounds(TournamentScheduleDto tournament);
     }
 }

@@ -15,7 +15,8 @@
     /// </summary>
     public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
                                      IQuery<List<Tournament>, GetAllCriteria>,
-                                     IQuery<Tournament, FindByIdCriteria>
+                                     IQuery<Tournament, FindByIdCriteria>,
+                                     IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>
     {
         #region Fields
 
@@ -77,6 +78,26 @@
                                       .Where(t => t.Id == criteria.Id)
                                       .Select(GetTournamentMapping())
                                       .SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Finds tournament data transfer object by tournament id 
+        /// </summary>
+        /// <param name="criteria">Tournament id criteria</param>
+        /// <returns>The <see cref="TournamentScheduleDto"/></returns>
+        public TournamentScheduleDto Execute(TournamentScheduleInfoCriteria criteria)
+        {
+            return this._unitOfWork.Context.Tournaments.Where(t => t.Id == criteria.TournamentId)
+                .Select(tr => new TournamentScheduleDto()
+                {
+                    Id = tr.Id,
+                    Name = tr.Name,
+                    StartDate = tr.GamesStart,
+                    EndDate = tr.GamesEnd, 
+                    Scheme = (TournamentSchemeEnum)tr.Scheme,
+                    TeamCount = (byte)tr.Teams.Count()
+                })
+                .SingleOrDefault();
         }
 
         #endregion

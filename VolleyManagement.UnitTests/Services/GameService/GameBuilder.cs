@@ -15,6 +15,8 @@
 
         private const string DATE = "2016-04-03 10:00";
 
+        private const int MAX_SETS_COUNT = 5;
+
         private Game _game;
 
         #endregion
@@ -99,6 +101,34 @@
         }
 
         /// <summary>
+        /// Sets empty null result in game.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithNullResult()
+        {
+            _game.GameDate = DateTime.Parse(DATE);
+            _game.Result = null;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets empty initialized result in game.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithDefaultResult()
+        {
+            _game.Result.SetsScore = new Score(0, 0);
+            _game.Result.IsTechnicalDefeat = false;
+            foreach (var score in _game.Result.SetScores)
+            {
+                score.Away = 0;
+                score.Home = 0;
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Sets the final score of the game.
         /// </summary>
         /// <param name="score">Final score of the game.</param>
@@ -151,6 +181,17 @@
             _game.Result.SetScores.Clear();
             _game.Result.SetScores.AddRange(scores);
             return this;
+        }
+
+        /// <summary>
+        /// Sets the game date to given date
+        /// </summary>
+        /// <param name="date">Date to set</param>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithStartDate(DateTime date)
+        {
+            this._game.GameDate = date;
+            return this; 
         }
 
         /// <summary>
@@ -279,6 +320,46 @@
             };
 
             return this;
+        }
+
+        /// <summary>
+        /// Sets the round number for game
+        /// </summary>
+        /// <param name="roundNumber">number of the round</param>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithRound(byte roundNumber)
+        {
+            this._game.Round = roundNumber;
+            return this; 
+        } 
+
+        public GameBuilder TestRoundGame()
+        {
+            this._game.TournamentId = 1;
+            this._game.HomeTeamId = 1;
+            this._game.AwayTeamId = 2;
+            this._game.Round = 1; 
+
+            return this; 
+        }
+
+        public GameBuilder TestRoundGameSwithedTeams()
+        {
+            this._game.TournamentId = 1;
+            this._game.HomeTeamId = 2;
+            this._game.AwayTeamId = 1;
+            this._game.Round = 1;
+
+            return this;
+        }
+
+        public GameBuilder TestFreeDayGame()
+        {
+            this._game.HomeTeamId = 1;
+            this._game.AwayTeamId = 0;
+            this._game.Round = 1; 
+
+            return this; 
         }
 
         /// <summary>

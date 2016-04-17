@@ -105,6 +105,10 @@
     <Compile Include="Context\Migrations\201604061543141_ModifyGameResult.Designer.cs">
       <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201604140531421_NullableAwayTeam.cs" />
+    <Compile Include="Context\Migrations\201604140531421_NullableAwayTeam.Designer.cs">
+      <DependentUpon>201604140531421_NullableAwayTeam.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
@@ -205,6 +209,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201604061543141_ModifyGameResult.resx">
       <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201604140531421_NullableAwayTeam.resx">
+      <DependentUpon>201604140531421_NullableAwayTeam.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

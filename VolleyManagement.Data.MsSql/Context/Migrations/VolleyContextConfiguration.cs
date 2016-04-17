@@ -229,11 +229,11 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 ApplyingPeriodStart = new DateTime(2015, 06, 02),
                 ApplyingPeriodEnd = new DateTime(2015, 09, 02),
                 GamesStart = new DateTime(2015, 09, 03),
-                GamesEnd = new DateTime(2015, 12, 03),
-                TransferStart = new DateTime(2015, 10, 01),
-                TransferEnd = new DateTime(2015, 11, 01),
+                GamesEnd = new DateTime(2015, 09, 29),
+                TransferStart = new DateTime(2015, 09, 04),
+                TransferEnd = new DateTime(2015, 09, 28), 
                 Scheme = 1,
-                Season = 110,
+                Season = 115,
                 Divisions = new List<DivisionEntity>()
                 {
                     new DivisionEntity()

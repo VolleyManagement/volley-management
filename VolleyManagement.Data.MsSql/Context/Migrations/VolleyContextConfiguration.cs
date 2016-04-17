@@ -52,7 +52,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
-
+           
+            #region Seed players
             PlayerEntity player1 = new PlayerEntity
                 {
                     BirthYear = 70,
@@ -166,8 +167,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 player11,
                 player12
             });
-           // context.SaveChanges();
-            
+            #endregion
+
+            #region Seed teams
             TeamEntity team1 = new TeamEntity
             {
                 Captain = player1,
@@ -221,7 +223,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                     team5, 
                     team6 
                 });
+            #endregion
 
+            #region Seed tournaments
             // Past torunament, scheme 1
             TournamentEntity tour1 = new TournamentEntity 
             {
@@ -256,8 +260,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             {
                 Name = "New Hope",
                 ApplyingPeriodStart = DateTime.Now.AddMonths(-1),
-                ApplyingPeriodEnd = DateTime.Now.AddDays(-1),
-                GamesStart = DateTime.Now,
+                ApplyingPeriodEnd = DateTime.Now.AddDays(-2),
+                GamesStart = DateTime.Now.AddDays(-1),
                 GamesEnd = DateTime.Now.AddDays(5),
                 TransferStart = DateTime.Now,
                 TransferEnd = DateTime.Now.AddDays(4),
@@ -277,18 +281,18 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         }
                     }
                 },
-                Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5 }
+                Teams = new List<TeamEntity>() { team1, team2, team3, team4 }
             };
             // Future tournament scheme 1
             TournamentEntity tour3 = new TournamentEntity
             {
                 Name = "Force Awakens",
-                ApplyingPeriodStart = DateTime.Now.AddYears(1),
-                ApplyingPeriodEnd = DateTime.Now.AddYears(1).AddMonths(3),
-                GamesStart = DateTime.Now.AddYears(1).AddMonths(3).AddDays(2),
-                GamesEnd = DateTime.Now.AddYears(1).AddMonths(3).AddDays(10),
-                TransferStart = DateTime.Now.AddYears(1).AddMonths(3).AddDays(2),
-                TransferEnd = DateTime.Now.AddYears(1).AddMonths(3).AddDays(4),
+                ApplyingPeriodStart = DateTime.Now.AddMonths(1),
+                ApplyingPeriodEnd = DateTime.Now.AddMonths(2),
+                GamesStart = DateTime.Now.AddMonths(2).AddDays(2),
+                GamesEnd = DateTime.Now.AddMonths(2).AddDays(10),
+                TransferStart = DateTime.Now.AddMonths(2).AddDays(2),
+                TransferEnd = DateTime.Now.AddMonths(2).AddDays(7),
                 Scheme = 1,
                 Season = Convert.ToByte(DateTime.Now.AddYears(1).Year - 1900),
                 Divisions = new List<DivisionEntity>()
@@ -308,13 +312,117 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5 }
             };
 
+            // Past tournament, scheme 2
+            TournamentEntity tour4 = new TournamentEntity
+            {
+                Name = "Hunger Games",
+                ApplyingPeriodStart = new DateTime(2012, 01, 02),
+                ApplyingPeriodEnd = new DateTime(2012, 05, 05),
+                GamesStart = new DateTime(2012, 05, 20),
+                GamesEnd = new DateTime(2012, 06, 01),
+                TransferStart = new DateTime(2012, 05, 20),
+                TransferEnd = new DateTime(2012, 06, 01),
+                Scheme = 2,
+                Season = 112,
+                Divisions = new List<DivisionEntity>()
+                {
+                    new DivisionEntity()
+                    {
+                        Name = "Division 4",
+                        Groups = new List<GroupEntity>()
+                        {
+                            new GroupEntity()
+                            {   
+                                Name = "Group 4"
+                            }
+                        }
+                    }
+                },
+                Teams = new List<TeamEntity>() { 
+                    team1,
+                    team2,
+                    team3,
+                    team4 }
+            };
+
+            // Current tournament, scheme 2
+            TournamentEntity tour5 = new TournamentEntity
+            {
+                Name = "Epic tour",
+                ApplyingPeriodStart = DateTime.Now.AddMonths(-2),
+                ApplyingPeriodEnd = DateTime.Now.AddDays(-3),
+                GamesStart = DateTime.Now.AddDays(-2),
+                GamesEnd = DateTime.Now.AddDays(20),
+                TransferStart = DateTime.Now.AddDays(2),
+                TransferEnd = DateTime.Now.AddDays(19),
+                Scheme = 2,
+                Season = Convert.ToByte(DateTime.Now.Year - 1900),
+                Divisions = new List<DivisionEntity>()
+                {
+                    new DivisionEntity()
+                    {
+                        Name = "Division 5",
+                        Groups = new List<GroupEntity>()
+                        {
+                            new GroupEntity()
+                            {   
+                                Name = "Group 5"
+                            }
+                        }
+                    }
+                },
+                Teams = new List<TeamEntity>() { team1, team2, team3 } 
+            };
+            // Future tournament, scheme 2
+            TournamentEntity tour6 = new TournamentEntity
+            {
+                Name = "Empire Strikes Back",
+                ApplyingPeriodStart = DateTime.Now.AddMonths(1),
+                ApplyingPeriodEnd = DateTime.Now.AddMonths(2).AddDays(15),
+                GamesStart = DateTime.Now.AddMonths(2).AddDays(16),
+                GamesEnd = DateTime.Now.AddMonths(2).AddDays(7),
+                TransferEnd = null,
+                TransferStart = null,
+                Scheme = 2,
+                Season = Convert.ToByte(DateTime.Now.Year - 1900),
+                Divisions = new List<DivisionEntity>()
+                {
+                    new DivisionEntity()
+                    {
+                        Name = "Division 6",
+                        Groups = new List<GroupEntity>()
+                        {
+                            new GroupEntity()
+                            {   
+                                Name = "Group 6"
+                            }
+                        }
+                    }
+                },
+                Teams = new List<TeamEntity>() { team1, team5, team3, team6 } 
+            };
+         
             context.Tournaments.AddOrUpdate(
                 t => t.Name, 
                 new TournamentEntity[]
             { 
                 tour1,
                 tour2,
-                tour3 });
+                tour3,
+                tour4,
+                tour5,
+                tour6});
+            #endregion
+
+            GameResultEntity game1 = new GameResultEntity
+            {
+                Tournament = tour1,
+                HomeTeam = team1,
+                AwayTeam = team2,
+                RoundNumber = 1,
+                StartTime = new DateTime(2015, 09, 03, 10, 00, 00),
+                
+            };
         } 
 
         private static RoleEntity CreateRole(string name)

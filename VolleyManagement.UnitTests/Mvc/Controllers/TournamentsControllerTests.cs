@@ -44,7 +44,7 @@
         private const int DAYS_FOR_GAMES_PERIOD = 120;
         private const int DAYS_FROM_GAMES_START_TO_TRANSFER_START = 1;
         private const int DAYS_FOR_TRANSFER_PERIOD = 21;
-        private static readonly DateTime TEST_DATE = new DateTime(2016, 07, 25);
+        private static readonly DateTime _testDate = new DateTime(2016, 07, 25);
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -310,7 +310,7 @@
             const int MIN_ROUND_NUMBER = 1;
             const int TEST_ROUND_COUNT = 3;
 
-            var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = TEST_DATE };
+            var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
             var testTeams = MakeTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
@@ -319,7 +319,7 @@
             var expected = new GameViewModel
             {
                 TournamentId = TEST_TOURNAMENT_ID,
-                GameDate = TEST_DATE,
+                GameDate = _testDate,
                 Teams = new SelectList(testTeams, "Id", "Name"),
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, TEST_ROUND_COUNT))
             };
@@ -887,19 +887,19 @@
 
         private void AssertEqual(GameViewModel x, GameViewModel y)
         {
-            string WRONG_TOURNAMENT_ID = "Actual TournamentId doesn't match expected";
-            string WRONG_HOME_TEAM_ID = "Actual HomeTeamId doesn't match expected";
-            string WRONG_AWAY_TEAM_ID = "Actual AwayTeamId doesn't match expected";
-            string WRONG_ROUND = "Actual Round number doesn't match expected";
-            string WRONG_GAME_DATE = "Actual GameDate doesn't match expected";
-            string WRONG_TEAMS = "Actual Teams list doesn't match expected";
-            string WRONG_ROUNDS = "Actual Rounds list doesn't match expected";
+            string wrongTournamentId = "Actual TournamentId doesn't match expected";
+            string wrongHomeTeamId = "Actual HomeTeamId doesn't match expected";
+            string wrongAwayTeamId = "Actual AwayTeamId doesn't match expected";
+            string wrongRound = "Actual Round number doesn't match expected";
+            string wrongGameDate = "Actual GameDate doesn't match expected";
+            string wronsWrongTeams = "Actual Teams list doesn't match expected";
+            string wrongRounds = "Actual Rounds list doesn't match expected";
 
-            Assert.AreEqual(x.TournamentId, y.TournamentId, WRONG_TOURNAMENT_ID);
-            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, WRONG_HOME_TEAM_ID);
-            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, WRONG_AWAY_TEAM_ID);
-            Assert.AreEqual(x.Round, y.Round, WRONG_ROUND);
-            Assert.AreEqual(x.GameDate, y.GameDate, WRONG_GAME_DATE);
+            Assert.AreEqual(x.TournamentId, y.TournamentId, wrongTournamentId);
+            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, wrongHomeTeamId);
+            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, wrongAwayTeamId);
+            Assert.AreEqual(x.Round, y.Round, wrongRound);
+            Assert.AreEqual(x.GameDate, y.GameDate, wrongGameDate);
 
             Assert.IsTrue(
                 x.Teams != null &&
@@ -907,14 +907,14 @@
                 x.Teams.Select(
                     team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
                     y.Teams.Select(team => new { Text = team.Text, Value = team.Value })),
-                WRONG_TEAMS);
+                wronsWrongTeams);
 
             Assert.IsTrue(
                           x.Rounds != null &&
                           y.Rounds != null &&
                          (x.Rounds.Items as IEnumerable<int>).SequenceEqual(
                           y.Rounds.Items as IEnumerable<int>),
-                          WRONG_ROUNDS);
+                          wrongRounds);
         }
         #endregion
     }

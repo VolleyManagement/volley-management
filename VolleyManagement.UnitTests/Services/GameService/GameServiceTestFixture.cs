@@ -119,9 +119,10 @@
         }
 
         /// <summary>
-        /// Adds game results with all possible scores to collection of <see cref="GameResultDto"/> objects.
+        /// Adds game results with all possible scores.
+        /// to collection of <see cref="GameResultDto"/> objects.
         /// </summary>
-        /// <returns>Instance of <see cref="GameServiceTestFixture"/>.</returns>
+        /// <returns>Instance of <see cref="GameServiceTestFixture"/></returns>
         public GameServiceTestFixture WithAllPossibleScores()
         {
             _gameResults.Clear();

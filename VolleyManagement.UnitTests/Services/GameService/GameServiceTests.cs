@@ -53,10 +53,10 @@
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
-        private readonly string NoTeamsInGame
+        private readonly string _noTeamsInGame
             = "No teams are specified for current game in round {0}";
 
-        private readonly string WrongRoundDate
+        private readonly string _wrongRoundDate
             = "Start of the round should not be earlier than the start of the tournament or later than the end of the tournament";
 
         private IKernel _kernel;
@@ -571,7 +571,7 @@
 
             // Assert
             VerifyCreateGame(game, Times.Never());
-            VerifyExceptionThrown(exception, WrongRoundDate);
+            VerifyExceptionThrown(exception, _wrongRoundDate);
         }
 
         /// <summary>
@@ -674,7 +674,7 @@
             // Assert
             VerifyExceptionThrown(
                 exception,
-                string.Format(NoTeamsInGame, duplicateFreeDayGame.Round));
+                string.Format(_noTeamsInGame, duplicateFreeDayGame.Round));
         }
 
         [TestMethod]

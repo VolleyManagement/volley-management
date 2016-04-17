@@ -60,7 +60,7 @@
             new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
 
         private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto =
-            new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>(); 
+            new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -80,7 +80,7 @@
             _kernel.Bind<IQuery<List<Tournament>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
             _kernel.Bind<IQuery<Tournament, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>().ToConstant(_getAllTeamsQuery.Object);
-            _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>().ToConstant(_getTorunamentDto.Object); 
+            _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>().ToConstant(_getTorunamentDto.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;
@@ -770,7 +770,7 @@
             Assert.IsTrue(gotException);
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
         }
-        
+
         /// <summary>
         /// Test for Delete Tournament method.
         /// </summary>
@@ -779,10 +779,10 @@
         {
             // Arrange
             var sut = _kernel.Get<TournamentService>();
-            
+
             // Act
             sut.Delete(FIRST_TOURNAMENT_ID);
-            
+
             // Assert
             VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
         }

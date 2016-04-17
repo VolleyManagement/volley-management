@@ -243,7 +243,7 @@
 
             public const byte EMPTY_SCORE = 0;
 
-            public const bool DEFAULT_TECHNICAL_DEFEAT = false; 
+            public const bool DEFAULT_TECHNICAL_DEFEAT = false;
 
             public const string FREE_DAY_TEAM_NAME = "Free day";
         }

@@ -83,7 +83,7 @@
         public List<SelectListItem> TeamsList { get; set; }
 
         /// <summary>
-        /// Gets or sets the format of game date
+        /// Gets the format of game date
         /// </summary>
         public string ShortGameDate
         {

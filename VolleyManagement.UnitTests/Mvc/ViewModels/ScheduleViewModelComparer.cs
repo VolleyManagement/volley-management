@@ -1,11 +1,11 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for schedule objects.
@@ -89,7 +89,7 @@ using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
                 }
 
                 return true;
-            }            
+            }
         }
     }
 }

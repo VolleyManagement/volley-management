@@ -42,7 +42,7 @@
         List<Team> GetAllTournamentTeams(int tournamentId);
 
         /// <summary>
-        /// Finds tournament data transfer object by torunament id
+        /// Finds tournament data transfer object by tournament id
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
@@ -78,7 +78,7 @@
         /// </summary>
         /// <param name="teamId">Team to delete</param>
         /// <param name="tournamentId">Tournament to un assign team</param>
-        void DeleteTeamFromTournament(int teamId, int tournamentId); 
+        void DeleteTeamFromTournament(int teamId, int tournamentId);
 
         /// <summary>
         /// Counts number of rounds for specified tournament

@@ -14,9 +14,9 @@
     {
         private const int TOURNAMENT_DEFAULT_ID = 1;
 
-        private const string TEST_START_DATE  = "2016-04-02 10:00";
+        private const string TEST_START_DATE = "2016-04-02 10:00";
 
-        private const string TEST_END_DATE = "2016-04-05 10:00"; 
+        private const string TEST_END_DATE = "2016-04-05 10:00";
 
         /// <summary>
         /// Holds test tournament instance
@@ -297,10 +297,10 @@
         }
 
         public TournamentBuilder TestTournament()
-        {   
+        {
             this._tournament.GamesStart = DateTime.Parse(TEST_START_DATE);
             this._tournament.GamesEnd = DateTime.Parse(TEST_END_DATE);
-            return this; 
+            return this;
         }
 
         /// <summary>

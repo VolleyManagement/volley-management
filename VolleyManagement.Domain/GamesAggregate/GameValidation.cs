@@ -1,5 +1,5 @@
 ﻿namespace VolleyManagement.Domain.GamesAggregate
-{ 
+{
     /// <summary>
     /// Game validation class.
     /// </summary>
@@ -19,7 +19,7 @@
         }
 
         /// <summary>
-        /// Determines whether the home and away teams are same accordingly 
+        /// Determines whether the home and away teams are same accordingly
         /// </summary>
         /// <param name="firstGame">First game in tournament</param>
         /// <param name="secondGame">Second game in tournament</param>
@@ -31,7 +31,7 @@
         }
 
         /// <summary>
-        /// Verifies if teams are same in two different games ignoring order 
+        /// Verifies if teams are same in two different games ignoring order
         /// </summary>
         /// <param name="firstGame">First game to check</param>
         /// <param name="secondGame">Second game to check</param>
@@ -45,7 +45,7 @@
         }
 
         /// <summary>
-        /// Checks if one team from new game participates in original game 
+        /// Checks if one team from new game participates in original game
         /// </summary>
         /// <param name="originalGame">Game which teams are compared to new game's teams</param>
         /// <param name="newGame">Game which teams are compared to original game's teams</param>
@@ -59,14 +59,14 @@
         }
 
         /// <summary>
-        /// Checks if team is scheduled to a free day 
+        /// Checks if team is scheduled to a free day
         /// </summary>
         /// <param name="teamId">Id of the team</param>
         /// <returns>True if game is scheduled free day</returns>
         public static bool IsFreeDayTeam(int? teamId)
         {
-            return teamId == null; 
-        } 
+            return teamId == null;
+        }
 
         /// <summary>
         /// Checks if team in the game is scheduled to free day
@@ -75,7 +75,7 @@
         /// <returns>True if team in game is scheduled in free day</returns>
         public static bool IsFreeDayGame(Game game)
         {
-            return !game.AwayTeamId.HasValue; 
+            return !game.AwayTeamId.HasValue;
         }
     }
 }

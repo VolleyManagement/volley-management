@@ -9,10 +9,10 @@
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.GameResult;
+    using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.Properties;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Data.Queries.Tournament;
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 
     /// <summary>
@@ -275,8 +275,7 @@
 
         private void ValidateGameInRoundOnCreate(Game newGame, List<GameResultDto> gamesInRound)
         {
-            // We are sure that newGame is been created, not edited 
-
+            // We are sure that newGame is been created, not edited
             foreach (GameResultDto game in gamesInRound)
             {
                 if (GameValidation.AreSameTeamsInGames(game, newGame))
@@ -330,9 +329,9 @@
 
         private void ValidateGameInRoundOnEdit(Game newGame, GameResultDto oldGameToUpdate, List<GameResultDto> gamesInRound)
         {
-            // We are ok in case when teams were not changed 
+            // We are ok in case when teams were not changed
 
-            // Only one team changed 
+            // Only one team changed
             if (!GameValidation.AreSameTeamsInGames(oldGameToUpdate, newGame)
                 && GameValidation.IsTheSameTeamInTwoGames(oldGameToUpdate, newGame))
             {
@@ -366,7 +365,7 @@
             }
             else if (!GameValidation.AreSameTeamsInGames(oldGameToUpdate, newGame))
             {
-                // Both teams in new game are different fro old game 
+                // Both teams in new game are different fro old game
                 ValidateGameInRoundOnCreate(newGame, gamesInRound);
             }
         }

@@ -3,12 +3,12 @@
     using VolleyManagement.Data.Contracts;
 
     /// <summary>
-    /// Represents criteria for finding tournament data transfer object 
+    /// Represents criteria for finding tournament data transfer object
     /// </summary>
-    public class TournamentScheduleInfoCriteria : IQueryCriteria 
+    public class TournamentScheduleInfoCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Gets or sets tournament id criteria 
+        /// Gets or sets tournament id criteria
         /// </summary>
         public int TournamentId { get; set; }
     }

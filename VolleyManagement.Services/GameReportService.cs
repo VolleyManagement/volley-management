@@ -66,7 +66,7 @@
 
         private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<GameResultDto> gameResults)
         {
-            var entries = new List<StandingsEntry>();                       
+            var entries = new List<StandingsEntry>();
 
             var teams = gameResults.Select(gr => new { Id = gr.HomeTeamId, Name = gr.HomeTeamName })
                 .Union(gameResults.Where(gr => gr.AwayTeamId.HasValue)
@@ -159,7 +159,6 @@
             awayTeamEntry.BallsLost += homeBallsTotal;
             awayTeamEntry.BallsRatio = (float)awayTeamEntry.BallsWon / awayTeamEntry.BallsLost;
         }
-
         #endregion
     }
 }

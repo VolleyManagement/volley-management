@@ -49,7 +49,7 @@
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTeamsQuery;
-        private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery; 
+        private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
 
         #endregion
 
@@ -122,7 +122,7 @@
         }
 
         /// <summary>
-        /// Finds tournament data transfer object by torunament id
+        /// Finds tournament data transfer object by tournament id
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>

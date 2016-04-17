@@ -12,7 +12,7 @@
     /// Schedule view model builder
     /// </summary>
     [ExcludeFromCodeCoverage]
-     internal class ScheduleViewModelBuilder
+    internal class ScheduleViewModelBuilder
     {
         /// <summary>
         /// Holds test schedule view model instance
@@ -31,7 +31,9 @@
                 NumberOfRounds = 3,
                 Rounds = new GameServiceTestFixture().TestGameResults()
                                      .Build().GroupBy(d => d.Round)
-                                     .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)
+                                     .ToDictionary(
+                                      d => d.Key,
+                                      c => c.OrderBy(t => t.GameDate)
                                      .Select(x => GameResultViewModel.Map(x)).ToList())
             };
         }

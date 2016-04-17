@@ -291,7 +291,9 @@
                 NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                 .GroupBy(d => d.Round)
-                .ToDictionary(d => d.Key, c => c.OrderBy(t => t.GameDate)
+                .ToDictionary(
+                     d => d.Key,
+                     c => c.OrderBy(t => t.GameDate)
                     .Select(x => GameResultViewModel.Map(x)).ToList())
             };
 

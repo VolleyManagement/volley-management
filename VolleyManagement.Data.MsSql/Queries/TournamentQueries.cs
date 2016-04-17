@@ -81,7 +81,7 @@
         }
 
         /// <summary>
-        /// Finds tournament data transfer object by tournament id 
+        /// Finds tournament data transfer object by tournament id
         /// </summary>
         /// <param name="criteria">Tournament id criteria</param>
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
@@ -93,7 +93,7 @@
                     Id = tr.Id,
                     Name = tr.Name,
                     StartDate = tr.GamesStart,
-                    EndDate = tr.GamesEnd, 
+                    EndDate = tr.GamesEnd,
                     Scheme = (TournamentSchemeEnum)tr.Scheme,
                     TeamCount = (byte)tr.Teams.Count()
                 })

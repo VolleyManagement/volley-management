@@ -191,7 +191,7 @@
         public GameBuilder WithStartDate(DateTime date)
         {
             this._game.GameDate = date;
-            return this; 
+            return this;
         }
 
         /// <summary>
@@ -330,17 +330,17 @@
         public GameBuilder WithRound(byte roundNumber)
         {
             this._game.Round = roundNumber;
-            return this; 
-        } 
+            return this;
+        }
 
         public GameBuilder TestRoundGame()
         {
             this._game.TournamentId = 1;
             this._game.HomeTeamId = 1;
             this._game.AwayTeamId = 2;
-            this._game.Round = 1; 
+            this._game.Round = 1;
 
-            return this; 
+            return this;
         }
 
         public GameBuilder TestRoundGameSwithedTeams()
@@ -357,9 +357,9 @@
         {
             this._game.HomeTeamId = 1;
             this._game.AwayTeamId = 0;
-            this._game.Round = 1; 
+            this._game.Round = 1;
 
-            return this; 
+            return this;
         }
 
         /// <summary>

@@ -12,12 +12,12 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Tournament; 
     using VolleyManagement.Data.Queries.GameResult;
+    using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate; 
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.TournamentService; 
+    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Tests for <see cref="GameService"/> class.
@@ -36,7 +36,7 @@
 
         private const string BEFORE_TOURNAMENT_DATE = "2016-04-02 07:00";
 
-        private const string LATE_TOURNAMENT_DATE = "2016-04-06 10:00"; 
+        private const string LATE_TOURNAMENT_DATE = "2016-04-06 10:00";
 
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
@@ -58,7 +58,7 @@
 
         private readonly string WrongRoundDate
             = "Start of the round should not be earlier than the start of the tournament or later than the end of the tournament";
-        
+
         private IKernel _kernel;
 
         /// <summary>
@@ -86,7 +86,7 @@
         public void Create_GameValid_GameCreated()
         {
             // Arrange
-            MockDefaultTournament(); 
+            MockDefaultTournament();
             var newGame = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -112,7 +112,7 @@
             // Act
             try
             {
-            sut.Create(newGame);
+                sut.Create(newGame);
             }
             catch (ArgumentException ex)
             {
@@ -138,7 +138,7 @@
             // Act
             try
             {
-            sut.Create(newGame);
+                sut.Create(newGame);
             }
             catch (ArgumentException ex)
             {
@@ -194,7 +194,7 @@
             // Act
             try
             {
-            sut.Create(newGame);
+                sut.Create(newGame);
             }
             catch (ArgumentException ex)
             {
@@ -221,7 +221,7 @@
             // Act
             try
             {
-            sut.Create(newGame);
+                sut.Create(newGame);
             }
             catch (ArgumentException ex)
             {
@@ -248,7 +248,7 @@
             // Act
             try
             {
-            sut.Create(newGame);
+                sut.Create(newGame);
             }
             catch (ArgumentException ex)
             {
@@ -275,7 +275,7 @@
             // Act
             try
             {
-            sut.Create(newGame);
+                sut.Create(newGame);
             }
             catch (ArgumentException ex)
             {
@@ -365,7 +365,7 @@
         public void Create_GameAwayTeamTechnicalWinValidData_GameCreated()
         {
             // Arrange
-            MockDefaultTournament(); 
+            MockDefaultTournament();
 
             var newGame = new GameBuilder()
                 .WithTechnicalDefeatValidSetScoresAwayTeamWin()
@@ -504,7 +504,7 @@
             // Act
             try
             {
-            sut.Create(newGame);
+                sut.Create(newGame);
             }
             catch (ArgumentException ex)
             {
@@ -525,7 +525,7 @@
         public void Create_GameWithNoResult_GameCreatedWithDefaultResult()
         {
             // Arrange
-            MockDefaultTournament(); 
+            MockDefaultTournament();
 
             var newGame = new GameBuilder()
                 .WithNullResult()
@@ -534,7 +534,7 @@
             var expectedGameToCreate = new GameBuilder()
                 .WithDefaultResult()
                 .Build();
-            
+
             // Act
             sut.Create(newGame);
 
@@ -543,7 +543,7 @@
         }
 
         /// <summary>
-        /// Tests creation of the game with invalid date 
+        /// Tests creation of the game with invalid date
         /// </summary>
         [TestMethod]
         public void Create_GameBeforeTournamentStarts_ExceptionThrown()
@@ -551,15 +551,15 @@
             // Arrange
             Exception exception = null;
 
-            MockDefaultTournament(); 
+            MockDefaultTournament();
 
             Game game = new GameBuilder()
                 .WithStartDate(DateTime.Parse(BEFORE_TOURNAMENT_DATE))
                 .Build();
 
-            var sut = _kernel.Get<GameService>(); 
+            var sut = _kernel.Get<GameService>();
 
-            // Act 
+            // Act
             try
             {
                 sut.Create(game);
@@ -569,13 +569,13 @@
                 exception = ex;
             }
 
-            // Assert 
+            // Assert
             VerifyCreateGame(game, Times.Never());
-            VerifyExceptionThrown(exception, WrongRoundDate); 
+            VerifyExceptionThrown(exception, WrongRoundDate);
         }
 
         /// <summary>
-        /// Tests creation of the game with invalid date 
+        /// Tests creation of the game with invalid date
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
@@ -594,22 +594,22 @@
 
             var sut = _kernel.Get<GameService>();
 
-            // Act 
+            // Act
             sut.Create(game);
 
-            // Assert 
+            // Assert
             VerifyCreateGame(game, Times.Never());
         }
 
         /// <summary>
-        /// Tests creation of same game in same round 
+        /// Tests creation of same game in same round
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Create_SameGameInRound_ExceptionThrown()
         {
             // Arrange
-            bool excaptionWasThrown = false; 
+            bool excaptionWasThrown = false;
 
             var game = new GameBuilder()
                 .WithId(1)
@@ -621,11 +621,11 @@
                 .TestRoundGame()
                 .Build();
 
-            var sut = _kernel.Get<GameService>(); 
+            var sut = _kernel.Get<GameService>();
 
-            sut.Create(game);  
+            sut.Create(game);
 
-            // Act 
+            // Act
             try
             {
                 sut.Create(duplicate);
@@ -635,9 +635,9 @@
                 excaptionWasThrown = true;
             }
 
-            // Assert 
-            Assert.IsTrue(excaptionWasThrown); 
-        } 
+            // Assert
+            Assert.IsTrue(excaptionWasThrown);
+        }
 
         /// <summary>
         /// Tests creation of the duplicate free day game
@@ -647,7 +647,7 @@
         public void Create_SecondFreeDayInRound_ExceptionThrown()
         {
             // Arrange
-           Exception exception = null; 
+            Exception exception = null;
 
             var freeDayGame = new GameBuilder()
                 .TestFreeDayGame()
@@ -661,27 +661,27 @@
             var sut = _kernel.Get<GameService>();
             sut.Create(freeDayGame);
 
-            // Act 
+            // Act
             try
             {
-                sut.Create(duplicateFreeDayGame); 
+                sut.Create(duplicateFreeDayGame);
             }
             catch (ArgumentException ex)
             {
-                exception = ex; 
+                exception = ex;
             }
-            
-            // Assert 
+
+            // Assert
             VerifyExceptionThrown(
                 exception,
                 string.Format(NoTeamsInGame, duplicateFreeDayGame.Round));
         }
 
-        [TestMethod] 
+        [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Create_SameTeamInTwoGamesInOneRound_ExceptionThrown()
         {
-            // Arrange 
+            // Arrange
             bool exceptionWasThrown = false;
 
             var gameInOneRound = new GameBuilder()
@@ -704,20 +704,20 @@
             }
             catch (ArgumentException)
             {
-                exceptionWasThrown = true; 
+                exceptionWasThrown = true;
             }
 
             // Assert
             Assert.IsTrue(exceptionWasThrown);
         }
 
-        [TestMethod] 
+        [TestMethod]
         public void Create_SameGameTournamentSchemeOne_ExceptionThrown()
         {
-            // Arrange 
+            // Arrange
             bool exceptionThrown = false;
 
-            MockDefaultTournament(); 
+            MockDefaultTournament();
 
             var gameInOtherRound = new GameBuilder()
                 .TestRoundGame()
@@ -728,48 +728,10 @@
             var sut = _kernel.Get<GameService>();
 
             SetupGetTournamentResults(
-                gameInOtherRound.TournamentId, 
-                new GameServiceTestFixture()
-                .TestGamesForDuplicateSchemeOne()
-                .Build()); 
+                gameInOtherRound.TournamentId,
+                new GameServiceTestFixture().TestGamesForDuplicateSchemeOne().Build());
 
-            // Act 
-            try
-            {
-                sut.Create(gameInOtherRound);
-            }
-            catch (ArgumentException)
-            {
-                exceptionThrown = true; 
-            }
-
-            // Assert 
-            Assert.IsTrue(exceptionThrown);
-        }
-
-        [TestMethod]
-        public void Create_SameGameSwitchedTeamsTournamentSchemeOne_ExceptionThrown()
-        {
-            // Arrange 
-            bool exceptionThrown = false;
-
-            MockDefaultTournament(); 
-
-            var gameInOtherRound = new GameBuilder()
-                .TestRoundGame()
-                .WithId(2)
-                .WithRound(2)
-                .Build();
-
-            var sut = _kernel.Get<GameService>();
-            
-            SetupGetTournamentResults(
-               gameInOtherRound.TournamentId,
-               new GameServiceTestFixture()
-               .TestGamesForDuplicateSchemeOne()
-               .Build()); 
-
-            // Act 
+            // Act
             try
             {
                 sut.Create(gameInOtherRound);
@@ -779,14 +741,48 @@
                 exceptionThrown = true;
             }
 
-            // Assert 
+            // Assert
+            Assert.IsTrue(exceptionThrown);
+        }
+
+        [TestMethod]
+        public void Create_SameGameSwitchedTeamsTournamentSchemeOne_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionThrown = false;
+
+            MockDefaultTournament();
+
+            var gameInOtherRound = new GameBuilder()
+                .TestRoundGame()
+                .WithId(2)
+                .WithRound(2)
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            SetupGetTournamentResults(
+               gameInOtherRound.TournamentId,
+               new GameServiceTestFixture().TestGamesForDuplicateSchemeOne().Build());
+
+            // Act
+            try
+            {
+                sut.Create(gameInOtherRound);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            // Assert
             Assert.IsTrue(exceptionThrown);
         }
 
         [TestMethod]
         public void Create_SameGameInOtherRoundTournamentSchemeTwo_ExceptionThrown()
         {
-            // Arrange 
+            // Arrange
             bool exceptionThrown = false;
 
             MockDefaultTournament();
@@ -799,23 +795,21 @@
 
             SetupGetTournamentResults(
               duplicate.TournamentId,
-              new GameServiceTestFixture()
-              .TestGamesForDuplicateSchemeTwo()
-              .Build()); 
-            var sut = _kernel.Get<GameService>(); 
+              new GameServiceTestFixture().TestGamesForDuplicateSchemeTwo().Build());
+            var sut = _kernel.Get<GameService>();
 
-            // Act 
+            // Act
             try
             {
                 sut.Create(duplicate);
             }
             catch (ArgumentException)
             {
-                exceptionThrown = true; 
+                exceptionThrown = true;
             }
 
-            // Assert 
-            Assert.IsTrue(exceptionThrown); 
+            // Assert
+            Assert.IsTrue(exceptionThrown);
         }
 
         /// <summary>
@@ -863,7 +857,7 @@
         public void Edit_GameValid_GameEdited()
         {
             // Arrange
-            MockDefaultTournament(); 
+            MockDefaultTournament();
             var game = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -883,7 +877,7 @@
             Exception exception = null;
 
             // Arrange
-            MockDefaultTournament(); 
+            MockDefaultTournament();
             var game = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -892,7 +886,7 @@
             // Act
             try
             {
-            sut.Edit(game);
+                sut.Edit(game);
             }
             catch (MissingEntityException ex)
             {
@@ -942,7 +936,7 @@
         {
             _tournamentScheduleDtoByIdQueryMock.Setup(m =>
                 m.Execute(It.Is<TournamentScheduleInfoCriteria>(c => c.TournamentId == id)))
-                .Returns(tournament); 
+                .Returns(tournament);
         }
 
         private void SetupEditMissingEntityException(Game game)
@@ -950,7 +944,7 @@
             _gameRepositoryMock.Setup(m =>
                 m.Update(It.Is<Game>(grs => AreGamesEqual(grs, game))))
                 .Throws(new ConcurrencyException());
-        } 
+        }
 
         private void VerifyCreateGame(Game game, Times times)
         {
@@ -980,7 +974,7 @@
         }
 
         /// <summary>
-        /// Checks if exception was thrown and has appropriate message 
+        /// Checks if exception was thrown and has appropriate message
         /// </summary>
         /// <param name="exception">Exception that has been thrown</param>
         /// <param name="expectedMessage">Message to compare with</param>
@@ -998,7 +992,7 @@
                 .Build();
 
             SetupGetTournamentById(tournament.Id, tournament);
-            SetupGetTournamentResults(tournament.Id, new List<GameResultDto>()); 
+            SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
         }
     }
 }

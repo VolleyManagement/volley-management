@@ -904,13 +904,17 @@
             Assert.IsTrue(
                 x.Teams != null &&
                 y.Teams != null &&
-                x.Teams.Select(team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
-                    y.Teams.Select(team => new { Text = team.Text, Value = team.Value })), WRONG_TEAMS);
+                x.Teams.Select(
+                    team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
+                    y.Teams.Select(team => new { Text = team.Text, Value = team.Value })),
+                WRONG_TEAMS);
 
-            Assert.IsTrue(x.Rounds != null &&
+            Assert.IsTrue(
+                          x.Rounds != null &&
                           y.Rounds != null &&
                          (x.Rounds.Items as IEnumerable<int>).SequenceEqual(
-                          y.Rounds.Items as IEnumerable<int>), WRONG_ROUNDS);
+                          y.Rounds.Items as IEnumerable<int>),
+                          WRONG_ROUNDS);
         }
         #endregion
     }

@@ -465,6 +465,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         games.Add(new GameResultEntity 
                         {
                             Tournament = tour,
+                            StartTime = prevRoundGames[i].StartTime.AddHours(1),
                             HomeTeam = prevRoundGames[i].HomeTeam,
                             AwayTeam = prevRoundGames[i+1].HomeTeam,
                             RoundNumber = (byte)(roundIter)
@@ -475,6 +476,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         games.Add(new GameResultEntity 
                         {
                             Tournament = tour,
+                            StartTime = prevRoundGames[i].StartTime.AddHours(1),
                             HomeTeam = prevRoundGames[i].AwayTeam,
                             AwayTeam = prevRoundGames[i-1].AwayTeam,
                             RoundNumber = (byte)(roundIter)
@@ -485,6 +487,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         games.Add(new GameResultEntity
                         {
                             Tournament = tour,
+                            StartTime = prevRoundGames[i].StartTime.AddHours(1),
                             HomeTeam = prevRoundGames[i + 1].HomeTeam,
                             AwayTeam = prevRoundGames[i - 1].AwayTeam,
                             RoundNumber = (byte)(roundIter)
@@ -504,6 +507,11 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 games = GenerateGamesDuplicateInSchemeTwo(games, roundsNumber); 
             }
 
+            if (tour.GamesStart <= DateTime.Now)
+            {
+                SetGameResults(games); 
+            }
+
             return games; 
         } 
 
@@ -516,6 +524,26 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                     game.HomeTeam = game.AwayTeam;
                     game.AwayTeam = null; 
                 }
+            }
+        }
+
+        private static void SetGameResults(List<GameResultEntity> games)
+        {
+            // Only for past and current games 
+            foreach (GameResultEntity game in games)
+            {
+                game.HomeSetsScore = 3;
+                game.AwaySetsScore = 2;
+                game.HomeSet1Score = 25;
+                game.AwaySet1Score = 10;
+                game.HomeSet2Score = 15;
+                game.AwaySet2Score = 25;
+                game.HomeSet3Score = 25;
+                game.AwaySet3Score = 5;
+                game.HomeSet4Score = 10;
+                game.AwaySet4Score = 25;
+                game.HomeSet5Score = 25;
+                game.AwaySet5Score = 10; 
             }
         }
 

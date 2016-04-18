@@ -115,6 +115,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Away team.
+        /// </summary>
+        public static string AwayTeam {
+            get {
+                return ResourceManager.GetString("AwayTeam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FixMe: Confirm password.
         /// </summary>
         public static string ConfirmUserPassword {
@@ -196,6 +205,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date and time.
+        /// </summary>
+        public static string GameDateTime {
+            get {
+                return ResourceManager.GetString("GameDateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End date of the tournament.
         /// </summary>
         public static string GamesEnd {
@@ -255,6 +273,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string Groups {
             get {
                 return ResourceManager.GetString("Groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home team.
+        /// </summary>
+        public static string HomeTeam {
+            get {
+                return ResourceManager.GetString("HomeTeam", resourceCulture);
             }
         }
         
@@ -444,6 +471,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string PlayerWeightFieldRange {
             get {
                 return ResourceManager.GetString("PlayerWeightFieldRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Round.
+        /// </summary>
+        public static string Round {
+            get {
+                return ResourceManager.GetString("Round", resourceCulture);
             }
         }
         

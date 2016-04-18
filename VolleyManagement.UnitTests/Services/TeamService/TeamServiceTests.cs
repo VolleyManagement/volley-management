@@ -110,7 +110,7 @@
             var actual = sut.Get(SPECIFIC_TEAM_ID);
 
             // Assert
-            TestHelper.AreEqual<Team>(expected, actual, new TeamComparer());            
+            TestHelper.AreEqual<Team>(expected, actual, new TeamComparer());
         }
 
         /// <summary>
@@ -234,7 +234,7 @@
         }
 
         /// <summary>
-        /// Test for Create() method. 
+        /// Test for Create() method.
         /// The method check case when captain is player of another team.
         /// The method should create a new team.
         /// </summary>
@@ -242,7 +242,7 @@
         public void Create_PlayerIsNotCaptainOfExistingTeam_TeamCreated()
         {
             // Arrange
-            var newTeam = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();            
+            var newTeam = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();
             var captain = (new PlayerBuilder()).WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.IsAny<FindByIdCriteria>())).Returns(captain);
             _getTeamByCaptainQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(null as Team);

@@ -124,11 +124,14 @@
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\DivisionViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\ScheduleViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\ScheduleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelComparer.cs" />
@@ -154,6 +157,7 @@
     <Compile Include="Services\GameReportService\StandingsTestFixture.cs" />
     <Compile Include="Services\GameService\GameBuilder.cs" />
     <Compile Include="Services\GameService\GameComparer.cs" />
+    <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />
     <Compile Include="Services\GameService\GameServiceTestFixture.cs" />
     <Compile Include="Services\GameService\GameServiceTests.cs" />

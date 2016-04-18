@@ -107,7 +107,7 @@
             // Act
             var actual = sut.Get(SPECIFIC_PLAYER_ID);
 
-            // Assert        
+            // Assert
             TestHelper.AreEqual<Player>(expected, actual, new PlayerComparer());
         }
 
@@ -127,7 +127,7 @@
             // Act
             var actual = sut.GetPlayerTeam(testPlayer);
 
-            // Assert        
+            // Assert
             TestHelper.AreEqual<Team>(expected, actual, new TeamComparer());
         }
 
@@ -144,7 +144,7 @@
             // Act
             var actual = sut.GetPlayerTeam(testPlayer);
 
-            // Assert        
+            // Assert
             Assert.IsNull(actual);
         }
 

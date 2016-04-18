@@ -13,8 +13,11 @@
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.GameResult;
+    using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Tests for <see cref="GameService"/> class.
@@ -27,6 +30,14 @@
 
         private const int TOURNAMENT_ID = 1;
 
+        private const string TOURNAMENT_DATE_START = "2016-04-02 10:00";
+
+        private const string TOURNAMENT_DATE_END = "2016-04-04 10:00";
+
+        private const string BEFORE_TOURNAMENT_DATE = "2016-04-02 07:00";
+
+        private const string LATE_TOURNAMENT_DATE = "2016-04-06 10:00";
+
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -37,7 +48,16 @@
         private readonly Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock
             = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
 
+        private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock
+            = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
+
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
+
+        private readonly string _noTeamsInGame
+            = "No teams are specified for current game in round {0}";
+
+        private readonly string _wrongRoundDate
+            = "Start of the round should not be earlier than the start of the tournament or later than the end of the tournament";
 
         private IKernel _kernel;
 
@@ -49,9 +69,12 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IGameRepository>().ToConstant(_gameRepositoryMock.Object);
-            _kernel.Bind<IQuery<GameResultDto, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
+            _kernel.Bind<IQuery<GameResultDto, FindByIdCriteria>>()
+                .ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
                 .ToConstant(_tournamentGameResultsQueryMock.Object);
+            _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>()
+                .ToConstant(_tournamentScheduleDtoByIdQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
@@ -63,6 +86,7 @@
         public void Create_GameValid_GameCreated()
         {
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -135,6 +159,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithInvalidSetsScore().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -162,6 +187,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithSetsScoreNoMatchSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -188,6 +214,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithInvalidRequiredSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -214,6 +241,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithInvalidOptionalSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -240,6 +268,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithPreviousOptionalSetUnplayed().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -266,6 +295,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithSetScoresUnorderedForHomeTeam().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -292,6 +322,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithSetScoresUnorderedForAwayTeam().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -316,6 +347,7 @@
         public void Create_GameHomeTeamTechnicalWinValidData_GameCreated()
         {
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -333,7 +365,12 @@
         public void Create_GameAwayTeamTechnicalWinValidData_GameCreated()
         {
             // Arrange
-            var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresAwayTeamWin().Build();
+            MockDefaultTournament();
+
+            var newGame = new GameBuilder()
+                .WithTechnicalDefeatValidSetScoresAwayTeamWin()
+                .WithTournamentId(1)
+                .Build();
             var sut = _kernel.Get<GameService>();
 
             // Act
@@ -352,6 +389,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetsScore().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -378,6 +416,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetScores().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -404,6 +443,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatValidOptional().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -430,6 +470,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithSetScoresNull().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -456,6 +497,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var newGame = new GameBuilder().WithOrdinarySetsScoreInvalid().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -471,6 +513,303 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID);
+        }
+
+        /// <summary>
+        /// Test for Create method.
+        /// Game object contains null result data.
+        /// Game object is created successfully.
+        /// Result of this game have to be initialized
+        /// </summary>
+        [TestMethod]
+        public void Create_GameWithNoResult_GameCreatedWithDefaultResult()
+        {
+            // Arrange
+            MockDefaultTournament();
+
+            var newGame = new GameBuilder()
+                .WithNullResult()
+                .Build();
+            var sut = _kernel.Get<GameService>();
+            var expectedGameToCreate = new GameBuilder()
+                .WithDefaultResult()
+                .Build();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyCreateGame(expectedGameToCreate, Times.Once());
+        }
+
+        /// <summary>
+        /// Tests creation of the game with invalid date
+        /// </summary>
+        [TestMethod]
+        public void Create_GameBeforeTournamentStarts_ExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+
+            MockDefaultTournament();
+
+            Game game = new GameBuilder()
+                .WithStartDate(DateTime.Parse(BEFORE_TOURNAMENT_DATE))
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(game);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyCreateGame(game, Times.Never());
+            VerifyExceptionThrown(exception, _wrongRoundDate);
+        }
+
+        /// <summary>
+        /// Tests creation of the game with invalid date
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_GameSetLateDateTime_ExceptionThrown()
+        {
+            // Arrange
+            TournamentScheduleDto tournament = new TournamentScheduleDtoBuilder()
+                .WithStartDate(DateTime.Parse(TOURNAMENT_DATE_START))
+                .WithEndDate(DateTime.Parse(TOURNAMENT_DATE_END))
+                .Build();
+
+            Game game = new GameBuilder()
+                .WithTournamentId(tournament.Id)
+                .WithStartDate(DateTime.Parse(LATE_TOURNAMENT_DATE))
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(game);
+
+            // Assert
+            VerifyCreateGame(game, Times.Never());
+        }
+
+        /// <summary>
+        /// Tests creation of same game in same round
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_SameGameInRound_ExceptionThrown()
+        {
+            // Arrange
+            bool excaptionWasThrown = false;
+
+            var game = new GameBuilder()
+                .WithId(1)
+                .TestRoundGame()
+                .Build();
+
+            var duplicate = new GameBuilder()
+                .WithId(2)
+                .TestRoundGame()
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            sut.Create(game);
+
+            // Act
+            try
+            {
+                sut.Create(duplicate);
+            }
+            catch (ArgumentException)
+            {
+                excaptionWasThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(excaptionWasThrown);
+        }
+
+        /// <summary>
+        /// Tests creation of the duplicate free day game
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_SecondFreeDayInRound_ExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+
+            var freeDayGame = new GameBuilder()
+                .TestFreeDayGame()
+                .Build();
+
+            var duplicateFreeDayGame = new GameBuilder()
+                .TestFreeDayGame()
+                .WithId(2)
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+            sut.Create(freeDayGame);
+
+            // Act
+            try
+            {
+                sut.Create(duplicateFreeDayGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                string.Format(_noTeamsInGame, duplicateFreeDayGame.Round));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Create_SameTeamInTwoGamesInOneRound_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionWasThrown = false;
+
+            var gameInOneRound = new GameBuilder()
+                .TestRoundGame()
+                .Build();
+
+            var gameInSameRound = new GameBuilder()
+                .WithId(2)
+                .TestRoundGame()
+                .WithHomeTeamId(3)
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+            sut.Create(gameInOneRound);
+
+            // Act
+            try
+            {
+                sut.Create(gameInSameRound);
+            }
+            catch (ArgumentException)
+            {
+                exceptionWasThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exceptionWasThrown);
+        }
+
+        [TestMethod]
+        public void Create_SameGameTournamentSchemeOne_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionThrown = false;
+
+            MockDefaultTournament();
+
+            var gameInOtherRound = new GameBuilder()
+                .TestRoundGame()
+                .WithId(2)
+                .WithRound(2)
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            SetupGetTournamentResults(
+                gameInOtherRound.TournamentId,
+                new GameServiceTestFixture().TestGamesForDuplicateSchemeOne().Build());
+
+            // Act
+            try
+            {
+                sut.Create(gameInOtherRound);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exceptionThrown);
+        }
+
+        [TestMethod]
+        public void Create_SameGameSwitchedTeamsTournamentSchemeOne_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionThrown = false;
+
+            MockDefaultTournament();
+
+            var gameInOtherRound = new GameBuilder()
+                .TestRoundGame()
+                .WithId(2)
+                .WithRound(2)
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            SetupGetTournamentResults(
+               gameInOtherRound.TournamentId,
+               new GameServiceTestFixture().TestGamesForDuplicateSchemeOne().Build());
+
+            // Act
+            try
+            {
+                sut.Create(gameInOtherRound);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exceptionThrown);
+        }
+
+        [TestMethod]
+        public void Create_SameGameInOtherRoundTournamentSchemeTwo_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionThrown = false;
+
+            MockDefaultTournament();
+
+            var duplicate = new GameBuilder()
+               .TestRoundGame()
+               .WithRound(3)
+               .WithId(3)
+               .Build();
+
+            SetupGetTournamentResults(
+              duplicate.TournamentId,
+              new GameServiceTestFixture().TestGamesForDuplicateSchemeTwo().Build());
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(duplicate);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exceptionThrown);
         }
 
         /// <summary>
@@ -518,6 +857,7 @@
         public void Edit_GameValid_GameEdited()
         {
             // Arrange
+            MockDefaultTournament();
             var game = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -537,6 +877,7 @@
             Exception exception = null;
 
             // Arrange
+            MockDefaultTournament();
             var game = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -579,7 +920,9 @@
 
         private void SetupGet(GameResultDto gameResult)
         {
-            _getByIdQueryMock.Setup(m => m.Execute(It.Is<FindByIdCriteria>(c => c.Id == gameResult.Id))).Returns(gameResult);
+            _getByIdQueryMock
+                .Setup(m => m.Execute(It.Is<FindByIdCriteria>(c => c.Id == gameResult.Id)))
+                .Returns(gameResult);
         }
 
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> gameResults)
@@ -587,6 +930,13 @@
             _tournamentGameResultsQueryMock.Setup(m =>
                 m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
                 .Returns(gameResults);
+        }
+
+        private void SetupGetTournamentById(int id, TournamentScheduleDto tournament)
+        {
+            _tournamentScheduleDtoByIdQueryMock.Setup(m =>
+                m.Execute(It.Is<TournamentScheduleInfoCriteria>(c => c.TournamentId == id)))
+                .Returns(tournament);
         }
 
         private void SetupEditMissingEntityException(Game game)
@@ -623,10 +973,26 @@
             _unitOfWorkMock.Verify(m => m.Commit(), times);
         }
 
+        /// <summary>
+        /// Checks if exception was thrown and has appropriate message
+        /// </summary>
+        /// <param name="exception">Exception that has been thrown</param>
+        /// <param name="expectedMessage">Message to compare with</param>
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)
         {
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
+        }
+
+        private void MockDefaultTournament()
+        {
+            var tournament = new TournamentScheduleDtoBuilder()
+                .TestTournamemtSchedultDto()
+                .WithScheme(TournamentSchemeEnum.One)
+                .Build();
+
+            SetupGetTournamentById(tournament.Id, tournament);
+            SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
         }
     }
 }

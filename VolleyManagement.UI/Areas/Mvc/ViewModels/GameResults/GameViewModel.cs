@@ -21,6 +21,11 @@
         }
 
         /// <summary>
+        /// Gets or sets id of a game
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets list of teams to be selected
         /// </summary>
         public IEnumerable<SelectListItem> Teams { get; set; }
@@ -69,11 +74,25 @@
         {
             return new Game
             {
+                Id = this.Id,
                 Round = this.Round,
                 TournamentId = this.TournamentId,
                 HomeTeamId = this.HomeTeamId,
                 AwayTeamId = this.AwayTeamId,
                 GameDate = this.GameDate
+            };
+        }
+
+        public static GameViewModel Map(GameResultDto game) 
+        {
+            return new GameViewModel 
+            {
+                Id = game.Id,
+                TournamentId = game.TournamentId,
+                HomeTeamId = game.HomeTeamId,
+                AwayTeamId = game.AwayTeamId,
+                Round = game.Round,
+                GameDate = game.GameDate
             };
         }
     }

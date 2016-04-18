@@ -93,4 +93,13 @@
             </div>
         }
     }
+    <div class="row">
+        <div class="col-md-2">
+            @if ((Model.GameDate > DateTime.Now) &&
+                   (Model.SetsScore.Home == 0) && (Model.SetsScore.Away == 0))
+            {
+                @Html.ActionLink("Edit", "EditScheduledGame", new { gameId = Model.Id })
+            }
+        </div>
+    </div>
 </div>

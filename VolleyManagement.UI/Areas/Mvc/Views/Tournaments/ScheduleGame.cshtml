@@ -15,40 +15,9 @@ else
 {
     using (Html.BeginForm())
     {
-        <legend>@Resources.TournamentViews.ScheduleGameLegend</legend>
-        
-        @Html.ValidationMessage("ValidationError")
-        @Html.HiddenFor(model => model.TournamentId)
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Round)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.Round, Model.Rounds, new { @class = "form-control" })
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.HomeTeamId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.HomeTeamId, Model.Teams, new { @class = "form-control" })
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.AwayTeamId)
-        </div>
-        <div class="editor-field">
-            @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, @Resources.TournamentViews.FreeDay , new { @class = "form-control" })
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.GameDate)
-        </div>
-        <div class="form-group editor-field">
-            @Html.EditorFor(model => model.GameDate, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.GameDate, "", new { @class = "text-danger" })
-        </div>
-
+        @Html.Partial("_ScheduleOrEditGame", Model);
         @Html.Hidden("redirectToSchedule");
+    
         <div class="row">
             <div class="col-md-1">
                 <input id="create" class="btn btn-default" type="submit" value="@Resources.TournamentViews.Create" />

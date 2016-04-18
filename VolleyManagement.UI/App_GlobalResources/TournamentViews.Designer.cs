@@ -196,6 +196,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit scheduled game.
+        /// </summary>
+        public static string EditScheduledGameTitle {
+            get {
+                return ResourceManager.GetString("EditScheduledGameTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Editing tournament.
         /// </summary>
         public static string EditTournamentTitle {

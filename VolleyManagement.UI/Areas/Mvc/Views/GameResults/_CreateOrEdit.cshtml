@@ -8,8 +8,6 @@
 
 <div class="form-group">
     @Resources.GameResultViews.TeamsFields
-    @*@Html.TextBoxFor(model => model.HomeTeamName, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
-        @Html.TextBoxFor(model => model.AwayTeamName, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })*@
 
     @Html.LabelFor(model => model.HomeTeamName, Model.HomeTeamName)
     @Html.LabelFor(model => model.AwayTeamName, Model.AwayTeamName)
@@ -49,26 +47,30 @@
 
 <script>
 
+    @{
+        <text>
     var gameResultConstants = {
-        "SETS_COUNT_TO_WIN" : @GameResultConstants.SETS_COUNT_TO_WIN,
-        "SET_POINTS_MIN_DELTA_TO_WIN": @GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-        "SET_POINTS_MIN_VALUE_TO_WIN": @GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
-        "TECHNICAL_DEFEAT_SETS_WINNER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE,
-        "TECHNICAL_DEFEAT_SETS_LOSER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE,
-        "TECHNICAL_DEFEAT_SET_WINNER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
-        "TECHNICAL_DEFEAT_SET_LOSER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
-        "UNPLAYED_SET_HOME_SCORE": @GameResultConstants.UNPLAYED_SET_HOME_SCORE,
-        "UNPLAYED_SET_AWAY_SCORE": @GameResultConstants.UNPLAYED_SET_AWAY_SCORE
-        };
+        "SETS_COUNT_TO_WIN": '@GameResultConstants.SETS_COUNT_TO_WIN',
+        "SET_POINTS_MIN_DELTA_TO_WIN": '@GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN',
+        "SET_POINTS_MIN_VALUE_TO_WIN": '@GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN',
+        "TECHNICAL_DEFEAT_SETS_WINNER_SCORE": '@GameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE',
+        "TECHNICAL_DEFEAT_SETS_LOSER_SCORE": '@GameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE',
+        "TECHNICAL_DEFEAT_SET_WINNER_SCORE": '@GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE',
+        "TECHNICAL_DEFEAT_SET_LOSER_SCORE": '@GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE',
+        "UNPLAYED_SET_HOME_SCORE": '@GameResultConstants.UNPLAYED_SET_HOME_SCORE',
+        "UNPLAYED_SET_AWAY_SCORE": '@GameResultConstants.UNPLAYED_SET_AWAY_SCORE'
+    };
 
     var resourceMessages = {
-        "GameResultSameTeam" : "@DomainResources.GameResultSameTeam",
-        "GameResultSetsScoreInvalid" : "@DomainResources.GameResultSetsScoreInvalid",
-        "GameResultSetsScoreNoMatchSetScores" : "@DomainResources.GameResultSetsScoreNoMatchSetScores",
-        "GameResultRequiredSetScores" : "@DomainResources.GameResultRequiredSetScores",
-        "GameResultOptionalSetScores" : "@DomainResources.GameResultOptionalSetScores",
-        "GameResultPreviousOptionalSetUnplayed" : "@DomainResources.GameResultPreviousOptionalSetUnplayed",
-        "GameResultSetScoresNotOrdered" : "@DomainResources.GameResultSetScoresNotOrdered"
+        "GameResultSameTeam": "@DomainResources.GameResultSameTeam",
+        "GameResultSetsScoreInvalid": "@DomainResources.GameResultSetsScoreInvalid",
+        "GameResultSetsScoreNoMatchSetScores": "@DomainResources.GameResultSetsScoreNoMatchSetScores",
+        "GameResultRequiredSetScores": "@DomainResources.GameResultRequiredSetScores",
+        "GameResultOptionalSetScores": "@DomainResources.GameResultOptionalSetScores",
+        "GameResultPreviousOptionalSetUnplayed": "@DomainResources.GameResultPreviousOptionalSetUnplayed",
+        "GameResultSetScoresNotOrdered": "@DomainResources.GameResultSetScoresNotOrdered"
     };
+    </text>
+    }
 
 </script>

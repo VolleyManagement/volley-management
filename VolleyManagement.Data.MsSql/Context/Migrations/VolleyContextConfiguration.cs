@@ -201,7 +201,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             TeamEntity team5 = new TeamEntity
             {
                 Captain = player10,
-                Name = "Team Cap",
+                Name = "Cap",
                 Coach = "Coach5",
                 Players = new List<PlayerEntity> { player11 }
             };
@@ -281,7 +281,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         }
                     }
                 },
-                Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5 }
+                Teams = new List<TeamEntity>() { team1, team2, team3, team5, team6 }
             };
             // Future tournament scheme 1
             TournamentEntity tour3 = new TournamentEntity
@@ -341,8 +341,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Teams = new List<TeamEntity>() { 
                     team1,
                     team2,
-                    team3,
-                    team4 }
+                    team3}
             };
 
             // Current tournament, scheme 2
@@ -399,7 +398,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         }
                     }
                 },
-                Teams = new List<TeamEntity>() { team6, team5, team3, team5, team4 } 
+                Teams = new List<TeamEntity>() { team6, team5, team3, team4, team1 } 
             };
          
             context.Tournaments.AddOrUpdate(
@@ -413,67 +412,135 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 tour5,
                 tour6});
             #endregion
-            /*
-            GameResultEntity game1 = new GameResultEntity
-            {
-                Tournament = tour1,
-                HomeTeam = team1,
-                AwayTeam = team2,
-                RoundNumber = 1,
-                StartTime = new DateTime(2015, 09, 03, 10, 00, 00),
-                HomeSet1Score = 3,
-                AwaySet1Score = 0,
-                HomeSet2Score = 3,
-                AwaySet2Score = 1,
-                HomeSet3Score = 3,
-                AwaySet3Score = 2,
-                HomeSet4Score = 2,
-                AwaySet4Score = 3,
-                HomeSet5Score = 1,
-                AwaySet5Score = 3 
-            };*/
 
-            // Future tour, scheme 1
-            
+            List<GameResultEntity> gamesInTour1 = GenerateGames(tour1);
+            List<GameResultEntity> gamesInTour2 = GenerateGames(tour2);
+            List<GameResultEntity> gamesInTour3 = GenerateGames(tour3);
+            List<GameResultEntity> gamesInTour4 = GenerateGames(tour4);
+            List<GameResultEntity> gamesInTour5 = GenerateGames(tour5);
+            List<GameResultEntity> gamesInTour6 = GenerateGames(tour6);
 
-
+            context.GameResults.AddOrUpdate(gamesInTour1.ToArray());
+            context.GameResults.AddOrUpdate(gamesInTour2.ToArray());
+            context.GameResults.AddOrUpdate(gamesInTour3.ToArray());
+            context.GameResults.AddOrUpdate(gamesInTour4.ToArray());
+            context.GameResults.AddOrUpdate(gamesInTour5.ToArray());
+            context.GameResults.AddOrUpdate(gamesInTour6.ToArray());
         } 
 
-        private static void GenerateFutureGames(TournamentEntity tour)
+        private static List<GameResultEntity> GenerateGames(TournamentEntity tour)
         {
-            List<GameResultEntity> games = new List<GameResultEntity>();
+            List<GameResultEntity> games = new List<GameResultEntity>(); 
 
-            int rounds = tour.Teams.Count % 2 == 0 ?
-                tour.Teams.Count - 1 : tour.Teams.Count;
+            int teamsCount = tour.Teams.Count;
+            int roundsNumber = teamsCount % 2 == 0 ? teamsCount - 1 : teamsCount;
+            int gamesInRound = roundsNumber % 2 == 0 ? roundsNumber / 2 : roundsNumber / 2 + 1;
+
+            // Initial round 
+            byte roundIter = 1; 
+            for (int i = 0; i < teamsCount; i++)
+            {
+                games.Add(new GameResultEntity 
+                {
+                    Tournament = tour,
+                    StartTime = tour.GamesStart.AddHours(1),
+                    HomeTeam = tour.Teams[i],
+                    AwayTeam = i == teamsCount - 1 && teamsCount % 2 != 0 ?
+                        null : tour.Teams[++i],
+                    RoundNumber = roundIter
+                });
+            }
+
+            // round robin swap 
+            roundIter++; 
+            int iter = 0;
+            do 
+            {
+                for (int i = 0; i < gamesInRound; i++)
+                {
+                    List<GameResultEntity> prevRoundGames
+                        = games.GetRange(gamesInRound*iter, gamesInRound);
+                    if (i == 0)
+                    {
+                        games.Add(new GameResultEntity 
+                        {
+                            Tournament = tour,
+                            HomeTeam = prevRoundGames[i].HomeTeam,
+                            AwayTeam = prevRoundGames[i+1].HomeTeam,
+                            RoundNumber = (byte)(roundIter)
+                        });
+                    } 
+                    else if (i == gamesInRound - 1)
+                    {
+                        games.Add(new GameResultEntity 
+                        {
+                            Tournament = tour,
+                            HomeTeam = prevRoundGames[i].AwayTeam,
+                            AwayTeam = prevRoundGames[i-1].AwayTeam,
+                            RoundNumber = (byte)(roundIter)
+                        });
+                    }
+                    else
+                    {
+                        games.Add(new GameResultEntity
+                        {
+                            Tournament = tour,
+                            HomeTeam = prevRoundGames[i + 1].HomeTeam,
+                            AwayTeam = prevRoundGames[i - 1].AwayTeam,
+                            RoundNumber = (byte)(roundIter)
+                        });
+                    }
+                }
+                iter++;
+                roundIter++; 
+            }
+            while (iter != roundsNumber-1);
+
+            // Free day games may occur in a wrong order 
+            SwitchTeamsInFreeDayGames(games);
 
             if (tour.Scheme == 2)
             {
-                rounds *= 2; 
+                games = GenerateGamesDuplicateInSchemeTwo(games, roundsNumber); 
             }
 
-            int gamesInRound = rounds % 2 == 0 
-                ? rounds / 2 : rounds / 2 + 1;  
+            return games; 
+        } 
 
-            for (int i = 0; i < rounds; i++)
+        private static void SwitchTeamsInFreeDayGames(List<GameResultEntity> games)
+        {
+            foreach (GameResultEntity game in games)
             {
-                for (int j = 0; j < gamesInRound; j++)
+                if (game.HomeTeam == null)
                 {
-                    TeamEntity homeTeam = tour.Teams[j];
-                    TeamEntity awayTeam = j != gamesInRound - 1 ?
-                            tour.Teams[j++] : null; 
-
-                    GameResultEntity game = new GameResultEntity()
-                    {
-                        Tournament = tour, 
-                        RoundNumber = Convert.ToByte(i),
-                        HomeTeam = tour.Teams[j],
-                        AwayTeam = awayTeam,
-                        StartTime = tour.GamesStart.AddHours(3)
-                    };
-
-                    games.Add(game); 
+                    game.HomeTeam = game.AwayTeam;
+                    game.AwayTeam = null; 
                 }
             }
+        }
+
+        private static List<GameResultEntity> GenerateGamesDuplicateInSchemeTwo(List<GameResultEntity> games, int roundNumber)
+        {
+            List<GameResultEntity> duplicates = new List<GameResultEntity>();
+
+            foreach (GameResultEntity game in games)
+            {
+                TeamEntity homeTeam = game.AwayTeam == null ? game.HomeTeam : game.AwayTeam;
+                TeamEntity awayTeam = game.AwayTeam == null ? null : game.HomeTeam; 
+
+                duplicates.Add(new GameResultEntity
+                    {
+                        Tournament = game.Tournament,
+                        StartTime = game.StartTime,
+                        HomeTeam = homeTeam,
+                        AwayTeam = awayTeam,
+                        RoundNumber = Convert.ToByte(game.RoundNumber + roundNumber)
+                    }); 
+            }
+
+            games.AddRange(duplicates); 
+
+            return games; 
         }
 
         private static RoleEntity CreateRole(string name)

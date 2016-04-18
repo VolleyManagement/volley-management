@@ -507,7 +507,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 games = GenerateGamesDuplicateInSchemeTwo(games, roundsNumber); 
             }
 
-            if (tour.GamesStart <= DateTime.Now)
+            if (tour.GamesStart < DateTime.Now)
             {
                 SetGameResults(games); 
             }

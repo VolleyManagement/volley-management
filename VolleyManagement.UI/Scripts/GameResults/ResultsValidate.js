@@ -255,3 +255,14 @@ $("#createForm").submit(function (e) {
         }
     }
 });
+
+$(document).ready(function () {
+    formLoaded = $("#createForm").serialize();
+});
+
+$("#backToSchedule").click(function () {
+    var formChanged = $("#createForm").serialize();
+    if (formLoaded != formChanged) {
+        return confirm("You've made changes. Do you want to discard them?");
+    }
+});

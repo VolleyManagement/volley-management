@@ -52,10 +52,11 @@
     <Compile Include="ContributorsAggregate\ContributorTeam.cs" />
     <Compile Include="ContributorsAggregate\IContributorTeamRepository.cs" />
     <Compile Include="Dto\UserInRoleDto.cs" />
-    <Compile Include="GameReportsAggregate\PivotStandingsEntry.cs" />
-    <Compile Include="GameReportsAggregate\TotalResultDto.cs" />
-    <Compile Include="GamesAggregate\Game.cs" />
     <Compile Include="GameReportsAggregate\StandingsEntry.cs" />
+    <Compile Include="GameReportsAggregate\TeamStandingsDto.cs" />
+    <Compile Include="GameReportsAggregate\TotalGameResultDto.cs" />
+    <Compile Include="GameReportsAggregate\PivotStandings.cs" />
+    <Compile Include="GamesAggregate\Game.cs" />
     <Compile Include="GamesAggregate\GamesResultDto.cs" />
     <Compile Include="GamesAggregate\GameValidation.cs" />
     <Compile Include="GamesAggregate\IGameRepository.cs" />

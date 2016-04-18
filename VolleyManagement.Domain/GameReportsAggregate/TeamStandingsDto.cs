@@ -5,12 +5,11 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using GamesAggregate;
 
     /// <summary>
-    /// Represents a single entry in pivot tournament's standings.
+    /// Represents a data transfer object of team with total score and statistics values.
     /// </summary>
-    public class PivotStandingsEntry
+    public class TeamStandingsDto
     {
         /// <summary>
         /// Gets or sets the team's identifier.
@@ -26,11 +25,6 @@
         /// Gets or sets the number of point for the team.
         /// </summary>
         public int Points { get; set; }
-
-        /// <summary>
-        /// Gets or sets list of team result set scores.
-        /// </summary>
-        public List<List<TotalResultDto>> ResultSetScores { get; set; }
 
         /// <summary>
         /// Gets or sets the ratio of number of sets the team won to number of sets the team lost.

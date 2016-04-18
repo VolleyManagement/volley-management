@@ -1,0 +1,36 @@
+﻿namespace VolleyManagement.Domain.GameReportsAggregate
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using GamesAggregate;
+
+    /// <summary>
+    /// Represents pivot tournament's standings.
+    /// </summary>
+    public class PivotStandings
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PivotStandings"/> class.
+        /// </summary>
+        /// <param name="teams">List of tournament teams standings</param>
+        /// <param name="gameResults">List of tournament game results</param>
+        public PivotStandings(List<TeamStandingsDto> teams, List<TotalGameResultDto> gameResults)
+        {
+            Teams = teams;
+            GameResults = gameResults;            
+        }
+
+        /// <summary>
+        /// Gets readonly collection of tournament Teams
+        /// </summary>
+        public IReadOnlyCollection<TeamStandingsDto> Teams { get; private set; }
+
+        /// <summary>
+        /// Gets readonly collection of tournament game results
+        /// </summary>
+        public IReadOnlyCollection<TotalGameResultDto> GameResults { get; private set; }
+    }
+}

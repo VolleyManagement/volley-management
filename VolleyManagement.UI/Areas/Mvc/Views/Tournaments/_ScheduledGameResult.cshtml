@@ -1,6 +1,6 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
 
-<div class="table-bordered">
+<div class="table-bordered" id=@Model.Id>
 
     @if (!Model.AwayTeamId.HasValue)
     {
@@ -93,4 +93,16 @@
             </div>
         }
     }
+  
+      <div class="row">
+        <div class="col-md-2">
+            @if ((Model.GameDate > DateTime.Now) &&
+                   (Model.SetsScore.Home == 0) && (Model.SetsScore.Away == 0))
+            {
+                @Html.ActionLink(Resources.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
+                                 new { @class = "deleteGame", @id = Model.Id })
+            }
+        </div>
+    </div>
+
 </div>

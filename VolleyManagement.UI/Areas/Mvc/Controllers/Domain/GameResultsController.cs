@@ -134,17 +134,27 @@
         /// Deletes an existing game result by its identifier.
         /// </summary>
         /// <param name="id">Identifier of the game result.</param>
-        [HttpPost]
-        public void Delete(int id)
+        /// <returns>Result message</returns>
+        public JsonResult Delete(int id)
         {
-            var gameResult = _gameService.Get(id);
-
-            if (gameResult == null)
+            try
             {
-                throw new MissingEntityException(App_GlobalResources.GameResultsController.GameResultNotFound);
+                this._gameService.Delete(id);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return Json(new GameDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
+            }
+            catch (ArgumentException ex)
+            {
+                return Json(new GameDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
             }
 
-            _gameService.Delete(id);
+            return Json(new GameDeleteResultViewModel
+            {
+                Message = App_GlobalResources.GameResultsController.GameWasDeletedSuccessfully,
+                HasDeleted = true
+            });
         }
 
         private List<SelectListItem> GetTeamsList()

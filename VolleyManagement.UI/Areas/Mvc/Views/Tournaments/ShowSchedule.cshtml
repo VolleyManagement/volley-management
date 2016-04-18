@@ -5,7 +5,9 @@
     @Html.ValidationMessage("LoadError")
 }
 else
-{ 
+{
+    @Html.HiddenFor(model => model.TournamentId, new { @id = "tournamentId" });
+    
     <h2>
         @Resources.TournamentViews.ScheduleTitle
         @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })
@@ -30,7 +32,7 @@ else
             @if (Model.Rounds.ContainsKey(i))
             {
                 foreach (var game in Model.Rounds[i])
-                {
+                {              
                     @Html.Partial("_ScheduledGameResult", game);
                 }
             }
@@ -44,3 +46,6 @@ else
         }
     }
 }
+
+@Html.Hidden("DeleteConfirmationMessage", Resources.GameResultViews.DeleteConfirmationText)
+@Scripts.Render("~/bundles/gameresultsscripts")

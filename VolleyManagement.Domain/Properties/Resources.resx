@@ -216,6 +216,9 @@
   <data name="ValidationPlayerWeight" xml:space="preserve">
     <value>Please, enter the valid weight</value>
   </data>
+  <data name="WrongDeletingGame" xml:space="preserve">
+    <value>Game can not be deleted because it has already ended</value>
+  </data>
   <data name="WrongRegistrationDatesPeriod" xml:space="preserve">
     <value>Start of the applying period must be earlier than its end</value>
   </data>

@@ -905,12 +905,71 @@
         {
             // Arrange
             var sut = _kernel.Get<GameService>();
+            var game = new GameResultDtoBuilder().WithDate(DateTime.MaxValue)
+                    .WithAwaySetsScore(0).WithHomeSetsScore(0).Build();
+
+            SetupGet(game);
 
             // Act
             sut.Delete(GAME_RESULT_ID);
 
             // Assert
             VerifyDeleteGame(GAME_RESULT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete method. Existing game has not to be deleted.
+        /// Invalid game.
+        /// </summary>
+        [TestMethod]
+        public void Delete_InValidExistingGame_ThrowArgumentExeption()
+        {
+            // Arrange
+            Exception exception = null;
+            var sut = _kernel.Get<GameService>();
+            var game = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
+
+            SetupGet(game);
+
+            // Act
+            try
+            {
+                sut.Delete(GAME_RESULT_ID);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.WRONG_DELETING_GAME);
+        }
+
+        /// <summary>
+        /// Test for Delete method. The game result instance is null.
+        /// Exception is thrown during removing.
+        /// </summary>
+        [TestMethod]
+        public void Delete_GameNull_ExceptionThrown()
+        {
+            Exception exception = null;
+
+            // Arrange
+            int gameNullId = 0;
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Delete(gameNullId);
+            }
+            catch (ArgumentNullException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
         }
 
         private bool AreGamesEqual(Game x, Game y)

@@ -125,6 +125,14 @@
         /// <param name="id">Identifier of game.</param>
         public void Delete(int id)
         {
+            GameResultDto game = Get(id);
+
+            if (game == null)
+            {
+                throw new ArgumentNullException("game");
+            }
+
+            ValidateGameInRoundOnDelete(game);
             _gameRepository.Remove(id);
             _gameRepository.UnitOfWork.Commit();
         }
@@ -367,6 +375,15 @@
             {
                 // Both teams in new game are different fro old game
                 ValidateGameInRoundOnCreate(newGame, gamesInRound);
+            }
+        }
+
+        private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
+        {
+            if (!((gameToDelete.HomeSetsScore == 0) && (gameToDelete.AwaySetsScore == 0))
+                || (gameToDelete.GameDate < DateTime.Now))
+            {
+                throw new ArgumentException(Resources.WrongDeletingGame);
             }
         }
 

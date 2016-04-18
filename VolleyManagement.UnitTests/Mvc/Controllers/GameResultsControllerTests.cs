@@ -37,6 +37,8 @@
         private const string AWAY_TEAM_NAME = "Away";
         private const string DETAILS_ACTION_NAME = "Details";
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
+        private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
+
         #endregion
 
         #region Fields
@@ -293,43 +295,60 @@
         }
 
         /// <summary>
-        /// Test for delete post method. Valid game result id - redirect to  the tournament results.
+        /// Test for Delete method (POST action). Player with specified identifier exists.
+        /// Player is deleted and JsonResult is returned.
         /// </summary>
         [TestMethod]
-        public void DeletePost_ValidId_Deleted()
+        public void DeleteGamePostAction_ExistingGame_GameIsDeleted()
         {
             // Arrange
-            var gameResult = new GameResultDtoBuilder().Build();
-
-            _gameServiceMock.Setup(grs => grs.Get(It.IsAny<int>())).Returns(gameResult);
-
+            this._gameServiceMock.Setup(tr => tr.Delete(GAME_RESULTS_ID));
             var sut = this._kernel.Get<GameResultsController>();
 
             // Act
-            sut.Delete(GAME_RESULT_ID);
+            var result = sut.Delete(GAME_RESULTS_ID);
 
             // Assert
-            _gameServiceMock.Verify(grs => grs.Delete(GAME_RESULT_ID), Times.Once);
+            VerifyDelete(GAME_RESULTS_ID, Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
-        /// Test for delete post method. Invalid game result id - Missing entity exception.
+        /// Test for Delete method (POST action). Player with specified identifier does not exist.
+        /// Exception is thrown during player removal and JsonResult is returned.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(MissingEntityException))]
-        public void DeletePost_InvalidId_MissingEntityExceptionThrows()
+        public void DeleteGamePostAction_NonExistentGame_JsonResultIsReturned()
         {
             // Arrange
-            _gameServiceMock.Setup(grs => grs.Get(It.IsAny<int>()))
-                .Returns((GameResultDto)null);
-
+            SetupDeleteGameThrowsArgumentNullException();
             var sut = this._kernel.Get<GameResultsController>();
 
             // Act
-            sut.Delete(GAME_RESULT_ID);
+            var result = sut.Delete(GAME_RESULTS_ID);
 
             // Assert
-            _gameServiceMock.Verify(grs => grs.Delete(GAME_RESULT_ID), Times.Never);
+            VerifyDelete(GAME_RESULTS_ID, Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+        }
+
+        /// <summary>
+        /// Test for Delete method (POST action). Player id is valid, but exception
+        /// is thrown during deleting. JsonResult is returned.
+        /// </summary>
+        [TestMethod]
+        public void DeleteGamePostAction_ValidGameIdWithArgumentException_JsonResultIsReturned()
+        {
+            // Arrange
+            SetupDeleteGameThrowsArgumentException();
+            var sut = this._kernel.Get<GameResultsController>();
+
+            // Act
+            var result = sut.Delete(GAME_RESULTS_ID);
+
+            // Assert
+            VerifyDelete(GAME_RESULTS_ID, Times.Once());
+            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>
@@ -361,6 +380,11 @@
             this._gameServiceMock.Verify(ts => ts.Edit(It.IsAny<Game>()), times);
         }
 
+        private void VerifyDelete(int gameId, Times times)
+        {
+            this._gameServiceMock.Verify(ts => ts.Delete(It.Is<int>(id => id == gameId)), times);
+        }
+
         private void SetupGet(int gameResultId, GameResultDto gameResult)
         {
             this._gameServiceMock.Setup(tr => tr.Get(gameResultId)).Returns(gameResult);
@@ -386,6 +410,18 @@
             _teamServiceMock.Setup(ts => ts.Get(HOME_TEAM_ID)).Returns(homeTeam);
             _teamServiceMock.Setup(ts => ts.Get(AWAY_TEAM_ID)).Returns(awayTeam);
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>() { homeTeam, awayTeam });
+        }
+
+        private void SetupDeleteGameThrowsArgumentNullException()
+        {
+            this._gameServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
+                .Throws(new ArgumentNullException(string.Empty));
+        }
+
+        private void SetupDeleteGameThrowsArgumentException()
+        {
+            this._gameServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
+                .Throws(new ArgumentException(string.Empty));
         }
 
         #endregion

@@ -5,12 +5,12 @@
     @Html.ValidationMessage("LoadError")
 }
 else
-{ 
+{
     <h2>
         @Resources.TournamentViews.ScheduleTitle
         @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })
     </h2>
-    
+
     if (Model.NumberOfRounds == 0)
     {
         <div class="col-md-2">@Resources.TournamentViews.TournamentTeamIsNotSelected</div>
@@ -22,25 +22,27 @@ else
         </div>
 
         <hr>
-        for (byte i = 1; i <= Model.NumberOfRounds; i++)
-        {
+        <div class="col-md-3">
+            @for (byte i = 1; i <= Model.NumberOfRounds; i++)
+            {
             <h4> @Resources.TournamentViews.Round @i </h4>
 
             <div class="table-bordered">
-            @if (Model.Rounds.ContainsKey(i))
-            {
-                foreach (var game in Model.Rounds[i])
+                @if (Model.Rounds.ContainsKey(i))
                 {
-                    @Html.Partial("_ScheduledGameResult", game);
+                    foreach (var game in Model.Rounds[i])
+                    {
+                        @Html.Partial("_ScheduledGameResult", game);
+                    }
                 }
-            }
-            else
-            {
-                <div class="row">
-                    <div class="col-md-2">@Resources.TournamentViews.NoGamesScheduled</div>
-                </div>
-            }
+                else
+                {
+                    <div class="row">
+                        <div class="col-md-2">@Resources.TournamentViews.NoGamesScheduled</div>
+                    </div>
+                }
             </div>
-        }
+            }
+        </div>
     }
 }

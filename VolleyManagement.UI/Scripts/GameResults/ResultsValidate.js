@@ -1,12 +1,10 @@
 ﻿(function () {
     var resValidateNs = VM.addNamespace("GameResult.Validate"),
-        priv = {},
-        formLoaded;
+        privates = {};
 
-    resValidateNs.priv = priv;
-    priv.formLoaded = formLoaded;
+    resValidateNs.privates = privates;
 
-    priv.getResults = function () {
+    privates.getResults = function () {
         return {
             "SetsScore": {
                 "Home": $("#SetsScore_Home").val(),
@@ -45,15 +43,15 @@
 
     // Methods provides units of rules.
 
-    priv.AreTheSameTeams = function (HomeId, AwayId) {
+    privates.AreTheSameTeams = function (HomeId, AwayId) {
         return HomeId == AwayId;
     }
 
-    priv.IsSetsScoreValid = function (setsScore, isTechnicalDefeat) {
-        return isTechnicalDefeat ? priv.IsTechnicalDefeatSetsScoreValid(setsScore) : priv.IsOrdinarySetsScoreValid(setsScore);
+    privates.IsSetsScoreValid = function (setsScore, isTechnicalDefeat) {
+        return isTechnicalDefeat ? privates.IsTechnicalDefeatSetsScoreValid(setsScore) : privates.IsOrdinarySetsScoreValid(setsScore);
     }
 
-    priv.AreSetScoresMatched = function (setsScore, setScores) {
+    privates.AreSetScoresMatched = function (setsScore, setScores) {
         var score = {
             "Home": 0,
             "Away": 0
@@ -71,20 +69,20 @@
         return score.Home == setsScore.Home && score.Away == setsScore.Away;
     }
 
-    priv.IsRequiredSetScoreValid = function (setScore, isTechnicalDefeat) {
-        return isTechnicalDefeat ? priv.IsTechnicalDefeatRequiredSetScoreValid(setScore) : priv.IsOrdinaryRequiredSetScoreValid(setScore);
+    privates.IsRequiredSetScoreValid = function (setScore, isTechnicalDefeat) {
+        return isTechnicalDefeat ? privates.IsTechnicalDefeatRequiredSetScoreValid(setScore) : privates.IsOrdinaryRequiredSetScoreValid(setScore);
     }
 
-    priv.IsOptionalSetScoreValid = function (setScore, isTechnicalDefeat) {
-        return isTechnicalDefeat ? priv.IsTechnicalDefeatOptionalSetScoreValid(setScore) : priv.IsOrdinaryOptionalSetScoreValid(setScore);
+    privates.IsOptionalSetScoreValid = function (setScore, isTechnicalDefeat) {
+        return isTechnicalDefeat ? privates.IsTechnicalDefeatOptionalSetScoreValid(setScore) : privates.IsOrdinaryOptionalSetScoreValid(setScore);
     }
 
-    priv.IsSetUnplayed = function (setScore) {
+    privates.IsSetUnplayed = function (setScore) {
         return setScore.Home == gameResultConstants.UNPLAYED_SET_HOME_SCORE
             && setScore.Away == gameResultConstants.UNPLAYED_SET_AWAY_SCORE;
     }
 
-    priv.AreSetScoresOrdered = function (setScores) {
+    privates.AreSetScoresOrdered = function (setScores) {
         var hasMatchEnded = false;
         var score = {
             "Home": 0,
@@ -119,77 +117,77 @@
         return true;
     }
 
-    priv.IsTechnicalDefeatSetsScoreValid = function (setsScore) {
+    privates.IsTechnicalDefeatSetsScoreValid = function (setsScore) {
         return (setsScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE
             && setsScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE)
             || (setsScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE
             && setsScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE);
     }
 
-    priv.IsOrdinarySetsScoreValid = function (setsScore) {
+    privates.IsOrdinarySetsScoreValid = function (setsScore) {
         return (setsScore.Home == gameResultConstants.SETS_COUNT_TO_WIN
             && setsScore.Away < gameResultConstants.SETS_COUNT_TO_WIN)
             || (setsScore.Home < gameResultConstants.SETS_COUNT_TO_WIN
             && setsScore.Away == gameResultConstants.SETS_COUNT_TO_WIN);
     }
 
-    priv.IsTechnicalDefeatRequiredSetScoreValid = function (setScore) {
+    privates.IsTechnicalDefeatRequiredSetScoreValid = function (setScore) {
         return (setScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE
             && setScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE)
             || (setScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE
             && setScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE);
     }
 
-    priv.IsTechnicalDefeatOptionalSetScoreValid = function (setScore) {
+    privates.IsTechnicalDefeatOptionalSetScoreValid = function (setScore) {
         return setScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE
             && setScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE;
     }
 
-    priv.IsOrdinaryRequiredSetScoreValid = function (setScore) {
+    privates.IsOrdinaryRequiredSetScoreValid = function (setScore) {
         var isValid = false;
 
-        if (priv.IsSetScoreGreaterThanMin(setScore)) {
+        if (privates.IsSetScoreGreaterThanMin(setScore)) {
             isValid = Math.abs(setScore.Home - setScore.Away) == gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
         }
-        else if (priv.IsSetScoreEqualToMin(setScore)) {
+        else if (privates.IsSetScoreEqualToMin(setScore)) {
             isValid = Math.abs(setScore.Home - setScore.Away) >= gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
         }
 
         return isValid;
     }
 
-    priv.IsOrdinaryOptionalSetScoreValid = function (setScore) {
-        return priv.IsOrdinaryRequiredSetScoreValid(setScore) || priv.IsSetUnplayed(setScore);
+    privates.IsOrdinaryOptionalSetScoreValid = function (setScore) {
+        return privates.IsOrdinaryRequiredSetScoreValid(setScore) || privates.IsSetUnplayed(setScore);
     }
 
-    priv.IsSetScoreEqualToMin = function (setScore) {
+    privates.IsSetScoreEqualToMin = function (setScore) {
         return setScore.Home == gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN
             || setScore.Away == gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN;
     }
 
-    priv.IsSetScoreGreaterThanMin = function (setScore) {
+    privates.IsSetScoreGreaterThanMin = function (setScore) {
         return setScore.Home > gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN
             || setScore.Away > gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN;
     }
 
     // Methods to validate.
 
-    priv.ValidateGameResult = function (gameResult) {
-        priv.ValidateTeams(gameResult.Teams.Home, gameResult.Teams.Away);
-        priv.ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
-        priv.ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
-        priv.ValidateSetScoresValues(gameResult.SetScores, gameResult.IsTechnicalDefeat);
-        priv.ValidateSetScoresOrder(gameResult.SetScores);
+    privates.ValidateGameResult = function (gameResult) {
+        privates.ValidateTeams(gameResult.Teams.Home, gameResult.Teams.Away);
+        privates.ValidateSetsScore(gameResult.SetsScore, gameResult.IsTechnicalDefeat);
+        privates.ValidateSetsScoreMatchesSetScores(gameResult.SetsScore, gameResult.SetScores);
+        privates.ValidateSetScoresValues(gameResult.SetScores, gameResult.IsTechnicalDefeat);
+        privates.ValidateSetScoresOrder(gameResult.SetScores);
     }
 
-    priv.ValidateTeams = function (homeTeamId, awayTeamId) {
-        if (priv.AreTheSameTeams(homeTeamId, awayTeamId)) {
+    privates.ValidateTeams = function (homeTeamId, awayTeamId) {
+        if (privates.AreTheSameTeams(homeTeamId, awayTeamId)) {
             throw resourceMessages.GameResultSameTeam;
         }
     }
 
-    priv.ValidateSetsScore = function (setsScore, isTechnicalDefeat) {
-        if (!priv.IsSetsScoreValid(setsScore, isTechnicalDefeat)) {
+    privates.ValidateSetsScore = function (setsScore, isTechnicalDefeat) {
+        if (!privates.IsSetsScoreValid(setsScore, isTechnicalDefeat)) {
             var template = jQuery.validator.format(resourceMessages.GameResultSetsScoreInvalid);
             throw template(
                 gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE,
@@ -197,18 +195,18 @@
         }
     }
 
-    priv.ValidateSetsScoreMatchesSetScores = function (setsScore, setScores) {
-        if (!priv.AreSetScoresMatched(setsScore, setScores)) {
+    privates.ValidateSetsScoreMatchesSetScores = function (setsScore, setScores) {
+        if (!privates.AreSetScoresMatched(setsScore, setScores)) {
             throw resourceMessages.GameResultSetsScoreNoMatchSetScores;
         }
     }
 
-    priv.ValidateSetScoresValues = function (setScores, isTechnicalDefeat) {
+    privates.ValidateSetScoresValues = function (setScores, isTechnicalDefeat) {
         var isPreviousOptionalSetUnplayed = false;
 
         for (i = 0; i < setScores.length; i++) {
             if (i < gameResultConstants.SETS_COUNT_TO_WIN) {
-                if (!priv.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat)) {
+                if (!privates.IsRequiredSetScoreValid(setScores[i], isTechnicalDefeat)) {
                     var template = jQuery.validator.format(resourceMessages.GameResultRequiredSetScores);
                     throw template(
                         gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
@@ -218,7 +216,7 @@
                 }
             }
             else {
-                if (!priv.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat)) {
+                if (!privates.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat)) {
                     var template = jQuery.validator.format(resourceMessages.GameResultOptionalSetScores);
                     throw template(
                         gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
@@ -228,19 +226,19 @@
                 }
 
                 if (isPreviousOptionalSetUnplayed) {
-                    if (!priv.IsSetUnplayed(setScores[i])) {
+                    if (!privates.IsSetUnplayed(setScores[i])) {
                         var template = jQuery.validator.format(resourceMessages.GameResultPreviousOptionalSetUnplayed);
                         throw resourceMessages.GameResultPreviousOptionalSetUnplayed;
                     }
                 }
 
-                isPreviousOptionalSetUnplayed = priv.IsSetUnplayed(setScores[i]);
+                isPreviousOptionalSetUnplayed = privates.IsSetUnplayed(setScores[i]);
             }
         }
     }
 
-    priv.ValidateSetScoresOrder = function (setScores) {
-        if (!priv.AreSetScoresOrdered(setScores)) {
+    privates.ValidateSetScoresOrder = function (setScores) {
+        if (!privates.AreSetScoresOrdered(setScores)) {
             throw resourceMessages.GameResultSetScoresNotOrdered;
         }
     }
@@ -252,8 +250,8 @@
             var gameResult;
 
             try {
-                gameResult = priv.getResults();
-                priv.ValidateGameResult(gameResult);
+                gameResult = privates.getResults();
+                privates.ValidateGameResult(gameResult);
                 form.submit();
             }
             catch (message) {
@@ -265,12 +263,12 @@
     });
 
     $(document).ready(function () {
-        priv.formLoaded = $("#createForm").serialize();
+        privates.formLoaded = $("#createForm").serialize();
     });
 
     $("#backToSchedule").click(function () {
         var formChanged = $("#createForm").serialize();
-        if (priv.formLoaded != formChanged) {
+        if (privates.formLoaded != formChanged) {
             return confirm("You've made changes. Do you want to discard them?");
         }
     });

@@ -272,7 +272,7 @@
             // Assert
             VerifyEdit(Times.Once());
             Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
-            VerifyRedirectingRoute(result);
+            VerifyRedirectingRoute(result, REDIRECT_TO_ACTION, REDIRECT_TO_CONTROLLER);
         }
 
         /// <summary>
@@ -391,12 +391,12 @@
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>() { homeTeam, awayTeam });
         }
 
-        private void VerifyRedirectingRoute(ActionResult result)
+        private void VerifyRedirectingRoute(ActionResult result, string action, string controller)
         {
             var routeValues = ((RedirectToRouteResult)result).RouteValues;
             Assert.AreEqual(TOURNAMENT_ID, routeValues["tournamentId"]);
-            Assert.AreEqual(REDIRECT_TO_ACTION, routeValues["action"]);
-            Assert.AreEqual(REDIRECT_TO_CONTROLLER, routeValues["controller"]);
+            Assert.AreEqual(action, routeValues["action"]);
+            Assert.AreEqual(controller, routeValues["controller"]);
         }
         #endregion
     }

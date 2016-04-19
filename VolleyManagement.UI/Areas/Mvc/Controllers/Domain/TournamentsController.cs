@@ -419,10 +419,10 @@
         }
 
         /// <summary>
-        /// Gets GameViewModel with loaded teams list & rounds.
+        /// Gets GameViewModel with loaded teams list and rounds.
         /// </summary>
         /// <param name="tournamentId">Id of the tournament to create GameViewModel for.</param>
-        /// <returns>GameViewModel with loaded teams list & rounds.</returns>
+        /// <returns>GameViewModel with loaded teams list and rounds.</returns>
         private GameViewModel GetGameViewModelFor(int tournamentId)
         {
             var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);

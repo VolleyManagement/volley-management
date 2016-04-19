@@ -67,6 +67,24 @@
         public DateTime GameDate { get; set; }
 
         /// <summary>
+        /// Mapper from GameResult to GameViewModel
+        /// </summary>
+        /// <param name="game">GameResult to map from</param>
+        /// <returns>Complete GameViewModel</returns>
+        public static GameViewModel Map(GameResultDto game)
+        {
+            return new GameViewModel
+            {
+                Id = game.Id,
+                TournamentId = game.TournamentId,
+                HomeTeamId = game.HomeTeamId,
+                AwayTeamId = game.AwayTeamId,
+                Round = game.Round,
+                GameDate = game.GameDate
+            };
+        }
+
+        /// <summary>
         /// Mapper from <see cref="GameViewModel"/> to <see cref="Game"/>
         /// </summary>
         /// <returns>Game domain model</returns>
@@ -80,19 +98,6 @@
                 HomeTeamId = this.HomeTeamId,
                 AwayTeamId = this.AwayTeamId,
                 GameDate = this.GameDate
-            };
-        }
-
-        public static GameViewModel Map(GameResultDto game) 
-        {
-            return new GameViewModel 
-            {
-                Id = game.Id,
-                TournamentId = game.TournamentId,
-                HomeTeamId = game.HomeTeamId,
-                AwayTeamId = game.AwayTeamId,
-                Round = game.Round,
-                GameDate = game.GameDate
             };
         }
     }

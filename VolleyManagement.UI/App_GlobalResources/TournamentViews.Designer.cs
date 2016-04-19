@@ -250,7 +250,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No games scheduled yet.
+        ///   Looks up a localized string similar to No games were scheduled yet.
         /// </summary>
         public static string NoGamesScheduled {
             get {

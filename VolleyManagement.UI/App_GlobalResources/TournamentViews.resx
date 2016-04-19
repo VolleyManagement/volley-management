@@ -193,7 +193,7 @@
     <value>Upcoming</value>
   </data>
   <data name="NoGamesScheduled" xml:space="preserve">
-    <value>No games scheduled yet</value>
+    <value>No games were scheduled yet</value>
   </data>
   <data name="Round" xml:space="preserve">
     <value>Round</value>

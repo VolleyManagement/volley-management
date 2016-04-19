@@ -52,48 +52,67 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
-           
+
+            PlayerEntity[] players;
+            TeamEntity[] teams;
+            TournamentEntity[] tournaments;
+            GameResultEntity[] games;
+
+            GenerateEntities(out players, out teams, out tournaments, out games);
+
+            context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
+            context.Teams.AddOrUpdate(t => t.Name, teams);
+            context.Tournaments.AddOrUpdate(t => t.Name, tournaments);
+            context.GameResults.AddOrUpdate(games); 
+        } 
+
+        private static void GenerateEntities(
+            out PlayerEntity[] players,
+            out TeamEntity[] teams,
+            out TournamentEntity[] tournaments, 
+            out GameResultEntity[] games)
+        {
             #region Seed players
             PlayerEntity player1 = new PlayerEntity
-                {
-                    BirthYear = 1970,
-                    FirstName = "John",
-                    LastName = "Smith",
-                    Height = 180,
-                    Weight = 70
-                };
+            {
+                BirthYear = 1970,
+                FirstName = "John",
+                LastName = "Smith",
+                Height = 180,
+                Weight = 70
+            };
             PlayerEntity player2 = new PlayerEntity
-                {
-                    BirthYear = 1986,
-                    FirstName = "Lex",
-                    LastName = "Luthor",
-                    Height = 175,
-                    Weight = 75
-                };
+            {
+                BirthYear = 1986,
+                FirstName = "Lex",
+                LastName = "Luthor",
+                Height = 175,
+                Weight = 75
+            };
             PlayerEntity player3 = new PlayerEntity
-              {
-                    BirthYear = 1977,
-                    FirstName = "Darth",
-                    LastName = "Vader",
-                    Height = 181,
-                    Weight = 80
-              }; 
+            {
+                BirthYear = 1977,
+                FirstName = "Darth",
+                LastName = "Vader",
+                Height = 181,
+                Weight = 80
+            };
             PlayerEntity player4 = new PlayerEntity
-              {
-                  BirthYear = 1988,
-                  FirstName = "Kylo",
-                  LastName = "Ren",
-                  Height = 176,
-                  Weight = 80
-              }; 
+            {
+                BirthYear = 1988,
+                FirstName = "Kylo",
+                LastName = "Ren",
+                Height = 176,
+                Weight = 80
+            };
             PlayerEntity player5 = new PlayerEntity
-                {
-                    BirthYear = 85,
-                    FirstName = "Han",
-                    LastName = "Solo",
-                    Height = 180,
-                    Weight = 75
-                };
+            {
+                BirthYear = 85,
+                FirstName = "Han",
+                LastName = "Solo",
+                Height = 180,
+                Weight = 75
+            };
             PlayerEntity player6 = new PlayerEntity
             {
                 BirthYear = 1968,
@@ -120,7 +139,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             };
             PlayerEntity player9 = new PlayerEntity
             {
-                BirthYear = 1945, 
+                BirthYear = 1945,
                 FirstName = "Tony",
                 LastName = "Stark",
                 Height = 150,
@@ -151,8 +170,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Weight = 300
             };
 
-            context.Players.AddOrUpdate(p => p.Id, 
-                new PlayerEntity[]
+            players = new PlayerEntity[]
             {
                 player1, 
                 player2,
@@ -166,7 +184,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 player10,
                 player11,
                 player12
-            });
+            };
+
             #endregion
 
             #region Seed teams
@@ -178,12 +197,12 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Players = new List<PlayerEntity> { player2 }
             };
             TeamEntity team2 = new TeamEntity
-                {
-                    Captain = player3,
-                    Name = "Empire",
-                    Coach = "Coach2",
-                    Players = new List<PlayerEntity> { player4 }
-                };
+            {
+                Captain = player3,
+                Name = "Empire",
+                Coach = "Coach2",
+                Players = new List<PlayerEntity> { player4 }
+            };
             TeamEntity team3 = new TeamEntity
             {
                 Captain = player5,
@@ -193,7 +212,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             };
             TeamEntity team4 = new TeamEntity
             {
-                Captain = player8, 
+                Captain = player8,
                 Name = "Avengers",
                 Coach = "Coach4",
                 Players = new List<PlayerEntity> { player9 }
@@ -213,8 +232,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Players = new List<PlayerEntity> { player12 }
             };
 
-            context.Teams.AddOrUpdate(t => t.Name,
-                new TeamEntity[]
+            teams = new TeamEntity[]
                 {
                     team1, 
                     team2, 
@@ -222,12 +240,12 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                     team4, 
                     team5, 
                     team6 
-                });
+                };
             #endregion
 
             #region Seed tournaments
             // Past torunament, scheme 1
-            TournamentEntity tour1 = new TournamentEntity 
+            TournamentEntity tour1 = new TournamentEntity
             {
                 Name = "Clone Wars",
                 ApplyingPeriodStart = new DateTime(2015, 06, 02),
@@ -235,7 +253,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 GamesStart = new DateTime(2015, 09, 03),
                 GamesEnd = new DateTime(2015, 09, 29),
                 TransferStart = new DateTime(2015, 09, 04),
-                TransferEnd = new DateTime(2015, 09, 28), 
+                TransferEnd = new DateTime(2015, 09, 28),
                 Scheme = 1,
                 Season = 115,
                 Divisions = new List<DivisionEntity>()
@@ -370,7 +388,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         }
                     }
                 },
-                Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5 } 
+                Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5 }
             };
             // Future tournament, scheme 2
             TournamentEntity tour6 = new TournamentEntity
@@ -398,35 +416,34 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         }
                     }
                 },
-                Teams = new List<TeamEntity>() { team6, team5, team3, team4, team1 } 
+                Teams = new List<TeamEntity>() { team6, team5, team3, team4, team1 }
             };
-         
-            context.Tournaments.AddOrUpdate(
-                t => t.Name, 
-                new TournamentEntity[]
+
+            tournaments = new TournamentEntity[]
             { 
                 tour1,
                 tour2,
                 tour3,
                 tour4,
                 tour5,
-                tour6});
+                tour6
+            };
             #endregion
 
-            List<GameResultEntity> gamesInTour1 = GenerateGames(tour1);
-            List<GameResultEntity> gamesInTour2 = GenerateGames(tour2);
-            List<GameResultEntity> gamesInTour3 = GenerateGames(tour3);
-            List<GameResultEntity> gamesInTour4 = GenerateGames(tour4);
-            List<GameResultEntity> gamesInTour5 = GenerateGames(tour5);
-            List<GameResultEntity> gamesInTour6 = GenerateGames(tour6);
+            games = GenerateGamesFromTournaments(tournaments); 
+        }
 
-            context.GameResults.AddOrUpdate(gamesInTour1.ToArray());
-            context.GameResults.AddOrUpdate(gamesInTour2.ToArray());
-            context.GameResults.AddOrUpdate(gamesInTour3.ToArray());
-            context.GameResults.AddOrUpdate(gamesInTour4.ToArray());
-            context.GameResults.AddOrUpdate(gamesInTour5.ToArray());
-            context.GameResults.AddOrUpdate(gamesInTour6.ToArray());
-        } 
+        private static GameResultEntity[] GenerateGamesFromTournaments(TournamentEntity[] tours)
+        {
+            List<GameResultEntity> games = new List<GameResultEntity>();
+
+            foreach (TournamentEntity tour in tours)
+            {
+                games.AddRange(GenerateGames(tour)); 
+            }
+
+            return games.ToArray(); 
+        }
 
         private static List<GameResultEntity> GenerateGames(TournamentEntity tour)
         {

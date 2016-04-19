@@ -60,10 +60,17 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
             GenerateEntities(out players, out teams, out tournaments, out games);
 
-            context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
-            context.Teams.AddOrUpdate(t => t.Name, teams);
+            //context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
+           /* context.Teams.AddOrUpdate(t => t.Name, teams);
             context.Tournaments.AddOrUpdate(t => t.Name, tournaments);
-            context.GameResults.AddOrUpdate(games); 
+            context.GameResults.AddOrUpdate(games); */
+
+            context.Players.AddRange(players);
+            context.Teams.AddOrUpdate(teams);
+
+           // context.Teams.AddRange(teams); 
+
+           // context.SaveChanges(); 
         } 
 
         private static void GenerateEntities(
@@ -191,45 +198,45 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             #region Seed teams
             TeamEntity team1 = new TeamEntity
             {
+                Players = new List<PlayerEntity> { player2 },
                 Captain = player1,
                 Name = "First Order",
-                Coach = "Coach1",
-                Players = new List<PlayerEntity> { player2 }
+                Coach = "Coach1"
             };
             TeamEntity team2 = new TeamEntity
             {
+                Players = new List<PlayerEntity> { player4 },
                 Captain = player3,
                 Name = "Empire",
                 Coach = "Coach2",
-                Players = new List<PlayerEntity> { player4 }
             };
             TeamEntity team3 = new TeamEntity
             {
+                Players = new List<PlayerEntity> { player6, player7 },
                 Captain = player5,
                 Name = "Rebelion",
-                Coach = "Coach3",
-                Players = new List<PlayerEntity> { player6, player7 }
+                Coach = "Coach3"
             };
             TeamEntity team4 = new TeamEntity
             {
+                Players = new List<PlayerEntity> { player9 },
                 Captain = player8,
                 Name = "Avengers",
-                Coach = "Coach4",
-                Players = new List<PlayerEntity> { player9 }
+                Coach = "Coach4"
             };
             TeamEntity team5 = new TeamEntity
             {
+                Players = new List<PlayerEntity> { player11 },
                 Captain = player10,
                 Name = "Cap",
-                Coach = "Coach5",
-                Players = new List<PlayerEntity> { player11 }
+                Coach = "Coach5"
             };
             TeamEntity team6 = new TeamEntity
             {
+                Players = new List<PlayerEntity> { player12 },
                 Captain = player11,
                 Name = "DC",
-                Coach = "Coach6",
-                Players = new List<PlayerEntity> { player12 }
+                Coach = "Coach6"
             };
 
             teams = new TeamEntity[]

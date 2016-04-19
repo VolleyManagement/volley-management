@@ -38,6 +38,8 @@
 
         private const string LATE_TOURNAMENT_DATE = "2016-04-06 10:00";
 
+        private const double ONE_DAY = 1;
+
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -905,7 +907,7 @@
         {
             // Arrange
             var sut = _kernel.Get<GameService>();
-            var game = new GameResultDtoBuilder().WithDate(DateTime.MaxValue)
+            var game = new GameResultDtoBuilder().WithDate(DateTime.Now.AddDays(ONE_DAY))
                     .WithAwaySetsScore(0).WithHomeSetsScore(0).Build();
 
             SetupGet(game);
@@ -922,7 +924,7 @@
         /// Invalid game.
         /// </summary>
         [TestMethod]
-        public void Delete_InValidExistingGame_ThrowArgumentExeption()
+        public void Delete_EndedGame_ThrowArgumentExeption()
         {
             // Arrange
             Exception exception = null;

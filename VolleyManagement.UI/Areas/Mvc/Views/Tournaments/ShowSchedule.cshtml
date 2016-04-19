@@ -28,11 +28,11 @@ else
         {
             <h4> @Resources.TournamentViews.Round @i </h4>
 
-            <div class="table-bordered">
+            <div class="table-bordered" id="round_@i">
             @if (Model.Rounds.ContainsKey(i))
             {
                 foreach (var game in Model.Rounds[i])
-                {              
+                {            
                     @Html.Partial("_ScheduledGameResult", game);
                 }
             }

@@ -63,13 +63,18 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
             context.Teams.AddOrUpdate(t => t.Name, teams);
             context.Tournaments.AddOrUpdate(t => t.Name, tournaments);
-            context.GameResults.AddOrUpdate(g => new { g.Id, g.TournamentId }, games); 
+
+            context.SaveChanges(); 
+             
+            context.GameResults.AddOrUpdate(g=>g.Id, games);
+
+            context.SaveChanges(); 
         } 
 
         private static void GenerateEntities(
             out PlayerEntity[] players,
             out TeamEntity[] teams,
-            out TournamentEntity[] tournaments, 
+            out TournamentEntity[] tournaments,
             out GameResultEntity[] games)
         {
             #region Seed players
@@ -439,13 +444,13 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
             for (int i = 0; i < tours.Length; i++)
             {
-                games.AddRange(GenerateGames(tours[i])); 
+                games.AddRange(GenerateGames(tours[i], i+1)); 
             }
 
             return games.ToArray(); 
         }
 
-        private static List<GameResultEntity> GenerateGames(TournamentEntity tour)
+        private static List<GameResultEntity> GenerateGames(TournamentEntity tour, int tourId)
         {
             List<GameResultEntity> games = new List<GameResultEntity>(); 
 
@@ -454,70 +459,82 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             int gamesInRound = roundsNumber % 2 == 0 ? roundsNumber / 2 : roundsNumber / 2 + 1;
 
             // Initial round 
-            byte roundIter = 1; 
-            for (int i = 0; i < teamsCount; i++)
+            byte roundIter = 1;
+            int[] homeTeamIds = new int[gamesInRound];
+            int[] awayTeamIds = new int[gamesInRound];
+            int[] tempHome = new int[gamesInRound];
+            int[] tempAway = new int[gamesInRound];
+            for (int i = 0, j = 1; i < gamesInRound; i++, j++)
             {
-                games.Add(new GameResultEntity 
-                {
-                    Tournament = tour,
-                    StartTime = tour.GamesStart.AddHours(1),
-                    HomeTeam = tour.Teams[i],
-                    AwayTeam = i == teamsCount - 1 && teamsCount % 2 != 0 ?
-                        null : tour.Teams[++i],
-                    RoundNumber = roundIter
-                });
+                homeTeamIds[i] = j;
+                awayTeamIds[i] = i == teamsCount - 1 && teamsCount % 2 != 0 ? 0 : ++j;
+
+                tempHome[i] = homeTeamIds[i];
+                tempAway[i] = awayTeamIds[i]; 
             }
 
             // round robin swap 
-            roundIter++; 
             int iter = 0;
-            do 
-            {
+            do
+            { 
                 for (int i = 0; i < gamesInRound; i++)
                 {
-                    List<GameResultEntity> prevRoundGames
-                        = games.GetRange(gamesInRound*iter, gamesInRound);
-                    if (i == 0)
+                    int currentHomeTeamId = 0;
+                    int? currentAwayTeamId = 0;
+
+                    if (homeTeamIds[0] == 0)
                     {
-                        games.Add(new GameResultEntity 
-                        {
-                            Tournament = tour,
-                            StartTime = prevRoundGames[i].StartTime.AddHours(1),
-                            HomeTeam = prevRoundGames[i].HomeTeam,
-                            AwayTeam = prevRoundGames[i+1].HomeTeam,
-                            RoundNumber = (byte)(roundIter)
-                        });
-                    } 
-                    else if (i == gamesInRound - 1)
+                        currentAwayTeamId = null;
+                        currentHomeTeamId = awayTeamIds[i];
+                    }
+                    else if (awayTeamIds[i] == 0)
                     {
-                        games.Add(new GameResultEntity 
-                        {
-                            Tournament = tour,
-                            StartTime = prevRoundGames[i].StartTime.AddHours(1),
-                            HomeTeam = prevRoundGames[i].AwayTeam,
-                            AwayTeam = prevRoundGames[i-1].AwayTeam,
-                            RoundNumber = (byte)(roundIter)
-                        });
+                        currentAwayTeamId = null;
+                        currentHomeTeamId = homeTeamIds[i];
                     }
                     else
                     {
-                        games.Add(new GameResultEntity
-                        {
-                            Tournament = tour,
-                            StartTime = prevRoundGames[i].StartTime.AddHours(1),
-                            HomeTeam = prevRoundGames[i + 1].HomeTeam,
-                            AwayTeam = prevRoundGames[i - 1].AwayTeam,
-                            RoundNumber = (byte)(roundIter)
-                        });
+                        currentAwayTeamId = awayTeamIds[i];
+                        currentHomeTeamId = homeTeamIds[i];
                     }
+
+                    games.Add(new GameResultEntity
+                    {
+                        TournamentId = tourId,
+                        HomeTeamId = currentHomeTeamId,
+                        AwayTeamId = currentAwayTeamId,
+                        StartTime = tour.GamesStart.AddDays(1),
+                        RoundNumber = (byte)(roundIter)
+                    });
+
+                   if (i == 0)
+                   {
+                       awayTeamIds[i] = tempHome[i + 1];
+                   }
+                   else if (i == gamesInRound - 1)
+                   {
+                       homeTeamIds[i] = tempAway[i];
+                       awayTeamIds[i] = tempAway[i - 1];
+                   }
+                   else
+                   {
+                       awayTeamIds[i] = tempAway[i - 1];
+                       homeTeamIds[i] = tempHome[i + 1];
+                   } 
                 }
+
+                for (int i = 0; i < homeTeamIds.Length; i++)
+                {
+                    tempHome[i] = homeTeamIds[i];
+                    tempAway[i] = awayTeamIds[i]; 
+                }
+            
                 iter++;
                 roundIter++; 
             }
             while (iter != roundsNumber-1);
 
             // Free day games may occur in a wrong order 
-            SwitchTeamsInFreeDayGames(games);
 
             if (tour.Scheme == 2)
             {
@@ -531,18 +548,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
             return games; 
         } 
-
-        private static void SwitchTeamsInFreeDayGames(List<GameResultEntity> games)
-        {
-            foreach (GameResultEntity game in games)
-            {
-                if (game.HomeTeam == null)
-                {
-                    game.HomeTeam = game.AwayTeam;
-                    game.AwayTeam = null; 
-                }
-            }
-        }
+         
 
         private static void SetGameScores(List<GameResultEntity> games)
         {
@@ -556,15 +562,22 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
             foreach (GameResultEntity game in games)
             {
-                TeamEntity homeTeam = game.AwayTeam == null ? game.HomeTeam : game.AwayTeam;
-                TeamEntity awayTeam = game.AwayTeam == null ? null : game.HomeTeam; 
+                int homeTeamId = game.HomeTeamId;
+                int? awayTeamId = game.AwayTeamId; 
+
+                if (awayTeamId != null)
+                {
+                    int temp = homeTeamId;
+                    homeTeamId = awayTeamId.Value;
+                    awayTeamId = temp; 
+                }
 
                 duplicates.Add(new GameResultEntity
                     {
-                        Tournament = game.Tournament,
+                        TournamentId = game.TournamentId,
                         StartTime = game.StartTime,
-                        HomeTeam = homeTeam,
-                        AwayTeam = awayTeam,
+                        HomeTeamId = homeTeamId,
+                        AwayTeamId = awayTeamId,
                         RoundNumber = Convert.ToByte(game.RoundNumber + roundNumber)
                     }); 
             }

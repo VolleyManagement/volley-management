@@ -9,6 +9,7 @@
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
@@ -40,6 +41,10 @@
 
         private const double ONE_DAY = 1;
 
+        private const int TEST_HOME_SET_SCORS = 3;
+
+        private const int TEST_AWAY_SET_SCORS = 2;
+
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -61,6 +66,8 @@
         private readonly string _wrongRoundDate
             = "Start of the round should not be earlier than the start of the tournament or later than the end of the tournament";
 
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+
         private IKernel _kernel;
 
         /// <summary>
@@ -79,6 +86,8 @@
                 .ToConstant(_tournamentScheduleDtoByIdQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
+            TimeProvider.Current = _timeMock.Object;
         }
 
         /// <summary>
@@ -907,7 +916,9 @@
         {
             // Arrange
             var sut = _kernel.Get<GameService>();
-            var game = new GameResultDtoBuilder().WithDate(DateTime.Now.AddDays(ONE_DAY))
+            var now = TimeProvider.Current.UtcNow;
+
+            var game = new GameResultDtoBuilder().WithDate(now.AddDays(ONE_DAY))
                     .WithAwaySetsScore(0).WithHomeSetsScore(0).Build();
 
             SetupGet(game);
@@ -929,7 +940,39 @@
             // Arrange
             Exception exception = null;
             var sut = _kernel.Get<GameService>();
-            var game = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
+            var now = TimeProvider.Current.UtcNow;
+            var game = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                                                 .WithDate(now.AddDays(-ONE_DAY)).Build();
+
+            SetupGet(game);
+
+            // Act
+            try
+            {
+                sut.Delete(GAME_RESULT_ID);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.WRONG_DELETING_GAME);
+        }
+
+        /// <summary>
+        /// Test for Delete method. Existing game has not to be deleted.
+        /// Invalid game.
+        /// </summary>
+        [TestMethod]
+        public void Delete_GameHasResult_ThrowArgumentExeption()
+        {
+            // Arrange
+            Exception exception = null;
+            var sut = _kernel.Get<GameService>();
+            var game = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                                .WithAwaySetsScore(TEST_AWAY_SET_SCORS)
+                                .WithHomeSetsScore(TEST_HOME_SET_SCORS).Build();
 
             SetupGet(game);
 

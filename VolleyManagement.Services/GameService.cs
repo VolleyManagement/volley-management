@@ -5,6 +5,7 @@
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
@@ -381,7 +382,7 @@
         private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
             if (!((gameToDelete.HomeSetsScore == 0) && (gameToDelete.AwaySetsScore == 0))
-                || (gameToDelete.GameDate < DateTime.Now))
+                || (gameToDelete.GameDate < TimeProvider.Current.UtcNow))
             {
                 throw new ArgumentException(Resources.WrongDeletingGame);
             }

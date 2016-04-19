@@ -241,6 +241,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game was not found in the tournament.
+        /// </summary>
+        public static string GameNotFoundInTournament {
+            get {
+                return ResourceManager.GetString("GameNotFoundInTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage Teams.
         /// </summary>
         public static string ManageTeams {

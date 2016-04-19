@@ -237,4 +237,7 @@
   <data name="EditScheduledGameTitle" xml:space="preserve">
     <value>Edit scheduled game</value>
   </data>
+  <data name="GameNotFoundInTournament" xml:space="preserve">
+    <value>Game was not found in the tournament</value>
+  </data>
 </root>

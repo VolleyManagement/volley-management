@@ -355,7 +355,7 @@
 
             if (game == null)
             {
-                this.ModelState.AddModelError("LoadError", "Can not find this game in the tournament");
+                this.ModelState.AddModelError("LoadError", App_GlobalResources.TournamentViews.GameNotFoundInTournament);
                 return View();
             }
 

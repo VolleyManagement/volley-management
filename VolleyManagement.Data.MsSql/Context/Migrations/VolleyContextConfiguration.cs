@@ -60,17 +60,10 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
             GenerateEntities(out players, out teams, out tournaments, out games);
 
-            //context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
-           /* context.Teams.AddOrUpdate(t => t.Name, teams);
+            context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
+            context.Teams.AddOrUpdate(t => t.Name, teams);
             context.Tournaments.AddOrUpdate(t => t.Name, tournaments);
-            context.GameResults.AddOrUpdate(games); */
-
-            context.Players.AddRange(players);
-            context.Teams.AddOrUpdate(teams);
-
-           // context.Teams.AddRange(teams); 
-
-           // context.SaveChanges(); 
+            context.GameResults.AddOrUpdate(g => new { g.Id, g.TournamentId }, games); 
         } 
 
         private static void GenerateEntities(
@@ -199,42 +192,42 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             TeamEntity team1 = new TeamEntity
             {
                 Players = new List<PlayerEntity> { player2 },
-                Captain = player1,
+                CaptainId = 1,
                 Name = "First Order",
                 Coach = "Coach1"
             };
             TeamEntity team2 = new TeamEntity
             {
                 Players = new List<PlayerEntity> { player4 },
-                Captain = player3,
+                CaptainId = 2,
                 Name = "Empire",
                 Coach = "Coach2",
             };
             TeamEntity team3 = new TeamEntity
             {
                 Players = new List<PlayerEntity> { player6, player7 },
-                Captain = player5,
+                CaptainId = 3,
                 Name = "Rebelion",
                 Coach = "Coach3"
             };
             TeamEntity team4 = new TeamEntity
             {
                 Players = new List<PlayerEntity> { player9 },
-                Captain = player8,
+                CaptainId = 4,
                 Name = "Avengers",
                 Coach = "Coach4"
             };
             TeamEntity team5 = new TeamEntity
             {
                 Players = new List<PlayerEntity> { player11 },
-                Captain = player10,
+                CaptainId = 5,
                 Name = "Cap",
                 Coach = "Coach5"
             };
             TeamEntity team6 = new TeamEntity
             {
                 Players = new List<PlayerEntity> { player12 },
-                Captain = player11,
+                CaptainId = 6,
                 Name = "DC",
                 Coach = "Coach6"
             };
@@ -444,9 +437,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             List<GameResultEntity> games = new List<GameResultEntity>();
 
-            foreach (TournamentEntity tour in tours)
+            for (int i = 0; i < tours.Length; i++)
             {
-                games.AddRange(GenerateGames(tour)); 
+                games.AddRange(GenerateGames(tours[i])); 
             }
 
             return games.ToArray(); 
@@ -533,7 +526,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
             if (tour.GamesStart < DateTime.Now)
             {
-                SetGameResults(games); 
+                SetGameScores(games); 
             }
 
             return games; 
@@ -551,24 +544,10 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             }
         }
 
-        private static void SetGameResults(List<GameResultEntity> games)
+        private static void SetGameScores(List<GameResultEntity> games)
         {
-            // Only for past and current games 
-            foreach (GameResultEntity game in games)
-            {
-                game.HomeSetsScore = 3;
-                game.AwaySetsScore = 2;
-                game.HomeSet1Score = 25;
-                game.AwaySet1Score = 10;
-                game.HomeSet2Score = 15;
-                game.AwaySet2Score = 25;
-                game.HomeSet3Score = 25;
-                game.AwaySet3Score = 5;
-                game.HomeSet4Score = 10;
-                game.AwaySet4Score = 25;
-                game.HomeSet5Score = 25;
-                game.AwaySet5Score = 10; 
-            }
+            // Only for past games  
+           
         }
 
         private static List<GameResultEntity> GenerateGamesDuplicateInSchemeTwo(List<GameResultEntity> games, int roundNumber)

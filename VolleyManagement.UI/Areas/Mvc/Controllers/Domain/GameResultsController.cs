@@ -55,7 +55,6 @@
             var gameResultViewModel = new GameResultViewModel
             {
                 TournamentId = tournamentId,
-                TeamsList = GetTeamsList()
             };
 
             return View(gameResultViewModel);
@@ -80,7 +79,6 @@
             catch (ArgumentException ex)
             {
                 ModelState.AddModelError("ValidationMessage", ex.Message);
-                gameResultViewModel.TeamsList = GetTeamsList();
                 return View(gameResultViewModel);
             }
         }
@@ -100,7 +98,6 @@
             }
 
             var gameResultsViewModel = GameResultViewModel.Map(gameResult);
-            gameResultsViewModel.TeamsList = GetTeamsList();
             return View(gameResultsViewModel);
         }
 
@@ -119,7 +116,7 @@
                 {
                     var gameResult = gameResultViewModel.ToDomain();
                     _gameService.Edit(gameResult);
-                    return RedirectToAction("Details", "Tournaments", new { id = gameResultViewModel.TournamentId });
+                    return RedirectToAction("ShowSchedule", "Tournaments", new { tournamentId = gameResultViewModel.TournamentId });
                 }
             }
             catch (MissingEntityException)
@@ -155,11 +152,6 @@
                 Message = App_GlobalResources.GameResultsController.GameWasDeletedSuccessfully,
                 HasDeleted = true
             });
-        }
-
-        private List<SelectListItem> GetTeamsList()
-        {
-            return _teamService.Get().Select(team => new SelectListItem { Value = team.Id.ToString(), Text = team.Name }).ToList();
         }
     }
 }

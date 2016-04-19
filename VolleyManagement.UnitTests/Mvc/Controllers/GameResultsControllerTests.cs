@@ -39,6 +39,8 @@
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
 
+        private const string REDIRECT_TO_ACTION = "ShowSchedule";
+        private const string REDIRECT_TO_CONTROLLER = "Tournaments";
         #endregion
 
         #region Fields
@@ -272,6 +274,7 @@
             // Assert
             VerifyEdit(Times.Once());
             Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
+            VerifyRedirectingRoute(result, REDIRECT_TO_ACTION, REDIRECT_TO_CONTROLLER);
         }
 
         /// <summary>
@@ -424,6 +427,13 @@
                 .Throws(new ArgumentException(string.Empty));
         }
 
+        private void VerifyRedirectingRoute(ActionResult result, string action, string controller)
+        {
+            var routeValues = ((RedirectToRouteResult)result).RouteValues;
+            Assert.AreEqual(TOURNAMENT_ID, routeValues["tournamentId"]);
+            Assert.AreEqual(action, routeValues["action"]);
+            Assert.AreEqual(controller, routeValues["controller"]);
+        }
         #endregion
     }
 }

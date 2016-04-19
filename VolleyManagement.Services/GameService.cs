@@ -241,6 +241,12 @@
             }
 
             List<GameResultDto> allGames = this.GetTournamentResults(tournamentDto.Id);
+            GameResultDto oldGameToUpdate = allGames.Where(gr => gr.Id == game.Id).SingleOrDefault();
+
+            if (oldGameToUpdate != null)
+            {
+                allGames.Remove(oldGameToUpdate);
+            }
 
             ValidateFreeDayGame(game);
             ValidateGameDate(tournamentDto, game);
@@ -259,18 +265,8 @@
         {
             List<GameResultDto> gamesInRound = games
                .Where(gr => gr.Round == newGame.Round)
-               .ToList();
-
-            GameResultDto oldGameToUpdate = gamesInRound.Where(gr => gr.Id == newGame.Id).SingleOrDefault();
-
-            if (oldGameToUpdate == null)
-            {
-                ValidateGameInRoundOnCreate(newGame, gamesInRound);
-            }
-            else
-            {
-                ValidateGameInRoundOnEdit(newGame, oldGameToUpdate, gamesInRound);
-            }
+               .ToList();            
+            ValidateGameInRoundOnCreate(newGame, gamesInRound);
         }
 
         private void ValidateGameInRoundOnCreate(Game newGame, List<GameResultDto> gamesInRound)

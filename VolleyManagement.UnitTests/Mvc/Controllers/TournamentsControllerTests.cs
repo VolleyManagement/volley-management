@@ -1031,21 +1031,12 @@
 
         private void AssertEqual(GameViewModel x, GameViewModel y)
         {
-            string wrongId = "Actual game Id doesn't match expected";
-            string wrongTournamentId = "Actual TournamentId doesn't match expected";
-            string wrongHomeTeamId = "Actual HomeTeamId doesn't match expected";
-            string wrongAwayTeamId = "Actual AwayTeamId doesn't match expected";
-            string wrongRound = "Actual Round number doesn't match expected";
-            string wrongGameDate = "Actual GameDate doesn't match expected";
-            string wronsWrongTeams = "Actual Teams list doesn't match expected";
-            string wrongRounds = "Actual Rounds list doesn't match expected";
-
-            Assert.AreEqual(x.Id, y.Id, wrongId);
-            Assert.AreEqual(x.TournamentId, y.TournamentId, wrongTournamentId);
-            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, wrongHomeTeamId);
-            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, wrongAwayTeamId);
-            Assert.AreEqual(x.Round, y.Round, wrongRound);
-            Assert.AreEqual(x.GameDate, y.GameDate, wrongGameDate);
+            Assert.AreEqual(x.Id, y.Id, "Actual game Id doesn't match expected");
+            Assert.AreEqual(x.TournamentId, y.TournamentId, "Actual TournamentId doesn't match expected");
+            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, "Actual HomeTeamId doesn't match expected");
+            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, "Actual AwayTeamId doesn't match expected");
+            Assert.AreEqual(x.Round, y.Round, "Actual Round number doesn't match expected");
+            Assert.AreEqual(x.GameDate, y.GameDate, "Actual GameDate doesn't match expected");
 
             Assert.IsTrue(
                 x.Teams != null &&
@@ -1053,14 +1044,14 @@
                 x.Teams.Select(
                     team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
                     y.Teams.Select(team => new { Text = team.Text, Value = team.Value })),
-                wronsWrongTeams);
+                "Actual Teams list doesn't match expected");
 
             Assert.IsTrue(
                           x.Rounds != null &&
                           y.Rounds != null &&
                          (x.Rounds.Items as IEnumerable<int>).SequenceEqual(
                           y.Rounds.Items as IEnumerable<int>),
-                          wrongRounds);
+                          "Actual Rounds list doesn't match expected");
         }
         #endregion
     }

@@ -68,9 +68,12 @@
             <div class="row">
                 @foreach (var score in Model.SetScores)
                 {
-                    <div class="col-md-2">
-                        @score.Home:@score.Away
-                    </div>
+                    if (!(score.Home == 0 && score.Away == 0))
+                    {
+                        <div class="col-md-2">
+                            @score.Home:@score.Away
+                        </div>                        
+                    }
                 }
             </div>
         }

@@ -4,17 +4,17 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Diagnostics; 
+    using System.Diagnostics;
 
     using VolleyManagement.Data.MsSql.Entities;
 
     /// <summary>
-    /// Genetrates and seeds test entity data 
+    /// Generates and seeds test entity data
     /// </summary>
     internal static class SeedDataGenerator
     {
         /// <summary>
-        /// Generates and seeds test data for 
+        /// Generates and seeds test data for
         /// players, trams, tournaments and game results entities
         /// </summary>
         /// <param name="context">Context of the entities</param>
@@ -34,7 +34,7 @@
 
             context.GameResults.AddOrUpdate(g => g.Id, games);
 
-            context.SaveChanges(); 
+            context.SaveChanges();
         }
 
         private static PlayerEntity[] GeneratePlayers()
@@ -213,13 +213,13 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 1"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() 
+                    Teams = new List<TeamEntity>()
                     {
                         teams[0],
                         teams[1],
@@ -229,6 +229,7 @@
                         teams[5]
                     }
                 },
+
                 // Current tournament, shceme 1
                 new TournamentEntity
                 {
@@ -249,21 +250,22 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 2"
                                 }
                             }
                         }
                     },
                     Teams = new List<TeamEntity>()
-                    { 
+                    {
                         teams[0],
                         teams[1],
                         teams[2],
                         teams[3],
-                        teams[4] 
+                        teams[4]
                     }
                 },
+
                 // Future tournament scheme 1
                 new TournamentEntity
                 {
@@ -284,14 +286,14 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 3"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() 
-                    { 
+                    Teams = new List<TeamEntity>()
+                    {
                         teams[0],
                         teams[1],
                         teams[2],
@@ -299,6 +301,7 @@
                         teams[4]
                     }
                 },
+
                 // Past tournament, scheme 2
                 new TournamentEntity
                 {
@@ -319,18 +322,20 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 4"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() { 
+                    Teams = new List<TeamEntity>()
+                    {
                         teams[0],
                         teams[2],
                         teams[4]
                     }
-                }, 
+                },
+
                 // Current tournament, scheme 2
                 new TournamentEntity
                 {
@@ -351,14 +356,14 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 5"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() 
-                    { 
+                    Teams = new List<TeamEntity>()
+                    {
                         teams[0],
                         teams[1],
                         teams[2],
@@ -366,6 +371,7 @@
                         teams[4]
                     }
                 },
+
                 // Future tournament, scheme 2
                 new TournamentEntity
                 {
@@ -386,18 +392,19 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 6"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() { 
-                        teams[5], 
+                    Teams = new List<TeamEntity>()
+                    {
+                        teams[5],
                         teams[4],
                         teams[2],
                         teams[3],
-                        teams[0] 
+                        teams[0]
                     }
                 }
             };
@@ -407,12 +414,14 @@
         {
             List<GameResultEntity> games = new List<GameResultEntity>();
             int gameId = 0;
+
             for (int i = 0; i < tours.Length; i++)
             {
                 if (games.Count > 0)
                 {
                     gameId = games[games.Count - 1].Id;
                 }
+
                 games.AddRange(GenerateGames(tours[i], i + 1, ++gameId));
             }
 
@@ -422,12 +431,11 @@
         private static List<GameResultEntity> GenerateGames(TournamentEntity tour, int tourId, int gameId)
         {
             List<GameResultEntity> games = new List<GameResultEntity>();
-
             int teamsCount = tour.Teams.Count;
-            int roundsNumber = teamsCount % 2 == 0 ? teamsCount - 1 : teamsCount;
-            int gamesInRound = roundsNumber % 2 == 0 ? roundsNumber / 2 : roundsNumber / 2 + 1;
+            int roundsNumber = teamsCount % 2 == 0 ? (teamsCount - 1) : teamsCount;
+            int gamesInRound = roundsNumber % 2 == 0 ? (roundsNumber / 2) : ((roundsNumber / 2) + 1);
 
-            // Initial round 
+            // Initial round
             byte roundIter = 1;
             int[] homeTeamIds = new int[gamesInRound];
             int[] awayTeamIds = new int[gamesInRound];
@@ -442,7 +450,7 @@
                 tempAway[i] = awayTeamIds[i];
             }
 
-            // round robin swap 
+            // round robin swap
             do
             {
                 for (int i = 0; i < gamesInRound; i++)
@@ -473,7 +481,7 @@
                         HomeTeamId = currentHomeTeamId,
                         AwayTeamId = currentAwayTeamId,
                         StartTime = tour.GamesStart.AddDays(1),
-                        RoundNumber = (byte)(roundIter)
+                        RoundNumber = Convert.ToByte(roundIter)
                     });
 
                     if (i == 0)
@@ -502,8 +510,7 @@
             }
             while (roundIter != roundsNumber + 1);
 
-            // Free day games may occur in a wrong order 
-
+            // Free day games may occur in a wrong order
             if (tour.Scheme == 2)
             {
                 games = GenerateGamesDuplicateInSchemeTwo(games, roundsNumber);
@@ -519,7 +526,7 @@
 
         private static void SetGameScores(List<GameResultEntity> games)
         {
-            // Only for past games  
+            // Only for past games
             int maxFinalScore = 3;
             int maxScore = 25;
             int scoresNumber = 5;

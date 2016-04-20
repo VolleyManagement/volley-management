@@ -64,9 +64,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             context.Teams.AddOrUpdate(t => t.Name, teams);
             context.Tournaments.AddOrUpdate(t => t.Name, tournaments);
 
-            context.SaveChanges(); 
-             
-            context.GameResults.AddOrUpdate(g=>g.Id, games);
+            context.SaveChanges();
+
+            context.GameResults.AddOrUpdate(g => g.Id, games);
 
             context.SaveChanges(); 
         } 
@@ -441,16 +441,20 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         private static GameResultEntity[] GenerateGamesFromTournaments(TournamentEntity[] tours)
         {
             List<GameResultEntity> games = new List<GameResultEntity>();
-
+            int gameId = 0;
             for (int i = 0; i < tours.Length; i++)
             {
-                games.AddRange(GenerateGames(tours[i], i+1)); 
+                if (games.Count > 0)
+                {
+                    gameId = games[games.Count - 1].Id;
+                }
+                games.AddRange(GenerateGames(tours[i], i+1, ++gameId)); 
             }
 
             return games.ToArray(); 
         }
 
-        private static List<GameResultEntity> GenerateGames(TournamentEntity tour, int tourId)
+        private static List<GameResultEntity> GenerateGames(TournamentEntity tour, int tourId, int gameId)
         {
             List<GameResultEntity> games = new List<GameResultEntity>(); 
 
@@ -474,7 +478,6 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             }
 
             // round robin swap 
-            int iter = 0;
             do
             { 
                 for (int i = 0; i < gamesInRound; i++)
@@ -500,6 +503,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                     games.Add(new GameResultEntity
                     {
+                        Id = gameId++,
                         TournamentId = tourId,
                         HomeTeamId = currentHomeTeamId,
                         AwayTeamId = currentAwayTeamId,
@@ -529,10 +533,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                     tempAway[i] = awayTeamIds[i]; 
                 }
             
-                iter++;
                 roundIter++; 
             }
-            while (iter != roundsNumber-1);
+            while (roundIter != roundsNumber+1);
 
             // Free day games may occur in a wrong order 
 
@@ -560,6 +563,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         {
             List<GameResultEntity> duplicates = new List<GameResultEntity>();
 
+            int gameId = games[games.Count - 1].Id; 
             foreach (GameResultEntity game in games)
             {
                 int homeTeamId = game.HomeTeamId;
@@ -574,6 +578,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
                 duplicates.Add(new GameResultEntity
                     {
+                        Id = ++gameId,
                         TournamentId = game.TournamentId,
                         StartTime = game.StartTime,
                         HomeTeamId = homeTeamId,

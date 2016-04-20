@@ -556,7 +556,72 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         private static void SetGameScores(List<GameResultEntity> games)
         {
             // Only for past games  
-           
+            int maxFinalScore = 3;
+            int maxScore = 25;
+            int scoresNumber = 5;
+            Random rand = new Random();
+
+            int awayFinalScore = 0;
+            int homeFinalScroe = 0;
+            int[] homeScores = new int[scoresNumber];
+            int[] awayScores = new int[scoresNumber];
+
+            foreach (GameResultEntity game in games)
+            {
+                int r = rand.Next(0, 2);
+                if (r == 0)
+                {
+                    awayFinalScore = maxFinalScore;
+                    homeFinalScroe = rand.Next(0, 3);
+                }
+                else
+                {
+                    awayFinalScore = rand.Next(0, 3);
+                    homeFinalScroe = maxFinalScore; 
+                }
+
+                for (int i = 0, j = 1; i < scoresNumber; i++, j++)
+                {
+                    if (j > awayFinalScore + homeFinalScroe)
+                    {
+                        awayScores[i] = 0;
+                        homeScores[i] = 0; 
+                    }
+                    else if (homeFinalScroe > awayFinalScore && j <= awayFinalScore)
+                    {
+                        awayScores[i] = maxScore;
+                        homeScores[i] = rand.Next(0, 20); 
+                    }
+                    else if (homeFinalScroe > awayFinalScore && j > awayFinalScore)
+                    {
+                        awayScores[i] = rand.Next(0, 20);
+                        homeScores[i] = maxScore;
+                    }
+                    else if (awayFinalScore > homeFinalScroe &&  j <= homeFinalScroe)
+                    {
+                        awayScores[i] = rand.Next(0, 20);
+                        homeScores[i] = maxScore; 
+                    }
+                    else if (awayFinalScore > homeFinalScroe && j > homeFinalScroe)
+                    {
+                        awayScores[i] = maxScore;
+                        homeScores[i] = rand.Next(0, 20); 
+                    } 
+                }
+
+                game.HomeSetsScore = (byte)homeFinalScroe;
+                game.AwaySetsScore = (byte)awayFinalScore;
+                game.HomeSet1Score = (byte)homeScores[0];
+                game.HomeSet2Score = (byte)homeScores[1];
+                game.HomeSet3Score = (byte)homeScores[2];
+                game.HomeSet4Score = (byte)homeScores[3];
+                game.HomeSet5Score = (byte)homeScores[4];
+                game.AwaySet1Score = (byte)awayScores[0];
+                game.AwaySet2Score = (byte)awayScores[1];
+                game.AwaySet3Score = (byte)awayScores[2];
+                game.AwaySet4Score = (byte)awayScores[3];
+                game.AwaySet5Score = (byte)awayScores[4];
+            }
         }
 
         private static List<GameResultEntity> GenerateGamesDuplicateInSchemeTwo(List<GameResultEntity> games, int roundNumber)

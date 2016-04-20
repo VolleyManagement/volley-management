@@ -3,7 +3,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System; 
     using System.Collections.Generic;
     using System.Data.Entity;
-    using System.Data.Entity.Migrations;
+    using System.Data.Entity.Migrations; 
 
     using VolleyManagement.Data.MsSql.Entities;
 
@@ -52,7 +52,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
-
+        
+#if DEBUG   
             PlayerEntity[] players;
             TeamEntity[] teams;
             TournamentEntity[] tournaments;
@@ -69,7 +70,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             context.GameResults.AddOrUpdate(g => g.Id, games);
 
             context.SaveChanges(); 
-        } 
+#endif
+        }
 
         private static void GenerateEntities(
             out PlayerEntity[] players,

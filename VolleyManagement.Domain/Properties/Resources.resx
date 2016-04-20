@@ -195,6 +195,9 @@
   <data name="UniqueNameMessage" xml:space="preserve">
     <value>Tournament name should be unique</value>
   </data>
+  <data name="ValidationCoachName" xml:space="preserve">
+    <value>Coach name can not contain more than  {0} symbols; The field must contain only letters</value>
+  </data>
   <data name="ValidationDivisionName" xml:space="preserve">
     <value>Please, enter the valid name of the division</value>
   </data>
@@ -215,6 +218,12 @@
   </data>
   <data name="ValidationPlayerWeight" xml:space="preserve">
     <value>Please, enter the valid weight</value>
+  </data>
+  <data name="ValidationTeamAchievements" xml:space="preserve">
+    <value>Team achievements can not contain more than  {0} symbols</value>
+  </data>
+  <data name="ValidationTeamName" xml:space="preserve">
+    <value>Team name can not contain more than  {0} symbols; The field can not be empty</value>
   </data>
   <data name="WrongDeletingGame" xml:space="preserve">
     <value>Game can not be deleted because it has already ended</value>

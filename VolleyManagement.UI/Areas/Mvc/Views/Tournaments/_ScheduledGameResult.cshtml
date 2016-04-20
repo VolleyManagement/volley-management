@@ -101,21 +101,18 @@
             @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
         </div>
 
-        <div class="col-md-2">
             @if ((Model.GameDate > DateTime.Now) &&
                    (Model.SetsScore.Home == 0) && (Model.SetsScore.Away == 0))
-            {
-                @Html.ActionLink(Resources.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
+            { 
+                 <div class="col-md-2">    
+                      @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                 </div>
+                
+                 <div class="col-md-2">
+                      @Html.ActionLink(Resources.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
                                  new { @class = "deleteGame", @id = Model.Id })
+                </div>                
             }
-        </div>
-
-        <div class="col-md-2">
-            @if ((Model.GameDate > DateTime.Now) &&
-                   (Model.SetsScore.Home == 0) && (Model.SetsScore.Away == 0))
-            {
-                @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-            }
-        </div>
-    </div>
+     </div>
+</div>
 

@@ -21,15 +21,10 @@
         [Conditional("DEBUG")]
         internal static void GenerateEntities(VolleyManagementEntities context)
         {
-            PlayerEntity[] players;
-            TeamEntity[] teams;
-            TournamentEntity[] tournaments;
-            GameResultEntity[] games;
-
-            players = GeneratePlayers(); 
-            teams = GenerateTeams(players); 
-            tournaments = GenerateTournaments(teams); 
-            games = GenerateGamesFromTournaments(tournaments);
+            PlayerEntity[] players = GeneratePlayers();
+            TeamEntity[] teams = GenerateTeams(players);
+            TournamentEntity[] tournaments = GenerateTournaments(teams);
+            GameResultEntity[] games = GenerateGamesFromTournaments(tournaments);
 
             context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
             context.Teams.AddOrUpdate(t => t.Name, teams);

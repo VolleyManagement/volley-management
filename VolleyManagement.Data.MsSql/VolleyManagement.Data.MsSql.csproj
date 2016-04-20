@@ -109,6 +109,7 @@
     <Compile Include="Context\Migrations\201604140531421_NullableAwayTeam.Designer.cs">
       <DependentUpon>201604140531421_NullableAwayTeam.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />

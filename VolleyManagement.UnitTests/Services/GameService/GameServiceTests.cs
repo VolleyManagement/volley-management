@@ -822,7 +822,7 @@
 
             // Assert
             Assert.IsTrue(exceptionThrown);
-        } 
+        }
         #endregion
 
         /// <summary>
@@ -872,7 +872,7 @@
             // Arrange
             MockDefaultTournament();
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
-            var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();         
+            var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
             _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
             var sut = _kernel.Get<GameService>();
 

@@ -1,16 +1,18 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
 
-<div class="table-bordered">
+<div class="table-bordered" id=@Model.Id>
+
+    @Html.HiddenFor(model => Model.Round, new { @id = "numberOfRound_" + @Model.Id })
 
     @if (!Model.AwayTeamId.HasValue)
     {
         <div class="row">
-            <div class="col-md-2">
-                @Model.HomeTeamName
+            <div class="col-md-10">
+                <strong>  @Model.HomeTeamName </strong>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-10 text-right">
                 @Resources.TournamentViews.TeamDayOff
             </div>
         </div>
@@ -20,82 +22,93 @@
         if (Model.IsTechnicalDefeat)
         {
             <div class="row">
-                <div class="col-md-2">
-                    @Model.HomeTeamName
+                <div class="col-md-10">
+                    <strong>  @Model.HomeTeamName </strong>
                 </div>
                 <div class="col-md-2">
-                    @Model.SetsScore.Home
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-2">
-                    @Model.AwayTeamName
-                </div>
-                <div class="col-md-2">
-                    @Model.SetsScore.Away
+                    <strong>  @Model.SetsScore.Home </strong>
                 </div>
             </div>
 
             <div class="row">
+                <div class="col-md-10">
+                    <strong>  @Model.AwayTeamName </strong>
+                </div>
                 <div class="col-md-2">
+                    <strong>  @Model.SetsScore.Away </strong>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-10 text-right">
                     @Resources.GameResultViews.TechnicalDefeat
                 </div>
             </div>
         }
-        else if ((Model.SetsScore.Home != 0) || (Model.SetsScore.Away != 0))
+        else if (Model.SetsScore.Home != 0 || Model.SetsScore.Away != 0)
         {
             <div class="row">
-                <div class="col-md-2">
-                    @Model.HomeTeamName
+                <div class="col-md-10">
+                    <strong>  @Model.HomeTeamName </strong>
                 </div>
                 <div class="col-md-2">
-                    @Model.SetsScore.Home
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-2">
-                    @Model.AwayTeamName
-                </div>
-                <div class="col-md-2">
-                    @Model.SetsScore.Away
+                    <strong>   @Model.SetsScore.Home </strong>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-10">
+                    <strong>  @Model.AwayTeamName </strong>
+                </div>
+                <div class="col-md-2">
+                    <strong>  @Model.SetsScore.Away </strong>
+                </div>
+            </div>
+
+            <div class="row">
                     @foreach (var score in Model.SetScores)
                     {
-                        @: @score.Home:@score.Away|
+                        <div class="col-md-2">
+                         @score.Home:@score.Away
+                         </div>
                     }
-                </div>
             </div>
         }
         else
         {
             <div class="row">
-                <div class="col-md-2">
-                    @Model.HomeTeamName
+                <div class="col-md-10">
+                    <strong>  @Model.HomeTeamName </strong>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-2">
-                    @Model.AwayTeamName
+                <div class="col-md-10">
+                    <strong>  @Model.AwayTeamName </strong>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-10 text-right">
                     @Model.ShortGameDate
                 </div>
             </div>
         }
-        <div class="row">
-            <div class="col-md-2">
-                @Html.ActionLink("Result", "Edit", "GameResults", new { Id = Model.Id }, null)
-            </div>
-        </div>
     }
+  
+      <div class="row">
+         <div class="col-md-2">
+             @Html.ActionLink("Result", "Edit", "GameResults", new { Id = Model.Id }, null)
+         </div>
+
+        <div class="col-md-2">
+            @if ((Model.GameDate > DateTime.Now) &&
+                   (Model.SetsScore.Home == 0) && (Model.SetsScore.Away == 0))
+            {
+                @Html.ActionLink(Resources.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
+                                 new { @class = "deleteGame", @id = Model.Id })
+            }
+        </div>          
+      </div>
+
 </div>

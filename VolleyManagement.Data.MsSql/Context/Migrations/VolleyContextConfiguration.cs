@@ -51,10 +51,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Contributors085Net()
             };
 
-            context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams); 
-#if DEBUG  
+            context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
+
             SeedDataGenerator.GenerateEntities(context);
-#endif
         }
 
         private static RoleEntity CreateRole(string name)

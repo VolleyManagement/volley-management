@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Diagnostics; 
 
     using VolleyManagement.Data.MsSql.Entities;
 
@@ -17,6 +18,7 @@
         /// players, trams, tournaments and game results entities
         /// </summary>
         /// <param name="context">Context of the entities</param>
+        [Conditional("DEBUG")]
         internal static void GenerateEntities(VolleyManagementEntities context)
         {
             PlayerEntity[] players;
@@ -24,357 +26,9 @@
             TournamentEntity[] tournaments;
             GameResultEntity[] games;
 
-            PlayerEntity player1 = new PlayerEntity
-            {
-                BirthYear = 1970,
-                FirstName = "John",
-                LastName = "Smith",
-                Height = 180,
-                Weight = 70
-            };
-            PlayerEntity player2 = new PlayerEntity
-            {
-                BirthYear = 1986,
-                FirstName = "Lex",
-                LastName = "Luthor",
-                Height = 175,
-                Weight = 75
-            };
-            PlayerEntity player3 = new PlayerEntity
-            {
-                BirthYear = 1977,
-                FirstName = "Darth",
-                LastName = "Vader",
-                Height = 181,
-                Weight = 80
-            };
-            PlayerEntity player4 = new PlayerEntity
-            {
-                BirthYear = 1988,
-                FirstName = "Kylo",
-                LastName = "Ren",
-                Height = 176,
-                Weight = 80
-            };
-            PlayerEntity player5 = new PlayerEntity
-            {
-                BirthYear = 85,
-                FirstName = "Han",
-                LastName = "Solo",
-                Height = 180,
-                Weight = 75
-            };
-            PlayerEntity player6 = new PlayerEntity
-            {
-                BirthYear = 1968,
-                FirstName = "Luke",
-                LastName = "Skywalker",
-                Height = 165,
-                Weight = 6
-            };
-            PlayerEntity player7 = new PlayerEntity
-            {
-                BirthYear = 1990,
-                FirstName = "Obivan",
-                LastName = "Kenobi",
-                Height = 190,
-                Weight = 120
-            };
-            PlayerEntity player8 = new PlayerEntity
-            {
-                BirthYear = 2005,
-                FirstName = "Mighty",
-                LastName = "Thor",
-                Height = 250,
-                Weight = 400
-            };
-            PlayerEntity player9 = new PlayerEntity
-            {
-                BirthYear = 1945,
-                FirstName = "Tony",
-                LastName = "Stark",
-                Height = 150,
-                Weight = 50
-            };
-            PlayerEntity player10 = new PlayerEntity
-            {
-                BirthYear = 1920,
-                FirstName = "Hulk",
-                LastName = "Incredible",
-                Height = 250,
-                Weight = 500
-            };
-            PlayerEntity player11 = new PlayerEntity
-            {
-                BirthYear = 1955,
-                FirstName = "Man",
-                LastName = "Ant",
-                Height = 10,
-                Weight = 10
-            };
-            PlayerEntity player12 = new PlayerEntity
-            {
-                BirthYear = 1900,
-                FirstName = "Clark",
-                LastName = "Kent",
-                Height = 200,
-                Weight = 300
-            };
-
-            players = new PlayerEntity[]
-            {
-                player1, 
-                player2,
-                player3,
-                player4,
-                player5,
-                player6,
-                player7,
-                player8,
-                player9,
-                player10,
-                player11,
-                player12
-            };
-
-            TeamEntity team1 = new TeamEntity
-            {
-                Players = new List<PlayerEntity> { player2 },
-                CaptainId = 1,
-                Name = "First Order",
-                Coach = "Coach1"
-            };
-            TeamEntity team2 = new TeamEntity
-            {
-                Players = new List<PlayerEntity> { player4 },
-                CaptainId = 2,
-                Name = "Empire",
-                Coach = "Coach2",
-            };
-            TeamEntity team3 = new TeamEntity
-            {
-                Players = new List<PlayerEntity> { player6, player7 },
-                CaptainId = 3,
-                Name = "Rebelion",
-                Coach = "Coach3"
-            };
-            TeamEntity team4 = new TeamEntity
-            {
-                Players = new List<PlayerEntity> { player9 },
-                CaptainId = 4,
-                Name = "Avengers",
-                Coach = "Coach4"
-            };
-            TeamEntity team5 = new TeamEntity
-            {
-                Players = new List<PlayerEntity> { player11 },
-                CaptainId = 5,
-                Name = "Cap",
-                Coach = "Coach5"
-            };
-            TeamEntity team6 = new TeamEntity
-            {
-                Players = new List<PlayerEntity> { player12 },
-                CaptainId = 6,
-                Name = "DC",
-                Coach = "Coach6"
-            };
-
-            teams = new TeamEntity[]
-                {
-                    team1, 
-                    team2, 
-                    team3, 
-                    team4, 
-                    team5, 
-                    team6 
-                };
-
-            // Past torunament, scheme 1
-            TournamentEntity tour1 = new TournamentEntity
-            {
-                Name = "Clone Wars",
-                ApplyingPeriodStart = new DateTime(2015, 06, 02),
-                ApplyingPeriodEnd = new DateTime(2015, 09, 02),
-                GamesStart = new DateTime(2015, 09, 03),
-                GamesEnd = new DateTime(2015, 09, 29),
-                TransferStart = new DateTime(2015, 09, 04),
-                TransferEnd = new DateTime(2015, 09, 28),
-                Scheme = 1,
-                Season = 115,
-                Divisions = new List<DivisionEntity>()
-                {
-                    new DivisionEntity()
-                    {
-                        Name = "Division 1",
-                        Groups = new List<GroupEntity>()
-                        {
-                            new GroupEntity()
-                            {   
-                                Name = "Group 1"
-                            }
-                        }
-                    }
-                },
-                Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5, team6 }
-            };
-
-            // Current tournament, shceme 1
-            TournamentEntity tour2 = new TournamentEntity
-            {
-                Name = "New Hope",
-                ApplyingPeriodStart = DateTime.Now.AddMonths(-1),
-                ApplyingPeriodEnd = DateTime.Now.AddDays(-2),
-                GamesStart = DateTime.Now.AddDays(-1),
-                GamesEnd = DateTime.Now.AddDays(5),
-                TransferStart = DateTime.Now,
-                TransferEnd = DateTime.Now.AddDays(4),
-                Scheme = 1,
-                Season = Convert.ToByte(DateTime.Now.Year - 1900),
-                Divisions = new List<DivisionEntity>()
-                {
-                    new DivisionEntity()
-                    {
-                        Name = "Division 2",
-                        Groups = new List<GroupEntity>()
-                        {
-                            new GroupEntity()
-                            {   
-                                Name = "Group 2"
-                            }
-                        }
-                    }
-                },
-                Teams = new List<TeamEntity>() { team1, team2, team3, team5, team6 }
-            };
-            // Future tournament scheme 1
-            TournamentEntity tour3 = new TournamentEntity
-            {
-                Name = "Force Awakens",
-                ApplyingPeriodStart = DateTime.Now.AddMonths(1),
-                ApplyingPeriodEnd = DateTime.Now.AddMonths(2),
-                GamesStart = DateTime.Now.AddMonths(2).AddDays(2),
-                GamesEnd = DateTime.Now.AddMonths(2).AddDays(10),
-                TransferStart = DateTime.Now.AddMonths(2).AddDays(2),
-                TransferEnd = DateTime.Now.AddMonths(2).AddDays(7),
-                Scheme = 1,
-                Season = Convert.ToByte(DateTime.Now.AddYears(1).Year - 1900),
-                Divisions = new List<DivisionEntity>()
-                {
-                    new DivisionEntity()
-                    {
-                        Name = "Division 3",
-                        Groups = new List<GroupEntity>()
-                        {
-                            new GroupEntity()
-                            {   
-                                Name = "Group 3"
-                            }
-                        }
-                    }
-                },
-                Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5, team6 }
-            };
-
-            // Past tournament, scheme 2
-            TournamentEntity tour4 = new TournamentEntity
-            {
-                Name = "Hunger Games",
-                ApplyingPeriodStart = new DateTime(2012, 01, 02),
-                ApplyingPeriodEnd = new DateTime(2012, 05, 05),
-                GamesStart = new DateTime(2012, 05, 20),
-                GamesEnd = new DateTime(2012, 06, 01),
-                TransferStart = new DateTime(2012, 05, 20),
-                TransferEnd = new DateTime(2012, 06, 01),
-                Scheme = 2,
-                Season = 112,
-                Divisions = new List<DivisionEntity>()
-                {
-                    new DivisionEntity()
-                    {
-                        Name = "Division 4",
-                        Groups = new List<GroupEntity>()
-                        {
-                            new GroupEntity()
-                            {   
-                                Name = "Group 4"
-                            }
-                        }
-                    }
-                },
-                Teams = new List<TeamEntity>() { 
-                    team1,
-                    team2,
-                    team3}
-            };
-
-            // Current tournament, scheme 2
-            TournamentEntity tour5 = new TournamentEntity
-            {
-                Name = "Epic tour",
-                ApplyingPeriodStart = DateTime.Now.AddMonths(-2),
-                ApplyingPeriodEnd = DateTime.Now.AddDays(-3),
-                GamesStart = DateTime.Now.AddDays(-2),
-                GamesEnd = DateTime.Now.AddDays(20),
-                TransferStart = DateTime.Now.AddDays(2),
-                TransferEnd = DateTime.Now.AddDays(19),
-                Scheme = 2,
-                Season = Convert.ToByte(DateTime.Now.Year - 1900),
-                Divisions = new List<DivisionEntity>()
-                {
-                    new DivisionEntity()
-                    {
-                        Name = "Division 5",
-                        Groups = new List<GroupEntity>()
-                        {
-                            new GroupEntity()
-                            {   
-                                Name = "Group 5"
-                            }
-                        }
-                    }
-                },
-                Teams = new List<TeamEntity>() { team1, team2, team3, team4, team5 }
-            };
-            // Future tournament, scheme 2
-            TournamentEntity tour6 = new TournamentEntity
-            {
-                Name = "Empire Strikes Back",
-                ApplyingPeriodStart = DateTime.Now.AddMonths(1),
-                ApplyingPeriodEnd = DateTime.Now.AddMonths(2).AddDays(15),
-                GamesStart = DateTime.Now.AddMonths(2).AddDays(16),
-                GamesEnd = DateTime.Now.AddMonths(2).AddDays(7),
-                TransferEnd = null,
-                TransferStart = null,
-                Scheme = 2,
-                Season = Convert.ToByte(DateTime.Now.Year - 1900),
-                Divisions = new List<DivisionEntity>()
-                {
-                    new DivisionEntity()
-                    {
-                        Name = "Division 6",
-                        Groups = new List<GroupEntity>()
-                        {
-                            new GroupEntity()
-                            {   
-                                Name = "Group 6"
-                            }
-                        }
-                    }
-                },
-                Teams = new List<TeamEntity>() { team6, team5, team3, team4, team1 }
-            };
-
-            tournaments = new TournamentEntity[]
-            { 
-                tour1,
-                tour2,
-                tour3,
-                tour4,
-                tour5,
-                tour6
-            };
-
+            players = GeneratePlayers(); 
+            teams = GenerateTeams(players); 
+            tournaments = GenerateTournaments(teams); 
             games = GenerateGamesFromTournaments(tournaments);
 
             context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
@@ -386,6 +40,372 @@
             context.GameResults.AddOrUpdate(g => g.Id, games);
 
             context.SaveChanges(); 
+        }
+
+        private static PlayerEntity[] GeneratePlayers()
+        {
+            return new PlayerEntity[]
+            {
+                new PlayerEntity
+                {
+                    BirthYear = 1970,
+                    FirstName = "John",
+                    LastName = "Smith",
+                    Height = 180,
+                    Weight = 70
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 1986,
+                    FirstName = "Lex",
+                    LastName = "Luthor",
+                    Height = 175,
+                    Weight = 75
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 1977,
+                    FirstName = "Darth",
+                    LastName = "Vader",
+                    Height = 181,
+                    Weight = 80
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 1988,
+                    FirstName = "Kylo",
+                    LastName = "Ren",
+                    Height = 176,
+                    Weight = 80
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 85,
+                    FirstName = "Han",
+                    LastName = "Solo",
+                    Height = 180,
+                    Weight = 75
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 1968,
+                    FirstName = "Luke",
+                    LastName = "Skywalker",
+                    Height = 165,
+                    Weight = 6
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 1990,
+                    FirstName = "Obivan",
+                    LastName = "Kenobi",
+                    Height = 190,
+                    Weight = 120
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 2005,
+                    FirstName = "Mighty",
+                    LastName = "Thor",
+                    Height = 250,
+                    Weight = 400
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 1945,
+                    FirstName = "Tony",
+                    LastName = "Stark",
+                    Height = 150,
+                    Weight = 50
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 1920,
+                    FirstName = "Hulk",
+                    LastName = "Incredible",
+                    Height = 250,
+                    Weight = 500
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 1955,
+                    FirstName = "Man",
+                    LastName = "Ant",
+                    Height = 10,
+                    Weight = 10
+                },
+                new PlayerEntity
+                {
+                    BirthYear = 1900,
+                    FirstName = "Clark",
+                    LastName = "Kent",
+                    Height = 200,
+                    Weight = 300
+                }
+            };
+        }
+
+        private static TeamEntity[] GenerateTeams(PlayerEntity[] players)
+        {
+            return new TeamEntity[]
+            {
+                new TeamEntity
+                {
+                    Players = new List<PlayerEntity> { players[1] },
+                    CaptainId = 1,
+                    Name = "First Order",
+                    Coach = "Coach1"
+                },
+                new TeamEntity
+                {
+                    Players = new List<PlayerEntity> { players[3] },
+                    CaptainId = 2,
+                    Name = "Empire",
+                    Coach = "Coach2",
+                },
+                new TeamEntity
+                {
+                    Players = new List<PlayerEntity> { players[5], players[6] },
+                    CaptainId = 3,
+                    Name = "Rebelion",
+                    Coach = "Coach3"
+                },
+                new TeamEntity
+                {
+                    Players = new List<PlayerEntity> { players[8] },
+                    CaptainId = 4,
+                    Name = "Avengers",
+                    Coach = "Coach4"
+                },
+                new TeamEntity
+                {
+                    Players = new List<PlayerEntity> { players[10] },
+                    CaptainId = 5,
+                    Name = "Cap",
+                    Coach = "Coach5"
+                },
+                new TeamEntity
+                {
+                    Players = new List<PlayerEntity> { players[11] },
+                    CaptainId = 6,
+                    Name = "DC",
+                    Coach = "Coach6"
+                }
+            };
+        }
+
+        private static TournamentEntity[] GenerateTournaments(TeamEntity[] teams)
+        {
+            return new TournamentEntity[]
+            {
+                // Past torunament, scheme 1
+                    new TournamentEntity
+                {
+                    Name = "Clone Wars",
+                    ApplyingPeriodStart = new DateTime(2015, 06, 02),
+                    ApplyingPeriodEnd = new DateTime(2015, 09, 02),
+                    GamesStart = new DateTime(2015, 09, 03),
+                    GamesEnd = new DateTime(2015, 09, 29),
+                    TransferStart = new DateTime(2015, 09, 04),
+                    TransferEnd = new DateTime(2015, 09, 28),
+                    Scheme = 1,
+                    Season = 115,
+                    Divisions = new List<DivisionEntity>()
+                    {
+                        new DivisionEntity()
+                        {
+                            Name = "Division 1",
+                            Groups = new List<GroupEntity>()
+                            {
+                                new GroupEntity()
+                                {   
+                                    Name = "Group 1"
+                                }
+                            }
+                        }
+                    },
+                    Teams = new List<TeamEntity>() 
+                    {
+                        teams[0],
+                        teams[1],
+                        teams[2],
+                        teams[3],
+                        teams[4],
+                        teams[5]
+                    }
+                },
+                // Current tournament, shceme 1
+                new TournamentEntity
+                {
+                    Name = "New Hope",
+                    ApplyingPeriodStart = DateTime.Now.AddMonths(-1),
+                    ApplyingPeriodEnd = DateTime.Now.AddDays(-2),
+                    GamesStart = DateTime.Now.AddDays(-1),
+                    GamesEnd = DateTime.Now.AddDays(5),
+                    TransferStart = DateTime.Now,
+                    TransferEnd = DateTime.Now.AddDays(4),
+                    Scheme = 1,
+                    Season = Convert.ToByte(DateTime.Now.Year - 1900),
+                    Divisions = new List<DivisionEntity>()
+                    {
+                        new DivisionEntity()
+                        {
+                            Name = "Division 2",
+                            Groups = new List<GroupEntity>()
+                            {
+                                new GroupEntity()
+                                {   
+                                    Name = "Group 2"
+                                }
+                            }
+                        }
+                    },
+                    Teams = new List<TeamEntity>()
+                    { 
+                        teams[0],
+                        teams[1],
+                        teams[2],
+                        teams[3],
+                        teams[4] 
+                    }
+                },
+                // Future tournament scheme 1
+                new TournamentEntity
+                {
+                    Name = "Force Awakens",
+                    ApplyingPeriodStart = DateTime.Now.AddMonths(1),
+                    ApplyingPeriodEnd = DateTime.Now.AddMonths(2),
+                    GamesStart = DateTime.Now.AddMonths(2).AddDays(2),
+                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(10),
+                    TransferStart = DateTime.Now.AddMonths(2).AddDays(2),
+                    TransferEnd = DateTime.Now.AddMonths(2).AddDays(7),
+                    Scheme = 1,
+                    Season = Convert.ToByte(DateTime.Now.AddYears(1).Year - 1900),
+                    Divisions = new List<DivisionEntity>()
+                    {
+                        new DivisionEntity()
+                        {
+                            Name = "Division 3",
+                            Groups = new List<GroupEntity>()
+                            {
+                                new GroupEntity()
+                                {   
+                                    Name = "Group 3"
+                                }
+                            }
+                        }
+                    },
+                    Teams = new List<TeamEntity>() 
+                    { 
+                        teams[0],
+                        teams[1],
+                        teams[2],
+                        teams[3],
+                        teams[4]
+                    }
+                },
+                // Past tournament, scheme 2
+                new TournamentEntity
+                {
+                    Name = "Hunger Games",
+                    ApplyingPeriodStart = new DateTime(2012, 01, 02),
+                    ApplyingPeriodEnd = new DateTime(2012, 05, 05),
+                    GamesStart = new DateTime(2012, 05, 20),
+                    GamesEnd = new DateTime(2012, 06, 01),
+                    TransferStart = new DateTime(2012, 05, 20),
+                    TransferEnd = new DateTime(2012, 06, 01),
+                    Scheme = 2,
+                    Season = 112,
+                    Divisions = new List<DivisionEntity>()
+                    {
+                        new DivisionEntity()
+                        {
+                            Name = "Division 4",
+                            Groups = new List<GroupEntity>()
+                            {
+                                new GroupEntity()
+                                {   
+                                    Name = "Group 4"
+                                }
+                            }
+                        }
+                    },
+                    Teams = new List<TeamEntity>() { 
+                        teams[0],
+                        teams[2],
+                        teams[4]
+                    }
+                }, 
+                // Current tournament, scheme 2
+                new TournamentEntity
+                {
+                    Name = "Epic tour",
+                    ApplyingPeriodStart = DateTime.Now.AddMonths(-2),
+                    ApplyingPeriodEnd = DateTime.Now.AddDays(-3),
+                    GamesStart = DateTime.Now.AddDays(-2),
+                    GamesEnd = DateTime.Now.AddDays(20),
+                    TransferStart = DateTime.Now.AddDays(2),
+                    TransferEnd = DateTime.Now.AddDays(19),
+                    Scheme = 2,
+                    Season = Convert.ToByte(DateTime.Now.Year - 1900),
+                    Divisions = new List<DivisionEntity>()
+                    {
+                        new DivisionEntity()
+                        {
+                            Name = "Division 5",
+                            Groups = new List<GroupEntity>()
+                            {
+                                new GroupEntity()
+                                {   
+                                    Name = "Group 5"
+                                }
+                            }
+                        }
+                    },
+                    Teams = new List<TeamEntity>() 
+                    { 
+                        teams[0],
+                        teams[1],
+                        teams[2],
+                        teams[3],
+                        teams[4]
+                    }
+                },
+                // Future tournament, scheme 2
+                new TournamentEntity
+                {
+                    Name = "Empire Strikes Back",
+                    ApplyingPeriodStart = DateTime.Now.AddMonths(1),
+                    ApplyingPeriodEnd = DateTime.Now.AddMonths(2).AddDays(15),
+                    GamesStart = DateTime.Now.AddMonths(2).AddDays(16),
+                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(7),
+                    TransferEnd = null,
+                    TransferStart = null,
+                    Scheme = 2,
+                    Season = Convert.ToByte(DateTime.Now.Year - 1900),
+                    Divisions = new List<DivisionEntity>()
+                    {
+                        new DivisionEntity()
+                        {
+                            Name = "Division 6",
+                            Groups = new List<GroupEntity>()
+                            {
+                                new GroupEntity()
+                                {   
+                                    Name = "Group 6"
+                                }
+                            }
+                        }
+                    },
+                    Teams = new List<TeamEntity>() { 
+                        teams[5], 
+                        teams[4],
+                        teams[2],
+                        teams[3],
+                        teams[0] 
+                    }
+                }
+            };
         }
 
         private static GameResultEntity[] GenerateGamesFromTournaments(TournamentEntity[] tours)

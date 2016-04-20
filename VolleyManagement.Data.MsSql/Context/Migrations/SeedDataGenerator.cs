@@ -7,14 +7,23 @@
 
     using VolleyManagement.Data.MsSql.Entities;
 
-    public static class SeedDataGenerator
+    /// <summary>
+    /// Genetrates and seeds test entity data 
+    /// </summary>
+    internal static class SeedDataGenerator
     {
-        public static void GenerateEntities(
-             out PlayerEntity[] players,
-             out TeamEntity[] teams,
-             out TournamentEntity[] tournaments,
-             out GameResultEntity[] games)
+        /// <summary>
+        /// Generates and seeds test data for 
+        /// players, trams, tournaments and game results entities
+        /// </summary>
+        /// <param name="context">Context of the entities</param>
+        internal static void GenerateEntities(VolleyManagementEntities context)
         {
+            PlayerEntity[] players;
+            TeamEntity[] teams;
+            TournamentEntity[] tournaments;
+            GameResultEntity[] games;
+
             #region Seed players
             PlayerEntity player1 = new PlayerEntity
             {
@@ -374,6 +383,16 @@
             #endregion
 
             games = GenerateGamesFromTournaments(tournaments);
+
+            context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
+            context.Teams.AddOrUpdate(t => t.Name, teams);
+            context.Tournaments.AddOrUpdate(t => t.Name, tournaments);
+
+            context.SaveChanges();
+
+            context.GameResults.AddOrUpdate(g => g.Id, games);
+
+            context.SaveChanges(); 
         }
 
         private static GameResultEntity[] GenerateGamesFromTournaments(TournamentEntity[] tours)

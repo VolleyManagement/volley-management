@@ -51,28 +51,12 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Contributors085Net()
             };
 
-            context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
-        
-
-            PlayerEntity[] players;
-            TeamEntity[] teams;
-            TournamentEntity[] tournaments;
-            GameResultEntity[] games;
-
-            SeedDataGenerator.GenerateEntities(out players, out teams, out tournaments, out games);
-
-            context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
-            context.Teams.AddOrUpdate(t => t.Name, teams);
-            context.Tournaments.AddOrUpdate(t => t.Name, tournaments);
-
-            context.SaveChanges();
-
-            context.GameResults.AddOrUpdate(g => g.Id, games);
-
-            context.SaveChanges(); 
+            context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams); 
+#if DEBUG  
+            SeedDataGenerator.GenerateEntities(context);
+#endif
         }
 
-      
         private static RoleEntity CreateRole(string name)
         {
             return new RoleEntity { Name = name };

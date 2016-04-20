@@ -344,6 +344,7 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -455,6 +456,7 @@
     <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsEntryViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\GameDeleteResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameViewModel.cs" />

@@ -55,7 +55,6 @@
             var gameResultViewModel = new GameResultViewModel
             {
                 TournamentId = tournamentId,
-                TeamsList = GetTeamsList()
             };
 
             return View(gameResultViewModel);
@@ -80,7 +79,6 @@
             catch (ArgumentException ex)
             {
                 ModelState.AddModelError("ValidationMessage", ex.Message);
-                gameResultViewModel.TeamsList = GetTeamsList();
                 return View(gameResultViewModel);
             }
         }
@@ -100,7 +98,6 @@
             }
 
             var gameResultsViewModel = GameResultViewModel.Map(gameResult);
-            gameResultsViewModel.TeamsList = GetTeamsList();
             return View(gameResultsViewModel);
         }
 
@@ -119,7 +116,7 @@
                 {
                     var gameResult = gameResultViewModel.ToDomain();
                     _gameService.Edit(gameResult);
-                    return RedirectToAction("Details", "Tournaments", new { id = gameResultViewModel.TournamentId });
+                    return RedirectToAction("ShowSchedule", "Tournaments", new { tournamentId = gameResultViewModel.TournamentId });
                 }
             }
             catch (MissingEntityException)
@@ -134,22 +131,27 @@
         /// Deletes an existing game result by its identifier.
         /// </summary>
         /// <param name="id">Identifier of the game result.</param>
-        [HttpPost]
-        public void Delete(int id)
+        /// <returns>Result message</returns>
+        public JsonResult Delete(int id)
         {
-            var gameResult = _gameService.Get(id);
-
-            if (gameResult == null)
+            try
             {
-                throw new MissingEntityException(App_GlobalResources.GameResultsController.GameResultNotFound);
+                this._gameService.Delete(id);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return Json(new GameDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
+            }
+            catch (ArgumentException ex)
+            {
+                return Json(new GameDeleteResultViewModel { Message = ex.Message, HasDeleted = false });
             }
 
-            _gameService.Delete(id);
-        }
-
-        private List<SelectListItem> GetTeamsList()
-        {
-            return _teamService.Get().Select(team => new SelectListItem { Value = team.Id.ToString(), Text = team.Name }).ToList();
+            return Json(new GameDeleteResultViewModel
+            {
+                Message = App_GlobalResources.GameResultsController.GameWasDeletedSuccessfully,
+                HasDeleted = true
+            });
         }
     }
 }

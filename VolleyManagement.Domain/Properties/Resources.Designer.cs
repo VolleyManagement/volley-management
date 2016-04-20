@@ -358,6 +358,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game can not be deleted because it has already ended.
+        /// </summary>
+        public static string WrongDeletingGame {
+            get {
+                return ResourceManager.GetString("WrongDeletingGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start of the applying period must be earlier than its end.
         /// </summary>
         public static string WrongRegistrationDatesPeriod {

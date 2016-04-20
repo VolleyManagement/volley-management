@@ -61,6 +61,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to the tournament details.
         /// </summary>
         public static string BackToTournament {
@@ -174,6 +183,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string ResultNumberHeader {
             get {
                 return ResourceManager.GetString("ResultNumberHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
             }
         }
         

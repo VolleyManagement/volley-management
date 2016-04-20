@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
   <data name="BackToTournament" xml:space="preserve">
     <value>Back to the tournament details</value>
   </data>
@@ -155,6 +158,9 @@
   </data>
   <data name="ResultNumberHeader" xml:space="preserve">
     <value>№ s/s</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="Set1ScoreHeader" xml:space="preserve">
     <value>Set 1</value>

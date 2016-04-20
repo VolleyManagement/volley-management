@@ -9,6 +9,7 @@
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
@@ -38,6 +39,12 @@
 
         private const string LATE_TOURNAMENT_DATE = "2016-04-06 10:00";
 
+        private const double ONE_DAY = 1;
+
+        private const int TEST_HOME_SET_SCORS = 3;
+
+        private const int TEST_AWAY_SET_SCORS = 2;
+
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -59,6 +66,8 @@
         private readonly string _wrongRoundDate
             = "Start of the round should not be earlier than the start of the tournament or later than the end of the tournament";
 
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+
         private IKernel _kernel;
 
         /// <summary>
@@ -77,6 +86,8 @@
                 .ToConstant(_tournamentScheduleDtoByIdQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
+            TimeProvider.Current = _timeMock.Object;
         }
 
         #region Create
@@ -909,12 +920,105 @@
         {
             // Arrange
             var sut = _kernel.Get<GameService>();
+            var now = TimeProvider.Current.UtcNow;
+
+            var game = new GameResultDtoBuilder().WithDate(now.AddDays(ONE_DAY))
+                    .WithAwaySetsScore(0).WithHomeSetsScore(0).Build();
+
+            SetupGet(game);
 
             // Act
             sut.Delete(GAME_RESULT_ID);
 
             // Assert
             VerifyDeleteGame(GAME_RESULT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete method. Existing game has not to be deleted.
+        /// Invalid game.
+        /// </summary>
+        [TestMethod]
+        public void Delete_EndedGame_ThrowArgumentExeption()
+        {
+            // Arrange
+            Exception exception = null;
+            var sut = _kernel.Get<GameService>();
+            var now = TimeProvider.Current.UtcNow;
+            var game = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                                                 .WithDate(now.AddDays(-ONE_DAY)).Build();
+
+            SetupGet(game);
+
+            // Act
+            try
+            {
+                sut.Delete(GAME_RESULT_ID);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.WRONG_DELETING_GAME);
+        }
+
+        /// <summary>
+        /// Test for Delete method. Existing game has not to be deleted.
+        /// Invalid game.
+        /// </summary>
+        [TestMethod]
+        public void Delete_GameHasResult_ThrowArgumentExeption()
+        {
+            // Arrange
+            Exception exception = null;
+            var sut = _kernel.Get<GameService>();
+            var game = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
+                                .WithAwaySetsScore(TEST_AWAY_SET_SCORS)
+                                .WithHomeSetsScore(TEST_HOME_SET_SCORS).Build();
+
+            SetupGet(game);
+
+            // Act
+            try
+            {
+                sut.Delete(GAME_RESULT_ID);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.WRONG_DELETING_GAME);
+        }
+
+        /// <summary>
+        /// Test for Delete method. The game result instance is null.
+        /// Exception is thrown during removing.
+        /// </summary>
+        [TestMethod]
+        public void Delete_GameNull_ExceptionThrown()
+        {
+            Exception exception = null;
+
+            // Arrange
+            int gameNullId = 0;
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Delete(gameNullId);
+            }
+            catch (ArgumentNullException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
         }
 
         private bool AreGamesEqual(Game x, Game y)

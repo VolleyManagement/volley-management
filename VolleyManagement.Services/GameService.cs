@@ -5,6 +5,7 @@
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
@@ -125,6 +126,14 @@
         /// <param name="id">Identifier of game.</param>
         public void Delete(int id)
         {
+            GameResultDto game = Get(id);
+
+            if (game == null)
+            {
+                throw new ArgumentNullException("game");
+            }
+
+            ValidateGameInRoundOnDelete(game);
             _gameRepository.Remove(id);
             _gameRepository.UnitOfWork.Commit();
         }
@@ -264,9 +273,9 @@
         {
             List<GameResultDto> gamesInRound = games
                .Where(gr => gr.Round == newGame.Round)
-               .ToList();            
-            ValidateGameInRoundOnCreate(newGame, gamesInRound);
-        }
+               .ToList();
+                ValidateGameInRoundOnCreate(newGame, gamesInRound);
+            }
 
         private void ValidateGameInRoundOnCreate(Game newGame, List<GameResultDto> gamesInRound)
         {
@@ -319,6 +328,15 @@
                                  opositeTeam));
                     }
                 }
+                }
+                }
+
+        private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
+        {
+            if (gameToDelete.HomeSetsScore != 0 || gameToDelete.AwaySetsScore != 0
+                || gameToDelete.GameDate < TimeProvider.Current.UtcNow)
+            {
+                throw new ArgumentException(Resources.WrongDeletingGame);
             }
         }
 

@@ -15,7 +15,12 @@
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="@Resources.GameResultViews.Edit" class="btn btn-default" />
+            <input type="submit" value="@Resources.GameResultViews.Save" class="btn btn-default" />
+            @Html.ActionLink(@Resources.GameResultViews.Back, 
+                "ShowSchedule",
+                "Tournaments",
+                new { tournamentId = Model.TournamentId }, 
+                new { @class = "btn btn-default", @id = "backToSchedule" })
         </div>
     </div>
 

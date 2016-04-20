@@ -34,5 +34,7 @@
         public const string CONCURRENCY_EXCEPTION = "Игра с указаным идентификатором не была найдена";
 
         public const string GAME_SET_SCORES_NOT_ORDERED = "The set scores are listed in the wrong order";
+
+        public const string WRONG_DELETING_GAME = "Game can not be deleted because it has already ended";
     }
 }

@@ -126,4 +126,7 @@
   <data name="GameResultWasDeleted" xml:space="preserve">
     <value>This game can not be found, because it was deleted. Edit operation can not be applied.</value>
   </data>
+  <data name="GameWasDeletedSuccessfully" xml:space="preserve">
+    <value>Game was deleted successfully.</value>
+  </data>
 </root>

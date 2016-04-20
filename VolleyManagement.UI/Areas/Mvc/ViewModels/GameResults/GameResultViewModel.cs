@@ -11,7 +11,7 @@
     /// Represents a view model for game result.
     /// </summary>
     public class GameResultViewModel
-    {       
+    {
         /// <summary>
         /// Initializes a new instance of the <see cref="GameResultViewModel"/> class.
         /// </summary>
@@ -19,7 +19,6 @@
         {
             SetsScore = new Score();
             SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
-            TeamsList = new List<SelectListItem>();
         }
 
         /// <summary>
@@ -76,11 +75,6 @@
         /// Gets or sets the round of the game in the tournament.
         /// </summary>
         public int Round { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of teams of a tournament where game result belongs.
-        /// </summary>
-        public List<SelectListItem> TeamsList { get; set; }
 
         /// <summary>
         /// Gets the format of game date

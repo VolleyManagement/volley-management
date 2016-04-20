@@ -54,7 +54,7 @@
     <Compile Include="Dto\UserInRoleDto.cs" />
     <Compile Include="GameReportsAggregate\StandingsEntry.cs" />
     <Compile Include="GameReportsAggregate\TeamStandingsDto.cs" />
-    <Compile Include="GameReportsAggregate\TotalGameResultDto.cs" />
+    <Compile Include="GameReportsAggregate\ShortGameResultDto.cs" />
     <Compile Include="GameReportsAggregate\PivotStandings.cs" />
     <Compile Include="GamesAggregate\Game.cs" />
     <Compile Include="GamesAggregate\GamesResultDto.cs" />

@@ -10,7 +10,7 @@
     /// <summary>
     /// Represents a data transfer object of game result with scores and technical defeat value.
     /// </summary>
-    public class TotalGameResultDto
+    public class ShortGameResultDto
     {
         /// <summary>
         /// Gets or sets the identifier of the home team which played the game.

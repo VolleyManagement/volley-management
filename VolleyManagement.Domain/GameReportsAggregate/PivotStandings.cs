@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="teams">List of tournament teams standings</param>
         /// <param name="gameResults">List of tournament game results</param>
-        public PivotStandings(List<TeamStandingsDto> teams, List<TotalGameResultDto> gameResults)
+        public PivotStandings(List<TeamStandingsDto> teams, List<ShortGameResultDto> gameResults)
         {
             Teams = teams;
             GameResults = gameResults;            
@@ -31,6 +31,6 @@
         /// <summary>
         /// Gets readonly collection of tournament game results
         /// </summary>
-        public IReadOnlyCollection<TotalGameResultDto> GameResults { get; private set; }
+        public IReadOnlyCollection<ShortGameResultDto> GameResults { get; private set; }
     }
 }

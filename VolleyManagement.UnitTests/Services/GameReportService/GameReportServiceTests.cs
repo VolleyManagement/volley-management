@@ -13,6 +13,7 @@
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Services.GameService;
+    using VolleyManagement.UnitTests.Services.TeamService;
 
     /// <summary>
     /// Tests for <see cref="GameReportService"/> class.
@@ -28,7 +29,7 @@
         private readonly Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock =
             new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
 
-        private readonly Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getTournamentTeamsQueryMock =
+        private readonly Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock =
             new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
 
         private IKernel _kernel;
@@ -43,7 +44,7 @@
             _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
                 .ToConstant(_tournamentGameResultsQueryMock.Object);
             _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>()
-                .ToConstant(_getTournamentTeamsQueryMock.Object);
+                .ToConstant(_tournamentTeamsQueryMock.Object);
         }
 
         /// <summary>
@@ -324,10 +325,121 @@
             Assert.AreNotEqual(expected, actual);
         }
 
+        /// <summary>
+        /// Test for GetPivotStandings() method.
+        /// Game results with all possible scores are available for the specified tournament.
+        /// Teams points in tournament standings is calculated correctly.
+        /// </summary>
+        [TestMethod]
+        public void GetPivotStandings_GameResultsAllPossibleScores_CorrectPoints()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
+            var sut = _kernel.Get<GameReportService>();
+            var expected = new TeamStandingsTestFixture().WithTeamStandingsForAllPossibleScores()
+                .OrderByPoints()
+                .Build()
+                .Select(t => new { t.Points })
+                .ToList();
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.Select(t => new { t.Points }).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for GetPivotStandings() method.
+        /// Game results with all possible scores are available for the specified tournament.
+        /// Teams sets ratio in tournament standings is calculated correctly.
+        /// </summary>
+        [TestMethod]
+        public void GetPivotStandings_GameResultsAllPossibleScores_CorrectSetsRatios()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
+            var sut = _kernel.Get<GameReportService>();
+            var expected = new TeamStandingsTestFixture().WithTeamStandingsForAllPossibleScores()
+                .OrderByPointsAndSets()
+                .Build()
+                .Select(t => new { t.SetsRatio })
+                .ToList();
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.Select(t => new { t.SetsRatio }).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for GetPivotStandings() method.
+        /// Game result where one team has no lost sets is available for the specified tournament.
+        /// Teams which has no lost sets is positioned at the top of the standings and its value is infinity
+        /// </summary>
+        [TestMethod]
+        public void GetPivotStandings_GameResultOneTeamNoLostSets_TopTeamNoLostSets()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().WithNoLostSetsForOneTeam().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
+            var sut = _kernel.Get<GameReportService>();
+            var expected = float.PositiveInfinity;
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.First().SetsRatio;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for GetPivotStandings() method.
+        /// Game result where one team has no lost sets is available for the specified tournament.
+        /// Teams which has no lost sets is positioned at the top of the standings and its value is infinity
+        /// </summary>
+        [TestMethod]
+        public void GetPivotStandings_OneTeamHasNoGameResults_LastTeamWithNoSetRatio()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().TestGameResults().Build();
+            var teamWithNoResults = new Team { Id = 4 };
+            var teamsTestData = new TeamServiceTestFixture().AddTeam(teamWithNoResults).TestTeams().Build();
+            var sut = _kernel.Get<GameReportService>();
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.Last().SetsRatio;
+
+            // Assert
+            Assert.IsNull(actual);
+        }
+
         private void SetupTournamentGameResultsQuery(int tournamentId, List<GameResultDto> testData)
         {
             _tournamentGameResultsQueryMock.Setup(m =>
                 m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
+                .Returns(testData);
+        }
+
+        private void SetupTournamentTeamsQuery(int tournamentId, List<Team> testData)
+        {
+            _tournamentTeamsQueryMock.Setup(m =>
+                m.Execute(It.Is<FindByTournamentIdCriteria>(c => c.TournamentId == tournamentId)))
                 .Returns(testData);
         }
     }

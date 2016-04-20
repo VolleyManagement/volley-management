@@ -19,7 +19,7 @@
         #region Queries
 
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
-        private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getTournamentTeamsQuery;
+        private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
 
         #endregion
 
@@ -29,13 +29,13 @@
         /// Initializes a new instance of the <see cref="GameReportService"/> class.
         /// </summary>
         /// <param name="tournamentGameResultsQuery">Query for getting tournament's game results.</param>
-        /// <param name="getTournamentTeamsQuery">Query for getting tournament's game teams.</param>
+        /// <param name="tournamentTeamsQuery">Query for getting tournament's game teams.</param>
         public GameReportService(
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
-            IQuery<List<Team>, FindByTournamentIdCriteria> getTournamentTeamsQuery)
+            IQuery<List<Team>, FindByTournamentIdCriteria> tournamentTeamsQuery)
         {
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
-            _getTournamentTeamsQuery = getTournamentTeamsQuery;
+            _tournamentTeamsQuery = tournamentTeamsQuery;
         }
 
         #endregion
@@ -76,7 +76,7 @@
         public PivotStandings GetPivotStandings(int tournamentId)
         {
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var tournamentTeams = _getTournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+            var tournamentTeams = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
 
             var teamStandings = CreateTeamStandings(tournamentTeams, gameResults);
 

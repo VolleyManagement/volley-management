@@ -39,7 +39,7 @@
                 ApplyingPeriodStart = new DateTime(2015, 06, 02),
                 ApplyingPeriodEnd = new DateTime(2015, 09, 02),
                 GamesStart = new DateTime(2015, 09, 03),
-                GamesEnd = new DateTime(2015, 12, 03),  
+                GamesEnd = new DateTime(2015, 12, 03),
                 TransferStart = new DateTime(2015, 10, 01),
                 TransferEnd = new DateTime(2015, 11, 01),
                 Divisions = new List<Division>

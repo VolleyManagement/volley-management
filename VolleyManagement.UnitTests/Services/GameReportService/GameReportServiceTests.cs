@@ -8,7 +8,9 @@
     using Ninject;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.GameResult;
+    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Services.GameService;
 
@@ -26,6 +28,9 @@
         private readonly Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock =
             new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
 
+        private readonly Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getTournamentTeamsQueryMock =
+            new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
+
         private IKernel _kernel;
 
         /// <summary>
@@ -37,6 +42,8 @@
             _kernel = new StandardKernel();
             _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
                 .ToConstant(_tournamentGameResultsQueryMock.Object);
+            _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>()
+                .ToConstant(_getTournamentTeamsQueryMock.Object);
         }
 
         /// <summary>

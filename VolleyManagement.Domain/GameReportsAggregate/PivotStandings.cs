@@ -20,7 +20,7 @@
         public PivotStandings(List<TeamStandingsDto> teams, List<ShortGameResultDto> gameResults)
         {
             Teams = teams;
-            GameResults = gameResults;            
+            GameResults = gameResults;
         }
 
         /// <summary>

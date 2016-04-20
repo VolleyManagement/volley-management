@@ -1,12 +1,15 @@
 ﻿namespace VolleyManagement.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.GameResult;
+    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.GameReportsAggregate;
     using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
     /// Represents an implementation of IGameReportService contract.
@@ -16,6 +19,7 @@
         #region Queries
 
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
+        private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getTournamentTeamsQuery;
 
         #endregion
 
@@ -25,9 +29,13 @@
         /// Initializes a new instance of the <see cref="GameReportService"/> class.
         /// </summary>
         /// <param name="tournamentGameResultsQuery">Query for getting tournament's game results.</param>
-        public GameReportService(IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery)
+        /// <param name="getTournamentTeamsQuery">Query for getting tournament's game teams.</param>
+        public GameReportService(
+            IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
+            IQuery<List<Team>, FindByTournamentIdCriteria> getTournamentTeamsQuery)
         {
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
+            _getTournamentTeamsQuery = getTournamentTeamsQuery;
         }
 
         #endregion
@@ -60,6 +68,31 @@
                 .ToList();
         }
 
+        /// <summary>
+        /// Gets pivot standings of the tournament specified by identifier.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>Pivot standings of the tournament with specified identifier.</returns>
+        public PivotStandings GetPivotStandings(int tournamentId)
+        {
+            var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
+            var tournamentTeams = _getTournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+
+            var teamStandings = CreateTeamStandings(tournamentTeams, gameResults);
+
+            var shortGameResults = gameResults.Select(
+                g => new ShortGameResultDto
+                {
+                    HomeTeamId = g.HomeTeamId,
+                    AwayTeamId = g.AwayTeamId,
+                    HomeSetsScore = g.HomeSetsScore,
+                    AwaySetsScore = g.AwaySetsScore,
+                    IsTechnicalDefeat = g.IsTechnicalDefeat
+                }).ToList();
+
+            return new PivotStandings(teamStandings, shortGameResults);
+        }
+
         #endregion
 
         #region Private methods
@@ -80,6 +113,36 @@
             }
 
             return entries;
+        }
+
+        private List<TeamStandingsDto> CreateTeamStandings(List<Team> tournamentTeams, List<GameResultDto> gameResults)
+        {
+            var teamsStandings = tournamentTeams.Select(
+                t => new TeamStandingsDto
+                {
+                    TeamId = t.Id,
+                    TeamName = t.Name,
+                    Points = 0,
+                    SetsRatio = CalculateSetsRatio(GetTeamWonSets(t.Id, gameResults), GetTeamLostSets(t.Id, gameResults))
+                })
+                .ToList();
+
+            foreach (var game in gameResults)
+            {
+                var homeTeam = new StandingsEntry { TeamId = game.HomeTeamId };
+                var awayTeam = new StandingsEntry { TeamId = game.AwayTeamId };
+
+                CalculateGamesStatistics(homeTeam, awayTeam, game);
+
+                teamsStandings.Single(t => t.TeamId == homeTeam.TeamId).Points += homeTeam.Points;
+                teamsStandings.Single(t => t.TeamId == awayTeam.TeamId).Points += awayTeam.Points;
+            }
+
+            return teamsStandings
+                 .OrderByDescending(t => t.Points)
+                 .ThenByDescending(t => t.SetsRatio)
+                 .ThenBy(t => t.TeamName)
+                 .ToList();
         }
 
         private void CalculateGamesStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultDto gameResult)
@@ -140,10 +203,10 @@
         {
             homeTeamEntry.SetsWon += gameResult.HomeSetsScore;
             homeTeamEntry.SetsLost += gameResult.AwaySetsScore;
-            homeTeamEntry.SetsRatio = (float)homeTeamEntry.SetsWon / homeTeamEntry.SetsLost;
+            homeTeamEntry.SetsRatio = (float)CalculateSetsRatio(homeTeamEntry.SetsWon, homeTeamEntry.SetsLost);
             awayTeamEntry.SetsWon += gameResult.AwaySetsScore;
             awayTeamEntry.SetsLost += gameResult.HomeSetsScore;
-            awayTeamEntry.SetsRatio = (float)awayTeamEntry.SetsWon / awayTeamEntry.SetsLost;
+            awayTeamEntry.SetsRatio = (float)CalculateSetsRatio(awayTeamEntry.SetsWon, awayTeamEntry.SetsLost);
 
             var homeBallsTotal = gameResult.HomeSet1Score + gameResult.HomeSet2Score + gameResult.HomeSet3Score
                 + gameResult.HomeSet4Score + gameResult.HomeSet5Score;
@@ -158,6 +221,32 @@
             awayTeamEntry.BallsRatio = (float)awayTeamEntry.BallsWon / awayTeamEntry.BallsLost;
         }
 
+        private int GetTeamWonSets(int teamId, List<GameResultDto> games)
+        {
+            int result = 0;
+            result += games.Where(g => g.HomeTeamId == teamId).Select(g => (int)g.HomeSetsScore).Sum();
+            result += games.Where(g => g.AwayTeamId == teamId).Select(g => (int)g.AwaySetsScore).Sum();
+            return result;
+        }
+
+        private int GetTeamLostSets(int teamId, List<GameResultDto> games)
+        {
+            int result = 0;
+            result += games.Where(g => g.HomeTeamId == teamId).Select(g => (int)g.AwaySetsScore).Sum();
+            result += games.Where(g => g.AwayTeamId == teamId).Select(g => (int)g.HomeSetsScore).Sum();
+            return result;
+        }
+
+        private float? CalculateSetsRatio(int gamesWon, int gamesLost)
+        {
+            var result = (float)gamesWon / gamesLost;
+            if (float.IsNaN(result))
+            {
+                return null;
+            }
+
+            return result;
+        }
         #endregion
     }
 }

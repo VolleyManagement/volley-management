@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
@@ -96,11 +97,11 @@
         }
 
         /// <summary>
-        /// Create method test. Model state is not valid.
+        /// Delete method test. Model state is not valid.
         /// The method should return message as JavaScript Object Notation.
         /// </summary>
         [TestMethod]
-        public void Create_TeamNotValid_JsonReturned()
+        public void Delete_TeamNotValid_JsonReturned()
         {
             // Arrange
             _teamServiceMock.Setup(ps => ps.Delete(TEAM_UNEXISTING_ID_TO_DELETE)).Throws<MissingEntityException>();
@@ -132,6 +133,49 @@
 
             // Assert
             Assert.AreEqual(viewModel.Id, SPECIFIED_TEAM_ID);
+        }
+
+        /// <summary>
+        /// Create method test. Team is not valid. Argument exception is thrown.
+        /// Json is Returned
+        /// </summary>
+        [TestMethod]
+        public void Create_TeamNotValid_ArgumentExceptionThrown()
+        {
+            // Arrange
+            var viewModel = new TeamMvcViewModelBuilder().Build();
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
+                                           .Throws(new ArgumentException(SPECIFIED_EXCEPTION_MESSAGE));
+
+            // Act
+            var sut = _kernel.Get<TeamsController>();
+            sut.Create(viewModel);
+            var modelState = sut.ModelState[string.Empty];
+
+            // Assert
+            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+        }
+
+        /// <summary>
+        /// Create method test. Model state is invalid.
+        /// Json is Returned
+        /// </summary>
+        [TestMethod]
+        public void Create_InValidTeamViewModel_JsonReturned()
+        {
+            // Arrange
+            var viewModel = new TeamMvcViewModelBuilder().Build();
+            var sut = this._kernel.Get<TeamsController>();
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
+
+            // Act
+            var result = sut.Create(viewModel) as JsonResult;
+
+            // Assert
+            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Never());
+            Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
         /// <summary>

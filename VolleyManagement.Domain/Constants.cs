@@ -214,6 +214,8 @@
             public const int MAX_COACH_NAME_LENGTH = 60;
 
             public const int MAX_ACHIEVEMENTS_LENGTH = 4000;
+
+            public const string COACH_NAME_VALIDATION_REGEX = @"([ '-]?\p{L})+$";
         }
 
         /// <summary>

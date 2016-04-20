@@ -37,9 +37,11 @@
         public string Coach { get; set; }
 
         /// <summary>
-        /// Gets or sets the player birth year
+        /// Gets or sets team achievements
         /// </summary>
         [Display(Name = "TeamAchievements", ResourceType = typeof(ViewModelResources))]
+        [StringLength(Constants.Team.MAX_ACHIEVEMENTS_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Achievements { get; set; }
 
         /// <summary>

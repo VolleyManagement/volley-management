@@ -24,7 +24,6 @@
             TournamentEntity[] tournaments;
             GameResultEntity[] games;
 
-            #region Seed players
             PlayerEntity player1 = new PlayerEntity
             {
                 BirthYear = 1970,
@@ -138,9 +137,6 @@
                 player12
             };
 
-            #endregion
-
-            #region Seed teams
             TeamEntity team1 = new TeamEntity
             {
                 Players = new List<PlayerEntity> { player2 },
@@ -193,9 +189,7 @@
                     team5, 
                     team6 
                 };
-            #endregion
 
-            #region Seed tournaments
             // Past torunament, scheme 1
             TournamentEntity tour1 = new TournamentEntity
             {
@@ -380,7 +374,6 @@
                 tour5,
                 tour6
             };
-            #endregion
 
             games = GenerateGamesFromTournaments(tournaments);
 

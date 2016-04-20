@@ -193,7 +193,7 @@
     <value>Upcoming</value>
   </data>
   <data name="NoGamesScheduled" xml:space="preserve">
-    <value>No games scheduled yet</value>
+    <value>No games were scheduled yet</value>
   </data>
   <data name="Round" xml:space="preserve">
     <value>Round</value>
@@ -233,5 +233,14 @@
   </data>
   <data name="TeamDayOff" xml:space="preserve">
     <value>Day off</value>
+  </data>
+  <data name="EditScheduledGameTitle" xml:space="preserve">
+    <value>Edit scheduled game</value>
+  </data>
+  <data name="GameNotFoundInTournament" xml:space="preserve">
+    <value>Game was not found in the tournament</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
   </data>
 </root>

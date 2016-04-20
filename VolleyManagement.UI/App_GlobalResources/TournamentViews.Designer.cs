@@ -196,6 +196,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit scheduled game.
+        /// </summary>
+        public static string EditScheduledGameTitle {
+            get {
+                return ResourceManager.GetString("EditScheduledGameTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Editing tournament.
         /// </summary>
         public static string EditTournamentTitle {
@@ -232,6 +241,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game was not found in the tournament.
+        /// </summary>
+        public static string GameNotFoundInTournament {
+            get {
+                return ResourceManager.GetString("GameNotFoundInTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage Teams.
         /// </summary>
         public static string ManageTeams {
@@ -241,7 +259,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No games scheduled yet.
+        ///   Looks up a localized string similar to No games were scheduled yet.
         /// </summary>
         public static string NoGamesScheduled {
             get {
@@ -255,6 +273,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string RegistrationFieldsTitle {
             get {
                 return ResourceManager.GetString("RegistrationFieldsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Result.
+        /// </summary>
+        public static string Result {
+            get {
+                return ResourceManager.GetString("Result", resourceCulture);
             }
         }
         

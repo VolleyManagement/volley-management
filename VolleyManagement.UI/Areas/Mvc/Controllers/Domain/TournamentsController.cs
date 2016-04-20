@@ -307,30 +307,7 @@
         /// <returns>View to schedule a game in tournament</returns>
         public ActionResult ScheduleGame(int tournamentId)
         {
-            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
-
-            if (tournament == null)
-            {
-                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
-                return View();
-            }
-
-            var tournamentTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var roundsNumber = _tournamentService.GetNumberOfRounds(tournament);
-            if (roundsNumber <= 0)
-            {
-                this.ModelState.AddModelError("LoadError", TournamentController.SchedulingError);
-                return View();
-            }
-
-            var scheduleGameViewModel = new GameViewModel
-            {
-                TournamentId = tournamentId,
-                GameDate = tournament.StartDate,
-                Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
-                Teams = new SelectList(tournamentTeams, "Id", "Name")
-            };
-
+            var scheduleGameViewModel = GetGameViewModelFor(tournamentId);
             return View(scheduleGameViewModel);
         }
 
@@ -368,6 +345,62 @@
         }
 
         /// <summary>
+        /// Edit scheduled game action (GET)
+        /// </summary>
+        /// <param name="gameId">Identifier of the game.</param>
+        /// <returns>View to edit scheduled game in the tournament.</returns>
+        public ActionResult EditScheduledGame(int gameId)
+        {
+            var game = _gameService.Get(gameId);
+
+            if (game == null)
+            {
+                this.ModelState.AddModelError("LoadError", App_GlobalResources.TournamentViews.GameNotFoundInTournament);
+                return View();
+            }
+
+            var gameViewModel = GetGameViewModelFor(game.TournamentId);
+
+            gameViewModel.Id = game.Id;
+            gameViewModel.AwayTeamId = game.AwayTeamId;
+            gameViewModel.HomeTeamId = game.HomeTeamId;
+            gameViewModel.GameDate = game.GameDate;
+            gameViewModel.Round = game.Round;
+
+            return View(gameViewModel);
+        }
+
+        /// <summary>
+        /// Schedule game action (POST)
+        /// </summary>
+        /// <param name="gameViewModel">Submitted game to be edited</param>
+        /// <returns>Appropriate view</returns>
+        [HttpPost]
+        public ActionResult EditScheduledGame(GameViewModel gameViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _gameService.Edit(gameViewModel.ToDomain());
+                    return RedirectToAction("ShowSchedule", new { tournamentId = gameViewModel.TournamentId });
+                }
+            }
+            catch (ArgumentException e)
+            {
+                this.ModelState.AddModelError("ValidationError", e.Message);
+            }
+            catch (MissingEntityException e) 
+            {
+                this.ModelState.AddModelError("LoadError", e.Message);
+                return View();
+            }
+
+            return EditScheduledGame(gameViewModel.Id);
+        }
+
+        #region Private
+        /// <summary>
         /// Gets info about the tournament with a specified identifier.
         /// </summary>
         /// <param name="id">Identifier of the tournament.</param>
@@ -384,5 +417,38 @@
             var tournamentViewModel = TournamentViewModel.Map(tournament);
             return View(tournamentViewModel);
         }
+
+        /// <summary>
+        /// Gets GameViewModel with loaded teams list and rounds.
+        /// </summary>
+        /// <param name="tournamentId">Id of the tournament to create GameViewModel for.</param>
+        /// <returns>GameViewModel with loaded teams list and rounds.</returns>
+        private GameViewModel GetGameViewModelFor(int tournamentId)
+        {
+            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
+
+            if (tournament == null)
+            {
+                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                return null;
+            }
+
+            var tournamentTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
+            var roundsNumber = _tournamentService.GetNumberOfRounds(tournament);
+            if (roundsNumber <= 0)
+            {
+                this.ModelState.AddModelError("LoadError", TournamentController.SchedulingError);
+                return null;
+            }
+
+            return new GameViewModel
+            {
+                TournamentId = tournamentId,
+                GameDate = tournament.StartDate,
+                Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
+                Teams = new SelectList(tournamentTeams, "Id", "Name")
+            };
+        } 
+        #endregion
     }
 }

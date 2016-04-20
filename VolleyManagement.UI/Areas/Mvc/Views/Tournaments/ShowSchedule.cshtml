@@ -5,7 +5,7 @@
     @Html.ValidationMessage("LoadError")
 }
 else
-{
+{ 
     @Html.HiddenFor(model => model.TournamentId, new { @id = "tournamentId" });
     
     <h2>
@@ -30,19 +30,19 @@ else
             <h4> @Resources.TournamentViews.Round @i </h4>
 
             <div class="table-bordered" id="round_@i">
-                @if (Model.Rounds.ContainsKey(i))
+            @if (Model.Rounds.ContainsKey(i))
+            {
+                foreach (var game in Model.Rounds[i])
                 {
-                    foreach (var game in Model.Rounds[i])
-                    {
-                        @Html.Partial("_ScheduledGameResult", game);
-                    }
+                    @Html.Partial("_ScheduledGameResult", game);
                 }
-                else
-                {
-                    <div class="row">
-                        <div class="col-md-8">@Resources.TournamentViews.NoGamesScheduled</div>
-                    </div>
-                }
+            }
+            else
+            {
+                <div class="row">
+                        <div class="col-md-12">@Resources.TournamentViews.NoGamesScheduled</div>
+                </div>
+            }
             </div>
         }
     </div>

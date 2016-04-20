@@ -90,6 +90,7 @@
             TimeProvider.Current = _timeMock.Object;
         }
 
+        #region Create
         /// <summary>
         /// Test for Create method. GameResult object contains valid data. Game result is created successfully.
         /// </summary>
@@ -822,6 +823,7 @@
             // Assert
             Assert.IsTrue(exceptionThrown);
         }
+        #endregion
 
         /// <summary>
         /// Test for Get method. Existing game is requested. Game is returned.
@@ -869,7 +871,9 @@
         {
             // Arrange
             MockDefaultTournament();
-            var game = new GameBuilder().Build();
+            var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
+            var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
+            _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
             var sut = _kernel.Get<GameService>();
 
             // Act

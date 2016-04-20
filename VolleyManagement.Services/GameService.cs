@@ -250,8 +250,13 @@
             }
 
             List<GameResultDto> allGames = this.GetTournamentResults(tournamentDto.Id);
+            GameResultDto oldGameToUpdate = allGames.Where(gr => gr.Id == game.Id).SingleOrDefault();
 
-            ValidateFreeDayGame(game);
+            if (oldGameToUpdate != null)
+            {
+                allGames.Remove(oldGameToUpdate);
+            }
+
             ValidateGameDate(tournamentDto, game);
             ValidateGameInRound(game, allGames);
             if (tournamentDto.Scheme == TournamentSchemeEnum.One)
@@ -269,18 +274,8 @@
             List<GameResultDto> gamesInRound = games
                .Where(gr => gr.Round == newGame.Round)
                .ToList();
-
-            GameResultDto oldGameToUpdate = gamesInRound.Where(gr => gr.Id == newGame.Id).SingleOrDefault();
-
-            if (oldGameToUpdate == null)
-            {
                 ValidateGameInRoundOnCreate(newGame, gamesInRound);
             }
-            else
-            {
-                ValidateGameInRoundOnEdit(newGame, oldGameToUpdate, gamesInRound);
-            }
-        }
 
         private void ValidateGameInRoundOnCreate(Game newGame, List<GameResultDto> gamesInRound)
         {
@@ -333,51 +328,8 @@
                                  opositeTeam));
                     }
                 }
-            }
-        }
-
-        private void ValidateGameInRoundOnEdit(Game newGame, GameResultDto oldGameToUpdate, List<GameResultDto> gamesInRound)
-        {
-            // We are ok in case when teams were not changed
-
-            // Only one team changed
-            if (!GameValidation.AreSameTeamsInGames(oldGameToUpdate, newGame)
-                && GameValidation.IsTheSameTeamInTwoGames(oldGameToUpdate, newGame))
-            {
-                int? remainedTeamId = 0;
-
-                if (oldGameToUpdate.HomeTeamId != newGame.HomeTeamId
-                    && oldGameToUpdate.HomeTeamId != newGame.AwayTeamId)
-                {
-                    remainedTeamId = oldGameToUpdate.HomeTeamId;
                 }
-                else
-                {
-                    remainedTeamId = oldGameToUpdate.AwayTeamId;
                 }
-
-                foreach (GameResultDto game in gamesInRound)
-                {
-                    if (GameValidation.IsTheSameTeamInTwoGames(game, newGame)
-                        && game.HomeTeamId != remainedTeamId
-                        && game.AwayTeamId != remainedTeamId)
-                    {
-                        string opositeTeam = game.HomeTeamId != remainedTeamId ?
-                            game.HomeTeamName : game.AwayTeamName;
-
-                        throw new ArgumentException(
-                                 string.Format(
-                                 Resources.SameTeamInRound,
-                                 opositeTeam));
-                    }
-                }
-            }
-            else if (!GameValidation.AreSameTeamsInGames(oldGameToUpdate, newGame))
-            {
-                // Both teams in new game are different fro old game
-                ValidateGameInRoundOnCreate(newGame, gamesInRound);
-            }
-        }
 
         private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
@@ -458,21 +410,6 @@
                     Resources.SameGameInTournamentSchemeOne,
                     duplicates.First().HomeTeamName,
                     awayTeamName));
-            }
-        }
-
-        private void ValidateFreeDayGame(Game game)
-        {
-            if (GameValidation.IsFreeDayTeam(game.HomeTeamId)
-                && GameValidation.IsFreeDayTeam(game.AwayTeamId))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.NoTeamsInGame, game.Round));
-            }
-            else if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
-            {
-                SwitchTeamsOrder(game);
             }
         }
 

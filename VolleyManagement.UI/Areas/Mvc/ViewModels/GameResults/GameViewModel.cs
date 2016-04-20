@@ -21,6 +21,11 @@
         }
 
         /// <summary>
+        /// Gets or sets id of a game
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// Gets or sets list of teams to be selected
         /// </summary>
         public IEnumerable<SelectListItem> Teams { get; set; }
@@ -62,6 +67,24 @@
         public DateTime GameDate { get; set; }
 
         /// <summary>
+        /// Mapper from GameResult to GameViewModel
+        /// </summary>
+        /// <param name="game">GameResult to map from</param>
+        /// <returns>Complete GameViewModel</returns>
+        public static GameViewModel Map(GameResultDto game)
+        {
+            return new GameViewModel
+            {
+                Id = game.Id,
+                TournamentId = game.TournamentId,
+                HomeTeamId = game.HomeTeamId,
+                AwayTeamId = game.AwayTeamId,
+                Round = game.Round,
+                GameDate = game.GameDate
+            };
+        }
+
+        /// <summary>
         /// Mapper from <see cref="GameViewModel"/> to <see cref="Game"/>
         /// </summary>
         /// <returns>Game domain model</returns>
@@ -69,6 +92,7 @@
         {
             return new Game
             {
+                Id = this.Id,
                 Round = this.Round,
                 TournamentId = this.TournamentId,
                 HomeTeamId = this.HomeTeamId,

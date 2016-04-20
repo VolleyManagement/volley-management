@@ -29,9 +29,10 @@
     [TestClass]
     public class TournamentsControllerTests
     {
+        private const int TEST_ID = 1;
         private const int TEST_TOURNAMENT_ID = 1;
         private const string TEST_TOURNAMENT_NAME = "Name";
-        private const int TEST_TEAM_ID = 1;
+        private const int TEST_ROUND_NUMBER = 2;
         private const int EMPTY_TEAMLIST_COUNT = 0;
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
@@ -44,7 +45,7 @@
         private const int DAYS_FOR_GAMES_PERIOD = 120;
         private const int DAYS_FROM_GAMES_START_TO_TRANSFER_START = 1;
         private const int DAYS_FOR_TRANSFER_PERIOD = 21;
-        private static readonly DateTime _testDate = new DateTime(2016, 07, 25);
+        private static readonly DateTime _testDate = new DateTime(1996, 07, 25);
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -414,6 +415,139 @@
         }
         #endregion
 
+        #region EditScheduledGameGetAction
+        /// <summary>
+        /// Test for EditScheduledGame method (GET action). Correct game id passed. View with GameViewModel is returned.
+        /// </summary>
+        [TestMethod]
+        public void EditScheduledGameGetAction_GameExists_GameViewModelIsReturned()
+        {
+            // Arrange
+            const int MIN_ROUND_NUMBER = 1;
+            const int TEST_ROUND_COUNT = 3;
+
+            var testGame = new GameResultDto
+            {
+                Id = TEST_ID,
+                HomeTeamId = TEST_ID,
+                AwayTeamId = TEST_ID,
+                TournamentId = TEST_TOURNAMENT_ID,
+                Round = TEST_ROUND_NUMBER,
+                GameDate = _testDate
+            };
+            SetupGetGame(TEST_ID, testGame);
+
+            var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
+            var testTeams = MakeTestTeams();
+            SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
+            SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
+            SetupGetTournamentNumberOfRounds(testTournament, TEST_ROUND_COUNT);
+
+            var expected = GameViewModel.Map(testGame);
+            expected.Teams = new SelectList(testTeams, "Id", "Name");
+            expected.Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, TEST_ROUND_COUNT));
+
+            // Act
+            var actual = TestExtensions.GetModel<GameViewModel>(this._sut.EditScheduledGame(TEST_ID));
+
+            // Assert
+            AssertEqual(actual, expected);
+        }
+
+        /// <summary>
+        /// Test for EditScheduledGame method (GET action). Wrong game Id passed. View with error message is returned.
+        /// </summary>
+        [TestMethod]
+        public void EditScheduledGameGetAction_NonExistentGame_ErrorViewIsReturned()
+        {
+            // Arrange
+            _gameServiceMock.Setup(gs => gs.Get(TEST_ID)).Returns(null as GameResultDto);
+
+            // Act
+            var result = TestExtensions.GetModel<GameViewModel>(this._sut.EditScheduledGame(TEST_ID));
+
+            // Assert
+            VerifyInvalidModelState("LoadError", result);
+        }
+        #endregion
+
+        #region EditScheduledGamePostAction
+        /// <summary>
+        /// Test for EditScheduledGame method (POST action).
+        /// Valid gameViewModel is passed, no exception occurs.
+        /// Game is updated. Browser is redirected to ShowSchedule action.
+        /// </summary>
+        [TestMethod]
+        public void EditScheduledGamePostAction_ValidGameViewModel_GameIsUpdated()
+        {
+            // Arrange
+            var testData = MakeTestGameViewModel();
+
+            // Act
+            var result = this._sut.EditScheduledGame(testData) as RedirectToRouteResult;
+
+            // Assert
+            VerifyEditGame(Times.Once());
+            VerifyRedirect("ShowSchedule", result);
+        }
+
+        /// <summary>
+        /// Test for EditScheduledGame method (POST action).
+        /// Valid game is passed, but ArgumentException occurs.
+        /// Game is not updated. View with GameViewModel is returned.
+        /// </summary>
+        [TestMethod]
+        public void EditScheduledGamePostAction_ServiceValidationFails_GameViewModelIsReturned()
+        {
+            // Arrange
+            var testData = MakeTestGameViewModel();
+            _gameServiceMock.Setup(gs => gs.Edit(It.IsAny<Game>())).Throws<ArgumentException>();
+
+            // Act
+            var result = TestExtensions.GetModel<GameViewModel>(this._sut.EditScheduledGame(testData));
+
+            // Assert
+            VerifyInvalidModelState("ValidationError", result);
+        }
+
+        /// <summary>
+        /// Test for EditScheduledGame method (POST action).
+        /// Valid game is passed, but MissingEntityException occurs.
+        /// Game is not updated. View with error message is returned.
+        /// </summary>
+        [TestMethod]
+        public void EditScheduledGamePostAction_NonExistentGameIsPassed_ErrorViewIsReturned()
+        {
+            // Arrange
+            var testData = MakeTestGameViewModel();
+            _gameServiceMock.Setup(gs => gs.Edit(It.IsAny<Game>())).Throws<MissingEntityException>();
+
+            // Act
+            var result = TestExtensions.GetModel<GameViewModel>(this._sut.EditScheduledGame(testData));
+
+            // Assert
+            VerifyInvalidModelState("LoadError", result);
+        }
+
+        /// <summary>
+        /// Test for EditScheduledGame method (POST action). Invalid game view model is passed, view with GameViewModel is returned.
+        /// </summary>
+        [TestMethod]
+        public void EditScheduledGamePostAction_InvalidGameViewModel_GameViewModelIsReturned()
+        {
+            // Arrange
+            var testData = MakeTestGameViewModel();
+            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
+
+            // Act
+            var result = this._sut.EditScheduledGame(testData) as ViewResult;
+
+            // Assert
+            VerifyCreateGame(Times.Never());
+            Assert.IsNotNull(result);
+        }
+        #endregion
+
         #region GetFinished
         /// <summary>
         /// Test for GetFinished method. Finished tournaments are requested. JsonResult with finished tournaments is returned.
@@ -663,7 +797,7 @@
                 .Setup(ts => ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()));
 
             // Act
-            var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_ID);
             var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
 
             // Assert
@@ -683,7 +817,7 @@
                 .Throws(new MissingEntityException());
 
             // Act
-            var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_ID);
             var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
 
             // Assert
@@ -836,6 +970,11 @@
             this._tournamentServiceMock.Setup(tr => tr.GetTournamentScheduleInfo(tournamentId)).Returns(tournament);
         }
 
+        private void SetupGetGame(int gameId, GameResultDto game)
+        {
+            this._gameServiceMock.Setup(gs => gs.Get(gameId)).Returns(game);
+        }
+
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
         {
             this._gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
@@ -878,6 +1017,11 @@
             this._gameServiceMock.Verify(gs => gs.Create(It.IsAny<Game>()), times);
         }
 
+        private void VerifyEditGame(Times times)
+        {
+            this._gameServiceMock.Verify(gs => gs.Edit(It.IsAny<Game>()), times);
+        }
+
         private void VerifyInvalidModelState(string expectedKey, GameViewModel gameViewModel)
         {
             Assert.IsFalse(_sut.ModelState.IsValid);
@@ -887,19 +1031,12 @@
 
         private void AssertEqual(GameViewModel x, GameViewModel y)
         {
-            string wrongTournamentId = "Actual TournamentId doesn't match expected";
-            string wrongHomeTeamId = "Actual HomeTeamId doesn't match expected";
-            string wrongAwayTeamId = "Actual AwayTeamId doesn't match expected";
-            string wrongRound = "Actual Round number doesn't match expected";
-            string wrongGameDate = "Actual GameDate doesn't match expected";
-            string wronsWrongTeams = "Actual Teams list doesn't match expected";
-            string wrongRounds = "Actual Rounds list doesn't match expected";
-
-            Assert.AreEqual(x.TournamentId, y.TournamentId, wrongTournamentId);
-            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, wrongHomeTeamId);
-            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, wrongAwayTeamId);
-            Assert.AreEqual(x.Round, y.Round, wrongRound);
-            Assert.AreEqual(x.GameDate, y.GameDate, wrongGameDate);
+            Assert.AreEqual(x.Id, y.Id, "Actual game Id doesn't match expected");
+            Assert.AreEqual(x.TournamentId, y.TournamentId, "Actual TournamentId doesn't match expected");
+            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, "Actual HomeTeamId doesn't match expected");
+            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, "Actual AwayTeamId doesn't match expected");
+            Assert.AreEqual(x.Round, y.Round, "Actual Round number doesn't match expected");
+            Assert.AreEqual(x.GameDate, y.GameDate, "Actual GameDate doesn't match expected");
 
             Assert.IsTrue(
                 x.Teams != null &&
@@ -907,14 +1044,14 @@
                 x.Teams.Select(
                     team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
                     y.Teams.Select(team => new { Text = team.Text, Value = team.Value })),
-                wronsWrongTeams);
+                "Actual Teams list doesn't match expected");
 
             Assert.IsTrue(
                           x.Rounds != null &&
                           y.Rounds != null &&
                          (x.Rounds.Items as IEnumerable<int>).SequenceEqual(
                           y.Rounds.Items as IEnumerable<int>),
-                          wrongRounds);
+                          "Actual Rounds list doesn't match expected");
         }
         #endregion
     }

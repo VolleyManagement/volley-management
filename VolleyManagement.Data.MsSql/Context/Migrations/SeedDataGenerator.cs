@@ -4,42 +4,43 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Diagnostics; 
+    using System.Diagnostics;
 
     using VolleyManagement.Data.MsSql.Entities;
 
     /// <summary>
-    /// Genetrates and seeds test entity data 
+    /// Generates and seeds test entity data
     /// </summary>
     internal static class SeedDataGenerator
     {
         /// <summary>
-        /// Generates and seeds test data for 
+        /// Generates and seeds test data for
         /// players, trams, tournaments and game results entities
         /// </summary>
         /// <param name="context">Context of the entities</param>
         [Conditional("DEBUG")]
         internal static void GenerateEntities(VolleyManagementEntities context)
         {
-            PlayerEntity[] players = GeneratePlayers();
-            TeamEntity[] teams = GenerateTeams(players);
-            TournamentEntity[] tournaments = GenerateTournaments(teams);
-            GameResultEntity[] games = GenerateGamesFromTournaments(tournaments);
+            List<PlayerEntity> players = GeneratePlayers();
+            List<TeamEntity> teams = GenerateTeams(players);
+            List<TournamentEntity> tours = GenerateTournamentsSchemOne(teams);
+            tours.AddRange(GenerateTournamentsSchemTwo(teams));
+            List<GameResultEntity> games = GenerateGamesFromTournaments(tours);
 
-            context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players);
-            context.Teams.AddOrUpdate(t => t.Name, teams);
-            context.Tournaments.AddOrUpdate(t => t.Name, tournaments);
+            context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players.ToArray());
+            context.Teams.AddOrUpdate(t => t.Name, teams.ToArray());
+            context.Tournaments.AddOrUpdate(t => t.Name, tours.ToArray());
 
             context.SaveChanges();
 
-            context.GameResults.AddOrUpdate(g => g.Id, games);
+            context.GameResults.AddOrUpdate(g => g.Id, games.ToArray());
 
-            context.SaveChanges(); 
+            context.SaveChanges();
         }
 
-        private static PlayerEntity[] GeneratePlayers()
+        private static List<PlayerEntity> GeneratePlayers()
         {
-            return new PlayerEntity[]
+            return new List<PlayerEntity>
             {
                 new PlayerEntity
                 {
@@ -140,9 +141,9 @@
             };
         }
 
-        private static TeamEntity[] GenerateTeams(PlayerEntity[] players)
+        private static List<TeamEntity> GenerateTeams(List<PlayerEntity> players)
         {
-            return new TeamEntity[]
+            return new List<TeamEntity>
             {
                 new TeamEntity
                 {
@@ -189,12 +190,12 @@
             };
         }
 
-        private static TournamentEntity[] GenerateTournaments(TeamEntity[] teams)
+        private static List<TournamentEntity> GenerateTournamentsSchemOne(List<TeamEntity> teams)
         {
-            return new TournamentEntity[]
+            return new List<TournamentEntity> 
             {
-                // Past torunament, scheme 1
-                    new TournamentEntity
+                 // Past torunament, scheme 1
+                new TournamentEntity
                 {
                     Name = "Clone Wars",
                     ApplyingPeriodStart = new DateTime(2015, 06, 02),
@@ -213,13 +214,14 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 1"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() 
+
+                    Teams = new List<TeamEntity>()
                     {
                         teams[0],
                         teams[1],
@@ -229,6 +231,7 @@
                         teams[5]
                     }
                 },
+
                 // Current tournament, shceme 1
                 new TournamentEntity
                 {
@@ -249,21 +252,23 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 2"
                                 }
                             }
                         }
                     },
+
                     Teams = new List<TeamEntity>()
-                    { 
+                    {
                         teams[0],
                         teams[1],
                         teams[2],
                         teams[3],
-                        teams[4] 
+                        teams[4]
                     }
                 },
+
                 // Future tournament scheme 1
                 new TournamentEntity
                 {
@@ -284,21 +289,29 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 3"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() 
-                    { 
+
+                    Teams = new List<TeamEntity>()
+                    {
                         teams[0],
                         teams[1],
                         teams[2],
                         teams[3],
                         teams[4]
                     }
-                },
+                }
+            };
+        }
+
+        private static List<TournamentEntity> GenerateTournamentsSchemTwo(List<TeamEntity> teams)
+        {
+            return new List<TournamentEntity>
+            {
                 // Past tournament, scheme 2
                 new TournamentEntity
                 {
@@ -319,18 +332,20 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 4"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() { 
+                    Teams = new List<TeamEntity>()
+                    {
                         teams[0],
                         teams[2],
                         teams[4]
                     }
-                }, 
+                },
+
                 // Current tournament, scheme 2
                 new TournamentEntity
                 {
@@ -351,14 +366,15 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 5"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() 
-                    { 
+
+                    Teams = new List<TeamEntity>()
+                    {
                         teams[0],
                         teams[1],
                         teams[2],
@@ -366,6 +382,7 @@
                         teams[4]
                     }
                 },
+
                 // Future tournament, scheme 2
                 new TournamentEntity
                 {
@@ -373,9 +390,7 @@
                     ApplyingPeriodStart = DateTime.Now.AddMonths(1),
                     ApplyingPeriodEnd = DateTime.Now.AddMonths(2).AddDays(15),
                     GamesStart = DateTime.Now.AddMonths(2).AddDays(16),
-                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(7),
-                    TransferEnd = null,
-                    TransferStart = null,
+                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(20),
                     Scheme = 2,
                     Season = Convert.ToByte(DateTime.Now.Year - 1900),
                     Divisions = new List<DivisionEntity>()
@@ -386,37 +401,41 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 6"
                                 }
                             }
                         }
                     },
-                    Teams = new List<TeamEntity>() { 
-                        teams[5], 
+
+                    Teams = new List<TeamEntity>()
+                    {
+                        teams[5],
                         teams[4],
                         teams[2],
                         teams[3],
-                        teams[0] 
+                        teams[0]
                     }
                 }
             };
         }
 
-        private static GameResultEntity[] GenerateGamesFromTournaments(TournamentEntity[] tours)
+        private static List<GameResultEntity> GenerateGamesFromTournaments(List<TournamentEntity> tours)
         {
             List<GameResultEntity> games = new List<GameResultEntity>();
             int gameId = 0;
-            for (int i = 0; i < tours.Length; i++)
+
+            for (int i = 0; i < tours.Count; i++)
             {
                 if (games.Count > 0)
                 {
                     gameId = games[games.Count - 1].Id;
                 }
+
                 games.AddRange(GenerateGames(tours[i], i + 1, ++gameId));
             }
 
-            return games.ToArray();
+            return games;
         }
 
         private static List<GameResultEntity> GenerateGames(TournamentEntity tour, int tourId, int gameId)
@@ -424,10 +443,10 @@
             List<GameResultEntity> games = new List<GameResultEntity>();
 
             int teamsCount = tour.Teams.Count;
-            int roundsNumber = teamsCount % 2 == 0 ? teamsCount - 1 : teamsCount;
-            int gamesInRound = roundsNumber % 2 == 0 ? roundsNumber / 2 : roundsNumber / 2 + 1;
+            int roundsNumber = teamsCount % 2 == 0 ? (teamsCount - 1) : teamsCount;
+            int gamesInRound = roundsNumber % 2 == 0 ? (roundsNumber / 2) : ((roundsNumber / 2) + 1);
 
-            // Initial round 
+            // Initial round
             byte roundIter = 1;
             int[] homeTeamIds = new int[gamesInRound];
             int[] awayTeamIds = new int[gamesInRound];
@@ -442,7 +461,7 @@
                 tempAway[i] = awayTeamIds[i];
             }
 
-            // round robin swap 
+            // round robin swap
             do
             {
                 for (int i = 0; i < gamesInRound; i++)
@@ -473,7 +492,7 @@
                         HomeTeamId = currentHomeTeamId,
                         AwayTeamId = currentAwayTeamId,
                         StartTime = tour.GamesStart.AddDays(1),
-                        RoundNumber = (byte)(roundIter)
+                        RoundNumber = Convert.ToByte(roundIter)
                     });
 
                     if (i == 0)
@@ -502,8 +521,7 @@
             }
             while (roundIter != roundsNumber + 1);
 
-            // Free day games may occur in a wrong order 
-
+            // Free day games may occur in a wrong order
             if (tour.Scheme == 2)
             {
                 games = GenerateGamesDuplicateInSchemeTwo(games, roundsNumber);
@@ -519,7 +537,7 @@
 
         private static void SetGameScores(List<GameResultEntity> games)
         {
-            // Only for past games  
+            // Only for past games
             int maxFinalScore = 3;
             int maxScore = 25;
             int scoresNumber = 5;
@@ -530,65 +548,70 @@
             int[] homeScores = new int[scoresNumber];
             int[] awayScores = new int[scoresNumber];
 
-            foreach (GameResultEntity game in games)
+            for (int k = 0; k < games.Count; k++)
             {
-                int r = rand.Next(0, 2);
-                if (r == 0)
+                if (k > games.Count * 0.6)
                 {
-                    awayFinalScore = maxFinalScore;
-                    homeFinalScroe = rand.Next(0, 3);
-                }
-                else
-                {
-                    awayFinalScore = rand.Next(0, 3);
-                    homeFinalScroe = maxFinalScore;
-                }
+                    int r = rand.Next(0, 2);
+                    if (r == 0)
+                    {
+                        awayFinalScore = maxFinalScore;
+                        homeFinalScroe = rand.Next(0, maxFinalScore);
+                    }
+                    else
+                    {
+                        awayFinalScore = rand.Next(0, maxFinalScore);
+                        homeFinalScroe = maxFinalScore;
+                    }
 
-                for (int i = 0, j = 1; i < scoresNumber; i++, j++)
-                {
-                    if (j > awayFinalScore + homeFinalScroe)
+                    for (int i = 0, j = 1; i < scoresNumber; i++, j++)
                     {
-                        awayScores[i] = 0;
-                        homeScores[i] = 0;
+                        if (j > awayFinalScore + homeFinalScroe)
+                        {
+                            awayScores[i] = 0;
+                            homeScores[i] = 0;
+                        }
+                        else if (homeFinalScroe > awayFinalScore && j <= awayFinalScore)
+                        {
+                            awayScores[i] = maxScore;
+                            homeScores[i] = rand.Next(0, 20);
+                        }
+                        else if (homeFinalScroe > awayFinalScore && j > awayFinalScore)
+                        {
+                            awayScores[i] = rand.Next(0, 20);
+                            homeScores[i] = maxScore;
+                        }
+                        else if (awayFinalScore > homeFinalScroe && j <= homeFinalScroe)
+                        {
+                            awayScores[i] = rand.Next(0, 20);
+                            homeScores[i] = maxScore;
+                        }
+                        else if (awayFinalScore > homeFinalScroe && j > homeFinalScroe)
+                        {
+                            awayScores[i] = maxScore;
+                            homeScores[i] = rand.Next(0, 20);
+                        }
                     }
-                    else if (homeFinalScroe > awayFinalScore && j <= awayFinalScore)
-                    {
-                        awayScores[i] = maxScore;
-                        homeScores[i] = rand.Next(0, 20);
-                    }
-                    else if (homeFinalScroe > awayFinalScore && j > awayFinalScore)
-                    {
-                        awayScores[i] = rand.Next(0, 20);
-                        homeScores[i] = maxScore;
-                    }
-                    else if (awayFinalScore > homeFinalScroe && j <= homeFinalScroe)
-                    {
-                        awayScores[i] = rand.Next(0, 20);
-                        homeScores[i] = maxScore;
-                    }
-                    else if (awayFinalScore > homeFinalScroe && j > homeFinalScroe)
-                    {
-                        awayScores[i] = maxScore;
-                        homeScores[i] = rand.Next(0, 20);
-                    }
-                }
 
-                game.HomeSetsScore = (byte)homeFinalScroe;
-                game.AwaySetsScore = (byte)awayFinalScore;
-                game.HomeSet1Score = (byte)homeScores[0];
-                game.HomeSet2Score = (byte)homeScores[1];
-                game.HomeSet3Score = (byte)homeScores[2];
-                game.HomeSet4Score = (byte)homeScores[3];
-                game.HomeSet5Score = (byte)homeScores[4];
-                game.AwaySet1Score = (byte)awayScores[0];
-                game.AwaySet2Score = (byte)awayScores[1];
-                game.AwaySet3Score = (byte)awayScores[2];
-                game.AwaySet4Score = (byte)awayScores[3];
-                game.AwaySet5Score = (byte)awayScores[4];
+                    games[k].HomeSetsScore = (byte)homeFinalScroe;
+                    games[k].AwaySetsScore = (byte)awayFinalScore;
+                    games[k].HomeSet1Score = (byte)homeScores[0];
+                    games[k].HomeSet2Score = (byte)homeScores[1];
+                    games[k].HomeSet3Score = (byte)homeScores[2];
+                    games[k].HomeSet4Score = (byte)homeScores[3];
+                    games[k].HomeSet5Score = (byte)homeScores[4];
+                    games[k].AwaySet1Score = (byte)awayScores[0];
+                    games[k].AwaySet2Score = (byte)awayScores[1];
+                    games[k].AwaySet3Score = (byte)awayScores[2];
+                    games[k].AwaySet4Score = (byte)awayScores[3];
+                    games[k].AwaySet5Score = (byte)awayScores[4];
+                }
             }
         }
 
-        private static List<GameResultEntity> GenerateGamesDuplicateInSchemeTwo(List<GameResultEntity> games, int roundNumber)
+        private static List<GameResultEntity> GenerateGamesDuplicateInSchemeTwo(
+            List<GameResultEntity> games,
+            int roundNumber)
         {
             List<GameResultEntity> duplicates = new List<GameResultEntity>();
 

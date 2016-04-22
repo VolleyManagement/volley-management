@@ -196,7 +196,7 @@
 
         private static List<TournamentEntity> GenerateTournamentsSchemOne(List<TeamEntity> teams)
         {
-            return new List<TournamentEntity> 
+            return new List<TournamentEntity>
             {
                  // Past torunament, scheme 1
                 new TournamentEntity
@@ -567,7 +567,7 @@
                 actualPercentage = 0;
             }
 
-            IEnumerator<GameResultEntity> gameEnumerator = games.GetEnumerator(); 
+            IEnumerator<GameResultEntity> gameEnumerator = games.GetEnumerator();
             gameEnumerator.MoveNext();
             for (int k = 0; k < games.Count; k++, gameEnumerator.MoveNext())
             {
@@ -616,7 +616,7 @@
                         homeScores[i] = (byte)rand.Next(0, 20);
                     }
                 }
- 
+
                 GameResultEntity currentGame = gameEnumerator.Current;
                 currentGame.HomeSetsScore = homeFinalScroe;
                 currentGame.AwaySetsScore = awayFinalScore;
@@ -629,7 +629,7 @@
                 currentGame.AwaySet2Score = awayScores[1];
                 currentGame.AwaySet3Score = awayScores[2];
                 currentGame.AwaySet4Score = awayScores[3];
-                currentGame.AwaySet5Score = awayScores[4]; 
+                currentGame.AwaySet5Score = awayScores[4];
             }
         }
 

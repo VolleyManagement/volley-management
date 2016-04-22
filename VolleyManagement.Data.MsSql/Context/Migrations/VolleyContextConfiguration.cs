@@ -1,9 +1,9 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
-    using System; 
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
-    using System.Data.Entity.Migrations; 
+    using System.Data.Entity.Migrations;
 
     using VolleyManagement.Data.MsSql.Entities;
 

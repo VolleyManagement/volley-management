@@ -33,6 +33,10 @@
 
             context.SaveChanges();
 
+            SetGameScores(tours[0].GameResults);
+            SetGameScores(tours[3].GameResults);
+            SetGameScores(tours[1].GameResults, 50);
+            SetGameScores(tours[4].GameResults, 30);
             context.GameResults.AddOrUpdate(g => g.Id, games.ToArray());
 
             context.SaveChanges();
@@ -237,9 +241,9 @@
                 {
                     Name = "New Hope",
                     ApplyingPeriodStart = DateTime.Now.AddMonths(-1),
-                    ApplyingPeriodEnd = DateTime.Now.AddDays(-2),
-                    GamesStart = DateTime.Now.AddDays(-1),
-                    GamesEnd = DateTime.Now.AddDays(5),
+                    ApplyingPeriodEnd = DateTime.Now.AddDays(-10),
+                    GamesStart = DateTime.Now.AddDays(-8),
+                    GamesEnd = DateTime.Now.AddDays(3),
                     TransferStart = DateTime.Now,
                     TransferEnd = DateTime.Now.AddDays(4),
                     Scheme = 1,
@@ -276,7 +280,7 @@
                     ApplyingPeriodStart = DateTime.Now.AddMonths(1),
                     ApplyingPeriodEnd = DateTime.Now.AddMonths(2),
                     GamesStart = DateTime.Now.AddMonths(2).AddDays(2),
-                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(10),
+                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(12),
                     TransferStart = DateTime.Now.AddMonths(2).AddDays(2),
                     TransferEnd = DateTime.Now.AddMonths(2).AddDays(7),
                     Scheme = 1,
@@ -350,12 +354,12 @@
                 new TournamentEntity
                 {
                     Name = "Epic tour",
-                    ApplyingPeriodStart = DateTime.Now.AddMonths(-2),
-                    ApplyingPeriodEnd = DateTime.Now.AddDays(-3),
-                    GamesStart = DateTime.Now.AddDays(-2),
-                    GamesEnd = DateTime.Now.AddDays(20),
-                    TransferStart = DateTime.Now.AddDays(2),
-                    TransferEnd = DateTime.Now.AddDays(19),
+                    ApplyingPeriodStart = DateTime.Now.AddMonths(-20),
+                    ApplyingPeriodEnd = DateTime.Now.AddDays(-11),
+                    GamesStart = DateTime.Now.AddDays(-10),
+                    GamesEnd = DateTime.Now.AddDays(2),
+                    TransferStart = DateTime.Now.AddDays(-4),
+                    TransferEnd = DateTime.Now.AddDays(2),
                     Scheme = 2,
                     Season = Convert.ToByte(DateTime.Now.Year - 1900),
                     Divisions = new List<DivisionEntity>()
@@ -390,7 +394,7 @@
                     ApplyingPeriodStart = DateTime.Now.AddMonths(1),
                     ApplyingPeriodEnd = DateTime.Now.AddMonths(2).AddDays(15),
                     GamesStart = DateTime.Now.AddMonths(2).AddDays(16),
-                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(20),
+                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(28),
                     Scheme = 2,
                     Season = Convert.ToByte(DateTime.Now.Year - 1900),
                     Divisions = new List<DivisionEntity>()
@@ -432,7 +436,14 @@
                     gameId = games[games.Count - 1].Id;
                 }
 
-                games.AddRange(GenerateGames(tours[i], i + 1, ++gameId));
+                tours[i].GameResults = new List<GameResultEntity>();
+                List<GameResultEntity> gamesInTour = GenerateGames(tours[i], i + 1, ++gameId);
+                for (int j = 0; j < gamesInTour.Count; j++)
+                {
+                    tours[i].GameResults.Add(gamesInTour[j]);
+                }
+
+                games.AddRange(gamesInTour);
             }
 
             return games;
@@ -491,7 +502,9 @@
                         TournamentId = tourId,
                         HomeTeamId = currentHomeTeamId,
                         AwayTeamId = currentAwayTeamId,
-                        StartTime = tour.GamesStart.AddDays(1),
+                        StartTime = games.Count > 0 ?
+                            tour.GamesStart.AddDays(roundIter)
+                            : tour.GamesStart.AddDays(1),
                         RoundNumber = Convert.ToByte(roundIter)
                     });
 
@@ -527,85 +540,96 @@
                 games = GenerateGamesDuplicateInSchemeTwo(games, roundsNumber);
             }
 
-            if (tour.GamesStart < DateTime.Now)
-            {
-                SetGameScores(games);
-            }
-
             return games;
         }
 
-        private static void SetGameScores(List<GameResultEntity> games)
+        private static void SetGameScores(ICollection<GameResultEntity> games, int percentage = 100)
         {
             // Only for past games
-            int maxFinalScore = 3;
-            int maxScore = 25;
-            int scoresNumber = 5;
+            byte maxFinalScore = 3;
+            byte maxScore = 25;
+            byte scoresNumber = 5;
+            byte maxPercents = 100;
             Random rand = new Random();
 
-            int awayFinalScore = 0;
-            int homeFinalScroe = 0;
-            int[] homeScores = new int[scoresNumber];
-            int[] awayScores = new int[scoresNumber];
+            byte awayFinalScore = 0;
+            byte homeFinalScroe = 0;
+            byte[] homeScores = new byte[scoresNumber];
+            byte[] awayScores = new byte[scoresNumber];
 
-            for (int k = 0; k < games.Count; k++)
+            int actualPercentage = percentage;
+            if (percentage > maxPercents)
             {
-                if (k > games.Count * 0.6)
+                actualPercentage = maxPercents;
+            }
+            else if (percentage < 0)
+            {
+                actualPercentage = 0;
+            }
+
+            IEnumerator<GameResultEntity> gameEnumerator = games.GetEnumerator(); 
+            gameEnumerator.MoveNext();
+            for (int k = 0; k < games.Count; k++, gameEnumerator.MoveNext())
+            {
+                if (k > actualPercentage * games.Count / maxPercents)
                 {
-                    int r = rand.Next(0, 2);
-                    if (r == 0)
-                    {
-                        awayFinalScore = maxFinalScore;
-                        homeFinalScroe = rand.Next(0, maxFinalScore);
-                    }
-                    else
-                    {
-                        awayFinalScore = rand.Next(0, maxFinalScore);
-                        homeFinalScroe = maxFinalScore;
-                    }
-
-                    for (int i = 0, j = 1; i < scoresNumber; i++, j++)
-                    {
-                        if (j > awayFinalScore + homeFinalScroe)
-                        {
-                            awayScores[i] = 0;
-                            homeScores[i] = 0;
-                        }
-                        else if (homeFinalScroe > awayFinalScore && j <= awayFinalScore)
-                        {
-                            awayScores[i] = maxScore;
-                            homeScores[i] = rand.Next(0, 20);
-                        }
-                        else if (homeFinalScroe > awayFinalScore && j > awayFinalScore)
-                        {
-                            awayScores[i] = rand.Next(0, 20);
-                            homeScores[i] = maxScore;
-                        }
-                        else if (awayFinalScore > homeFinalScroe && j <= homeFinalScroe)
-                        {
-                            awayScores[i] = rand.Next(0, 20);
-                            homeScores[i] = maxScore;
-                        }
-                        else if (awayFinalScore > homeFinalScroe && j > homeFinalScroe)
-                        {
-                            awayScores[i] = maxScore;
-                            homeScores[i] = rand.Next(0, 20);
-                        }
-                    }
-
-                    games[k].HomeSetsScore = (byte)homeFinalScroe;
-                    games[k].AwaySetsScore = (byte)awayFinalScore;
-                    games[k].HomeSet1Score = (byte)homeScores[0];
-                    games[k].HomeSet2Score = (byte)homeScores[1];
-                    games[k].HomeSet3Score = (byte)homeScores[2];
-                    games[k].HomeSet4Score = (byte)homeScores[3];
-                    games[k].HomeSet5Score = (byte)homeScores[4];
-                    games[k].AwaySet1Score = (byte)awayScores[0];
-                    games[k].AwaySet2Score = (byte)awayScores[1];
-                    games[k].AwaySet3Score = (byte)awayScores[2];
-                    games[k].AwaySet4Score = (byte)awayScores[3];
-                    games[k].AwaySet5Score = (byte)awayScores[4];
+                    break;
                 }
+
+                int r = rand.Next(0, 2);
+                if (r == 0)
+                {
+                    awayFinalScore = maxFinalScore;
+                    homeFinalScroe = (byte)rand.Next(0, maxFinalScore);
+                }
+                else
+                {
+                    awayFinalScore = (byte)rand.Next(0, maxFinalScore);
+                    homeFinalScroe = maxFinalScore;
+                }
+
+                for (int i = 0, j = 1; i < scoresNumber; i++, j++)
+                {
+                    if (j > awayFinalScore + homeFinalScroe)
+                    {
+                        awayScores[i] = 0;
+                        homeScores[i] = 0;
+                    }
+                    else if (homeFinalScroe > awayFinalScore && j <= awayFinalScore)
+                    {
+                        awayScores[i] = maxScore;
+                        homeScores[i] = (byte)rand.Next(0, 20);
+                    }
+                    else if (homeFinalScroe > awayFinalScore && j > awayFinalScore)
+                    {
+                        awayScores[i] = (byte)rand.Next(0, 20);
+                        homeScores[i] = maxScore;
+                    }
+                    else if (awayFinalScore > homeFinalScroe && j <= homeFinalScroe)
+                    {
+                        awayScores[i] = (byte)rand.Next(0, 20);
+                        homeScores[i] = maxScore;
+                    }
+                    else if (awayFinalScore > homeFinalScroe && j > homeFinalScroe)
+                    {
+                        awayScores[i] = maxScore;
+                        homeScores[i] = (byte)rand.Next(0, 20);
+                    }
+                }
+ 
+                GameResultEntity currentGame = gameEnumerator.Current;
+                currentGame.HomeSetsScore = homeFinalScroe;
+                currentGame.AwaySetsScore = awayFinalScore;
+                currentGame.HomeSet1Score = homeScores[0];
+                currentGame.HomeSet2Score = homeScores[1];
+                currentGame.HomeSet3Score = homeScores[2];
+                currentGame.HomeSet4Score = homeScores[3];
+                currentGame.HomeSet5Score = homeScores[4];
+                currentGame.AwaySet1Score = awayScores[0];
+                currentGame.AwaySet2Score = awayScores[1];
+                currentGame.AwaySet3Score = awayScores[2];
+                currentGame.AwaySet4Score = awayScores[3];
+                currentGame.AwaySet5Score = awayScores[4]; 
             }
         }
 

@@ -503,7 +503,7 @@
                         HomeTeamId = currentHomeTeamId,
                         AwayTeamId = currentAwayTeamId,
                         StartTime = games.Count > 0 ?
-                            tour.GamesStart.AddDays(roundIter)
+                            tour.GamesStart.AddDays(roundIter).AddHours(i)
                             : tour.GamesStart.AddDays(1),
                         RoundNumber = Convert.ToByte(roundIter)
                     });

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Diagnostics; 
+    using System.Diagnostics;
 
     using VolleyManagement.Data.MsSql.Entities;
 
@@ -14,7 +14,7 @@
     internal static class SeedDataGenerator
     {
         /// <summary>
-        /// Generates and seeds test data for 
+        /// Generates and seeds test data for
         /// players, trams, tournaments and game results entities
         /// </summary>
         /// <param name="context">Context of the entities</param>
@@ -39,7 +39,7 @@
             SetGameScores(tours[4].GameResults, 30);
             context.GameResults.AddOrUpdate(g => g.Id, games.ToArray());
 
-            context.SaveChanges(); 
+            context.SaveChanges();
         }
 
         private static List<PlayerEntity> GeneratePlayers()
@@ -225,7 +225,7 @@
                         }
                     },
 
-                    Teams = new List<TeamEntity>() 
+                    Teams = new List<TeamEntity>()
                     {
                         teams[0],
                         teams[1],
@@ -256,7 +256,7 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 2"
                                 }
                             }
@@ -264,12 +264,12 @@
                     },
 
                     Teams = new List<TeamEntity>()
-                    { 
+                    {
                         teams[0],
                         teams[1],
                         teams[2],
                         teams[3],
-                        teams[4] 
+                        teams[4]
                     }
                 },
 
@@ -293,15 +293,15 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 3"
                                 }
                             }
                         }
                     },
 
-                    Teams = new List<TeamEntity>() 
-                    { 
+                    Teams = new List<TeamEntity>()
+                    {
                         teams[0],
                         teams[1],
                         teams[2],
@@ -336,7 +336,7 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 4"
                                 }
                             }
@@ -348,7 +348,7 @@
                         teams[2],
                         teams[4]
                     }
-                }, 
+                },
 
                 // Current tournament, scheme 2
                 new TournamentEntity
@@ -370,15 +370,15 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 5"
                                 }
                             }
                         }
                     },
 
-                    Teams = new List<TeamEntity>() 
-                    { 
+                    Teams = new List<TeamEntity>()
+                    {
                         teams[0],
                         teams[1],
                         teams[2],
@@ -405,7 +405,7 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 6"
                                 }
                             }
@@ -414,11 +414,11 @@
 
                     Teams = new List<TeamEntity>()
                     {
-                        teams[5], 
+                        teams[5],
                         teams[4],
                         teams[2],
                         teams[3],
-                        teams[0] 
+                        teams[0]
                     }
                 }
             };
@@ -456,7 +456,7 @@
             int roundsNumber = teamsCount % 2 == 0 ? (teamsCount - 1) : teamsCount;
             int gamesInRound = roundsNumber % 2 == 0 ? (roundsNumber / 2) : ((roundsNumber / 2) + 1);
 
-            // Initial round 
+            // Initial round
             byte roundIter = 1;
             int[] homeTeamIds = new int[gamesInRound];
             int[] awayTeamIds = new int[gamesInRound];
@@ -471,7 +471,7 @@
                 tempAway[i] = awayTeamIds[i];
             }
 
-            // round robin swap 
+            // round robin swap
             do
             {
                 for (int i = 0; i < gamesInRound; i++)
@@ -533,7 +533,7 @@
             }
             while (roundIter != roundsNumber + 1);
 
-            // Free day games may occur in a wrong order 
+            // Free day games may occur in a wrong order
             if (tour.Scheme == 2)
             {
                 games = GenerateGamesDuplicateInSchemeTwo(games, roundsNumber);
@@ -544,7 +544,7 @@
 
         private static void SetGameScores(ICollection<GameResultEntity> games, int percentage = 100)
         {
-            // Only for past games  
+            // Only for past games
             byte maxFinalScore = 3;
             byte maxScore = 25;
             byte scoresNumber = 5;

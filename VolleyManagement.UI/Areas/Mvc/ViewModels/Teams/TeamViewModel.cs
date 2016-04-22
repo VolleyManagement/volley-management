@@ -32,8 +32,10 @@
         /// Gets or sets coach of the team
         /// </summary>
         [Display(Name = "TeamCoach", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
+        [StringLength(Constants.Team.MAX_COACH_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "TeamCoachNameInvalidEntriesError",
+           ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Coach { get; set; }
 
         /// <summary>

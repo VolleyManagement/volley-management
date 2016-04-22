@@ -24,7 +24,7 @@
         [Display(Name = "TeamName", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "TeamNameRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
+        [StringLength(Constants.Team.MAX_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 

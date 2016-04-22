@@ -823,6 +823,50 @@
             // Assert
             Assert.IsTrue(exceptionThrown);
         }
+
+        /// <summary>
+        /// Tests creation of the game with invalid fifth set score
+        /// </summary>
+        [TestMethod]
+        public void Create_FifthSetInvalidScore_ExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            MockDefaultTournament();
+            var newGame = new GameBuilder().WithFifthSetScoreInvalid().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_15_0);
+        }
+
+        /// <summary>
+        /// Tests creation of the game with valid fifth set score
+        /// </summary>
+        [TestMethod]
+        public void Create_FifthSetValidScore_ExceptionThrown()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var newGame = new GameBuilder().WithFifthSetScoreValid().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyCreateGame(newGame, Times.Once());
+        }
         #endregion
 
         /// <summary>

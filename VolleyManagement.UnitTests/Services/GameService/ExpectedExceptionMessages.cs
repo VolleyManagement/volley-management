@@ -36,5 +36,11 @@
         public const string GAME_SET_SCORES_NOT_ORDERED = "The set scores are listed in the wrong order";
 
         public const string WRONG_DELETING_GAME = "Game can not be deleted because it has already ended";
+
+        public const string GAME_REQUIRED_SET_SCORES_15_0 =
+        "In the set, the number of points for one team must be at least 15"
+        + " and the points difference should be at least 2."
+        + " If the score exceeds 15, the points difference must be equal to 2."
+        + " In case of a technical defeat score of an optional game should be 25: 0 or 0: 25";
     }
 }

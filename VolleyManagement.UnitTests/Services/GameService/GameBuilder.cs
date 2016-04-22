@@ -297,7 +297,7 @@
                 new Score(20, 25),
                 new Score(25, 21),
                 new Score(0, 0),
-                new Score(25, 17)
+                new Score(25, 23)
             };
 
             return this;
@@ -375,7 +375,7 @@
                 new Score(0, 25),
                 new Score(0, 25),
                 new Score(25, 0),
-                new Score(25, 0),
+                new Score(15, 0),
             };
 
             return this;
@@ -513,6 +513,43 @@
             return this;
         }
 
+        /// <summary>
+        /// Sets the fifth set scores in a way that they are invalid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithFifthSetScoreInvalid()
+        {
+            _game.Result.SetsScore = new Score(3, 2);
+            _game.Result.SetScores = new List<Score>
+            {
+                new Score(0, 25),
+                new Score(0, 25),
+                new Score(25, 0),
+                new Score(25, 0),
+                new Score(25, 0)
+            };
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the set scores in a way that they are valid.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
+        public GameBuilder WithFifthSetScoreValid()
+        {
+            _game.Result.SetsScore = new Score(3, 2);
+            _game.Result.SetScores = new List<Score>
+            {
+                new Score(0, 25),
+                new Score(0, 25),
+                new Score(25, 0),
+                new Score(25, 0),
+                new Score(15, 13)
+            };
+
+            return this;
+        }
         #endregion
     }
 }

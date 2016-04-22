@@ -213,11 +213,9 @@
                         {
                             throw new ArgumentException(
                             string.Format(
-                            Resources.GameResultRequiredSetScores,
+                            Resources.GameResultFifthSetScoreInvalid,
                             GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
-                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
-                            GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE));
+                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
                         }
 
                         throw new ArgumentException(

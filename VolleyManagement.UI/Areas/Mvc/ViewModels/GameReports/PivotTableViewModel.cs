@@ -146,8 +146,8 @@
             foreach (var item in results)
             {
                 PivotGameResultsViewModel result = new PivotGameResultsViewModel();
-                result.HomeTeamId = item.HomeTeamId;
-                result.AwayTeamId = item.AwayTeamId;
+                result.HomeTeamId = item.AwayTeamId;
+                result.AwayTeamId = item.HomeTeamId;
                 result.HomeSetsScore = item.AwaySetsScore;
                 result.AwaySetsScore = item.HomeSetsScore;
                 result.IsTechnicalDefeat = item.IsTechnicalDefeat;

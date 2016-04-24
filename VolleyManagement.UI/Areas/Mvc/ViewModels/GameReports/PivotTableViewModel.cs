@@ -145,14 +145,14 @@
             List<PivotGameResultsViewModel> swapedResults = new List<PivotGameResultsViewModel>();
             foreach (var item in results)
             {
-                PivotGameResultsViewModel tmp = new PivotGameResultsViewModel();
-                tmp.HomeTeamId = item.AwayTeamId;
-                tmp.AwayTeamId = item.HomeTeamId;
-                tmp.HomeSetsScore = item.AwaySetsScore;
-                tmp.AwaySetsScore = item.HomeSetsScore;
-                tmp.IsTechnicalDefeat = item.IsTechnicalDefeat;
-                tmp.CssClass = SetCssClass(tmp.HomeSetsScore, tmp.AwaySetsScore);
-                swapedResults.Add(tmp);
+                PivotGameResultsViewModel result = new PivotGameResultsViewModel();
+                result.HomeTeamId = item.HomeTeamId;
+                result.AwayTeamId = item.AwayTeamId;
+                result.HomeSetsScore = item.AwaySetsScore;
+                result.AwaySetsScore = item.HomeSetsScore;
+                result.IsTechnicalDefeat = item.IsTechnicalDefeat;
+                result.CssClass = SetCssClass(result.HomeSetsScore, result.AwaySetsScore);
+                swapedResults.Add(result);
             }
 
             return swapedResults;

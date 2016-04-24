@@ -56,7 +56,36 @@
         {
             return x.TournamentId == y.TournamentId
                 && x.TournamentName == y.TournamentName
-                && x.Entries.SequenceEqual(y.Entries, new StandingsEntryViewModelEqualityComparer());
+                && x.Entries.SequenceEqual(y.Entries, new StandingsEntryViewModelEqualityComparer())
+                && x.PivotTable.TeamsStandings.SequenceEqual(y.PivotTable.TeamsStandings, new PivotTeamStandingsViewModelEqualityComparer())
+                && IsResultTablesEquals(x.PivotTable.GameResults, y.PivotTable.GameResults);
+        }
+
+        private bool IsResultTablesEquals(List<PivotGameResultsViewModel>[,] tableExpected, List<PivotGameResultsViewModel>[,] tableActual)
+        {
+            if ((tableExpected.GetLength(0) != tableActual.GetLength(0)) ||
+                (tableExpected.GetLength(1) != tableActual.GetLength(1)))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < tableExpected.GetLength(0); i++)
+            {
+                for (int j = 0; j < tableExpected.GetLength(1); j++)
+                {
+                    if (tableExpected[i, j].Count == 0 && tableActual[i, j].Count == 0)
+                    {
+                        continue;
+                    }
+
+                    if (!tableExpected[i, j].SequenceEqual(tableActual[i, j], new PivotGameResultsViewModelEqualityComparer()))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

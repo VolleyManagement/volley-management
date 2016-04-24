@@ -44,11 +44,16 @@
         public void Standings_StandingsRequested_StandingsReturned()
         {
             // Arrange
+            var teams = new TeamStandingsTestFixture().TestTeamStandings().Build();
+            var gameResults = new ShortGameResultDtoTetsFixture().GetShortResults().Build();
+            var testPivotStandings = new PivotStandings(teams, gameResults);
+
             var testStandings = new StandingsTestFixture().TestStandings().Build();
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().Build();
 
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
+            SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 
             // Act
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
@@ -60,6 +65,11 @@
         private void SetupGameReportGetStandings(int tournamentId, List<StandingsEntry> testData)
         {
             _gameReportServiceMock.Setup(m => m.GetStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
+        }
+
+        private void SetupGameReportGetPivotStandings(int tournamentId, PivotStandings testData)
+        {
+            _gameReportServiceMock.Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
         }
     }
 }

@@ -2,7 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using VolleyManagement.Domain.GameReportsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
+    using VolleyManagement.UnitTests.Services.GameReportService;
 
     /// <summary>
     /// Represents <see cref="StandingsViewModel"/> builder for unit tests for <see cref="GameReportsController"/>.
@@ -83,6 +85,12 @@
                         BallsLost = 204,
                         BallsRatio = 123.0f / 204
                     }
+                },
+
+                PivotTable = new PivotTableViewModel
+                {
+                    TeamsStandings = GetPivotTeamsStandings(),
+                    GameResults = GetPivotTable()
                 }
             };
         }
@@ -127,6 +135,126 @@
         public StandingsViewModel Build()
         {
             return _standingsViewModel;
+        }
+
+        private List<PivotTeamStandingsViewModel> GetPivotTeamsStandings()
+        {
+            var teams = new List<PivotTeamStandingsViewModel>
+            {
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 1,
+                    TeamName = "TeamNameA",
+                    Points = 5,
+                    SetsRatio = 6.0f / 3
+                },
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 3,
+                    TeamName = "TeamNameC",
+                    Points = 3,
+                    SetsRatio = 4.0f / 3,
+                },
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 2,
+                    TeamName = "TeamNameB",
+                    Points = 1,
+                    SetsRatio = 2.0f / 6,
+                }
+            };
+
+            return teams;
+        }
+
+        private List<PivotGameResultsViewModel>[,] GetPivotTable()
+        {
+            int rows = 3;
+            int columns = 3;
+            var table = new List<PivotGameResultsViewModel>[rows, columns];
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < columns; j++)
+                {
+                    table[i, j] = new List<PivotGameResultsViewModel>();
+                }
+            }
+
+            for (int i = 0; i < rows; i++)
+            {
+                table[i, i] = new List<PivotGameResultsViewModel>();
+                table[i, i].Add(new PivotGameResultsViewModel
+                {
+                    HomeTeamId = 0,
+                    AwayTeamId = 0,
+                    HomeSetsScore = null,
+                    AwaySetsScore = null,
+                    IsTechnicalDefeat = false,
+                    CssClass = CssClassConstants.NON_PLAYABLE_CELL
+                });
+            }
+
+            table[0, 1].Add(new PivotGameResultsViewModel
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeSetsScore = 3,
+                AwaySetsScore = 2,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_2
+            });
+
+            table[0, 1].Add(new PivotGameResultsViewModel
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeSetsScore = 0,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = true,
+                CssClass = CssClassConstants.LOSE_0_3
+            });
+
+            table[1, 0].Add(new PivotGameResultsViewModel
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 1,
+                HomeSetsScore = 2,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSE_2_3
+            });
+
+            table[1, 0].Add(new PivotGameResultsViewModel
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 1,
+                HomeSetsScore = 3,
+                AwaySetsScore = 0,
+                IsTechnicalDefeat = true,
+                CssClass = CssClassConstants.WIN_3_0
+            });
+
+            table[0, 2].Add(new PivotGameResultsViewModel
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeSetsScore = 3,
+                AwaySetsScore = 1,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_1
+            });
+
+            table[2, 0].Add(new PivotGameResultsViewModel
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                HomeSetsScore = 1,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSE_1_3
+            });
+
+            return table;
         }
     }
 }

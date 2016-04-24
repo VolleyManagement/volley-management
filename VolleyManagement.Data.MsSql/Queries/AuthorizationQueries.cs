@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VolleyManagement.Data.Contracts;
-using VolleyManagement.Data.MsSql.Entities;
-using VolleyManagement.Data.Queries.Common;
-using VolleyManagement.Domain.RolesAggregate;
-
-namespace VolleyManagement.Data.MsSql.Queries
+﻿namespace VolleyManagement.Data.MsSql.Queries
 {
-    public class AuthorizationQueries : IQuery<List<AppOperations>, FindByIdCriteria>
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.MsSql.Entities;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Domain.RolesAggregate;
+
+    public class AuthorizationQueries : IQuery<List<AppAreaOperation>, FindByIdCriteria>
     {
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<UserEntity> _dalUsers;
@@ -27,7 +24,7 @@ namespace VolleyManagement.Data.MsSql.Queries
             
         }
 
-        public List<AppOperations> Execute(FindByIdCriteria criteria)
+        public List<AppAreaOperation> Execute(FindByIdCriteria criteria)
         {
             var data = _dalUsers.Where(u => u.Id == criteria.Id)
                                 .SelectMany(u => u.Roles)
@@ -37,7 +34,7 @@ namespace VolleyManagement.Data.MsSql.Queries
                                       (r, o) => o.OperationId)
                                 .Distinct()
                                 .AsEnumerable()
-                                .Select(o => (AppOperations)o)
+                                .Select(o => (AppAreaOperation)o)
                                 .ToList();
 
             return data;

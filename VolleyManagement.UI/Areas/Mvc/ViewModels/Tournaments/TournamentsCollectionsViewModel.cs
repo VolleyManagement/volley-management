@@ -1,7 +1,8 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
     using System.Collections.Generic;
-    using VolleyManagement.Domain.TournamentsAggregate;
+using VolleyManagement.Contracts.Authorization;
+using VolleyManagement.Domain.TournamentsAggregate;
 
     /// <summary>
     /// Represents tournaments collections
@@ -17,5 +18,10 @@
         /// Gets or sets expected tournaments collection
         /// </summary>
         public IEnumerable<Tournament> UpcomingTournaments { get; set; }
+
+        /// <summary>
+        /// Gets or sets instance of AuthOperationsVerifier object
+        /// </summary>
+        public AllowedOperations OperationAccessVerifier { get; set; }
     }
 }

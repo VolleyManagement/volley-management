@@ -105,6 +105,10 @@
     <Compile Include="Context\Migrations\201604061543141_ModifyGameResult.Designer.cs">
       <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201604241414023_AddRolesToOperationsMap.cs" />
+    <Compile Include="Context\Migrations\201604241414023_AddRolesToOperationsMap.Designer.cs">
+      <DependentUpon>201604241414023_AddRolesToOperationsMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
@@ -120,6 +124,7 @@
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\AuthorizationQueries.cs" />
     <Compile Include="Queries\GameResultQueries.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
@@ -206,6 +211,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201604061543141_ModifyGameResult.resx">
       <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201604241414023_AddRolesToOperationsMap.resx">
+      <DependentUpon>201604241414023_AddRolesToOperationsMap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

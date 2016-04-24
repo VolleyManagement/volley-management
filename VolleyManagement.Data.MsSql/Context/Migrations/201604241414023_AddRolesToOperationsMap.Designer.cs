@@ -13,7 +13,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201604160811300_AddRolesToOperationsMap"; }
+            get { return "201604241414023_AddRolesToOperationsMap"; }
         }
         
         string IMigrationMetadata.Source

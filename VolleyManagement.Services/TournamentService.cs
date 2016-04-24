@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
@@ -11,6 +12,7 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using DivisionConstants = VolleyManagement.Domain.Constants.Division;
@@ -40,6 +42,7 @@
         #region Fields
 
         private readonly ITournamentRepository _tournamentRepository;
+        private readonly IAuthorizationService _authService;
 
         #endregion
 
@@ -67,13 +70,15 @@
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
-            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery)
+            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
+            IAuthorizationService authService)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
+            _authService = authService;
         }
 
         #endregion
@@ -123,6 +128,11 @@
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
+            if (!_authService.CheckAccess(AppOperations.Tournaments.Create))
+            {
+                throw new AuthorizationException();
+            }
+
             if (tournamentToCreate == null)
             {
                 throw new ArgumentNullException("tournamentToCreate");

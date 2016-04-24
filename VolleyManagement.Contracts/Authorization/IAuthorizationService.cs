@@ -1,13 +1,13 @@
 ﻿namespace VolleyManagement.Contracts.Authorization
 {
+    using System.Collections.Generic;
     using VolleyManagement.Domain.RolesAggregate;
 
     public interface IAuthorizationService
     {
-        void SetUser(int userId);
+        bool CheckAccess(AppAreaOperation operation);
 
-        bool CheckAccess(AppOperations operation);
-
-        IAuthOperationsVerifier GetAuthOperationsVerifier();
+        AllowedOperations GetAuthOperationsVerifier(List<AppAreaOperation> requestedOperations);
+        AllowedOperations GetAuthOperationsVerifier(AppAreaOperation requestedOperation);
     }
 }

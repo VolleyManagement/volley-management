@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
@@ -9,53 +10,56 @@
 
     public class AuthorizationService: IAuthorizationService
     {
-        private AuthOperationsVerifier _verifier;
-        private int _userId;
-        private IQuery<List<AppOperations>, FindByIdCriteria> _getOperationsQuery;
+        private ICurrentUserService _userService;
+        private IQuery<List<AppAreaOperation>, FindByIdCriteria> _getOperationsQuery;
 
-        public AuthorizationService(IQuery<List<AppOperations>, FindByIdCriteria> getOperationsQuery)
+        public AuthorizationService(
+            ICurrentUserService userService,
+            IQuery<List<AppAreaOperation>, FindByIdCriteria> getOperationsQuery)
         {
+            if (userService == null)
+            {
+                throw new ArgumentException("userService");
+            }
+
             if (getOperationsQuery == null)
             {
                 throw new ArgumentException("getFeaturesQuery");
             }
+
+            this._userService = userService;
             this._getOperationsQuery = getOperationsQuery;
         }
 
-        public bool CheckAccess(AppOperations operation)
+        public bool CheckAccess(AppAreaOperation operation)
         {
-            var verifier = GetAuthOperationsVerifier();
-            return verifier.IsAllowed(operation);
-        }
-                
-        public void SetUser(int userId)
-        {
-            this._userId = userId;
+            var allowedOperations = this.GetAllowedOperations();
+            return allowedOperations.Select(i => i.Id).Contains(operation.Id);
         }
 
-        public IAuthOperationsVerifier GetAuthOperationsVerifier()
+        public AllowedOperations GetAuthOperationsVerifier(List<AppAreaOperation> requestedOperations)
         {
-            CheckServiceState();
-            if (this._verifier == null)
-            {
-                UpdateVerifier();
-            }
+            var data = from ao in this.GetAllowedOperations()
+                       join ro in requestedOperations
+                            on ao.Id equals ro.Id
+                       select ao;
 
-            return this._verifier;
+            return new AllowedOperations(data.ToList());
         }
 
-        private void UpdateVerifier()
+        public AllowedOperations GetAuthOperationsVerifier(AppAreaOperation requestedOperation)
         {
-            var operations = this._getOperationsQuery.Execute(new FindByIdCriteria() { Id = this._userId });
-            this._verifier = new AuthOperationsVerifier(operations);
+            return this.GetAuthOperationsVerifier(new List<AppAreaOperation> { requestedOperation });
         }
 
-        private void CheckServiceState()
+        #region Private
+
+        private List<AppAreaOperation> GetAllowedOperations()
         {
-            if (this._userId == 0)
-            {
-                throw new InvalidOperationException("User is not set to authorization service!");
-            }
+            var userId = this._userService.GetCurrentUserId();
+            return this._getOperationsQuery.Execute(new FindByIdCriteria() { Id = userId });
         }
+
+        #endregion        
     }
 }

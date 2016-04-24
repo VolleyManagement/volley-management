@@ -13,7 +13,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         RoleId = c.Int(nullable: false),
-                        OperationId = c.Byte(nullable: false),
+                        OperationId = c.Short(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             

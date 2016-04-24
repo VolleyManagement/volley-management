@@ -18,6 +18,6 @@
         /// <summary>
         /// Identifier of the operation
         /// </summary>
-        public byte OperationId { get; set; }
+        public short OperationId { get; set; }
     }
 }

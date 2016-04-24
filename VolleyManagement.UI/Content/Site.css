@@ -158,3 +158,42 @@ table.standings {
     margin: 0 0 20px 0;
     font-size: 13px;
 }
+
+.win_3_0 {
+    background-color: #2b5536;
+    margin: 0;
+}
+
+.win_3_1 {
+    background-color: #a1d07e;
+    margin: 0;
+}
+
+.win_3_2 {
+    background-color: #dfe282;
+    padding: 0;
+}
+
+.lose_2_3 {
+    background-color: #fed280;
+    margin: 0;
+}
+
+.lose_1_3 {
+    background-color: #fb9d75;
+    margin: 0;
+}
+
+.lose_0_3 {
+    background-color: #f8696b;
+    margin: 0;
+}
+
+.noresult {
+}
+
+.non-playable {
+    background-color: #000000;
+    color: #000000;
+    margin: 0;
+}

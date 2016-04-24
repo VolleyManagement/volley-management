@@ -444,8 +444,12 @@
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Account\AuthenticationStatusViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\CssClassConstants.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotGameResultsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotTableViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsEntryViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotTeamStandingsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamDeleteFromTournamentViewModel.cs" />

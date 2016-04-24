@@ -30,11 +30,18 @@
         /// <returns>View with standings of the tournament.</returns>
         public ActionResult Standings(int tournamentId, string tournamentName)
         {
+            var dataForPivotTable = _gameReportService.GetPivotStandings(tournamentId);
+
             var standingsViewModel = new StandingsViewModel
             {
                 TournamentId = tournamentId,
                 TournamentName = tournamentName,
-                Entries = _gameReportService.GetStandings(tournamentId).Select(se => StandingsEntryViewModel.Map(se)).ToList()
+                Entries = _gameReportService.GetStandings(tournamentId).Select(se => StandingsEntryViewModel.Map(se)).ToList(),
+                PivotTable = new PivotTableViewModel
+                {
+                    TeamsStandings = dataForPivotTable.Teams.Select(t => PivotTeamStandingsViewModel.Map(t)).ToList(),
+                    GameResults = PivotTableViewModel.CreateGameResultsTable(dataForPivotTable.GameResults, dataForPivotTable.Teams)
+                }
             };
 
             return View(standingsViewModel);

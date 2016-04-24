@@ -12,7 +12,7 @@
     @{
         string legendText = string.Format(Resources.GameReportViews.TournamentStandingsLegend, Model.TournamentName);
         string setsRatioText = string.Empty;
-        string ballsRatioText = string.Empty;
+        string ballsRatioText = string.Empty;   
         int position = 0;
     }
 
@@ -84,6 +84,61 @@
             </tbody>
         </table>
     }
+</fieldset>
+
+<fieldset>
+    @{
+        position = 0;
+        setsRatioText = null;
+        string resultToShow = string.Empty;
+    }
+    <table class="standings">
+        <thead>
+            <tr class="standings-header-row">
+                <th colspan="2" class="standings-header-cell">
+                    @string.Format(Resources.GameReportViews.LastUpdated,
+                    VolleyManagement.Crosscutting.Contracts.Providers.TimeProvider.Current.UtcNow)
+                </th>
+                @foreach (var item in Model.PivotTable.TeamsStandings)
+                {
+                    <th class="standings-header-cell">@item.TeamName</th>
+                }
+                <th class="standings-header-cell">@Resources.GameReportViews.PointsHeader</th>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.PivotTable.GameResults.GetLength(0); i++)
+            {
+                setsRatioText = @Model.PivotTable.TeamsStandings.ElementAt(i).SetsRatio != float.PositiveInfinity
+                        ? string.Format("{0:0.###}", @Model.PivotTable.TeamsStandings.ElementAt(i).SetsRatio) : "MAX";
+
+                <tr class="standings-row">
+                    <td class="standings-cell">@(++position)</td>
+                    <td class="standings-cell">@Model.PivotTable.TeamsStandings.ElementAt(i).TeamName</td>
+                    @for (int j = 0; j < Model.PivotTable.GameResults.GetLength(1); j++)
+                    {
+                        var result = Model.PivotTable.GameResults[i, j];
+                        <td class="standings-cell">
+                            @foreach (var item in Model.PivotTable.GameResults[i, j])
+                            {
+                                resultToShow = item.IsTechnicalDefeat ?
+                                    @item.HomeSetsScore + ":" + @item.AwaySetsScore + "*" :
+                                    @item.HomeSetsScore + ":" + @item.AwaySetsScore;
+                                <div class="@item.CssClass">@resultToShow</div>
+                            }
+                        </td>
+                    }
+                    <td class="standings-cell">
+                        <div>
+                            @Model.PivotTable.TeamsStandings.ElementAt(i).Points
+                        </div>
+                        <div>
+                            @setsRatioText
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </fieldset>
 
 <p>@Html.ActionLink(Resources.GameReportViews.BackToTournament, "Details", "Tournaments", new { id = Model.TournamentId }, null)</p>

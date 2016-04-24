@@ -10,6 +10,7 @@
     using Ninject;
     using Services.TournamentService;
     using UI.Areas.WebApi.ViewModels.Tournaments;
+    using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.Controllers;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
@@ -42,11 +43,6 @@
         private IKernel _kernel;
 
         /// <summary>
-        /// System under test
-        /// </summary>
-        private TournamentsController _sut;
-
-        /// <summary>
         /// Initializes test data
         /// </summary>
         [TestInitialize]
@@ -55,7 +51,6 @@
             _kernel = new StandardKernel();
             _kernel.Bind<ITournamentService>()
                    .ToConstant(_tournamentServiceMock.Object);
-            _sut = _kernel.Get<TournamentsController>();
         }
 
         #region GetAllTournaments
@@ -63,6 +58,7 @@
         public void GetAllTournaments_TournamentsExist_TournamentsReturned()
         {
             // Arrange
+            var sut = _kernel.Get<TournamentsController>();
             var testData = _testFixture.TestTournaments()
                                             .Build();
             MockGetTournaments(testData);
@@ -72,7 +68,26 @@
                                             .ToList();
 
             // Act
-            var actual = _sut.GetAllTournaments().ToList();
+            var actual = sut.GetAllTournaments().ToList();
+
+            // Assert
+            _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
+            CollectionAssert.AreEqual(
+                expected,
+                actual,
+                new TournamentViewModelComparer());
+        }
+
+        [TestMethod]
+        public void GetAllTournaments_NoTournamentsAwailable_EmptyCollectionReturned() 
+        {
+            // Arrange
+            var sut = _kernel.Get<TournamentsController>();
+            MockGetTournaments(new List<Tournament>());
+            var expected = new List<TournamentViewModel>();
+
+            // Act
+            var actual = sut.GetAllTournaments().ToList();
 
             // Assert
             _tournamentServiceMock.Verify(ts => ts.Get(), Times.Once());
@@ -88,6 +103,7 @@
         public void GetTournament_SpecificTournamentExist_TournamentReturned()
         {
             // Arrange
+            var sut = _kernel.Get<TournamentsController>();
             var testData = new TournamentBuilder()
                                .WithId(1)
                                .WithName("test")
@@ -97,29 +113,38 @@
                                .WithRegulationsLink("volley.dp.ua")
                                .Build();
             MockGetTournament(testData, SPECIFIC_TOURNAMENT_ID);
-            var expected = TournamentViewModel.Map(testData);
+            var expected = new TournamentViewModel
+            {
+                Id = testData.Id,
+                Name = testData.Name,
+                Description = testData.Description,
+                Scheme = testData.Scheme.ToDescription(),
+                Season = testData.Season,
+                RegulationsLink = testData.RegulationsLink
+            };
 
             // Act
-            var result = _sut.GetTournament(SPECIFIC_TOURNAMENT_ID);
+            var result = sut.GetTournament(SPECIFIC_TOURNAMENT_ID);
             var actual = result as OkNegotiatedContentResult<TournamentViewModel>;
 
             // Assert
-            Assert.IsTrue(result is OkNegotiatedContentResult<TournamentViewModel>);
-            Assert.IsTrue(new TournamentViewModelComparer().AreEqual(expected, actual.Content));
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<TournamentViewModel>));
+            TestHelper.AreEqual(expected, actual.Content, new TournamentViewModelComparer());
         }
 
         [TestMethod]
         public void GetTournament_NonExistentTournament_NotFoundIsReturned()
         {
             // Arrange
+            var sut = _kernel.Get<TournamentsController>();
             var testData = null as Tournament;
             MockGetTournament(testData, SPECIFIC_TOURNAMENT_ID);
 
             // Act
-            var result = _sut.GetTournament(SPECIFIC_TOURNAMENT_ID);
+            var result = sut.GetTournament(SPECIFIC_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsTrue(result is NotFoundResult);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
         #endregion
 

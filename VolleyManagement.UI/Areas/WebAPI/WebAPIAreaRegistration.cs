@@ -48,7 +48,7 @@
                 .Collection
                 .Function("GetFinished")
                 .Returns<TournamentViewModel>();
-
+            
             config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
 
@@ -58,6 +58,11 @@
         /// <param name="context"> The context. </param>
         public override void RegisterArea(AreaRegistrationContext context)
         {
+            context.Routes.MapHttpRoute(
+                            name: "WebApi_v1",
+                            routeTemplate: "api/v1/{controller}/{id}",
+                            defaults: new { id = RouteParameter.Optional });
+
             context.MapRoute(
                 "WebApi_v1_default",
                 "api/{controller}/{action}/{id}",

@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
+﻿namespace VolleyManagement.UnitTests.WebApi.ODataControllers
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;

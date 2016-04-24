@@ -51,7 +51,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given tournaments have the same properties.</returns>
-        private bool AreEqual(TournamentViewModel x, TournamentViewModel y)
+        public bool AreEqual(TournamentViewModel x, TournamentViewModel y)
         {
             return x.Description == y.Description &&
                 x.Name == y.Name &&

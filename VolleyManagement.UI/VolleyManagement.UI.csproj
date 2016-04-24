@@ -481,10 +481,10 @@
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserEditViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
+    <Compile Include="Areas\WebApi\Controllers\TournamentsController.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\ContributorsTeamController.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\PlayersController.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\TeamsController.cs" />
-    <Compile Include="Areas\WebApi\ODataControllers\TournamentsController.cs" />
     <Compile Include="Areas\WebApi\Controllers\HomeController.cs" />
     <Compile Include="Areas\WebApi\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
     <Compile Include="Areas\WebApi\Infrastructure\WebApiHelpers.cs" />

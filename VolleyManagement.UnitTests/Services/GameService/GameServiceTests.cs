@@ -852,7 +852,7 @@
         public void Create_ThirdDuplicateGameInTournamentSchemeTwo_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false; 
+            bool exceptionThrown = false;
 
             MockTournamentSchemeTwo();
 
@@ -861,13 +861,14 @@
                 .TestRoundGame()
                 .WithRound(4)
                 .WithId(4)
-                .Build(); 
+                .Build();
 
             SetupGetTournamentResults(
-             duplicate.TournamentId,
-             new GameServiceTestFixture()
-             .TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
-             .Build());
+                duplicate.TournamentId,
+                new GameServiceTestFixture()
+                .TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
+                .Build());
+
             var sut = _kernel.Get<GameService>();
 
             // Act
@@ -881,7 +882,7 @@
             }
 
             // Assert
-            Assert.IsTrue(exceptionThrown); 
+            Assert.IsTrue(exceptionThrown);
         }
 
         [TestMethod]
@@ -899,12 +900,12 @@
                 .Build();
 
             SetupGetTournamentResults(
-             freeDayGameDuplicate.TournamentId,
-             new GameServiceTestFixture()
-             .TestGamesWithTwoFreeDays()
-             .Build());
+                freeDayGameDuplicate.TournamentId,
+                new GameServiceTestFixture()
+                .TestGamesWithTwoFreeDays()
+                .Build());
 
-            var sut = _kernel.Get<GameService>(); 
+            var sut = _kernel.Get<GameService>();
 
             // Act
             try
@@ -917,7 +918,7 @@
             }
 
             // Assert
-            Assert.IsTrue(exceptionThrown); 
+            Assert.IsTrue(exceptionThrown);
         }
 
         [TestMethod]
@@ -926,7 +927,7 @@
             // Arrange
             Exception exception = null;
 
-            MockDefaultTournament(); 
+            MockDefaultTournament();
 
             var freeDayGmeInSameRound = new GameBuilder()
                 .TestFreeDayGame()
@@ -935,10 +936,10 @@
                 .Build();
 
             SetupGetTournamentResults(
-             freeDayGmeInSameRound.TournamentId,
-             new GameServiceTestFixture()
-             .TestGamesWithFreeDay()
-             .Build());
+                freeDayGmeInSameRound.TournamentId,
+                new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .Build());
 
             var sut = _kernel.Get<GameService>();
 
@@ -970,10 +971,10 @@
                 .Build();
 
             SetupGetTournamentResults(
-             freeDayGmeInSameRound.TournamentId,
-             new GameServiceTestFixture()
-             .TestGamesWithFreeDay()
-             .Build());
+                freeDayGmeInSameRound.TournamentId,
+                new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .Build());
 
             var sut = _kernel.Get<GameService>();
 
@@ -995,7 +996,7 @@
         public void Create_DuplicateGamesInSameRound_ExceptionThrown()
         {
             // Arrange
-            bool exceptionThrown = false; 
+            bool exceptionThrown = false;
 
             MockDefaultTournament();
 
@@ -1027,7 +1028,7 @@
         }
 
         [TestMethod]
-        public void CreateDuplicateAwayTeamInGameInSameRound_ExceptionThrown()
+        public void Create_DuplicateAwayTeamInGameInSameRound_ExceptionThrown()
         {
             // Arrange
             bool exceptionThrown = false;
@@ -1041,10 +1042,10 @@
                 .Build();
 
             SetupGetTournamentResults(
-             freeDayGmeInSameRound.TournamentId,
-             new GameServiceTestFixture()
-             .TestGamesForDuplicateSchemeOne()
-             .Build());
+                freeDayGmeInSameRound.TournamentId,
+                new GameServiceTestFixture()
+                .TestGamesForDuplicateSchemeOne()
+                .Build());
 
             var sut = _kernel.Get<GameService>();
 
@@ -1063,7 +1064,7 @@
         }
 
         [TestMethod]
-        public void CreateDuplicateHomeTeamInGameInSameRound_ExceptionThrown()
+        public void Create_DuplicateHomeTeamInGameInSameRound_ExceptionThrown()
         {
             // Arrange
             bool exceptionThrown = false;
@@ -1077,10 +1078,10 @@
                 .Build();
 
             SetupGetTournamentResults(
-             freeDayGmeInSameRound.TournamentId,
-             new GameServiceTestFixture()
-             .TestGamesForDuplicateSchemeOne()
-             .Build());
+                freeDayGmeInSameRound.TournamentId,
+                new GameServiceTestFixture()
+                .TestGamesForDuplicateSchemeOne()
+                .Build());
 
             var sut = _kernel.Get<GameService>();
 

@@ -856,29 +856,24 @@
 
             MockTournamentSchemeTwo();
 
-            var firstDuplicate = new GameBuilder()
+            var duplicate = new GameBuilder()
+                .WithTournamentId(1)
                 .TestRoundGame()
-                .WithRound(2)
-                .Build();
-
-            var secondDuplicate = new GameBuilder()
-                .TestRoundGame()
-                .WithRound(3)
+                .WithRound(4)
+                .WithId(4)
                 .Build(); 
 
             SetupGetTournamentResults(
-             firstDuplicate.TournamentId,
+             duplicate.TournamentId,
              new GameServiceTestFixture()
-             .TestGamesForDuplicateSchemeTwo()
+             .TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
              .Build());
             var sut = _kernel.Get<GameService>();
-
-            sut.Create(firstDuplicate);
 
             // Act
             try
             {
-                sut.Create(secondDuplicate);
+                sut.Create(duplicate);
             }
             catch (ArgumentException)
             {
@@ -889,29 +884,27 @@
             Assert.IsTrue(exceptionThrown); 
         }
 
+        [TestMethod]
         public void Create_DuplicateFreeDayGameTournamentSchemeTwo_ExceptionThrown()
         {
             // Arrange
             bool exceptionThrown = false;
 
-            MockDefaultTournament();
-
-            var freeDayDuplicate = new GameBuilder()
-                .TestFreeDayGame()
-                .WithRound(2)
-                .Build();
+            MockTournamentSchemeTwo();
 
             var freeDayGameDuplicate = new GameBuilder()
                 .TestFreeDayGame()
+                .WithId(3)
                 .WithRound(3)
                 .Build();
 
             SetupGetTournamentResults(
-             freeDayDuplicate.TournamentId,
-             new GameServiceTestFixture().Build());
-            var sut = _kernel.Get<GameService>();
+             freeDayGameDuplicate.TournamentId,
+             new GameServiceTestFixture()
+             .TestGamesWithTwoFreeDays()
+             .Build());
 
-            sut.Create(freeDayDuplicate);
+            var sut = _kernel.Get<GameService>(); 
 
             // Act
             try
@@ -926,6 +919,8 @@
             // Assert
             Assert.IsTrue(exceptionThrown); 
         }
+
+
         #endregion
 
         /// <summary>

@@ -548,6 +548,77 @@
             return this;
         }
 
+        public GameServiceTestFixture TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
+        {
+            this._gameResults.Clear();
+            this._gameResults.Add(
+                new GameResultDto()
+                {
+                    Id = 1,
+                    GameDate = DateTime.Parse(DATE_A),
+                    HomeTeamId = 1,
+                    AwayTeamId = 2,
+                    TournamentId = 1,
+                    Round = 1
+                });
+            this._gameResults.Add(
+               new GameResultDto()
+               {
+                   Id = 2,
+                   GameDate = DateTime.Parse(DATE_A),
+                   HomeTeamId = 2,
+                   AwayTeamId = 1,
+                   TournamentId = 1,
+                   Round = 2
+               });
+
+            return this;
+        }
+
+        public GameServiceTestFixture TestGamesWithFreeDay()
+        {
+            this._gameResults.Clear();
+            this._gameResults.Add(
+                new GameResultDto()
+                {
+                    Id = 1,
+                    GameDate = DateTime.Parse(DATE_A),
+                    HomeTeamId = 1,
+                    AwayTeamId = null,
+                    TournamentId = 1,
+                    Round = 1
+                });
+
+            return this;
+        }
+
+        public GameServiceTestFixture TestGamesWithTwoFreeDays()
+        {
+            this._gameResults.Clear();
+            this._gameResults.Add(
+                new GameResultDto()
+                {
+                    Id = 1,
+                    GameDate = DateTime.Parse(DATE_A),
+                    HomeTeamId = 1,
+                    AwayTeamId = null,
+                    TournamentId = 1,
+                    Round = 1
+                });
+            this._gameResults.Add(
+               new GameResultDto()
+               {
+                   Id = 2,
+                   GameDate = DateTime.Parse(DATE_A),
+                   HomeTeamId = 1,
+                   AwayTeamId = null,
+                   TournamentId = 1,
+                   Round = 2
+               });
+
+            return this;
+        }
+
         /// <summary>
         /// Builds instance of <see cref="GameServiceTestFixture"/>.
         /// </summary>

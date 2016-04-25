@@ -170,6 +170,7 @@
     <Compile Include="Services\ContributorService\ContributorTeamBuilder.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamComparer.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamServiceTestFixture.cs" />
+    <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelServiceTestFixture.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamServiceTests.cs" />
     <Compile Include="Services\PlayerService\PlayerBuilder.cs" />
@@ -191,10 +192,9 @@
     <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelServiceTestFixture.cs" />
-    <Compile Include="WebApi\Controllers\ContributorControllerTests.cs" />
-    <Compile Include="WebApi\Controllers\PlayerControllerTests.cs" />
-    <Compile Include="WebApi\Controllers\TeamControllerTests.cs" />
-    <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
+    <Compile Include="WebApi\ODataControllers\ContributorControllerTests.cs" />
+    <Compile Include="WebApi\ODataControllers\PlayerControllerTests.cs" />
+    <Compile Include="WebApi\ODataControllers\TeamControllerTests.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\ContributorViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />

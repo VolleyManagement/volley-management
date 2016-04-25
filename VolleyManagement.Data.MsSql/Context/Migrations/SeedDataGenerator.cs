@@ -23,6 +23,7 @@
         {
             List<PlayerEntity> players = GeneratePlayers();
             List<TeamEntity> teams = GenerateTeams(players);
+            AssignPlayersToTeams(players);
             List<TournamentEntity> tours = GenerateTournamentsSchemOne(teams);
             tours.AddRange(GenerateTournamentsSchemTwo(teams));
             List<GameResultEntity> games = GenerateGamesFromTournaments(tours);
@@ -151,47 +152,58 @@
             {
                 new TeamEntity
                 {
-                    Players = new List<PlayerEntity> { players[1] },
+                    Id = 1,
                     CaptainId = 1,
                     Name = "First Order",
                     Coach = "Coach1"
                 },
                 new TeamEntity
                 {
-                    Players = new List<PlayerEntity> { players[3] },
+                    Id = 2,
                     CaptainId = 2,
                     Name = "Empire",
                     Coach = "Coach2",
                 },
                 new TeamEntity
                 {
-                    Players = new List<PlayerEntity> { players[5], players[6] },
+                    Id = 3,
                     CaptainId = 3,
                     Name = "Rebelion",
                     Coach = "Coach3"
                 },
                 new TeamEntity
                 {
-                    Players = new List<PlayerEntity> { players[8] },
+                    Id = 4,
                     CaptainId = 4,
                     Name = "Avengers",
                     Coach = "Coach4"
                 },
                 new TeamEntity
                 {
-                    Players = new List<PlayerEntity> { players[10] },
+                    Id = 5,
                     CaptainId = 5,
                     Name = "Cap",
                     Coach = "Coach5"
                 },
                 new TeamEntity
                 {
-                    Players = new List<PlayerEntity> { players[11] },
+                    Id = 6,
                     CaptainId = 6,
                     Name = "DC",
                     Coach = "Coach6"
                 }
             };
+        }
+
+        private static void AssignPlayersToTeams(List<PlayerEntity> players)
+        {
+            players[0].TeamId = 1;
+            players[3].TeamId = 2;
+            players[5].TeamId = 3;
+            players[6].TeamId = 3;
+            players[8].TeamId = 4;
+            players[10].TeamId = 5;
+            players[11].TeamId = 6; 
         }
 
         private static List<TournamentEntity> GenerateTournamentsSchemOne(List<TeamEntity> teams)
@@ -547,6 +559,9 @@
             // Only for past games
             byte maxFinalScore = 3;
             byte maxScore = 25;
+            byte maxSecondTeamScore = 23;
+            byte maxScoreLast = 15;
+            byte maxSecondTeamScoreLast = 13; 
             byte scoresNumber = 5;
             byte maxPercents = 100;
             Random rand = new Random();
@@ -571,7 +586,7 @@
             for (int k = 0; k < games.Count; k++, gameEnumerator.MoveNext())
             {
                 if (k > actualPercentage * games.Count / maxPercents)
-            {
+                {
                     break;
                 }
 
@@ -589,6 +604,10 @@
 
                 for (int i = 0, j = 1; i < scoresNumber; i++, j++)
                 {
+                    byte currentMaxScore = j == scoresNumber ? maxScoreLast : maxScore;
+                    byte currentMaxSecondTeamScore = j == scoresNumber ?
+                        maxSecondTeamScoreLast : maxSecondTeamScore; 
+
                     if (j > awayFinalScore + homeFinalScroe)
                     {
                         awayScores[i] = 0;
@@ -596,23 +615,23 @@
                     }
                     else if (homeFinalScroe > awayFinalScore && j <= awayFinalScore)
                     {
-                        awayScores[i] = maxScore;
-                        homeScores[i] = (byte)rand.Next(0, 20);
+                        awayScores[i] = currentMaxScore;
+                        homeScores[i] = (byte)rand.Next(0, currentMaxSecondTeamScore);
                     }
                     else if (homeFinalScroe > awayFinalScore && j > awayFinalScore)
                     {
-                        awayScores[i] = (byte)rand.Next(0, 20);
-                        homeScores[i] = maxScore;
+                        awayScores[i] = (byte)rand.Next(0, currentMaxSecondTeamScore);
+                        homeScores[i] = currentMaxScore;
                     }
                     else if (awayFinalScore > homeFinalScroe && j <= homeFinalScroe)
                     {
-                        awayScores[i] = (byte)rand.Next(0, 20);
-                        homeScores[i] = maxScore;
+                        awayScores[i] = (byte)rand.Next(0, currentMaxSecondTeamScore);
+                        homeScores[i] = currentMaxScore;
                     }
                     else if (awayFinalScore > homeFinalScroe && j > homeFinalScroe)
                     {
-                        awayScores[i] = maxScore;
-                        homeScores[i] = (byte)rand.Next(0, 20);
+                        awayScores[i] = currentMaxScore;
+                        homeScores[i] = (byte)rand.Next(0, currentMaxSecondTeamScore);
                     }
                 }
 

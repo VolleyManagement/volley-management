@@ -515,7 +515,8 @@
                 GameDate = DateTime.Parse(DATE_A),
                 HomeTeamId = 1,
                 AwayTeamId = 2,
-                TournamentId = 1
+                TournamentId = 1,
+                Round = 1
             });
 
             return this;

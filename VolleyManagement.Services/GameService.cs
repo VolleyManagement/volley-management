@@ -302,7 +302,7 @@
                 }
                 else if (GameValidation.IsTheSameTeamInTwoGames(game, newGame))
                 {
-                    if (GameValidation.IsFreeDayGame(newGame))
+                    if (GameValidation.IsFreeDayGame(game))
                     {
                         throw new ArgumentException(
                             Resources
@@ -429,10 +429,6 @@
                 int tempHomeId = game.HomeTeamId;
                 game.HomeTeamId = game.AwayTeamId.Value;
                 game.AwayTeamId = tempHomeId;
-            }
-            else
-            {
-                throw new ArgumentException(Resources.HomeTeamNullId);
             }
         }
         #endregion

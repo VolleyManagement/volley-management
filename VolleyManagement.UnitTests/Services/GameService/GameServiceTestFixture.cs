@@ -531,7 +531,8 @@
                     GameDate = DateTime.Parse(DATE_A),
                     HomeTeamId = 1,
                     AwayTeamId = 2,
-                    TournamentId = 1
+                    TournamentId = 1,
+                    Round = 1
                 });
             this._gameResults.Add(
                new GameResultDto()
@@ -540,7 +541,8 @@
                    GameDate = DateTime.Parse(DATE_A),
                    HomeTeamId = 3,
                    AwayTeamId = 4,
-                   TournamentId = 1
+                   TournamentId = 1,
+                   Round = 1
                });
 
             return this;

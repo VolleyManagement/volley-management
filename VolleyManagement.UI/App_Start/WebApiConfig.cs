@@ -23,12 +23,6 @@
             // Attribute routing.
             config.MapHttpAttributeRoutes();
 
-            // Convention-based routing.
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/v1/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional });
-
             WebApiAreaRegistration.RegisterOData(config);
         }
 

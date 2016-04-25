@@ -148,20 +148,34 @@
         var isValid = false;
         setOrderNumber = setOrderNumber || 0;
         if (setOrderNumber == gameResultConstants.MAX_SETS_COUNT) {
-            if (privates.IsFifthSetScoreGreaterThanMin(setScore)) {
-                isValid = Math.abs(setScore.Home - setScore.Away) == gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
-            }
-            else if (privates.IsFifthSetScoreEqualToMin(setScore)) {
-                isValid = Math.abs(setScore.Home - setScore.Away) >= gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
-            }
+            isValid = privates.IsFifthSetScoreValid(setScore);
         }
         else {
-            if (privates.IsSetScoreGreaterThanMin(setScore)) {
-                isValid = Math.abs(setScore.Home - setScore.Away) == gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
-            }
-            else if (privates.IsSetScoreEqualToMin(setScore)) {
-                isValid = Math.abs(setScore.Home - setScore.Away) >= gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
-            }
+            isValid = privates.IsSetScoreValid(setScore);
+        }
+
+        return isValid;
+    }
+
+    privates.IsFifthSetScoreValid = function (setScore) {
+        var isValid = false;
+        if (privates.IsFifthSetScoreGreaterThanMin(setScore)) {
+            isValid = Math.abs(setScore.Home - setScore.Away) == gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
+        }
+        else if (privates.IsFifthSetScoreEqualToMin(setScore)) {
+            isValid = Math.abs(setScore.Home - setScore.Away) >= gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
+        }
+
+        return isValid;
+    }
+
+    privates.IsSetScoreValid = function (setScore) {
+        var isValid = false;
+        if (privates.IsSetScoreGreaterThanMin(setScore)) {
+            isValid = Math.abs(setScore.Home - setScore.Away) == gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
+        }
+        else if (privates.IsSetScoreEqualToMin(setScore)) {
+            isValid = Math.abs(setScore.Home - setScore.Away) >= gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
         }
 
         return isValid;

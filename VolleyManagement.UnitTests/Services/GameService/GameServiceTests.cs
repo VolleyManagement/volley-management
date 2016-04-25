@@ -828,7 +828,7 @@
         /// Tests creation of the game with invalid fifth set score
         /// </summary>
         [TestMethod]
-        public void Create_FifthSetInvalidScore_ExceptionThrown()
+        public void Create_FifthSetScore250Invalid_ExceptionThrown()
         {
             // Arrange
             Exception exception = null;

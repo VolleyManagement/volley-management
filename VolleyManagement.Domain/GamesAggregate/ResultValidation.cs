@@ -164,25 +164,41 @@
             bool isValid = false;
             if (setOrderNumber == Constants.GameResult.MAX_SETS_COUNT)
             {
-                if (IsFifthSetScoreGreaterThanMin(setScore))
-                {
-                    isValid = Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
-                }
-                else if (IsFifthSetScoreEqualToMin(setScore))
-                {
-                    isValid = Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
-                }
+                isValid = IsFifthSetScoreValid(setScore);
             }
             else
             {
-                if (IsSetScoreGreaterThanMin(setScore))
-                {
-                    isValid = Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
-                }
-                else if (IsSetScoreEqualToMin(setScore))
-                {
-                    isValid = Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
-                }
+                isValid = IsSetScoreValid(setScore);
+            }
+
+            return isValid;
+        }
+
+        private static bool IsSetScoreValid(Score setScore)
+        {
+            bool isValid = false;
+            if (IsSetScoreGreaterThanMin(setScore))
+            {
+                isValid = Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+            }
+            else if (IsSetScoreEqualToMin(setScore))
+            {
+                isValid = Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+            }
+
+            return isValid;
+        }
+
+        private static bool IsFifthSetScoreValid(Score setScore)
+        {
+            bool isValid = false;
+            if (IsFifthSetScoreGreaterThanMin(setScore))
+            {
+                isValid = Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+            }
+            else if (IsFifthSetScoreEqualToMin(setScore))
+            {
+                isValid = Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
             }
 
             return isValid;

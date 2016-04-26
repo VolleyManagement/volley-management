@@ -123,6 +123,7 @@
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\DivisionViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GameMvcEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
     <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
+    <Compile Include="Services\GameService\GameMvcComparer.cs" />
     <Compile Include="Services\GameService\GameResultDtoBuilder.cs" />
     <Compile Include="Services\GameService\GameResultDtoComparer.cs" />
     <Compile Include="Mvc\ViewModels\UserEditMvcViewModelBuilder.cs" />

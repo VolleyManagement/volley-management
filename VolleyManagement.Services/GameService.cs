@@ -32,6 +32,7 @@
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
+        private readonly IQuery<List<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
 
         #endregion
 
@@ -44,17 +45,20 @@
         /// <param name="getByIdQuery">Query which gets <see cref="GameResultDto"/> object by its identifier.</param>
         /// <param name="tournamentGameResultsQuery">Query which gets <see cref="GameResultDto"/> objects
         /// of the specified tournament.</param>
-        /// /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
+        /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
+        /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
-            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery)
+            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery,
+            IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
             _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
+            _gamesByTournamentIdRoundsNumberQuery = gamesByTournamentIdRoundsNumberQuery;
         }
 
         #endregion
@@ -121,6 +125,27 @@
         }
 
         /// <summary>
+        /// Edits specified instance of game.
+        /// </summary>
+        /// <param name="games">Games to update.</param>
+        public void Edit(List<Game> games)
+        {
+            try
+            {
+                foreach (var game in games)
+                {
+                    _gameRepository.Update(game);
+                }
+            }
+            catch (ConcurrencyException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
+            }
+
+            _gameRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
         /// Deletes game by its identifier.
         /// </summary>
         /// <param name="id">Identifier of game.</param>
@@ -136,6 +161,30 @@
             ValidateGameInRoundOnDelete(game);
             _gameRepository.Remove(id);
             _gameRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Method swap all games between two rounds.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of tournament.</param>
+        /// <param name="firstRoundNumber">Identifier of first round number.</param>
+        /// <param name="secondRoundNumber">Identifier of second round number.</param>
+        public void SwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)
+        {
+            List<Game> games = _gamesByTournamentIdRoundsNumberQuery.Execute(
+                new TournamentRoundsGameResultsCriteria
+                {
+                    TournamentId = tournamentId,
+                    FirstRoundNumber = firstRoundNumber,
+                    SecondRoundNumber = secondRoundNumber
+                });
+
+            foreach (var game in games)
+            {
+                game.Round = game.Round == firstRoundNumber ? secondRoundNumber : firstRoundNumber;
+            }
+
+            this.Edit(games);
         }
 
         #endregion

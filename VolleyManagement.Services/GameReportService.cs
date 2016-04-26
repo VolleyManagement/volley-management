@@ -67,6 +67,7 @@
             return standings.OrderByDescending(ts => ts.Points)
                 .ThenByDescending(ts => ts.SetsRatio)
                 .ThenByDescending(ts => ts.BallsRatio)
+                .ThenBy(ts => ts.TeamName)
                 .ToList();
         }
 
@@ -148,12 +149,12 @@
 
         private void CalculateGamesStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultDto gameResult)
         {
-            if (IsTeamGameCountNull(homeTeamEntry))
+            if (HasTeamPlayedGames(homeTeamEntry))
             {
                 SetDataFromNullToZero(homeTeamEntry);
             }
 
-            if (IsTeamGameCountNull(awayTeamEntry))
+            if (HasTeamPlayedGames(awayTeamEntry))
             {
                 SetDataFromNullToZero(awayTeamEntry);
             }
@@ -286,7 +287,7 @@
             entry.SetsLost = 0;
         }
 
-        private bool IsTeamGameCountNull(StandingsEntry entry)
+        private bool HasTeamPlayedGames(StandingsEntry entry)
         {
             return entry.GamesTotal == 0;
         }

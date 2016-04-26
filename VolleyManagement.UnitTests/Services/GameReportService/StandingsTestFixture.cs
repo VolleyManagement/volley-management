@@ -403,11 +403,12 @@
         /// Orders standings by points, then by sets ratio and then by balls ratio in descending order.
         /// </summary>
         /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
-        public StandingsTestFixture OrderByPointsAndSetsAndBalls()
+        public StandingsTestFixture OrderByPointsAndSetsAndBallsAndName()
         {
             _standings = _standings.OrderByDescending(ts => ts.Points)
                 .ThenByDescending(ts => ts.SetsRatio)
                 .ThenByDescending(ts => ts.BallsRatio)
+                .ThenBy(ts => ts.TeamName)
                 .ToList();
 
             return this;

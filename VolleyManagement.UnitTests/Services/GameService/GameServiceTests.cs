@@ -863,11 +863,12 @@
                 .WithId(4)
                 .Build();
 
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                       .TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
+                       .Build();
             SetupGetTournamentResults(
-                duplicate.TournamentId,
-                new GameServiceTestFixture()
-                .TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
-                .Build());
+                       duplicate.TournamentId,
+                       gameResults);
 
             var sut = _kernel.Get<GameService>();
 
@@ -899,11 +900,13 @@
                 .WithRound(3)
                 .Build();
 
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesWithTwoFreeDays()
+                .Build();
+
             SetupGetTournamentResults(
                 freeDayGameDuplicate.TournamentId,
-                new GameServiceTestFixture()
-                .TestGamesWithTwoFreeDays()
-                .Build());
+                gameResults);
 
             var sut = _kernel.Get<GameService>();
 
@@ -935,11 +938,13 @@
                 .WithHomeTeamId(3)
                 .Build();
 
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .Build();
+
             SetupGetTournamentResults(
                 freeDayGmeInSameRound.TournamentId,
-                new GameServiceTestFixture()
-                .TestGamesWithFreeDay()
-                .Build());
+                gameResults);
 
             var sut = _kernel.Get<GameService>();
 
@@ -970,11 +975,13 @@
                 .WithId(2)
                 .Build();
 
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .Build();
+
             SetupGetTournamentResults(
                 freeDayGmeInSameRound.TournamentId,
-                new GameServiceTestFixture()
-                .TestGamesWithFreeDay()
-                .Build());
+                gameResults);
 
             var sut = _kernel.Get<GameService>();
 
@@ -1005,11 +1012,13 @@
                 .WithId(2)
                 .Build();
 
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+             .TestGamesForDuplicateSchemeOne()
+             .Build();
+
             SetupGetTournamentResults(
              freeDayGmeInSameRound.TournamentId,
-             new GameServiceTestFixture()
-             .TestGamesForDuplicateSchemeOne()
-             .Build());
+             gameResults);
 
             var sut = _kernel.Get<GameService>();
 
@@ -1041,11 +1050,13 @@
                 .WithId(2)
                 .Build();
 
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesForDuplicateSchemeOne()
+                .Build();
+
             SetupGetTournamentResults(
                 freeDayGmeInSameRound.TournamentId,
-                new GameServiceTestFixture()
-                .TestGamesForDuplicateSchemeOne()
-                .Build());
+                gameResults);
 
             var sut = _kernel.Get<GameService>();
 
@@ -1077,11 +1088,13 @@
                 .WithId(2)
                 .Build();
 
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesForDuplicateSchemeOne()
+                .Build();
+
             SetupGetTournamentResults(
                 freeDayGmeInSameRound.TournamentId,
-                new GameServiceTestFixture()
-                .TestGamesForDuplicateSchemeOne()
-                .Build());
+                gameResults);
 
             var sut = _kernel.Get<GameService>();
 

@@ -160,10 +160,10 @@
     privates.IsFifthSetScoreValid = function (setScore) {
         var isValid = false;
         if (privates.IsFifthSetScoreGreaterThanMin(setScore)) {
-            isValid = Math.abs(setScore.Home - setScore.Away) == gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
+            isValid = privates.IsPointsDifferenceEqualRequired(setScore);
         }
         else if (privates.IsFifthSetScoreEqualToMin(setScore)) {
-            isValid = Math.abs(setScore.Home - setScore.Away) >= gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
+            isValid = privates.IsPointsDifferenceGreaterOrEqualRequired(setScore);
         }
 
         return isValid;
@@ -172,13 +172,21 @@
     privates.IsSetScoreValid = function (setScore) {
         var isValid = false;
         if (privates.IsSetScoreGreaterThanMin(setScore)) {
-            isValid = Math.abs(setScore.Home - setScore.Away) == gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
+            isValid = privates.IsPointsDifferenceEqualRequired(setScore);
         }
         else if (privates.IsSetScoreEqualToMin(setScore)) {
-            isValid = Math.abs(setScore.Home - setScore.Away) >= gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
+            isValid = privates.IsPointsDifferenceGreaterOrEqualRequired(setScore);
         }
 
         return isValid;
+    }
+
+    privates.IsPointsDifferenceEqualRequired = function (setScore) {
+        return Math.abs(setScore.Home - setScore.Away) == gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
+    }
+
+    privates.IsPointsDifferenceGreaterOrEqualRequired = function (setScore) {
+        return Math.abs(setScore.Home - setScore.Away) >= gameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN;
     }
 
     privates.IsOrdinaryOptionalSetScoreValid = function (setScore, setOrderNumber) {

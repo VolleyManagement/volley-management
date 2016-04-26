@@ -828,12 +828,82 @@
         /// Tests creation of the game with invalid fifth set score
         /// </summary>
         [TestMethod]
-        public void Create_FifthSetScore250Invalid_ExceptionThrown()
+        public void Create_FifthSetScoreAsUsualSetScore_ExceptionThrown()
         {
             // Arrange
             Exception exception = null;
             MockDefaultTournament();
-            var newGame = new GameBuilder().WithFifthSetScoreInvalid().Build();
+            var newGame = new GameBuilder().WithFifthSetScoreAsUsualSetScore().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_15_0);
+        }
+
+        /// <summary>
+        /// Tests creation of the game with invalid fifth set score
+        /// </summary>
+        [TestMethod]
+        public void Create_FifthSetScoreMoreThanMaxWithValidDifference_GameCreated()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var newGame = new GameBuilder().WithFifthSetScoreMoreThanMaxWithValidDifference().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyCreateGame(newGame, Times.Once());
+        }
+
+        /// <summary>
+        /// Tests creation of the game with valid fifth set score
+        /// </summary>
+        [TestMethod]
+        public void Create_FifthSetScoreMoreThanMaxWithInvalidDifference_ExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            MockDefaultTournament();
+            var newGame = new GameBuilder().WithFifthSetScoreMoreThanMaxWithInvalidDifference().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(newGame);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_15_0);
+        }
+
+        /// <summary>
+        /// Tests creation of the game with invalid fifth set score
+        /// </summary>
+        [TestMethod]
+        public void Create_FifthSetScoreLessThanMax_ExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            MockDefaultTournament();
+            var newGame = new GameBuilder().WithFifthSetScoreLessThanMax().Build();
             var sut = _kernel.Get<GameService>();
 
             // Act

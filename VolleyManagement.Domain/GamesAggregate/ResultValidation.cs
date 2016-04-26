@@ -179,11 +179,11 @@
             bool isValid = false;
             if (IsSetScoreGreaterThanMin(setScore))
             {
-                isValid = Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+                isValid = IsPointsDifferenceEqualRequired(setScore);
             }
             else if (IsSetScoreEqualToMin(setScore))
             {
-                isValid = Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+                isValid = IsPointsDifferenceGreaterOrEqualRequired(setScore);
             }
 
             return isValid;
@@ -194,14 +194,24 @@
             bool isValid = false;
             if (IsFifthSetScoreGreaterThanMin(setScore))
             {
-                isValid = Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+                isValid = IsPointsDifferenceEqualRequired(setScore);
             }
             else if (IsFifthSetScoreEqualToMin(setScore))
             {
-                isValid = Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+                isValid = IsPointsDifferenceGreaterOrEqualRequired(setScore);
             }
 
             return isValid;
+        }
+
+        private static bool IsPointsDifferenceEqualRequired(Score setScore)
+        {
+            return Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+        }
+
+        private static bool IsPointsDifferenceGreaterOrEqualRequired(Score setScore)
+        {
+            return Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
         }
 
         private static bool IsOrdinaryOptionalSetScoreValid(Score setScore, int setOrderNumber)

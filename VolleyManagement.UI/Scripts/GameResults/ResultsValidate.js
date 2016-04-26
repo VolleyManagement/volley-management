@@ -148,33 +148,21 @@
         var isValid = false;
         setOrderNumber = setOrderNumber || 0;
         if (setOrderNumber == gameResultConstants.MAX_SETS_COUNT) {
-            isValid = privates.IsFifthSetScoreValid(setScore);
+            isValid = privates.IsSetScoreValid(setScore, gameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN);
         }
         else {
-            isValid = privates.IsSetScoreValid(setScore);
+            isValid = privates.IsSetScoreValid(setScore, gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN);
         }
 
         return isValid;
     }
 
-    privates.IsFifthSetScoreValid = function (setScore) {
+    privates.IsSetScoreValid = function (setScore, setPointsMinValueToWin) {
         var isValid = false;
-        if (privates.IsFifthSetScoreGreaterThanMin(setScore)) {
+        if (privates.IsSetScoreGreaterThanMin(setScore, setPointsMinValueToWin)) {
             isValid = privates.IsPointsDifferenceEqualRequired(setScore);
         }
-        else if (privates.IsFifthSetScoreEqualToMin(setScore)) {
-            isValid = privates.IsPointsDifferenceGreaterOrEqualRequired(setScore);
-        }
-
-        return isValid;
-    }
-
-    privates.IsSetScoreValid = function (setScore) {
-        var isValid = false;
-        if (privates.IsSetScoreGreaterThanMin(setScore)) {
-            isValid = privates.IsPointsDifferenceEqualRequired(setScore);
-        }
-        else if (privates.IsSetScoreEqualToMin(setScore)) {
+        else if (privates.IsSetScoreEqualToMin(setScore, setPointsMinValueToWin)) {
             isValid = privates.IsPointsDifferenceGreaterOrEqualRequired(setScore);
         }
 
@@ -193,24 +181,14 @@
         return privates.IsOrdinaryRequiredSetScoreValid(setScore, setOrderNumber) || privates.IsSetUnplayed(setScore);
     }
 
-    privates.IsSetScoreEqualToMin = function (setScore) {
-        return setScore.Home == gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN
-            || setScore.Away == gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN;
+    privates.IsSetScoreEqualToMin = function (setScore, setPointsMinValueToWin) {
+        return setScore.Home == setPointsMinValueToWin
+            || setScore.Away == setPointsMinValueToWin;
     }
 
-    privates.IsSetScoreGreaterThanMin = function (setScore) {
-        return setScore.Home > gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN
-            || setScore.Away > gameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN;
-    }
-
-    privates.IsFifthSetScoreEqualToMin = function (setScore) {
-        return setScore.Home == gameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN
-            || setScore.Away == gameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN;
-    }
-
-    privates.IsFifthSetScoreGreaterThanMin = function (setScore) {
-        return setScore.Home > gameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN
-            || setScore.Away > gameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN;
+    privates.IsSetScoreGreaterThanMin = function (setScore, setPointsMinValueToWin) {
+        return setScore.Home > setPointsMinValueToWin
+            || setScore.Away > setPointsMinValueToWin;
     }
 
     // Methods to validate.

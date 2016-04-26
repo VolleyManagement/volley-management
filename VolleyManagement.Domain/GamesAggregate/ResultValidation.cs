@@ -164,39 +164,25 @@
             bool isValid = false;
             if (setOrderNumber == Constants.GameResult.MAX_SETS_COUNT)
             {
-                isValid = IsFifthSetScoreValid(setScore);
+                isValid = IsSetScoreValid(setScore, Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN);
             }
             else
             {
-                isValid = IsSetScoreValid(setScore);
+                isValid = IsSetScoreValid(setScore, Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN);
             }
 
             return isValid;
         }
 
-        private static bool IsSetScoreValid(Score setScore)
+        private static bool IsSetScoreValid(Score setScore, int setPointsMinValueToWin)
         {
             bool isValid = false;
-            if (IsSetScoreGreaterThanMin(setScore))
+
+            if (IsSetScoreGreaterThanMin(setScore, setPointsMinValueToWin))
             {
                 isValid = IsPointsDifferenceEqualRequired(setScore);
             }
-            else if (IsSetScoreEqualToMin(setScore))
-            {
-                isValid = IsPointsDifferenceGreaterOrEqualRequired(setScore);
-            }
-
-            return isValid;
-        }
-
-        private static bool IsFifthSetScoreValid(Score setScore)
-        {
-            bool isValid = false;
-            if (IsFifthSetScoreGreaterThanMin(setScore))
-            {
-                isValid = IsPointsDifferenceEqualRequired(setScore);
-            }
-            else if (IsFifthSetScoreEqualToMin(setScore))
+            else if (IsSetScoreEqualToMin(setScore, setPointsMinValueToWin))
             {
                 isValid = IsPointsDifferenceGreaterOrEqualRequired(setScore);
             }
@@ -219,28 +205,16 @@
             return IsOrdinaryRequiredSetScoreValid(setScore, setOrderNumber) || IsSetUnplayed(setScore);
         }
 
-        private static bool IsSetScoreEqualToMin(Score setScore)
+        private static bool IsSetScoreEqualToMin(Score setScore, int setPointsMinValueToWin)
         {
-            return setScore.Home == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
-                || setScore.Away == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
+            return setScore.Home == setPointsMinValueToWin
+                || setScore.Away == setPointsMinValueToWin;
         }
 
-        private static bool IsSetScoreGreaterThanMin(Score setScore)
+        private static bool IsSetScoreGreaterThanMin(Score setScore, int setPointsMinValueToWin)
         {
-            return setScore.Home > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
-                || setScore.Away > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
-        }
-
-        private static bool IsFifthSetScoreEqualToMin(Score setScore)
-        {
-            return setScore.Home == Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN
-                || setScore.Away == Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN;
-        }
-
-        private static bool IsFifthSetScoreGreaterThanMin(Score setScore)
-        {
-            return setScore.Home > Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN
-                || setScore.Away > Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN;
+            return setScore.Home > setPointsMinValueToWin
+                || setScore.Away > setPointsMinValueToWin;
         }
     }
 }

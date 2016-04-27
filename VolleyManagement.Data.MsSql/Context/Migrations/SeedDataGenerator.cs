@@ -23,15 +23,19 @@
         {
             List<PlayerEntity> players = GeneratePlayers();
             List<TeamEntity> teams = GenerateTeams(players);
-            AssignPlayersToTeams(players);
             List<TournamentEntity> tours = GenerateTournamentsSchemOne(teams);
             tours.AddRange(GenerateTournamentsSchemTwo(teams));
             List<GameResultEntity> games = GenerateGamesFromTournaments(tours);
 
             context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players.ToArray());
             context.Teams.AddOrUpdate(t => t.Name, teams.ToArray());
-            context.Tournaments.AddOrUpdate(t => t.Name, tours.ToArray());
+            context.SaveChanges();
 
+            AssignPlayersToTeams(players);
+            context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players.ToArray());
+            context.SaveChanges();
+
+            context.Tournaments.AddOrUpdate(t => t.Name, tours.ToArray());
             context.SaveChanges();
 
             SetGameScores(tours[0].GameResults);
@@ -49,6 +53,7 @@
             {
                 new PlayerEntity
                 {
+                    Id = 1,
                     BirthYear = 1970,
                     FirstName = "John",
                     LastName = "Smith",
@@ -57,6 +62,7 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 2,
                     BirthYear = 1986,
                     FirstName = "Lex",
                     LastName = "Luthor",
@@ -65,6 +71,7 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 3,
                     BirthYear = 1977,
                     FirstName = "Darth",
                     LastName = "Vader",
@@ -73,6 +80,7 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 4,
                     BirthYear = 1988,
                     FirstName = "Kylo",
                     LastName = "Ren",
@@ -81,6 +89,7 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 5,
                     BirthYear = 85,
                     FirstName = "Han",
                     LastName = "Solo",
@@ -89,14 +98,16 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 6,
                     BirthYear = 1968,
                     FirstName = "Luke",
                     LastName = "Skywalker",
                     Height = 165,
-                    Weight = 6
+                    Weight = 60
                 },
                 new PlayerEntity
                 {
+                    Id = 7,
                     BirthYear = 1990,
                     FirstName = "Obivan",
                     LastName = "Kenobi",
@@ -105,6 +116,7 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 8,
                     BirthYear = 2005,
                     FirstName = "Mighty",
                     LastName = "Thor",
@@ -113,6 +125,7 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 9,
                     BirthYear = 1945,
                     FirstName = "Tony",
                     LastName = "Stark",
@@ -121,6 +134,7 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 10,
                     BirthYear = 1920,
                     FirstName = "Hulk",
                     LastName = "Incredible",
@@ -129,6 +143,7 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 11,
                     BirthYear = 1955,
                     FirstName = "Man",
                     LastName = "Ant",
@@ -137,6 +152,7 @@
                 },
                 new PlayerEntity
                 {
+                    Id = 12,
                     BirthYear = 1900,
                     FirstName = "Clark",
                     LastName = "Kent",
@@ -198,12 +214,18 @@
         private static void AssignPlayersToTeams(List<PlayerEntity> players)
         {
             players[0].TeamId = 1;
-            players[3].TeamId = 2;
-            players[5].TeamId = 3;
-            players[6].TeamId = 3;
-            players[8].TeamId = 4;
+            players[1].TeamId = 2;
+            players[2].TeamId = 3;
+            players[3].TeamId = 4;
+            players[4].TeamId = 5;
+            players[5].TeamId = 6;
+
+            players[6].TeamId = 1;
+            players[7].TeamId = 2;
+            players[8].TeamId = 3;
+            players[9].TeamId = 4;
             players[10].TeamId = 5;
-            players[11].TeamId = 6; 
+            players[11].TeamId = 6;
         }
 
         private static List<TournamentEntity> GenerateTournamentsSchemOne(List<TeamEntity> teams)
@@ -230,7 +252,7 @@
                             Groups = new List<GroupEntity>()
                             {
                                 new GroupEntity()
-                                {   
+                                {
                                     Name = "Group 1"
                                 }
                             }
@@ -561,7 +583,7 @@
             byte maxScore = 25;
             byte maxSecondTeamScore = 23;
             byte maxScoreLast = 15;
-            byte maxSecondTeamScoreLast = 13; 
+            byte maxSecondTeamScoreLast = 13;
             byte scoresNumber = 5;
             byte maxPercents = 100;
             Random rand = new Random();
@@ -606,7 +628,7 @@
                 {
                     byte currentMaxScore = j == scoresNumber ? maxScoreLast : maxScore;
                     byte currentMaxSecondTeamScore = j == scoresNumber ?
-                        maxSecondTeamScoreLast : maxSecondTeamScore; 
+                        maxSecondTeamScoreLast : maxSecondTeamScore;
 
                     if (j > awayFinalScore + homeFinalScroe)
                     {

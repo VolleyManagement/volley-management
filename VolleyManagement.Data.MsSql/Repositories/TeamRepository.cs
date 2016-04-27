@@ -67,6 +67,13 @@
         /// <param name="updatedEntity">Updated team.</param>
         public void Update(Team updatedEntity)
         {
+            if (updatedEntity.Id < Constants.START_DATABASE_ID_VALUE)
+            {
+                var exc = new InvalidKeyValueException(Properties.Resources.InvalidEntityId);
+                exc.Data[Constants.ENTITY_ID_KEY] = updatedEntity.Id;
+                throw exc;
+            }
+
             var teamToUpdate = _dalTeams.SingleOrDefault(t => t.Id == updatedEntity.Id);
 
             if (teamToUpdate == null)

@@ -23,7 +23,7 @@
             {
                 TournamentId = 1,
                 TournamentName = "Name",
-                Entries = new List<StandingsEntryViewModel>
+                Standings = new List<StandingsEntryViewModel>
                 {
                     new StandingsEntryViewModel
                     {
@@ -90,7 +90,7 @@
                 PivotTable = new PivotTableViewModel
                 {
                     TeamsStandings = GetPivotTeamsStandings(),
-                    GameResults = GetPivotTable()
+                    AllGameResults = GetPivotTable()
                 }
             };
         }
@@ -124,7 +124,7 @@
         /// <returns>Instance of <see cref="StandingsViewModelBuilder"/>.</returns>
         public StandingsViewModelBuilder WithEntries(List<StandingsEntryViewModel> entries)
         {
-            _standingsViewModel.Entries = entries;
+            _standingsViewModel.Standings = entries;
             return this;
         }
 
@@ -167,23 +167,19 @@
             return teams;
         }
 
-        private List<PivotGameResultsViewModel>[,] GetPivotTable()
+        private List<PivotGameResultViewModel>[] GetPivotTable()
         {
-            int rows = 3;
-            int columns = 3;
-            var table = new List<PivotGameResultsViewModel>[rows, columns];
+            int rows = 9;
+            var table = new List<PivotGameResultViewModel>[rows];
             for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < columns; j++)
-                {
-                    table[i, j] = new List<PivotGameResultsViewModel>();
-                }
+                table[i] = new List<PivotGameResultViewModel>();
             }
 
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < rows; i += 4)
             {
-                table[i, i] = new List<PivotGameResultsViewModel>();
-                table[i, i].Add(new PivotGameResultsViewModel
+                table[i] = new List<PivotGameResultViewModel>();
+                table[i].Add(new PivotGameResultViewModel
                 {
                     HomeTeamId = 0,
                     AwayTeamId = 0,
@@ -194,7 +190,7 @@
                 });
             }
 
-            table[0, 1].Add(new PivotGameResultsViewModel
+            table[1].Add(new PivotGameResultViewModel
             {
                 HomeTeamId = 1,
                 AwayTeamId = 3,
@@ -204,27 +200,27 @@
                 CssClass = CssClassConstants.WIN_3_2
             });
 
-            table[0, 1].Add(new PivotGameResultsViewModel
+            table[1].Add(new PivotGameResultViewModel
             {
                 HomeTeamId = 1,
                 AwayTeamId = 3,
                 HomeSetsScore = 0,
                 AwaySetsScore = 3,
                 IsTechnicalDefeat = true,
-                CssClass = CssClassConstants.LOSE_0_3
+                CssClass = CssClassConstants.LOSS_0_3
             });
 
-            table[1, 0].Add(new PivotGameResultsViewModel
+            table[3].Add(new PivotGameResultViewModel
             {
                 HomeTeamId = 3,
                 AwayTeamId = 1,
                 HomeSetsScore = 2,
                 AwaySetsScore = 3,
                 IsTechnicalDefeat = false,
-                CssClass = CssClassConstants.LOSE_2_3
+                CssClass = CssClassConstants.LOSS_2_3
             });
 
-            table[1, 0].Add(new PivotGameResultsViewModel
+            table[3].Add(new PivotGameResultViewModel
             {
                 HomeTeamId = 3,
                 AwayTeamId = 1,
@@ -234,7 +230,7 @@
                 CssClass = CssClassConstants.WIN_3_0
             });
 
-            table[0, 2].Add(new PivotGameResultsViewModel
+            table[2].Add(new PivotGameResultViewModel
             {
                 HomeTeamId = 1,
                 AwayTeamId = 2,
@@ -244,14 +240,14 @@
                 CssClass = CssClassConstants.WIN_3_1
             });
 
-            table[2, 0].Add(new PivotGameResultsViewModel
+            table[6].Add(new PivotGameResultViewModel
             {
                 HomeTeamId = 2,
                 AwayTeamId = 1,
                 HomeSetsScore = 1,
                 AwaySetsScore = 3,
                 IsTechnicalDefeat = false,
-                CssClass = CssClassConstants.LOSE_1_3
+                CssClass = CssClassConstants.LOSS_1_3
             });
 
             return table;

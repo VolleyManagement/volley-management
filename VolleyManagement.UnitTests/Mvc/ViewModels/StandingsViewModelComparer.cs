@@ -56,22 +56,21 @@
         {
             return x.TournamentId == y.TournamentId
                 && x.TournamentName == y.TournamentName
-                && x.Entries.SequenceEqual(y.Entries, new StandingsEntryViewModelEqualityComparer())
+                && x.Standings.SequenceEqual(y.Standings, new StandingsEntryViewModelEqualityComparer())
                 && x.PivotTable.TeamsStandings.SequenceEqual(y.PivotTable.TeamsStandings, new PivotTeamStandingsViewModelEqualityComparer())
-                && IsResultTablesEquals(x.PivotTable.GameResults, y.PivotTable.GameResults);
+                && AreResultTablesEquals(x.PivotTable, y.PivotTable);
         }
 
-        private bool IsResultTablesEquals(List<PivotGameResultsViewModel>[,] tableExpected, List<PivotGameResultsViewModel>[,] tableActual)
+        private bool AreResultTablesEquals(PivotTableViewModel tableExpected, PivotTableViewModel tableActual)
         {
-            if ((tableExpected.GetLength(0) != tableActual.GetLength(0)) ||
-                (tableExpected.GetLength(1) != tableActual.GetLength(1)))
+            if (tableExpected.AllGameResults.Length != tableActual.AllGameResults.Length)
             {
                 return false;
             }
 
-            for (int i = 0; i < tableExpected.GetLength(0); i++)
+            for (int i = 0; i < 3; i++)
             {
-                for (int j = 0; j < tableExpected.GetLength(1); j++)
+                for (int j = 0; j < 3; j++)
                 {
                     if (tableExpected[i, j].Count == 0 && tableActual[i, j].Count == 0)
                     {

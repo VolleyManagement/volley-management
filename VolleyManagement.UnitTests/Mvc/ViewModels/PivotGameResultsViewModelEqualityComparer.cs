@@ -8,10 +8,10 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
-    /// Represents an equality comparer for <see cref="PivotGameResultsViewModel"/> objects.
+    /// Represents an equality comparer for <see cref="PivotGameResultViewModel"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class PivotGameResultsViewModelEqualityComparer : IEqualityComparer<PivotGameResultsViewModel>
+    internal class PivotGameResultsViewModelEqualityComparer : IEqualityComparer<PivotGameResultViewModel>
     {
         /// <summary>
         /// Determines whether the specified object instances are considered equal.
@@ -19,7 +19,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if the objects are considered equal; otherwise, false.</returns>
-        public bool Equals(PivotGameResultsViewModel x, PivotGameResultsViewModel y)
+        public bool Equals(PivotGameResultViewModel x, PivotGameResultViewModel y)
         {
             return x.HomeTeamId == y.HomeTeamId
                 && x.AwayTeamId == y.AwayTeamId
@@ -30,11 +30,11 @@
         }
 
         /// <summary>
-        /// Gets hash code for the specified <see cref="PivotGameResultsViewModel"/> object.
+        /// Gets hash code for the specified <see cref="PivotGameResultViewModel"/> object.
         /// </summary>
-        /// <param name="obj"><see cref="PivotGameResultsViewModel"/> object.</param>
-        /// <returns>Hash code for the specified <see cref="PivotGameResultsViewModel"/>.</returns>
-        public int GetHashCode(PivotGameResultsViewModel obj)
+        /// <param name="obj"><see cref="PivotGameResultViewModel"/> object.</param>
+        /// <returns>Hash code for the specified <see cref="PivotGameResultViewModel"/>.</returns>
+        public int GetHashCode(PivotGameResultViewModel obj)
         {
             StringBuilder stringBuilder = new StringBuilder();
 

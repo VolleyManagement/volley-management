@@ -7,6 +7,7 @@
     /// </summary>
     public class AuthOperation
     {
+        private const byte BYTE_SIZE_SHIFT = 8;
         private readonly short _id;
 
         #region Constructor
@@ -147,7 +148,7 @@
 
         private static short GetAuthOperationId(byte areaId, byte operationId)
         {
-            short result = (short)(areaId << 8 | operationId);
+            short result = (short)(areaId << BYTE_SIZE_SHIFT | operationId);
             return result;
         }
 

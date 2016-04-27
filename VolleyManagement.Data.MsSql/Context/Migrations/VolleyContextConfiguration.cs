@@ -44,7 +44,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
-            
+
             SeedDataGenerator.GenerateRequiredEntities(context);
             SeedDataGenerator.GenerateEntities(context);
         }

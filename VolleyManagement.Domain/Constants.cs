@@ -231,6 +231,8 @@
 
             public const int SET_POINTS_MIN_VALUE_TO_WIN = 25;
 
+            public const int FIFTH_SET_POINTS_MIN_VALUE_TO_WIN = 15;
+
             public const int TECHNICAL_DEFEAT_SETS_WINNER_SCORE = 3;
 
             public const int TECHNICAL_DEFEAT_SETS_LOSER_SCORE = 0;

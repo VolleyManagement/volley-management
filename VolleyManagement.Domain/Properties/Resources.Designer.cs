@@ -79,6 +79,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In fifth set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}..
+        /// </summary>
+        public static string GameResultFifthSetScoreInvalid {
+            get {
+                return ResourceManager.GetString("GameResultFifthSetScoreInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3}.
         /// </summary>
         public static string GameResultOptionalSetScores {

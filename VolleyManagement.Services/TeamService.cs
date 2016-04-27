@@ -100,7 +100,35 @@
         /// <param name="team">Team to edit.</param>
         public void Edit(Team team)
         {
-            throw new System.NotImplementedException();
+            Player captain = GetPlayerById(team.CaptainId);
+
+            if (captain == null)
+            {
+                // ToDo: Revisit this case
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, team.CaptainId);
+            }
+
+            // Check if captain in teamToCreate is captain of another team
+            if ((captain.TeamId != null) && (captain.TeamId != team.Id))
+            {
+                var existTeam = GetPlayerLedTeam(captain.Id);
+                VerifyExistingTeamOrThrow(existTeam);
+            }
+
+            ValidateTeam(team);
+
+            try
+            {
+                _teamRepository.Update(team);
+            }
+            catch (InvalidKeyValueException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
+            }
+
+            captain.TeamId = team.Id;
+            _playerRepository.Update(captain);
+            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -232,25 +260,31 @@
 
         private void ValidateCoachName(string teamCoachName)
         {
-            if (TeamValidation.ValidateCoachName(teamCoachName))
+            if (!string.IsNullOrEmpty(teamCoachName))
             {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationCoachName,
-                    VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                    "Coach");
+                if (TeamValidation.ValidateCoachName(teamCoachName))
+                {
+                    throw new ArgumentException(
+                        string.Format(
+                        Resources.ValidationCoachName,
+                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
+                        "Coach");
+                }
             }
         }
 
         private void ValidateAchievements(string teamAchievements)
         {
-            if (TeamValidation.ValidateAchievements(teamAchievements))
+            if (!string.IsNullOrEmpty(teamAchievements))
             {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationTeamAchievements,
-                    VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
-                    "Achievements");
+                if (TeamValidation.ValidateAchievements(teamAchievements))
+                {
+                    throw new ArgumentException(
+                        string.Format(
+                        Resources.ValidationTeamAchievements,
+                        VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
+                        "Achievements");
+                }
             }
         }
 

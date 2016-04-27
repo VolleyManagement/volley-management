@@ -203,6 +203,24 @@
         }
 
         /// <summary>
+        /// Test for Create() method. The method should create a new team with empty achievements.
+        /// </summary>
+        [TestMethod]
+        public void Create_EmptyTeamAchievements_TeamCreated()
+        {
+            // Arrange
+            MockGetPlayerByIdQuery(new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build());
+            var newTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithAchievements(string.Empty).Build();
+
+            // Act
+            var sut = _kernel.Get<TeamService>();
+            sut.Create(newTeam);
+
+            // Assert
+            VerifyCreateTeam(newTeam, Times.Once());
+        }
+
+        /// <summary>
         /// Test for Create() method. The method check case when team name is invalid.
         /// Should throw ArgumentException
         /// </summary>
@@ -340,6 +358,24 @@
             VerifyExceptionThrown(
                 exception,
                 new ArgumentException(argExMessage, "Coach"));
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method should create a new team with empty coach name.
+        /// </summary>
+        [TestMethod]
+        public void Create_EmptyTeamCoachName_TeamCreated()
+        {
+            // Arrange
+            MockGetPlayerByIdQuery(new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build());
+            var newTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithCoach(string.Empty).Build();
+
+            // Act
+            var sut = _kernel.Get<TeamService>();
+            sut.Create(newTeam);
+
+            // Assert
+            VerifyCreateTeam(newTeam, Times.Once());
         }
 
         /// <summary>
@@ -558,6 +594,98 @@
         }
 
         /// <summary>
+        /// Edit() method test. catch InvalidKeyValueException from DAL
+        /// Throws MissingEntityException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(MissingEntityException))]
+        public void Edit_CatchDalInvalidKeyValueException_ThrowMissingEntityException()
+        {
+            // Arrange
+            MockGetPlayerByIdQuery(new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(UNASSIGNED_ID).Build());
+            var teamWithWrongId = new TeamBuilder().WithId(UNASSIGNED_ID).WithCaptain(SPECIFIC_PLAYER_ID).Build();
+            _teamRepositoryMock.Setup(pr => pr.Update(It.IsAny<Team>())).Throws(new InvalidKeyValueException());
+
+            // Act
+            var sut = _kernel.Get<TeamService>();
+            sut.Edit(teamWithWrongId);
+        }
+
+        /// <summary>
+        /// Test for Edit() method. The method check case when captain id is invalid.
+        /// Should throw MissingEntityException
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(MissingEntityException))]
+        public void Edit_InvalidCaptainId_ThrowMissingEntityException()
+        {
+            // Arrange
+            var teamWithWrongCaptainId = new TeamBuilder().Build();
+
+            // Act
+            var sut = _kernel.Get<TeamService>();
+            sut.Edit(teamWithWrongCaptainId);
+        }
+
+        /// <summary>
+        /// Test for Edit() method. The method checks case when captain is captain of another team.
+        /// Should throw ValidationException
+        /// </summary>
+        [TestMethod]
+        public void Edit_PlayerIsCaptainOfExistingTeam_ValidationExceptionThrown()
+        {
+            // Arrange
+            var newTeam = new TeamBuilder().Build();
+            var captain = new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build();
+
+            var captainLeadTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var testTeams = new TeamServiceTestFixture().AddTeam(captainLeadTeam).Build();
+            _getPlayerByIdQueryMock.Setup(pr =>
+                            pr.Execute(It.Is<FindByIdCriteria>(cr =>
+                                            cr.Id == captain.Id)))
+                                            .Returns(captain);
+            _getTeamByCaptainQueryMock.Setup(tm =>
+                            tm.Execute(It.Is<FindByCaptainIdCriteria>(cr =>
+                                                                    cr.CaptainId == captain.Id)))
+                            .Returns(testTeams.Where(tm => tm.Id == captain.TeamId).FirstOrDefault());
+
+            // Act
+            var sut = _kernel.Get<TeamService>();
+            bool gotException = false;
+
+            try
+            {
+                sut.Edit(newTeam);
+            }
+            catch (ValidationException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyEditTeam(newTeam, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Edit() method. Existing team should be updated
+        /// </summary>
+        [TestMethod]
+        public void Edit_TeamPassed_TeamUpdated()
+        {
+            // Arrange
+            MockGetPlayerByIdQuery(new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build());
+            var teamToEdit = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+
+            // Act
+            var sut = _kernel.Get<TeamService>();
+            sut.Edit(teamToEdit);
+
+            // Assert
+            VerifyEditTeam(teamToEdit, Times.Once());
+        }
+
+        /// <summary>
         /// Test for SetPlayerTeam() method.
         /// Case when specified player isn't exist. Throw MissingEntityException
         /// </summary>
@@ -724,6 +852,12 @@
         private void VerifyCreateTeam(Team team, Times times)
         {
             _teamRepositoryMock.Verify(tr => tr.Add(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyEditTeam(Team team, Times times)
+        {
+            _teamRepositoryMock.Verify(tr => tr.Update(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 

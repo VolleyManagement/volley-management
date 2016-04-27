@@ -7,6 +7,7 @@
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
 
@@ -18,17 +19,24 @@
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
 
         /// <summary>
-        /// Holds PlayerService instance
+        /// Holds TeamService instance
         /// </summary>
         private readonly ITeamService _teamService;
+
+        /// <summary>
+        /// Holds PlayerService instance
+        /// </summary>
+        private readonly IPlayerService _playerService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
         /// <param name="teamService">Instance of the class that implements ITeamService.</param>
-        public TeamsController(ITeamService teamService)
+        /// <param name="playerService">Instance of the class that implements IPlayerService.</param>
+        public TeamsController(ITeamService teamService, IPlayerService playerService)
         {
             this._teamService = teamService;
+            this._playerService = playerService;
         }
 
         /// <summary>
@@ -145,6 +153,23 @@
                 try
                 {
                     this._teamService.Edit(domainTeam);
+                    bool duringRosterUpdateErrors = false;
+                    if (teamViewModel.Roster != null)
+                    {
+                        duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
+                        result = this.Json(this.ModelState);
+                    }
+
+                    teamViewModel.Id = domainTeam.Id;
+                    if (!duringRosterUpdateErrors)
+                    {
+                        result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                catch (ArgumentException ex)
+                {
+                    this.ModelState.AddModelError(string.Empty, ex.Message);
+                    result = this.Json(this.ModelState);
                 }
                 catch (MissingEntityException ex)
                 {
@@ -155,19 +180,6 @@
                 {
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
-                }
-
-                bool duringRosterUpdateErrors = false;
-                if (teamViewModel.Roster != null)
-                {
-                    duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
-                    result = this.Json(this.ModelState);
-                }
-
-                teamViewModel.Id = domainTeam.Id;
-                if (!duringRosterUpdateErrors)
-                {
-                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
             }
 
@@ -234,7 +246,17 @@
 
         private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)
         {
-            //// TODO: manage case when player was deleted from the team
+            //// case when player was deleted from the team
+            IEnumerable<Player> teamPlayers = _teamService.GetTeamRoster(teamId);
+
+            foreach (var player in teamPlayers)
+            {
+                if (!roster.Contains(PlayerNameViewModel.Map(player)))
+                {
+                    player.TeamId = null;
+                    this._playerService.Edit(player);
+                }
+            }
 
             bool clearUpdate = true;
 

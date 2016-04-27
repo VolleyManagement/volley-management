@@ -2,6 +2,7 @@
 {
     using System;
     using System.Data.Entity;
+    using System.Linq;
 
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
@@ -66,7 +67,14 @@
         /// <param name="updatedEntity">Updated team.</param>
         public void Update(Team updatedEntity)
         {
-            throw new NotImplementedException();
+            var teamToUpdate = _dalTeams.SingleOrDefault(t => t.Id == updatedEntity.Id);
+
+            if (teamToUpdate == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            DomainToDal.Map(teamToUpdate, updatedEntity);
         }
 
         /// <summary>

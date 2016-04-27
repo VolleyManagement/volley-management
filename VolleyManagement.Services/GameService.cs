@@ -158,15 +158,12 @@
                     SecondRoundNumber = secondRoundNumber
                 });
 
-            foreach (var game in games)
-            {
-                game.Round = game.Round == firstRoundNumber ? secondRoundNumber : firstRoundNumber;
-            }
 
             try
             {
                 foreach (var game in games)
                 {
+                    game.Round = game.Round == firstRoundNumber ? secondRoundNumber : firstRoundNumber;
                     _gameRepository.Update(game);
                 }
             }
@@ -174,7 +171,7 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
-
+        
             _gameRepository.UnitOfWork.Commit();
         }
 

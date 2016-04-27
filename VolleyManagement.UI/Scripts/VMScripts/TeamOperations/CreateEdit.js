@@ -13,6 +13,7 @@
     privates.notValidPlayerInputMessage = "You can choose only existing player!";
     privates.selectedPlayers = [];
     privates.teamPlayersTable = $("#teamRoster");
+    privates.defaultTeamPlayerInputClasses = "teamPlayerInput existingPlayerRequired";
     privates.captainRow = null; // set on render
 
     // HELPERS
@@ -53,12 +54,13 @@
             isCaptain = config.isCaptain || false,
             rowClass = isCaptain ? "teamPlayer captain" : "teamPlayer",
             customAttributes = privates.playerIdAttributeName + " ='" + playerId + "'",
-            inputClasses = isCaptain ? "teamPlayerInput existingPlayerRequired captain" : "teamPlayerInput existingPlayerRequired",
+            inputClasses = privates.defaultTeamPlayerInputClasses,
             inputName = playerId,
             rowOptions = "<button class='viewTeamPlayerDetailsButton'>Details</button>",
             validationSpan = "<span class='field-validation-valid' data-valmsg-for='" + playerId + "' data-valmsg-replace='true'></span>",
             result;
 
+        inputClasses += isCaptain ? " captain" : "";
         rowOptions += (isCaptain ? "" : " <button class='deleteTeamPlayerButton'>Delete</button>");
 
         result = "<tr class='" + rowClass + "'>" +

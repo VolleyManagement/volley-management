@@ -4,12 +4,13 @@
     using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
-    /// Provides way to check permissions for particular operation
+    /// Performs authorization checks
     /// </summary>
     public interface IAuthorizationService
     {
         /// <summary>
-        /// Checks if specified operation is allowed for user
+        /// Checks if specified operation is allowed for user.
+        /// If check isn't passed <see cref="AuthorizationException"/> will be thrown
         /// </summary>
         /// <param name="operation">Operation to check</param>
         void CheckAccess(AuthOperation operation);

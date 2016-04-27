@@ -10,7 +10,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthorizationException"/> class
         /// </summary>
-        public AuthorizationException() : base("Requested area is forbidden for current user")
+        public AuthorizationException()
+            : base("Requested operation is not allowed")
         {
         }
     }

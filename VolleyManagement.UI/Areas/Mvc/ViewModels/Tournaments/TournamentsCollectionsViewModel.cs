@@ -22,6 +22,6 @@ using VolleyManagement.Domain.TournamentsAggregate;
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> object
         /// </summary>
-        public AllowedOperations OperationAccessVerifier { get; set; }
+        public AllowedOperations Authorization { get; set; }
     }
 }

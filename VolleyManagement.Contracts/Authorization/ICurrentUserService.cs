@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Contracts.Authorization
 {
     /// <summary>
-    /// Provides the way to get information about current user
+    /// Provides information about current user
     /// </summary>
     public interface ICurrentUserService
     {

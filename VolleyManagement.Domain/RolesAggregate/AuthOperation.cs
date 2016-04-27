@@ -7,8 +7,12 @@
     /// </summary>
     public class AuthOperation
     {
+        #region Constants
+
         private const byte BYTE_SIZE_SHIFT = 8;
         private readonly short _id;
+
+        #endregion
 
         #region Constructor
 
@@ -18,14 +22,6 @@
         }
 
         #endregion
-
-        /// <summary>
-        /// Returns identifier of current operation
-        /// </summary>
-        public short Id
-        {
-            get { return this._id; }
-        }
 
         #region Operators overload
 
@@ -37,6 +33,16 @@
         public static implicit operator AuthOperation(short id)
         {
             return new AuthOperation(id);
+        }
+
+        /// <summary>
+        /// Implementing of "implicit" operator from <see cref="AuthOperation"/> class
+        /// </summary>
+        /// <param name="operation">Operation</param>
+        /// <returns>Identifier of the operation</returns>
+        public static implicit operator short(AuthOperation operation)
+        {
+            return operation._id;
         }
 
         /// <summary>

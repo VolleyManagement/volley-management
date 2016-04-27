@@ -752,9 +752,9 @@
         {
             var entries = new List<RoleToOperationEntity>
             {
-                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Create.Id },
-                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Edit.Id },
-                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Delete.Id }
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Create },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Edit },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Delete }
             };
 
             context.RolesToOperations.AddOrUpdate(r => new { r.RoleId, r.OperationId }, entries.ToArray());

@@ -8,7 +8,7 @@
 
 <h2>@ViewBag.Title</h2>
 
-@if (Model.OperationAccessVerifier.IsAllowed(AuthOperations.Tournaments.Create))
+@if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Create))
 {
     <p>
         @Html.ActionLink(Resources.TournamentViews.CreateNewTournament, "Create")

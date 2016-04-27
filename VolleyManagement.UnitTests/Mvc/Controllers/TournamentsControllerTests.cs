@@ -10,6 +10,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -49,6 +50,7 @@
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
+        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
         private IKernel _kernel;
         private TournamentsController _sut;
@@ -62,6 +64,7 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITournamentService>().ToConstant(this._tournamentServiceMock.Object);
             this._kernel.Bind<IGameService>().ToConstant(this._gameServiceMock.Object);
+            this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
             this._sut = this._kernel.Get<TournamentsController>();
         }
 

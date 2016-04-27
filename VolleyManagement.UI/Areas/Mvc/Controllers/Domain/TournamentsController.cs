@@ -65,7 +65,7 @@
         {
             var tournamentsCollections = new TournamentsCollectionsViewModel
             {
-                OperationAccessVerifier = this._authService.GetAllowedOperations(AuthOperations.Tournaments.Create)
+                Authorization = this._authService.GetAllowedOperations(AuthOperations.Tournaments.Create)
             };
 
             var actualTournaments = this._tournamentService.GetActual().ToArray();

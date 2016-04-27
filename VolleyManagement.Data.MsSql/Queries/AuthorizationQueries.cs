@@ -11,7 +11,7 @@
     /// <summary>
     /// Provides query object implementation for authorization
     /// </summary>
-    public class AuthorizationQueries : IQuery<List<AuthOperation>, FindByIdCriteria>
+    public class AuthorizationQueries : IQuery<List<AuthOperation>, FindByUserIdCriteria>
     {
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<UserEntity> _dalUsers;
@@ -35,9 +35,9 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The list of<see cref="AuthOperation"/>. </returns>
-        public List<AuthOperation> Execute(FindByIdCriteria criteria)
+        public List<AuthOperation> Execute(FindByUserIdCriteria criteria)
         {
-            var data = _dalUsers.Where(u => u.Id == criteria.Id)
+            var data = _dalUsers.Where(u => u.Id == criteria.UserId)
                                 .SelectMany(u => u.Roles)
                                 .Join(
                                     _dalRolesToOperations,

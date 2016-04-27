@@ -9,7 +9,7 @@
     /// </summary>
     public class CurrentUserService : ICurrentUserService
     {
-        private const int ANONIMOUS_USER_ID = -1;
+        private const int ANONYM = -1;
 
         /// <summary>
         /// Returns current user identifier
@@ -19,7 +19,7 @@
         {
             return HttpContext.Current.User.Identity.IsAuthenticated
                 ? System.Convert.ToInt32(HttpContext.Current.User.Identity.GetUserId())
-                : ANONIMOUS_USER_ID;
+                : ANONYM;
         }
     }
 }

@@ -15,7 +15,7 @@
     public class AuthorizationService : IAuthorizationService
     {
         private ICurrentUserService _userService;
-        private IQuery<List<AuthOperation>, FindByIdCriteria> _getOperationsQuery;
+        private IQuery<List<AuthOperation>, FindByUserIdCriteria> _getOperationsQuery;
 
         #region Constructor
 
@@ -26,7 +26,7 @@
         /// <param name="getOperationsQuery">Implementation of authorization queries object</param>
         public AuthorizationService(
             ICurrentUserService userService,
-            IQuery<List<AuthOperation>, FindByIdCriteria> getOperationsQuery)
+            IQuery<List<AuthOperation>, FindByUserIdCriteria> getOperationsQuery)
         {
             if (userService == null)
             {
@@ -98,7 +98,7 @@
         private List<AuthOperation> GetAllUserOperations()
         {
             var userId = this._userService.GetCurrentUserId();
-            return this._getOperationsQuery.Execute(new FindByIdCriteria() { Id = userId });
+            return this._getOperationsQuery.Execute(new FindByUserIdCriteria() { UserId = userId });
         }
 
         #endregion

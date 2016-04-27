@@ -29,9 +29,11 @@
         private const int OPERATION_3_ID = 3;
         private const int OPERATION_4_ID = 4;
 
+        private const byte BYTE_SIZE_SHIFT = 8;
+
         private IKernel _kernel;
 
-        private Mock<IQuery<List<AuthOperation>, FindByIdCriteria>> _getByIdQueryMock;
+        private Mock<IQuery<List<AuthOperation>, FindByUserIdCriteria>> _getByIdQueryMock;
         private Mock<ICurrentUserService> _currentUserService;
         private Type[] _authOperationsAreas = typeof(AuthOperations).GetNestedTypes();
 
@@ -391,8 +393,8 @@
                 var areaName = area.Name;
                 foreach (var operation in areaOperations)
                 {
-                    var operationId = ((AuthOperation)operation.GetValue(null)).Id;
-                    var areaId = BitConverter.GetBytes(operationId)[0];
+                    short operationId = (AuthOperation)operation.GetValue(null);
+                    var areaId = (byte)(operationId >> BYTE_SIZE_SHIFT);
                     if (processedAreas.ContainsKey(areaId))
                     {
                         if (processedAreas[areaId] != areaName)
@@ -428,8 +430,8 @@
                 var processed = new List<int>();
                 foreach (var operation in areaOperations)
                 {
-                    var operationId = ((AuthOperation)operation.GetValue(null)).Id;
-                    var operationKeyId = BitConverter.GetBytes(operationId)[1];
+                    var operationId = (AuthOperation)operation.GetValue(null);
+                    var operationKeyId = (byte)((operationId << BYTE_SIZE_SHIFT) >> BYTE_SIZE_SHIFT);
 
                     if (processed.Contains(operationKeyId))
                     {
@@ -463,8 +465,8 @@
                 byte? areaId = null;
                 foreach (var operation in areaOperations)
                 {
-                    var operationId = ((AuthOperation)operation.GetValue(null)).Id;
-                    var operationAreaId = BitConverter.GetBytes(operationId)[0];
+                    short operationId = (AuthOperation)operation.GetValue(null);
+                    var operationAreaId = (byte)(operationId >> BYTE_SIZE_SHIFT);
 
                     if (areaId.HasValue && areaId.Value != operationAreaId)
                     {
@@ -532,7 +534,7 @@
 
         private void MockAllowedOperations(List<AuthOperation> operations)
         {
-            this._getByIdQueryMock.Setup(q => q.Execute(It.IsAny<FindByIdCriteria>())).Returns(operations);
+            this._getByIdQueryMock.Setup(q => q.Execute(It.IsAny<FindByUserIdCriteria>())).Returns(operations);
         }
 
         #endregion

@@ -70,6 +70,7 @@
     <Compile Include="Queries\Common\FindByIdCriteria.cs" />
     <Compile Include="Queries\Division\TournamentDivisionsCriteria.cs" />
     <Compile Include="Queries\GameResult\TournamentGameResultsCriteria.cs" />
+    <Compile Include="Queries\GameResult\TournamentRoundsGameResultsCriteria.cs" />
     <Compile Include="Queries\Player\TeamPlayersCriteria.cs" />
     <Compile Include="Queries\Team\FindByCaptainIdCriteria.cs" />
     <Compile Include="Queries\Common\GetAllCriteria.cs" />

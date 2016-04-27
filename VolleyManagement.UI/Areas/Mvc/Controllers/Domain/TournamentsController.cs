@@ -416,6 +416,35 @@
             return EditScheduledGame(gameViewModel.Id);
         }
 
+        /// <summary>
+        /// Swap rounds action.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <param name="firstRoundNumber">Identifier of the first round number.</param>
+        /// <param name="secondRoundNumber">Identifier of the second round number.</param>
+        /// <returns>Redirect to schedule page.</returns>
+        public ActionResult SwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)
+        {
+            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
+
+            if (tournament == null)
+            {
+                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                return View();
+            }
+
+            try
+            {
+                this._gameService.SwapRounds(tournamentId, firstRoundNumber, secondRoundNumber);
+                return RedirectToAction("ShowSchedule", new { tournamentId = tournamentId });
+            }
+            catch (MissingEntityException ex)
+            {
+                this.ModelState.AddModelError("LoadError", ex.Message);
+                return View();
+            }
+        }
+
         #region Private
         /// <summary>
         /// Gets info about the tournament with a specified identifier.

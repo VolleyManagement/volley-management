@@ -90,8 +90,7 @@
 
         private void SetCellValue(int i, int j, List<PivotGameResultViewModel> result)
         {
-            AllGameResults[(i * TeamsStandings.Count) + j] = new List<PivotGameResultViewModel>();
-            AllGameResults[(i * TeamsStandings.Count) + j].AddRange(result);
+            AllGameResults[(i * TeamsStandings.Count) + j] = new List<PivotGameResultViewModel>(result);
         }
     }
 }

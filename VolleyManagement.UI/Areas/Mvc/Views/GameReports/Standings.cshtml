@@ -110,7 +110,7 @@
                         <td class="standings-cell">
                             @foreach (var item in Model.PivotTable[i, j])
                             {
-                                <div class="@item.CssClass">@item.ResultToShow</div>
+                                <div class="@item.CssClass">@item.FormattedResult</div>
                             }
                         </td>
                     }

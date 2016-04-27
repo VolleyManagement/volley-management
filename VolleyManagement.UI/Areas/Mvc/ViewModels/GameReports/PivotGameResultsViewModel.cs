@@ -40,7 +40,7 @@
         /// <summary>
         /// Gets the total score of the game.
         /// </summary>
-        public string ResultToShow
+        public string FormattedResult
         {
             get
             {

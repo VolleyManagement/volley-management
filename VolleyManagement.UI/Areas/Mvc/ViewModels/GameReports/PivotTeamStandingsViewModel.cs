@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -39,7 +40,11 @@
         {
             get
             {
-                return SetsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", SetsRatio) : "MAX";
+                return SetsRatio != float.PositiveInfinity ?
+                    string.Format(
+                    CultureInfo.CurrentUICulture,
+                    "{0:0.###}",
+                    SetsRatio) : "MAX";
             }
         }
 

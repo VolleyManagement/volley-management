@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
+    using System.Globalization;
     using VolleyManagement.Domain.GameReportsAggregate;
 
     /// <summary>
@@ -84,7 +85,11 @@
         {
             get
             {
-                return SetsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", SetsRatio) : "MAX";
+                return SetsRatio != float.PositiveInfinity ?
+                    string.Format(
+                    CultureInfo.CurrentUICulture,
+                    "{0:0.###}", SetsRatio) :
+                    "MAX";
             }
         }
 
@@ -110,7 +115,11 @@
         {
             get
             {
-                return BallsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", BallsRatio) : "MAX";
+                return BallsRatio != float.PositiveInfinity ?
+                    string.Format(
+                    CultureInfo.CurrentUICulture, 
+                    "{0:0.###}", BallsRatio) :
+                    "MAX";
             }
         }
 

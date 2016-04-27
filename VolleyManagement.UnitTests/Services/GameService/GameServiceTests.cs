@@ -18,6 +18,7 @@
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
@@ -45,6 +46,10 @@
 
         private const int TEST_AWAY_SET_SCORS = 2;
 
+        private const byte FIRST_ROUND_NUMBER = 1;
+
+        private const byte SECOND_ROUND_NUMBER = 2;
+
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -54,6 +59,9 @@
 
         private readonly Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock
             = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
+
+        private readonly Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>> _gamesByTournamentIdRoundsNumberQueryMock
+            = new Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>();
 
         private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock
             = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
@@ -84,6 +92,8 @@
                 .ToConstant(_tournamentGameResultsQueryMock.Object);
             _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>()
                 .ToConstant(_tournamentScheduleDtoByIdQueryMock.Object);
+            _kernel.Bind<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>()
+                .ToConstant(_gamesByTournamentIdRoundsNumberQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
@@ -1423,6 +1433,72 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
         }
 
+        /// <summary>
+        /// Test for SwapRounds method. Swap rounds in existing games.
+        /// </summary>
+        [TestMethod]
+        public void SwapRounds_AllGamesExist_GamesSwapped()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var games = new List<Game> { new GameBuilder().WithRound(FIRST_ROUND_NUMBER).Build() };
+            games.Add(new GameBuilder().WithRound(SECOND_ROUND_NUMBER).Build());
+            var expectedGames = new List<Game> { new GameBuilder().WithRound(SECOND_ROUND_NUMBER).Build() };
+            expectedGames.Add(new GameBuilder().WithRound(FIRST_ROUND_NUMBER).Build());
+
+            _gamesByTournamentIdRoundsNumberQueryMock
+                .Setup(m => m.Execute(It.IsAny<TournamentRoundsGameResultsCriteria>()))
+                .Returns(expectedGames);
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.SwapRounds(TOURNAMENT_ID, FIRST_ROUND_NUMBER, SECOND_ROUND_NUMBER);
+
+            // Assert
+            Assert.IsTrue(Enumerable.SequenceEqual(
+                                        games,
+                                        expectedGames,
+                                        new GameMvcEqualityComparer()));
+        }
+
+        /// <summary>
+        /// Test for SwapRounds method. Games are missing and cannot be swapped.
+        /// Exception is thrown during editing.
+        /// </summary>
+        [TestMethod]
+        public void SwapRounds_MissingGames_ExceptionThrown()
+        {
+            Exception exception = null;
+            const byte WRONG_ROUND_NUMBER = 0;
+
+            // Arrange
+            MockDefaultTournament();
+            var games = new List<Game> { new GameBuilder().Build() };
+
+            _gamesByTournamentIdRoundsNumberQueryMock
+                .Setup(m => m.Execute(It.IsAny<TournamentRoundsGameResultsCriteria>()))
+                .Returns(games);
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                foreach (var game in games)
+                {
+                    SetupEditMissingEntityException(game);
+                }
+
+                sut.SwapRounds(TOURNAMENT_ID, WRONG_ROUND_NUMBER, WRONG_ROUND_NUMBER);
+            }
+            catch (MissingEntityException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
+        }
+
         private bool AreGamesEqual(Game x, Game y)
         {
             return new GameComparer().Compare(x, y) == 0;
@@ -1468,6 +1544,16 @@
             _gameRepositoryMock.Verify(
                 m => m.Update(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
             _unitOfWorkMock.Verify(m => m.Commit(), times);
+        }
+
+        private void VerifyEditGames(List<Game> games, Times times)
+        {
+            foreach (var game in games)
+            {
+                _gameRepositoryMock.Verify(
+                m => m.Update(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
+                _unitOfWorkMock.Verify(m => m.Commit(), times);
+            }
         }
 
         private void VerifyEditGame(Game game, Times repositoryTimes, Times unitOfWorkTimes)

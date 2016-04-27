@@ -1,0 +1,23 @@
+﻿@model byte
+
+<div id="dialog-swap" title="Swap rounds">
+    <div class="col-md-6">
+        <select class="selectpicker" data-style="btn-success" id="list_rounds1">
+            @for (int i = 1; i <= Model; i++)
+            {
+                <option value="@i">Round @i</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-6">
+        <select id="list_rounds2" class="selectpicker">
+            @for (int i = 1; i <= Model; i++)
+            {
+                <option value="@i">Round @i</option>
+            }
+        </select>
+    </div>
+
+    <div id="error" class="col-md-12 text-right"></div>
+</div>
+

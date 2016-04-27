@@ -34,6 +34,8 @@
         private const string TEST_TOURNAMENT_NAME = "Name";
         private const int TEST_ROUND_NUMBER = 2;
         private const int EMPTY_TEAMLIST_COUNT = 0;
+        private const byte FIRST_ROUND_NUMBER = 1;
+        private const byte SECOND_ROUND_NUMBER = 2;
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string INDEX_ACTION_NAME = "Index";
@@ -150,7 +152,7 @@
             // Assert
             Assert.IsFalse(_sut.ModelState.IsValid);
             Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
-            Assert.IsNull(result);
+            Assert.IsNull(result, "Result should be null");
         }
 
         /// <summary>
@@ -900,6 +902,79 @@
         }
         #endregion
 
+        #region SwapRounds
+        /// <summary>
+        /// Test for SwapRounds method.
+        /// Wrong tournament Id passed. View with error message is returned.
+        /// </summary>
+        [TestMethod]
+        public void SwapRounds_NonExistentTournament_ErrorViewIsReturned()
+        {
+            // Arrange
+            SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+
+            // Act
+            var result = TestExtensions
+                            .GetModel<ScheduleViewModel>(this._sut.SwapRounds(
+                                                            TEST_TOURNAMENT_ID,
+                                                            FIRST_ROUND_NUMBER,
+                                                            SECOND_ROUND_NUMBER));
+
+            // Assert
+            Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
+            Assert.IsNull(result);
+        }
+
+        /// <summary>
+        /// Test for SwapRounds method. Games are exist.
+        /// All games are swapped.
+        /// </summary>
+        [TestMethod]
+        public void SwapRounds_ExistentGames_GamesIsSwapped()
+        {
+            // Arrange
+            var tournament = new TournamentScheduleDtoBuilder().Build();
+
+            SetupGetScheduleInfo(TEST_TOURNAMENT_ID, tournament);
+
+            // Act
+            var result = this._sut
+                .SwapRounds(TEST_TOURNAMENT_ID, FIRST_ROUND_NUMBER, SECOND_ROUND_NUMBER) as RedirectToRouteResult;
+
+            // Assert
+            VerifyRedirect("ShowSchedule", result);
+        }
+
+        /// <summary>
+        /// Test for SwapRounds method. Some game are not exist.
+        /// All games are swapped.
+        /// </summary>
+        [TestMethod]
+        public void SwapRounds_NonExistentGames_ErrorViewIsReturned()
+        {
+            // Arrange
+            var tournament = new TournamentScheduleDtoBuilder().Build();
+            SetupGetScheduleInfo(TEST_TOURNAMENT_ID, tournament);
+            this._gameServiceMock.Setup(tr => tr.SwapRounds(
+                                                            TEST_TOURNAMENT_ID,
+                                                            FIRST_ROUND_NUMBER,
+                                                            SECOND_ROUND_NUMBER))
+                                                                   .Throws(new MissingEntityException());
+
+            // Act
+            var result = TestExtensions.GetModel<ScheduleViewModel>(this._sut.SwapRounds(
+                                                                              TEST_TOURNAMENT_ID,
+                                                                              FIRST_ROUND_NUMBER,
+                                                                              SECOND_ROUND_NUMBER));
+
+            // Assert
+            Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
+            Assert.IsNull(result);
+        }
+        #endregion
+
         #region Private
         private List<Tournament> MakeTestTournaments()
         {
@@ -924,6 +999,11 @@
         private GameViewModel MakeTestGameViewModel()
         {
             return new GameViewModelBuilder().Build();
+        }
+
+        private Game MakeTestGame()
+        {
+            return new GameBuilder().Build();
         }
 
         private TournamentViewModel MakeTestTournamentViewModel(int tournamentId)
@@ -1015,6 +1095,11 @@
         private void VerifyCreateGame(Times times)
         {
             this._gameServiceMock.Verify(gs => gs.Create(It.IsAny<Game>()), times);
+        }
+
+        private void VerifySwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)
+        {
+            this._gameServiceMock.Verify(gs => gs.SwapRounds(tournamentId, firstRoundNumber, secondRoundNumber));
         }
 
         private void VerifyEditGame(Times times)

@@ -39,5 +39,13 @@
         /// </summary>
         /// <param name="id">Identifier of game.</param>
         void Delete(int id);
+
+        /// <summary>
+        /// Swap all games between two rounds.
+        /// </summary>
+        /// <param name="tournamentId"> Identifier of tournament.</param>
+        /// <param name="firstRoundNumber"> Identifier of first round.</param>
+        /// <param name="secondRoundNumber"> Identifier of second round.</param>
+        void SwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber);
     }
 }

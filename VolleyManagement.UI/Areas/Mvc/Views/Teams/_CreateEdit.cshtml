@@ -1,5 +1,6 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
 @using VolleyManagement.UI.App_GlobalResources
+@using VolleyManagement.Domain
 
 <div class="editor-label">
     @Html.LabelFor(model => model.Name)
@@ -46,8 +47,8 @@
 <div class="editor-label">
     @Html.LabelFor(model => model.Achievements)
 </div>
-<div class="editor-label">
-    @Html.EditorFor(model => model.Achievements)
+<div class="multiline-editor-field">
+    @Html.TextAreaFor(model => model.Achievements, new { @maxlength = Constants.Team.MAX_ACHIEVEMENTS_LENGTH})
     @Html.ValidationMessageFor(model => model.Achievements)
 </div>
 

@@ -2,15 +2,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-
-    /// <summary>
-    /// Add support for authorization operations
-    /// </summary>
+    
     public partial class AddRolesToOperationsMap : DbMigration
     {
-        /// <summary>
-        /// The up migration.
-        /// </summary>
         public override void Up()
         {
             CreateTable(
@@ -22,11 +16,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         OperationId = c.Short(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
+            
         }
-
-        /// <summary>
-        /// The down migration.
-        /// </summary>
+        
         public override void Down()
         {
             DropTable("dbo.RolesToOperationsMap");

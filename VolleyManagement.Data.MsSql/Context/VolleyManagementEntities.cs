@@ -49,7 +49,7 @@ namespace VolleyManagement.Data.MsSql.Context
         /// <summary>
         /// Gets or sets the roles to features table.
         /// </summary>
-        public DbSet<RoleToOperationEntity> RolesToFeatures { get; set; }
+        public DbSet<RoleToOperationEntity> RolesToOperations { get; set; }
 
         /// <summary>
         /// Gets or sets the user table.
@@ -108,7 +108,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureUserLogins(modelBuilder);
             ConfigureRoles(modelBuilder);
             ConfigureUserRoleRelationship(modelBuilder);
-            ConfigureRoleToFeatures(modelBuilder);
+            ConfigureRoleToOperations(modelBuilder);
             ConfigurePlayers(modelBuilder);
             ConfigureTeams(modelBuilder);
             ConfigureTournamentTeamRelationship(modelBuilder);
@@ -277,7 +277,7 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsVariableLength();
         }
 
-        private static void ConfigureRoleToFeatures(DbModelBuilder modelBuilder)
+        private static void ConfigureRoleToOperations(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RoleToOperationEntity>()
                 .ToTable(VolleyDatabaseMetadata.ROLES_TO_OPERATIONS_TABLE_NAME)

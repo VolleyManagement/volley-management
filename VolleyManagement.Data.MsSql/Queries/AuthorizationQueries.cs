@@ -27,7 +27,7 @@
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalUsers = _unitOfWork.Context.Users;
             _dalRoles = _unitOfWork.Context.Roles;
-            _dalRolesToOperations = _unitOfWork.Context.RolesToFeatures;
+            _dalRolesToOperations = _unitOfWork.Context.RolesToOperations;
         }
 
         /// <summary>

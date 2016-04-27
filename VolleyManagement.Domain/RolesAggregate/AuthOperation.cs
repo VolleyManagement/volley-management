@@ -147,7 +147,8 @@
 
         private static short GetAuthOperationId(byte areaId, byte operationId)
         {
-            return BitConverter.ToInt16(new byte[] { areaId, operationId }, 0);
+            short result = (short)(areaId << 8 | operationId);
+            return result;
         }
 
         #endregion

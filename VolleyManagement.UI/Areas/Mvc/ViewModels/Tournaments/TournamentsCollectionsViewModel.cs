@@ -20,7 +20,7 @@ using VolleyManagement.Domain.TournamentsAggregate;
         public IEnumerable<Tournament> UpcomingTournaments { get; set; }
 
         /// <summary>
-        /// Gets or sets instance of AuthOperationsVerifier object
+        /// Gets or sets instance of <see cref="AllowedOperations"/> object
         /// </summary>
         public AllowedOperations OperationAccessVerifier { get; set; }
     }

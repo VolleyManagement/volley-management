@@ -2,9 +2,15 @@
 {
     using System;
 
-    public class AuthorizationException: Exception
+    /// <summary>
+    /// Contains information about thrown authorization exception
+    /// </summary>
+    public class AuthorizationException : Exception
     {
-        public AuthorizationException(): base("Requested area is forbidden for current user")
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationException"/> class
+        /// </summary>
+        public AuthorizationException() : base("Requested area is forbidden for current user")
         {
         }
     }

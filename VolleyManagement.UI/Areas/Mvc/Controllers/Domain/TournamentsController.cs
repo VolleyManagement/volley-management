@@ -44,6 +44,7 @@
         /// </summary>
         /// <param name="tournamentService">The tournament service</param>
         /// <param name="gameService">The game service</param>
+        /// <param name="authService">The authorization service</param>
         public TournamentsController(
             ITournamentService tournamentService,
             IGameService gameService,
@@ -60,9 +61,9 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            var tournamentsCollections = new TournamentsCollectionsViewModel 
+            var tournamentsCollections = new TournamentsCollectionsViewModel
             {
-                OperationAccessVerifier = this._authService.GetAuthOperationsVerifier(AppOperations.Tournaments.Create)
+                OperationAccessVerifier = this._authService.GetAllowedOperations(AuthOperations.Tournaments.Create)
             };
 
             var actualTournaments = this._tournamentService.GetActual().ToArray();

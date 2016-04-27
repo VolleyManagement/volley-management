@@ -65,6 +65,7 @@
         /// <param name="getAllQuery"> Get All object query. </param>
         /// <param name="getByIdQuery">Get tournament by id query.</param>
         /// <param name="getAllTeamsQuery">Get All Tournament Teams query.</param>
+        /// <param name="authService">Authorization service</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
@@ -128,10 +129,7 @@
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
-            if (!_authService.CheckAccess(AppOperations.Tournaments.Create))
-            {
-                throw new AuthorizationException();
-            }
+            _authService.CheckAccess(AuthOperations.Tournaments.Create);
 
             if (tournamentToCreate == null)
             {

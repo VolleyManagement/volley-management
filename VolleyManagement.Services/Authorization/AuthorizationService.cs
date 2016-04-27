@@ -4,18 +4,29 @@
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.RolesAggregate;
 
-    public class AuthorizationService: IAuthorizationService
+    /// <summary>
+    /// Provides way to check permissions for particular operation
+    /// </summary>
+    public class AuthorizationService : IAuthorizationService
     {
         private ICurrentUserService _userService;
-        private IQuery<List<AppAreaOperation>, FindByIdCriteria> _getOperationsQuery;
+        private IQuery<List<AuthOperation>, FindByIdCriteria> _getOperationsQuery;
 
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationService"/> class
+        /// </summary>
+        /// <param name="userService">Service to get information about user</param>
+        /// <param name="getOperationsQuery">Implementation of authorization queries object</param>
         public AuthorizationService(
             ICurrentUserService userService,
-            IQuery<List<AppAreaOperation>, FindByIdCriteria> getOperationsQuery)
+            IQuery<List<AuthOperation>, FindByIdCriteria> getOperationsQuery)
         {
             if (userService == null)
             {
@@ -31,35 +42,65 @@
             this._getOperationsQuery = getOperationsQuery;
         }
 
-        public bool CheckAccess(AppAreaOperation operation)
+        #endregion
+
+        /// <summary>
+        /// Checks if specified operation is allowed for user
+        /// </summary>
+        /// <param name="operation">Operation to check</param>
+        public void CheckAccess(AuthOperation operation)
         {
-            var allowedOperations = this.GetAllowedOperations();
-            return allowedOperations.Select(i => i.Id).Contains(operation.Id);
+            var allowedOperations = this.GetAllUserOperations();
+            if (!allowedOperations.Contains(operation))
+            {
+                throw new AuthorizationException();
+            }
         }
 
-        public AllowedOperations GetAuthOperationsVerifier(List<AppAreaOperation> requestedOperations)
+        /// <summary>
+        /// Returns an instance of <see cref="AllowedOperations"/> class, which allows to check permissions
+        /// to specified list of operations
+        /// </summary>
+        /// <param name="requestedOperations">Operations to check</param>
+        /// <returns>An instance of <see cref="AllowedOperations"/> class</returns>
+        public AllowedOperations GetAllowedOperations(List<AuthOperation> requestedOperations)
         {
-            var data = from ao in this.GetAllowedOperations()
-                       join ro in requestedOperations
-                            on ao.Id equals ro.Id
-                       select ao;
+            if (requestedOperations == null)
+            {
+                throw new ArgumentNullException("Requested operations list shouldn't be null!");
+            }
 
-            return new AllowedOperations(data.ToList());
+            var data = GetAllUserOperations()
+                       .Where(op => requestedOperations.Contains(op))
+                       .ToList();
+
+            return new AllowedOperations(data);
         }
 
-        public AllowedOperations GetAuthOperationsVerifier(AppAreaOperation requestedOperation)
+        /// <summary>
+        /// Returns an instance of <see cref="AllowedOperations"/> class, which allows to check permissions
+        /// to specified operation
+        /// </summary>
+        /// <param name="requestedOperation">Operation to check</param>
+        /// <returns>An instance of <see cref="AllowedOperations"/> class</returns>
+        public AllowedOperations GetAllowedOperations(AuthOperation requestedOperation)
         {
-            return this.GetAuthOperationsVerifier(new List<AppAreaOperation> { requestedOperation });
+            if (requestedOperation == null)
+            {
+                throw new ArgumentNullException("Requested operation shouldn't be null!");
+            }
+
+            return this.GetAllowedOperations(new List<AuthOperation> { requestedOperation });
         }
 
         #region Private
 
-        private List<AppAreaOperation> GetAllowedOperations()
+        private List<AuthOperation> GetAllUserOperations()
         {
             var userId = this._userService.GetCurrentUserId();
             return this._getOperationsQuery.Execute(new FindByIdCriteria() { Id = userId });
         }
 
-        #endregion        
+        #endregion
     }
 }

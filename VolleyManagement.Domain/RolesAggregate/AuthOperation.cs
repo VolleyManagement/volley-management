@@ -1,0 +1,155 @@
+﻿namespace VolleyManagement.Domain.RolesAggregate
+{
+    using System;
+
+    /// <summary>
+    /// Contains information about particular operation within application
+    /// </summary>
+    public class AuthOperation
+    {
+        private readonly short _id;
+
+        #region Constructor
+
+        private AuthOperation(short id)
+        {
+            this._id = id;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Returns identifier of current operation
+        /// </summary>
+        public short Id
+        {
+            get { return this._id; }
+        }
+
+        #region Operators overload
+
+        /// <summary>
+        /// Implementing of "implicit" operator from <see cref="Int16"/>
+        /// </summary>
+        /// <param name="id">Identifier of operation</param>
+        /// <returns>instance of <see cref="AuthOperation"/> class</returns>
+        public static implicit operator AuthOperation(short id)
+        {
+            return new AuthOperation(id);
+        }
+
+        /// <summary>
+        /// Implementing of "implicit" operator from tuple of <see cref="Byte"/> parameters
+        /// </summary>
+        /// <param name="parameters">Parameters of the instance of <see cref="AuthOperation"/> class</param>
+        /// <returns>instance of <see cref="AuthOperation"/> class</returns>
+        public static implicit operator AuthOperation(Tuple<byte, int> parameters)
+        {
+            checked
+            {
+                return new AuthOperation(GetAuthOperationId(parameters.Item1, (byte)parameters.Item2));
+            }
+        }
+
+        /// <summary>
+        /// Implementing of "==" operator
+        /// </summary>
+        /// <param name="x">Left operation</param>
+        /// <param name="y">Right operation</param>
+        /// <returns>Flag if specified objects equals</returns>
+        public static bool operator ==(AuthOperation x, AuthOperation y)
+        {
+            bool result;
+
+            if (object.ReferenceEquals(x, null))
+            {
+                result = object.ReferenceEquals(y, null);
+            }
+            else
+            {
+                result = x.Equals(y);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implementing of "!=" operator
+        /// </summary>
+        /// <param name="x">Left operation</param>
+        /// <param name="y">Right operation</param>
+        /// <returns>Flag if specified objects equals</returns>
+        public static bool operator !=(AuthOperation x, AuthOperation y)
+        {
+            return !(x == y);
+        }
+
+        #endregion
+
+        #region Overrides
+
+        /// <summary>
+        /// Implementing of "Equals" method
+        /// </summary>
+        /// <param name="obj">object to check equality</param>
+        /// <returns>Flag if specified object equals to current</returns>
+        public override bool Equals(object obj)
+        {
+            bool result;
+
+            if (obj == null)
+            {
+                result = false;
+            }
+            else
+            {
+                result = obj is AuthOperation
+                         ? Equals((AuthOperation)obj)
+                         : false;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implementing of "Equals" method
+        /// </summary>
+        /// <param name="obj">>object to check equality</param>
+        /// <returns>Flag if specified object equals to current</returns>
+        public bool Equals(AuthOperation obj)
+        {
+            bool result;
+
+            if (obj == null)
+            {
+                result = false;
+            }
+            else
+            {
+                result = this._id == obj._id;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Implementing of "GetHashCode" method
+        /// </summary>
+        /// <returns>Hash code</returns>
+        public override int GetHashCode()
+        {
+            return this._id.GetHashCode();
+        }
+
+        #endregion
+
+        #region Private
+
+        private static short GetAuthOperationId(byte areaId, byte operationId)
+        {
+            return BitConverter.ToInt16(new byte[] { areaId, operationId }, 0);
+        }
+
+        #endregion
+    }
+}

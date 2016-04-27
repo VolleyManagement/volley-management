@@ -69,8 +69,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="RolesAggregate\AppAreaOperation.cs" />
-    <Compile Include="RolesAggregate\AppOperations.cs" />
+    <Compile Include="RolesAggregate\AuthOperation.cs" />
+    <Compile Include="RolesAggregate\AuthOperations.cs" />
     <Compile Include="RolesAggregate\IRoleRepository.cs" />
     <Compile Include="RolesAggregate\Role.cs" />
     <Compile Include="TeamsAggregate\ITeamRepository.cs" />

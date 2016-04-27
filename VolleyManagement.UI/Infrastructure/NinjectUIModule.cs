@@ -2,10 +2,13 @@
 {
     using System;
     using Ninject.Activation;
+    using Ninject.Infrastructure;
     using Ninject.Modules;
     using VolleyManagement.Contracts.Authorization;
-    using Ninject.Infrastructure;
 
+    /// <summary>
+    /// Defines bindings for UI layer
+    /// </summary>
     public class NinjectUIModule : NinjectModule
     {
         private readonly Func<IContext, object> _scopeCallback;
@@ -28,6 +31,4 @@
             configuration.BindingConfiguration.ScopeCallback = _scopeCallback;
         }
     }
-
-
 }

@@ -8,33 +8,45 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.RolesAggregate;
 
-    public class AuthorizationQueries : IQuery<List<AppAreaOperation>, FindByIdCriteria>
+    /// <summary>
+    /// Provides query object implementation for authorization
+    /// </summary>
+    public class AuthorizationQueries : IQuery<List<AuthOperation>, FindByIdCriteria>
     {
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<UserEntity> _dalUsers;
         private readonly DbSet<RoleEntity> _dalRoles;
         private readonly DbSet<RoleToOperationEntity> _dalRolesToOperations;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorizationQueries"/> class
+        /// </summary>
+        /// <param name="unitOfWork">Instance of class which implements <see cref="IUnitOfWork"/></param>
         public AuthorizationQueries(IUnitOfWork unitOfWork)
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalUsers = _unitOfWork.Context.Users;
             _dalRoles = _unitOfWork.Context.Roles;
             _dalRolesToOperations = _unitOfWork.Context.RolesToFeatures;
-            
         }
 
-        public List<AppAreaOperation> Execute(FindByIdCriteria criteria)
+        /// <summary>
+        /// Finds list of allowed operation by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The list of<see cref="AuthOperation"/>. </returns>
+        public List<AuthOperation> Execute(FindByIdCriteria criteria)
         {
             var data = _dalUsers.Where(u => u.Id == criteria.Id)
                                 .SelectMany(u => u.Roles)
-                                .Join(_dalRolesToOperations,
-                                      r => r.Id,
-                                      o => o.RoleId,
-                                      (r, o) => o.OperationId)
+                                .Join(
+                                    _dalRolesToOperations,
+                                    r => r.Id,
+                                    o => o.RoleId,
+                                    (r, o) => o.OperationId)
                                 .Distinct()
                                 .AsEnumerable()
-                                .Select(o => (AppAreaOperation)o)
+                                .Select(o => (AuthOperation)o)
                                 .ToList();
 
             return data;

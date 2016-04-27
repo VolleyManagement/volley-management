@@ -923,59 +923,6 @@
         }
 
         /// <summary>
-        /// Test for Edit method. Games exist. Games are edited successfully.
-        /// </summary>
-        [TestMethod]
-        public void Edit_AllGamesExist_GamesEdited()
-        {
-            // Arrange
-            MockDefaultTournament();
-            var existingGames = new List<Game> { new GameBuilder().WithId(GAME_RESULT_ID).Build() };
-            var games = new List<Game> { new GameBuilder().WithId(GAME_RESULT_ID).Build() };
-            _gamesByTournamentIdRoundsNumberQueryMock
-                .Setup(m => m.Execute(It.IsAny<TournamentRoundsGameResultsCriteria>())).Returns(existingGames);
-            var sut = _kernel.Get<GameService>();
-
-            // Act
-            sut.Edit(games);
-
-            // Assert
-            VerifyEditGames(games, Times.Once());
-        }
-
-        /// <summary>
-        /// Test for Edit method. Games are missing and cannot be edited. Exception is thrown during editing.
-        /// </summary>
-        [TestMethod]
-        public void Edit_MissingGameInList_ExceptionThrown()
-        {
-            Exception exception = null;
-
-            // Arrange
-            MockDefaultTournament();
-            var games = new List<Game> { new GameBuilder().Build() };
-            var sut = _kernel.Get<GameService>();
-
-            // Act
-            try
-            {
-                foreach (var game in games)
-                {
-                    SetupEditMissingEntityException(game);
-                }
-
-                sut.Edit(games);
-            }
-            catch (MissingEntityException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
-        }
-
-        /// <summary>
         /// Test for Delete method. Existing game has to be deleted. Game is deleted.
         /// </summary>
         [TestMethod]

@@ -931,7 +931,7 @@
         /// All games are swapped.
         /// </summary>
         [TestMethod]
-        public void SwapRounds_ValidGamesViewModel_GamesIsSwapped()
+        public void SwapRounds_ExistentGames_GamesIsSwapped()
         {
             // Arrange
             var tournament = new TournamentScheduleDtoBuilder().Build();

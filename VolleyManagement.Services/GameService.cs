@@ -125,27 +125,6 @@
         }
 
         /// <summary>
-        /// Edits specified instance of game.
-        /// </summary>
-        /// <param name="games">Games to update.</param>
-        public void Edit(List<Game> games)
-        {
-            try
-            {
-                foreach (var game in games)
-                {
-                    _gameRepository.Update(game);
-                }
-            }
-            catch (ConcurrencyException ex)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
-            }
-
-            _gameRepository.UnitOfWork.Commit();
-        }
-
-        /// <summary>
         /// Deletes game by its identifier.
         /// </summary>
         /// <param name="id">Identifier of game.</param>
@@ -184,7 +163,19 @@
                 game.Round = game.Round == firstRoundNumber ? secondRoundNumber : firstRoundNumber;
             }
 
-            this.Edit(games);
+            try
+            {
+                foreach (var game in games)
+                {
+                    _gameRepository.Update(game);
+                }
+            }
+            catch (ConcurrencyException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
+            }
+
+            _gameRepository.UnitOfWork.Commit();
         }
 
         #endregion

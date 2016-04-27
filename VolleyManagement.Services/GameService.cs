@@ -158,7 +158,6 @@
                     SecondRoundNumber = secondRoundNumber
                 });
 
-
             try
             {
                 foreach (var game in games)

@@ -1,10 +1,10 @@
-﻿$(document).ready(function() {
+﻿$(document).ready(function () {
     'use strict';
 
     // register namespace
     var currNs = VM.addNamespace("team.createEdit"),
         privates = {};
-        
+
     privates.teamUnderEdit = document.location.pathname.search("Edit") > 0 || document.location.pathname.search("edit") > 0;
     privates.teamId = privates.teamUnderEdit ? $("[name='Id']").val() : 0;
     privates.playersData = [];
@@ -16,9 +16,9 @@
     privates.captainRow = null; // set on render
 
     // HELPERS
-    privates.updateSelectedPlayers = function() {      
+    privates.updateSelectedPlayers = function () {
         privates.selectedPlayers = [];
-        $('.teamPlayerInput', privates.teamPlayersTable).each(function(key, value) {
+        $('.teamPlayerInput', privates.teamPlayersTable).each(function (key, value) {
             var playerId = privates.getPlayerId(value);
             if (playerId) {
                 privates.selectedPlayers.push(playerId);
@@ -26,7 +26,7 @@
         });
     };
 
-    privates.areAllPlayersSetToInputs = function() {
+    privates.areAllPlayersSetToInputs = function () {
 
         var inputs = $('.teamPlayerInput', privates.teamPlayersTable),
             length = inputs.length,
@@ -47,26 +47,28 @@
         return result;
     };
 
-    privates.getTeamPlayerRowMarkup = function(config) {
+    privates.getTeamPlayerRowMarkup = function (config) {
         var playerName = config.playerName || "",
             playerId = config.playerId || 0,
             isCaptain = config.isCaptain || false,
             rowClass = isCaptain ? "teamPlayer captain" : "teamPlayer",
             customAttributes = privates.playerIdAttributeName + " ='" + playerId + "'",
-            inputClasses = isCaptain ? "teamPlayerInput captain" : "teamPlayerInput",
+            inputClasses = isCaptain ? "teamPlayerInput existingPlayerRequired captain" : "teamPlayerInput existingPlayerRequired",
+            inputName = playerId,
             rowOptions = "<button class='viewTeamPlayerDetailsButton'>Details</button>",
+            validationSpan = "<span class='field-validation-valid' data-valmsg-for='" + playerId + "' data-valmsg-replace='true'></span>",
             result;
 
         rowOptions += (isCaptain ? "" : " <button class='deleteTeamPlayerButton'>Delete</button>");
 
         result = "<tr class='" + rowClass + "'>" +
-            "<td><input type='text' class='" + inputClasses + "' value='" + playerName + "' " + customAttributes + "/></td>" +
+            "<td><div><input type='text' name='" + inputName + "' class='" + inputClasses + "' value='" + playerName + "' " + customAttributes + "/>" + validationSpan + "</div></td>" +
             "<td>" + rowOptions + "</td></tr>";
 
         return result;
     };
 
-    privates.getPlayerId = function(inputElement) {
+    privates.getPlayerId = function (inputElement) {
         var result;
 
         if (inputElement.attr) {
@@ -78,7 +80,7 @@
         return result || 0;
     };
 
-    privates.setPlayerId = function(inputElement, id) {
+    privates.setPlayerId = function (inputElement, id) {
         var attr;
 
         id = id || 0;
@@ -91,8 +93,8 @@
             inputElement.attributes.setNamedItem(attr);
         }
     };
-    
-    privates.updateCaptainRowValues = function(name, id) {
+
+    privates.updateCaptainRowValues = function (name, id) {
         var inputElement = $(".teamPlayerInput", privates.captainRow),
             sourceInput;
 
@@ -103,8 +105,10 @@
         }
 
         inputElement.val(name);
+        inputElement.attr("name", id);
+        $(inputElement.parent()).children().last().attr("data-valmsg-for", id);
         privates.setPlayerId(inputElement, id);
-        
+
         if (!name) {
             privates.captainRow.hide();
         } else {
@@ -112,7 +116,7 @@
         }
     };
 
-    privates.renderNewTeamPlayerRow = function(config) {
+    privates.renderNewTeamPlayerRow = function (config) {
         config = config || {};
 
         config.isCaptain = false;
@@ -120,7 +124,7 @@
         privates.setRowOptionsListeners($('tr:last', privates.teamPlayersTable));
     };
 
-    privates.setTeamPlayerInputListeners = function(inputElement) {
+    privates.setTeamPlayerInputListeners = function (inputElement) {
         inputElement.bind('change', currNs.onTeamPlayerInputChange);
         inputElement.bind('blur', currNs.onTeamPlayerInputBlur);
         inputElement.autocomplete({
@@ -131,16 +135,16 @@
         });
     };
 
-    privates.setRowOptionsListeners = function(teamPlayerRow) {
+    privates.setRowOptionsListeners = function (teamPlayerRow) {
         $(".deleteTeamPlayerButton", teamPlayerRow).bind('click', currNs.deleteTeamPlayersRow);
         $(".viewTeamPlayerDetailsButton", teamPlayerRow).bind('click', currNs.viewTeamPlayerDetails);
     };
 
-    privates.getCaptainEditInput = function() {
+    privates.getCaptainEditInput = function () {
         return $("#Captain_FullName");
     };
 
-    privates.addTeamPlayersRow = function(config) {
+    privates.addTeamPlayersRow = function (config) {
         var teamPlayerInput = null;
 
         privates.renderNewTeamPlayerRow(config);
@@ -152,7 +156,7 @@
         return false;
     };
 
-    privates.getJsonForTeamSave = function() {
+    privates.getJsonForTeamSave = function () {
         var result = {
             Name: $("#Name").val(),
             Coach: $("#Coach").val(),
@@ -167,7 +171,7 @@
             result.Id = privates.teamId;
         }
 
-        $.each(privates.selectedPlayers, function(key, value) {
+        $.each(privates.selectedPlayers, function (key, value) {
             result.Roster.push({
                 Id: value
             });
@@ -177,13 +181,13 @@
     };
 
 
-    privates.teamIsValid = function(teamData) {
+    privates.teamIsValid = function (teamData) {
         return $("form").valid();
     };
 
     // AUTOCOMPLETE
 
-    privates.getAutocompleteUrl = function(config) {
+    privates.getAutocompleteUrl = function (config) {
 
         var searchString,
             isCaptain = "false",
@@ -193,15 +197,15 @@
         if (config.searchString) {
             result = "/Players/GetFreePlayers?searchString=" + encodeURI(config.searchString);
 
-            if (privates.selectedPlayers.length > 0){
+            if (privates.selectedPlayers.length > 0) {
                 selectedPlayers = privates.selectedPlayers.join();
-                
+
                 if (config.isCaptain) {
                     result += ("&includeList=" + selectedPlayers);
                 } else {
                     result += ("&excludeList=" + selectedPlayers);
                 }
-                
+
                 if (privates.teamUnderEdit) {
                     result += ("&includeTeam=" + privates.teamId);
                 }
@@ -211,13 +215,13 @@
         return result;
     };
 
-    privates.executeCompleter = function(url, responseHandler) {
+    privates.executeCompleter = function (url, responseHandler) {
 
         var processedData = [];
 
         if (url) {
-            $.getJSON(url, function(data, status, xhr) {
-                $.each(data, function(key, value) {
+            $.getJSON(url, function (data, status, xhr) {
+                $.each(data, function (key, value) {
                     processedData.push({
                         id: value.Id,
                         value: value.FullName
@@ -229,7 +233,7 @@
         }
     };
 
-    privates.teamPlayerCompleter = function(requestObj, responseHandler) {
+    privates.teamPlayerCompleter = function (requestObj, responseHandler) {
 
         var url = privates.getAutocompleteUrl({
             searchString: requestObj.term,
@@ -239,7 +243,7 @@
         privates.executeCompleter(url, responseHandler);
     };
 
-    privates.captainCompleter = function(requestObj, responseHandler) {
+    privates.captainCompleter = function (requestObj, responseHandler) {
 
         var url = privates.getAutocompleteUrl({
             searchString: requestObj.term,
@@ -249,19 +253,19 @@
         privates.executeCompleter(url, responseHandler);
     };
 
-    privates.onTeamPlayerSelect = function(eventObj, selectedItem) {
+    privates.onTeamPlayerSelect = function (eventObj, selectedItem) {
         privates.setPlayerId(eventObj.target, selectedItem.item.id);
         privates.updateSelectedPlayers();
     };
 
-    privates.onCaptainSelect = function(eventObj, selectedItem) {
+    privates.onCaptainSelect = function (eventObj, selectedItem) {
         var selectedId = selectedItem.item.id,
             selectedName = selectedItem.item.value;
 
         privates.setPlayerId(eventObj.target, selectedId);
-        
+
         if (selectedId) {
-            $("tr .teamPlayerInput",  privates.teamPlayersTable).each(function(ind, el){
+            $("tr .teamPlayerInput", privates.teamPlayersTable).each(function (ind, el) {
                 if (!$(el).hasClass("captain") && privates.getPlayerId(el) === selectedId) {
                     el.parentNode.parentNode.remove();
                 }
@@ -276,27 +280,27 @@
         document.location = "/Teams/Index";
     };
 
-    privates.handleTeamCreateEditFail = function(data, status, xhr) {
+    privates.handleTeamCreateEditFail = function (data, status, xhr) {
         alert("Create/Edit failed");
     };
 
 
     // NAMESPACE PUBLIC METHODS
 
-    currNs.onAddPlayerToTeamButtonClick = function() {
+    currNs.onAddPlayerToTeamButtonClick = function () {
         if (privates.areAllPlayersSetToInputs()) {
             privates.addTeamPlayersRow();
         }
         return false;
     };
 
-    currNs.onTeamPlayerInputChange = function(eventData) {
+    currNs.onTeamPlayerInputChange = function (eventData) {
         privates.setPlayerId(eventData.target, "");
         privates.updateSelectedPlayers();
         return false;
     };
 
-    currNs.deleteTeamPlayersRow = function(eventData) {
+    currNs.deleteTeamPlayersRow = function (eventData) {
         var currentRow = eventData.target.parentElement.parentElement;
         currentRow.remove();
         privates.updateSelectedPlayers();
@@ -304,29 +308,32 @@
         return false;
     };
 
-    currNs.onTeamPlayerInputBlur = function(eventData) {
+    currNs.onTeamPlayerInputBlur = function (eventData) {
         var inputElement = eventData.target,
             playerId = privates.getPlayerId(inputElement);
 
-        if (!playerId) {
+        if (playerId) {
+            eventData.target.name = playerId;
+            eventData.target.parentElement.lastChild.dataset["valmsgFor"] = playerId;
+        }
+        else {
             if (inputElement.value !== "") {
-                alert(privates.notValidPlayerInputMessage);
-                inputElement.focus();
+                eventData.target.classList.add("existingPlayerRequired");
+            }
+            else {
+                eventData.target.classList.remove("existingPlayerRequired");
             }
         }
 
         return false;
     };
 
-    currNs.onCaptainBlur = function(eventData) {
+    currNs.onCaptainBlur = function (eventData) {
         var inputElement = eventData.target,
             captainId = privates.getPlayerId(inputElement);
 
         if (!captainId) {
-            if (inputElement.value !== "") {
-                alert(privates.notValidPlayerInputMessage);
-                inputElement.focus();
-            } else {
+            if (inputElement.value === "") {
                 privates.updateCaptainRowValues("", "");
             }
         }
@@ -334,7 +341,7 @@
         return false;
     };
 
-    currNs.createTeam = function() {
+    currNs.createTeam = function () {
         var teamData = privates.getJsonForTeamSave();
 
         if (privates.teamIsValid(teamData)) {
@@ -346,7 +353,7 @@
         return false;
     };
 
-    currNs.saveTeam = function() {
+    currNs.saveTeam = function () {
         var teamData = privates.getJsonForTeamSave();
 
         if (privates.teamIsValid(teamData)) {
@@ -359,7 +366,7 @@
     };
 
 
-    currNs.viewTeamPlayerDetails = function(eventData) {
+    currNs.viewTeamPlayerDetails = function (eventData) {
         // TODO: add necessary actions
         return false;
     };
@@ -367,7 +374,7 @@
 
     // INIT RENDER
     // STRICTLY BEFORE BINDINGS to avoid wrong page state
-    (function() {
+    (function () {
 
         var playersData = currNs.teamRoster || [],
             inputElement;
@@ -376,20 +383,20 @@
         $('tr:first', privates.teamPlayersTable).after(privates.getTeamPlayerRowMarkup({
             isCaptain: true
         }));
-        
+
         privates.captainRow = $('tr.captain', privates.teamPlayersTable);
         privates.updateCaptainRowValues();
 
         // Team players rows
         if (playersData.length > 0) {
-            $.each(playersData, function(ind, val) {
+            $.each(playersData, function (ind, val) {
                 if (!val.isCaptain) {
                     privates.addTeamPlayersRow({
                         playerName: val.name,
                         playerId: val.id,
                     });
-                }             
-            });     
+                }
+            });
         }
 
         privates.updateSelectedPlayers();
@@ -397,7 +404,7 @@
 
 
     /// BINDINGS
-    (function() {
+    (function () {
 
         var captainNameInput;
 
@@ -422,6 +429,13 @@
         $("#createTeamButton").bind("click", currNs.createTeam);
 
         $("#saveTeamButton").bind("click", currNs.saveTeam);
+
+        //Validation
+        $.validator.addMethod("PlayerExist", function (value, element) {
+            return +element.dataset["vmPlayerid"];
+        }, privates.notValidPlayerInputMessage);
+
+        $.validator.addClassRules("existingPlayerRequired", { PlayerExist: true });
 
     })();
 

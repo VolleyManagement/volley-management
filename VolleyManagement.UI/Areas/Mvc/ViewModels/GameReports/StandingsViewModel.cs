@@ -20,7 +20,7 @@
         /// <summary>
         /// Gets or sets the collection of entries in tournament's standings.
         /// </summary>
-        public List<StandingsEntryViewModel> Entries { get; set; }
+        public List<StandingsEntryViewModel> Standings { get; set; }
 
         /// <summary>
         /// Gets or sets data for pivot table.

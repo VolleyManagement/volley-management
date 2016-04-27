@@ -174,17 +174,17 @@ table.standings {
     padding: 0;
 }
 
-.lose_2_3 {
+.loss_2_3 {
     background-color: #fed280;
     margin: 0;
 }
 
-.lose_1_3 {
+.loss_1_3 {
     background-color: #fb9d75;
     margin: 0;
 }
 
-.lose_0_3 {
+.loss_0_3 {
     background-color: #f8696b;
     margin: 0;
 }

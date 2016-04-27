@@ -33,6 +33,17 @@
         public float? SetsRatio { get; set; }
 
         /// <summary>
+        /// Gets the sets ratio of the team.
+        /// </summary>
+        public string SetsRatioText
+        {
+            get
+            {
+                return SetsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", SetsRatio) : "MAX";
+            }
+        }
+
+        /// <summary>
         /// Maps domain model of team standings to view model of team standings.
         /// </summary>
         /// <param name="team">Domain model of team standings.</param>

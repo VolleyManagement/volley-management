@@ -11,13 +11,11 @@
 <fieldset>
     @{
         string legendText = string.Format(Resources.GameReportViews.TournamentStandingsLegend, Model.TournamentName);
-        string setsRatioText = string.Empty;
-        string ballsRatioText = string.Empty;   
         int position = 0;
     }
 
     <legend>@legendText</legend>
-    @if (Model.Entries.Count == 0)
+    @if (Model.Standings.Count == 0)
     {
         <p>@Resources.GameReportViews.NoGameResults</p>
     }
@@ -55,11 +53,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var entry in Model.Entries)
+                @foreach (var entry in Model.Standings)
                 {
-                    setsRatioText = entry.SetsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", entry.SetsRatio) : "MAX";
-                    ballsRatioText = entry.BallsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", entry.BallsRatio) : "MAX";
-
                     <tr class="standings-row">
                         <td class="standings-cell">@(++position)</td>
                         <td class="standings-cell">@entry.TeamName</td>
@@ -75,10 +70,10 @@
                         <td class="standings-cell">@entry.GamesWithScoreNilThree</td>
                         <td class="standings-cell">@entry.SetsWon</td>
                         <td class="standings-cell">@entry.SetsLost</td>
-                        <td class="standings-cell">@setsRatioText</td>
+                        <td class="standings-cell">@entry.SetsRatioText</td>
                         <td class="standings-cell">@entry.BallsWon</td>
                         <td class="standings-cell">@entry.BallsLost</td>
-                        <td class="standings-cell">@ballsRatioText</td>
+                        <td class="standings-cell">@entry.BallsRatioText</td>
                     </tr>
                 }
             </tbody>
@@ -88,9 +83,8 @@
 
 <fieldset>
     @{
-        position = 0;
-        setsRatioText = null;
-        string resultToShow = string.Empty;
+        int rows = Model.PivotTable.TeamsStandings.Count;
+        int columns = Model.PivotTable.TeamsStandings.Count;
     }
     <table class="standings">
         <thead>
@@ -106,33 +100,26 @@
                 <th class="standings-header-cell">@Resources.GameReportViews.PointsHeader</th>
         </thead>
         <tbody>
-            @for (int i = 0; i < Model.PivotTable.GameResults.GetLength(0); i++)
+            @for (int i = 0, pos = 1; i < rows; i++, pos++)
             {
-                setsRatioText = @Model.PivotTable.TeamsStandings.ElementAt(i).SetsRatio != float.PositiveInfinity
-                        ? string.Format("{0:0.###}", @Model.PivotTable.TeamsStandings.ElementAt(i).SetsRatio) : "MAX";
-
                 <tr class="standings-row">
-                    <td class="standings-cell">@(++position)</td>
-                    <td class="standings-cell">@Model.PivotTable.TeamsStandings.ElementAt(i).TeamName</td>
-                    @for (int j = 0; j < Model.PivotTable.GameResults.GetLength(1); j++)
+                    <td class="standings-cell">@(pos)</td>
+                    <td class="standings-cell">@Model.PivotTable.TeamsStandings[i].TeamName</td>
+                    @for (int j = 0; j < columns; j++)
                     {
-                        var result = Model.PivotTable.GameResults[i, j];
                         <td class="standings-cell">
-                            @foreach (var item in Model.PivotTable.GameResults[i, j])
+                            @foreach (var item in Model.PivotTable[i, j])
                             {
-                                resultToShow = item.IsTechnicalDefeat ?
-                                    @item.HomeSetsScore + ":" + @item.AwaySetsScore + "*" :
-                                    @item.HomeSetsScore + ":" + @item.AwaySetsScore;
-                                <div class="@item.CssClass">@resultToShow</div>
+                                <div class="@item.CssClass">@item.ResultToShow</div>
                             }
                         </td>
                     }
                     <td class="standings-cell">
                         <div>
-                            @Model.PivotTable.TeamsStandings.ElementAt(i).Points
+                            @Model.PivotTable.TeamsStandings[i].Points
                         </div>
                         <div>
-                            @setsRatioText
+                            @Model.PivotTable.TeamsStandings[i].SetsRatioText
                         </div>
                     </td>
                 </tr>

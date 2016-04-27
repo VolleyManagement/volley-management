@@ -11,10 +11,23 @@
     /// </summary>
     public class PivotTableViewModel
     {
-        private const byte ZERO = 0;
-        private const byte ONE = 1;
-        private const byte TWO = 2;
-        private const byte THREE = 3;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PivotTableViewModel"/> class
+        /// </summary>
+        /// <param name="pivotStandings">Instance of a class which implements<see cref="PivotStandings"/></param>
+        public PivotTableViewModel(PivotStandings pivotStandings)
+        {
+            TeamsStandings = pivotStandings.Teams.Select(PivotTeamStandingsViewModel.Map).ToList();
+            GameResults = pivotStandings.GameResults.Select(PivotGameResultViewModel.Map).ToList();
+            AllGameResults = new List<PivotGameResultViewModel>[TeamsStandings.Count * TeamsStandings.Count];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PivotTableViewModel"/> class.
+        /// </summary>
+        public PivotTableViewModel()
+        {
+        }
 
         /// <summary>
         /// Gets or sets the ordered collection of teams according their position in tournament.
@@ -24,138 +37,61 @@
         /// <summary>
         /// Gets or sets the collection of games in tournament standings for pivot table.
         /// </summary>
-        public List<PivotGameResultsViewModel>[,] GameResults { get; set; }
+        public List<PivotGameResultViewModel>[] AllGameResults { get; set; }
+
+        private List<PivotGameResultViewModel> GameResults { get; set; }
 
         /// <summary>
-        /// Create game results pivot table
+        /// Indexer to get game results
         /// </summary>
-        /// <param name="gameResults">Collection of all results in tournament</param>
-        /// <param name="teams">Collection of teams in tournament</param>
-        /// <returns>Pivot table with all results</returns>
-        public static List<PivotGameResultsViewModel>[,] CreateGameResultsTable(
-            IReadOnlyCollection<ShortGameResultDto> gameResults,
-            IReadOnlyCollection<TeamStandingsDto> teams)
+        /// <param name="i">row index</param>
+        /// <param name="j">column index</param>
+        /// <returns>Collection of game results</returns>
+        public List<PivotGameResultViewModel> this[int i, int j]
         {
-            int columns = teams.Count;
-            int rows = teams.Count;
-
-            List<PivotGameResultsViewModel>[,] resultsTable = new List<PivotGameResultsViewModel>[rows, columns];
-
-            for (int i = 0; i < rows; i++)
+            get
             {
-                for (int j = i; j < columns; j++)
+                var results = new List<PivotGameResultViewModel>();
+                if (i == j)
                 {
-                    if (i == j)
+                    results.Add(PivotGameResultViewModel.GetNonPlayableCell());
+                    SetCellValue(i, j, results);
+                }
+                else
+                {
+                    if (AllGameResults[(j * TeamsStandings.Count) + i] != null)
                     {
-                        resultsTable[i, j] = GetNonPlayableCell();
-                        resultsTable[j, i] = GetNonPlayableCell();
+                        var result = AllGameResults[(j * TeamsStandings.Count) + i];
+                        results.AddRange(result.ConvertAll(gr => gr.ReverseTeams()));
+                        SetCellValue(i, j, results);
                     }
                     else
                     {
-                        int rowTeamId = teams.ElementAt(i).TeamId;
-                        int columnTeamId = teams.ElementAt(j).TeamId;
-
-                        var results = GetHomeGames(gameResults, rowTeamId, columnTeamId);
-                        resultsTable[i, j] = results;
-                        results = GetCellValueForOpponentTeam(results);
-                        resultsTable[j, i] = results;
-
-                        results = GetAwayGames(gameResults, rowTeamId, columnTeamId);
-                        resultsTable[j, i].AddRange(results);
-                        results = GetCellValueForOpponentTeam(results);
-                        resultsTable[i, j].AddRange(results);
+                        int rowTeamId = TeamsStandings[i].TeamId;
+                        int columnTeamId = TeamsStandings[j].TeamId;
+                        results = GetAllResultsForTeams(rowTeamId, columnTeamId);
+                        SetCellValue(i, j, results);
                     }
                 }
-            }
 
-            return resultsTable;
+                return results;
+            }
         }
 
-        /// <summary>
-        /// According game score returns cascade style sheets class name
-        /// </summary>
-        /// <param name="homeScore">Sets score of home team</param>
-        /// <param name="awayScore">Sets score of away team</param>
-        /// <returns>Name of the class with cascade style sheets settings</returns>
-        public static string SetCssClass(byte? homeScore, byte? awayScore)
+        private List<PivotGameResultViewModel> GetAllResultsForTeams(int rowTeamId, int columnTeamId)
         {
-            if (homeScore == THREE && awayScore == ZERO)
-            {
-                return CssClassConstants.WIN_3_0;
-            }
-            else if (homeScore == THREE && awayScore == ONE)
-            {
-                return CssClassConstants.WIN_3_1;
-            }
-            else if (homeScore == THREE && awayScore == TWO)
-            {
-                return CssClassConstants.WIN_3_2;
-            }
-            else if (homeScore == TWO && awayScore == THREE)
-            {
-                return CssClassConstants.LOSE_2_3;
-            }
-            else if (homeScore == ONE && awayScore == THREE)
-            {
-                return CssClassConstants.LOSE_1_3;
-            }
-            else if (homeScore == ZERO && awayScore == THREE)
-            {
-                return CssClassConstants.LOSE_0_3;
-            }
-
-            return CssClassConstants.NORESULT;
+            var results = new List<PivotGameResultViewModel>();
+            var resultHome = GameResults.Where(r => r.HomeTeamId == rowTeamId && r.AwayTeamId == columnTeamId).ToList();
+            var resultAway = GameResults.Where(r => r.AwayTeamId == rowTeamId && r.HomeTeamId == columnTeamId).ToList();
+            results.AddRange(resultHome);
+            results.AddRange(resultAway.ConvertAll(gr => gr.ReverseTeams()));
+            return results;
         }
 
-        private static List<PivotGameResultsViewModel> GetAwayGames(
-            IReadOnlyCollection<ShortGameResultDto> allResults,
-            int homeTeamId,
-            int awayTeamId)
+        private void SetCellValue(int i, int j, List<PivotGameResultViewModel> result)
         {
-            return GetHomeGames(allResults, awayTeamId, homeTeamId);
-        }
-
-        private static List<PivotGameResultsViewModel> GetHomeGames(
-            IReadOnlyCollection<ShortGameResultDto> allResults,
-            int homeTeamId,
-            int awayTeamId)
-        {
-            return allResults.Where(r => r.HomeTeamId == homeTeamId && r.AwayTeamId == awayTeamId)
-                .Select(PivotGameResultsViewModel.GetPivotGameResultsViewModelMapper).ToList();
-        }
-
-        private static List<PivotGameResultsViewModel> GetNonPlayableCell()
-        {
-            return new List<PivotGameResultsViewModel>
-            {
-                new PivotGameResultsViewModel
-                {
-                     HomeTeamId = 0,
-                     AwayTeamId = 0,
-                     HomeSetsScore = null,
-                     AwaySetsScore = null,
-                     IsTechnicalDefeat = false,
-                     CssClass = CssClassConstants.NON_PLAYABLE_CELL
-                }
-            };
-        }
-
-        private static List<PivotGameResultsViewModel> GetCellValueForOpponentTeam(List<PivotGameResultsViewModel> results)
-        {
-            List<PivotGameResultsViewModel> swapedResults = new List<PivotGameResultsViewModel>();
-            foreach (var item in results)
-            {
-                PivotGameResultsViewModel result = new PivotGameResultsViewModel();
-                result.HomeTeamId = item.AwayTeamId;
-                result.AwayTeamId = item.HomeTeamId;
-                result.HomeSetsScore = item.AwaySetsScore;
-                result.AwaySetsScore = item.HomeSetsScore;
-                result.IsTechnicalDefeat = item.IsTechnicalDefeat;
-                result.CssClass = SetCssClass(result.HomeSetsScore, result.AwaySetsScore);
-                swapedResults.Add(result);
-            }
-
-            return swapedResults;
+            AllGameResults[(i * TeamsStandings.Count) + j] = new List<PivotGameResultViewModel>();
+            AllGameResults[(i * TeamsStandings.Count) + j].AddRange(result);
         }
     }
 }

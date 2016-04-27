@@ -121,7 +121,7 @@
             {
                 _teamRepository.Update(team);
             }
-            catch (InvalidKeyValueException ex)
+            catch (ConcurrencyException ex)
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
             }

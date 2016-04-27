@@ -25,7 +25,7 @@
         /// <summary>
         /// Gets or sets the identifier of the away team which played the game.
         /// </summary>
-        public int AwayTeamId { get; set; }
+        public int? AwayTeamId { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the home team which played the game.

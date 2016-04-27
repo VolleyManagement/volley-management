@@ -105,10 +105,15 @@
     <Compile Include="Context\Migrations\201604061543141_ModifyGameResult.Designer.cs">
       <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201604140531421_NullableAwayTeam.cs" />
+    <Compile Include="Context\Migrations\201604140531421_NullableAwayTeam.Designer.cs">
+      <DependentUpon>201604140531421_NullableAwayTeam.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\201604241414023_AddRolesToOperationsMap.cs" />
     <Compile Include="Context\Migrations\201604241414023_AddRolesToOperationsMap.Designer.cs">
       <DependentUpon>201604241414023_AddRolesToOperationsMap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
@@ -211,6 +216,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201604061543141_ModifyGameResult.resx">
       <DependentUpon>201604061543141_ModifyGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201604140531421_NullableAwayTeam.resx">
+      <DependentUpon>201604140531421_NullableAwayTeam.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201604241414023_AddRolesToOperationsMap.resx">
       <DependentUpon>201604241414023_AddRolesToOperationsMap.cs</DependentUpon>

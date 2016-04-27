@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
@@ -85,6 +86,11 @@
                     {
                         result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
                     }
+                }
+                catch (ArgumentException ex)
+                {
+                    this.ModelState.AddModelError(string.Empty, ex.Message);
+                    result = this.Json(this.ModelState);
                 }
                 catch (MissingEntityException ex)
                 {

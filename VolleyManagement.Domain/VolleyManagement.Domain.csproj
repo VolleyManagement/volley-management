@@ -74,11 +74,13 @@
     <Compile Include="RolesAggregate\IRoleRepository.cs" />
     <Compile Include="RolesAggregate\Role.cs" />
     <Compile Include="TeamsAggregate\ITeamRepository.cs" />
+    <Compile Include="TeamsAggregate\TeamValidation.cs" />
     <Compile Include="TournamentsAggregate\Divisions\Division.cs" />
     <Compile Include="TournamentsAggregate\Divisions\DivisionValidation.cs" />
     <Compile Include="TournamentsAggregate\Groups\Group.cs" />
     <Compile Include="TournamentsAggregate\Groups\GroupValidation.cs" />
     <Compile Include="TournamentsAggregate\ITournamentRepository.cs" />
+    <Compile Include="TournamentsAggregate\TournamentScheduleDto.cs" />
     <Compile Include="TournamentsAggregate\TournamentSchemeEnum.cs" />
     <Compile Include="TournamentsAggregate\Tournament.cs" />
     <Compile Include="TournamentsAggregate\TournamentStateEnum.cs" />

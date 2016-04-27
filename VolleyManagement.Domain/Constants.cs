@@ -214,6 +214,8 @@
             public const int MAX_COACH_NAME_LENGTH = 60;
 
             public const int MAX_ACHIEVEMENTS_LENGTH = 4000;
+
+            public const string COACH_NAME_VALIDATION_REGEX = @"([ '-]?\p{L})+$";
         }
 
         /// <summary>
@@ -240,6 +242,12 @@
             public const int UNPLAYED_SET_HOME_SCORE = 0;
 
             public const int UNPLAYED_SET_AWAY_SCORE = 0;
+
+            public const byte EMPTY_SCORE = 0;
+
+            public const bool DEFAULT_TECHNICAL_DEFEAT = false;
+
+            public const string FREE_DAY_TEAM_NAME = "Free day";
         }
     }
 }

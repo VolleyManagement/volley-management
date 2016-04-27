@@ -1,5 +1,6 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -51,6 +52,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
+
+            SeedDataGenerator.GenerateEntities(context);
         }
 
         private static RoleEntity CreateRole(string name)

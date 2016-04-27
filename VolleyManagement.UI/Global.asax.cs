@@ -34,9 +34,7 @@
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-
             RouteConfig.RegisterIgnoreRoutes(RouteTable.Routes);
-
             AreaRegistration.RegisterAllAreas();
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

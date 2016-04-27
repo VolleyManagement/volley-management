@@ -1,9 +1,11 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Text;
     using Data.Queries.Player;
     using Data.Queries.Team;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,6 +16,7 @@
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.Properties;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Services.PlayerService;
@@ -26,6 +29,7 @@
     public class TeamServiceTests
     {
         private const int SPECIFIC_PLAYER_ID = 2;
+        private const int PLAYER_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int UNASSIGNED_ID = 0;
 
@@ -161,6 +165,181 @@
             // Assert
             Assert.AreNotEqual(newTeam.Id, UNASSIGNED_ID);
             VerifyCreateTeam(newTeam, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method check case when team achievements are invalid.
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void Create_InvalidAchievements_ArgumentExceptionThrown()
+        {
+            string invalidAchievements = CreateInvalidTeamAchievements();
+            string argExMessage = string.Format(
+                    Resources.ValidationTeamAchievements,
+                        VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH);
+            var testTeam = new TeamBuilder()
+                                        .WithAchievements(invalidAchievements)
+                                        .Build();
+            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+            Exception exception = null;
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            try
+            {
+                sut.Create(testTeam);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage, "Achievements"));
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method check case when team name is invalid.
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void Create_InvalidTeamName_ArgumentExceptionThrown()
+        {
+            string invalidName = CreateInvalidTeamName();
+            string argExMessage = string.Format(
+                    Resources.ValidationTeamName,
+                        VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH);
+            var testTeam = new TeamBuilder()
+                                        .WithName(invalidName)
+                                        .Build();
+            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+            Exception exception = null;
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            try
+            {
+                sut.Create(testTeam);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage, "Name"));
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method check case when team name is invalid.
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void Create_EmptyTeamName_ArgumentExceptionThrown()
+        {
+            string invalidName = string.Empty;
+            string argExMessage = string.Format(
+                    Resources.ValidationTeamName,
+                        VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH);
+            var testTeam = new TeamBuilder()
+                                        .WithName(invalidName)
+                                        .Build();
+            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+            Exception exception = null;
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            try
+            {
+                sut.Create(testTeam);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage, "Name"));
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method check case when team coach name is invalid.
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void Create_InvalidTeamCoachNameNotAllowedLength_ArgumentExceptionThrown()
+        {
+            string invalidCoachName = CreateInvalidTeamCoachName();
+            string argExMessage = string.Format(
+                    Resources.ValidationCoachName,
+                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
+            var testTeam = new TeamBuilder()
+                                        .WithCoach(invalidCoachName)
+                                        .Build();
+            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+            Exception exception = null;
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            try
+            {
+                sut.Create(testTeam);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage, "Coach"));
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method check case when team coach name is invalid.
+        /// Should throw ArgumentException
+        /// </summary>
+        [TestMethod]
+        public void Create_InvalidTeamCoachNameNotAllowedSymbols_ArgumentExceptionThrown()
+        {
+            string invalidCoachName = "name%-)";
+            string argExMessage = string.Format(
+                    Resources.ValidationCoachName,
+                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
+            var testTeam = new TeamBuilder()
+                                        .WithCoach(invalidCoachName)
+                                        .Build();
+            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).Build();
+            _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.Is<FindByIdCriteria>(cr => cr.Id == testPlayer.Id))).Returns(testPlayer);
+            Exception exception = null;
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            try
+            {
+                sut.Create(testTeam);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage, "Coach"));
         }
 
         /// <summary>
@@ -564,6 +743,62 @@
         {
             _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == teamId)), repositoryTimes);
             _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
+        }
+
+        /// <summary>
+        /// Creates Achievements with more number of symbols than it is allowed
+        /// </summary>
+        /// <returns>Invalid Achievements</returns>
+        private string CreateInvalidTeamAchievements()
+        {
+            StringBuilder invalidAchievements = new StringBuilder();
+            for (int i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH + 1; i++)
+            {
+                invalidAchievements.Append("a");
+            }
+
+            return invalidAchievements.ToString();
+        }
+
+        /// <summary>
+        /// Creates Team name with more number of symbols than it is allowed
+        /// </summary>
+        /// <returns>Invalid team name</returns>
+        private string CreateInvalidTeamName()
+        {
+            StringBuilder invalidTeamName = new StringBuilder();
+            for (int i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH + 1; i++)
+            {
+                invalidTeamName.Append("a");
+            }
+
+            return invalidTeamName.ToString();
+        }
+
+        /// <summary>
+        /// Creates Team coach name with more number of symbols than it is allowed
+        /// </summary>
+        /// <returns>Invalid team coach name</returns>
+        private string CreateInvalidTeamCoachName()
+        {
+            StringBuilder invalidTeamCoachName = new StringBuilder();
+            for (int i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH + 1; i++)
+            {
+                invalidTeamCoachName.Append("a");
+            }
+
+            return invalidTeamCoachName.ToString();
+        }
+
+        /// <summary>
+        /// Checks if exception was thrown and has appropriate message
+        /// </summary>
+        /// <param name="exception">Exception that has been thrown</param>
+        /// <param name="expected">Expected exception</param>
+        private void VerifyExceptionThrown(Exception exception, Exception expected)
+        {
+            Assert.IsNotNull(exception);
+            Assert.IsTrue(exception.Message.Equals(expected.Message));
         }
     }
 }

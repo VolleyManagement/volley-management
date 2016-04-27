@@ -174,15 +174,15 @@
             return isValid;
         }
 
-        private static bool IsSetScoreValid(Score setScore, int setPointsMinValueToWin)
+        private static bool IsSetScoreValid(Score setScore, int minSetScore)
         {
             bool isValid = false;
 
-            if (IsSetScoreGreaterThanMin(setScore, setPointsMinValueToWin))
+            if (IsSetScoreGreaterThanMin(setScore, minSetScore))
             {
                 isValid = IsPointsDifferenceEqualRequired(setScore);
             }
-            else if (IsSetScoreEqualToMin(setScore, setPointsMinValueToWin))
+            else if (IsSetScoreEqualToMin(setScore, minSetScore))
             {
                 isValid = IsPointsDifferenceGreaterOrEqualRequired(setScore);
             }
@@ -205,16 +205,16 @@
             return IsOrdinaryRequiredSetScoreValid(setScore, setOrderNumber) || IsSetUnplayed(setScore);
         }
 
-        private static bool IsSetScoreEqualToMin(Score setScore, int setPointsMinValueToWin)
+        private static bool IsSetScoreEqualToMin(Score setScore, int minSetScore)
         {
-            return setScore.Home == setPointsMinValueToWin
-                || setScore.Away == setPointsMinValueToWin;
+            return setScore.Home == minSetScore
+                || setScore.Away == minSetScore;
         }
 
-        private static bool IsSetScoreGreaterThanMin(Score setScore, int setPointsMinValueToWin)
+        private static bool IsSetScoreGreaterThanMin(Score setScore, int minSetScore)
         {
-            return setScore.Home > setPointsMinValueToWin
-                || setScore.Away > setPointsMinValueToWin;
+            return setScore.Home > minSetScore
+                || setScore.Away > minSetScore;
         }
     }
 }

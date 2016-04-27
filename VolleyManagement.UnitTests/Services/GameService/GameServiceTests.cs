@@ -824,6 +824,294 @@
             Assert.IsTrue(exceptionThrown);
         }
 
+        [TestMethod]
+        public void Create_TwoGamesWithSameTeamsOrderInTorunamentSchemeTwo_GameCreated()
+        {
+            // Arrange
+            MockTournamentSchemeTwo();
+
+            var duplicate = new GameBuilder()
+              .TestRoundGame()
+              .WithRound(3)
+              .WithId(3)
+              .Build();
+
+            SetupGetTournamentResults(
+             duplicate.TournamentId,
+             new GameServiceTestFixture().TestGamesForDuplicateSchemeTwo().Build());
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(duplicate);
+
+            // Assert
+            VerifyCreateGame(duplicate, Times.Once());
+        }
+
+        [TestMethod]
+        public void Create_ThirdDuplicateGameInTournamentSchemeTwo_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionThrown = false;
+
+            MockTournamentSchemeTwo();
+
+            var duplicate = new GameBuilder()
+                .WithTournamentId(1)
+                .TestRoundGame()
+                .WithRound(4)
+                .WithId(4)
+                .Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                       .TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
+                       .Build();
+            SetupGetTournamentResults(
+                       duplicate.TournamentId,
+                       gameResults);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(duplicate);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exceptionThrown);
+        }
+
+        [TestMethod]
+        public void Create_DuplicateFreeDayGameTournamentSchemeTwo_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionThrown = false;
+
+            MockTournamentSchemeTwo();
+
+            var freeDayGameDuplicate = new GameBuilder()
+                .TestFreeDayGame()
+                .WithId(3)
+                .WithRound(3)
+                .Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesWithTwoFreeDays()
+                .Build();
+
+            SetupGetTournamentResults(
+                freeDayGameDuplicate.TournamentId,
+                gameResults);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(freeDayGameDuplicate);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exceptionThrown);
+        }
+
+        [TestMethod]
+        public void Create_FreeDayGameWithOtherTeamInSameRound_ExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+
+            MockDefaultTournament();
+
+            var freeDayGmeInSameRound = new GameBuilder()
+                .TestFreeDayGame()
+                .WithId(2)
+                .WithHomeTeamId(3)
+                .Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .Build();
+
+            SetupGetTournamentResults(
+                freeDayGmeInSameRound.TournamentId,
+                gameResults);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(freeDayGmeInSameRound);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "Free day game has already been scheduled in this round");
+        }
+
+        [TestMethod]
+        public void Create_FreeDayGammeWithSameTeamInSameRound_ExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+
+            MockDefaultTournament();
+
+            var freeDayGmeInSameRound = new GameBuilder()
+                .TestFreeDayGame()
+                .WithId(2)
+                .Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .Build();
+
+            SetupGetTournamentResults(
+                freeDayGmeInSameRound.TournamentId,
+                gameResults);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(freeDayGmeInSameRound);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "Free day game has already been scheduled in this round");
+        }
+
+        [TestMethod]
+        public void Create_DuplicateGamesInSameRound_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionThrown = false;
+
+            MockDefaultTournament();
+
+            var freeDayGmeInSameRound = new GameBuilder()
+                .TestRoundGame()
+                .WithId(2)
+                .Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+             .TestGamesForDuplicateSchemeOne()
+             .Build();
+
+            SetupGetTournamentResults(
+             freeDayGmeInSameRound.TournamentId,
+             gameResults);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(freeDayGmeInSameRound);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exceptionThrown);
+        }
+
+        [TestMethod]
+        public void Create_DuplicateAwayTeamInGameInSameRound_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionThrown = false;
+
+            MockDefaultTournament();
+
+            var freeDayGmeInSameRound = new GameBuilder()
+                .TestRoundGame()
+                .WithHomeTeamId(3)
+                .WithId(2)
+                .Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesForDuplicateSchemeOne()
+                .Build();
+
+            SetupGetTournamentResults(
+                freeDayGmeInSameRound.TournamentId,
+                gameResults);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(freeDayGmeInSameRound);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exceptionThrown);
+        }
+
+        [TestMethod]
+        public void Create_DuplicateHomeTeamInGameInSameRound_ExceptionThrown()
+        {
+            // Arrange
+            bool exceptionThrown = false;
+
+            MockDefaultTournament();
+
+            var freeDayGmeInSameRound = new GameBuilder()
+                .TestRoundGame()
+                .WithAwayTeamId(3)
+                .WithId(2)
+                .Build();
+
+            List<GameResultDto> gameResults = new GameServiceTestFixture()
+                .TestGamesForDuplicateSchemeOne()
+                .Build();
+
+            SetupGetTournamentResults(
+                freeDayGmeInSameRound.TournamentId,
+                gameResults);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(freeDayGmeInSameRound);
+            }
+            catch (ArgumentException)
+            {
+                exceptionThrown = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exceptionThrown);
+        }
+
         /// <summary>
         /// Tests creation of the game with invalid fifth set score
         /// </summary>
@@ -1212,6 +1500,17 @@
                 .TestTournamemtSchedultDto()
                 .WithScheme(TournamentSchemeEnum.One)
                 .Build();
+
+            SetupGetTournamentById(tournament.Id, tournament);
+            SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
+        }
+
+        private void MockTournamentSchemeTwo()
+        {
+            var tournament = new TournamentScheduleDtoBuilder()
+               .TestTournamemtSchedultDto()
+               .WithScheme(TournamentSchemeEnum.Two)
+               .Build();
 
             SetupGetTournamentById(tournament.Id, tournament);
             SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());

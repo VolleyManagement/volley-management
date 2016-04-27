@@ -336,4 +336,7 @@
   <data name="GameDateTime" xml:space="preserve">
     <value>Date and time</value>
   </data>
+  <data name="TeamCoachNameInvalidEntriesError" xml:space="preserve">
+    <value>{0} should contain only letters and spaces, or " - ", " ' " characters (no more than one consecutive). {0} must not end with a special character.</value>
+  </data>
 </root>

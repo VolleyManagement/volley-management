@@ -356,7 +356,7 @@
         public GameBuilder TestFreeDayGame()
         {
             this._game.HomeTeamId = 1;
-            this._game.AwayTeamId = 0;
+            this._game.AwayTeamId = null;
             this._game.Round = 1;
 
             return this;

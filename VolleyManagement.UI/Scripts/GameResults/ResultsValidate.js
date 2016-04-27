@@ -157,12 +157,12 @@
         return isValid;
     }
 
-    privates.IsSetScoreValid = function (setScore, setPointsMinValueToWin) {
+    privates.IsSetScoreValid = function (setScore, minSetScore) {
         var isValid = false;
-        if (privates.IsSetScoreGreaterThanMin(setScore, setPointsMinValueToWin)) {
+        if (privates.IsSetScoreGreaterThanMin(setScore, minSetScore)) {
             isValid = privates.IsPointsDifferenceEqualRequired(setScore);
         }
-        else if (privates.IsSetScoreEqualToMin(setScore, setPointsMinValueToWin)) {
+        else if (privates.IsSetScoreEqualToMin(setScore, minSetScore)) {
             isValid = privates.IsPointsDifferenceGreaterOrEqualRequired(setScore);
         }
 
@@ -181,14 +181,14 @@
         return privates.IsOrdinaryRequiredSetScoreValid(setScore, setOrderNumber) || privates.IsSetUnplayed(setScore);
     }
 
-    privates.IsSetScoreEqualToMin = function (setScore, setPointsMinValueToWin) {
-        return setScore.Home == setPointsMinValueToWin
-            || setScore.Away == setPointsMinValueToWin;
+    privates.IsSetScoreEqualToMin = function (setScore, minSetScore) {
+        return setScore.Home == minSetScore
+            || setScore.Away == minSetScore;
     }
 
-    privates.IsSetScoreGreaterThanMin = function (setScore, setPointsMinValueToWin) {
-        return setScore.Home > setPointsMinValueToWin
-            || setScore.Away > setPointsMinValueToWin;
+    privates.IsSetScoreGreaterThanMin = function (setScore, minSetScore) {
+        return setScore.Home > minSetScore
+            || setScore.Away > minSetScore;
     }
 
     // Methods to validate.

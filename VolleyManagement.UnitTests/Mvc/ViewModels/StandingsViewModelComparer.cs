@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -63,14 +64,15 @@
 
         private bool AreResultTablesEquals(PivotTableViewModel tableExpected, PivotTableViewModel tableActual)
         {
+            int count = (int)Math.Sqrt(tableExpected.AllGameResults.Length);
             if (tableExpected.AllGameResults.Length != tableActual.AllGameResults.Length)
             {
                 return false;
             }
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < count; i++)
             {
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < count; j++)
                 {
                     if (tableExpected[i, j].Count == 0 && tableActual[i, j].Count == 0)
                     {

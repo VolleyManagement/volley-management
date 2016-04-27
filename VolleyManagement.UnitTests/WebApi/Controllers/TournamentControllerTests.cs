@@ -79,7 +79,7 @@
         }
 
         [TestMethod]
-        public void GetAllTournaments_NoTournamentsAwailable_EmptyCollectionReturned() 
+        public void GetAllTournaments_NoTournamentsAwailable_EmptyCollectionReturned()
         {
             // Arrange
             var sut = _kernel.Get<TournamentsController>();

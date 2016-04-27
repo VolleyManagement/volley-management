@@ -50,16 +50,18 @@
     @{
         <text>
     var gameResultConstants = {
-        "SETS_COUNT_TO_WIN": '@GameResultConstants.SETS_COUNT_TO_WIN',
-        "SET_POINTS_MIN_DELTA_TO_WIN": '@GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN',
-        "SET_POINTS_MIN_VALUE_TO_WIN": '@GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN',
-        "TECHNICAL_DEFEAT_SETS_WINNER_SCORE": '@GameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE',
-        "TECHNICAL_DEFEAT_SETS_LOSER_SCORE": '@GameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE',
-        "TECHNICAL_DEFEAT_SET_WINNER_SCORE": '@GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE',
-        "TECHNICAL_DEFEAT_SET_LOSER_SCORE": '@GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE',
-        "UNPLAYED_SET_HOME_SCORE": '@GameResultConstants.UNPLAYED_SET_HOME_SCORE',
-        "UNPLAYED_SET_AWAY_SCORE": '@GameResultConstants.UNPLAYED_SET_AWAY_SCORE'
-    };
+        "SETS_COUNT_TO_WIN": @GameResultConstants.SETS_COUNT_TO_WIN,
+        "SET_POINTS_MIN_DELTA_TO_WIN": @GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN,
+        "SET_POINTS_MIN_VALUE_TO_WIN": @GameResultConstants.SET_POINTS_MIN_VALUE_TO_WIN,
+        "FIFTH_SET_POINTS_MIN_VALUE_TO_WIN": @GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
+        "TECHNICAL_DEFEAT_SETS_WINNER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE,
+        "TECHNICAL_DEFEAT_SETS_LOSER_SCORE": @GameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE,
+        "TECHNICAL_DEFEAT_SET_WINNER_SCORE":@GameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE,
+        "TECHNICAL_DEFEAT_SET_LOSER_SCORE":@GameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE,
+        "UNPLAYED_SET_HOME_SCORE": @GameResultConstants.UNPLAYED_SET_HOME_SCORE,
+        "UNPLAYED_SET_AWAY_SCORE": @GameResultConstants.UNPLAYED_SET_AWAY_SCORE,
+        "MAX_SETS_COUNT": @GameResultConstants.MAX_SETS_COUNT
+        };
 
     var resourceMessages = {
         "GameResultSameTeam": "@DomainResources.GameResultSameTeam",
@@ -68,7 +70,8 @@
         "GameResultRequiredSetScores": "@DomainResources.GameResultRequiredSetScores",
         "GameResultOptionalSetScores": "@DomainResources.GameResultOptionalSetScores",
         "GameResultPreviousOptionalSetUnplayed": "@DomainResources.GameResultPreviousOptionalSetUnplayed",
-        "GameResultSetScoresNotOrdered": "@DomainResources.GameResultSetScoresNotOrdered"
+        "GameResultSetScoresNotOrdered": "@DomainResources.GameResultSetScoresNotOrdered",
+        "GameResultFifthSetScoreInvalid":"@DomainResources.GameResultFifthSetScoreInvalid"
     };
     </text>
     }

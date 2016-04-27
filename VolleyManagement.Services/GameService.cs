@@ -190,7 +190,7 @@
         {
             bool isPreviousOptionalSetUnplayed = false;
 
-            for (int i = 0; i < setScores.Count; i++)
+            for (int i = 0, setOrderNumber = 1; i < setScores.Count; i++, setOrderNumber++)
             {
                 if (i < GameResultConstants.SETS_COUNT_TO_WIN)
                 {
@@ -207,8 +207,17 @@
                 }
                 else
                 {
-                    if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat))
+                    if (!ResultValidation.IsOptionalSetScoreValid(setScores[i], isTechnicalDefeat, setOrderNumber))
                     {
+                        if (setOrderNumber == GameResultConstants.MAX_SETS_COUNT)
+                        {
+                            throw new ArgumentException(
+                            string.Format(
+                            Resources.GameResultFifthSetScoreInvalid,
+                            GameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN,
+                            GameResultConstants.SET_POINTS_MIN_DELTA_TO_WIN));
+                        }
+
                         throw new ArgumentException(
                             string.Format(
                             Resources.GameResultOptionalSetScores,
@@ -274,8 +283,8 @@
             List<GameResultDto> gamesInRound = games
                .Where(gr => gr.Round == newGame.Round)
                .ToList();
-                ValidateGameInRoundOnCreate(newGame, gamesInRound);
-            }
+            ValidateGameInRoundOnCreate(newGame, gamesInRound);
+        }
 
         private void ValidateGameInRoundOnCreate(Game newGame, List<GameResultDto> gamesInRound)
         {
@@ -328,8 +337,8 @@
                                  opositeTeam));
                     }
                 }
-                }
-                }
+            }
+        }
 
         private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {

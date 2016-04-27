@@ -80,7 +80,7 @@
                      && (gr.RoundNumber == criteria.FirstRoundNumber || gr.RoundNumber == criteria.SecondRoundNumber))
                  .Select(GetGameMapping());
 
-            return games.Any() ? games.ToList() : new List<Game>();
+            return games.ToList();
         }
 
         #endregion

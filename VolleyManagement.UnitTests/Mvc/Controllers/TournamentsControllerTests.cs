@@ -152,7 +152,7 @@
             // Assert
             Assert.IsFalse(_sut.ModelState.IsValid);
             Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
-            Assert.IsNull(result);
+            Assert.IsNull(result, "Result should be null");
         }
 
         /// <summary>

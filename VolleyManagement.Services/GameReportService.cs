@@ -50,7 +50,9 @@
         public List<StandingsEntry> GetStandings(int tournamentId)
         {
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var standings = CreateEntriesForTeams(gameResults);
+            var tournamentTeams = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+
+            var standings = CreateEntriesForTeams(tournamentTeams);
 
             foreach (var gameResult in gameResults)
             {
@@ -65,6 +67,7 @@
             return standings.OrderByDescending(ts => ts.Points)
                 .ThenByDescending(ts => ts.SetsRatio)
                 .ThenByDescending(ts => ts.BallsRatio)
+                .ThenBy(ts => ts.TeamName)
                 .ToList();
         }
 
@@ -97,11 +100,10 @@
 
         #region Private methods
 
-        private List<StandingsEntry> CreateEntriesForTeams(IEnumerable<GameResultDto> gameResults)
+        private List<StandingsEntry> CreateEntriesForTeams(List<Team> tournamentTeams)
         {
             var entries = new List<StandingsEntry>();
-            var teams = gameResults.Select(gr => new { Id = gr.HomeTeamId, Name = gr.HomeTeamName })
-                .Union(gameResults.Select(gr => new { Id = gr.AwayTeamId, Name = gr.AwayTeamName }));
+            var teams = tournamentTeams.Select(gr => new { Id = gr.Id, Name = gr.Name });
 
             foreach (var team in teams)
             {
@@ -147,6 +149,16 @@
 
         private void CalculateGamesStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultDto gameResult)
         {
+            if (HasTeamPlayedGames(homeTeamEntry))
+            {
+                SetDataFromNullToZero(homeTeamEntry);
+            }
+
+            if (HasTeamPlayedGames(awayTeamEntry))
+            {
+                SetDataFromNullToZero(awayTeamEntry);
+            }
+
             homeTeamEntry.GamesTotal++;
             awayTeamEntry.GamesTotal++;
 
@@ -203,10 +215,10 @@
         {
             homeTeamEntry.SetsWon += gameResult.HomeSetsScore;
             homeTeamEntry.SetsLost += gameResult.AwaySetsScore;
-            homeTeamEntry.SetsRatio = (float)CalculateSetsRatio(homeTeamEntry.SetsWon, homeTeamEntry.SetsLost);
+            homeTeamEntry.SetsRatio = CalculateSetsRatio((int)homeTeamEntry.SetsWon, (int)homeTeamEntry.SetsLost);
             awayTeamEntry.SetsWon += gameResult.AwaySetsScore;
             awayTeamEntry.SetsLost += gameResult.HomeSetsScore;
-            awayTeamEntry.SetsRatio = (float)CalculateSetsRatio(awayTeamEntry.SetsWon, awayTeamEntry.SetsLost);
+            awayTeamEntry.SetsRatio = CalculateSetsRatio((int)awayTeamEntry.SetsWon, (int)awayTeamEntry.SetsLost);
 
             var homeBallsTotal = gameResult.HomeSet1Score + gameResult.HomeSet2Score + gameResult.HomeSet3Score
                 + gameResult.HomeSet4Score + gameResult.HomeSet5Score;
@@ -215,10 +227,10 @@
 
             homeTeamEntry.BallsWon += homeBallsTotal;
             homeTeamEntry.BallsLost += awayBallsTotal;
-            homeTeamEntry.BallsRatio = (float)homeTeamEntry.BallsWon / homeTeamEntry.BallsLost;
+            homeTeamEntry.BallsRatio = CalculateBallsRatio((int)homeTeamEntry.BallsWon, (int)homeTeamEntry.BallsLost);
             awayTeamEntry.BallsWon += awayBallsTotal;
             awayTeamEntry.BallsLost += homeBallsTotal;
-            awayTeamEntry.BallsRatio = (float)awayTeamEntry.BallsWon / awayTeamEntry.BallsLost;
+            awayTeamEntry.BallsRatio = CalculateBallsRatio((int)awayTeamEntry.BallsWon, (int)awayTeamEntry.BallsLost);
         }
 
         private int GetTeamWonSets(int teamId, List<GameResultDto> games)
@@ -246,6 +258,38 @@
             }
 
             return result;
+        }
+
+        private float? CalculateBallsRatio(int ballsWon, int ballsLost)
+        {
+            var result = (float)ballsWon / ballsLost;
+            if (float.IsNaN(result))
+            {
+                return null;
+            }
+
+            return result;
+        }
+
+        private void SetDataFromNullToZero(StandingsEntry entry)
+        {
+            entry.GamesWon = 0;
+            entry.GamesLost = 0;
+            entry.GamesWithScoreThreeNil = 0;
+            entry.GamesWithScoreThreeOne = 0;
+            entry.GamesWithScoreThreeTwo = 0;
+            entry.GamesWithScoreTwoThree = 0;
+            entry.GamesWithScoreOneThree = 0;
+            entry.GamesWithScoreNilThree = 0;
+            entry.BallsWon = 0;
+            entry.BallsLost = 0;
+            entry.SetsWon = 0;
+            entry.SetsLost = 0;
+        }
+
+        private bool HasTeamPlayedGames(StandingsEntry entry)
+        {
+            return entry.GamesTotal == 0;
         }
         #endregion
     }

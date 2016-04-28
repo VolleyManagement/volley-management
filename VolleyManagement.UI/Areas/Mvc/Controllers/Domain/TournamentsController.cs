@@ -1,15 +1,13 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using App_GlobalResources;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
@@ -34,6 +32,11 @@
         private readonly ITournamentService _tournamentService;
 
         /// <summary>
+        /// Holds AuthorizationService instance
+        /// </summary>
+        private readonly IAuthorizationService _authService;
+
+        /// <summary>
         /// Holds GameService instance
         /// </summary>
         private readonly IGameService _gameService;
@@ -43,12 +46,15 @@
         /// </summary>
         /// <param name="tournamentService">The tournament service</param>
         /// <param name="gameService">The game service</param>
+        /// <param name="authService">The authorization service</param>
         public TournamentsController(
             ITournamentService tournamentService,
-            IGameService gameService)
+            IGameService gameService,
+            IAuthorizationService authService)
         {
             this._tournamentService = tournamentService;
             this._gameService = gameService;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -57,7 +63,10 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            var tournamentsCollections = new TournamentsCollectionsViewModel();
+            var tournamentsCollections = new TournamentsCollectionsViewModel
+            {
+                Authorization = this._authService.GetAllowedOperations(AuthOperations.Tournaments.Create)
+            };
 
             var actualTournaments = this._tournamentService.GetActual().ToArray();
 
@@ -101,14 +110,22 @@
             {
                 ApplyingPeriodStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
                 ApplyingPeriodEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD),
-                GamesStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
-                GamesEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FOR_GAMES_PERIOD),
-                TransferStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START + DAYS_FOR_TRANSFER_PERIOD)
+                GamesStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                                    + DAYS_FOR_APPLYING_PERIOD
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
+                GamesEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                                + DAYS_FOR_APPLYING_PERIOD
+                                                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                                + DAYS_FOR_GAMES_PERIOD),
+                TransferStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                                    + DAYS_FOR_APPLYING_PERIOD
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
+                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START 
+                                                    + DAYS_FOR_APPLYING_PERIOD
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START 
+                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START 
+                                                    + DAYS_FOR_TRANSFER_PERIOD)
             };
 
             return this.View(tournamentViewModel);

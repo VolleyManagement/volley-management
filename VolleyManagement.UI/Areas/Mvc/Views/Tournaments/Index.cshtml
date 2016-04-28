@@ -1,4 +1,5 @@
 ﻿@using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+@using VolleyManagement.Domain.RolesAggregate;
 @model TournamentsCollectionsViewModel
 
 @{
@@ -7,9 +8,12 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink(Resources.TournamentViews.CreateNewTournament, "Create")
-</p>
+@if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Create))
+{
+    <p>
+        @Html.ActionLink(Resources.TournamentViews.CreateNewTournament, "Create")
+    </p>
+}
 <p>
     <h3>
         @Resources.TournamentViews.CurrentTournamentsHeader

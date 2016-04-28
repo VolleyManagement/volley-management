@@ -56,7 +56,11 @@
     <Compile Include="Authentication\IVolleyUserStore.cs" />
     <Compile Include="Authentication\Models\LoginProviderModel.cs" />
     <Compile Include="Authentication\Models\UserModel.cs" />
+    <Compile Include="Authorization\AllowedOperations.cs" />
+    <Compile Include="Authorization\IAuthorizationService.cs" />
+    <Compile Include="Authorization\ICurrentUserService.cs" />
     <Compile Include="Authorization\IRolesService.cs" />
+    <Compile Include="Exceptions\AuthorizationException.cs" />
     <Compile Include="Exceptions\MissingEntityException.cs" />
     <Compile Include="IContributorTeamService.cs" />
     <Compile Include="IGameReportService.cs" />

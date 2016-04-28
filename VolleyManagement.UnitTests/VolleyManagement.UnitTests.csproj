@@ -148,6 +148,7 @@
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
+    <Compile Include="Services\AuthService\AuthorizationServiceTests.cs" />
     <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
     <Compile Include="Services\GameService\GameMvcComparer.cs" />
     <Compile Include="Services\GameService\GameResultDtoBuilder.cs" />

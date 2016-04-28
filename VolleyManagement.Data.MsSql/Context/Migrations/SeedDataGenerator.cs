@@ -5,14 +5,19 @@
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Diagnostics;
-
+    using System.Linq;
     using VolleyManagement.Data.MsSql.Entities;
+    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Generates and seeds test entity data
     /// </summary>
     internal static class SeedDataGenerator
     {
+        private const string ADMINISTRATOR_ROLE_NAME = "Administrator";
+        private const string USER_ROLE_NAME = "User";
+        private const string TOURNAMENT_ADMINISTRATOR_ROLE_NAME = "TournamentAdministrator";
+
         /// <summary>
         /// Generates and seeds test data for
         /// players, trams, tournaments and game results entities
@@ -46,6 +51,18 @@
 
             context.SaveChanges();
         }
+
+        /// <summary>
+        /// Generates and seeds all required data
+        /// </summary>
+        /// <param name="context">Context of the entities</param>
+        internal static void GenerateRequiredEntities(VolleyManagementEntities context)
+        {
+            GenerateRoles(context);
+            GenerateRolesToOperationsMap(context);
+        }
+
+        #region Optional
 
         private static List<PlayerEntity> GeneratePlayers()
         {
@@ -707,5 +724,47 @@
 
             return games;
         }
+
+        #endregion
+
+        #region Required
+
+        private static void GenerateRoles(VolleyManagementEntities context)
+        {
+            var defaultRoles = new List<RoleEntity>
+            {
+                CreateRole(ADMINISTRATOR_ROLE_NAME),
+                CreateRole(TOURNAMENT_ADMINISTRATOR_ROLE_NAME),
+                CreateRole(USER_ROLE_NAME)
+            };
+
+            context.Roles.AddOrUpdate(r => r.Name, defaultRoles.ToArray());
+            context.SaveChanges();
+        }
+
+        private static void GenerateRolesToOperationsMap(VolleyManagementEntities context)
+        {
+            var tournamentAdminId = context.Roles.Where(r => r.Name == TOURNAMENT_ADMINISTRATOR_ROLE_NAME).First().Id;
+            GenerateTournamentAdministratorOperations(tournamentAdminId, context);
+        }
+
+        private static void GenerateTournamentAdministratorOperations(int roleId, VolleyManagementEntities context)
+        {
+            var entries = new List<RoleToOperationEntity>
+            {
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Create },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Edit },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Delete }
+            };
+
+            context.RolesToOperations.AddOrUpdate(r => new { r.RoleId, r.OperationId }, entries.ToArray());
+        }
+
+        private static RoleEntity CreateRole(string name)
+        {
+            return new RoleEntity { Name = name };
+        }
+
+        #endregion
     }
 }

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
@@ -11,6 +12,7 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using DivisionConstants = VolleyManagement.Domain.Constants.Division;
@@ -40,6 +42,7 @@
         #region Fields
 
         private readonly ITournamentRepository _tournamentRepository;
+        private readonly IAuthorizationService _authService;
 
         #endregion
 
@@ -64,19 +67,22 @@
         /// <param name="getByIdQuery">Get tournament by id query.</param>
         /// <param name="getAllTeamsQuery">Get All Tournament Teams query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
+        /// <param name="authService">Authorization service</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
-            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery)
+            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
+            IAuthorizationService authService)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
+            _authService = authService;
             _getTournamentDtoQuery = getTournamentDtoQuery;
         }
 
@@ -138,6 +144,8 @@
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
+            _authService.CheckAccess(AuthOperations.Tournaments.Create);
+
             if (tournamentToCreate == null)
             {
                 throw new ArgumentNullException("tournamentToCreate");

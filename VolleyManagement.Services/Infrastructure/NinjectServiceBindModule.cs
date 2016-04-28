@@ -44,7 +44,8 @@
                                   Bind<IVolleyUserStore>().To<VolleyUserStore>(),
                                   Bind<IRolesService>().To<RolesService>(),
                                   Bind<IGameService>().To<GameService>(),
-                                  Bind<IGameReportService>().To<GameReportService>()
+                                  Bind<IGameReportService>().To<GameReportService>(),
+                                  Bind<IAuthorizationService>().To<AuthorizationService>()
                               };
             configs.InScope(_scopeCallback);
         }

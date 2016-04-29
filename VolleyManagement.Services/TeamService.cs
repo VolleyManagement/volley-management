@@ -76,7 +76,7 @@
         /// <param name="teamToCreate">A Team to create.</param>
         public void Create(Team teamToCreate)
         {
-            _authService.CheckAccess(AuthOperations.Tournaments.Create);
+            _authService.CheckAccess(AuthOperations.Teams.Create);
 
             Player captain = GetPlayerById(teamToCreate.CaptainId);
             if (captain == null)
@@ -126,6 +126,7 @@
         /// <param name="teamId">The id of team to delete.</param>
         public void Delete(int teamId)
         {
+            _authService.CheckAccess(AuthOperations.Teams.Delete);
             try
             {
                 _teamRepository.Remove(teamId);
@@ -173,6 +174,7 @@
         /// <param name="teamId">Id of team which should be set to player</param>
         public void UpdatePlayerTeam(int playerId, int teamId)
         {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
             Player player = GetPlayerById(playerId);
 
             if (player == null)

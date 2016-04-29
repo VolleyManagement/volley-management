@@ -107,6 +107,7 @@
         /// <param name="team">Team to edit.</param>
         public void Edit(Team team)
         {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
             throw new System.NotImplementedException();
         }
 
@@ -174,7 +175,6 @@
         /// <param name="teamId">Id of team which should be set to player</param>
         public void UpdatePlayerTeam(int playerId, int teamId)
         {
-            _authService.CheckAccess(AuthOperations.Teams.Edit);
             Player player = GetPlayerById(playerId);
 
             if (player == null)

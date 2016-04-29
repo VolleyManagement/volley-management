@@ -128,6 +128,7 @@
     <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotGameResultsViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PivotTableEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotTeamsStandingsEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />

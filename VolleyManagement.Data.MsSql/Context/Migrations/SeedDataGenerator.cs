@@ -744,8 +744,15 @@
 
         private static void GenerateRolesToOperationsMap(VolleyManagementEntities context)
         {
-            var tournamentAdminId = context.Roles.Where(r => r.Name == TOURNAMENT_ADMINISTRATOR_ROLE_NAME).First().Id;
-            GenerateTournamentAdministratorOperations(tournamentAdminId, context);
+            var roleIDs = new List<int>();
+
+            roleIDs.Add(context.Roles.Where(r => r.Name == TOURNAMENT_ADMINISTRATOR_ROLE_NAME).First().Id);
+            roleIDs.Add(context.Roles.Where(r => r.Name == ADMINISTRATOR_ROLE_NAME).First().Id);
+
+            foreach (int roleId in roleIDs)
+            {
+                GenerateTournamentAdministratorOperations(roleId, context);
+            }
         }
 
         private static void GenerateTournamentAdministratorOperations(int roleId, VolleyManagementEntities context)
@@ -754,7 +761,25 @@
             {
                 new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Create },
                 new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Edit },
-                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Delete }
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Delete },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Teams.Create },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Teams.Edit },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Teams.Delete }
+            };
+
+            context.RolesToOperations.AddOrUpdate(r => new { r.RoleId, r.OperationId }, entries.ToArray());
+        }
+
+        private static void GenerateAdministratorOperations(int roleId, VolleyManagementEntities context)
+        {
+            var entries = new List<RoleToOperationEntity>
+            {
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Create },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Edit },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Delete },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Teams.Create },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Teams.Edit },
+                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Teams.Delete }
             };
 
             context.RolesToOperations.AddOrUpdate(r => new { r.RoleId, r.OperationId }, entries.ToArray());

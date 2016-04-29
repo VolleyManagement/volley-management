@@ -6,7 +6,9 @@
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
 
@@ -21,14 +23,17 @@
         /// Holds PlayerService instance
         /// </summary>
         private readonly ITeamService _teamService;
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
         /// <param name="teamService">Instance of the class that implements ITeamService.</param>
-        public TeamsController(ITeamService teamService)
+        /// <param name="authService">The authorization service</param>
+        public TeamsController(ITeamService teamService, IAuthorizationService authService)
         {
             this._teamService = teamService;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -37,9 +42,14 @@
         /// <returns>View with collection of teams.</returns>
         public ActionResult Index()
         {
-            var teams = this._teamService.Get()
+            var teams = new TeamCollectionViewModel()
+            {
+                Teams = this._teamService.Get()
                                          .ToList()
-                                         .Select(t => TeamViewModel.Map(t, null, null));
+                                         .Select(t => TeamViewModel.Map(t, null, null)),
+                Authorization = this._authService.GetAllowedOperations(AuthOperations.Teams.Create)
+            };
+
             return View(teams);
         }
 
@@ -102,7 +112,7 @@
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
                 }
-            }            
+            }
 
             return result;
         }

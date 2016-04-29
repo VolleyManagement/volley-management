@@ -14,8 +14,18 @@
         public IEnumerable<TeamViewModel> Teams { get; set; }
 
         /// <summary>
-        /// Gets or sets instance of <see cref="AllowedOperations"/> object
+        /// Gets or sets instance of <see cref="AllowedOperations"/> create object
         /// </summary>
-        public List<AllowedOperations> Authorization { get; set; }
+        public AllowedOperations Create { get; set; }
+
+        /// <summary>
+        /// Gets or sets instance of <see cref="AllowedOperations"/> Edit object
+        /// </summary>
+        public AllowedOperations Edit { get; set; }
+
+        /// <summary>
+        /// Gets or sets instance of <see cref="AllowedOperations"/> Delete object
+        /// </summary>
+        public AllowedOperations Delete { get; set; }
     }
 }

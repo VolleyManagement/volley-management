@@ -7,13 +7,8 @@
     ViewBag.Title = "Teams";
 }
 
-@{
-    int AUTH_OPERATION_CREATE_INDEX = 0;
-    int AUTH_OPERATION_DELETE_INDEX = 1;
-    int AUTH_OPERATION_EDIT_INDEX = 2;
-}
 <h2>List of teams</h2>
-@if (Model.Authorization[AUTH_OPERATION_CREATE_INDEX].IsAllowed(AuthOperations.Teams.Create))
+@if (Model.Create.IsAllowed(AuthOperations.Teams.Create))
 {
     <p>
     @Html.ActionLink(Resources.TeamViews.Create, "Create")
@@ -36,11 +31,11 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @if (Model.Authorization[AUTH_OPERATION_DELETE_INDEX].IsAllowed(AuthOperations.Teams.Delete))
+                @if (Model.Delete.IsAllowed(AuthOperations.Teams.Delete))
                 { 
                     <button class='deleteTeamButton'>@Resources.TeamViews.Delete</button>
                 }
-                @if (Model.Authorization[AUTH_OPERATION_EDIT_INDEX].IsAllowed(AuthOperations.Teams.Edit))
+                @if (Model.Edit.IsAllowed(AuthOperations.Teams.Edit))
                 {
                     @Html.ActionLink(@Resources.TeamViews.Details, "Details", new { id = item.Id })
                 }

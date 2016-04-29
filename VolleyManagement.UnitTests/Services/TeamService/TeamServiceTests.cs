@@ -11,6 +11,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
@@ -38,6 +39,7 @@
         private readonly TeamServiceTestFixture _testFixture = new TeamServiceTestFixture();
         private readonly Mock<ITeamRepository> _teamRepositoryMock = new Mock<ITeamRepository>();
         private readonly Mock<IPlayerRepository> _playerRepositoryMock = new Mock<IPlayerRepository>();
+        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
         private readonly Mock<IQuery<Team, FindByIdCriteria>> _getTeamByIdQueryMock =
             new Mock<IQuery<Team, FindByIdCriteria>>();
 
@@ -71,6 +73,7 @@
             _kernel.Bind<IQuery<Team, FindByCaptainIdCriteria>>().ToConstant(_getTeamByCaptainQueryMock.Object);
             _kernel.Bind<IQuery<List<Team>, GetAllCriteria>>().ToConstant(_getAllTeamsQueryMock.Object);
             _kernel.Bind<IQuery<List<Player>, TeamPlayersCriteria>>().ToConstant(_getTeamRosterQueryMock.Object);
+            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _playerRepositoryMock.Setup(pr => pr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }

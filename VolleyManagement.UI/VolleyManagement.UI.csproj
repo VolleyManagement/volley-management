@@ -339,7 +339,13 @@
     <Content Include="Areas\Mvc\Views\GameResults\_CreateOrEdit.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\ManageTournamentTeams.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\ShowSchedule.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\ScheduleGame.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_ScheduledGameResult.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -358,6 +364,7 @@
     <Content Include="Scripts\TournamentOperationScripts.js" />
     <Content Include="Scripts\UserActions.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\AddTeams.js" />
+    <Content Include="Scripts\VMScripts\TournamentOperations\SwapRounds.js" />
     <Content Include="Scripts\VMScripts\VMScripts.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -398,6 +405,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TeamViews.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\TournamentController.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TournamentController.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\TournamentViews.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -450,8 +462,10 @@
     <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsEntryViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\StandingsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotTeamStandingsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\GameDeleteResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\GameViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamDeleteFromTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamsAddToTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListViewModel.cs" />
@@ -473,10 +487,10 @@
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserEditViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
+    <Compile Include="Areas\WebApi\Controllers\TournamentsController.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\ContributorsTeamController.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\PlayersController.cs" />
     <Compile Include="Areas\WebApi\ODataControllers\TeamsController.cs" />
-    <Compile Include="Areas\WebApi\ODataControllers\TournamentsController.cs" />
     <Compile Include="Areas\WebApi\Controllers\HomeController.cs" />
     <Compile Include="Areas\WebApi\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
     <Compile Include="Areas\WebApi\Infrastructure\WebApiHelpers.cs" />
@@ -489,11 +503,13 @@
     <Compile Include="Areas\Mvc\Helpers\JQueryUIDateFormatConverter.cs" />
     <Compile Include="Areas\Mvc\Controllers\ErrorController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Infrastructure\CurrentUserService.cs" />
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\NinjectUIModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelConstants.cs" />
     <Compile Include="OwinConfig.cs" />
@@ -568,6 +584,10 @@
     <EmbeddedResource Include="App_GlobalResources\GameResultViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameResultViews.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\TournamentController.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TournamentController.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

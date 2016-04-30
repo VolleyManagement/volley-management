@@ -10,14 +10,14 @@
     /// <summary>
     /// Represents pivot tournament's standings.
     /// </summary>
-    public class PivotStandings
+    public class PivotStandingsDto
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PivotStandings"/> class.
+        /// Initializes a new instance of the <see cref="PivotStandingsDto"/> class.
         /// </summary>
         /// <param name="teams">List of tournament teams standings</param>
         /// <param name="gameResults">List of tournament game results</param>
-        public PivotStandings(List<TeamStandingsDto> teams, List<ShortGameResultDto> gameResults)
+        public PivotStandingsDto(List<TeamStandingsDto> teams, List<ShortGameResultDto> gameResults)
         {
             Teams = teams;
             GameResults = gameResults;

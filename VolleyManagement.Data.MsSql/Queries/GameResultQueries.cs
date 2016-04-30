@@ -15,7 +15,8 @@
     /// Provides implementation of game result queries.
     /// </summary>
     public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
-                                     IQuery<List<GameResultDto>, TournamentGameResultsCriteria>
+                                     IQuery<List<GameResultDto>, TournamentGameResultsCriteria>,
+                                     IQuery<List<Game>, TournamentRoundsGameResultsCriteria>
     {
         #region Fields
 
@@ -47,7 +48,10 @@
         /// <returns>Domain model of game result.</returns>
         public GameResultDto Execute(FindByIdCriteria criteria)
         {
-            return _dalGameResults.Where(gr => gr.Id == criteria.Id).Select(GetGameResultWithTeamNamesMapping()).SingleOrDefault();
+            return _dalGameResults
+                .Where(gr => gr.Id == criteria.Id)
+                .Select(GetGameResultDtoMapping())
+                .SingleOrDefault();
         }
 
         /// <summary>
@@ -57,17 +61,33 @@
         /// <returns>List of domain models of game result.</returns>
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
-            var gameResults = _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
-                     .Select(GetGameResultWithTeamNamesMapping());
+            var gameResults = _dalGameResults
+                .Where(gr => gr.TournamentId == criteria.TournamentId)
+                .Select(GetGameResultDtoMapping());
 
             return gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
+        }
+
+        /// <summary>
+        /// Gets games results of the tournament and rounds by specified criteria.
+        /// </summary>
+        /// <param name="criteria">Tournament's and round`s game results criteria.</param>
+        /// <returns>List of Game of game result.</returns>
+        public List<Game> Execute(TournamentRoundsGameResultsCriteria criteria)
+        {
+            var games = _dalGameResults
+                 .Where(gr => gr.TournamentId == criteria.TournamentId
+                     && (gr.RoundNumber == criteria.FirstRoundNumber || gr.RoundNumber == criteria.SecondRoundNumber))
+                 .Select(GetGameMapping());
+
+            return games.ToList();
         }
 
         #endregion
 
         #region Mapping
 
-        private static Expression<Func<GameResultEntity, GameResultDto>> GetGameResultWithTeamNamesMapping()
+        private static Expression<Func<GameResultEntity, GameResultDto>> GetGameResultDtoMapping()
         {
             return gr => new GameResultDto
             {
@@ -92,6 +112,31 @@
                 AwaySet5Score = gr.AwaySet5Score,
                 GameDate = gr.StartTime,
                 Round = gr.RoundNumber
+            };
+        }
+
+        private static Expression<Func<GameResultEntity, Game>> GetGameMapping()
+        {
+            return gr => new Game
+            {
+                Id = gr.Id,
+                TournamentId = gr.TournamentId,
+                HomeTeamId = gr.HomeTeamId,
+                AwayTeamId = gr.AwayTeamId,
+                GameDate = gr.StartTime,
+                Round = gr.RoundNumber,
+                Result = new Result
+                {
+                    SetScores = new List<Score>
+                    {
+                         new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score },
+                         new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score },
+                         new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score },
+                         new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score },
+                         new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score }
+                    },
+                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore }
+                }
             };
         }
 

@@ -41,7 +41,7 @@ function OnShowFinishedTournamentsClick(e) {
             $('#FinishedHeader').show();
             $.each(resultJson, function (i, item) {
                 var $tr = $('<tr class="dynamicData">').append(
-                    $('<td width="400">').append($('<a/>').attr('href','mvc/Tournaments/Details/' + item.Id).text(item.Name)),
+                    $('<td width="400">').append($('<a/>').attr('href','/Tournaments/Details/' + item.Id).text(item.Name)),
                     $('<td width="100">').append($('<label>').text(DisplaySeason(item.Season)))
                 ).appendTo('#finished_table');
             });

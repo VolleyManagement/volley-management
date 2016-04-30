@@ -1,5 +1,6 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -27,14 +28,6 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         /// <param name="context"> Volley Management context</param>
         protected override void Seed(VolleyManagementEntities context)
         {
-            var defaultRoles = new List<RoleEntity>();
-
-            defaultRoles.Add(CreateRole("Administrator"));
-            defaultRoles.Add(CreateRole("TournamentAdministrator"));
-            defaultRoles.Add(CreateRole("User"));
-
-            context.Roles.AddOrUpdate(r => r.Name, defaultRoles.ToArray());
-
             var contributorTeams = new[]
             {
                 ContributorsProMan(),
@@ -51,11 +44,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
-        }
 
-        private static RoleEntity CreateRole(string name)
-        {
-            return new RoleEntity { Name = name };
+            SeedDataGenerator.GenerateRequiredEntities(context);
+            SeedDataGenerator.GenerateEntities(context);
         }
 
         private static ContributorTeamEntity ContributorsProMan()

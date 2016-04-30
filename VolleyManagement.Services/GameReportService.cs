@@ -76,7 +76,7 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>Pivot standings of the tournament with specified identifier.</returns>
-        public PivotStandings GetPivotStandings(int tournamentId)
+        public PivotStandingsDto GetPivotStandings(int tournamentId)
         {
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
             var tournamentTeams = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
@@ -87,13 +87,13 @@
                 g => new ShortGameResultDto
                 {
                     HomeTeamId = g.HomeTeamId,
-                    AwayTeamId = g.AwayTeamId,
+                    AwayTeamId = g.AwayTeamId.Value,
                     HomeSetsScore = g.HomeSetsScore,
                     AwaySetsScore = g.AwaySetsScore,
                     IsTechnicalDefeat = g.IsTechnicalDefeat
                 }).ToList();
 
-            return new PivotStandings(teamStandings, shortGameResults);
+            return new PivotStandingsDto(teamStandings, shortGameResults);
         }
 
         #endregion
@@ -132,7 +132,7 @@
             foreach (var game in gameResults)
             {
                 var homeTeam = new StandingsEntry { TeamId = game.HomeTeamId };
-                var awayTeam = new StandingsEntry { TeamId = game.AwayTeamId };
+                var awayTeam = new StandingsEntry { TeamId = game.AwayTeamId.Value };
 
                 CalculateGamesStatistics(homeTeam, awayTeam, game);
 

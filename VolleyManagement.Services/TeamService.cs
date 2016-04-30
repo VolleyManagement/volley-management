@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Services
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using VolleyManagement.Contracts;
@@ -10,6 +11,7 @@
     using VolleyManagement.Data.Queries.Player;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.Properties;
     using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
@@ -82,6 +84,8 @@
                 var existTeam = GetPlayerLedTeam(captain.Id);
                 VerifyExistingTeamOrThrow(existTeam);
             }
+
+            ValidateTeam(teamToCreate);
 
             _teamRepository.Add(teamToCreate);
 
@@ -212,6 +216,49 @@
         private Player GetPlayerById(int id)
         {
             return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        private void ValidateTeamName(string teamName)
+        {
+            if (TeamValidation.ValidateTeamName(teamName))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.ValidationTeamName,
+                    VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH),
+                    "Name");
+            }
+        }
+
+        private void ValidateCoachName(string teamCoachName)
+        {
+            if (TeamValidation.ValidateCoachName(teamCoachName))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.ValidationCoachName,
+                    VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
+                    "Coach");
+            }
+        }
+
+        private void ValidateAchievements(string teamAchievements)
+        {
+            if (TeamValidation.ValidateAchievements(teamAchievements))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.ValidationTeamAchievements,
+                    VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
+                    "Achievements");
+            }
+        }
+
+        private void ValidateTeam(Team teamToValidate)
+        {
+            ValidateTeamName(teamToValidate.Name);
+            ValidateCoachName(teamToValidate.Coach);
+            ValidateAchievements(teamToValidate.Achievements);
         }
     }
 }

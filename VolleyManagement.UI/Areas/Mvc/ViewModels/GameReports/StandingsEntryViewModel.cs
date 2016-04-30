@@ -88,7 +88,8 @@
                 return SetsRatio != float.PositiveInfinity ?
                     string.Format(
                     CultureInfo.CurrentUICulture,
-                    "{0:0.###}", SetsRatio) :
+                    "{0:0.###}",
+                    SetsRatio) :
                     "MAX";
             }
         }
@@ -118,7 +119,8 @@
                 return BallsRatio != float.PositiveInfinity ?
                     string.Format(
                     CultureInfo.CurrentUICulture, 
-                    "{0:0.###}", BallsRatio) :
+                    "{0:0.###}",
+                    BallsRatio) :
                     "MAX";
             }
         }

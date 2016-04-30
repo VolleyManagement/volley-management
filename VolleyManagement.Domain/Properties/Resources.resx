@@ -123,6 +123,9 @@
   <data name="DivisionNamesNotUnique" xml:space="preserve">
     <value>Divisions can not have the same name</value>
   </data>
+  <data name="GameResultFifthSetScoreInvalid" xml:space="preserve">
+    <value>In fifth set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}.</value>
+  </data>
   <data name="GameResultOptionalSetScores" xml:space="preserve">
     <value>In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3}</value>
   </data>
@@ -150,11 +153,35 @@
   <data name="GroupNamesNotUnique" xml:space="preserve">
     <value>Group names should be unique</value>
   </data>
+  <data name="HomeTeamNullId" xml:space="preserve">
+    <value>Home team can't be set to freeday</value>
+  </data>
   <data name="InvalidTransferEndpoint" xml:space="preserve">
     <value>End of the transfer period should be before the end of the tournament</value>
   </data>
   <data name="LateRegistrationDates" xml:space="preserve">
     <value>Start of the applying period must be later than today</value>
+  </data>
+  <data name="NoSuchToruanment" xml:space="preserve">
+    <value>Game cannot be added to the tournament that doesn't exist</value>
+  </data>
+  <data name="NoTeamsInGame" xml:space="preserve">
+    <value>No teams are specified for current game in round {0}</value>
+  </data>
+  <data name="SameFreeDayGameInRound" xml:space="preserve">
+    <value>Free day game has already been scheduled in this round</value>
+  </data>
+  <data name="SameGameInRound" xml:space="preserve">
+    <value>Game between {0} and {1} has already been scheduled for round number {2}</value>
+  </data>
+  <data name="SameGameInTournamentSchemeOne" xml:space="preserve">
+    <value>Game between {0} and {1} has already been scheduled in another round. Same teams cannot play twice in one round tournament</value>
+  </data>
+  <data name="SameGameInTournamentSchemeTwo" xml:space="preserve">
+    <value>Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round tournament</value>
+  </data>
+  <data name="SameTeamInRound" xml:space="preserve">
+    <value>Team {0} has game scheduled already in this round</value>
   </data>
   <data name="TeamNameInTournamentNotUnique" xml:space="preserve">
     <value>Team with such name already exists in tournament</value>
@@ -171,32 +198,47 @@
   <data name="UniqueNameMessage" xml:space="preserve">
     <value>Tournament name should be unique</value>
   </data>
+  <data name="ValidationCoachName" xml:space="preserve">
+    <value>Coach name can not contain more than  {0} symbols; The field must contain only letters</value>
+  </data>
   <data name="ValidationDivisionName" xml:space="preserve">
-    <value>Пожалуйста, введите название дивизиона правильно</value>
+    <value>Please, enter the valid name of the division</value>
   </data>
   <data name="ValidationGroupName" xml:space="preserve">
-    <value>Пожалуйста, введите название группы правильно</value>
+    <value>Please, enter the valid name of the group</value>
   </data>
   <data name="ValidationPlayerBirthYear" xml:space="preserve">
-    <value>Пожалуйста, введите дату рождения верно</value>
+    <value>Please enter the valid birth date</value>
   </data>
   <data name="ValidationPlayerFirstName" xml:space="preserve">
-    <value>Пожалуйста, введите имя корректно</value>
+    <value>Please, enter the valid first name</value>
   </data>
   <data name="ValidationPlayerHeight" xml:space="preserve">
-    <value>Пожалуйста, введите рост корректно</value>
+    <value>Please, enter the valid height</value>
   </data>
   <data name="ValidationPlayerLastName" xml:space="preserve">
-    <value>Пожалуйста, введите фамилию корректно</value>
+    <value>Please, enter the valid last name</value>
   </data>
   <data name="ValidationPlayerWeight" xml:space="preserve">
-    <value>Пожалуйта, введите вес корректно</value>
+    <value>Please, enter the valid weight</value>
+  </data>
+  <data name="ValidationTeamAchievements" xml:space="preserve">
+    <value>Team achievements can not contain more than  {0} symbols</value>
+  </data>
+  <data name="ValidationTeamName" xml:space="preserve">
+    <value>Team name can not contain more than  {0} symbols; The field can not be empty</value>
+  </data>
+  <data name="WrongDeletingGame" xml:space="preserve">
+    <value>Game can not be deleted because it has already ended</value>
   </data>
   <data name="WrongRegistrationDatesPeriod" xml:space="preserve">
     <value>Start of the applying period must be earlier than its end</value>
   </data>
   <data name="WrongRegistrationGames" xml:space="preserve">
     <value>Games should start after the end of the applying period</value>
+  </data>
+  <data name="WrongRoundDate" xml:space="preserve">
+    <value>Start of the round should not be earlier than the start of the tournament or later than the end of the tournament</value>
   </data>
   <data name="WrongStartTournamentDates" xml:space="preserve">
     <value>Start of the tournament must be eariler than its end</value>

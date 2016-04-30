@@ -14,19 +14,19 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentTeamsListViewModel"/> class
         /// </summary>
+        public TournamentTeamsListViewModel()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TournamentTeamsListViewModel"/> class
+        /// </summary>
         /// <param name="source">All needed teams</param>
         /// <param name="tournamentId">Tournament id</param>
         public TournamentTeamsListViewModel(List<Team> source, int tournamentId)
         {
             this.TournamentId = tournamentId;
             this.List = source.Select(t => TeamNameViewModel.Map(t)).ToList();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TournamentTeamsListViewModel"/> class
-        /// </summary>
-        public TournamentTeamsListViewModel()
-        {
         }
 
         /// <summary>

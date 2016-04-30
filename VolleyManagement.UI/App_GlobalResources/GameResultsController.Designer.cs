@@ -86,5 +86,14 @@ namespace VolleyManagement.UI.App_GlobalResources {
                 return ResourceManager.GetString("GameResultWasDeleted", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game was deleted successfully..
+        /// </summary>
+        public static string GameWasDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("GameWasDeletedSuccessfully", resourceCulture);
+            }
+        }
     }
 }

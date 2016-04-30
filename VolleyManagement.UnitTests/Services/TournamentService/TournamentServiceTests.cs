@@ -7,6 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
@@ -46,6 +47,7 @@
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
 
         private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
+        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
         private readonly Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock =
             new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
@@ -58,6 +60,9 @@
 
         private readonly Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getAllTeamsQuery =
             new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
+
+        private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto =
+            new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -77,6 +82,8 @@
             _kernel.Bind<IQuery<List<Tournament>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
             _kernel.Bind<IQuery<Tournament, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>().ToConstant(_getAllTeamsQuery.Object);
+            _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>().ToConstant(_getTorunamentDto.Object);
+            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;

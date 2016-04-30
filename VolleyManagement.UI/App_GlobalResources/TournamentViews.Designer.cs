@@ -97,6 +97,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
         public static string Create {
@@ -111,6 +120,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string CreateNewTournament {
             get {
                 return ResourceManager.GetString("CreateNewTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create one more.
+        /// </summary>
+        public static string CreateOneMore {
+            get {
+                return ResourceManager.GetString("CreateOneMore", resourceCulture);
             }
         }
         
@@ -178,6 +196,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit scheduled game.
+        /// </summary>
+        public static string EditScheduledGameTitle {
+            get {
+                return ResourceManager.GetString("EditScheduledGameTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Editing tournament.
         /// </summary>
         public static string EditTournamentTitle {
@@ -205,6 +232,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Free day.
+        /// </summary>
+        public static string FreeDay {
+            get {
+                return ResourceManager.GetString("FreeDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game was not found in the tournament.
+        /// </summary>
+        public static string GameNotFoundInTournament {
+            get {
+                return ResourceManager.GetString("GameNotFoundInTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage Teams.
         /// </summary>
         public static string ManageTeams {
@@ -214,7 +259,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No games scheduled yet.
+        ///   Looks up a localized string similar to No games were scheduled yet.
         /// </summary>
         public static string NoGamesScheduled {
             get {
@@ -228,6 +273,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string RegistrationFieldsTitle {
             get {
                 return ResourceManager.GetString("RegistrationFieldsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Result.
+        /// </summary>
+        public static string Result {
+            get {
+                return ResourceManager.GetString("Result", resourceCulture);
             }
         }
         
@@ -268,6 +322,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Game.
+        /// </summary>
+        public static string ScheduleGameLegend {
+            get {
+                return ResourceManager.GetString("ScheduleGameLegend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule game.
+        /// </summary>
+        public static string ScheduleGameTitle {
+            get {
+                return ResourceManager.GetString("ScheduleGameTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Schedule for.
         /// </summary>
         public static string ScheduleTitle {
@@ -291,6 +363,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string ShowTournamentStandings {
             get {
                 return ResourceManager.GetString("ShowTournamentStandings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Day off.
+        /// </summary>
+        public static string TeamDayOff {
+            get {
+                return ResourceManager.GetString("TeamDayOff", resourceCulture);
             }
         }
         

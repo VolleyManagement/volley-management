@@ -32,5 +32,14 @@
         /// Gets or sets the score of the away team.
         /// </summary>
         public byte Away { get; set; }
+
+        /// <summary>
+        /// Indicates whether score is empty.
+        /// </summary>
+        /// <returns>True if score is empty; otherwise, false.</returns>
+        public bool IsEmpty()
+        {
+            return this.Home == 0 && this.Away == 0;
+        }
     }
 }

@@ -44,10 +44,14 @@
         {
             get
             {
-                string result = HomeSetsScore + " : " + AwaySetsScore;
-                if (IsTechnicalDefeat)
+                string result = string.Empty;
+                if (HomeSetsScore != 0 || AwaySetsScore != 0)
                 {
-                    result += "*";
+                    result = HomeSetsScore + " : " + AwaySetsScore;
+                    if (IsTechnicalDefeat)
+                    {
+                        result += "*";
+                    }
                 }
 
                 return result;

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
@@ -11,6 +12,7 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using DivisionConstants = VolleyManagement.Domain.Constants.Division;
@@ -40,6 +42,7 @@
         #region Fields
 
         private readonly ITournamentRepository _tournamentRepository;
+        private readonly IAuthorizationService _authService;
 
         #endregion
 
@@ -49,6 +52,7 @@
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTeamsQuery;
+        private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
 
         #endregion
 
@@ -57,23 +61,29 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentService"/> class
         /// </summary>
-        /// <param name="tournamentRepository"> The tournament repository  </param>
-        /// <param name="uniqueTournamentQuery"> First By Name object query  </param>
+        /// <param name="tournamentRepository"> The tournament repository.</param>
+        /// <param name="uniqueTournamentQuery"> First By Name object query.</param>
         /// <param name="getAllQuery"> Get All object query. </param>
         /// <param name="getByIdQuery">Get tournament by id query.</param>
         /// <param name="getAllTeamsQuery">Get All Tournament Teams query.</param>
+        /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
+        /// <param name="authService">Authorization service</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
-            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery)
+            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
+            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
+            IAuthorizationService authService)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
+            _authService = authService;
+            _getTournamentDtoQuery = getTournamentDtoQuery;
         }
 
         #endregion
@@ -118,11 +128,24 @@
         }
 
         /// <summary>
+        /// Finds tournament data transfer object by tournament id
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>The <see cref="TournamentScheduleDto"/></returns>
+        public TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId)
+        {
+            return _getTournamentDtoQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
+        }
+
+        /// <summary>
         /// Create a new tournament
         /// </summary>
         /// <param name="tournamentToCreate">A Tournament to create</param>
         public void Create(Tournament tournamentToCreate)
         {
+            _authService.CheckAccess(AuthOperations.Tournaments.Create);
+
             if (tournamentToCreate == null)
             {
                 throw new ArgumentNullException("tournamentToCreate");
@@ -213,6 +236,28 @@
             _tournamentRepository.UnitOfWork.Commit();
         }
 
+        /// <summary>
+        /// Counts number of rounds for specified tournament
+        /// </summary>
+        /// <param name="tournament">Tournament for which we count rounds</param>
+        /// <returns>Number of rounds</returns>
+        public byte GetNumberOfRounds(TournamentScheduleDto tournament)
+        {
+            byte numberOfRounds = 0;
+
+            switch (tournament.Scheme)
+            {
+                case TournamentSchemeEnum.One:
+                    numberOfRounds = GetNumberOfRoundsByScheme1(tournament.TeamCount);
+                    break;
+                case TournamentSchemeEnum.Two:
+                    numberOfRounds = GetNumberOfRoundsByScheme2(tournament.TeamCount);
+                    break;
+            }
+
+            return numberOfRounds;
+        }
+
         #endregion
 
         #region Private
@@ -227,6 +272,26 @@
             }
 
             return criteria;
+        }
+
+        /// <summary>
+        /// Calculate number of rounds in tournament by scheme 1.
+        /// </summary>
+        /// <param name="teamCount">Number of teams.</param>
+        /// <returns>Number of rounds.</returns>
+        private byte GetNumberOfRoundsByScheme1(int teamCount)
+        {
+            return Convert.ToByte((teamCount % 2 == 0) && (teamCount != 0) ? teamCount - 1 : teamCount);
+        }
+
+        /// <summary>
+        /// Calculate number of rounds in tournament by scheme 2.
+        /// </summary>
+        /// <param name="teamCount">Number of teams.</param>
+        /// <returns>Number of rounds.</returns>
+        private byte GetNumberOfRoundsByScheme2(int teamCount)
+        {
+            return Convert.ToByte(2 * GetNumberOfRoundsByScheme1(teamCount));
         }
 
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)

@@ -14,8 +14,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="PivotTableViewModel"/> class
         /// </summary>
-        /// <param name="pivotStandings">Instance of a class which implements<see cref="PivotStandings"/></param>
-        public PivotTableViewModel(PivotStandings pivotStandings)
+        /// <param name="pivotStandings">Instance of a class which implements<see cref="PivotStandingsDto"/></param>
+        public PivotTableViewModel(PivotStandingsDto pivotStandings)
         {
             TeamsStandings = pivotStandings.Teams.Select(PivotTeamStandingsViewModel.Map).ToList();
             GameResults = pivotStandings.GameResults.Select(PivotGameResultViewModel.Map).ToList();

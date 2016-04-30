@@ -46,7 +46,7 @@
             // Arrange
             var teams = new TeamStandingsTestFixture().TestTeamStandings().Build();
             var gameResults = new ShortGameResultDtoTetsFixture().GetShortResults().Build();
-            var testPivotStandings = new PivotStandings(teams, gameResults);
+            var testPivotStandings = new PivotStandingsDto(teams, gameResults);
 
             var testStandings = new StandingsTestFixture().TestStandings().Build();
             var sut = _kernel.Get<GameReportsController>();
@@ -67,7 +67,7 @@
             _gameReportServiceMock.Setup(m => m.GetStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
         }
 
-        private void SetupGameReportGetPivotStandings(int tournamentId, PivotStandings testData)
+        private void SetupGameReportGetPivotStandings(int tournamentId, PivotStandingsDto testData)
         {
             _gameReportServiceMock.Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
         }

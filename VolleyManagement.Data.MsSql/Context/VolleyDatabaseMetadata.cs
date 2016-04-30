@@ -41,6 +41,8 @@
 
         public const string ROLES_TABLE_NAME = "Roles";
 
+        public const string ROLES_TO_OPERATIONS_TABLE_NAME = "RolesToOperationsMap";
+
         public const string USERS_TO_ROLES_TABLE_NAME = "UserToRoleMap";
 
         public const string USER_TO_ROLE_FK = "RoleId";

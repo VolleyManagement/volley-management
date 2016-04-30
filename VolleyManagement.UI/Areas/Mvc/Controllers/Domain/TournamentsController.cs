@@ -5,8 +5,11 @@
     using System.Web.Mvc;
     using App_GlobalResources;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
@@ -21,11 +24,17 @@
         private const int DAYS_FOR_GAMES_PERIOD = 120;
         private const int DAYS_FROM_GAMES_START_TO_TRANSFER_START = 1;
         private const int DAYS_FOR_TRANSFER_PERIOD = 21;
+        private const int MIN_ROUND_NUMBER = 1;
 
         /// <summary>
         /// Holds TournamentService instance
         /// </summary>
         private readonly ITournamentService _tournamentService;
+
+        /// <summary>
+        /// Holds AuthorizationService instance
+        /// </summary>
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Holds GameService instance
@@ -37,12 +46,15 @@
         /// </summary>
         /// <param name="tournamentService">The tournament service</param>
         /// <param name="gameService">The game service</param>
+        /// <param name="authService">The authorization service</param>
         public TournamentsController(
             ITournamentService tournamentService,
-            IGameService gameService)
+            IGameService gameService,
+            IAuthorizationService authService)
         {
             this._tournamentService = tournamentService;
             this._gameService = gameService;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -51,7 +63,10 @@
         /// <returns>View with collection of tournaments</returns>
         public ActionResult Index()
         {
-            var tournamentsCollections = new TournamentsCollectionsViewModel();
+            var tournamentsCollections = new TournamentsCollectionsViewModel
+            {
+                Authorization = this._authService.GetAllowedOperations(AuthOperations.Tournaments.Create)
+            };
 
             var actualTournaments = this._tournamentService.GetActual().ToArray();
 
@@ -95,14 +110,22 @@
             {
                 ApplyingPeriodStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
                 ApplyingPeriodEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD),
-                GamesStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
-                GamesEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FOR_GAMES_PERIOD),
-                TransferStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START + DAYS_FOR_TRANSFER_PERIOD)
+                GamesStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                                    + DAYS_FOR_APPLYING_PERIOD
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
+                GamesEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                                + DAYS_FOR_APPLYING_PERIOD
+                                                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                                + DAYS_FOR_GAMES_PERIOD),
+                TransferStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                                    + DAYS_FOR_APPLYING_PERIOD
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
+                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START 
+                                                    + DAYS_FOR_APPLYING_PERIOD
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START 
+                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START 
+                                                    + DAYS_FOR_TRANSFER_PERIOD)
             };
 
             return this.View(tournamentViewModel);
@@ -270,39 +293,164 @@
         /// <returns>View for view model of the schedule with specified identifier.</returns>    
         public ActionResult ShowSchedule(int tournamentId)
         {
-            var tournament = _tournamentService.Get(tournamentId);
+            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
 
             if (tournament == null)
             {
-                return HttpNotFound();
+                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                return View();
             }
 
-            var scheduleViewModel = new ScheduleViewModel();
-            scheduleViewModel.TournamentId = tournament.Id;
-            scheduleViewModel.TournamentName = tournament.Name;
-
-            int countTeams = _tournamentService.GetAllTournamentTeams(tournamentId).ToList().Count;
-            switch (tournament.Scheme)
+            var scheduleViewModel = new ScheduleViewModel
             {
-                case TournamentSchemeEnum.One:
-                    scheduleViewModel.CountRound = GetCountRoundByScheme1(countTeams);
-                    break;
-                case TournamentSchemeEnum.Two:
-                    scheduleViewModel.CountRound = GetCountRoundByScheme2(countTeams);
-                    break;
-            }
-
-            scheduleViewModel.Rounds = _gameService.GetTournamentResults(tournamentId).GroupBy(d => d.Round)
-               .ToDictionary(d => d.Key, d => d.OrderBy(t => t.GameDate).ToList());
+                TournamentId = tournament.Id,
+                TournamentName = tournament.Name,
+                NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament),
+                Rounds = _gameService.GetTournamentResults(tournamentId)
+                .GroupBy(d => d.Round)
+                .ToDictionary(
+                     d => d.Key,
+                     c => c.OrderBy(t => t.GameDate)
+                    .Select(x => GameResultViewModel.Map(x)).ToList())
+            };
 
             return View(scheduleViewModel);
         }
 
         /// <summary>
-        /// Gets the view for view model of the tournament with specified identifier.
+        /// Schedule game action (GET)
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>View to schedule a game in tournament</returns>
+        public ActionResult ScheduleGame(int tournamentId)
+        {
+            var scheduleGameViewModel = GetGameViewModelFor(tournamentId);
+            return View(scheduleGameViewModel);
+        }
+
+        /// <summary>
+        /// Schedule game action (POST)
+        /// </summary>
+        /// <param name="gameViewModel">Submitted game to be scheduled</param>
+        /// <param name="redirectToSchedule">Defines whether it's necessary to redirect to Schedule action, after game was created</param>
+        /// <returns>Appropriate view</returns>
+        [HttpPost]
+        public ActionResult ScheduleGame(GameViewModel gameViewModel, bool redirectToSchedule)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _gameService.Create(gameViewModel.ToDomain());
+
+                    if (redirectToSchedule)
+                    {
+                        return RedirectToAction("ShowSchedule", new { tournamentId = gameViewModel.TournamentId });
+                    }
+                    else
+                    {
+                        ModelState.Clear();
+                    }
+                }
+            }
+            catch (ArgumentException e)
+            {
+                this.ModelState.AddModelError("ValidationError", e.Message);
+            }
+
+            return ScheduleGame(gameViewModel.TournamentId);
+        }
+
+        /// <summary>
+        /// Edit scheduled game action (GET)
+        /// </summary>
+        /// <param name="gameId">Identifier of the game.</param>
+        /// <returns>View to edit scheduled game in the tournament.</returns>
+        public ActionResult EditScheduledGame(int gameId)
+        {
+            var game = _gameService.Get(gameId);
+
+            if (game == null)
+            {
+                this.ModelState.AddModelError("LoadError", App_GlobalResources.TournamentViews.GameNotFoundInTournament);
+                return View();
+            }
+
+            var gameViewModel = GetGameViewModelFor(game.TournamentId);
+
+            gameViewModel.Id = game.Id;
+            gameViewModel.AwayTeamId = game.AwayTeamId;
+            gameViewModel.HomeTeamId = game.HomeTeamId;
+            gameViewModel.GameDate = game.GameDate;
+            gameViewModel.Round = game.Round;
+
+            return View(gameViewModel);
+        }
+
+        /// <summary>
+        /// Schedule game action (POST)
+        /// </summary>
+        /// <param name="gameViewModel">Submitted game to be edited</param>
+        /// <returns>Appropriate view</returns>
+        [HttpPost]
+        public ActionResult EditScheduledGame(GameViewModel gameViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _gameService.Edit(gameViewModel.ToDomain());
+                    return RedirectToAction("ShowSchedule", new { tournamentId = gameViewModel.TournamentId });
+                }
+            }
+            catch (ArgumentException e)
+            {
+                this.ModelState.AddModelError("ValidationError", e.Message);
+            }
+            catch (MissingEntityException e) 
+            {
+                this.ModelState.AddModelError("LoadError", e.Message);
+                return View();
+            }
+
+            return EditScheduledGame(gameViewModel.Id);
+        }
+
+        /// <summary>
+        /// Swap rounds action.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <param name="firstRoundNumber">Identifier of the first round number.</param>
+        /// <param name="secondRoundNumber">Identifier of the second round number.</param>
+        /// <returns>Redirect to schedule page.</returns>
+        public ActionResult SwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)
+        {
+            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
+
+            if (tournament == null)
+            {
+                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                return View();
+            }
+
+            try
+            {
+                this._gameService.SwapRounds(tournamentId, firstRoundNumber, secondRoundNumber);
+                return RedirectToAction("ShowSchedule", new { tournamentId = tournamentId });
+            }
+            catch (MissingEntityException ex)
+            {
+                this.ModelState.AddModelError("LoadError", ex.Message);
+                return View();
+            }
+        }
+
+        #region Private
+        /// <summary>
+        /// Gets info about the tournament with a specified identifier.
         /// </summary>
         /// <param name="id">Identifier of the tournament.</param>
-        /// <returns>View for view model of the tournament with specified identifier.</returns>
+        /// <returns>View with the TournamentViewModel.</returns>
         private ActionResult GetTournamentView(int id)
         {
             var tournament = _tournamentService.Get(id);
@@ -317,23 +465,36 @@
         }
 
         /// <summary>
-        /// Calculate number of rounds in tournament by scheme 1.
+        /// Gets GameViewModel with loaded teams list and rounds.
         /// </summary>
-        /// <param name="countTeams">Number of teams.</param>
-        /// <returns>Number of rounds.</returns>
-        private byte GetCountRoundByScheme1(int countTeams)
+        /// <param name="tournamentId">Id of the tournament to create GameViewModel for.</param>
+        /// <returns>GameViewModel with loaded teams list and rounds.</returns>
+        private GameViewModel GetGameViewModelFor(int tournamentId)
         {
-            return Convert.ToByte((countTeams % 2 == 0) && (countTeams != 0) ? countTeams - 1 : countTeams);
-        }
+            var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
 
-        /// <summary>
-        /// Calculate number of rounds in tournament by scheme 2.
-        /// </summary>
-        /// <param name="countTeams">Number of teams.</param>
-        /// <returns>Number of rounds.</returns>
-        private byte GetCountRoundByScheme2(int countTeams)
-        {
-            return Convert.ToByte(2 * GetCountRoundByScheme1(countTeams));
-        }
+            if (tournament == null)
+            {
+                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                return null;
+            }
+
+            var tournamentTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
+            var roundsNumber = _tournamentService.GetNumberOfRounds(tournament);
+            if (roundsNumber <= 0)
+            {
+                this.ModelState.AddModelError("LoadError", TournamentController.SchedulingError);
+                return null;
+            }
+
+            return new GameViewModel
+            {
+                TournamentId = tournamentId,
+                GameDate = tournament.StartDate,
+                Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
+                Teams = new SelectList(tournamentTeams, "Id", "Name")
+            };
+        } 
+        #endregion
     }
 }

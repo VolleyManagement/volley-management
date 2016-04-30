@@ -1,0 +1,47 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameViewModel
+
+@{
+    ViewBag.Title = @Resources.TournamentViews.ScheduleGameTitle;
+    Layout = "~/Areas/Mvc/Views/Shared/_MenuLayout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model == null)
+{
+    @Html.ValidationMessage("LoadError")
+}
+else
+{
+    using (Html.BeginForm())
+    {
+        @Html.Partial("_ScheduleOrEditGame", Model);
+        @Html.Hidden("redirectToSchedule");
+    
+        <div class="row">
+            <div class="col-md-1">
+                <input id="create" class="btn btn-default" type="submit" value="@Resources.TournamentViews.Create" />
+            </div>
+            <div class="col-md-2">
+                <input id="createOneMore" class="btn btn-default" type="submit" value="@Resources.TournamentViews.CreateOneMore" />
+            </div>
+        </div>
+    }
+    
+    <br/>
+    @Html.ActionLink(@Resources.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })
+}
+
+<br/>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#create').click(OnCreateClick);
+        $('#createOneMore').click(OnCreateOneMoreClick);
+    });
+    function OnCreateClick() {        
+        $('#redirectToSchedule').val(true);
+    }
+    function OnCreateOneMoreClick() {
+        $('#redirectToSchedule').val(false);
+    }
+</script>

@@ -20,6 +20,6 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>Pivot standings of the tournament with specified identifier.</returns>
-        PivotStandings GetPivotStandings(int tournamentId);
+        PivotStandingsDto GetPivotStandings(int tournamentId);
     }
 }

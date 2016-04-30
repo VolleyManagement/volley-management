@@ -65,10 +65,12 @@
         /// </summary>
         /// <param name="setScore">Score of the set.</param>
         /// <param name="isTechnicalDefeat">Value indicating whether the technical defeat has taken place.</param>
+        /// <param name="setOrderNumber">Value indicating set order number.</param>
         /// <returns>True if optional set score is valid; otherwise, false.</returns>
-        public static bool IsOptionalSetScoreValid(Score setScore, bool isTechnicalDefeat)
+        public static bool IsOptionalSetScoreValid(Score setScore, bool isTechnicalDefeat, int setOrderNumber)
         {
-            return isTechnicalDefeat ? IsTechnicalDefeatOptionalSetScoreValid(setScore) : IsOrdinaryOptionalSetScoreValid(setScore);
+            return isTechnicalDefeat ? IsTechnicalDefeatOptionalSetScoreValid(setScore) :
+                IsOrdinaryOptionalSetScoreValid(setScore, setOrderNumber);
         }
 
         /// <summary>
@@ -157,37 +159,62 @@
                 && setScore.Away == Constants.GameResult.UNPLAYED_SET_AWAY_SCORE;
         }
 
-        private static bool IsOrdinaryRequiredSetScoreValid(Score setScore)
+        private static bool IsOrdinaryRequiredSetScoreValid(Score setScore, int setOrderNumber = 0)
         {
             bool isValid = false;
-
-            if (IsSetScoreGreaterThanMin(setScore))
+            if (setOrderNumber == Constants.GameResult.MAX_SETS_COUNT)
             {
-                isValid = Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+                isValid = IsSetScoreValid(setScore, Constants.GameResult.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN);
             }
-            else if (IsSetScoreEqualToMin(setScore))
+            else
             {
-                isValid = Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+                isValid = IsSetScoreValid(setScore, Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN);
             }
 
             return isValid;
         }
 
-        private static bool IsOrdinaryOptionalSetScoreValid(Score setScore)
+        private static bool IsSetScoreValid(Score setScore, int minSetScore)
         {
-            return IsOrdinaryRequiredSetScoreValid(setScore) || IsSetUnplayed(setScore);
+            bool isValid = false;
+
+            if (IsSetScoreGreaterThanMin(setScore, minSetScore))
+            {
+                isValid = IsPointsDifferenceEqualRequired(setScore);
+            }
+            else if (IsSetScoreEqualToMin(setScore, minSetScore))
+            {
+                isValid = IsPointsDifferenceGreaterOrEqualRequired(setScore);
+            }
+
+            return isValid;
         }
 
-        private static bool IsSetScoreEqualToMin(Score setScore)
+        private static bool IsPointsDifferenceEqualRequired(Score setScore)
         {
-            return setScore.Home == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
-                || setScore.Away == Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
+            return Math.Abs(setScore.Home - setScore.Away) == Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
         }
 
-        private static bool IsSetScoreGreaterThanMin(Score setScore)
+        private static bool IsPointsDifferenceGreaterOrEqualRequired(Score setScore)
         {
-            return setScore.Home > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN
-                || setScore.Away > Constants.GameResult.SET_POINTS_MIN_VALUE_TO_WIN;
+            return Math.Abs(setScore.Home - setScore.Away) >= Constants.GameResult.SET_POINTS_MIN_DELTA_TO_WIN;
+        }
+
+        private static bool IsOrdinaryOptionalSetScoreValid(Score setScore, int setOrderNumber)
+        {
+            return IsOrdinaryRequiredSetScoreValid(setScore, setOrderNumber) || IsSetUnplayed(setScore);
+        }
+
+        private static bool IsSetScoreEqualToMin(Score setScore, int minSetScore)
+        {
+            return setScore.Home == minSetScore
+                || setScore.Away == minSetScore;
+        }
+
+        private static bool IsSetScoreGreaterThanMin(Score setScore, int minSetScore)
+        {
+            return setScore.Home > minSetScore
+                || setScore.Away > minSetScore;
         }
     }
 }

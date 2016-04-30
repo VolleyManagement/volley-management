@@ -47,9 +47,7 @@
                 Teams = this._teamService.Get()
                                          .ToList()
                                          .Select(t => TeamViewModel.Map(t, null, null)),
-                Create = this._authService.GetAllowedOperations(AuthOperations.Teams.Create),
-                Delete = this._authService.GetAllowedOperations(AuthOperations.Teams.Delete),
-                Edit = this._authService.GetAllowedOperations(AuthOperations.Teams.Edit)
+                AllowedOperations = this._authService.GetAllowedOperations(AuthOperations.Teams.TeamOperations)
             };
 
             return View(teams);

@@ -34,6 +34,16 @@
             /// Delete tournament operation
             /// </summary>
             public static readonly AuthOperation Delete = Tuple.Create(TOURNAMENTS, 3);
+
+            /// <summary>
+            /// List of possible operations with tournaments
+            /// </summary>
+            public static readonly List<AuthOperation> TournamentOperations = new List<AuthOperation>
+            {
+                Create,
+                Edit,
+                Delete
+            };
         }
 
         /// <summary>
@@ -47,7 +57,7 @@
             public static readonly AuthOperation Create = Tuple.Create(TEAMS, 1);
 
             /// <summary>
-            /// Edit team operation
+            /// List of possible operations with teams
             /// </summary>
             public static readonly AuthOperation Edit = Tuple.Create(TEAMS, 2);
 
@@ -55,6 +65,16 @@
             /// Delete team operation
             /// </summary>
             public static readonly AuthOperation Delete = Tuple.Create(TEAMS, 3);
+
+            /// <summary>
+            /// list of team operatations
+            /// </summary>
+            public static readonly List<AuthOperation> TeamOperations = new List<AuthOperation>
+            {
+                Create,
+                Edit,
+                Delete
+            };
         }
     }
 }

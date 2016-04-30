@@ -23,6 +23,13 @@
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TournamentTeamsListViewModel"/> class
+        /// </summary>
+        public TournamentTeamsListViewModel()
+        {
+        }
+
+        /// <summary>
         /// Tournament Id
         /// </summary>
         public int TournamentId { get; set; }
@@ -38,7 +45,7 @@
         /// <returns>Domain list of teams</returns>
         public List<Team> ToDomain()
         {
-            return List.Select(t => t.ToDomain()).ToList();            
+            return List.Select(t => t.ToDomain()).ToList();
         }
     }
 }

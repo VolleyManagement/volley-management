@@ -86,7 +86,6 @@
         /// <summary>
         /// Add tournament to collection.
         /// </summary>
-        /// <param name="newTournament">Tournament to add.</param>
         /// <returns>Builder object with collection of tournaments.</returns>
         public TournamentServiceTestFixture WithFinishedTournaments()
         {

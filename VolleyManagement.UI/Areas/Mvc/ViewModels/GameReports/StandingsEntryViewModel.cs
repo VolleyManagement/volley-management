@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
+    using System.Globalization;
     using VolleyManagement.Domain.GameReportsAggregate;
 
     /// <summary>
@@ -78,6 +79,21 @@
         public float SetsRatio { get; set; }
 
         /// <summary>
+        /// Gets the sets ratio of the team.
+        /// </summary>
+        public string SetsRatioText
+        {
+            get
+            {
+                return SetsRatio != float.PositiveInfinity ?
+                    string.Format(
+                    CultureInfo.CurrentUICulture,
+                    "{0:0.###}", SetsRatio) :
+                    "MAX";
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the total number of balls the team won.
         /// </summary>
         public int BallsWon { get; set; }
@@ -91,6 +107,21 @@
         /// Gets or sets the ratio of number of balls the team won to number of balls the team lost.
         /// </summary>
         public float BallsRatio { get; set; }
+
+        /// <summary>
+        /// Gets the balls ratio of the team.
+        /// </summary>
+        public string BallsRatioText
+        {
+            get
+            {
+                return BallsRatio != float.PositiveInfinity ?
+                    string.Format(
+                    CultureInfo.CurrentUICulture, 
+                    "{0:0.###}", BallsRatio) :
+                    "MAX";
+            }
+        }
 
         #region Factory methods
 

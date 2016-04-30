@@ -127,6 +127,9 @@
     <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PivotGameResultsViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PivotTableEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PivotTeamsStandingsEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
@@ -144,6 +147,7 @@
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
+    <Compile Include="Services\GameReportService\ShortGameResultDtoTetsFixture.cs" />
     <Compile Include="Services\GameReportService\TeamStandingsTestFixture.cs" />
     <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
     <Compile Include="Services\GameService\GameResultDtoBuilder.cs" />

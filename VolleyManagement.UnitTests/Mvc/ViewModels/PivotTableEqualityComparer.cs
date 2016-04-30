@@ -19,7 +19,7 @@
         /// <returns>True if the objects are considered equal; otherwise, false.</returns>
         public static bool AreResultTablesEquals(PivotTableViewModel x, PivotTableViewModel y)
         {
-            int count = (int)Math.Sqrt(x.AllGameResults.Length);
+            int count = x.TeamsStandings.Count;
             if (x.AllGameResults.Length != y.AllGameResults.Length)
             {
                 return false;

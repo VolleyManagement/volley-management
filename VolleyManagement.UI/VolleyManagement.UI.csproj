@@ -432,6 +432,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+	<Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
     <Compile Include="Areas\Admin\Models\ModifiedRoleViewModel.cs" />
@@ -453,7 +455,6 @@
     <Compile Include="Areas\Mvc\Helpers\ReverseComparer.cs" />
     <Compile Include="Areas\Mvc\Mappers\DomainToViewModel.cs" />
     <Compile Include="Areas\Mvc\Mappers\ViewModelToDomain.cs" />
-    <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Account\AuthenticationStatusViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\CssClassConstants.cs" />
@@ -498,7 +499,6 @@
     <Compile Include="Areas\WebApi\ViewModels\Teams\TeamViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Users\UserViewModel.cs" />
-    <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Areas\Mvc\Helpers\JQueryUIDateFormatConverter.cs" />
     <Compile Include="Areas\Mvc\Controllers\ErrorController.cs" />

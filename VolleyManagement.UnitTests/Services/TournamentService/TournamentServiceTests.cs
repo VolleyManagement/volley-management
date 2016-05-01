@@ -1,12 +1,12 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentService
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Ninject;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using Ninject;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;

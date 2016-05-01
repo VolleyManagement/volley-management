@@ -170,7 +170,7 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
-        
+
             _gameRepository.UnitOfWork.Commit();
         }
 

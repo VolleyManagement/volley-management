@@ -20,7 +20,7 @@ function OnDeleteClick(e) {
                 if (resultJson.HasDeleted) {
                     $("#" + playerId).parent().parent().remove();
                 } else {
-                    window.location.pathname = "Mvc/Players";
+                    window.location.pathname = "Players";
                 }
             }
         });

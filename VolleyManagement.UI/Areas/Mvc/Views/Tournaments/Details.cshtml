@@ -1,4 +1,5 @@
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
+@using VolleyManagement.Domain.RolesAggregate
 @using VolleyManagement.Domain.Tournaments
 @using VolleyManagement.UI.Areas.Mvc;
 
@@ -73,30 +74,36 @@
             new { tournamentId = Model.Id, tournamentName = Model.Name },
             null)
     </div>
-	<div>
+    <div>
         @Html.ActionLink(
             Resources.TournamentViews.ShowTournamentStandings,
             "Standings",
             "GameReports",
             new { tournamentId = Model.Id, tournamentName = Model.Name },
             null)
-	</div>
-    <div>
-        @Html.ActionLink(
+    </div>
+    @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.ManageTeams))
+    {
+        <div>
+            @Html.ActionLink(
             Resources.TournamentViews.ManageTeams,
             "ManageTournamentTeams",
             "Tournaments",
             new { tournamentId = Model.Id },
             null)
-    </div>
+        </div>
+    }
     <div>
         @Html.ActionLink(
-           Resources.TournamentViews.Schedule, 
-           "ShowSchedule", 
+           Resources.TournamentViews.Schedule,
+           "ShowSchedule",
            new { tournamentId = Model.Id })
     </div>
 </fieldset>
 <p>
-    @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id = Model.Id }) |
+    @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Edit))
+    {
+        @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id = Model.Id }) @:|
+    }
     @Html.ActionLink(Resources.TournamentViews.BackToList, "Index")
 </p>

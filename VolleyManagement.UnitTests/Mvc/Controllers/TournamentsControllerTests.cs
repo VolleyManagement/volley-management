@@ -22,6 +22,7 @@
     using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.Services.TeamService;
     using VolleyManagement.UnitTests.Services.TournamentService;
+    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -597,8 +598,11 @@
         {
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var allowedOperations = new AllowedOperations(new List<AuthOperation> { AuthOperations.Tournaments.Edit });
             var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
+            expected.Authorization = allowedOperations;
             SetupGet(TEST_TOURNAMENT_ID, testData);
+            _authServiceMock.Setup(tr => tr.GetAllowedOperations(It.IsAny<List<AuthOperation>>())).Returns(allowedOperations);
 
             // Act
             var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Details(TEST_TOURNAMENT_ID));

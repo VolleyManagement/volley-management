@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
+    using System.Collections.Generic;
     using System.Globalization;
     using VolleyManagement.Domain.GameReportsAggregate;
 
@@ -12,6 +13,11 @@
         /// Gets or sets the team's name.
         /// </summary>
         public string TeamName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the team's position.
+        /// </summary>
+        public int Position { get; set; }
 
         /// <summary>
         /// Gets or sets the number of point for the team.
@@ -157,5 +163,36 @@
         }
 
         #endregion
+
+        /// <summary>
+        /// Set positions for teams in tournament according their results
+        /// </summary>
+        /// <param name="entries">Collection of entries with team's tournament data</param>
+        /// <returns>Collection of entries with team's tournament data with set position for every team</returns>
+        public static List<StandingsEntryViewModel> SetPositions(List<StandingsEntryViewModel> entries)
+        {
+            for (int i = 0; i < entries.Count; i++)
+            {
+                if (i != 0)
+                {
+                    if (entries[i].Points == entries[i - 1].Points
+                        && entries[i].SetsRatio == entries[i - 1].SetsRatio
+                        && entries[i].BallsRatio == entries[i - 1].BallsRatio)
+                    {
+                        entries[i].Position = entries[i - 1].Position;
+                    }
+                    else
+                    {
+                        entries[i].Position = i + 1;
+                    }
+                }
+                else
+                {
+                    entries[i].Position = i + 1;
+                }
+            }
+
+            return entries;
+        }
     }
 }

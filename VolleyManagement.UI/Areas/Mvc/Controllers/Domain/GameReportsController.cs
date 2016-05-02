@@ -34,7 +34,9 @@
             {
                 TournamentId = tournamentId,
                 TournamentName = tournamentName,
-                Standings = _gameReportService.GetStandings(tournamentId).Select(se => StandingsEntryViewModel.Map(se)).ToList(),
+                Standings = StandingsEntryViewModel.SetPositions(
+                    _gameReportService.GetStandings(tournamentId)
+                    .Select(se => StandingsEntryViewModel.Map(se)).ToList()),
                 PivotTable = new PivotTableViewModel(_gameReportService.GetPivotStandings(tournamentId))
             };
 

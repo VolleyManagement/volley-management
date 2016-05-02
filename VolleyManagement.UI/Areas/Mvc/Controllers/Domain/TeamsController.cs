@@ -42,12 +42,24 @@
         /// <returns>View with collection of teams.</returns>
         public ActionResult Index()
         {
+            List<AuthOperation> requestedOperations = new List<AuthOperation>()
+            {
+                AuthOperations.Teams.Create,
+                AuthOperations.Teams.Edit,
+                AuthOperations.Teams.Delete
+            };
+
             var teams = new TeamCollectionViewModel()
             {
                 Teams = this._teamService.Get()
                                          .ToList()
                                          .Select(t => TeamViewModel.Map(t, null, null)),
-                AllowedOperations = this._authService.GetAllowedOperations(AuthOperations.Teams.TeamOperations)
+                AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                                                                          {
+                                                                            AuthOperations.Teams.Create,
+                                                                            AuthOperations.Teams.Edit,
+                                                                            AuthOperations.Teams.Delete
+                                                                          })
             };
 
             return View(teams);

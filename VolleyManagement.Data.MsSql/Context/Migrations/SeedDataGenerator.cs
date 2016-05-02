@@ -751,36 +751,51 @@
             GenerateAdministratorOperations(roleId, context);
         }
 
-        private static void GenerateTournamentAdministratorOperations(
-            int roleId,
-            VolleyManagementEntities context)
+        private static void GenerateTournamentAdministratorOperations(int roleId, VolleyManagementEntities context)
         {
-            var operations = AuthOperations.Tournaments.TournamentOperations.Concat(AuthOperations.Teams.TeamOperations).ToList();
-            var entries = CreateEntries(roleId);
-            
+            var operationIds = new List<short>()
+            {
+                AuthOperations.Tournaments.Create,
+                AuthOperations.Tournaments.Edit,
+                AuthOperations.Tournaments.Delete,
+                AuthOperations.Teams.Create,
+                AuthOperations.Teams.Edit,
+                AuthOperations.Teams.Delete
+            };
+
+            var entries = CreateRolesToOperation(roleId, operationIds);
+
             context.RolesToOperations.AddOrUpdate(r => new { r.RoleId, r.OperationId }, entries.ToArray());
         }
 
         private static void GenerateAdministratorOperations(int roleId, VolleyManagementEntities context)
         {
-            var operations = AuthOperations.Tournaments.TournamentOperations.Concat(AuthOperations.Teams.TeamOperations).ToList();
-            var entries = CreateEntries(roleId);
+            var operationIds = new List<short>()
+            {
+                AuthOperations.Tournaments.Create,
+                AuthOperations.Tournaments.Edit,
+                AuthOperations.Tournaments.Delete,
+                AuthOperations.Teams.Create,
+                AuthOperations.Teams.Edit,
+                AuthOperations.Teams.Delete
+            };
+
+            var entries = CreateRolesToOperation(roleId, operationIds);
 
             context.RolesToOperations.AddOrUpdate(r => new { r.RoleId, r.OperationId }, entries.ToArray());
         }
 
-        private static List<RoleToOperationEntity> CreateEntries(int roleId)
+        private static List<RoleToOperationEntity> CreateRolesToOperation(int roleId, List<short> operationIds)
         {
-            var operations = AuthOperations.Tournaments.TournamentOperations.Concat(AuthOperations.Teams.TeamOperations).ToList();
             var entries = new List<RoleToOperationEntity>();
-            foreach (var operation in operations)
+            foreach (var operationId in operationIds)
             {
-                entries.Add(new RoleToOperationEntity { RoleId = roleId, OperationId = operation });
+                entries.Add(new RoleToOperationEntity { RoleId = roleId, OperationId = operationId });
             }
 
             return entries;
         }
-                
+
         private static RoleEntity CreateRole(string name)
         {
             return new RoleEntity { Name = name };

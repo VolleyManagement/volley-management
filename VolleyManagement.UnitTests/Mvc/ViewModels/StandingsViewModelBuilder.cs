@@ -28,6 +28,7 @@
                     new StandingsEntryViewModel
                     {
                         TeamName = "TeamNameA",
+                        Position = 1,
                         Points = 5,
                         GamesTotal = 2,
                         GamesWon = 2,
@@ -48,6 +49,7 @@
                     new StandingsEntryViewModel
                     {
                         TeamName = "TeamNameC",
+                        Position = 2,
                         Points = 3,
                         GamesTotal = 2,
                         GamesWon = 1,
@@ -68,6 +70,7 @@
                     new StandingsEntryViewModel
                     {
                         TeamName = "TeamNameB",
+                        Position = 3,
                         Points = 1,
                         GamesTotal = 2,
                         GamesWon = 0,
@@ -146,7 +149,9 @@
                     TeamId = 1,
                     TeamName = "TeamNameA",
                     Points = 5,
-                    SetsRatio = 6.0f / 3
+                    SetsRatio = 6.0f / 3,
+                    Position = 1,
+                    BallsRatio = 234.0f / 214
                 },
                 new PivotTeamStandingsViewModel
                 {
@@ -154,6 +159,8 @@
                     TeamName = "TeamNameC",
                     Points = 3,
                     SetsRatio = 4.0f / 3,
+                    Position = 2,
+                    BallsRatio = 166.0f / 105
                 },
                 new PivotTeamStandingsViewModel
                 {
@@ -161,6 +168,8 @@
                     TeamName = "TeamNameB",
                     Points = 1,
                     SetsRatio = 2.0f / 6,
+                    Position = 3,
+                    BallsRatio = 123.0f / 204
                 }
             };
 

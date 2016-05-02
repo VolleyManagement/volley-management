@@ -24,7 +24,9 @@
             return x.TeamId == y.TeamId
                 && x.TeamName == y.TeamName
                 && x.Points == y.Points
-                && x.SetsRatio == y.SetsRatio;
+                && x.SetsRatio == y.SetsRatio
+                && x.Position == y.Position
+                && x.BallsRatio == y.BallsRatio;
         }
 
         /// <summary>
@@ -40,6 +42,8 @@
             stringBuilder.Append(obj.TeamName);
             stringBuilder.Append(obj.Points);
             stringBuilder.Append(obj.SetsRatio);
+            stringBuilder.Append(obj.Position);
+            stringBuilder.Append(obj.BallsRatio);
 
             return stringBuilder.ToString().GetHashCode();
         }

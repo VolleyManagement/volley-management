@@ -17,7 +17,7 @@
         /// <param name="pivotStandings">Instance of a class which implements<see cref="PivotStandingsDto"/></param>
         public PivotTableViewModel(PivotStandingsDto pivotStandings)
         {
-            TeamsStandings = PivotTeamStandingsViewModel.SetPositions(pivotStandings.Teams.Select(PivotTeamStandingsViewModel.Map).ToList());
+            TeamsStandings = TeamStandings.SetPositions(pivotStandings.Teams.Select(PivotTeamStandingsViewModel.Map).ToList());
             GameResults = pivotStandings.GameResults.Select(PivotGameResultViewModel.Map).ToList();
             AllGameResults = new List<PivotGameResultViewModel>[TeamsStandings.Count * TeamsStandings.Count];
         }

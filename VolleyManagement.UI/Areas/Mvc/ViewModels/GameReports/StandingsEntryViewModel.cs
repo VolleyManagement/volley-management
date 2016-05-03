@@ -7,22 +7,12 @@
     /// <summary>
     /// Represents a view model for <see cref="StandingsEntry"/>.
     /// </summary>
-    public class StandingsEntryViewModel
+    public class StandingsEntryViewModel : TeamStandings
     {
         /// <summary>
         /// Gets or sets the team's name.
         /// </summary>
         public string TeamName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the team's position.
-        /// </summary>
-        public int Position { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of point for the team.
-        /// </summary>
-        public int Points { get; set; }
 
         /// <summary>
         /// Gets or sets the total number of games played by the team.
@@ -80,11 +70,6 @@
         public int? SetsLost { get; set; }
 
         /// <summary>
-        /// Gets or sets the ratio of number of sets the team won to number of sets the team lost.
-        /// </summary>
-        public float? SetsRatio { get; set; }
-
-        /// <summary>
         /// Gets the sets ratio of the team.
         /// </summary>
         public string SetsRatioText
@@ -111,11 +96,6 @@
         public int? BallsLost { get; set; }
 
         /// <summary>
-        /// Gets or sets the ratio of number of balls the team won to number of balls the team lost.
-        /// </summary>
-        public float? BallsRatio { get; set; }
-
-        /// <summary>
         /// Gets the balls ratio of the team.
         /// </summary>
         public string BallsRatioText
@@ -124,7 +104,7 @@
             {
                 return BallsRatio != float.PositiveInfinity ?
                     string.Format(
-                    CultureInfo.CurrentUICulture, 
+                    CultureInfo.CurrentUICulture,
                     "{0:0.###}",
                     BallsRatio) :
                     "MAX";
@@ -163,36 +143,5 @@
         }
 
         #endregion
-
-        /// <summary>
-        /// Set positions for teams in tournament according their results
-        /// </summary>
-        /// <param name="entries">Collection of entries with team's tournament data</param>
-        /// <returns>Collection of entries with team's tournament data with set position for every team</returns>
-        public static List<StandingsEntryViewModel> SetPositions(List<StandingsEntryViewModel> entries)
-        {
-            for (int i = 0; i < entries.Count; i++)
-            {
-                if (i != 0)
-                {
-                    if (entries[i].Points == entries[i - 1].Points
-                        && entries[i].SetsRatio == entries[i - 1].SetsRatio
-                        && entries[i].BallsRatio == entries[i - 1].BallsRatio)
-                    {
-                        entries[i].Position = entries[i - 1].Position;
-                    }
-                    else
-                    {
-                        entries[i].Position = i + 1;
-                    }
-                }
-                else
-                {
-                    entries[i].Position = i + 1;
-                }
-            }
-
-            return entries;
-        }
     }
 }

@@ -8,7 +8,7 @@
     /// <summary>
     /// Represents an abstract class with data to be able set correct standings of teams in tournament.
     /// </summary>
-    public abstract class TeamStandings
+    public abstract class TeamStandingsViewModelBase
     {
         /// <summary>
         /// Gets or sets the team's position.
@@ -33,18 +33,16 @@
         /// <summary>
         /// Set positions for teams in tournament according their results
         /// </summary>
-        /// <typeparam name="T">The element type of the list. Must be inheritor of <see cref="TeamStandings"/></typeparam>
+        /// <typeparam name="T">The element type of the list. Must be inheritor of <see cref="TeamStandingsViewModelBase"/></typeparam>
         /// <param name="entries">Collection of entries with team's tournament data</param>
         /// <returns>Collection of entries with team's tournament data with set position for every team</returns>        
-        public static List<T> SetPositions<T>(List<T> entries) where T : TeamStandings
+        public static List<T> SetPositions<T>(List<T> entries) where T : TeamStandingsViewModelBase
         {
             for (int i = 0; i < entries.Count; i++)
             {
                 if (i != 0)
                 {
-                    if (entries[i].Points == entries[i - 1].Points
-                        && entries[i].SetsRatio == entries[i - 1].SetsRatio
-                        && entries[i].BallsRatio == entries[i - 1].BallsRatio)
+                    if (AreScoresCompletelyEqual(entries[i], entries[i - 1]))
                     {
                         entries[i].Position = entries[i - 1].Position;
                         continue;
@@ -55,6 +53,13 @@
             }
 
             return entries;
+        }
+
+        private static bool AreScoresCompletelyEqual(TeamStandingsViewModelBase entryA, TeamStandingsViewModelBase entryB)
+        {
+            return entryA.Points == entryB.Points
+                && entryA.SetsRatio == entryB.SetsRatio
+                && entryA.BallsRatio == entryB.BallsRatio;
         }
     }
 }

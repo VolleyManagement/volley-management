@@ -11,7 +11,7 @@
     /// <summary>
     /// Represents a data transfer object of team with total score and statistics values.
     /// </summary>
-    public class PivotTeamStandingsViewModel : TeamStandings
+    public class PivotTeamStandingsViewModel : TeamStandingsViewModelBase
     {
         /// <summary>
         /// Gets or sets the team's identifier.

@@ -7,7 +7,7 @@
     /// <summary>
     /// Represents a view model for <see cref="StandingsEntry"/>.
     /// </summary>
-    public class StandingsEntryViewModel : TeamStandings
+    public class StandingsEntryViewModel : TeamStandingsViewModelBase
     {
         /// <summary>
         /// Gets or sets the team's name.

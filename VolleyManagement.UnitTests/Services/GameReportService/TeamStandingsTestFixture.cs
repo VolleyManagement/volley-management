@@ -83,6 +83,36 @@
             return this;
         }
 
+        public TeamStandingsTestFixture WithTeamStandingsTwoTeamsScoresCompletelyEqual()
+        {
+            _teamStandings.Clear();
+            _teamStandings.Add(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 3,
+                SetsRatio = 3.0f / 1,
+                BallsRatio = 102.0f / 96
+            });
+            _teamStandings.Add(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 3,
+                SetsRatio = 3.0f / 1,
+                BallsRatio = 102.0f / 96
+            });
+            _teamStandings.Add(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 0,
+                SetsRatio = 2.0f / 6,
+                BallsRatio = 192.0f / 204
+            });
+            return this;
+        }
+
         /// <summary>
         /// Orders team standings by points in descending order.
         /// </summary>
@@ -100,6 +130,21 @@
         public TeamStandingsTestFixture OrderByPointsAndSets()
         {
             _teamStandings = _teamStandings.OrderByDescending(ts => ts.Points).ThenByDescending(ts => ts.SetsRatio).ToList();
+            return this;
+        }
+
+        /// <summary>
+        /// Orders standings by points, then by sets ratio ,then by balls ratio in descending order and then by team name.
+        /// </summary>
+        /// <returns>Instance of <see cref="TeamStandingsTestFixture"/>.</returns>
+        public TeamStandingsTestFixture OrderByPointsSetsBallsAndName()
+        {
+            _teamStandings = _teamStandings
+                .OrderByDescending(ts => ts.Points)
+                .ThenByDescending(ts => ts.SetsRatio)
+                .ThenByDescending(ts => ts.BallsRatio)
+                .ThenBy(ts => ts.TeamName)
+                .ToList();
             return this;
         }
 

@@ -60,7 +60,8 @@
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 7,
-                SetsRatio = 9.0f / 7
+                SetsRatio = 9.0f / 7,
+                BallsRatio = 363.0f / 355
             });
             _teamStandings.Add(new TeamStandingsDto
             {
@@ -68,13 +69,15 @@
                 TeamName = "TeamNameB",
                 Points = 4,
                 SetsRatio = 6.0f / 10,
+                BallsRatio = 349.0f / 345
             });
             _teamStandings.Add(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 7,
-                SetsRatio = 9.0f / 7
+                SetsRatio = 9.0f / 7,
+                BallsRatio = 350.0f / 362
             });
 
             return this;

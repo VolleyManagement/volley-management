@@ -38,7 +38,7 @@
         /// <summary>
         /// Gets or sets the date and time of the game.
         /// </summary>
-        public string GameDate { get; set; }
+        public DateTime GameDate { get; set; }
 
         /// <summary>
         /// Gets or sets the final score of the game.
@@ -62,15 +62,12 @@
         /// <returns>View model of game.</returns>
         public static GameViewModel Map(GameResultDto gameResult)
         {
-            int hours = TimeZoneInfo.Local.BaseUtcOffset.Hours;
-            string offset = string.Format("{0}{1}", (hours > 0) ? "+" : string.Empty, hours.ToString("00"));
-
             return new GameViewModel
             {
                 Id = gameResult.Id,
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
-                GameDate = gameResult.GameDate.ToString("s") + offset,
+                GameDate = gameResult.GameDate.ToUniversalTime(),
                 TotalScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
                 IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
                 SetScores = new List<Score>

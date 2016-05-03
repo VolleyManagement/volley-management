@@ -24,19 +24,12 @@
         private readonly ITeamService _teamService;
 
         /// <summary>
-        /// Holds PlayerService instance
-        /// </summary>
-        private readonly IPlayerService _playerService;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
         /// <param name="teamService">Instance of the class that implements ITeamService.</param>
-        /// <param name="playerService">Instance of the class that implements IPlayerService.</param>
-        public TeamsController(ITeamService teamService, IPlayerService playerService)
+        public TeamsController(ITeamService teamService)
         {
             this._teamService = teamService;
-            this._playerService = playerService;
         }
 
         /// <summary>
@@ -82,18 +75,13 @@
                 try
                 {
                     this._teamService.Create(domainTeam);
-                    bool duringRosterUpdateErrors = false;
                     if (teamViewModel.Roster != null)
                     {
-                        duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
-                        result = this.Json(this.ModelState);
+                        _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                    if (!duringRosterUpdateErrors)
-                    {
-                        result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
-                    }
+                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)
                 {
@@ -153,18 +141,13 @@
                 try
                 {
                     this._teamService.Edit(domainTeam);
-                    bool duringRosterUpdateErrors = false;
                     if (teamViewModel.Roster != null)
                     {
-                        duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
-                        result = this.Json(this.ModelState);
+                        _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                    if (!duringRosterUpdateErrors)
-                    {
-                        result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
-                    }
+                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)
                 {
@@ -242,63 +225,6 @@
                                          .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
-        }
-
-        private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)
-        {
-            //// case when player was deleted from the team
-            IEnumerable<Player> teamPlayers = _teamService.GetTeamRoster(teamId);
-
-            foreach (var player in teamPlayers)
-            {
-                if (!roster.Contains(PlayerNameViewModel.Map(player)))
-                {
-                    player.TeamId = null;
-                    this._playerService.Edit(player);
-                }
-            }
-
-            bool clearUpdate = true;
-
-            List<PlayerNameViewModel> playersToRemoveFromViewModel = new List<PlayerNameViewModel>();
-            foreach (var item in roster)
-            {
-                // Here possible the case when captain will be updated twice
-                // First as captain in services, second - if user chose him as roster player
-                try
-                {
-                    this._teamService.UpdatePlayerTeam(item.Id, teamId);
-                }
-                catch (MissingEntityException ex)
-                {
-                    clearUpdate = false;
-                    string message = string.Format("{0} (id = {1}) : {2} \n", item.FullName, item.Id, ex.Message);
-                    this.ModelState.AddModelError(string.Empty, message);
-                    playersToRemoveFromViewModel.Add(item);
-                }
-                catch (ValidationException ex)
-                {
-                    clearUpdate = false;
-                    string message = string.Format("{0} (id = {1}) : {2} \n", item.FullName, item.Id, ex.Message);
-                    this.ModelState.AddModelError(string.Empty, message);
-                    playersToRemoveFromViewModel.Add(item);
-                }
-            }
-
-            if (playersToRemoveFromViewModel.Count > 0)
-            {
-                RemovePlayersFromRoster(roster, playersToRemoveFromViewModel);
-            }
-
-            return clearUpdate;
-        }
-
-        private void RemovePlayersFromRoster(List<PlayerNameViewModel> roster, List<PlayerNameViewModel> playersToRemove)
-        {
-            foreach (var item in playersToRemove)
-            {
-                roster.Remove(item);
-            }
         }
     }
 }

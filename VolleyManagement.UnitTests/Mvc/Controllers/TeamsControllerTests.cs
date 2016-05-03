@@ -44,7 +44,6 @@
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
-        private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
 
@@ -59,7 +58,6 @@
         {
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
-            this._kernel.Bind<IPlayerService>().ToConstant(this._playerServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<TeamsController>();
         }
@@ -123,18 +121,7 @@
         public void Create_TeamPassed_EntityIdIsSet()
         {
             // Arrange
-            var team = CreateTeam();
-            var captain = CreatePlayer(SPECIFIED_PLAYER_ID);
-            var roster = new PlayerServiceTestFixture()
-                                .TestPlayers()
-                                .AddPlayer(captain)
-                                .Build();
-
-            MockTeamServiceGetTeam(team);
-            _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
-            _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
-
-            var viewModel = CreateViewModel();
+            var viewModel = new TeamMvcViewModelBuilder().WithId(0).Build();
             var expectedDomain = viewModel.ToDomain();
             var comparer = new TeamComparer();
             _teamServiceMock.Setup(ts => ts.Create(It.Is<Team>(t => comparer.AreEqual(t, expectedDomain))))
@@ -205,15 +192,13 @@
             // Act
             var sut = _kernel.Get<TeamsController>();
             sut.Create(viewModel);
-            bool gotException = sut.ModelState.Values
-                                   .Select(ms => ms.Errors
-                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
-                                   .Count() == 1;
+            var modelState = sut.ModelState[string.Empty];
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
-            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
-            Assert.IsTrue(gotException);
+            _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
 
         /// <summary>
@@ -230,15 +215,13 @@
             // Act
             var sut = _kernel.Get<TeamsController>();
             sut.Create(viewModel);
-            bool gotException = sut.ModelState.Values
-                                   .Select(ms => ms.Errors
-                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
-                                   .Count() == 1;
+            var modelState = sut.ModelState[string.Empty];
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
-            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
-            Assert.IsTrue(gotException);
+            _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
 
         /// <summary>
@@ -248,33 +231,20 @@
         public void Create_InvalidRosterPlayerId_MissingEntityExceptionThrown()
         {
             // Arrange
-            var team = CreateTeam();
-            var captain = CreatePlayer(SPECIFIED_PLAYER_ID);
-            var roster = new PlayerServiceTestFixture()
-                                .TestPlayers()
-                                .AddPlayer(captain)
-                                .Build();
-
-            MockTeamServiceGetTeam(team);
-            _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
-            _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
-
-            var viewModel = CreateViewModel();
+            var viewModel = new TeamMvcViewModelBuilder().Build();
             var comparer = new TeamComparer();
-            _teamServiceMock.Setup(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()))
+            _teamServiceMock.Setup(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()))
                                            .Throws(new MissingEntityException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
             var sut = _kernel.Get<TeamsController>();
             sut.Create(viewModel);
-            bool gotException = sut.ModelState.Values
-                                   .Select(ms => ms.Errors
-                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
-                                   .Count() >= 1;
+            var modelState = sut.ModelState[string.Empty];
 
             // Assert
-            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.AtLeastOnce());
-            Assert.IsTrue(gotException);
+            _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Once());
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
 
         /// <summary>
@@ -284,32 +254,19 @@
         public void Create_RosterPlayerIsCaptainOfAnotherTeam_ValidationExceptionThrown()
         {
             // Arrange
-            var team = CreateTeam();
-            var captain = CreatePlayer(SPECIFIED_PLAYER_ID);
-            var roster = new PlayerServiceTestFixture()
-                                .TestPlayers()
-                                .AddPlayer(captain)
-                                .Build();
-
-            MockTeamServiceGetTeam(team);
-            _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
-            _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
-
-            var viewModel = CreateViewModel();
-            _teamServiceMock.Setup(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()))
+            var viewModel = new TeamMvcViewModelBuilder().Build();
+            _teamServiceMock.Setup(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()))
                                            .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
             var sut = _kernel.Get<TeamsController>();
             sut.Create(viewModel);
-            bool gotException = sut.ModelState.Values
-                                   .Select(ms => ms.Errors
-                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
-                                   .Count() >= 1;
+            var modelState = sut.ModelState[string.Empty];
 
             // Assert
-            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.AtLeastOnce());
-            Assert.IsTrue(gotException);
+            _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Once());
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
 
         /// <summary>
@@ -333,7 +290,6 @@
             var rosterPlayer = new PlayerNameViewModel() { Id = SPECIFIED_PLAYER_ID, FullName = SPECIFIED_PLAYER_NAME };
             var roster = new List<PlayerNameViewModel>() { rosterPlayer };
             var viewModel = new TeamMvcViewModelBuilder().WithRoster(roster).Build();
-            int expectedCountOfUpdates = viewModel.Roster.Count();
 
             _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
                                            .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
@@ -344,13 +300,7 @@
 
             // Assert
             _teamServiceMock.Verify(
-                             ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()),
-                             Times.Exactly(expectedCountOfUpdates));
-
-            _teamServiceMock.Verify(
-                             ts => ts.UpdatePlayerTeam(
-                                      It.Is<int>(pId => pId == SPECIFIED_PLAYER_ID),
-                                      It.Is<int>(pId => pId == SPECIFIED_TEAM_ID)),
+                             ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()),
                              Times.Once());
         }
 
@@ -447,7 +397,7 @@
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Once());
-            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
+            _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
             Assert.AreEqual(modelState.Errors.Count, 1);
             Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
@@ -470,7 +420,7 @@
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Once());
-            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.Never());
+            _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
             Assert.AreEqual(modelState.Errors.Count, 1);
             Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
@@ -495,20 +445,18 @@
 
             var viewModel = CreateViewModel();
             var comparer = new TeamComparer();
-            _teamServiceMock.Setup(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()))
+            _teamServiceMock.Setup(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()))
                                            .Throws(new MissingEntityException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
             var sut = _kernel.Get<TeamsController>();
             sut.Edit(viewModel);
-            bool gotException = sut.ModelState.Values
-                                   .Select(ms => ms.Errors
-                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
-                                   .Count() >= 1;
+            var modelState = sut.ModelState[string.Empty];
 
             // Assert
-            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.AtLeastOnce());
-            Assert.IsTrue(gotException);
+            _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Once());
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
 
         /// <summary>
@@ -530,20 +478,18 @@
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
 
             var viewModel = CreateViewModel();
-            _teamServiceMock.Setup(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()))
+            _teamServiceMock.Setup(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()))
                                            .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
             var sut = _kernel.Get<TeamsController>();
             sut.Edit(viewModel);
-            bool gotException = sut.ModelState.Values
-                                   .Select(ms => ms.Errors
-                                                   .Select(me => me.ErrorMessage == SPECIFIED_EXCEPTION_MESSAGE))
-                                   .Count() >= 1;
+            var modelState = sut.ModelState[string.Empty];
 
             // Assert
-            _teamServiceMock.Verify(ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()), Times.AtLeastOnce());
-            Assert.IsTrue(gotException);
+            _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Once());
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
 
         /// <summary>
@@ -567,7 +513,6 @@
             var rosterPlayer = new PlayerNameViewModel() { Id = SPECIFIED_PLAYER_ID, FullName = SPECIFIED_PLAYER_NAME };
             var roster = new List<PlayerNameViewModel>() { rosterPlayer };
             var viewModel = new TeamMvcViewModelBuilder().WithRoster(roster).Build();
-            int expectedCountOfUpdates = viewModel.Roster.Count();
 
             _teamServiceMock.Setup(ts => ts.Edit(It.IsAny<Team>()))
                                            .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
@@ -578,13 +523,7 @@
 
             // Assert
             _teamServiceMock.Verify(
-                             ts => ts.UpdatePlayerTeam(It.IsAny<int>(), It.IsAny<int>()),
-                             Times.Exactly(expectedCountOfUpdates));
-
-            _teamServiceMock.Verify(
-                             ts => ts.UpdatePlayerTeam(
-                                      It.Is<int>(pId => pId == SPECIFIED_PLAYER_ID),
-                                      It.Is<int>(pId => pId == SPECIFIED_TEAM_ID)),
+                             ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()),
                              Times.Once());
         }
 

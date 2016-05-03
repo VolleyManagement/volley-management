@@ -432,7 +432,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-	<Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsGameViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsEntryViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\ShortGameResultViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\StandingsEntryViewModel.cs" />
+    <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />

@@ -18,14 +18,21 @@
         public PivotStandingsViewModel(PivotStandingsDto pivotStandings)
         {
             TeamsStandings = pivotStandings.Teams.Select(t => PivotStandingsEntryViewModel.Map(t)).ToList();
-            GamesStandings = pivotStandings.GameResults.Select(g => PivotStandingsGamesViewModel.Map(g)).ToList();
+            GamesStandings = pivotStandings.GameResults.Select(g => PivotStandingsGameViewModel.Map(g)).ToList();
 
             foreach (var game in GamesStandings)
             {
-                pivotStandings.GameResults
+                game.Results = pivotStandings.GameResults
                     .Where(g => g.HomeTeamId == game.HomeTeamId && g.AwayTeamId == game.AwayTeamId)
                     .Select(g => ShortGameResultViewModel.Map(g)).ToList();
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PivotStandingsViewModel"/> class
+        /// </summary>
+        public PivotStandingsViewModel()
+        {
         }
 
         /// <summary>
@@ -36,6 +43,6 @@
         /// <summary>
         /// Gets or sets the collection of games in tournament standings for pivot table.
         /// </summary>
-        public List<PivotStandingsGamesViewModel> GamesStandings { get; set; }
+        public List<PivotStandingsGameViewModel> GamesStandings { get; set; }
     }
 }

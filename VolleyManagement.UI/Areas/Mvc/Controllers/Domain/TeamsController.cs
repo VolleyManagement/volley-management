@@ -20,7 +20,7 @@
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
 
         /// <summary>
-        /// Holds PlayerService instance
+        /// Holds TeamService instance
         /// </summary>
         private readonly ITeamService _teamService;
         private readonly IAuthorizationService _authService;
@@ -96,19 +96,14 @@
                 try
                 {
                     this._teamService.Create(domainTeam);
-                    bool duringRosterUpdateErrors = false;
                     if (teamViewModel.Roster != null)
                     {
-                        duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
-                        result = this.Json(this.ModelState);
+                        _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                    if (!duringRosterUpdateErrors)
-                    {
                         result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
                     }
-                }
                 catch (ArgumentException ex)
                 {
                     this.ModelState.AddModelError(string.Empty, ex.Message);
@@ -124,7 +119,7 @@
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
                 }
-            }
+            }            
 
             return result;
         }
@@ -167,6 +162,18 @@
                 try
                 {
                     this._teamService.Edit(domainTeam);
+                    if (teamViewModel.Roster != null)
+                    {
+                        _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
+                }
+
+                    teamViewModel.Id = domainTeam.Id;
+                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                }
+                catch (ArgumentException ex)
+                {
+                    this.ModelState.AddModelError(string.Empty, ex.Message);
+                    result = this.Json(this.ModelState);
                 }
                 catch (MissingEntityException ex)
                 {
@@ -178,20 +185,7 @@
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
                 }
-
-                bool duringRosterUpdateErrors = false;
-                if (teamViewModel.Roster != null)
-                {
-                    duringRosterUpdateErrors = !this.UpdateRosterPlayersTeamId(teamViewModel.Roster, domainTeam.Id);
-                    result = this.Json(this.ModelState);
                 }
-
-                teamViewModel.Id = domainTeam.Id;
-                if (!duringRosterUpdateErrors)
-                {
-                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
-                }
-            }
 
             return result;
         }
@@ -252,53 +246,6 @@
                                          .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
-        }
-
-        private bool UpdateRosterPlayersTeamId(List<PlayerNameViewModel> roster, int teamId)
-        {
-            //// TODO: manage case when player was deleted from the team
-
-            bool clearUpdate = true;
-
-            List<PlayerNameViewModel> playersToRemoveFromViewModel = new List<PlayerNameViewModel>();
-            foreach (var item in roster)
-            {
-                // Here possible the case when captain will be updated twice
-                // First as captain in services, second - if user chose him as roster player
-                try
-                {
-                    this._teamService.UpdatePlayerTeam(item.Id, teamId);
-                }
-                catch (MissingEntityException ex)
-                {
-                    clearUpdate = false;
-                    string message = string.Format("{0} (id = {1}) : {2} \n", item.FullName, item.Id, ex.Message);
-                    this.ModelState.AddModelError(string.Empty, message);
-                    playersToRemoveFromViewModel.Add(item);
-                }
-                catch (ValidationException ex)
-                {
-                    clearUpdate = false;
-                    string message = string.Format("{0} (id = {1}) : {2} \n", item.FullName, item.Id, ex.Message);
-                    this.ModelState.AddModelError(string.Empty, message);
-                    playersToRemoveFromViewModel.Add(item);
-                }
-            }
-
-            if (playersToRemoveFromViewModel.Count > 0)
-            {
-                RemovePlayersFromRoster(roster, playersToRemoveFromViewModel);
-            }
-
-            return clearUpdate;
-        }
-
-        private void RemovePlayersFromRoster(List<PlayerNameViewModel> roster, List<PlayerNameViewModel> playersToRemove)
-        {
-            foreach (var item in playersToRemove)
-            {
-                roster.Remove(item);
-            }
         }
     }
 }

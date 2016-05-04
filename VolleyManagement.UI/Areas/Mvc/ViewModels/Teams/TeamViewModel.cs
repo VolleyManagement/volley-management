@@ -14,7 +14,7 @@
     public class TeamViewModel
     {
         /// <summary>
-        /// Gets or sets the player Id
+        /// Gets or sets the team Id
         /// </summary>
         public int Id { get; set; }
 

@@ -129,6 +129,9 @@
     <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PivotGameResultsViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PivotTableEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PivotTeamsStandingsEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\ScheduleViewModelBuilder.cs" />
@@ -148,6 +151,8 @@
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
+    <Compile Include="Services\GameReportService\ShortGameResultDtoTetsFixture.cs" />
+    <Compile Include="Services\GameReportService\TeamStandingsTestFixture.cs" />
     <Compile Include="Services\AuthService\AuthorizationServiceTests.cs" />
     <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
     <Compile Include="Services\GameService\GameMvcComparer.cs" />
@@ -180,6 +185,11 @@
     <Compile Include="Services\PlayerService\PlayerComparer.cs" />
     <Compile Include="Services\PlayerService\PlayerServiceTestFixture.cs" />
     <Compile Include="Services\PlayerService\PlayerServiceTests.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsEntryViewModelServiceTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsEntryViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsGameViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsGameViewModelServiceTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelServiceTestFixture.cs" />
     <Compile Include="Services\RolesService\RoleComparer.cs" />
     <Compile Include="Services\RolesService\RolesServiceTests.cs" />
@@ -188,6 +198,9 @@
     <Compile Include="Services\TeamService\TeamComparer.cs" />
     <Compile Include="Services\TeamService\TeamServiceTestFixture.cs" />
     <Compile Include="Services\TeamService\TeamServiceTests.cs" />
+    <Compile Include="WebApi\ViewModels\ShortGameResultViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\StandingsEntryViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\StandingsEntryViewModelServiceTestFixture.cs" />
     <Compile Include="WebApi\ViewModels\TeamViewModelServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />

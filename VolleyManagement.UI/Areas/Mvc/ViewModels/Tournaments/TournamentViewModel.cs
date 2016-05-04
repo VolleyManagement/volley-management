@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web.Script.Serialization;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
@@ -158,6 +159,12 @@
         /// </summary>
         [Display(Name = "Divisions", ResourceType = typeof(ViewModelResources))]
         public List<DivisionViewModel> Divisions { get; set; }
+
+        /// <summary>
+        /// Gets or sets instance of <see cref="AllowedOperations"/> object
+        /// </summary>
+        [ScriptIgnore]
+        public AllowedOperations Authorization { get; set; }
 
         #region Factory Methods
 

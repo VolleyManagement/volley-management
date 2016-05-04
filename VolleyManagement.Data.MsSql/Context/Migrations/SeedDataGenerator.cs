@@ -516,7 +516,7 @@
             for (int i = 0, j = 1; i < gamesInRound; i++, j++)
             {
                 homeTeamIds[i] = j;
-                awayTeamIds[i] = i == teamsCount - 1 && teamsCount % 2 != 0 ? 0 : ++j;
+                awayTeamIds[i] = i == gamesInRound - 1 && teamsCount % 2 != 0 ? 0 : ++j;
 
                 tempHome[i] = homeTeamIds[i];
                 tempAway[i] = awayTeamIds[i];
@@ -550,8 +550,8 @@
                     {
                         Id = gameId++,
                         TournamentId = tourId,
-                        HomeTeamId = currentHomeTeamId,
-                        AwayTeamId = currentAwayTeamId,
+                        HomeTeamId = currentHomeTeamId == 0 ? currentAwayTeamId.Value : currentHomeTeamId,
+                        AwayTeamId = currentHomeTeamId == 0 ? null : currentAwayTeamId,
                         StartTime = games.Count > 0 ?
                             tour.GamesStart.AddDays(roundIter).AddHours(i)
                             : tour.GamesStart.AddDays(1),

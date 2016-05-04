@@ -34,6 +34,11 @@
             /// Delete tournament operation
             /// </summary>
             public static readonly AuthOperation Delete = Tuple.Create(TOURNAMENTS, 3);
+
+            /// <summary>
+            /// Manage tournament teams operation
+            /// </summary>
+            public static readonly AuthOperation ManageTeams = Tuple.Create(TOURNAMENTS, 4);
         }
 
         /// <summary>

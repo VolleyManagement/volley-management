@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
@@ -109,6 +110,35 @@
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
             throw new System.NotImplementedException();
+            Player captain = GetPlayerById(team.CaptainId);
+
+            if (captain == null)
+            {
+                // ToDo: Revisit this case
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, team.CaptainId);
+        }
+
+            // Check if captain in teamToCreate is captain of another team
+            if ((captain.TeamId != null) && (captain.TeamId != team.Id))
+            {
+                var existTeam = GetPlayerLedTeam(captain.Id);
+                VerifyExistingTeamOrThrow(existTeam);
+            }
+
+            ValidateTeam(team);
+
+            try
+            {
+                _teamRepository.Update(team);
+            }
+            catch (ConcurrencyException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, ex);
+            }
+
+            captain.TeamId = team.Id;
+            _playerRepository.Update(captain);
+            _playerRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -169,11 +199,40 @@
         }
 
         /// <summary>
-        /// Sets team to player
+        /// Sets team id to roster
         /// </summary>
-        /// <param name="playerId">Id of player to set the team</param>
+        /// <param name="roster">Players to set the team</param>
         /// <param name="teamId">Id of team which should be set to player</param>
-        public void UpdatePlayerTeam(int playerId, int teamId)
+        public void UpdateRosterTeamId(List<Player> roster, int teamId)
+        {
+            if (GetTeamRoster(teamId).Count > 1)
+            {
+                foreach (var player in GetTeamRoster(teamId))
+                {
+                    if (roster.SingleOrDefault(t => t.Id == player.Id) == null)
+                    {
+                        SetPlayerTeamIdToNull(player.Id);
+                    }
+                }
+            }
+
+            foreach (var player in roster)
+            {
+                UpdatePlayerTeam(player.Id, teamId);
+            }
+        }
+
+        private static void VerifyExistingTeamOrThrow(Team existTeam)
+        {
+            if (existTeam != null)
+            {
+                var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
+                ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existTeam.Id;
+                throw ex;
+            }
+        }
+
+        private void UpdatePlayerTeam(int playerId, int teamId)
         {
             Player player = GetPlayerById(playerId);
 
@@ -207,14 +266,18 @@
             _playerRepository.UnitOfWork.Commit();
         }
 
-        private static void VerifyExistingTeamOrThrow(Team existTeam)
+        private void SetPlayerTeamIdToNull(int playerId)
         {
-            if (existTeam != null)
+            Player player = GetPlayerById(playerId);
+
+            if (player == null)
             {
-                var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
-                ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existTeam.Id;
-                throw ex;
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
             }
+
+            player.TeamId = null;
+            _playerRepository.Update(player);
+            _playerRepository.UnitOfWork.Commit();
         }
 
         private Team GetPlayerLedTeam(int playerId)
@@ -241,6 +304,8 @@
 
         private void ValidateCoachName(string teamCoachName)
         {
+            if (!string.IsNullOrEmpty(teamCoachName))
+            {
             if (TeamValidation.ValidateCoachName(teamCoachName))
             {
                 throw new ArgumentException(
@@ -250,9 +315,12 @@
                     "Coach");
             }
         }
+        }
 
         private void ValidateAchievements(string teamAchievements)
         {
+            if (!string.IsNullOrEmpty(teamAchievements))
+            {
             if (TeamValidation.ValidateAchievements(teamAchievements))
             {
                 throw new ArgumentException(
@@ -261,6 +329,7 @@
                     VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
                     "Achievements");
             }
+        }
         }
 
         private void ValidateTeam(Team teamToValidate)

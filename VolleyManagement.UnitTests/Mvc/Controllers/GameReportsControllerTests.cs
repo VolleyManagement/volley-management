@@ -67,7 +67,7 @@
         /// Tournament standings view model with 2 team scores completely equal returned.
         /// </summary>
         [TestMethod]
-        public void Standings_StandingsWithTwoTeamsScoresCompletelyEqual_StandingsViewModelReturned()
+        public void Standings_StandingsWithTwoTeamsScoresCompletelyEqual_TeamsHaveSamePosition()
         {
             // Arrange
             var teams = new TeamStandingsTestFixture().WithTeamStandingsTwoTeamsScoresCompletelyEqual().Build();

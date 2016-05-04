@@ -257,7 +257,7 @@
         {
             // Arrange
             Tournament testTournament = new TournamentBuilder().Build();
-            _authServiceMock.Setup(tr => tr.CheckAccess(AuthOperations.Tournaments.Edit)).Throws<AuthorizationException>();
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Edit);
             var sut = _kernel.Get<TournamentService>();
 
             // Act
@@ -265,6 +265,7 @@
 
             // Assert
             VerifyEditTournament(testTournament, Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.Edit, Times.Once());
         }
 
         /// <summary>
@@ -717,7 +718,7 @@
         {
             // Arrange
             Tournament testTournament = new TournamentBuilder().Build();
-            _authServiceMock.Setup(tr => tr.CheckAccess(AuthOperations.Tournaments.Create)).Throws<AuthorizationException>();
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Create);
             var sut = _kernel.Get<TournamentService>();
 
             // Act
@@ -725,6 +726,7 @@
 
             // Assert
             VerifyCreateTournament(testTournament, Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.Create, Times.Once());
         }
         #endregion
 
@@ -788,7 +790,7 @@
         {
             // Arrange
             var testData = new TeamServiceTestFixture().TestTeams().Build();
-            _authServiceMock.Setup(tr => tr.CheckAccess(AuthOperations.Tournaments.ManageTeams)).Throws<AuthorizationException>();
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ManageTeams);
             var sut = _kernel.Get<TournamentService>();
 
             // Act
@@ -796,6 +798,7 @@
 
             // Assert
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.ManageTeams, Times.Once());
         }
         #endregion
 
@@ -857,7 +860,7 @@
         public void DeleteTeamFromTournament_NoManageRights_ExceptionThrown()
         {
             // Arrange
-            _authServiceMock.Setup(tr => tr.CheckAccess(AuthOperations.Tournaments.ManageTeams)).Throws<AuthorizationException>();
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ManageTeams);
             var sut = _kernel.Get<TournamentService>();
 
             // Act
@@ -865,6 +868,7 @@
 
             // Assert
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.ManageTeams, Times.Once());
         }
         #endregion
 
@@ -894,7 +898,7 @@
         public void Delete_NoDeleteRights_ExceptionThrown()
         {
             // Arrange
-            _authServiceMock.Setup(tr => tr.CheckAccess(AuthOperations.Tournaments.Delete)).Throws<AuthorizationException>();
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Delete);
             var sut = _kernel.Get<TournamentService>();
 
             // Act
@@ -902,6 +906,7 @@
 
             // Assert
             VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.Delete, Times.Once());
         }
         #endregion
 
@@ -1058,6 +1063,11 @@
             _timeMock.Setup(c => c.UtcNow).Returns(date);
         }
 
+        private void MockAuthServiceThrowsExeption(AuthOperation operation) 
+        {
+            _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
+        }
+
         private Tournament CreateAnyTournament(int id)
         {
             return new TournamentBuilder()
@@ -1146,7 +1156,12 @@
         {
             _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
-        } 
+        }
+
+        private void VerifyCheckAccess(AuthOperation operation, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
+        }
         #endregion
     }
 }

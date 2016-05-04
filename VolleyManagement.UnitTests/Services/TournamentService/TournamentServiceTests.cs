@@ -15,12 +15,12 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TeamService;
-    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -134,7 +134,7 @@
 
             // Assert
             Assert.IsNull(tournament);
-        } 
+        }
         #endregion
 
         #region GetAll
@@ -160,7 +160,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
-        } 
+        }
         #endregion
 
         #region GetAllTournamentTeams
@@ -202,7 +202,7 @@
 
             // Assert
             Assert.AreEqual(actual.Count, EMPTY_TEAM_LIST_COUNT);
-        } 
+        }
         #endregion
 
         #region Edit
@@ -295,7 +295,7 @@
 
             // Assert
             VerifyEditTournament(nonUniqueNameTournament, Times.Never());
-        } 
+        }
         #endregion
 
         #region Create
@@ -963,7 +963,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
-        } 
+        }
         #endregion
 
         #region GetFinished
@@ -1006,7 +1006,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
-        } 
+        }
         #endregion
 
         #region Get
@@ -1029,7 +1029,7 @@
             // Assert
             int actualCount = actual.Count(t => t.State == TournamentStateEnum.NotStarted);
             Assert.AreEqual(EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT, actualCount);
-        } 
+        }
         #endregion
 
         #region Private
@@ -1063,7 +1063,7 @@
             _timeMock.Setup(c => c.UtcNow).Returns(date);
         }
 
-        private void MockAuthServiceThrowsExeption(AuthOperation operation) 
+        private void MockAuthServiceThrowsExeption(AuthOperation operation)
         {
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
         }

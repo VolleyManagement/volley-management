@@ -12,6 +12,7 @@
     using Ninject;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
@@ -22,7 +23,6 @@
     using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.Services.TeamService;
     using VolleyManagement.UnitTests.Services.TournamentService;
-    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Tests for MVC TournamentController class.

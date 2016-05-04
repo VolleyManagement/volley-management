@@ -380,7 +380,8 @@
         }
 
         /// <summary>
-        /// Adds standings entries where teams have repetitive points and sets ratio and balls ratio to collection of <see cref="StandingsEntry"/> objects.
+        /// Adds standings entries where teams have repetitive points
+        /// and sets ratio and balls ratio to collection of <see cref="StandingsEntry"/> objects.
         /// </summary>
         /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
         public StandingsTestFixture WithRepetitivePointsAndSetsRatioAndBallsRatio()

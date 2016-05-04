@@ -12,9 +12,29 @@
     public class GameViewModel
     {
         /// <summary>
-        /// Gets or sets the identifier of game.
+        /// Gets or sets the identifier of game result.
         /// </summary>
-        public GameInfo Game { get; set; }
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the home team which played the game.
+        /// </summary>
+        public string HomeTeamName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the away team which played the game.
+        /// </summary>
+        public string AwayTeamName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and time of the game.
+        /// </summary>
+        public string GameDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the game result.
+        /// </summary>
+        public GameResult Result { get; set; }
 
         /// <summary>
         /// Maps domain model of game result to view model of game.
@@ -25,17 +45,15 @@
         {
             return new GameViewModel
             {
-                Game = new GameInfo
+                Id = gameResult.Id,
+                HomeTeamName = gameResult.HomeTeamName,
+                AwayTeamName = gameResult.AwayTeamName,
+                GameDate = gameResult.GameDate.ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                Result = new GameResult
                 {
-                    Id = gameResult.Id,
-                    HomeTeamName = gameResult.HomeTeamName,
-                    AwayTeamName = gameResult.AwayTeamName,
-                    GameDate = gameResult.GameDate.ToString("yyyy-MM-ddTHH:mm:sszzz"),
-                    Result = new GameResult
-                    {
-                        TotalScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
-                        IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
-                        SetScores = new List<Score>
+                    TotalScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
+                    IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
+                    SetScores = new List<Score>
                         {
                             new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },
                             new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score },
@@ -43,41 +61,9 @@
                             new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score },
                             new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score }
                         }
-                    }
                 }
             };
-        }
-
-        /// <summary>
-        /// Game inner class.
-        /// </summary>
-        public class GameInfo
-        {
-            /// <summary>
-            /// Gets or sets the identifier of game result.
-            /// </summary>
-            public int Id { get; set; }
-
-            /// <summary>
-            /// Gets or sets the name of the home team which played the game.
-            /// </summary>
-            public string HomeTeamName { get; set; }
-
-            /// <summary>
-            /// Gets or sets the name of the away team which played the game.
-            /// </summary>
-            public string AwayTeamName { get; set; }
-
-            /// <summary>
-            /// Gets or sets the date and time of the game.
-            /// </summary>
-            public string GameDate { get; set; }
-
-            /// <summary>
-            /// Gets or sets the game result.
-            /// </summary>
-            public GameResult Result { get; set; }
-        }
+        }       
 
         /// <summary>
         /// GameResult inner class.

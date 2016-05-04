@@ -18,6 +18,7 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Services.PlayerService;
@@ -29,6 +30,8 @@
     [TestClass]
     public class TeamServiceTests
     {
+        #region Fields and constants
+
         private const int SPECIFIC_PLAYER_ID = 2;
         private const int PLAYER_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
@@ -59,6 +62,10 @@
 
         private IKernel _kernel;
 
+        #endregion
+
+        #region Constuctor
+
         /// <summary>
         /// Initializes test data.
         /// </summary>
@@ -77,6 +84,10 @@
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _playerRepositoryMock.Setup(pr => pr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
+
+        #endregion
+
+        #region Team tests
 
         /// <summary>
         /// Test for Get() method. The method should return existing teams
@@ -699,6 +710,80 @@
             VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Once());
         }
 
+        #endregion
+
+        #region Authorization team tests
+
+        /// <summary>
+        /// Test for Create() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Create_CreateNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Teams.Create);
+
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            sut.Create(testData);
+
+            // Assert
+            VerifyCreateTeam(testData, Times.Never());
+            VerifyCheckAccess(AuthOperations.Teams.Create, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Delete_DeleteNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Teams.Delete);
+
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            sut.Delete(testData.Id);
+
+            // Assert
+            VerifyDeleteTeam(testData.Id, Times.Never());
+            VerifyCheckAccess(AuthOperations.Teams.Delete, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Edit() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Edit_EditNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Teams.Edit);
+
+            var sut = _kernel.Get<TeamService>();
+
+            // Act
+            sut.Edit(testData);
+
+            // Assert
+            VerifyEditTeam(testData, Times.Never());
+            VerifyCheckAccess(AuthOperations.Teams.Edit, Times.Once());
+        }
+
+        #endregion
+
+        #region Private
+
         private bool TeamsAreEqual(Team x, Team y)
         {
             return new TeamComparer().Compare(x, y) == 0;
@@ -733,6 +818,12 @@
         private void VerifyEditPlayer(int playerId, int teamId, Times times)
         {
             _playerRepositoryMock.Verify(pr => pr.Update(It.Is<Player>(p => p.Id == playerId && p.TeamId == teamId)), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyEditTeam(Team team, Times times)
+        {
+            _teamRepositoryMock.Verify(pr => pr.Update(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
@@ -803,5 +894,17 @@
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.Message.Equals(expected.Message));
         }
+
+        private void VerifyCheckAccess(AuthOperation operation, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
+        }
+
+        private void MockAuthServiceThrowsExeption(AuthOperation operation)
+        {
+            _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
+        }
+                
+        #endregion
     }
 }

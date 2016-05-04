@@ -69,7 +69,8 @@
                 && x.GamesStart.Date == x.GamesStart.Date
                 && x.TransferEnd.Value.Date == y.TransferEnd.Value.Date
                 && x.TransferStart.Value.Date == y.TransferStart.Value.Date
-                && x.Divisions.SequenceEqual(y.Divisions, new DivisionViewModelEqualityComparer());
+                && x.Divisions.SequenceEqual(y.Divisions, new DivisionViewModelEqualityComparer())
+                && x.Authorization == y.Authorization;
         }
     }
 }

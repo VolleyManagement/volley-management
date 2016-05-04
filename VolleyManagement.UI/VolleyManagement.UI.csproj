@@ -433,7 +433,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Games\GameViewModel.cs" />
-    <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsGameViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsEntryViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\ShortGameResultViewModel.cs" />
+    <Compile Include="Areas\WebApi\ViewModels\GameReports\StandingsEntryViewModel.cs" />
+	<Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
@@ -468,6 +473,7 @@
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamCollectionViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamDeleteFromTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamsAddToTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListViewModel.cs" />

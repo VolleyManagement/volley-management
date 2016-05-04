@@ -126,6 +126,17 @@
         public GameServiceTestFixture WithAllPossibleScores()
         {
             _gameResults.Clear();
+
+            return WithHomeTeamWinningScores()
+                .WithAwayTeamWinningScores();
+        }
+
+        /// <summary>
+        /// Adds game results where home team wins with all possible scores
+        /// </summary>
+        /// <returns>Instance of <see cref="GameServiceTestFixture"/></returns>
+        public GameServiceTestFixture WithHomeTeamWinningScores()
+        {
             _gameResults.Add(new GameResultDto
             {
                 Id = 1,
@@ -192,6 +203,16 @@
                 GameDate = DateTime.Parse(DATE_C),
                 Round = 3
             });
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds game results where away team wins with all possible scores
+        /// </summary>
+        /// <returns>Instance of <see cref="GameServiceTestFixture"/></returns>
+        public GameServiceTestFixture WithAwayTeamWinningScores()
+        {
             _gameResults.Add(new GameResultDto
             {
                 Id = 4,

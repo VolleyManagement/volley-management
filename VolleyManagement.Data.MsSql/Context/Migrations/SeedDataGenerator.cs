@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Diagnostics;
     using System.Linq;
@@ -516,7 +516,7 @@
             for (int i = 0, j = 1; i < gamesInRound; i++, j++)
             {
                 homeTeamIds[i] = j;
-                awayTeamIds[i] = i == teamsCount - 1 && teamsCount % 2 != 0 ? 0 : ++j;
+                awayTeamIds[i] = i == gamesInRound - 1 && teamsCount % 2 != 0 ? 0 : ++j;
 
                 tempHome[i] = homeTeamIds[i];
                 tempAway[i] = awayTeamIds[i];
@@ -550,8 +550,8 @@
                     {
                         Id = gameId++,
                         TournamentId = tourId,
-                        HomeTeamId = currentHomeTeamId,
-                        AwayTeamId = currentAwayTeamId,
+                        HomeTeamId = currentHomeTeamId == 0 ? currentAwayTeamId.Value : currentHomeTeamId,
+                        AwayTeamId = currentHomeTeamId == 0 ? null : currentAwayTeamId,
                         StartTime = games.Count > 0 ?
                             tour.GamesStart.AddDays(roundIter).AddHours(i)
                             : tour.GamesStart.AddDays(1),
@@ -744,20 +744,56 @@
 
         private static void GenerateRolesToOperationsMap(VolleyManagementEntities context)
         {
-            var tournamentAdminId = context.Roles.Where(r => r.Name == TOURNAMENT_ADMINISTRATOR_ROLE_NAME).First().Id;
-            GenerateTournamentAdministratorOperations(tournamentAdminId, context);
+            int roleId = context.Roles.Where(r => r.Name == TOURNAMENT_ADMINISTRATOR_ROLE_NAME).First().Id;
+            GenerateTournamentAdministratorOperations(roleId, context);
+
+            roleId = context.Roles.Where(r => r.Name == ADMINISTRATOR_ROLE_NAME).First().Id;
+            GenerateAdministratorOperations(roleId, context);
         }
 
         private static void GenerateTournamentAdministratorOperations(int roleId, VolleyManagementEntities context)
         {
-            var entries = new List<RoleToOperationEntity>
+            var operationIds = new List<short>()
             {
-                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Create },
-                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Edit },
-                new RoleToOperationEntity { RoleId = roleId, OperationId = AuthOperations.Tournaments.Delete }
+                AuthOperations.Tournaments.Create,
+                AuthOperations.Tournaments.Edit,
+                AuthOperations.Tournaments.Delete,
+                AuthOperations.Teams.Create,
+                AuthOperations.Teams.Edit,
+                AuthOperations.Teams.Delete
             };
 
+            var entries = CreateRolesToOperation(roleId, operationIds);
+
             context.RolesToOperations.AddOrUpdate(r => new { r.RoleId, r.OperationId }, entries.ToArray());
+        }
+
+        private static void GenerateAdministratorOperations(int roleId, VolleyManagementEntities context)
+        {
+            var operationIds = new List<short>()
+            {
+                AuthOperations.Tournaments.Create,
+                AuthOperations.Tournaments.Edit,
+                AuthOperations.Tournaments.Delete,
+                AuthOperations.Teams.Create,
+                AuthOperations.Teams.Edit,
+                AuthOperations.Teams.Delete
+            };
+
+            var entries = CreateRolesToOperation(roleId, operationIds);
+
+            context.RolesToOperations.AddOrUpdate(r => new { r.RoleId, r.OperationId }, entries.ToArray());
+        }
+
+        private static List<RoleToOperationEntity> CreateRolesToOperation(int roleId, List<short> operationIds)
+        {
+            var entries = new List<RoleToOperationEntity>();
+            foreach (var operationId in operationIds)
+            {
+                entries.Add(new RoleToOperationEntity { RoleId = roleId, OperationId = operationId });
+            }
+
+            return entries;
         }
 
         private static RoleEntity CreateRole(string name)

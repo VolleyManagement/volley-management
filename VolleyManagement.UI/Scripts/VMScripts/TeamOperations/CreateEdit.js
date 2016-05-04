@@ -278,8 +278,8 @@
         privates.updateSelectedPlayers();
     };
 
-    privates.handleTeamCreateEditSuccess = function (data, status, xhr) {
-        document.location = "../Teams/Index";
+    privates.handleTeamCreateEditSuccess = function(data, status, xhr) {
+        document.location = "/Teams/Index";
     };
 
     privates.handleTeamCreateEditFail = function (data, status, xhr) {
@@ -358,7 +358,7 @@
     currNs.saveTeam = function () {
         var teamData = privates.getJsonForTeamSave();
 
-        if (privates.validateTeamData(teamData)) {
+        if (privates.teamIsValid(teamData)) {
             $.post("/Teams/Edit", teamData)
                 .done(privates.handleTeamCreateEditSuccess)
                 .fail(privates.handleTeamCreateEditFail);
@@ -429,6 +429,8 @@
 
         // Create team button
         $("#createTeamButton").bind("click", currNs.createTeam);
+
+        $("#saveTeamButton").bind("click", currNs.saveTeam);
 
         //Validation
         $.validator.addMethod("PlayerExist", function (value, element) {

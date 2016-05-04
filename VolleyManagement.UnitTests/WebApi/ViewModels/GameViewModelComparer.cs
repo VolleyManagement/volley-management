@@ -57,19 +57,32 @@
                 && x.GameDate == y.GameDate
                 && x.Id == y.Id
                 && x.HomeTeamName == y.HomeTeamName
-                && x.Result.SetScores[0].Home == y.Result.SetScores[0].Home
-                && x.Result.SetScores[1].Home == y.Result.SetScores[1].Home
-                && x.Result.SetScores[2].Home == y.Result.SetScores[2].Home
-                && x.Result.SetScores[3].Home == y.Result.SetScores[3].Home
-                && x.Result.SetScores[4].Home == y.Result.SetScores[4].Home
-                && x.Result.SetScores[0].Away == y.Result.SetScores[0].Away
-                && x.Result.SetScores[1].Away == y.Result.SetScores[1].Away
-                && x.Result.SetScores[2].Away == y.Result.SetScores[2].Away
-                && x.Result.SetScores[3].Away == y.Result.SetScores[3].Away
-                && x.Result.SetScores[4].Away == y.Result.SetScores[4].Away
-                && x.Result.TotalScore.Home == y.Result.TotalScore.Home
-                && x.Result.TotalScore.Away == y.Result.TotalScore.Away
-                && x.Result.IsTechnicalDefeat == y.Result.IsTechnicalDefeat;
+                && AreEqualResult(x.Result, y.Result);
+        }
+
+        private bool AreEqualResult(GameViewModel.GameResult x, GameViewModel.GameResult y)
+        {
+            if (x == null && y == null)
+            {
+                return true;
+            }
+            else
+            {
+                return
+                    x.SetScores[0].Home == y.SetScores[0].Home
+                    && x.SetScores[1].Home == y.SetScores[1].Home
+                    && x.SetScores[2].Home == y.SetScores[2].Home
+                    && x.SetScores[3].Home == y.SetScores[3].Home
+                    && x.SetScores[4].Home == y.SetScores[4].Home
+                    && x.SetScores[0].Away == y.SetScores[0].Away
+                    && x.SetScores[1].Away == y.SetScores[1].Away
+                    && x.SetScores[2].Away == y.SetScores[2].Away
+                    && x.SetScores[3].Away == y.SetScores[3].Away
+                    && x.SetScores[4].Away == y.SetScores[4].Away
+                    && x.TotalScore.Home == y.TotalScore.Home
+                    && x.TotalScore.Away == y.TotalScore.Away
+                    && x.IsTechnicalDefeat == y.IsTechnicalDefeat;
+            }
         }
     }
 }

@@ -30,6 +30,28 @@
         /// Adds games to collection
         /// </summary>
         /// <returns>Builder object with collection of games</returns>
+        public GameViewModelTestFixture TestGamesWithoutResult()
+        {
+            _games.Add(new GameViewModel()
+            {
+                Id = 1,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
+                GameDate = DATE_A,
+                Result = null
+            });
+            _games.Add(new GameViewModel()
+            {
+                Id = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameC",
+                GameDate = DATE_B,
+                Result = null
+            });
+
+            return this;
+        }
+
         public GameViewModelTestFixture TestGames()
         {
             _games.Add(new GameViewModel()

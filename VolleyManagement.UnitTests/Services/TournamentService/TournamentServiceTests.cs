@@ -15,6 +15,7 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
@@ -98,6 +99,7 @@
             TimeProvider.ResetToDefault();
         }
 
+        #region FindById
         /// <summary>
         /// Test for FinById method.
         /// </summary>
@@ -133,7 +135,9 @@
             // Assert
             Assert.IsNull(tournament);
         }
+        #endregion
 
+        #region GetAll
         /// <summary>
         /// Test for Get() method. The method should return existing tournaments
         /// (order is important).
@@ -157,7 +161,9 @@
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
+        #endregion
 
+        #region GetAllTournamentTeams
         /// <summary>
         /// Test for GetAllTournamentTeams method.
         /// The method should return existing teams in specific tournament
@@ -197,7 +203,9 @@
             // Assert
             Assert.AreEqual(actual.Count, EMPTY_TEAM_LIST_COUNT);
         }
+        #endregion
 
+        #region Edit
         /// <summary>
         /// Test for Edit() method. The method should invoke Update() method of ITournamentRepository
         /// and Commit() method of IUnitOfWork.
@@ -240,6 +248,27 @@
         }
 
         /// <summary>
+        /// Test for Edit() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Edit_NoEditRights_ExceptionThrown()
+        {
+            // Arrange
+            Tournament testTournament = new TournamentBuilder().Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Edit);
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Edit(testTournament);
+
+            // Assert
+            VerifyEditTournament(testTournament, Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.Edit, Times.Once());
+        }
+
+        /// <summary>
         /// Test for Edit() method where input tournament has non-unique name. The method should
         /// throw TournamentValidationException and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
@@ -267,7 +296,9 @@
             // Assert
             VerifyEditTournament(nonUniqueNameTournament, Times.Never());
         }
+        #endregion
 
+        #region Create
         /// <summary>
         /// Test for Create() method. Tournament's applying start date comes before current date.
         /// Exception is thrown during tournament creation.
@@ -678,6 +709,29 @@
         }
 
         /// <summary>
+        /// Test for Create() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Create_NoCreateRights_ExceptionThrown()
+        {
+            // Arrange
+            Tournament testTournament = new TournamentBuilder().Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Create);
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.Create(testTournament);
+
+            // Assert
+            VerifyCreateTournament(testTournament, Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.Create, Times.Once());
+        }
+        #endregion
+
+        #region AddTeamsToTournament
+        /// <summary>
         /// Test for AddTeamsToTournament method.
         /// Valid teams have to be added.
         /// </summary>
@@ -727,6 +781,29 @@
         }
 
         /// <summary>
+        /// Test for AddTeamsToTournament() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void AddTeamsToTournament_NoManageRights_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new TeamServiceTestFixture().TestTeams().Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ManageTeams);
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
+
+            // Assert
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.ManageTeams, Times.Once());
+        }
+        #endregion
+
+        #region DeleteTeamFromTournament
+        /// <summary>
         /// Test for DeleteTeamFromTournament method.
         /// Team have to be removed from tournament
         /// </summary>
@@ -775,6 +852,28 @@
         }
 
         /// <summary>
+        /// Test for DeleteTeamFromTournament() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void DeleteTeamFromTournament_NoManageRights_ExceptionThrown()
+        {
+            // Arrange
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ManageTeams);
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
+
+            // Assert
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.ManageTeams, Times.Once());
+        }
+        #endregion
+
+        #region Delete
+        /// <summary>
         /// Test for Delete Tournament method.
         /// </summary>
         [TestMethod]
@@ -791,25 +890,27 @@
         }
 
         /// <summary>
-        /// GetActual method test. The method should invoke Find() method of ITournamentRepository
+        /// Test for Delete() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
         [TestMethod]
-        public void GetFinished_FinishTournamentsExist_FinishedTournamentsReturned()
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Delete_NoDeleteRights_ExceptionThrown()
         {
             // Arrange
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Delete);
             var sut = _kernel.Get<TournamentService>();
-            var testData = _testFixture.WithFinishedTournaments().Build();
-            MockGetAllTournamentsQuery(testData);
-
-            var expected = new TournamentServiceTestFixture().WithFinishedTournaments().Build();
 
             // Act
-            var actual = sut.GetFinished().ToList();
+            sut.Delete(FIRST_TOURNAMENT_ID);
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.Delete, Times.Once());
         }
+        #endregion
 
+        #region GetActual
         /// <summary>
         /// GetActual method test. The method should invoke Find() method of ITournamentRepository
         /// </summary>
@@ -863,6 +964,28 @@
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
+        #endregion
+
+        #region GetFinished
+        /// <summary>
+        /// GetActual method test. The method should invoke Find() method of ITournamentRepository
+        /// </summary>
+        [TestMethod]
+        public void GetFinished_FinishTournamentsExist_FinishedTournamentsReturned()
+        {
+            // Arrange
+            var sut = _kernel.Get<TournamentService>();
+            var testData = _testFixture.WithFinishedTournaments().Build();
+            MockGetAllTournamentsQuery(testData);
+
+            var expected = new TournamentServiceTestFixture().WithFinishedTournaments().Build();
+
+            // Act
+            var actual = sut.GetFinished().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
 
         /// <summary>
         /// GetFinished method test. The method should return finished tournaments
@@ -884,7 +1007,9 @@
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
+        #endregion
 
+        #region Get
         /// <summary>
         /// Get method test. The method returns all tournaments.
         /// Then select all not started tournaments
@@ -905,7 +1030,9 @@
             int actualCount = actual.Count(t => t.State == TournamentStateEnum.NotStarted);
             Assert.AreEqual(EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT, actualCount);
         }
+        #endregion
 
+        #region Private
         private bool TournamentsAreEqual(Tournament x, Tournament y)
         {
             return new TournamentComparer().Compare(x, y) == 0;
@@ -934,6 +1061,11 @@
         private void MockTimeProviderUtcNow(DateTime date)
         {
             _timeMock.Setup(c => c.UtcNow).Returns(date);
+        }
+
+        private void MockAuthServiceThrowsExeption(AuthOperation operation)
+        {
+            _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
         }
 
         private Tournament CreateAnyTournament(int id)
@@ -1025,5 +1157,11 @@
             _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
+
+        private void VerifyCheckAccess(AuthOperation operation, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
+        }
+        #endregion
     }
 }

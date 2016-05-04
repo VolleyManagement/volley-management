@@ -12,6 +12,7 @@
     using Ninject;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
@@ -605,6 +606,7 @@
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+            VerifyGetAllowedOperations(Times.Once());
         }
         #endregion
 
@@ -1115,6 +1117,11 @@
             Assert.IsFalse(_sut.ModelState.IsValid);
             Assert.IsTrue(_sut.ModelState.ContainsKey(expectedKey));
             Assert.IsNull(gameViewModel);
+        }
+
+        private void VerifyGetAllowedOperations(Times times)
+        {
+            _authServiceMock.Verify(tr => tr.GetAllowedOperations(It.IsAny<List<AuthOperation>>()), times);
         }
 
         private void AssertEqual(GameViewModel x, GameViewModel y)

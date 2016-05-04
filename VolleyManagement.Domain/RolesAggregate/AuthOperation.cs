@@ -38,7 +38,7 @@
         /// <summary>
         /// Implementing of "implicit" operator from <see cref="AuthOperation"/> class
         /// </summary>
-        /// <param name="operation">Operation</param>
+        /// <param name="operation">The operation</param>
         /// <returns>Identifier of the operation</returns>
         public static implicit operator short(AuthOperation operation)
         {

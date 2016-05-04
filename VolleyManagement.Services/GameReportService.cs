@@ -56,10 +56,13 @@
 
             foreach (var gameResult in gameResults)
             {
-                StandingsEntry standingsHomeTeamEntry = standings.Single(se => se.TeamId == gameResult.HomeTeamId);
-                StandingsEntry standingsAwayTeamEntry = standings.Single(se => se.TeamId == gameResult.AwayTeamId);
+                if (gameResult.AwayTeamId != null)
+                {
+                    StandingsEntry standingsHomeTeamEntry = standings.Single(se => se.TeamId == gameResult.HomeTeamId);
+                    StandingsEntry standingsAwayTeamEntry = standings.Single(se => se.TeamId == gameResult.AwayTeamId);
 
-                CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
+                    CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
+                }
             }
 
             CalculateSetsStatistics(gameResults, standings);
@@ -85,7 +88,7 @@
 
             var teamStandings = CreateTeamStandings(tournamentTeams, gameResults);
 
-            var shortGameResults = gameResults.Select(
+            var shortGameResults = gameResults.Where(g => g.AwayTeamId != null).Select(
                 g => new ShortGameResultDto
                 {
                     HomeTeamId = g.HomeTeamId,
@@ -134,13 +137,16 @@
 
             foreach (var game in gameResults)
             {
-                var homeTeam = new StandingsEntry { TeamId = game.HomeTeamId };
-                var awayTeam = new StandingsEntry { TeamId = game.AwayTeamId.Value };
+                if (game.AwayTeamId != null)
+                {
+                    var homeTeam = new StandingsEntry { TeamId = game.HomeTeamId };
+                    var awayTeam = new StandingsEntry { TeamId = game.AwayTeamId.Value };
 
-                CalculateGamesStatistics(homeTeam, awayTeam, game);
+                    CalculateGamesStatistics(homeTeam, awayTeam, game);
 
-                teamsStandings.Single(t => t.TeamId == homeTeam.TeamId).Points += homeTeam.Points;
-                teamsStandings.Single(t => t.TeamId == awayTeam.TeamId).Points += awayTeam.Points;
+                    teamsStandings.Single(t => t.TeamId == homeTeam.TeamId).Points += homeTeam.Points;
+                    teamsStandings.Single(t => t.TeamId == awayTeam.TeamId).Points += awayTeam.Points;
+                }
             }
 
             return teamsStandings

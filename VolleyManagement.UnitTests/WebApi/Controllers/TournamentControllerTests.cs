@@ -10,9 +10,12 @@
     using Ninject;
     using Services.TournamentService;
     using UI.Areas.WebApi.ViewModels.Tournaments;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.Controllers;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
+    using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
 
     /// <summary>
@@ -26,6 +29,7 @@
         /// ID for tests
         /// </summary>
         private const int SPECIFIC_TOURNAMENT_ID = 2;
+        private const int TOURNAMENT_ID = 1;
 
         /// <summary>
         /// Test Fixture
@@ -36,6 +40,11 @@
         /// Tournaments Service Mock
         /// </summary>
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+
+        /// <summary>
+        /// Game Service Mock
+        /// </summary>
+        private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
 
         /// <summary>
         /// IoC for tests
@@ -51,6 +60,8 @@
             _kernel = new StandardKernel();
             _kernel.Bind<ITournamentService>()
                    .ToConstant(_tournamentServiceMock.Object);
+            _kernel.Bind<IGameService>()
+                   .ToConstant(_gameServiceMock.Object);
         }
 
         #region GetAllTournaments
@@ -148,6 +159,53 @@
         }
         #endregion
 
+        #region GetSchedule
+        /// <summary>
+        /// Test for GetSchedule method.
+        /// Tournament with games; games list returned
+        /// </summary>
+        [TestMethod]
+        public void GetSchedule_TournamentWithGames_GamesListReturned()
+        {
+            // Arrange
+            var sut = _kernel.Get<TournamentsController>();
+            var testTournament = new TournamentBuilder().Build();
+            MockGetTournament(testTournament, TOURNAMENT_ID);
+            var testGames = new GameServiceTestFixture().TestGameResults().Build();
+            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
+            var expected = new GameViewModelTestFixture().TestGames().Build().ToList();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID).ToList();
+
+            // Assert
+            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
+            CollectionAssert.AreEqual(expected, actual, new GameViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for GetSchedule method.
+        /// Tournament without games; empty games list returned
+        /// </summary>
+        [TestMethod]
+        public void GetSchedule_TournamentWithoutGames_EmptyGamesListReturned()
+        {
+            // Arrange
+            var sut = _kernel.Get<TournamentsController>();
+            var testTournament = new TournamentBuilder().Build();
+            MockGetTournament(testTournament, TOURNAMENT_ID);
+            SetupGetTournamentResults(TOURNAMENT_ID, null);
+            var expected = new List<GameViewModel>();
+
+            // Act
+            var actual = sut.GetSchedule(TOURNAMENT_ID).ToList();
+
+            // Assert
+            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
+            CollectionAssert.AreEqual(expected, actual, new GameViewModelComparer());
+        }
+        #endregion
+
         #region Private
         private void MockGetTournaments(List<Tournament> testData)
         {
@@ -157,6 +215,11 @@
         private void MockGetTournament(Tournament tournament, int id)
         {
             _tournamentServiceMock.Setup(tr => tr.Get(id)).Returns(tournament);
+        }
+
+        private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
+        {
+            this._gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
         }
         #endregion
     }

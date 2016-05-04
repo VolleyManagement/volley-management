@@ -63,11 +63,11 @@
         }
 
         /// <summary>
-        /// Test for Standings() method. Tournament standings are requested. Tournament standings are returned.
-        /// With 2 team scores completely equal.
+        /// Test for Standings() method. Tournament standings view model are requested.
+        /// Tournament standings view model with 2 team scores completely equal returned.
         /// </summary>
         [TestMethod]
-        public void Standings_StandingsRequested_StandingsWithTwoTeamsScoresCompletelyEqualReturned()
+        public void Standings_StandingsWithTwoTeamsScoresCompletelyEqual_StandingsViewModelReturned()
         {
             // Arrange
             var teams = new TeamStandingsTestFixture().WithTeamStandingsTwoTeamsScoresCompletelyEqual().Build();

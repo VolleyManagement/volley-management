@@ -109,7 +109,6 @@
         public void Edit(Team team)
         {
             _authService.CheckAccess(AuthOperations.Teams.Edit);
-            throw new System.NotImplementedException();
             Player captain = GetPlayerById(team.CaptainId);
 
             if (captain == null)

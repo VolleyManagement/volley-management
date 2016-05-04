@@ -986,12 +986,6 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
-        private void VerifyEditTeam(Team team, Times times)
-        {
-            _teamRepositoryMock.Verify(pr => pr.Update(It.Is<Team>(t => TeamsAreEqual(t, team))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
-        }
-
         private void VerifyDeleteTeam(int teamId, Times times)
         {
             _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == teamId)), times);
@@ -1069,7 +1063,6 @@
         {
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
         }
-                
         #endregion
     }
 }

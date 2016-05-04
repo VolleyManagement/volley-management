@@ -12,6 +12,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -46,6 +47,7 @@
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
+        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
         private IKernel _kernel;
         private TeamsController _sut;
@@ -59,6 +61,7 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
+            this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
             this._sut = this._kernel.Get<TeamsController>();
         }
 

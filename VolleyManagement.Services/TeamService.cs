@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
@@ -13,6 +14,7 @@
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
@@ -27,6 +29,7 @@
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<List<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamService"/> class.
@@ -38,6 +41,7 @@
         /// <param name="getTeamByCaptainQuery"> Get By Captain ID query for Teams</param>
         /// <param name="getAllTeamsQuery"> Get All teams query</param>
         /// <param name="getTeamRosterQuery"> Get players for team query</param>
+        /// <param name="authService">Authorization service</param>
         public TeamService(
             ITeamRepository teamRepository,
             IPlayerRepository playerRepository,
@@ -45,7 +49,8 @@
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
-            IQuery<List<Player>, TeamPlayersCriteria> getTeamRosterQuery)
+            IQuery<List<Player>, TeamPlayersCriteria> getTeamRosterQuery,
+            IAuthorizationService authService)
         {
             _teamRepository = teamRepository;
             _playerRepository = playerRepository;
@@ -54,6 +59,7 @@
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getTeamRosterQuery = getTeamRosterQuery;
+            _authService = authService;
         }
 
         /// <summary>
@@ -71,8 +77,9 @@
         /// <param name="teamToCreate">A Team to create.</param>
         public void Create(Team teamToCreate)
         {
-            Player captain = GetPlayerById(teamToCreate.CaptainId);
+            _authService.CheckAccess(AuthOperations.Teams.Create);
 
+            Player captain = GetPlayerById(teamToCreate.CaptainId);
             if (captain == null)
             {
                 // ToDo: Revisit this case
@@ -101,13 +108,14 @@
         /// <param name="team">Team to edit.</param>
         public void Edit(Team team)
         {
+            _authService.CheckAccess(AuthOperations.Teams.Edit);
             Player captain = GetPlayerById(team.CaptainId);
 
             if (captain == null)
             {
                 // ToDo: Revisit this case
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, team.CaptainId);
-            }
+        }
 
             // Check if captain in teamToCreate is captain of another team
             if ((captain.TeamId != null) && (captain.TeamId != team.Id))
@@ -148,6 +156,7 @@
         /// <param name="teamId">The id of team to delete.</param>
         public void Delete(int teamId)
         {
+            _authService.CheckAccess(AuthOperations.Teams.Delete);
             try
             {
                 _teamRepository.Remove(teamId);
@@ -296,30 +305,30 @@
         {
             if (!string.IsNullOrEmpty(teamCoachName))
             {
-                if (TeamValidation.ValidateCoachName(teamCoachName))
-                {
-                    throw new ArgumentException(
-                        string.Format(
-                        Resources.ValidationCoachName,
-                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
-                        "Coach");
-                }
+            if (TeamValidation.ValidateCoachName(teamCoachName))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.ValidationCoachName,
+                    VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
+                    "Coach");
             }
+        }
         }
 
         private void ValidateAchievements(string teamAchievements)
         {
             if (!string.IsNullOrEmpty(teamAchievements))
             {
-                if (TeamValidation.ValidateAchievements(teamAchievements))
-                {
-                    throw new ArgumentException(
-                        string.Format(
-                        Resources.ValidationTeamAchievements,
-                        VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
-                        "Achievements");
-                }
+            if (TeamValidation.ValidateAchievements(teamAchievements))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.ValidationTeamAchievements,
+                    VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
+                    "Achievements");
             }
+        }
         }
 
         private void ValidateTeam(Team teamToValidate)

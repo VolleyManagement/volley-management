@@ -6,8 +6,9 @@
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
 
@@ -22,14 +23,17 @@
         /// Holds TeamService instance
         /// </summary>
         private readonly ITeamService _teamService;
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
         /// <param name="teamService">Instance of the class that implements ITeamService.</param>
-        public TeamsController(ITeamService teamService)
+        /// <param name="authService">The authorization service</param>
+        public TeamsController(ITeamService teamService, IAuthorizationService authService)
         {
             this._teamService = teamService;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -38,9 +42,26 @@
         /// <returns>View with collection of teams.</returns>
         public ActionResult Index()
         {
-            var teams = this._teamService.Get()
+            List<AuthOperation> requestedOperations = new List<AuthOperation>()
+            {
+                AuthOperations.Teams.Create,
+                AuthOperations.Teams.Edit,
+                AuthOperations.Teams.Delete
+            };
+
+            var teams = new TeamCollectionViewModel()
+            {
+                Teams = this._teamService.Get()
                                          .ToList()
-                                         .Select(t => TeamViewModel.Map(t, null, null));
+                                         .Select(t => TeamViewModel.Map(t, null, null)),
+                AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                                                                          {
+                                                                            AuthOperations.Teams.Create,
+                                                                            AuthOperations.Teams.Edit,
+                                                                            AuthOperations.Teams.Delete
+                                                                          })
+            };
+
             return View(teams);
         }
 
@@ -81,8 +102,8 @@
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
-                }
+                        result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                    }
                 catch (ArgumentException ex)
                 {
                     this.ModelState.AddModelError(string.Empty, ex.Message);
@@ -144,7 +165,7 @@
                     if (teamViewModel.Roster != null)
                     {
                         _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
-                    }
+                }
 
                     teamViewModel.Id = domainTeam.Id;
                     result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
@@ -164,7 +185,7 @@
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
                 }
-            }
+                }
 
             return result;
         }

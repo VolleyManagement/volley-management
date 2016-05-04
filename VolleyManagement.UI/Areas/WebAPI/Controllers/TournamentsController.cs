@@ -64,20 +64,19 @@
         /// <param name="tournamentId">Id of tournament.</param>
         /// <returns>Information about games with specified tournament id.</returns>
         [Route("api/Tournament/{tournamentId}/Schedule")]
-        public HttpResponseMessage GetSchedule(int tournamentId)
+        public IEnumerable<GameViewModel> GetSchedule(int tournamentId)
         {
-            var games = this._gameService.GetTournamentResults(tournamentId)
-                                                        .Select(t => GameViewModel.Map(t));
-
-            XmlSerializer xsSubmit = new XmlSerializer(typeof(List<GameViewModel>));
-            using (StringWriter sww = new StringWriter())
+            List<GameViewModel> gamesViewModel = this._gameService.GetTournamentResults(tournamentId)
+                                                        .Select(t => GameViewModel.Map(t)).ToList();
+            foreach (var item in gamesViewModel)
             {
-                xsSubmit.Serialize(sww, games.ToList());
-                return new HttpResponseMessage()
+                if (item.Game.Result.TotalScore.IsEmpty())
                 {
-                    Content = new StringContent(sww.ToString(), Encoding.UTF8, "application/xml")
-                };
+                    item.Game.Result = null;
+                }
             }
+
+            return gamesViewModel;
         }
     }
 }

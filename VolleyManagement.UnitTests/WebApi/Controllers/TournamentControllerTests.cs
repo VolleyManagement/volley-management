@@ -36,6 +36,16 @@
         private const int EMPTY_LIST_COUNT = 0;
 
         /// <summary>
+        /// Index of first element in collection
+        /// </summary>
+        private const int FIRST_ELEMENT_INDEX = 0;
+
+        /// <summary>
+        /// Index of second element in collection
+        /// </summary>
+        private const int SECOND_ELEMENT_INDEX = 1;
+
+        /// <summary>
         /// Test Fixture
         /// </summary>
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
@@ -183,14 +193,14 @@
         {
             // Arrange
             var sut = _kernel.Get<TournamentsController>();
-            var testData = new StandingsTestFixture().WithRepetitivePointsAndSetsRatioAndBallsRatio().Build();
+            var testData = new StandingsTestFixture().WithRepetitivePointsSetsRatioAndBallsRatio().Build();
             MockGetStandings(testData, SPECIFIC_TOURNAMENT_ID);
 
             // Act
             var actual = sut.GetTournamentStandings(SPECIFIC_TOURNAMENT_ID).ToList();
 
             // Assert
-            Assert.AreEqual(actual.First().Position, actual.Last().Position);
+            Assert.AreEqual(actual[FIRST_ELEMENT_INDEX].Position, actual[SECOND_ELEMENT_INDEX].Position);
         }
 
         [TestMethod]

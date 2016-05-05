@@ -1,22 +1,18 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
+    using System.Collections.Generic;
     using System.Globalization;
     using VolleyManagement.Domain.GameReportsAggregate;
 
     /// <summary>
     /// Represents a view model for <see cref="StandingsEntry"/>.
     /// </summary>
-    public class StandingsEntryViewModel
+    public class StandingsEntryViewModel : TeamStandingsViewModelBase
     {
         /// <summary>
         /// Gets or sets the team's name.
         /// </summary>
         public string TeamName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of point for the team.
-        /// </summary>
-        public int Points { get; set; }
 
         /// <summary>
         /// Gets or sets the total number of games played by the team.
@@ -74,11 +70,6 @@
         public int? SetsLost { get; set; }
 
         /// <summary>
-        /// Gets or sets the ratio of number of sets the team won to number of sets the team lost.
-        /// </summary>
-        public float? SetsRatio { get; set; }
-
-        /// <summary>
         /// Gets the sets ratio of the team.
         /// </summary>
         public string SetsRatioText
@@ -105,11 +96,6 @@
         public int? BallsLost { get; set; }
 
         /// <summary>
-        /// Gets or sets the ratio of number of balls the team won to number of balls the team lost.
-        /// </summary>
-        public float? BallsRatio { get; set; }
-
-        /// <summary>
         /// Gets the balls ratio of the team.
         /// </summary>
         public string BallsRatioText
@@ -118,7 +104,7 @@
             {
                 return BallsRatio != float.PositiveInfinity ?
                     string.Format(
-                    CultureInfo.CurrentUICulture, 
+                    CultureInfo.CurrentUICulture,
                     "{0:0.###}",
                     BallsRatio) :
                     "MAX";

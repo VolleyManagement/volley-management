@@ -11,7 +11,7 @@
     /// <summary>
     /// Represents a data transfer object of team with total score and statistics values.
     /// </summary>
-    public class PivotTeamStandingsViewModel
+    public class PivotTeamStandingsViewModel : TeamStandingsViewModelBase
     {
         /// <summary>
         /// Gets or sets the team's identifier.
@@ -22,16 +22,6 @@
         /// Gets or sets the team's name.
         /// </summary>
         public string TeamName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of point for the team.
-        /// </summary>
-        public int Points { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ratio of number of sets the team won to number of sets the team lost.
-        /// </summary>
-        public float? SetsRatio { get; set; }
 
         /// <summary>
         /// Gets the sets ratio of the team.
@@ -60,7 +50,8 @@
                 TeamId = team.TeamId,
                 TeamName = team.TeamName,
                 Points = team.Points,
-                SetsRatio = team.SetsRatio
+                SetsRatio = team.SetsRatio,
+                BallsRatio = team.BallsRatio
             };
         }
     }

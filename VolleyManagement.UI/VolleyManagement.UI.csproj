@@ -437,7 +437,8 @@
     <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\GameReports\ShortGameResultViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\GameReports\StandingsEntryViewModel.cs" />
-    <Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\TeamStandingsViewModelBase.cs" />
+	<Compile Include="Areas\WebApi\WebApiAreaRegistration.cs" />
     <Compile Include="Areas\Mvc\MvcAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />

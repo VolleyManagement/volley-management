@@ -56,12 +56,17 @@
 
             foreach (var gameResult in gameResults)
             {
-                StandingsEntry standingsHomeTeamEntry = standings.Single(se => se.TeamId == gameResult.HomeTeamId);
-                StandingsEntry standingsAwayTeamEntry = standings.Single(se => se.TeamId == gameResult.AwayTeamId);
+                if (gameResult.AwayTeamId != null)
+                {
+                    StandingsEntry standingsHomeTeamEntry = standings.Single(se => se.TeamId == gameResult.HomeTeamId);
+                    StandingsEntry standingsAwayTeamEntry = standings.Single(se => se.TeamId == gameResult.AwayTeamId);
 
-                CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
-                CalculateSetsStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
+                    CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
+                }
             }
+
+            CalculateSetsStatistics(gameResults, standings);
+            CalculateBallsStatistics(gameResults, standings);
 
             // order all standings entries by points, then by sets ratio and then by balls ratio in descending order
             return standings.OrderByDescending(ts => ts.Points)
@@ -83,7 +88,7 @@
 
             var teamStandings = CreateTeamStandings(tournamentTeams, gameResults);
 
-            var shortGameResults = gameResults.Select(
+            var shortGameResults = gameResults.Where(g => g.AwayTeamId != null).Select(
                 g => new ShortGameResultDto
                 {
                     HomeTeamId = g.HomeTeamId,
@@ -125,24 +130,29 @@
                     TeamId = t.Id,
                     TeamName = t.Name,
                     Points = 0,
-                    SetsRatio = CalculateSetsRatio(GetTeamWonSets(t.Id, gameResults), GetTeamLostSets(t.Id, gameResults))
+                    SetsRatio = CalculateSetsRatio(GetTeamWonSets(t.Id, gameResults), GetTeamLostSets(t.Id, gameResults)),
+                    BallsRatio = CalculateBallsRatio(GetTeamWonBalls(t.Id, gameResults), GetTeamLostBalls(t.Id, gameResults))
                 })
                 .ToList();
 
             foreach (var game in gameResults)
             {
-                var homeTeam = new StandingsEntry { TeamId = game.HomeTeamId };
-                var awayTeam = new StandingsEntry { TeamId = game.AwayTeamId.Value };
+                if (game.AwayTeamId != null)
+                {
+                    var homeTeam = new StandingsEntry { TeamId = game.HomeTeamId };
+                    var awayTeam = new StandingsEntry { TeamId = game.AwayTeamId.Value };
 
-                CalculateGamesStatistics(homeTeam, awayTeam, game);
+                    CalculateGamesStatistics(homeTeam, awayTeam, game);
 
-                teamsStandings.Single(t => t.TeamId == homeTeam.TeamId).Points += homeTeam.Points;
-                teamsStandings.Single(t => t.TeamId == awayTeam.TeamId).Points += awayTeam.Points;
+                    teamsStandings.Single(t => t.TeamId == homeTeam.TeamId).Points += homeTeam.Points;
+                    teamsStandings.Single(t => t.TeamId == awayTeam.TeamId).Points += awayTeam.Points;
+                }
             }
 
             return teamsStandings
                  .OrderByDescending(t => t.Points)
                  .ThenByDescending(t => t.SetsRatio)
+                 .ThenByDescending(ts => ts.BallsRatio)
                  .ThenBy(t => t.TeamName)
                  .ToList();
         }
@@ -211,26 +221,24 @@
             }
         }
 
-        private void CalculateSetsStatistics(StandingsEntry homeTeamEntry, StandingsEntry awayTeamEntry, GameResultDto gameResult)
+        private void CalculateSetsStatistics(List<GameResultDto> gameResults, List<StandingsEntry> standings)
         {
-            homeTeamEntry.SetsWon += gameResult.HomeSetsScore;
-            homeTeamEntry.SetsLost += gameResult.AwaySetsScore;
-            homeTeamEntry.SetsRatio = CalculateSetsRatio((int)homeTeamEntry.SetsWon, (int)homeTeamEntry.SetsLost);
-            awayTeamEntry.SetsWon += gameResult.AwaySetsScore;
-            awayTeamEntry.SetsLost += gameResult.HomeSetsScore;
-            awayTeamEntry.SetsRatio = CalculateSetsRatio((int)awayTeamEntry.SetsWon, (int)awayTeamEntry.SetsLost);
+            foreach (var item in standings)
+            {
+                item.SetsWon = GetTeamWonSets(item.TeamId, gameResults);
+                item.SetsLost = GetTeamLostSets(item.TeamId, gameResults);
+                item.SetsRatio = CalculateSetsRatio(item.SetsWon.Value, item.SetsLost.Value);
+            }
+        }
 
-            var homeBallsTotal = gameResult.HomeSet1Score + gameResult.HomeSet2Score + gameResult.HomeSet3Score
-                + gameResult.HomeSet4Score + gameResult.HomeSet5Score;
-            var awayBallsTotal = gameResult.AwaySet1Score + gameResult.AwaySet2Score + gameResult.AwaySet3Score
-                + gameResult.AwaySet4Score + gameResult.AwaySet5Score;
-
-            homeTeamEntry.BallsWon += homeBallsTotal;
-            homeTeamEntry.BallsLost += awayBallsTotal;
-            homeTeamEntry.BallsRatio = CalculateBallsRatio((int)homeTeamEntry.BallsWon, (int)homeTeamEntry.BallsLost);
-            awayTeamEntry.BallsWon += awayBallsTotal;
-            awayTeamEntry.BallsLost += homeBallsTotal;
-            awayTeamEntry.BallsRatio = CalculateBallsRatio((int)awayTeamEntry.BallsWon, (int)awayTeamEntry.BallsLost);
+        private void CalculateBallsStatistics(List<GameResultDto> gameResults, List<StandingsEntry> standings)
+        {
+            foreach (var item in standings)
+            {
+                item.BallsWon = GetTeamWonBalls(item.TeamId, gameResults);
+                item.BallsLost = GetTeamLostBalls(item.TeamId, gameResults);
+                item.BallsRatio = CalculateBallsRatio(item.BallsWon.Value, item.BallsLost.Value);
+            }
         }
 
         private int GetTeamWonSets(int teamId, List<GameResultDto> games)
@@ -258,6 +266,44 @@
             }
 
             return result;
+        }
+
+        private int GetTeamWonBalls(int teamId, List<GameResultDto> games)
+        {
+            var results = games.Where(g => g.HomeTeamId == teamId).ToList();
+            int wonBalls = results.Sum(
+                item => item.HomeSet1Score
+                + item.HomeSet2Score
+                + item.HomeSet3Score
+                + item.HomeSet4Score
+                + item.HomeSet5Score);
+            results = games.Where(g => g.AwayTeamId == teamId).ToList();
+            wonBalls += results.Sum(
+                item => item.AwaySet1Score
+                + item.AwaySet2Score
+                + item.AwaySet3Score
+                + item.AwaySet4Score
+                + item.AwaySet5Score);
+            return wonBalls;
+        }
+
+        private int GetTeamLostBalls(int teamId, List<GameResultDto> games)
+        {
+            var results = games.Where(g => g.HomeTeamId == teamId).ToList();
+            int lostBalls = results.Sum(
+                item => item.AwaySet1Score
+                + item.AwaySet2Score
+                + item.AwaySet3Score
+                + item.AwaySet4Score
+                + item.AwaySet5Score);
+            results = games.Where(g => g.AwayTeamId == teamId).ToList();
+            lostBalls += results.Sum(
+                item => item.HomeSet1Score
+                + item.HomeSet2Score
+                + item.HomeSet3Score
+                + item.HomeSet4Score
+                + item.HomeSet5Score);
+            return lostBalls;
         }
 
         private float? CalculateBallsRatio(int ballsWon, int ballsLost)

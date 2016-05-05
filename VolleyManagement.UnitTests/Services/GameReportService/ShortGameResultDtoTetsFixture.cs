@@ -52,6 +52,33 @@
             return this;
         }
 
+        public ShortGameResultDtoTetsFixture GetShortResultsForTwoTeamsScoresCompletelyEqual()
+        {
+            _shortResults = new List<ShortGameResultDto>();
+
+            _shortResults.Add(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 1,
+                    AwayTeamId = 2,
+                    HomeSetsScore = 1,
+                    AwaySetsScore = 3,
+                    IsTechnicalDefeat = false
+                });
+
+            _shortResults.Add(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 1,
+                    AwayTeamId = 3,
+                    HomeSetsScore = 1,
+                    AwaySetsScore = 3,
+                    IsTechnicalDefeat = false
+                });
+
+            return this;
+        }
+
         public List<ShortGameResultDto> Build()
         {
             return _shortResults;

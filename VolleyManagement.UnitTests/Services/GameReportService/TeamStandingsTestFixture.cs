@@ -24,7 +24,8 @@
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 5,
-                SetsRatio = 6.0f / 3
+                SetsRatio = 6.0f / 3,
+                BallsRatio = 234.0f / 214
             });
             _teamStandings.Add(new TeamStandingsDto
             {
@@ -32,6 +33,7 @@
                 TeamName = "TeamNameC",
                 Points = 3,
                 SetsRatio = 4.0f / 3,
+                BallsRatio = 166.0f / 105
             });
             _teamStandings.Add(new TeamStandingsDto
             {
@@ -39,6 +41,7 @@
                 TeamName = "TeamNameB",
                 Points = 1,
                 SetsRatio = 2.0f / 6,
+                BallsRatio = 123.0f / 204
             });
 
             return this;
@@ -57,7 +60,8 @@
                 TeamId = 1,
                 TeamName = "TeamNameA",
                 Points = 7,
-                SetsRatio = 9.0f / 7
+                SetsRatio = 9.0f / 7,
+                BallsRatio = 363.0f / 355
             });
             _teamStandings.Add(new TeamStandingsDto
             {
@@ -65,15 +69,47 @@
                 TeamName = "TeamNameB",
                 Points = 4,
                 SetsRatio = 6.0f / 10,
+                BallsRatio = 349.0f / 345
             });
             _teamStandings.Add(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 7,
-                SetsRatio = 9.0f / 7
+                SetsRatio = 9.0f / 7,
+                BallsRatio = 350.0f / 362
             });
 
+            return this;
+        }
+
+        public TeamStandingsTestFixture WithTeamStandingsTwoTeamsScoresCompletelyEqual()
+        {
+            _teamStandings.Clear();
+            _teamStandings.Add(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 3,
+                SetsRatio = 3.0f / 1,
+                BallsRatio = 102.0f / 96
+            });
+            _teamStandings.Add(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 3,
+                SetsRatio = 3.0f / 1,
+                BallsRatio = 102.0f / 96
+            });
+            _teamStandings.Add(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 0,
+                SetsRatio = 2.0f / 6,
+                BallsRatio = 192.0f / 204
+            });
             return this;
         }
 
@@ -94,6 +130,21 @@
         public TeamStandingsTestFixture OrderByPointsAndSets()
         {
             _teamStandings = _teamStandings.OrderByDescending(ts => ts.Points).ThenByDescending(ts => ts.SetsRatio).ToList();
+            return this;
+        }
+
+        /// <summary>
+        /// Orders standings by points, then by sets ratio ,then by balls ratio in descending order and then by team name.
+        /// </summary>
+        /// <returns>Instance of <see cref="TeamStandingsTestFixture"/>.</returns>
+        public TeamStandingsTestFixture OrderByPointsSetsBallsAndName()
+        {
+            _teamStandings = _teamStandings
+                .OrderByDescending(ts => ts.Points)
+                .ThenByDescending(ts => ts.SetsRatio)
+                .ThenByDescending(ts => ts.BallsRatio)
+                .ThenBy(ts => ts.TeamName)
+                .ToList();
             return this;
         }
 

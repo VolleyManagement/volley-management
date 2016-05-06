@@ -758,6 +758,7 @@
                 AuthOperations.Tournaments.Create,
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.Delete,
+                AuthOperations.Tournaments.ManageTeams,
                 AuthOperations.Teams.Create,
                 AuthOperations.Teams.Edit,
                 AuthOperations.Teams.Delete
@@ -775,6 +776,7 @@
                 AuthOperations.Tournaments.Create,
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.Delete,
+                AuthOperations.Tournaments.ManageTeams,
                 AuthOperations.Teams.Create,
                 AuthOperations.Teams.Edit,
                 AuthOperations.Teams.Delete

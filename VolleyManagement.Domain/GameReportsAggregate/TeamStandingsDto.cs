@@ -30,5 +30,10 @@
         /// Gets or sets the ratio of number of sets the team won to number of sets the team lost.
         /// </summary>
         public float? SetsRatio { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ratio of number of balls the team won to number of balls the team lost.
+        /// </summary>
+        public float? BallsRatio { get; set; }
     }
 }

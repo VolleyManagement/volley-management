@@ -403,6 +403,34 @@
 
         /// <summary>
         /// Test for GetPivotStandings() method.
+        /// Game results with all possible scores are available for the specified tournament.
+        /// Teams balls ratio in tournament standings is calculated correctly.
+        /// </summary>
+        [TestMethod]
+        public void GetPivotStandings_GameResultsAllPossibleScores_CorrectBallsRatios()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
+            var sut = _kernel.Get<GameReportService>();
+            var expected = new TeamStandingsTestFixture().WithTeamStandingsForAllPossibleScores()
+                .OrderByPointsAndSets()
+                .Build()
+                .Select(t => new { t.BallsRatio })
+                .ToList();
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.Select(t => new { t.BallsRatio }).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for GetPivotStandings() method.
         /// Game result where one team has no lost sets is available for the specified tournament.
         /// Teams which has no lost sets is positioned at the top of the standings and its value is infinity
         /// </summary>

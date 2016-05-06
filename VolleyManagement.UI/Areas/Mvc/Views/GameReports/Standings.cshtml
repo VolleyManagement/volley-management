@@ -11,7 +11,6 @@
 <fieldset>
     @{
         string legendText = string.Format(Resources.GameReportViews.TournamentStandingsLegend, Model.TournamentName);
-        int position = 0;
     }
 
     <legend>@legendText</legend>
@@ -56,7 +55,7 @@
                 @foreach (var entry in Model.Standings)
                 {
                     <tr class="standings-row">
-                        <td class="standings-cell">@(++position)</td>
+                        <td class="standings-cell">@entry.Position</td>
                         <td class="standings-cell">@entry.TeamName</td>
                         <td class="standings-cell">@entry.Points</td>
                         <td class="standings-cell">@entry.GamesTotal</td>
@@ -100,10 +99,10 @@
                 <th class="standings-header-cell">@Resources.GameReportViews.PointsHeader</th>
         </thead>
         <tbody>
-            @for (int i = 0, pos = 1; i < rows; i++, pos++)
+            @for (int i = 0; i < rows; i++)
             {
                 <tr class="standings-row">
-                    <td class="standings-cell">@(pos)</td>
+                    <td class="standings-cell">@Model.PivotTable.TeamsStandings[i].Position</td>
                     <td class="standings-cell">@Model.PivotTable.TeamsStandings[i].TeamName</td>
                     @for (int j = 0; j < columns; j++)
                     {

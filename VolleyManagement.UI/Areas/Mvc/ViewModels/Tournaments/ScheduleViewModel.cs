@@ -36,5 +36,10 @@
         /// Gets or sets name of tournament
         /// </summary>
         public string TournamentName { get; set; }
+
+        /// <summary>
+        /// Gets or sets names of rounds for playoff scheme
+        /// </summary>
+        public IEnumerable<string> RoundNames { get; set; }
     }
 }

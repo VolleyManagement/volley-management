@@ -136,10 +136,10 @@
                                                     + DAYS_FOR_APPLYING_PERIOD
                                                     + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
                                                     + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START 
+                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
                                                     + DAYS_FOR_APPLYING_PERIOD
-                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START 
-                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START 
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START
                                                     + DAYS_FOR_TRANSFER_PERIOD)
             };
 
@@ -329,6 +329,11 @@
                     .Select(x => GameResultViewModel.Map(x)).ToList())
             };
 
+            if (true/*tournament.Scheme == TournamentSchemeEnum.PlayOff*/)
+            {
+                FillRoundNames(scheduleViewModel);
+            }
+
             return View(scheduleViewModel);
         }
 
@@ -422,7 +427,7 @@
             {
                 this.ModelState.AddModelError("ValidationError", e.Message);
             }
-            catch (MissingEntityException e) 
+            catch (MissingEntityException e)
             {
                 this.ModelState.AddModelError("LoadError", e.Message);
                 return View();
@@ -509,7 +514,40 @@
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
-        } 
+        }
+
+        /// <summary>
+        /// Fills round names for playoff scheme
+        /// </summary>
+        /// <param name="scheduleViewModel">View model which contains round names</param>
+        private void FillRoundNames(ScheduleViewModel scheduleViewModel)
+        {
+            var roundNames = new string[scheduleViewModel.NumberOfRounds];
+
+            for (byte i = 1; i <= scheduleViewModel.NumberOfRounds; i++)
+            {
+                var roundName = string.Empty;
+                switch (i)
+                {
+                    case 1:
+                        roundName = TournamentController.Final;
+                        break;
+                    case 2:
+                        roundName = TournamentController.Semifinal;
+                        break;
+                    case 3:
+                        roundName = TournamentController.QuarterFinal;
+                        break;
+                    default:
+                        roundName = string.Format(TournamentController.RoundNumber, Math.Pow(2, i));
+                        break;
+                }
+
+                roundNames[roundNames.Length - i] = roundName;
+            }
+
+            scheduleViewModel.RoundNames = roundNames;
+        }
         #endregion
     }
 }

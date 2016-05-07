@@ -514,7 +514,7 @@
         /// Test for Create method. Home team id is null. AwayTeam free-day game is created.
         /// </summary>
         [TestMethod]
-        public void Create_HomeTeamIdNull_GameCreated() 
+        public void Create_NoHomeTeam_GameCreated() 
         {
             // Arrange
             MockDefaultTournament();
@@ -526,6 +526,7 @@
             sut.Create(newGame);
 
             // Assert
+            Assert.IsTrue(newGame.HomeTeamId.HasValue);
             VerifyCreateGame(newGame, Times.Once());
         }
 

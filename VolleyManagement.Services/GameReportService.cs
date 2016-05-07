@@ -91,7 +91,7 @@
             var shortGameResults = gameResults.Where(g => g.AwayTeamId != null).Select(
                 g => new ShortGameResultDto
                 {
-                    HomeTeamId = g.HomeTeamId,
+                    HomeTeamId = g.HomeTeamId.Value,
                     AwayTeamId = g.AwayTeamId.Value,
                     HomeSetsScore = g.HomeSetsScore,
                     AwaySetsScore = g.AwaySetsScore,
@@ -139,7 +139,7 @@
             {
                 if (game.AwayTeamId != null)
                 {
-                    var homeTeam = new StandingsEntry { TeamId = game.HomeTeamId };
+                    var homeTeam = new StandingsEntry { TeamId = game.HomeTeamId.Value };
                     var awayTeam = new StandingsEntry { TeamId = game.AwayTeamId.Value };
 
                     CalculateGamesStatistics(homeTeam, awayTeam, game);

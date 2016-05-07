@@ -41,6 +41,15 @@
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
 
+        private readonly List<AuthOperation> _allowedOperationsIndex = new List<AuthOperation>
+                {
+                    AuthOperations.Players.Create,
+                    AuthOperations.Players.Edit,
+                    AuthOperations.Players.Delete
+                };
+
+        private readonly AuthOperation _allowedOperationDetails = AuthOperations.Players.Edit;
+
         private IKernel _kernel;
         private PlayersController _sut;
 
@@ -126,7 +135,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
-            VerifyGetAllowedOperations(Times.Once());
+            VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
         }
 
         /// <summary>
@@ -147,7 +156,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
-            VerifyGetAllowedOperations(Times.Once());
+            VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
         }
 
         /// <summary>
@@ -166,7 +175,7 @@
 
             // Assert
             VerifyRedirect(INDEX_ACTION_NAME, result);
-            VerifyGetAllowedOperation(Times.Never());
+            VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Never());
         }
 
         /// <summary>
@@ -183,7 +192,7 @@
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
-            VerifyGetAllowedOperation(Times.Never());
+            VerifyGetAllowedOperation(_allowedOperationDetails, Times.Never());
         }
 
         /// <summary>
@@ -202,7 +211,7 @@
 
             // Assert
             TestHelper.AreEqual<PlayerViewModel>(expected, actual.Model, new PlayerViewModelComparer());
-            VerifyGetAllowedOperation(Times.Once());
+            VerifyGetAllowedOperation(_allowedOperationDetails, Times.Once());
         }
 
         /// <summary>
@@ -507,14 +516,14 @@
             Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
         }
 
-        private void VerifyGetAllowedOperations(Times times)
+        private void VerifyGetAllowedOperations(List<AuthOperation> allowedOperations, Times times)
         {
-            _authServiceMock.Verify(tr => tr.GetAllowedOperations(It.IsAny<List<AuthOperation>>()), times);
+            _authServiceMock.Verify(tr => tr.GetAllowedOperations(allowedOperations), times);
         }
 
-        private void VerifyGetAllowedOperation(Times times)
+        private void VerifyGetAllowedOperation(AuthOperation allowedOperation, Times times)
         {
-            _authServiceMock.Verify(tr => tr.GetAllowedOperations(It.IsAny<AuthOperation>()), times);
+            _authServiceMock.Verify(tr => tr.GetAllowedOperations(allowedOperation), times);
         }
     }
 }

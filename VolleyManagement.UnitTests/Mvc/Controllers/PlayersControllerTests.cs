@@ -12,8 +12,10 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -35,8 +37,18 @@
         private const string PLAYER_NAME_TO_SEARCH = "Player Name";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
+        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
+
+        private readonly List<AuthOperation> _allowedOperationsIndex = new List<AuthOperation>
+                {
+                    AuthOperations.Players.Create,
+                    AuthOperations.Players.Edit,
+                    AuthOperations.Players.Delete
+                };
+
+        private readonly AuthOperation _allowedOperationDetails = AuthOperations.Players.Edit;
 
         private IKernel _kernel;
         private PlayersController _sut;
@@ -49,6 +61,7 @@
         {
             this._kernel = new StandardKernel();
             this._kernel.Bind<IPlayerService>().ToConstant(this._playerServiceMock.Object);
+            this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<PlayersController>();
         }
@@ -122,6 +135,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
+            VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
         }
 
         /// <summary>
@@ -142,6 +156,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
+            VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
         }
 
         /// <summary>
@@ -160,6 +175,7 @@
 
             // Assert
             VerifyRedirect(INDEX_ACTION_NAME, result);
+            VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Never());
         }
 
         /// <summary>
@@ -176,6 +192,7 @@
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            VerifyGetAllowedOperation(_allowedOperationDetails, Times.Never());
         }
 
         /// <summary>
@@ -194,6 +211,7 @@
 
             // Assert
             TestHelper.AreEqual<PlayerViewModel>(expected, actual.Model, new PlayerViewModelComparer());
+            VerifyGetAllowedOperation(_allowedOperationDetails, Times.Once());
         }
 
         /// <summary>
@@ -496,6 +514,16 @@
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)
         {
             Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
+        }
+
+        private void VerifyGetAllowedOperations(List<AuthOperation> allowedOperations, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.GetAllowedOperations(allowedOperations), times);
+        }
+
+        private void VerifyGetAllowedOperation(AuthOperation allowedOperation, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.GetAllowedOperations(allowedOperation), times);
         }
     }
 }

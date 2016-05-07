@@ -4,12 +4,14 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
@@ -22,6 +24,7 @@
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<IQueryable<Player>, GetAllCriteria> _getAllPlayersQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayerService"/> class.
@@ -31,18 +34,21 @@
         /// <param name="getPlayerByIdQuery"> Get By ID query for Players</param>
         /// <param name="getAllPlayersQuery"> Get All players query</param>
         /// <param name="getTeamByCaptainQuery">Get Player by Captain query</param>
+        /// <param name="authService">Authorization service</param>
         public PlayerService(
             IPlayerRepository playerRepository,
             IQuery<Team, FindByIdCriteria> getTeamByIdQuery,
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
             IQuery<IQueryable<Player>, GetAllCriteria> getAllPlayersQuery,
-            IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery)
+            IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
+            IAuthorizationService authService)
         {
             _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
             _getPlayerByIdQuery = getPlayerByIdQuery;
             _getAllPlayersQuery = getAllPlayersQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
+            _authService = authService;
         }
 
         /// <summary>
@@ -60,6 +66,7 @@
         /// <param name="playerToCreate">A Player to create.</param>
         public void Create(Player playerToCreate)
         {
+            _authService.CheckAccess(AuthOperations.Players.Create);
             if (playerToCreate == null)
             {
                 throw new ArgumentNullException("playerToCreate");
@@ -101,6 +108,7 @@
             ////    throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, playerToEdit.TeamId);
             ////}
 
+            _authService.CheckAccess(AuthOperations.Players.Edit);
             try
             {
                 _playerRepository.Update(playerToEdit);
@@ -119,6 +127,7 @@
         /// <param name="id">The id of player to delete.</param>
         public void Delete(int id)
         {
+            _authService.CheckAccess(AuthOperations.Players.Delete);
             Team playerTeam = GetPlayerLedTeam(id);
 
             if (playerTeam != null)

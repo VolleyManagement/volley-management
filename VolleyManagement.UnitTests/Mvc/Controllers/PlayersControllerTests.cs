@@ -15,6 +15,7 @@
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -125,6 +126,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
+            VerifyGetAllowedOperations(Times.Once());
         }
 
         /// <summary>
@@ -145,6 +147,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
+            VerifyGetAllowedOperations(Times.Once());
         }
 
         /// <summary>
@@ -163,6 +166,7 @@
 
             // Assert
             VerifyRedirect(INDEX_ACTION_NAME, result);
+            VerifyGetAllowedOperation(Times.Never());
         }
 
         /// <summary>
@@ -179,6 +183,7 @@
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            VerifyGetAllowedOperation(Times.Never());
         }
 
         /// <summary>
@@ -197,6 +202,7 @@
 
             // Assert
             TestHelper.AreEqual<PlayerViewModel>(expected, actual.Model, new PlayerViewModelComparer());
+            VerifyGetAllowedOperation(Times.Once());
         }
 
         /// <summary>
@@ -499,6 +505,16 @@
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)
         {
             Assert.AreEqual(actionName, result.RouteValues[ROUTE_VALUES_KEY]);
+        }
+
+        private void VerifyGetAllowedOperations(Times times)
+        {
+            _authServiceMock.Verify(tr => tr.GetAllowedOperations(It.IsAny<List<AuthOperation>>()), times);
+        }
+
+        private void VerifyGetAllowedOperation(Times times)
+        {
+            _authServiceMock.Verify(tr => tr.GetAllowedOperations(It.IsAny<AuthOperation>()), times);
         }
     }
 }

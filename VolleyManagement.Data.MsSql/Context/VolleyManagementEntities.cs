@@ -501,6 +501,10 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsRequired()
                 .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);
 
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.GameNumber)
+                .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);
+
             // FK GameResult -> Tournament
             modelBuilder.Entity<GameResultEntity>()
                 .HasRequired(gr => gr.Tournament)

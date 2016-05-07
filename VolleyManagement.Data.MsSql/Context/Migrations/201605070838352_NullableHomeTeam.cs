@@ -2,7 +2,10 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
+    /// <summary>
+    /// Makes it possible to set home team id to null
+    /// </summary>
     public partial class NullableHomeTeam : DbMigration
     {
         /// <summary>

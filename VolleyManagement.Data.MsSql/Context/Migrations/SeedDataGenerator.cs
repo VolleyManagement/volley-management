@@ -761,7 +761,10 @@
                 AuthOperations.Tournaments.ManageTeams,
                 AuthOperations.Teams.Create,
                 AuthOperations.Teams.Edit,
-                AuthOperations.Teams.Delete
+                AuthOperations.Teams.Delete,
+                AuthOperations.Players.Create,
+                AuthOperations.Players.Edit,
+                AuthOperations.Players.Delete
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);
@@ -779,7 +782,10 @@
                 AuthOperations.Tournaments.ManageTeams,
                 AuthOperations.Teams.Create,
                 AuthOperations.Teams.Edit,
-                AuthOperations.Teams.Delete
+                AuthOperations.Teams.Delete,
+                AuthOperations.Players.Create,
+                AuthOperations.Players.Edit,
+                AuthOperations.Players.Delete
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

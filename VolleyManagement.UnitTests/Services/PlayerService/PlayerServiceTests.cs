@@ -8,12 +8,14 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Services.TeamService;
@@ -30,6 +32,7 @@
         private const int SPECIFIC_TEAM_ID = 2;
 
         private readonly PlayerServiceTestFixture _testFixture = new PlayerServiceTestFixture();
+        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
         private readonly Mock<IPlayerRepository> _playerRepositoryMock = new Mock<IPlayerRepository>();
 
@@ -64,6 +67,7 @@
             _kernel.Bind<ITeamRepository>().ToConstant(_teamRepositoryMock.Object);
             _kernel.Bind<IQuery<Team, FindByIdCriteria>>().ToConstant(_getTeamByIdQueryMock.Object);
             _kernel.Bind<IQuery<Team, FindByCaptainIdCriteria>>().ToConstant(_getTeamByCaptainQueryMock.Object);
+            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _playerRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
@@ -191,6 +195,68 @@
             // Assert
             Assert.IsTrue(gotException);
             VerifyCreatePlayer(newPlayer, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Create_NoCreateRights_ExceptionThrown()
+        {
+            // Arrange
+            Player testPlayer = new PlayerBuilder().Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Players.Create);
+            var sut = _kernel.Get<PlayerService>();
+
+            // Act
+            sut.Create(testPlayer);
+
+            // Assert
+            VerifyCreatePlayer(testPlayer, Times.Never());
+            VerifyCheckAccess(AuthOperations.Players.Create, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Edit() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Edit_NoEditRights_ExceptionThrown()
+        {
+            // Arrange
+            Player testPlayer = new PlayerBuilder().Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Players.Edit);
+            var sut = _kernel.Get<PlayerService>();
+
+            // Act
+            sut.Edit(testPlayer);
+
+            // Assert
+            VerifyEditPlayer(testPlayer, Times.Never());
+            VerifyCheckAccess(AuthOperations.Players.Create, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Delete_NoDeleteRights_ExceptionThrown()
+        {
+            // Arrange
+            MockAuthServiceThrowsExeption(AuthOperations.Players.Delete);
+            var sut = _kernel.Get<PlayerService>();
+
+            // Act
+            sut.Delete(SPECIFIC_PLAYER_ID);
+
+            // Assert
+            VerifyDeletePlayer(SPECIFIC_PLAYER_ID, Times.Never());
+            VerifyCheckAccess(AuthOperations.Players.Delete, Times.Once());
         }
 
         /// <summary>
@@ -351,6 +417,16 @@
         {
             _playerRepositoryMock.Verify(pr => pr.Remove(It.Is<int>(id => id == playerId)), repositoryTimes);
             _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
+        }
+
+        private void MockAuthServiceThrowsExeption(AuthOperation operation)
+        {
+            _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
+        }
+
+        private void VerifyCheckAccess(AuthOperation operation, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
         }
     }
 }

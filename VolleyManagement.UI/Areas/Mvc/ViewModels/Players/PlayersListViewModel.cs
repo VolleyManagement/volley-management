@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.PlayersAggregate;
 
     /// <summary>
@@ -68,5 +69,10 @@
         /// List Of Players
         /// </summary>
         public List<PlayerNameViewModel> List { get; private set; }
+
+        /// <summary>
+        /// Gets or sets instance of <see cref="AllowedOperations"/> create object
+        /// </summary>
+        public AllowedOperations AllowedOperations { get; set; }
     }
 }

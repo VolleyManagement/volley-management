@@ -12,6 +12,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
@@ -35,6 +36,7 @@
         private const string PLAYER_NAME_TO_SEARCH = "Player Name";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
+        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
 
@@ -49,6 +51,7 @@
         {
             this._kernel = new StandardKernel();
             this._kernel.Bind<IPlayerService>().ToConstant(this._playerServiceMock.Object);
+            this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<PlayersController>();
         }

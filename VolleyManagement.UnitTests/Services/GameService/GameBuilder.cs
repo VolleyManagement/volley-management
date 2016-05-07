@@ -83,7 +83,7 @@
         /// </summary>
         /// <param name="id">Identifier of the home team.</param>
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
-        public GameBuilder WithHomeTeamId(int id)
+        public GameBuilder WithHomeTeamId(int? id)
         {
             _game.HomeTeamId = id;
             return this;
@@ -94,7 +94,7 @@
         /// </summary>
         /// <param name="id">Identifier of the away team.</param>
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
-        public GameBuilder WithAwayTeamId(int id)
+        public GameBuilder WithAwayTeamId(int? id)
         {
             _game.AwayTeamId = id;
             return this;

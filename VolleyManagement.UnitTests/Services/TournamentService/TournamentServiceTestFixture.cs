@@ -69,6 +69,21 @@
                     TransferStart = new DateTime(2015, 08, 20),
                     TransferEnd = new DateTime(2015, 09, 10)
                 });
+            _tournaments.Add(new Tournament()
+                {
+                    Id = 4,
+                    Name = "Tournament 4",
+                    Description = "Tournament 4 description",
+                    Season = 2014,
+                    Scheme = TournamentSchemeEnum.PlayOff,
+                    RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('4')",
+                    ApplyingPeriodStart = new DateTime(2015, 02, 20),
+                    ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                    GamesStart = new DateTime(2015, 06, 30),
+                    GamesEnd = new DateTime(2015, 11, 30),
+                    TransferStart = new DateTime(2015, 08, 20),
+                    TransferEnd = new DateTime(2015, 09, 10)
+                });
             return this;
         }
 

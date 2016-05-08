@@ -37,7 +37,7 @@
 
         private const int EMPTY_TEAM_LIST_COUNT = 0;
 
-        private const int EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT = 3;
+        private const int EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT = 4;
 
         private readonly DateTime _dateForCurrentState = new DateTime(2015, 09, 30);
 
@@ -1118,6 +1118,20 @@
                                             .WithSeason(2014)
                                             .WithScheme(TournamentSchemeEnum.TwoAndHalf)
                                             .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('3')")
+                                            .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
+                                            .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
+                                            .WithGamesStart(new DateTime(2015, 06, 30))
+                                            .WithGamesEnd(new DateTime(2015, 11, 30))
+                                            .WithTransferStart(new DateTime(2015, 08, 20))
+                                            .WithTransferEnd(new DateTime(2015, 09, 10))
+                                            .Build())
+                            .AddTournament(new TournamentBuilder()
+                                            .WithId(4)
+                                            .WithName("Tournament 4")
+                                            .WithDescription("Tournament 4 description")
+                                            .WithSeason(2014)
+                                            .WithScheme(TournamentSchemeEnum.PlayOff)
+                                            .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('4')")
                                             .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
                                             .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
                                             .WithGamesStart(new DateTime(2015, 06, 30))

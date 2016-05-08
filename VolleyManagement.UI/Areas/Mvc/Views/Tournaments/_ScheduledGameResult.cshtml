@@ -1,4 +1,5 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
+@using VolleyManagement.Domain.RolesAggregate;
 
 <div class="table-bordered" id=@Model.Id>
 
@@ -99,12 +100,16 @@
         }
     }
 
+    
     <div class="row">
+@if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit) &&
+        Model.AllowedOperations.IsAllowed(AuthOperations.Games.Delete))
+{
         <div class="col-md-2">
             @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
         </div>
 
-            @if (Model.GameDate > DateTime.Now &&
+            if (Model.GameDate > DateTime.Now &&
                    Model.SetsScore.IsEmpty())
             { 
                  <div class="col-md-2">    
@@ -116,6 +121,8 @@
                                  new { @class = "deleteGame", @id = Model.Id })
                 </div>                
             }
+}
      </div>
+    
 </div>
 

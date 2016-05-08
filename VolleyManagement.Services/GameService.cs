@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
@@ -13,6 +14,7 @@
     using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.Properties;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 
@@ -24,6 +26,7 @@
         #region Fields
 
         private readonly IGameRepository _gameRepository;
+        private readonly IAuthorizationService _authService;
 
         #endregion
 
@@ -47,18 +50,21 @@
         /// of the specified tournament.</param>
         /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
         /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
+        /// <param name="authService">Authorization service</param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery,
-            IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery)
+            IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
+            IAuthorizationService authService)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
             _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
             _gamesByTournamentIdRoundsNumberQuery = gamesByTournamentIdRoundsNumberQuery;
+            _authService = authService;
         }
 
         #endregion
@@ -71,6 +77,8 @@
         /// <param name="game">Game to create.</param>
         public void Create(Game game)
         {
+            _authService.CheckAccess(AuthOperations.Games.Create);
+
             if (game == null)
             {
                 throw new ArgumentNullException("game");
@@ -110,6 +118,8 @@
         /// <param name="game">Game to update.</param>
         public void Edit(Game game)
         {
+            _authService.CheckAccess(AuthOperations.Games.Edit);
+
             ValidateGame(game);
 
             try
@@ -130,6 +140,8 @@
         /// <param name="id">Identifier of game.</param>
         public void Delete(int id)
         {
+            _authService.CheckAccess(AuthOperations.Games.Delete);
+
             GameResultDto game = Get(id);
 
             if (game == null)
@@ -150,6 +162,8 @@
         /// <param name="secondRoundNumber">Identifier of second round number.</param>
         public void SwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)
         {
+            _authService.CheckAccess(AuthOperations.Games.SwapRounds);
+
             List<Game> games = _gamesByTournamentIdRoundsNumberQuery.Execute(
                 new TournamentRoundsGameResultsCriteria
                 {

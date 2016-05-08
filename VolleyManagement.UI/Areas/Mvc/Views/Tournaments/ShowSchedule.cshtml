@@ -1,5 +1,6 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.ScheduleViewModel
 @using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+@using VolleyManagement.Domain.RolesAggregate;
 
 @{
     ViewBag.Title = "Schedule";
@@ -27,20 +28,25 @@ else
     }
     else
     {
-        <div>
-            @Html.ActionLink(@Resources.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
-        </div>
+        if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Create))
+        {
+            <div>
+                @Html.ActionLink(@Resources.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
+            </div>
+        }
 
         <hr>
-        <div class="col-md-3">
-            
+        <div class="col-md-3">            
 
             @for (byte i = 1; i <= Model.NumberOfRounds; i++)
             {
-                <h4>
-                    @Resources.TournamentViews.Round @i
-                    <button id="swap_round_@i" type="button" class="btn btn-default btn-sm" onclick="SwapRounds(@i)">Swap</button>
-                </h4>
+                    <h4>
+                        @Resources.TournamentViews.Round @i
+                        @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.SwapRounds))
+                        {
+                            <button id="swap_round_@i" type="button" class="btn btn-default btn-sm" onclick="SwapRounds(@i)">Swap</button>
+                        }
+                    </h4>
                 
                 <div class="table-bordered" id="round_@i">
                     @if (Model.Rounds.ContainsKey(i))
@@ -59,7 +65,7 @@ else
                 </div>
             }
         </div>
-    }
+                                                                              }
 }
 
 @Html.Hidden("DeleteConfirmationMessage", Resources.GameResultViews.DeleteConfirmationText)

@@ -48,7 +48,8 @@
                     }
                 },
                 GameDate = DateTime.Parse(DATE),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             };
         }
 

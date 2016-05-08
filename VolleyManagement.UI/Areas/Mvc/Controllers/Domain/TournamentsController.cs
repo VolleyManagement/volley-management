@@ -330,6 +330,8 @@
                 AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
                                                                             AuthOperations.Games.Create,
+                                                                            AuthOperations.Games.Edit,
+                                                                            AuthOperations.Games.Delete,
                                                                             AuthOperations.Games.SwapRounds
                                                                           })
             };

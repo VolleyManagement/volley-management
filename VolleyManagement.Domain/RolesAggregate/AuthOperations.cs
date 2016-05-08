@@ -13,6 +13,7 @@
         private const byte TOURNAMENTS = 0x01;
         private const byte TEAMS = 0x02;
         private const byte GAMES = 0x03;
+        private const byte PLAYERS = 0x04;
 
         #endregion
 
@@ -87,6 +88,27 @@
             /// Swap rounds in tournament operation
             /// </summary>
             public static readonly AuthOperation SwapRounds = Tuple.Create(GAMES, 4);
+        }
+
+        /// <summary>
+        /// Contains players operations
+        /// </summary>
+        public static class Players
+        {
+            /// <summary>
+            /// Create player operation
+            /// </summary>
+            public static readonly AuthOperation Create = Tuple.Create(PLAYERS, 1);
+
+            /// <summary>
+            /// Edit player operation
+            /// </summary>
+            public static readonly AuthOperation Edit = Tuple.Create(PLAYERS, 2);
+
+            /// <summary>
+            /// Delete player operation
+            /// </summary>
+            public static readonly AuthOperation Delete = Tuple.Create(PLAYERS, 3);
         }
     }
 }

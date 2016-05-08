@@ -766,6 +766,9 @@
                 AuthOperations.Games.Edit,
                 AuthOperations.Games.Delete,
                 AuthOperations.Games.SwapRounds,
+                AuthOperations.Players.Create,
+                AuthOperations.Players.Edit,
+                AuthOperations.Players.Delete
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);
@@ -788,6 +791,9 @@
                 AuthOperations.Games.Edit,
                 AuthOperations.Games.Delete,
                 AuthOperations.Games.SwapRounds,
+                AuthOperations.Players.Create,
+                AuthOperations.Players.Edit,
+                AuthOperations.Players.Delete
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

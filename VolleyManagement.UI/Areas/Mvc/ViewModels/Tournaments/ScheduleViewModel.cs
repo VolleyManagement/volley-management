@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
@@ -36,5 +37,10 @@
         /// Gets or sets name of tournament
         /// </summary>
         public string TournamentName { get; set; }
+
+        /// <summary>
+        /// Gets or sets instance of <see cref="AllowedOperations"/> create object
+        /// </summary>
+        public AllowedOperations AllowedOperations { get; set; }
     }
 }

@@ -762,6 +762,10 @@
                 AuthOperations.Teams.Create,
                 AuthOperations.Teams.Edit,
                 AuthOperations.Teams.Delete,
+                AuthOperations.Games.Create,
+                AuthOperations.Games.Edit,
+                AuthOperations.Games.Delete,
+                AuthOperations.Games.SwapRounds,
                 AuthOperations.Players.Create,
                 AuthOperations.Players.Edit,
                 AuthOperations.Players.Delete
@@ -783,6 +787,10 @@
                 AuthOperations.Teams.Create,
                 AuthOperations.Teams.Edit,
                 AuthOperations.Teams.Delete,
+                AuthOperations.Games.Create,
+                AuthOperations.Games.Edit,
+                AuthOperations.Games.Delete,
+                AuthOperations.Games.SwapRounds,
                 AuthOperations.Players.Create,
                 AuthOperations.Players.Edit,
                 AuthOperations.Players.Delete

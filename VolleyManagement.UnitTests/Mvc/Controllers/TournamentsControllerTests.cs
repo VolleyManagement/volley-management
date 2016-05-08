@@ -51,6 +51,14 @@
         private const int DAYS_FOR_TRANSFER_PERIOD = 21;
         private static readonly DateTime _testDate = new DateTime(1996, 07, 25);
 
+        private readonly List<AuthOperation> _allowedOperationsShowSchedule = new List<AuthOperation>
+                {
+                    AuthOperations.Games.Create,
+                    AuthOperations.Games.Edit,
+                    AuthOperations.Games.Delete,
+                    AuthOperations.Games.SwapRounds,
+                };
+
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
@@ -157,6 +165,8 @@
             Assert.IsFalse(_sut.ModelState.IsValid);
             Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
             Assert.IsNull(result, "Result should be null");
+
+            VerifyGetAllowedOperations(_allowedOperationsShowSchedule, Times.Never());
         }
 
         /// <summary>
@@ -189,6 +199,7 @@
 
             // Assert
             Assert.IsTrue(new ScheduleViewModelComparer().AreRoundsEqual(actual.Rounds, expected.Rounds));
+            VerifyGetAllowedOperations(_allowedOperationsShowSchedule, Times.Once());
         }
 
         /// <summary>
@@ -222,6 +233,7 @@
 
             // Assert
             Assert.IsTrue(new ScheduleViewModelComparer().AreEqual(actual, expected));
+            VerifyGetAllowedOperations(_allowedOperationsShowSchedule, Times.Once());
         }
         #endregion
 
@@ -1122,6 +1134,11 @@
         private void VerifyGetAllowedOperations(Times times)
         {
             _authServiceMock.Verify(tr => tr.GetAllowedOperations(It.IsAny<List<AuthOperation>>()), times);
+        }
+
+        private void VerifyGetAllowedOperations(List<AuthOperation> allowedOperations, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.GetAllowedOperations(allowedOperations), times);
         }
 
         private void AssertEqual(GameViewModel x, GameViewModel y)

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.GamesAggregate;
 
@@ -86,6 +87,11 @@
                 return GameDate.ToString("d MMM dddd H:mm");
             }
         }
+
+        /// <summary>
+        /// Gets or sets instance of <see cref="AllowedOperations"/> create object
+        /// </summary>
+        public AllowedOperations AllowedOperations { get; set; }
 
         /// <summary>
         /// Maps domain model of game result to view model of game result.

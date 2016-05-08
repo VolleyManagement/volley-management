@@ -326,8 +326,27 @@
                 .ToDictionary(
                      d => d.Key,
                      c => c.OrderBy(t => t.GameDate)
-                    .Select(x => GameResultViewModel.Map(x)).ToList())
+                    .Select(x => GameResultViewModel.Map(x)).ToList()),                   
+                AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                                                                          {
+                                                                            AuthOperations.Games.Create,
+                                                                            AuthOperations.Games.Edit,
+                                                                            AuthOperations.Games.Delete,
+                                                                            AuthOperations.Games.SwapRounds
+                                                                          })
             };
+
+            for (byte i = 1; i <= scheduleViewModel.Rounds.Count; i++)
+            {
+                foreach (var game in scheduleViewModel.Rounds[i])
+                {
+                    game.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                                                                          {
+                                                                            AuthOperations.Games.Edit,
+                                                                            AuthOperations.Games.Delete
+                                                                          });
+                }
+            }
 
             return View(scheduleViewModel);
         }

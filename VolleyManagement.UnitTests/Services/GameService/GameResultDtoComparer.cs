@@ -73,7 +73,8 @@
                 && x.HomeSet5Score == y.HomeSet5Score
                 && x.AwaySet5Score == y.AwaySet5Score
                 && x.GameDate == y.GameDate
-                && x.Round == y.Round;
+                && x.Round == y.Round
+                && x.GameNumber == y.GameNumber;
         }
     }
 }

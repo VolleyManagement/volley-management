@@ -62,7 +62,8 @@
                 && x.Result.IsTechnicalDefeat == y.Result.IsTechnicalDefeat
                 && x.Result.SetScores.SequenceEqual(y.Result.SetScores, new ScoreComparer())
                 && x.GameDate == y.GameDate
-                && x.Round == y.Round;
+                && x.Round == y.Round
+                && x.GameNumber == y.GameNumber;
         }
     }
 }

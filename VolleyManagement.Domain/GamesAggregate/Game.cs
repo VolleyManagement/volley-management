@@ -41,5 +41,10 @@
         /// Gets or sets the round of the game in the tournament.
         /// </summary>
         public byte Round { get; set; }
+
+        /// <summary>
+        /// Gets or sets the game number of the game in the tournament.
+        /// </summary>
+        public byte GameNumber { get; set; }
     }
 }

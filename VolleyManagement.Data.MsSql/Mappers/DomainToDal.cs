@@ -185,6 +185,7 @@
             to.AwaySet5Score = from.Result.SetScores[4].Away;
             to.StartTime = from.GameDate;
             to.RoundNumber = from.Round;
+            to.GameNumber = from.GameNumber;
         }
     }
 }

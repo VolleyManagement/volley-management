@@ -526,7 +526,7 @@
             sut.Create(newGame);
 
             // Assert
-            Assert.IsTrue(newGame.HomeTeamId.HasValue);
+            VerifyFreeDayGame(newGame);
             VerifyCreateGame(newGame, Times.Once());
         }
 
@@ -1609,6 +1609,12 @@
         {
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
+        }
+
+        private void VerifyFreeDayGame(Game game) 
+        {
+            Assert.IsNotNull(game.HomeTeamId);
+            Assert.IsNull(game.AwayTeamId);
         }
 
         private void MockDefaultTournament()

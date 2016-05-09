@@ -1566,7 +1566,7 @@
         private void VerifyCreateGame(Game game, Times times)
         {
             _gameRepositoryMock.Verify(
-                m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
+                m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times, "Game was not created");
             _unitOfWorkMock.Verify(m => m.Commit(), times);
         }
 
@@ -1613,8 +1613,8 @@
 
         private void VerifyFreeDayGame(Game game) 
         {
-            Assert.IsNotNull(game.HomeTeamId);
-            Assert.IsNull(game.AwayTeamId);
+            Assert.IsNotNull(game.HomeTeamId, "HomeTeamId should not be null");
+            Assert.IsNull(game.AwayTeamId, "AwayTeamId should be null");
         }
 
         private void MockDefaultTournament()

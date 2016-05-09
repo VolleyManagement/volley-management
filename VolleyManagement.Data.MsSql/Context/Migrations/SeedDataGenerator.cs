@@ -571,7 +571,14 @@
                             }
                         }
                     },
-                    Teams = teams
+                    Teams = new List<TeamEntity>
+                    {
+                        teams[0],
+                        teams[1],
+                        teams[2],
+                        teams[3],
+                        teams[4],
+                    }
                 }
             };
 
@@ -823,7 +830,7 @@
             int teamsCount = Convert.ToInt32(Math.Pow(2, GetNumberOfRoundsInPlayoffScheme(tour.Teams.Count)));
             List<TeamEntity> teamsInTournament = tour.Teams.ToList();
 
-            for (int i = 0; i <= teamsCount - tour.Teams.Count; i++)
+            for (int i = 0; i < teamsCount - tour.Teams.Count; i++)
             {
                 teamsInTournament.Add(null);
             }

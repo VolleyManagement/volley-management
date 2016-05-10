@@ -551,10 +551,12 @@
                 new TournamentEntity
                 {
                     Name = "Tour Playoff #3",
-                    ApplyingPeriodStart = DateTime.Now.AddMonths(2),
-                    ApplyingPeriodEnd = DateTime.Now.AddMonths(3).AddDays(15),
-                    GamesStart = DateTime.Now.AddMonths(3).AddDays(16),
-                    GamesEnd = DateTime.Now.AddMonths(3).AddDays(30),
+                    ApplyingPeriodStart = DateTime.Now.AddMonths(1),
+                    ApplyingPeriodEnd = DateTime.Now.AddMonths(2),
+                    GamesStart = DateTime.Now.AddMonths(2).AddDays(2),
+                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(12),
+                    TransferStart = DateTime.Now.AddMonths(2).AddDays(2),
+                    TransferEnd = DateTime.Now.AddMonths(2).AddDays(7),
                     Scheme = 4,
                     Season = Convert.ToByte(DateTime.Now.Year - 1900),
                     Divisions = new List<DivisionEntity>()
@@ -575,9 +577,7 @@
                     {
                         teams[0],
                         teams[1],
-                        teams[2],
-                        teams[3],
-                        teams[4],
+                        teams[2]
                     }
                 }
             };
@@ -748,17 +748,19 @@
             // Set results
             for (int i = 0; i < numberOfRounds; i++)
             {
-                List<GameResultEntity> gamesInCurrentRound = games.Where(x => x.RoundNumber == i + 1).ToList();
+                List<GameResultEntity> gamesInCurrentRound = games
+                    .Where(x => x.RoundNumber == i + 1)
+                    .ToList();
                 foreach (GameResultEntity game in gamesInCurrentRound)
                 {
+                    SetSingleGameScores(game);
+
                     if (game.RoundNumber == numberOfRounds)
                     {
                         continue;
                     }
 
-                    SetSingleGameScores(game);
                     int winnerId = 0;
-
                     if (game.AwayTeamId == null || game.HomeSetsScore > game.AwaySetsScore)
                     {
                         winnerId = game.HomeTeamId.Value;
@@ -768,22 +770,24 @@
                         winnerId = game.AwayTeamId.Value;
                     }
 
-                    int numberOfGamesInCurrentRound = GetNumberOfGamesByRoundNumerSchemePlayoff(
-                        game.RoundNumber,
-                        numberOfGamesInFirstRound);
+                    // Get last game number from previous game
+                    int lastGameNumberPreviousRound = 0;
 
-                    int numberOfGamesInPreviousRound = GetNumberOfGamesByRoundNumerSchemePlayoff(
-                        game.RoundNumber - 1,
-                        numberOfGamesInFirstRound);
+                    if (game.RoundNumber > 1)
+                    {
+                        lastGameNumberPreviousRound = games
+                        .Where(gr => gr.RoundNumber == game.RoundNumber - 1)
+                        .Max(gr => gr.GameNumber);
+                    }
 
                     int offset = (game.GameNumber % 2 == 0) ?
-                        ((game.GameNumber - numberOfGamesInPreviousRound) / 2)
-                        : (((game.GameNumber - numberOfGamesInPreviousRound) / 2) + 1);
+                        ((game.GameNumber - lastGameNumberPreviousRound) / 2)
+                        : (((game.GameNumber - lastGameNumberPreviousRound) / 2) + 1);
 
                     int nextWinnerGameNumber = gamesInCurrentRound[gamesInCurrentRound.Count - 1]
                         .GameNumber + offset;
 
-                    if (game.RoundNumber == numberOfRounds - 1)
+                    if (game.RoundNumber == numberOfRounds - 1 && numberOfRounds > 2)
                     {
                         // add losers to next round
                         int nextLoserGameNumber = nextWinnerGameNumber;
@@ -793,8 +797,16 @@
                             .Where(gr => gr.GameNumber == nextLoserGameNumber)
                             .SingleOrDefault();
 
-                        int loserId = game.HomeSetsScore > game.AwaySetsScore ?
+                        int? loserId = 0;
+                        if (game.AwayTeamId == null)
+                        {
+                            loserId = null;
+                        }
+                        else
+                        {
+                            loserId = game.HomeSetsScore > game.AwaySetsScore ?
                             game.AwayTeamId.Value : game.HomeTeamId.Value;
+                        }
 
                         if (loserGame.HomeTeamId == null)
                         {

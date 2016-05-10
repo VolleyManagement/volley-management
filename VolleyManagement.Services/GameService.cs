@@ -115,7 +115,7 @@
         /// <param name="game">Game to update.</param>
         public void Edit(Game game)
         {
-            // Get list of all games in the tournament 
+            // Get list of all games in the tournament and tournament schedule info
             // for validation and autogeneration
 
             List<GameResultDto> gamesInTournament = GetTournamentResults(game.TournamentId);
@@ -126,6 +126,10 @@
             ValidateGame(game, gamesInTournament, tournamentScheduleInfo);
 
             // Add autogeneration
+            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                // Call Autogeneration methods
+            }
 
             try
             {
@@ -503,6 +507,52 @@
                 game.AwayTeamId = tempHomeId;
             }
         }
+        #endregion
+
+        #region Schedule autogeneration methods
+
+        private void ScheduleNextGame(Game finishedGame, List<GameResultDto> games)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ScheduleWinnerGame(Game finishedGame, List<GameResultDto> games)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SheduleLoserGame(Game finishedGame, List<GameResultDto> games)
+        {
+            throw new NotImplementedException();
+        }
+
+        private GameResultDto GetNextGameToSchedule(Game current, List<GameResultDto> games)
+        {
+            int lastGameNumberInPreviousRound = 0;
+            if (current.Round != 1)
+            {
+                lastGameNumberInPreviousRound = games
+                    .Where(gr => gr.Round == current.Round - 1)
+                    .Max(g => g.GameNumber);
+            }
+
+            int difference = current.GameNumber - lastGameNumberInPreviousRound;
+            int offset = difference % 2 == 0 ? difference / 2 : difference / 2 + 1;
+            int lastGameNumberInCurrentRound = games
+                .Where(gr => gr.Round == current.Round)
+                .Max(g => g.GameNumber);
+            int nextGameNumber = lastGameNumberInCurrentRound + offset;
+
+            return games
+                .Where(gr => gr.GameNumber == nextGameNumber)
+                .SingleOrDefault();
+        }
+
+        private bool IsGameResultUpdated(Game current)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

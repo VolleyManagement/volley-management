@@ -194,7 +194,7 @@
             ValidateSetScoresOrder(game.Result.SetScores);
         }
 
-        private void ValidateTeams(int homeTeamId, int? awayTeamId)
+        private void ValidateTeams(int? homeTeamId, int? awayTeamId)
         {
             if (GameValidation.AreTheSameTeams(homeTeamId, awayTeamId))
             {
@@ -302,6 +302,7 @@
                 allGames.Remove(oldGameToUpdate);
             }
 
+            ValidateFreeDayGame(game);
             ValidateGameDate(tournamentDto, game);
             ValidateGameInRound(game, allGames);
             if (tournamentDto.Scheme == TournamentSchemeEnum.One)
@@ -458,6 +459,14 @@
             }
         }
 
+        private void ValidateFreeDayGame(Game game)
+        {
+            if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
+            {
+                SwitchTeamsOrder(game);
+            }
+        }
+
         private void ValidateGameDate(TournamentScheduleDto tournament, Game game)
         {
             if (DateTime.Compare(tournament.StartDate, game.GameDate) > 0
@@ -471,8 +480,8 @@
         {
             if (!GameValidation.IsFreeDayGame(game))
             {
-                int tempHomeId = game.HomeTeamId;
-                game.HomeTeamId = game.AwayTeamId.Value;
+                int? tempHomeId = game.HomeTeamId;
+                game.HomeTeamId = game.AwayTeamId;
                 game.AwayTeamId = tempHomeId;
             }
         }

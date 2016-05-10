@@ -50,7 +50,7 @@
         /// Gets or sets the identifier of the home team.
         /// </summary>
         [Display(Name = "HomeTeam", ResourceType = typeof(ViewModelResources))]
-        public int HomeTeamId { get; set; }
+        public int? HomeTeamId { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the away team.

@@ -699,12 +699,12 @@
             int gameId = games[games.Count - 1].Id;
             foreach (GameResultEntity game in games)
             {
-                int homeTeamId = game.HomeTeamId;
+                int? homeTeamId = game.HomeTeamId;
                 int? awayTeamId = game.AwayTeamId;
 
-                if (awayTeamId != null)
+                if (awayTeamId.HasValue && homeTeamId.HasValue)
                 {
-                    int temp = homeTeamId;
+                    int temp = homeTeamId.Value;
                     homeTeamId = awayTeamId.Value;
                     awayTeamId = temp;
                 }

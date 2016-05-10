@@ -77,7 +77,11 @@
             }
 
             List<GameResultDto> gamesInTournament = GetTournamentResults(game.TournamentId);
-            ValidateGame(game, gamesInTournament);
+
+            TournamentScheduleDto tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
+
+            ValidateGame(game, gamesInTournament, tournamentScheduleInfo);
 
             _gameRepository.Add(game);
             _gameRepository.UnitOfWork.Commit();
@@ -115,7 +119,13 @@
             // for validation and autogeneration
 
             List<GameResultDto> gamesInTournament = GetTournamentResults(game.TournamentId);
-            ValidateGame(game, gamesInTournament);
+
+            TournamentScheduleDto tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
+
+            ValidateGame(game, gamesInTournament, tournamentScheduleInfo);
+
+            // Add autogeneration
 
             try
             {
@@ -183,10 +193,10 @@
 
         #region Validation methods
 
-        private void ValidateGame(Game game, List<GameResultDto> allGamesInTournament)
+        private void ValidateGame(Game game, List<GameResultDto> allGamesInTournament, TournamentScheduleDto tournamentScheduleInfo)
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
-            ValidateGameInTournament(game, allGamesInTournament);
+            ValidateGameInTournament(game, allGamesInTournament, tournamentScheduleInfo);
             if (game.Result == null)
             {
                 game.Result = new Result();
@@ -289,12 +299,9 @@
             }
         }
 
-        private void ValidateGameInTournament(Game game, List<GameResultDto> allGamesInTournament)
+        private void ValidateGameInTournament(Game game, List<GameResultDto> allGamesInTournament, TournamentScheduleDto tournamentScheduleInfo)
         {
-            TournamentScheduleDto tournamentDto = _tournamentScheduleDtoByIdQuery
-                .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
-
-            if (tournamentDto == null)
+            if (tournamentScheduleInfo == null)
             {
                 throw new ArgumentException(Resources.NoSuchToruanment);
             }
@@ -307,13 +314,13 @@
             }
 
             ValidateFreeDayGame(game);
-            ValidateGameDate(tournamentDto, game);
+            ValidateGameDate(tournamentScheduleInfo, game);
             ValidateGameInRound(game, allGamesInTournament);
-            if (tournamentDto.Scheme == TournamentSchemeEnum.One)
+            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.One)
             {
                 ValidateGamesInTournamentSchemeOne(game, allGamesInTournament);
             }
-            else if (tournamentDto.Scheme == TournamentSchemeEnum.Two)
+            else if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.Two)
             {
                 ValidateGamesInTournamentSchemeTwo(game, allGamesInTournament);
             }

@@ -5,7 +5,7 @@
     /// <summary>
     /// Main view in Admin part of Volley Management web-site
     /// </summary>
-    //[Authorize]
+    [Authorize]
     public class DashboardController : Controller
     {
         /// <summary>

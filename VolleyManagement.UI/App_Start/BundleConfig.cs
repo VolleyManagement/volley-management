@@ -85,8 +85,8 @@
         {
             bundles.Add(new StyleBundle("~/bundles/admincss")
                    .Include(
-                       "~/Libs/metisMenu/dist/metisMenu.min.css",
-                       "~/Libs/font-awesome/css/font-awesome.min.css",
+                       "~/Content/metisMenu.min.css",
+                       "~/Content/font-awesome.min.css",
                        "~/Content/Admin/admin.css",
                        "~/Content/Admin/vm.css"));
         }
@@ -95,7 +95,7 @@
         {
             bundles.Add(new ScriptBundle("~/bundles/adminscripts")
                         .Include(
-                            "~/Libs/metisMenu/dist/metisMenu.min.js",
+                            "~/Scripts/metisMenu.min.js",
                             "~/Scripts/VMScripts/Admin/admin.js")); 
         }
 

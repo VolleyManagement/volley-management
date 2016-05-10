@@ -320,6 +320,7 @@
             {
                 TournamentId = tournament.Id,
                 TournamentName = tournament.Name,
+                TournamentScheme = tournament.Scheme,
                 NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                 .GroupBy(d => d.Round)
@@ -329,7 +330,7 @@
                     .Select(x => GameResultViewModel.Map(x)).ToList())
             };
 
-            if (true/*tournament.Scheme == TournamentSchemeEnum.PlayOff*/)
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
             {
                 FillRoundNames(scheduleViewModel);
             }
@@ -510,6 +511,7 @@
             return new GameViewModel
             {
                 TournamentId = tournamentId,
+                TournamentScheme = tournament.Scheme,
                 GameDate = tournament.StartDate,
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")

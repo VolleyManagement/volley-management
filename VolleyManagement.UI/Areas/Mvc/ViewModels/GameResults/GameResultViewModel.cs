@@ -77,6 +77,17 @@
         public int Round { get; set; }
 
         /// <summary>
+        /// Gets an identifier whether this game is a first round game.
+        /// </summary>
+        public bool IsFirstRoundGame 
+        {
+            get 
+            {
+                return this.Round == 1; 
+            }
+        }
+
+        /// <summary>
         /// Gets the format of game date
         /// </summary>
         public string ShortGameDate

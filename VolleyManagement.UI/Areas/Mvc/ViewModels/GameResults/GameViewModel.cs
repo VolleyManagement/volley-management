@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.App_GlobalResources;
 
     /// <summary>
@@ -16,8 +17,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="GameViewModel"/> class
         /// </summary>
-        public GameViewModel() 
-        {        
+        public GameViewModel()
+        {
         }
 
         /// <summary>
@@ -47,6 +48,11 @@
         public int TournamentId { get; set; }
 
         /// <summary>
+        /// Gets or sets scheme of the tournament game belongs to.
+        /// </summary>
+        public TournamentSchemeEnum TournamentScheme { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the home team.
         /// </summary>
         [Display(Name = "HomeTeam", ResourceType = typeof(ViewModelResources))]
@@ -65,6 +71,17 @@
         [Display(Name = "GameDateTime", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime GameDate { get; set; }
+
+        /// <summary>
+        /// Gets an identifier whether this game is a first round game.
+        /// </summary>
+        public bool IsFirstRoundGame
+        {
+            get
+            {
+                return this.Round == 1;
+            }
+        }
 
         /// <summary>
         /// Mapper from GameResult to GameViewModel
@@ -88,7 +105,7 @@
         /// Mapper from <see cref="GameViewModel"/> to <see cref="Game"/>
         /// </summary>
         /// <returns>Game domain model</returns>
-        public Game ToDomain() 
+        public Game ToDomain()
         {
             return new Game
             {

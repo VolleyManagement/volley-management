@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
@@ -38,8 +39,13 @@
         public string TournamentName { get; set; }
 
         /// <summary>
+        /// Gets or sets tournament's scheme
+        /// </summary>
+        public TournamentSchemeEnum TournamentScheme { get; set; }
+
+        /// <summary>
         /// Gets or sets names of rounds for playoff scheme
         /// </summary>
-        public IEnumerable<string> RoundNames { get; set; }
+        public string[] RoundNames { get; set; }
     }
 }

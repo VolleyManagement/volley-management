@@ -76,7 +76,8 @@
                 throw new ArgumentNullException("game");
             }
 
-            ValidateGame(game);
+            List<GameResultDto> gamesInTournament = GetTournamentResults(game.TournamentId);
+            ValidateGame(game, gamesInTournament);
 
             _gameRepository.Add(game);
             _gameRepository.UnitOfWork.Commit();
@@ -110,7 +111,11 @@
         /// <param name="game">Game to update.</param>
         public void Edit(Game game)
         {
-            ValidateGame(game);
+            // Get list of all games in the tournament 
+            // for validation and autogeneration
+
+            List<GameResultDto> gamesInTournament = GetTournamentResults(game.TournamentId);
+            ValidateGame(game, gamesInTournament);
 
             try
             {
@@ -178,10 +183,10 @@
 
         #region Validation methods
 
-        private void ValidateGame(Game game)
+        private void ValidateGame(Game game, List<GameResultDto> allGamesInTournament)
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
-            ValidateGameInTournament(game);
+            ValidateGameInTournament(game, allGamesInTournament);
             if (game.Result == null)
             {
                 game.Result = new Result();
@@ -284,7 +289,7 @@
             }
         }
 
-        private void ValidateGameInTournament(Game game)
+        private void ValidateGameInTournament(Game game, List<GameResultDto> allGamesInTournament)
         {
             TournamentScheduleDto tournamentDto = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
@@ -294,24 +299,23 @@
                 throw new ArgumentException(Resources.NoSuchToruanment);
             }
 
-            List<GameResultDto> allGames = this.GetTournamentResults(tournamentDto.Id);
-            GameResultDto oldGameToUpdate = allGames.Where(gr => gr.Id == game.Id).SingleOrDefault();
+            GameResultDto oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
 
             if (oldGameToUpdate != null)
             {
-                allGames.Remove(oldGameToUpdate);
+                allGamesInTournament.Remove(oldGameToUpdate);
             }
 
             ValidateFreeDayGame(game);
             ValidateGameDate(tournamentDto, game);
-            ValidateGameInRound(game, allGames);
+            ValidateGameInRound(game, allGamesInTournament);
             if (tournamentDto.Scheme == TournamentSchemeEnum.One)
             {
-                ValidateGamesInTournamentSchemeOne(game, allGames);
+                ValidateGamesInTournamentSchemeOne(game, allGamesInTournament);
             }
             else if (tournamentDto.Scheme == TournamentSchemeEnum.Two)
             {
-                ValidateGamesInTournamentSchemeTwo(game, allGames);
+                ValidateGamesInTournamentSchemeTwo(game, allGamesInTournament);
             }
         }
 

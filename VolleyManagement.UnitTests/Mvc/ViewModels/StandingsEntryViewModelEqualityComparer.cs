@@ -21,6 +21,7 @@
         public bool Equals(StandingsEntryViewModel x, StandingsEntryViewModel y)
         {
             return x.TeamName == y.TeamName
+                && x.Position == y.Position
                 && x.Points == y.Points
                 && x.GamesTotal == y.GamesTotal
                 && x.GamesWon == y.GamesWon
@@ -49,6 +50,7 @@
             StringBuilder stringBuilder = new StringBuilder();
 
             stringBuilder.Append(obj.TeamName);
+            stringBuilder.Append(obj.Position);
             stringBuilder.Append(obj.Points);
             stringBuilder.Append(obj.GamesTotal);
             stringBuilder.Append(obj.GamesWon);

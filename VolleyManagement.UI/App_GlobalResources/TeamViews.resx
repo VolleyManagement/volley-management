@@ -162,4 +162,7 @@
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>
+  <data name="TeamName" xml:space="preserve">
+    <value>Name</value>
+  </data>
 </root>

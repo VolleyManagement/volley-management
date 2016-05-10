@@ -11,13 +11,10 @@
 <fieldset>
     @{
         string legendText = string.Format(Resources.GameReportViews.TournamentStandingsLegend, Model.TournamentName);
-        string setsRatioText = string.Empty;
-        string ballsRatioText = string.Empty;
-        int position = 0;
     }
 
     <legend>@legendText</legend>
-    @if (Model.Entries.Count == 0)
+    @if (Model.Standings.Count == 0)
     {
         <p>@Resources.GameReportViews.NoGameResults</p>
     }
@@ -55,13 +52,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var entry in Model.Entries)
+                @foreach (var entry in Model.Standings)
                 {
-                    setsRatioText = entry.SetsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", entry.SetsRatio) : "MAX";
-                    ballsRatioText = entry.BallsRatio != float.PositiveInfinity ? string.Format("{0:0.###}", entry.BallsRatio) : "MAX";
-
                     <tr class="standings-row">
-                        <td class="standings-cell">@(++position)</td>
+                        <td class="standings-cell">@entry.Position</td>
                         <td class="standings-cell">@entry.TeamName</td>
                         <td class="standings-cell">@entry.Points</td>
                         <td class="standings-cell">@entry.GamesTotal</td>
@@ -75,15 +69,62 @@
                         <td class="standings-cell">@entry.GamesWithScoreNilThree</td>
                         <td class="standings-cell">@entry.SetsWon</td>
                         <td class="standings-cell">@entry.SetsLost</td>
-                        <td class="standings-cell">@setsRatioText</td>
+                        <td class="standings-cell">@entry.SetsRatioText</td>
                         <td class="standings-cell">@entry.BallsWon</td>
                         <td class="standings-cell">@entry.BallsLost</td>
-                        <td class="standings-cell">@ballsRatioText</td>
+                        <td class="standings-cell">@entry.BallsRatioText</td>
                     </tr>
                 }
             </tbody>
         </table>
     }
+</fieldset>
+
+<fieldset>
+    @{
+        int rows = Model.PivotTable.TeamsStandings.Count;
+        int columns = Model.PivotTable.TeamsStandings.Count;
+    }
+    <table class="standings">
+        <thead>
+            <tr class="standings-header-row">
+                <th colspan="2" class="standings-header-cell">
+                    @string.Format(Resources.GameReportViews.LastUpdated,
+                    VolleyManagement.Crosscutting.Contracts.Providers.TimeProvider.Current.UtcNow)
+                </th>
+                @foreach (var item in Model.PivotTable.TeamsStandings)
+                {
+                    <th class="standings-header-cell">@item.TeamName</th>
+                }
+                <th class="standings-header-cell">@Resources.GameReportViews.PointsHeader</th>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < rows; i++)
+            {
+                <tr class="standings-row">
+                    <td class="standings-cell">@Model.PivotTable.TeamsStandings[i].Position</td>
+                    <td class="standings-cell">@Model.PivotTable.TeamsStandings[i].TeamName</td>
+                    @for (int j = 0; j < columns; j++)
+                    {
+                        <td class="standings-cell">
+                            @foreach (var item in Model.PivotTable[i, j])
+                            {
+                                <div class="@item.CssClass">@item.FormattedResult</div>
+                            }
+                        </td>
+                    }
+                    <td class="standings-cell">
+                        <div>
+                            @Model.PivotTable.TeamsStandings[i].Points
+                        </div>
+                        <div>
+                            @Model.PivotTable.TeamsStandings[i].SetsRatioText
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </fieldset>
 
 <p>@Html.ActionLink(Resources.GameReportViews.BackToTournament, "Details", "Tournaments", new { id = Model.TournamentId }, null)</p>

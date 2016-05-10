@@ -8,8 +8,10 @@
     using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
@@ -29,14 +31,17 @@
         /// Holds PlayerService instance
         /// </summary>
         private readonly IPlayerService _playerService;
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class
         /// </summary>
         /// <param name="playerService">Instance of the class that implements IPlayerService.</param>
-        public PlayersController(IPlayerService playerService)
+        /// <param name="authService">The authorization service</param>
+        public PlayersController(IPlayerService playerService, IAuthorizationService authService)
         {
             this._playerService = playerService;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -50,6 +55,12 @@
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
+                playersOnPage.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                {
+                    AuthOperations.Players.Create,
+                    AuthOperations.Players.Edit,
+                    AuthOperations.Players.Delete
+                });
                 ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
                 return View(playersOnPage);
             }
@@ -75,6 +86,7 @@
             }
 
             var model = new PlayerRefererViewModel(player, returnUrl);
+            model.AllowedOperations = this._authService.GetAllowedOperations(AuthOperations.Players.Edit);
             return View(model);
         }
 

@@ -380,6 +380,77 @@
         }
 
         /// <summary>
+        /// Adds standings entries where teams have repetitive points and sets ratio to collection of <see cref="StandingsEntry"/> objects.
+        /// </summary>
+        /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
+        public StandingsTestFixture WithRepetitivePointsSetsRatioAndBallsRatio()
+        {
+            _standings.Clear();
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameB",
+                Points = 3,
+                GamesTotal = 1,
+                GamesWon = 1,
+                GamesLost = 0,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 1,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 3,
+                SetsLost = 1,
+                SetsRatio = 3.0f / 1,
+                BallsWon = 102,
+                BallsLost = 96,
+                BallsRatio = 102.0f / 96
+            });
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameC",
+                Points = 3,
+                GamesTotal = 1,
+                GamesWon = 1,
+                GamesLost = 0,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 1,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 3,
+                SetsLost = 1,
+                SetsRatio = 3.0f / 1,
+                BallsWon = 102,
+                BallsLost = 96,
+                BallsRatio = 102.0f / 96
+            });
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameA",
+                Points = 0,
+                GamesTotal = 2,
+                GamesWon = 0,
+                GamesLost = 2,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 2,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 2,
+                SetsLost = 6,
+                SetsRatio = 2.0f / 6,
+                BallsWon = 192,
+                BallsLost = 204,
+                BallsRatio = 192.0f / 204
+            });
+
+            return this;
+        }
+
+        /// <summary>
         /// Orders standings by points in descending order.
         /// </summary>
         /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
@@ -403,11 +474,12 @@
         /// Orders standings by points, then by sets ratio and then by balls ratio in descending order.
         /// </summary>
         /// <returns>Instance of <see cref="StandingsTestFixture"/>.</returns>
-        public StandingsTestFixture OrderByPointsAndSetsAndBalls()
+        public StandingsTestFixture OrderByPointsAndSetsAndBallsAndName()
         {
             _standings = _standings.OrderByDescending(ts => ts.Points)
                 .ThenByDescending(ts => ts.SetsRatio)
                 .ThenByDescending(ts => ts.BallsRatio)
+                .ThenBy(ts => ts.TeamName)
                 .ToList();
 
             return this;

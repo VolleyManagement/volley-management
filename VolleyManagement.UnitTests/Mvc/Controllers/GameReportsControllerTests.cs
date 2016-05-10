@@ -44,11 +44,44 @@
         public void Standings_StandingsRequested_StandingsReturned()
         {
             // Arrange
+            var teams = new TeamStandingsTestFixture().TestTeamStandings().Build();
+            var gameResults = new ShortGameResultDtoTetsFixture().GetShortResults().Build();
+            var testPivotStandings = new PivotStandingsDto(teams, gameResults);
+
             var testStandings = new StandingsTestFixture().TestStandings().Build();
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().Build();
 
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
+            SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
+
+            // Act
+            var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Standings() method. Tournament standings view model are requested.
+        /// Tournament standings view model with 2 team scores completely equal returned.
+        /// </summary>
+        [TestMethod]
+        public void Standings_StandingsWithTwoTeamsScoresCompletelyEqual_TeamsHaveSamePosition()
+        {
+            // Arrange
+            var teams = new TeamStandingsTestFixture().WithTeamStandingsTwoTeamsScoresCompletelyEqual().Build();
+            var gameResults = new ShortGameResultDtoTetsFixture().GetShortResultsForTwoTeamsScoresCompletelyEqual().Build();
+            var testPivotStandings = new PivotStandingsDto(teams, gameResults);
+
+            var testStandings = new StandingsTestFixture()
+                .WithRepetitivePointsSetsRatioAndBallsRatio()
+                .Build();
+            var sut = _kernel.Get<GameReportsController>();
+            var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
+
+            SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
+            SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 
             // Act
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
@@ -60,6 +93,11 @@
         private void SetupGameReportGetStandings(int tournamentId, List<StandingsEntry> testData)
         {
             _gameReportServiceMock.Setup(m => m.GetStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
+        }
+
+        private void SetupGameReportGetPivotStandings(int tournamentId, PivotStandingsDto testData)
+        {
+            _gameReportServiceMock.Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
         }
     }
 }

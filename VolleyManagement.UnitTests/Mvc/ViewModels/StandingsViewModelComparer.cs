@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -56,7 +57,9 @@
         {
             return x.TournamentId == y.TournamentId
                 && x.TournamentName == y.TournamentName
-                && x.Entries.SequenceEqual(y.Entries, new StandingsEntryViewModelEqualityComparer());
+                && x.Standings.SequenceEqual(y.Standings, new StandingsEntryViewModelEqualityComparer())
+                && x.PivotTable.TeamsStandings.SequenceEqual(y.PivotTable.TeamsStandings, new PivotTeamStandingsViewModelEqualityComparer())
+                && PivotTableEqualityComparer.AreResultTablesEquals(x.PivotTable, y.PivotTable);
         }
     }
 }

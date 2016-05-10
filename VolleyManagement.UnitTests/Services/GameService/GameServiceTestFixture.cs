@@ -126,6 +126,17 @@
         public GameServiceTestFixture WithAllPossibleScores()
         {
             _gameResults.Clear();
+
+            return WithHomeTeamWinningScores()
+                .WithAwayTeamWinningScores();
+        }
+
+        /// <summary>
+        /// Adds game results where home team wins with all possible scores
+        /// </summary>
+        /// <returns>Instance of <see cref="GameServiceTestFixture"/></returns>
+        public GameServiceTestFixture WithHomeTeamWinningScores()
+        {
             _gameResults.Add(new GameResultDto
             {
                 Id = 1,
@@ -192,6 +203,16 @@
                 GameDate = DateTime.Parse(DATE_C),
                 Round = 3
             });
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds game results where away team wins with all possible scores
+        /// </summary>
+        /// <returns>Instance of <see cref="GameServiceTestFixture"/></returns>
+        public GameServiceTestFixture WithAwayTeamWinningScores()
+        {
             _gameResults.Add(new GameResultDto
             {
                 Id = 4,
@@ -614,6 +635,63 @@
                    HomeTeamId = 1,
                    AwayTeamId = null,
                    TournamentId = 1,
+                   Round = 2
+               });
+
+            return this;
+        }
+
+        public GameServiceTestFixture TestGamesWithoutResult()
+        {
+            this._gameResults.Clear();
+            this._gameResults.Add(
+                new GameResultDto()
+                {
+                    Id = 1,
+                    TournamentId = 1,
+                    HomeTeamId = 1,
+                    AwayTeamId = 2,
+                    HomeTeamName = "TeamNameA",
+                    AwayTeamName = "TeamNameB",
+                    HomeSetsScore = 0,
+                    AwaySetsScore = 0,
+                    IsTechnicalDefeat = false,
+                    HomeSet1Score = 0,
+                    AwaySet1Score = 0,
+                    HomeSet2Score = 0,
+                    AwaySet2Score = 0,
+                    HomeSet3Score = 0,
+                    AwaySet3Score = 0,
+                    HomeSet4Score = 0,
+                    AwaySet4Score = 0,
+                    HomeSet5Score = 0,
+                    AwaySet5Score = 0,
+                    GameDate = DateTime.Parse(DATE_A),
+                    Round = 1
+                });
+            this._gameResults.Add(
+               new GameResultDto()
+               {
+                   Id = 2,
+                   TournamentId = 1,
+                   HomeTeamId = 1,
+                   AwayTeamId = 3,
+                   HomeTeamName = "TeamNameA",
+                   AwayTeamName = "TeamNameC",
+                   HomeSetsScore = 0,
+                   AwaySetsScore = 0,
+                   IsTechnicalDefeat = false,
+                   HomeSet1Score = 0,
+                   AwaySet1Score = 0,
+                   HomeSet2Score = 0,
+                   AwaySet2Score = 0,
+                   HomeSet3Score = 0,
+                   AwaySet3Score = 0,
+                   HomeSet4Score = 0,
+                   AwaySet4Score = 0,
+                   HomeSet5Score = 0,
+                   AwaySet5Score = 0,
+                   GameDate = DateTime.Parse(DATE_B),
                    Round = 2
                });
 

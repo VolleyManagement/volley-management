@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using App_GlobalResources;
@@ -97,7 +98,21 @@
         /// <returns>View with specific tournament</returns>
         public ActionResult Details(int id)
         {
-            return GetTournamentView(id);
+            var tournament = _tournamentService.Get(id);
+
+            if (tournament == null)
+            {
+                return HttpNotFound();
+            }
+
+            var tournamentViewModel = TournamentViewModel.Map(tournament);
+            tournamentViewModel.Authorization = this._authService.GetAllowedOperations(new List<AuthOperation> 
+            { 
+                AuthOperations.Tournaments.Edit,
+                AuthOperations.Tournaments.ManageTeams
+            });
+
+            return View(tournamentViewModel);
         }
 
         /// <summary>
@@ -311,8 +326,27 @@
                 .ToDictionary(
                      d => d.Key,
                      c => c.OrderBy(t => t.GameDate)
-                    .Select(x => GameResultViewModel.Map(x)).ToList())
+                    .Select(x => GameResultViewModel.Map(x)).ToList()),                   
+                AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                                                                          {
+                                                                            AuthOperations.Games.Create,
+                                                                            AuthOperations.Games.Edit,
+                                                                            AuthOperations.Games.Delete,
+                                                                            AuthOperations.Games.SwapRounds
+                                                                          })
             };
+
+            for (byte i = 1; i <= scheduleViewModel.Rounds.Count; i++)
+            {
+                foreach (var game in scheduleViewModel.Rounds[i])
+                {
+                    game.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                                                                          {
+                                                                            AuthOperations.Games.Edit,
+                                                                            AuthOperations.Games.Delete
+                                                                          });
+                }
+            }
 
             return View(scheduleViewModel);
         }

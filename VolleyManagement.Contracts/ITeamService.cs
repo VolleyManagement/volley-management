@@ -56,10 +56,10 @@
         List<Player> GetTeamRoster(int teamId);
 
         /// <summary>
-        /// Sets team to player
+        /// Sets team id to roster
         /// </summary>
-        /// <param name="playerId">Id of player to set the team</param>
+        /// <param name="roster">Players to set the team id</param>
         /// <param name="teamId">Id of team which should be set to player</param>
-        void UpdatePlayerTeam(int playerId, int teamId);
+        void UpdateRosterTeamId(List<Player> roster, int teamId);
     }
 }

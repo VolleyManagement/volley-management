@@ -1,4 +1,5 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayersListViewModel
+﻿@using VolleyManagement.Domain.RolesAggregate;
 
 @{
     ViewBag.Title = Resources.PlayerViews.PlayersIndexTitle;
@@ -14,7 +15,10 @@
         @Html.TextBox("textToSearch", Model.TextToSearch)
     }
 </div>
-@Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
+@if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Create))
+{
+    @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
+}
 
 <table class="table">
     <tr>
@@ -31,11 +35,17 @@
                 @Html.ActionLink(item.FullName, "Details", new { id = item.Id, returnUrl = ViewBag.ReturnUrl },
                 new { @class = "playerName", @id = item.Id + "playerName" })
             </td>
-            <td>
-                @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) |
+            <td>            
+            @if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
+            {
+                @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) @:|
+            }
+            @if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Delete))
+            {
                 @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id },
-                            new { @class = "delete", @id = item.Id })
-            </td>
+                        new { @class = "delete", @id = item.Id })
+            }
+            </td>        
         </tr>
     }
 

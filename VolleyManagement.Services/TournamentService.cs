@@ -175,6 +175,7 @@
         /// <param name="tournamentToEdit">Tournament to edit</param>
         public void Edit(Tournament tournamentToEdit)
         {
+            _authService.CheckAccess(AuthOperations.Tournaments.Edit);
             ValidateTournament(tournamentToEdit, isUpdate: true);
 
             _tournamentRepository.Update(tournamentToEdit);
@@ -187,6 +188,8 @@
         /// <param name="id">The id of tournament to delete.</param>
         public void Delete(int id)
         {
+            _authService.CheckAccess(AuthOperations.Tournaments.Delete);
+
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -198,6 +201,7 @@
         /// <param name="tournamentId">Tournament to assign team.</param>
         public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId)
         {
+            _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
             var allTeams = GetAllTournamentTeams(tournamentId);
 
             foreach (var team in teams)
@@ -224,6 +228,8 @@
         /// <param name="tournamentId">Tournament to un assign team</param>
         public void DeleteTeamFromTournament(int teamId, int tournamentId)
         {
+            _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
+
             try
             {
                 _tournamentRepository.RemoveTeamFromTournament(teamId, tournamentId);

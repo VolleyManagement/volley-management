@@ -1,11 +1,32 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Account.AuthenticationStatusViewModel
 
-@if (Model.IsAuthenticated)
-{
-    <span>Hi,@Html.ActionLink(@Model.UserName, "Details", "Account") </span>
-    @Html.ActionLink("Log Out", "Logout", new { returnUrl = Model.ReturnUrl })
-}
-else
-{
-    @Html.ActionLink("Log In", "Login", new { returnUrl = Model.ReturnUrl })
-}
+<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+    <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+</a>
+<ul class="dropdown-menu dropdown-user">
+    @if (Model.IsAuthenticated)
+    {
+        <li>
+            <a href="~/Account/Details"><i class="fa fa-user fa-fw"></i> User Profile</a>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a href="~/Account/Logout" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a href="~/Account/Login" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Login</a>
+        </li>
+    }
+
+</ul>
+
+
+
+
+

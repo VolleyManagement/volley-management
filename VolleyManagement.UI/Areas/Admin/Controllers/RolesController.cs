@@ -9,7 +9,7 @@
     /// <summary>
     /// Provides Roles management
     /// </summary>
-    [Authorize]
+    //[Authorize]
     public class RolesController : Controller
     {
         private readonly IRolesService _rolesService;

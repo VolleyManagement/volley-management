@@ -4,6 +4,8 @@
 
 @foreach (var item in Model)
 {
-    @Html.ActionLink(item.Name, item.Action, item.Controller, null, 
-        new { @class = item.IsCurrent ? "selected" : null})
+    <li>
+        @Html.ActionLink(item.Name, item.Action, item.Controller, null,
+        new { @class = item.IsCurrent ? "selected" : string.Empty })
+    </li>   
 }

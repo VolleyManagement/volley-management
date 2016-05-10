@@ -240,6 +240,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Admin\admin.css" />
+    <Content Include="Content\Admin\vm.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
@@ -312,6 +314,16 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Libs\font-awesome\css\font-awesome.css" />
+    <Content Include="Libs\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Libs\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Libs\metisMenu\dist\metisMenu.css" />
+    <Content Include="Libs\metisMenu\dist\metisMenu.js" />
+    <Content Include="Libs\metisMenu\dist\metisMenu.min.css" />
+    <Content Include="Libs\metisMenu\dist\metisMenu.min.js" />
+    <Content Include="Libs\metisMenu\Gruntfile.js" />
+    <Content Include="Libs\metisMenu\src\metisMenu.css" />
+    <Content Include="Libs\metisMenu\src\metisMenu.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\Mvc\Views\Teams\Create.cshtml" />
@@ -344,12 +356,57 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
+    <Content Include="Libs\font-awesome\.bower.json" />
+    <Content Include="Libs\font-awesome\.gitignore" />
+    <Content Include="Libs\font-awesome\.npmignore" />
+    <Content Include="Libs\font-awesome\bower.json" />
+    <Content Include="Libs\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Libs\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Libs\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Libs\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Libs\font-awesome\less\bordered-pulled.less" />
+    <Content Include="Libs\font-awesome\less\core.less" />
+    <Content Include="Libs\font-awesome\less\extras.less" />
+    <Content Include="Libs\font-awesome\less\fixed-width.less" />
+    <Content Include="Libs\font-awesome\less\font-awesome.less" />
+    <Content Include="Libs\font-awesome\less\icons.less" />
+    <Content Include="Libs\font-awesome\less\larger.less" />
+    <Content Include="Libs\font-awesome\less\list.less" />
+    <Content Include="Libs\font-awesome\less\mixins.less" />
+    <Content Include="Libs\font-awesome\less\path.less" />
+    <Content Include="Libs\font-awesome\less\rotated-flipped.less" />
+    <Content Include="Libs\font-awesome\less\spinning.less" />
+    <Content Include="Libs\font-awesome\less\stacked.less" />
+    <Content Include="Libs\font-awesome\less\variables.less" />
+    <Content Include="Libs\font-awesome\scss\font-awesome.scss" />
+    <Content Include="Libs\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="Libs\font-awesome\scss\_core.scss" />
+    <Content Include="Libs\font-awesome\scss\_extras.scss" />
+    <Content Include="Libs\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="Libs\font-awesome\scss\_icons.scss" />
+    <Content Include="Libs\font-awesome\scss\_larger.scss" />
+    <Content Include="Libs\font-awesome\scss\_list.scss" />
+    <Content Include="Libs\font-awesome\scss\_mixins.scss" />
+    <Content Include="Libs\font-awesome\scss\_path.scss" />
+    <Content Include="Libs\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="Libs\font-awesome\scss\_spinning.scss" />
+    <Content Include="Libs\font-awesome\scss\_stacked.scss" />
+    <Content Include="Libs\font-awesome\scss\_variables.scss" />
+    <Content Include="Libs\metisMenu\.bower.json" />
+    <Content Include="Libs\metisMenu\bower.json" />
+    <Content Include="Libs\metisMenu\LICENSE" />
+    <Content Include="Libs\metisMenu\package.json" />
+    <Content Include="Libs\metisMenu\README.md" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminNavigation.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\_Navigation.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\Admin\admin.js" />
     <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Scripts\jquery.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
@@ -599,7 +656,9 @@
       <LastGenOutput>ViewModelResources.designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\Site\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

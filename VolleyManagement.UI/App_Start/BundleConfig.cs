@@ -13,19 +13,32 @@
         /// <param name="bundles">Collection of bundles</param>
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new StyleBundle("~/bundles/css")
-                   .Include(
-                       "~/Content/bootstrap.min.css",
-                       "~/Content/Site.css",
-                       "~/Content/themes/base/all.css"));
-
             //// NOTE: Bundles {version} parameters doesn't work correctly with min files
+            
+            //// TODO: find developer
+            bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
+                .Include("~/Scripts/UserActions.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrapscripts")
-                        .Include(
-                            "~/Scripts/jquery-{version}.js",
-                            "~/Scripts/bootstrap.min.js",
-                            "~/Scripts/VmScripts/VmScripts.js"));
+            RegisterCommonBundles(bundles);
+            RegisterAdminStyles(bundles);
+            RegisterAdminScripts(bundles);
+            
+            RegisterTeamScripts(bundles);
+            RegisterTornamentScripts(bundles);
+            RegisterGameScripts(bundles);
+        }
+
+        private static void RegisterCommonBundles(BundleCollection bundles)
+        {
+            bundles.Add(new StyleBundle("~/bundles/commoncss")
+                   .Include(
+                       "~/Content/bootstrap.min.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/commonscripts")
+                            .Include(
+                                "~/Scripts/jquery-{version}.js",
+                                "~/Scripts/bootstrap.min.js",
+                                "~/Scripts/VmScripts/VmScripts.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/vmscripts")
                         .Include("~/Scripts/VmScripts/VmScripts.js"));
@@ -37,14 +50,9 @@
                         .Include(
                             "~/Scripts/jquery.validate.min.js",
                             "~/Scripts/jquery.validate.unobtrusive.min.js")); 
-
-            bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
-                .Include("~/Scripts/UserActions.js"));
-
-            RegisterTeamScripts(bundles);
-            RegisterTornamentScripts(bundles);
-            RegisterGameScripts(bundles);
         }
+
+        #region Domain bundles
 
         private static void RegisterTeamScripts(BundleCollection bundles)
         {
@@ -68,5 +76,30 @@
             bundles.Add(new ScriptBundle("~/bundles/gameresultsscripts")
                 .Include("~/Scripts/VmScripts/GameOperations/DeleteGame.js"));
         }
+
+        #endregion
+
+        #region Admin bundles
+
+        private static void RegisterAdminStyles(BundleCollection bundles)
+        {
+            bundles.Add(new StyleBundle("~/bundles/admincss")
+                   .Include(
+                       "~/Libs/metisMenu/dist/metisMenu.min.css",
+                       "~/Libs/font-awesome/css/font-awesome.min.css",
+                       "~/Content/Admin/admin.css",
+                       "~/Content/Admin/vm.css"));
+        }
+
+        private static void RegisterAdminScripts(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/bundles/adminscripts")
+                        .Include(
+                            "~/Libs/metisMenu/dist/metisMenu.min.js",
+                            "~/Scripts/VMScripts/Admin/admin.js")); 
+        }
+
+        #endregion
+
     }
 }

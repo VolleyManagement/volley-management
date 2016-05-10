@@ -243,4 +243,7 @@
   <data name="Result" xml:space="preserve">
     <value>Result</value>
   </data>
+  <data name="NoTeamsAvailable" xml:space="preserve">
+    <value>No teams available in the tournament</value>
+  </data>
 </root>

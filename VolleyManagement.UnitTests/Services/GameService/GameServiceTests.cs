@@ -511,6 +511,26 @@
         }
 
         /// <summary>
+        /// Test for Create method. Home team id is null. AwayTeam free-day game is created.
+        /// </summary>
+        [TestMethod]
+        public void Create_NoHomeTeam_GameCreated() 
+        {
+            // Arrange
+            MockDefaultTournament();
+            var newGame = new GameBuilder().WithHomeTeamId(null).Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyFreeDayGame(newGame);
+            VerifyCreateGame(newGame, Times.Once());
+        }
+
+        /// <summary>
         /// Test for Create method. Set scores are invalid. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
@@ -1237,6 +1257,7 @@
         }
         #endregion
 
+        #region Get
         /// <summary>
         /// Test for Get method. Existing game is requested. Game is returned.
         /// </summary>
@@ -1254,8 +1275,10 @@
 
             // Assert
             TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
-        }
+        } 
+        #endregion
 
+        #region GetTournamentResults
         /// <summary>
         /// Test for GetTournamentResults method. Game results of specified tournament are requested. Game results are returned.
         /// </summary>
@@ -1273,8 +1296,10 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
-        }
+        } 
+        #endregion
 
+        #region Edit
         /// <summary>
         /// Test for Edit method. Game object contains valid data. Game is edited successfully.
         /// </summary>
@@ -1322,8 +1347,10 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
-        }
+        } 
+        #endregion
 
+        #region Delete
         /// <summary>
         /// Test for Delete method. Existing game has to be deleted. Game is deleted.
         /// </summary>
@@ -1431,8 +1458,10 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
-        }
+        } 
+        #endregion
 
+        #region SwapRounds
         /// <summary>
         /// Test for SwapRounds method. Swap rounds in existing games.
         /// </summary>
@@ -1497,8 +1526,10 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
-        }
+        } 
+        #endregion
 
+        #region Private
         private bool AreGamesEqual(Game x, Game y)
         {
             return new GameComparer().Compare(x, y) == 0;
@@ -1535,7 +1566,7 @@
         private void VerifyCreateGame(Game game, Times times)
         {
             _gameRepositoryMock.Verify(
-                m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
+                m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times, "Game was not created");
             _unitOfWorkMock.Verify(m => m.Commit(), times);
         }
 
@@ -1580,6 +1611,12 @@
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
         }
 
+        private void VerifyFreeDayGame(Game game) 
+        {
+            Assert.IsNotNull(game.HomeTeamId, "HomeTeamId should not be null");
+            Assert.IsNull(game.AwayTeamId, "AwayTeamId should be null");
+        }
+
         private void MockDefaultTournament()
         {
             var tournament = new TournamentScheduleDtoBuilder()
@@ -1600,6 +1637,7 @@
 
             SetupGetTournamentById(tournament.Id, tournament);
             SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
-        }
+        } 
+        #endregion
     }
 }

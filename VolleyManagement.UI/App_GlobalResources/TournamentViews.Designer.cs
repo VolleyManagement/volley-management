@@ -268,6 +268,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No teams available in the tournament.
+        /// </summary>
+        public static string NoTeamsAvailable {
+            get {
+                return ResourceManager.GetString("NoTeamsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Applying period.
         /// </summary>
         public static string RegistrationFieldsTitle {

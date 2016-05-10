@@ -745,7 +745,14 @@
                 }
             }
 
-            // Set results
+            ScheduleGamesSchemePlayoff(numberOfRounds, games);
+
+            return games;
+        }
+
+        private static void ScheduleGamesSchemePlayoff(int numberOfRounds, List<GameResultEntity> games)
+        {
+            // Set results and schedule next game
             for (int i = 0; i < numberOfRounds; i++)
             {
                 List<GameResultEntity> gamesInCurrentRound = games
@@ -787,7 +794,7 @@
                     int nextWinnerGameNumber = gamesInCurrentRound[gamesInCurrentRound.Count - 1]
                         .GameNumber + offset;
 
-                    if (game.RoundNumber == numberOfRounds - 1 && numberOfRounds > 2)
+                    if (game.RoundNumber == numberOfRounds - 1 && numberOfRounds > 1)
                     {
                         // add losers to next round
                         int nextLoserGameNumber = nextWinnerGameNumber;
@@ -832,8 +839,6 @@
                     }
                 }
             }
-
-            return games;
         }
 
         private static List<GameResultEntity> GenerateGamesInFirstRoundSchemePlyoff(TournamentEntity tour, int tourId, int startGameId)

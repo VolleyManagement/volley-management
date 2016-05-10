@@ -8,7 +8,7 @@
     /// <typeparam name="T">Type to compare</typeparam>
     public sealed class ReverseComparer<T> : IComparer<T>
     {
-        private readonly IComparer<T> original;
+        private readonly IComparer<T> _original;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReverseComparer{T}"/> class.
@@ -16,7 +16,7 @@
         /// <param name="original">Original comparer</param>
         public ReverseComparer(IComparer<T> original)
         {
-            this.original = original;
+            this._original = original;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@
         /// <returns>Integer value of comparison result.</returns>
         public int Compare(T left, T right)
         {
-            return original.Compare(right, left);
+            return _original.Compare(right, left);
         }
     }
 }

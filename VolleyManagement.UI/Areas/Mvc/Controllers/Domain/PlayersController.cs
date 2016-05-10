@@ -210,7 +210,7 @@
         }
 
         /// <summary>
-        /// Returns list of free players which are satisfy specified search string, team and exclude list 
+        /// Returns list of free players which are satisfy specified search string, team and exclude list
         /// </summary>
         /// <param name="searchString">Name of player</param>
         /// <param name="excludeList">list of players ids should be excluded from result</param>
@@ -221,7 +221,7 @@
         {
             searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
             var query = this._playerService.Get()
-                            .Where(p => (p.FirstName + p.LastName).Contains(searchString) 
+                            .Where(p => (p.FirstName + p.LastName).Contains(searchString)
                                    || (p.LastName + p.FirstName).Contains(searchString));
 
             if (includeTeam.HasValue)
@@ -235,7 +235,7 @@
                     var selectedIds = this.ParseIntList(includeList);
                     query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
                 }
-            } 
+            }
             else if (string.IsNullOrEmpty(includeList))
             {
                 query = query.Where(p => p.TeamId == null);
@@ -251,7 +251,7 @@
                 var selectedIds = this.ParseIntList(excludeList);
                 query = query.Where(p => !selectedIds.Contains(p.Id));
             }
-            
+
             var result = query.OrderBy(p => p.LastName)
                               .ToList()
                               .Select(p => PlayerNameViewModel.Map(p));

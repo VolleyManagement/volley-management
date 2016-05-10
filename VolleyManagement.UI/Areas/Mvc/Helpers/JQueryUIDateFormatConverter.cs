@@ -12,18 +12,18 @@
     /// Provides methods and properties to convert UI date format to jQuery UI date format.
     /// Represent properties to get current globalization settings.
     /// </summary>
-    public class JQueryUIDateFormatConverter
+    public class JqueryUIDateFormatConverter
     {
-        private static SortedDictionary<string, string> replaceTokens = new SortedDictionary<string, string>(
+        private static SortedDictionary<string, string> _replaceTokens = new SortedDictionary<string, string>(
                                                             new ReverseComparer<string>(Comparer<string>.Default))
         {
-            { "dddd", "DD" }, 
-            { "ddd", "D" }, 
-            { "M", "m" }, 
-            { "MM", "mm" },  
-            { "MMMM", "MM" }, 
+            { "dddd", "DD" },
+            { "ddd", "D" },
+            { "M", "m" },
+            { "MM", "mm" },
+            { "MMMM", "MM" },
             { "MMM", "M" },
-            { "yy", "y" }, 
+            { "yy", "y" },
             { "yyyy", "yy" }
         };
 
@@ -34,7 +34,7 @@
         {
             get
             {
-                return objectToJson(dateTimeFormat.AbbreviatedMonthNames);
+                return ObjectToJson(DateTimeFormat.AbbreviatedMonthNames);
             }
         }
 
@@ -45,7 +45,7 @@
         {
             get
             {
-                return objectToJson(dateTimeFormat.MonthGenitiveNames);
+                return ObjectToJson(DateTimeFormat.MonthGenitiveNames);
             }
         }
 
@@ -56,7 +56,7 @@
         {
             get
             {
-                return objectToJson(dateTimeFormat.DayNames);
+                return ObjectToJson(DateTimeFormat.DayNames);
             }
         }
 
@@ -67,7 +67,7 @@
         {
             get
             {
-                return objectToJson(dateTimeFormat.AbbreviatedDayNames);
+                return ObjectToJson(DateTimeFormat.AbbreviatedDayNames);
             }
         }
 
@@ -78,7 +78,7 @@
         {
             get
             {
-                return objectToJson(dateTimeFormat.ShortestDayNames);
+                return ObjectToJson(DateTimeFormat.ShortestDayNames);
             }
         }
 
@@ -93,7 +93,7 @@
             }
         }
 
-        private static DateTimeFormatInfo dateTimeFormat
+        private static DateTimeFormatInfo DateTimeFormat
         {
             get
             {
@@ -105,12 +105,12 @@
         /// Convert current .Net Culture to the jQuery format.
         /// </summary>
         /// <returns>jQuery format of current culture.</returns>
-        public static string JQueryUICurrentDateFormat()
+        public static string JqueryUICurrentDateFormat()
         {
-            string currentFormat = dateTimeFormat.ShortDatePattern;
+            string currentFormat = DateTimeFormat.ShortDatePattern;
             List<char> changedTypes = new List<char>();
-            foreach (var kvp in replaceTokens)
-            {                
+            foreach (var kvp in _replaceTokens)
+            {
                 if (!changedTypes.Contains(kvp.Key[0]) && currentFormat.Contains(kvp.Key))
                 {
                     changedTypes.Add(kvp.Key[0]);
@@ -121,7 +121,7 @@
             return currentFormat;
         }
 
-        private static HtmlString objectToJson(object obj)
+        private static HtmlString ObjectToJson(object obj)
         {
             return new HtmlString(JsonConvert.SerializeObject(obj, Formatting.None));
         }

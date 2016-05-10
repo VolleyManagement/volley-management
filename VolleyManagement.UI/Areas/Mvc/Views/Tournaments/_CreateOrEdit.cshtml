@@ -55,13 +55,13 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $.datepicker.setDefaults($.datepicker.regional['@JQueryUIDateFormatConverter.Localization'] = {
-            monthNames: @JQueryUIDateFormatConverter.MonthNames,
-            monthNamesShort: @JQueryUIDateFormatConverter.AbbreviatedMonthNames,
-            dayNames: @JQueryUIDateFormatConverter.DayNames,
-            dayNamesShort: @JQueryUIDateFormatConverter.AbbreviatedDayNames,
-            dayNamesMin: @JQueryUIDateFormatConverter.ShortestDayNames,
-            dateFormat: '@JQueryUIDateFormatConverter.JQueryUICurrentDateFormat()'
+        $.datepicker.setDefaults($.datepicker.regional['@JqueryUIDateFormatConverter.Localization'] = {
+            monthNames: @JqueryUIDateFormatConverter.MonthNames,
+            monthNamesShort: @JqueryUIDateFormatConverter.AbbreviatedMonthNames,
+            dayNames: @JqueryUIDateFormatConverter.DayNames,
+            dayNamesShort: @JqueryUIDateFormatConverter.AbbreviatedDayNames,
+            dayNamesMin: @JqueryUIDateFormatConverter.ShortestDayNames,
+            dateFormat: '@JqueryUIDateFormatConverter.JqueryUICurrentDateFormat()'
         });
 
         $("#ApplyingPeriodStart").datepicker();
@@ -77,8 +77,8 @@
             if (!this.checked) {
                 transfer_fields.attr("value", "");
             }
-        });
-    });
+        })
+    })
 </script>
 <div class="editor-label">
     @Html.Label(Resources.TournamentViews.RegistrationFieldsTitle)
@@ -169,7 +169,7 @@
 
                     <div class="add-group-button">
                         <a id=@addGroupButtonId class="link-button"
-                            onClick="addGroup(@i, @GroupConstants.MAX_GROUPS_COUNT, '@Resources.ViewModelResources.GroupDefaultName')">
+                           onClick="addGroup(@i, @GroupConstants.MAX_GROUPS_COUNT, '@Resources.ViewModelResources.GroupDefaultName')">
                             @Resources.TournamentViews.AddGroup
                         </a>
                     </div>
@@ -182,7 +182,7 @@
 {
     <div class="add-division-button">
         <a id="Add_Division" class="link-button"
-            onClick="addDivision(
+           onClick="addDivision(
                 @DivisionConstants.MAX_DIVISIONS_COUNT,
                 '@Resources.ViewModelResources.DivisionDefaultName',
                 '@Resources.ViewModelResources.Groups',

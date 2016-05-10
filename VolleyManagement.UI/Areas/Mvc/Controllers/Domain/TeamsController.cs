@@ -102,8 +102,8 @@
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                        result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
-                    }
+                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                }
                 catch (ArgumentException ex)
                 {
                     this.ModelState.AddModelError(string.Empty, ex.Message);
@@ -119,7 +119,7 @@
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
                 }
-            }            
+            }
 
             return result;
         }
@@ -165,7 +165,7 @@
                     if (teamViewModel.Roster != null)
                     {
                         _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
-                }
+                    }
 
                     teamViewModel.Id = domainTeam.Id;
                     result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
@@ -185,7 +185,7 @@
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
                 }
-                }
+            }
 
             return result;
         }
@@ -237,7 +237,7 @@
         }
 
         /// <summary>
-        /// Returns list of all teams  
+        /// Returns list of all teams
         /// </summary>
         /// <returns>Json list of teams</returns>
         public JsonResult GetAllTeams()

@@ -726,7 +726,7 @@
                 int numberOfGamesInRound = Convert.ToInt32(numberOfGamesInFirstRound / Math.Pow(2, i));
 
                 // include loser teams into last round
-                if (numberOfGamesInRound == 1)
+                if (numberOfGamesInRound == 1 && numberOfRounds > 1)
                 {
                     numberOfGamesInRound = 2;
                 }

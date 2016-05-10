@@ -343,7 +343,8 @@
                     game.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
                                                                             AuthOperations.Games.Edit,
-                                                                            AuthOperations.Games.Delete
+                                                                            AuthOperations.Games.Delete,
+                                                                            AuthOperations.Games.EditResult
                                                                           });
                 }
             }

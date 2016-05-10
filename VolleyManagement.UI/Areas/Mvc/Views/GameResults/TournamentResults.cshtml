@@ -1,4 +1,5 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.TournamentResultsViewModel
+@using VolleyManagement.Domain.RolesAggregate
 
 @{
     ViewBag.Title = Resources.GameResultViews.TournamentResultsTitle;
@@ -67,10 +68,16 @@
                         <td class="results-cell">@set4ScoreText</td>
                         <td class="results-cell">@set5ScoreText</td>
                         <td class="results-first-operation-cell">
-                            @Html.ActionLink(Resources.GameResultViews.Edit, "Edit", new { id = gameResult.Id }, null)
+                            @if (Model.Authorization.IsAllowed(AuthOperations.Games.EditResult))
+                            {
+                                @Html.ActionLink(Resources.GameResultViews.Edit, "Edit", new { id = gameResult.Id }, null)
+                            }
                         </td>
                         <td class="results-operation-cell">
-                            <a href="#" class="deleteResult_btn" data-id="@gameResult.Id">@Resources.GameResultViews.Delete</a>
+                            @if (Model.Authorization.IsAllowed(AuthOperations.Games.Delete))
+                            {
+                                <a href="#" class="deleteResult_btn" data-id="@gameResult.Id">@Resources.GameResultViews.Delete</a>
+                            }
                         </td>
                     </tr>
                 }

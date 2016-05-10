@@ -14,7 +14,7 @@
         public static void RegisterBundles(BundleCollection bundles)
         {
             //// NOTE: Bundles {version} parameters doesn't work correctly with min files
-            
+
             //// TODO: find developer
             bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
                 .Include("~/Scripts/UserActions.js"));
@@ -22,7 +22,7 @@
             RegisterCommonBundles(bundles);
             RegisterAdminStyles(bundles);
             RegisterAdminScripts(bundles);
-            
+
             RegisterTeamScripts(bundles);
             RegisterTornamentScripts(bundles);
             RegisterGameScripts(bundles);
@@ -49,7 +49,7 @@
             bundles.Add(new ScriptBundle("~/bundles/jqueryvalidation")
                         .Include(
                             "~/Scripts/jquery.validate.min.js",
-                            "~/Scripts/jquery.validate.unobtrusive.min.js")); 
+                            "~/Scripts/jquery.validate.unobtrusive.min.js"));
         }
 
         #region Domain bundles
@@ -96,10 +96,9 @@
             bundles.Add(new ScriptBundle("~/bundles/adminscripts")
                         .Include(
                             "~/Scripts/metisMenu.min.js",
-                            "~/Scripts/VMScripts/Admin/admin.js")); 
+                            "~/Scripts/VMScripts/Admin/admin.js"));
         }
 
         #endregion
-
     }
 }

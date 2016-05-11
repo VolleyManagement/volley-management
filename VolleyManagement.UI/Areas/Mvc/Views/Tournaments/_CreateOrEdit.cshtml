@@ -55,13 +55,13 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $.datepicker.setDefaults($.datepicker.regional['@JqueryUIDateFormatConverter.Localization'] = {
-            monthNames: @JqueryUIDateFormatConverter.MonthNames,
-            monthNamesShort: @JqueryUIDateFormatConverter.AbbreviatedMonthNames,
-            dayNames: @JqueryUIDateFormatConverter.DayNames,
-            dayNamesShort: @JqueryUIDateFormatConverter.AbbreviatedDayNames,
-            dayNamesMin: @JqueryUIDateFormatConverter.ShortestDayNames,
-            dateFormat: '@JqueryUIDateFormatConverter.JqueryUICurrentDateFormat()'
+        $.datepicker.setDefaults($.datepicker.regional['@JQueryUIDateFormatConverter.Localization'] = {
+            monthNames: @JQueryUIDateFormatConverter.MonthNames,
+            monthNamesShort: @JQueryUIDateFormatConverter.AbbreviatedMonthNames,
+            dayNames: @JQueryUIDateFormatConverter.DayNames,
+            dayNamesShort: @JQueryUIDateFormatConverter.AbbreviatedDayNames,
+            dayNamesMin: @JQueryUIDateFormatConverter.ShortestDayNames,
+            dateFormat: '@JQueryUIDateFormatConverter.JqueryUICurrentDateFormat()'
         });
 
         $("#ApplyingPeriodStart").datepicker();

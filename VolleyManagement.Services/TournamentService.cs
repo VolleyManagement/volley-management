@@ -28,6 +28,10 @@
     {
         #region Const & Readonly
 
+        private const int MIN_TEAMS_TO_PLAY_ONE_ROUND = 2;
+        private const int GAMES_TO_PLAY_ONE_ROUND = 2;
+        private const int DONT_CREATE_SCHEDULE_TEAMS_COUNT = 1;
+
         private static readonly TournamentStateEnum[] _actualStates =
             {
                 TournamentStateEnum.Current, TournamentStateEnum.Upcoming
@@ -44,9 +48,7 @@
 
         private readonly ITournamentRepository _tournamentRepository;
         private readonly IAuthorizationService _authService;
-        private readonly IGameRepository _gameRepository;
-        private const int MIN_TEAMS_TO_PLAY_ONE_ROUND = 2;
-        private const int GAMES_TO_PLAY_ONE_ROUND = 2;
+        private readonly IGameService _gameService;
 
         #endregion
 
@@ -72,7 +74,7 @@
         /// <param name="getAllTeamsQuery">Get All Tournament Teams query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
         /// <param name="authService">Authorization service</param>
-        /// <param name="gameRepository">The game repository</param>
+        /// <param name="gameService">The game service</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
@@ -81,7 +83,7 @@
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IAuthorizationService authService,
-            IGameRepository gameRepository)
+            IGameService gameService)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
@@ -90,7 +92,7 @@
             _getAllTeamsQuery = getAllTeamsQuery;
             _authService = authService;
             _getTournamentDtoQuery = getTournamentDtoQuery;
-            _gameRepository = gameRepository;
+            _gameService = gameService;
         }
 
         #endregion
@@ -513,7 +515,7 @@
         }
 
         private byte GetNumberOfRoundsByPlayOffScheme(byte teamCount)
-        {          
+        {
             byte rounds = 1;
             for (byte i = 1; i < teamCount; i++)
             {
@@ -537,17 +539,16 @@
             var tournament = this.Get(tournamentId);
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
             {
-                if (allTeamsCount > 1)
+                if (allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
                 {
-                    var games = GetAllGamesInPlayOffTournament(allTeamsCount, tournamentId);
-
-                    _gameRepository.RemoveAllGamesInTournament(tournamentId);
-                    _gameRepository.AddGamesInTournament(games);
+                    var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
+                    _gameService.RemoveAllGamesInTournament(tournamentId);
+                    _gameService.AddGames(gamesToAdd);
                 }
             }
         }
 
-        private List<Game> GetAllGamesInPlayOffTournament(int teamsCount, int tournamentId)
+        private List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
         {
             var roundsCount = GetNumberOfRoundsByPlayOffScheme((byte)teamsCount);
             int gamesCount = GetGamesCount(teamsCount);

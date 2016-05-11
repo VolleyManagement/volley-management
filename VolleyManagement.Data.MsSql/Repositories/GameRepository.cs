@@ -79,29 +79,5 @@
             _dalGame.Attach(dalToRemove);
             _dalGame.Remove(dalToRemove);
         }
-
-        /// <summary>
-        /// Removes all games in tournament by tournament's id
-        /// </summary>
-        /// <param name="tournamentId">Identifier of the tournament</param>
-        public void RemoveAllGamesInTournament(int tournamentId)
-        {
-            var gamesToRemove = _dalGame.Where(gr => gr.TournamentId == tournamentId);
-            _dalGame.RemoveRange(gamesToRemove);
-        }
-
-        /// <summary>
-        /// Adds collection of new games.
-        /// </summary>
-        /// <param name="games">Collection of games to add</param>
-        public void AddGamesInTournament(List<Game> games)
-        {
-            foreach (var game in games)
-            {
-                var newGame = new GameResultEntity();
-                DomainToDal.Map(newGame, game);
-                _dalGame.Add(newGame);
-            }
-        }
     }
 }

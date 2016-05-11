@@ -7,6 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
@@ -52,7 +53,7 @@
 
         private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-        private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
+        private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
 
         private readonly Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock =
             new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
@@ -89,7 +90,7 @@
             _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>().ToConstant(_getAllTeamsQuery.Object);
             _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>().ToConstant(_getTorunamentDto.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
-            _kernel.Bind<IGameRepository>().ToConstant(_gameRepositoryMock.Object);
+            _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;
@@ -832,7 +833,7 @@
             sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCreateSchedule(FIRST_TOURNAMENT_ID, Times.Once());
+            VerifyCreateSchedule(FIRST_TOURNAMENT_ID, Times.Once(), Times.Once());
         }
 
         #endregion
@@ -934,7 +935,7 @@
             sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCreateSchedule(FIRST_TOURNAMENT_ID, Times.Once());
+            VerifyCreateSchedule(FIRST_TOURNAMENT_ID, Times.Once(), Times.Once());
         }
 
         #endregion
@@ -1251,11 +1252,11 @@
             _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
         }
 
-        private void VerifyCreateSchedule(int tourmanentId, Times times)
+        private void VerifyCreateSchedule(int tourmanentId, Times times, Times uowTimes)
         {
-            _gameRepositoryMock.Verify(gr => gr.RemoveAllGamesInTournament(tourmanentId), times);
-            _gameRepositoryMock.Verify(gr => gr.AddGamesInTournament(It.IsAny<List<Game>>()), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+            _gameServiceMock.Verify(gs => gs.RemoveAllGamesInTournament(tourmanentId), times);
+            _gameServiceMock.Verify(gs => gs.AddGames(It.IsAny<List<Game>>()), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
         }
 
         #endregion

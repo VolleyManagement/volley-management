@@ -37,7 +37,9 @@
                                                 initialValue.Value.Month,
                                                 initialValue.Value.Day);
 
-            string dateStringInCurrentUICulture = initialNotNullValue.ToString(CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern, CultureInfo.InvariantCulture);
+            string dateStringInCurrentUICulture = initialNotNullValue.ToString(
+                CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern,
+                CultureInfo.InvariantCulture);
             return new MvcHtmlString(
               System.Web.Mvc.Html.InputExtensions.TextBoxFor<TModel, TProperty>(
                                                                                 helper,

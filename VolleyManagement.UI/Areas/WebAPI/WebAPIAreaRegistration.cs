@@ -48,7 +48,7 @@
                 .Collection
                 .Function("GetFinished")
                 .Returns<TournamentViewModel>();
-            
+
             config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
 

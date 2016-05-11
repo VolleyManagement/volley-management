@@ -86,7 +86,7 @@
         {
             return new PivotStandingsViewModel(this._gameReportService.GetPivotStandings(id));
         }
-        
+
         /// <summary>
         /// Gets games by tournament id.
         /// </summary>

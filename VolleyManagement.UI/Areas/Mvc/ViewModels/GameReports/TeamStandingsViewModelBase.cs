@@ -35,7 +35,7 @@
         /// </summary>
         /// <typeparam name="T">The element type of the list. Must be inheritor of <see cref="TeamStandingsViewModelBase"/></typeparam>
         /// <param name="entries">Collection of entries with team's tournament data</param>
-        /// <returns>Collection of entries with team's tournament data with set position for every team</returns>        
+        /// <returns>Collection of entries with team's tournament data with set position for every team</returns>
         public static List<T> SetPositions<T>(List<T> entries) where T : TeamStandingsViewModelBase
         {
             for (int i = 0; i < entries.Count; i++)

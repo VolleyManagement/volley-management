@@ -333,6 +333,7 @@
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
             {
                 FillRoundNames(scheduleViewModel);
+                SetAbilityToEditResults(scheduleViewModel);
             }
 
             return View(scheduleViewModel);
@@ -549,6 +550,37 @@
             }
 
             scheduleViewModel.RoundNames = roundNames;
+        }
+
+        private void SetAbilityToEditResults(ScheduleViewModel scheduleViewModel)
+        {
+            var allGames = scheduleViewModel.Rounds.Values.SelectMany(games => games);
+            var gamesToAllowEditingResults = allGames.Where(game => game.HomeTeamId.HasValue &&
+                                                                    game.AwayTeamId.HasValue &&
+                                                                    NextGames(allGames, game).All(next => next.SetsScore.IsEmpty));
+            foreach (var game in gamesToAllowEditingResults)
+            {
+                game.AllowEditResult = true;
+            }
+        }
+
+        private IEnumerable<GameResultViewModel> NextGames(IEnumerable<GameResultViewModel> allGames, GameResultViewModel currentGame)
+        {
+            var numberOfRounds = Convert.ToByte(Math.Sqrt(allGames.Count()));
+            if (currentGame.Round == numberOfRounds)
+            {
+                return Enumerable.Empty<GameResultViewModel>();
+            }
+
+            var nextGames = allGames.Where(game => game.GameNumber == NextGameNumber(game.GameNumber, numberOfRounds) ||
+                                                 (currentGame.Round == numberOfRounds - 1 &&
+                                                 game.GameNumber == NextGameNumber(game.GameNumber, numberOfRounds) + 1));
+            return nextGames;
+        }
+
+        private byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
+        {
+            return Convert.ToByte((currentGameNumber + 1) / 2 + Math.Pow(numberOfRounds - 1, 2));
         }
         #endregion
     }

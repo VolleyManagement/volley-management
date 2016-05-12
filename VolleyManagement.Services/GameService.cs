@@ -81,7 +81,7 @@
             TournamentScheduleDto tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
-            ValidateGame(game, gamesInTournament, tournamentScheduleInfo);
+            ValidateGame(game, tournamentScheduleInfo);
 
             _gameRepository.Add(game);
             _gameRepository.UnitOfWork.Commit();
@@ -118,12 +118,10 @@
             // Get list of all games in the tournament and tournament schedule info
             // for validation and autogeneration
 
-            List<GameResultDto> gamesInTournament = GetTournamentResults(game.TournamentId);
-
             TournamentScheduleDto tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
-            ValidateGame(game, gamesInTournament, tournamentScheduleInfo);
+            ValidateGame(game, tournamentScheduleInfo);
 
             // Add autogeneration
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
@@ -197,10 +195,10 @@
 
         #region Validation methods
 
-        private void ValidateGame(Game game, List<GameResultDto> allGamesInTournament, TournamentScheduleDto tournamentScheduleInfo)
+        private void ValidateGame(Game game, TournamentScheduleDto tournamentScheduleInfo)
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
-            ValidateGameInTournament(game, allGamesInTournament, tournamentScheduleInfo);
+            ValidateGameInTournament(game, tournamentScheduleInfo);
             if (game.Result == null)
             {
                 game.Result = new Result();
@@ -303,13 +301,14 @@
             }
         }
 
-        private void ValidateGameInTournament(Game game, List<GameResultDto> allGamesInTournament, TournamentScheduleDto tournamentScheduleInfo)
+        private void ValidateGameInTournament(Game game, TournamentScheduleDto tournamentScheduleInfo)
         {
             if (tournamentScheduleInfo == null)
             {
                 throw new ArgumentException(Resources.NoSuchToruanment);
             }
 
+            List<GameResultDto> allGamesInTournament = GetTournamentResults(game.TournamentId);
             GameResultDto oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
 
             if (oldGameToUpdate != null)
@@ -511,41 +510,74 @@
 
         #region Schedule autogeneration methods
 
-        private void ScheduleNextGame(Game finishedGame, List<GameResultDto> games)
+        private List<Game> ScheduleNextGames(Game finishedGame, List<Game> nextRoundGames)
         {
             throw new NotImplementedException();
         }
 
-        private void ScheduleWinnerGame(Game finishedGame, List<GameResultDto> games)
+        private Game ShedueNextWinnerGame(Game finishedGame, List<Game> nextRoundGames)
         {
-            throw new NotImplementedException();
-        }
-
-        private void SheduleLoserGame(Game finishedGame, List<GameResultDto> games)
-        {
-            throw new NotImplementedException();
-        }
-
-        private GameResultDto GetNextGameToSchedule(Game current, List<GameResultDto> games)
-        {
-            int lastGameNumberInPreviousRound = 0;
-            if (current.Round != 1)
+            int nextGameNumber = GetNextGameNumber(finishedGame, nextRoundGames);
+            if (IsSemiFinalGame(finishedGame, nextRoundGames))
             {
-                lastGameNumberInPreviousRound = games
-                    .Where(gr => gr.Round == current.Round - 1)
-                    .Max(g => g.GameNumber);
+                nextGameNumber++;
             }
 
-            int difference = current.GameNumber - lastGameNumberInPreviousRound;
-            int offset = difference % 2 == 0 ? difference / 2 : difference / 2 + 1;
-            int lastGameNumberInCurrentRound = games
-                .Where(gr => gr.Round == current.Round)
-                .Max(g => g.GameNumber);
-            int nextGameNumber = lastGameNumberInCurrentRound + offset;
+            Game nextGame = nextRoundGames.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
+            int winnerTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ? 
+                finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
 
-            return games
-                .Where(gr => gr.GameNumber == nextGameNumber)
-                .SingleOrDefault();
+            if (finishedGame.GameNumber % 2 == 0)
+            {
+                nextGame.HomeTeamId = winnerTeamId;
+            }
+            else
+            {
+                nextGame.AwayTeamId = winnerTeamId;
+            }
+
+            return nextGame;
+        }
+
+        private Game SheduleNextLoserGame(Game finishedGame, List<Game> nextRoundGames)
+        {
+            // Assume that finished game is a semifinal game
+            int nextGameNumber = GetNextGameNumber(finishedGame, nextRoundGames);
+            Game nextGame = nextRoundGames.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
+
+            int loserTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
+                finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
+
+            if (nextGame.GameNumber % 2 == 0)
+            {
+                nextGame.HomeTeamId = loserTeamId;
+            }
+            else
+            {
+                nextGame.AwayTeamId = loserTeamId;
+            }
+
+            return nextGame;
+        }
+
+        private int GetNextGameNumber(Game finishedGame, List<Game> nextRoundGames)
+        {
+            int numberOfRounds = GetNumberOfRounds(finishedGame, nextRoundGames);
+
+            return (finishedGame.GameNumber + 1) / 2
+                + Convert.ToInt32(Math.Pow(numberOfRounds, 2));
+        }
+
+        private bool IsSemiFinalGame(Game finishedGame, List<Game> nextRoundGames)
+        {
+            int numberOfRounds = GetNumberOfRounds(finishedGame, nextRoundGames);
+            return finishedGame.Round == numberOfRounds - 1;
+        }
+
+        private int GetNumberOfRounds(Game finishedGame, List<Game> nextRoundGames)
+        {
+            return Convert.ToInt32(Math.Log(nextRoundGames.Count(), 2))
+                + finishedGame.Round;
         }
 
         private bool IsGameResultUpdated(Game current)

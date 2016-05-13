@@ -48,6 +48,7 @@
         /// of the specified tournament.</param>
         /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
         /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
+        /// <param name="gamesByTournamentIdInRoundsByNumbersQuery">Query which gets list of <see cref="Game"/> objects.</param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
@@ -118,9 +119,6 @@
         /// <param name="game">Game to update.</param>
         public void Edit(Game game)
         {
-            // Get list of all games in the tournament and tournament schedule info
-            // for validation and autogeneration
-
             TournamentScheduleDto tournamentScheduleInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
@@ -129,6 +127,7 @@
             // Add autogeneration
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
+                ScheduleNextGames(game, tournamentScheduleInfo);
             }
 
             try
@@ -313,8 +312,6 @@
             List<GameResultDto> allGamesInTournament = GetTournamentResults(game.TournamentId);
             GameResultDto oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
 
-
-
             if (oldGameToUpdate != null)
             {
                 allGamesInTournament.Remove(oldGameToUpdate);
@@ -331,14 +328,6 @@
             {
                 ValidateGamesInTournamentSchemeTwo(game, allGamesInTournament);
             }
-        }
-
-        private bool ValidateEditingSchemePlayoff(Game finishedGame, List<Game> games)
-        {
-            Game nextGame = SchedueNextWinnerGame(finishedGame, games);
-
-            return nextGame.Result.SetsScore.Home == 0
-                && nextGame.Result.SetsScore.Away == 0;
         }
 
         private void ValidateGameInRound(Game newGame, List<GameResultDto> games)
@@ -522,17 +511,28 @@
 
         #region Schedule autogeneration methods
 
-        private List<Game> ScheduleNextGames(Game finishedGame, TournamentScheduleDto torunamentScheduleInfo)
-        {   
+        private void ScheduleNextGames(Game finishedGame, TournamentScheduleDto tournamentScheduleInfo)
+        {
+            List<Game> gamesToUpdate = GetGamesToSchedule(finishedGame, tournamentScheduleInfo);
+            foreach (Game nextGame in gamesToUpdate)
+            {
+                _gameRepository.Update(nextGame);
+            }
+        }
+
+        private List<Game> GetGamesToSchedule(Game finishedGame, TournamentScheduleDto torunamentScheduleInfo)
+        {
             List<Game> gamesToUpdate = new List<Game>();
 
             List<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesInRoundByNumberCriteria() 
+                .Execute(new GamesInRoundByNumberCriteria()
                 {
                     TournamentId = torunamentScheduleInfo.Id,
-                    RoundNumbers = new List<byte> { 
+                    RoundNumbers = new List<byte>
+                    {
                         finishedGame.Round,
-                        Convert.ToByte(finishedGame.Round + 1) }
+                        Convert.ToByte(finishedGame.Round + 1)
+                    }
                 });
 
             // Schedule next games only if finished game is not in last round
@@ -540,14 +540,14 @@
             {
                 if (IsSemiFinalGame(finishedGame, gamesInCurrentAndNextRounds))
                 {
-                    gamesInCurrentAndNextRounds
-                        .Add(ScheduleNextLoserGame(
+                    gamesToUpdate.Add(
+                        ScheduleNextLoserGame(
                         finishedGame,
                         gamesInCurrentAndNextRounds));
                 }
 
-                gamesToUpdate
-                    .Add(SchedueNextWinnerGame(
+                gamesToUpdate.Add(
+                    SchedueNextWinnerGame(
                     finishedGame,
                     gamesInCurrentAndNextRounds));
             }
@@ -567,7 +567,10 @@
                 .Where(g => g.GameNumber == nextGameNumber)
                 .SingleOrDefault();
 
-            int winnerTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ? 
+            // Check if next game can be scheduled
+            ValidateEditingSchemePlayoff(nextGame);
+
+            int winnerTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
                 finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
 
             if (finishedGame.GameNumber % 2 == 0)
@@ -588,6 +591,8 @@
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
             Game nextGame = games.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault();
 
+            ValidateEditingSchemePlayoff(nextGame);
+
             int loserTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
                 finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
 
@@ -607,7 +612,7 @@
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
 
-            return (finishedGame.GameNumber + 1) / 2
+            return ((finishedGame.GameNumber + 1) / 2)
                 + Convert.ToInt32(Math.Pow(numberOfRounds, 2));
         }
 
@@ -631,6 +636,15 @@
 
             return oldGame.Result.SetsScore.Home != newGame.Result.SetsScore.Home
                 && oldGame.Result.SetsScore.Away != newGame.Result.SetsScore.Away;
+        }
+
+        private void ValidateEditingSchemePlayoff(Game nextGame)
+        {
+            if (nextGame.Result.SetsScore.Home == 0
+                && nextGame.Result.SetsScore.Away == 0)
+            {
+                throw new ArgumentException(Resources.PlayoffGameEditingError);
+            }
         }
 
         #endregion

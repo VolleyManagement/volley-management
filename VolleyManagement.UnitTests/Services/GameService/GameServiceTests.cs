@@ -66,6 +66,9 @@
         private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock
             = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
 
+        private readonly Mock<IQuery<List<Game>, GamesInRoundByNumberCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock
+           = new Mock<IQuery<List<Game>, GamesInRoundByNumberCriteria>>();
+
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private readonly string _noTeamsInGame
@@ -94,6 +97,8 @@
                 .ToConstant(_tournamentScheduleDtoByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>()
                 .ToConstant(_gamesByTournamentIdRoundsNumberQueryMock.Object);
+            _kernel.Bind<IQuery<List<Game>, GamesInRoundByNumberCriteria>>()
+                .ToConstant(_gamesByTournamentIdInRoundsByNumbersQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
@@ -1054,7 +1059,7 @@
 
             MockDefaultTournament();
 
-            var freeDayGmeInSameRound = new GameBuilder()
+            var freeDayGameInSameRound = new GameBuilder()
                 .TestRoundGame()
                 .WithHomeTeamId(3)
                 .WithId(2)
@@ -1065,7 +1070,7 @@
                 .Build();
 
             SetupGetTournamentResults(
-                freeDayGmeInSameRound.TournamentId,
+                freeDayGameInSameRound.TournamentId,
                 gameResults);
 
             var sut = _kernel.Get<GameService>();
@@ -1073,7 +1078,7 @@
             // Act
             try
             {
-                sut.Create(freeDayGmeInSameRound);
+                sut.Create(freeDayGameInSameRound);
             }
             catch (ArgumentException)
             {

@@ -129,8 +129,6 @@
             // Add autogeneration
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
-                // Call Autogeneration methods
-                // update game repository with new generated games
             }
 
             try
@@ -315,6 +313,8 @@
             List<GameResultDto> allGamesInTournament = GetTournamentResults(game.TournamentId);
             GameResultDto oldGameToUpdate = allGamesInTournament.Where(gr => gr.Id == game.Id).SingleOrDefault();
 
+
+
             if (oldGameToUpdate != null)
             {
                 allGamesInTournament.Remove(oldGameToUpdate);
@@ -331,6 +331,14 @@
             {
                 ValidateGamesInTournamentSchemeTwo(game, allGamesInTournament);
             }
+        }
+
+        private bool ValidateEditingSchemePlayoff(Game finishedGame, List<Game> games)
+        {
+            Game nextGame = SchedueNextWinnerGame(finishedGame, games);
+
+            return nextGame.Result.SetsScore.Home == 0
+                && nextGame.Result.SetsScore.Away == 0;
         }
 
         private void ValidateGameInRound(Game newGame, List<GameResultDto> games)
@@ -623,14 +631,6 @@
 
             return oldGame.Result.SetsScore.Home != newGame.Result.SetsScore.Home
                 && oldGame.Result.SetsScore.Away != newGame.Result.SetsScore.Away;
-        }
-
-        private bool ValidateEditingSchemePlayoff(Game finishedGame, List<Game> games)
-        {
-            Game nextGame = SchedueNextWinnerGame(finishedGame, games);
-
-            return nextGame.Result.SetsScore.Home == 0 
-                && nextGame.Result.SetsScore.Away == 0;
         }
 
         #endregion

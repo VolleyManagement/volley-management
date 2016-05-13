@@ -514,7 +514,7 @@
         /// Test for Create method. Home team id is null. AwayTeam free-day game is created.
         /// </summary>
         [TestMethod]
-        public void Create_NoHomeTeam_GameCreated() 
+        public void Create_NoHomeTeam_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
@@ -641,6 +641,37 @@
 
             // Assert
             VerifyCreateGame(game, Times.Never());
+        }
+
+        /// <summary>
+        /// Tests creation of the game with no date
+        /// </summary>
+        [TestMethod]
+        public void Create_GameDateNull_ExceptionThrown()
+        {
+            Exception exception = null;
+
+            // Arrange
+            MockDefaultTournament();
+
+            Game game = new GameBuilder()
+                .WithNoStartDate()
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(game);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_DATE_NOT_SET);
         }
 
         /// <summary>
@@ -1275,7 +1306,7 @@
 
             // Assert
             TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
-        } 
+        }
         #endregion
 
         #region GetTournamentResults
@@ -1296,7 +1327,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
-        } 
+        }
         #endregion
 
         #region Edit
@@ -1347,7 +1378,7 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
-        } 
+        }
         #endregion
 
         #region Delete
@@ -1458,7 +1489,7 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
-        } 
+        }
         #endregion
 
         #region SwapRounds
@@ -1526,7 +1557,7 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
-        } 
+        }
         #endregion
 
         #region Private
@@ -1611,7 +1642,7 @@
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
         }
 
-        private void VerifyFreeDayGame(Game game) 
+        private void VerifyFreeDayGame(Game game)
         {
             Assert.IsNotNull(game.HomeTeamId, "HomeTeamId should not be null");
             Assert.IsNull(game.AwayTeamId, "AwayTeamId should be null");
@@ -1637,7 +1668,7 @@
 
             SetupGetTournamentById(tournament.Id, tournament);
             SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
-        } 
+        }
         #endregion
     }
 }

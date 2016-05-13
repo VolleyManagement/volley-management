@@ -48,7 +48,7 @@
                 Id = gameResult.Id,
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
-                GameDate = gameResult.GameDate.ToString("yyyy-MM-ddTHH:mm:sszzz"),
+                GameDate = gameResult.GameDate.HasValue ? gameResult.GameDate.Value.ToString("yyyy-MM-ddTHH:mm:sszzz") : string.Empty,
                 Result = new GameResult
                 {
                     TotalScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
@@ -63,7 +63,7 @@
                         }
                 }
             };
-        }       
+        }
 
         /// <summary>
         /// GameResult inner class.

@@ -16,7 +16,8 @@
     /// </summary>
     public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
                                      IQuery<List<GameResultDto>, TournamentGameResultsCriteria>,
-                                     IQuery<List<Game>, TournamentRoundsGameResultsCriteria>
+                                     IQuery<List<Game>, TournamentRoundsGameResultsCriteria>,
+                                     IQuery<List<Game>, GamesInRoundByNumberCriteria> 
     {
         #region Fields
 
@@ -79,6 +80,16 @@
                  .Where(gr => gr.TournamentId == criteria.TournamentId
                      && (gr.RoundNumber == criteria.FirstRoundNumber || gr.RoundNumber == criteria.SecondRoundNumber))
                  .Select(GetGameMapping());
+
+            return games.ToList();
+        }
+
+        public List<Game> Execute(GamesInRoundByNumberCriteria criteria)
+        {
+            var games = _dalGameResults
+                .Where(gr => gr.TournamentId == criteria.TournamentId 
+                    && criteria.RoundNumbers.Any(n => gr.RoundNumber == n))
+                    .Select(GetGameMapping());
 
             return games.ToList();
         }

@@ -1,9 +1,0 @@
-MSYS-1.0.12 Build:2012-07-05 14:56
-Exception: STATUS_ACCESS_VIOLATION at eip=68027968
-eax=00000001 ebx=0069F4AC ecx=680A4C5C edx=00030000 esi=0069F4B0 edi=00000000
-ebp=0069F484 esp=0069F30C program=C:\Users\Dima\AppData\Local\Atlassian\SourceTree\git_local\bin\sh.exe
-cs=0023 ds=002B es=002B fs=0053 gs=002B ss=002B
-Stack trace:
-Frame     Function  Args
-0069F484  68027968  (76F8C9C0, 000A0001, 0069F5B0, 000A1718)
-2045354 [main] sh 10644 handle_exceptions: Error while dumping state (probably corrupted stack)

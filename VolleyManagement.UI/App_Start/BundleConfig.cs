@@ -50,6 +50,13 @@
                         .Include(
                             "~/Scripts/jquery.validate.min.js",
                             "~/Scripts/jquery.validate.unobtrusive.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/useractionscripts")
+                .Include("~/Scripts/UserActions.js"));
+
+            RegisterTeamScripts(bundles);
+            RegisterTornamentScripts(bundles);
+            RegisterGameScripts(bundles);
         }
 
         #region Domain bundles

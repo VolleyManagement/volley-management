@@ -63,7 +63,7 @@
                         }
                 }
             };
-        }       
+        }
 
         /// <summary>
         /// GameResult inner class.

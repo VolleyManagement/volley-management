@@ -81,7 +81,7 @@ namespace VolleyManagement.UI
             RegisterInfrastructure(kernel);
 
             var scope = GetPerRequestScopeCallback();
-            
+
             kernel.Load(new NinjectDataAccessModule(scope));
             kernel.Load(new NinjectServiceBindModule(scope));
             kernel.Load(new NinjectUIModule(scope));

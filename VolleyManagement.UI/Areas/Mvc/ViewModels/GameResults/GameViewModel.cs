@@ -16,8 +16,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="GameViewModel"/> class
         /// </summary>
-        public GameViewModel() 
-        {        
+        public GameViewModel()
+        {
         }
 
         /// <summary>
@@ -88,7 +88,7 @@
         /// Mapper from <see cref="GameViewModel"/> to <see cref="Game"/>
         /// </summary>
         /// <returns>Game domain model</returns>
-        public Game ToDomain() 
+        public Game ToDomain()
         {
             return new Game
             {

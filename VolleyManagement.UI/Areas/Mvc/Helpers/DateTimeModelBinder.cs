@@ -5,7 +5,7 @@
     using System.Web.Mvc;
 
     /// <summary>
-    /// Binder to convert 
+    /// Binder to convert
     /// </summary>
     public class DateTimeModelBinder : IModelBinder
     {
@@ -36,7 +36,7 @@
             // Set the ModelState to the first attempted value before we have converted the date. This is to ensure that the ModelState has
             // a value. When we have converted it, we will override it with a full universal date.
             bindingContext.ModelState.SetModelValue(
-                                                bindingContext.ModelName, 
+                                                bindingContext.ModelName,
                                                 bindingContext.ValueProvider.GetValue(bindingContext.ModelName));
 
             try
@@ -48,7 +48,7 @@
                 bindingContext.ModelState.SetModelValue(
                                                         bindingContext.ModelName,
                                                         new ValueProviderResult(
-                                                            date, 
+                                                            date,
                                                             realDate.ToString("yyyy-MM-dd hh:mm:ss"),
                                                             System.Globalization.CultureInfo.CurrentUICulture));
 
@@ -56,7 +56,8 @@
             }
             catch (Exception)
             {
-                bindingContext.ModelState.AddModelError(bindingContext.ModelName, string.Format("\"{0}\" is invalid.", bindingContext.ModelName));
+                string message = string.Format("\"{0}\" is invalid.", bindingContext.ModelName);
+                bindingContext.ModelState.AddModelError(bindingContext.ModelName, message);
                 return null;
             }
         }

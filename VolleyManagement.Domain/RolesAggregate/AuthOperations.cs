@@ -14,6 +14,7 @@
         private const byte TEAMS = 0x02;
         private const byte GAMES = 0x03;
         private const byte PLAYERS = 0x04;
+        private const byte VIEWDASHBOARDS = 0x05;
 
         #endregion
 
@@ -109,6 +110,27 @@
             /// Delete player operation
             /// </summary>
             public static readonly AuthOperation Delete = Tuple.Create(PLAYERS, 3);
+        }
+
+        /// <summary>
+        /// Contains administrators operations
+        /// </summary>
+        public static class ViewDashboard
+        {
+            /// <summary>
+            /// View admin page operation
+            /// </summary>
+            public static readonly AuthOperation Index = Tuple.Create(VIEWDASHBOARDS, 1);
+
+            /// <summary>
+            /// Edit users on admin page operation
+            /// </summary>
+            public static readonly AuthOperation Edit = Tuple.Create(VIEWDASHBOARDS, 2);
+
+            /// <summary>
+            /// View details of user operation
+            /// </summary>
+            public static readonly AuthOperation Details = Tuple.Create(VIEWDASHBOARDS, 3);
         }
     }
 }

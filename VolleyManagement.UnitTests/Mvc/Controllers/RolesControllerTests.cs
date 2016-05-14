@@ -28,6 +28,8 @@
 
         private Mock<IRolesService> _rolesServiceMock;
 
+        private Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+
         #endregion
 
         #region Init
@@ -38,6 +40,8 @@
             _kernel = new StandardKernel();
 
             _kernel.RegisterDefaultMock(out _rolesServiceMock);
+
+            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
         }
 
         #endregion
@@ -59,6 +63,8 @@
             // Assert
             var actual = GetModel<List<RoleViewModel>>(actionResult);
             CollectionAssert.AreEqual(expected, actual, new RoleViewModelComparer());
+
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         [TestMethod]
@@ -81,6 +87,8 @@
             // Assert
             var actual = GetModel<RoleDetailsViewModel>(actionResult);
             AreDetailsModelsEqual(actual, expected);
+
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         [TestMethod]
@@ -108,6 +116,8 @@
             // Assert
             var actual = GetModel<RoleEditViewModel>(actionResult);
             AreEditModelsEqual(actual, expected);
+
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         [TestMethod]
@@ -131,6 +141,8 @@
                 Times.Once);
 
             AssertValidRedirectResult(actionResult);
+
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         [TestMethod]
@@ -155,6 +167,8 @@
 
             // Assert
             AssertModelStateError(service.ModelState, ANY_ERROR_MESSAGE);
+
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         #endregion
@@ -324,6 +338,15 @@
         private void MockGetRole(int roleId, Role role)
         {
             _rolesServiceMock.Setup(r => r.GetRole(roleId)).Returns(role);
+        }
+
+        #endregion
+
+        #region Private
+
+        private void VerifyCheckAccess(AuthOperation operation, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
         }
 
         #endregion

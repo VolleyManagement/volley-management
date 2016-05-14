@@ -795,7 +795,8 @@
                 AuthOperations.Games.SwapRounds,
                 AuthOperations.Players.Create,
                 AuthOperations.Players.Edit,
-                AuthOperations.Players.Delete
+                AuthOperations.Players.Delete,
+                AuthOperations.AdminDashboard.View
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

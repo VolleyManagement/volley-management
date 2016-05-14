@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using System.Collections.Generic;
+    using Contracts.Authorization;
 
     /// <summary>
     /// Represents a view model for tournament results.
@@ -29,5 +30,10 @@
         /// Gets or sets the game results related to current tournament.
         /// </summary>
         public List<GameResultViewModel> GameResults { get; set; }
+
+        /// <summary>
+        /// Gets or sets instance of <see cref="AllowedOperations"/> object
+        /// </summary>
+        public AllowedOperations Authorization { get; set; }
     }
 }

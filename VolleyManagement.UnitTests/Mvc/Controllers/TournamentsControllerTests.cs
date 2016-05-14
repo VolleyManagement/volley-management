@@ -57,6 +57,7 @@
                     AuthOperations.Games.Edit,
                     AuthOperations.Games.Delete,
                     AuthOperations.Games.SwapRounds,
+                    AuthOperations.Games.EditResult
                 };
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();

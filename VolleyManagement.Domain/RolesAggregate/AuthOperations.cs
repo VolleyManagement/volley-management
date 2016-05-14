@@ -88,6 +88,11 @@
             /// Swap rounds in tournament operation
             /// </summary>
             public static readonly AuthOperation SwapRounds = Tuple.Create(GAMES, 4);
+
+            /// <summary>
+            /// Edit game result operation
+            /// </summary>
+            public static readonly AuthOperation EditResult = Tuple.Create(GAMES, 5);
         }
 
         /// <summary>

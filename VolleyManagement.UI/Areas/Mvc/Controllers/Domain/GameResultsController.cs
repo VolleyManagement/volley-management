@@ -5,7 +5,9 @@
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
@@ -15,16 +17,19 @@
     {
         private readonly IGameService _gameService;
         private readonly ITeamService _teamService;
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameResultsController"/> class.
         /// </summary>
         /// <param name="gameResultService">Instance of a class which implements <see cref="IGameResultService"/>.</param>
         /// <param name="teamService">Instance of a class which implements <see cref="ITeamService"/>.</param>
-        public GameResultsController(IGameService gameResultService, ITeamService teamService)
+        /// <param name="authService">The authorization service</param>
+        public GameResultsController(IGameService gameResultService, ITeamService teamService, IAuthorizationService authService)
         {
             _gameService = gameResultService;
             _teamService = teamService;
+            _authService = authService;
         }
 
         /// <summary>
@@ -39,7 +44,12 @@
             {
                 Id = tournamentId,
                 Name = tournamentName,
-                GameResults = _gameService.GetTournamentResults(tournamentId).Select(gr => GameResultViewModel.Map(gr)).ToList()
+                GameResults = _gameService.GetTournamentResults(tournamentId).Select(gr => GameResultViewModel.Map(gr)).ToList(),
+                Authorization = _authService.GetAllowedOperations(new List<AuthOperation>
+                {
+                AuthOperations.Games.EditResult,
+                AuthOperations.Games.Delete
+                })
             };
 
             return View(tournamentResults);
@@ -115,7 +125,7 @@
                 if (ModelState.IsValid)
                 {
                     var gameResult = gameResultViewModel.ToDomain();
-                    _gameService.Edit(gameResult);
+                    _gameService.EditGameResult(gameResult);
                     return RedirectToAction("ShowSchedule", "Tournaments", new { tournamentId = gameResultViewModel.TournamentId });
                 }
             }

@@ -1599,6 +1599,28 @@
         }
 
         /// <summary>
+        /// Test for EditGameResult() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void EditGameResult_EditNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new GameBuilder().WithId(SPECIFIC_GAME_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Games.EditResult);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.EditGameResult(testData);
+
+            // Assert
+            VerifyEditGame(testData, Times.Never());
+            VerifyCheckAccess(AuthOperations.Games.EditResult, Times.Once());
+        }
+
+        /// <summary>
         /// Test for SwapRounds() method with no permission for such action. The method has to throw AuthorizationException,
         /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
         /// </summary>

@@ -84,6 +84,11 @@
                 throw new ArgumentNullException("game");
             }
 
+            if (game.Result != null)
+            {
+                ValidateResult(game.Result);
+            }
+
             ValidateGame(game);
 
             _gameRepository.Add(game);
@@ -121,6 +126,28 @@
             _authService.CheckAccess(AuthOperations.Games.Edit);
 
             ValidateGame(game);
+
+            try
+            {
+                _gameRepository.Update(game);
+            }
+            catch (ConcurrencyException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
+            }
+
+            _gameRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Edits result of specified instance of game.
+        /// </summary>
+        /// <param name="game">Game which result have to be to update.</param>
+        public void EditGameResult(Game game)
+        {
+            _authService.CheckAccess(AuthOperations.Games.EditResult);
+
+            ValidateResult(game.Result);
 
             try
             {
@@ -201,11 +228,14 @@
                 game.Result = new Result();
                 return;
             }
+        }
 
-            ValidateSetsScore(game.Result.SetsScore, game.Result.IsTechnicalDefeat);
-            ValidateSetsScoreMatchesSetScores(game.Result.SetsScore, game.Result.SetScores);
-            ValidateSetScoresValues(game.Result.SetScores, game.Result.IsTechnicalDefeat);
-            ValidateSetScoresOrder(game.Result.SetScores);
+        private void ValidateResult(Result result)
+        {
+            ValidateSetsScore(result.SetsScore, result.IsTechnicalDefeat);
+            ValidateSetsScoreMatchesSetScores(result.SetsScore, result.SetScores);
+            ValidateSetScoresValues(result.SetScores, result.IsTechnicalDefeat);
+            ValidateSetScoresOrder(result.SetScores);
         }
 
         private void ValidateTeams(int homeTeamId, int? awayTeamId)

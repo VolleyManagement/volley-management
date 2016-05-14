@@ -73,7 +73,7 @@
                     {
                         <div class="col-md-2">
                             @score.Home:@score.Away
-                        </div>                        
+                        </div>
                     }
                 }
             </div>
@@ -100,29 +100,31 @@
         }
     }
 
-    
+
     <div class="row">
-@if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit) &&
-        Model.AllowedOperations.IsAllowed(AuthOperations.Games.Delete))
-{
-        <div class="col-md-2">
-            @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
-        </div>
+        @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.EditResult))
+        {
+            <div class="col-md-2">
+                @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
+            </div>
+        }
+        @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit) &&
+                Model.AllowedOperations.IsAllowed(AuthOperations.Games.Delete))
+        {
 
             if (Model.GameDate > DateTime.Now &&
                    Model.SetsScore.IsEmpty())
-            { 
-                 <div class="col-md-2">    
-                      @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-                 </div>
-                
-                 <div class="col-md-2">
-                      @Html.ActionLink(Resources.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
-                                 new { @class = "deleteGame", @id = Model.Id })
-                </div>                
-            }
-}
-     </div>
-    
-</div>
+            {
+                <div class="col-md-2">
+                    @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                </div>
 
+                <div class="col-md-2">
+                    @Html.ActionLink(Resources.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
+                                 new { @class = "deleteGame", @id = Model.Id })
+                </div>
+            }
+        }
+    </div>
+
+</div>

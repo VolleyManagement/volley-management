@@ -332,7 +332,8 @@
                                                                             AuthOperations.Games.Create,
                                                                             AuthOperations.Games.Edit,
                                                                             AuthOperations.Games.Delete,
-                                                                            AuthOperations.Games.SwapRounds
+                                                                            AuthOperations.Games.SwapRounds,
+                                                                            AuthOperations.Games.EditResult
                                                                           })
             };
 
@@ -343,7 +344,8 @@
                     game.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
                                                                             AuthOperations.Games.Edit,
-                                                                            AuthOperations.Games.Delete
+                                                                            AuthOperations.Games.Delete,
+                                                                            AuthOperations.Games.EditResult
                                                                           });
                 }
             }

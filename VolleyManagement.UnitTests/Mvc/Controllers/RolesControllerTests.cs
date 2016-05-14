@@ -63,7 +63,8 @@
             // Assert
             var actual = GetModel<List<RoleViewModel>>(actionResult);
             CollectionAssert.AreEqual(expected, actual, new RoleViewModelComparer());
-            VerifyCheckAccess(AuthOperations.ViewDashboard.Index, Times.Once());
+
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         [TestMethod]
@@ -87,7 +88,7 @@
             var actual = GetModel<RoleDetailsViewModel>(actionResult);
             AreDetailsModelsEqual(actual, expected);
 
-            VerifyCheckAccess(AuthOperations.ViewDashboard.Details, Times.Once());
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         [TestMethod]
@@ -116,7 +117,7 @@
             var actual = GetModel<RoleEditViewModel>(actionResult);
             AreEditModelsEqual(actual, expected);
 
-            VerifyCheckAccess(AuthOperations.ViewDashboard.Edit, Times.Once());
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         [TestMethod]
@@ -141,7 +142,7 @@
 
             AssertValidRedirectResult(actionResult);
 
-            VerifyCheckAccess(AuthOperations.ViewDashboard.Edit, Times.Once());
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         [TestMethod]
@@ -167,7 +168,7 @@
             // Assert
             AssertModelStateError(service.ModelState, ANY_ERROR_MESSAGE);
 
-            VerifyCheckAccess(AuthOperations.ViewDashboard.Edit, Times.Once());
+            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
         }
 
         #endregion

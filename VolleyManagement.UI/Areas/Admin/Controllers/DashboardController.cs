@@ -27,7 +27,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            _authService.CheckAccess(AuthOperations.ViewDashboard.Index);
+            _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
             return View();
         }

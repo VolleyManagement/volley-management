@@ -34,7 +34,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            _authService.CheckAccess(AuthOperations.ViewDashboard.Index);
+            _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
             var roles = _rolesService.GetAllRoles().ConvertAll(r => new RoleViewModel(r));
             return View(roles);
@@ -47,7 +47,7 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Edit(int id)
         {
-            _authService.CheckAccess(AuthOperations.ViewDashboard.Edit);
+            _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
             var allUsers = _rolesService.GetAllUsersWithRoles();
             var role = _rolesService.GetRole(id);
@@ -65,7 +65,7 @@
         [HttpPost]
         public ActionResult Edit(ModifiedRoleViewModel modifiedRoles)
         {
-            _authService.CheckAccess(AuthOperations.ViewDashboard.Edit);
+            _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
             try
             {
@@ -89,7 +89,7 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Details(int id)
         {
-            _authService.CheckAccess(AuthOperations.ViewDashboard.Details);
+            _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
             var role = _rolesService.GetRole(id);
             var result = new RoleDetailsViewModel(role);

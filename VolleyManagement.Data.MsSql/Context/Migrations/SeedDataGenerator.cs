@@ -794,9 +794,7 @@
                 AuthOperations.Players.Create,
                 AuthOperations.Players.Edit,
                 AuthOperations.Players.Delete,
-                AuthOperations.ViewDashboard.Index,
-                AuthOperations.ViewDashboard.Edit,
-                AuthOperations.ViewDashboard.Details
+                AuthOperations.AdminDashboard.View
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

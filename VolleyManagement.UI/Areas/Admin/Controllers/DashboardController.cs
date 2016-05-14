@@ -18,7 +18,7 @@
         /// <param name="authService">Authorization service</param>
         public DashboardController(IAuthorizationService authService)
         {
-            _authService = authService;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            _authService.CheckAccess(AuthOperations.AdminDashboard.View);
+            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
             return View();
         }

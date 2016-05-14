@@ -397,7 +397,7 @@
             gameViewModel.Id = game.Id;
             gameViewModel.AwayTeamId = game.AwayTeamId;
             gameViewModel.HomeTeamId = game.HomeTeamId;
-            gameViewModel.GameDate = game.GameDate.HasValue ? game.GameDate.Value : new DateTime();
+            gameViewModel.GameDate = game.GameDate.GetValueOrDefault();
             gameViewModel.Round = game.Round;
 
             return View(gameViewModel);

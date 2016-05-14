@@ -103,7 +103,7 @@
                 AwayTeamId = gameResult.AwayTeamId,
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
-                GameDate = gameResult.GameDate.HasValue ? gameResult.GameDate.Value : new DateTime(),
+                GameDate = gameResult.GameDate.GetValueOrDefault(),
                 Round = gameResult.Round,
 
                 SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },

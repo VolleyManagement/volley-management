@@ -12,6 +12,7 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -26,6 +27,10 @@
     public class TournamentService : ITournamentService
     {
         #region Const & Readonly
+
+        private const int MIN_TEAMS_TO_PLAY_ONE_ROUND = 2;
+        private const int GAMES_TO_PLAY_ONE_ROUND = 2;
+        private const int DONT_CREATE_SCHEDULE_TEAMS_COUNT = 1;
 
         private static readonly TournamentStateEnum[] _actualStates =
             {
@@ -43,6 +48,7 @@
 
         private readonly ITournamentRepository _tournamentRepository;
         private readonly IAuthorizationService _authService;
+        private readonly IGameService _gameService;
 
         #endregion
 
@@ -68,6 +74,7 @@
         /// <param name="getAllTeamsQuery">Get All Tournament Teams query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
         /// <param name="authService">Authorization service</param>
+        /// <param name="gameService">The game service</param>
         public TournamentService(
             ITournamentRepository tournamentRepository,
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
@@ -75,7 +82,8 @@
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
-            IAuthorizationService authService)
+            IAuthorizationService authService,
+            IGameService gameService)
         {
             _tournamentRepository = tournamentRepository;
             _uniqueTournamentQuery = uniqueTournamentQuery;
@@ -84,6 +92,7 @@
             _getAllTeamsQuery = getAllTeamsQuery;
             _authService = authService;
             _getTournamentDtoQuery = getTournamentDtoQuery;
+            _gameService = gameService;
         }
 
         #endregion
@@ -218,6 +227,9 @@
                 }
             }
 
+            var count = allTeams.Count() + teams.Count();
+            CreateSchedule(tournamentId, count);
+
             _tournamentRepository.UnitOfWork.Commit();
         }
 
@@ -239,6 +251,10 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamInTournamentNotFound, ex);
             }
 
+            var allTeams = GetAllTournamentTeams(tournamentId);
+            var count = allTeams.Count() - 1;
+            CreateSchedule(tournamentId, count);
+
             _tournamentRepository.UnitOfWork.Commit();
         }
 
@@ -258,6 +274,9 @@
                     break;
                 case TournamentSchemeEnum.Two:
                     numberOfRounds = GetNumberOfRoundsByScheme2(tournament.TeamCount);
+                    break;
+                case TournamentSchemeEnum.PlayOff:
+                    numberOfRounds = GetNumberOfRoundsByPlayOffScheme(tournament.TeamCount);
                     break;
             }
 
@@ -493,6 +512,94 @@
             {
                 throw new ArgumentException(TournamentResources.GroupNamesNotUnique);
             }
+        }
+
+        private byte GetNumberOfRoundsByPlayOffScheme(byte teamCount)
+        {
+            byte rounds = 1;
+            for (byte i = 1; i < teamCount; i++)
+            {
+                if (Math.Pow(MIN_TEAMS_TO_PLAY_ONE_ROUND, i) >= teamCount)
+                {
+                    rounds = i;
+                    break;
+                }
+            }
+
+            return rounds;
+        }
+
+        private int GetGamesCount(int teamsCount)
+        {
+            return (int)Math.Pow(GAMES_TO_PLAY_ONE_ROUND, GetNumberOfRoundsByPlayOffScheme((byte)teamsCount));
+        }
+
+        private void CreateSchedule(int tournamentId, int allTeamsCount)
+        {
+            var tournament = this.Get(tournamentId);
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                if (allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)
+                {
+                    var gamesToAdd = GetAllGamesInPlayOffTournament(tournamentId, allTeamsCount);
+                    _gameService.RemoveAllGamesInTournament(tournamentId);
+                    _gameService.AddGames(gamesToAdd);
+                }
+            }
+        }
+
+        private List<Game> GetAllGamesInPlayOffTournament(int tournamentId, int teamsCount)
+        {
+            var roundsCount = GetNumberOfRoundsByPlayOffScheme((byte)teamsCount);
+            int gamesCount = GetGamesCount(teamsCount);
+            List<Game> games = new List<Game>();
+
+            for (int i = 1; i <= gamesCount; i++)
+            {
+                var game = new Game();
+                game.TournamentId = tournamentId;
+                game.HomeTeamId = null;
+                game.AwayTeamId = null;
+                game.Result = new Result();
+                game.Round = GetRoundNumber(roundsCount, gamesCount, i);
+                game.GameNumber = (byte)i;
+                game.GameDate = TimeProvider.Current.UtcNow;
+                games.Add(game);
+            }
+
+            return games;
+        }
+
+        private byte GetRoundNumber(int roundsCount, int gamesCount, int gameNumber)
+        {
+            byte roundNumber = 1;
+
+            int roundStartGameNumber = 0;
+            int roundEndGameNumber = gamesCount / 2;
+            int numberOfGamesInRound = gamesCount / 2;
+
+            for (int i = 1; i <= roundsCount; i++)
+            {
+                if (gameNumber > roundStartGameNumber && gameNumber <= roundEndGameNumber)
+                {
+                    roundNumber = (byte)i;
+                    break;
+                }
+
+                if (i + 1 == roundsCount)
+                {
+                    roundStartGameNumber = roundEndGameNumber;
+                    roundEndGameNumber += numberOfGamesInRound;
+                }
+                else
+                {
+                    roundStartGameNumber = roundEndGameNumber;
+                    roundEndGameNumber += numberOfGamesInRound / 2;
+                    numberOfGamesInRound = numberOfGamesInRound / 2;
+                }
+            }
+
+            return roundNumber;
         }
 
         #endregion

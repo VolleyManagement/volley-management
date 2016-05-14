@@ -121,6 +121,10 @@
     <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.Designer.cs">
       <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.cs" />
+    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.Designer.cs">
+      <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -236,6 +240,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201605071138277_GameNumberInGameResult.resx">
       <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605141828548_HomeTeamOptional.resx">
+      <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -514,7 +514,7 @@
         /// Test for Create method. Home team id is null. AwayTeam free-day game is created.
         /// </summary>
         [TestMethod]
-        public void Create_NoHomeTeam_GameCreated() 
+        public void Create_NoHomeTeam_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
@@ -1275,7 +1275,7 @@
 
             // Assert
             TestHelper.AreEqual(expected, actual, new GameResultDtoComparer());
-        } 
+        }
         #endregion
 
         #region GetTournamentResults
@@ -1296,7 +1296,7 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new GameResultDtoComparer());
-        } 
+        }
         #endregion
 
         #region Edit
@@ -1347,7 +1347,7 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
-        } 
+        }
         #endregion
 
         #region Delete
@@ -1458,7 +1458,7 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
-        } 
+        }
         #endregion
 
         #region SwapRounds
@@ -1526,7 +1526,87 @@
 
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
-        } 
+        }
+        #endregion
+
+        #region AddGamesInTournament
+
+        /// <summary>
+        /// Test for AddGamesInTournament method. Add games in tournament.
+        /// </summary>
+        [TestMethod]
+        public void AddGamesInTournament_GamesCollectionExists_GamesAdded()
+        {
+            // Arrange
+            var gamesToAdd = new GameTestFixture().TestGames().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.AddGames(gamesToAdd);
+
+            // Assert
+            VerifyGamesAdded(Times.Exactly(gamesToAdd.Count));
+        }
+
+        /// <summary>
+        /// Test for AddGamesInTournament method. Don't add games in tournament.
+        /// </summary>
+        [TestMethod]
+        public void AddGamesInTournament_EmptyGamesCollection_GamesNotAdded()
+        {
+            // Arrange
+            var gamesToAdd = new GameTestFixture().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.AddGames(gamesToAdd);
+
+            // Assert
+            VerifyGamesAdded(Times.Never());
+        }
+
+        #endregion
+
+        #region RemoveAllGamesInTournament
+
+        /// <summary>
+        /// Test for RemoveAllGamesInTournament method. Remove games from tournament.
+        /// </summary>
+        [TestMethod]
+        public void RemoveAllGamesInTournament_GamesExists_GamesRemoved()
+        {
+            // Arrange
+            var gamesInTournament = new GameServiceTestFixture().TestGameResults().Build();
+            var sut = _kernel.Get<GameService>();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
+
+            // Act
+            sut.RemoveAllGamesInTournament(TOURNAMENT_ID);
+
+            // Assert
+            VerifyGamesRemoved(Times.Exactly(gamesInTournament.Count));
+        }
+
+        /// <summary>
+        /// Test for RemoveAllGamesInTournament method. Don't remove games from tournament.
+        /// </summary>
+        [TestMethod]
+        public void RemoveAllGamesInTournament_NoGamesInTournament_GamesNotRemoved()
+        {
+            // Arrange
+            var gamesInTournament = new GameServiceTestFixture().Build();
+            var sut = _kernel.Get<GameService>();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
+
+            // Act
+            sut.RemoveAllGamesInTournament(TOURNAMENT_ID);
+
+            // Assert
+            VerifyGamesRemoved(Times.Never());
+        }
+
         #endregion
 
         #region Private
@@ -1611,7 +1691,7 @@
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
         }
 
-        private void VerifyFreeDayGame(Game game) 
+        private void VerifyFreeDayGame(Game game)
         {
             Assert.IsNotNull(game.HomeTeamId, "HomeTeamId should not be null");
             Assert.IsNull(game.AwayTeamId, "AwayTeamId should be null");
@@ -1637,7 +1717,17 @@
 
             SetupGetTournamentById(tournament.Id, tournament);
             SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
-        } 
+        }
+
+        private void VerifyGamesAdded(Times times)
+        {
+            _gameRepositoryMock.Verify(gr => gr.Add(It.IsAny<Game>()), times);
+        }
+
+        private void VerifyGamesRemoved(Times times)
+        {
+            _gameRepositoryMock.Verify(gr => gr.Remove(It.IsAny<int>()), times);
+        }
         #endregion
     }
 }

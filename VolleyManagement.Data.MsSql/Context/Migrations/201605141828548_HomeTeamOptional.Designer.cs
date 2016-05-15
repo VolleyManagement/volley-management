@@ -7,13 +7,13 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class GameStartTimeNullable : IMigrationMetadata
+    public sealed partial class HomeTeamOptional : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(GameStartTimeNullable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(HomeTeamOptional));
         
         string IMigrationMetadata.Id
         {
-            get { return "201605130859578_GameStartTimeNullable"; }
+            get { return "201605141828548_HomeTeamOptional"; }
         }
         
         string IMigrationMetadata.Source

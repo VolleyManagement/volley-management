@@ -63,18 +63,18 @@ namespace VolleyManagement.UI.App_GlobalResources {
         /// <summary>
         ///   Looks up a localized string similar to Final.
         /// </summary>
-        public static string Final {
+        public static string FinalRoundName {
             get {
-                return ResourceManager.GetString("Final", resourceCulture);
+                return ResourceManager.GetString("FinalRoundName", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Quarter final.
         /// </summary>
-        public static string QuarterFinal {
+        public static string QuarterFinalRoundName {
             get {
-                return ResourceManager.GetString("QuarterFinal", resourceCulture);
+                return ResourceManager.GetString("QuarterFinalRoundName", resourceCulture);
             }
         }
         
@@ -99,9 +99,9 @@ namespace VolleyManagement.UI.App_GlobalResources {
         /// <summary>
         ///   Looks up a localized string similar to Semifinal.
         /// </summary>
-        public static string Semifinal {
+        public static string SemifinalRoundName {
             get {
-                return ResourceManager.GetString("Semifinal", resourceCulture);
+                return ResourceManager.GetString("SemifinalRoundName", resourceCulture);
             }
         }
         

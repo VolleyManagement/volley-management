@@ -116,5 +116,10 @@
         /// Gets or sets the game number of the game in the tournament.
         /// </summary>
         public byte GameNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether it is allowed to edit game's result (for Playoff scheme)
+        /// </summary>
+        public bool AllowEditResult { get; set; }
     }
 }

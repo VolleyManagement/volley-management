@@ -82,7 +82,7 @@
         public byte GameNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets whether it is allowed to edit game's result.
+        /// Gets or sets whether it is allowed to edit game's result (for Playoff scheme)
         /// </summary>
         public bool AllowEditResult { get; set; }
 
@@ -124,10 +124,12 @@
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
                 GameDate = gameResult.GameDate,
+                GameNumber = gameResult.GameNumber,
                 Round = gameResult.Round,
 
                 SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
                 IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
+                AllowEditResult = gameResult.AllowEditResult,
                 SetScores = new List<Score>
                     {
                         new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },

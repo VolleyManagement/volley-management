@@ -129,9 +129,8 @@
         /// Edit team action POST
         /// </summary>
         /// <param name="id">Id of the team which is needed to be edited</param>
-        /// <param name="returnUrl">URL for back link</param>
         /// <returns>Redirect to team index page</returns>
-        public ActionResult Edit(int id, string returnUrl = "")
+        public ActionResult Edit(int id)
         {
             var team = _teamService.Get(id);
             if (team == null)

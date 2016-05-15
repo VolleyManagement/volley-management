@@ -1,4 +1,4 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamRefererViewModel
 
 @using System.Web.Optimization
 
@@ -15,8 +15,8 @@
     <fieldset>
         <legend>@Resources.TeamViews.TeamLegend</legend>
 
-        @Html.HiddenFor(model => model.Id)
-        @Html.Partial("_CreateEdit", Model)
+        @Html.HiddenFor(model => model.Model.Id)
+        @Html.Partial("_CreateEdit", Model.Model)
 
         <p>
             <button id="saveTeamButton">@Resources.TeamViews.Save</button>
@@ -25,6 +25,6 @@
 }
 
 <div>
-    @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
+    <a href="@Model.Referer">@Resources.TeamViews.Back</a>
 </div>
 

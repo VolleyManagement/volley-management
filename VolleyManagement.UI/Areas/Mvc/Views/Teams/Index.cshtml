@@ -37,7 +37,7 @@
                 }
                 @if (Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Edit))
                 {
-                    @Html.ActionLink(@Resources.TeamViews.Details, "Details", new { id = item.Id })
+                    @Html.ActionLink(@Resources.TeamViews.Details, "Details", new { id = item.Id, returnUrl = ViewBag.ReturnUrl }, null)
                 }
             </td>
         </tr>

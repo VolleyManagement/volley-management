@@ -432,6 +432,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Teams\TeamRefererViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Games\GameViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsGameViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsEntryViewModel.cs" />

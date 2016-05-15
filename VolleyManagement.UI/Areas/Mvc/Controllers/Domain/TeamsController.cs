@@ -61,6 +61,7 @@
                                                                             AuthOperations.Teams.Delete
                                                                           })
             };
+            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
 
             return View(teams);
         }
@@ -128,8 +129,9 @@
         /// Edit team action POST
         /// </summary>
         /// <param name="id">Id of the team which is needed to be edited</param>
+        /// <param name="returnUrl">URL for back link</param>
         /// <returns>Redirect to team index page</returns>
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, string returnUrl = "")
         {
             var team = _teamService.Get(id);
             if (team == null)
@@ -138,7 +140,8 @@
             }
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
-            return View(viewModel);
+            var referrerViewModel = new TeamRefererViewModel(viewModel, returnUrl);
+            return View(referrerViewModel);
         }
 
         /// <summary>
@@ -221,8 +224,9 @@
         /// Details action method for specific team.
         /// </summary>
         /// <param name="id">Team ID</param>
+        /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific team.</returns>
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(int id = 0, string returnUrl = "")
         {
             var team = _teamService.Get(id);
 
@@ -231,9 +235,9 @@
                 return HttpNotFound();
             }
 
-            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
-            return View(viewModel);
+            var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl);
+            return View(refererViewModel);
         }
 
         /// <summary>

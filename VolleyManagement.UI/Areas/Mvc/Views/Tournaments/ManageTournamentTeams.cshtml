@@ -19,7 +19,7 @@
         @foreach (var item in Model.List)
         {
             <tr>
-                <td>@Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id }, null)</td>
+                <td>@Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id, returnUrl = ViewBag.ReturnUrl }, null)</td>
                 <td><button class="deleteTeamFromTournamentButton" id="@item.Id">Delete</button></td>
             </tr>
         }

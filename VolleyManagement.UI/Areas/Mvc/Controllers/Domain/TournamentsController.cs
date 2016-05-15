@@ -245,6 +245,7 @@
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = this._tournamentService.GetAllTournamentTeams(tournamentId);
+            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
             return View(new TournamentTeamsListViewModel(resultTeams, tournamentId));
         }
 

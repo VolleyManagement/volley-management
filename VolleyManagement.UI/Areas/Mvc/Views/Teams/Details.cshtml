@@ -1,4 +1,4 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamRefererViewModel
 
 @{
     ViewBag.Title = Resources.TeamViews.TeamDetailsTitle;
@@ -7,24 +7,24 @@
 <h2>@ViewBag.Title</h2>
 
 <fieldset>
-    <legend>@Resources.TeamViews.TeamLegend @Model.Name</legend>
+    <legend>@Resources.TeamViews.TeamLegend @Model.Model.Name</legend>
 
-    <div class="display-label">@Html.LabelFor(model => model.Coach)</div>
-    <div class="display-field">@Model.Coach</div>
+    <div class="display-label">@Html.LabelFor(model => model.Model.Coach)</div>
+    <div class="display-field">@Model.Model.Coach</div>
 
-    <div class="display-label">@Html.LabelFor(model => model.Achievements)</div>
-    <div class="display-field">@Model.Achievements</div>
+    <div class="display-label">@Html.LabelFor(model => model.Model.Achievements)</div>
+    <div class="display-field">@Model.Model.Achievements</div>
 
-    <div class="display-label">@Html.LabelFor(model => model.Captain)</div>
-    @Html.ActionLink(Model.Captain.FullName,
+    <div class="display-label">@Html.LabelFor(model => model.Model.Captain)</div>
+    @Html.ActionLink(Model.Model.Captain.FullName,
                     "Details",
                     "Players",
-                    new {id = Model.Captain.Id, returnUrl = ViewBag.ReturnUrl},
+                    new {id = Model.Model.Captain.Id, returnUrl = ViewBag.ReturnUrl},
                     null)
     
-    <div class="display-label">@Html.LabelFor(model => model.Roster)</div>
+    <div class="display-label">@Html.LabelFor(model => model.Model.Roster)</div>
     <ul>
-        @foreach (var item in Model.Roster)
+        @foreach (var item in Model.Model.Roster)
         {
             <li>
                 @Html.ActionLink(item.FullName,
@@ -37,6 +37,6 @@
     </ul>
 </fieldset>
 <p>
-    @Html.ActionLink(Resources.TeamViews.Edit, "Edit", new { id = Model.Id }) |
-    @Html.ActionLink(Resources.TeamViews.Back, "Index")
+    @Html.ActionLink(Resources.TeamViews.Edit, "Edit", new { id = Model.Model.Id }) |
+    <a href="@Model.Referer">@Resources.TeamViews.Back</a>
 </p>

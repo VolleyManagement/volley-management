@@ -740,7 +740,7 @@
                         TournamentId = tourId,
                         GameNumber = Convert.ToByte(previousGame.GameNumber + 1),
                         RoundNumber = Convert.ToByte(i + 1),
-                        StartTime = previousGame.StartTime.AddHours(1)
+                        StartTime = previousGame.StartTime.Value.AddHours(1)
                     });
                 }
             }

@@ -493,7 +493,7 @@ namespace VolleyManagement.Data.MsSql.Context
 
             modelBuilder.Entity<GameResultEntity>()
                 .Property(gr => gr.StartTime)
-                .IsRequired()
+                .IsOptional()
                 .HasColumnType(VolleyDatabaseMetadata.DATETIME2_COLUMN_TYPE);
 
             modelBuilder.Entity<GameResultEntity>()

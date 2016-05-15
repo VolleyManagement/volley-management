@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.GamesAggregate;
 
@@ -102,7 +103,7 @@
                 AwayTeamId = gameResult.AwayTeamId,
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
-                GameDate = gameResult.GameDate,
+                GameDate = gameResult.GameDate.GetValueOrDefault(),
                 Round = gameResult.Round,
 
                 SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },

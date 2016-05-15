@@ -644,6 +644,37 @@
         }
 
         /// <summary>
+        /// Tests creation of the game with no date
+        /// </summary>
+        [TestMethod]
+        public void Create_GameDateNull_ExceptionThrown()
+        {
+            Exception exception = null;
+
+            // Arrange
+            MockDefaultTournament();
+
+            Game game = new GameBuilder()
+                .WithNoStartDate()
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(game);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_DATE_NOT_SET);
+        }
+
+        /// <summary>
         /// Tests creation of same game in same round
         /// </summary>
         [TestMethod]

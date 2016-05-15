@@ -8,6 +8,7 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
@@ -136,10 +137,10 @@
                                                     + DAYS_FOR_APPLYING_PERIOD
                                                     + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
                                                     + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START 
+                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
                                                     + DAYS_FOR_APPLYING_PERIOD
-                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START 
-                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START 
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START
                                                     + DAYS_FOR_TRANSFER_PERIOD)
             };
 
@@ -396,7 +397,7 @@
             gameViewModel.Id = game.Id;
             gameViewModel.AwayTeamId = game.AwayTeamId;
             gameViewModel.HomeTeamId = game.HomeTeamId;
-            gameViewModel.GameDate = game.GameDate;
+            gameViewModel.GameDate = game.GameDate.GetValueOrDefault();
             gameViewModel.Round = game.Round;
 
             return View(gameViewModel);
@@ -422,7 +423,7 @@
             {
                 this.ModelState.AddModelError("ValidationError", e.Message);
             }
-            catch (MissingEntityException e) 
+            catch (MissingEntityException e)
             {
                 this.ModelState.AddModelError("LoadError", e.Message);
                 return View();
@@ -509,7 +510,7 @@
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
-        } 
+        }
         #endregion
     }
 }

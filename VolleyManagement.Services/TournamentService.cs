@@ -563,7 +563,7 @@
                 game.Result = new Result();
                 game.Round = GetRoundNumber(roundsCount, gamesCount, i);
                 game.GameNumber = (byte)i;
-                game.GameDate = TimeProvider.Current.UtcNow;
+                game.GameDate = null;
                 games.Add(game);
             }
 

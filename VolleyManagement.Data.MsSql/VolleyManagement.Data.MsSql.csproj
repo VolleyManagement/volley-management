@@ -117,6 +117,14 @@
     <Compile Include="Context\Migrations\201605070838352_NullableHomeTeam.Designer.cs">
       <DependentUpon>201605070838352_NullableHomeTeam.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.cs" />
+    <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.Designer.cs">
+      <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605130859578_GameStartTimeNullable.cs" />
+    <Compile Include="Context\Migrations\201605130859578_GameStartTimeNullable.Designer.cs">
+      <DependentUpon>201605130859578_GameStartTimeNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -229,6 +237,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201605070838352_NullableHomeTeam.resx">
       <DependentUpon>201605070838352_NullableHomeTeam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605071138277_GameNumberInGameResult.resx">
+      <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605130859578_GameStartTimeNullable.resx">
+      <DependentUpon>201605130859578_GameStartTimeNullable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

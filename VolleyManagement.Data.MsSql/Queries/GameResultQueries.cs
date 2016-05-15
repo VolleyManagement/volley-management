@@ -111,7 +111,8 @@
                 HomeSet5Score = gr.HomeSet5Score,
                 AwaySet5Score = gr.AwaySet5Score,
                 GameDate = gr.StartTime,
-                Round = gr.RoundNumber
+                Round = gr.RoundNumber,
+                GameNumber = gr.GameNumber
             };
         }
 
@@ -125,6 +126,7 @@
                 AwayTeamId = gr.AwayTeamId,
                 GameDate = gr.StartTime,
                 Round = gr.RoundNumber,
+                GameNumber = gr.GameNumber,
                 Result = new Result
                 {
                     SetScores = new List<Score>

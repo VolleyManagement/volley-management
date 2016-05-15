@@ -303,6 +303,7 @@
             }
 
             ValidateFreeDayGame(game);
+            ValidateGameDateSet(game);
             ValidateGameDate(tournamentDto, game);
             ValidateGameInRound(game, allGames);
             if (tournamentDto.Scheme == TournamentSchemeEnum.One)
@@ -467,10 +468,18 @@
             }
         }
 
+        private void ValidateGameDateSet(Game game)
+        {
+            if (!game.GameDate.HasValue)
+            {
+                throw new ArgumentException(Resources.RoundDateNotSet);
+            }
+        }
+
         private void ValidateGameDate(TournamentScheduleDto tournament, Game game)
         {
-            if (DateTime.Compare(tournament.StartDate, game.GameDate) > 0
-                || DateTime.Compare(tournament.EndDate, game.GameDate) < 0)
+            if (DateTime.Compare(tournament.StartDate, game.GameDate.Value) > 0
+                || DateTime.Compare(tournament.EndDate, game.GameDate.Value) < 0)
             {
                 throw new ArgumentException(Resources.WrongRoundDate);
             }

@@ -69,7 +69,7 @@
         /// <summary>
         /// Gets or sets the date and time of the game.
         /// </summary>
-        public DateTime GameDate { get; set; }
+        public DateTime? GameDate { get; set; }
 
         /// <summary>
         /// Gets or sets the round of the game in the tournament.
@@ -104,7 +104,7 @@
         {
             get
             {
-                return GameDate.ToString("d MMM dddd H:mm");
+                return GameDate.HasValue ? GameDate.Value.ToString("d MMM dddd H:mm") : string.Empty;
             }
         }
 

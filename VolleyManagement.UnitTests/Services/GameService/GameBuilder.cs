@@ -195,6 +195,12 @@
             return this;
         }
 
+        public GameBuilder WithNoStartDate()
+        {
+            this._game.GameDate = null;
+            return this;
+        }
+
         /// <summary>
         /// Builds instance of <see cref="GameBuilder"/>.
         /// </summary>

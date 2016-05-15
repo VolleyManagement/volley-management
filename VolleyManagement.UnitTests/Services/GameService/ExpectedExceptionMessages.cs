@@ -41,5 +41,7 @@
         "In fifth set, the number of points for one team must be at least 15"
         + " and the points difference should be at least 2. If the score exceeds 15,"
         + " the points difference must be equal to 2.";
+
+        public const string GAME_DATE_NOT_SET = "Game date not set.";
     }
 }

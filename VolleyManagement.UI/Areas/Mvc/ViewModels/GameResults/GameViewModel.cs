@@ -97,7 +97,7 @@
                 HomeTeamId = game.HomeTeamId,
                 AwayTeamId = game.AwayTeamId,
                 Round = game.Round,
-                GameDate = game.GameDate
+                GameDate = game.GameDate.Value
             };
         }
 

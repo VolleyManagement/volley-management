@@ -140,8 +140,7 @@
             }
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
-            var referrerViewModel = new TeamRefererViewModel(viewModel, returnUrl);
-            return View(referrerViewModel);
+            return View(viewModel);
         }
 
         /// <summary>
@@ -235,6 +234,7 @@
                 return HttpNotFound();
             }
 
+            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl);
             return View(refererViewModel);

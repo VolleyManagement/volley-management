@@ -55,7 +55,7 @@
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery,
             IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
-           IQuery<List<Game>, GamesInRoundByNumberCriteria> gamesByTournamentIdInRoundsByNumbersQuery)
+            IQuery<List<Game>, GamesInRoundByNumberCriteria> gamesByTournamentIdInRoundsByNumbersQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -536,9 +536,14 @@
                 });
 
             // Schedule next games only if finished game is not in last round
-            if (gamesInCurrentAndNextRounds.Max(g => g.Round != finishedGame.Round))
+            if (IsGameResultUpdated(finishedGame, gamesInCurrentAndNextRounds) &&
+                !IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
-                if (IsSemiFinalGame(finishedGame, gamesInCurrentAndNextRounds))
+                List<Game> gamesInCurrentRound = gamesInCurrentAndNextRounds
+                        .Where(g => g.Round == finishedGame.Round)
+                        .ToList();
+
+                if (IsSemiFinalGame(finishedGame, gamesInCurrentRound))
                 {
                     gamesToUpdate.Add(
                         ScheduleNextLoserGame(
@@ -596,7 +601,7 @@
             int loserTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
                 finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
 
-            if (nextGame.GameNumber % 2 == 0)
+            if (finishedGame.GameNumber % 2 == 0)
             {
                 nextGame.HomeTeamId = loserTeamId;
             }
@@ -613,21 +618,27 @@
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
 
             return ((finishedGame.GameNumber + 1) / 2)
-                + Convert.ToInt32(Math.Pow(numberOfRounds, 2));
+                + Convert.ToInt32(Math.Pow(2, numberOfRounds - 1));
         }
 
         private bool IsSemiFinalGame(Game finishedGame, List<Game> games)
         {
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
-            return finishedGame.Round == numberOfRounds - 1;
+            List<Game> gamesInCurrentRound = games.Where(g => g.Round == finishedGame.Round).ToList();
+
+            return (finishedGame.Round == numberOfRounds - 1
+                && finishedGame.Round != 1)
+                || (finishedGame.Round == 1
+                && gamesInCurrentRound[0].AwayTeamId != null
+                && gamesInCurrentRound[1].AwayTeamId != null);
         }
 
         private int GetNumberOfRounds(Game finishedGame, List<Game> games)
         {
             List<Game> gamesInCurrntRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
-            return Convert.ToInt32(Math.Log(games.Count(), 2))
-                + finishedGame.Round - 1;
+            return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count(), 2))
+                + finishedGame.Round;
         }
 
         private bool IsGameResultUpdated(Game newGame, List<Game> games)
@@ -635,13 +646,18 @@
             Game oldGame = games.Where(gr => gr.Id == newGame.Id).SingleOrDefault();
 
             return oldGame.Result.SetsScore.Home != newGame.Result.SetsScore.Home
-                && oldGame.Result.SetsScore.Away != newGame.Result.SetsScore.Away;
+                || oldGame.Result.SetsScore.Away != newGame.Result.SetsScore.Away;
+        }
+
+        private bool IsGameInLastRound(Game finishedGame, List<Game> games)
+        {
+            return games.Max(g => g.Round) == finishedGame.Round;
         }
 
         private void ValidateEditingSchemePlayoff(Game nextGame)
         {
-            if (nextGame.Result.SetsScore.Home == 0
-                && nextGame.Result.SetsScore.Away == 0)
+            if (nextGame.Result != null && nextGame.Result.SetsScore.Home != 0
+                && nextGame.Result.SetsScore.Away != 0)
             {
                 throw new ArgumentException(Resources.PlayoffGameEditingError);
             }

@@ -195,6 +195,12 @@
             return this;
         }
 
+        public GameBuilder WithGameNumber(byte gameNumber)
+        {
+            this._game.GameNumber = gameNumber;
+            return this;
+        }
+
         /// <summary>
         /// Builds instance of <see cref="GameBuilder"/>.
         /// </summary>

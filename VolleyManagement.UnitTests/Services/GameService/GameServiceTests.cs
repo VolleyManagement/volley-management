@@ -1329,6 +1329,136 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
         }
 
+        [TestMethod]
+        public void Edit_AddResultsToGameInPlayoff_NewGameIsScheduled()
+        {
+            List<Game> games = new GameTestFixtures()
+                .TestEmptyGamePlayoffSchedule()
+                .Build();
+
+            List<GameResultDto> gameInfo = new GameServiceTestFixture()
+                .TestEmptyGamesInPlayoff()
+                .Build();
+
+            MockTournamentSchemePlayoff(
+                gameInfo,
+                games);
+
+            Game finishedGame = TestGameToEditInPlayoff();
+
+            var sut = _kernel.Get<GameService>();
+
+            sut.Edit(finishedGame);
+
+            Game newScheduledGame = games
+                    .Where(g => g.GameNumber == 5)
+                    .SingleOrDefault();
+
+            VerifyEditGames(
+                new List<Game>
+                {
+                    finishedGame,
+                    newScheduledGame
+                },
+                Times.AtLeastOnce());
+        }
+
+        [TestMethod]
+        public void Edit_AddResultsToPlayoffTournamentWithMinimalEvenTeams_NewGameIsScheduled()
+        {
+            List<Game> games = new GameTestFixtures()
+                .TestMinimumEvenTeamsPlayOffSchedule()
+                .Build();
+
+            List<GameResultDto> gameInfo = new GameServiceTestFixture()
+                .TestMinimumEvenEmptyGamesPlayoff()
+                .Build();
+
+            MockTournamentSchemePlayoff(
+                gameInfo,
+                games);
+
+            Game finishedGame = TestGameToEditInPlayoff();
+
+            var sut = _kernel.Get<GameService>();
+
+            sut.Edit(finishedGame);
+
+            Game newScheduledGame = games
+                    .Where(g => g.GameNumber == 3)
+                    .SingleOrDefault();
+
+            VerifyEditGames(
+                new List<Game>
+                {
+                    finishedGame,
+                    newScheduledGame
+                },
+                Times.AtLeastOnce());
+        }
+
+        [TestMethod]
+        public void Edit_AddResultsToPlayoffTournamentWithMinimalOddTeams_NewGameIsScheduled()
+        {
+            List<Game> games = new GameTestFixtures()
+                .TestMinimumOddTeamsPlayOffSchedule()
+                .Build();
+
+            List<GameResultDto> gameInfo = new GameServiceTestFixture()
+                .TestMinimumOddTeamsPlayOffSchedule()
+                .Build();
+
+            MockTournamentSchemePlayoff(
+                gameInfo,
+                games);
+
+            Game finishedGame = new GameBuilder()
+                .WithId(2)
+                .WithGameNumber(2)
+                .WithRound(1)
+                .WithSetsScore(new Score
+                {
+                    Home = 1,
+                    Away = 3
+                })
+                .WithSetScores(
+                new List<Score>
+                {
+                    new Score
+                    {
+                        Home = 10,
+                        Away = 25
+                    },
+                    new Score
+                    {
+                        Home = 5,
+                        Away = 25
+                    },
+                    new Score
+                    {
+                        Home = 25,
+                        Away = 10
+                    },
+                    new Score
+                    {
+                        Home = 10,
+                        Away = 25
+                    }
+                })
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            sut.Edit(finishedGame);
+
+            VerifyEditGames(
+                new List<Game>
+                {
+                    finishedGame
+                },
+                Times.Once());
+        }
+
         /// <summary>
         /// Test for Delete method. Existing game has to be deleted. Game is deleted.
         /// </summary>
@@ -1504,6 +1634,30 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
         }
 
+        private Game TestGameToEditInPlayoff()
+        {
+            return new GameBuilder()
+                .WithId(1)
+                .WithGameNumber(1)
+                .WithRound(1)
+                .WithSetsScore(new Score
+                {
+                    Home = 3,
+                    Away = 0
+                })
+                .Build();
+        }
+
+        private Game TestNewGameForScheduling()
+        {
+            return new GameBuilder()
+                .WithGameNumber(5)
+                .WithRound(2)
+                .WithTournamentId(1)
+                .WithHomeTeamId(1)
+                .Build();
+        }
+
         private bool AreGamesEqual(Game x, Game y)
         {
             return new GameComparer().Compare(x, y) == 0;
@@ -1520,6 +1674,15 @@
         {
             _tournamentGameResultsQueryMock.Setup(m =>
                 m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
+                .Returns(gameResults);
+        }
+
+        private void SetupGetTournamentResults(int tournamentId, List<Game> gameResults)
+        {
+            _gamesByTournamentIdInRoundsByNumbersQueryMock.Setup(m =>
+                m.Execute(It.Is<GamesInRoundByNumberCriteria>(
+                c => c.TournamentId == tournamentId
+                && c.RoundNumbers.Any(n => gameResults.Any(gr => gr.Round == n)))))
                 .Returns(gameResults);
         }
 
@@ -1605,6 +1768,18 @@
 
             SetupGetTournamentById(tournament.Id, tournament);
             SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
+        }
+
+        private void MockTournamentSchemePlayoff(List<GameResultDto> allGames, List<Game> games)
+        {
+            var tournament = new TournamentScheduleDtoBuilder()
+               .TestTournamemtSchedultDto()
+               .WithScheme(TournamentSchemeEnum.PlayOff)
+               .Build();
+
+            SetupGetTournamentById(tournament.Id, tournament);
+            SetupGetTournamentResults(tournament.Id, allGames);
+            SetupGetTournamentResults(tournament.Id, games);
         }
     }
 }

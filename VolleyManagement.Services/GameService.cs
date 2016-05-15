@@ -174,6 +174,31 @@
             _gameRepository.UnitOfWork.Commit();
         }
 
+        /// <summary>
+        /// Removes all games in tournament by tournament's id
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament</param>
+        public void RemoveAllGamesInTournament(int tournamentId)
+        {
+            var gamesToRemove = GetTournamentResults(tournamentId);
+            foreach (var game in gamesToRemove)
+            {
+                _gameRepository.Remove(game.Id);
+            }
+        }
+
+        /// <summary>
+        /// Adds collection of new games.
+        /// </summary>
+        /// <param name="games">Collection of games to add</param>
+        public void AddGames(List<Game> games)
+        {
+            foreach (var game in games)
+            {
+                _gameRepository.Add(game);
+            }
+        }
+
         #endregion
 
         #region Validation methods

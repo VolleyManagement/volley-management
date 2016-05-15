@@ -514,7 +514,7 @@ namespace VolleyManagement.Data.MsSql.Context
 
             // FK GameResult -> HomeTeam
             modelBuilder.Entity<GameResultEntity>()
-                .HasRequired(gr => gr.HomeTeam)
+                .HasOptional(gr => gr.HomeTeam)
                 .WithMany(t => t.HomeGameResults)
                 .HasForeignKey(gr => gr.HomeTeamId)
                 .WillCascadeOnDelete(false);

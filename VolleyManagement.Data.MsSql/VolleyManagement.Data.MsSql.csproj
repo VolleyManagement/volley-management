@@ -121,9 +121,13 @@
     <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.Designer.cs">
       <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201605130859578_GameStartTimeNullable.cs" />
-    <Compile Include="Context\Migrations\201605130859578_GameStartTimeNullable.Designer.cs">
-      <DependentUpon>201605130859578_GameStartTimeNullable.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.cs" />
+    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.Designer.cs">
+      <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.cs" />
+    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.Designer.cs">
+      <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
@@ -241,8 +245,11 @@
     <EmbeddedResource Include="Context\Migrations\201605071138277_GameNumberInGameResult.resx">
       <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201605130859578_GameStartTimeNullable.resx">
-      <DependentUpon>201605130859578_GameStartTimeNullable.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201605141828548_HomeTeamOptional.resx">
+      <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605150733454_GameStartTimeNullable.resx">
+      <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

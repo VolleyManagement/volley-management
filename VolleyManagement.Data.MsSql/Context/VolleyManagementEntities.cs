@@ -493,7 +493,7 @@ namespace VolleyManagement.Data.MsSql.Context
 
             modelBuilder.Entity<GameResultEntity>()
                 .Property(gr => gr.StartTime)
-                .IsRequired()
+                .IsOptional()
                 .HasColumnType(VolleyDatabaseMetadata.DATETIME2_COLUMN_TYPE);
 
             modelBuilder.Entity<GameResultEntity>()
@@ -514,7 +514,7 @@ namespace VolleyManagement.Data.MsSql.Context
 
             // FK GameResult -> HomeTeam
             modelBuilder.Entity<GameResultEntity>()
-                .HasRequired(gr => gr.HomeTeam)
+                .HasOptional(gr => gr.HomeTeam)
                 .WithMany(t => t.HomeGameResults)
                 .HasForeignKey(gr => gr.HomeTeamId)
                 .WillCascadeOnDelete(false);

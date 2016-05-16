@@ -165,7 +165,7 @@
     <Compile Include="Services\GameReportService\StandingsTestFixture.cs" />
     <Compile Include="Services\GameService\GameBuilder.cs" />
     <Compile Include="Services\GameService\GameComparer.cs" />
-    <Compile Include="Services\GameService\GameTestFixtures.cs" />
+    <Compile Include="Services\GameService\GameTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />
     <Compile Include="Services\GameService\GameServiceTestFixture.cs" />

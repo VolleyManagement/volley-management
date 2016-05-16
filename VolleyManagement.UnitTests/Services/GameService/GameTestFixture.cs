@@ -3,10 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
     using VolleyManagement.Domain.GamesAggregate;
 
     [ExcludeFromCodeCoverage]
-    internal class GameTestFixtures
+    public class GameTestFixture
     {
         private const string DATE_A = "2016-04-03 10:00";
 
@@ -16,22 +19,72 @@
 
         private const string DATE_D = "2016-04-13 10:00";
 
-        private const string DATE_E = "2016-04-16 10:00";
+        private List<Game> _games = new List<Game>();
 
-        private const string DATE_F = "2016-04-19 10:00";
-
-        private List<Game> _gameResults = new List<Game>();
-
-        public GameTestFixtures Add(Game game)
+        /// <summary>
+        /// Generates <see cref="Game"/> objects filled with test data.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameTestFixture"/>.</returns>
+        public GameTestFixture TestGames()
         {
-            this._gameResults.Add(game);
+            _games.Add(new Game
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = null,
+                AwayTeamId = null,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 1
+            });
+            _games.Add(new Game
+            {
+                Id = 2,
+                TournamentId = 1,
+                HomeTeamId = null,
+                AwayTeamId = null,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 1,
+                GameNumber = 2
+            });
+            _games.Add(new Game
+            {
+                Id = 3,
+                TournamentId = 1,
+                HomeTeamId = null,
+                AwayTeamId = null,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 2,
+                GameNumber = 3
+            });
+            _games.Add(new Game
+            {
+                Id = 4,
+                TournamentId = 1,
+                HomeTeamId = null,
+                AwayTeamId = null,
+                Result = new Result(),
+                GameDate = DateTime.Parse(DATE_D),
+                Round = 2,
+                GameNumber = 4
+            });
+
             return this;
         }
 
-        public GameTestFixtures TestEmptyGamePlayoffSchedule()
+        public GameTestFixture Add(Game game)
         {
-            this._gameResults.Clear();
-            _gameResults.AddRange(
+            this._games.Add(game);
+            return this;
+        }
+
+        public GameTestFixture TestEmptyGamePlayoffSchedule()
+        {
+            this._games.Clear();
+            _games.AddRange(
                 new List<Game>
                 {
                     new Game
@@ -111,11 +164,11 @@
             return this;
         }
 
-        public GameTestFixtures TestMinimumEvenTeamsPlayOffSchedule()
+        public GameTestFixture TestMinimumEvenTeamsPlayOffSchedule()
         {
-            this._gameResults.Clear();
+            this._games.Clear();
 
-            _gameResults.AddRange(
+            _games.AddRange(
                 new List<Game>
                 {
                     new Game
@@ -159,11 +212,11 @@
             return this;
         }
 
-        public GameTestFixtures TestMinimumOddTeamsPlayOffSchedule()
+        public GameTestFixture TestMinimumOddTeamsPlayOffSchedule()
         {
-            this._gameResults.Clear();
+            this._games.Clear();
 
-            _gameResults.AddRange(
+            _games.AddRange(
                 new List<Game>
                 {
                     new Game
@@ -206,9 +259,13 @@
             return this;
         }
 
+        /// <summary>
+        /// Builds instance of <see cref="GameTestFixture"/>.
+        /// </summary>
+        /// <returns>Collection of <see cref="Game"/> objects filled with test data.</returns>
         public List<Game> Build()
         {
-            return this._gameResults;
+            return _games;
         }
     }
 }

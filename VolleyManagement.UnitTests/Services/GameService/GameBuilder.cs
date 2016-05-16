@@ -195,6 +195,12 @@
             return this;
         }
 
+        public GameBuilder WithNoStartDate()
+        {
+            this._game.GameDate = null;
+            return this;
+        }
+
         public GameBuilder WithGameNumber(byte gameNumber)
         {
             this._game.GameNumber = gameNumber;

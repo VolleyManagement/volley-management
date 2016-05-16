@@ -519,7 +519,7 @@
         /// Test for Create method. Home team id is null. AwayTeam free-day game is created.
         /// </summary>
         [TestMethod]
-        public void Create_NoHomeTeam_GameCreated() 
+        public void Create_NoHomeTeam_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
@@ -646,6 +646,37 @@
 
             // Assert
             VerifyCreateGame(game, Times.Never());
+        }
+
+        /// <summary>
+        /// Tests creation of the game with no date
+        /// </summary>
+        [TestMethod]
+        public void Create_GameDateNull_ExceptionThrown()
+        {
+            Exception exception = null;
+
+            // Arrange
+            MockDefaultTournament();
+
+            Game game = new GameBuilder()
+                .WithNoStartDate()
+                .Build();
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            try
+            {
+                sut.Create(game);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_DATE_NOT_SET);
         }
 
         /// <summary>
@@ -1358,7 +1389,7 @@
         [TestMethod]
         public void Edit_AddResultsToGameInPlayoff_NewGameIsScheduled()
         {
-            List<Game> games = new GameTestFixtures()
+            List<Game> games = new GameTestFixture()
                 .TestEmptyGamePlayoffSchedule()
                 .Build();
 
@@ -1392,7 +1423,7 @@
         [TestMethod]
         public void Edit_AddResultsToPlayoffTournamentWithMinimalEvenTeams_NewGameIsScheduled()
         {
-            List<Game> games = new GameTestFixtures()
+            List<Game> games = new GameTestFixture()
                 .TestMinimumEvenTeamsPlayOffSchedule()
                 .Build();
 
@@ -1426,7 +1457,7 @@
         [TestMethod]
         public void Edit_AddResultsToPlayoffTournamentWithMinimalOddTeams_NewGameIsScheduled()
         {
-            List<Game> games = new GameTestFixtures()
+            List<Game> games = new GameTestFixture()
                 .TestMinimumOddTeamsPlayOffSchedule()
                 .Build();
 
@@ -1664,6 +1695,86 @@
         }
         #endregion
 
+        #region AddGamesInTournament
+
+        /// <summary>
+        /// Test for AddGamesInTournament method. Add games in tournament.
+        /// </summary>
+        [TestMethod]
+        public void AddGamesInTournament_GamesCollectionExists_GamesAdded()
+        {
+            // Arrange
+            var gamesToAdd = new GameTestFixture().TestGames().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.AddGames(gamesToAdd);
+
+            // Assert
+            VerifyGamesAdded(Times.Exactly(gamesToAdd.Count));
+        }
+
+        /// <summary>
+        /// Test for AddGamesInTournament method. Don't add games in tournament.
+        /// </summary>
+        [TestMethod]
+        public void AddGamesInTournament_EmptyGamesCollection_GamesNotAdded()
+        {
+            // Arrange
+            var gamesToAdd = new GameTestFixture().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.AddGames(gamesToAdd);
+
+            // Assert
+            VerifyGamesAdded(Times.Never());
+        }
+
+        #endregion
+
+        #region RemoveAllGamesInTournament
+
+        /// <summary>
+        /// Test for RemoveAllGamesInTournament method. Remove games from tournament.
+        /// </summary>
+        [TestMethod]
+        public void RemoveAllGamesInTournament_GamesExists_GamesRemoved()
+        {
+            // Arrange
+            var gamesInTournament = new GameServiceTestFixture().TestGameResults().Build();
+            var sut = _kernel.Get<GameService>();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
+
+            // Act
+            sut.RemoveAllGamesInTournament(TOURNAMENT_ID);
+
+            // Assert
+            VerifyGamesRemoved(Times.Exactly(gamesInTournament.Count));
+        }
+
+        /// <summary>
+        /// Test for RemoveAllGamesInTournament method. Don't remove games from tournament.
+        /// </summary>
+        [TestMethod]
+        public void RemoveAllGamesInTournament_NoGamesInTournament_GamesNotRemoved()
+        {
+            // Arrange
+            var gamesInTournament = new GameServiceTestFixture().Build();
+            var sut = _kernel.Get<GameService>();
+
+            SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
+
+            // Act
+            sut.RemoveAllGamesInTournament(TOURNAMENT_ID);
+
+            // Assert
+            VerifyGamesRemoved(Times.Never());
+        }
+
+        #endregion
+
         private Game TestGameToEditInPlayoff()
         {
             return new GameBuilder()
@@ -1779,7 +1890,7 @@
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
         }
 
-        private void VerifyFreeDayGame(Game game) 
+        private void VerifyFreeDayGame(Game game)
         {
             Assert.IsNotNull(game.HomeTeamId, "HomeTeamId should not be null");
             Assert.IsNull(game.AwayTeamId, "AwayTeamId should be null");
@@ -1805,6 +1916,16 @@
 
             SetupGetTournamentById(tournament.Id, tournament);
             SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
+        }
+
+        private void VerifyGamesAdded(Times times)
+        {
+            _gameRepositoryMock.Verify(gr => gr.Add(It.IsAny<Game>()), times);
+        }
+
+        private void VerifyGamesRemoved(Times times)
+        {
+            _gameRepositoryMock.Verify(gr => gr.Remove(It.IsAny<int>()), times);
         }
 
         private void MockTournamentSchemePlayoff(List<GameResultDto> allGames, List<Game> games)

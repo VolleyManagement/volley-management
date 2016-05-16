@@ -192,6 +192,31 @@
             _gameRepository.UnitOfWork.Commit();
         }
 
+        /// <summary>
+        /// Removes all games in tournament by tournament's id
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament</param>
+        public void RemoveAllGamesInTournament(int tournamentId)
+        {
+            var gamesToRemove = GetTournamentResults(tournamentId);
+            foreach (var game in gamesToRemove)
+            {
+                _gameRepository.Remove(game.Id);
+            }
+        }
+
+        /// <summary>
+        /// Adds collection of new games.
+        /// </summary>
+        /// <param name="games">Collection of games to add</param>
+        public void AddGames(List<Game> games)
+        {
+            foreach (var game in games)
+            {
+                _gameRepository.Add(game);
+            }
+        }
+
         #endregion
 
         #region Validation methods
@@ -318,6 +343,7 @@
             }
 
             ValidateFreeDayGame(game);
+            ValidateGameDateSet(game);
             ValidateGameDate(tournamentScheduleInfo, game);
             ValidateGameInRound(game, allGamesInTournament);
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.One)
@@ -482,10 +508,18 @@
             }
         }
 
+        private void ValidateGameDateSet(Game game)
+        {
+            if (!game.GameDate.HasValue)
+            {
+                throw new ArgumentException(Resources.RoundDateNotSet);
+            }
+        }
+
         private void ValidateGameDate(TournamentScheduleDto tournament, Game game)
         {
-            if (DateTime.Compare(tournament.StartDate, game.GameDate) > 0
-                || DateTime.Compare(tournament.EndDate, game.GameDate) < 0)
+            if (DateTime.Compare(tournament.StartDate, game.GameDate.Value) > 0
+                || DateTime.Compare(tournament.EndDate, game.GameDate.Value) < 0)
             {
                 throw new ArgumentException(Resources.WrongRoundDate);
             }

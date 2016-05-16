@@ -568,10 +568,10 @@
             var expected = CreateViewModel();
 
             // Act
-            var actual = TestExtensions.GetModel<TeamViewModel>(this._sut.Details(SPECIFIED_TEAM_ID));
+            var actual = TestExtensions.GetModel<TeamRefererViewModel>(this._sut.Details(SPECIFIED_TEAM_ID));
 
             // Assert
-            TestHelper.AreEqual<TeamViewModel>(expected, actual, new TeamViewModelComparer());
+            TestHelper.AreEqual<TeamViewModel>(expected, actual.Model, new TeamViewModelComparer());
         }
 
         /// <summary>

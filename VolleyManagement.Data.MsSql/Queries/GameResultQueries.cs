@@ -17,7 +17,7 @@
     public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
                                      IQuery<List<GameResultDto>, TournamentGameResultsCriteria>,
                                      IQuery<List<Game>, TournamentRoundsGameResultsCriteria>,
-                                     IQuery<List<Game>, GamesInRoundByNumberCriteria>
+                                     IQuery<List<Game>, GamesByRoundCriteria>
     {
         #region Fields
 
@@ -89,7 +89,7 @@
         /// </summary>
         /// <param name="criteria">Tournament and round number criteria</param>
         /// <returns>Collection of games which satisfy the criteria</returns>
-        public List<Game> Execute(GamesInRoundByNumberCriteria criteria)
+        public List<Game> Execute(GamesByRoundCriteria criteria)
         {
             var games = _dalGameResults
                 .Where(gr => gr.TournamentId == criteria.TournamentId

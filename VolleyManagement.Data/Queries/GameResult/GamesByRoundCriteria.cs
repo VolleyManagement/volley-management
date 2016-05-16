@@ -6,7 +6,7 @@
     /// <summary>
     /// Represents criteria to get games from specified round numbers in tournament
     /// </summary>
-    public class GamesInRoundByNumberCriteria : IQueryCriteria
+    public class GamesByRoundCriteria : IQueryCriteria
     {
         /// <summary>
         /// Gets orr sets id of the tournament

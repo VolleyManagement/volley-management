@@ -66,8 +66,8 @@
         private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock
             = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
 
-        private readonly Mock<IQuery<List<Game>, GamesInRoundByNumberCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock
-           = new Mock<IQuery<List<Game>, GamesInRoundByNumberCriteria>>();
+        private readonly Mock<IQuery<List<Game>, GamesByRoundCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock
+           = new Mock<IQuery<List<Game>, GamesByRoundCriteria>>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -97,7 +97,7 @@
                 .ToConstant(_tournamentScheduleDtoByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>()
                 .ToConstant(_gamesByTournamentIdRoundsNumberQueryMock.Object);
-            _kernel.Bind<IQuery<List<Game>, GamesInRoundByNumberCriteria>>()
+            _kernel.Bind<IQuery<List<Game>, GamesByRoundCriteria>>()
                 .ToConstant(_gamesByTournamentIdInRoundsByNumbersQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -1680,7 +1680,7 @@
         private void SetupGetTournamentResults(int tournamentId, List<Game> gameResults)
         {
             _gamesByTournamentIdInRoundsByNumbersQueryMock.Setup(m =>
-                m.Execute(It.Is<GamesInRoundByNumberCriteria>(
+                m.Execute(It.Is<GamesByRoundCriteria>(
                 c => c.TournamentId == tournamentId
                 && c.RoundNumbers.Any(n => gameResults.Any(gr => gr.Round == n)))))
                 .Returns(gameResults);

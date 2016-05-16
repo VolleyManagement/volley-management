@@ -33,7 +33,7 @@
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
         private readonly IQuery<List<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
-        private readonly IQuery<List<Game>, GamesInRoundByNumberCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
+        private readonly IQuery<List<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
 
         #endregion
 
@@ -55,7 +55,7 @@
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery,
             IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
-            IQuery<List<Game>, GamesInRoundByNumberCriteria> gamesByTournamentIdInRoundsByNumbersQuery)
+            IQuery<List<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -525,7 +525,7 @@
             List<Game> gamesToUpdate = new List<Game>();
 
             List<Game> gamesInCurrentAndNextRounds = _gamesByTournamentIdInRoundsByNumbersQuery
-                .Execute(new GamesInRoundByNumberCriteria()
+                .Execute(new GamesByRoundCriteria()
                 {
                     TournamentId = torunamentScheduleInfo.Id,
                     RoundNumbers = new List<byte>
@@ -546,13 +546,13 @@
                 if (IsSemiFinalGame(finishedGame, gamesInCurrentRound))
                 {
                     gamesToUpdate.Add(
-                        ScheduleNextLoserGame(
+                        GetNextLoserGame(
                         finishedGame,
                         gamesInCurrentAndNextRounds));
                 }
 
                 gamesToUpdate.Add(
-                    SchedueNextWinnerGame(
+                    GetNextWinnerGame(
                     finishedGame,
                     gamesInCurrentAndNextRounds));
             }
@@ -560,7 +560,7 @@
             return gamesToUpdate;
         }
 
-        private Game SchedueNextWinnerGame(Game finishedGame, List<Game> games)
+        private Game GetNextWinnerGame(Game finishedGame, List<Game> games)
         {
             int nextGameNumber = GetNextGameNumber(finishedGame, games);
             if (IsSemiFinalGame(finishedGame, games))
@@ -590,7 +590,7 @@
             return nextGame;
         }
 
-        private Game ScheduleNextLoserGame(Game finishedGame, List<Game> games)
+        private Game GetNextLoserGame(Game finishedGame, List<Game> games)
         {
             // Assume that finished game is a semifinal game
             int nextGameNumber = GetNextGameNumber(finishedGame, games);

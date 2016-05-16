@@ -1,14 +1,14 @@
 ﻿@using System.Web.Optimization
 @using VolleyManagement.Domain.RolesAggregate;
 @using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-@model TeamCollectionViewModel
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamCollectionReferrerViewModel
 
 @{
     ViewBag.Title = "Teams";
 }
 
 <h2>List of teams</h2>
-@if (Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Create))
+@if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Create))
 {
     <p>
     @Html.ActionLink(Resources.TeamViews.Create, "Create")
@@ -24,20 +24,20 @@
         <th></th>
     </tr>
 
-    @foreach (var item in Model.Teams)
+    @foreach (var item in Model.Model.Teams)
     {
         <tr vm_teamId='@item.Id' vm_teamName='@item.Name'>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @if (Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Delete))
+                @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Delete))
                 {
                     <button class='deleteTeamButton'>@Resources.TeamViews.Delete</button>
                 }
-                @if (Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Edit))
+                @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Edit))
                 {
-                    @Html.ActionLink(@Resources.TeamViews.Details, "Details", new { id = item.Id, returnUrl = ViewBag.ReturnUrl }, null)
+                    @Html.ActionLink(@Resources.TeamViews.Details, "Details", new { id = item.Id, returnUrl = Model.Referer }, null)
                 }
             </td>
         </tr>

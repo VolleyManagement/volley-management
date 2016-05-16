@@ -61,9 +61,9 @@
                                                                             AuthOperations.Teams.Delete
                                                                           })
             };
-            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
 
-            return View(teams);
+            var referrerViewModel = new TeamCollectionReferrerViewModel(teams, this.HttpContext.Request.RawUrl);
+            return View(referrerViewModel);
         }
 
         /// <summary>
@@ -233,9 +233,8 @@
                 return HttpNotFound();
             }
 
-            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
-            var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl);
+            var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
             return View(refererViewModel);
         }
 

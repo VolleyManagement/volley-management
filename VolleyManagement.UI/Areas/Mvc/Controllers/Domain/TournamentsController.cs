@@ -245,8 +245,9 @@
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = this._tournamentService.GetAllTournamentTeams(tournamentId);
-            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
-            return View(new TournamentTeamsListViewModel(resultTeams, tournamentId));
+            var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
+            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, this.HttpContext.Request.RawUrl);
+            return View(referrerViewModel);
         }
 
         /// <summary>

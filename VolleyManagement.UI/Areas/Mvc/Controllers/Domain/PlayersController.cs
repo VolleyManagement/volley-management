@@ -61,8 +61,8 @@
                     AuthOperations.Players.Edit,
                     AuthOperations.Players.Delete
                 });
-                ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
-                return View(playersOnPage);
+                var referrerViewModel = new PlayersListReferrerViewModel(playersOnPage, this.HttpContext.Request.RawUrl);
+                return View(referrerViewModel);
             }
             catch (ArgumentOutOfRangeException)
             {

@@ -131,7 +131,7 @@
             SetupControllerContext();
 
             // Act
-            var actual = TestExtensions.GetModel<PlayersListViewModel>(this._sut.Index(null, string.Empty)).List;
+            var actual = TestExtensions.GetModel<PlayersListReferrerViewModel>(this._sut.Index(null, string.Empty)).Model.List;
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
@@ -152,7 +152,7 @@
             SetupControllerContext();
 
             // Act
-            var actual = TestExtensions.GetModel<PlayersListViewModel>(this._sut.Index(null, PLAYER_NAME_TO_SEARCH)).List;
+            var actual = TestExtensions.GetModel<PlayersListReferrerViewModel>(this._sut.Index(null, PLAYER_NAME_TO_SEARCH)).Model.List;
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());

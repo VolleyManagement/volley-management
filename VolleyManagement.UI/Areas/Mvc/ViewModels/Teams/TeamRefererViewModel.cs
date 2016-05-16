@@ -1,10 +1,5 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Generic;
 
     /// <summary>
@@ -15,11 +10,18 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamRefererViewModel" /> class.
         /// </summary>
-        /// <param name="team">Domain team model.</param>
+        /// <param name="team">Team view model.</param>
         /// <param name="referrer">Referrer controller name.</param>
-        public TeamRefererViewModel(TeamViewModel team, string referrer)
+        /// <param name="curReferrer">Current referrer controller name.</param>
+        public TeamRefererViewModel(TeamViewModel team, string referrer, string curReferrer)
             : base(team, referrer)
         {
+            CurrentReferrer = curReferrer;
         }
+
+        /// <summary>
+        /// Current referrer controller name
+        /// </summary>
+        public string CurrentReferrer { get; set; }
     }
 }

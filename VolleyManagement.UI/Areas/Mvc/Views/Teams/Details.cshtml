@@ -19,7 +19,7 @@
     @Html.ActionLink(Model.Model.Captain.FullName,
                     "Details",
                     "Players",
-                    new {id = Model.Model.Captain.Id, returnUrl = ViewBag.ReturnUrl},
+                    new {id = Model.Model.Captain.Id, returnUrl = Model.CurrentReferrer},
                     null)
     
     <div class="display-label">@Html.LabelFor(model => model.Model.Roster)</div>
@@ -30,7 +30,7 @@
                 @Html.ActionLink(item.FullName,
                                 "Details",
                                 "Players",
-                                new {id = item.Id, returnUrl = ViewBag.ReturnUrl},
+                                new {id = item.Id, returnUrl = Model.CurrentReferrer},
                                 null)
             </li>
         }

@@ -125,12 +125,12 @@
             var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
 
             // Act
-            var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListViewModel>(
+            var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListReferrerViewModel>(
                 this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
-                .AreEqual(expectedTeamsList, returnedTeamsList));
+                .AreEqual(expectedTeamsList, returnedTeamsList.Model));
         }
 
         /// <summary>
@@ -146,11 +146,11 @@
             SetupControllerContext();
 
             // Act
-            var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListViewModel>(
+            var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListReferrerViewModel>(
                 this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.AreEqual(returnedTeamsList.List.Count, EMPTY_TEAMLIST_COUNT);
+            Assert.AreEqual(returnedTeamsList.Model.List.Count, EMPTY_TEAMLIST_COUNT);
         }
         #endregion
 

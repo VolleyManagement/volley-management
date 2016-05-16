@@ -95,6 +95,6 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// <summary>
         /// Gets or sets last time, when tournament was updated
         /// </summary>
-        public virtual DateTime LastTimeUpdated { get; set; }
+        public virtual DateTime? LastTimeUpdated { get; set; }
     }
 }

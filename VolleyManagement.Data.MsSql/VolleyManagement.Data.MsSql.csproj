@@ -113,6 +113,10 @@
     <Compile Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.Designer.cs">
       <DependentUpon>201604271211049_AddRolesToOperationsMap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201605161743580_LastTimeUpdate.cs" />
+    <Compile Include="Context\Migrations\201605161743580_LastTimeUpdate.Designer.cs">
+      <DependentUpon>201605161743580_LastTimeUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -222,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.resx">
       <DependentUpon>201604271211049_AddRolesToOperationsMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605161743580_LastTimeUpdate.resx">
+      <DependentUpon>201605161743580_LastTimeUpdate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

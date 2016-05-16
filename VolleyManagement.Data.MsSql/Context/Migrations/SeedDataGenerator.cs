@@ -393,7 +393,7 @@
                             }
                         }
                     },
-                    LastTimeUpdated = new DateTime(2012, 06, 01),
+                    LastTimeUpdated = new DateTime(2017, 06, 01),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],

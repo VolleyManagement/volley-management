@@ -31,6 +31,6 @@
         /// <summary>
         /// Gets or sets last time, when tournament was updated
         /// </summary>
-        public DateTime LastTimeUpdated { get; set; }
+        public DateTime? LastTimeUpdated { get; set; }
     }
 }

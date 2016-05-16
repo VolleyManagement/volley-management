@@ -476,14 +476,7 @@
 
         private void ValidateFreeDayGame(Game game)
         {
-            if (GameValidation.IsFreeDayTeam(game.HomeTeamId)
-                && GameValidation.IsFreeDayTeam(game.AwayTeamId))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.NoTeamsInGame, game.Round));
-            }
-            else if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
+            if (GameValidation.IsFreeDayTeam(game.HomeTeamId))
             {
                 SwitchTeamsOrder(game);
             }

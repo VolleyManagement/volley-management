@@ -17,6 +17,7 @@
         private const string ADMINISTRATOR_ROLE_NAME = "Administrator";
         private const string USER_ROLE_NAME = "User";
         private const string TOURNAMENT_ADMINISTRATOR_ROLE_NAME = "TournamentAdministrator";
+        private static Random _rand;
 
         /// <summary>
         /// Generates and seeds test data for
@@ -26,11 +27,12 @@
         [Conditional("DEBUG")]
         internal static void GenerateEntities(VolleyManagementEntities context)
         {
+            _rand = new Random();
+
             List<PlayerEntity> players = GeneratePlayers();
             List<TeamEntity> teams = GenerateTeams(players);
-            List<TournamentEntity> tours = GenerateTournamentsSchemOne(teams);
-            tours.AddRange(GenerateTournamentsSchemTwo(teams));
-            List<GameResultEntity> games = GenerateGamesFromTournaments(tours);
+            List<TournamentEntity> tours = GenerateTournaments(teams);
+            List<GameResultEntity> games = GenerateGames(tours);
 
             context.Players.AddOrUpdate(p => new { p.FirstName, p.LastName }, players.ToArray());
             context.Teams.AddOrUpdate(t => t.Name, teams.ToArray());
@@ -245,6 +247,15 @@
             players[11].TeamId = 6;
         }
 
+        private static List<TournamentEntity> GenerateTournaments(List<TeamEntity> teams)
+        {
+            List<TournamentEntity> tours = GenerateTournamentsSchemOne(teams);
+            tours.AddRange(GenerateTournamentsSchemeTwo(teams));
+            tours.AddRange(GenerateTournamentsSchemePlayoff(teams));
+
+            return tours;
+        }
+
         private static List<TournamentEntity> GenerateTournamentsSchemOne(List<TeamEntity> teams)
         {
             return new List<TournamentEntity>
@@ -363,7 +374,7 @@
             };
         }
 
-        private static List<TournamentEntity> GenerateTournamentsSchemTwo(List<TeamEntity> teams)
+        private static List<TournamentEntity> GenerateTournamentsSchemeTwo(List<TeamEntity> teams)
         {
             return new List<TournamentEntity>
             {
@@ -462,7 +473,6 @@
                             }
                         }
                     },
-
                     Teams = new List<TeamEntity>()
                     {
                         teams[5],
@@ -475,7 +485,107 @@
             };
         }
 
-        private static List<GameResultEntity> GenerateGamesFromTournaments(List<TournamentEntity> tours)
+        private static List<TournamentEntity> GenerateTournamentsSchemePlayoff(List<TeamEntity> teams)
+        {
+            List<TournamentEntity> tournaments = new List<TournamentEntity>()
+            {
+                // Past
+                new TournamentEntity()
+                {
+                    Name = "Tour Playoff #1",
+                    ApplyingPeriodStart = new DateTime(2012, 01, 03),
+                    ApplyingPeriodEnd = new DateTime(2012, 05, 04),
+                    GamesStart = new DateTime(2012, 05, 20),
+                    GamesEnd = new DateTime(2012, 06, 01),
+                    TransferStart = new DateTime(2012, 05, 20),
+                    TransferEnd = new DateTime(2012, 06, 01),
+                    Scheme = 4,
+                    Season = 114,
+                     Divisions = new List<DivisionEntity>()
+                    {
+                        new DivisionEntity()
+                        {
+                            Name = "Division 7",
+                            Groups = new List<GroupEntity>()
+                            {
+                                new GroupEntity()
+                                {
+                                    Name = "Group 7"
+                                }
+                            }
+                        }
+                    },
+                    Teams = teams
+                },
+
+                // Current
+                new TournamentEntity
+                {
+                    Name = "Tour Playoff #2",
+                    ApplyingPeriodStart = DateTime.Now.AddMonths(-21),
+                    ApplyingPeriodEnd = DateTime.Now.AddDays(-10),
+                    GamesStart = DateTime.Now.AddDays(-9),
+                    GamesEnd = DateTime.Now.AddDays(6),
+                    TransferStart = DateTime.Now.AddDays(-4),
+                    TransferEnd = DateTime.Now.AddDays(3),
+                    Scheme = 4,
+                    Season = Convert.ToByte(DateTime.Now.Year - 1900),
+                    Divisions = new List<DivisionEntity>
+                    {
+                        new DivisionEntity
+                        {
+                            Name = "Division 8",
+                            Groups = new List<GroupEntity>()
+                            {
+                                new GroupEntity()
+                                {
+                                    Name = "Group 8"
+                                }
+                            }
+                        }
+                    },
+                    Teams = teams
+                },
+
+                // Future
+                new TournamentEntity
+                {
+                    Name = "Tour Playoff #3",
+                    ApplyingPeriodStart = DateTime.Now.AddMonths(1),
+                    ApplyingPeriodEnd = DateTime.Now.AddMonths(2),
+                    GamesStart = DateTime.Now.AddMonths(2).AddDays(2),
+                    GamesEnd = DateTime.Now.AddMonths(2).AddDays(12),
+                    TransferStart = DateTime.Now.AddMonths(2).AddDays(2),
+                    TransferEnd = DateTime.Now.AddMonths(2).AddDays(7),
+                    Scheme = 4,
+                    Season = Convert.ToByte(DateTime.Now.Year - 1900),
+                    Divisions = new List<DivisionEntity>()
+                    {
+                        new DivisionEntity()
+                        {
+                            Name = "Division 9",
+                            Groups = new List<GroupEntity>()
+                            {
+                                new GroupEntity()
+                                {
+                                    Name = "Group 9"
+                                }
+                            }
+                        }
+                    },
+                    Teams = new List<TeamEntity>
+                    {
+                        teams[0],
+                        teams[1],
+                        teams[2]
+                    }
+                }
+            };
+
+            return tournaments;
+        }
+
+        private static List<GameResultEntity> GenerateGames(List<TournamentEntity> tours)
         {
             List<GameResultEntity> games = new List<GameResultEntity>();
             int gameId = 0;
@@ -488,7 +598,17 @@
                 }
 
                 tours[i].GameResults = new List<GameResultEntity>();
-                List<GameResultEntity> gamesInTour = GenerateGames(tours[i], i + 1, ++gameId);
+                List<GameResultEntity> gamesInTour = null;
+
+                if (tours[i].Scheme == 1 || tours[i].Scheme == 2)
+                {
+                    gamesInTour = GenerateGamesForSchemeOneAndTwo(tours[i], i + 1, ++gameId);
+                }
+                else if (tours[i].Scheme == 4)
+                {
+                    gamesInTour = GenerateGamesForSchemePlayoff(tours[i], i + 1, ++gameId);
+                }
+
                 for (int j = 0; j < gamesInTour.Count; j++)
                 {
                     tours[i].GameResults.Add(gamesInTour[j]);
@@ -500,7 +620,7 @@
             return games;
         }
 
-        private static List<GameResultEntity> GenerateGames(TournamentEntity tour, int tourId, int gameId)
+        private static List<GameResultEntity> GenerateGamesForSchemeOneAndTwo(TournamentEntity tour, int tourId, int gameId)
         {
             List<GameResultEntity> games = new List<GameResultEntity>();
             int teamsCount = tour.Teams.Count;
@@ -593,22 +713,267 @@
             return games;
         }
 
-        private static void SetGameScores(ICollection<GameResultEntity> games, int percentage = 100)
+        private static List<GameResultEntity> GenerateGamesForSchemePlayoff(TournamentEntity tour, int tourId, int startGameId)
         {
-            // Only for past games
+            int currentNumberOfTeams = tour.Teams.Count;
+            List<GameResultEntity> games = GenerateGamesInFirstRoundSchemePlyoff(tour, tourId, startGameId);
+            int numberOfGamesInFirstRound = games.Count;
+            int numberOfRounds = GetNumberOfRoundsInPlayoffScheme(currentNumberOfTeams);
+            int numberOfGamesInTournament = Convert.ToInt32(Math.Pow(2, numberOfRounds));
+
+            for (int i = 1; i < numberOfRounds; i++)
+            {
+                int numberOfGamesInRound = Convert.ToInt32(numberOfGamesInFirstRound / Math.Pow(2, i));
+
+                // include loser teams into last round
+                if (numberOfGamesInRound == 1 && numberOfRounds > 1)
+                {
+                    numberOfGamesInRound = 2;
+                }
+
+                for (int j = 0; j < numberOfGamesInRound; j++)
+                {
+                    GameResultEntity previousGame = games[games.Count - 1];
+                    games.Add(new GameResultEntity
+                    {
+                        Id = previousGame.Id + 1,
+                        TournamentId = tourId,
+                        GameNumber = Convert.ToByte(previousGame.GameNumber + 1),
+                        RoundNumber = Convert.ToByte(i + 1),
+                        StartTime = previousGame.StartTime.AddHours(1)
+                    });
+                }
+            }
+
+            ScheduleGamesSchemePlayoff(numberOfRounds, games);
+
+            return games;
+        }
+
+        private static void ScheduleGamesSchemePlayoff(int numberOfRounds, List<GameResultEntity> games)
+        {
+            // Set results and schedule next game
+            for (int i = 0; i < numberOfRounds; i++)
+            {
+                List<GameResultEntity> gamesInCurrentRound = games
+                    .Where(x => x.RoundNumber == i + 1)
+                    .ToList();
+                foreach (GameResultEntity game in gamesInCurrentRound)
+                {
+                    SetSingleGameScores(game);
+
+                    if (game.RoundNumber == numberOfRounds)
+                    {
+                        continue;
+                    }
+
+                    int winnerId = 0;
+                    if (game.AwayTeamId == null || game.HomeSetsScore > game.AwaySetsScore)
+                    {
+                        winnerId = game.HomeTeamId.Value;
+                    }
+                    else
+                    {
+                        winnerId = game.AwayTeamId.Value;
+                    }
+
+                    // Get last game number from previous game
+                    int lastGameNumberPreviousRound = 0;
+
+                    if (game.RoundNumber > 1)
+                    {
+                        lastGameNumberPreviousRound = games
+                        .Where(gr => gr.RoundNumber == game.RoundNumber - 1)
+                        .Max(gr => gr.GameNumber);
+                    }
+
+                    int offset = (game.GameNumber % 2 == 0) ?
+                        ((game.GameNumber - lastGameNumberPreviousRound) / 2)
+                        : (((game.GameNumber - lastGameNumberPreviousRound) / 2) + 1);
+
+                    int nextWinnerGameNumber = gamesInCurrentRound[gamesInCurrentRound.Count - 1]
+                        .GameNumber + offset;
+
+                    if (game.RoundNumber == numberOfRounds - 1 && numberOfRounds > 1)
+                    {
+                        // add losers to next round
+                        int nextLoserGameNumber = nextWinnerGameNumber;
+                        nextWinnerGameNumber++;
+
+                        GameResultEntity loserGame = games
+                            .Where(gr => gr.GameNumber == nextLoserGameNumber)
+                            .SingleOrDefault();
+
+                        int? loserId = 0;
+                        if (game.AwayTeamId == null)
+                        {
+                            loserId = null;
+                        }
+                        else
+                        {
+                            loserId = game.HomeSetsScore > game.AwaySetsScore ?
+                            game.AwayTeamId.Value : game.HomeTeamId.Value;
+                        }
+
+                        if (loserGame.HomeTeamId == null)
+                        {
+                            loserGame.HomeTeamId = loserId;
+                        }
+                        else
+                        {
+                            loserGame.AwayTeamId = loserId;
+                        }
+                    }
+
+                    GameResultEntity gameInNextRound = games
+                        .Where(gr => gr.GameNumber == nextWinnerGameNumber)
+                        .SingleOrDefault();
+
+                    if (gameInNextRound.HomeTeamId == null)
+                    {
+                        gameInNextRound.HomeTeamId = winnerId;
+                    }
+                    else
+                    {
+                        gameInNextRound.AwayTeamId = winnerId;
+                    }
+                }
+            }
+        }
+
+        private static List<GameResultEntity> GenerateGamesInFirstRoundSchemePlyoff(TournamentEntity tour, int tourId, int startGameId)
+        {
+            List<GameResultEntity> gamesInFirstRound = new List<GameResultEntity>();
+            int teamsCount = Convert.ToInt32(Math.Pow(2, GetNumberOfRoundsInPlayoffScheme(tour.Teams.Count)));
+            List<TeamEntity> teamsInTournament = tour.Teams.ToList();
+
+            for (int i = 0; i < teamsCount - tour.Teams.Count; i++)
+            {
+                teamsInTournament.Add(null);
+            }
+
+            int gamesCount = (teamsCount % 2 == 0) ? (teamsCount / 2) : (teamsCount / 2) + 1;
+            for (int i = 0; i < gamesCount; i++)
+            {
+                // Make sure that non of the teams plays with itself or there are two free days in one game
+                int homeTeamId = teamsInTournament[0].Id;
+                int lastTeamIndex = teamsInTournament.Count - 1;
+                int? awayTeamId = teamsInTournament[lastTeamIndex] == null ?
+                    null : (int?)teamsInTournament[lastTeamIndex].Id;
+                teamsInTournament.RemoveAt(lastTeamIndex);
+                teamsInTournament.RemoveAt(0);
+
+                // Now each next game starts one hour after the previous
+                gamesInFirstRound.Add(new GameResultEntity
+                    {
+                        Id = startGameId++,
+                        HomeTeamId = homeTeamId,
+                        AwayTeamId = awayTeamId,
+                        TournamentId = tourId,
+                        GameNumber = Convert.ToByte(i + 1),
+                        RoundNumber = 1,
+                        StartTime = tour.GamesStart.AddHours(i)
+                    });
+            }
+
+            return gamesInFirstRound;
+        }
+
+        private static int GetNumberOfGamesByRoundNumerSchemePlayoff(int roundNumber, int gamesInFirstRound)
+        {
+            int numberOfGames = roundNumber <= 0 ? 0 : Convert.ToInt32(gamesInFirstRound / Math.Pow(2, roundNumber - 1));
+            return numberOfGames == 1 ? 2 : numberOfGames;
+        }
+
+        private static int GetNumberOfRoundsInPlayoffScheme(int value)
+        {
+            return value > 0 ?
+                Convert.ToInt32(Math.Ceiling(Math.Log(value) / Math.Log(2)))
+                : 0;
+        }
+
+        private static void SetSingleGameScores(GameResultEntity game)
+        {
+            if (game.AwayTeamId == null)
+            {
+                return;
+            }
+
             byte maxFinalScore = 3;
             byte maxScore = 25;
             byte maxSecondTeamScore = 23;
             byte maxScoreLast = 15;
             byte maxSecondTeamScoreLast = 13;
             byte scoresNumber = 5;
-            byte maxPercents = 100;
-            Random rand = new Random();
 
             byte awayFinalScore = 0;
             byte homeFinalScroe = 0;
             byte[] homeScores = new byte[scoresNumber];
             byte[] awayScores = new byte[scoresNumber];
+
+            int r = _rand.Next(0, 2);
+            if (r == 0)
+            {
+                awayFinalScore = maxFinalScore;
+                homeFinalScroe = (byte)_rand.Next(0, maxFinalScore);
+            }
+            else
+            {
+                awayFinalScore = (byte)_rand.Next(0, maxFinalScore);
+                homeFinalScroe = maxFinalScore;
+            }
+
+            for (int i = 0, j = 1; i < scoresNumber; i++, j++)
+            {
+                byte currentMaxScore = j == scoresNumber ? maxScoreLast : maxScore;
+                byte currentMaxSecondTeamScore = j == scoresNumber ?
+                    maxSecondTeamScoreLast : maxSecondTeamScore;
+
+                if (j > awayFinalScore + homeFinalScroe)
+                {
+                    awayScores[i] = 0;
+                    homeScores[i] = 0;
+                }
+                else if (homeFinalScroe > awayFinalScore && j <= awayFinalScore)
+                {
+                    awayScores[i] = currentMaxScore;
+                    homeScores[i] = (byte)_rand.Next(0, currentMaxSecondTeamScore);
+                }
+                else if (homeFinalScroe > awayFinalScore && j > awayFinalScore)
+                {
+                    awayScores[i] = (byte)_rand.Next(0, currentMaxSecondTeamScore);
+                    homeScores[i] = currentMaxScore;
+                }
+                else if (awayFinalScore > homeFinalScroe && j <= homeFinalScroe)
+                {
+                    awayScores[i] = (byte)_rand.Next(0, currentMaxSecondTeamScore);
+                    homeScores[i] = currentMaxScore;
+                }
+                else if (awayFinalScore > homeFinalScroe && j > homeFinalScroe)
+                {
+                    awayScores[i] = currentMaxScore;
+                    homeScores[i] = (byte)_rand.Next(0, currentMaxSecondTeamScore);
+                }
+            }
+
+            game.HomeSetsScore = homeFinalScroe;
+            game.AwaySetsScore = awayFinalScore;
+            game.HomeSet1Score = homeScores[0];
+            game.HomeSet2Score = homeScores[1];
+            game.HomeSet3Score = homeScores[2];
+            game.HomeSet4Score = homeScores[3];
+            game.HomeSet5Score = homeScores[4];
+            game.AwaySet1Score = awayScores[0];
+            game.AwaySet2Score = awayScores[1];
+            game.AwaySet3Score = awayScores[2];
+            game.AwaySet4Score = awayScores[3];
+            game.AwaySet5Score = awayScores[4];
+        }
+
+        private static void SetGameScores(ICollection<GameResultEntity> games, int percentage = 100)
+        {
+            // Only for past games
+            byte maxPercents = 100;
 
             int actualPercentage = percentage;
             if (percentage > maxPercents)
@@ -624,69 +989,7 @@
             gameEnumerator.MoveNext();
             for (int k = 0; k < games.Count; k++, gameEnumerator.MoveNext())
             {
-                if (k > actualPercentage * games.Count / maxPercents)
-                {
-                    break;
-                }
-
-                int r = rand.Next(0, 2);
-                if (r == 0)
-                {
-                    awayFinalScore = maxFinalScore;
-                    homeFinalScroe = (byte)rand.Next(0, maxFinalScore);
-                }
-                else
-                {
-                    awayFinalScore = (byte)rand.Next(0, maxFinalScore);
-                    homeFinalScroe = maxFinalScore;
-                }
-
-                for (int i = 0, j = 1; i < scoresNumber; i++, j++)
-                {
-                    byte currentMaxScore = j == scoresNumber ? maxScoreLast : maxScore;
-                    byte currentMaxSecondTeamScore = j == scoresNumber ?
-                        maxSecondTeamScoreLast : maxSecondTeamScore;
-
-                    if (j > awayFinalScore + homeFinalScroe)
-                    {
-                        awayScores[i] = 0;
-                        homeScores[i] = 0;
-                    }
-                    else if (homeFinalScroe > awayFinalScore && j <= awayFinalScore)
-                    {
-                        awayScores[i] = currentMaxScore;
-                        homeScores[i] = (byte)rand.Next(0, currentMaxSecondTeamScore);
-                    }
-                    else if (homeFinalScroe > awayFinalScore && j > awayFinalScore)
-                    {
-                        awayScores[i] = (byte)rand.Next(0, currentMaxSecondTeamScore);
-                        homeScores[i] = currentMaxScore;
-                    }
-                    else if (awayFinalScore > homeFinalScroe && j <= homeFinalScroe)
-                    {
-                        awayScores[i] = (byte)rand.Next(0, currentMaxSecondTeamScore);
-                        homeScores[i] = currentMaxScore;
-                    }
-                    else if (awayFinalScore > homeFinalScroe && j > homeFinalScroe)
-                    {
-                        awayScores[i] = currentMaxScore;
-                        homeScores[i] = (byte)rand.Next(0, currentMaxSecondTeamScore);
-                    }
-                }
-
-                GameResultEntity currentGame = gameEnumerator.Current;
-                currentGame.HomeSetsScore = homeFinalScroe;
-                currentGame.AwaySetsScore = awayFinalScore;
-                currentGame.HomeSet1Score = homeScores[0];
-                currentGame.HomeSet2Score = homeScores[1];
-                currentGame.HomeSet3Score = homeScores[2];
-                currentGame.HomeSet4Score = homeScores[3];
-                currentGame.HomeSet5Score = homeScores[4];
-                currentGame.AwaySet1Score = awayScores[0];
-                currentGame.AwaySet2Score = awayScores[1];
-                currentGame.AwaySet3Score = awayScores[2];
-                currentGame.AwaySet4Score = awayScores[3];
-                currentGame.AwaySet5Score = awayScores[4];
+                SetSingleGameScores(gameEnumerator.Current);
             }
         }
 

@@ -91,5 +91,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Gets or sets collection of tournaments teams
         /// </summary>
         public virtual List<TeamEntity> Teams { get; set; }
+
+        /// <summary>
+        /// Gets or sets last time, when tournament was updated
+        /// </summary>
+        public virtual DateTime LastTimeUpdated { get; set; }
     }
 }

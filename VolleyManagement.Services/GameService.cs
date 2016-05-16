@@ -27,6 +27,8 @@
 
         private readonly IGameRepository _gameRepository;
         private readonly IAuthorizationService _authService;
+        private readonly ITournamentRepository _tournamentRepository;
+        private readonly ITournamentService _tournamentService;
 
         #endregion
 
@@ -57,7 +59,9 @@
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery,
             IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
-            IAuthorizationService authService)
+            IAuthorizationService authService,
+            ITournamentRepository tournamentRepository,
+            ITournamentService tournamentService)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -65,6 +69,8 @@
             _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
             _gamesByTournamentIdRoundsNumberQuery = gamesByTournamentIdRoundsNumberQuery;
             _authService = authService;
+            _tournamentRepository = tournamentRepository;
+            _tournamentService = tournamentService;
         }
 
         #endregion
@@ -90,9 +96,11 @@
             }
 
             ValidateGame(game);
-
+            
             _gameRepository.Add(game);
             _gameRepository.UnitOfWork.Commit();
+
+            UpdateTournamentLastTimeUpdated(game);
         }
 
         /// <summary>
@@ -126,7 +134,7 @@
             _authService.CheckAccess(AuthOperations.Games.Edit);
 
             ValidateGame(game);
-
+            
             try
             {
                 _gameRepository.Update(game);
@@ -137,6 +145,8 @@
             }
 
             _gameRepository.UnitOfWork.Commit();
+
+            UpdateTournamentLastTimeUpdated(game);
         }
 
         /// <summary>
@@ -520,6 +530,18 @@
                 game.AwayTeamId = tempHomeId;
             }
         }
+        #endregion
+
+        #region private methods
+
+        private void UpdateTournamentLastTimeUpdated (Game game)
+        {
+            var tournament = _tournamentService.Get(game.TournamentId);
+            tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
+           _tournamentRepository.Update(tournament);
+           _tournamentRepository.UnitOfWork.Commit();
+        }
+
         #endregion
     }
 }

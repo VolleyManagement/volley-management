@@ -275,7 +275,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = new DateTime(2015, 09, 29),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -313,7 +313,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = DateTime.Now.AddDays(-8),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -350,7 +350,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = new DateTime(2016, 01, 01),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -393,6 +393,7 @@
                             }
                         }
                     },
+                    LastTimeUpdated = new DateTime(2016, 01, 01),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -427,7 +428,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = new DateTime(2016, 01, 01),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -462,7 +463,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = new DateTime(2016, 01, 01),
                     Teams = new List<TeamEntity>()
                     {
                         teams[5],

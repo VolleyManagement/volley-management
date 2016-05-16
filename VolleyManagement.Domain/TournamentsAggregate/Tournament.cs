@@ -119,5 +119,7 @@
         /// Divisions of the tournament
         /// </summary>
         public List<Division> Divisions { get; set; }
+
+        public virtual DateTime LastTimeUpdated { get; set; }
     }
 }

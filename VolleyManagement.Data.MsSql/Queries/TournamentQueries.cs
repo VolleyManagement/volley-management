@@ -126,7 +126,8 @@
                                     .AsQueryable()
                                     .Where(d => d.TournamentId == t.Id)
                                     .Select(GetDivisionMapping())
-                                    .ToList()
+                                    .ToList(),
+                    LastTimeUpdated = t.LastTimeUpdated
                 };
         }
 

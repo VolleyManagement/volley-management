@@ -633,10 +633,10 @@
             int[] awayTeamIds = new int[gamesInRound];
             int[] tempHome = new int[gamesInRound];
             int[] tempAway = new int[gamesInRound];
-            for (int i = 0, j = 1; i < gamesInRound; i++, j++)
+            for (int i = 0, j = 0; i < gamesInRound; i++, j++)
             {
-                homeTeamIds[i] = j;
-                awayTeamIds[i] = i == gamesInRound - 1 && teamsCount % 2 != 0 ? 0 : ++j;
+                homeTeamIds[i] = tour.Teams[j].Id;
+                awayTeamIds[i] = i == gamesInRound - 1 && teamsCount % 2 != 0 ? 0 : tour.Teams[++j].Id;
 
                 tempHome[i] = homeTeamIds[i];
                 tempAway[i] = awayTeamIds[i];

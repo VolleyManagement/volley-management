@@ -79,7 +79,7 @@
 
         private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock
             = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
-        
+
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private readonly string _noTeamsInGame
@@ -152,7 +152,7 @@
         public void Create_GameNull_ExceptionThrown()
         {
             Exception exception = null;
-            
+
             // Arrange
             var newGame = null as Game;
             var sut = _kernel.Get<GameService>();
@@ -1338,7 +1338,7 @@
             sut.Edit(game);
 
             // Assert
-            VerifyEditGame(game, Times.Once());
+            VerifyEditGame(game, Times.Once(), Times.Exactly(2));
         }
 
         /// <summary>
@@ -1618,7 +1618,7 @@
             sut.Edit(testData);
 
             // Assert
-            VerifyEditGame(testData, Times.Never());
+            VerifyEditGame(testData, Times.Never(), Times.Never());
             VerifyCheckAccess(AuthOperations.Games.Edit, Times.Once());
         }
 
@@ -1640,7 +1640,7 @@
             sut.EditGameResult(testData);
 
             // Assert
-            VerifyEditGame(testData, Times.Never());
+            VerifyEditGame(testData, Times.Never(), Times.Never());
             VerifyCheckAccess(AuthOperations.Games.EditResult, Times.Once());
         }
 

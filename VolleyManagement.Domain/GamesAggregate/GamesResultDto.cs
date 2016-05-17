@@ -118,8 +118,8 @@
         public byte GameNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the allowance to edit the game
+        /// Gets or sets whether it is allowed to edit game's result (for Playoff scheme)
         /// </summary>
-        public bool IsAllowedEditing { get; set; }
+        public bool AllowEditResult { get; set; }
     }
 }

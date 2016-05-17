@@ -106,6 +106,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bronze match.
+        /// </summary>
+        public static string BronzeGameName {
+            get {
+                return ResourceManager.GetString("BronzeGameName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
@@ -219,6 +228,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string EditTournamentTitle {
             get {
                 return ResourceManager.GetString("EditTournamentTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Final match.
+        /// </summary>
+        public static string FinalGameName {
+            get {
+                return ResourceManager.GetString("FinalGameName", resourceCulture);
             }
         }
         

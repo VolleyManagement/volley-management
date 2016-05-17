@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
@@ -47,5 +48,16 @@
         /// Gets or sets names of rounds for playoff scheme
         /// </summary>
         public string[] RoundNames { get; set; }
+
+        /// <summary>
+        /// Gets the number of the last game in tournament (for playoff scheme)
+        /// </summary>
+        public int LastGameNumber 
+        {
+            get 
+            {
+                return NumberOfRounds == 0 ? 0 : Rounds.Last().Value.Last().GameNumber;
+            }
+        }
     }
 }

@@ -137,10 +137,10 @@
                                                     + DAYS_FOR_APPLYING_PERIOD
                                                     + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
                                                     + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START 
+                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
                                                     + DAYS_FOR_APPLYING_PERIOD
-                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START 
-                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START 
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START
                                                     + DAYS_FOR_TRANSFER_PERIOD)
             };
 
@@ -334,7 +334,6 @@
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
             {
                 FillRoundNames(scheduleViewModel);
-                SetAbilityToEditResults(scheduleViewModel);
             }
 
             return View(scheduleViewModel);
@@ -404,7 +403,11 @@
             gameViewModel.Id = game.Id;
             gameViewModel.AwayTeamId = game.AwayTeamId;
             gameViewModel.HomeTeamId = game.HomeTeamId;
-            gameViewModel.GameDate = game.GameDate.GetValueOrDefault();
+            if (game.GameDate.HasValue)
+            {
+                gameViewModel.GameDate = game.GameDate.Value;
+            }
+
             gameViewModel.Round = game.Round;
 
             return View(gameViewModel);
@@ -430,7 +433,7 @@
             {
                 this.ModelState.AddModelError("ValidationError", e.Message);
             }
-            catch (MissingEntityException e) 
+            catch (MissingEntityException e)
             {
                 this.ModelState.AddModelError("LoadError", e.Message);
                 return View();
@@ -518,7 +521,7 @@
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
-        } 
+        }
 
         /// <summary>
         /// Fills round names for playoff scheme
@@ -534,13 +537,13 @@
                 switch (i)
                 {
                     case 1:
-                        roundName = TournamentController.Final;
+                        roundName = TournamentController.FinalRoundName;
                         break;
                     case 2:
-                        roundName = TournamentController.Semifinal;
+                        roundName = TournamentController.SemifinalRoundName;
                         break;
                     case 3:
-                        roundName = TournamentController.QuarterFinal;
+                        roundName = TournamentController.QuarterFinalRoundName;
                         break;
                     default:
                         roundName = string.Format(TournamentController.RoundNumber, Math.Pow(2, i));
@@ -551,37 +554,6 @@
             }
 
             scheduleViewModel.RoundNames = roundNames;
-        }
-
-        private void SetAbilityToEditResults(ScheduleViewModel scheduleViewModel)
-        {
-            var allGames = scheduleViewModel.Rounds.Values.SelectMany(games => games);
-            var gamesToAllowEditingResults = allGames.Where(game => game.HomeTeamId.HasValue &&
-                                                                    game.AwayTeamId.HasValue &&
-                                                                    NextGames(allGames, game).All(next => next.SetsScore.IsEmpty));
-            foreach (var game in gamesToAllowEditingResults)
-            {
-                game.AllowEditResult = true;
-            }
-        }
-
-        private IEnumerable<GameResultViewModel> NextGames(IEnumerable<GameResultViewModel> allGames, GameResultViewModel currentGame)
-        {
-            var numberOfRounds = Convert.ToByte(Math.Sqrt(allGames.Count()));
-            if (currentGame.Round == numberOfRounds)
-            {
-                return Enumerable.Empty<GameResultViewModel>();
-            }
-
-            var nextGames = allGames.Where(game => game.GameNumber == NextGameNumber(game.GameNumber, numberOfRounds) ||
-                                                 (currentGame.Round == numberOfRounds - 1 &&
-                                                 game.GameNumber == NextGameNumber(game.GameNumber, numberOfRounds) + 1));
-            return nextGames;
-        }
-
-        private byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
-        {
-            return Convert.ToByte((currentGameNumber + 1) / 2 + Math.Pow(numberOfRounds - 1, 2));
         }
         #endregion
     }

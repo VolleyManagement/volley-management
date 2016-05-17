@@ -2,7 +2,7 @@
 
 <div class="table-bordered">
 
-    @if (Model.HomeTeamId == null && Model.AwayTeamId == null)
+    @if (!Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
     {
         <div class="row">
             <div class="col-md-10">
@@ -16,12 +16,14 @@
             </div>
         </div>
 
-        //TODO: check if null
-        <div class="row">
-            <div class="col-md-10 text-right">
-                @Model.ShortGameDate
+        if (Model.GameDate.HasValue)
+        {
+            <div class="row">
+                <div class="col-md-10 text-right">
+                    @Model.ShortGameDate
+                </div>
             </div>
-        </div>
+        }
 
         <div class="row">
             <div class="col-md-2">
@@ -29,7 +31,7 @@
             </div>
         </div>
     }
-    else if (Model.HomeTeamId == null && Model.AwayTeamId.HasValue)
+    else if (!Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)
     {
         <div class="row">
             <div class="col-md-10">
@@ -43,12 +45,14 @@
             </div>
         </div>
 
-        //TODO: check if null
-        <div class="row">
-            <div class="col-md-10 text-right">
-                @Model.ShortGameDate
+        if (Model.GameDate.HasValue)
+        {
+            <div class="row">
+                <div class="col-md-10 text-right">
+                    @Model.ShortGameDate
+                </div>
             </div>
-        </div>
+        }
 
         <div class="row">
             <div class="col-md-2">
@@ -56,7 +60,7 @@
             </div>
         </div>
     }
-    else if (Model.HomeTeamId.HasValue && Model.AwayTeamId == null)
+    else if (Model.HomeTeamId.HasValue && !Model.AwayTeamId.HasValue)
     {
         if (Model.IsFirstRoundGame)
         {
@@ -85,12 +89,14 @@
                 </div>
             </div>
 
-            //TODO: check if null
-            <div class="row">
-                <div class="col-md-10 text-right">
-                    @Model.ShortGameDate
+            if (Model.GameDate.HasValue)
+            {
+                <div class="row">
+                    <div class="col-md-10 text-right">
+                        @Model.ShortGameDate
+                    </div>
                 </div>
-            </div>
+            }
 
             <div class="row">
                 <div class="col-md-2">
@@ -191,12 +197,14 @@
                 </div>
             </div>
 
-            //TODO: check if null
-            <div class="row">
-                <div class="col-md-10 text-right">
-                    @Model.ShortGameDate
+            if (Model.GameDate.HasValue)
+            {
+                <div class="row">
+                    <div class="col-md-10 text-right">
+                        @Model.ShortGameDate
+                    </div>
                 </div>
-            </div>
+            }
 
             <div class="row">
                 <div class="col-md-2">

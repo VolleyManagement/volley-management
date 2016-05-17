@@ -256,7 +256,6 @@
 
             // Assert
             CollectionAssert.AreEqual(actual.RoundNames, expected.RoundNames);
-            //Assert.IsTrue(new ScheduleViewModelComparer().AreEqual(actual, expected));
         }
         #endregion
 

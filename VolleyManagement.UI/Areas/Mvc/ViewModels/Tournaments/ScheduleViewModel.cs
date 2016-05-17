@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
     using System;
-    using System.Linq;
     using System.Collections.Generic;
+    using System.Linq;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 

@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
+    using System.Web.Routing;
     using Contracts;
     using Contracts.Exceptions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -43,6 +45,7 @@
         private const string INDEX_ACTION_NAME = "Index";
         private const string SHOW_SCHEDULE_ACTION_NAME = "ShowSchedule";
         private const string ROUTE_VALUES_KEY = "action";
+        private const string MANAGE_TOURNAMENT_TEAMS = "/Teams/ManageTournamentTeams?tournamentId=";
         private const int DAYS_TO_APPLYING_PERIOD_START = 14;
         private const int DAYS_FOR_APPLYING_PERIOD = 14;
         private const int DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START = 7;
@@ -63,6 +66,8 @@
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+        private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
+        private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
 
         private IKernel _kernel;
         private TournamentsController _sut;
@@ -77,6 +82,7 @@
             this._kernel.Bind<ITournamentService>().ToConstant(this._tournamentServiceMock.Object);
             this._kernel.Bind<IGameService>().ToConstant(this._gameServiceMock.Object);
             this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
+            this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<TournamentsController>();
         }
 
@@ -117,14 +123,17 @@
             var testData = MakeTestTeams();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
+            SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
+            SetupControllerContext();
 
             // Act
-            var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListViewModel>(
+            var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListReferrerViewModel>(
                 this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
-                .AreEqual(expectedTeamsList, returnedTeamsList));
+                .AreEqual(expectedTeamsList, returnedTeamsList.Model));
+            Assert.AreEqual(returnedTeamsList.Referer, this._sut.Request.RawUrl);
         }
 
         /// <summary>
@@ -137,13 +146,16 @@
             // Arrange
             var testData = new TeamServiceTestFixture().Build();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
+            SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
+            SetupControllerContext();
 
             // Act
-            var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListViewModel>(
+            var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListReferrerViewModel>(
                 this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.AreEqual(returnedTeamsList.List.Count, EMPTY_TEAMLIST_COUNT);
+            Assert.AreEqual(returnedTeamsList.Model.List.Count, EMPTY_TEAMLIST_COUNT);
+            Assert.AreEqual(returnedTeamsList.Referer, this._sut.Request.RawUrl);
         }
         #endregion
 
@@ -1088,6 +1100,16 @@
         {
             this._tournamentServiceMock.Setup(ts => ts.Edit(It.IsAny<Tournament>()))
                 .Throws(new TournamentValidationException(string.Empty, string.Empty, string.Empty));
+        }
+
+        private void SetupControllerContext()
+        {
+            this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
+        }
+
+        private void SetupRequestRawUrl(string rawUrl)
+        {
+            this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
         }
 
         private void VerifyCreate(Times times)

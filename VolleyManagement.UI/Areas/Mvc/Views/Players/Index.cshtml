@@ -1,4 +1,4 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayersListViewModel
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayersListReferrerViewModel
 ﻿@using VolleyManagement.Domain.RolesAggregate;
 
 @{
@@ -12,10 +12,10 @@
     @using (@Html.BeginForm("Index"))
     {
         @Html.Label(Resources.PlayerViews.SearchTitle)
-        @Html.TextBox("textToSearch", Model.TextToSearch)
+        @Html.TextBox("textToSearch", Model.Model.TextToSearch)
     }
 </div>
-@if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Create))
+@if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Players.Create))
 {
     @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
 }
@@ -23,24 +23,24 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.List.FirstOrDefault().FullName)
+            @Html.DisplayNameFor(model => model.Model.List.FirstOrDefault().FullName)
         </th>
         <th></th>
     </tr>
 
-    @foreach (var item in Model.List)
+    @foreach (var item in Model.Model.List)
     {
         <tr>
             <td>
-                @Html.ActionLink(item.FullName, "Details", new { id = item.Id, returnUrl = ViewBag.ReturnUrl },
+                @Html.ActionLink(item.FullName, "Details", new { id = item.Id, returnUrl = Model.Referer },
                 new { @class = "playerName", @id = item.Id + "playerName" })
             </td>
             <td>            
-            @if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
+            @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
             {
                 @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) @:|
             }
-            @if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Delete))
+            @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Players.Delete))
             {
                 @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id },
                         new { @class = "delete", @id = item.Id })
@@ -53,45 +53,45 @@
 @{
     int firstPage = 1;
     int secondPage = 2;
-    int pageBefore = Model.PageNumber - 1;
-    int pageAfter = Model.PageNumber + 1;
+    int pageBefore = Model.Model.PageNumber - 1;
+    int pageAfter = Model.Model.PageNumber + 1;
 }
 
-@if (Model.PageNumber != firstPage && Model.List.Count != 0)
+@if (Model.Model.PageNumber != firstPage && Model.Model.List.Count != 0)
 {
-    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.TextToSearch });
+    @Html.ActionLink(firstPage.ToString(), "Index", new { page = (firstPage), textToSearch = Model.Model.TextToSearch });
 }
 
-@if (pageBefore > firstPage && Model.List.Count != 0)
+@if (pageBefore > firstPage && Model.Model.List.Count != 0)
 {
     if (pageBefore > secondPage)
     {
     <b>...</b>
     }
-    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.TextToSearch });
+    @Html.ActionLink(pageBefore.ToString(), "Index", new { page = (pageBefore), textToSearch = Model.Model.TextToSearch });
 }
 
-@if (Model.List.Count != 0)
+@if (Model.Model.List.Count != 0)
 {
-    @Model.PageNumber
+    @Model.Model.PageNumber
 }
 
-@if (pageAfter < Model.NumberOfPages && Model.List.Count != 0)
+@if (pageAfter < Model.Model.NumberOfPages && Model.Model.List.Count != 0)
 {
-    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.TextToSearch });
-                                                                                                                  if (pageAfter < Model.NumberOfPages - 1)
+    @Html.ActionLink(pageAfter.ToString(), "Index", new { page = (pageAfter), textToSearch = Model.Model.TextToSearch });
+                                                                                                                  if (pageAfter < Model.Model.NumberOfPages - 1)
                                                                                                                   {
     <b>...</b>
                                                                                                                   }
 }
 
-@if (Model.PageNumber != Model.NumberOfPages && Model.List.Count != 0)
+@if (Model.Model.PageNumber != Model.Model.NumberOfPages && Model.Model.List.Count != 0)
 {
-    @Html.ActionLink(Model.NumberOfPages.ToString(), "Index", new { page = (Model.NumberOfPages), textToSearch = Model.TextToSearch })
+    @Html.ActionLink(Model.Model.NumberOfPages.ToString(), "Index", new { page = (Model.Model.NumberOfPages), textToSearch = Model.Model.TextToSearch })
 }
 
 
-@if (Model.List.Count == 0)
+@if (Model.Model.List.Count == 0)
 {
     <p>@Resources.PlayerViews.NotFoundPlayerMessage</p>
 }

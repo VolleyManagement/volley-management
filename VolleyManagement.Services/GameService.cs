@@ -134,7 +134,7 @@
             _authService.CheckAccess(AuthOperations.Games.Edit);
 
             ValidateGame(game);
-            
+
             try
             {
                 _gameRepository.Update(game);
@@ -539,9 +539,9 @@
         private void UpdateTournamentLastTimeUpdated(Game game)
         {
             var tournament = _tournamentService.Get(game.TournamentId);
-            tournament.LastTimeUpdated = DateTime.UtcNow;
-           _tournamentRepository.Update(tournament);
-           _tournamentRepository.UnitOfWork.Commit();
+            tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
+            _tournamentRepository.Update(tournament);
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         #endregion

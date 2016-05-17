@@ -117,6 +117,7 @@
             _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;
         }
@@ -132,6 +133,8 @@
         {
             // Arrange
             MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
             var newGame = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -139,7 +142,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once());
+            VerifyCreateGame(newGame, Times.Once(),Times.Exactly(2));
         }
 
         /// <summary>
@@ -400,7 +403,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once());
+            VerifyCreateGame(newGame, Times.Once(), Times.Once());
         }
 
         /// <summary>
@@ -422,7 +425,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once());
+            VerifyCreateGame(newGame, Times.Once(), Times.Once());
         }
 
         /// <summary>
@@ -584,7 +587,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(expectedGameToCreate, Times.Once());
+            VerifyCreateGame(expectedGameToCreate, Times.Once(), Times.Once());
         }
 
         /// <summary>
@@ -615,7 +618,7 @@
             }
 
             // Assert
-            VerifyCreateGame(game, Times.Never());
+            VerifyCreateGame(game, Times.Never(), Times.Once());
             VerifyExceptionThrown(exception, _wrongRoundDate);
         }
 
@@ -643,7 +646,7 @@
             sut.Create(game);
 
             // Assert
-            VerifyCreateGame(game, Times.Never());
+            VerifyCreateGame(game, Times.Never(), Times.Once());
         }
 
         /// <summary>
@@ -878,7 +881,7 @@
             sut.Create(duplicate);
 
             // Assert
-            VerifyCreateGame(duplicate, Times.Once());
+            VerifyCreateGame(duplicate, Times.Once(), Times.Once());
         }
 
         [TestMethod]
@@ -1186,7 +1189,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once());
+            VerifyCreateGame(newGame, Times.Once(), Times.Once());
         }
 
         /// <summary>
@@ -1256,7 +1259,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once());
+            VerifyCreateGame(newGame, Times.Once(), Times.Once());
         }
         #endregion
 
@@ -1556,7 +1559,7 @@
             sut.Create(testData);
 
             // Assert
-            VerifyCreateGame(testData, Times.Never());
+            VerifyCreateGame(testData, Times.Never(), Times.Once());
             VerifyCheckAccess(AuthOperations.Games.Create, Times.Once());
         }
 
@@ -1696,11 +1699,11 @@
                 .Throws(new ConcurrencyException());
         }
 
-        private void VerifyCreateGame(Game game, Times times)
+        private void VerifyCreateGame(Game game, Times times,Times uowTimes)
         {
             _gameRepositoryMock.Verify(
                 m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
-            _unitOfWorkMock.Verify(m => m.Commit(), times);
+            _unitOfWorkMock.Verify(m => m.Commit(), uowTimes);
         }
 
         private void VerifyEditGame(Game game, Times times)

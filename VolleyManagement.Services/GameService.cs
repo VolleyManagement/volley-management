@@ -345,7 +345,7 @@
             ValidateFreeDayGame(game);
             ValidateGameDateSet(game);
             ValidateGameDate(tournamentScheduleInfo, game);
-            ValidateGameInRound(game, allGamesInTournament);
+            ValidateGameInRound(game, allGamesInTournament, tournamentScheduleInfo);
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.One)
             {
                 ValidateGamesInTournamentSchemeOne(game, allGamesInTournament);
@@ -356,15 +356,24 @@
             }
         }
 
-        private void ValidateGameInRound(Game newGame, List<GameResultDto> games)
+        private void ValidateGameInRound(
+            Game newGame,
+            List<GameResultDto> games,
+            TournamentScheduleDto torunamentSsheduleInfo)
         {
             List<GameResultDto> gamesInRound = games
                .Where(gr => gr.Round == newGame.Round)
                .ToList();
-            ValidateGameInRoundOnCreate(newGame, gamesInRound);
+            ValidateGameInRoundOnCreate(
+                newGame,
+                gamesInRound,
+                torunamentSsheduleInfo);
         }
 
-        private void ValidateGameInRoundOnCreate(Game newGame, List<GameResultDto> gamesInRound)
+        private void ValidateGameInRoundOnCreate(
+            Game newGame,
+            List<GameResultDto> gamesInRound,
+            TournamentScheduleDto tournamentScheduleInfo)
         {
             // We are sure that newGame is been created, not edited
             foreach (GameResultDto game in gamesInRound)
@@ -373,9 +382,12 @@
                 {
                     if (GameValidation.IsFreeDayGame(newGame))
                     {
-                        throw new ArgumentException(
-                            Resources
-                            .SameFreeDayGameInRound);
+                        if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
+                        {
+                            throw new ArgumentException(
+                                Resources
+                                .SameFreeDayGameInRound);
+                        }
                     }
                     else
                     {

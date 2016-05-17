@@ -142,7 +142,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(),Times.Exactly(2));
+            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
         }
 
         /// <summary>
@@ -1699,7 +1699,7 @@
                 .Throws(new ConcurrencyException());
         }
 
-        private void VerifyCreateGame(Game game, Times times,Times uowTimes)
+        private void VerifyCreateGame(Game game, Times times, Times uowTimes)
         {
             _gameRepositoryMock.Verify(
                 m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);

@@ -18,6 +18,7 @@
         /// Initializes a new instance of the <see cref="GameReportsController"/> class.
         /// </summary>
         /// <param name="gameReportService">Instance of a class which implements <see cref="IGameReportService"/>.</param>
+        /// <param name="tournamentService">Instance of a class which implements <see cref="ITournamentService"/>.</param>
         public GameReportsController(IGameReportService gameReportService, ITournamentService tournamentService)
         {
             _gameReportService = gameReportService;

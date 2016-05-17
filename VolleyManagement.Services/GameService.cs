@@ -53,6 +53,8 @@
         /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
         /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
         /// <param name="authService">Authorization service</param>
+        /// <param name="tournamentRepository">Tournament repository</param>
+        /// <param name="tournamentService">Tournament service </param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,

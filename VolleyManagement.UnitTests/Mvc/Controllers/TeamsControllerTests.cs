@@ -563,6 +563,7 @@
             MockTeamServiceGetTeam(team);
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
+            SetupRequestRawUrl("/Teams");
             SetupControllerContext();
 
             var expected = CreateViewModel();
@@ -572,6 +573,7 @@
 
             // Assert
             TestHelper.AreEqual<TeamViewModel>(expected, actual.Model, new TeamViewModelComparer());
+            Assert.AreEqual(actual.CurrentReferrer, this._sut.Request.RawUrl);
         }
 
         /// <summary>
@@ -732,6 +734,11 @@
         private void SetupGetAllTeams(List<Team> teams)
         {
             this._teamServiceMock.Setup(tr => tr.Get()).Returns(teams);
+        }
+
+        private void SetupRequestRawUrl(string rawUrl)
+        {
+            this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
         }
 
         private List<Team> MakeTestTeams()

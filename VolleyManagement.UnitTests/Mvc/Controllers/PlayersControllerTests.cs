@@ -149,14 +149,17 @@
             var testData = MakeTestPlayers();
             var expected = GetPlayerNameViewModelsWithPlayerName(MakePlayerNameViewModels(testData), PLAYER_NAME_TO_SEARCH);
             SetupGetAll(testData);
+            SetupRequestRawUrl("/Players");
             SetupControllerContext();
 
             // Act
-            var actual = TestExtensions.GetModel<PlayersListReferrerViewModel>(this._sut.Index(null, PLAYER_NAME_TO_SEARCH)).Model.List;
+            var actual = TestExtensions.GetModel<PlayersListReferrerViewModel>(this._sut.Index(null, PLAYER_NAME_TO_SEARCH));
+            var playersList = actual.Model.List;
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
+            CollectionAssert.AreEqual(expected, playersList, new PlayerNameViewModelComparer());
             VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
+            Assert.AreEqual(actual.Referer, this._sut.Request.RawUrl);
         }
 
         /// <summary>
@@ -494,6 +497,11 @@
         private void SetupControllerContext()
         {
             this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
+        }
+
+        private void SetupRequestRawUrl(string rawUrl)
+        {
+            this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
         }
 
         private void VerifyCreate(Times times)

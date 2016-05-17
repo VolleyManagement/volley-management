@@ -45,6 +45,7 @@
         private const string INDEX_ACTION_NAME = "Index";
         private const string SHOW_SCHEDULE_ACTION_NAME = "ShowSchedule";
         private const string ROUTE_VALUES_KEY = "action";
+        private const string MANAGE_TOURNAMENT_TEAMS = "/Teams/ManageTournamentTeams?tournamentId=";
         private const int DAYS_TO_APPLYING_PERIOD_START = 14;
         private const int DAYS_FOR_APPLYING_PERIOD = 14;
         private const int DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START = 7;
@@ -121,8 +122,9 @@
             // Arrange
             var testData = MakeTestTeams();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
-            SetupControllerContext();
             var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
+            SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
+            SetupControllerContext();
 
             // Act
             var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListReferrerViewModel>(
@@ -131,6 +133,7 @@
             // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
                 .AreEqual(expectedTeamsList, returnedTeamsList.Model));
+            Assert.AreEqual(returnedTeamsList.Referer, this._sut.Request.RawUrl);
         }
 
         /// <summary>
@@ -143,6 +146,7 @@
             // Arrange
             var testData = new TeamServiceTestFixture().Build();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
+            SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
             SetupControllerContext();
 
             // Act
@@ -151,6 +155,7 @@
 
             // Assert
             Assert.AreEqual(returnedTeamsList.Model.List.Count, EMPTY_TEAMLIST_COUNT);
+            Assert.AreEqual(returnedTeamsList.Referer, this._sut.Request.RawUrl);
         }
         #endregion
 
@@ -1100,6 +1105,11 @@
         private void SetupControllerContext()
         {
             this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
+        }
+
+        private void SetupRequestRawUrl(string rawUrl)
+        {
+            this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
         }
 
         private void VerifyCreate(Times times)

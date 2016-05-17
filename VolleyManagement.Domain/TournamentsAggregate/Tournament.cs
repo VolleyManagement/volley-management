@@ -120,6 +120,9 @@
         /// </summary>
         public List<Division> Divisions { get; set; }
 
+        /// <summary>
+        /// Gets or sets last time, when tournament was updated
+        /// </summary>
         public virtual DateTime? LastTimeUpdated { get; set; }
     }
 }

@@ -64,6 +64,10 @@
 
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
+        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+
+        private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
+
         private readonly Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock
             = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
 
@@ -75,7 +79,7 @@
 
         private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock
             = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
-
+        
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private readonly string _noTeamsInGame
@@ -100,6 +104,7 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IGameRepository>().ToConstant(_gameRepositoryMock.Object);
+            _kernel.Bind<ITournamentRepository>().ToConstant(_tournamentRepositoryMock.Object);
             _kernel.Bind<IQuery<GameResultDto, FindByIdCriteria>>()
                 .ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
@@ -109,6 +114,7 @@
             _kernel.Bind<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>()
                 .ToConstant(_gamesByTournamentIdRoundsNumberQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
+            _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));

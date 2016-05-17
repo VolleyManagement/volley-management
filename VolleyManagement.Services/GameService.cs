@@ -96,7 +96,7 @@
             }
 
             ValidateGame(game);
-            
+
             _gameRepository.Add(game);
             _gameRepository.UnitOfWork.Commit();
 
@@ -169,6 +169,8 @@
             }
 
             _gameRepository.UnitOfWork.Commit();
+
+            UpdateTournamentLastTimeUpdated(game);
         }
 
         /// <summary>
@@ -534,10 +536,10 @@
 
         #region private methods
 
-        private void UpdateTournamentLastTimeUpdated (Game game)
+        private void UpdateTournamentLastTimeUpdated(Game game)
         {
             var tournament = _tournamentService.Get(game.TournamentId);
-            tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
+            tournament.LastTimeUpdated = DateTime.UtcNow;
            _tournamentRepository.Update(tournament);
            _tournamentRepository.UnitOfWork.Commit();
         }

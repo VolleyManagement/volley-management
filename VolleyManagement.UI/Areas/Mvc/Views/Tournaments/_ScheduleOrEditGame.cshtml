@@ -6,37 +6,31 @@
 @Html.ValidationMessage("ValidationError")
 @Html.HiddenFor(model => model.TournamentId)
 
-@if (Model.TournamentScheme == TournamentSchemeEnum.PlayOff)
+@if (!(Model.TournamentScheme == TournamentSchemeEnum.PlayOff))
 {
-    @:<fieldset disabled>
-}
-<div class="editor-label">
-    @Html.LabelFor(model => model.Round)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.Round, Model.Rounds, new { @class = "form-control" })
-</div>
-@if (Model.TournamentScheme == TournamentSchemeEnum.PlayOff && Model.IsFirstRoundGame)
-{
-    @:</fieldset>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Round)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Round, Model.Rounds, new { @class = "form-control" })
+    </div>
 }
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.HomeTeamId)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.HomeTeamId, Model.Teams, new { @class = "form-control" })
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.AwayTeamId)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, @Resources.TournamentViews.FreeDay, new { @class = "form-control" })
-</div>
-@if (Model.TournamentScheme == TournamentSchemeEnum.PlayOff && !Model.IsFirstRoundGame)
+@if (!(Model.TournamentScheme == TournamentSchemeEnum.PlayOff && !Model.IsFirstRoundGame))
 {
-    @:</fieldset>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.HomeTeamId)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.HomeTeamId, Model.Teams, new { @class = "form-control" })
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.AwayTeamId)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, Resources.TournamentViews.FreeDay, new { @class = "form-control" })
+    </div>
 }
 
 <div class="editor-label">

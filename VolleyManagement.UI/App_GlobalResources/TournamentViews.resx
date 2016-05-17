@@ -252,4 +252,10 @@
   <data name="HomeTeamPlaceholder" xml:space="preserve">
     <value>Team 1</value>
   </data>
+  <data name="BronzeGameName" xml:space="preserve">
+    <value>Bronze match</value>
+  </data>
+  <data name="FinalGameName" xml:space="preserve">
+    <value>Final match</value>
+  </data>
 </root>

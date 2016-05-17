@@ -516,8 +516,8 @@
 
         private byte GetNumberOfRoundsByPlayOffScheme(byte teamCount)
         {
-            byte rounds = 1;
-            for (byte i = 1; i < teamCount; i++)
+            byte rounds = 0;
+            for (byte i = 0; i < teamCount; i++)
             {
                 if (Math.Pow(MIN_TEAMS_TO_PLAY_ONE_ROUND, i) >= teamCount)
                 {
@@ -563,7 +563,7 @@
                 game.Result = new Result();
                 game.Round = GetRoundNumber(roundsCount, gamesCount, i);
                 game.GameNumber = (byte)i;
-                game.GameDate = TimeProvider.Current.UtcNow;
+                game.GameDate = null;
                 games.Add(game);
             }
 

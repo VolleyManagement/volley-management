@@ -22,6 +22,15 @@ else
             <div class="table-bordered">
                 @foreach (var game in Model.Rounds[i])
                 {
+                    if (game.GameNumber == Model.LastGameNumber)
+                    {
+                        <h5>@Resources.TournamentViews.FinalGameName:</h5>
+                    }
+                    else if (game.GameNumber == Model.LastGameNumber - 1)
+                    {
+                        <h5>@Resources.TournamentViews.BronzeGameName:</h5>
+                    }
+                    
                     @Html.Partial("_PlayoffGameResult", game);
                 }
             </div>

@@ -125,9 +125,9 @@
     <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.Designer.cs">
       <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201605150557171_GameStartTimeNullable.cs" />
-    <Compile Include="Context\Migrations\201605150557171_GameStartTimeNullable.Designer.cs">
-      <DependentUpon>201605150557171_GameStartTimeNullable.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.cs" />
+    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.Designer.cs">
+      <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
@@ -248,8 +248,8 @@
     <EmbeddedResource Include="Context\Migrations\201605141828548_HomeTeamOptional.resx">
       <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201605150557171_GameStartTimeNullable.resx">
-      <DependentUpon>201605150557171_GameStartTimeNullable.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201605150733454_GameStartTimeNullable.resx">
+      <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

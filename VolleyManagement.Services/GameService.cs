@@ -382,12 +382,9 @@
                 {
                     if (GameValidation.IsFreeDayGame(newGame))
                     {
-                        if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
-                        {
-                            throw new ArgumentException(
-                                Resources
-                                .SameFreeDayGameInRound);
-                        }
+                        throw new ArgumentException(
+                            Resources
+                            .SameFreeDayGameInRound);
                     }
                     else
                     {
@@ -403,9 +400,12 @@
                 {
                     if (GameValidation.IsFreeDayGame(game))
                     {
-                        throw new ArgumentException(
-                            Resources
-                            .SameFreeDayGameInRound);
+                        if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
+                        {
+                            throw new ArgumentException(
+                                Resources
+                                .SameFreeDayGameInRound);
+                        }
                     }
                     else
                     {

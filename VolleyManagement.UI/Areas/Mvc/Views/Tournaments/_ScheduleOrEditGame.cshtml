@@ -2,7 +2,6 @@
 @using VolleyManagement.Domain.TournamentsAggregate;
 
 <legend>@Resources.TournamentViews.ScheduleGameLegend</legend>
-
 @Html.ValidationMessage("ValidationError")
 @Html.HiddenFor(model => model.TournamentId)
 
@@ -15,6 +14,11 @@
         @Html.DropDownListFor(model => model.Round, Model.Rounds, new { @class = "form-control" })
     </div>
 }
+else
+{
+    @Html.HiddenFor(model => model.Round)
+}
+
 
 @if (!(Model.TournamentScheme == TournamentSchemeEnum.PlayOff && !Model.IsFirstRoundGame))
 {
@@ -32,6 +36,12 @@
         @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, Resources.TournamentViews.FreeDay, new { @class = "form-control" })
     </div>
 }
+else
+{
+    @Html.HiddenFor(model => model.HomeTeamId);
+    @Html.HiddenFor(model => model.AwayTeamId);
+}
+
 
 <div class="editor-label">
     @Html.LabelFor(model => model.GameDate)

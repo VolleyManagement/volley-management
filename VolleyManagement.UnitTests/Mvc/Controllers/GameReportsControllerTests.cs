@@ -11,6 +11,7 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.GameReportService;
+    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Tests for <see cref="GameReportsController"/> class.
@@ -25,6 +26,8 @@
 
         private readonly Mock<IGameReportService> _gameReportServiceMock = new Mock<IGameReportService>();
 
+        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+
         private IKernel _kernel;
 
         /// <summary>
@@ -35,6 +38,7 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IGameReportService>().ToConstant(_gameReportServiceMock.Object);
+            _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
         }
 
         /// <summary>
@@ -52,6 +56,8 @@
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().Build();
 
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 
@@ -80,6 +86,8 @@
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
 
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 

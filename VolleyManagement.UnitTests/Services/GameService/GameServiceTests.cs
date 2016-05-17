@@ -152,7 +152,7 @@
         public void Create_GameNull_ExceptionThrown()
         {
             Exception exception = null;
-
+            
             // Arrange
             var newGame = null as Game;
             var sut = _kernel.Get<GameService>();
@@ -396,6 +396,8 @@
         {
             // Arrange
             MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
             var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -403,7 +405,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(), Times.Once());
+            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
         }
 
         /// <summary>
@@ -414,7 +416,8 @@
         {
             // Arrange
             MockDefaultTournament();
-
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
             var newGame = new GameBuilder()
                 .WithTechnicalDefeatValidSetScoresAwayTeamWin()
                 .WithTournamentId(1)
@@ -425,7 +428,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(), Times.Once());
+            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
         }
 
         /// <summary>
@@ -574,6 +577,8 @@
         {
             // Arrange
             MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
 
             var newGame = new GameBuilder()
                 .WithNullResult()
@@ -587,7 +592,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(expectedGameToCreate, Times.Once(), Times.Once());
+            VerifyCreateGame(expectedGameToCreate, Times.Once(), Times.Exactly(2));
         }
 
         /// <summary>
@@ -600,6 +605,8 @@
             Exception exception = null;
 
             MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
 
             Game game = new GameBuilder()
                 .WithStartDate(DateTime.Parse(BEFORE_TOURNAMENT_DATE))
@@ -618,7 +625,7 @@
             }
 
             // Assert
-            VerifyCreateGame(game, Times.Never(), Times.Once());
+            VerifyCreateGame(game, Times.Never(), Times.Never());
             VerifyExceptionThrown(exception, _wrongRoundDate);
         }
 
@@ -865,6 +872,8 @@
         {
             // Arrange
             MockTournamentSchemeTwo();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
 
             var duplicate = new GameBuilder()
               .TestRoundGame()
@@ -881,7 +890,7 @@
             sut.Create(duplicate);
 
             // Assert
-            VerifyCreateGame(duplicate, Times.Once(), Times.Once());
+            VerifyCreateGame(duplicate, Times.Once(), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -1182,6 +1191,8 @@
         {
             // Arrange
             MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
             var newGame = new GameBuilder().WithFifthSetScoreMoreThanMaxWithValidDifference().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -1189,7 +1200,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(), Times.Once());
+            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
         }
 
         /// <summary>
@@ -1252,6 +1263,8 @@
         {
             // Arrange
             MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
             var newGame = new GameBuilder().WithFifthSetScoreValid().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -1259,7 +1272,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(), Times.Once());
+            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
         }
         #endregion
 
@@ -1314,6 +1327,8 @@
         {
             // Arrange
             MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
             var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
             _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);

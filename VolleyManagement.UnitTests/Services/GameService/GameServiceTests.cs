@@ -133,8 +133,7 @@
         {
             // Arrange
             MockDefaultTournament();
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -396,8 +395,7 @@
         {
             // Arrange
             MockDefaultTournament();
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -416,8 +414,7 @@
         {
             // Arrange
             MockDefaultTournament();
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder()
                 .WithTechnicalDefeatValidSetScoresAwayTeamWin()
                 .WithTournamentId(1)
@@ -577,8 +574,7 @@
         {
             // Arrange
             MockDefaultTournament();
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
 
             var newGame = new GameBuilder()
                 .WithNullResult()
@@ -605,8 +601,7 @@
             Exception exception = null;
 
             MockDefaultTournament();
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
 
             Game game = new GameBuilder()
                 .WithStartDate(DateTime.Parse(BEFORE_TOURNAMENT_DATE))
@@ -872,8 +867,7 @@
         {
             // Arrange
             MockTournamentSchemeTwo();
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
 
             var duplicate = new GameBuilder()
               .TestRoundGame()
@@ -1191,8 +1185,7 @@
         {
             // Arrange
             MockDefaultTournament();
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder().WithFifthSetScoreMoreThanMaxWithValidDifference().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -1263,8 +1256,7 @@
         {
             // Arrange
             MockDefaultTournament();
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder().WithFifthSetScoreValid().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -1327,8 +1319,7 @@
         {
             // Arrange
             MockDefaultTournament();
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
             var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
             _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
@@ -1803,6 +1794,12 @@
         private void MockAuthServiceThrowsExeption(AuthOperation operation)
         {
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
+        }
+
+        private void MockTournamentServiceReturnTournament()
+        {
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
         }
 
         #endregion

@@ -56,8 +56,7 @@
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().Build();
 
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 
@@ -86,8 +85,7 @@
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
 
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            MockTournamentServiceReturnTournament();
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 
@@ -106,6 +104,12 @@
         private void SetupGameReportGetPivotStandings(int tournamentId, PivotStandingsDto testData)
         {
             _gameReportServiceMock.Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
+        }
+
+        private void MockTournamentServiceReturnTournament()
+        {
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
         }
     }
 }

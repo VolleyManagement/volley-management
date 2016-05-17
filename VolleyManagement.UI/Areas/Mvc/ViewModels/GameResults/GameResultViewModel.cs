@@ -78,6 +78,27 @@
         public int Round { get; set; }
 
         /// <summary>
+        /// Gets or sets the number of the game in the tournament
+        /// </summary>
+        public byte GameNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether it is allowed to edit game's result.
+        /// </summary>
+        public bool AllowEditResult { get; set; }
+
+        /// <summary>
+        /// Gets an identifier whether this game is a first round game.
+        /// </summary>
+        public bool IsFirstRoundGame
+        {
+            get
+            {
+                return this.Round == 1;
+            }
+        }
+
+        /// <summary>
         /// Gets the format of game date
         /// </summary>
         public string ShortGameDate

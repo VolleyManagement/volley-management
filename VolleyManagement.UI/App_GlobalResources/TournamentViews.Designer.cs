@@ -88,6 +88,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Team 2.
+        /// </summary>
+        public static string AwayTeamPlaceholder {
+            get {
+                return ResourceManager.GetString("AwayTeamPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to list.
         /// </summary>
         public static string BackToList {
@@ -246,6 +255,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string GameNotFoundInTournament {
             get {
                 return ResourceManager.GetString("GameNotFoundInTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Team 1.
+        /// </summary>
+        public static string HomeTeamPlaceholder {
+            get {
+                return ResourceManager.GetString("HomeTeamPlaceholder", resourceCulture);
             }
         }
         

@@ -145,6 +145,27 @@
         }
 
         /// <summary>
+        /// Test for Create method. Tournament last date which was updated is today.
+        /// Game result is created successfully.
+        /// </summary>
+        [TestMethod]
+        public void Create_LastTimeUpdated_GameCreated()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            var newGame = new GameBuilder().Build();
+            var sut = _kernel.Get<GameService>();
+            
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
+        }
+
+        /// <summary>
         /// Test for Create method. The game result instance is null. Exception is thrown during creation.
         /// </summary>
         [TestMethod]
@@ -1333,6 +1354,29 @@
         }
 
         /// <summary>
+        /// Test for Edit method. Tournament last date which was updated is today.
+        /// Game result is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_LastTimeUpdated_GameEdited()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
+            var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
+            _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Edit(game);
+
+            // Assert
+            Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
+        }
+
+        /// <summary>
         /// Test for Edit method. Game is missing and cannot be edited. Exception is thrown during editing.
         /// </summary>
         [TestMethod]
@@ -1673,6 +1717,11 @@
 
         #region Private
         private bool AreGamesEqual(Game x, Game y)
+        {
+            return new GameComparer().Compare(x, y) == 0;
+        }
+
+        private bool AreDatesEqual(DateTime? x, DateTime? y)
         {
             return new GameComparer().Compare(x, y) == 0;
         }

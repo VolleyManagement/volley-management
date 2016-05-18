@@ -578,6 +578,7 @@
             if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
+                
                 if (!IsGameResultUpdated(finishedGame, gamesInCurrentAndNextRounds))
                 {
                     foreach (Game game in gamesToUpdate)
@@ -717,7 +718,9 @@
         {
             Game oldGame = games.Where(gr => gr.Id == newGame.Id).SingleOrDefault();
 
-            bool isFreeDayNewGame = newGame.HomeTeamId != null && newGame.AwayTeamId == null;
+            bool isFreeDayNewGame = newGame.Round == 1 
+                && newGame.HomeTeamId != null
+                && newGame.AwayTeamId == null;
 
             bool isResultChanged = oldGame.Result.SetsScore.Home != newGame.Result.SetsScore.Home
                 || oldGame.Result.SetsScore.Away != newGame.Result.SetsScore.Away;

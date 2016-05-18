@@ -246,4 +246,16 @@
   <data name="NoTeamsAvailable" xml:space="preserve">
     <value>No teams available in the tournament</value>
   </data>
+  <data name="AwayTeamPlaceholder" xml:space="preserve">
+    <value>Team 2</value>
+  </data>
+  <data name="HomeTeamPlaceholder" xml:space="preserve">
+    <value>Team 1</value>
+  </data>
+  <data name="BronzeGameName" xml:space="preserve">
+    <value>Bronze match</value>
+  </data>
+  <data name="FinalGameName" xml:space="preserve">
+    <value>Final match</value>
+  </data>
 </root>

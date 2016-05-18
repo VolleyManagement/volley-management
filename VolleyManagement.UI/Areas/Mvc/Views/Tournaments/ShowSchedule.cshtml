@@ -1,4 +1,5 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.ScheduleViewModel
+@using VolleyManagement.Domain.TournamentsAggregate;
 @using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
 @{
@@ -11,58 +12,12 @@
 }
 else
 {
-    @Html.HiddenFor(model => model.TournamentId, new { @id = "tournamentId" });
-    <div style="display:none;">
-                @Html.Partial("_SwappedRounds", @Model.NumberOfRounds);
-            </div>
-
-    <h2>
-        @Resources.TournamentViews.ScheduleTitle
-        @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })
-    </h2>
-
-    if (Model.NumberOfRounds == 0)
+    if (Model.TournamentScheme == TournamentSchemeEnum.PlayOff)
     {
-        <div class="col-md-6">@Resources.TournamentViews.NoTeamsAvailable</div>
+        @Html.Partial("_PlayoffSchedule", Model)
     }
     else
     {
-        <div>
-            @Html.ActionLink(@Resources.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
-        </div>
-
-        <hr>
-        <div class="col-md-3">
-            
-
-            @for (byte i = 1; i <= Model.NumberOfRounds; i++)
-            {
-                <h4>
-                    @Resources.TournamentViews.Round @i
-                    <button id="swap_round_@i" type="button" class="btn btn-default btn-sm" onclick="SwapRounds(@i)">Swap</button>
-                </h4>
-                
-                <div class="table-bordered" id="round_@i">
-                    @if (Model.Rounds.ContainsKey(i))
-                    {
-                        foreach (var game in Model.Rounds[i])
-                        {
-                            @Html.Partial("_ScheduledGameResult", game);
-                        }
-                    }
-                    else
-                    {
-                        <div class="row">
-                            <div class="col-md-12">@Resources.TournamentViews.NoGamesScheduled</div>
-                        </div>
-                    }
-                </div>
-            }
-        </div>
+        @Html.Partial("_NonPlayoffSchedule", Model)
     }
 }
-
-@Html.Hidden("DeleteConfirmationMessage", Resources.GameResultViews.DeleteConfirmationText)
-@Scripts.Render("~/bundles/gameresultsscripts")
-@Scripts.Render("~/bundles/tournamentroundsscripts")
-

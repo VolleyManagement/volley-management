@@ -45,7 +45,7 @@
                 </div>
             </div>
         }
-        else if (!Model.SetsScore.IsEmpty())
+        else if (!Model.SetsScore.IsEmpty)
         {
             <div class="row">
                 <div class="col-md-10">
@@ -68,7 +68,7 @@
             <div class="row">
                 @foreach (var score in Model.SetScores)
                 {
-                    if (!score.IsEmpty())
+                    if (!score.IsEmpty)
                     {
                         <div class="col-md-2">
                             @score.Home:@score.Away
@@ -107,7 +107,7 @@
             </div>
         }
         @if (Model.GameDate > DateTime.Now &&
-                   Model.SetsScore.IsEmpty())
+                   Model.SetsScore.IsEmpty)
         {
             <div class="col-md-2">
                 @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })

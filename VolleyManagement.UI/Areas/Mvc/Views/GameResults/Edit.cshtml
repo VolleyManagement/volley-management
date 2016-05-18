@@ -13,6 +13,7 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.Partial("_CreateOrEdit", Model)
 
+    @Html.HiddenFor(model => model.GameNumber);
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="@Resources.GameResultViews.Save" class="btn btn-default" />

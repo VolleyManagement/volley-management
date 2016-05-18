@@ -321,14 +321,20 @@
             {
                 TournamentId = tournament.Id,
                 TournamentName = tournament.Name,
+                TournamentScheme = tournament.Scheme,
                 NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                 .GroupBy(d => d.Round)
                 .ToDictionary(
                      d => d.Key,
-                     c => c.OrderBy(t => t.GameDate)
+                     c => c.OrderBy(t => t.GameNumber).ThenBy(t => t.GameDate)
                     .Select(x => GameResultViewModel.Map(x)).ToList())
             };
+
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                FillRoundNames(scheduleViewModel);
+            }
 
             return View(scheduleViewModel);
         }
@@ -397,7 +403,12 @@
             gameViewModel.Id = game.Id;
             gameViewModel.AwayTeamId = game.AwayTeamId;
             gameViewModel.HomeTeamId = game.HomeTeamId;
-            gameViewModel.GameDate = game.GameDate.GetValueOrDefault();
+            gameViewModel.GameNumber = game.GameNumber;
+            if (game.GameDate.HasValue)
+            {
+                gameViewModel.GameDate = game.GameDate.Value;
+            }
+
             gameViewModel.Round = game.Round;
 
             return View(gameViewModel);
@@ -506,10 +517,44 @@
             return new GameViewModel
             {
                 TournamentId = tournamentId,
+                TournamentScheme = tournament.Scheme,
                 GameDate = tournament.StartDate,
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
+        }
+
+        /// <summary>
+        /// Fills round names for playoff scheme
+        /// </summary>
+        /// <param name="scheduleViewModel">View model which contains round names</param>
+        private void FillRoundNames(ScheduleViewModel scheduleViewModel)
+        {
+            var roundNames = new string[scheduleViewModel.NumberOfRounds];
+
+            for (byte i = 1; i <= scheduleViewModel.NumberOfRounds; i++)
+            {
+                var roundName = string.Empty;
+                switch (i)
+                {
+                    case 1:
+                        roundName = TournamentController.FinalRoundName;
+                        break;
+                    case 2:
+                        roundName = TournamentController.SemifinalRoundName;
+                        break;
+                    case 3:
+                        roundName = TournamentController.QuarterFinalRoundName;
+                        break;
+                    default:
+                        roundName = string.Format(TournamentController.RoundNumber, Math.Pow(2, i));
+                        break;
+                }
+
+                roundNames[roundNames.Length - i] = roundName;
+            }
+
+            scheduleViewModel.RoundNames = roundNames;
         }
         #endregion
     }

@@ -108,9 +108,19 @@
         /// <returns>List of game results of specified tournament.</returns>
         public List<GameResultDto> GetTournamentResults(int tournamentId)
         {
-            return _tournamentGameResultsQuery
+            var allGames = _tournamentGameResultsQuery
                 .Execute(
                 new TournamentGameResultsCriteria { TournamentId = tournamentId });
+
+            var tournamentInfo = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
+
+            if (tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
+            {
+                SetAbilityToEditResults(allGames);
+            }
+
+            return allGames;
         }
 
         /// <summary>
@@ -578,7 +588,6 @@
             if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
-                
                 if (!IsGameResultUpdated(finishedGame, gamesInCurrentAndNextRounds))
                 {
                     foreach (Game game in gamesToUpdate)
@@ -644,7 +653,6 @@
             ValidateEditingSchemePlayoff(nextGame);
 
             int winnerTeamId = 0;
-            
             if (finishedGame.AwayTeamId == null)
             {
                 winnerTeamId = finishedGame.HomeTeamId.Value;
@@ -703,7 +711,7 @@
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
             List<Game> gamesInCurrentRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
-            return (finishedGame.Round == numberOfRounds - 1);
+            return finishedGame.Round == numberOfRounds - 1;
         }
 
         private int GetNumberOfRounds(Game finishedGame, List<Game> games)
@@ -718,7 +726,7 @@
         {
             Game oldGame = games.Where(gr => gr.Id == newGame.Id).SingleOrDefault();
 
-            bool isFreeDayNewGame = newGame.Round == 1 
+            bool isFreeDayNewGame = newGame.Round == 1
                 && newGame.HomeTeamId != null
                 && newGame.AwayTeamId == null;
 
@@ -741,6 +749,44 @@
             {
                 throw new ArgumentException(Resources.PlayoffGameEditingError);
             }
+        }
+
+        private void SetAbilityToEditResults(List<GameResultDto> allGames)
+        {
+            var gamesToAllowEditingResults = allGames.Where(game => game.HomeTeamId.HasValue
+                && game.AwayTeamId.HasValue
+                && NextGames(allGames, game)
+                .All(next => next.HomeSetsScore == 0 && next.AwaySetsScore == 0));
+
+            foreach (var game in gamesToAllowEditingResults)
+            {
+                game.AllowEditResult = true;
+            }
+        }
+
+        private List<GameResultDto> NextGames(IEnumerable<GameResultDto> allGames, GameResultDto currentGame)
+        {
+            var numberOfRounds = Convert.ToByte(Math.Sqrt(allGames.Count()));
+            if (currentGame.Round == numberOfRounds)
+            {
+                return new List<GameResultDto>();
+            }
+
+            List<GameResultDto> games = new List<GameResultDto>();
+
+            int nextGameNumber = NextGameNumber(currentGame.GameNumber, numberOfRounds);
+            games.Add(allGames.Where(g => g.GameNumber == nextGameNumber).SingleOrDefault());
+            if (currentGame.Round == numberOfRounds - 1)
+            {
+                games.Add(allGames.Where(g => g.GameNumber == nextGameNumber + 1).SingleOrDefault());
+            }
+
+            return games;
+        }
+
+        private byte NextGameNumber(byte currentGameNumber, byte numberOfRounds)
+        {
+            return Convert.ToByte(((currentGameNumber + 1) / 2) + Math.Pow(numberOfRounds - 1, 2));
         }
 
         #endregion

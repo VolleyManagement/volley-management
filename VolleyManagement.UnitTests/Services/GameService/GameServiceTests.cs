@@ -162,6 +162,8 @@
             var newGame = new GameBuilder().WithTheSameTeams().Build();
             var sut = _kernel.Get<GameService>();
 
+            _tournamentScheduleDtoByIdQueryMock.Setup(m => m.Execute(It.IsAny<TournamentScheduleInfoCriteria>()))
+                .Returns(new TournamentScheduleDto());
             // Act
             try
             {
@@ -629,16 +631,20 @@
         public void Create_GameSetLateDateTime_ExceptionThrown()
         {
             // Arrange
+         
+
             TournamentScheduleDto tournament = new TournamentScheduleDtoBuilder()
                 .WithStartDate(DateTime.Parse(TOURNAMENT_DATE_START))
                 .WithEndDate(DateTime.Parse(TOURNAMENT_DATE_END))
                 .Build();
 
+           
             Game game = new GameBuilder()
                 .WithTournamentId(tournament.Id)
                 .WithStartDate(DateTime.Parse(LATE_TOURNAMENT_DATE))
                 .Build();
 
+            
             var sut = _kernel.Get<GameService>();
 
             // Act
@@ -702,7 +708,7 @@
             var sut = _kernel.Get<GameService>();
 
             sut.Create(game);
-
+            
             // Act
             try
             {

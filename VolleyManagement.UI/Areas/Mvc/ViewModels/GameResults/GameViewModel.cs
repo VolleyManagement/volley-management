@@ -73,6 +73,11 @@
         public DateTime GameDate { get; set; }
 
         /// <summary>
+        /// Gets or sets the game number of the game in the tournament.
+        /// </summary>
+        public byte GameNumber { get; set; }
+
+        /// <summary>
         /// Gets an identifier whether this game is a first round game.
         /// </summary>
         public bool IsFirstRoundGame
@@ -97,7 +102,8 @@
                 HomeTeamId = game.HomeTeamId,
                 AwayTeamId = game.AwayTeamId,
                 Round = game.Round,
-                GameDate = game.GameDate.Value
+                GameDate = game.GameDate.Value,
+                GameNumber = game.GameNumber
             };
         }
 
@@ -114,7 +120,8 @@
                 TournamentId = this.TournamentId,
                 HomeTeamId = this.HomeTeamId,
                 AwayTeamId = this.AwayTeamId,
-                GameDate = this.GameDate
+                GameDate = this.GameDate,
+                GameNumber = this.GameNumber
             };
         }
     }

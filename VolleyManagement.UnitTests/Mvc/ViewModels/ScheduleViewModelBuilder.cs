@@ -8,6 +8,7 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Services.GameService;
+
     /// <summary>
     /// Schedule view model builder
     /// </summary>
@@ -64,7 +65,7 @@
         /// <summary>
         /// Sets the schedule view model TournamentScheme
         /// </summary>
-        /// <param name="tournamentName">Tournament view model TournamentScheme</param>
+        /// <param name="scheme">Scheme of tournament to be set to view model</param>
         /// <returns>Schedule view model builder object</returns>
         public ScheduleViewModelBuilder WithTournamentScheme(TournamentSchemeEnum scheme)
         {
@@ -84,9 +85,9 @@
         }
 
         /// <summary>
-        /// Sets the schedule view model NumberOfRounds
+        /// Sets the round names to the schedule view model
         /// </summary>
-        /// <param name="numberOfRounds">Tournament view model NumberOfRounds</param>
+        /// <param name="roundNames">Array with the round names</param>
         /// <returns>Schedule view model builder object</returns>
         public ScheduleViewModelBuilder WithRoundNames(string[] roundNames)
         {

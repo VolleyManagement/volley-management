@@ -85,9 +85,9 @@
         }
 
         /// <summary>
-        /// Sets the schedule view model NumberOfRounds
+        /// Sets the round names to the schedule view model
         /// </summary>
-        /// <param name="roundNames">Tournament view model NumberOfRounds</param>
+        /// <param name="roundNames">Array with the round names</param>
         /// <returns>Schedule view model builder object</returns>
         public ScheduleViewModelBuilder WithRoundNames(string[] roundNames)
         {

@@ -156,6 +156,7 @@
                 AwayTeamId = this.AwayTeamId,
                 Round = Convert.ToByte(this.Round),
                 GameDate = this.GameDate,
+                GameNumber = this.GameNumber,
                 Result = new Result
                 {
                     SetsScore = this.SetsScore,

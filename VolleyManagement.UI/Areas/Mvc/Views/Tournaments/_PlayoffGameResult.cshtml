@@ -97,13 +97,13 @@
                     </div>
                 </div>
             }
-
-            <div class="row">
-                <div class="col-md-2">
-                    @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-                </div>
-            </div>
         }
+
+        <div class="row">
+            <div class="col-md-2">
+                @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+            </div>
+        </div>
     }
     else if (Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)
     {

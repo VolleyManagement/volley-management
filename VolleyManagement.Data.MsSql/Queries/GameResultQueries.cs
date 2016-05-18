@@ -66,7 +66,8 @@
                 .Where(gr => gr.TournamentId == criteria.TournamentId)
                 .Select(GetGameResultDtoMapping());
 
-            return gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
+            List<GameResultDto> list = gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
+            return list;
         }
 
         /// <summary>

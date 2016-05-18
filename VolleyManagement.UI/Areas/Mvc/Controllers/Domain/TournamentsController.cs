@@ -327,7 +327,7 @@
                 .GroupBy(d => d.Round)
                 .ToDictionary(
                      d => d.Key,
-                     c => c.OrderBy(t => t.GameDate)
+                     c => c.OrderBy(t => t.GameNumber).ThenBy(t => t.GameDate)
                     .Select(x => GameResultViewModel.Map(x)).ToList())
             };
 

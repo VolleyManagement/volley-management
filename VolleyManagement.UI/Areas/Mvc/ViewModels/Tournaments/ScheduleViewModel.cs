@@ -50,14 +50,25 @@
         public string[] RoundNames { get; set; }
 
         /// <summary>
-        /// Gets the number of the last game in tournament (for playoff scheme)
+        /// Checks if the game is the final game (for playoff scheme)
         /// </summary>
-        public int LastGameNumber 
+        /// <param name="game">Game to check</param>
+        /// <returns>True, if game is the final</returns>
+        public bool IsFinal(GameResultViewModel game) 
         {
-            get 
-            {
-                return NumberOfRounds == 0 ? 0 : Rounds.Last().Value.Last().GameNumber;
-            }
+            return NumberOfRounds != 0 &&
+                   game.GameNumber == Rounds.Last().Value.Last().GameNumber;
+        }
+
+        /// <summary>
+        /// Checks if the game is the bronze match (for playoff scheme)
+        /// </summary>
+        /// <param name="game">Game to check</param>
+        /// <returns>True, if game is the bronze match</returns>
+        public bool IsBronzeMatch(GameResultViewModel game)
+        {
+            return NumberOfRounds != 0 &&
+                   game.GameNumber == Rounds.Last().Value.Last().GameNumber - 1;
         }
     }
 }

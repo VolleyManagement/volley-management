@@ -22,11 +22,11 @@ else
             <div class="table-bordered">
                 @foreach (var game in Model.Rounds[i])
                 {
-                    if (game.GameNumber == Model.LastGameNumber)
+                    if (Model.IsFinal(game))
                     {
                         <h5>@Resources.TournamentViews.FinalGameName:</h5>
                     }
-                    else if (game.GameNumber == Model.LastGameNumber - 1)
+                    else if (Model.IsBronzeMatch(game))
                     {
                         <h5>@Resources.TournamentViews.BronzeGameName:</h5>
                     }

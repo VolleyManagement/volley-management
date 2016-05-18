@@ -413,8 +413,12 @@
                         if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff)
                         {
                             throw new ArgumentException(
-                                Resources
-                                .SameFreeDayGameInRound);
+                                Resources.SameFreeDayGameInRound);
+                        }
+                        else if (!GameValidation.IsFreeDayGame(newGame))
+                        {
+                            throw new ArgumentException(
+                                string.Format(Resources.SameTeamInRound, game.HomeTeamName));
                         }
                     }
                     else
@@ -627,7 +631,7 @@
 
         private void ClearGame(Game finishedGame, Game newGame)
         {
-            if (finishedGame.GameNumber % 2 == 0)
+            if (finishedGame.GameNumber % 2 != 0)
             {
                 newGame.HomeTeamId = null;
             }
@@ -663,7 +667,7 @@
                 finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
             }
 
-            if (finishedGame.GameNumber % 2 == 0)
+            if (finishedGame.GameNumber % 2 != 0)
             {
                 nextGame.HomeTeamId = winnerTeamId;
             }
@@ -686,7 +690,7 @@
             int loserTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
                 finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
 
-            if (finishedGame.GameNumber % 2 == 0)
+            if (finishedGame.GameNumber % 2 != 0)
             {
                 nextGame.HomeTeamId = loserTeamId;
             }

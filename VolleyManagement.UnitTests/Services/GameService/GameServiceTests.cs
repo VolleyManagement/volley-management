@@ -631,8 +631,6 @@
         public void Create_GameSetLateDateTime_ExceptionThrown()
         {
             // Arrange
-         
-
             TournamentScheduleDto tournament = new TournamentScheduleDtoBuilder()
                 .WithStartDate(DateTime.Parse(TOURNAMENT_DATE_START))
                 .WithEndDate(DateTime.Parse(TOURNAMENT_DATE_END))
@@ -644,7 +642,8 @@
                 .WithStartDate(DateTime.Parse(LATE_TOURNAMENT_DATE))
                 .Build();
 
-            
+            SetupGetTournamentDto(new TournamentScheduleDto());
+            SetupGetTournamentResults(tournament.Id, (new GameServiceTestFixture()).TestGameResults().Build());
             var sut = _kernel.Get<GameService>();
 
             // Act
@@ -705,6 +704,9 @@
                 .TestRoundGame()
                 .Build();
 
+            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
+            SetupGetTournamentResults(1, (new GameServiceTestFixture()).TestGameResults().Build());
+           
             var sut = _kernel.Get<GameService>();
 
             sut.Create(game);
@@ -741,7 +743,9 @@
                 .TestFreeDayGame()
                 .WithId(2)
                 .Build();
-
+            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
+            SetupGetTournamentResults(1, (new GameServiceTestFixture()).TestGameResults().Build());
+           
             var sut = _kernel.Get<GameService>();
             sut.Create(freeDayGame);
 
@@ -778,6 +782,9 @@
                 .WithHomeTeamId(3)
                 .Build();
 
+            SetupGetTournamentDto(new TournamentScheduleDto());
+            SetupGetTournamentResults(1, (new GameServiceTestFixture()).TestGameResults().Build());
+           
             var sut = _kernel.Get<GameService>();
             sut.Create(gameInOneRound);
 
@@ -1331,6 +1338,9 @@
             var expected = new GameServiceTestFixture().TestGameResults().Build();
             var sut = _kernel.Get<GameService>();
 
+            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
+            SetupGetTournamentResults(1, (new GameServiceTestFixture()).TestGameResults().Build());
+
             SetupGetTournamentResults(TOURNAMENT_ID, expected);
 
             // Act
@@ -1470,10 +1480,12 @@
             List<GameResultDto> gameInfo = new GameServiceTestFixture()
                 .TestMinimumOddTeamsPlayOffSchedule()
                 .Build();
-
+           
             MockTournamentSchemePlayoff(
                 gameInfo,
                 games);
+
+            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
 
             Game finishedGame = new GameBuilder()
                 .WithId(2)
@@ -1753,6 +1765,8 @@
 
             SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
 
+            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
+            SetupGetTournamentResults(1, (new GameServiceTestFixture()).TestGameResults().Build());
             // Act
             sut.RemoveAllGamesInTournament(TOURNAMENT_ID);
 
@@ -1772,6 +1786,7 @@
 
             SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
 
+            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
             // Act
             sut.RemoveAllGamesInTournament(TOURNAMENT_ID);
 
@@ -1809,6 +1824,12 @@
         private bool AreGamesEqual(Game x, Game y)
         {
             return new GameComparer().Compare(x, y) == 0;
+        }
+
+        private void SetupGetTournamentDto(TournamentScheduleDto torunamentInfo)
+        {
+            _tournamentScheduleDtoByIdQueryMock.Setup(m => m.Execute(It.IsAny<TournamentScheduleInfoCriteria>()))
+              .Returns(torunamentInfo);
         }
 
         private void SetupGet(GameResultDto gameResult)

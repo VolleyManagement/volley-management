@@ -403,6 +403,7 @@
             gameViewModel.Id = game.Id;
             gameViewModel.AwayTeamId = game.AwayTeamId;
             gameViewModel.HomeTeamId = game.HomeTeamId;
+            gameViewModel.GameNumber = game.GameNumber;
             if (game.GameDate.HasValue)
             {
                 gameViewModel.GameDate = game.GameDate.Value;

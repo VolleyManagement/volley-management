@@ -141,7 +141,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
+            VerifyCreateGame(newGame, Times.Once());
         }
 
         /// <summary>
@@ -424,7 +424,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
+            VerifyCreateGame(newGame, Times.Once());
         }
 
         /// <summary>
@@ -446,7 +446,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
+            VerifyCreateGame(newGame, Times.Once());
         }
 
         /// <summary>
@@ -609,7 +609,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(expectedGameToCreate, Times.Once(), Times.Exactly(2));
+            VerifyCreateGame(expectedGameToCreate, Times.Once());
         }
 
         /// <summary>
@@ -905,7 +905,7 @@
             sut.Create(duplicate);
 
             // Assert
-            VerifyCreateGame(duplicate, Times.Once(), Times.Exactly(2));
+            VerifyCreateGame(duplicate, Times.Once());
         }
 
         [TestMethod]
@@ -1214,7 +1214,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
+            VerifyCreateGame(newGame, Times.Once());
         }
 
         /// <summary>
@@ -1285,7 +1285,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once(), Times.Exactly(2));
+            VerifyCreateGame(newGame, Times.Once());
         }
         #endregion
 
@@ -1350,7 +1350,7 @@
             sut.Edit(game);
 
             // Assert
-            VerifyEditGame(game, Times.Once(), Times.Exactly(2));
+            VerifyEditGame(game, Times.Once());
         }
 
         /// <summary>

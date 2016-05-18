@@ -98,11 +98,9 @@
             }
 
             ValidateGame(game);
-
+            UpdateTournamentLastTimeUpdated(game);
             _gameRepository.Add(game);
             _gameRepository.UnitOfWork.Commit();
-
-            UpdateTournamentLastTimeUpdated(game);
         }
 
         /// <summary>
@@ -146,9 +144,8 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
 
-            _gameRepository.UnitOfWork.Commit();
-
             UpdateTournamentLastTimeUpdated(game);
+            _gameRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -170,9 +167,8 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
 
-            _gameRepository.UnitOfWork.Commit();
-
             UpdateTournamentLastTimeUpdated(game);
+            _gameRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -543,7 +539,6 @@
             var tournament = _tournamentService.Get(game.TournamentId);
             tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
             _tournamentRepository.Update(tournament);
-            _tournamentRepository.UnitOfWork.Commit();
         }
 
         #endregion

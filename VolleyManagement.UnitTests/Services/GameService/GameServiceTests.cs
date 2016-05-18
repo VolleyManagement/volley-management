@@ -620,7 +620,7 @@
             }
 
             // Assert
-            VerifyCreateGame(game, Times.Never(), Times.Never());
+            VerifyCreateGame(game, Times.Never());
             VerifyExceptionThrown(exception, _wrongRoundDate);
         }
 
@@ -1609,7 +1609,7 @@
             sut.Edit(testData);
 
             // Assert
-            VerifyEditGame(testData, Times.Never(), Times.Never());
+            VerifyEditGame(testData, Times.Never());
             VerifyCheckAccess(AuthOperations.Games.Edit, Times.Once());
         }
 
@@ -1631,7 +1631,7 @@
             sut.EditGameResult(testData);
 
             // Assert
-            VerifyEditGame(testData, Times.Never(), Times.Never());
+            VerifyEditGame(testData, Times.Never());
             VerifyCheckAccess(AuthOperations.Games.EditResult, Times.Once());
         }
 
@@ -1705,11 +1705,18 @@
                 .Throws(new ConcurrencyException());
         }
 
-        private void VerifyCreateGame(Game game, Times times, Times uowTimes)
+        private void VerifyCreateGame(Game game, Times times)
         {
             _gameRepositoryMock.Verify(
                 m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
-            _unitOfWorkMock.Verify(m => m.Commit(), uowTimes);
+            _unitOfWorkMock.Verify(m => m.Commit(), times);
+        }
+
+        private void VerifyCreateGame(Game game, Times times, Times unitOfWorkTimes)
+        {
+            _gameRepositoryMock.Verify(
+                m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
+            _unitOfWorkMock.Verify(m => m.Commit(), unitOfWorkTimes);
         }
 
         private void VerifyEditGame(Game game, Times times)

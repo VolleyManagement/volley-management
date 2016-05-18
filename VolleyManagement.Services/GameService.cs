@@ -575,28 +575,56 @@
                 });
 
             // Schedule next games only if finished game is not in last round
-            if (IsGameResultUpdated(finishedGame, gamesInCurrentAndNextRounds) &&
-                !IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
+            if (!IsGameInLastRound(finishedGame, gamesInCurrentAndNextRounds))
             {
-                List<Game> gamesInCurrentRound = gamesInCurrentAndNextRounds
+                gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
+                if (!IsGameResultUpdated(finishedGame, gamesInCurrentAndNextRounds))
+                {
+                    foreach (Game game in gamesToUpdate)
+                    {
+                        ClearGame(finishedGame, game);
+                    }
+                }
+            }
+
+            return gamesToUpdate;
+        }
+
+        private List<Game> GetGamesToUpdate(Game finishedGame, List<Game> gamesInCurrentAndNextRounds)
+        {
+            List<Game> gamesToUpdate = new List<Game>();
+
+            List<Game> gamesInCurrentRound = gamesInCurrentAndNextRounds
                         .Where(g => g.Round == finishedGame.Round)
                         .ToList();
 
-                if (IsSemiFinalGame(finishedGame, gamesInCurrentRound))
-                {
-                    gamesToUpdate.Add(
-                        GetNextLoserGame(
-                        finishedGame,
-                        gamesInCurrentAndNextRounds));
-                }
-
+            if (IsSemiFinalGame(finishedGame, gamesInCurrentRound)
+                       && (finishedGame.AwayTeamId != null))
+            {
                 gamesToUpdate.Add(
-                    GetNextWinnerGame(
+                    GetNextLoserGame(
                     finishedGame,
                     gamesInCurrentAndNextRounds));
             }
 
+            gamesToUpdate.Add(
+                GetNextWinnerGame(
+                finishedGame,
+                gamesInCurrentAndNextRounds));
+
             return gamesToUpdate;
+        }
+
+        private void ClearGame(Game finishedGame, Game newGame)
+        {
+            if (finishedGame.GameNumber % 2 == 0)
+            {
+                newGame.HomeTeamId = null;
+            }
+            else
+            {
+                newGame.AwayTeamId = null;
+            }
         }
 
         private Game GetNextWinnerGame(Game finishedGame, List<Game> games)
@@ -614,8 +642,17 @@
             // Check if next game can be scheduled
             ValidateEditingSchemePlayoff(nextGame);
 
-            int winnerTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
+            int winnerTeamId = 0;
+            
+            if (finishedGame.AwayTeamId == null)
+            {
+                winnerTeamId = finishedGame.HomeTeamId.Value;
+            }
+            else
+            {
+                winnerTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
                 finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
+            }
 
             if (finishedGame.GameNumber % 2 == 0)
             {
@@ -665,11 +702,7 @@
             int numberOfRounds = GetNumberOfRounds(finishedGame, games);
             List<Game> gamesInCurrentRound = games.Where(g => g.Round == finishedGame.Round).ToList();
 
-            return (finishedGame.Round == numberOfRounds - 1
-                && finishedGame.Round != 1)
-                || (finishedGame.Round == 1
-                && gamesInCurrentRound[0].AwayTeamId != null
-                && gamesInCurrentRound[1].AwayTeamId != null);
+            return (finishedGame.Round == numberOfRounds - 1);
         }
 
         private int GetNumberOfRounds(Game finishedGame, List<Game> games)
@@ -684,13 +717,18 @@
         {
             Game oldGame = games.Where(gr => gr.Id == newGame.Id).SingleOrDefault();
 
-            return oldGame.Result.SetsScore.Home != newGame.Result.SetsScore.Home
+            bool isFreeDayNewGame = newGame.HomeTeamId != null && newGame.AwayTeamId == null;
+
+            bool isResultChanged = oldGame.Result.SetsScore.Home != newGame.Result.SetsScore.Home
                 || oldGame.Result.SetsScore.Away != newGame.Result.SetsScore.Away;
+
+            return isFreeDayNewGame || isResultChanged;
         }
 
         private bool IsGameInLastRound(Game finishedGame, List<Game> games)
         {
-            return games.Max(g => g.Round) == finishedGame.Round;
+            byte roundNum = games.Max(g => g.Round);
+            return roundNum == finishedGame.Round;
         }
 
         private void ValidateEditingSchemePlayoff(Game nextGame)

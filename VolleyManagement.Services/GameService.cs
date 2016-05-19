@@ -594,10 +594,9 @@
                 Game oldGame = gamesInCurrentAndNextRounds.Where(gr => gr.Id == finishedGame.Id).SingleOrDefault();
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
                 
-                if ((!finishedGame.AwayTeamId.HasValue && oldGame.AwayTeamId.HasValue)
-                    || (finishedGame.AwayTeamId.HasValue
+                if (finishedGame.AwayTeamId.HasValue
                     && finishedGame.Result.SetsScore.Home == 0
-                    && finishedGame.Result.SetsScore.Away == 0))
+                    && finishedGame.Result.SetsScore.Away == 0)
                 {
                     foreach (Game game in gamesToUpdate)
                     {
@@ -636,7 +635,7 @@
 
         private void ClearGame(Game finishedGame, Game newGame)
         {
-            if (finishedGame.GameNumber % 2 == 0)
+            if (finishedGame.GameNumber % 2 != 0)
             {
                 newGame.HomeTeamId = null;
             }
@@ -729,22 +728,6 @@
 
             return Convert.ToInt32(Math.Log(gamesInCurrntRound.Count(), 2))
                 + finishedGame.Round;
-        }
-
-        private bool IsChangedToFreeDay(Game newGame, Game oldGame)
-        {
-            bool isFreeDayNewGame = newGame.Round == 1
-                && newGame.HomeTeamId != null
-                && newGame.AwayTeamId == null
-                && oldGame.AwayTeamId != null;
-
-            return isFreeDayNewGame;
-        }
-
-        private bool IsChangedGameResult(Game newGame, Game oldGame)
-        {
-            return oldGame.Result.SetsScore.Home != newGame.Result.SetsScore.Home
-                || oldGame.Result.SetsScore.Away != newGame.Result.SetsScore.Away;
         }
 
         private bool IsGameInLastRound(Game finishedGame, List<Game> games)

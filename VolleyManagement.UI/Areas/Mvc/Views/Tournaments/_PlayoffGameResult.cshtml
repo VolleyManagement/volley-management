@@ -207,9 +207,14 @@
             }
 
             <div class="row">
-                <div class="col-md-2">
-                    @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
-                </div>
+               @{
+                    if (Model.AllowEditResult)
+                    {
+                        <div class="col-md-2">
+                            @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
+                        </div>
+                    }
+                }
                 <div class="col-md-2">
                     @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
                 </div>

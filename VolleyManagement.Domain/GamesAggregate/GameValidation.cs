@@ -85,7 +85,7 @@
         /// <returns>True if team in game is scheduled in free day</returns>
         public static bool IsFreeDayGame(GameResultDto gameResult)
         {
-            return !gameResult.AwayTeamId.HasValue;
+            return !gameResult.AwayTeamId.HasValue || !gameResult.HomeTeamId.HasValue;
         }
     }
 }

@@ -99,11 +99,14 @@
             }
         }
 
-        <div class="row">
-            <div class="col-md-2">
-                @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+        if (Model.AllowEditResult)
+        {
+            <div class="row">
+                <div class="col-md-2">
+                    @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                </div>
             </div>
-        </div>
+        }
     }
     else if (Model.HomeTeamId.HasValue && Model.AwayTeamId.HasValue)
     {
@@ -205,20 +208,15 @@
                     </div>
                 </div>
 
-            <div class="row">
-               @{
-                    if (Model.AllowEditResult)
-                    {
-                <div class="col-md-2">
-                    @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
+                <div class="row">
+                    <div class="col-md-2">
+                        @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
+                    </div>
+                    <div class="col-md-2">
+                        @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                    </div>
                 </div>
-                    }
-                }
-                <div class="col-md-2">
-                    @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-                </div>
-            </div>
-        }
+            }
             else
             {
                 <div class="row">

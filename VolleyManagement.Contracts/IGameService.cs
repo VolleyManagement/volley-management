@@ -35,6 +35,12 @@
         void Edit(Game game);
 
         /// <summary>
+        /// Edits result of specified instance of game.
+        /// </summary>
+        /// <param name="game">Game which result have to be to update.</param>
+        void EditGameResult(Game game);
+
+        /// <summary>
         /// Deletes game by its identifier.
         /// </summary>
         /// <param name="id">Identifier of game.</param>

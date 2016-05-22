@@ -8,8 +8,10 @@
     using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
@@ -29,14 +31,17 @@
         /// Holds PlayerService instance
         /// </summary>
         private readonly IPlayerService _playerService;
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class
         /// </summary>
         /// <param name="playerService">Instance of the class that implements IPlayerService.</param>
-        public PlayersController(IPlayerService playerService)
+        /// <param name="authService">The authorization service</param>
+        public PlayersController(IPlayerService playerService, IAuthorizationService authService)
         {
             this._playerService = playerService;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -50,8 +55,14 @@
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
-                ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
-                return View(playersOnPage);
+                playersOnPage.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                {
+                    AuthOperations.Players.Create,
+                    AuthOperations.Players.Edit,
+                    AuthOperations.Players.Delete
+                });
+                var referrerViewModel = new PlayersListReferrerViewModel(playersOnPage, this.HttpContext.Request.RawUrl);
+                return View(referrerViewModel);
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -75,6 +86,7 @@
             }
 
             var model = new PlayerRefererViewModel(player, returnUrl);
+            model.AllowedOperations = this._authService.GetAllowedOperations(AuthOperations.Players.Edit);
             return View(model);
         }
 
@@ -198,7 +210,7 @@
         }
 
         /// <summary>
-        /// Returns list of free players which are satisfy specified search string, team and exclude list 
+        /// Returns list of free players which are satisfy specified search string, team and exclude list
         /// </summary>
         /// <param name="searchString">Name of player</param>
         /// <param name="excludeList">list of players ids should be excluded from result</param>
@@ -209,7 +221,7 @@
         {
             searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
             var query = this._playerService.Get()
-                            .Where(p => (p.FirstName + p.LastName).Contains(searchString) 
+                            .Where(p => (p.FirstName + p.LastName).Contains(searchString)
                                    || (p.LastName + p.FirstName).Contains(searchString));
 
             if (includeTeam.HasValue)
@@ -223,7 +235,7 @@
                     var selectedIds = this.ParseIntList(includeList);
                     query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
                 }
-            } 
+            }
             else if (string.IsNullOrEmpty(includeList))
             {
                 query = query.Where(p => p.TeamId == null);
@@ -239,7 +251,7 @@
                 var selectedIds = this.ParseIntList(excludeList);
                 query = query.Where(p => !selectedIds.Contains(p.Id));
             }
-            
+
             var result = query.OrderBy(p => p.LastName)
                               .ToList()
                               .Select(p => PlayerNameViewModel.Map(p));

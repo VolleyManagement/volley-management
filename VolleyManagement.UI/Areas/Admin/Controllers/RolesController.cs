@@ -2,8 +2,8 @@
 {
     using System;
     using System.Web.Mvc;
-
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Admin.Models;
 
     /// <summary>
@@ -13,14 +13,19 @@
     public class RolesController : Controller
     {
         private readonly IRolesService _rolesService;
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RolesController"/> class.
         /// </summary>
         /// <param name="rolesService"> The roles service. </param>
-        public RolesController(IRolesService rolesService)
+        /// <param name="authService">Authorization service</param>
+        public RolesController(
+                IRolesService rolesService,
+                IAuthorizationService authService)
         {
             this._rolesService = rolesService;
+            this._authService = authService;
         }
 
         /// <summary>
@@ -29,6 +34,8 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
+            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
+
             var roles = _rolesService.GetAllRoles().ConvertAll(r => new RoleViewModel(r));
             return View(roles);
         }
@@ -40,6 +47,8 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Edit(int id)
         {
+            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
+
             var allUsers = _rolesService.GetAllUsersWithRoles();
             var role = _rolesService.GetRole(id);
             var result = new RoleEditViewModel(role);
@@ -56,6 +65,8 @@
         [HttpPost]
         public ActionResult Edit(ModifiedRoleViewModel modifiedRoles)
         {
+            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
+
             try
             {
                 _rolesService.ChangeRoleMembership(
@@ -78,6 +89,8 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Details(int id)
         {
+            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
+
             var role = _rolesService.GetRole(id);
             var result = new RoleDetailsViewModel(role);
 

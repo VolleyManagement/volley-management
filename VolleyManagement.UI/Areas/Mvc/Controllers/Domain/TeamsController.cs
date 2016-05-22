@@ -62,7 +62,8 @@
                                                                           })
             };
 
-            return View(teams);
+            var referrerViewModel = new TeamCollectionReferrerViewModel(teams, this.HttpContext.Request.RawUrl);
+            return View(referrerViewModel);
         }
 
         /// <summary>
@@ -102,8 +103,8 @@
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                        result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
-                    }
+                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                }
                 catch (ArgumentException ex)
                 {
                     this.ModelState.AddModelError(string.Empty, ex.Message);
@@ -119,7 +120,7 @@
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
                 }
-            }            
+            }
 
             return result;
         }
@@ -165,7 +166,7 @@
                     if (teamViewModel.Roster != null)
                     {
                         _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
-                }
+                    }
 
                     teamViewModel.Id = domainTeam.Id;
                     result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
@@ -185,7 +186,7 @@
                     this.ModelState.AddModelError(string.Empty, ex.Message);
                     result = this.Json(this.ModelState);
                 }
-                }
+            }
 
             return result;
         }
@@ -221,8 +222,9 @@
         /// Details action method for specific team.
         /// </summary>
         /// <param name="id">Team ID</param>
+        /// <param name="returnUrl">URL for back link</param>
         /// <returns>View with specific team.</returns>
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(int id = 0, string returnUrl = "")
         {
             var team = _teamService.Get(id);
 
@@ -231,13 +233,13 @@
                 return HttpNotFound();
             }
 
-            ViewBag.ReturnUrl = this.HttpContext.Request.RawUrl;
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
-            return View(viewModel);
+            var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
+            return View(refererViewModel);
         }
 
         /// <summary>
-        /// Returns list of all teams  
+        /// Returns list of all teams
         /// </summary>
         /// <returns>Json list of teams</returns>
         public JsonResult GetAllTeams()

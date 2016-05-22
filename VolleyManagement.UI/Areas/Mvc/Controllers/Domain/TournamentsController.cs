@@ -137,10 +137,10 @@
                                                     + DAYS_FOR_APPLYING_PERIOD
                                                     + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
                                                     + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START 
                                                     + DAYS_FOR_APPLYING_PERIOD
-                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
-                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START 
+                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START 
                                                     + DAYS_FOR_TRANSFER_PERIOD)
             };
 
@@ -246,7 +246,9 @@
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = this._tournamentService.GetAllTournamentTeams(tournamentId);
-            return View(new TournamentTeamsListViewModel(resultTeams, tournamentId));
+            var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
+            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, this.HttpContext.Request.RawUrl);
+            return View(referrerViewModel);
         }
 
         /// <summary>
@@ -328,12 +330,33 @@
                 .ToDictionary(
                      d => d.Key,
                      c => c.OrderBy(t => t.GameNumber).ThenBy(t => t.GameDate)
-                    .Select(x => GameResultViewModel.Map(x)).ToList())
+                    .Select(x => GameResultViewModel.Map(x)).ToList()),
+                AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                                                                          {
+                                                                            AuthOperations.Games.Create,
+                                                                            AuthOperations.Games.Edit,
+                                                                            AuthOperations.Games.Delete,
+                                                                            AuthOperations.Games.SwapRounds,
+                                                                            AuthOperations.Games.EditResult
+                                                                          })
             };
 
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
             {
                 FillRoundNames(scheduleViewModel);
+            }
+
+            for (byte i = 0; i < scheduleViewModel.Rounds.Count; i++)
+            {
+                foreach (var game in scheduleViewModel.Rounds.ElementAt(i).Value)
+                {
+                    game.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                                                                          {
+                                                                            AuthOperations.Games.Edit,
+                                                                            AuthOperations.Games.Delete,
+                                                                            AuthOperations.Games.EditResult
+                                                                          });
+                }
             }
 
             return View(scheduleViewModel);
@@ -434,7 +457,7 @@
             {
                 this.ModelState.AddModelError("ValidationError", e.Message);
             }
-            catch (MissingEntityException e)
+            catch (MissingEntityException e) 
             {
                 this.ModelState.AddModelError("LoadError", e.Message);
                 return View();
@@ -522,7 +545,7 @@
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
-        }
+        } 
 
         /// <summary>
         /// Fills round names for playoff scheme

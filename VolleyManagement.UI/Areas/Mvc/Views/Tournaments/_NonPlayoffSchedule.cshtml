@@ -1,4 +1,5 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.ScheduleViewModel
+@using VolleyManagement.Domain.RolesAggregate;
 
 @Html.HiddenFor(model => model.TournamentId, new { @id = "tournamentId" })
 <div style="display:none;">
@@ -16,17 +17,24 @@
 }
 else
 {
-    <div>
-        @Html.ActionLink(@Resources.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
-    </div>
+    if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Create))
+    {
+        <div>
+            @Html.ActionLink(@Resources.TournamentViews.ScheduleGame, "ScheduleGame", new { tournamentId = Model.TournamentId })
+        </div>
+    }
 
     <hr>
     <div class="col-md-3">
+
         @for (byte i = 1; i <= Model.NumberOfRounds; i++)
         {
             <h4>
                 @Resources.TournamentViews.Round @i
-                <button id="swap_round_@i" type="button" class="btn btn-default btn-sm" onclick="SwapRounds(@i)">Swap</button>
+                @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.SwapRounds))
+                {
+                    <button id="swap_round_@i" type="button" class="btn btn-default btn-sm" onclick="SwapRounds(@i)">Swap</button>
+                }
             </h4>
 
             <div class="table-bordered" id="round_@i">

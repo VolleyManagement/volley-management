@@ -1,4 +1,5 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayerRefererViewModel
+﻿@using VolleyManagement.Domain.RolesAggregate;
 
 @{
     ViewBag.Title = Resources.PlayerViews.PlayerDetailsTitle;
@@ -25,6 +26,9 @@
     <div class="display-field">@Model.Model.Weight</div>
 </fieldset>
 <p>
-    @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) |
+@if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
+{
+    @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) @:|
+}
     <a href="@Model.Referer">@Resources.PlayerViews.Back</a>
 </p>

@@ -77,12 +77,16 @@
         /// <returns>List of Game of game result.</returns>
         public List<Game> Execute(TournamentRoundsGameResultsCriteria criteria)
         {
+            // Method ToList() used because it gives opportunity to load
+            // specified game results into memory and then convert them.
+            // In case of using method Select(Mapper) there is an issue with EF query.
+            // If method Select() called set scores mapped in wrong order.
             var games = _dalGameResults
                  .Where(gr => gr.TournamentId == criteria.TournamentId
                      && (gr.RoundNumber == criteria.FirstRoundNumber || gr.RoundNumber == criteria.SecondRoundNumber))
-                 .Select(GetGameMapping());
+                     .ToList();
 
-            return games.ToList();
+            return games.ConvertAll(GetGameMapping());
         }
 
         /// <summary>
@@ -95,9 +99,9 @@
             var games = _dalGameResults
                 .Where(gr => gr.TournamentId == criteria.TournamentId
                     && criteria.RoundNumbers.Any(n => gr.RoundNumber == n))
-                    .Select(GetGameMapping());
+                    .ToList();
 
-            return games.ToList();
+            return games.ConvertAll(GetGameMapping());
         }
 
         #endregion
@@ -133,7 +137,7 @@
             };
         }
 
-        private static Expression<Func<GameResultEntity, Game>> GetGameMapping()
+        private Converter<GameResultEntity, Game> GetGameMapping()
         {
             return gr => new Game
             {
@@ -154,7 +158,8 @@
                          new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score },
                          new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score }
                     },
-                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore }
+                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore },
+                    IsTechnicalDefeat = gr.IsTechnicalDefeat
                 }
             };
         }

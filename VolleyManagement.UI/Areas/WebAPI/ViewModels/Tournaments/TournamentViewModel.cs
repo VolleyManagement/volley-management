@@ -122,20 +122,20 @@
         public static TournamentViewModel Map(Tournament tournament)
         {
             var tournamentViewModel = new TournamentViewModel
-                                          {
-                                              Id = tournament.Id,
-                                              Name = tournament.Name,
-                                              Description = tournament.Description,
-                                              Season = tournament.Season,
-                                              RegulationsLink = tournament.RegulationsLink,
-                                              Scheme = tournament.Scheme.ToDescription(),
-                                              GamesStart = tournament.GamesStart,
-                                              GamesEnd = tournament.GamesEnd,
-                                              ApplyingPeriodStart = tournament.ApplyingPeriodStart,
-                                              ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
-                                              TransferStart = tournament.TransferStart,
-                                              TransferEnd = tournament.TransferEnd
-                                          };
+            {
+                Id = tournament.Id,
+                Name = tournament.Name,
+                Description = tournament.Description,
+                Season = tournament.Season,
+                RegulationsLink = tournament.RegulationsLink,
+                Scheme = tournament.Scheme.ToDescription(),
+                GamesStart = tournament.GamesStart,
+                GamesEnd = tournament.GamesEnd,
+                ApplyingPeriodStart = tournament.ApplyingPeriodStart,
+                ApplyingPeriodEnd = tournament.ApplyingPeriodEnd,
+                TransferStart = tournament.TransferStart,
+                TransferEnd = tournament.TransferEnd
+            };
 
             return tournamentViewModel;
         }
@@ -160,7 +160,7 @@
             tournament.ApplyingPeriodStart = this.ApplyingPeriodStart;
             tournament.ApplyingPeriodEnd = this.ApplyingPeriodEnd;
             tournament.TransferStart = this.TransferStart;
-            tournament.TransferEnd = this.TransferEnd; 
+            tournament.TransferEnd = this.TransferEnd;
 
             return tournament;
         }

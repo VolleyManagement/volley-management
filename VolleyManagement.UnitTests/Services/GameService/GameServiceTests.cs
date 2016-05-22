@@ -8,6 +8,7 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Contracts;
@@ -16,6 +17,7 @@
     using VolleyManagement.Data.Queries.GameResult;
     using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
@@ -28,6 +30,8 @@
     [TestClass]
     public class GameServiceTests
     {
+        #region Fields and constants
+
         private const int GAME_RESULT_ID = 1;
 
         private const int TOURNAMENT_ID = 1;
@@ -50,9 +54,15 @@
 
         private const byte SECOND_ROUND_NUMBER = 2;
 
+        private const int SPECIFIC_GAME_ID = 2;
+
+        private const int ANOTHER_GAME_ID = SPECIFIC_GAME_ID + 1;
+
         private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
 
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
+
+        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
         private readonly Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock
             = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
@@ -78,6 +88,10 @@
 
         private IKernel _kernel;
 
+        #endregion
+
+        #region Constuctor
+
         /// <summary>
         /// Initializes test data.
         /// </summary>
@@ -97,10 +111,13 @@
             _kernel.Bind<IQuery<List<Game>, GamesByRoundCriteria>>()
                 .ToConstant(_gamesByTournamentIdInRoundsByNumbersQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
+            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;
         }
+
+        #endregion
 
         #region Create
         /// <summary>
@@ -1796,6 +1813,133 @@
                 .Build();
         }
 
+        #region Authorization game tests
+
+        /// <summary>
+        /// Test for Create() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Create_CreateNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new GameBuilder().WithId(SPECIFIC_GAME_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Games.Create);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(testData);
+
+            // Assert
+            VerifyCreateGame(testData, Times.Never());
+            VerifyCheckAccess(AuthOperations.Games.Create, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Delete_DeleteNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new GameBuilder().WithId(SPECIFIC_GAME_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Games.Delete);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Delete(testData.Id);
+
+            // Assert
+            VerifyDeleteGame(testData.Id, Times.Never());
+            VerifyCheckAccess(AuthOperations.Games.Delete, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Edit() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Edit_EditNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new GameBuilder().WithId(SPECIFIC_GAME_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Games.Edit);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Edit(testData);
+
+            // Assert
+            VerifyEditGame(testData, Times.Never());
+            VerifyCheckAccess(AuthOperations.Games.Edit, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for EditGameResult() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void EditGameResult_EditNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            var testData = new GameBuilder().WithId(SPECIFIC_GAME_ID).Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Games.EditResult);
+
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.EditGameResult(testData);
+
+            // Assert
+            VerifyEditGame(testData, Times.Never());
+            VerifyCheckAccess(AuthOperations.Games.EditResult, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for SwapRounds() method with no permission for such action. The method has to throw AuthorizationException,
+        /// should invoke CheckAccess() and shouldn't invoke Commit() method of IUnitOfWork
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void SwapRounds_SwapRoundsNotPermitted_ExceptionThrown()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var games = new List<Game>
+                            {
+                                new GameBuilder().WithRound(FIRST_ROUND_NUMBER).Build(),
+                                new GameBuilder().WithRound(SECOND_ROUND_NUMBER).Build()
+                            };
+            var expectedGames = new List<Game>
+                            {
+                                new GameBuilder().WithRound(SECOND_ROUND_NUMBER).Build(),
+                                new GameBuilder().WithRound(FIRST_ROUND_NUMBER).Build()
+                            };
+
+            MockAuthServiceThrowsExeption(AuthOperations.Games.SwapRounds);
+            _gamesByTournamentIdRoundsNumberQueryMock
+                .Setup(m => m.Execute(It.IsAny<TournamentRoundsGameResultsCriteria>()))
+                .Returns(expectedGames);
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.SwapRounds(TOURNAMENT_ID, FIRST_ROUND_NUMBER, SECOND_ROUND_NUMBER);
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.Games.SwapRounds, Times.Once());
+        }
+
+        #endregion
+
+        #region Private
         private Game TestNewGameForScheduling()
         {
             return new GameBuilder()
@@ -1930,6 +2074,29 @@
             SetupGetTournamentById(tournament.Id, tournament);
             SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
         }
+
+        /// <summary>
+        /// Checks if exception was thrown and has appropriate message
+        /// </summary>
+        /// <param name="exception">Exception that has been thrown</param>
+        /// <param name="expected">Expected exception</param>
+        private void VerifyExceptionThrown(Exception exception, Exception expected)
+        {
+            Assert.IsNotNull(exception);
+            Assert.IsTrue(exception.Message.Equals(expected.Message));
+        }
+
+        private void VerifyCheckAccess(AuthOperation operation, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
+        }
+
+        private void MockAuthServiceThrowsExeption(AuthOperation operation)
+        {
+            _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
+        }
+
+        #endregion
 
         private void VerifyGamesAdded(Times times)
         {

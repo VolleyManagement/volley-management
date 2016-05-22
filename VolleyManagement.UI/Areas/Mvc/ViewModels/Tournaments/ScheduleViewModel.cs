@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using VolleyManagement.Contracts.Authorization;
     using System.Linq;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
@@ -70,5 +71,10 @@
             return NumberOfRounds != 0 &&
                    game.GameNumber == Rounds.Last().Value.Last().GameNumber - 1;
         }
+
+        /// <summary>
+        /// Gets or sets instance of <see cref="AllowedOperations"/> create object
+        /// </summary>
+        public AllowedOperations AllowedOperations { get; set; }
     }
 }

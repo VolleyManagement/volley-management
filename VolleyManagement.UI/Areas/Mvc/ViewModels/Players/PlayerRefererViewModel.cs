@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Generic;
 
@@ -17,5 +18,10 @@
             : base(PlayerViewModel.Map(player), referer)
         {
         }
+
+        /// <summary>
+        /// Gets or sets instance of <see cref="AllowedOperations"/> create object
+        /// </summary>
+        public AllowedOperations AllowedOperations { get; set; }
     }
 }

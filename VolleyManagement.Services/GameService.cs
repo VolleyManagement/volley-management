@@ -129,7 +129,7 @@
             if (tournamentInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
                 SetAbilityToEditResults(allGames);
-        }
+            }
 
             return allGames;
         }
@@ -185,6 +185,7 @@
             {
                 ScheduleNextGames(game, tournamentScheduleInfo);
             }
+
             // Add autogeneration
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
             {
@@ -477,7 +478,7 @@
                     if (GameValidation.IsFreeDayGame(newGame))
                     {
                         if (tournamentScheduleInfo.Scheme != TournamentSchemeEnum.PlayOff
-                            && game.HomeTeamId != newGame.HomeTeamId 
+                            && game.HomeTeamId != newGame.HomeTeamId
                             && game.AwayTeamId != newGame.HomeTeamId)
                         {
                             throw new ArgumentException(
@@ -485,9 +486,13 @@
                         }
                         else if (!GameValidation.IsFreeDayGame(game))
                         {
+                            string sameTeamName = game.HomeTeamId == newGame.HomeTeamId
+                                ? game.HomeTeamName : game.AwayTeamName;
+
                             throw new ArgumentException(
-                                string.Format(Resources.SameTeamInRound, game.HomeTeamId == newGame.HomeTeamId? 
-                            game.HomeTeamName : game.AwayTeamName));
+                                string.Format(
+                                Resources.SameTeamInRound,
+                                sameTeamName));
                         }
                     }
                     else
@@ -662,7 +667,7 @@
             {
                 Game oldGame = gamesInCurrentAndNextRounds.Where(gr => gr.Id == finishedGame.Id).SingleOrDefault();
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
-                
+
                 if (finishedGame.AwayTeamId.HasValue
                     && finishedGame.Result.SetsScore.Home == 0
                     && finishedGame.Result.SetsScore.Away == 0)

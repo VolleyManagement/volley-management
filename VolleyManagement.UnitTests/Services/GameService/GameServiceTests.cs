@@ -1799,20 +1799,6 @@
 
         #endregion
 
-        private Game TestGameToEditInPlayoff()
-        {
-            return new GameBuilder()
-                .WithId(1)
-                .WithGameNumber(1)
-                .WithRound(1)
-                .WithSetsScore(new Score
-                {
-                    Home = 3,
-                    Away = 0
-                })
-                .Build();
-        }
-
         #region Authorization game tests
 
         /// <summary>
@@ -1940,6 +1926,21 @@
         #endregion
 
         #region Private
+
+        private Game TestGameToEditInPlayoff()
+        {
+            return new GameBuilder()
+                .WithId(1)
+                .WithGameNumber(1)
+                .WithRound(1)
+                .WithSetsScore(new Score
+                {
+                    Home = 3,
+                    Away = 0
+                })
+                .Build();
+        }
+
         private Game TestNewGameForScheduling()
         {
             return new GameBuilder()

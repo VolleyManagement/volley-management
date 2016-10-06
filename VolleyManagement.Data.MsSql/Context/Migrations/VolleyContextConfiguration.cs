@@ -41,7 +41,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Contributors072Net(),
                 Contributors076Atqc(),
                 Contributors085Net(),
-                Contributors091ATQC(),
+                Contributors091Atqc(),
                 Contributors096Net()
             };
 
@@ -258,7 +258,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             return contributors;
         }
 
-        private static ContributorTeamEntity Contributors091ATQC()
+        private static ContributorTeamEntity Contributors091Atqc()
         {
             ContributorTeamEntity contributors = new ContributorTeamEntity()
             {

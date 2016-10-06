@@ -27,6 +27,8 @@
 
         private readonly IGameRepository _gameRepository;
         private readonly IAuthorizationService _authService;
+        private readonly ITournamentRepository _tournamentRepository;
+        private readonly ITournamentService _tournamentService;
 
         #endregion
 
@@ -51,13 +53,17 @@
         /// <param name="getTournamentByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier.</param>
         /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
         /// <param name="authService">Authorization service</param>
+        /// <param name="tournamentRepository">Tournament repository</param>
+        /// <param name="tournamentService">Tournament service </param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery,
             IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
-            IAuthorizationService authService)
+            IAuthorizationService authService,
+            ITournamentRepository tournamentRepository,
+            ITournamentService tournamentService)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -65,6 +71,8 @@
             _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
             _gamesByTournamentIdRoundsNumberQuery = gamesByTournamentIdRoundsNumberQuery;
             _authService = authService;
+            _tournamentRepository = tournamentRepository;
+            _tournamentService = tournamentService;
         }
 
         #endregion
@@ -90,7 +98,7 @@
             }
 
             ValidateGame(game);
-
+            UpdateTournamentLastTimeUpdated(game);
             _gameRepository.Add(game);
             _gameRepository.UnitOfWork.Commit();
         }
@@ -136,6 +144,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
 
+            UpdateTournamentLastTimeUpdated(game);
             _gameRepository.UnitOfWork.Commit();
         }
 
@@ -158,6 +167,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
 
+            UpdateTournamentLastTimeUpdated(game);
             _gameRepository.UnitOfWork.Commit();
         }
 
@@ -520,6 +530,17 @@
                 game.AwayTeamId = tempHomeId;
             }
         }
+        #endregion
+
+        #region private methods
+
+        private void UpdateTournamentLastTimeUpdated(Game game)
+        {
+            var tournament = _tournamentService.Get(game.TournamentId);
+            tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
+            _tournamentRepository.Update(tournament);
+        }
+
         #endregion
     }
 }

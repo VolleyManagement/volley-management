@@ -24,7 +24,7 @@
             <thead>
                 <tr class="standings-header-row">
                     <th colspan="3" class="standings-header-cell">
-                        @string.Format(Resources.GameReportViews.LastUpdated, TimeProvider.Current.UtcNow)
+                        @string.Format(Resources.GameReportViews.LastUpdated, Model.LastTimeUpdated)
                     </th>
                     <th colspan="9" class="standings-header-cell">@Resources.GameReportViews.GamesGroupHeader</th>
                     <th colspan="3" class="standings-header-cell">@Resources.GameReportViews.SetsGroupHeader</th>
@@ -90,7 +90,7 @@
             <tr class="standings-header-row">
                 <th colspan="2" class="standings-header-cell">
                     @string.Format(Resources.GameReportViews.LastUpdated,
-                    VolleyManagement.Crosscutting.Contracts.Providers.TimeProvider.Current.UtcNow)
+                                   Model.LastTimeUpdated)
                 </th>
                 @foreach (var item in Model.PivotTable.TeamsStandings)
                 {

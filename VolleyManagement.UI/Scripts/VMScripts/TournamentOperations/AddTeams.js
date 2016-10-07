@@ -20,7 +20,7 @@
 
     privates.getJsonForTournamentTeamsSave = function () {
         var result = {
-            TournamentId: $("[name='TournamentId']").val(),
+            TournamentId: location.search.split('tournamentId=')[1],
             List: []
         }
         var selectedTeams = $("select :selected");
@@ -67,7 +67,7 @@
     }
 
     currNs.onAddTeamsButtonButtonClick = function () {
-        var data = privates.getJsonForTournamentTeamsSave();
+        var data = privates.getJsonForTournamentTeamsSave();        
         if (data.List.length > 0) {
             $.post("/Tournaments/AddTeamsToTournament", data)
                 .done(privates.handleTeamsAddSuccess);
@@ -81,7 +81,7 @@
 
     currNs.onDeleteTeamFromTournamentButtonClick = function (eventData) {
         var teamId = eventData.target.id;
-        var tournamentId = $("[name='TournamentId']").val();
+        var tournamentId =  location.search.split('tournamentId=')[1];
         var confirmDeleteTeamResult = confirm(currNs.deleteConfirmMessage);
         if (confirmDeleteTeamResult) {
             $.post("/Tournaments/DeleteTeamFromTournament",

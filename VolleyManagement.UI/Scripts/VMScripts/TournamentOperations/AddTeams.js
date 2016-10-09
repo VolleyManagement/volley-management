@@ -20,7 +20,7 @@
 
     privates.getJsonForTournamentTeamsSave = function () {
         var result = {
-            TournamentId: $('#tournamentId').html(),
+            TournamentId: $("[id='TournamentId']").val(),
             List: []
         }
         var selectedTeams = $("select :selected");
@@ -81,7 +81,7 @@
 
     currNs.onDeleteTeamFromTournamentButtonClick = function (eventData) {
         var teamId = eventData.target.id;
-        var tournamentId = $('#tournamentId').html();
+        var tournamentId = $("[id='TournamentId']").val();
         var confirmDeleteTeamResult = confirm(currNs.deleteConfirmMessage);
         if (confirmDeleteTeamResult) {
             $.post("/Tournaments/DeleteTeamFromTournament",

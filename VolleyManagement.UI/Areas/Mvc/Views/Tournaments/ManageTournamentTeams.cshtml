@@ -9,7 +9,7 @@
 <h2>@TournamentViews.ManageTeams</h2>
 
 <div>
-    @Html.HiddenFor(model => model.Model.TournamentId)
+    <div id="tournamentId">@Model.Model.TournamentId</div>
     <button id="addTeamToTournamentButton">Add team to tournament</button>
     <table id="tornamentRoster" class="table">
         <tr>

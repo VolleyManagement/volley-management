@@ -17,7 +17,8 @@
     public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
                                      IQuery<List<GameResultDto>, TournamentGameResultsCriteria>,
                                      IQuery<List<Game>, TournamentRoundsGameResultsCriteria>,
-                                     IQuery<List<Game>, GamesByRoundCriteria>
+                                     IQuery<List<Game>, GamesByRoundCriteria>,
+                                     IQuery<Game, GameByNumberCriteria>
     {
         #region Fields
 
@@ -104,6 +105,20 @@
             return games.ConvertAll(GetGameMapping());
         }
 
+        /// <summary>
+        /// Find game result by criteria.
+        /// </summary>
+        /// <param name="criteria">Identifier criteria.</param>
+        /// <returns>Domain model of game result.</returns>
+        public Game Execute(GameByNumberCriteria criteria)
+        {
+            return _dalGameResults
+                .Where(gr => gr.TournamentId == criteria.TournamentId
+                && gr.GameNumber == criteria.GameNumber)
+                .Select(GetGameMappingExpression())
+                .SingleOrDefault();
+        }
+
         #endregion
 
         #region Mapping
@@ -134,6 +149,33 @@
                 GameDate = gr.StartTime,
                 Round = gr.RoundNumber,
                 GameNumber = gr.GameNumber
+            };
+        }
+
+        private static Expression<Func<GameResultEntity, Game>> GetGameMappingExpression()
+        {
+            return gr => new Game
+            {
+                Id = gr.Id,
+                TournamentId = gr.TournamentId,
+                HomeTeamId = gr.HomeTeamId,
+                AwayTeamId = gr.AwayTeamId,
+                GameDate = gr.StartTime,
+                Round = gr.RoundNumber,
+                GameNumber = gr.GameNumber,
+                Result = new Result
+                {
+                    SetScores = new List<Score>
+                    {
+                         new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score },
+                         new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score },
+                         new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score },
+                         new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score },
+                         new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score }
+                    },
+                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore },
+                    IsTechnicalDefeat = gr.IsTechnicalDefeat
+                }
             };
         }
 

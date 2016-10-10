@@ -37,6 +37,7 @@
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
         private readonly IQuery<List<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
         private readonly IQuery<List<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
+        private readonly IQuery<Game, GameByNumberCriteria> _gameNumberByTournamentIdQuery;
 
         #endregion
 
@@ -53,6 +54,7 @@
         /// <param name="gamesByTournamentIdRoundsNumberQuery">Query which gets <see cref="Game"/> object by its identifier.</param>
         /// <param name="authService">Authorization service</param>
         /// <param name="gamesByTournamentIdInRoundsByNumbersQuery">Query which gets list of <see cref="Game"/> objects.</param>
+        /// <param name="gameNumberByTournamentIdQuery">Query which gets game by number</param>
         public GameService(
             IGameRepository gameRepository,
             IQuery<GameResultDto, FindByIdCriteria> getByIdQuery,
@@ -60,7 +62,8 @@
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentByIdQuery,
             IQuery<List<Game>, TournamentRoundsGameResultsCriteria> gamesByTournamentIdRoundsNumberQuery,
             IAuthorizationService authService,
-            IQuery<List<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery)
+            IQuery<List<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery,
+            IQuery<Game, GameByNumberCriteria> gameNumberByTournamentIdQuery)
         {
             _gameRepository = gameRepository;
             _getByIdQuery = getByIdQuery;
@@ -68,6 +71,7 @@
             _tournamentScheduleDtoByIdQuery = getTournamentByIdQuery;
             _gamesByTournamentIdRoundsNumberQuery = gamesByTournamentIdRoundsNumberQuery;
             _gamesByTournamentIdInRoundsByNumbersQuery = gamesByTournamentIdInRoundsByNumbersQuery;
+            _gameNumberByTournamentIdQuery = gameNumberByTournamentIdQuery;
             _authService = authService;
         }
 
@@ -637,6 +641,17 @@
         #endregion
 
         #region Schedule autogeneration methods
+
+        private Game GetGameByNumber(int gameNumber, int tournamentId)
+        {
+            Game gameInCurrentTournament = _gameNumberByTournamentIdQuery
+               .Execute(new GameByNumberCriteria()
+               {
+                   TournamentId = tournamentId,
+                   GameNumber = gameNumber
+               });
+            return gameInCurrentTournament;
+        }
 
         private void ScheduleNextGames(Game finishedGame, TournamentScheduleDto tournamentScheduleInfo)
         {

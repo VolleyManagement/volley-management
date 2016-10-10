@@ -279,7 +279,7 @@
     };
 
     privates.handleTeamCreateEditSuccess = function(data, status, xhr) {
-        document.location = "/Teams/Index";
+        window.history.back();
     };
 
     privates.handleTeamCreateEditFail = function (data, status, xhr) {

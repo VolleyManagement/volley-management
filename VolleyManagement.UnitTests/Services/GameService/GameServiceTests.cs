@@ -79,6 +79,9 @@
         private readonly Mock<IQuery<List<Game>, GamesByRoundCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock
            = new Mock<IQuery<List<Game>, GamesByRoundCriteria>>();
 
+        private readonly Mock<IQuery<Game, GameByNumberCriteria>> _gameNumberByTournamentIdQueryMock
+           = new Mock<IQuery<Game, GameByNumberCriteria>>();
+        
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private readonly string _wrongRoundDate
@@ -110,6 +113,8 @@
                 .ToConstant(_gamesByTournamentIdRoundsNumberQueryMock.Object);
             _kernel.Bind<IQuery<List<Game>, GamesByRoundCriteria>>()
                 .ToConstant(_gamesByTournamentIdInRoundsByNumbersQueryMock.Object);
+            _kernel.Bind<IQuery<Game, GameByNumberCriteria>>()
+               .ToConstant(_gameNumberByTournamentIdQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);

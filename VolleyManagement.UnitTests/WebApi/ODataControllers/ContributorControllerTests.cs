@@ -54,7 +54,6 @@
         /// Test for Get() method. The method should return existing contributors team
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void Get_ContributorsTeamExist_ContributorsTeamReturned()
         {
             // Arrange

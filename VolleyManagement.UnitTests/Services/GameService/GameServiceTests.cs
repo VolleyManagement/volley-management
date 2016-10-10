@@ -157,7 +157,7 @@
             _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
             var newGame = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
-           
+            
             // Act
             sut.Create(newGame);
 

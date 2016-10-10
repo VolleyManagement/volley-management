@@ -67,7 +67,7 @@
     }
 
     currNs.onAddTeamsButtonButtonClick = function () {
-        var data = privates.getJsonForTournamentTeamsSave();    
+        var data = privates.getJsonForTournamentTeamsSave(); 
         if (data.List.length > 0) {
             $.post("/Tournaments/AddTeamsToTournament", data)
                 .done(privates.handleTeamsAddSuccess);

@@ -116,12 +116,7 @@
             var tournamentInfo = _tournamentScheduleDtoByIdQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
 
-            if (tournamentInfo.Scheme != TournamentSchemeEnum.PlayOff)
-            {
-                return true;
-            }
-
-            return false;
+            return tournamentInfo.Scheme != TournamentSchemeEnum.PlayOff;
         }
 
         #endregion

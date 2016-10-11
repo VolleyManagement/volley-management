@@ -69,6 +69,26 @@
 
         /// <summary>
         /// Test for Standings() method. Tournament standings view model are requested.
+        /// Tournament standings not available for playoff scheme
+        /// </summary>
+        [TestMethod]
+        public void Standings_StandingsForPlayoffScheme_StandingsNotAvailableReturned()
+        {
+            // Arrange
+            var sut = _kernel.Get<GameReportsController>();
+            var expected = new StandingsViewModelBuilder().WithStandingsNotAvailableMessage().Build();
+
+            SetupIsStandingsAvailableFalse(TOURNAMENT_PLAYOFF_ID);
+
+            // Act
+            var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_PLAYOFF_ID, TOURNAMENT_NAME));
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Standings() method. Tournament standings view model are requested.
         /// Tournament standings view model with 2 team scores completely equal returned.
         /// </summary>
         [TestMethod]
@@ -82,7 +102,6 @@
             var testStandings = new StandingsTestFixture()
                 .WithRepetitivePointsSetsRatioAndBallsRatio()
                 .Build();
-            var testTournament = new TournamentServiceTestFixture().Build();
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
 

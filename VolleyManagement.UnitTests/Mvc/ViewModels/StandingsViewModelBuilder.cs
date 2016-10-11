@@ -185,6 +185,21 @@
         }
 
         /// <summary>
+        /// Sets the tournament's data with 2 teams scores completely equal.
+        /// </summary>
+        /// <returns>Instance of <see cref="StandingsViewModelBuilder"/>.</returns>
+        public StandingsViewModelBuilder WithStandingsNotAvailableMessage()
+        {
+            _standingsViewModel = new StandingsViewModel
+            {
+                TournamentId = 4,
+                TournamentName = "Name",
+                Message = "Standings are not available for this tournament",
+            };
+            return this;
+        }
+
+        /// <summary>
         /// Sets the tournament's identifier of the view model.
         /// </summary>
         /// <param name="id">Identifier of the tournament.</param>

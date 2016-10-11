@@ -81,7 +81,7 @@
 
         private readonly Mock<IQuery<Game, GameByNumberCriteria>> _gameNumberByTournamentIdQueryMock
            = new Mock<IQuery<Game, GameByNumberCriteria>>();
-        
+
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private readonly string _wrongRoundDate

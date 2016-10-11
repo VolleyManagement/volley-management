@@ -26,5 +26,10 @@
         /// Gets or sets data for pivot table.
         /// </summary>
         public PivotTableViewModel PivotTable { get; set; }
+
+        /// <summary>
+        /// Gets or sets the message.
+        /// </summary>
+        public string Message { get; set; }
     }
 }

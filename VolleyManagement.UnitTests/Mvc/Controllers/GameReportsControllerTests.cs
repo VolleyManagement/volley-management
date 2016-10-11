@@ -11,15 +11,19 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.GameReportService;
+    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Tests for <see cref="GameReportsController"/> class.
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
+
     public class GameReportsControllerTests
     {
         private const int TOURNAMENT_ID = 1;
+
+        private const int TOURNAMENT_PLAYOFF_ID = 4;
 
         private const string TOURNAMENT_NAME = "Name";
 
@@ -52,6 +56,7 @@
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().Build();
 
+            SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 
@@ -77,9 +82,11 @@
             var testStandings = new StandingsTestFixture()
                 .WithRepetitivePointsSetsRatioAndBallsRatio()
                 .Build();
+            var testTournament = new TournamentServiceTestFixture().Build();
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
 
+            SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 
@@ -98,6 +105,16 @@
         private void SetupGameReportGetPivotStandings(int tournamentId, PivotStandingsDto testData)
         {
             _gameReportServiceMock.Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
+        }
+
+        private void SetupIsStandingsAvailableTrue(int tournamentId)
+        {
+            _gameReportServiceMock.Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(true);
+        }
+
+        private void SetupIsStandingsAvailableFalse(int tournamentId)
+        {
+            _gameReportServiceMock.Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(false);
         }
     }
 }

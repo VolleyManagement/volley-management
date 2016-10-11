@@ -30,17 +30,30 @@
         /// <returns>View with standings of the tournament.</returns>
         public ActionResult Standings(int tournamentId, string tournamentName)
         {
-            var standingsViewModel = new StandingsViewModel
+            if (_gameReportService.IsStandingAvailable(tournamentId))
             {
-                TournamentId = tournamentId,
-                TournamentName = tournamentName,
-                Standings = TeamStandingsViewModelBase.SetPositions(
-                    _gameReportService.GetStandings(tournamentId)
-                    .Select(se => StandingsEntryViewModel.Map(se)).ToList()),
-                PivotTable = new PivotTableViewModel(_gameReportService.GetPivotStandings(tournamentId))
-            };
+                var standingsViewModel = new StandingsViewModel
+                {
+                    TournamentId = tournamentId,
+                    TournamentName = tournamentName,
+                    Standings = TeamStandingsViewModelBase.SetPositions(
+                        _gameReportService.GetStandings(tournamentId)
+                            .Select(se => StandingsEntryViewModel.Map(se)).ToList()),
+                    PivotTable = new PivotTableViewModel(_gameReportService.GetPivotStandings(tournamentId))
+                };
 
-            return View(standingsViewModel);
+                return View(standingsViewModel);
+            }
+            else
+            {
+                var standingsViewModel = new StandingsViewModel
+                {
+                    TournamentId = tournamentId,
+                    TournamentName = tournamentName,
+                    Message = App_GlobalResources.GameReportViews.StandingsNotAvaliable
+                };
+                return View("StandingsNotAvailable", standingsViewModel);
+            }
         }
     }
 }

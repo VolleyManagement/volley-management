@@ -347,6 +347,7 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_NonPlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffGameResult.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameReports\StandingsNotAvailable.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />

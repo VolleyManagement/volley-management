@@ -1,8 +1,9 @@
 ﻿namespace VolleyManagement.Services
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Data.Queries.Tournament;
+    using Domain.TournamentsAggregate;
     using VolleyManagement.Contracts;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.GameResult;
@@ -20,6 +21,7 @@
 
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
+        private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
 
         #endregion
 
@@ -30,12 +32,15 @@
         /// </summary>
         /// <param name="tournamentGameResultsQuery">Query for getting tournament's game results.</param>
         /// <param name="tournamentTeamsQuery">Query for getting tournament's game teams.</param>
+        /// <param name="tournamentScheduleDtoByIdQuery">Get tournament data transfer object query.</param>
         public GameReportService(
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
-            IQuery<List<Team>, FindByTournamentIdCriteria> tournamentTeamsQuery)
+            IQuery<List<Team>, FindByTournamentIdCriteria> tournamentTeamsQuery,
+            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> tournamentScheduleDtoByIdQuery)
         {
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
             _tournamentTeamsQuery = tournamentTeamsQuery;
+            _tournamentScheduleDtoByIdQuery = tournamentScheduleDtoByIdQuery;
         }
 
         #endregion
@@ -99,6 +104,24 @@
                 }).ToList();
 
             return new PivotStandingsDto(teamStandings, shortGameResults);
+        }
+
+        /// <summary>
+        /// Check if the standing available in the tournament
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>True or false</returns>
+        public bool IsStandingAvailable(int tournamentId)
+        {
+            var tournamentInfo = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
+
+            if (tournamentInfo.Scheme != TournamentSchemeEnum.PlayOff)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         #endregion

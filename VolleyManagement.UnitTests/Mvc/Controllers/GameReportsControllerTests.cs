@@ -29,6 +29,8 @@
 
         private readonly Mock<IGameReportService> _gameReportServiceMock = new Mock<IGameReportService>();
 
+        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+
         private IKernel _kernel;
 
         /// <summary>
@@ -39,6 +41,7 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IGameReportService>().ToConstant(_gameReportServiceMock.Object);
+            _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
         }
 
         /// <summary>
@@ -56,6 +59,7 @@
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().Build();
 
+            MockTournamentServiceReturnTournament();
             SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
@@ -105,6 +109,7 @@
             var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
 
+            MockTournamentServiceReturnTournament();
             SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
@@ -134,6 +139,12 @@
         private void SetupIsStandingsAvailableFalse(int tournamentId)
         {
             _gameReportServiceMock.Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(false);
+        }
+
+        private void MockTournamentServiceReturnTournament()
+        {
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
         }
     }
 }

@@ -12,14 +12,17 @@
     public class GameReportsController : Controller
     {
         private readonly IGameReportService _gameReportService;
+        private readonly ITournamentService _tournamentService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameReportsController"/> class.
         /// </summary>
         /// <param name="gameReportService">Instance of a class which implements <see cref="IGameReportService"/>.</param>
-        public GameReportsController(IGameReportService gameReportService)
+        /// <param name="tournamentService">Instance of a class which implements <see cref="ITournamentService"/>.</param>
+        public GameReportsController(IGameReportService gameReportService, ITournamentService tournamentService)
         {
             _gameReportService = gameReportService;
+            _tournamentService = tournamentService;
         }
 
         /// <summary>
@@ -32,14 +35,16 @@
         {
             if (_gameReportService.IsStandingAvailable(tournamentId))
             {
+                var tournament = _tournamentService.Get(tournamentId);
                 var standingsViewModel = new StandingsViewModel
                 {
                     TournamentId = tournamentId,
                     TournamentName = tournamentName,
                     Standings = TeamStandingsViewModelBase.SetPositions(
                         _gameReportService.GetStandings(tournamentId)
-                            .Select(se => StandingsEntryViewModel.Map(se)).ToList()),
-                    PivotTable = new PivotTableViewModel(_gameReportService.GetPivotStandings(tournamentId))
+                        .Select(se => StandingsEntryViewModel.Map(se)).ToList()),
+                    PivotTable = new PivotTableViewModel(_gameReportService.GetPivotStandings(tournamentId)),
+                    LastTimeUpdated = tournament.LastTimeUpdated
                 };
 
                 return View(standingsViewModel);

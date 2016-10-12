@@ -25,6 +25,7 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
+    [Ignore]
     public class PlayerControllerTests
     {
         private const int SPECIFIC_PLAYER_ID = 2;

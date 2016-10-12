@@ -64,6 +64,10 @@
 
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
+        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+
+        private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
+
         private readonly Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock
             = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
 
@@ -103,6 +107,7 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IGameRepository>().ToConstant(_gameRepositoryMock.Object);
+            _kernel.Bind<ITournamentRepository>().ToConstant(_tournamentRepositoryMock.Object);
             _kernel.Bind<IQuery<GameResultDto, FindByIdCriteria>>()
                 .ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
@@ -116,8 +121,10 @@
             _kernel.Bind<IQuery<Game, GameByNumberCriteria>>()
                .ToConstant(_gameNumberByTournamentIdQueryMock.Object);
             _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
+            _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;
         }
@@ -133,6 +140,7 @@
         {
             // Arrange
             MockDefaultTournament();
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -141,6 +149,27 @@
 
             // Assert
             VerifyCreateGame(newGame, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create method. Tournament last date which was updated is today.
+        /// Game result is created successfully.
+        /// </summary>
+        [TestMethod]
+        public void Create_LastTimeUpdated_GameCreated()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            var newGame = new GameBuilder().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
         }
 
         /// <summary>
@@ -397,6 +426,7 @@
         {
             // Arrange
             MockDefaultTournament();
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -415,7 +445,7 @@
         {
             // Arrange
             MockDefaultTournament();
-
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder()
                 .WithTechnicalDefeatValidSetScoresAwayTeamWin()
                 .WithTournamentId(1)
@@ -595,6 +625,7 @@
         {
             // Arrange
             MockDefaultTournament();
+            MockTournamentServiceReturnTournament();
 
             var newGame = new GameBuilder()
                 .WithNullResult()
@@ -621,6 +652,7 @@
             Exception exception = null;
 
             MockDefaultTournament();
+            MockTournamentServiceReturnTournament();
 
             Game game = new GameBuilder()
                 .WithStartDate(DateTime.Parse(BEFORE_TOURNAMENT_DATE))
@@ -669,7 +701,7 @@
             sut.Create(game);
 
             // Assert
-            VerifyCreateGame(game, Times.Never());
+            VerifyCreateGame(game, Times.Never(), Times.Once());
         }
 
         /// <summary>
@@ -915,6 +947,7 @@
         {
             // Arrange
             MockTournamentSchemeTwo();
+            MockTournamentServiceReturnTournament();
 
             var duplicate = new GameBuilder()
               .TestRoundGame()
@@ -1232,6 +1265,7 @@
         {
             // Arrange
             MockDefaultTournament();
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder().WithFifthSetScoreMoreThanMaxWithValidDifference().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -1302,6 +1336,7 @@
         {
             // Arrange
             MockDefaultTournament();
+            MockTournamentServiceReturnTournament();
             var newGame = new GameBuilder().WithFifthSetScoreValid().Build();
             var sut = _kernel.Get<GameService>();
 
@@ -1367,6 +1402,7 @@
         {
             // Arrange
             MockDefaultTournament();
+            MockTournamentServiceReturnTournament();
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
             var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
             _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
@@ -1377,6 +1413,52 @@
 
             // Assert
             VerifyEditGame(game, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Edit method. Tournament last date which was updated is today.
+        /// Game is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_LastTimeUpdated_GameEdited()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
+            var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
+            _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Edit(game);
+
+            // Assert
+            Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
+        }
+
+        /// <summary>
+        /// Test for Edit method. Tournament last date which was updated is today.
+        /// Game result is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_LastTimeUpdated_GameResultEdited()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
+            var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
+            _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.EditGameResult(game);
+
+            // Assert
+            Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
         }
 
         /// <summary>
@@ -1824,7 +1906,7 @@
             sut.Create(testData);
 
             // Assert
-            VerifyCreateGame(testData, Times.Never());
+            VerifyCreateGame(testData, Times.Never(), Times.Once());
             VerifyCheckAccess(AuthOperations.Games.Create, Times.Once());
         }
 
@@ -1965,7 +2047,12 @@
         private void SetupGetTournamentDto(TournamentScheduleDto torunamentInfo)
         {
             _tournamentScheduleDtoByIdQueryMock.Setup(m => m.Execute(It.IsAny<TournamentScheduleInfoCriteria>()))
-              .Returns(torunamentInfo);
+                .Returns(torunamentInfo);
+        }
+
+        private bool AreDatesEqual(DateTime? x, DateTime? y)
+        {
+            return new GameComparer().Compare(x, y) == 0;
         }
 
         private void SetupGet(GameResultDto gameResult)
@@ -2010,6 +2097,13 @@
             _gameRepositoryMock.Verify(
                 m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times, "Game was not created");
             _unitOfWorkMock.Verify(m => m.Commit(), times);
+        }
+
+        private void VerifyCreateGame(Game game, Times times, Times unitOfWorkTimes)
+        {
+            _gameRepositoryMock.Verify(
+                m => m.Add(It.Is<Game>(grs => AreGamesEqual(grs, game))), times);
+            _unitOfWorkMock.Verify(m => m.Commit(), unitOfWorkTimes);
         }
 
         private void VerifyEditGame(Game game, Times times)
@@ -2100,6 +2194,12 @@
         private void MockAuthServiceThrowsExeption(AuthOperation operation)
         {
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
+        }
+
+        private void MockTournamentServiceReturnTournament()
+        {
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
         }
 
         #endregion

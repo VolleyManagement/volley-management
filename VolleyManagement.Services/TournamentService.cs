@@ -164,6 +164,8 @@
             ValidateDivisions(tournamentToCreate.Divisions);
             ValidateGroups(tournamentToCreate.Divisions);
 
+            tournamentToCreate.LastTimeUpdated = TimeProvider.Current.UtcNow;
+
             _tournamentRepository.Add(tournamentToCreate);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -186,6 +188,8 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.Edit);
             ValidateTournament(tournamentToEdit, isUpdate: true);
+
+            tournamentToEdit.LastTimeUpdated = TimeProvider.Current.UtcNow;
 
             _tournamentRepository.Update(tournamentToEdit);
             _tournamentRepository.UnitOfWork.Commit();

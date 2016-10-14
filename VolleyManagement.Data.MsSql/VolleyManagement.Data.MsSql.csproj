@@ -113,9 +113,29 @@
     <Compile Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.Designer.cs">
       <DependentUpon>201604271211049_AddRolesToOperationsMap.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201605070838352_NullableHomeTeam.cs" />
+    <Compile Include="Context\Migrations\201605070838352_NullableHomeTeam.Designer.cs">
+      <DependentUpon>201605070838352_NullableHomeTeam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.cs" />
+    <Compile Include="Context\Migrations\201605071138277_GameNumberInGameResult.Designer.cs">
+      <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.cs" />
+    <Compile Include="Context\Migrations\201605141828548_HomeTeamOptional.Designer.cs">
+      <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.cs" />
+    <Compile Include="Context\Migrations\201605150733454_GameStartTimeNullable.Designer.cs">
+      <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\201605161743580_LastTimeUpdate.cs" />
     <Compile Include="Context\Migrations\201605161743580_LastTimeUpdate.Designer.cs">
       <DependentUpon>201605161743580_LastTimeUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201610141515542_MergedMigration.cs" />
+    <Compile Include="Context\Migrations\201610141515542_MergedMigration.Designer.cs">
+      <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
@@ -227,8 +247,23 @@
     <EmbeddedResource Include="Context\Migrations\201604271211049_AddRolesToOperationsMap.resx">
       <DependentUpon>201604271211049_AddRolesToOperationsMap.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605070838352_NullableHomeTeam.resx">
+      <DependentUpon>201605070838352_NullableHomeTeam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605071138277_GameNumberInGameResult.resx">
+      <DependentUpon>201605071138277_GameNumberInGameResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605141828548_HomeTeamOptional.resx">
+      <DependentUpon>201605141828548_HomeTeamOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201605150733454_GameStartTimeNullable.resx">
+      <DependentUpon>201605150733454_GameStartTimeNullable.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201605161743580_LastTimeUpdate.resx">
       <DependentUpon>201605161743580_LastTimeUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201610141515542_MergedMigration.resx">
+      <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

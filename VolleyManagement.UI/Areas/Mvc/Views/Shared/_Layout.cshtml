@@ -26,6 +26,9 @@
                 @Html.ActionLink("Volley Management", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-right navbar-text">
+                @Html.ActionLink("Feedback", "Create", "Feedbacks", null, new { @class = "feedback-link" })
+            </div>
+            <div class="navbar-right navbar-text">
                 @{ Html.RenderAction("Info", "Account"); }
             </div>
         </div>

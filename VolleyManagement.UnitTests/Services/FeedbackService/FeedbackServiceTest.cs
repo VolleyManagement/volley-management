@@ -1,26 +1,19 @@
 ﻿namespace VolleyManagement.UnitTests.Services.FeedbackService
 {
     using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using Data.Queries.Player;
-    using Data.Queries.Team;
+    using Data.Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Services;
-    using Data.Contracts;
 
     [TestClass]
     public class FeedbackServiceTest
-    {         
+    {
         private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
-        private IKernel _kernel;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
+        private IKernel _kernel;
 
         [TestInitialize]
         public void TestInit()

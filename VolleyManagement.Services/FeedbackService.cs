@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Services
 {
+    using System;
     using Contracts;
     using Domain.FeedbackAggregate;
-    using System;
 
     /// <summary>
     /// Represents an implementation of IFeedbackService contract.
@@ -17,6 +17,10 @@
 
         #region Constructor
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeedbackService"/> class.
+        /// </summary>
+        /// <param name="feedbackService">read the instance of feedbackService class</param>
         public FeedbackService(IFeedbackRepository feedbackService)
         {
             _feedbackService = feedbackService;
@@ -36,6 +40,7 @@
             {
                 throw new ArgumentNullException("feedback");
             }
+
             UpdateFeedbackTime(feedbackToCreate);
             _feedbackService.Add(feedbackToCreate);
             _feedbackService.UnitOfWork.Commit();

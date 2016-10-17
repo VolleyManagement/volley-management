@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Data.MsSql.Mappers
+﻿using VolleyManagement.Domain.FeedbackAggregate;
+
+namespace VolleyManagement.Data.MsSql.Mappers
 {
     using System;
     using System.Collections.Generic;
@@ -186,6 +188,20 @@
             to.AwaySet5Score = from.Result.SetScores[4].Away;
             to.StartTime = from.GameDate;
             to.RoundNumber = from.Round;
+        }
+
+        /// <summary>
+        /// Maps Feedbacks model.
+        /// </summary>
+        /// <param name="to">Target of the mapping</param>
+        /// <param name="from">Source of the mapping</param>
+        public static void Map(FeedbackEntity to, Feedback from)
+        {
+            to.Id = from.Id;
+            to.UsersEmail = from.UsersEmail;
+            to.Content = from.Content;
+            to.Date = from.Date;
+            to.Status = (byte)from.Status;
         }
     }
 }

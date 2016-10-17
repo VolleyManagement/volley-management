@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Data.MsSql.Infrastructure
+﻿using VolleyManagement.Domain.FeedbackAggregate;
+
+namespace VolleyManagement.Data.MsSql.Infrastructure
 {
     using System;
     using System.Collections.Generic;
@@ -57,7 +59,8 @@
                                   Bind<IContributorTeamRepository>().To<ContributorTeamRepository>(),
                                   Bind<ITeamRepository>().To<TeamRepository>(),
                                   Bind<IRoleRepository>().To<RoleRepostitory>(),
-                                  Bind<IGameRepository>().To<GameRepository>()
+                                  Bind<IGameRepository>().To<GameRepository>(),
+                                  Bind<IFeedbackRepository>().To<FeedbackRepository>()
                               };
 
             configs.InScope(_scopeCallback);

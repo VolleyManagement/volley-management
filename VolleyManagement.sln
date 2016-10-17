@@ -1,5 +1,8 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Domain", "VolleyManagement.Domain\VolleyManagement.Domain.csproj", "{996EEE53-56AC-4002-891F-B989659323D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VolleyManagement.Services", "VolleyManagement.Services\VolleyManagement.Services.csproj", "{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F}"
@@ -80,17 +83,17 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
-		{285D93E6-1AD5-4F78-AEF6-72B81D81465D} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
 		{996EEE53-56AC-4002-891F-B989659323D1} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
-		{F82FF279-9D06-4494-BC61-1B7AC88A737D} = {6A07E1F5-E557-400A-BDA9-FABC65F3090A}
+		{4D6C885F-9E5D-4F09-B81B-CD14ED6A527F} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
 		{7A32AA11-6E95-4896-9E7A-FC3DF24524EA} = {6A07E1F5-E557-400A-BDA9-FABC65F3090A}
+		{F82FF279-9D06-4494-BC61-1B7AC88A737D} = {6A07E1F5-E557-400A-BDA9-FABC65F3090A}
+		{285D93E6-1AD5-4F78-AEF6-72B81D81465D} = {B955D566-45CA-4850-8BAF-4BE1B8196351}
 		{BA2D2BB6-9862-4D96-9D64-54ECE7F8CA2C} = {E6A8CFA8-FB27-4FF7-88A0-E5D7DCBE7596}
 		{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28} = {E6A8CFA8-FB27-4FF7-88A0-E5D7DCBE7596}
 		{DCB1ED18-18F5-42DE-8931-DC6D92ACA8E1} = {7FA1212A-3834-421F-8FCA-CBBF7650948E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35
 	EndGlobalSection
 EndGlobal

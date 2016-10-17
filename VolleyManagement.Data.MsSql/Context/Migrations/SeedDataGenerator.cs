@@ -797,6 +797,8 @@
                 AuthOperations.Players.Create,
                 AuthOperations.Players.Edit,
                 AuthOperations.Players.Delete,
+                AuthOperations.Feedbacks.Edit,
+                AuthOperations.Feedbacks.Delete,
                 AuthOperations.AdminDashboard.View
             };
 

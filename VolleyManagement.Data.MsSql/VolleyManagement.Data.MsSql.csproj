@@ -121,6 +121,7 @@
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
+    <Compile Include="Entities\FeedbackEntity.cs" />
     <Compile Include="Entities\GameResultEntity.cs" />
     <Compile Include="Entities\GroupEntity.cs" />
     <Compile Include="Entities\DivisionEntity.cs" />

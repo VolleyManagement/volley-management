@@ -128,6 +128,8 @@
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\ContributorTeamViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\DivisionViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\FeedbackMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\FeedbackViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameMvcEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />
@@ -156,6 +158,8 @@
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
+    <Compile Include="Services\FeedbackService\FeedbackBuilder.cs" />
+    <Compile Include="Services\FeedbackService\FeedbackComparer.cs" />
     <Compile Include="Services\GameReportService\ShortGameResultDtoTetsFixture.cs" />
     <Compile Include="Services\GameReportService\TeamStandingsTestFixture.cs" />
     <Compile Include="Services\AuthService\AuthorizationServiceTests.cs" />

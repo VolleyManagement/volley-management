@@ -1,11 +1,10 @@
-﻿using VolleyManagement.Domain.FeedbackAggregate;
-
-namespace VolleyManagement.Data.MsSql.Mappers
+﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Data.MsSql.Entities;
+    using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.TeamsAggregate;

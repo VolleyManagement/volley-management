@@ -1,6 +1,4 @@
-﻿using VolleyManagement.Domain.FeedbackAggregate;
-
-namespace VolleyManagement.Data.MsSql.Infrastructure
+﻿namespace VolleyManagement.Data.MsSql.Infrastructure
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +12,7 @@ namespace VolleyManagement.Data.MsSql.Infrastructure
     using VolleyManagement.Data.MsSql.Queries;
     using VolleyManagement.Data.MsSql.Repositories;
     using VolleyManagement.Domain.ContributorsAggregate;
+    using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;

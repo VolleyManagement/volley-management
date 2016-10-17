@@ -2,9 +2,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
+    /// <summary>
+    /// Added feedbacks
+    /// </summary>
     public partial class AddFeedbacks : DbMigration
     {
+        /// <summary>
+        /// The up migration.
+        /// </summary>
         public override void Up()
         {
             CreateTable(
@@ -18,9 +24,11 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         StatusCode = c.Byte(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
-            
         }
-        
+
+        /// <summary>
+        /// The down migration.
+        /// </summary>
         public override void Down()
         {
             DropTable("dbo.Feedbacks");

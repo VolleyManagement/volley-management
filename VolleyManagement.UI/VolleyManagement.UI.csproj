@@ -240,9 +240,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Admin\admin.css" />
+    <Content Include="Content\Admin\vm.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\metisMenu.css" />
+    <Content Include="Content\metisMenu.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\styles.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -278,6 +284,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Mvc\Views\_ViewStart.cshtml" />
@@ -344,12 +351,23 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_AdminNavigation.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\_Navigation.cshtml" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\metisMenu.js" />
+    <Content Include="Scripts\metisMenu.min.js" />
+    <Content Include="Scripts\VMScripts\Admin\admin.js" />
     <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Scripts\jquery.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
@@ -615,7 +633,9 @@
       <LastGenOutput>ViewModelResources.designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Content\Site\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

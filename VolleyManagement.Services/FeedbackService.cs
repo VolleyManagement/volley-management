@@ -3,6 +3,7 @@
     using System;
     using Contracts;
     using Domain.FeedbackAggregate;
+    using Crosscutting.Contracts.Providers;
 
     /// <summary>
     /// Represents an implementation of IFeedbackService contract.
@@ -11,7 +12,7 @@
     {
         #region Fields
 
-        private readonly IFeedbackRepository _feedbackService;
+        private readonly IFeedbackRepository _feedbackRepository;
 
         #endregion
 
@@ -20,10 +21,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
-        /// <param name="feedbackService">read the instance of feedbackService class</param>
-        public FeedbackService(IFeedbackRepository feedbackService)
+        /// <param name=" feedbackRepository">read the instance of feedbackService class</param>
+        public FeedbackService(IFeedbackRepository feedbackRepository)
         {
-            _feedbackService = feedbackService;
+            _feedbackRepository = feedbackRepository;
         }
 
         #endregion
@@ -42,8 +43,8 @@
             }
 
             UpdateFeedbackTime(feedbackToCreate);
-            _feedbackService.Add(feedbackToCreate);
-            _feedbackService.UnitOfWork.Commit();
+            _feedbackRepository.Add(feedbackToCreate);
+            _feedbackRepository.UnitOfWork.Commit();
         }
 
         #endregion
@@ -52,7 +53,8 @@
 
         private void UpdateFeedbackTime(Feedback feedbackToUpdate)
         {
-            feedbackToUpdate.Date = DateTime.Now;
+            feedbackToUpdate.Date = TimeProvider.Current.UtcNow;
+            _feedbackRepository.Update(feedbackToUpdate);
         }
 
         #endregion

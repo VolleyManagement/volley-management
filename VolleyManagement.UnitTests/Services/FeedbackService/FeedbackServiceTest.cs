@@ -1,16 +1,21 @@
 ﻿namespace VolleyManagement.UnitTests.Services.FeedbackService
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
+    using Contracts;
     using Data.Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Services;
+    using Crosscutting.Contracts.Providers;
 
+    [ExcludeFromCodeCoverage]
     [TestClass]
     public class FeedbackServiceTest
     {
+        private const int FEEDBACK_ID = 1;
         private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
         private IKernel _kernel;
@@ -24,9 +29,9 @@
         }
 
         [TestMethod]
-        public void Create_FeedbackPassed_FeedbackCreated()
+        public void Create_FeedbackValid_FeedbackCreated()
         {
-            var newFeedback = new FeedbackBuilder().WithId(2).Build();
+            var newFeedback = new FeedbackBuilder().WithId(FEEDBACK_ID).Build();
 
             var sut = _kernel.Get<FeedbackService>();
             sut.Create(newFeedback);
@@ -55,6 +60,13 @@
             // Assert
             Assert.IsTrue(gotException);
             VerifyCreateFeedback(newFeedback, Times.Never());
+        }
+
+        [TestMethod]
+        public void Create_UpdateFeedbackTime_FeedbackCreated()
+        {
+            var feed = new FeedbackBuilder().Build();
+            Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);
         }
 
         private bool FeedbacksAreEqual(Feedback x, Feedback y)

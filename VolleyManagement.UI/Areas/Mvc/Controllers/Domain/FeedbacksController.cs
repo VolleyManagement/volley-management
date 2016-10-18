@@ -7,7 +7,7 @@
     using Contracts;
     using Contracts.Authentication;
     using Contracts.Authentication.Models;
-    using Microsoft.AspNet.Identity;
+    using Contracts.Authorization;
     using ViewModels.FeedbackViewModel;
     using ViewModels.Users;
 
@@ -17,9 +17,19 @@
     public class FeedbacksController : Controller
     {
         /// <summary>
+        /// User Id for anonym role.
+        /// </summary>
+        private const int ANONYM = -1;
+
+        /// <summary>
+        /// Holds CurrentUserService instance.
+        /// </summary>
+        private readonly ICurrentUserService _userService;
+
+        /// <summary>
         /// Holds VolleyUserManager instance.
         /// </summary>
-        private readonly IVolleyUserManager<UserModel> _userManager;
+        private readonly IVolleyUserStore _userStore;
 
         /// <summary>
         /// Holds FeedbackService instance.
@@ -31,30 +41,32 @@
         /// </summary>
         /// <param name="feedbackService">Instance of the class
         /// that implements <see cref="IFeedbackService"/></param>
-        /// <param name="userManager">Instance of the class
-        /// that implements <see cref="IVolleyUserManager{T}"/></param>
+        /// <param name="userStore">Instance of the class
+        /// that implements <see cref="IVolleyUserStore"/></param>
+        /// <param name="userService">Instance of the class
+        /// that implements <see cref="ICurrentUserService"/></param>
         public FeedbacksController(
-            IFeedbackService feedbackService, IVolleyUserManager<UserModel> userManager)
+            IFeedbackService feedbackService,
+            IVolleyUserStore userStore,
+            ICurrentUserService userService)
         {
             this._feedbackService = feedbackService;
-            this._userManager = userManager;
+            this._userStore = userStore;
+            this._userService = userService;
         }
 
         /// <summary>
         /// Create feedback action GET.
         /// </summary>
         /// <returns>Feedback creation view.</returns>
-        public async Task<ActionResult> Create()
+        public ActionResult Create()
         {
             var feedbackViewModel = new FeedbackViewModel();
+            int currentUserId = this._userService.GetCurrentUserId();
 
-            if (System.Web.HttpContext.Current.User != null
-                && System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            if (currentUserId != ANONYM)
             {
-                int currentUserId = int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId());
-                UserModel user = await this._userManager.FindByIdAsync(currentUserId);
-                UserViewModel userViewModel = UserViewModel.Map(user);
-                feedbackViewModel.UsersEmail = userViewModel.Email;
+                feedbackViewModel.UsersEmail = GetUsersEmailById(currentUserId);
             }
 
             return View("Create", feedbackViewModel);
@@ -84,6 +96,20 @@
                 ModelState.AddModelError("ValidationMessage", ex.Message);
                 return View("Create", feedbackViewModel);
             }
+        }
+
+        /// <summary>
+        /// Returns authenticated user email.
+        /// </summary>
+        /// <param name="currentUserId">Authenticated user Id.</param>
+        /// <returns>Authenticated user email.</returns>
+        private string GetUsersEmailById(int currentUserId)
+        {
+            var userTask =
+                    Task.Run(() => this._userStore.FindByIdAsync(currentUserId));
+            UserModel user = userTask.Result;
+            UserViewModel userViewModel = UserViewModel.Map(user);
+            return userViewModel.Email;
         }
     }
 }

@@ -3,8 +3,13 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+
     using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
 
+    /// <summary>
+    /// Implementation of <see cref="IComparer"/> and <see cref="IComparer{T}"/>
+    /// interfaces for FeedbackViewModel class.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     internal class FeedbackViewModelComparer : IComparer<FeedbackViewModel>, IComparer
     {

@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
+
     using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
 
     /// <summary>
@@ -9,6 +10,9 @@
     [ExcludeFromCodeCoverage]
     internal class FeedbackMvcViewModelBuilder
     {
+        private const string TEST_MAIL = "test@gmail.com";
+        private const string TEST_CONTENT = "Test content";
+
         /// <summary>
         /// Holds test feedback team view model instance.
         /// </summary>
@@ -23,8 +27,8 @@
             this._feedbackViewModel = new FeedbackViewModel
             {
                 Id = 1,
-                UsersEmail = "qwerty@gmail.com",
-                Content = "Thank you for great application!"
+                UsersEmail = TEST_MAIL,
+                Content = TEST_CONTENT
             };
         }
 

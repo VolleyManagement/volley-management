@@ -117,6 +117,7 @@
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />
     <Compile Include="Mvc\Controllers\ContributorsTeamControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\FeedbacksControllerTest.cs" />
     <Compile Include="Mvc\Controllers\GameReportsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\GameResultsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\PlayersControllerTests.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Mvc\ViewModels\DivisionViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\FeedbackMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\FeedbackViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\FeedbackViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GameMvcEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />

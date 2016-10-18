@@ -14,8 +14,7 @@
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class FeedbackServiceTest
-    {
-        private const int FEEDBACK_ID = 1;
+    { 
         private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
         private IKernel _kernel;
@@ -31,7 +30,7 @@
         [TestMethod]
         public void Create_FeedbackValid_FeedbackCreated()
         {
-            var newFeedback = new FeedbackBuilder().WithId(FEEDBACK_ID).Build();
+            var newFeedback = new FeedbackBuilder().Build();
 
             var sut = _kernel.Get<FeedbackService>();
             sut.Create(newFeedback);

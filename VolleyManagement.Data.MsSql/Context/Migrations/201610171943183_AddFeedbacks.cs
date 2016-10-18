@@ -19,7 +19,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         UsersEmail = c.String(nullable: false, maxLength: 80),
-                        Content = c.String(nullable: false, maxLength: 1000),
+                        Content = c.String(nullable: false, maxLength: 5000),
                         Date = c.DateTime(nullable: false, precision: 0, storeType: "datetime2"),
                         StatusCode = c.Byte(nullable: false),
                     })

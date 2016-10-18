@@ -9,6 +9,7 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
@@ -51,6 +52,8 @@
 
         private Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
         private Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+        private Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+
         #endregion
 
         #region Init
@@ -66,6 +69,8 @@
                 .ToConstant(_teamServiceMock.Object);
             _kernel.Bind<IGameService>()
                 .ToConstant(_gameServiceMock.Object);
+            _kernel.Bind<IAuthorizationService>()
+                .ToConstant(_authServiceMock.Object);
         }
 
         #endregion
@@ -227,7 +232,7 @@
             // Arrange
             var gameResultViewModel = new GameResultViewModelBuilder().Build();
 
-            _gameServiceMock.Setup(grs => grs.Edit(It.IsAny<Game>()))
+            _gameServiceMock.Setup(grs => grs.EditGameResult(It.IsAny<Game>()))
                                   .Throws(new MissingEntityException());
 
             var sut = this._kernel.Get<GameResultsController>();
@@ -236,7 +241,7 @@
             var result = TestExtensions.GetModel<GameResultViewModel>(sut.Edit(gameResultViewModel));
 
             // Assert
-            VerifyEdit(Times.Once());
+            VerifyEditGameResult(Times.Once());
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
@@ -254,7 +259,7 @@
             var result = controller.Edit(testData);
 
             // Assert
-            VerifyEdit(Times.Once());
+            VerifyEditGameResult(Times.Once());
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
@@ -272,7 +277,7 @@
             var result = sut.Edit(gameResultViewModel);
 
             // Assert
-            VerifyEdit(Times.Once());
+            VerifyEditGameResult(Times.Once());
             Assert.AreEqual(result.GetType(), typeof(RedirectToRouteResult));
             VerifyRedirectingRoute(result, REDIRECT_TO_ACTION, REDIRECT_TO_CONTROLLER);
         }
@@ -293,7 +298,7 @@
             var result = TestExtensions.GetModel<GameResultViewModel>(sut.Edit(testData));
 
             // Assert
-            VerifyEdit(Times.Never());
+            VerifyEditGameResult(Times.Never());
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
 
@@ -378,9 +383,9 @@
 
         #region Additional Methods
 
-        private void VerifyEdit(Times times)
+        private void VerifyEditGameResult(Times times)
         {
-            this._gameServiceMock.Verify(ts => ts.Edit(It.IsAny<Game>()), times);
+            this._gameServiceMock.Verify(ts => ts.EditGameResult(It.IsAny<Game>()), times);
         }
 
         private void VerifyDelete(int gameId, Times times)

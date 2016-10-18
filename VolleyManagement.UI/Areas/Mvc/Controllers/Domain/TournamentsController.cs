@@ -245,7 +245,9 @@
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = this._tournamentService.GetAllTournamentTeams(tournamentId);
-            return View(new TournamentTeamsListViewModel(resultTeams, tournamentId));
+            var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
+            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, this.HttpContext.Request.RawUrl);
+            return View(referrerViewModel);
         }
 
         /// <summary>
@@ -332,7 +334,8 @@
                                                                             AuthOperations.Games.Create,
                                                                             AuthOperations.Games.Edit,
                                                                             AuthOperations.Games.Delete,
-                                                                            AuthOperations.Games.SwapRounds
+                                                                            AuthOperations.Games.SwapRounds,
+                                                                            AuthOperations.Games.EditResult
                                                                           })
             };
 
@@ -343,7 +346,8 @@
                     game.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
                                                                             AuthOperations.Games.Edit,
-                                                                            AuthOperations.Games.Delete
+                                                                            AuthOperations.Games.Delete,
+                                                                            AuthOperations.Games.EditResult
                                                                           });
                 }
             }

@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -26,5 +27,10 @@
         /// Gets or sets data for pivot table.
         /// </summary>
         public PivotTableViewModel PivotTable { get; set; }
+
+        /// <summary>
+        /// Gets or sets last time, when tournament was updated
+        /// </summary>
+        public DateTime? LastTimeUpdated { get; set; }
     }
 }

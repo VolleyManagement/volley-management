@@ -1,4 +1,4 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TournamentTeamsListViewModel
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentTeamsListReferrerViewModel
 @using VolleyManagement.UI.App_GlobalResources
 
 @{
@@ -9,17 +9,17 @@
 <h2>@TournamentViews.ManageTeams</h2>
 
 <div>
-    @Html.HiddenFor(model => model.TournamentId)
+    @Html.HiddenFor(model => model.Model.TournamentId, new { id = "TournamentId" })
     <button id="addTeamToTournamentButton">Add team to tournament</button>
     <table id="tornamentRoster" class="table">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.List.FirstOrDefault().Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Model.List.FirstOrDefault().Name)</th>
             <th class="hidden"></th>
         </tr>
-        @foreach (var item in Model.List)
+        @foreach (var item in Model.Model.List)
         {
             <tr>
-                <td>@Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id }, null)</td>
+                <td>@Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id, returnUrl = Model.Referer }, null)</td>
                 <td><button class="deleteTeamFromTournamentButton" id="@item.Id">Delete</button></td>
             </tr>
         }

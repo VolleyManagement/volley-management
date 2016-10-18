@@ -22,6 +22,7 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
+    [Ignore]
     public class TeamControllerTests
     {
         /// <summary>

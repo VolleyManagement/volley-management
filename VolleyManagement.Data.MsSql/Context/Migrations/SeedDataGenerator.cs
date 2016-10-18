@@ -275,7 +275,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = new DateTime(2015, 09, 29),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -313,7 +313,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = DateTime.Now.AddDays(-8),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -350,7 +350,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = DateTime.Now.AddMonths(2).AddDays(2),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -393,6 +393,7 @@
                             }
                         }
                     },
+                    LastTimeUpdated = new DateTime(2017, 06, 01),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -427,7 +428,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = DateTime.Now.AddDays(-10),
                     Teams = new List<TeamEntity>()
                     {
                         teams[0],
@@ -462,7 +463,7 @@
                             }
                         }
                     },
-
+                    LastTimeUpdated = DateTime.Now.AddMonths(2).AddDays(16),
                     Teams = new List<TeamEntity>()
                     {
                         teams[5],
@@ -764,6 +765,7 @@
                 AuthOperations.Teams.Delete,
                 AuthOperations.Games.Create,
                 AuthOperations.Games.Edit,
+                AuthOperations.Games.EditResult,
                 AuthOperations.Games.Delete,
                 AuthOperations.Games.SwapRounds,
                 AuthOperations.Players.Create,
@@ -789,11 +791,13 @@
                 AuthOperations.Teams.Delete,
                 AuthOperations.Games.Create,
                 AuthOperations.Games.Edit,
+                AuthOperations.Games.EditResult,
                 AuthOperations.Games.Delete,
                 AuthOperations.Games.SwapRounds,
                 AuthOperations.Players.Create,
                 AuthOperations.Players.Edit,
-                AuthOperations.Players.Delete
+                AuthOperations.Players.Delete,
+                AuthOperations.AdminDashboard.View
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

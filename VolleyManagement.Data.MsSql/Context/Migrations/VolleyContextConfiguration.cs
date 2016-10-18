@@ -40,7 +40,9 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Contributors070Ui(),
                 Contributors072Net(),
                 Contributors076Atqc(),
-                Contributors085Net()
+                Contributors085Net(),
+                Contributors091Atqc(),
+                Contributors096Net()
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
@@ -251,6 +253,44 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         new ContributorEntity { Name = "Pavel Novichkhin" },
                         new ContributorEntity { Name = "Artem Kolisnyk" },
                         new ContributorEntity { Name = "Oleksii Khloptsev" }
+                    }
+            };
+            return contributors;
+        }
+
+        private static ContributorTeamEntity Contributors091Atqc()
+        {
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            {
+                Name = "Dp-091 ATQC",
+                CourseDirection = "ATQC",
+                Contributors = new List<ContributorEntity>
+                    {
+                        new ContributorEntity { Name = "Daniil Zhyliaiev" },
+                        new ContributorEntity { Name = "Sergiy Tsyganivskiy" },
+                        new ContributorEntity { Name = "Yuriy Eugene" },
+                        new ContributorEntity { Name = "Anton Karabaza" },
+                        new ContributorEntity { Name = "Julia Bodnar" }
+                    }
+            };
+            return contributors;
+        }
+
+        private static ContributorTeamEntity Contributors096Net()
+        {
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            {
+                Name = "Dp-096 .NET",
+                CourseDirection = ".NET",
+                Contributors = new List<ContributorEntity>
+                    {
+                        new ContributorEntity { Name = "Ievgen Oparyshev" },
+                        new ContributorEntity { Name = "Anatolii Padenko" },
+                        new ContributorEntity { Name = "Maxym Prisich" },
+                        new ContributorEntity { Name = "Nataliya Tapchevskaya" },
+                        new ContributorEntity { Name = "Daria Tatarchenko" },
+                        new ContributorEntity { Name = "Mariia Hubenko" },
+                        new ContributorEntity { Name = "Mykola Bocharskyi" }
                     }
             };
             return contributors;

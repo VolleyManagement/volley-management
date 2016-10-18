@@ -14,9 +14,19 @@
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class FeedbackServiceTest
-    { 
-        private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
+    {
+        private const string ERROR_FOR_FEEDBACK_REPOSITORY_VERIFY
+            = "Method Create() was failed";
+
+        private const string ERROR_FOR_UNIT_OF_WORK_VERIFY
+            = "Method Commit() was failed";
+
+        private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock
+            = new Mock<IFeedbackRepository>();
+
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock
+            = new Mock<IUnitOfWork>();
+
         private IKernel _kernel;
 
         [TestInitialize]
@@ -75,8 +85,13 @@
 
         private void VerifyCreateFeedback(Feedback feedback, Times times)
         {
-            _feedbackRepositoryMock.Verify(pr => pr.Add(It.Is<Feedback>(f => FeedbacksAreEqual(f, feedback))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+            _feedbackRepositoryMock.Verify(pr => pr.Add(It.Is<Feedback>(f =>
+                FeedbacksAreEqual(f, feedback))),
+                times,
+                ERROR_FOR_FEEDBACK_REPOSITORY_VERIFY);
+            _unitOfWorkMock.Verify(uow => uow.Commit(),
+                times,
+                ERROR_FOR_UNIT_OF_WORK_VERIFY);
         }
     }
 }

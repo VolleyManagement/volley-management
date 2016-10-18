@@ -9,6 +9,11 @@
     public interface IGameService
     {
         /// <summary>
+        /// Sets tournament Service
+        /// </summary>
+        ITournamentService TournamentService { set; }
+
+        /// <summary>
         /// Creates a new game.
         /// </summary>
         /// <param name="game">Game to create.</param>

@@ -152,6 +152,27 @@
         }
 
         /// <summary>
+        /// Test for Create method. Tournament last date which was updated is today.
+        /// Game result is created successfully.
+        /// </summary>
+        [TestMethod]
+        public void Create_LastTimeUpdated_GameCreated()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+            var newGame = new GameBuilder().Build();
+            var sut = _kernel.Get<GameService>();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
+        }
+
+        /// <summary>
         /// Test for Create method. The game result instance is null. Exception is thrown during creation.
         /// </summary>
         [TestMethod]

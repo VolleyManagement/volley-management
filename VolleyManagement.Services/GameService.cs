@@ -34,6 +34,7 @@
         #region Query objects
 
         private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
+        private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentInstanceByIdQuery;
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
         private readonly IQuery<List<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
@@ -56,6 +57,7 @@
         /// <param name="authService">Authorization service</param>
         /// <param name="gamesByTournamentIdInRoundsByNumbersQuery">Query which gets list of <see cref="Game"/> objects.</param>
         /// <param name="gameNumberByTournamentIdQuery">Query which gets game by number</param>
+        /// <param name="getTournamentInstanceByIdQuery">Query which gets <see cref="Tournament"/> object by its identifier</param>
         /// <param name="tournamentRepository">Instance of class which implements <see cref="ITournamentRepository"/></param>
         public GameService(
             IGameRepository gameRepository,
@@ -66,6 +68,7 @@
             IAuthorizationService authService,
             IQuery<List<Game>, GamesByRoundCriteria> gamesByTournamentIdInRoundsByNumbersQuery,
             IQuery<Game, GameByNumberCriteria> gameNumberByTournamentIdQuery,
+            IQuery<Tournament, FindByIdCriteria> getTournamentInstanceByIdQuery,
             ITournamentRepository tournamentRepository)
         {
             _gameRepository = gameRepository;
@@ -76,6 +79,7 @@
             _gamesByTournamentIdInRoundsByNumbersQuery = gamesByTournamentIdInRoundsByNumbersQuery;
             _gameNumberByTournamentIdQuery = gameNumberByTournamentIdQuery;
             _tournamentRepository = tournamentRepository;
+            _getTournamentInstanceByIdQuery = getTournamentInstanceByIdQuery;
             _authService = authService;
         }
 
@@ -216,6 +220,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
 
+            UpdateTournamentLastTimeUpdated(game);
             _gameRepository.UnitOfWork.Commit();
         }
 
@@ -891,7 +896,11 @@
 
         private void UpdateTournamentLastTimeUpdated(Game game)
         {
-            var tournament = TournamentService.Get(game.TournamentId);
+            var tournament = _getTournamentInstanceByIdQuery
+               .Execute(new FindByIdCriteria()
+               {
+                   Id = game.TournamentId
+               });
             tournament.LastTimeUpdated = TimeProvider.Current.UtcNow;
             _tournamentRepository.Update(tournament);
         }

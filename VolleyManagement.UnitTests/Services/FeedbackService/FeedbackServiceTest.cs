@@ -19,6 +19,7 @@
 
         public const string ERROR_FOR_UNIT_OF_WORK_VERIFY
             = "Can't save feedback to database";
+
         private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock
             = new Mock<IFeedbackRepository>();
 
@@ -89,7 +90,7 @@
         {
             _feedbackRepositoryMock.Verify(
                 pr => pr.Add(
-                It.Is<Feedback>(f=>
+                It.Is<Feedback>(f =>
                 FeedbacksAreEqual(f, feedback))),
                 times,
                 ERROR_FOR_FEEDBACK_REPOSITORY_VERIFY);

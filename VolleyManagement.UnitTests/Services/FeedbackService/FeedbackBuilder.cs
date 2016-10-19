@@ -23,7 +23,7 @@
                 Id = 1,
                 UsersEmail = "qwerty@gmail.com",
                 Content = "A perfect application",
-                Date = new DateTime(2016, 10, 01),
+                Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 01),
                 Status = FeedbackStatusEnum.New
             };
         }

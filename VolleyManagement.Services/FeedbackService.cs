@@ -54,7 +54,6 @@
         private void UpdateFeedbackDate(Feedback feedbackToUpdate)
         {
             feedbackToUpdate.Date = TimeProvider.Current.UtcNow;
-            _feedbackRepository.Update(feedbackToUpdate);
         }
 
         #endregion

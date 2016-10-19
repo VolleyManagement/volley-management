@@ -32,7 +32,7 @@
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 }
 
                 TimeProvider._current = value;
@@ -43,6 +43,17 @@
         /// Gets current UTC time
         /// </summary>
         public abstract DateTime UtcNow { get; }
+
+        /// <summary>
+        /// Gets current time zone time.
+        /// </summary>
+        public DateTime DateTimeNow
+        {
+            get
+            {
+                return TimeZone.CurrentTimeZone.ToLocalTime(UtcNow);
+            }
+        }
 
         /// <summary>
         /// Sets default time provider

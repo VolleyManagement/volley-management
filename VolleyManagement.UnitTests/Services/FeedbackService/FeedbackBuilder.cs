@@ -3,7 +3,6 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using Domain.FeedbackAggregate;
-    using Crosscutting.Contracts.Providers;
 
     /// <summary>
     /// Represents a builder of <see cref="Feedback"/> objects for unit
@@ -24,7 +23,7 @@
                 Id = 1,
                 UsersEmail = "qwerty@gmail.com",
                 Content = "A perfect application",
-                Date = TimeProvider.Current.UtcNow,
+                Date = new DateTime(2016, 10, 01),
                 Status = FeedbackStatusEnum.New
             };
         }

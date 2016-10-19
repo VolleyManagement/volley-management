@@ -2,31 +2,25 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using Contracts;
+    using Crosscutting.Contracts.Providers;
     using Data.Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Services;
-    using Crosscutting.Contracts.Providers;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class FeedbackServiceTest
-    {
-        private const string ERROR_FOR_FEEDBACK_REPOSITORY_VERIFY
-            = "Method Create() was failed";
-
-        private const string ERROR_FOR_UNIT_OF_WORK_VERIFY
-            = "Method Commit() was failed";
-
+    {   
         private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock
             = new Mock<IFeedbackRepository>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock
             = new Mock<IUnitOfWork>();
 
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
         private IKernel _kernel;
 
         [TestInitialize]
@@ -35,6 +29,8 @@
             _kernel = new StandardKernel();
             _kernel.Bind<IFeedbackRepository>().ToConstant(_feedbackRepositoryMock.Object);
             _feedbackRepositoryMock.Setup(fr => fr.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            _timeMock.Setup(tp => tp.UtcNow).Returns(new DateTime(2016, 10, 01));
+            TimeProvider.Current = _timeMock.Object;
         }
 
         [TestMethod]
@@ -72,7 +68,7 @@
         }
 
         [TestMethod]
-        public void Create_UpdateFeedbackTime_FeedbackCreated()
+        public void Create_UpdateFeedbackDate_FeedbackCreated()
         {
             var feed = new FeedbackBuilder().Build();
             Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);
@@ -85,12 +81,17 @@
 
         private void VerifyCreateFeedback(Feedback feedback, Times times)
         {
-            _feedbackRepositoryMock.Verify(pr => pr.Add(It.Is<Feedback>(f =>
+            _feedbackRepositoryMock.Verify(
+                pr => pr.Add(
+                It.Is<Feedback>(f =>
                 FeedbacksAreEqual(f, feedback))),
                 times,
+                ExpectedExceptionMessages.
                 ERROR_FOR_FEEDBACK_REPOSITORY_VERIFY);
-            _unitOfWorkMock.Verify(uow => uow.Commit(),
+            _unitOfWorkMock.Verify(
+                uow => uow.Commit(),
                 times,
+                ExpectedExceptionMessages.
                 ERROR_FOR_UNIT_OF_WORK_VERIFY);
         }
     }

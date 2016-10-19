@@ -656,7 +656,7 @@
         public void CreateGetAction_GetTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
-            var now = TimeProvider.Current.DateTimeNow;
+            var now = _testDate;
 
             var expected = new TournamentViewModel
             {

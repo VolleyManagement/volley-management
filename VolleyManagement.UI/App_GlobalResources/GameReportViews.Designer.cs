@@ -268,6 +268,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Standings are not available for this tournament.
+        /// </summary>
+        public static string StandingsNotAvaliable {
+            get {
+                return ResourceManager.GetString("StandingsNotAvaliable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team.
         /// </summary>
         public static string TeamHeader {

@@ -20,7 +20,7 @@
         /// <summary>
         /// Gets or sets the identifier of the home team which played the game.
         /// </summary>
-        public int HomeTeamId { get; set; }
+        public int? HomeTeamId { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the away team which played the game.
@@ -95,12 +95,17 @@
         /// <summary>
         /// Gets or sets date and time when the game starts
         /// </summary>
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
         /// <summary>
         /// Gets or sets the number of the round for the game
         /// </summary>
         public byte RoundNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of the game in the tournament
+        /// </summary>
+        public byte GameNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the tournament where game result belongs.

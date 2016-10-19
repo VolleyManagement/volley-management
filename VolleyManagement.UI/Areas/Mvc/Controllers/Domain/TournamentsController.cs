@@ -8,6 +8,7 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
@@ -106,8 +107,8 @@
             }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
-            tournamentViewModel.Authorization = this._authService.GetAllowedOperations(new List<AuthOperation>
-            {
+            tournamentViewModel.Authorization = this._authService.GetAllowedOperations(new List<AuthOperation> 
+            { 
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.ManageTeams
             });
@@ -136,10 +137,10 @@
                                                     + DAYS_FOR_APPLYING_PERIOD
                                                     + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
                                                     + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START 
                                                     + DAYS_FOR_APPLYING_PERIOD
-                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
-                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START
+                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START 
+                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START 
                                                     + DAYS_FOR_TRANSFER_PERIOD)
             };
 
@@ -307,7 +308,7 @@
         /// Gets the view for view model of the schedule with specified identifier.
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
-        /// <returns>View for view model of the schedule with specified identifier.</returns>
+        /// <returns>View for view model of the schedule with specified identifier.</returns>    
         public ActionResult ShowSchedule(int tournamentId)
         {
             var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
@@ -322,12 +323,13 @@
             {
                 TournamentId = tournament.Id,
                 TournamentName = tournament.Name,
+                TournamentScheme = tournament.Scheme,
                 NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                 .GroupBy(d => d.Round)
                 .ToDictionary(
                      d => d.Key,
-                     c => c.OrderBy(t => t.GameDate)
+                     c => c.OrderBy(t => t.GameNumber).ThenBy(t => t.GameDate)
                     .Select(x => GameResultViewModel.Map(x)).ToList()),
                 AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
@@ -339,9 +341,14 @@
                                                                           })
             };
 
-            for (byte i = 1; i <= scheduleViewModel.Rounds.Count; i++)
+            if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
             {
-                foreach (var game in scheduleViewModel.Rounds[i])
+                FillRoundNames(scheduleViewModel);
+            }
+
+            for (byte i = 0; i < scheduleViewModel.Rounds.Count; i++)
+            {
+                foreach (var game in scheduleViewModel.Rounds.ElementAt(i).Value)
                 {
                     game.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
@@ -419,7 +426,12 @@
             gameViewModel.Id = game.Id;
             gameViewModel.AwayTeamId = game.AwayTeamId;
             gameViewModel.HomeTeamId = game.HomeTeamId;
-            gameViewModel.GameDate = game.GameDate;
+            gameViewModel.GameNumber = game.GameNumber;
+            if (game.GameDate.HasValue)
+            {
+                gameViewModel.GameDate = game.GameDate.Value;
+            }
+
             gameViewModel.Round = game.Round;
 
             return View(gameViewModel);
@@ -445,7 +457,7 @@
             {
                 this.ModelState.AddModelError("ValidationError", e.Message);
             }
-            catch (MissingEntityException e)
+            catch (MissingEntityException e) 
             {
                 this.ModelState.AddModelError("LoadError", e.Message);
                 return View();
@@ -528,10 +540,44 @@
             return new GameViewModel
             {
                 TournamentId = tournamentId,
+                TournamentScheme = tournament.Scheme,
                 GameDate = tournament.StartDate,
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
+        } 
+
+        /// <summary>
+        /// Fills round names for playoff scheme
+        /// </summary>
+        /// <param name="scheduleViewModel">View model which contains round names</param>
+        private void FillRoundNames(ScheduleViewModel scheduleViewModel)
+        {
+            var roundNames = new string[scheduleViewModel.NumberOfRounds];
+
+            for (byte i = 1; i <= scheduleViewModel.NumberOfRounds; i++)
+            {
+                var roundName = string.Empty;
+                switch (i)
+                {
+                    case 1:
+                        roundName = TournamentController.FinalRoundName;
+                        break;
+                    case 2:
+                        roundName = TournamentController.SemifinalRoundName;
+                        break;
+                    case 3:
+                        roundName = TournamentController.QuarterFinalRoundName;
+                        break;
+                    default:
+                        roundName = string.Format(TournamentController.RoundNumber, Math.Pow(2, i));
+                        break;
+                }
+
+                roundNames[roundNames.Length - i] = roundName;
+            }
+
+            scheduleViewModel.RoundNames = roundNames;
         }
         #endregion
     }

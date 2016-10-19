@@ -18,9 +18,12 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
+
     public class GameReportsControllerTests
     {
         private const int TOURNAMENT_ID = 1;
+
+        private const int TOURNAMENT_PLAYOFF_ID = 4;
 
         private const string TOURNAMENT_NAME = "Name";
 
@@ -57,11 +60,32 @@
             var expected = new StandingsViewModelBuilder().Build();
 
             MockTournamentServiceReturnTournament();
+            SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 
             // Act
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Standings() method. Tournament standings view model are requested.
+        /// Tournament standings not available for playoff scheme
+        /// </summary>
+        [TestMethod]
+        public void Standings_StandingsForPlayoffScheme_StandingsNotAvailableReturned()
+        {
+            // Arrange
+            var sut = _kernel.Get<GameReportsController>();
+            var expected = new StandingsViewModelBuilder().WithStandingsNotAvailableMessage().Build();
+
+            SetupIsStandingsAvailableFalse(TOURNAMENT_PLAYOFF_ID);
+
+            // Act
+            var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_PLAYOFF_ID, TOURNAMENT_NAME));
 
             // Assert
             TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
@@ -86,6 +110,7 @@
             var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
 
             MockTournamentServiceReturnTournament();
+            SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
 
@@ -104,6 +129,16 @@
         private void SetupGameReportGetPivotStandings(int tournamentId, PivotStandingsDto testData)
         {
             _gameReportServiceMock.Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
+        }
+
+        private void SetupIsStandingsAvailableTrue(int tournamentId)
+        {
+            _gameReportServiceMock.Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(true);
+        }
+
+        private void SetupIsStandingsAvailableFalse(int tournamentId)
+        {
+            _gameReportServiceMock.Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(false);
         }
 
         private void MockTournamentServiceReturnTournament()

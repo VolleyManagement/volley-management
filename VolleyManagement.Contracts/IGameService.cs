@@ -9,6 +9,11 @@
     public interface IGameService
     {
         /// <summary>
+        /// Sets tournament Service
+        /// </summary>
+        ITournamentService TournamentService { set; }
+
+        /// <summary>
         /// Creates a new game.
         /// </summary>
         /// <param name="game">Game to create.</param>
@@ -53,5 +58,17 @@
         /// <param name="firstRoundNumber"> Identifier of first round.</param>
         /// <param name="secondRoundNumber"> Identifier of second round.</param>
         void SwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber);
+
+        /// <summary>
+        /// Deletes all games in tournament.
+        /// </summary>
+        /// <param name="tournamentId">The id of tournament from which to remove games.</param>
+        void RemoveAllGamesInTournament(int tournamentId);
+
+        /// <summary>
+        /// Add collection of games into tournament
+        /// </summary>
+        /// <param name="games">Collection of games</param>
+        void AddGames(List<Game> games);
     }
 }

@@ -351,6 +351,10 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_NonPlayoffSchedule.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffSchedule.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffGameResult.cshtml" />
+    <Content Include="Areas\Mvc\Views\GameReports\StandingsNotAvailable.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_AdminNavigation.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\_Navigation.cshtml" />
     <Content Include="fonts\fontawesome-webfont.woff2" />

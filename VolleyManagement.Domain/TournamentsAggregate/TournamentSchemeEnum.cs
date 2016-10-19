@@ -12,6 +12,8 @@
         [Description("2")]
         Two,
         [Description("2.5")]
-        TwoAndHalf
+        TwoAndHalf,
+        [Description("PlayOff")]
+        PlayOff
     }
 }

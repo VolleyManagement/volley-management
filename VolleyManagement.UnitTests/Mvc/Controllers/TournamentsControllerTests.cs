@@ -183,11 +183,11 @@
         }
 
         /// <summary>
-        /// Test for ShowSchedule method (GET action).
+        /// Test for ShowSchedule method.
         /// Valid rounds is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_TournamentHasGamesScheduled_RoundsCreatedCorrectly()
+        public void ShowSchedule_TournamentHasGamesScheduled_RoundsCreatedCorrectly()
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;
@@ -216,11 +216,11 @@
         }
 
         /// <summary>
-        /// Test for ShowSchedule method (GET action).
+        /// Test for ShowSchedule method.
         /// Valid schedule is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_ValidScheduleViewModel_ScheduleViewModelIsReturned()
+        public void ShowSchedule_ValidScheduleViewModel_ScheduleViewModelIsReturned()
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;
@@ -239,7 +239,7 @@
                 TEST_TOURNAMENT_ID,
                 new GameServiceTestFixture().TestGameResults().Build());
 
-            var expected = new ScheduleViewModelBuilder().Build();
+            var expected = new ScheduleViewModelBuilder().WithTournamentScheme(TournamentSchemeEnum.One).Build();
 
             // Act
             var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
@@ -247,6 +247,40 @@
             // Assert
             Assert.IsTrue(new ScheduleViewModelComparer().AreEqual(actual, expected));
             VerifyGetAllowedOperations(_allowedOperationsShowSchedule, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for ShowSchedule method.
+        /// Valid schedule is passed, no exception occurred.
+        /// </summary>
+        [TestMethod]
+        public void ShowSchedule_PlayoffScheme_RoundNamesAreCreated()
+        {
+            // Arrange
+            const int TEST_ROUND_COUNT = 5;
+            var tournament = new TournamentScheduleDto
+            {
+                Id = TEST_TOURNAMENT_ID,
+                Name = TEST_TOURNAMENT_NAME,
+                Scheme = TournamentSchemeEnum.PlayOff
+            };
+
+            SetupGetScheduleInfo(
+                TEST_TOURNAMENT_ID,
+                tournament);
+            SetupGetTournamentResults(
+                TEST_TOURNAMENT_ID,
+                new GameServiceTestFixture().TestGameResults().Build());
+
+            SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
+            var expectedRoundNames = new string[] { "Round of 32", "Round of 16", "Quarter final", "Semifinal", "Final" };
+            var expected = new ScheduleViewModelBuilder().WithRoundNames(expectedRoundNames).Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+
+            // Assert
+            CollectionAssert.AreEqual(actual.RoundNames, expected.RoundNames);
         }
         #endregion
 
@@ -1172,6 +1206,7 @@
             Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, "Actual AwayTeamId doesn't match expected");
             Assert.AreEqual(x.Round, y.Round, "Actual Round number doesn't match expected");
             Assert.AreEqual(x.GameDate, y.GameDate, "Actual GameDate doesn't match expected");
+            Assert.AreEqual(x.GameNumber, y.GameNumber, "Actual GameNumber doesn't match expected");
 
             Assert.IsTrue(
                 x.Teams != null &&

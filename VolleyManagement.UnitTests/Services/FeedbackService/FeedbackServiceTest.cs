@@ -28,6 +28,7 @@
 
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
         private IKernel _kernel;
+        private DateTime _date = new DateTime(2007, 05, 03);
 
         [TestInitialize]
         public void TestInit()
@@ -36,7 +37,7 @@
             _kernel.Bind<IFeedbackRepository>().ToConstant(_feedbackRepositoryMock.Object);
             _feedbackRepositoryMock.Setup(fr => fr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             TimeProvider.Current = _timeMock.Object;
-            _timeMock.Setup(tp => tp.UtcNow).Returns(new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day));
+            _timeMock.Setup(tp => tp.UtcNow).Returns(_date);
         }
 
         /// <summary>
@@ -49,7 +50,7 @@
         }
 
         [TestMethod]
-        public void Create_FeedbackWithNoExceptions_FeedbackCreated()
+        public void Create_SuccessfulCreationFeedback_FeedbackCreated()
         {
             var newFeedback = new FeedbackBuilder().Build();
 

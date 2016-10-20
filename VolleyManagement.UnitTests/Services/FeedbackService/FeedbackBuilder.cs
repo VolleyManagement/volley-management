@@ -24,7 +24,7 @@
                 Id = 1,
                 UsersEmail = "qwerty@gmail.com",
                 Content = "A perfect application",
-                Date = TimeProvider.Current.UtcNow,
+                Date = new DateTime(2007, 05, 03),
                 Status = FeedbackStatusEnum.New
             };
         }

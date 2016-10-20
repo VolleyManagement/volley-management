@@ -1,15 +1,10 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
-    using System.Threading.Tasks;
     using System.Web.Mvc;
 
     using Contracts;
-    using Contracts.Authentication;
-    using Contracts.Authentication.Models;
-    using Contracts.Authorization;
     using ViewModels.FeedbackViewModel;
-    using ViewModels.Users;
 
     /// <summary>
     /// Defines feedback controller.
@@ -17,41 +12,27 @@
     public class FeedbacksController : Controller
     {
         /// <summary>
-        /// User Id for anonym role.
+        /// Holds UserService instance.
         /// </summary>
-        private const int ANONYM = -1;
-
-        /// <summary>
-        /// Holds CurrentUserService instance.
-        /// </summary>
-        private readonly ICurrentUserService _userService;
-
-        /// <summary>
-        /// Holds VolleyUserManager instance.
-        /// </summary>
-        private readonly IVolleyUserStore _userStore;
+        private readonly IUserService _userService;
 
         /// <summary>
         /// Holds FeedbackService instance.
         /// </summary>
         private readonly IFeedbackService _feedbackService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
-        /// </summary>
-        /// <param name="feedbackService">Instance of the class
-        /// that implements <see cref="IFeedbackService"/></param>
-        /// <param name="userStore">Instance of the class
-        /// that implements <see cref="IVolleyUserStore"/></param>
-        /// <param name="userService">Instance of the class
-        /// that implements <see cref="ICurrentUserService"/></param>
+       /// <summary>
+       /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
+       /// </summary>
+       /// <param name="feedbackService">Instance of the class
+       /// that implements <see cref="IFeedbackService"/></param>
+       /// <param name="userService">Instance of the class
+       /// that implements <see cref="IUserService"/></param>
         public FeedbacksController(
             IFeedbackService feedbackService,
-            IVolleyUserStore userStore,
-            ICurrentUserService userService)
+            IUserService userService)
         {
             this._feedbackService = feedbackService;
-            this._userStore = userStore;
             this._userService = userService;
         }
 
@@ -61,13 +42,10 @@
         /// <returns>Feedback creation view.</returns>
         public ActionResult Create()
         {
-            var feedbackViewModel = new FeedbackViewModel();
-            int currentUserId = this._userService.GetCurrentUserId();
-
-            if (currentUserId != ANONYM)
+            var feedbackViewModel = new FeedbackViewModel
             {
-                feedbackViewModel.UsersEmail = GetUsersEmailById(currentUserId);
-            }
+                UsersEmail = this._userService.GetCurrentUserMailById()
+            };
 
             return View("Create", feedbackViewModel);
         }
@@ -96,20 +74,6 @@
                 ModelState.AddModelError("ValidationMessage", ex.Message);
                 return View("Create", feedbackViewModel);
             }
-        }
-
-        /// <summary>
-        /// Returns authenticated user email.
-        /// </summary>
-        /// <param name="currentUserId">Authenticated user Id.</param>
-        /// <returns>Authenticated user email.</returns>
-        private string GetUsersEmailById(int currentUserId)
-        {
-            var userTask =
-                    Task.Run(() => this._userStore.FindByIdAsync(currentUserId));
-            UserModel user = userTask.Result;
-            UserViewModel userViewModel = UserViewModel.Map(user);
-            return userViewModel.Email;
         }
     }
 }

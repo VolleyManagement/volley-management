@@ -5,15 +5,20 @@
     using System.Web.Mvc;
 
     using Contracts;
-    using Contracts.Authentication;
-    using Contracts.Authorization;
+
     using Domain.FeedbackAggregate;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using Moq;
+
     using Ninject;
+
     using Services.FeedbackService;
-    using Services.UserManager;
+
     using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
+
     using ViewModels;
 
     /// <summary>
@@ -23,21 +28,26 @@
     [TestClass]
     public class FeedbacksControllerTests
     {
-        private const int ANONYM = -1;
+        private const int TEST_ID = 1;
+
         private const string CREATE_VIEW = "Create";
+
         private const string FEEDBACK_SENT_MESSAGE = "FeedbackSentMessage";
+
         private const string TEST_MAIL = "test@gmail.com";
+
+        private const string USER_MAIL = "user@gmail.com";
+
+        private const string TEST_CONTENT = "Test content";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
             new Mock<IFeedbackService>();
 
-        private readonly Mock<IVolleyUserStore> _userStoreMock =
-            new Mock<IVolleyUserStore>();
-
-        private readonly Mock<ICurrentUserService> _userServiceMock =
-            new Mock<ICurrentUserService>();
+        private readonly Mock<IUserService> _userServiceMock =
+            new Mock<IUserService>();
 
         private FeedbacksController _sut;
+
         private IKernel _kernel;
 
         /// <summary>
@@ -49,9 +59,7 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<IFeedbackService>()
                 .ToConstant(this._feedbackServiceMock.Object);
-            this._kernel.Bind<IVolleyUserStore>()
-                .ToConstant(this._userStoreMock.Object);
-            this._kernel.Bind<ICurrentUserService>()
+            this._kernel.Bind<IUserService>()
                 .ToConstant(this._userServiceMock.Object);
             this._sut = this._kernel.Get<FeedbacksController>();
         }
@@ -61,20 +69,12 @@
         /// Return Create view if user is not authenticated.
         /// </summary>
         [TestMethod]
-        public void CreateGetAction_UserIsNotAuthentificated_CreateViewReturned()
+        public void CreateGetAction_UserIsAuthentificated_FeedbackEmailEqualsUsersEmail()
         {
-            ////Arrange
-            var user = new UserMvcViewModelBuilder()
-                .WithId(ANONYM)
-                .Build();
-
-            this._userServiceMock.Setup(us => us.GetCurrentUserId())
-                .Returns(user.Id);
-
-            ////Act
+            // Act
             var result = this._sut.Create() as ViewResult;
 
-            ////Assert
+            // Assert
             Assert.AreEqual(CREATE_VIEW, result.ViewName);
         }
 
@@ -85,14 +85,14 @@
         [TestMethod]
         public void CreatePostAction_ModelIsInvalid_CreateViewReturned()
         {
-            ////Arrange
-            var feedback = new FeedbackMvcViewModelBuilder().Build();
-
-            ////Act
+            // Arrange
+            var feedback = CreateValidFeedback();
             this._sut.ModelState.AddModelError("Content", "FieldRequired");
+
+            // Act
             var result = this._sut.Create(feedback) as ViewResult;
 
-            ////Assert
+            // Assert
             Assert.AreEqual(CREATE_VIEW, result.ViewName);
         }
 
@@ -103,13 +103,13 @@
         [TestMethod]
         public void CreatePostAction_ModelIsValid_FeedbackThankReturned()
         {
-            ////Arrange
-            var feedback = new FeedbackMvcViewModelBuilder().Build();
+            // Arrange
+            var feedback = CreateValidFeedback();
 
-            ////Act
+            // Act
             var result = this._sut.Create(feedback) as ViewResult;
 
-            ////Assert
+            // Assert
             Assert.AreEqual(FEEDBACK_SENT_MESSAGE, result.ViewName);
         }
 
@@ -120,18 +120,18 @@
         [TestMethod]
         public void CreatePostAction_ModelIsValid_FeedbackCreated()
         {
-            ////Arrange
-            var feedback = new FeedbackMvcViewModelBuilder().Build();
-            Feedback expectedFeedback = feedback.ToDomain();
+            // Arrange
+            var feedback = CreateValidFeedback();
+            var expectedFeedback = CreateExpectedFeedback();
 
             Feedback actualFeedback = null;
             this._feedbackServiceMock.Setup(f => f.Create(It.IsAny<Feedback>()))
                 .Callback<Feedback>(a => actualFeedback = a);
 
-            ////Act
+            // Act
             this._sut.Create(feedback);
 
-            ////Assert
+            // Assert
             TestHelper.AreEqual(
                 expectedFeedback,
                 actualFeedback,
@@ -146,44 +146,33 @@
         [TestMethod]
         public void CreatePostAction_ModelIsValid_ArgumentExceptionThrown()
         {
-            ////Arrange
-            var feedback = new FeedbackMvcViewModelBuilder().Build();
+            // Arrange
+            var feedback = CreateValidFeedback();
             this._feedbackServiceMock.Setup(f => f.Create(It.IsAny<Feedback>()))
                 .Throws(new ArgumentException());
 
-            ////Act
+            // Act
             var sut = this._kernel.Get<FeedbacksController>();
             sut.Create(feedback);
 
-            ////Assert
+            // Assert
             Assert.IsTrue(this._sut.ModelState.IsValid);
         }
 
-        /// <summary>
-        /// Test for Feedbacks controller GetUsersEmailById method.
-        /// If user is authenticated returns email.
-        /// </summary>
-        [TestMethod]
-        public void GetUsersEmailByIdMethod_UserIsAuthentificated_UserEmailReturned()
+        private FeedbackViewModel CreateValidFeedback()
         {
-            ////Arrange
-            var user = new UserMvcViewModelBuilder()
-                .Build();
-            var userDomain = new UserModelBuilder()
-                .WithEmail(TEST_MAIL)
-                .Build();
+            return new FeedbackMvcViewModelBuilder().Build();
+        }
 
-            this._userServiceMock.Setup(us => us.GetCurrentUserId())
-                .Returns(user.Id);
-            this._userStoreMock.Setup(um => um.FindByIdAsync(user.Id))
-                .ReturnsAsync(userDomain);
-
-            ////Act
-            PrivateObject sut = new PrivateObject(this._sut);
-            var userEmail = sut.Invoke("GetUsersEmailById", user.Id);
-
-            ////Assert
-            Assert.IsTrue(string.Equals(TEST_MAIL, (string)userEmail));
+        private Feedback CreateExpectedFeedback()
+        {
+            return
+                new FeedbackBuilder().WithId(TEST_ID)
+                    .WithEmail(TEST_MAIL)
+                    .WithContent(TEST_CONTENT)
+                    .WithDate(DateTime.MinValue)
+                    .WithStatus(0)
+                    .Build();
         }
     }
 }

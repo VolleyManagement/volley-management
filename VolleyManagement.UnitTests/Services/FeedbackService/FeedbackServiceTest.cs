@@ -50,7 +50,7 @@
         }
 
         [TestMethod]
-        public void _FeedbackCreated()
+        public void Create_CorrectFeedback_FeedbackCreated()
         {
             var newFeedback = new FeedbackBuilder().Build();
 

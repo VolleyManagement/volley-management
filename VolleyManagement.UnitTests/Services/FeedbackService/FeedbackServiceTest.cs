@@ -35,8 +35,17 @@
             _kernel = new StandardKernel();
             _kernel.Bind<IFeedbackRepository>().ToConstant(_feedbackRepositoryMock.Object);
             _feedbackRepositoryMock.Setup(fr => fr.UnitOfWork).Returns(_unitOfWorkMock.Object);
-            _timeMock.Setup(tp => tp.UtcNow).Returns(new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 01));
             TimeProvider.Current = _timeMock.Object;
+            _timeMock.Setup(tp => tp.UtcNow).Returns(new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day));
+        }
+
+        /// <summary>
+        /// Cleanup test data
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            TimeProvider.ResetToDefault();
         }
 
         [TestMethod]

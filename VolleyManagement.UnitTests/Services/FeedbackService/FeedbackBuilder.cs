@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.FeedbackService
+﻿using VolleyManagement.Crosscutting.Contracts.Providers;
+
+namespace VolleyManagement.UnitTests.Services.FeedbackService
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -23,7 +25,7 @@
                 Id = 1,
                 UsersEmail = "qwerty@gmail.com",
                 Content = "A perfect application",
-                Date = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 01),
+                Date = TimeProvider.Current.UtcNow,
                 Status = FeedbackStatusEnum.New
             };
         }

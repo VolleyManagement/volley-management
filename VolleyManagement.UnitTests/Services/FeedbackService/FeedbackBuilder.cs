@@ -1,10 +1,9 @@
-﻿using VolleyManagement.Crosscutting.Contracts.Providers;
-
-namespace VolleyManagement.UnitTests.Services.FeedbackService
+﻿namespace VolleyManagement.UnitTests.Services.FeedbackService
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
     using Domain.FeedbackAggregate;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
 
     /// <summary>
     /// Represents a builder of <see cref="Feedback"/> objects for unit

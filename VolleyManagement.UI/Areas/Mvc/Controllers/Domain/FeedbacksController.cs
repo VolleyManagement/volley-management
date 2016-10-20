@@ -4,6 +4,7 @@
     using System.Web.Mvc;
 
     using Contracts;
+    using Domain.UsersAggregate;
     using ViewModels.FeedbackViewModel;
 
     /// <summary>
@@ -44,7 +45,7 @@
         {
             var feedbackViewModel = new FeedbackViewModel
             {
-                UsersEmail = this._userService.GetCurrentUserMailById()
+                UsersEmail = GetCurrentUserMail()
             };
 
             return View("Create", feedbackViewModel);
@@ -74,6 +75,12 @@
                 ModelState.AddModelError("ValidationMessage", ex.Message);
                 return View("Create", feedbackViewModel);
             }
+        }
+
+        private string GetCurrentUserMail()
+        {
+            User user = this._userService.GetCurrentUserInstance();
+            return user.Email;
         }
     }
 }

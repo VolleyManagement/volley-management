@@ -7,6 +7,7 @@
     using Contracts;
     using Contracts.Authentication;
     using Contracts.Authentication.Models;
+    using Domain.UsersAggregate;
     using Microsoft.AspNet.Identity;
 
     /// <summary>
@@ -30,10 +31,10 @@
         }
 
         /// <summary>
-        /// Get authorized user email.
+        /// Get authorized user instance.
         /// </summary>
-        /// <returns>User email.</returns>
-        public string GetCurrentUserMailById()
+        /// <returns>User instance.</returns>
+        public User GetCurrentUserInstance()
         {
             if (HttpContext.Current.User != null
                 && HttpContext.Current.User.Identity.IsAuthenticated)
@@ -44,10 +45,10 @@
                     Task.Run(() => this._userStore.FindByIdAsync(currentUserId));
                 UserModel user = userTask.Result;
                 UserViewModel userViewModel = UserViewModel.Map(user);
-                return userViewModel.Email;
+                return userViewModel.ToDomain();
             }
 
-            return string.Empty;
+            return new User();
         }
     }
 }

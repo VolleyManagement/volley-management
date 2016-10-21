@@ -1,0 +1,53 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel.FeedbackViewModel
+
+@{
+    ViewBag.Title = "Create Feedback";
+}
+
+<h2>We are waiting for your Feedback</h2>
+
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <hr />
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.UsersEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UsersEmail,
+                        new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UsersEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Content,
+                    new { htmlAttributes = new { @class = "feedback-text-area" } })
+                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Send" id="send-feedback" class="btn btn-success" />
+            </div>
+        </div>
+
+    </div>
+}
+
+<div>
+    <button id="feedback-return" class="btn btn-default">Return</button>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#feedback-return').click(function () {
+            window.history.back();
+        });
+    });
+</script>

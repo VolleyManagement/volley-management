@@ -10,7 +10,8 @@
         /// <summary>
         /// Get authorized user instance.
         /// </summary>
+        /// <param name="userId">User Id.</param>
         /// <returns>User instance.</returns>
-        User GetCurrentUserInstance();
+        User GetCurrentUserInstance(int userId);
     }
 }

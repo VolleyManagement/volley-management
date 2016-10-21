@@ -5,20 +5,15 @@
     using System.Web.Mvc;
 
     using Contracts;
-
+    using Contracts.Authorization;
     using Domain.FeedbackAggregate;
-
+    using Domain.UsersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-
     using Ninject;
-
     using Services.FeedbackService;
-
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
-
     using ViewModels;
 
     /// <summary>
@@ -29,15 +24,10 @@
     public class FeedbacksControllerTests
     {
         private const int TEST_ID = 1;
-
+        private const int ANONYM_ID = -1;
         private const string CREATE_VIEW = "Create";
-
         private const string FEEDBACK_SENT_MESSAGE = "FeedbackSentMessage";
-
         private const string TEST_MAIL = "test@gmail.com";
-
-        private const string USER_MAIL = "user@gmail.com";
-
         private const string TEST_CONTENT = "Test content";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
@@ -45,6 +35,9 @@
 
         private readonly Mock<IUserService> _userServiceMock =
             new Mock<IUserService>();
+
+        private readonly Mock<ICurrentUserService> _currentUserServiceMock =
+            new Mock<ICurrentUserService>();
 
         private FeedbacksController _sut;
 
@@ -61,21 +54,61 @@
                 .ToConstant(this._feedbackServiceMock.Object);
             this._kernel.Bind<IUserService>()
                 .ToConstant(this._userServiceMock.Object);
+            this._kernel.Bind<ICurrentUserService>()
+               .ToConstant(this._currentUserServiceMock.Object);
             this._sut = this._kernel.Get<FeedbacksController>();
         }
 
         /// <summary>
+        /// Resets Mock setups after every test.
+        /// </summary>
+        [TestCleanup]
+        public void ResetMocks()
+        {
+            this._currentUserServiceMock.Reset();
+            this._feedbackServiceMock.Reset();
+            this._userServiceMock.Reset();
+        }
+
+        /// <summary>
         /// Test for create GET method.
-        /// Return Create view if user is not authenticated.
+        /// User email is empty if user is not authenticated.
+        /// </summary>
+        [TestMethod]
+        public void CreateGetAction_UserIsNotAuthentificated_FeedbackHasEmptyEmailField()
+        {
+            // Arrange
+            var feedback = new FeedbackMvcViewModelBuilder().WithEmail(string.Empty).Build();
+            this._currentUserServiceMock.Setup(cs => cs.GetCurrentUserId()).Returns(ANONYM_ID);
+
+            // Act
+            this._sut.Create();
+
+            // Assert
+            Assert.AreEqual(feedback.UsersEmail, string.Empty);
+        }
+
+        /// <summary>
+        /// Test for create GET method.
+        /// User is authenticated. User email returned.
         /// </summary>
         [TestMethod]
         public void CreateGetAction_UserIsAuthentificated_FeedbackEmailEqualsUsersEmail()
         {
+            // Arrange
+            var feedback = CreateValidFeedback();
+            this._currentUserServiceMock.Setup(
+                cs => cs.GetCurrentUserId()).Returns(TEST_ID);
+
+            this._userServiceMock.Setup(
+                us => us.GetCurrentUserInstance(TEST_ID)).Returns(
+                new User { Email = TEST_MAIL });
+
             // Act
-            var result = this._sut.Create() as ViewResult;
+            this._sut.Create();
 
             // Assert
-            Assert.AreEqual(CREATE_VIEW, result.ViewName);
+            Assert.AreEqual(feedback.UsersEmail, TEST_MAIL);
         }
 
         /// <summary>
@@ -144,26 +177,50 @@
         /// argument exception is thrown.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_ModelIsValid_ArgumentExceptionThrown()
+        public void CreatePostAction_InvalidModel_ArgumentExceptionThrown()
         {
             // Arrange
-            var feedback = CreateValidFeedback();
+            var expectedFeedback = new FeedbackMvcViewModelBuilder()
+                .WithId(TEST_ID)
+                .WithEmail(string.Empty)
+                .WithContent(string.Empty)
+                .Build();
+
             this._feedbackServiceMock.Setup(f => f.Create(It.IsAny<Feedback>()))
                 .Throws(new ArgumentException());
 
             // Act
-            var sut = this._kernel.Get<FeedbacksController>();
-            sut.Create(feedback);
+            var actualFeedback =
+                TestExtensions.GetModel<FeedbackViewModel>(
+                    this._sut.Create(expectedFeedback));
 
             // Assert
-            Assert.IsTrue(this._sut.ModelState.IsValid);
+            TestHelper.AreEqual(
+                actualFeedback,
+                expectedFeedback,
+                new FeedbackViewModelComparer());
         }
 
+        /// <summary>
+        /// Creates valid Feedback object.
+        /// </summary>
+        /// <returns>FeedbackViewModel object.</returns>
         private FeedbackViewModel CreateValidFeedback()
         {
-            return new FeedbackMvcViewModelBuilder().Build();
+            return new FeedbackMvcViewModelBuilder()
+                .WithId(TEST_ID)
+                .WithEmail(TEST_MAIL)
+                .WithContent(TEST_CONTENT)
+                .Build();
         }
 
+        /// <summary>
+        /// Creates expected Feedback.
+        /// We have to assign fields Date and Status with default values
+        /// because FeedbackViewModel object doesn't has this field
+        /// but we want to compare it with Feedback object.
+        /// </summary>
+        /// <returns>Feedback object.</returns>
         private Feedback CreateExpectedFeedback()
         {
             return

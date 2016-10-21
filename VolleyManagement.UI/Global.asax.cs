@@ -6,8 +6,10 @@
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
+    using Areas.Admin;
+    using Areas.Mvc;
     using VolleyManagement.UI.Helpers;
-
+    
     /// <summary>
     /// The volley management application.
     /// </summary>
@@ -33,16 +35,30 @@
             Justification = "Sergii Diachenko: This is specific naming convention.")]
         protected void Application_Start()
         {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-            RouteConfig.RegisterIgnoreRoutes(RouteTable.Routes);
-            AreaRegistration.RegisterAllAreas();
-
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
+            AreaConfig.RegisterAreas();
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateTimeModelBinder());
+        }
+
+        /// <summary>
+        /// Configure areas
+        /// </summary>
+        public static class AreaConfig
+        {
+            /// <summary>
+            /// Register all areas
+            /// </summary>
+            public static void RegisterAreas()
+            {
+                var adminArea = new AdminAreaRegistration();
+                var adminAreaContext = new AreaRegistrationContext(adminArea.AreaName, RouteTable.Routes);
+                adminArea.RegisterArea(adminAreaContext);
+                var defaultArea = new MvcAreaRegistration();
+                var defaultAreaContext = new AreaRegistrationContext(defaultArea.AreaName, RouteTable.Routes);
+                defaultArea.RegisterArea(defaultAreaContext);
+            }
         }
     }
 }

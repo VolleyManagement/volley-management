@@ -60,6 +60,7 @@
     <Compile Include="Authorization\IAuthorizationService.cs" />
     <Compile Include="Authorization\ICurrentUserService.cs" />
     <Compile Include="Authorization\IRolesService.cs" />
+    <Compile Include="Authorization\IUserService.cs" />
     <Compile Include="Exceptions\AuthorizationException.cs" />
     <Compile Include="Exceptions\MissingEntityException.cs" />
     <Compile Include="IContributorTeamService.cs" />

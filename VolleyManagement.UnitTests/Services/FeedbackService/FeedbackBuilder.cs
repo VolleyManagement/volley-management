@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using Domain.FeedbackAggregate;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
 
     /// <summary>
     /// Represents a builder of <see cref="Feedback"/> objects for unit
@@ -23,7 +24,7 @@
                 Id = 1,
                 UsersEmail = "qwerty@gmail.com",
                 Content = "A perfect application",
-                Date = DateTime.Now,
+                Date = new DateTime(2007, 05, 03),
                 Status = FeedbackStatusEnum.New
             };
         }

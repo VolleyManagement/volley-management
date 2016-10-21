@@ -1,12 +1,15 @@
 ﻿namespace VolleyManagement.UnitTests.Services.FeedbackService
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Crosscutting.Contracts.Providers;
     using Data.Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Services;
 
@@ -14,6 +17,8 @@
     [TestClass]
     public class FeedbackServiceTest
     {
+        #region Fields and constants
+
         public const string ERROR_FOR_FEEDBACK_REPOSITORY_VERIFY
             = "Parameter feedback is not equal to Instance of feedback";
 
@@ -27,8 +32,21 @@
             = new Mock<IUnitOfWork>();
 
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+
+        private readonly Mock<IQuery<List<Feedback>, GetAllCriteria>> _getAllFeedbacksQueryMock =
+            new Mock<IQuery<List<Feedback>, GetAllCriteria>>();
+
+        private readonly Mock<IQuery<Feedback, FindByIdCriteria>> _getFeedbackByIdQueryMock =
+         new Mock<IQuery<List<Feedback>, FindByIdCriteria>>();
+
+        private readonly Mock<IMailService> _mailServiceMock = new Mock<IMailService>();
+
+        private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
+
         private IKernel _kernel;
         private DateTime _date = new DateTime(2007, 05, 03);
+
+        #endregion
 
         [TestInitialize]
         public void TestInit()
@@ -37,6 +55,8 @@
             _kernel.Bind<IFeedbackRepository>().ToConstant(_feedbackRepositoryMock.Object);
             _feedbackRepositoryMock.Setup(fr => fr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             TimeProvider.Current = _timeMock.Object;
+            _kernel.Bind<IQuery<Feedback, FindByIdCriteria>>().ToConstant(_getFeedbackByIdQueryMock.Object);
+            _kernel.Bind<IQuery<List<Feedback>, GetAllCriteria>>().ToConstant(_getAllFeedbacksQueryMock.Object);
             _timeMock.Setup(tp => tp.UtcNow).Returns(_date);
         }
 

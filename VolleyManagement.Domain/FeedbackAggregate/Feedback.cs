@@ -21,10 +21,7 @@
         /// </summary>
         public string UsersEmail
         {
-            get
-            {
-                return _usersEmail;
-            }
+            get { return _usersEmail; }
 
             set
             {
@@ -44,18 +41,15 @@
         /// </summary>
         public string Content
         {
-            get
-            {
-                return _content;
-            }
+            get { return _content; }
 
             set
             {
                 if (FeedbackValidation.ValidateContent(value))
                 {
                     throw new ArgumentException(
-                       Resources.ValidationFeedbackContent,
-                       Resources.FeedbackContentParam);
+                        Resources.ValidationFeedbackContent,
+                        Resources.FeedbackContentParam);
                 }
 
                 _content = value;
@@ -71,5 +65,15 @@
         /// Gets or sets feedback status.
         /// </summary>
         public FeedbackStatusEnum Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets update date of feedback.
+        /// </summary>
+        public DateTime UpdateDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets admin name.
+        /// </summary>
+        public string AdminName { get; set; }
     }
 }

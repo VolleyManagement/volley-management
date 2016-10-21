@@ -123,6 +123,9 @@
   <data name="DivisionsListIsEmpty" xml:space="preserve">
     <value>Список дивизионов пуст</value>
   </data>
+  <data name="FeedbackNotFound" xml:space="preserve">
+    <value>A feedback with specified identifier was not found</value>
+  </data>
   <data name="GameNotFound" xml:space="preserve">
     <value>Игра с указаным идентификатором не была найдена</value>
   </data>

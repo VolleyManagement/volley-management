@@ -16,6 +16,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         Content = c.String(nullable: false, maxLength: 5000),
                         Date = c.DateTime(nullable: false, precision: 0, storeType: "datetime2"),
                         StatusCode = c.Byte(nullable: false),
+                        UpdateDate = c.DateTime(nullable: false, precision: 0, storeType: "datetime2"),
+                        AdminName = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id);
             

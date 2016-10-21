@@ -10,10 +10,8 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/bundles/commoncss")
     @Styles.Render("~/bundles/admincss")
-
     @Scripts.Render("~/bundles/commonscripts")
     @Scripts.Render("~/bundles/adminscripts")
-
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/jqueryvalidation")
     @Scripts.Render("~/bundles/useractionscripts")
@@ -22,10 +20,9 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
+
 </head>
 <body>
-
     <div id="wrapper">
         <!-- Navigation -->
         @Html.Partial("_Navigation")
@@ -40,22 +37,6 @@
                     <!-- /.col-lg-12 -->
                 </div>
                 <!-- /.row -->
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Volley Management", "Index", "Home", null, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-right navbar-text">
-                @Html.ActionLink("Feedback", "Create", "Feedbacks", null, new { @class = "feedback-link" })
-            </div>
-            <div class="navbar-right navbar-text">
-                @{ Html.RenderAction("Info", "Account"); }
             </div>
             <!-- /.container-fluid -->
         </div>
@@ -67,5 +48,6 @@
     </footer>
 </body>
 </html>
+
 
 

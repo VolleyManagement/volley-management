@@ -13,6 +13,9 @@
         <li class="dropdown">
             @{ Html.RenderAction("Info", "Account"); }
         </li>
+        <li>
+            @Html.ActionLink("Feedback", "Create", "Feedbacks", null, new { @class = "feedback-link" })
+        </li>
     </ul>
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">

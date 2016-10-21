@@ -21,7 +21,7 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
-        /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
+        /// <param name="feedbackRepository"> The feedback repository</param>
         public FeedbackService(IFeedbackRepository feedbackRepository)
         {
             _feedbackRepository = feedbackRepository;

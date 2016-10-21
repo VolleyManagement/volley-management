@@ -20,19 +20,18 @@
         public const string ERROR_FOR_UNIT_OF_WORK_VERIFY
             = "Can't save feedback to database";
 
-        private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock
-            = new Mock<IFeedbackRepository>();
-
         private readonly Mock<IUnitOfWork> _unitOfWorkMock
             = new Mock<IUnitOfWork>();
 
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
         private IKernel _kernel;
+        private Mock<IFeedbackRepository> _feedbackRepositoryMock;
         private DateTime _date = new DateTime(2007, 05, 03);
 
         [TestInitialize]
         public void TestInit()
         {
+            _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
             _kernel = new StandardKernel();
             _kernel.Bind<IFeedbackRepository>().ToConstant(_feedbackRepositoryMock.Object);
             _feedbackRepositoryMock.Setup(fr => fr.UnitOfWork).Returns(_unitOfWorkMock.Object);

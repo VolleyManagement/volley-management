@@ -96,5 +96,15 @@
         {
             public const int MAX_GROUP_NAME_LENGTH = 60;
         }
+
+        /// <summary>
+        /// Feedback entity validation constants
+        /// </summary>
+        public static class Feedback
+        {
+            public const int MAX_EMAIL_LENGTH = 80;
+
+            public const int MAX_CONTENT_LENGTH = 5000;
+        }
     }
 }

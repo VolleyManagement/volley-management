@@ -1,8 +1,4 @@
-﻿using VolleyManagement.Contracts.Exceptions;
-using VolleyManagement.Data.Exceptions;
-using VolleyManagement.Domain.UsersAggregate;
-
-namespace VolleyManagement.UnitTests.Services.FeedbackService
+﻿namespace VolleyManagement.UnitTests.Services.FeedbackService
 {
     using System;
     using System.Collections.Generic;
@@ -14,8 +10,11 @@ namespace VolleyManagement.UnitTests.Services.FeedbackService
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.FeedbackAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.Services;
 
     [ExcludeFromCodeCoverage]
@@ -195,7 +194,7 @@ namespace VolleyManagement.UnitTests.Services.FeedbackService
             }
 
             // Assert
-            VerifyExceptionThrown(exception, ExpectedExceptionMessages.FEEDBACK_NOT_FOUND); 
+            VerifyExceptionThrown(exception, ExpectedExceptionMessages.FEEDBACK_NOT_FOUND);
         }
 
         /// <summary>
@@ -223,7 +222,7 @@ namespace VolleyManagement.UnitTests.Services.FeedbackService
         }
 
         /// <summary>
-        /// Test for Close() method with valid id as input parameter and non-authorized user. 
+        /// Test for Close() method with valid id as input parameter and non-authorized user.
         /// The method should throw AuthorizationException
         /// and shouldn't invoke Update and Commit() method of IUnitOfWork.
         /// </summary>
@@ -252,7 +251,7 @@ namespace VolleyManagement.UnitTests.Services.FeedbackService
         }
 
         /// <summary>
-        /// Test for GetDetails() method with valid id as input parameter. The method should return feedback 
+        /// Test for GetDetails() method with valid id as input parameter. The method should return feedback
         /// and update it's status
         /// </summary>
         [TestMethod]

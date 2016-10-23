@@ -106,6 +106,7 @@
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound, ex);
             }
+
             return feedback;
         }
 
@@ -167,6 +168,7 @@
                     {
                         throw new AuthorizationException();
                     }
+
                     feedback.UpdateDate = TimeProvider.Current.UtcNow;
                     feedback.AdminName = user.PersonName;
                 }

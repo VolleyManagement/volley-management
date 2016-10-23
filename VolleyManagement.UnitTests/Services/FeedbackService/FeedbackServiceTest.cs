@@ -25,18 +25,17 @@
 
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
         private IKernel _kernel;
-        private Mock<IFeedbackRepository> _feedbackRepositoryMock;
-        private DateTime _date = new DateTime(2007, 05, 03);
+        private Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
+        private DateTime _testDate = new DateTime(2007, 05, 03);
 
         [TestInitialize]
         public void TestInit()
-        {
-            _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
+        { 
             _kernel = new StandardKernel();
             _kernel.Bind<IFeedbackRepository>().ToConstant(_feedbackRepositoryMock.Object);
             _feedbackRepositoryMock.Setup(fr => fr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             TimeProvider.Current = _timeMock.Object;
-            _timeMock.Setup(tp => tp.UtcNow).Returns(_date);
+            _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
         }
 
         /// <summary>
@@ -46,10 +45,16 @@
         public void TestCleanup()
         {
             TimeProvider.ResetToDefault();
+            _feedbackRepositoryMock.Reset();
+            _timeMock.Reset();
+            _unitOfWorkMock.Reset();
         }
 
+        /// <summary>
+        /// Test for Create() method. The method should create a new feedback.
+        /// </summary>
         [TestMethod]
-        public void Create_CorrectFeedback_FeedbackCreated()
+        public void Create_FeedbackPassed_FeedbackCreated()
         {
             var newFeedback = new FeedbackBuilder().Build();
 

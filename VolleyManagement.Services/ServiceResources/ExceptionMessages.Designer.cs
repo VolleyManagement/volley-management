@@ -97,6 +97,15 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are not authorized.Please login again..
+        /// </summary>
+        internal static string NotAuthorized {
+            get {
+                return ResourceManager.GetString("NotAuthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Количество дивизионов в турнире должно быть между {0} и {1}.
         /// </summary>
         internal static string OutOfDivisionsCountRange {

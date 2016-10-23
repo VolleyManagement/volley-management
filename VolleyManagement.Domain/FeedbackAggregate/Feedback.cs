@@ -21,7 +21,10 @@
         /// </summary>
         public string UsersEmail
         {
-            get { return _usersEmail; }
+            get
+            {
+                return _usersEmail;
+            }
 
             set
             {
@@ -41,7 +44,10 @@
         /// </summary>
         public string Content
         {
-            get { return _content; }
+            get
+            {
+                return _content;
+            }
 
             set
             {

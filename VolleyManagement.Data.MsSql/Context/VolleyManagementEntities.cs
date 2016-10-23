@@ -578,7 +578,6 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsUnicode()
                 .IsVariableLength()
                 .HasMaxLength(ValidationConstants.User.MAX_FULL_NAME_LENGTH);
-
         }
 
         #endregion

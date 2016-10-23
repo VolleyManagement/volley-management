@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using VolleyManagement.Contracts.Exceptions;
-using VolleyManagement.Data.Contracts;
-using VolleyManagement.Data.Exceptions;
-using VolleyManagement.Data.Queries.Common;
-using VolleyManagement.Domain.UsersAggregate;
-
-namespace VolleyManagement.Services
+﻿namespace VolleyManagement.Services
 {
     using System;
+    using System.Collections.Generic;
     using Contracts;
     using Crosscutting.Contracts.Providers;
     using Domain.FeedbackAggregate;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Domain.MailsAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// Represents an implementation of IFeedbackService contract.
@@ -33,7 +33,12 @@ namespace VolleyManagement.Services
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
         /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
-        public FeedbackService(IFeedbackRepository feedbackRepository,
+        /// <param name="userService">Instance of class which implements <see cref="IUserService"/>e</param>
+        /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
+        /// <param name="getFeedbackByIdQuery">Get By ID query for feedbacks</param>
+        /// <param name="getAllFeedbacksQuery">Get All feedbacks query</param>
+        public FeedbackService(
+            IFeedbackRepository feedbackRepository,
             IUserService userService,
             IMailService mailService,
             IQuery<Feedback, FindByIdCriteria> getFeedbackByIdQuery,
@@ -41,7 +46,7 @@ namespace VolleyManagement.Services
         {
             _feedbackRepository = feedbackRepository;
             _userService = userService;
-           // _mailService = mailService;
+            _mailService = mailService;
             _getFeedbackByIdQuery = getFeedbackByIdQuery;
             _getAllFeedbacksQuery = getAllFeedbacksQuery;
         }
@@ -89,7 +94,8 @@ namespace VolleyManagement.Services
         /// Get a Feedback's details by id.
         /// </summary>
         /// <param name="id">id for details.</param>
-        public void GetDetails(int id)
+        /// <returns>founded feedback.</returns>
+        public Feedback GetDetails(int id)
         {
             var feedback = Get(id);
             try
@@ -100,6 +106,7 @@ namespace VolleyManagement.Services
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound, ex);
             }
+            return feedback;
         }
 
         /// <summary>
@@ -137,6 +144,10 @@ namespace VolleyManagement.Services
             {
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound, ex);
             }
+            catch (AuthorizationException)
+            {
+                throw new AuthorizationException();
+            }
         }
 
         private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum statusCode)
@@ -152,14 +163,18 @@ namespace VolleyManagement.Services
                 if (feedback.Status == FeedbackStatusEnum.Closed || feedback.Status == FeedbackStatusEnum.Answered)
                 {
                     User user = this._userService.GetCurrentUserInstance();
+                    if (user == null)
+                    {
+                        throw new AuthorizationException();
+                    }
                     feedback.UpdateDate = TimeProvider.Current.UtcNow;
                     feedback.AdminName = user.PersonName;
                 }
+
                 _feedbackRepository.Update(feedback);
                 _feedbackRepository.UnitOfWork.Commit();
             }
         }
-
 
         #endregion
 

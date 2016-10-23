@@ -18,19 +18,23 @@
 
         /// <summary>
         /// ToDomain() method test.
-        /// Does correct feedback team view model mapped to domain model.
+        /// Does correct feedback view model mapped to domain model.
         /// </summary>
         [TestMethod]
-        public void ToDomain_FeedbackViewModelMapped_ToDomain()
+        public void ToDomain_FeedbackViewModel_MappedToDomain()
         {
-            //// Arrange
+            // Arrange
             var testViewModel = new FeedbackMvcViewModelBuilder()
                 .WithId(1)
                 .WithEmail(TEST_MAIL)
                 .WithContent(TEST_CONTENT)
                 .Build();
 
-            var testDomainModel = new FeedbackBuilder()
+            // Creates expected Feedback.
+            // We have to assign fields Date and Status with default values
+            // because FeedbackViewModel object doesn't has this field
+            // but we want to compare it with Feedback object.
+            var expected = new FeedbackBuilder()
                 .WithId(1)
                 .WithEmail(TEST_MAIL)
                 .WithContent(TEST_CONTENT)
@@ -38,11 +42,11 @@
                 .WithStatus(0)
                 .Build();
 
-            //// Act
+            // Act
             var actual = testViewModel.ToDomain();
 
-            //// Assert
-            TestHelper.AreEqual(testDomainModel, actual, new FeedbackComparer());
+            // Assert
+            TestHelper.AreEqual(expected, actual, new FeedbackComparer());
         }
     }
 }

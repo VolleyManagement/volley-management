@@ -37,11 +37,11 @@
         /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
         /// </summary>
         /// <param name="feedbackService">Instance of the class
-        /// that implements <see cref="IFeedbackService"/></param>
+        /// that implements IFeedbackService interface.</param>
         /// <param name="userService">Instance of the class
-        /// that implements <see cref="IUserService"/></param>
+        /// that implements IUserService interface.</param>
         /// <param name="currentUserService">Instance of the class
-        /// that implements <see cref="ICurrentUserService"/></param>
+        /// that implements ICurrentUserService interface.</param>
         public FeedbacksController(
             IFeedbackService feedbackService,
             IUserService userService,
@@ -60,7 +60,7 @@
         {
             var feedbackViewModel = new FeedbackViewModel
             {
-                UsersEmail = GetCurrentUserMail()
+                UsersEmail = GetUserMail()
             };
 
             return View("Create", feedbackViewModel);
@@ -95,16 +95,20 @@
         /// Gets current user mail.
         /// </summary>
         /// <returns>User email.</returns>
-        private string GetCurrentUserMail()
+        private string GetUserMail()
         {
             int userId = this._currentUserService.GetCurrentUserId();
+            User currentUser = new User();
 
             if (userId == ANONYM)
             {
-                return string.Empty;
+                currentUser.Email = string.Empty;
+            }
+            else
+            {
+                currentUser = this._userService.GetUser(userId);
             }
 
-            User currentUser = this._userService.GetCurrentUserInstance(userId);
             return currentUser.Email;
         }
     }

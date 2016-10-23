@@ -101,7 +101,7 @@
                 cs => cs.GetCurrentUserId()).Returns(TEST_ID);
 
             this._userServiceMock.Setup(
-                us => us.GetCurrentUserInstance(TEST_ID)).Returns(
+                us => us.GetUser(TEST_ID)).Returns(
                 new User { Email = TEST_MAIL });
 
             // Act

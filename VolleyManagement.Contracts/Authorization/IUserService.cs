@@ -12,6 +12,6 @@
         /// </summary>
         /// <param name="userId">User Id.</param>
         /// <returns>User instance.</returns>
-        User GetCurrentUserInstance(int userId);
+        User GetUser(int userId);
     }
 }

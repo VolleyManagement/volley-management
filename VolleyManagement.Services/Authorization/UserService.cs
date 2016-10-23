@@ -29,7 +29,7 @@
         /// </summary>
         /// <param name="userId">User Id.</param>
         /// <returns>User entity.</returns>
-        public User GetCurrentUserInstance(int userId)
+        public User GetUser(int userId)
         {
             return this._getUserByIdQuery.Execute(
                     new FindByIdCriteria { Id = userId });

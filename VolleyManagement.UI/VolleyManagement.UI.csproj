@@ -347,6 +347,7 @@
     <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -382,6 +383,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthorizationRoles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FeedbackViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FeedbackViews.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\GameReportViews.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -589,6 +595,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\FeedbackViews.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>FeedbackViews.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\GameReportViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameReportViews.Designer.cs</LastGenOutput>

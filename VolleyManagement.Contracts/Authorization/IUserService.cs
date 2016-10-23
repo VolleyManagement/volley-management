@@ -8,7 +8,7 @@
     public interface IUserService
     {
         /// <summary>
-        /// Get authorized user instance.
+        /// Get user instance by Id.
         /// </summary>
         /// <param name="userId">User Id.</param>
         /// <returns>User instance.</returns>

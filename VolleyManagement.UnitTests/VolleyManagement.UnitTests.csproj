@@ -131,7 +131,6 @@
     <Compile Include="Mvc\ViewModels\DivisionViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\FeedbackMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\FeedbackViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\FeedbackViewModelToDomain.cs" />
     <Compile Include="Mvc\ViewModels\GameMvcEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />

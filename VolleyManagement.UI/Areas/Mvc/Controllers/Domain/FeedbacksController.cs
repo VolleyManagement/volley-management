@@ -22,19 +22,28 @@
         /// </summary>
         private readonly IFeedbackService _feedbackService;
 
-       /// <summary>
-       /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
-       /// </summary>
-       /// <param name="feedbackService">Instance of the class
-       /// that implements <see cref="IFeedbackService"/></param>
-       /// <param name="userService">Instance of the class
-       /// that implements <see cref="IUserService"/></param>
+        /// <summary>
+        /// Holds MailService instance.
+        /// </summary>
+        private readonly IMailService _mailService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
+        /// </summary>
+        /// <param name="feedbackService">Instance of the class
+        /// that implements <see cref="IFeedbackService"/></param>
+        /// <param name="userService">Instance of the class
+        /// that implements <see cref="IUserService"/></param>
+        /// <param name="mailService">Instance of the class
+        /// that implements <see cref="IMailService"/></param>
         public FeedbacksController(
             IFeedbackService feedbackService,
-            IUserService userService)
+            IUserService userService,
+            IMailService mailService)
         {
             this._feedbackService = feedbackService;
             this._userService = userService;
+            this._mailService = mailService;
         }
 
         /// <summary>
@@ -68,6 +77,9 @@
             {
                 var domainFeedback = feedbackViewModel.ToDomain();
                 this._feedbackService.Create(domainFeedback);
+                //////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                _mailService.NotifyUser(feedbackViewModel.UsersEmail);
+                _mailService.NotifyAdmins(domainFeedback);
                 return View("FeedbackSentMessage");
             }
             catch (ArgumentException ex)

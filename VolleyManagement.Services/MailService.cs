@@ -5,10 +5,13 @@
     using System.Net;
     using System.Net.Mail;
     using System.Web.Configuration;
+    using Authentication;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.Dto;
     using VolleyManagement.Domain.FeedbackAggregate;
+    using Contracts.Authentication.Models;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Defines MailService.
@@ -17,13 +20,17 @@
     {
         private readonly IRolesService _roleService;
 
+        private readonly VolleyUserStore _volleyUserStore;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MailService"/> class.
         /// </summary>
         /// <param name="rolesService">Roles service.</param>
-        public MailService(IRolesService rolesService)
+        public MailService(IRolesService rolesService,
+            VolleyUserStore volleyUserStore)
         {
             _roleService = rolesService;
+            _volleyUserStore = volleyUserStore;
         }
 
         /// <summary>
@@ -55,8 +62,16 @@
             List<UserInRoleDto> adminsList = _roleService.GetUsersInRole(ROLE_ID);
 
             // выбираем соответствующие емейлы
+            foreach (var admin in adminsList)
+            {
+                var usersTask = Task.Run(() => _volleyUserStore.FindByIdAsync(admin.UserId));
+                var user = usersTask.Result;
+
+                Send(user.Email, emailBody);
+
+            }
             // создаем список получателей
-            Send(feedback.UsersEmail, emailBody);
+          //  Send(feedback.UsersEmail, emailBody);
         }
 
         /// <summary>

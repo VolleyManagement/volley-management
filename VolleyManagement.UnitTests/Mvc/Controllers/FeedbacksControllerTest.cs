@@ -60,17 +60,6 @@
         }
 
         /// <summary>
-        /// Resets Mock setups after every test.
-        /// </summary>
-        [TestCleanup]
-        public void ResetMocks()
-        {
-            this._currentUserServiceMock.Reset();
-            this._feedbackServiceMock.Reset();
-            this._userServiceMock.Reset();
-        }
-
-        /// <summary>
         /// Test for create GET method.
         /// User email is empty if user is not authenticated.
         /// </summary>
@@ -86,6 +75,7 @@
 
             // Assert
             Assert.AreEqual(feedback.UsersEmail, string.Empty);
+            this._currentUserServiceMock.Verify(cs => cs.GetCurrentUserId(), Times.Once);
         }
 
         /// <summary>
@@ -109,6 +99,8 @@
 
             // Assert
             Assert.AreEqual(feedback.UsersEmail, TEST_MAIL);
+            this._currentUserServiceMock.Verify(cs => cs.GetCurrentUserId(), Times.Once);
+            this._userServiceMock.Verify(us => us.GetUser(TEST_ID), Times.Once);
         }
 
         /// <summary>
@@ -169,6 +161,7 @@
                 expectedFeedback,
                 actualFeedback,
                 new FeedbackComparer());
+            this._feedbackServiceMock.Verify(f => f.Create(It.IsAny<Feedback>()), Times.Once);
         }
 
         /// <summary>
@@ -199,6 +192,7 @@
                 actualFeedback,
                 expectedFeedback,
                 new FeedbackViewModelComparer());
+            this._feedbackServiceMock.Verify(f => f.Create(It.IsAny<Feedback>()));
         }
 
         /// <summary>

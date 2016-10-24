@@ -98,13 +98,12 @@
         private string GetUserMail()
         {
             int userId = this._currentUserService.GetCurrentUserId();
-            User currentUser = new User();
-
-            if (userId == ANONYM)
+            User currentUser = new User
             {
-                currentUser.Email = string.Empty;
-            }
-            else
+                Email = string.Empty
+            };
+
+            if (userId != ANONYM)
             {
                 currentUser = this._userService.GetUser(userId);
             }

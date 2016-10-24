@@ -2,8 +2,10 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Optimization;
+    using System.Web.Routing;
     using VolleyManagement.UI.Helpers;
 
     /// <summary>
@@ -31,10 +33,13 @@
             Justification = "Sergii Diachenko: This is specific naming convention.")]
         protected void Application_Start()
         {
+            GlobalConfiguration.Configure(WebApiConfig.Register);
+            RouteConfig.RegisterIgnoreRoutes(RouteTable.Routes);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AreaConfig.RegisterArea(new Areas.Admin.AdminAreaRegistration());
             AreaConfig.RegisterArea(new Areas.Mvc.MvcAreaRegistration());
+            AreaConfig.RegisterArea(new Areas.WebApi.WebApiAreaRegistration());
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateTimeModelBinder());
         }

@@ -25,8 +25,8 @@
 
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
         private IKernel _kernel;
-        private Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
-        private DateTime _testDate = new DateTime(2007, 05, 03);
+        private Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository> {CallBase = true};
+        private DateTime _feedbackTestDate = new DateTime(2007, 05, 03);
 
         [TestInitialize]
         public void TestInit()
@@ -35,7 +35,7 @@
             _kernel.Bind<IFeedbackRepository>().ToConstant(_feedbackRepositoryMock.Object);
             _feedbackRepositoryMock.Setup(fr => fr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             TimeProvider.Current = _timeMock.Object;
-            _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
+            _timeMock.Setup(tp => tp.UtcNow).Returns(_feedbackTestDate);
         }
 
         /// <summary>
@@ -45,9 +45,6 @@
         public void TestCleanup()
         {
             TimeProvider.ResetToDefault();
-            _feedbackRepositoryMock.Reset();
-            _timeMock.Reset();
-            _unitOfWorkMock.Reset();
         }
 
         /// <summary>

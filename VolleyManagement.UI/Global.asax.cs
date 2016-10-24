@@ -2,14 +2,10 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Optimization;
-    using System.Web.Routing;
-    using Areas.Admin;
-    using Areas.Mvc;
     using VolleyManagement.UI.Helpers;
-    
+
     /// <summary>
     /// The volley management application.
     /// </summary>
@@ -37,28 +33,10 @@
         {
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AreaConfig.RegisterAreas();
+            AreaConfig.RegisterArea(new Areas.Admin.AdminAreaRegistration());
+            AreaConfig.RegisterArea(new Areas.Mvc.MvcAreaRegistration());
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateTimeModelBinder());
-        }
-
-        /// <summary>
-        /// Configure areas
-        /// </summary>
-        public static class AreaConfig
-        {
-            /// <summary>
-            /// Register all areas
-            /// </summary>
-            public static void RegisterAreas()
-            {
-                var adminArea = new AdminAreaRegistration();
-                var adminAreaContext = new AreaRegistrationContext(adminArea.AreaName, RouteTable.Routes);
-                adminArea.RegisterArea(adminAreaContext);
-                var defaultArea = new MvcAreaRegistration();
-                var defaultAreaContext = new AreaRegistrationContext(defaultArea.AreaName, RouteTable.Routes);
-                defaultArea.RegisterArea(defaultAreaContext);
-            }
         }
     }
 }

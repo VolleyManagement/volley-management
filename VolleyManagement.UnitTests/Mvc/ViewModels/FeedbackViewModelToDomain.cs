@@ -35,7 +35,6 @@
                 .WithEmail(TEST_MAIL)
                 .WithContent(TEST_CONTENT)
                 .WithDate(DateTime.MinValue)
-                .WithStatus(0)
                 .Build();
 
             //// Act

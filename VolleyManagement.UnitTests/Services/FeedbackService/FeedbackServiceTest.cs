@@ -20,12 +20,13 @@
         public const string ERROR_FOR_UNIT_OF_WORK_VERIFY
             = "Can't save feedback to database";
 
+        public const int SPECIFIC_FEEDBACK_ID = 1;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock
             = new Mock<IUnitOfWork>();
 
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+        private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
         private IKernel _kernel;
-        private Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository> {CallBase = true};
         private DateTime _feedbackTestDate = new DateTime(2007, 05, 03);
 
         [TestInitialize]
@@ -54,7 +55,8 @@
         public void Create_FeedbackPassed_FeedbackCreated()
         {
             var newFeedback = new FeedbackBuilder().Build();
-
+            _feedbackRepositoryMock.Setup(tr => tr.Add(It.IsAny<Feedback>()))
+                 .Callback<Feedback>(t => t.Id = SPECIFIC_FEEDBACK_ID);
             var sut = _kernel.Get<FeedbackService>();
             sut.Create(newFeedback);
 

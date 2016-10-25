@@ -61,6 +61,24 @@ namespace VolleyManagement.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Thank you for your feedback!.
+        /// </summary>
+        internal static string FeedbackConfirmationLetterBody {
+            get {
+                return ResourceManager.GetString("FeedbackConfirmationLetterBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User notification.
+        /// </summary>
+        internal static string FeedbackConfirmationLetterSubject {
+            get {
+                return ResourceManager.GetString("FeedbackConfirmationLetterSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback №{0}, 
         ///Date: {1}.
         ///User email: {2},
@@ -70,6 +88,15 @@ namespace VolleyManagement.Services.Properties {
         internal static string FeedbackEmailBodyToAdmins {
             get {
                 return ResourceManager.GetString("FeedbackEmailBodyToAdmins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback №{0}.
+        /// </summary>
+        internal static string FeedbackEmailSubjectToAdmins {
+            get {
+                return ResourceManager.GetString("FeedbackEmailSubjectToAdmins", resourceCulture);
             }
         }
     }

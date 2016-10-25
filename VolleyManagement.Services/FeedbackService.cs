@@ -14,6 +14,11 @@
 
         private readonly IFeedbackRepository _feedbackRepository;
 
+        /// <summary>
+        /// Holds MailService instance.
+        /// </summary>
+        private readonly IMailService _mailService;
+
         #endregion
 
         #region Constructor
@@ -22,9 +27,14 @@
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
         /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
-        public FeedbackService(IFeedbackRepository feedbackRepository)
+        /// <param name="mailService">Instance of the class
+        /// that implements <see cref="IMailService"/></param>
+        public FeedbackService(
+            IFeedbackRepository feedbackRepository,
+            IMailService mailService)
         {
             _feedbackRepository = feedbackRepository;
+            _mailService = mailService;
         }
 
         #endregion
@@ -45,6 +55,9 @@
             UpdateFeedbackDate(feedbackToCreate);
             _feedbackRepository.Add(feedbackToCreate);
             _feedbackRepository.UnitOfWork.Commit();
+
+            _mailService.NotifyUser(feedbackToCreate.UsersEmail);
+            _mailService.NotifyAdmins(feedbackToCreate);
         }
 
         #endregion

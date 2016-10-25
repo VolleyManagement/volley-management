@@ -29,9 +29,11 @@
         /// <summary>
         /// Send an email.
         /// </summary>
-        /// <param name="emailTo">Recipient email.</param>
-        /// /// <param name="emailFrom">Sender email.</param>
+        /// <param name="emailFrom">Sender email address.</param>
+        /// <param name="password">Password for sender's email address.</param>
         /// <param name="body">Body of the email.</param>
-        void Send(string emailTo, string emailFrom, string body);
+        /// <param name="subject">Subject of the email.</param>
+        /// <param name="emailsTo">Array of recipients' email addresses.</param>
+        void Send(string emailFrom, string password, string body, string subject, params string[] emailsTo);
     }
 }

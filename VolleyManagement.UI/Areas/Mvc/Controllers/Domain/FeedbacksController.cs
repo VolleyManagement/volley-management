@@ -23,27 +23,18 @@
         private readonly IFeedbackService _feedbackService;
 
         /// <summary>
-        /// Holds MailService instance.
-        /// </summary>
-        private readonly IMailService _mailService;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
         /// </summary>
         /// <param name="feedbackService">Instance of the class
         /// that implements <see cref="IFeedbackService"/></param>
         /// <param name="userService">Instance of the class
         /// that implements <see cref="IUserService"/></param>
-        /// <param name="mailService">Instance of the class
-        /// that implements <see cref="IMailService"/></param>
         public FeedbacksController(
             IFeedbackService feedbackService,
-            IUserService userService,
-            IMailService mailService)
+            IUserService userService)
         {
             this._feedbackService = feedbackService;
             this._userService = userService;
-            this._mailService = mailService;
         }
 
         /// <summary>
@@ -76,10 +67,7 @@
             try
             {
                 var domainFeedback = feedbackViewModel.ToDomain();
-                this._feedbackService.Create(domainFeedback);
-                //////////////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                _mailService.NotifyUser(feedbackViewModel.UsersEmail);
-                _mailService.NotifyAdmins(domainFeedback);
+                this._feedbackService.Create(domainFeedback);           
                 return View("FeedbackSentMessage");
             }
             catch (ArgumentException ex)

@@ -4,14 +4,13 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Mail;
+    using System.Threading.Tasks;
     using System.Web.Configuration;
     using Authentication;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.Dto;
     using VolleyManagement.Domain.FeedbackAggregate;
-    using Contracts.Authentication.Models;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Defines MailService.
@@ -26,7 +25,9 @@
         /// Initializes a new instance of the <see cref="MailService"/> class.
         /// </summary>
         /// <param name="rolesService">Roles service.</param>
-        public MailService(IRolesService rolesService,
+        /// /// <param name="volleyUserStore">Volley User Store.</param>
+        public MailService(
+            IRolesService rolesService,
             VolleyUserStore volleyUserStore)
         {
             _roleService = rolesService;
@@ -39,7 +40,22 @@
         /// <param name="emailTo">Recipient email.</param>
         public void NotifyUser(string emailTo)
         {
-            Send(emailTo, "Thank you for your feedback!");
+            // достаем логин и пароль из других сервисов?
+            const string EMAIL_ADDRESS_KEY = "GoogleEmailAddress";
+            const string EMAIL_PASSWORD_KEY = "GoogleEmailPassword";
+
+            var emailFrom = WebConfigurationManager.AppSettings[EMAIL_ADDRESS_KEY];
+            var password = WebConfigurationManager.AppSettings[EMAIL_PASSWORD_KEY];
+
+            if (emailFrom == null || password == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            string body = Properties.Resources.FeedbackConfirmationLetterBody;
+            string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
+
+            Send(emailFrom, password, body, subject, emailTo);
         }
 
         /// <summary>
@@ -48,8 +64,24 @@
         /// <param name="feedback">Feedback to send.</param>
         public void NotifyAdmins(Feedback feedback)
         {
-            // формируем тело письма
-            string emailBody = string.Format(
+            // достаем логин-пароль из другого сервиса?
+            const string EMAIL_ADDRESS_KEY = "GoogleEmailAddress";
+            const string EMAIL_PASSWORD_KEY = "GoogleEmailPassword";
+            const int ROLE_ID = 1;
+
+            var emailFrom = WebConfigurationManager.AppSettings[EMAIL_ADDRESS_KEY];
+            var password = WebConfigurationManager.AppSettings[EMAIL_PASSWORD_KEY];
+
+            if (emailFrom == null || password == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            string subject = string.Format(
+                Properties.Resources.FeedbackConfirmationLetterSubject,
+                feedback.Id);
+
+            string body = string.Format(
                 Properties.Resources.FeedbackEmailBodyToAdmins,
                 feedback.Id,
                 feedback.Date,
@@ -57,21 +89,15 @@
                 feedback.Status,
                 feedback.Content);
 
-            // выбираем всех админов
-            const int ROLE_ID = 1;
             List<UserInRoleDto> adminsList = _roleService.GetUsersInRole(ROLE_ID);
 
-            // выбираем соответствующие емейлы
             foreach (var admin in adminsList)
             {
                 var usersTask = Task.Run(() => _volleyUserStore.FindByIdAsync(admin.UserId));
                 var user = usersTask.Result;
 
-                Send(user.Email, emailBody);
-
+                Send(emailFrom, password, body, subject, user.Email);
             }
-            // создаем список получателей
-          //  Send(feedback.UsersEmail, emailBody);
         }
 
         /// <summary>
@@ -114,11 +140,22 @@
         /// <summary>
         /// Send an email.
         /// </summary>
-        /// <param name="emailTo">Recipient email.</param>
-        /// /// <param name="emailFrom">Sender email.</param>
+        /// <param name="emailFrom">Sender email address.</param>
+        /// <param name="password">Password for sender's email address.</param>
         /// <param name="body">Body of the email.</param>
-        public void Send(string emailTo, string emailFrom, string body)
+        /// <param name="subject">Subject of the email.</param>
+        /// <param name="emailsTo">Array of recipients' email addresses.</param>
+        public void Send(string emailFrom, string password, string body, string subject, params string[] emailsTo)
         {
+            if (string.IsNullOrEmpty(emailFrom)
+                || string.IsNullOrEmpty(password)
+                || string.IsNullOrEmpty(body)
+                || string.IsNullOrEmpty(subject)
+                || emailsTo == null)
+            {
+                throw new ArgumentException();
+            }
+
             SmtpClient smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
@@ -126,16 +163,25 @@
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(emailFrom, "password") // !!!
+                Credentials = new NetworkCredential(emailFrom, password)
             };
 
             MailMessage message = new MailMessage();
             message.From = new MailAddress(emailFrom);
             message.Priority = MailPriority.High;
-            message.To.Add(emailTo);
-            message.Subject = "Notification from VolleyManagement"; // ??
+            foreach (var emailTo in emailsTo)
+            {
+                message.To.Add(emailTo);
+            }
+
+            message.Subject = subject;
             message.Body = body;
             smtp.Send(message);
+        }
+
+        public void Send(string emailTo, string emailFrom, string body)
+        {
+            throw new NotImplementedException();
         }
     }
 }

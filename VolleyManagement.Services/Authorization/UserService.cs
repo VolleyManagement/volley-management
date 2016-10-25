@@ -10,9 +10,6 @@
     /// </summary>
     public class UserService : IUserService
     {
-        /// <summary>
-        /// Query for getting User by Id.
-        /// </summary>
         private readonly IQuery<User, FindByIdCriteria> _getUserByIdQuery;
 
         /// <summary>

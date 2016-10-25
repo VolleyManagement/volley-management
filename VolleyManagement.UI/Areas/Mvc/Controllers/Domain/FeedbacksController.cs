@@ -18,19 +18,8 @@
         /// </summary>
         private const int ANONYM = -1;
 
-        /// <summary>
-        /// Holds UserService instance.
-        /// </summary>
         private readonly IUserService _userService;
-
-        /// <summary>
-        /// Holds CurrentUserService instance.
-        /// </summary>
         private readonly ICurrentUserService _currentUserService;
-
-        /// <summary>
-        /// Holds FeedbackService instance.
-        /// </summary>
         private readonly IFeedbackService _feedbackService;
 
         /// <summary>

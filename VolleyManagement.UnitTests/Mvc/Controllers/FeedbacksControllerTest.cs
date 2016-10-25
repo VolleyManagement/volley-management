@@ -56,7 +56,6 @@
                 .ToConstant(this._userServiceMock.Object);
             this._kernel.Bind<ICurrentUserService>()
                .ToConstant(this._currentUserServiceMock.Object);
-            this._sut = this._kernel.Get<FeedbacksController>();
         }
 
         /// <summary>
@@ -67,15 +66,18 @@
         public void CreateGetAction_UserIsNotAuthentificated_FeedbackHasEmptyEmailField()
         {
             // Arrange
-            var feedback = new FeedbackMvcViewModelBuilder().WithEmail(string.Empty).Build();
-            this._currentUserServiceMock.Setup(cs => cs.GetCurrentUserId()).Returns(ANONYM_ID);
+            this._sut = this._kernel.Get<FeedbacksController>();
+            var feedback = new FeedbackMvcViewModelBuilder()
+                .WithEmail(string.Empty)
+                .Build();
+
+            SetupCurrentUserServiceGetCurrentUserId(ANONYM_ID);
 
             // Act
             this._sut.Create();
 
             // Assert
             Assert.AreEqual(feedback.UsersEmail, string.Empty);
-            this._currentUserServiceMock.Verify(cs => cs.GetCurrentUserId(), Times.Once);
         }
 
         /// <summary>
@@ -86,21 +88,19 @@
         public void CreateGetAction_UserIsAuthentificated_FeedbackEmailEqualsUsersEmail()
         {
             // Arrange
+            this._sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateValidFeedback();
-            this._currentUserServiceMock.Setup(
-                cs => cs.GetCurrentUserId()).Returns(TEST_ID);
+            SetupCurrentUserServiceGetCurrentUserId(TEST_ID);
 
             this._userServiceMock.Setup(
                 us => us.GetUser(TEST_ID)).Returns(
-                new User { Email = TEST_MAIL });
+                new User { Email = feedback.UsersEmail });
 
             // Act
             this._sut.Create();
 
             // Assert
             Assert.AreEqual(feedback.UsersEmail, TEST_MAIL);
-            this._currentUserServiceMock.Verify(cs => cs.GetCurrentUserId(), Times.Once);
-            this._userServiceMock.Verify(us => us.GetUser(TEST_ID), Times.Once);
         }
 
         /// <summary>
@@ -111,8 +111,13 @@
         public void CreatePostAction_ModelIsInvalid_CreateViewReturned()
         {
             // Arrange
-            var feedback = CreateValidFeedback();
-            this._sut.ModelState.AddModelError("Content", "FieldRequired");
+            this._sut = this._kernel.Get<FeedbacksController>();
+            var feedback = new FeedbackMvcViewModelBuilder()
+                .WithEmail(string.Empty)
+                .WithContent(string.Empty)
+                .Build();
+
+           SetInvalidModelState();
 
             // Act
             var result = this._sut.Create(feedback) as ViewResult;
@@ -129,6 +134,7 @@
         public void CreatePostAction_ModelIsValid_FeedbackThankReturned()
         {
             // Arrange
+            this._sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateValidFeedback();
 
             // Act
@@ -146,6 +152,7 @@
         public void CreatePostAction_ModelIsValid_FeedbackCreated()
         {
             // Arrange
+            this._sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateValidFeedback();
             var expectedFeedback = CreateExpectedFeedback();
 
@@ -161,8 +168,9 @@
                 expectedFeedback,
                 actualFeedback,
                 new FeedbackComparer());
-            this._feedbackServiceMock.Verify(f => f.Create(It.IsAny<Feedback>()), Times.Once);
         }
+
+        #region Private
 
         /// <summary>
         /// Test for Create POST method.
@@ -173,26 +181,17 @@
         public void CreatePostAction_InvalidModel_ArgumentExceptionThrown()
         {
             // Arrange
-            var expectedFeedback = new FeedbackMvcViewModelBuilder()
-                .WithId(TEST_ID)
-                .WithEmail(string.Empty)
-                .WithContent(string.Empty)
-                .Build();
+            this._sut = this._kernel.Get<FeedbacksController>();
+            var feedback = CreateInvalidFeedback();
 
             this._feedbackServiceMock.Setup(f => f.Create(It.IsAny<Feedback>()))
                 .Throws(new ArgumentException());
 
             // Act
-            var actualFeedback =
-                TestExtensions.GetModel<FeedbackViewModel>(
-                    this._sut.Create(expectedFeedback));
+            this._sut.Create(feedback);
 
             // Assert
-            TestHelper.AreEqual(
-                actualFeedback,
-                expectedFeedback,
-                new FeedbackViewModelComparer());
-            this._feedbackServiceMock.Verify(f => f.Create(It.IsAny<Feedback>()));
+            Assert.IsFalse(this._sut.ModelState.IsValid);
         }
 
         /// <summary>
@@ -201,11 +200,12 @@
         /// <returns>FeedbackViewModel object.</returns>
         private FeedbackViewModel CreateValidFeedback()
         {
-            return new FeedbackMvcViewModelBuilder()
-                .WithId(TEST_ID)
-                .WithEmail(TEST_MAIL)
-                .WithContent(TEST_CONTENT)
-                .Build();
+            return
+                new FeedbackMvcViewModelBuilder()
+                    .WithId(TEST_ID)
+                    .WithEmail(TEST_MAIL)
+                    .WithContent(TEST_CONTENT)
+                    .Build();
         }
 
         /// <summary>
@@ -218,12 +218,36 @@
         private Feedback CreateExpectedFeedback()
         {
             return
-                new FeedbackBuilder().WithId(TEST_ID)
+                new FeedbackBuilder()
+                    .WithId(TEST_ID)
                     .WithEmail(TEST_MAIL)
                     .WithContent(TEST_CONTENT)
                     .WithDate(DateTime.MinValue)
                     .WithStatus(0)
                     .Build();
         }
+
+        private FeedbackViewModel CreateInvalidFeedback()
+        {
+            return
+                new FeedbackMvcViewModelBuilder()
+                    .WithId(TEST_ID)
+                    .WithEmail(string.Empty)
+                    .WithContent(string.Empty)
+                    .Build();
+        }
+
+        private void SetInvalidModelState()
+        {
+            this._sut.ModelState.AddModelError("Content", "FieldRequired");
+        }
+
+        private void SetupCurrentUserServiceGetCurrentUserId(int id)
+        {
+            this._currentUserServiceMock.Setup(cs => cs.GetCurrentUserId())
+                .Returns(id);
+        }
+
+        #endregion
     }
 }

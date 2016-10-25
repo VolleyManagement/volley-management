@@ -37,9 +37,7 @@
             RouteConfig.RegisterIgnoreRoutes(RouteTable.Routes);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AreaConfig.RegisterArea(new Areas.Admin.AdminAreaRegistration());
-            AreaConfig.RegisterArea(new Areas.Mvc.MvcAreaRegistration());
-            AreaConfig.RegisterArea(new Areas.WebApi.WebApiAreaRegistration());
+            AreaConfig.RegisterAllAreas();
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateTimeModelBinder());
         }

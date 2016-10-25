@@ -17,5 +17,16 @@
             var areaContext = new AreaRegistrationContext(areaRegistration.AreaName, RouteTable.Routes);
             areaRegistration.RegisterArea(areaContext);
         }
+
+        /// <summary>
+        /// Register all areas in Areas folder.
+        /// ORDER IS IMPORTANT!!!
+        /// </summary>
+        public static void RegisterAllAreas()
+        {
+            RegisterArea(new Areas.Admin.AdminAreaRegistration());
+            RegisterArea(new Areas.Mvc.MvcAreaRegistration());
+            RegisterArea(new Areas.WebApi.WebApiAreaRegistration());
+        }
     }
 }

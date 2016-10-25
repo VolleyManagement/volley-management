@@ -10,10 +10,12 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.FeedbackAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.Services;
 
@@ -29,7 +31,11 @@
         public const string ERROR_FOR_UNIT_OF_WORK_VERIFY
             = "Can't save feedback to database";
 
-        private const int ANONYM_ID = -1;
+        private const string EXCEPTION_NOT_EQUAL = "Expected and actual exceptions aren't equal";
+
+        private const string EXCEPTION_NULL = "Exception is null";
+
+        private const string FEEDBACK_NOT_FOUND = "A feedback with specified identifier was not found";
 
         private const int SPECIFIC_FEEDBACK_ID = 1;
 
@@ -57,6 +63,8 @@
 
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
 
+        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+
         private readonly FeedbackServiceTestFixture _testFixture = new FeedbackServiceTestFixture();
 
         private IKernel _kernel;
@@ -75,22 +83,17 @@
             _kernel.Bind<IQuery<Feedback, FindByIdCriteria>>().ToConstant(_getFeedbackByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<Feedback>, GetAllCriteria>>().ToConstant(_getAllFeedbacksQueryMock.Object);
             _kernel.Bind<IMailService>().ToConstant(_mailServiceMock.Object);
+            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
             _timeMock.Setup(tp => tp.UtcNow).Returns(_date);
         }
 
-        /// <summary>
-        /// Cleanup test data
-        /// </summary>
         [TestCleanup]
         public void TestCleanup()
         {
             TimeProvider.ResetToDefault();
         }
 
-        /// <summary>
-        /// Test for Get() method. The method should return existing feedbacks
-        /// </summary>
         [TestMethod]
         public void GetAll_FeedbackExist_FeedbacksReturned()
         {
@@ -103,24 +106,22 @@
                                             .Build()
                                             .ToList();
 
-            // Act
             var sut = _kernel.Get<FeedbackService>();
+
+            // Act
             var actual = sut.Get().ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new FeedbackComparer());
         }
 
-        /// <summary>
-        /// Test for Get() method. The method should return existing feedback
-        /// </summary>
         [TestMethod]
         public void GetById_FeedbackExist_FeedbackReturned()
         {
             // Arrange
-            var testData = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
-            MockGetFeedbackByIdQuery(testData);
             var expected = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
+            MockGetFeedbackByIdQuery(expected);
+
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
@@ -172,12 +173,8 @@
             Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);
         }
 
-        /// <summary>
-        /// Test for Close() method with invalid id as input parameter. The method should throw MissingEntityException
-        /// and shouldn't invoke Update and Commit() method of IUnitOfWork.
-        /// </summary>
         [TestMethod]
-        public void Close_NotValidIdAsParam_ExceptionThrown()
+        public void Close_FeedbackWithNotValidIdAsParam_ExceptionThrown()
         {
             // Arrange
             Exception exception = null;
@@ -194,23 +191,17 @@
             }
 
             // Assert
-            VerifyExceptionThrown(exception, ExpectedExceptionMessages.FEEDBACK_NOT_FOUND);
+            VerifyExceptionThrown(exception, FEEDBACK_NOT_FOUND);
         }
 
-        /// <summary>
-        /// Test for Close() method with valid id as input parameter. The method should throw MissingEntityException
-        /// and shouldn't invoke Update and Commit() method of IUnitOfWork.
-        /// </summary>
         [TestMethod]
-        public void Close_ValidIdAsParam_UpdatedFeedbackInfo()
+        public void Close_FeedbackWithValidIdAsParam_UpdatedFeedbackInfo()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
             MockGetFeedbackByIdQuery(feedback);
 
-            this._userServiceMock.Setup(
-                us => us.GetCurrentUserInstance()).Returns(
-                new User { PersonName = TEST_NAME });
+            SetupCurrentUserInfo();
 
             var sut = _kernel.Get<FeedbackService>();
 
@@ -221,49 +212,29 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        /// <summary>
-        /// Test for Close() method with valid id as input parameter and non-authorized user.
-        /// The method should throw AuthorizationException
-        /// and shouldn't invoke Update and Commit() method of IUnitOfWork.
-        /// </summary>
         [TestMethod]
-        public void Close_ValidIdAsParamUserNotAuthorized_ExceptionThrown()
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Close_NoCloseRights_ExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
-            var feedback = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
-            MockGetFeedbackByIdQuery(feedback);
+            MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Close);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            try
-            {
-                sut.Close(SPECIFIC_FEEDBACK_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
+             sut.Close(SPECIFIC_FEEDBACK_ID);
 
             // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+            VerifyCheckAccess(AuthOperations.Feedbacks.Close, Times.Once());
         }
 
-        /// <summary>
-        /// Test for GetDetails() method with valid id as input parameter. The method should return feedback
-        /// and update it's status
-        /// </summary>
         [TestMethod]
-        public void GetDetails_ValidIdAsParam_UpdateFeedbackInfo()
+        public void GetDetails_FeedbackWithValidIdAsParam_UpdateFeedbackInfo()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
             MockGetFeedbackByIdQuery(feedback);
-
-            this._userServiceMock.Setup(
-                us => us.GetCurrentUserInstance()).Returns(
-                new User { PersonName = TEST_NAME });
 
             var sut = _kernel.Get<FeedbackService>();
 
@@ -274,11 +245,8 @@
             VerifyEditFeedback(feedback, Times.Once());
         }
 
-        /// <summary>
-        /// Test for GetDetails() method with non-valid id as input parameter. The method should thrown exception
-        /// </summary>
         [TestMethod]
-        public void GetDetails_NotValidIdAsParam_ExceptionThrown()
+        public void GetDetails_FeedbackWithNotValidIdAsParam_ExceptionThrown()
         {
             // Arrange
             Exception exception = null;
@@ -295,7 +263,12 @@
             }
 
             // Assert
-            VerifyExceptionThrown(exception, ExpectedExceptionMessages.FEEDBACK_NOT_FOUND);
+            VerifyExceptionThrown(exception, FEEDBACK_NOT_FOUND);
+        }
+
+        private void VerifyCheckAccess(AuthOperation operation, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
         }
 
         private void SetupEditMissingEntityException(Feedback feedback)
@@ -305,15 +278,17 @@
                 .Throws(new ConcurrencyException());
         }
 
-        /// <summary>
-        /// Checks if exception was thrown and has appropriate message
-        /// </summary>
-        /// <param name="exception">Exception that has been thrown</param>
-        /// <param name="expectedMessage">Message to compare with</param>
+        private void SetupCurrentUserInfo()
+        {
+            this._userServiceMock.Setup(
+             us => us.GetCurrentUserInstance()).Returns(
+             new User { PersonName = TEST_NAME });
+        }
+
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)
         {
-            Assert.IsNotNull(exception);
-            Assert.IsTrue(exception.Message.Equals(expectedMessage));
+            Assert.IsNotNull(exception, EXCEPTION_NULL);
+            Assert.IsTrue(exception.Message.Equals(expectedMessage), EXCEPTION_NOT_EQUAL);
         }
 
         private bool FeedbacksAreEqual(Feedback x, Feedback y)
@@ -339,6 +314,11 @@
         {
             _feedbackRepositoryMock.Verify(tr => tr.Update(It.Is<Feedback>(t => FeedbacksAreEqual(t, feedback))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void MockAuthServiceThrowsExeption(AuthOperation operation)
+        {
+            _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
         }
 
         private void MockGetAllFeedbacksQuery(IEnumerable<Feedback> testData)

@@ -12,14 +12,14 @@
         /// <summary>
         /// Gets list of all feedbacks.
         /// </summary>
-        /// <returns>Return list of all teams.</returns>
+        /// <returns>Return list of all feedbacks.</returns>
         List<Feedback> Get();
 
         /// <summary>
         /// Find feedback by id.
         /// </summary>
-        /// <param name="id">Team id.</param>
-        /// <returns>Found team.</returns>
+        /// <param name="id">Feedback id.</param>
+        /// <returns>Found feedback.</returns>
         Feedback Get(int id);
 
         /// <summary>

@@ -26,5 +26,21 @@
             return string.IsNullOrEmpty(content)
                 || content.Length > Constants.Feedback.MAX_CONTENT_LENGTH;
         }
+
+        /// <summary>
+        /// Validates status of feedback.
+        /// </summary>
+        /// <param name="status">Feedback status for validation.</param>
+        /// <param name="newStatus">Feedback's new status for validation.</param>
+        /// <returns>Validity of status.</returns>
+        public static bool ValidateStatus(FeedbackStatusEnum status, FeedbackStatusEnum newStatus)
+        {
+            if (status == newStatus && status != FeedbackStatusEnum.New)
+            {
+                return false;
+            }
+
+            return (int)newStatus < (int)status;
+        }
     }
 }

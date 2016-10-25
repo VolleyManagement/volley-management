@@ -4,12 +4,14 @@
     using System.Collections.Generic;
     using Contracts;
     using Crosscutting.Contracts.Providers;
-    using Domain.FeedbackAggregate;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.MailsAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
@@ -22,6 +24,7 @@
         private readonly IFeedbackRepository _feedbackRepository;
         private readonly IUserService _userService;
         private readonly IMailService _mailService;
+        private readonly IAuthorizationService _authService;
         private readonly IQuery<Feedback, FindByIdCriteria> _getFeedbackByIdQuery;
         private readonly IQuery<List<Feedback>, GetAllCriteria> _getAllFeedbacksQuery;
 
@@ -35,18 +38,21 @@
         /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
         /// <param name="userService">Instance of class which implements <see cref="IUserService"/>e</param>
         /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
-        /// <param name="getFeedbackByIdQuery">Get By ID query for feedbacks</param>
-        /// <param name="getAllFeedbacksQuery">Get All feedbacks query</param>
+        /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
+        /// <param name="getFeedbackByIdQuery">Get feedback by it's id </param>
+        /// <param name="getAllFeedbacksQuery">Get list of all feedbacks</param>
         public FeedbackService(
             IFeedbackRepository feedbackRepository,
             IUserService userService,
             IMailService mailService,
+            IAuthorizationService authService,
             IQuery<Feedback, FindByIdCriteria> getFeedbackByIdQuery,
             IQuery<List<Feedback>, GetAllCriteria> getAllFeedbacksQuery)
         {
             _feedbackRepository = feedbackRepository;
             _userService = userService;
             _mailService = mailService;
+            _authService = authService;
             _getFeedbackByIdQuery = getFeedbackByIdQuery;
             _getAllFeedbacksQuery = getAllFeedbacksQuery;
         }
@@ -97,15 +103,15 @@
         /// <returns>founded feedback.</returns>
         public Feedback GetDetails(int id)
         {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Read);
             var feedback = Get(id);
-            try
+
+            if (feedback == null)
             {
-                ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Read);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound);
             }
-            catch (ConcurrencyException ex)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound, ex);
-            }
+
+            ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Read);
 
             return feedback;
         }
@@ -116,15 +122,15 @@
         /// <param name="id">id for close.</param>
         public void Close(int id)
         {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Close);
             var feedback = Get(id);
-            try
+
+            if (feedback == null)
             {
-                ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Closed);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound);
             }
-            catch (ConcurrencyException ex)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound, ex);
-            }
+
+            ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Closed);
         }
 
         /// <summary>
@@ -134,48 +140,36 @@
         /// <param name="answerToSend">Information about mail (body, receiver)</param>
         public void Reply(int id, Mail answerToSend)
         {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Answer);
+
             var feedback = Get(id);
 
-            try
-            {
-                _mailService.Send(answerToSend);
-                ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Answered);
-            }
-            catch (ConcurrencyException ex)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound, ex);
-            }
-            catch (AuthorizationException)
-            {
-                throw new AuthorizationException();
-            }
-        }
-
-        private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum statusCode)
-        {
             if (feedback == null)
             {
-                throw new ConcurrencyException();
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound);
             }
 
-            if (feedback.Status != statusCode)
-            {
-                feedback.Status = statusCode;
+           _mailService.Send(answerToSend);
+            ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Answered);
+        }
+
+        /// <summary>
+        /// Change status of the feedback
+        /// </summary>
+        /// <param name="feedback">id for reply.</param>
+        /// <param name="newStatusCode">Information about mail (body, receiver)</param>
+        private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
+        {
+                feedback.Status = newStatusCode;
                 if (feedback.Status == FeedbackStatusEnum.Closed || feedback.Status == FeedbackStatusEnum.Answered)
                 {
                     User user = this._userService.GetCurrentUserInstance();
-                    if (user == null)
-                    {
-                        throw new AuthorizationException();
-                    }
-
                     feedback.UpdateDate = TimeProvider.Current.UtcNow;
                     feedback.AdminName = user.PersonName;
                 }
 
                 _feedbackRepository.Update(feedback);
                 _feedbackRepository.UnitOfWork.Commit();
-            }
         }
 
         #endregion

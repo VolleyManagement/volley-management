@@ -9,7 +9,10 @@
     public class Feedback
     {
         private string _usersEmail;
+
         private string _content;
+
+        private FeedbackStatusEnum _status;
 
         /// <summary>
         /// Gets or sets feedback Id.
@@ -70,7 +73,25 @@
         /// <summary>
         /// Gets or sets feedback status.
         /// </summary>
-        public FeedbackStatusEnum Status { get; set; }
+        public FeedbackStatusEnum Status
+        {
+            get
+            {
+                return _status;
+            }
+
+            set
+            {
+                if (FeedbackValidation.ValidateStatus(_status, value))
+                {
+                    throw new ArgumentException(
+                        Resources.ValidationFeedbackStatus,
+                        Resources.FeedbackStatusParam);
+                }
+
+                _status = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets update date of feedback.

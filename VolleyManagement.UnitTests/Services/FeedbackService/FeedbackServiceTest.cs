@@ -87,7 +87,7 @@
         }
 
         [TestMethod]
-        public void Create_CreateFeedbackDate_FeedbackCreated()
+        public void Get_GetDefaultFeedbackDate_FeedbackGot()
         {
             var feed = new FeedbackBuilder().Build();
             Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);

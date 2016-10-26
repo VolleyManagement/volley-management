@@ -15,6 +15,7 @@
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.FeedbackAggregate;
+    using VolleyManagement.Domain.MailsAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.Services;
@@ -31,15 +32,11 @@
         public const string ERROR_FOR_UNIT_OF_WORK_VERIFY
             = "Can't save feedback to database";
 
-        private const string EXCEPTION_NOT_EQUAL = "Expected and actual exceptions aren't equal";
-
-        private const string EXCEPTION_NULL = "Exception is null";
-
         private const string FEEDBACK_NOT_FOUND = "A feedback with specified identifier was not found";
 
         private const int SPECIFIC_FEEDBACK_ID = 1;
 
-        private const int NOT_VALID_ID = -1;
+        private const int INVALID_ID = -1;
 
         private const string TEST_NAME = "Nick";
 
@@ -95,7 +92,7 @@
         }
 
         [TestMethod]
-        public void GetAll_FeedbackExist_FeedbacksReturned()
+        public void GetAll_FeedbackWithValidIdAsParam_FeedbacksReturned()
         {
             // Arrange
             var testData = _testFixture.TestFeedbacks().Build();
@@ -116,7 +113,7 @@
         }
 
         [TestMethod]
-        public void GetById_FeedbackExist_FeedbackReturned()
+        public void GetById_FeedbackWithValidIdAsParam_FeedbackReturned()
         {
             // Arrange
             var expected = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
@@ -174,7 +171,7 @@
         }
 
         [TestMethod]
-        public void Close_FeedbackWithNotValidIdAsParam_ExceptionThrown()
+        public void Close_InvalidIdFeedbackNotExist_ExceptionThrown()
         {
             // Arrange
             Exception exception = null;
@@ -183,7 +180,7 @@
             // Act
             try
             {
-                sut.Close(NOT_VALID_ID);
+                sut.Close(INVALID_ID);
             }
             catch (MissingEntityException ex)
             {
@@ -246,7 +243,7 @@
         }
 
         [TestMethod]
-        public void GetDetails_FeedbackWithNotValidIdAsParam_ExceptionThrown()
+        public void GetDetails_InvalidIdFeedbackNotExist_ExceptionThrown()
         {
             // Arrange
             Exception exception = null;
@@ -255,7 +252,7 @@
             // Act
             try
             {
-                sut.GetDetails(NOT_VALID_ID);
+                sut.GetDetails(INVALID_ID);
             }
             catch (MissingEntityException ex)
             {
@@ -264,6 +261,82 @@
 
             // Assert
             VerifyExceptionThrown(exception, FEEDBACK_NOT_FOUND);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void GetDetails_NoReadRights_ExceptionThrown()
+        {
+            // Arrange
+            MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Read);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.GetDetails(SPECIFIC_FEEDBACK_ID);
+
+            // Assert
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+            VerifyCheckAccess(AuthOperations.Feedbacks.Read, Times.Once());
+        }
+
+        [TestMethod]
+        public void Reply_InvalidIdFeedbackNotExist_ExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            var sut = _kernel.Get<FeedbackService>();
+            var answerToSend = new Mail();
+            SetupMail(answerToSend);
+
+            // Act
+            try
+            {
+                sut.Reply(INVALID_ID, answerToSend);
+            }
+            catch (MissingEntityException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, FEEDBACK_NOT_FOUND);
+        }
+
+        [TestMethod]
+        public void Reply_FeedbackWithValidIdAsParam_UpdatedFeedback()
+        {
+            // Arrange
+            var feedback = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
+            MockGetFeedbackByIdQuery(feedback);
+            var answerToSend = new Mail();
+            SetupMail(answerToSend);
+            SetupCurrentUserInfo();
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.Reply(SPECIFIC_FEEDBACK_ID, answerToSend);
+
+            // Assert
+            VerifyEditFeedback(feedback, Times.Once());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Reply_NoReplyRights_ExceptionThrown()
+        {
+            // Arrange
+            MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Answer);
+            var answerToSend = new Mail();
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.Reply(SPECIFIC_FEEDBACK_ID, answerToSend);
+
+            // Assert
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+            VerifyCheckAccess(AuthOperations.Feedbacks.Answer, Times.Once());
         }
 
         private void VerifyCheckAccess(AuthOperation operation, Times times)
@@ -285,10 +358,16 @@
              new User { PersonName = TEST_NAME });
         }
 
+        private void SetupMail(Mail newMail)
+        {
+            this._mailServiceMock.Setup(
+                us => us.Send(newMail));
+        }
+
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)
         {
-            Assert.IsNotNull(exception, EXCEPTION_NULL);
-            Assert.IsTrue(exception.Message.Equals(expectedMessage), EXCEPTION_NOT_EQUAL);
+            Assert.IsNotNull(exception, "Exception is null");
+            Assert.IsTrue(exception.Message.Equals(expectedMessage), "Expected and actual exceptions aren't equal");
         }
 
         private bool FeedbacksAreEqual(Feedback x, Feedback y)

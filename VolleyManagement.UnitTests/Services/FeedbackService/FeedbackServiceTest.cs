@@ -92,7 +92,7 @@
         }
 
         [TestMethod]
-        public void GetAll_FeedbackWithValidIdAsParam_FeedbacksReturned()
+        public void GetAll_FeedbackExist_FeedbacksReturned()
         {
             // Arrange
             var testData = _testFixture.TestFeedbacks().Build();
@@ -113,7 +113,7 @@
         }
 
         [TestMethod]
-        public void GetById_FeedbackWithValidIdAsParam_FeedbackReturned()
+        public void GetById_FeedbackExist_FeedbackReturned()
         {
             // Arrange
             var expected = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();

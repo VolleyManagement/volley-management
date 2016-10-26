@@ -55,8 +55,7 @@
         public void Create_FeedbackPassed_FeedbackCreated()
         {
             var newFeedback = new FeedbackBuilder().Build();
-            _feedbackRepositoryMock.Setup(tr => tr.Add(It.IsAny<Feedback>()))
-                 .Callback<Feedback>(t => t.Id = SPECIFIC_FEEDBACK_ID);
+
             var sut = _kernel.Get<FeedbackService>();
             sut.Create(newFeedback);
 
@@ -88,7 +87,7 @@
         }
 
         [TestMethod]
-        public void Update_UpdateFeedbackDate_FeedbackUpdated()
+        public void Create_CreateFeedbackDate_FeedbackCreated()
         {
             var feed = new FeedbackBuilder().Build();
             Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);

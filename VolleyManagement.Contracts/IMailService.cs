@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Contracts
 {
+    using System.Net.Mail;
     using VolleyManagement.Domain.FeedbackAggregate;
 
     /// <summary>
@@ -20,13 +21,6 @@
         void NotifyAdmins(Feedback feedback);
 
         /// <summary>
-        /// Send an email with default email sender.
-        /// </summary>
-        /// <param name="emailTo">Recipient email.</param>
-        /// <param name="body">Body of the email.</param>
-        void Send(string emailTo, string body);
-
-        /// <summary>
         /// Send an email.
         /// </summary>
         /// <param name="emailFrom">Sender email address.</param>
@@ -35,5 +29,11 @@
         /// <param name="subject">Subject of the email.</param>
         /// <param name="emailsTo">Array of recipients' email addresses.</param>
         void Send(string emailFrom, string password, string body, string subject, params string[] emailsTo);
+
+        /// <summary>
+        /// Send an email.
+        /// </summary>
+        /// <param name="message">Email to send.</param>
+        void Send(MailMessage message);
     }
 }

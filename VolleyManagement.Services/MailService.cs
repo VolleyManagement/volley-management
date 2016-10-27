@@ -6,8 +6,8 @@
     using System.Net.Mail;
     using System.Threading.Tasks;
     using System.Web.Configuration;
-    using Authentication;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authentication;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.Dto;
     using VolleyManagement.Domain.FeedbackAggregate;
@@ -19,7 +19,7 @@
     {
         private readonly IRolesService _roleService;
 
-        private readonly VolleyUserStore _volleyUserStore;
+        private readonly IVolleyUserStore _volleyUserStore;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MailService"/> class.
@@ -28,7 +28,7 @@
         /// /// <param name="volleyUserStore">Volley User Store.</param>
         public MailService(
             IRolesService rolesService,
-            VolleyUserStore volleyUserStore)
+            IVolleyUserStore volleyUserStore)
         {
             _roleService = rolesService;
             _volleyUserStore = volleyUserStore;
@@ -40,22 +40,10 @@
         /// <param name="emailTo">Recipient email.</param>
         public void NotifyUser(string emailTo)
         {
-            // достаем логин и пароль из других сервисов?
-            const string EMAIL_ADDRESS_KEY = "GoogleEmailAddress";
-            const string EMAIL_PASSWORD_KEY = "GoogleEmailPassword";
-
-            var emailFrom = WebConfigurationManager.AppSettings[EMAIL_ADDRESS_KEY];
-            var password = WebConfigurationManager.AppSettings[EMAIL_PASSWORD_KEY];
-
-            if (emailFrom == null || password == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             string body = Properties.Resources.FeedbackConfirmationLetterBody;
             string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
 
-            Send(emailFrom, password, body, subject, emailTo);
+            Send(GetSenderEmailAddress(), GetSenderPassword(), body, subject, emailTo);
         }
 
         /// <summary>
@@ -64,18 +52,7 @@
         /// <param name="feedback">Feedback to send.</param>
         public void NotifyAdmins(Feedback feedback)
         {
-            // достаем логин-пароль из другого сервиса?
-            const string EMAIL_ADDRESS_KEY = "GoogleEmailAddress";
-            const string EMAIL_PASSWORD_KEY = "GoogleEmailPassword";
             const int ROLE_ID = 1;
-
-            var emailFrom = WebConfigurationManager.AppSettings[EMAIL_ADDRESS_KEY];
-            var password = WebConfigurationManager.AppSettings[EMAIL_PASSWORD_KEY];
-
-            if (emailFrom == null || password == null)
-            {
-                throw new ArgumentNullException();
-            }
 
             string subject = string.Format(
                 Properties.Resources.FeedbackConfirmationLetterSubject,
@@ -96,45 +73,8 @@
                 var usersTask = Task.Run(() => _volleyUserStore.FindByIdAsync(admin.UserId));
                 var user = usersTask.Result;
 
-                Send(emailFrom, password, body, subject, user.Email);
+                Send(GetSenderEmailAddress(), GetSenderPassword(), body, subject, user.Email);
             }
-        }
-
-        /// <summary>
-        /// Send an email.
-        /// </summary>
-        /// <param name="emailTo">Recipient email.</param>
-        /// <param name="body">Body of the email.</param>
-        public void Send(string emailTo, string body)
-        {
-            const string EMAIL_ADDRESS_KEY = "GoogleEmailAddress";
-            const string EMAIL_PASSWORD_KEY = "GoogleEmailPassword";
-
-            var googleEmail = WebConfigurationManager.AppSettings[EMAIL_ADDRESS_KEY];
-            var googleAddress = WebConfigurationManager.AppSettings[EMAIL_PASSWORD_KEY];
-
-            if (googleEmail == null || googleAddress == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            SmtpClient smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(googleEmail, googleAddress)
-            };
-
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress(googleEmail);
-            message.Priority = MailPriority.High;
-            message.To.Add(emailTo);
-            message.Subject = "Feedback notification";
-            message.Body = body;
-            smtp.Send(message);
         }
 
         /// <summary>
@@ -156,6 +96,84 @@
                 throw new ArgumentException();
             }
 
+            SmtpClient smtp = GetSmtpClient(emailFrom, password);
+
+            MailMessage message = new MailMessage()
+            {
+                From = new MailAddress(emailFrom),
+                Priority = MailPriority.High,
+                Subject = subject,
+                Body = body
+            };
+
+            foreach (var emailTo in emailsTo)
+            {
+                message.To.Add(emailTo);
+            }
+
+            smtp.Send(message);
+        }
+
+        /// <summary>
+        /// Send an email.
+        /// </summary>
+        /// <param name="message">Message to send.</param>
+        public void Send(MailMessage message)
+        {
+            if (message == null)
+            {
+                throw new ArgumentException();
+            }
+
+            SmtpClient smtp = GetSmtpClient(GetSenderEmailAddress(), GetSenderPassword());
+
+            smtp.Send(message);
+        }
+
+        /// <summary>
+        /// Gets sender email address for authorization.
+        /// </summary>
+        /// <returns>Email address.</returns>
+        private string GetSenderEmailAddress()
+        {
+            const string EMAIL_ADDRESS_KEY = "GoogleEmailAddress";
+
+            var emailAddress = WebConfigurationManager.AppSettings[EMAIL_ADDRESS_KEY];
+
+            if (emailAddress == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            return emailAddress;
+        }
+
+        /// <summary>
+        /// Gets sender email password for authorization.
+        /// </summary>
+        /// <returns>Email password.</returns>
+        private string GetSenderPassword()
+        {
+            const string EMAIL_PASSWORD_KEY = "GoogleEmailPassword";
+
+            var password = WebConfigurationManager.AppSettings[EMAIL_PASSWORD_KEY];
+
+            if (password == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            return password;
+        }
+
+        /// <summary>
+        /// Returns Simple Mail Transfer Protocol.
+        /// </summary>
+        /// <param name="email">Email that is being used.</param>
+        /// <param name="password">Password to the email.</param>
+        /// <returns>Valid protocol for sending emails.</returns>
+        private SmtpClient GetSmtpClient(string email, string password)
+        {
             SmtpClient smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
@@ -163,25 +181,10 @@
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(emailFrom, password)
+                Credentials = new NetworkCredential(email, password)
             };
 
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress(emailFrom);
-            message.Priority = MailPriority.High;
-            foreach (var emailTo in emailsTo)
-            {
-                message.To.Add(emailTo);
-            }
-
-            message.Subject = subject;
-            message.Body = body;
-            smtp.Send(message);
-        }
-
-        public void Send(string emailTo, string emailFrom, string body)
-        {
-            throw new NotImplementedException();
+            return smtp;
         }
     }
 }

@@ -12,6 +12,7 @@
     using VolleyManagement.Services;
     using VolleyManagement.Services.Authentication;
     using VolleyManagement.Services.Authorization;
+    using VolleyManagement.UI.Infrastructure;
 
     /// <summary>
     /// Defines bindings for Service layer
@@ -47,7 +48,9 @@
                                   Bind<IGameReportService>().To<GameReportService>(),
                                   Bind<IAuthorizationService>().To<AuthorizationService>(),
                                   Bind<IFeedbackService>().To<FeedbackService>(),
-                                  Bind<IMailService>().To<MailService>()
+                                  Bind<IMailService>().To<MailService>(),
+                                  Bind<IUserService>().To<UserService>()
+
                               };
             configs.InScope(_scopeCallback);
         }

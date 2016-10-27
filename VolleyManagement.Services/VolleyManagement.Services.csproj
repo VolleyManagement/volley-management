@@ -59,6 +59,7 @@
     <Compile Include="Authentication\VolleyUserManager.cs" />
     <Compile Include="Authentication\VolleyUserStore.cs" />
     <Compile Include="Authorization\AuthorizationService.cs" />
+    <Compile Include="Authorization\UserService.cs" />
     <Compile Include="Authorization\RolesService.cs" />
     <Compile Include="ContributorTeamService.cs" />
     <Compile Include="FeedbackService.cs" />

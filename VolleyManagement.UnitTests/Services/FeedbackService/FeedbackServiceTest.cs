@@ -15,7 +15,6 @@
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.MailsAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.Services;
@@ -34,9 +33,11 @@
 
         private const string FEEDBACK_NOT_FOUND = "A feedback with specified identifier was not found";
 
-        private const int SPECIFIC_FEEDBACK_ID = 1;
+        private const int EXISTING_ID = 1;
 
-        private const int INVALID_ID = -1;
+        private const int INVALID_FEEDBACK_ID = -1;
+
+        private const int VALID_USER_ID = 1;
 
         private const string TEST_NAME = "Nick";
 
@@ -56,7 +57,7 @@
         private readonly Mock<IQuery<Feedback, FindByIdCriteria>> _getFeedbackByIdQueryMock =
          new Mock<IQuery<Feedback, FindByIdCriteria>>();
 
-        private readonly Mock<IMailService> _mailServiceMock = new Mock<IMailService>();
+        private readonly Mock<ICurrentUserService> _currentUserServiceMock = new Mock<ICurrentUserService>();
 
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
 
@@ -79,7 +80,7 @@
             TimeProvider.Current = _timeMock.Object;
             _kernel.Bind<IQuery<Feedback, FindByIdCriteria>>().ToConstant(_getFeedbackByIdQueryMock.Object);
             _kernel.Bind<IQuery<List<Feedback>, GetAllCriteria>>().ToConstant(_getAllFeedbacksQueryMock.Object);
-            _kernel.Bind<IMailService>().ToConstant(_mailServiceMock.Object);
+            _kernel.Bind<ICurrentUserService>().ToConstant(_currentUserServiceMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
             _timeMock.Setup(tp => tp.UtcNow).Returns(_date);
@@ -92,7 +93,7 @@
         }
 
         [TestMethod]
-        public void GetAll_FeedbackExist_FeedbacksReturned()
+        public void GetAll_FeedbacksExist_FeedbacksReturned()
         {
             // Arrange
             var testData = _testFixture.TestFeedbacks().Build();
@@ -113,16 +114,16 @@
         }
 
         [TestMethod]
-        public void GetById_FeedbackExist_FeedbackReturned()
+        public void GetById_FeedbackExists_FeedbackReturned()
         {
             // Arrange
-            var expected = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
+            var expected = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(expected);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            var actual = sut.Get(SPECIFIC_FEEDBACK_ID);
+            var actual = sut.Get(EXISTING_ID);
 
             // Assert
             TestHelper.AreEqual<Feedback>(expected, actual, new FeedbackComparer());
@@ -171,7 +172,7 @@
         }
 
         [TestMethod]
-        public void Close_InvalidIdFeedbackNotExist_ExceptionThrown()
+        public void Close_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
             Exception exception = null;
@@ -180,7 +181,7 @@
             // Act
             try
             {
-                sut.Close(INVALID_ID);
+                sut.Close(INVALID_FEEDBACK_ID);
             }
             catch (MissingEntityException ex)
             {
@@ -192,18 +193,19 @@
         }
 
         [TestMethod]
-        public void Close_FeedbackWithValidIdAsParam_UpdatedFeedbackInfo()
+        public void Close_FeedbackWithValidIdAsParam_UpdatedFeedbackStatusToCloseSetAdminNameDate()
         {
             // Arrange
-            var feedback = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(feedback);
 
-            SetupCurrentUserInfo();
+            SetupCurrentUserServiceGetCurrentUserId(VALID_USER_ID);
+            MockCurrentUser(VALID_USER_ID);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.Close(SPECIFIC_FEEDBACK_ID);
+            sut.Close(EXISTING_ID);
 
             // Assert
             VerifyEditFeedback(feedback, Times.Once());
@@ -214,36 +216,37 @@
         public void Close_NoCloseRights_ExceptionThrown()
         {
             // Arrange
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Close);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-             sut.Close(SPECIFIC_FEEDBACK_ID);
+             sut.Close(EXISTING_ID);
 
             // Assert
-            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+            VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Close, Times.Once());
         }
 
         [TestMethod]
-        public void GetDetails_FeedbackWithValidIdAsParam_UpdateFeedbackInfo()
+        public void GetDetails_FeedbackWithValidIdAsParam_UpdatedFeedbackStatusToRead()
         {
             // Arrange
-            var feedback = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(feedback);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.GetDetails(SPECIFIC_FEEDBACK_ID);
+            sut.GetDetails(EXISTING_ID);
 
             // Assert
             VerifyEditFeedback(feedback, Times.Once());
         }
 
         [TestMethod]
-        public void GetDetails_InvalidIdFeedbackNotExist_ExceptionThrown()
+        public void GetDetails_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
             Exception exception = null;
@@ -252,7 +255,7 @@
             // Act
             try
             {
-                sut.GetDetails(INVALID_ID);
+                sut.GetDetails(INVALID_FEEDBACK_ID);
             }
             catch (MissingEntityException ex)
             {
@@ -265,34 +268,33 @@
 
         [TestMethod]
         [ExpectedException(typeof(AuthorizationException))]
-        public void GetDetails_NoReadRights_ExceptionThrown()
+        public void GetDetails_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Read);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.GetDetails(SPECIFIC_FEEDBACK_ID);
+            sut.GetDetails(EXISTING_ID);
 
             // Assert
-            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
+            VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Read, Times.Once());
         }
 
         [TestMethod]
-        public void Reply_InvalidIdFeedbackNotExist_ExceptionThrown()
+        public void Reply_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
             Exception exception = null;
             var sut = _kernel.Get<FeedbackService>();
-            var answerToSend = new Mail();
-            SetupMail(answerToSend);
 
             // Act
             try
             {
-                sut.Reply(INVALID_ID, answerToSend);
+                sut.Reply(INVALID_FEEDBACK_ID);
             }
             catch (MissingEntityException ex)
             {
@@ -304,19 +306,19 @@
         }
 
         [TestMethod]
-        public void Reply_FeedbackWithValidIdAsParam_UpdatedFeedback()
+        public void Reply_FeedbackWithValidIdAsParam_UpdatedFeedbackStatusToAnsweredSetAdminNameDate()
         {
             // Arrange
-            var feedback = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build();
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(feedback);
-            var answerToSend = new Mail();
-            SetupMail(answerToSend);
-            SetupCurrentUserInfo();
+            SetupCurrentUserServiceGetCurrentUserId(VALID_USER_ID);
+
+            MockCurrentUser(VALID_USER_ID);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.Reply(SPECIFIC_FEEDBACK_ID, answerToSend);
+            sut.Reply(EXISTING_ID);
 
             // Assert
             VerifyEditFeedback(feedback, Times.Once());
@@ -324,19 +326,73 @@
 
         [TestMethod]
         [ExpectedException(typeof(AuthorizationException))]
-        public void Reply_NoReplyRights_ExceptionThrown()
+        public void Reply_NoReplyRights_AuthorizationExceptionThrown()
         {
             // Arrange
-            MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Answer);
-            var answerToSend = new Mail();
+            MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Reply);
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.Reply(SPECIFIC_FEEDBACK_ID, answerToSend);
+            sut.Reply(EXISTING_ID);
 
             // Assert
-            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
-            VerifyCheckAccess(AuthOperations.Feedbacks.Answer, Times.Once());
+            VerifyEditFeedback(feedback, Times.Never());
+            VerifyCheckAccess(AuthOperations.Feedbacks.Reply, Times.Once());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ChangeFeedbackStatus_FeedbackAnsweredToRead_ExceptionThrown()
+        {
+            // Arrange
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
+                                                .WithStatus(FeedbackStatusEnum.Answered)
+                                                .Build();
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.ChangeFeedbackStatus(feedback,FeedbackStatusEnum.Read);
+
+            // Assert
+            VerifyEditFeedback(feedback, Times.Never());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ChangeFeedbackStatus_FeedbackClosedToNew_ExceptionThrown()
+        {
+            // Arrange
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
+                                                .WithStatus(FeedbackStatusEnum.Closed)
+                                                .Build();
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.ChangeFeedbackStatus(feedback, FeedbackStatusEnum.New);
+
+            // Assert
+            VerifyEditFeedback(feedback, Times.Never());
+        }
+
+        [TestMethod]
+        public void ChangeFeedbackStatus_FeedbackReadToAnswered_SetFeedbackStatusToAnswered()
+        {
+            // Arrange
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
+                                                .WithStatus(FeedbackStatusEnum.Read)
+                                                .Build();
+            SetupCurrentUserServiceGetCurrentUserId(VALID_USER_ID);
+            MockCurrentUser(VALID_USER_ID);
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Answered);
+
+            // Assert
+            VerifyEditFeedback(feedback, Times.Once());
         }
 
         private void VerifyCheckAccess(AuthOperation operation, Times times)
@@ -351,17 +407,11 @@
                 .Throws(new ConcurrencyException());
         }
 
-        private void SetupCurrentUserInfo()
+        private void MockCurrentUser(int userId)
         {
             this._userServiceMock.Setup(
-             us => us.GetCurrentUserInstance()).Returns(
+             us => us.GetUser(userId)).Returns(
              new User { PersonName = TEST_NAME });
-        }
-
-        private void SetupMail(Mail newMail)
-        {
-            this._mailServiceMock.Setup(
-                us => us.Send(newMail));
         }
 
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)
@@ -408,6 +458,12 @@
         private void MockGetFeedbackByIdQuery(Feedback testData)
         {
             _getFeedbackByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
+        }
+
+        private void SetupCurrentUserServiceGetCurrentUserId(int id)
+        {
+            this._currentUserServiceMock.Setup(cs => cs.GetCurrentUserId())
+                .Returns(id);
         }
     }
 }

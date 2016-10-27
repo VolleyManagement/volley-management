@@ -146,7 +146,7 @@
             /// <summary>
             /// Answer on feedback
             /// </summary>
-            public static readonly AuthOperation Answer = Tuple.Create(FEEDBACKS, 5);
+            public static readonly AuthOperation Reply = Tuple.Create(FEEDBACKS, 5);
 
             /// <summary>
             /// Close feedback

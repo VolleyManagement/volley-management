@@ -45,7 +45,6 @@
         /// Reply the answer to user.
         /// </summary>
         /// <param name="id">id for reply.</param>
-        /// <param name="answerToSend">Information about mail (body, receiver)</param>
-         void Reply(int id, Mail answerToSend);
+         void Reply(int id);
     }
 }

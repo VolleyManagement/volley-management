@@ -13,7 +13,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201610241706264_AddFeedbacks"; }
+            get { return "201610272242426_AddFeedbacks"; }
         }
         
         string IMigrationMetadata.Source

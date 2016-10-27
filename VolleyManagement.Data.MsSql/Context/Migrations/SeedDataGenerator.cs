@@ -1104,7 +1104,7 @@
                 AuthOperations.Feedbacks.Edit,
                 AuthOperations.Feedbacks.Delete,
                 AuthOperations.Feedbacks.Read,
-                AuthOperations.Feedbacks.Answer,
+                AuthOperations.Feedbacks.Reply,
                 AuthOperations.Feedbacks.Close,
                 AuthOperations.AdminDashboard.View
             };

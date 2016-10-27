@@ -137,9 +137,13 @@
     <Compile Include="Context\Migrations\201610141515542_MergedMigration.Designer.cs">
       <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201610241706264_AddFeedbacks.cs" />
-    <Compile Include="Context\Migrations\201610241706264_AddFeedbacks.Designer.cs">
-      <DependentUpon>201610241706264_AddFeedbacks.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201610272242426_AddFeedbacks.cs" />
+    <Compile Include="Context\Migrations\201610272242426_AddFeedbacks.Designer.cs">
+      <DependentUpon>201610272242426_AddFeedbacks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.cs" />
+    <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.Designer.cs">
+      <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
@@ -150,7 +154,6 @@
     <Compile Include="Entities\GroupEntity.cs" />
     <Compile Include="Entities\DivisionEntity.cs" />
     <Compile Include="Entities\LoginInfoEntity.cs" />
-    <Compile Include="Entities\MailEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\RoleToOperationEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
@@ -274,8 +277,11 @@
     <EmbeddedResource Include="Context\Migrations\201610141515542_MergedMigration.resx">
       <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201610241706264_AddFeedbacks.resx">
-      <DependentUpon>201610241706264_AddFeedbacks.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201610272242426_AddFeedbacks.resx">
+      <DependentUpon>201610272242426_AddFeedbacks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.resx">
+      <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

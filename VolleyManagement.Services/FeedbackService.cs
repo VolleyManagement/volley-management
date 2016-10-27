@@ -23,7 +23,7 @@
 
         private readonly IFeedbackRepository _feedbackRepository;
         private readonly IUserService _userService;
-        private readonly IMailService _mailService;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IAuthorizationService _authService;
         private readonly IQuery<Feedback, FindByIdCriteria> _getFeedbackByIdQuery;
         private readonly IQuery<List<Feedback>, GetAllCriteria> _getAllFeedbacksQuery;
@@ -36,23 +36,23 @@
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
         /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
-        /// <param name="userService">Instance of class which implements <see cref="IUserService"/>e</param>
-        /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
+        /// <param name="userService">Instance of class which implements <see cref="IUserService"/></param>
+        /// <param name="currentUserService">Instance of the class </param>
         /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
         /// <param name="getFeedbackByIdQuery">Get feedback by it's id </param>
         /// <param name="getAllFeedbacksQuery">Get list of all feedbacks</param>
         public FeedbackService(
             IFeedbackRepository feedbackRepository,
             IUserService userService,
-            IMailService mailService,
+            ICurrentUserService currentUserService,
             IAuthorizationService authService,
             IQuery<Feedback, FindByIdCriteria> getFeedbackByIdQuery,
             IQuery<List<Feedback>, GetAllCriteria> getAllFeedbacksQuery)
         {
             _feedbackRepository = feedbackRepository;
             _userService = userService;
-            _mailService = mailService;
             _authService = authService;
+            _currentUserService = currentUserService;
             _getFeedbackByIdQuery = getFeedbackByIdQuery;
             _getAllFeedbacksQuery = getAllFeedbacksQuery;
         }
@@ -137,10 +137,9 @@
         /// Reply the answer to user.
         /// </summary>
         /// <param name="id">id for reply.</param>
-        /// <param name="answerToSend">Information about mail (body, receiver)</param>
-        public void Reply(int id, Mail answerToSend)
+        public void Reply(int id)
         {
-            _authService.CheckAccess(AuthOperations.Feedbacks.Answer);
+            _authService.CheckAccess(AuthOperations.Feedbacks.Reply);
 
             var feedback = Get(id);
 
@@ -149,7 +148,6 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound);
             }
 
-           _mailService.Send(answerToSend);
             ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Answered);
         }
 
@@ -158,12 +156,13 @@
         /// </summary>
         /// <param name="feedback">id for reply.</param>
         /// <param name="newStatusCode">Information about mail (body, receiver)</param>
-        private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
+        public void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
         {
                 feedback.Status = newStatusCode;
-                if (feedback.Status == FeedbackStatusEnum.Closed || feedback.Status == FeedbackStatusEnum.Answered)
+                if (IsStatusAnsweredOrClosed(newStatusCode))
                 {
-                    User user = this._userService.GetCurrentUserInstance();
+                    int userId = this._currentUserService.GetCurrentUserId();
+                    User user = this._userService.GetUser(userId);
                     feedback.UpdateDate = TimeProvider.Current.UtcNow;
                     feedback.AdminName = user.PersonName;
                 }
@@ -175,6 +174,11 @@
         #endregion
 
         #region Privates
+
+        private bool IsStatusAnsweredOrClosed(FeedbackStatusEnum newStatusCode)
+        {
+            return newStatusCode == FeedbackStatusEnum.Closed || newStatusCode == FeedbackStatusEnum.Answered;
+        }
 
         private void UpdateFeedbackDate(Feedback feedbackToUpdate)
         {

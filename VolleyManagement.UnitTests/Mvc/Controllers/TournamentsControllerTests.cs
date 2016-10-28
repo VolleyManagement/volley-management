@@ -9,6 +9,7 @@
     using System.Web.Routing;
     using Contracts;
     using Contracts.Exceptions;
+    using Crosscutting.Contracts.Providers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -68,6 +69,7 @@
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
         private IKernel _kernel;
         private TournamentsController _sut;
@@ -84,6 +86,17 @@
             this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<TournamentsController>();
+            TimeProvider.Current = _timeMock.Object;
+            this._timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
+        }
+
+        /// <summary>
+        /// Cleanup test data
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            TimeProvider.ResetToDefault();
         }
 
         #region Index
@@ -677,18 +690,29 @@
         public void CreateGetAction_GetTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
-            var expected = new TournamentViewModel()
+            var now = _testDate;
+
+            var expected = new TournamentViewModel
             {
-                ApplyingPeriodStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
-                ApplyingPeriodEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD),
-                GamesStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
-                GamesEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FOR_GAMES_PERIOD),
-                TransferStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START + DAYS_FOR_TRANSFER_PERIOD)
+                ApplyingPeriodStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
+                ApplyingPeriodEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                              + DAYS_FOR_APPLYING_PERIOD),
+                GamesStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                       + DAYS_FOR_APPLYING_PERIOD
+                                       + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
+                GamesEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                     + DAYS_FOR_APPLYING_PERIOD
+                                     + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                     + DAYS_FOR_GAMES_PERIOD),
+                TransferStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                          + DAYS_FOR_APPLYING_PERIOD
+                                          + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                          + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
+                TransferEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                        + DAYS_FOR_APPLYING_PERIOD
+                                        + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                        + DAYS_FROM_GAMES_START_TO_TRANSFER_START
+                                        + DAYS_FOR_TRANSFER_PERIOD)
             };
 
             // Act

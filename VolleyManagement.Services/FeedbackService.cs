@@ -1,8 +1,15 @@
 ﻿namespace VolleyManagement.Services
 {
     using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System.Web.Configuration;
     using Contracts;
+    using Contracts.Authentication;
+    using Contracts.Authorization;
     using Crosscutting.Contracts.Providers;
+    using Domain;
+    using Domain.Dto;
     using Domain.FeedbackAggregate;
 
     /// <summary>
@@ -15,9 +22,13 @@
         private readonly IFeedbackRepository _feedbackRepository;
 
         /// <summary>
-        /// Holds MailService instance.
+        /// Holds GmailAccountMailService instance.
         /// </summary>
-        private readonly IMailService _mailService;
+        private readonly IGmailAccountMailService _gmailAccountMailService;
+
+        private readonly IRolesService _roleService;
+
+        private readonly IVolleyUserStore _volleyUserStore;
 
         #endregion
 
@@ -27,14 +38,20 @@
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
         /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
-        /// <param name="mailService">Instance of the class
-        /// that implements <see cref="IMailService"/></param>
+        /// <param name="gmailAccountMailService">Instance of the class
+        /// that implements <see cref="IGmailAccountMailService"/></param>
+        /// <param name="rolesService">Roles service.</param>
+        /// <param name="volleyUserStore">Volley User Store.</param>
         public FeedbackService(
             IFeedbackRepository feedbackRepository,
-            IMailService mailService)
+            IGmailAccountMailService gmailAccountMailService,
+            IRolesService rolesService,
+            IVolleyUserStore volleyUserStore)
         {
             _feedbackRepository = feedbackRepository;
-            _mailService = mailService;
+            _gmailAccountMailService = gmailAccountMailService;
+            _roleService = rolesService;
+            _volleyUserStore = volleyUserStore;
         }
 
         #endregion
@@ -56,8 +73,8 @@
             _feedbackRepository.Add(feedbackToCreate);
             _feedbackRepository.UnitOfWork.Commit();
 
-            _mailService.NotifyUser(feedbackToCreate.UsersEmail);
-            _mailService.NotifyAdmins(feedbackToCreate);
+            NotifyUser(feedbackToCreate.UsersEmail);
+            NotifyAdmins(feedbackToCreate);
         }
 
         #endregion
@@ -67,6 +84,67 @@
         private void UpdateFeedbackDate(Feedback feedbackToUpdate)
         {
             feedbackToUpdate.Date = TimeProvider.Current.UtcNow;
+        }
+
+        /// <summary>
+        /// Send a confirmation email to user.
+        /// </summary>
+        /// <param name="emailTo">Recipient email.</param>
+        private void NotifyUser(string emailTo)
+        {
+            string body = Properties.Resources.FeedbackConfirmationLetterBody;
+            string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
+
+            GmailMessage gmailMessage = new GmailMessage(GetSenderEmailAddress(), emailTo, subject, body);
+            _gmailAccountMailService.Send(gmailMessage);
+        }
+
+        /// <summary>
+        /// Send a feedback email to all admins.
+        /// </summary>
+        /// <param name="feedback">Feedback to send.</param>
+        private void NotifyAdmins(Feedback feedback)
+        {
+            const int ROLE_ID = 1;
+
+            string subject = string.Format(
+                Properties.Resources.FeedbackConfirmationLetterSubject,
+                feedback.Id);
+
+            string body = string.Format(
+                Properties.Resources.FeedbackEmailBodyToAdmins,
+                feedback.Id,
+                feedback.Date,
+                feedback.UsersEmail,
+                feedback.Status,
+                feedback.Content);
+
+            List<UserInRoleDto> adminsList = _roleService.GetUsersInRole(ROLE_ID);
+
+            foreach (var admin in adminsList)
+            {
+                var usersTask = Task.Run(() => _volleyUserStore.FindByIdAsync(admin.UserId));
+                var user = usersTask.Result;
+
+                GmailMessage gmailMessage = new GmailMessage(GetSenderEmailAddress(), user.Email, subject, body);
+                _gmailAccountMailService.Send(gmailMessage);
+            }
+        }
+
+        private string GetSenderEmailAddress()
+        {
+            const string EMAIL_ADDRESS_KEY = "GoogleEmailAddress";
+
+            var emailAddress = WebConfigurationManager.AppSettings[EMAIL_ADDRESS_KEY];
+
+            if (emailAddress == null)
+            {
+                throw new ArgumentNullException(
+                    Properties.Resources.ArgumentNullExceptionInvalidGmailAddress,
+                    Properties.Resources.GmailAddress);
+            }
+
+            return emailAddress;
         }
 
         #endregion

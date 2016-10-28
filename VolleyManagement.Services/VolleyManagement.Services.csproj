@@ -65,7 +65,7 @@
     <Compile Include="FeedbackService.cs" />
     <Compile Include="GameReportService.cs" />
     <Compile Include="GameService.cs" />
-    <Compile Include="MailService.cs" />
+    <Compile Include="GmailAccountMailService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -111,6 +111,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ServiceResources\ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>

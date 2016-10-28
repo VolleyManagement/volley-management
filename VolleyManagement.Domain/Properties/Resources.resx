@@ -270,4 +270,10 @@
   <data name="WrongTransferStart" xml:space="preserve">
     <value>Start of the transfer window should be later than the games start</value>
   </data>
+  <data name="ArgumentExceptionGmailMessage" xml:space="preserve">
+    <value>GmailMessage</value>
+  </data>
+  <data name="ArgumentExceptionInvalidGmailMessageArguments" xml:space="preserve">
+    <value>Invalid gmail message arguments</value>
+  </data>
 </root>

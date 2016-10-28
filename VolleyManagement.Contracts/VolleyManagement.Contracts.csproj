@@ -67,7 +67,7 @@
     <Compile Include="IFeedbackService.cs" />
     <Compile Include="IGameReportService.cs" />
     <Compile Include="IGameService.cs" />
-    <Compile Include="IMailService.cs" />
+    <Compile Include="IGmailAccountMailService.cs" />
     <Compile Include="IPlayerService.cs" />
     <Compile Include="ITeamService.cs" />
     <Compile Include="ITournamentService.cs" />

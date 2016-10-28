@@ -61,6 +61,33 @@ namespace VolleyManagement.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gmail message is invalid..
+        /// </summary>
+        internal static string ArgumentExceptionInvalidGmailMessage {
+            get {
+                return ResourceManager.GetString("ArgumentExceptionInvalidGmailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gmail address is invalid..
+        /// </summary>
+        internal static string ArgumentNullExceptionInvalidGmailAddress {
+            get {
+                return ResourceManager.GetString("ArgumentNullExceptionInvalidGmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gmail password is invalid..
+        /// </summary>
+        internal static string ArgumentNullExceptionInvalidGmailPassword {
+            get {
+                return ResourceManager.GetString("ArgumentNullExceptionInvalidGmailPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Thank you for your feedback!.
         /// </summary>
         internal static string FeedbackConfirmationLetterBody {
@@ -97,6 +124,33 @@ namespace VolleyManagement.Services.Properties {
         internal static string FeedbackEmailSubjectToAdmins {
             get {
                 return ResourceManager.GetString("FeedbackEmailSubjectToAdmins", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GoogleEmailAddress.
+        /// </summary>
+        internal static string GmailAddress {
+            get {
+                return ResourceManager.GetString("GmailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GmailMessage.
+        /// </summary>
+        internal static string GmailMessage {
+            get {
+                return ResourceManager.GetString("GmailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GoogleEmailPassword.
+        /// </summary>
+        internal static string GmailPassword {
+            get {
+                return ResourceManager.GetString("GmailPassword", resourceCulture);
             }
         }
     }

@@ -48,7 +48,8 @@
                     }
                 },
                 GameDate = DateTime.Parse(DATE),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             };
         }
 
@@ -83,7 +84,7 @@
         /// </summary>
         /// <param name="id">Identifier of the home team.</param>
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
-        public GameBuilder WithHomeTeamId(int id)
+        public GameBuilder WithHomeTeamId(int? id)
         {
             _game.HomeTeamId = id;
             return this;
@@ -94,7 +95,7 @@
         /// </summary>
         /// <param name="id">Identifier of the away team.</param>
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
-        public GameBuilder WithAwayTeamId(int id)
+        public GameBuilder WithAwayTeamId(int? id)
         {
             _game.AwayTeamId = id;
             return this;
@@ -191,6 +192,18 @@
         public GameBuilder WithStartDate(DateTime date)
         {
             this._game.GameDate = date;
+            return this;
+        }
+
+        public GameBuilder WithNoStartDate()
+        {
+            this._game.GameDate = null;
+            return this;
+        }
+
+        public GameBuilder WithGameNumber(byte gameNumber)
+        {
+            this._game.GameNumber = gameNumber;
             return this;
         }
 

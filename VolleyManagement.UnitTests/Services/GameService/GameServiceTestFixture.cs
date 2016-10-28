@@ -53,7 +53,8 @@
                 HomeSet5Score = 27,
                 AwaySet5Score = 25,
                 GameDate = DateTime.Parse(DATE_A),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             });
             _gameResults.Add(new GameResultDto
             {
@@ -77,7 +78,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_B),
-                Round = 2
+                Round = 2,
+                GameNumber = 0
             });
             _gameResults.Add(new GameResultDto
             {
@@ -101,7 +103,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_C),
-                Round = 3
+                Round = 3,
+                GameNumber = 0
             });
 
             return this;
@@ -157,7 +160,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_A),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             });
             _gameResults.Add(new GameResultDto
             {
@@ -179,7 +183,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_B),
-                Round = 2
+                Round = 2,
+                GameNumber = 0
             });
             _gameResults.Add(new GameResultDto
             {
@@ -201,7 +206,8 @@
                 HomeSet5Score = 25,
                 AwaySet5Score = 12,
                 GameDate = DateTime.Parse(DATE_C),
-                Round = 3
+                Round = 3,
+                GameNumber = 0
             });
 
             return this;
@@ -233,7 +239,8 @@
                 HomeSet5Score = 13,
                 AwaySet5Score = 25,
                 GameDate = DateTime.Parse(DATE_D),
-                Round = 4
+                Round = 4,
+                GameNumber = 0
             });
             _gameResults.Add(new GameResultDto
             {
@@ -255,7 +262,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_E),
-                Round = 5
+                Round = 5,
+                GameNumber = 0
             });
             _gameResults.Add(new GameResultDto
             {
@@ -277,7 +285,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_F),
-                Round = 6
+                Round = 6,
+                GameNumber = 0
             });
 
             return this;
@@ -310,7 +319,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_A),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             });
 
             return this;
@@ -343,7 +353,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_A),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             });
 
             return this;
@@ -378,7 +389,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_A),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             });
             _gameResults.Add(new GameResultDto
             {
@@ -402,7 +414,8 @@
                 HomeSet5Score = 25,
                 AwaySet5Score = 23,
                 GameDate = DateTime.Parse(DATE_B),
-                Round = 2
+                Round = 2,
+                GameNumber = 0
             });
 
             return this;
@@ -437,7 +450,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_A),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             });
             _gameResults.Add(new GameResultDto
             {
@@ -461,7 +475,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_B),
-                Round = 2
+                Round = 2,
+                GameNumber = 0
             });
 
             return this;
@@ -496,7 +511,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_A),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             });
             _gameResults.Add(new GameResultDto
             {
@@ -520,7 +536,8 @@
                 HomeSet5Score = 0,
                 AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE_B),
-                Round = 2
+                Round = 2,
+                GameNumber = 0
             });
 
             return this;
@@ -537,7 +554,8 @@
                 HomeTeamId = 1,
                 AwayTeamId = 2,
                 TournamentId = 1,
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             });
 
             return this;
@@ -554,7 +572,8 @@
                     HomeTeamId = 1,
                     AwayTeamId = 2,
                     TournamentId = 1,
-                    Round = 1
+                    Round = 1,
+                    GameNumber = 0
                 });
             this._gameResults.Add(
                new GameResultDto()
@@ -564,7 +583,8 @@
                    HomeTeamId = 3,
                    AwayTeamId = 4,
                    TournamentId = 1,
-                   Round = 1
+                   Round = 1,
+                   GameNumber = 0
                });
 
             return this;
@@ -581,7 +601,8 @@
                     HomeTeamId = 1,
                     AwayTeamId = 2,
                     TournamentId = 1,
-                    Round = 1
+                    Round = 1,
+                    GameNumber = 0
                 });
             this._gameResults.Add(
                new GameResultDto()
@@ -591,7 +612,8 @@
                    HomeTeamId = 2,
                    AwayTeamId = 1,
                    TournamentId = 1,
-                   Round = 2
+                   Round = 2,
+                   GameNumber = 0
                });
 
             return this;
@@ -608,7 +630,8 @@
                     HomeTeamId = 1,
                     AwayTeamId = null,
                     TournamentId = 1,
-                    Round = 1
+                    Round = 1,
+                    GameNumber = 0
                 });
 
             return this;
@@ -625,7 +648,8 @@
                     HomeTeamId = 1,
                     AwayTeamId = null,
                     TournamentId = 1,
-                    Round = 1
+                    Round = 1,
+                    GameNumber = 0
                 });
             this._gameResults.Add(
                new GameResultDto()
@@ -635,7 +659,8 @@
                    HomeTeamId = 1,
                    AwayTeamId = null,
                    TournamentId = 1,
-                   Round = 2
+                   Round = 2,
+                   GameNumber = 0
                });
 
             return this;
@@ -667,7 +692,8 @@
                     HomeSet5Score = 0,
                     AwaySet5Score = 0,
                     GameDate = DateTime.Parse(DATE_A),
-                    Round = 1
+                    Round = 1,
+                    GameNumber = 0
                 });
             this._gameResults.Add(
                new GameResultDto()
@@ -692,8 +718,168 @@
                    HomeSet5Score = 0,
                    AwaySet5Score = 0,
                    GameDate = DateTime.Parse(DATE_B),
-                   Round = 2
+                   Round = 2,
+                   GameNumber = 0
                });
+
+            return this;
+        }
+
+        public GameServiceTestFixture TestEmptyGamesInPlayoff()
+        {
+            this._gameResults.Clear();
+
+            _gameResults.AddRange(
+                new List<GameResultDto>
+                {
+                    new GameResultDto
+                    {
+                        Id = 1,
+                        HomeTeamId = 1,
+                        AwayTeamId = 2,
+                        GameNumber = 1,
+                        Round = 1,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 2,
+                        HomeTeamId = 3,
+                        AwayTeamId = 4,
+                        GameNumber = 2,
+                        Round = 1,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 3,
+                        HomeTeamId = 5,
+                        AwayTeamId = 6,
+                        Round = 1,
+                        GameNumber = 3,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 4,
+                        Round = 1,
+                        HomeTeamId = 7,
+                        AwayTeamId = 8,
+                        GameNumber = 4,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 5,
+                        Round = 2,
+                        GameNumber = 5,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 6,
+                        Round = 2,
+                        GameNumber = 6,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 7,
+                        Round = 3,
+                        GameNumber = 7,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 8,
+                        Round = 3,
+                        GameNumber = 8,
+                        TournamentId = 1
+                    }
+                });
+
+            return this;
+        }
+
+        public GameServiceTestFixture TestMinimumEvenEmptyGamesPlayoff()
+        {
+            this._gameResults.Clear();
+
+            _gameResults.AddRange(
+                  new List<GameResultDto>
+                {
+                    new GameResultDto
+                    {
+                        Id = 1,
+                        HomeTeamId = 1,
+                        AwayTeamId = 2,
+                        GameNumber = 1,
+                        Round = 1,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 2,
+                        HomeTeamId = 3,
+                        AwayTeamId = 4,
+                        GameNumber = 2,
+                        Round = 1,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 3,
+                        Round = 2,
+                        GameNumber = 3,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 4,
+                        Round = 2,
+                        GameNumber = 4,
+                        TournamentId = 1
+                    }
+                });
+
+            return this;
+        }
+
+        public GameServiceTestFixture TestMinimumOddTeamsPlayOffSchedule()
+        {
+            this._gameResults.Clear();
+
+            _gameResults.AddRange(
+                new List<GameResultDto>
+                {
+                    new GameResultDto
+                    {
+                        Id = 1,
+                        HomeTeamId = 3,
+                        AwayTeamId = null,
+                        GameNumber = 2,
+                        Round = 1,
+                        TournamentId = 1
+                    },
+                    new GameResultDto
+                    {
+                        Id = 2,
+                        HomeTeamId = 1,
+                        AwayTeamId = 2,
+                        GameNumber = 1,
+                        Round = 1,
+                        TournamentId = 1,
+                    },
+                    new GameResultDto
+                    {
+                        Id = 3,
+                        Round = 2,
+                        HomeTeamId = 1,
+                        AwayTeamId = 3,
+                        GameNumber = 3,
+                        TournamentId = 1
+                    }
+                });
 
             return this;
         }

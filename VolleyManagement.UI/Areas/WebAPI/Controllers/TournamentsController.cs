@@ -99,7 +99,7 @@
                                                         .Select(t => GameViewModel.Map(t)).ToList();
             foreach (var item in gamesViewModel)
             {
-                if (item.Result.TotalScore.IsEmpty())
+                if (item.Result.TotalScore.IsEmpty)
                 {
                     item.Result = null;
                 }

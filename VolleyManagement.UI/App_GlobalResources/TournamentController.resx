@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FinalRoundName" xml:space="preserve">
+    <value>Final</value>
+  </data>
+  <data name="QuarterFinalRoundName" xml:space="preserve">
+    <value>Quarter final</value>
+  </data>
+  <data name="RoundNumber" xml:space="preserve">
+    <value>Round of {0}</value>
+  </data>
   <data name="SchedulingError" xml:space="preserve">
     <value>Please, add teams to tournament before creating schedule</value>
+  </data>
+  <data name="SemifinalRoundName" xml:space="preserve">
+    <value>Semifinal</value>
   </data>
   <data name="TournamentNotFound" xml:space="preserve">
     <value>Tournament was not found</value>

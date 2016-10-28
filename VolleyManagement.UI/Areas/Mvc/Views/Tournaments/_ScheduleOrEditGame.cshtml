@@ -1,29 +1,48 @@
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameViewModel
+@using VolleyManagement.Domain.TournamentsAggregate;
 
 <legend>@Resources.TournamentViews.ScheduleGameLegend</legend>
-
 @Html.ValidationMessage("ValidationError")
 @Html.HiddenFor(model => model.TournamentId)
-<div class="editor-label">
-    @Html.LabelFor(model => model.Round)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.Round, Model.Rounds, new { @class = "form-control" })
-</div>
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.HomeTeamId)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.HomeTeamId, Model.Teams, new { @class = "form-control" })
-</div>
+@if (!(Model.TournamentScheme == TournamentSchemeEnum.PlayOff))
+{
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Round)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.Round, Model.Rounds, new { @class = "form-control" })
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.Round)
+    @Html.HiddenFor(model => model.GameNumber);
+}
 
-<div class="editor-label">
-    @Html.LabelFor(model => model.AwayTeamId)
-</div>
-<div class="editor-field">
-    @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, @Resources.TournamentViews.FreeDay, new { @class = "form-control" })
-</div>
+
+@if (!(Model.TournamentScheme == TournamentSchemeEnum.PlayOff && !Model.IsFirstRoundGame))
+{
+    <div class="editor-label">
+        @Html.LabelFor(model => model.HomeTeamId)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.HomeTeamId, Model.Teams, new { @class = "form-control" })
+    </div>
+
+    <div class="editor-label">
+        @Html.LabelFor(model => model.AwayTeamId)
+    </div>
+    <div class="editor-field">
+        @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, Resources.TournamentViews.FreeDay, new { @class = "form-control" })
+    </div>
+}
+else
+{
+    @Html.HiddenFor(model => model.HomeTeamId);
+    @Html.HiddenFor(model => model.AwayTeamId);
+}
+
 
 <div class="editor-label">
     @Html.LabelFor(model => model.GameDate)

@@ -37,4 +37,5 @@
         })();
     </script>
 </div>
+@Html.ActionLink(@TournamentViews.Cancel, "Details", new { id = Model.Model.TournamentId })
 @Scripts.Render("~/bundles/tournamentteamsscripts")

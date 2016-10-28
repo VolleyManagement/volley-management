@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Services.GameService;
@@ -28,6 +29,7 @@
             {
                 TournamentId = 1,
                 TournamentName = "Name",
+                TournamentScheme = TournamentSchemeEnum.One,
                 NumberOfRounds = 3,
                 Rounds = new GameServiceTestFixture().TestGameResults()
                                      .Build().GroupBy(d => d.Round)
@@ -61,6 +63,17 @@
         }
 
         /// <summary>
+        /// Sets the schedule view model TournamentScheme
+        /// </summary>
+        /// <param name="scheme">Tournament view model TournamentScheme</param>
+        /// <returns>Schedule view model builder object</returns>
+        public ScheduleViewModelBuilder WithTournamentScheme(TournamentSchemeEnum scheme)
+        {
+            _scheduleViewModel.TournamentScheme = scheme;
+            return this;
+        }
+
+        /// <summary>
         /// Sets the schedule view model NumberOfRounds
         /// </summary>
         /// <param name="numberOfRounds">Tournament view model NumberOfRounds</param>
@@ -68,6 +81,17 @@
         public ScheduleViewModelBuilder WithNumberOfRounds(byte numberOfRounds)
         {
             _scheduleViewModel.NumberOfRounds = numberOfRounds;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the round names to the schedule view model
+        /// </summary>
+        /// <param name="roundNames">Array with the round names</param>
+        /// <returns>Schedule view model builder object</returns>
+        public ScheduleViewModelBuilder WithRoundNames(string[] roundNames)
+        {
+            _scheduleViewModel.RoundNames = roundNames;
             return this;
         }
 

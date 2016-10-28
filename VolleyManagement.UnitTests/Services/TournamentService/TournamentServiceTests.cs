@@ -7,6 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
@@ -15,6 +16,7 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -35,9 +37,11 @@
 
         private const int SPECIFIC_TEAM_ID = 2;
 
+        private const int SPECIFIC_TOURNAMENT_ID = 2;
+
         private const int EMPTY_TEAM_LIST_COUNT = 0;
 
-        private const int EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT = 3;
+        private const int EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT = 4;
 
         private readonly DateTime _dateForCurrentState = new DateTime(2015, 09, 30);
 
@@ -49,6 +53,7 @@
 
         private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+        private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
 
         private readonly Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock =
             new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
@@ -85,6 +90,7 @@
             _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>().ToConstant(_getAllTeamsQuery.Object);
             _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>().ToConstant(_getTorunamentDto.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
+            _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;
@@ -741,6 +747,8 @@
             // Arrange
             var testData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
+            var tournament = new TournamentBuilder().Build();
+            MockGetByIdQuery(tournament);
             var sut = _kernel.Get<TournamentService>();
 
             // Act
@@ -800,6 +808,34 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
             VerifyCheckAccess(AuthOperations.Tournaments.ManageTeams, Times.Once());
         }
+
+        /// <summary>
+        /// Test for AddTeamsToTournament method.
+        /// Valid teams have to be added into playoff tournament.
+        /// Schedule created.
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_ValidTeamListPlayOffScheme_ScheduleCreated()
+        {
+            // Arrange
+            var testData = new TeamServiceTestFixture().TestTeams().Build();
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
+            MockGetAllTournamentTeamsQueryTwoCalls(new TeamServiceTestFixture().Build(), testTeamsData);
+
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyCreateSchedule(FIRST_TOURNAMENT_ID, Times.Once(), Times.Once());
+        }
+
         #endregion
 
         #region DeleteTeamFromTournament
@@ -811,13 +847,18 @@
         public void DeleteTeamFromTournament_TeamExist_TeamDeleted()
         {
             // Arrange
+            var tournament = new TournamentBuilder().Build();
+            MockGetByIdQuery(tournament);
             var sut = _kernel.Get<TournamentService>();
+
+            var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
+            MockGetAllTournamentTeamsQuery(testTeamsData);
 
             // Act
             sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyTeamDeleted(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID, Times.Once());
+            VerifyTeamDeleted(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID, Times.Once(), Times.Once());
         }
 
         /// <summary>
@@ -870,6 +911,33 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
             VerifyCheckAccess(AuthOperations.Tournaments.ManageTeams, Times.Once());
         }
+
+        /// <summary>
+        /// Test for DeleteTeamFromTournament method.
+        /// Team have to be removed from playoff tournament
+        /// Schedule created
+        /// </summary>
+        [TestMethod]
+        public void DeleteTeamFromTournament_TeamExistPlayOffScheme_ScheduleCreated()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
+            MockGetAllTournamentTeamsQuery(testTeamsData);
+
+            var sut = _kernel.Get<TournamentService>();
+
+            // Act
+            sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyCreateSchedule(FIRST_TOURNAMENT_ID, Times.Once(), Times.Once());
+        }
+
         #endregion
 
         #region Delete
@@ -1058,6 +1126,13 @@
             _getAllTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>())).Returns(testData);
         }
 
+        private void MockGetAllTournamentTeamsQueryTwoCalls(List<Team> firstCallTestData, List<Team> secondCallTestData)
+        {
+            _getAllTeamsQuery.SetupSequence(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>()))
+                .Returns(firstCallTestData)
+                .Returns(secondCallTestData);
+        }
+
         private void MockTimeProviderUtcNow(DateTime date)
         {
             _timeMock.Setup(c => c.UtcNow).Returns(date);
@@ -1125,6 +1200,20 @@
                                             .WithTransferStart(new DateTime(2015, 08, 20))
                                             .WithTransferEnd(new DateTime(2015, 09, 10))
                                             .Build())
+                            .AddTournament(new TournamentBuilder()
+                                            .WithId(4)
+                                            .WithName("Tournament 4")
+                                            .WithDescription("Tournament 4 description")
+                                            .WithSeason(2014)
+                                            .WithScheme(TournamentSchemeEnum.PlayOff)
+                                            .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('4')")
+                                            .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
+                                            .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
+                                            .WithGamesStart(new DateTime(2015, 06, 30))
+                                            .WithGamesEnd(new DateTime(2015, 11, 30))
+                                            .WithTransferStart(new DateTime(2015, 08, 20))
+                                            .WithTransferEnd(new DateTime(2015, 09, 10))
+                                            .Build())
                             .Build();
         }
 
@@ -1146,10 +1235,10 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
         }
 
-        private void VerifyTeamDeleted(int teamId, int tourmanentId, Times times)
+        private void VerifyTeamDeleted(int teamId, int tourmanentId, Times times, Times uowTimes)
         {
             _tournamentRepositoryMock.Verify(tr => tr.RemoveTeamFromTournament(teamId, tourmanentId), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
         }
 
         private void VerifyEditTournament(Tournament tournament, Times times)
@@ -1162,6 +1251,14 @@
         {
             _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
         }
+
+        private void VerifyCreateSchedule(int tourmanentId, Times times, Times uowTimes)
+        {
+            _gameServiceMock.Verify(gs => gs.RemoveAllGamesInTournament(tourmanentId), times);
+            _gameServiceMock.Verify(gs => gs.AddGames(It.IsAny<List<Game>>()), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
+        }
+
         #endregion
     }
 }

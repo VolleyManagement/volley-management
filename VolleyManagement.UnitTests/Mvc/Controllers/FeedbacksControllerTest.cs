@@ -31,6 +31,7 @@
         private const string FEEDBACK_SENT_MESSAGE = "FeedbackSentMessage";
         private const string TEST_MAIL = "test@gmail.com";
         private const string TEST_CONTENT = "Test content";
+        private const string EXCEPTION_MESSAGE = "ValidationMessage";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
             new Mock<IFeedbackService>();
@@ -40,8 +41,6 @@
 
         private readonly Mock<ICurrentUserService> _currentUserServiceMock =
             new Mock<ICurrentUserService>();
-
-        private FeedbacksController _sut;
 
         private IKernel _kernel;
 
@@ -77,12 +76,12 @@
             CreateGetAction_UserIsNotAuthentificated_FeedbackHasEmptyEmailField()
         {
             // Arrange
-            this._sut = this._kernel.Get<FeedbacksController>();
+            FeedbacksController sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateInvalidFeedback();
             SetupCurrentUserGetId(ANONYM_ID);
 
             // Act
-            this._sut.Create();
+            sut.Create();
 
             // Assert
             Assert.AreEqual(feedback.UsersEmail, string.Empty);
@@ -94,17 +93,17 @@
         /// </summary>
         [TestMethod]
         public void
-            CreateGetAction_UserIsAuthentificated_FeedbackEmailEqualsUsersEmail()
+            CreateGetAction_UserIsAuthentificated_UsersEmailPrepolulated()
         {
             // Arrange
-            this._sut = this._kernel.Get<FeedbacksController>();
+            FeedbacksController sut = this._kernel.Get<FeedbacksController>();
             SetupCurrentUserGetId(TEST_ID);
             this._userServiceMock.Setup(us => us.GetUser(TEST_ID))
                 .Returns(new User { Email = TEST_MAIL });
 
             // Act
             var feedback = TestExtensions
-                .GetModel<FeedbackViewModel>(this._sut.Create());
+                .GetModel<FeedbackViewModel>(sut.Create());
 
             // Assert
             Assert.AreEqual(TEST_MAIL, feedback.UsersEmail);
@@ -122,13 +121,13 @@
         public void CreatePostAction_ModelIsInvalid_CreateViewReturned()
         {
             // Arrange
-            this._sut = this._kernel.Get<FeedbacksController>();
+            FeedbacksController sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateInvalidFeedback();
 
-            SetInvalidModelState();
+            SetInvalidModelState(sut);
 
             // Act
-            var result = this._sut.Create(feedback) as ViewResult;
+            var result = sut.Create(feedback) as ViewResult;
 
             // Assert
             Assert.AreEqual(CREATE_VIEW, result.ViewName);
@@ -142,11 +141,11 @@
         public void CreatePostAction_ModelIsValid_FeedbackThankReturned()
         {
             // Arrange
-            this._sut = this._kernel.Get<FeedbacksController>();
+            FeedbacksController sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateValidFeedback();
 
             // Act
-            var result = this._sut.Create(feedback) as ViewResult;
+            var result = sut.Create(feedback) as ViewResult;
 
             // Assert
             Assert.AreEqual(FEEDBACK_SENT_MESSAGE, result.ViewName);
@@ -160,7 +159,7 @@
         public void CreatePostAction_ModelIsValid_FeedbackCreated()
         {
             // Arrange
-            this._sut = this._kernel.Get<FeedbacksController>();
+            FeedbacksController sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateValidFeedback();
             var expectedFeedback = CreateExpectedFeedback();
 
@@ -169,7 +168,7 @@
                 .Callback<Feedback>(a => actualFeedback = a);
 
             // Act
-            this._sut.Create(feedback);
+            sut.Create(feedback);
 
             // Assert
             TestHelper.AreEqual(
@@ -187,32 +186,19 @@
         public void CreatePostAction_ArgumentExceptionThrown_ModelChanged()
         {
             // Arrange
-            this._sut = this._kernel.Get<FeedbacksController>();
+            FeedbacksController sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateInvalidFeedback();
 
             this._feedbackServiceMock.Setup(f => f.Create(It.IsAny<Feedback>()))
-                .Throws(new ArgumentException());
+                .Throws(new ArgumentException(EXCEPTION_MESSAGE));
 
             // Act
-            this._sut.Create(feedback);
+            sut.Create(feedback);
+            var res = sut.ModelState[EXCEPTION_MESSAGE].Errors;
 
             // Assert
-            Assert.IsFalse(this._sut.ModelState.IsValid);
-        }
-
-        [TestMethod]
-        public void
-            CreatePostAction_FeedbackViewModelMapsCorrectly_FeedbackCreated()
-        {
-            // Arrange
-            var expected = CreateExpectedFeedback();
-            var feedback = CreateValidFeedback();
-
-            // Act
-            var actual = feedback.ToDomain();
-
-            // Assert
-            TestHelper.AreEqual(expected, actual, new FeedbackComparer());
+            Assert.IsFalse(sut.ModelState.IsValid);
+            Assert.AreEqual(EXCEPTION_MESSAGE, res[0].ErrorMessage);
         }
 
         #endregion
@@ -262,9 +248,9 @@
                     .Build();
         }
 
-        private void SetInvalidModelState()
+        private void SetInvalidModelState(FeedbacksController controller)
         {
-            this._sut.ModelState.AddModelError("Content", "FieldRequired");
+            controller.ModelState.AddModelError("Content", "FieldRequired");
         }
 
         private void SetupCurrentUserGetId(int id)

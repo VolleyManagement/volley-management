@@ -10,7 +10,6 @@
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.MailsAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
 
@@ -159,7 +158,7 @@
         public void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
         {
                 feedback.Status = newStatusCode;
-                if (IsStatusAnsweredOrClosed(newStatusCode))
+                if (ShouldChangeLastUpdateInfo(newStatusCode))
                 {
                     int userId = this._currentUserService.GetCurrentUserId();
                     User user = this._userService.GetUser(userId);
@@ -175,7 +174,7 @@
 
         #region Privates
 
-        private bool IsStatusAnsweredOrClosed(FeedbackStatusEnum newStatusCode)
+        private bool ShouldChangeLastUpdateInfo(FeedbackStatusEnum newStatusCode)
         {
             return newStatusCode == FeedbackStatusEnum.Closed || newStatusCode == FeedbackStatusEnum.Answered;
         }

@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Domain.FeedbackAggregate;
-    using Domain.MailsAggregate;
 
     /// <summary>
     /// Defines a contract for Feedback service.

@@ -33,6 +33,10 @@
 
         private const string FEEDBACK_NOT_FOUND = "A feedback with specified identifier was not found";
 
+        private const string OPERATION_NOT_ALLOWED = "Requested operation is not allowed";
+
+        private const string INVALID_OPERATION = "Feedback status can't be changed to this status";
+
         private const int EXISTING_ID = 1;
 
         private const int INVALID_FEEDBACK_ID = -1;
@@ -171,6 +175,8 @@
             Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);
         }
 
+        #region Close
+
         [TestMethod]
         public void Close_FeedbackDoesNotExist_ExceptionThrown()
         {
@@ -193,13 +199,12 @@
         }
 
         [TestMethod]
-        public void Close_FeedbackWithValidIdAsParam_UpdatedFeedbackStatusToCloseSetAdminNameDate()
+        public void Close_AnsweredFeedback_UpdatedFeedbackStatusToClose()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(feedback);
 
-            SetupCurrentUserServiceGetCurrentUserId(VALID_USER_ID);
             MockCurrentUser(VALID_USER_ID);
 
             var sut = _kernel.Get<FeedbackService>();
@@ -212,25 +217,56 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
-        public void Close_NoCloseRights_ExceptionThrown()
+        public void Close_AnsweredFeedback_UpdatedFeedbackAdminNameUpdateDate()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
-            MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Close);
+            MockGetFeedbackByIdQuery(feedback);
+
+            MockCurrentUser(VALID_USER_ID);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-             sut.Close(EXISTING_ID);
+            sut.Close(EXISTING_ID);
 
             // Assert
+            VerifyAdminName(feedback,TEST_NAME);
+            VerifyEditFeedback(feedback, Times.Once());
+        }
+
+        [TestMethod]
+        public void Close_NoCloseRights_AuthorizationExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
+            MockAuthServiceThrowsException(AuthOperations.Feedbacks.Close);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Close(EXISTING_ID);
+            }
+            catch (AuthorizationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, OPERATION_NOT_ALLOWED);
             VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Close, Times.Once());
         }
 
+        #endregion
+
+        #region GetDetails
+
         [TestMethod]
-        public void GetDetails_FeedbackWithValidIdAsParam_UpdatedFeedbackStatusToRead()
+        public void GetDetails_NewFeedback_UpdatedFeedbackStatusToRead()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
@@ -267,23 +303,34 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
         public void GetDetails_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
+            Exception exception = null;
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
-            MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Read);
+            MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.GetDetails(EXISTING_ID);
+            try
+            {
+                sut.GetDetails(EXISTING_ID);
+            }
+            catch (AuthorizationException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
+            VerifyExceptionThrown(exception, OPERATION_NOT_ALLOWED);
             VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Read, Times.Once());
         }
 
+        #endregion
+
+        #region Reply
         [TestMethod]
         public void Reply_FeedbackDoesNotExist_ExceptionThrown()
         {
@@ -306,12 +353,11 @@
         }
 
         [TestMethod]
-        public void Reply_FeedbackWithValidIdAsParam_UpdatedFeedbackStatusToAnsweredSetAdminNameDate()
+        public void Reply_FeedbackWithValidIdAsParam_UpdatedFeedbackStatusToAnswered()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(feedback);
-            SetupCurrentUserServiceGetCurrentUserId(VALID_USER_ID);
 
             MockCurrentUser(VALID_USER_ID);
 
@@ -325,27 +371,57 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
-        public void Reply_NoReplyRights_AuthorizationExceptionThrown()
+        public void Reply_FeedbackWithValidIdAsParam_UpdatedFeedbackAdminNameAndUpdateDate()
         {
             // Arrange
-            MockAuthServiceThrowsExeption(AuthOperations.Feedbacks.Reply);
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
+            MockGetFeedbackByIdQuery(feedback);
+
+            MockCurrentUser(VALID_USER_ID);
+
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
             sut.Reply(EXISTING_ID);
 
             // Assert
+            VerifyAdminName(feedback, TEST_NAME);
+            VerifyEditFeedback(feedback, Times.Once());
+        }
+
+        [TestMethod]
+        public void Reply_NoReplyRights_AuthorizationExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            MockAuthServiceThrowsException(AuthOperations.Feedbacks.Reply);
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Reply(EXISTING_ID);
+            }
+            catch (AuthorizationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, OPERATION_NOT_ALLOWED);
             VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Reply, Times.Once());
         }
 
+        #endregion
+
+        #region ChangeFeedbackStatus
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ChangeFeedbackStatus_FeedbackAnsweredToRead_ExceptionThrown()
+        public void ChangeFeedbackStatus_AnsweredFeedback_InvalidOperationExceptionThrown()
         {
             // Arrange
+            Exception exception = null;
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
                                                 .WithStatus(FeedbackStatusEnum.Answered)
                                                 .Build();
@@ -353,17 +429,25 @@
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.ChangeFeedbackStatus(feedback,FeedbackStatusEnum.Read);
+            try
+            {
+                sut.ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Read);
+            }
+            catch (InvalidOperationException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
+            VerifyExceptionThrown(exception, INVALID_OPERATION);
             VerifyEditFeedback(feedback, Times.Never());
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ChangeFeedbackStatus_FeedbackClosedToNew_ExceptionThrown()
+        public void ChangeFeedbackStatus_ClosedFeedback_InvalidOperationExceptionThrown()
         {
             // Arrange
+            Exception exception = null;
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
                                                 .WithStatus(FeedbackStatusEnum.Closed)
                                                 .Build();
@@ -371,20 +455,28 @@
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.ChangeFeedbackStatus(feedback, FeedbackStatusEnum.New);
+            try
+            {
+                sut.ChangeFeedbackStatus(feedback, FeedbackStatusEnum.New);
+            }
+            catch (InvalidOperationException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
+            VerifyExceptionThrown(exception, INVALID_OPERATION);
             VerifyEditFeedback(feedback, Times.Never());
         }
 
         [TestMethod]
-        public void ChangeFeedbackStatus_FeedbackReadToAnswered_SetFeedbackStatusToAnswered()
+        public void ChangeFeedbackStatus_AnsweredFeedback_SetFeedbackStatusToAnswered()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
                                                 .WithStatus(FeedbackStatusEnum.Read)
                                                 .Build();
-            SetupCurrentUserServiceGetCurrentUserId(VALID_USER_ID);
+           
             MockCurrentUser(VALID_USER_ID);
             var sut = _kernel.Get<FeedbackService>();
 
@@ -394,6 +486,7 @@
             // Assert
             VerifyEditFeedback(feedback, Times.Once());
         }
+        #endregion
 
         private void VerifyCheckAccess(AuthOperation operation, Times times)
         {
@@ -409,6 +502,8 @@
 
         private void MockCurrentUser(int userId)
         {
+            SetupCurrentUserServiceGetCurrentUserId(VALID_USER_ID);
+
             this._userServiceMock.Setup(
              us => us.GetUser(userId)).Returns(
              new User { PersonName = TEST_NAME });
@@ -445,7 +540,13 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
-        private void MockAuthServiceThrowsExeption(AuthOperation operation)
+        private void VerifyAdminName(Feedback feedback, string expectedAdminName)
+        {
+            Assert.IsNotNull(feedback.AdminName, "Admin's name is null");
+            Assert.IsTrue(feedback.AdminName.Equals(expectedAdminName), "Expected and actual admin names aren't equal");
+        }
+
+        private void MockAuthServiceThrowsException(AuthOperation operation)
         {
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
         }

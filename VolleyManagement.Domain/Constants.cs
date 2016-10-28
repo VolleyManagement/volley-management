@@ -261,15 +261,5 @@
 
             public const int MAX_CONTENT_LENGTH = 5000;
         }
-
-        /// <summary>
-        /// Container for mail constants.
-        /// </summary>
-        public static class Mail
-        {
-            public const int MAX_EMAIL_LENGTH = 80;
-
-            public const int MAX_CONTENT_LENGTH = 5000;
-        }
     }
 }

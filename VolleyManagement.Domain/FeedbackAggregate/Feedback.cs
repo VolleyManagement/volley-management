@@ -84,9 +84,8 @@
             {
                 if (FeedbackValidation.ValidateStatus(_status, value))
                 {
-                    throw new ArgumentException(
-                        Resources.ValidationFeedbackStatus,
-                        Resources.FeedbackStatusParam);
+                    throw new InvalidOperationException(
+                        Resources.ValidationFeedbackStatus);
                 }
 
                 _status = value;

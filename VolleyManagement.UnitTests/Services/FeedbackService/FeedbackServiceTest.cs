@@ -91,6 +91,10 @@
         {
             // Arrange
             var feed = new FeedbackBuilder().Build();
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.Create(feed);
 
             // Assert
             Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);

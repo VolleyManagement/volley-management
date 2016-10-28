@@ -45,8 +45,7 @@
                                   Bind<IRolesService>().To<RolesService>(),
                                   Bind<IGameService>().To<GameService>(),
                                   Bind<IGameReportService>().To<GameReportService>(),
-                                  Bind<IAuthorizationService>().To<AuthorizationService>(),
-                                  Bind<IFeedbackService>().To<FeedbackService>()
+                                  Bind<IAuthorizationService>().To<AuthorizationService>()
                               };
             configs.InScope(_scopeCallback);
         }

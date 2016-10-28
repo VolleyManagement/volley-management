@@ -14,12 +14,6 @@
     [TestClass]
     public class FeedbackServiceTest
     {
-        public const string ERROR_FOR_FEEDBACK_REPOSITORY_VERIFY
-            = "Parameter feedback is not equal to Instance of feedback";
-
-        public const string ERROR_FOR_UNIT_OF_WORK_VERIFY
-            = "Can't save feedback to database";
-
         public const int SPECIFIC_FEEDBACK_ID = 1;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock
             = new Mock<IUnitOfWork>();
@@ -55,14 +49,15 @@
         public void Create_FeedbackPassed_FeedbackCreated()
         {
             // Arrange
-            var newFeedback = new FeedbackBuilder().Build();
+            var newFeedback = new FeedbackBuilder().Build(); 
+            var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            var sut = _kernel.Get<FeedbackService>();
             sut.Create(newFeedback);
 
             // Assert
-            VerifyCreateFeedback(newFeedback, Times.Once(), ERROR_FOR_FEEDBACK_REPOSITORY_VERIFY);
+            VerifyCreateFeedback(newFeedback, Times.Once(),
+                "Parameter feedback is not equal to Instance of feedback");
         }
 
         [TestMethod]
@@ -90,7 +85,7 @@
         }
 
         [TestMethod]
-        public void Get_GetDefaultFeedbackDate_FeedbackDateReceived()
+        public void Get_DefaultFeedback_FeedbackDateReceived()
         {
             // Arrange
             var feed = new FeedbackBuilder().Build();
@@ -115,7 +110,7 @@
             _unitOfWorkMock.Verify(
                 uow => uow.Commit(),
                 times,
-                ERROR_FOR_UNIT_OF_WORK_VERIFY);
+                "Can't save feedback to database");
         }
 
         private void VerifyExceptionThrown(Exception exception, Exception expected)

@@ -90,7 +90,7 @@
         public void Get_DefaultFeedback_FeedbackDateReceived()
         {
             // Arrange
-            var feed = new FeedbackBuilder().Build();
+            var feed = new FeedbackBuilder().WithDate(_feedbackTestDate).Build();
             var sut = _kernel.Get<FeedbackService>();
 
             // Act

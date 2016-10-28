@@ -19,6 +19,10 @@
 
         public const string TOURNAMENT_SEASON_COLUMN_NAME = "SeasonOffset";
 
+        public const string FEEDBACKS_TABLE_NAME = "Feedbacks";
+
+        public const string FEEDBACK_STATUS_COLUMN_NAME = "StatusCode";
+
         public const string PLAYERS_TABLE_NAME = "Players";
 
         public const string TEAMS_TABLE_NAME = "Teams";

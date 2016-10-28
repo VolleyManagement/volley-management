@@ -123,6 +123,12 @@
   <data name="DivisionNamesNotUnique" xml:space="preserve">
     <value>Divisions can not have the same name</value>
   </data>
+  <data name="FeedbackContentParam" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="FeedbackUsersEmailParam" xml:space="preserve">
+    <value>UsersEmail</value>
+  </data>
   <data name="GameResultFifthSetScoreInvalid" xml:space="preserve">
     <value>In fifth set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}.</value>
   </data>
@@ -203,6 +209,12 @@
   </data>
   <data name="ValidationDivisionName" xml:space="preserve">
     <value>Please, enter the valid name of the division</value>
+  </data>
+  <data name="ValidationFeedbackContent" xml:space="preserve">
+    <value>Content should be less than 5000 symbols</value>
+  </data>
+  <data name="ValidationFeedbackUsersEmail" xml:space="preserve">
+    <value>Please, enter the valid email</value>
   </data>
   <data name="ValidationGroupName" xml:space="preserve">
     <value>Please, enter the valid name of the group</value>

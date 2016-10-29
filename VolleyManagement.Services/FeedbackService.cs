@@ -4,6 +4,7 @@
     using Contracts;
     using Crosscutting.Contracts.Providers;
     using Domain.FeedbackAggregate;
+    using Domain.Properties;
 
     /// <summary>
     /// Represents an implementation of IFeedbackService contract.
@@ -43,6 +44,8 @@
             }
 
             UpdateFeedbackDate(feedbackToCreate);
+
+            ValidateFeedback(feedbackToCreate);
             _feedbackRepository.Add(feedbackToCreate);
             _feedbackRepository.UnitOfWork.Commit();
         }
@@ -56,6 +59,22 @@
             feedbackToUpdate.Date = TimeProvider.Current.UtcNow;
         }
 
+        private void ValidateContent(string feedbackContent)
+        {
+            if (FeedbackValidation.ValidateFeedbackContent(feedbackContent))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.ValidationFeedbackContent,
+                    VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
+                    "Content");
+            }
+        }
+
+        private void ValidateFeedback(Feedback feedbackToValidate)
+        {
+            ValidateContent(feedbackToValidate.Content);
+        }
         #endregion
     }
 }

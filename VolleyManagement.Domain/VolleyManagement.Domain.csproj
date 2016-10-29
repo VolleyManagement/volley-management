@@ -54,6 +54,7 @@
     <Compile Include="Dto\UserInRoleDto.cs" />
     <Compile Include="FeedbackAggregate\Feedback.cs" />
     <Compile Include="FeedbackAggregate\FeedbackStatusEnum.cs" />
+    <Compile Include="FeedbackAggregate\FeedbackValidation.cs" />
     <Compile Include="FeedbackAggregate\IFeedbackRepository.cs" />
     <Compile Include="GameReportsAggregate\StandingsEntry.cs" />
     <Compile Include="GameReportsAggregate\TeamStandingsDto.cs" />

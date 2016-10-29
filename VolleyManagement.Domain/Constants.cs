@@ -251,5 +251,13 @@
 
             public const string FREE_DAY_TEAM_NAME = "Free day";
         }
+
+        /// <summary>
+        /// Container for feedback constants
+        /// </summary>
+        public static class Feedback
+        {
+            public const int MAX_CONTENT_LENGTH = 1000;
+        }
     }
 }

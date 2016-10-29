@@ -4,6 +4,7 @@
     using System.Diagnostics.CodeAnalysis;
     using Crosscutting.Contracts.Providers;
     using Data.Contracts;
+    using Data.Queries.Common;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -19,7 +20,13 @@
             = new Mock<IUnitOfWork>();
 
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
-        private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock = new Mock<IFeedbackRepository>();
+
+        private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock
+            = new Mock<IFeedbackRepository>();
+
+        private readonly Mock<IQuery<Feedback, FindByIdCriteria>> _getFeedbackByIdQueryMock =
+            new Mock<IQuery<Feedback, FindByIdCriteria>>();
+
         private IKernel _kernel;
         private DateTime _feedbackTestDate = new DateTime(2007, 05, 03);
 
@@ -87,6 +94,24 @@
         }
 
         [TestMethod]
+        public void Create_EmptyFeedbackContent_FeedbackCreated()
+        {
+            // Arrange
+            MockGetFeedbackByIdQuery(new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build());
+            var newTeam = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).WithContent(string.Empty).Build();
+
+            // Act
+            var sut = _kernel.Get<FeedbackService>();
+            sut.Create(newTeam);
+
+            // Assert
+            VerifyCreateFeedback(
+                newTeam,
+                Times.Once(),
+                "Parameter feedback is not equal to Instance of feedback");
+        }
+
+        [TestMethod]
         public void Get_DefaultFeedback_FeedbackDateReceived()
         {
             // Arrange
@@ -123,6 +148,11 @@
         {
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.Message.Equals(expected.Message));
+        }
+
+        private void MockGetFeedbackByIdQuery(Feedback feedback)
+        {
+            _getFeedbackByIdQueryMock.Setup(fb => fb.Execute(It.IsAny<FindByIdCriteria>())).Returns(feedback);
         }
     }
 }

@@ -23,8 +23,8 @@
         /// <returns>Validity of content.</returns>
         public static bool ValidateContent(string content)
         {
-             return string.IsNullOrEmpty(content)
-                 || content.Length > Constants.Feedback.MAX_CONTENT_LENGTH;
+            return string.IsNullOrEmpty(content)
+                || content.Length > Constants.Feedback.MAX_CONTENT_LENGTH;
         }
     }
 }

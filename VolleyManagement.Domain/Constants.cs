@@ -253,7 +253,7 @@
         }
 
         /// <summary>
-        /// Container for feedback constants
+        /// Container for feedback constants.
         /// </summary>
         public static class Feedback
         {

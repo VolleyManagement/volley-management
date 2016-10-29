@@ -364,6 +364,9 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
@@ -456,6 +459,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
+    <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
@@ -641,10 +646,8 @@
       <LastGenOutput>ViewModelResources.designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Content\Site\" />
-    <Folder Include="Areas\Mvc\Views\Feedbacks\" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
@@ -658,7 +661,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60575</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

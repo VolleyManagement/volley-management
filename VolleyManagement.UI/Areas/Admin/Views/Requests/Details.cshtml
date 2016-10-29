@@ -1,0 +1,35 @@
+﻿@model VolleyManagement.UI.Areas.Admin.Models.RequestsViewModel
+
+@{
+    ViewBag.Title = "Requests";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Request @Model.Id</div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Content</th>
+            <th>Environment</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Admin name</th>
+            <th>Reply date</th>
+            <th></th>
+        </tr>
+      
+                <tr>
+                    <td>@Model.Id</td>
+                    <td>@Model.UsersEmail</td>
+                    <td>@Model.Content</td>
+                    <td>@*@Model.UserEnvironment*@</td>
+                    <td>@Model.Date</td>
+                    <td>@Model.Status</td>
+                    <td>@Model.AdminName</td>
+                    <th>@Model.UpdateDate</th>
+                </tr>
+          
+    </table>
+</div>
+

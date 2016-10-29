@@ -70,10 +70,24 @@
                     "Content");
             }
         }
+        
 
+        private void ValidateEMail(string feedbackUserEMail)
+        {
+            if (FeedbackValidation.ValidateUsersEmail(feedbackUserEMail))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        Resources.ValidationFeedbackUsersEmail,
+                        VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH),
+                    "UsersEmail");
+            }
+        }
+             
         private void ValidateFeedback(Feedback feedbackToValidate)
         {
             ValidateContent(feedbackToValidate.Content);
+            ValidateEMail(feedbackToValidate.UsersEmail);
         }
         #endregion
     }

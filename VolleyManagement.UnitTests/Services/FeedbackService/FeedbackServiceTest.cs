@@ -9,13 +9,15 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Domain.FeedbackAggregate;
+    using VolleyManagement.Domain.Properties;
     using VolleyManagement.Services;
+    using System.Text;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class FeedbackServiceTest
     {
-        public const int SPECIFIC_FEEDBACK_ID = 1;
+        public const int SPECIFIC_FEEDBACK_ID = 2;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock
             = new Mock<IUnitOfWork>();
 
@@ -94,21 +96,122 @@
         }
 
         [TestMethod]
+        public void Create_InvalidFeedbackContentNotAllowedLength_ArgumentExceptionThrown()
+        {
+            // Arrange
+            string invalidContent = CreateInvalidFeedbackContent();
+            string argExMessage = string.Format(
+                Resources.ValidationFeedbackContent,
+                VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
+            var testFeedback = new FeedbackBuilder()
+                .WithContent(invalidContent)
+                .Build();
+            Exception exception = null;
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Create(testFeedback);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage, "Content"));
+        }
+
+        [TestMethod]
+        public void Create_InvalidFeedbackUsersMailNotAllowedLength_ArgumentExceptionThrown()
+        {
+            // Arrange
+            string invalidEmail = CreateInvalidUsersEmail();
+            string argExMessage = string.Format(
+                Resources.ValidationFeedbackUsersEmail,
+                VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
+            var testFeedback = new FeedbackBuilder()
+                .WithEmail(invalidEmail)
+                .Build();
+            Exception exception = null;
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Create(testFeedback);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage, "UsersEmail"));
+        }
+
+        [TestMethod]
         public void Create_EmptyFeedbackContent_FeedbackCreated()
         {
             // Arrange
-            MockGetFeedbackByIdQuery(new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).Build());
-            var newTeam = new FeedbackBuilder().WithId(SPECIFIC_FEEDBACK_ID).WithContent(string.Empty).Build();
+            string invalidFeedbackContent = string.Empty;
+            string argExMessage = string.Format(
+                    Resources.ValidationFeedbackContent,
+                        VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
+            var testFeedback = new FeedbackBuilder()
+                                        .WithContent(invalidFeedbackContent)
+                                        .Build();
+            Exception exception = null;
+            var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            var sut = _kernel.Get<FeedbackService>();
-            sut.Create(newTeam);
+            try
+            {
+                sut.Create(testFeedback);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
 
             // Assert
-            VerifyCreateFeedback(
-                newTeam,
-                Times.Once(),
-                "Parameter feedback is not equal to Instance of feedback");
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage, "Content"));
+        }
+
+        [TestMethod]
+        public void Create_EmptyFeedbackUsersEMail_FeedbackCreated()
+        {
+            string invalidFeedbackUserEmail = string.Empty;
+            string argExMessage = string.Format(
+                    Resources.ValidationFeedbackUsersEmail,
+                        VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
+            var testFeedback = new FeedbackBuilder()
+                                        .WithEmail(invalidFeedbackUserEmail)
+                                        .Build();
+            Exception exception = null;
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Create(testFeedback);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage, "UsersEmail"));
         }
 
         [TestMethod]
@@ -153,6 +256,27 @@
         private void MockGetFeedbackByIdQuery(Feedback feedback)
         {
             _getFeedbackByIdQueryMock.Setup(fb => fb.Execute(It.IsAny<FindByIdCriteria>())).Returns(feedback);
+        }
+
+        private string CreateInvalidFeedbackContent()
+        {
+            StringBuilder invalidFeedbackContent = new StringBuilder();
+            for (int i = 0; i < VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1; i++)
+            {
+                invalidFeedbackContent.Append("a");
+            }
+
+            return invalidFeedbackContent.ToString();
+        }
+        private string CreateInvalidUsersEmail()
+        {
+            StringBuilder invalidFeedbackUsersMail = new StringBuilder();
+            for (int i = 0; i < VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH + 1; i++)
+            {
+                invalidFeedbackUsersMail.Append("a");
+            }
+
+            return invalidFeedbackUsersMail.ToString();
         }
     }
 }

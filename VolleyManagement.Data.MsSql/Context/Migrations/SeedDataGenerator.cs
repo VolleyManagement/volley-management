@@ -1101,7 +1101,9 @@
                 AuthOperations.Players.Create,
                 AuthOperations.Players.Edit,
                 AuthOperations.Players.Delete,
-                AuthOperations.AdminDashboard.View
+                AuthOperations.AdminDashboard.View,
+                AuthOperations.AllUsers.ViewList,
+                AuthOperations.AllUsers.ViewDetails
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

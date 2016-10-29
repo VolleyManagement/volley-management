@@ -205,7 +205,10 @@
     <value>Please, enter the valid name of the division</value>
   </data>
   <data name="ValidationFeedbackContent" xml:space="preserve">
-    <value>Feedback content can not contain more than {0} symbols; The field can not be empty</value>
+    <value>Content should be less than 5000 symbols</value>
+  </data>
+  <data name="ValidationFeedbackUsersEmail" xml:space="preserve">
+    <value>Please, enter the valid email</value>
   </data>
   <data name="ValidationGroupName" xml:space="preserve">
     <value>Please, enter the valid name of the group</value>

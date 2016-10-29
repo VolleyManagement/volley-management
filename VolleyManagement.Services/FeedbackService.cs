@@ -61,7 +61,7 @@
 
         private void ValidateContent(string feedbackContent)
         {
-            if (FeedbackValidation.ValidateFeedbackContent(feedbackContent))
+            if (FeedbackValidation.ValidateContent(feedbackContent))
             {
                 throw new ArgumentException(
                     string.Format(

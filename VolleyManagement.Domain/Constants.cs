@@ -257,7 +257,9 @@
         /// </summary>
         public static class Feedback
         {
-            public const int MAX_CONTENT_LENGTH = 1000;
+            public const int MAX_EMAIL_LENGTH = 80;
+
+            public const int MAX_CONTENT_LENGTH = 5000;
         }
     }
 }

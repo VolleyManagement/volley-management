@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
     using System.Text;
     using Crosscutting.Contracts.Providers;
     using Data.Contracts;
@@ -12,7 +13,6 @@
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.Properties;
     using VolleyManagement.Services;
-    using System.Linq;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -132,7 +132,7 @@
         public void Create_UsersMailNotAllowedLength_ArgumentExceptionThrown()
         {
             // Arrange
-            string invalidEmail = CreateInvalidUsersEmail();
+            string invalidEmail = CreateInvalidFeedbackContent();
             string argExMessage = string.Format(
                 Resources.ValidationFeedbackUsersEmail,
                 VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
@@ -264,11 +264,6 @@
         private string CreateInvalidFeedbackContent()
         {
             return new string(Enumerable.Repeat<char>('a', VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1).ToArray());
-        }
-
-        private string CreateInvalidUsersEmail()
-        {
-            return new string(Enumerable.Repeat<char>('a', VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH+1).ToArray());
         }
     }
 }

@@ -58,15 +58,17 @@
         public void Create_FeedbackPassed_FeedbackCreated()
         {
             // Arrange
-            var newFeedback = new FeedbackBuilder().Build();
+            var actual = new FeedbackBuilder().Build();
+            var expected = new FeedbackBuilder().Build();
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.Create(newFeedback);
+            sut.Create(actual);
 
             // Assert
+            Assert.AreEqual(expected.Content, actual.Content);
             VerifyCreateFeedback(
-                newFeedback,
+                actual,
                 Times.Once(),
                 "Parameter feedback is not equal to Instance of feedback");
         }

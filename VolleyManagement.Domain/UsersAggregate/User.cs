@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Domain.UsersAggregate
 {
     using System.Collections.Generic;
+    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Represents User of the Volley Management system
@@ -44,5 +45,10 @@
         /// External login information for the user
         /// </summary>
         public IEnumerable<LoginProviderInfo> LoginProviders { get; set; }
+
+        /// <summary>
+        /// External information of the user roles
+        /// </summary>
+        public IEnumerable<Role> Roles { get; set; }
     }
 }

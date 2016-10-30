@@ -1,0 +1,73 @@
+﻿@model VolleyManagement.UI.Areas.Admin.Models.UserViewModel
+
+@{
+    ViewBag.Title = "User's details";
+}
+
+@Html.ActionLink("Block/Unblock", "UserDetails", new { id = Model.Id }, new { @class = "btn btn-success btn-xs" })
+
+<div class="panel panel-primary">
+    <div class="panel-heading">User @Model.Id</div>
+    <table class="table table-striped">
+
+        <tr>
+            <td>ID</td>
+            <td>@Model.Id</td>
+        </tr>
+
+        <tr>
+        <tr>
+            <td>Email</td>
+            <td>@Model.Email</td>
+        </tr>
+
+        <tr>
+            <td>Username</td>
+            <td>@Model.Name</td>
+        </tr>
+
+        <tr>
+            <td>Person name</td>
+            <td>@Model.PersonName</td>
+        </tr>
+
+        <tr>
+            <td>Phone</td>
+            <td>@Model.Phone</td>
+        </tr>
+    </table>
+
+    <div class="display-label">@Html.LabelFor(model => Model.LoginProviders)</div>
+
+    <tr>
+        <th>Login Provider</th>
+        <th>Provider key</th>
+    </tr>
+
+    @foreach (var provider in Model.LoginProviders)
+    {
+        <tr>
+            <td>@provider.LoginProvider</td>
+            <td>@provider.ProviderKey</td>
+        </tr>
+    }
+
+    <div class="display-label">@Html.LabelFor(model => Model.Roles)</div>
+
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+
+    @foreach (var role in Model.Roles)
+    {
+        <tr>
+            <td>@role.Id</td>
+            <td>@role.Name</td>
+        </tr>
+    }
+
+</div>
+
+
+

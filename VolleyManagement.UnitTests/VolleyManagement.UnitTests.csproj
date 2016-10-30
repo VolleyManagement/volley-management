@@ -113,6 +113,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Admin\Controllers\UsersControllerTest.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />

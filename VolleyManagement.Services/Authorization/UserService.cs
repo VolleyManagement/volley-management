@@ -1,9 +1,12 @@
 ﻿namespace VolleyManagement.UI.Infrastructure
 {
+    using System.Collections.Generic;
     using Contracts;
     using Data.Contracts;
     using Data.Queries.Common;
     using Domain.UsersAggregate;
+
+    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Provides the way to get specified information about user.
@@ -30,6 +33,21 @@
         {
             return this._getUserByIdQuery.Execute(
                     new FindByIdCriteria { Id = userId });
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return null;
+        }
+
+        public List<LoginProviderInfo> GetAuthProviders(int userId)
+        {
+            return null;
+        }
+
+        public List<Role> GetUserRoles(int userId)
+        {
+            return null;
         }
     }
 }

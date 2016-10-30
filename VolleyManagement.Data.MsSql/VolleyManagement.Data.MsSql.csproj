@@ -136,7 +136,7 @@
     <Compile Include="Context\Migrations\201610141515542_MergedMigration.cs" />
     <Compile Include="Context\Migrations\201610141515542_MergedMigration.Designer.cs">
       <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
-   </Compile>
+    </Compile>
     <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.cs" />
     <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.Designer.cs">
       <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
@@ -271,7 +271,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201610141515542_MergedMigration.resx">
       <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
-	</EmbeddedResource>
+    </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201610171943183_AddFeedbacks.resx">
       <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
     </EmbeddedResource>

@@ -28,7 +28,7 @@
 
         private IKernel _kernel;
 
-        private Mock<IFeedbackService> _requestsServiceMock;
+        private Mock<IFeedbackService> _feedbacksServiceMock;
 
         private Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
@@ -41,7 +41,7 @@
         {
             _kernel = new StandardKernel();
 
-            _kernel.RegisterDefaultMock(out _requestsServiceMock);
+            _kernel.RegisterDefaultMock(out _feedbacksServiceMock);
 
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
         }
@@ -51,12 +51,12 @@
         #region Tests
 
         [TestMethod]
-        public void Index_DefaultRequests_AllRequestsReturned()
+        public void Index_NewFeedbacks_AllFeedbacksReturned()
         {
             // Arrange
-            var requests = GetDefaultFeedbacks();
-            var expected = GetDefaultRequestViewModels();
-            _requestsServiceMock.Setup(r => r.Get()).Returns(requests);
+            var feedbacks = GetNewFeedbacks();
+            var expected = GetNewRequestsViewModels();
+            _feedbacksServiceMock.Setup(r => r.Get()).Returns(feedbacks);
             var controller = _kernel.Get<RequestsController>();
 
             // Act
@@ -70,13 +70,13 @@
         }
 
         [TestMethod]
-        public void Details_RequestWithReplies_DetailsModelReturned()
+        public void Details_FeedbackWithReplies_DetailsModelReturned()
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var request = GetAnyRequest(FEEDBACK_ID);
-            MockGetRequests(FEEDBACK_ID, request);
-            RequestsViewModel expected = new RequestsViewModel(request);
+            var feedback = GetAnyFeedback(FEEDBACK_ID);
+            MockGetFeedbacks(FEEDBACK_ID, feedback);
+            RequestsViewModel expected = new RequestsViewModel(feedback);
             var controller = _kernel.Get<RequestsController>();
             //// Act
             var actionResult = controller.Details(FEEDBACK_ID);
@@ -89,7 +89,7 @@
         }
 
         [TestMethod]
-        public void Close_AnyRequest_RequestRedirectToIndex()
+        public void Close_AnyFeedback_FeedbackRedirectToIndex()
         {
             // Arrange
             const int FEEDBACK_ID = 1;
@@ -102,13 +102,13 @@
         }
 
         [TestMethod]
-        public void Close_NotClosedRequest_RequestDetails()
+        public void Close_NotClosedFeedback_FeedbackDetails()
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var request = GetNotClosedFeedback(FEEDBACK_ID);
-            MockGetRequests(FEEDBACK_ID, request);
-            RequestsViewModel expected = new RequestsViewModel(request);
+            var feedback = GetNotClosedFeedback(FEEDBACK_ID);
+            MockGetFeedbacks(FEEDBACK_ID, feedback);
+            RequestsViewModel expected = new RequestsViewModel(feedback);
 
             var controller = _kernel.Get<RequestsController>();
             //// Act
@@ -124,13 +124,13 @@
         }
 
         [TestMethod]
-        public void Index_AnyRequest_RequestReply()
+        public void Index_AnyFeedback_FeedbackReply()
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var request = GetNotClosedFeedback(FEEDBACK_ID);
-            _requestsServiceMock.Setup(r => r.GetDetails(FEEDBACK_ID)).Returns(request);
-            RequestsViewModel expected = new RequestsViewModel(request);
+            var feedback = GetNotClosedFeedback(FEEDBACK_ID);
+            _feedbacksServiceMock.Setup(r => r.GetDetails(FEEDBACK_ID)).Returns(feedback);
+            RequestsViewModel expected = new RequestsViewModel(feedback);
 
             var controller = _kernel.Get<RequestsController>();
             //// Act
@@ -148,7 +148,7 @@
 
         #region Test Data
 
-        private static List<Feedback> GetDefaultFeedbacks()
+        private static List<Feedback> GetNewFeedbacks()
         {
             return new List<Feedback>
                        {
@@ -157,7 +157,7 @@
                        };
         }
 
-        private static List<RequestsViewModel> GetDefaultRequestViewModels()
+        private static List<RequestsViewModel> GetNewRequestsViewModels()
         {
             return new List<RequestsViewModel>
                        {
@@ -178,11 +178,11 @@
                         };
         }
 
-        private static Feedback GetAnyRequest(int requestId)
+        private static Feedback GetAnyFeedback(int feedbackId)
         {
             return new Feedback
             {
-                Id = requestId,
+                Id = feedbackId,
                 Content = "Content2",
                 UsersEmail = "2@gmail.com",
                 Status = FeedbackStatusEnum.Read,
@@ -192,11 +192,11 @@
             };
         }
 
-        private static Feedback GetNotClosedFeedback(int requestId)
+        private static Feedback GetNotClosedFeedback(int feedbackId)
         {
             return new Feedback
             {
-                Id = requestId,
+                Id = feedbackId,
                 Content = "Content2",
                 UsersEmail = "2@gmail.com",
                 Status = FeedbackStatusEnum.Answered,
@@ -212,14 +212,14 @@
 
         private static void AssertAreDetailsModelsEqual(RequestsViewModel expected, RequestsViewModel actual)
         {
-            Assert.AreEqual(expected.Id, actual.Id, "Request ID does not match");
-            Assert.AreEqual(expected.AdminName, actual.AdminName, "Request AdminNames are different");
-            Assert.AreEqual(expected.Content, actual.Content, "Request Content are different");
-            Assert.AreEqual(expected.Date, actual.Date, "Request Date are different");
-            Assert.AreEqual(expected.UsersEmail, actual.UsersEmail, "Request Email are different");
-            Assert.AreEqual(expected.Status, actual.Status, "Request Status are different");
-            Assert.AreEqual(expected.UpdateDate, actual.UpdateDate, "Request UpdateDate are different");
-            //// Assert.AreEqual(actual.UserEnvironment, expected.UserEnvironment, "Request UserEnvironment are different");
+            Assert.AreEqual(expected.Id, actual.Id, "Feedback ID does not match");
+            Assert.AreEqual(expected.AdminName, actual.AdminName, "Feedback AdminNames are different");
+            Assert.AreEqual(expected.Content, actual.Content, "Feedback Content are different");
+            Assert.AreEqual(expected.Date, actual.Date, "Feedback Date are different");
+            Assert.AreEqual(expected.UsersEmail, actual.UsersEmail, "Feedback Email are different");
+            Assert.AreEqual(expected.Status, actual.Status, "Feedback Status are different");
+            Assert.AreEqual(expected.UpdateDate, actual.UpdateDate, "Feedback UpdateDate are different");
+            //// Assert.AreEqual(actual.UserEnvironment, expected.UserEnvironment, "Feedback UserEnvironment are different");
         }
 
         private static void AssertValidRedirectResult(ActionResult actionResult)
@@ -240,9 +240,9 @@
         #endregion
 
         #region Mock
-        private void MockGetRequests(int feedbackID, Feedback request)
+        private void MockGetFeedbacks(int feedbackID, Feedback feedback)
         {
-            _requestsServiceMock.Setup(r => r.GetDetails(feedbackID)).Returns(request);
+            _feedbacksServiceMock.Setup(r => r.GetDetails(feedbackID)).Returns(feedback);
         }
         #endregion
 

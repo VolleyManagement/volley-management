@@ -124,7 +124,7 @@
         }
 
         [TestMethod]
-        public void Index_AnyFeedback_FeedbackReply()
+        public void Reply_AnyFeedback_FeedbackReply()
         {
             // Arrange
             const int FEEDBACK_ID = 1;

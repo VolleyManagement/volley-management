@@ -1,20 +1,20 @@
-﻿namespace VolleyManagement.Domain
+﻿namespace VolleyManagement.Crosscutting.MailService
 {
     using System;
 
     /// <summary>
     /// Gmail message for sending emails.
     /// </summary>
-    public class GmailMessage
+    public class EmailMessage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GmailMessage"/> class.
+        /// Initializes a new instance of the <see cref="EmailMessage"/> class.
         /// </summary>
         /// <param name="from">Sender of email.</param>
         /// <param name="recipient">Recipient of email.</param>
         /// <param name="subject">Subject of email.</param>
         /// <param name="body">Body of email.</param>
-        public GmailMessage(string from, string recipient, string subject, string body)
+        public EmailMessage(string from, string recipient, string subject, string body)
         {
             if (string.IsNullOrEmpty(from)
                 || string.IsNullOrEmpty(recipient)
@@ -22,8 +22,8 @@
                 || string.IsNullOrEmpty(subject))
             {
                 throw new ArgumentException(
-                    Properties.Resources.ArgumentExceptionInvalidGmailMessageArguments,
-                    Properties.Resources.ArgumentExceptionGmailMessage);
+                    Properties.Resources.ArgumentExceptionInvalidEmailMessageArguments,
+                    Properties.Resources.ArgumentExceptionEmailMessage);
             }
 
             From = from;

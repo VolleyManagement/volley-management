@@ -8,7 +8,7 @@
     using Contracts.Authentication;
     using Contracts.Authorization;
     using Crosscutting.Contracts.Providers;
-    using Domain;
+    using Crosscutting.MailService;
     using Domain.Dto;
     using Domain.FeedbackAggregate;
 
@@ -21,10 +21,7 @@
 
         private readonly IFeedbackRepository _feedbackRepository;
 
-        /// <summary>
-        /// Holds GmailAccountMailService instance.
-        /// </summary>
-        private readonly IGmailAccountMailService _gmailAccountMailService;
+        private readonly IMailService _mailService;
 
         private readonly IRolesService _roleService;
 
@@ -38,18 +35,18 @@
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
         /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
-        /// <param name="gmailAccountMailService">Instance of the class
-        /// that implements <see cref="IGmailAccountMailService"/></param>
+        /// <param name="mailService">Instance of the class
+        /// that implements <see cref="IMailService"/></param>
         /// <param name="rolesService">Roles service.</param>
         /// <param name="volleyUserStore">Volley User Store.</param>
         public FeedbackService(
             IFeedbackRepository feedbackRepository,
-            IGmailAccountMailService gmailAccountMailService,
+            IMailService mailService,
             IRolesService rolesService,
             IVolleyUserStore volleyUserStore)
         {
             _feedbackRepository = feedbackRepository;
-            _gmailAccountMailService = gmailAccountMailService;
+            _mailService = mailService;
             _roleService = rolesService;
             _volleyUserStore = volleyUserStore;
         }
@@ -95,8 +92,8 @@
             string body = Properties.Resources.FeedbackConfirmationLetterBody;
             string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
 
-            GmailMessage gmailMessage = new GmailMessage(GetSenderEmailAddress(), emailTo, subject, body);
-            _gmailAccountMailService.Send(gmailMessage);
+            EmailMessage emailMessage = new EmailMessage(GetSenderEmailAddress(), emailTo, subject, body);
+            _mailService.Send(emailMessage);
         }
 
         /// <summary>
@@ -105,7 +102,7 @@
         /// <param name="feedback">Feedback to send.</param>
         private void NotifyAdmins(Feedback feedback)
         {
-            const int ROLE_ID = 1;
+            const int ADMIN_ROLE_ID = 1;
 
             string subject = string.Format(
                 Properties.Resources.FeedbackConfirmationLetterSubject,
@@ -119,15 +116,15 @@
                 feedback.Status,
                 feedback.Content);
 
-            List<UserInRoleDto> adminsList = _roleService.GetUsersInRole(ROLE_ID);
+            List<UserInRoleDto> adminsList = _roleService.GetUsersInRole(ADMIN_ROLE_ID);
 
             foreach (var admin in adminsList)
             {
                 var usersTask = Task.Run(() => _volleyUserStore.FindByIdAsync(admin.UserId));
                 var user = usersTask.Result;
 
-                GmailMessage gmailMessage = new GmailMessage(GetSenderEmailAddress(), user.Email, subject, body);
-                _gmailAccountMailService.Send(gmailMessage);
+                EmailMessage emailMessage = new EmailMessage(GetSenderEmailAddress(), user.Email, subject, body);
+                _mailService.Send(emailMessage);
             }
         }
 

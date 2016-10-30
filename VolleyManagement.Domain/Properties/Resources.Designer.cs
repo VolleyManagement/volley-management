@@ -61,24 +61,6 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GmailMessage.
-        /// </summary>
-        public static string ArgumentExceptionGmailMessage {
-            get {
-                return ResourceManager.GetString("ArgumentExceptionGmailMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid gmail message arguments.
-        /// </summary>
-        public static string ArgumentExceptionInvalidGmailMessageArguments {
-            get {
-                return ResourceManager.GetString("ArgumentExceptionInvalidGmailMessageArguments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The number of divisions in the tournament must be between {0} and {1}.
         /// </summary>
         public static string DivisionCountOutOfRange {

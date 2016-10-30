@@ -4,13 +4,13 @@
     using System.Net;
     using System.Net.Mail;
     using System.Web.Configuration;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Domain;
+    using Contracts;
+    using Crosscutting.MailService;
 
     /// <summary>
     /// Defines GmailAccountMailService.
     /// </summary>
-    public class GmailAccountMailService : IGmailAccountMailService
+    public class GmailAccountMailService : IMailService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GmailAccountMailService"/> class.
@@ -23,7 +23,7 @@
         /// Send an email.
         /// </summary>
         /// <param name="message">Message to send.</param>
-        public void Send(GmailMessage message)
+        public void Send(EmailMessage message)
         {
             if (message == null)
             {

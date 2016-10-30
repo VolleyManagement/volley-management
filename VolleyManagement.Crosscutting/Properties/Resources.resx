@@ -117,38 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ArgumentExceptionInvalidGmailMessage" xml:space="preserve">
-    <value>Gmail message is invalid.</value>
-  </data>
-  <data name="ArgumentNullExceptionInvalidGmailAddress" xml:space="preserve">
-    <value>Gmail address is invalid.</value>
-  </data>
-  <data name="ArgumentNullExceptionInvalidGmailPassword" xml:space="preserve">
-    <value>Gmail password is invalid.</value>
-  </data>
-  <data name="FeedbackConfirmationLetterBody" xml:space="preserve">
-    <value>Thank you for your feedback!</value>
-  </data>
-  <data name="FeedbackConfirmationLetterSubject" xml:space="preserve">
-    <value>User notification</value>
-  </data>
-  <data name="FeedbackEmailBodyToAdmins" xml:space="preserve">
-    <value>Feedback №{0}, 
-Date: {1}.
-User email: {2},
-Status: {3}
-Content: {4}</value>
-  </data>
-  <data name="FeedbackEmailSubjectToAdmins" xml:space="preserve">
-    <value>Feedback №{0}</value>
-  </data>
-  <data name="GmailAddress" xml:space="preserve">
-    <value>GoogleEmailAddress</value>
-  </data>
-  <data name="GmailMessage" xml:space="preserve">
+  <data name="ArgumentExceptionEmailMessage" xml:space="preserve">
     <value>EmailMessage</value>
   </data>
-  <data name="GmailPassword" xml:space="preserve">
-    <value>GoogleEmailPassword</value>
+  <data name="ArgumentExceptionInvalidEmailMessageArguments" xml:space="preserve">
+    <value>Invalid email message arguments</value>
   </data>
 </root>

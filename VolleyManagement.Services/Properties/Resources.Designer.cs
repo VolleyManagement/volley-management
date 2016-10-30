@@ -137,7 +137,7 @@ namespace VolleyManagement.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GmailMessage.
+        ///   Looks up a localized string similar to EmailMessage.
         /// </summary>
         internal static string GmailMessage {
             get {

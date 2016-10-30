@@ -47,7 +47,7 @@
                                   Bind<IGameReportService>().To<GameReportService>(),
                                   Bind<IAuthorizationService>().To<AuthorizationService>(),
                                   Bind<IFeedbackService>().To<FeedbackService>(),
-                                  Bind<IGmailAccountMailService>().To<GmailAccountMailService>()
+                                  Bind<IMailService>().To<GmailAccountMailService>()
                               };
             configs.InScope(_scopeCallback);
         }

@@ -96,7 +96,7 @@
         }
 
         [TestMethod]
-        public void Create_InvalidFeedbackContentNotAllowedLength_ArgumentExceptionThrown()
+        public void Create_ContentNotAllowedLength_ArgumentExceptionThrown()
         {
             // Arrange
             string invalidContent = CreateInvalidFeedbackContent();
@@ -126,7 +126,7 @@
         }
 
         [TestMethod]
-        public void Create_InvalidFeedbackUsersMailNotAllowedLength_ArgumentExceptionThrown()
+        public void Create_UsersMailNotAllowedLength_ArgumentExceptionThrown()
         {
             // Arrange
             string invalidEmail = CreateInvalidUsersEmail();

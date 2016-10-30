@@ -92,6 +92,24 @@ namespace VolleyManagement.Domain.Properties
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Content.
+        /// </summary>
+        public static string FeedbackContentParam {
+            get {
+                return ResourceManager.GetString("FeedbackContentParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UsersEmail.
+        /// </summary>
+        public static string FeedbackUsersEmailParam {
+            get {
+                return ResourceManager.GetString("FeedbackUsersEmailParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to In fifth set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}..
         /// </summary>
         public static string GameResultFifthSetScoreInvalid
@@ -405,6 +423,24 @@ namespace VolleyManagement.Domain.Properties
             get
             {
                 return ResourceManager.GetString("ValidationDivisionName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content should be less than 5000 symbols.
+        /// </summary>
+        public static string ValidationFeedbackContent {
+            get {
+                return ResourceManager.GetString("ValidationFeedbackContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, enter the valid email.
+        /// </summary>
+        public static string ValidationFeedbackUsersEmail {
+            get {
+                return ResourceManager.GetString("ValidationFeedbackUsersEmail", resourceCulture);
             }
         }
         

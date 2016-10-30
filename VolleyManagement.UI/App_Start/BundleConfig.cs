@@ -57,6 +57,7 @@
             RegisterTeamScripts(bundles);
             RegisterTornamentScripts(bundles);
             RegisterGameScripts(bundles);
+            RegisterFeedbackScripts(bundles);
         }
 
         #region Domain bundles
@@ -107,5 +108,12 @@
         }
 
         #endregion
+
+        private static void RegisterFeedbackScripts(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/bundles/feedbackscripts")
+                .Include("~/Scripts/VmScripts/FeedbackOperations/BackButton.js"));
+        }
+
     }
 }

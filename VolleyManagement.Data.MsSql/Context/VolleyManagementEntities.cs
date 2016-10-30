@@ -91,6 +91,11 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<GameResultEntity> GameResults { get; set; }
 
+        /// <summary>
+        /// Gets or sets the feedback table.
+        /// </summary>
+        public DbSet<FeedbackEntity> Feedbacks { get; set; }
+
         #endregion
 
         #region Mapping Configuration
@@ -117,6 +122,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureDivisions(modelBuilder);
             ConfigureGroups(modelBuilder);
             ConfigureGameResults(modelBuilder);
+            ConfigureFeedbacks(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -525,6 +531,41 @@ namespace VolleyManagement.Data.MsSql.Context
                 .WithMany(t => t.AwayGameResults)
                 .HasForeignKey(gr => gr.AwayTeamId)
                 .WillCascadeOnDelete(false);
+        }
+
+        private static void ConfigureFeedbacks(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FeedbackEntity>()
+               .ToTable(VolleyDatabaseMetadata.FEEDBACKS_TABLE_NAME)
+               .HasKey(p => p.Id);
+
+            // UsersEmail
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.UsersEmail)
+                .IsRequired()
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.Feedback.MAX_EMAIL_LENGTH);
+
+            // Content
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.Content)
+                .IsRequired()
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.Feedback.MAX_CONTENT_LENGTH);
+
+            // Date
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.Date)
+                .IsRequired()
+                .HasColumnType(VolleyDatabaseMetadata.DATETIME2_COLUMN_TYPE);
+
+            // Status
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.Status)
+                .IsRequired()
+                .HasColumnName(VolleyDatabaseMetadata.FEEDBACK_STATUS_COLUMN_NAME);
         }
 
         #endregion

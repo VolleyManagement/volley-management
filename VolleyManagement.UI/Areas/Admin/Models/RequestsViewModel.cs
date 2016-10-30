@@ -40,7 +40,7 @@
         /// <summary>
         /// Gets or sets the user environment.
         /// </summary>
-       // public string UserEnvironment { get; set; }
+       //// public string UserEnvironment { get; set; }
 
         /// <summary>
         /// Gets or sets the email.

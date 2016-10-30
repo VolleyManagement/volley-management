@@ -72,8 +72,8 @@
         {
             this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
             _feedbackService.Close(id);
-            //var feedbacks = _feedbackService.Get().ConvertAll(f => new RequestsViewModel(f));
-            //return View("Index", feedbacks);
+            //// var feedbacks = _feedbackService.Get().ConvertAll(f => new RequestsViewModel(f));
+            //// return View("Index", feedbacks);
             return RedirectToAction("Index");
         }
     }

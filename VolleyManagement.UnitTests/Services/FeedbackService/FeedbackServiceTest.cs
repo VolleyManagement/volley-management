@@ -102,7 +102,7 @@
         public void Create_ContentNotAllowedLength_ArgumentExceptionThrown()
         {
             // Arrange
-            string invalidContent = CreateInvalidFeedbackContent();
+            string invalidContent = CreateInvalidText();
             string argExMessage = string.Format(
                 Resources.ValidationFeedbackContent,
                 VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
@@ -132,7 +132,7 @@
         public void Create_UsersMailNotAllowedLength_ArgumentExceptionThrown()
         {
             // Arrange
-            string invalidEmail = CreateInvalidFeedbackContent();
+            string invalidEmail = CreateInvalidText();
             string argExMessage = string.Format(
                 Resources.ValidationFeedbackUsersEmail,
                 VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
@@ -247,7 +247,7 @@
             _unitOfWorkMock.Verify(
                 uow => uow.Commit(),
                 times,
-                "Can't save feedback to database");
+                "DB should not be updated");
         }
 
         private void VerifyExceptionThrown(Exception exception, Exception expected)
@@ -261,7 +261,7 @@
             _getFeedbackByIdQueryMock.Setup(fb => fb.Execute(It.IsAny<FindByIdCriteria>())).Returns(feedback);
         }
 
-        private string CreateInvalidFeedbackContent()
+        private string CreateInvalidText()
         {
             return new string(Enumerable.Repeat<char>('a', VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1).ToArray());
         }

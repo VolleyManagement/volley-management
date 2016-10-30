@@ -31,12 +31,6 @@
         public const string ERROR_FOR_UNIT_OF_WORK_VERIFY
             = "Can't save feedback to database";
 
-        private const string FEEDBACK_NOT_FOUND = "A feedback with specified identifier was not found";
-
-        private const string OPERATION_NOT_ALLOWED = "Requested operation is not allowed";
-
-        private const string INVALID_OPERATION = "Feedback status can't be changed to this status";
-
         private const int EXISTING_ID = 1;
 
         private const int INVALID_FEEDBACK_ID = -1;
@@ -96,6 +90,8 @@
             TimeProvider.ResetToDefault();
         }
 
+        #region GetAll
+
         [TestMethod]
         public void GetAll_FeedbacksExist_FeedbacksReturned()
         {
@@ -111,11 +107,15 @@
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            var actual = sut.Get().ToList();
+            var actual = sut.Get();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new FeedbackComparer());
         }
+
+        #endregion
+
+        #region GetById
 
         [TestMethod]
         public void GetById_FeedbackExists_FeedbackReturned()
@@ -132,6 +132,10 @@
             // Assert
             TestHelper.AreEqual<Feedback>(expected, actual, new FeedbackComparer());
         }
+
+        #endregion
+
+        #region Create
 
         [TestMethod]
         public void Create_CorrectFeedback_FeedbackCreated()
@@ -175,6 +179,8 @@
             Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);
         }
 
+        #endregion
+
         #region Close
 
         [TestMethod]
@@ -195,11 +201,11 @@
             }
 
             // Assert
-            VerifyExceptionThrown(exception, FEEDBACK_NOT_FOUND);
+            VerifyExceptionThrown(exception, "A feedback with specified identifier was not found");
         }
 
         [TestMethod]
-        public void Close_AnsweredFeedback_UpdatedFeedbackStatusToClose()
+        public void Close_NewFeedback_UpdatedFeedbackStatusToClose()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
@@ -217,10 +223,13 @@
         }
 
         [TestMethod]
-        public void Close_AnsweredFeedback_UpdatedFeedbackAdminNameUpdateDate()
+        public void Close_ReadFeedback_UpdatedFeedbackStatusToClose()
         {
             // Arrange
-            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
+            var feedback = new FeedbackBuilder()
+                       .WithId(EXISTING_ID)
+                       .WithStatus(FeedbackStatusEnum.Read)
+                       .Build();
             MockGetFeedbackByIdQuery(feedback);
 
             MockCurrentUser(VALID_USER_ID);
@@ -231,7 +240,99 @@
             sut.Close(EXISTING_ID);
 
             // Assert
-            VerifyAdminName(feedback,TEST_NAME);
+            VerifyEditFeedback(feedback, Times.Once());
+        }
+
+        [TestMethod]
+        public void Close_AnsweredFeedback_UpdatedFeedbackStatusToClose()
+        {
+            // Arrange
+            var feedback = new FeedbackBuilder()
+                       .WithId(EXISTING_ID)
+                       .WithStatus(FeedbackStatusEnum.Answered)
+                       .Build();
+            MockGetFeedbackByIdQuery(feedback);
+
+            MockCurrentUser(VALID_USER_ID);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.Close(EXISTING_ID);
+
+            // Assert
+            VerifyEditFeedback(feedback, Times.Once());
+        }
+
+        [TestMethod]
+        public void Close_ClosedFeedback_InvalidOperationExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            var feedback = new FeedbackBuilder()
+                        .WithId(EXISTING_ID)
+                        .WithStatus(FeedbackStatusEnum.Closed)
+                        .Build();
+            MockGetFeedbackByIdQuery(feedback);
+
+            MockCurrentUser(VALID_USER_ID);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Close(EXISTING_ID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "Feedback status can't be changed to this status");
+        }
+
+        [TestMethod]
+        public void Close_AnsweredFeedback_LastUpdateInfoSet()
+        {
+            // Arrange
+            var feedback = new FeedbackBuilder()
+                         .WithId(EXISTING_ID)
+                         .WithStatus(FeedbackStatusEnum.Answered)
+                         .Build();
+            MockGetFeedbackByIdQuery(feedback);
+
+            MockCurrentUser(VALID_USER_ID);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.Close(EXISTING_ID);
+
+            // Assert
+            VerifyAdminName(feedback, TEST_NAME);
+            VerifyEditFeedback(feedback, Times.Once());
+        }
+
+        [TestMethod]
+        public void Close_NewFeedback_LastUpdateInfoSet()
+        {
+            // Arrange
+            var feedback = new FeedbackBuilder()
+                        .WithId(EXISTING_ID)
+                        .Build();
+            MockGetFeedbackByIdQuery(feedback);
+
+            MockCurrentUser(VALID_USER_ID);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.Close(EXISTING_ID);
+
+            // Assert
+            VerifyAdminName(feedback, TEST_NAME);
             VerifyEditFeedback(feedback, Times.Once());
         }
 
@@ -256,11 +357,33 @@
             }
 
             // Assert
-            VerifyExceptionThrown(exception, OPERATION_NOT_ALLOWED);
+            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+        }
+
+        [TestMethod]
+        public void Close_NoCloseRights_DbNotChanged()
+        {
+            // Arrange
+            Exception exception = null;
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
+            MockAuthServiceThrowsException(AuthOperations.Feedbacks.Close);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Close(EXISTING_ID);
+            }
+            catch (AuthorizationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
             VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Close, Times.Once());
         }
-
         #endregion
 
         #region GetDetails
@@ -282,6 +405,33 @@
         }
 
         [TestMethod]
+        public void GetDetails_ReadFeedback_InvalidOperationException()
+        {
+            // Arrange
+            Exception exception = null;
+            var feedback = new FeedbackBuilder()
+                       .WithId(EXISTING_ID)
+                       .WithStatus(FeedbackStatusEnum.Read)
+                       .Build();
+            MockGetFeedbackByIdQuery(feedback);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.GetDetails(EXISTING_ID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "Feedback status can't be changed to this status");
+        }
+
+        [TestMethod]
         public void GetDetails_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
@@ -299,7 +449,7 @@
             }
 
             // Assert
-            VerifyExceptionThrown(exception, FEEDBACK_NOT_FOUND);
+            VerifyExceptionThrown(exception, "A feedback with specified identifier was not found");
         }
 
         [TestMethod]
@@ -323,7 +473,30 @@
             }
 
             // Assert
-            VerifyExceptionThrown(exception, OPERATION_NOT_ALLOWED);
+            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+        }
+
+        [TestMethod]
+        public void GetDetails_NoReadRights_DbNotChanged()
+        {
+            // Arrange
+            Exception exception = null;
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
+            MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.GetDetails(EXISTING_ID);
+            }
+            catch (AuthorizationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
             VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Read, Times.Once());
         }
@@ -349,11 +522,11 @@
             }
 
             // Assert
-            VerifyExceptionThrown(exception, FEEDBACK_NOT_FOUND);
+            VerifyExceptionThrown(exception, "A feedback with specified identifier was not found");
         }
 
         [TestMethod]
-        public void Reply_FeedbackWithValidIdAsParam_UpdatedFeedbackStatusToAnswered()
+        public void Reply_NewFeedback_UpdatedFeedbackStatusToAnswered()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
@@ -371,7 +544,86 @@
         }
 
         [TestMethod]
-        public void Reply_FeedbackWithValidIdAsParam_UpdatedFeedbackAdminNameAndUpdateDate()
+        public void Reply_ReadFeedback_UpdatedFeedbackStatusToAnswered()
+        {
+            // Arrange
+            var feedback = new FeedbackBuilder()
+                         .WithId(EXISTING_ID)
+                         .WithStatus(FeedbackStatusEnum.Read)
+                         .Build();
+            MockGetFeedbackByIdQuery(feedback);
+
+            MockCurrentUser(VALID_USER_ID);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.Reply(EXISTING_ID);
+
+            // Assert
+            VerifyEditFeedback(feedback, Times.Once());
+        }
+
+        [TestMethod]
+        public void Reply_ClosedFeedback_InvalidOperationExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            var feedback = new FeedbackBuilder()
+                         .WithId(EXISTING_ID)
+                         .WithStatus(FeedbackStatusEnum.Closed)
+                         .Build();
+            MockGetFeedbackByIdQuery(feedback);
+
+            MockCurrentUser(VALID_USER_ID);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Reply(EXISTING_ID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "Feedback status can't be changed to this status");
+        }
+
+        [TestMethod]
+        public void Reply_ClosedFeedback_DbNotChanged()
+        {
+            // Arrange
+            Exception exception = null;
+            var feedback = new FeedbackBuilder()
+                         .WithId(EXISTING_ID)
+                         .WithStatus(FeedbackStatusEnum.Closed)
+                         .Build();
+            MockGetFeedbackByIdQuery(feedback);
+
+            MockCurrentUser(VALID_USER_ID);
+
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Reply(EXISTING_ID);
+            }
+            catch (InvalidOperationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyEditFeedback(feedback, Times.Never());
+        }
+
+        [TestMethod]
+        public void Reply_NewFeedback_LastUpdateInfoSet()
         {
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
@@ -409,84 +661,36 @@
             }
 
             // Assert
-            VerifyExceptionThrown(exception, OPERATION_NOT_ALLOWED);
+            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+        }
+
+        [TestMethod]
+        public void Reply_NoReplyRights_DbNotChanged()
+        {
+            // Arrange
+            Exception exception = null;
+            MockAuthServiceThrowsException(AuthOperations.Feedbacks.Reply);
+            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Reply(EXISTING_ID);
+            }
+            catch (AuthorizationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
             VerifyEditFeedback(feedback, Times.Never());
             VerifyCheckAccess(AuthOperations.Feedbacks.Reply, Times.Once());
         }
 
         #endregion
 
-        #region ChangeFeedbackStatus
-        [TestMethod]
-        public void ChangeFeedbackStatus_AnsweredFeedback_InvalidOperationExceptionThrown()
-        {
-            // Arrange
-            Exception exception = null;
-            var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
-                                                .WithStatus(FeedbackStatusEnum.Answered)
-                                                .Build();
-
-            var sut = _kernel.Get<FeedbackService>();
-
-            // Act
-            try
-            {
-                sut.ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Read);
-            }
-            catch (InvalidOperationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, INVALID_OPERATION);
-            VerifyEditFeedback(feedback, Times.Never());
-        }
-
-        [TestMethod]
-        public void ChangeFeedbackStatus_ClosedFeedback_InvalidOperationExceptionThrown()
-        {
-            // Arrange
-            Exception exception = null;
-            var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
-                                                .WithStatus(FeedbackStatusEnum.Closed)
-                                                .Build();
-
-            var sut = _kernel.Get<FeedbackService>();
-
-            // Act
-            try
-            {
-                sut.ChangeFeedbackStatus(feedback, FeedbackStatusEnum.New);
-            }
-            catch (InvalidOperationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, INVALID_OPERATION);
-            VerifyEditFeedback(feedback, Times.Never());
-        }
-
-        [TestMethod]
-        public void ChangeFeedbackStatus_AnsweredFeedback_SetFeedbackStatusToAnswered()
-        {
-            // Arrange
-            var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
-                                                .WithStatus(FeedbackStatusEnum.Read)
-                                                .Build();
-           
-            MockCurrentUser(VALID_USER_ID);
-            var sut = _kernel.Get<FeedbackService>();
-
-            // Act
-            sut.ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Answered);
-
-            // Assert
-            VerifyEditFeedback(feedback, Times.Once());
-        }
-        #endregion
+        #region Private methods
 
         private void VerifyCheckAccess(AuthOperation operation, Times times)
         {
@@ -511,8 +715,8 @@
 
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)
         {
-            Assert.IsNotNull(exception, "Exception is null");
-            Assert.IsTrue(exception.Message.Equals(expectedMessage), "Expected and actual exceptions aren't equal");
+            Assert.IsNotNull(exception, "There is no exception thrown");
+            Assert.IsTrue(exception.Message.Equals(expectedMessage), "Expected and actual exceptions messages aren't equal");
         }
 
         private bool FeedbacksAreEqual(Feedback x, Feedback y)
@@ -542,7 +746,7 @@
 
         private void VerifyAdminName(Feedback feedback, string expectedAdminName)
         {
-            Assert.IsNotNull(feedback.AdminName, "Admin's name is null");
+            Assert.IsNotNull(feedback.AdminName, "Admin's name didn't set");
             Assert.IsTrue(feedback.AdminName.Equals(expectedAdminName), "Expected and actual admin names aren't equal");
         }
 
@@ -566,5 +770,7 @@
             this._currentUserServiceMock.Setup(cs => cs.GetCurrentUserId())
                 .Returns(id);
         }
+
+        #endregion
     }
 }

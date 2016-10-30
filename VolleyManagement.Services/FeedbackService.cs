@@ -155,7 +155,7 @@
         /// </summary>
         /// <param name="feedback">id for reply.</param>
         /// <param name="newStatusCode">Information about mail (body, receiver)</param>
-        public void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
+        private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
         {
                 feedback.Status = newStatusCode;
                 if (ShouldChangeLastUpdateInfo(newStatusCode))

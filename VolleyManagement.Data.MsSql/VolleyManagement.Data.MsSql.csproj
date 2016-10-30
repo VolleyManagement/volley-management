@@ -137,9 +137,9 @@
     <Compile Include="Context\Migrations\201610141515542_MergedMigration.Designer.cs">
       <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201610272242426_AddFeedbacks.cs" />
-    <Compile Include="Context\Migrations\201610272242426_AddFeedbacks.Designer.cs">
-      <DependentUpon>201610272242426_AddFeedbacks.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201610211123161_AddFeedbacks.cs" />
+    <Compile Include="Context\Migrations\201610211123161_AddFeedbacks.Designer.cs">
+      <DependentUpon>201610211123161_AddFeedbacks.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.cs" />
     <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.Designer.cs">
@@ -277,8 +277,8 @@
     <EmbeddedResource Include="Context\Migrations\201610141515542_MergedMigration.resx">
       <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201610272242426_AddFeedbacks.resx">
-      <DependentUpon>201610272242426_AddFeedbacks.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201610211123161_AddFeedbacks.resx">
+      <DependentUpon>201610211123161_AddFeedbacks.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.resx">
       <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>

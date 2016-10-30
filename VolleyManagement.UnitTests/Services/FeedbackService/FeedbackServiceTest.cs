@@ -12,6 +12,7 @@
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.Properties;
     using VolleyManagement.Services;
+    using System.Linq;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -262,24 +263,12 @@
 
         private string CreateInvalidFeedbackContent()
         {
-            StringBuilder invalidFeedbackContent = new StringBuilder();
-            for (int i = 0; i < VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1; i++)
-            {
-                invalidFeedbackContent.Append("a");
-            }
-
-            return invalidFeedbackContent.ToString();
+            return new string(Enumerable.Repeat<char>('a', VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1).ToArray());
         }
 
         private string CreateInvalidUsersEmail()
         {
-            StringBuilder invalidFeedbackUsersMail = new StringBuilder();
-            for (int i = 0; i < VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH + 1; i++)
-            {
-                invalidFeedbackUsersMail.Append("a");
-            }
-
-            return invalidFeedbackUsersMail.ToString();
+            return new string(Enumerable.Repeat<char>('a', VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH+1).ToArray());
         }
     }
 }

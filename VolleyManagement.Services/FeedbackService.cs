@@ -70,11 +70,10 @@
                     "Content");
             }
         }
-        
 
-        private void ValidateEMail(string feedbackUserEMail)
+        private void ValidateMail(string feedbackMail)
         {
-            if (FeedbackValidation.ValidateUsersEmail(feedbackUserEMail))
+            if (FeedbackValidation.ValidateUsersEmail(feedbackMail))
             {
                 throw new ArgumentException(
                     string.Format(
@@ -83,11 +82,11 @@
                     "UsersEmail");
             }
         }
-             
+
         private void ValidateFeedback(Feedback feedbackToValidate)
         {
             ValidateContent(feedbackToValidate.Content);
-            ValidateEMail(feedbackToValidate.UsersEmail);
+            ValidateMail(feedbackToValidate.UsersEmail);
         }
         #endregion
     }

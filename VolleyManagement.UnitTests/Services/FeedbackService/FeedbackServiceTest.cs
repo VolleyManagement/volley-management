@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Text;
     using Crosscutting.Contracts.Providers;
     using Data.Contracts;
     using Data.Queries.Common;
@@ -11,7 +12,6 @@
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.Properties;
     using VolleyManagement.Services;
-    using System.Text;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -188,7 +188,7 @@
         }
 
         [TestMethod]
-        public void Create_EmptyFeedbackUsersEMail_FeedbackCreated()
+        public void Create_EmptyFeedbackUsersMail_FeedbackCreated()
         {
             string invalidFeedbackUserEmail = string.Empty;
             string argExMessage = string.Format(
@@ -270,6 +270,7 @@
 
             return invalidFeedbackContent.ToString();
         }
+
         private string CreateInvalidUsersEmail()
         {
             StringBuilder invalidFeedbackUsersMail = new StringBuilder();

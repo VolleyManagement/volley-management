@@ -67,7 +67,7 @@
             sut.Create(actual);
 
             // Assert
-            Assert.AreEqual(expected.Content, actual.Content);
+            AssertFeedbackFields(expected, actual);
             VerifyCreateFeedback(
                 actual,
                 Times.Once(),
@@ -170,7 +170,7 @@
             // Arrange
             string invalidFeedbackContent = string.Empty;
             string argExMessage = string.Format(
-                    Resources.ValidationFeedbackContent,
+                    "Content should be less than 5000 symbols",
                         VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
             var testFeedback = new FeedbackBuilder()
                                         .WithContent(invalidFeedbackContent)
@@ -199,7 +199,7 @@
         {
             string invalidFeedbackUserEmail = string.Empty;
             string argExMessage = string.Format(
-                    Resources.ValidationFeedbackUsersEmail,
+                    "Please, enter the valid email",
                         VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
             var testFeedback = new FeedbackBuilder()
                                         .WithEmail(invalidFeedbackUserEmail)
@@ -227,19 +227,28 @@
         public void Get_DefaultFeedback_FeedbackDateReceived()
         {
             // Arrange
-            var feed = new FeedbackBuilder().WithDate(_feedbackTestDate).Build();
+            var actual = new FeedbackBuilder().WithDate(_feedbackTestDate).Build();
+            var expected = new FeedbackBuilder().WithDate(_feedbackTestDate).Build();
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.Create(feed);
+            sut.Create(actual);
 
             // Assert
-            Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);
+            Assert.AreEqual(expected.Date, actual.Date);
         }
 
         private bool FeedbacksAreEqual(Feedback x, Feedback y)
         {
             return new FeedbackComparer().Compare(x, y) == 0;
+        }
+
+        private void AssertFeedbackFields(Feedback expected, Feedback actual)
+        {
+
+            Assert.AreEqual(expected.Content, actual.Content);
+            Assert.AreEqual(expected.UsersEmail, actual.UsersEmail);
+            Assert.AreEqual(expected.Status, actual.Status);
         }
 
         private void VerifyCreateFeedback(Feedback feedback, Times times, string message)

@@ -102,7 +102,10 @@
         public void Create_ContentNotAllowedLength_ArgumentExceptionThrown()
         {
             // Arrange
-            string invalidContent = CreateInvalidText();
+            string invalidContent = new string(
+                Enumerable.Repeat<char>(
+                    'a', VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1)
+                    .ToArray());
             string argExMessage = string.Format(
                 Resources.ValidationFeedbackContent,
                 VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
@@ -132,7 +135,10 @@
         public void Create_UsersMailNotAllowedLength_ArgumentExceptionThrown()
         {
             // Arrange
-            string invalidEmail = CreateInvalidText();
+            string invalidEmail = new string(
+                Enumerable.Repeat<char>(
+                    'a', VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH + 1)
+                    .ToArray());
             string argExMessage = string.Format(
                 Resources.ValidationFeedbackUsersEmail,
                 VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
@@ -259,11 +265,6 @@
         private void MockGetFeedbackByIdQuery(Feedback feedback)
         {
             _getFeedbackByIdQueryMock.Setup(fb => fb.Execute(It.IsAny<FindByIdCriteria>())).Returns(feedback);
-        }
-
-        private string CreateInvalidText()
-        {
-            return new string(Enumerable.Repeat<char>('a', VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1).ToArray());
         }
     }
 }

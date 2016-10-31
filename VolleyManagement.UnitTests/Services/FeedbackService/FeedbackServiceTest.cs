@@ -17,6 +17,18 @@
     public class FeedbackServiceTest
     {
         public const int SPECIFIC_FEEDBACK_ID = 2;
+        public const int CONTENT_NOT_ALLOWED_LENGTH
+            = Domain.Constants.Feedback.MAX_CONTENT_LENGTH;
+
+        public const int EMAIL_NOT_ALLOWED_LENGTH
+            = Domain.Constants.Feedback.MAX_EMAIL_LENGTH;
+
+        public const string CONTENT_EXCEPTION_MESSAGE
+                = "Content can't be empty or contains more than {0} symbols";
+
+        public const string EMAIL_EXCEPTION_MESSAGE
+                = "Email can't be empty or contains more than {0} symbols";
+
         private readonly Mock<IUnitOfWork> _unitOfWorkMock
             = new Mock<IUnitOfWork>();
 
@@ -35,8 +47,10 @@
         public void TestInit()
         {
             _kernel = new StandardKernel();
-            _kernel.Bind<IFeedbackRepository>().ToConstant(_feedbackRepositoryMock.Object);
-            _feedbackRepositoryMock.Setup(fr => fr.UnitOfWork).Returns(_unitOfWorkMock.Object);
+            _kernel.Bind<IFeedbackRepository>()
+                .ToConstant(_feedbackRepositoryMock.Object);
+            _feedbackRepositoryMock.Setup(fr => fr.UnitOfWork)
+                .Returns(_unitOfWorkMock.Object);
             TimeProvider.Current = _timeMock.Object;
             _timeMock.Setup(tp => tp.UtcNow).Returns(_feedbackTestDate);
         }
@@ -57,8 +71,12 @@
         public void Create_FeedbackPassed_FeedbackCreated()
         {
             // Arrange
-            var actual = new FeedbackBuilder().WithDate(_feedbackTestDate).Build();
-            var expected = new FeedbackBuilder().WithDate(_feedbackTestDate).Build();
+            var actual = new FeedbackBuilder()
+                .WithDate(_feedbackTestDate)
+                .Build();
+            var expected = new FeedbackBuilder()
+                .WithDate(_feedbackTestDate)
+                .Build();
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
@@ -106,10 +124,10 @@
             // Arrange
             string invalidContent =
                 GenerateTooLongText(Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1);
-            string exceptionMessage
-                = "Content can't be empty or contains more than {0} symbols";
-            int notAllowedLength = Domain.Constants.Feedback.MAX_CONTENT_LENGTH;
-            string argExMessage = CreateExceptionMessage(exceptionMessage, notAllowedLength);
+            string argExMessage
+                = CreateExceptionMessage(
+                    CONTENT_EXCEPTION_MESSAGE,
+                    CONTENT_NOT_ALLOWED_LENGTH);
             var testFeedback = new FeedbackBuilder()
                 .WithContent(invalidContent)
                 .Build();
@@ -138,10 +156,10 @@
             // Arrange
             string invalidEmail =
                 GenerateTooLongText(Domain.Constants.Feedback.MAX_EMAIL_LENGTH + 1);
-            string exceptionMessage
-                = "Email can't be empty or contains more than {0} symbols";
-            int notAllowedLength = Domain.Constants.Feedback.MAX_EMAIL_LENGTH;
-            string argExMessage = CreateExceptionMessage(exceptionMessage, notAllowedLength);
+            string argExMessage
+                = CreateExceptionMessage(
+                    EMAIL_EXCEPTION_MESSAGE,
+                    EMAIL_NOT_ALLOWED_LENGTH);
             var testFeedback = new FeedbackBuilder()
                 .WithEmail(invalidEmail)
                 .Build();
@@ -169,10 +187,10 @@
         {
             // Arrange
             string invalidFeedbackContent = string.Empty;
-            string exceptionMessage
-                = "Content can't be empty or contains more than {0} symbols";
-            int notAllowedLength = Domain.Constants.Feedback.MAX_CONTENT_LENGTH;
-            string argExMessage = CreateExceptionMessage(exceptionMessage, notAllowedLength);
+            string argExMessage
+                = CreateExceptionMessage(
+                    CONTENT_EXCEPTION_MESSAGE,
+                    CONTENT_NOT_ALLOWED_LENGTH);
             var testFeedback = new FeedbackBuilder()
                                         .WithContent(invalidFeedbackContent)
                                         .Build();
@@ -199,10 +217,9 @@
         public void Create_EmptyFeedbackUsersMail_ArgumentExceptionThrown()
         {
             string invalidFeedbackUserEmail = string.Empty;
-            string exceptionMessage
-                = "Email can't be empty or contains more than {0} symbols";
-            int notAllowedLength = Domain.Constants.Feedback.MAX_EMAIL_LENGTH;
-            string argExMessage = CreateExceptionMessage(exceptionMessage, notAllowedLength);
+            string argExMessage = CreateExceptionMessage(
+                    EMAIL_EXCEPTION_MESSAGE,
+                    EMAIL_NOT_ALLOWED_LENGTH);
             var testFeedback = new FeedbackBuilder()
                                         .WithEmail(invalidFeedbackUserEmail)
                                         .Build();

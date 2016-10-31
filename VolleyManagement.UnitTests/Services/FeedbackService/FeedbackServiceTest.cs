@@ -107,7 +107,7 @@
                     'a', VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1)
                     .ToArray());
             string argExMessage = string.Format(
-                Resources.ValidationFeedbackContent,
+                "Content should be less than 5000 symbols",
                 VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
             var testFeedback = new FeedbackBuilder()
                 .WithContent(invalidContent)
@@ -140,7 +140,7 @@
                     'a', VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH + 1)
                     .ToArray());
             string argExMessage = string.Format(
-                Resources.ValidationFeedbackUsersEmail,
+                "Please, enter the valid email",
                 VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
             var testFeedback = new FeedbackBuilder()
                 .WithEmail(invalidEmail)

@@ -57,9 +57,9 @@
             var actionResult = controller.Index();
 
             // Assert
-            var actual = GetModel<List<RequestsViewModel>>(actionResult);
+            var actual = TestExtensions.GetModel<List<RequestsViewModel>>(actionResult);
             CollectionAssert.AreEqual(expected, actual, new RequestsViewModelComparer());
-   }
+        }
 
         [TestMethod]
         public void Details_FeedbackWithReplies_DetailsModelReturned()
@@ -70,11 +70,13 @@
             MockGetFeedbacks(FEEDBACK_ID, feedback);
             Feedback expected = feedback;
             var controller = _kernel.Get<RequestsController>();
-            //// Act
+
+            // Act
             var actionResult = controller.Details(FEEDBACK_ID);
-            //// Assert
-            var actual = GetModel<Feedback>(actionResult);
-            AssertAreDetailsFeedbacksEqual(expected, actual);
+
+            // Assert
+            var actual = TestExtensions.GetModel<Feedback>(actionResult);
+            Assert.AreEqual<Feedback>(expected, actual);
         }
 
         [TestMethod]
@@ -82,9 +84,12 @@
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var service = _kernel.Get<RequestsController>();
-            //// Act
-            var actionResult = service.Close(FEEDBACK_ID);
+            var controller = _kernel.Get<RequestsController>();
+
+            // Act
+            var actionResult = controller.Close(FEEDBACK_ID);
+            _feedbacksServiceMock.Verify(ps => ps.Close(It.Is<int>(id => id == FEEDBACK_ID)), Times.Once());
+
             AssertValidRedirectResult(actionResult, "Index");
         }
 
@@ -93,9 +98,12 @@
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var service = _kernel.Get<RequestsController>();
-            //// Act
-            var actionResult = service.Reply(FEEDBACK_ID);
+            var controller = _kernel.Get<RequestsController>();
+
+            // Act
+            var actionResult = controller.Reply(FEEDBACK_ID);
+            _feedbacksServiceMock.Verify(ps => ps.Reply(It.Is<int>(id => id == FEEDBACK_ID)), Times.Once());
+
             AssertValidRedirectResult(actionResult, "Reply");
         }
         #endregion
@@ -177,17 +185,6 @@
         #endregion
 
         #region Custom assertions
-        private static void AssertAreDetailsFeedbacksEqual(Feedback expected, Feedback actual)
-        {
-            Assert.AreEqual(expected.Id, actual.Id, "Feedback ID does not match");
-            Assert.AreEqual(expected.AdminName, actual.AdminName, "Feedback AdminNames are different");
-            Assert.AreEqual(expected.Content, actual.Content, "Feedback Content are different");
-            Assert.AreEqual(expected.Date, actual.Date, "Feedback Date are different");
-            Assert.AreEqual(expected.UsersEmail, actual.UsersEmail, "Feedback Email are different");
-            Assert.AreEqual(expected.Status, actual.Status, "Feedback Status are different");
-            Assert.AreEqual(expected.UpdateDate, actual.UpdateDate, "Feedback UpdateDate are different");
-            //// Assert.AreEqual(actual.UserEnvironment, expected.UserEnvironment, "Feedback UserEnvironment are different");
-        }
 
         private static void AssertValidRedirectResult(ActionResult actionResult, string view)
         {
@@ -195,14 +192,6 @@
             Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
             Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
             Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));
-        }
-        #endregion
-
-        #region Helpers
-
-        private static T GetModel<T>(ActionResult actionResult)
-        {
-            return (T)((ViewResult)actionResult).Model;
         }
         #endregion
 

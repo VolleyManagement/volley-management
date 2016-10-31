@@ -243,7 +243,7 @@
             return new FeedbackComparer().Compare(x, y) == 0;
         }
 
-        private void AssertFeedbackFields(Feedback expected, Feedback actual)
+        private void AssertFeedbackAreEquals(Feedback expected, Feedback actual)
         {
             Assert.AreEqual(expected.Content, actual.Content);
             Assert.AreEqual(expected.UsersEmail, actual.UsersEmail);

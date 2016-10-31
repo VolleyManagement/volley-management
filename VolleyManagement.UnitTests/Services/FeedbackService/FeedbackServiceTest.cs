@@ -65,7 +65,7 @@
             sut.Create(actual);
 
             // Assert
-            AssertFeedbackFields(expected, actual);
+            AssertFeedbackAreEquals(expected, actual);
             VerifyCreateFeedback(
                 actual,
                 Times.Once(),
@@ -106,9 +106,10 @@
             // Arrange
             string invalidContent =
                 GenerateTooLongText(Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1);
-            string argExMessage = string.Format(
-                "Content can't be empty or contains more than {0} symbols",
-                Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
+            string exceptionMessage
+                = "Content can't be empty or contains more than {0} symbols";
+            int notAllowedLength = Domain.Constants.Feedback.MAX_CONTENT_LENGTH;
+            string argExMessage = CreateExceptionMessage(exceptionMessage, notAllowedLength);
             var testFeedback = new FeedbackBuilder()
                 .WithContent(invalidContent)
                 .Build();
@@ -137,9 +138,10 @@
             // Arrange
             string invalidEmail =
                 GenerateTooLongText(Domain.Constants.Feedback.MAX_EMAIL_LENGTH + 1);
-            string argExMessage = string.Format(
-                "Email can't be empty or contains more than {0} symbols",
-                Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
+            string exceptionMessage
+                = "Email can't be empty or contains more than {0} symbols";
+            int notAllowedLength = Domain.Constants.Feedback.MAX_EMAIL_LENGTH;
+            string argExMessage = CreateExceptionMessage(exceptionMessage, notAllowedLength);
             var testFeedback = new FeedbackBuilder()
                 .WithEmail(invalidEmail)
                 .Build();
@@ -163,13 +165,14 @@
         }
 
         [TestMethod]
-        public void Create_EmptyFeedbackContent_FeedbackCreated()
+        public void Create_EmptyFeedbackContent_ArgumentExceptionThrown()
         {
             // Arrange
             string invalidFeedbackContent = string.Empty;
-            string argExMessage = string.Format(
-                    "Content can't be empty or contains more than {0} symbols",
-                        Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
+            string exceptionMessage
+                = "Content can't be empty or contains more than {0} symbols";
+            int notAllowedLength = Domain.Constants.Feedback.MAX_CONTENT_LENGTH;
+            string argExMessage = CreateExceptionMessage(exceptionMessage, notAllowedLength);
             var testFeedback = new FeedbackBuilder()
                                         .WithContent(invalidFeedbackContent)
                                         .Build();
@@ -193,12 +196,13 @@
         }
 
         [TestMethod]
-        public void Create_EmptyFeedbackUsersMail_FeedbackCreated()
+        public void Create_EmptyFeedbackUsersMail_ArgumentExceptionThrown()
         {
             string invalidFeedbackUserEmail = string.Empty;
-            string argExMessage = string.Format(
-                    "Email can't be empty or contains more than {0} symbols",
-                        Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
+            string exceptionMessage
+                = "Email can't be empty or contains more than {0} symbols";
+            int notAllowedLength = Domain.Constants.Feedback.MAX_EMAIL_LENGTH;
+            string argExMessage = CreateExceptionMessage(exceptionMessage, notAllowedLength);
             var testFeedback = new FeedbackBuilder()
                                         .WithEmail(invalidFeedbackUserEmail)
                                         .Build();
@@ -222,7 +226,7 @@
         }
 
         [TestMethod]
-        public void Get_DefaultFeedback_FeedbackDateReceived()
+        public void CreateFeedbackPassed()
         {
             // Arrange
             var actual = new FeedbackBuilder().WithDate(_feedbackTestDate).Build();
@@ -281,6 +285,11 @@
                   Enumerable.Repeat<char>(
                       'a', length)
                       .ToArray());
+        }
+
+        private string CreateExceptionMessage(string message, int length)
+        {
+            return string.Format(message, length);
         }
     }
 }

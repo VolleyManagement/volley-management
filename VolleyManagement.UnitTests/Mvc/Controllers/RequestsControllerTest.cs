@@ -13,7 +13,6 @@
 
     using Ninject;
 
-    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.Dto;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.UI.Areas.Admin.Controllers;
@@ -29,9 +28,6 @@
         private IKernel _kernel;
 
         private Mock<IFeedbackService> _feedbacksServiceMock;
-
-        private Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-
         #endregion
 
         #region Init
@@ -42,8 +38,6 @@
             _kernel = new StandardKernel();
 
             _kernel.RegisterDefaultMock(out _feedbacksServiceMock);
-
-            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
         }
 
         #endregion
@@ -51,11 +45,11 @@
         #region Tests
 
         [TestMethod]
-        public void Index_NewFeedbacks_AllFeedbacksReturned()
+        public void Index_FeedbacksExist_AllFeedbacksReturned()
         {
             // Arrange
-            var feedbacks = GetNewFeedbacks();
-            var expected = GetNewRequestsViewModels();
+            var feedbacks = GetFeedbacks();
+            var expected = GetRequestsViewModels();
             _feedbacksServiceMock.Setup(r => r.Get()).Returns(feedbacks);
             var controller = _kernel.Get<RequestsController>();
 
@@ -65,9 +59,7 @@
             // Assert
             var actual = GetModel<List<RequestsViewModel>>(actionResult);
             CollectionAssert.AreEqual(expected, actual, new RequestsViewModelComparer());
-
-            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
-        }
+   }
 
         [TestMethod]
         public void Details_FeedbackWithReplies_DetailsModelReturned()
@@ -76,16 +68,13 @@
             const int FEEDBACK_ID = 1;
             var feedback = GetAnyFeedback(FEEDBACK_ID);
             MockGetFeedbacks(FEEDBACK_ID, feedback);
-            RequestsViewModel expected = new RequestsViewModel(feedback);
+            Feedback expected = feedback;
             var controller = _kernel.Get<RequestsController>();
             //// Act
             var actionResult = controller.Details(FEEDBACK_ID);
             //// Assert
             var actual = GetModel<Feedback>(actionResult);
-            RequestsViewModel act = new RequestsViewModel(actual);
-            AssertAreDetailsModelsEqual(expected, act);
-
-            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
+            AssertAreDetailsFeedbacksEqual(expected, actual);
         }
 
         [TestMethod]
@@ -96,68 +85,46 @@
             var service = _kernel.Get<RequestsController>();
             //// Act
             var actionResult = service.Close(FEEDBACK_ID);
-            AssertValidRedirectResult(actionResult);
-
-            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Once());
+            AssertValidRedirectResult(actionResult, "Index");
         }
 
         [TestMethod]
-        public void Close_NotClosedFeedback_FeedbackDetails()
+        public void Reply_AnyFeedback_FeedbackFromIndexRedirectToReply()
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var feedback = GetNotClosedFeedback(FEEDBACK_ID);
-            MockGetFeedbacks(FEEDBACK_ID, feedback);
-            RequestsViewModel expected = new RequestsViewModel(feedback);
-
-            var controller = _kernel.Get<RequestsController>();
+            var service = _kernel.Get<RequestsController>();
             //// Act
-            var actionCloseResult = controller.Close(FEEDBACK_ID);
-            //// Assert
-            var actionDetailsResult = controller.Details(FEEDBACK_ID);
-            //// Assert
-            var actual = GetModel<Feedback>(actionDetailsResult);
-            RequestsViewModel act = new RequestsViewModel(actual);
-            AssertAreDetailsModelsEqual(expected, act);
-
-            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Exactly(2));
-        }
-
-        [TestMethod]
-        public void Reply_AnyFeedback_FeedbackReply()
-        {
-            // Arrange
-            const int FEEDBACK_ID = 1;
-            var feedback = GetNotClosedFeedback(FEEDBACK_ID);
-            _feedbacksServiceMock.Setup(r => r.GetDetails(FEEDBACK_ID)).Returns(feedback);
-            RequestsViewModel expected = new RequestsViewModel(feedback);
-
-            var controller = _kernel.Get<RequestsController>();
-            //// Act
-            var actionCloseResult = controller.Reply(FEEDBACK_ID);
-            //// Assert
-            var actionDetailsResult = controller.Details(FEEDBACK_ID);
-            //// Assert
-            var actual = GetModel<Feedback>(actionDetailsResult);
-            RequestsViewModel act = new RequestsViewModel(actual);
-            AssertAreDetailsModelsEqual(expected, act);
-
-            VerifyCheckAccess(AuthOperations.AdminDashboard.View, Times.Exactly(2));
+            var actionResult = service.Reply(FEEDBACK_ID);
+            AssertValidRedirectResult(actionResult, "Reply");
         }
         #endregion
 
         #region Test Data
 
-        private static List<Feedback> GetNewFeedbacks()
+        private static List<Feedback> GetFeedbacks()
         {
             return new List<Feedback>
                        {
-                           new Feedback { Id = 1, Content = "Content1", UsersEmail = "1@gmail.com", Date = new DateTime(2016, 10, 25) },
-                           new Feedback { Id = 2, Content = "Content2", UsersEmail = "2@gmail.com", Date = new DateTime(2016, 10, 24) },
+                           new Feedback
+                           {
+                               Id = 1,
+                               Content = "Content1",
+                               UsersEmail = "1@gmail.com",
+                               Date = new DateTime(2016, 10, 25)
+                           },
+                           new Feedback
+                           {
+                               Id = 2,
+                               Content = "Content2",
+                               UsersEmail = "2@gmail.com",
+                               Status = FeedbackStatusEnum.Read,
+                               Date = new DateTime(2016, 10, 24)
+                           },
                        };
         }
 
-        private static List<RequestsViewModel> GetNewRequestsViewModels()
+        private static List<RequestsViewModel> GetRequestsViewModels()
         {
             return new List<RequestsViewModel>
                        {
@@ -173,7 +140,8 @@
                                Id = 2,
                                Content = "Content2",
                                UsersEmail = "2@gmail.com",
-                               Date = new DateTime(2016, 10, 24)
+                               Date = new DateTime(2016, 10, 24),
+                               Status = FeedbackStatusEnum.Read
                            },
                         };
         }
@@ -209,8 +177,7 @@
         #endregion
 
         #region Custom assertions
-
-        private static void AssertAreDetailsModelsEqual(RequestsViewModel expected, RequestsViewModel actual)
+        private static void AssertAreDetailsFeedbacksEqual(Feedback expected, Feedback actual)
         {
             Assert.AreEqual(expected.Id, actual.Id, "Feedback ID does not match");
             Assert.AreEqual(expected.AdminName, actual.AdminName, "Feedback AdminNames are different");
@@ -222,12 +189,12 @@
             //// Assert.AreEqual(actual.UserEnvironment, expected.UserEnvironment, "Feedback UserEnvironment are different");
         }
 
-        private static void AssertValidRedirectResult(ActionResult actionResult)
+        private static void AssertValidRedirectResult(ActionResult actionResult, string view)
         {
             var result = (RedirectToRouteResult)actionResult;
             Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
-            Assert.AreEqual(1, result.RouteValues.Count, "Redirect should forward to Requests.Index action");
-            Assert.AreEqual("Index", result.RouteValues["action"], "Redirect should forward to Requests.Index action");
+            Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
+            Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));
         }
         #endregion
 
@@ -244,15 +211,6 @@
         {
             _feedbacksServiceMock.Setup(r => r.GetDetails(feedbackID)).Returns(feedback);
         }
-        #endregion
-
-        #region Private
-
-        private void VerifyCheckAccess(AuthOperation operation, Times times)
-        {
-            _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
-        }
-
         #endregion
     }
 }

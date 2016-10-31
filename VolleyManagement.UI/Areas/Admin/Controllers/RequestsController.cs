@@ -2,8 +2,6 @@
 {
     using System.Web.Mvc;
     using Contracts;
-    using Contracts.Authorization;
-    using Domain.RolesAggregate;
     using Models;
 
     /// <summary>
@@ -13,19 +11,14 @@
     public class RequestsController : Controller
     {
         private readonly IFeedbackService _feedbackService;
-        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RequestsController"/> class.
         /// </summary>
         /// <param name="feedbackService"> The feedbacks service. </param>
-        /// <param name="authService">Authorization service</param>
-        public RequestsController(
-            IFeedbackService feedbackService,
-                IAuthorizationService authService)
+        public RequestsController(IFeedbackService feedbackService)
         {
             this._feedbackService = feedbackService;
-            this._authService = authService;
         }
 
         /// <summary>
@@ -34,7 +27,6 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
             var feedbacks = _feedbackService.Get().ConvertAll(f => new RequestsViewModel(f));
             return View(feedbacks);
         }
@@ -46,7 +38,6 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Details(int id)
         {
-            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
             var feedback = _feedbackService.GetDetails(id);
             return View(feedback);
         }
@@ -58,7 +49,6 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Reply(int id)
         {
-            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
             _feedbackService.Reply(id);
             return RedirectToAction("Reply");
         }
@@ -70,7 +60,6 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Close(int id)
         {
-            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
             _feedbackService.Close(id);
             return RedirectToAction("Index");
         }

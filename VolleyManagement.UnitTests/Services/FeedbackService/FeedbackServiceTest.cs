@@ -113,6 +113,28 @@
             CollectionAssert.AreEqual(expected, actual, new FeedbackComparer());
         }
 
+        [TestMethod]
+        public void GetAll_NoReadRights_AuthorizationExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Get();
+            }
+            catch (AuthorizationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+        }
+
         #endregion
 
         #region GetById
@@ -131,6 +153,28 @@
 
             // Assert
             TestHelper.AreEqual<Feedback>(expected, actual, new FeedbackComparer());
+        }
+
+        [TestMethod]
+        public void Get_NoReadRights_AuthorizationExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            try
+            {
+                sut.Get(EXISTING_ID);
+            }
+            catch (AuthorizationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "Requested operation is not allowed");
         }
 
         #endregion

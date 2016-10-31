@@ -72,6 +72,10 @@
                 actual,
                 Times.Once(),
                 "Parameter feedback is not equal to Instance of feedback");
+            VerifySaveFeedback(
+                actual,
+                Times.Once(),
+                "DB should not be updated");
         }
 
         [TestMethod]
@@ -254,10 +258,14 @@
                 FeedbacksAreEqual(f, feedback))),
                 times,
                 message);
+        }
+
+        private void VerifySaveFeedback(Feedback feedback, Times times, string message)
+        {
             _unitOfWorkMock.Verify(
                 uow => uow.Commit(),
                 times,
-                "DB should not be updated");
+                message);
         }
 
         private void VerifyExceptionThrown(Exception exception, Exception expected)

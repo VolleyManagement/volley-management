@@ -102,12 +102,10 @@
         public void Create_ContentNotAllowedLength_ArgumentExceptionThrown()
         {
             // Arrange
-            string invalidContent = new string(
-                Enumerable.Repeat<char>(
-                    'a', VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1)
-                    .ToArray());
+            string invalidContent =
+                GenerateTooLongText(VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH + 1);
             string argExMessage = string.Format(
-                "Content should be less than 5000 symbols",
+                "Content can't be empty or contains more than {0} symbols",
                 VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
             var testFeedback = new FeedbackBuilder()
                 .WithContent(invalidContent)
@@ -135,12 +133,10 @@
         public void Create_UsersMailNotAllowedLength_ArgumentExceptionThrown()
         {
             // Arrange
-            string invalidEmail = new string(
-                Enumerable.Repeat<char>(
-                    'a', VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH + 1)
-                    .ToArray());
+            string invalidEmail =
+                GenerateTooLongText(VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH + 1);
             string argExMessage = string.Format(
-                "Please, enter the valid email",
+                "Email can't be empty or contains more than {0} symbols",
                 VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
             var testFeedback = new FeedbackBuilder()
                 .WithEmail(invalidEmail)
@@ -170,7 +166,7 @@
             // Arrange
             string invalidFeedbackContent = string.Empty;
             string argExMessage = string.Format(
-                    "Content should be less than 5000 symbols",
+                    "Content can't be empty or contains more than {0} symbols",
                         VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH);
             var testFeedback = new FeedbackBuilder()
                                         .WithContent(invalidFeedbackContent)
@@ -199,7 +195,7 @@
         {
             string invalidFeedbackUserEmail = string.Empty;
             string argExMessage = string.Format(
-                    "Please, enter the valid email",
+                    "Email can't be empty or contains more than {0} symbols",
                         VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH);
             var testFeedback = new FeedbackBuilder()
                                         .WithEmail(invalidFeedbackUserEmail)
@@ -245,7 +241,6 @@
 
         private void AssertFeedbackFields(Feedback expected, Feedback actual)
         {
-
             Assert.AreEqual(expected.Content, actual.Content);
             Assert.AreEqual(expected.UsersEmail, actual.UsersEmail);
             Assert.AreEqual(expected.Status, actual.Status);
@@ -274,6 +269,14 @@
         private void MockGetFeedbackByIdQuery(Feedback feedback)
         {
             _getFeedbackByIdQueryMock.Setup(fb => fb.Execute(It.IsAny<FindByIdCriteria>())).Returns(feedback);
+        }
+
+        private string GenerateTooLongText(int length)
+        {
+            return new string(
+                  Enumerable.Repeat<char>(
+                      'a', length)
+                      .ToArray());
         }
     }
 }

@@ -42,7 +42,7 @@
             {
                 throw new ArgumentNullException("feedback");
             }
-            
+
             UpdateFeedbackDate(feedbackToCreate);
 
             ValidateFeedback(feedbackToCreate);
@@ -65,7 +65,7 @@
             {
                 throw new ArgumentException(
                     string.Format(
-                    Resources.ValidationFeedbackContent,
+                    "Content can't be empty or contains more than {0} symbols",
                     VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
                     "Content");
             }
@@ -77,7 +77,7 @@
             {
                 throw new ArgumentException(
                     string.Format(
-                        Resources.ValidationFeedbackUsersEmail,
+                        "Email can't be empty or contains more than {0} symbols",
                         VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH),
                     "UsersEmail");
             }

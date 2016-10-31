@@ -241,7 +241,7 @@
             return new FeedbackComparer().Compare(x, y) == 0;
         }
 
-        private void AssertFeedbackFields(Feedback expected, Feedback actual)
+        private void AssertFeedbackAreEquals(Feedback expected, Feedback actual)
         {
             TestHelper.AreEqual<Feedback>(expected, actual, new FeedbackComparer());
         }

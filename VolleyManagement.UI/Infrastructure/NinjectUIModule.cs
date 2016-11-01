@@ -5,6 +5,7 @@
     using Ninject.Infrastructure;
     using Ninject.Modules;
 
+    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
 
     /// <summary>
@@ -29,7 +30,6 @@
         public override void Load()
         {
             IHaveBindingConfiguration configuration = Bind<ICurrentUserService>().To<CurrentUserService>();
-           
             configuration.BindingConfiguration.ScopeCallback = _scopeCallback;
         }
     }

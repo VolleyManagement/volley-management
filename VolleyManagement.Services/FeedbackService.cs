@@ -6,6 +6,7 @@
     using Contracts;
     using Crosscutting.Contracts.Providers;
     using Domain.FeedbackAggregate;
+    using Domain.Properties;
     using VolleyManagement.Crosscutting.Contracts.MailService;
     using VolleyManagement.Domain.UsersAggregate;
 
@@ -29,12 +30,12 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
-        /// <param name="feedbackRepository">Feedback repository.</param>
+        /// <param name="feedbackRepository"> The feedback repository</param>
         /// <param name="mailService">Mail service.</param>
         /// <param name="userService">User service.</param>
         public FeedbackService(
             IFeedbackRepository feedbackRepository,
-            Crosscutting.Contracts.MailService.IMailService mailService,
+            IMailService mailService,
             IUserService userService)
         {
             _feedbackRepository = feedbackRepository;
@@ -58,6 +59,8 @@
             }
 
             UpdateFeedbackDate(feedbackToCreate);
+
+            ValidateFeedback(feedbackToCreate);
             _feedbackRepository.Add(feedbackToCreate);
             _feedbackRepository.UnitOfWork.Commit();
 
@@ -130,6 +133,35 @@
             return emailAddress;
         }
 
+        private void ValidateContent(string feedbackContent)
+        {
+            if (FeedbackValidation.ValidateContent(feedbackContent))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                    Resources.ValidationFeedbackContent,
+                    VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
+                    Resources.FeedbackContentParam);
+            }
+        }
+
+        private void ValidateMail(string feedbackMail)
+        {
+            if (FeedbackValidation.ValidateUsersEmail(feedbackMail))
+            {
+                throw new ArgumentException(
+                    string.Format(
+                        Resources.ValidationFeedbackUsersEmail,
+                        VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH),
+                    Resources.FeedbackUsersEmailParam);
+            }
+        }
+
+        private void ValidateFeedback(Feedback feedbackToValidate)
+        {
+            ValidateContent(feedbackToValidate.Content);
+            ValidateMail(feedbackToValidate.UsersEmail);
+        }
         #endregion
     }
 }

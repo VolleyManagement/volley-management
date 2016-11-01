@@ -4,37 +4,41 @@
     using System.Web.Mvc;
 
     using Contracts;
+    using Contracts.Authorization;
     using Domain.UsersAggregate;
     using ViewModels.FeedbackViewModel;
-
+    
     /// <summary>
     /// Defines feedback controller.
     /// </summary>
     public class FeedbacksController : Controller
     {
         /// <summary>
-        /// Holds UserService instance.
+        /// User Id for anonym role.
         /// </summary>
-        private readonly IUserService _userService;
+        private const int ANONYM = -1;
 
-        /// <summary>
-        /// Holds FeedbackService instance.
-        /// </summary>
+        private readonly IUserService _userService;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IFeedbackService _feedbackService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
         /// </summary>
         /// <param name="feedbackService">Instance of the class
-        /// that implements <see cref="IFeedbackService"/></param>
+        /// that implements IFeedbackService interface.</param>
         /// <param name="userService">Instance of the class
-        /// that implements <see cref="IUserService"/></param>
+        /// that implements IUserService interface.</param>
+        /// <param name="currentUserService">Instance of the class
+        /// that implements ICurrentUserService interface.</param>
         public FeedbacksController(
             IFeedbackService feedbackService,
-            IUserService userService)
+            IUserService userService,
+            ICurrentUserService currentUserService)
         {
             this._feedbackService = feedbackService;
             this._userService = userService;
+            this._currentUserService = currentUserService;
         }
 
         /// <summary>
@@ -45,7 +49,7 @@
         {
             var feedbackViewModel = new FeedbackViewModel
             {
-               // UsersEmail = GetCurrentUserMail()
+                UsersEmail = GetUserMail()
             };
 
             return View("Create", feedbackViewModel);
@@ -59,28 +63,41 @@
         [HttpPost]
         public ActionResult Create(FeedbackViewModel feedbackViewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return View("Create", feedbackViewModel);
-            }
-
             try
             {
-                var domainFeedback = feedbackViewModel.ToDomain();
-                this._feedbackService.Create(domainFeedback);           
-                return View("FeedbackSentMessage");
+                if (ModelState.IsValid)
+                {
+                    var domainFeedback = feedbackViewModel.ToDomain();
+                    this._feedbackService.Create(domainFeedback);
+                    return View("FeedbackSentMessage");
+                }
             }
             catch (ArgumentException ex)
             {
                 ModelState.AddModelError("ValidationMessage", ex.Message);
-                return View("Create", feedbackViewModel);
             }
+
+            return View("Create", feedbackViewModel);
         }
 
-        // private string GetCurrentUserMail()
-        // {
-        //     User user = this._userService.GetCurrentUserInstance();
-        //     return user.Email;
-        // }
+        /// <summary>
+        /// Gets current user mail.
+        /// </summary>
+        /// <returns>User email.</returns>
+        private string GetUserMail()
+        {
+            int userId = this._currentUserService.GetCurrentUserId();
+            User currentUser = new User
+            {
+                Email = string.Empty
+            };
+
+            if (userId != ANONYM)
+            {
+                currentUser = this._userService.GetUser(userId);
+            }
+
+            return currentUser.Email;
+        }
     }
 }

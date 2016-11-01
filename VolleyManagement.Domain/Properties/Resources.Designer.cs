@@ -358,7 +358,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Content should be less than 5000 symbols.
+        ///   Looks up a localized string similar to Content should be less than {0} symbols.
         /// </summary>
         public static string ValidationFeedbackContent {
             get {

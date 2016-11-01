@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Services.Authorization
+﻿namespace VolleyManagement.UI.Infrastructure
 {
     using System.Collections.Generic;
     using Contracts;

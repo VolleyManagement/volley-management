@@ -10,8 +10,10 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/bundles/commoncss")
     @Styles.Render("~/bundles/admincss")
+
     @Scripts.Render("~/bundles/commonscripts")
     @Scripts.Render("~/bundles/adminscripts")
+
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/jqueryvalidation")
     @Scripts.Render("~/bundles/useractionscripts")
@@ -20,9 +22,10 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    
 </head>
 <body>
+
     <div id="wrapper">
         <!-- Navigation -->
         @Html.Partial("_Navigation")
@@ -48,6 +51,5 @@
     </footer>
 </body>
 </html>
-
 
 

@@ -122,26 +122,29 @@
         /// <returns>View to create a tournament</returns>
         public ActionResult Create()
         {
+            var now = TimeProvider.Current.DateTimeNow;
+
             var tournamentViewModel = new TournamentViewModel()
             {
-                ApplyingPeriodStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
-                ApplyingPeriodEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD),
-                GamesStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
-                                                    + DAYS_FOR_APPLYING_PERIOD
-                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
-                GamesEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
-                                                + DAYS_FOR_APPLYING_PERIOD
-                                                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
-                                                + DAYS_FOR_GAMES_PERIOD),
-                TransferStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START
-                                                    + DAYS_FOR_APPLYING_PERIOD
-                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
-                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START 
-                                                    + DAYS_FOR_APPLYING_PERIOD
-                                                    + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START 
-                                                    + DAYS_FROM_GAMES_START_TO_TRANSFER_START 
-                                                    + DAYS_FOR_TRANSFER_PERIOD)
+                ApplyingPeriodStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
+                ApplyingPeriodEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                              + DAYS_FOR_APPLYING_PERIOD),
+                GamesStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                               + DAYS_FOR_APPLYING_PERIOD
+                                               + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
+                GamesEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                     + DAYS_FOR_APPLYING_PERIOD
+                                     + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                     + DAYS_FOR_GAMES_PERIOD),
+                TransferStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                          + DAYS_FOR_APPLYING_PERIOD
+                                          + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                          + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
+                TransferEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                        + DAYS_FOR_APPLYING_PERIOD
+                                        + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                        + DAYS_FROM_GAMES_START_TO_TRANSFER_START
+                                        + DAYS_FOR_TRANSFER_PERIOD)
             };
 
             return this.View(tournamentViewModel);

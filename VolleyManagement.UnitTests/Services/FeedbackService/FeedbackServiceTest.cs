@@ -231,7 +231,7 @@
             sut.Close(EXISTING_ID);
 
             // Assert
-            VerifyAdminName(feedback,TEST_NAME);
+            VerifyAdminName(feedback, TEST_NAME);
             VerifyEditFeedback(feedback, Times.Once());
         }
 
@@ -476,7 +476,6 @@
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID)
                                                 .WithStatus(FeedbackStatusEnum.Read)
                                                 .Build();
-           
             MockCurrentUser(VALID_USER_ID);
             var sut = _kernel.Get<FeedbackService>();
 

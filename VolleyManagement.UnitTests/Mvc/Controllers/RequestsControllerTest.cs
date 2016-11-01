@@ -90,8 +90,21 @@
             var actionResult = controller.Close(FEEDBACK_ID);
 
             // Assert
-            AssertCloseVerify(_feedbacksServiceMock, FEEDBACK_ID);
             AssertValidRedirectResult(actionResult, "Index");
+        }
+
+        [TestMethod]
+        public void Close_AnyFeedback_FeedbackClosed()
+        {
+            // Arrange
+            const int FEEDBACK_ID = 1;
+            var controller = _kernel.Get<RequestsController>();
+
+            // Act
+            var actionResult = controller.Close(FEEDBACK_ID);
+
+            // Assert
+            AssertCloseVerify(_feedbacksServiceMock, FEEDBACK_ID);
         }
 
         [TestMethod]
@@ -105,8 +118,21 @@
             var actionResult = controller.Reply(FEEDBACK_ID);
 
             // Assert
-            AssertReplyVerify(_feedbacksServiceMock, FEEDBACK_ID);
             AssertValidRedirectResult(actionResult, "Reply");
+        }
+
+        [TestMethod]
+        public void Reply_AnyFeedback_FeedbackReplied()
+        {
+            // Arrange
+            const int FEEDBACK_ID = 1;
+            var controller = _kernel.Get<RequestsController>();
+
+            // Act
+            var actionResult = controller.Reply(FEEDBACK_ID);
+
+            // Assert
+            AssertReplyVerify(_feedbacksServiceMock, FEEDBACK_ID);
         }
         #endregion
 

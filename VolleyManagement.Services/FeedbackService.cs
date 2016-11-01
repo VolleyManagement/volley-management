@@ -65,9 +65,9 @@
             {
                 throw new ArgumentException(
                     string.Format(
-                    "Content can't be empty or contains more than {0} symbols",
+                    Resources.ValidationFeedbackContent,
                     VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
-                    "Content");
+                    Resources.FeedbackContentParam);
             }
         }
 
@@ -77,9 +77,9 @@
             {
                 throw new ArgumentException(
                     string.Format(
-                        "Email can't be empty or contains more than {0} symbols",
+                        Resources.ValidationFeedbackUsersEmail,
                         VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH),
-                    "UsersEmail");
+                    Resources.FeedbackUsersEmailParam);
             }
         }
 

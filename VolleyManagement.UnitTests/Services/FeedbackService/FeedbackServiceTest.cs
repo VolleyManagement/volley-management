@@ -128,15 +128,16 @@
                 = CreateExceptionMessage(
                     CONTENT_EXCEPTION_MESSAGE,
                     CONTENT_NOT_ALLOWED_LENGTH);
-            var testFeedback = new FeedbackBuilder()
-                .WithContent(invalidContent)
-                .Build();
+            var testFeedback = new FeedbackBuilder().Build();
             Exception exception = null;
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
             try
             {
+                testFeedback = new FeedbackBuilder()
+                    .WithContent(invalidContent)
+                    .Build();
                 sut.Create(testFeedback);
             }
             catch (ArgumentException ex)
@@ -160,15 +161,16 @@
                 = CreateExceptionMessage(
                     EMAIL_EXCEPTION_MESSAGE,
                     EMAIL_NOT_ALLOWED_LENGTH);
-            var testFeedback = new FeedbackBuilder()
-                .WithEmail(invalidEmail)
-                .Build();
+            var testFeedback = new FeedbackBuilder().Build();
             Exception exception = null;
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
             try
             {
+                testFeedback = new FeedbackBuilder()
+                .WithEmail(invalidEmail)
+                .Build();
                 sut.Create(testFeedback);
             }
             catch (ArgumentException ex)
@@ -191,15 +193,16 @@
                 = CreateExceptionMessage(
                     CONTENT_EXCEPTION_MESSAGE,
                     CONTENT_NOT_ALLOWED_LENGTH);
-            var testFeedback = new FeedbackBuilder()
-                                        .WithContent(invalidFeedbackContent)
-                                        .Build();
+            var testFeedback = new FeedbackBuilder().Build();
             Exception exception = null;
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
             try
             {
+                testFeedback = new FeedbackBuilder()
+                                        .WithContent(invalidFeedbackContent)
+                                        .Build();
                 sut.Create(testFeedback);
             }
             catch (ArgumentException ex)
@@ -220,15 +223,16 @@
             string argExMessage = CreateExceptionMessage(
                     EMAIL_EXCEPTION_MESSAGE,
                     EMAIL_NOT_ALLOWED_LENGTH);
-            var testFeedback = new FeedbackBuilder()
-                                        .WithEmail(invalidFeedbackUserEmail)
-                                        .Build();
+            var testFeedback = new FeedbackBuilder().Build();
             Exception exception = null;
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
             try
             {
+                testFeedback = new FeedbackBuilder()
+                    .WithEmail(invalidFeedbackUserEmail)
+                    .Build();
                 sut.Create(testFeedback);
             }
             catch (ArgumentException ex)

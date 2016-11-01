@@ -242,21 +242,6 @@
                 new ArgumentException(argExMessage, "UsersEmail"));
         }
 
-        [TestMethod]
-        public void CreateFeedbackPassed()
-        {
-            // Arrange
-            var actual = new FeedbackBuilder().WithDate(_feedbackTestDate).Build();
-            var expected = new FeedbackBuilder().WithDate(_feedbackTestDate).Build();
-            var sut = _kernel.Get<FeedbackService>();
-
-            // Act
-            sut.Create(actual);
-
-            // Assert
-            Assert.AreEqual(expected.Date, actual.Date);
-        }
-
         private bool FeedbacksAreEqual(Feedback x, Feedback y)
         {
             return new FeedbackComparer().Compare(x, y) == 0;

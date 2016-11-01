@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Crosscutting.MailService
+﻿namespace VolleyManagement.Crosscutting.Contracts.MailService
 {
     using System;
 

@@ -1,7 +1,5 @@
-﻿namespace VolleyManagement.Contracts
+﻿namespace VolleyManagement.Crosscutting.Contracts.MailService
 {
-    using VolleyManagement.Crosscutting.MailService;
-
     /// <summary>
     /// Defines a contract for Mail service.
     /// </summary>

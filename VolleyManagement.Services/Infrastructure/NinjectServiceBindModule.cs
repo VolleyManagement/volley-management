@@ -8,6 +8,7 @@
     using VolleyManagement.Contracts.Authentication;
     using VolleyManagement.Contracts.Authentication.Models;
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Crosscutting.Contracts.MailService;
     using VolleyManagement.Crosscutting.Ninject;
     using VolleyManagement.Services;
     using VolleyManagement.Services.Authentication;
@@ -47,7 +48,8 @@
                                   Bind<IGameReportService>().To<GameReportService>(),
                                   Bind<IAuthorizationService>().To<AuthorizationService>(),
                                   Bind<IFeedbackService>().To<FeedbackService>(),
-                                  Bind<IMailService>().To<GmailAccountMailService>()
+                                  Bind<IMailService>().To<GmailAccountMailService>(),
+                                  Bind<IUserService>().To<UserService>()
                               };
             configs.InScope(_scopeCallback);
         }

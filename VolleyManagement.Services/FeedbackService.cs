@@ -2,15 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using System.Web.Configuration;
     using Contracts;
-    using Contracts.Authentication;
-    using Contracts.Authorization;
     using Crosscutting.Contracts.Providers;
-    using Crosscutting.MailService;
-    using Domain.Dto;
     using Domain.FeedbackAggregate;
+    using VolleyManagement.Crosscutting.Contracts.MailService;
+    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// Represents an implementation of IFeedbackService contract.
@@ -23,9 +20,7 @@
 
         private readonly IMailService _mailService;
 
-        private readonly IRolesService _roleService;
-
-        private readonly IVolleyUserStore _volleyUserStore;
+        private readonly IUserService _userService;
 
         #endregion
 
@@ -34,21 +29,17 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
-        /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
-        /// <param name="mailService">Instance of the class
-        /// that implements <see cref="IMailService"/></param>
-        /// <param name="rolesService">Roles service.</param>
-        /// <param name="volleyUserStore">Volley User Store.</param>
+        /// <param name="feedbackRepository">Feedback repository.</param>
+        /// <param name="mailService">Mail service.</param>
+        /// <param name="userService">User service.</param>
         public FeedbackService(
             IFeedbackRepository feedbackRepository,
-            IMailService mailService,
-            IRolesService rolesService,
-            IVolleyUserStore volleyUserStore)
+            Crosscutting.Contracts.MailService.IMailService mailService,
+            IUserService userService)
         {
             _feedbackRepository = feedbackRepository;
             _mailService = mailService;
-            _roleService = rolesService;
-            _volleyUserStore = volleyUserStore;
+            _userService = userService;
         }
 
         #endregion
@@ -102,10 +93,8 @@
         /// <param name="feedback">Feedback to send.</param>
         private void NotifyAdmins(Feedback feedback)
         {
-            const int ADMIN_ROLE_ID = 1;
-
             string subject = string.Format(
-                Properties.Resources.FeedbackConfirmationLetterSubject,
+                Properties.Resources.FeedbackEmailSubjectToAdmins,
                 feedback.Id);
 
             string body = string.Format(
@@ -116,14 +105,11 @@
                 feedback.Status,
                 feedback.Content);
 
-            List<UserInRoleDto> adminsList = _roleService.GetUsersInRole(ADMIN_ROLE_ID);
+            IList<User> adminsList = _userService.GetAdminsList();
 
             foreach (var admin in adminsList)
             {
-                var usersTask = Task.Run(() => _volleyUserStore.FindByIdAsync(admin.UserId));
-                var user = usersTask.Result;
-
-                EmailMessage emailMessage = new EmailMessage(GetSenderEmailAddress(), user.Email, subject, body);
+                EmailMessage emailMessage = new EmailMessage(GetSenderEmailAddress(), admin.Email, subject, body);
                 _mailService.Send(emailMessage);
             }
         }

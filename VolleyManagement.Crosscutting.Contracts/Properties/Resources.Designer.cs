@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VolleyManagement.Crosscutting.Properties {
+namespace VolleyManagement.Crosscutting.Contracts.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace VolleyManagement.Crosscutting.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VolleyManagement.Crosscutting.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VolleyManagement.Crosscutting.Contracts.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,24 @@ namespace VolleyManagement.Crosscutting.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EmailMessage.
+        /// </summary>
+        internal static string ArgumentExceptionEmailMessage {
+            get {
+                return ResourceManager.GetString("ArgumentExceptionEmailMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid email message arguments.
+        /// </summary>
+        internal static string ArgumentExceptionInvalidEmailMessageArguments {
+            get {
+                return ResourceManager.GetString("ArgumentExceptionInvalidEmailMessageArguments", resourceCulture);
             }
         }
     }

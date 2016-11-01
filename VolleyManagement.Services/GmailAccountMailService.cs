@@ -4,8 +4,7 @@
     using System.Net;
     using System.Net.Mail;
     using System.Web.Configuration;
-    using Contracts;
-    using Crosscutting.MailService;
+    using VolleyManagement.Crosscutting.Contracts.MailService;
 
     /// <summary>
     /// Defines GmailAccountMailService.

@@ -45,7 +45,7 @@
         {
             var feedbackViewModel = new FeedbackViewModel
             {
-                UsersEmail = GetCurrentUserMail()
+               // UsersEmail = GetCurrentUserMail()
             };
 
             return View("Create", feedbackViewModel);
@@ -77,10 +77,10 @@
             }
         }
 
-        private string GetCurrentUserMail()
-        {
-            User user = this._userService.GetCurrentUserInstance();
-            return user.Email;
-        }
+        // private string GetCurrentUserMail()
+        // {
+        //     User user = this._userService.GetCurrentUserInstance();
+        //     return user.Email;
+        // }
     }
 }

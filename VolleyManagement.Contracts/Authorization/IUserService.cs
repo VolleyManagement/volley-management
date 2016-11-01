@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Contracts
 {
+    using System.Collections.Generic;
     using Domain.UsersAggregate;
 
     /// <summary>
@@ -8,9 +9,16 @@
     public interface IUserService
     {
         /// <summary>
-        /// Get authorized user instance.
+        /// Gets User entity by Id.
         /// </summary>
-        /// <returns>User instance.</returns>
-        User GetCurrentUserInstance();
+        /// <param name="userId">User Id.</param>
+        /// <returns>User entity.</returns>
+        User GetUser(int userId);
+
+        /// <summary>
+        /// Gets list of users which role is Admin.
+        /// </summary>
+        /// <returns>List of User entities.</returns>
+        IList<User> GetAdminsList();
     }
 }

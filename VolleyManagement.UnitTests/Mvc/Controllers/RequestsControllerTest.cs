@@ -88,8 +88,9 @@
 
             // Act
             var actionResult = controller.Close(FEEDBACK_ID);
-            _feedbacksServiceMock.Verify(ps => ps.Close(It.Is<int>(id => id == FEEDBACK_ID)), Times.Once());
 
+            // Assert
+            AssertCloseVerify(_feedbacksServiceMock, FEEDBACK_ID);
             AssertValidRedirectResult(actionResult, "Index");
         }
 
@@ -102,8 +103,9 @@
 
             // Act
             var actionResult = controller.Reply(FEEDBACK_ID);
-            _feedbacksServiceMock.Verify(ps => ps.Reply(It.Is<int>(id => id == FEEDBACK_ID)), Times.Once());
 
+            // Assert
+            AssertReplyVerify(_feedbacksServiceMock, FEEDBACK_ID);
             AssertValidRedirectResult(actionResult, "Reply");
         }
         #endregion
@@ -192,6 +194,16 @@
             Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
             Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
             Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));
+        }
+
+        private static void AssertCloseVerify(Mock<IFeedbackService> mock, int feedbackId)
+        {
+            mock.Verify(ps => ps.Close(It.Is<int>(id => id == feedbackId)), Times.Once());
+        }
+
+        private static void AssertReplyVerify(Mock<IFeedbackService> mock, int feedbackId)
+        {
+            mock.Verify(ps => ps.Reply(It.Is<int>(id => id == feedbackId)), Times.Once());
         }
         #endregion
 

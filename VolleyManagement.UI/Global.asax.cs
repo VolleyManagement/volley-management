@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace VolleyManagement.UI
+﻿namespace VolleyManagement.UI
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -15,7 +13,6 @@ namespace VolleyManagement.UI
     /// </summary>
     public class VolleyManagementApplication : System.Web.HttpApplication
     {
-      
         /// <summary>
         /// Fix problem Entity framework
         /// </summary>

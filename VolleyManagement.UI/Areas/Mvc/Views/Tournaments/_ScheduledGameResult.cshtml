@@ -46,7 +46,7 @@
                 </div>
             </div>
         }
-        else if (!Model.SetsScore.IsEmpty())
+        else if (!Model.SetsScore.IsEmpty)
         {
             <div class="row">
                 <div class="col-md-10">
@@ -69,11 +69,11 @@
             <div class="row">
                 @foreach (var score in Model.SetScores)
                 {
-                    if (!score.IsEmpty())
+                    if (!score.IsEmpty)
                     {
                         <div class="col-md-2">
                             @score.Home:@score.Away
-                        </div>
+                        </div>                        
                     }
                 }
             </div>
@@ -102,29 +102,29 @@
 
 
     <div class="row">
-        @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.EditResult))
+        @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.EditResult) && Model.AwayTeamId.HasValue)
         {
-            <div class="col-md-2">
-                @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
-            </div>
+        <div class="col-md-2">
+            @Html.ActionLink(Resources.TournamentViews.Result, "Edit", "GameResults", new { Id = Model.Id }, null)
+        </div>
         }
         @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit) &&
                 Model.AllowedOperations.IsAllowed(AuthOperations.Games.Delete))
         {
 
-            if (Model.GameDate > DateTime.Now &&
-                   Model.SetsScore.IsEmpty())
-            {
-                <div class="col-md-2">
-                    @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
-                </div>
-
-                <div class="col-md-2">
-                    @Html.ActionLink(Resources.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
+        if (Model.GameDate > DateTime.Now &&
+                   Model.SetsScore.IsEmpty)
+            { 
+                 <div class="col-md-2">    
+                      @Html.ActionLink(Resources.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
+                 </div>
+                
+                 <div class="col-md-2">
+                      @Html.ActionLink(Resources.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
                                  new { @class = "deleteGame", @id = Model.Id })
-                </div>
+                </div>                
             }
         }
-    </div>
+     </div>
 
 </div>

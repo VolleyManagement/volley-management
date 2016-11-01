@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
@@ -39,8 +41,40 @@
         public string TournamentName { get; set; }
 
         /// <summary>
+        /// Gets or sets tournament's scheme
+        /// </summary>
+        public TournamentSchemeEnum TournamentScheme { get; set; }
+
+        /// <summary>
+        /// Gets or sets names of rounds for playoff scheme
+        /// </summary>
+        public string[] RoundNames { get; set; }
+
+        /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> create object
         /// </summary>
         public AllowedOperations AllowedOperations { get; set; }
+
+        /// <summary>
+        /// Checks if the game is the final game (for playoff scheme)
+        /// </summary>
+        /// <param name="game">Game to check</param>
+        /// <returns>True, if game is the final</returns>
+        public bool IsFinal(GameResultViewModel game) 
+        {
+            return NumberOfRounds != 0 &&
+                   game.GameNumber == Rounds.Last().Value.Last().GameNumber;
+        }
+
+        /// <summary>
+        /// Checks if the game is the bronze match (for playoff scheme)
+        /// </summary>
+        /// <param name="game">Game to check</param>
+        /// <returns>True, if game is the bronze match</returns>
+        public bool IsBronzeMatch(GameResultViewModel game)
+        {
+            return NumberOfRounds != 0 &&
+                   game.GameNumber == Rounds.Last().Value.Last().GameNumber - 1;
+        }
     }
 }

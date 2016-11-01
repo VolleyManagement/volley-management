@@ -1,0 +1,29 @@
+﻿@using System.Web.Optimization
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        @Html.ActionLink("Volley Management", "Index", "Tournaments", new { @class = "navbar-brand" })
+    </div>
+    <ul class="nav navbar-top-links navbar-right">
+        <li class="dropdown">
+            @{ Html.RenderAction("Info", "Account"); }
+        </li>
+        <li>
+            @Html.ActionLink("Feedbacks", "Create", "Feedbacks", null, new { @class = "feedback-link" })
+        </li>
+    </ul>
+
+
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse">
+            <ul class="nav" id="side-menu">
+                @{ Html.RenderAction("Menu", "Navigation"); }
+            </ul>
+        </div>
+    </div>
+</nav>

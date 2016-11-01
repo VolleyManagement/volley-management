@@ -29,6 +29,11 @@
         public PivotTableViewModel PivotTable { get; set; }
 
         /// <summary>
+        /// Gets or sets the message.
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
         /// Gets or sets last time, when tournament was updated
         /// </summary>
         public DateTime? LastTimeUpdated { get; set; }

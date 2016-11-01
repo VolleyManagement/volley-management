@@ -3,6 +3,8 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Data.Queries.Tournament;
+    using Domain.TournamentsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -15,9 +17,9 @@
     using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.Services.TeamService;
 
-    /// <summary>
-    /// Tests for <see cref="GameReportService"/> class.
-    /// </summary>
+                                       /// <summary>
+                                      /// Tests for <see cref="GameReportService"/> class.
+                                      /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class GameReportServiceTests
@@ -32,6 +34,9 @@
         private readonly Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock =
             new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
 
+        private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentQueryMock =
+            new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
+
         private IKernel _kernel;
 
         /// <summary>
@@ -45,6 +50,8 @@
                 .ToConstant(_tournamentGameResultsQueryMock.Object);
             _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>()
                 .ToConstant(_tournamentTeamsQueryMock.Object);
+            _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>()
+              .ToConstant(_tournamentQueryMock.Object);
         }
 
         /// <summary>
@@ -489,6 +496,13 @@
             _tournamentTeamsQueryMock.Setup(m =>
                 m.Execute(It.Is<FindByTournamentIdCriteria>(c => c.TournamentId == tournamentId)))
                 .Returns(testData);
+        }
+
+        private void SetupGetTournamentById(int id, TournamentScheduleDto tournament)
+        {
+            _tournamentQueryMock.Setup(m =>
+                m.Execute(It.Is<TournamentScheduleInfoCriteria>(c => c.TournamentId == id)))
+                .Returns(tournament);
         }
     }
 }

@@ -9,6 +9,7 @@
     using System.Web.Routing;
     using Contracts;
     using Contracts.Exceptions;
+    using Crosscutting.Contracts.Providers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -68,6 +69,7 @@
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
+        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
         private IKernel _kernel;
         private TournamentsController _sut;
@@ -84,6 +86,17 @@
             this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<TournamentsController>();
+            TimeProvider.Current = _timeMock.Object;
+            this._timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
+        }
+
+        /// <summary>
+        /// Cleanup test data
+        /// </summary>
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            TimeProvider.ResetToDefault();
         }
 
         #region Index
@@ -183,11 +196,11 @@
         }
 
         /// <summary>
-        /// Test for ShowSchedule method (GET action).
+        /// Test for ShowSchedule method.
         /// Valid rounds is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_TournamentHasGamesScheduled_RoundsCreatedCorrectly()
+        public void ShowSchedule_TournamentHasGamesScheduled_RoundsCreatedCorrectly()
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;
@@ -216,11 +229,11 @@
         }
 
         /// <summary>
-        /// Test for ShowSchedule method (GET action).
+        /// Test for ShowSchedule method.
         /// Valid schedule is passed, no exception occurred.
         /// </summary>
         [TestMethod]
-        public void ShowScheduleGetAction_ValidScheduleViewModel_ScheduleViewModelIsReturned()
+        public void ShowSchedule_ValidScheduleViewModel_ScheduleViewModelIsReturned()
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;
@@ -239,7 +252,7 @@
                 TEST_TOURNAMENT_ID,
                 new GameServiceTestFixture().TestGameResults().Build());
 
-            var expected = new ScheduleViewModelBuilder().Build();
+            var expected = new ScheduleViewModelBuilder().WithTournamentScheme(TournamentSchemeEnum.One).Build();
 
             // Act
             var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
@@ -247,6 +260,40 @@
             // Assert
             Assert.IsTrue(new ScheduleViewModelComparer().AreEqual(actual, expected));
             VerifyGetAllowedOperations(_allowedOperationsShowSchedule, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for ShowSchedule method.
+        /// Valid schedule is passed, no exception occurred.
+        /// </summary>
+        [TestMethod]
+        public void ShowSchedule_PlayoffScheme_RoundNamesAreCreated()
+        {
+            // Arrange
+            const int TEST_ROUND_COUNT = 5;
+            var tournament = new TournamentScheduleDto
+            {
+                Id = TEST_TOURNAMENT_ID,
+                Name = TEST_TOURNAMENT_NAME,
+                Scheme = TournamentSchemeEnum.PlayOff
+            };
+
+            SetupGetScheduleInfo(
+                TEST_TOURNAMENT_ID,
+                tournament);
+            SetupGetTournamentResults(
+                TEST_TOURNAMENT_ID,
+                new GameServiceTestFixture().TestGameResults().Build());
+
+            SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
+            var expectedRoundNames = new string[] { "Round of 32", "Round of 16", "Quarter final", "Semifinal", "Final" };
+            var expected = new ScheduleViewModelBuilder().WithRoundNames(expectedRoundNames).Build();
+
+            // Act
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+
+            // Assert
+            CollectionAssert.AreEqual(actual.RoundNames, expected.RoundNames);
         }
         #endregion
 
@@ -643,18 +690,29 @@
         public void CreateGetAction_GetTournamentViewModel_TournamentViewModelIsReturned()
         {
             // Arrange
-            var expected = new TournamentViewModel()
+            var now = _testDate;
+
+            var expected = new TournamentViewModel
             {
-                ApplyingPeriodStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
-                ApplyingPeriodEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD),
-                GamesStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
-                GamesEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FOR_GAMES_PERIOD),
-                TransferStart = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = DateTime.Now.AddDays(DAYS_TO_APPLYING_PERIOD_START + DAYS_FOR_APPLYING_PERIOD
-                + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START + DAYS_FROM_GAMES_START_TO_TRANSFER_START + DAYS_FOR_TRANSFER_PERIOD)
+                ApplyingPeriodStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
+                ApplyingPeriodEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                              + DAYS_FOR_APPLYING_PERIOD),
+                GamesStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                       + DAYS_FOR_APPLYING_PERIOD
+                                       + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
+                GamesEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                     + DAYS_FOR_APPLYING_PERIOD
+                                     + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                     + DAYS_FOR_GAMES_PERIOD),
+                TransferStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                          + DAYS_FOR_APPLYING_PERIOD
+                                          + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                          + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
+                TransferEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                        + DAYS_FOR_APPLYING_PERIOD
+                                        + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                        + DAYS_FROM_GAMES_START_TO_TRANSFER_START
+                                        + DAYS_FOR_TRANSFER_PERIOD)
             };
 
             // Act
@@ -1172,6 +1230,7 @@
             Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, "Actual AwayTeamId doesn't match expected");
             Assert.AreEqual(x.Round, y.Round, "Actual Round number doesn't match expected");
             Assert.AreEqual(x.GameDate, y.GameDate, "Actual GameDate doesn't match expected");
+            Assert.AreEqual(x.GameNumber, y.GameNumber, "Actual GameNumber doesn't match expected");
 
             Assert.IsTrue(
                 x.Teams != null &&

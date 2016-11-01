@@ -29,17 +29,26 @@
             {
                 Id = 1,
                 TournamentId = 1,
-                HomeTeamId = 1, AwayTeamId = 2,
-                HomeTeamName = "TeamNameA", AwayTeamName = "AwayTeamName",
-                HomeSetsScore = 3, AwaySetsScore = 0,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "AwayTeamName",
+                HomeSetsScore = 3,
+                AwaySetsScore = 0,
                 IsTechnicalDefeat = false,
-                HomeSet1Score = 25, AwaySet1Score = 20,
-                HomeSet2Score = 26, AwaySet2Score = 24,
-                HomeSet3Score = 30, AwaySet3Score = 28,
-                HomeSet4Score = 0, AwaySet4Score = 0,
-                HomeSet5Score = 0, AwaySet5Score = 0,
+                HomeSet1Score = 25,
+                AwaySet1Score = 20,
+                HomeSet2Score = 26,
+                AwaySet2Score = 24,
+                HomeSet3Score = 30,
+                AwaySet3Score = 28,
+                HomeSet4Score = 0,
+                AwaySet4Score = 0,
+                HomeSet5Score = 0,
+                AwaySet5Score = 0,
                 GameDate = DateTime.Parse(DATE),
-                Round = 1
+                Round = 1,
+                GameNumber = 0
             };
         }
 

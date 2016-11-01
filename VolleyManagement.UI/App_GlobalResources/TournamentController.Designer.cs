@@ -61,11 +61,47 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Final.
+        /// </summary>
+        public static string FinalRoundName {
+            get {
+                return ResourceManager.GetString("FinalRoundName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quarter final.
+        /// </summary>
+        public static string QuarterFinalRoundName {
+            get {
+                return ResourceManager.GetString("QuarterFinalRoundName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Round of {0}.
+        /// </summary>
+        public static string RoundNumber {
+            get {
+                return ResourceManager.GetString("RoundNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please, add teams to tournament before creating schedule.
         /// </summary>
         public static string SchedulingError {
             get {
                 return ResourceManager.GetString("SchedulingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Semifinal.
+        /// </summary>
+        public static string SemifinalRoundName {
+            get {
+                return ResourceManager.GetString("SemifinalRoundName", resourceCulture);
             }
         }
         

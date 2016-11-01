@@ -186,6 +186,9 @@
   <data name="SetsWonHeader" xml:space="preserve">
     <value>Won</value>
   </data>
+  <data name="StandingsNotAvaliable" xml:space="preserve">
+    <value>Standings are not available for this tournament</value>
+  </data>
   <data name="TeamHeader" xml:space="preserve">
     <value>Team</value>
   </data>

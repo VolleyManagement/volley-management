@@ -21,5 +21,12 @@
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>Pivot standings of the tournament with specified identifier.</returns>
         PivotStandingsDto GetPivotStandings(int tournamentId);
+
+        /// <summary>
+        /// Check if the standing available in the tournament
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>True or false</returns>
+        bool IsStandingAvailable(int tournamentId);
     }
 }

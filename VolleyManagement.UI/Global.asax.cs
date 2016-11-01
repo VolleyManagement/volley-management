@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI
+﻿using System.Diagnostics;
+
+namespace VolleyManagement.UI
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -13,6 +15,7 @@
     /// </summary>
     public class VolleyManagementApplication : System.Web.HttpApplication
     {
+      
         /// <summary>
         /// Fix problem Entity framework
         /// </summary>
@@ -35,12 +38,9 @@
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterIgnoreRoutes(RouteTable.Routes);
-            AreaRegistration.RegisterAllAreas();
-
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
+            AreaConfig.RegisterAllAreas();
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateTimeModelBinder());
         }

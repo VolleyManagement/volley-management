@@ -34,12 +34,15 @@
         public byte Away { get; set; }
 
         /// <summary>
-        /// Indicates whether score is empty.
+        /// Gets an indicator whether score is empty.
         /// </summary>
         /// <returns>True if score is empty; otherwise, false.</returns>
-        public bool IsEmpty()
+        public bool IsEmpty
         {
-            return this.Home == 0 && this.Away == 0;
+            get
+            {
+                return this.Home == 0 && this.Away == 0;
+            }
         }
     }
 }

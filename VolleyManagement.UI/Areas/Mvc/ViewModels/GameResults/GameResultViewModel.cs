@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.GamesAggregate;
 
@@ -35,7 +36,7 @@
         /// <summary>
         /// Gets or sets the identifier of the home team which played the game.
         /// </summary>
-        public int HomeTeamId { get; set; }
+        public int? HomeTeamId { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the away team which played the game.
@@ -70,12 +71,33 @@
         /// <summary>
         /// Gets or sets the date and time of the game.
         /// </summary>
-        public DateTime GameDate { get; set; }
+        public DateTime? GameDate { get; set; }
 
         /// <summary>
         /// Gets or sets the round of the game in the tournament.
         /// </summary>
         public int Round { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of the game in the tournament
+        /// </summary>
+        public byte GameNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether it is allowed to edit game's result (for Playoff scheme)
+        /// </summary>
+        public bool AllowEditResult { get; set; }
+
+        /// <summary>
+        /// Gets an identifier whether this game is a first round game.
+        /// </summary>
+        public bool IsFirstRoundGame
+        {
+            get
+            {
+                return this.Round == 1;
+            }
+        }
 
         /// <summary>
         /// Gets the format of game date
@@ -84,7 +106,7 @@
         {
             get
             {
-                return GameDate.ToString("d MMM dddd H:mm");
+                return GameDate.HasValue ? GameDate.Value.ToString("d MMM dddd H:mm") : string.Empty;
             }
         }
 
@@ -109,10 +131,12 @@
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
                 GameDate = gameResult.GameDate,
+                GameNumber = gameResult.GameNumber,
                 Round = gameResult.Round,
 
                 SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
                 IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
+                AllowEditResult = gameResult.AllowEditResult,
                 SetScores = new List<Score>
                     {
                         new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },
@@ -138,6 +162,7 @@
                 AwayTeamId = this.AwayTeamId,
                 Round = Convert.ToByte(this.Round),
                 GameDate = this.GameDate,
+                GameNumber = this.GameNumber,
                 Result = new Result
                 {
                     SetsScore = this.SetsScore,

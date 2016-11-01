@@ -16,7 +16,9 @@
     /// </summary>
     public class GameResultQueries : IQuery<GameResultDto, FindByIdCriteria>,
                                      IQuery<List<GameResultDto>, TournamentGameResultsCriteria>,
-                                     IQuery<List<Game>, TournamentRoundsGameResultsCriteria>
+                                     IQuery<List<Game>, TournamentRoundsGameResultsCriteria>,
+                                     IQuery<List<Game>, GamesByRoundCriteria>,
+                                     IQuery<Game, GameByNumberCriteria>
     {
         #region Fields
 
@@ -65,7 +67,8 @@
                 .Where(gr => gr.TournamentId == criteria.TournamentId)
                 .Select(GetGameResultDtoMapping());
 
-            return gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
+            List<GameResultDto> list = gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
+            return list;
         }
 
         /// <summary>
@@ -85,6 +88,35 @@
                      .ToList();
 
             return games.ConvertAll(GetGameMapping());
+        }
+
+        /// <summary>
+        /// Gets games of the tournament from specified rounds
+        /// </summary>
+        /// <param name="criteria">Tournament and round number criteria</param>
+        /// <returns>Collection of games which satisfy the criteria</returns>
+        public List<Game> Execute(GamesByRoundCriteria criteria)
+        {
+            var games = _dalGameResults
+                .Where(gr => gr.TournamentId == criteria.TournamentId
+                    && criteria.RoundNumbers.Any(n => gr.RoundNumber == n))
+                    .ToList();
+
+            return games.ConvertAll(GetGameMapping());
+        }
+
+        /// <summary>
+        /// Find game result by criteria.
+        /// </summary>
+        /// <param name="criteria">Identifier criteria.</param>
+        /// <returns>Domain model of game result.</returns>
+        public Game Execute(GameByNumberCriteria criteria)
+        {
+            return _dalGameResults
+                .Where(gr => gr.TournamentId == criteria.TournamentId
+                && gr.GameNumber == criteria.GameNumber)
+                .Select(GetGameMappingExpression())
+                .SingleOrDefault();
         }
 
         #endregion
@@ -115,7 +147,35 @@
                 HomeSet5Score = gr.HomeSet5Score,
                 AwaySet5Score = gr.AwaySet5Score,
                 GameDate = gr.StartTime,
-                Round = gr.RoundNumber
+                Round = gr.RoundNumber,
+                GameNumber = gr.GameNumber
+            };
+        }
+
+        private static Expression<Func<GameResultEntity, Game>> GetGameMappingExpression()
+        {
+            return gr => new Game
+            {
+                Id = gr.Id,
+                TournamentId = gr.TournamentId,
+                HomeTeamId = gr.HomeTeamId,
+                AwayTeamId = gr.AwayTeamId,
+                GameDate = gr.StartTime,
+                Round = gr.RoundNumber,
+                GameNumber = gr.GameNumber,
+                Result = new Result
+                {
+                    SetScores = new List<Score>
+                    {
+                         new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score },
+                         new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score },
+                         new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score },
+                         new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score },
+                         new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score }
+                    },
+                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore },
+                    IsTechnicalDefeat = gr.IsTechnicalDefeat
+                }
             };
         }
 
@@ -129,6 +189,7 @@
                 AwayTeamId = gr.AwayTeamId,
                 GameDate = gr.StartTime,
                 Round = gr.RoundNumber,
+                GameNumber = gr.GameNumber,
                 Result = new Result
                 {
                     SetScores = new List<Score>

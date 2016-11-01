@@ -55,11 +55,19 @@
         /// <returns>True if given <see cref="StandingsViewModel"/> objects are equal.</returns>
         internal bool AreEqual(StandingsViewModel x, StandingsViewModel y)
         {
-            return x.TournamentId == y.TournamentId
+            if (y.PivotTable != null && y.Standings != null)
+            {
+                return x.TournamentId == y.TournamentId
                 && x.TournamentName == y.TournamentName
+                && x.Message == y.Message
                 && x.Standings.SequenceEqual(y.Standings, new StandingsEntryViewModelEqualityComparer())
                 && x.PivotTable.TeamsStandings.SequenceEqual(y.PivotTable.TeamsStandings, new PivotTeamStandingsViewModelEqualityComparer())
                 && PivotTableEqualityComparer.AreResultTablesEquals(x.PivotTable, y.PivotTable);
+            }
+
+                return x.TournamentId == y.TournamentId
+                && x.TournamentName == y.TournamentName
+                && x.Message == y.Message;
         }
     }
 }

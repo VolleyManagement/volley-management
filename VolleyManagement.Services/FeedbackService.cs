@@ -44,8 +44,6 @@
             }
 
             UpdateFeedbackDate(feedbackToCreate);
-
-            ValidateFeedback(feedbackToCreate);
             _feedbackRepository.Add(feedbackToCreate);
             _feedbackRepository.UnitOfWork.Commit();
         }
@@ -57,36 +55,6 @@
         private void UpdateFeedbackDate(Feedback feedbackToUpdate)
         {
             feedbackToUpdate.Date = TimeProvider.Current.UtcNow;
-        }
-
-        private void ValidateContent(string feedbackContent)
-        {
-            if (FeedbackValidation.ValidateContent(feedbackContent))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationFeedbackContent,
-                    VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
-                    Resources.FeedbackContentParam);
-            }
-        }
-
-        private void ValidateMail(string feedbackMail)
-        {
-            if (FeedbackValidation.ValidateUsersEmail(feedbackMail))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                        Resources.ValidationFeedbackUsersEmail,
-                        VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH),
-                    Resources.FeedbackUsersEmailParam);
-            }
-        }
-
-        private void ValidateFeedback(Feedback feedbackToValidate)
-        {
-            ValidateContent(feedbackToValidate.Content);
-            ValidateMail(feedbackToValidate.UsersEmail);
         }
         #endregion
     }

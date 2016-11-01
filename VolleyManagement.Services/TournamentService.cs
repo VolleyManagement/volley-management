@@ -92,7 +92,6 @@
             _getAllTeamsQuery = getAllTeamsQuery;
             _authService = authService;
             _getTournamentDtoQuery = getTournamentDtoQuery;
-             gameService.TournamentService = this;
             _gameService = gameService;
         }
 

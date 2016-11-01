@@ -9,7 +9,10 @@
     public class Feedback
     {
         private string _usersEmail;
+
         private string _content;
+
+        private FeedbackStatusEnum _status;
 
         /// <summary>
         /// Gets or sets feedback Id.
@@ -54,8 +57,10 @@
                 if (FeedbackValidation.ValidateContent(value))
                 {
                     throw new ArgumentException(
-                       Resources.ValidationFeedbackContent,
-                       Resources.FeedbackContentParam);
+                        string.Format(
+                            Resources.ValidationFeedbackContent,
+                            VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
+                            Resources.FeedbackContentParam);
                 }
 
                 _content = value;
@@ -70,6 +75,33 @@
         /// <summary>
         /// Gets or sets feedback status.
         /// </summary>
-        public FeedbackStatusEnum Status { get; set; }
+        public FeedbackStatusEnum Status
+        {
+            get
+            {
+                return _status;
+            }
+
+            set
+            {
+                if (FeedbackValidation.ValidateStatus(_status, value))
+                {
+                    throw new InvalidOperationException(
+                        Resources.ValidationFeedbackStatus);
+                }
+
+                _status = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets update date of feedback.
+        /// </summary>
+        public DateTime UpdateDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets admin name.
+        /// </summary>
+        public string AdminName { get; set; }
     }
 }

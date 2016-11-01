@@ -30,12 +30,7 @@
         public override void Load()
         {
             IHaveBindingConfiguration configuration = Bind<ICurrentUserService>().To<CurrentUserService>();
-            IHaveBindingConfiguration _userServiceBindingConfiguration =
-                Bind<IUserService>().To<UserService>();
-
             configuration.BindingConfiguration.ScopeCallback = _scopeCallback;
-            _userServiceBindingConfiguration.BindingConfiguration.ScopeCallback
-                = _scopeCallback;
         }
     }
 }

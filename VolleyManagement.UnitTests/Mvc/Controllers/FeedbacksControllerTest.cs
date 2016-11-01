@@ -222,9 +222,6 @@
                     .WithId(TEST_ID)
                     .WithEmail(TEST_MAIL)
                     .WithContent(TEST_CONTENT)
-            // We have to assign fields Date and Status with default values
-            // because FeedbackViewModel object doesn't has this fields
-            // but we want to compare it with Feedback object.
                     .WithDate(DateTime.MinValue)
                     .Build();
         }

@@ -25,7 +25,8 @@
                 UsersEmail = "qwerty@gmail.com",
                 Content = "A perfect application",
                 Date = new DateTime(2007, 05, 03),
-                Status = FeedbackStatusEnum.New
+                Status = FeedbackStatusEnum.New,
+                UserEnvironment = "Windows10"
             };
         }
 
@@ -81,6 +82,12 @@
         public FeedbackBuilder WithStatus(FeedbackStatusEnum status)
         {
             this._feedback.Status = status;
+            return this;
+        }
+
+        public FeedbackBuilder WithEnvironment(string environment)
+        {
+            this._feedback.UserEnvironment = environment;
             return this;
         }
 

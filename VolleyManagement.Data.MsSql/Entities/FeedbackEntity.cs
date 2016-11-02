@@ -31,5 +31,10 @@
         /// Gets or sets feedback status
         /// </summary>
         public byte Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets user environment
+        /// </summary>
+        public string UserEnvironment { get; set; }
     }
 }

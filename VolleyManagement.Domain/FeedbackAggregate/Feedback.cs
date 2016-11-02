@@ -10,6 +10,7 @@
     {
         private string _usersEmail;
         private string _content;
+        private string _userEnvironment;
 
         /// <summary>
         /// Gets or sets feedback Id.
@@ -75,5 +76,30 @@
         /// Gets or sets feedback status.
         /// </summary>
         public FeedbackStatusEnum Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets user environment.
+        /// </summary>
+        public string UserEnvironment
+        {
+            get
+            {
+                return _userEnvironment;
+            }
+
+            set
+            {
+                if (FeedbackValidation.ValidateUserEnvironment(value))
+                {
+                    throw new ArgumentException(
+                         string.Format(
+                            Resources.ValidationFeedbackUserEnvironment,
+                            Constants.Feedback.MAX_USER_ENVIRONMENT_LENGTH),
+                            Resources.FeedbackUserEnvironmentParam);
+                }
+
+                _userEnvironment = value;
+            }
+        }
     }
 }

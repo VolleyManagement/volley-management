@@ -26,5 +26,16 @@
             return string.IsNullOrEmpty(content)
                 || content.Length > Constants.Feedback.MAX_CONTENT_LENGTH;
         }
+
+        /// <summary>
+        /// Validates user environment of feedback.
+        /// </summary>
+        /// <param name="environment">Feedback user environment for validation.</param>
+        /// <returns>Validity of user environment.</returns>
+        public static bool ValidateUserEnvironment(string environment)
+        {
+            return environment.Length
+                   > Constants.Feedback.MAX_USER_ENVIRONMENT_LENGTH;
+        }
     }
 }

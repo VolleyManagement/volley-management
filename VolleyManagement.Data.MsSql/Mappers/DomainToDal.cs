@@ -202,6 +202,7 @@
             to.Content = from.Content;
             to.Date = from.Date;
             to.Status = (byte)from.Status;
+            to.UserEnvironment = from.UserEnvironment;
         }
     }
 }

@@ -566,6 +566,12 @@ namespace VolleyManagement.Data.MsSql.Context
                 .Property(t => t.Status)
                 .IsRequired()
                 .HasColumnName(VolleyDatabaseMetadata.FEEDBACK_STATUS_COLUMN_NAME);
+
+            // UserEnvironment
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.UserEnvironment)
+                .IsOptional()
+                .HasMaxLength(ValidationConstants.Feedback.MAX_USER_ENVIRONMENT_LENGTH);
         }
 
         #endregion

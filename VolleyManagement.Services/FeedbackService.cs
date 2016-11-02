@@ -82,6 +82,7 @@
         /// <returns>All feedbacks.</returns>
         public List<Feedback> Get()
         {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Read);
             return _getAllFeedbacksQuery.Execute(new GetAllCriteria());
         }
 
@@ -92,6 +93,7 @@
         /// <returns>founded feedback.</returns>
         public Feedback Get(int id)
         {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Read);
             return _getFeedbackByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
@@ -155,7 +157,7 @@
         /// </summary>
         /// <param name="feedback">id for reply.</param>
         /// <param name="newStatusCode">Information about mail (body, receiver)</param>
-        public void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
+        private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
         {
                 feedback.Status = newStatusCode;
                 if (ShouldChangeLastUpdateInfo(newStatusCode))

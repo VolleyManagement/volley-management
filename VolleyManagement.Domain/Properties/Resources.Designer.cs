@@ -394,7 +394,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Content should be less than 5000 symbols.
+        ///   Looks up a localized string similar to Content should be less than {0} symbols or not empty.
         /// </summary>
         public static string ValidationFeedbackContent {
             get {
@@ -430,7 +430,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Body should be less than 5000 symbols.
+        ///   Looks up a localized string similar to Body should be less than {0} symbols or not empty.
         /// </summary>
         public static string ValidationMailBody {
             get {

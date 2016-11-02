@@ -57,8 +57,10 @@
                 if (FeedbackValidation.ValidateContent(value))
                 {
                     throw new ArgumentException(
-                        Resources.ValidationFeedbackContent,
-                        Resources.FeedbackContentParam);
+                        string.Format(
+                            Resources.ValidationFeedbackContent,
+                            VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
+                            Resources.FeedbackContentParam);
                 }
 
                 _content = value;

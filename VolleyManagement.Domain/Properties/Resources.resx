@@ -217,7 +217,7 @@
     <value>Please, enter the valid name of the division</value>
   </data>
   <data name="ValidationFeedbackContent" xml:space="preserve">
-    <value>Content should be less than 5000 symbols</value>
+    <value>Content should be less than {0} symbols or not empty</value>
   </data>
   <data name="ValidationFeedbackUsersEmail" xml:space="preserve">
     <value>Please, enter the valid email</value>
@@ -286,7 +286,7 @@
     <value>To</value>
   </data>
   <data name="ValidationMailBody" xml:space="preserve">
-    <value>Body should be less than 5000 symbols</value>
+    <value>Body should be less than {0} symbols or not empty</value>
   </data>
   <data name="ValidationMailEmail" xml:space="preserve">
     <value>Please, enter the valid email.</value>

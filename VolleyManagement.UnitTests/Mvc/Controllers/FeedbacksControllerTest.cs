@@ -32,7 +32,8 @@
         private const string TEST_MAIL = "test@gmail.com";
         private const string TEST_CONTENT = "Test content";
         private const string EXCEPTION_KEY = "ValidationMessage";
-        private const string EXCEPTION_MESSAGE = "Please, enter the valid email\r\nParameter name: UsersEmail";
+        private const string EXCEPTION_MESSAGE =
+            "Email can't be empty or contains more than 80 symbols\r\nParameter name: UsersEmail";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
             new Mock<IFeedbackService>();

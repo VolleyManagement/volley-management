@@ -137,10 +137,15 @@
     <Compile Include="Context\Migrations\201610141515542_MergedMigration.Designer.cs">
       <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.cs" />
+    <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.Designer.cs">
+      <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
     <Compile Include="Context\VolleyManagementDatabaseInitializer.cs" />
+    <Compile Include="Entities\FeedbackEntity.cs" />
     <Compile Include="Entities\GameResultEntity.cs" />
     <Compile Include="Entities\GroupEntity.cs" />
     <Compile Include="Entities\DivisionEntity.cs" />
@@ -166,9 +171,11 @@
     <Compile Include="Queries\TournamentQueries.cs" />
     <Compile Include="Queries\UserQueries.cs" />
     <Compile Include="Repositories\ContributorTeamRepository.cs" />
+    <Compile Include="Repositories\FeedbackRepository.cs" />
     <Compile Include="Repositories\GameRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
     <Compile Include="Repositories\RoleRepostitory.cs" />
+    <Compile Include="Repositories\Specifications\FeedbackStorageSpecification.cs" />
     <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
     <Compile Include="Repositories\Specifications\TeamStorageSpecification.cs" />
     <Compile Include="Repositories\Specifications\TournamentsStorageSpecification.cs" />
@@ -264,6 +271,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201610141515542_MergedMigration.resx">
       <DependentUpon>201610141515542_MergedMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201610171943183_AddFeedbacks.resx">
+      <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

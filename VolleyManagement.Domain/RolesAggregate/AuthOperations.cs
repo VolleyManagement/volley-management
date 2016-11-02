@@ -15,6 +15,7 @@
         private const byte GAMES = 0x03;
         private const byte PLAYERS = 0x04;
         private const byte ADMINDASHBOARD = 0x05;
+        private const byte FEEDBACKS = 0x06;
 
         #endregion
 
@@ -115,6 +116,27 @@
             /// Delete player operation
             /// </summary>
             public static readonly AuthOperation Delete = Tuple.Create(PLAYERS, 3);
+        }
+
+        /// <summary>
+        /// Contains feedbacks operations
+        /// </summary>
+        public static class Feedbacks
+        {
+            /// <summary>
+            /// Create player operation
+            /// </summary>
+            public static readonly AuthOperation Create = Tuple.Create(FEEDBACKS, 1);
+
+            /// <summary>
+            /// Edit player operation
+            /// </summary>
+            public static readonly AuthOperation Edit = Tuple.Create(FEEDBACKS, 2);
+
+            /// <summary>
+            /// Delete player operation
+            /// </summary>
+            public static readonly AuthOperation Delete = Tuple.Create(FEEDBACKS, 3);
         }
 
         /// <summary>

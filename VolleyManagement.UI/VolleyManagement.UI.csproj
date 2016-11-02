@@ -351,6 +351,10 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
+    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Areas\Mvc\Views\Tournaments\_NonPlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffGameResult.cshtml" />
@@ -402,6 +406,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AuthorizationRoles.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\FeedbackViews.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FeedbackViews.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\GameReportViews.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -455,6 +464,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="AreaConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamCollectionReferrerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamRefererViewModel.cs" />
@@ -608,6 +619,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="App_GlobalResources\FeedbackViews.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>FeedbackViews.Designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="App_GlobalResources\GameReportViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameReportViews.Designer.cs</LastGenOutput>

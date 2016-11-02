@@ -4,6 +4,8 @@
     using Ninject.Activation;
     using Ninject.Infrastructure;
     using Ninject.Modules;
+
+    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
 
     /// <summary>

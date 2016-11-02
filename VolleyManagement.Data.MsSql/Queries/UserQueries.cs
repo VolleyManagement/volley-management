@@ -22,7 +22,8 @@
                              IQueryAsync<User, FindByEmailCriteria>,
                              IQueryAsync<User, FindByLoginInfoCriteria>,
                              IQuery<List<UserInRoleDto>, FindByRoleCriteria>,
-                             IQuery<List<UserInRoleDto>, GetAllCriteria>
+                             IQuery<List<UserInRoleDto>, GetAllCriteria>,
+                             IQuery<User, FindByIdCriteria>
     {
         #region Fields
 
@@ -131,6 +132,19 @@
             return users;
         }
 
+        /// <summary>
+        /// Finds user by given criteria.
+        /// </summary>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns>User entity.</returns>
+        public User Execute(FindByIdCriteria criteria)
+        {
+            return
+                this._unitOfWork.Context.Users
+                .Where(i => i.Id == criteria.Id)
+                .Select(GetUserMapping())
+                .SingleOrDefault();
+        }
         #endregion
 
         #region Mapping

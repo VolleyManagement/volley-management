@@ -57,6 +57,7 @@
             RegisterTeamScripts(bundles);
             RegisterTornamentScripts(bundles);
             RegisterGameScripts(bundles);
+            RegisterFeedbackScripts(bundles);
         }
 
         #region Domain bundles
@@ -82,6 +83,12 @@
         {
             bundles.Add(new ScriptBundle("~/bundles/gameresultsscripts")
                 .Include("~/Scripts/VmScripts/GameOperations/DeleteGame.js"));
+        }
+
+        private static void RegisterFeedbackScripts(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/bundles/feedbackscripts")
+                .Include("~/Scripts/VmScripts/FeedbackOperations/BackButton.js"));
         }
 
         #endregion

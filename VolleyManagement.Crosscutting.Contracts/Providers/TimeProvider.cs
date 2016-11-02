@@ -45,6 +45,17 @@
         public abstract DateTime UtcNow { get; }
 
         /// <summary>
+        /// Gets current time zone time.
+        /// </summary>
+        public DateTime DateTimeNow
+        {
+            get
+            {
+                return TimeZone.CurrentTimeZone.ToLocalTime(UtcNow);
+            }
+        }
+
+        /// <summary>
         /// Sets default time provider
         /// </summary>
         public static void ResetToDefault()

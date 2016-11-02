@@ -42,6 +42,8 @@
         private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock
             = new Mock<IFeedbackRepository>();
 
+        public const int SPECIFIC_FEEDBACK_ID = 2;
+
         private readonly Mock<IFeedbackService> _feedbackServiceMock = new Mock<IFeedbackService>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock
@@ -64,7 +66,7 @@
         private readonly FeedbackServiceTestFixture _testFixture = new FeedbackServiceTestFixture();
 
         private IKernel _kernel;
-        private DateTime _date = new DateTime(2007, 05, 03);
+        private DateTime _feedbackTestDate = new DateTime(2007, 05, 03);
 
         #endregion
 
@@ -81,7 +83,7 @@
             _kernel.Bind<ICurrentUserService>().ToConstant(_currentUserServiceMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
-            _timeMock.Setup(tp => tp.UtcNow).Returns(_date);
+            _timeMock.Setup(tp => tp.UtcNow).Returns(_feedbackTestDate);
         }
 
         [TestCleanup]
@@ -182,22 +184,32 @@
         #region Create
 
         [TestMethod]
-        public void Create_CorrectFeedback_FeedbackCreated()
+        public void Create_FeedbackPassed_FeedbackCreated()
         {
-            var newFeedback = new FeedbackBuilder().Build();
-
+            // Arrange
+            var newFeedback = new FeedbackBuilder()
+                .Build();
             var sut = _kernel.Get<FeedbackService>();
+
+            // Act
             sut.Create(newFeedback);
 
-            VerifyCreateFeedback(newFeedback, Times.Once());
+            // Assert
+            VerifyCreateFeedback(
+                newFeedback,
+                Times.Once(),
+                "Parameter feedback is not equal to Instance of feedback");
+            VerifySaveFeedback(
+                newFeedback,
+                Times.Once(),
+                "DB should not be updated");
         }
 
         [TestMethod]
         public void Create_InvalidNullFeedback_ArgumentNullExceptionIsThrown()
         {
-            bool gotException = false;
-
             // Arrange
+            Exception exception = null;
             Feedback newFeedback = null;
             var sut = _kernel.Get<FeedbackService>();
 
@@ -206,21 +218,33 @@
             {
                 sut.Create(newFeedback);
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException ex)
             {
-                gotException = true;
+                exception = ex;
             }
 
             // Assert
-            Assert.IsTrue(gotException);
-            VerifyCreateFeedback(newFeedback, Times.Never());
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentNullException("feedback"));
         }
 
         [TestMethod]
-        public void Update_UpdateFeedbackDate_FeedbackUpdated()
+        public void Update_FeedbackPassed_FeedbackUpdated()
         {
-            var feed = new FeedbackBuilder().Build();
-            Assert.AreEqual(TimeProvider.Current.UtcNow, feed.Date);
+            // Arrange
+            var actual = new FeedbackBuilder()
+                .Build();
+            var expected = new FeedbackBuilder()
+                .WithDate(_feedbackTestDate)
+                .Build();
+            var sut = _kernel.Get<FeedbackService>();
+
+            // Act
+            sut.Create(actual);
+
+            // Assert
+            AssertFeedbackAreEquals(expected, actual);
         }
 
         #endregion
@@ -768,18 +792,33 @@
             return new FeedbackComparer().Compare(x, y) == 0;
         }
 
-        private void VerifyCreateFeedback(Feedback feedback, Times times)
+        private void AssertFeedbackAreEquals(Feedback expected, Feedback actual)
+        {
+            TestHelper.AreEqual<Feedback>(expected, actual, new FeedbackComparer());
+        }
+
+        private void VerifyCreateFeedback(Feedback feedback, Times times, string message)
         {
             _feedbackRepositoryMock.Verify(
                 pr => pr.Add(
                 It.Is<Feedback>(f =>
                 FeedbacksAreEqual(f, feedback))),
                 times,
-                ERROR_FOR_FEEDBACK_REPOSITORY_VERIFY);
+                message);
+        }
+
+        private void VerifySaveFeedback(Feedback feedback, Times times, string message)
+        {
             _unitOfWorkMock.Verify(
                 uow => uow.Commit(),
                 times,
-                ERROR_FOR_UNIT_OF_WORK_VERIFY);
+                message);
+        }
+
+        private void VerifyExceptionThrown(Exception exception, Exception expected)
+        {
+            Assert.IsNotNull(exception);
+            Assert.IsTrue(exception.Message.Equals(expected.Message));
         }
 
         private void VerifyEditFeedback(Feedback feedback, Times times)

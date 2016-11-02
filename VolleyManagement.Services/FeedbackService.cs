@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using Contracts;
     using Crosscutting.Contracts.Providers;
+    using Domain.Properties;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
@@ -185,7 +186,6 @@
         {
             feedbackToUpdate.Date = TimeProvider.Current.UtcNow;
         }
-
         #endregion
     }
 }

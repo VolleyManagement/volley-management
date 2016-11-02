@@ -1,10 +1,10 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel.FeedbackViewModel
 
 @{
-    ViewBag.Title = "Create Feedback";
+    ViewBag.Title = Resources.FeedbackViews.CreateFeedback;
 }
 
-<h2>We are waiting for your Feedback</h2>
+<h2>@Resources.FeedbackViews.FeedbackWaiting</h2>
 
 
 @using (Html.BeginForm())
@@ -41,13 +41,7 @@
 }
 
 <div>
-    <button id="feedback-return" class="btn btn-default">Return</button>
+    <button id="feedback-return" class="btn btn-default">@Resources.FeedbackViews.Return</button>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#feedback-return').click(function () {
-            window.history.back();
-        });
-    });
-</script>
+@Scripts.Render("~/bundles/feedbackscripts")

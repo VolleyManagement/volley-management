@@ -34,8 +34,10 @@
                 if (FeedbackValidation.ValidateUsersEmail(value))
                 {
                     throw new ArgumentException(
-                        Resources.ValidationFeedbackUsersEmail,
-                        Resources.FeedbackUsersEmailParam);
+                        string.Format(
+                            Resources.ValidationFeedbackUsersEmail,
+                            VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH),
+                            Resources.FeedbackUsersEmailParam);
                 }
 
                 _usersEmail = value;
@@ -57,7 +59,7 @@
                 if (FeedbackValidation.ValidateContent(value))
                 {
                     throw new ArgumentException(
-                        string.Format(
+                         string.Format(
                             Resources.ValidationFeedbackContent,
                             VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
                             Resources.FeedbackContentParam);

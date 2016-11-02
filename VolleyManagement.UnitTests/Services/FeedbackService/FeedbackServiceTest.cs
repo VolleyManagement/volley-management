@@ -473,33 +473,6 @@
         }
 
         [TestMethod]
-        public void GetDetails_ReadFeedback_InvalidOperationException()
-        {
-            // Arrange
-            Exception exception = null;
-            var feedback = new FeedbackBuilder()
-                       .WithId(EXISTING_ID)
-                       .WithStatus(FeedbackStatusEnum.Read)
-                       .Build();
-            MockGetFeedbackByIdQuery(feedback);
-
-            var sut = _kernel.Get<FeedbackService>();
-
-            // Act
-            try
-            {
-                sut.GetDetails(EXISTING_ID);
-            }
-            catch (InvalidOperationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Feedback status can't be changed to this status");
-        }
-
-        [TestMethod]
         public void GetDetails_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange

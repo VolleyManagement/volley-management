@@ -113,8 +113,11 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound);
             }
 
-            ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Read);
-
+            if (feedback.Status == FeedbackStatusEnum.New)
+            {
+                ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Read);
+            }
+           
             return feedback;
         }
 

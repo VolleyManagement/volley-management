@@ -53,5 +53,7 @@
         /// Created to address mapping issues for Team - Captain relationship
         /// </summary>
         public virtual ICollection<TeamEntity> LedTeam { get; set; }
+
+        public virtual ICollection<UserEntity> PlayerUser { get; set; }
     }
 }

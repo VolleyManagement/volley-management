@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.Domain.UsersAggregate
+﻿using VolleyManagement.Domain.PlayersAggregate;
+
+namespace VolleyManagement.Domain.UsersAggregate
 {
     using System.Collections.Generic;
     using VolleyManagement.Domain.RolesAggregate;
@@ -40,6 +42,16 @@
         /// Phone number for the user
         /// </summary>
         public string PhoneNumber { get; set; }
+
+        /// <summary>
+        /// Player Id
+        /// </summary>
+        public int PlayerId { get; set; }
+
+        /// <summary>
+        /// Player instance
+        /// </summary>
+        public Player Player { get; set; }
 
         /// <summary>
         /// External login information for the user

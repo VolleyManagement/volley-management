@@ -114,6 +114,5 @@
             bundles.Add(new ScriptBundle("~/bundles/feedbackscripts")
                 .Include("~/Scripts/VmScripts/FeedbackOperations/BackButton.js"));
         }
-
     }
 }

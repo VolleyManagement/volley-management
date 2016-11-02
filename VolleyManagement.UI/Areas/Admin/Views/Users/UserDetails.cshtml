@@ -4,10 +4,16 @@
     ViewBag.Title = "User's details";
 }
 
-@Html.ActionLink("Block/Unblock", "UserDetails", new { id = Model.Id }, new { @class = "btn btn-success btn-xs" })
-
 <div class="panel panel-primary">
-    <div class="panel-heading">User @Model.Id</div>
+
+
+    
+
+    <div class="panel-heading">User @Model.Id
+        <div class="pull-right">
+            @Html.ActionLink("Block/Unblock", "UserDetails", new { id = Model.Id }, new { @class = "btn btn-success btn-xs" })
+        </div>
+    </div>
     <table class="table table-striped">
 
         <tr>
@@ -37,35 +43,87 @@
         </tr>
     </table>
 
-    <div class="display-label">@Html.LabelFor(model => Model.LoginProviders)</div>
+    <div class="panel-heading"> @Html.LabelFor(model => Model.LoginProviders)</div>
+    <table class="table table-striped">
 
-    <tr>
-        <th>Login Provider</th>
-        <th>Provider key</th>
-    </tr>
+        <tr>
+            <th>Login Provider</th>
+            <th>Provider key</th>
+        </tr>
 
-    @foreach (var provider in Model.LoginProviders)
+        @foreach (var provider in Model.LoginProviders)
+        {
+            <tr>
+                <td>@provider.LoginProvider</td>
+                <td>@provider.ProviderKey</td>
+            </tr>
+        }
+
+    </table>
+
+    <div class="panel-heading"> @Html.LabelFor(model => Model.Roles)</div>
+    @if (Model.Roles == null)
     {
         <tr>
-            <td>@provider.LoginProvider</td>
-            <td>@provider.ProviderKey</td>
+            <td colspan="3" class="text-center">No roles assigned to user</td>
         </tr>
     }
-
-    <div class="display-label">@Html.LabelFor(model => Model.Roles)</div>
-
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-    </tr>
-
-    @foreach (var role in Model.Roles)
+    else
     {
-        <tr>
-            <td>@role.Id</td>
-            <td>@role.Name</td>
-        </tr>
+        <table class="table table-striped">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+
+            @foreach (var role in Model.Roles)
+            {
+                <tr>
+                    <td>@role.Id</td>
+                    <td>@role.Name</td>
+                </tr>
+            }
+        </table>
     }
+   
+
+    <div class="panel-heading"> @Html.LabelFor(model => Model.Player)</div>
+    <table class="table table-striped">
+        @if (Model.Player == null)
+        {
+            <tr>
+                <td colspan="3" class="text-center">No player assigned to user</td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td>@Html.LabelFor(model => Model.Player.FirstName)</td>
+                <td>@Model.Player.FirstName</td>
+
+            </tr>
+
+            <tr>
+                <td> @Html.LabelFor(model => Model.Player.LastName)</td>
+                <td> @Model.Player.LastName</td>
+            </tr>
+
+            <tr>
+                <td> @Html.LabelFor(model => Model.Player.BirthYear)</td>
+                <td> @Model.Player.BirthYear</td>
+            </tr>
+
+            <tr>
+                <td>@Html.LabelFor(model => Model.Player.Height)</td>
+                <td>@Model.Player.Height</td>
+            </tr>
+            <tr>
+                <td> @Html.LabelFor(model => Model.Player.Weight)</td>
+                <td> @Model.Player.Weight </td>
+            </tr>
+        }
+    </table>
+
 
 </div>
 

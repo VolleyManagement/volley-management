@@ -5,6 +5,7 @@ using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
 namespace VolleyManagement.UI.Areas.Admin.Models
 {
+    using Domain.PlayersAggregate;
     using VolleyManagement.Domain.Dto;
     using VolleyManagement.Domain.UsersAggregate;
 
@@ -13,6 +14,7 @@ namespace VolleyManagement.UI.Areas.Admin.Models
     /// </summary>
     public class UserViewModel
     {
+
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -39,14 +41,19 @@ namespace VolleyManagement.UI.Areas.Admin.Models
         public string Phone { get; set; }
 
         /// <summary>
-        /// Gets or sets the login providers.
+        /// Gets or sets Player info
         /// </summary>
-        public List<LoginProviderViewModel> LoginProviders { get; set; }
+        public PlayerViewModel Player { get; set; }
 
         /// <summary>
         /// Gets or sets the login providers.
         /// </summary>
-        public List<RoleViewModel> Roles { get; set; }
+        public IEnumerable<LoginProviderInfo> LoginProviders { get; set; }
+
+        /// <summary>
+        /// Gets or sets the login providers.
+        /// </summary>
+        public IEnumerable<Role> Roles { get; set; }
 
         /// <summary>
         /// Creates <see cref="UserViewModel"/> instance based on <see cref="UserInRoleDto"/>
@@ -74,10 +81,8 @@ namespace VolleyManagement.UI.Areas.Admin.Models
         /// Maps domain entity to presentation
         /// </summary>
         /// <param name="user"><see cref="User"/> domain entity.</param>
-        /// <param name="roles">User's roles.</param>
-        /// <param name="authProviders">User's auth providers.</param>
         /// <returns> View model object </returns>
-        public static UserViewModel Map(User user, IEnumerable<Role> roles, IEnumerable<LoginProviderInfo> authProviders)
+        public static UserViewModel Map(User user)
         {
             var userViewModel = new UserViewModel
             {
@@ -85,27 +90,19 @@ namespace VolleyManagement.UI.Areas.Admin.Models
                 Name = user.UserName,
                 Email = user.Email,
                 PersonName = user.PersonName,
-                Phone = user.PhoneNumber
+                Phone = user.PhoneNumber,
+                LoginProviders = user.LoginProviders
+               
             };
 
-            if (roles != null)
+            if (user.Roles != null)
             {
-                userViewModel.Roles = new List<RoleViewModel>();
-
-                foreach (var role in roles)
-                {
-                    userViewModel.Roles.Add(new RoleViewModel(role));
-                }
-
+                userViewModel.Roles = user.Roles;
             }
 
-            if (authProviders != null)
+            if (user.Player != null)
             {
-                userViewModel.LoginProviders = new List<LoginProviderViewModel>();
-                foreach (var provider in authProviders)
-                {
-                    userViewModel.LoginProviders.Add(new LoginProviderViewModel(provider));
-                }
+                userViewModel.Player = PlayerViewModel.Map(user.Player);
             }
 
             return userViewModel;

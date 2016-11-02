@@ -59,6 +59,7 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.VisualStudio.QualityTools.UnitTestFramework.11.0.50727.1\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
@@ -113,7 +114,9 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Admin\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Admin\Controllers\UsersControllerTest.cs" />
+    <Compile Include="Admin\ViewModels\UserAdminViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />
@@ -182,6 +185,10 @@
     <Compile Include="Services\GameService\GameServiceTestFixture.cs" />
     <Compile Include="Services\GameService\GameServiceTests.cs" />
     <Compile Include="Services\GameService\ScoreComparer.cs" />
+    <Compile Include="Services\UsersService\UserBuilder.cs" />
+    <Compile Include="Services\UsersService\UserComparer.cs" />
+    <Compile Include="Services\UsersService\UserServiceTestFixture.cs" />
+    <Compile Include="Services\UsersService\UserServiceTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelToDomain.cs" />

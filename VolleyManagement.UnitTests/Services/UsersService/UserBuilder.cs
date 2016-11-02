@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Services.UserManager
+﻿using VolleyManagement.Domain.RolesAggregate;
+
+namespace VolleyManagement.UnitTests.Services.UsersService
 {
     using System;
     using System.Collections.Generic;
@@ -28,7 +30,23 @@
                 UserName = "Player",
                 Email = "example@i.ua",
                 PersonName = "Eugene",
-                PhoneNumber = "068-11-22-333"
+                PhoneNumber = "068-11-22-333",
+                LoginProviders = new List<LoginProviderInfo>
+                {
+                    new LoginProviderInfo
+                    {
+                        LoginProvider = "Google",
+                        ProviderKey = "11111111111111"
+                    }
+                },
+                Roles = new List<Role>
+                {
+                      new Role
+                    {
+                        Id = 1,
+                        Name = "Administrator"
+                    }
+                }
             };
         }
 
@@ -95,6 +113,17 @@
         public UserBuilder WithLoginProviders(List<LoginProviderInfo> providers)
         {
             _user.LoginProviders = providers;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets roles of test user
+        /// </summary>
+        /// <param name="roles">Roles for test user</param>
+        /// <returns>User builder object</returns>
+        public UserBuilder WithRoles(List<Role> roles)
+        {
+            _user.Roles = roles;
             return this;
         }
 

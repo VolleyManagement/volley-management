@@ -35,6 +35,21 @@
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
 
+        /// <summary>
+        /// Question to user.
+        /// </summary>
+        public const string USER_ENVIRONMENT_QUESTION =         // TO DO : Resources
+            "Are you agree to provide additional information " +
+            "about your browser and operation system?";
+
+        /// <summary>
+        /// Environment (browser  and operating system) of user's computer.
+        /// </summary>
+        [Display(Name = "User's computer Environment")]
+        [StringLength(320)]
+        [DataType(DataType.MultilineText)]
+        public string UserEnvironment { get; set; }
+
         #region Factory Methods
 
         /// <summary>
@@ -47,7 +62,8 @@
             {
                 Id = this.Id,
                 UsersEmail = this.UsersEmail,
-                Content = this.Content
+                Content = this.Content,
+                UserEnvironment = this.UserEnvironment
             };
         }
 

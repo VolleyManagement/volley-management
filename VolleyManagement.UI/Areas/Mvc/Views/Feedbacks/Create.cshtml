@@ -1,4 +1,5 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel.FeedbackViewModel
+﻿@using VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel.FeedbackViewModel
 
 @{
     ViewBag.Title = Resources.FeedbackViews.CreateFeedback;
@@ -6,16 +7,15 @@
 
 <h2>@Resources.FeedbackViews.FeedbackWaiting</h2>
 
-
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, new { @id = string.Empty }, FormMethod.Post, new { @id = "feedbackForm" }))
 {
     <div class="form-horizontal">
         <hr />
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.UsersEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.UsersEmail, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
                 @Html.EditorFor(model => model.UsersEmail,
                         new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.UsersEmail, "", new { @class = "text-danger" })
@@ -23,16 +23,43 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
                 @Html.EditorFor(model => model.Content,
-                    new { htmlAttributes = new { @class = "feedback-text-area" } })
+                    new
+                    {
+                        htmlAttributes = new
+                        {
+                            @class = "form-control"
+                        }
+                    })
                 @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <label for="isUserAgree" class="control-label col-md-4">
+                @FeedbackViewModel.USER_ENVIRONMENT_QUESTION
+            </label>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.UserEnvironment,
+                    new
+                    {
+                        htmlAttributes =
+                            new
+                            {
+                                @class = "form-control",
+                                @readonly = "readonly"
+                            }
+                    })
+            </div>
+            <div class="col-md-8">
+                <input type="checkbox" id="isUserAgree" checked />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-8">
                 <input type="submit" value="Send" id="send-feedback" class="btn btn-success" />
             </div>
         </div>
@@ -41,7 +68,34 @@
 }
 
 <div>
-    <button id="feedback-return" class="btn btn-default">@Resources.FeedbackViews.Return</button>
+    <button id="feedback-return" class="btn btn-default">
+        @Resources.FeedbackViews.Return
+    </button>
 </div>
 
 @Scripts.Render("~/bundles/feedbackscripts")
+
+
+<script>
+    ;$(document).ready(function () {
+
+        var environment = navigator.userAgent;
+        $('#isUserAgree').prop('checked', true);
+        $('#UserEnvironment').val(environment);
+
+        $("#isUserAgree").change(function () {
+            if (this.checked) {
+                $('#UserEnvironment').val(environment);
+            }
+            else {
+                $('#UserEnvironment').val('');
+            }
+        });
+
+        $('#feedbackForm').submit(function() {
+            if (!$('#isUserAgree').prop('checked')) {
+                $('#UserEnvironment').val('');
+            }
+        });
+    });
+</script>

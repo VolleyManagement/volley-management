@@ -75,5 +75,11 @@
         /// Gets or sets feedback status.
         /// </summary>
         public FeedbackStatusEnum Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets environment (browser and operating system)
+        /// of user's computer.
+        /// </summary>
+        public string UserEnvironment { get; set; }
     }
 }

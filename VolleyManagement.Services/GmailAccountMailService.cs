@@ -26,7 +26,7 @@
         {
             if (message == null)
             {
-                throw new ArgumentException(
+                throw new ArgumentNullException(
                     Properties.Resources.ArgumentExceptionInvalidGmailMessage,
                     Properties.Resources.ArgumentExceptionInvalidGmailMessage);
             }
@@ -35,7 +35,7 @@
                 GetSenderEmailAddress(),
                 GetSenderPassword());
 
-            smtp.Send(message.From, message.Recipient, message.Subject, message.Body);
+            smtp.Send(GetSenderEmailAddress(), message.Recipient, message.Subject, message.Body);
         }
 
         private string GetSenderEmailAddress()

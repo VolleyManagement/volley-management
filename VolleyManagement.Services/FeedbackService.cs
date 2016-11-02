@@ -86,7 +86,7 @@
             string body = Properties.Resources.FeedbackConfirmationLetterBody;
             string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
 
-            EmailMessage emailMessage = new EmailMessage(GetSenderEmailAddress(), emailTo, subject, body);
+            EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
             _mailService.Send(emailMessage);
         }
 
@@ -112,25 +112,9 @@
 
             foreach (var admin in adminsList)
             {
-                EmailMessage emailMessage = new EmailMessage(GetSenderEmailAddress(), admin.Email, subject, body);
+                EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);
                 _mailService.Send(emailMessage);
             }
-        }
-
-        private string GetSenderEmailAddress()
-        {
-            const string EMAIL_ADDRESS_KEY = "GoogleEmailAddress";
-
-            var emailAddress = WebConfigurationManager.AppSettings[EMAIL_ADDRESS_KEY];
-
-            if (emailAddress == null)
-            {
-                throw new ArgumentNullException(
-                    Properties.Resources.ArgumentNullExceptionInvalidGmailAddress,
-                    Properties.Resources.GmailAddress);
-            }
-
-            return emailAddress;
         }
 
         private void ValidateContent(string feedbackContent)

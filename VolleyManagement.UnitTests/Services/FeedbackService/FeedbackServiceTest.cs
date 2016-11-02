@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.FeedbackService
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Contracts;
@@ -12,8 +13,10 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Domain.FeedbackAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.Services;
-    
+    using VolleyManagement.UnitTests.Services.MailService;
+    using VolleyManagement.UnitTests.Services.UserManager;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -91,6 +94,10 @@
                 .WithDate(_feedbackTestDate)
                 .Build();
             var sut = _kernel.Get<FeedbackService>();
+
+            var emailMessage = new EmailMessageBuilder().Build();
+            MockMailService(emailMessage);
+            MockUserService();
 
             // Act
             sut.Create(actual);
@@ -309,6 +316,18 @@
         private string CreateExceptionMessage(string message, int length)
         {
             return string.Format(message, length);
+        }
+
+        private void MockMailService(EmailMessage message)
+        {
+            _mailServiceMock.Setup(tr => tr.Send(message));
+        }
+
+        private void MockUserService()
+        {
+            User user = new UserBuilder().Build();
+            List<User> userList = new List<User> { user };
+            _userServiceMock.Setup(tr => tr.GetAdminsList()).Returns(userList);
         }
     }
 }

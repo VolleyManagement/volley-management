@@ -10,14 +10,12 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="EmailMessage"/> class.
         /// </summary>
-        /// <param name="from">Sender of email.</param>
         /// <param name="recipient">Recipient of email.</param>
         /// <param name="subject">Subject of email.</param>
         /// <param name="body">Body of email.</param>
-        public EmailMessage(string from, string recipient, string subject, string body)
+        public EmailMessage(string recipient, string subject, string body)
         {
-            if (string.IsNullOrEmpty(from)
-                || string.IsNullOrEmpty(recipient)
+            if (string.IsNullOrEmpty(recipient)
                 || string.IsNullOrEmpty(body)
                 || string.IsNullOrEmpty(subject))
             {
@@ -26,16 +24,10 @@
                     Properties.Resources.ArgumentExceptionEmailMessage);
             }
 
-            From = from;
             Body = body;
             Subject = subject;
             Recipient = recipient;
         }
-
-        /// <summary>
-        /// Sender of the email.
-        /// </summary>
-        public string From { get; set; }
 
         /// <summary>
         /// Body of the email.

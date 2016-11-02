@@ -68,15 +68,15 @@
             const int FEEDBACK_ID = 1;
             var feedback = GetAnyFeedback(FEEDBACK_ID);
             MockGetFeedbacks(FEEDBACK_ID, feedback);
-            Feedback expected = feedback;
+            RequestsViewModel expected = new RequestsViewModel(feedback);
             var controller = _kernel.Get<RequestsController>();
 
             // Act
             var actionResult = controller.Details(FEEDBACK_ID);
 
             // Assert
-            var actual = TestExtensions.GetModel<Feedback>(actionResult);
-            Assert.AreEqual<Feedback>(expected, actual);
+            var actual = TestExtensions.GetModel<RequestsViewModel>(actionResult);
+            AreDetailsModelsEqual(expected, actual);
         }
 
         [TestMethod]
@@ -213,6 +213,17 @@
         #endregion
 
         #region Custom assertions
+
+        private static void AreDetailsModelsEqual(RequestsViewModel expected, RequestsViewModel actual)
+        {
+            Assert.AreEqual(expected.Id, actual.Id, "Requests ID does not match");
+            Assert.AreEqual(expected.Content, actual.Content, "Requests Content are different");
+            Assert.AreEqual(expected.AdminName, actual.AdminName, "Requests AdminName are different");
+            Assert.AreEqual(expected.Date, actual.Date, "Requests Date are different");
+            Assert.AreEqual(expected.Status, actual.Status, "Requests Status are different");
+            Assert.AreEqual(expected.UpdateDate, actual.UpdateDate, "Requests UpdateDate are different");
+            Assert.AreEqual(expected.UsersEmail, actual.UsersEmail, "Requests UsersEmail are different");
+        }
 
         private static void AssertValidRedirectResult(ActionResult actionResult, string view)
         {

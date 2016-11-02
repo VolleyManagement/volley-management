@@ -5,6 +5,7 @@
     using Data.Contracts;
     using Data.Queries.Common;
     using Domain.UsersAggregate;
+    using VolleyManagement.Data.Queries.User;
 
     /// <summary>
     /// Provides the way to get specified information about user.
@@ -13,13 +14,19 @@
     {
         private readonly IQuery<User, FindByIdCriteria> _getUserByIdQuery;
 
+        private readonly IQuery<List<User>, UniqueUserCriteria> _getAdminsListQuery;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
         /// </summary>
         /// <param name="getUserByIdQuery">Query for getting User by Id.</param>
-        public UserService(IQuery<User, FindByIdCriteria> getUserByIdQuery)
+        /// /// <param name="getAdminsListQuery">Query for getting list of admins.</param>
+        public UserService(
+            IQuery<User, FindByIdCriteria> getUserByIdQuery,
+            IQuery<List<User>, UniqueUserCriteria> getAdminsListQuery)
         {
             this._getUserByIdQuery = getUserByIdQuery;
+            this._getAdminsListQuery = getAdminsListQuery;
         }
 
         /// <summary>
@@ -37,9 +44,10 @@
         /// Gets list of users which role is Admin.
         /// </summary>
         /// <returns>List of User entities.</returns>
-        public IList<User> GetAdminsList()
+        public List<User> GetAdminsList()
         {
-            throw new System.NotImplementedException();
+            return _getAdminsListQuery.Execute(
+                new UniqueUserCriteria { RoleId = 1 });
         }
     }
 }

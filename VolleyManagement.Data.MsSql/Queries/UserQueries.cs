@@ -23,7 +23,8 @@
                              IQueryAsync<User, FindByLoginInfoCriteria>,
                              IQuery<List<UserInRoleDto>, FindByRoleCriteria>,
                              IQuery<List<UserInRoleDto>, GetAllCriteria>,
-                             IQuery<User, FindByIdCriteria>
+                             IQuery<User, FindByIdCriteria>,
+                             IQuery<List<User>, UniqueUserCriteria>
     {
         #region Fields
 
@@ -144,6 +145,21 @@
                 .Where(i => i.Id == criteria.Id)
                 .Select(GetUserMapping())
                 .Single();
+        }
+
+        /// <summary>
+        /// Finds User by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="User"/>. </returns>
+        public List<User> Execute(UniqueUserCriteria criteria)
+        {
+            var users = _unitOfWork.Context.Roles
+                                           .Where(r => r.Id == criteria.RoleId)
+                                           .SelectMany(r => r.Users)
+                                           .Select(GetUserMapping())
+                                           .ToList();
+            return users;
         }
         #endregion
 

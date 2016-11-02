@@ -83,6 +83,7 @@
     <Compile Include="Queries\User\FindByLoginInfoCriteria.cs" />
     <Compile Include="Queries\User\FindByNameCriteria.cs" />
     <Compile Include="Queries\User\FindByRoleCriteria.cs" />
+    <Compile Include="Queries\User\UniqueUserCriteria.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

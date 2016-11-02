@@ -19,6 +19,6 @@
         /// Gets list of users which role is Admin.
         /// </summary>
         /// <returns>List of User entities.</returns>
-        IList<User> GetAdminsList();
+        List<User> GetAdminsList();
     }
 }

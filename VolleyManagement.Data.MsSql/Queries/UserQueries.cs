@@ -143,7 +143,7 @@
                 this._unitOfWork.Context.Users
                 .Where(i => i.Id == criteria.Id)
                 .Select(GetUserMapping())
-                .Single();
+                .SingleOrDefault();
         }
         #endregion
 

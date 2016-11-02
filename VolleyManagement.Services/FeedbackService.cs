@@ -2,11 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Configuration;
     using Contracts;
     using Crosscutting.Contracts.Providers;
     using Domain.FeedbackAggregate;
-    using Domain.Properties;
     using VolleyManagement.Crosscutting.Contracts.MailService;
     using VolleyManagement.Domain.UsersAggregate;
 
@@ -59,8 +57,6 @@
             }
 
             UpdateFeedbackDate(feedbackToCreate);
-
-            ValidateFeedback(feedbackToCreate);
             _feedbackRepository.Add(feedbackToCreate);
             _feedbackRepository.UnitOfWork.Commit();
 
@@ -115,36 +111,6 @@
                 EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);
                 _mailService.Send(emailMessage);
             }
-        }
-
-        private void ValidateContent(string feedbackContent)
-        {
-            if (FeedbackValidation.ValidateContent(feedbackContent))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                    Resources.ValidationFeedbackContent,
-                    VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
-                    Resources.FeedbackContentParam);
-            }
-        }
-
-        private void ValidateMail(string feedbackMail)
-        {
-            if (FeedbackValidation.ValidateUsersEmail(feedbackMail))
-            {
-                throw new ArgumentException(
-                    string.Format(
-                        Resources.ValidationFeedbackUsersEmail,
-                        VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH),
-                    Resources.FeedbackUsersEmailParam);
-            }
-        }
-
-        private void ValidateFeedback(Feedback feedbackToValidate)
-        {
-            ValidateContent(feedbackToValidate.Content);
-            ValidateMail(feedbackToValidate.UsersEmail);
         }
         #endregion
     }

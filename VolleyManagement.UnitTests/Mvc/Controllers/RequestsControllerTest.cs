@@ -118,7 +118,7 @@
             var actionResult = controller.Reply(FEEDBACK_ID);
 
             // Assert
-            AssertValidRedirectResult(actionResult, "Reply");
+            AssertValidRedirectResult(actionResult, "Index");
         }
 
         [TestMethod]

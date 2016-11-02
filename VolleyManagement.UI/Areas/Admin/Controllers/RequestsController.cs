@@ -38,7 +38,7 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Details(int id)
         {
-            var feedback = _feedbackService.GetDetails(id);
+            var feedback = new RequestsViewModel(_feedbackService.GetDetails(id));
             return View(feedback);
         }
 

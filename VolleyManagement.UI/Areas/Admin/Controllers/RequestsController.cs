@@ -50,7 +50,7 @@
         public ActionResult Reply(int id)
         {
             _feedbackService.Reply(id);
-            return RedirectToAction("Reply");
+            return RedirectToAction("Index");
         }
 
         /// <summary>

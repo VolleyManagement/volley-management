@@ -31,6 +31,8 @@
         public const string ERROR_FOR_UNIT_OF_WORK_VERIFY
             = "Can't save feedback to database";
 
+        public const int SPECIFIC_FEEDBACK_ID = 2;
+
         private const int EXISTING_ID = 1;
 
         private const int INVALID_FEEDBACK_ID = -1;
@@ -41,8 +43,6 @@
 
         private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock
             = new Mock<IFeedbackRepository>();
-
-        public const int SPECIFIC_FEEDBACK_ID = 2;
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock = new Mock<IFeedbackService>();
 

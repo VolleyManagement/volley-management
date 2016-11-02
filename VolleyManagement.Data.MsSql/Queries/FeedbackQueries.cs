@@ -15,7 +15,7 @@
     /// Provides Object Query implementation for Roles
     /// </summary>
     public class FeedbackQueries : IQuery<List<Feedback>, GetAllCriteria>,
-                                IQuery<Feedback, FindByIdCriteria>
+                                    IQuery<Feedback, FindByIdCriteria>
     {
         #region Fields
 
@@ -75,7 +75,8 @@
                     UsersEmail = t.UsersEmail,
                     Content = t.Content,
                     Status = (FeedbackStatusEnum)t.Status,
-                    Date = t.UpdateDate,
+                    Date = t.Date,
+                    AdminName = t.AdminName,
                     UpdateDate = t.UpdateDate
                 };
         }

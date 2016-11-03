@@ -70,6 +70,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you agree to provide additional information about your browser and operation system?.
+        /// </summary>
+        internal static string EnvironmentQuestion {
+            get {
+                return ResourceManager.GetString("EnvironmentQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback Sent.
         /// </summary>
         internal static string FeedbackSent {

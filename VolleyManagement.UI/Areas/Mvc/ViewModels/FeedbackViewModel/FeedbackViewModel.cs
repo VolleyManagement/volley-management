@@ -34,14 +34,7 @@
         [StringLength(5000)]
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
-
-        /// <summary>
-        /// Question to user.
-        /// </summary>
-        public const string USER_ENVIRONMENT_QUESTION =         // TO DO : Resources
-            "Are you agree to provide additional information " +
-            "about your browser and operation system?";
-
+        
         /// <summary>
         /// Environment (browser  and operating system) of user's computer.
         /// </summary>

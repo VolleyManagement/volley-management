@@ -12,6 +12,7 @@
     {
         private const string TEST_MAIL = "test@gmail.com";
         private const string TEST_CONTENT = "Test content";
+        private const string TEST_ENVIRONMENT = "Test environment";
 
         /// <summary>
         /// Holds test feedback team view model instance.
@@ -28,7 +29,8 @@
             {
                 Id = 1,
                 UsersEmail = TEST_MAIL,
-                Content = TEST_CONTENT
+                Content = TEST_CONTENT,
+                UserEnvironment = TEST_ENVIRONMENT
             };
         }
 
@@ -62,6 +64,17 @@
         public FeedbackMvcViewModelBuilder WithContent(string content)
         {
             this._feedbackViewModel.Content = content;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the feedback view model environment.
+        /// </summary>
+        /// <param name="content">Feedback view model content.</param>
+        /// <returns>Feedback view model object.</returns>
+        public FeedbackMvcViewModelBuilder WithEnvironment(string environment)
+        {
+            this._feedbackViewModel.UserEnvironment = environment;
             return this;
         }
 

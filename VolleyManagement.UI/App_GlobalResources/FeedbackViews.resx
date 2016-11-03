@@ -120,6 +120,9 @@
   <data name="CreateFeedback" xml:space="preserve">
     <value>Create Feedback</value>
   </data>
+  <data name="EnvironmentQuestion" xml:space="preserve">
+    <value>Are you agree to provide additional information about your browser and operation system?</value>
+  </data>
   <data name="FeedbackSent" xml:space="preserve">
     <value>Feedback Sent</value>
   </data>

@@ -31,6 +31,7 @@
         private const string FEEDBACK_SENT_MESSAGE = "FeedbackSentMessage";
         private const string TEST_MAIL = "test@gmail.com";
         private const string TEST_CONTENT = "Test content";
+        private const string TEST_ENVIRONMENT = "Test environment";
         private const string EXCEPTION_KEY = "ValidationMessage";
         private const string EXCEPTION_MESSAGE = "Please, enter the valid email\r\nParameter name: UsersEmail";
 
@@ -213,6 +214,7 @@
                     .WithId(TEST_ID)
                     .WithEmail(TEST_MAIL)
                     .WithContent(TEST_CONTENT)
+                    .WithEnvironment(TEST_ENVIRONMENT)
                     .Build();
         }
 
@@ -223,6 +225,7 @@
                     .WithId(TEST_ID)
                     .WithEmail(TEST_MAIL)
                     .WithContent(TEST_CONTENT)
+                    .WithEnvironment(TEST_ENVIRONMENT)
                     .WithDate(DateTime.MinValue)
                     .WithStatus(0)
                     .Build();

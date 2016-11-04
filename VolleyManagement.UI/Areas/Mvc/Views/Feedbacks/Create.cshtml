@@ -33,10 +33,15 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Send" id="send-feedback" class="btn btn-success" />
+                <div>
+                    @using (Html.BeginForm("FormSubmit", "Feedbacks", FormMethod.Post))
+                    {
+                        <div class="g-recaptcha" data-sitekey="6LcS5woUAAAAANLbUgwxUXdLGyQSTDYO0DuVdNlH"></div>
+                        <input type="submit" value="Send" id="send-feedback" class="btn btn-success" />
+                    }
+                </div>
             </div>
         </div>
-
     </div>
 }
 
@@ -45,3 +50,5 @@
 </div>
 
 @Scripts.Render("~/bundles/feedbackscripts")
+
+<script src='https://www.google.com/recaptcha/api.js'></script>

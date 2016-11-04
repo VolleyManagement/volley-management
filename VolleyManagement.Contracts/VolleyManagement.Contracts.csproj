@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +64,7 @@
     <Compile Include="Authorization\IUserService.cs" />
     <Compile Include="Exceptions\AuthorizationException.cs" />
     <Compile Include="Exceptions\MissingEntityException.cs" />
+    <Compile Include="ICaptchaManager.cs" />
     <Compile Include="IContributorTeamService.cs" />
     <Compile Include="IFeedbackService.cs" />
     <Compile Include="IGameReportService.cs" />

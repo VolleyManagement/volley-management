@@ -2,8 +2,8 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Web;
     using System.Web.Mvc;
-
     using Contracts;
     using Contracts.Authorization;
     using Domain.FeedbackAggregate;
@@ -43,6 +43,9 @@
         private readonly Mock<ICurrentUserService> _currentUserServiceMock =
             new Mock<ICurrentUserService>();
 
+        private readonly Mock<ICaptchaManager> _captchaManagerMock =
+            new Mock<ICaptchaManager>();
+
         private IKernel _kernel;
 
         #endregion
@@ -62,6 +65,10 @@
                 .ToConstant(this._userServiceMock.Object);
             this._kernel.Bind<ICurrentUserService>()
                 .ToConstant(this._currentUserServiceMock.Object);
+            this._kernel.Bind<ICaptchaManager>()
+                .ToConstant(this._captchaManagerMock.Object);
+
+            _captchaManagerMock.Setup(m => m.FormSubmit(It.IsAny<HttpRequestBase>())).Returns(true);
         }
 
         #endregion

@@ -1,13 +1,13 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
+    using System.Web;
     using System.Web.Mvc;
-
     using Contracts;
     using Contracts.Authorization;
     using Domain.UsersAggregate;
     using ViewModels.FeedbackViewModel;
-    
+
     /// <summary>
     /// Defines feedback controller.
     /// </summary>
@@ -21,6 +21,7 @@
         private readonly IUserService _userService;
         private readonly ICurrentUserService _currentUserService;
         private readonly IFeedbackService _feedbackService;
+        private ICaptchaManager _captchaManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
@@ -31,14 +32,18 @@
         /// that implements IUserService interface.</param>
         /// <param name="currentUserService">Instance of the class
         /// that implements ICurrentUserService interface.</param>
+        /// <param name="captchaManager">Instance of the class
+        /// that implements ICaptchaManager interface.</param>
         public FeedbacksController(
             IFeedbackService feedbackService,
             IUserService userService,
-            ICurrentUserService currentUserService)
+            ICurrentUserService currentUserService,
+            ICaptchaManager captchaManager)
         {
             this._feedbackService = feedbackService;
             this._userService = userService;
             this._currentUserService = currentUserService;
+            this._captchaManager = captchaManager;
         }
 
         /// <summary>
@@ -65,11 +70,15 @@
         {
             try
             {
-                if (ModelState.IsValid)
+                HttpRequestBase response = Request;
+                if (_captchaManager.FormSubmit(response))
                 {
-                    var domainFeedback = feedbackViewModel.ToDomain();
-                    this._feedbackService.Create(domainFeedback);
-                    return View("FeedbackSentMessage");
+                    if (ModelState.IsValid)
+                    {
+                        var domainFeedback = feedbackViewModel.ToDomain();
+                        this._feedbackService.Create(domainFeedback);
+                        return View("FeedbackSentMessage");
+                    } 
                 }
             }
             catch (ArgumentException ex)
@@ -98,6 +107,6 @@
             }
 
             return currentUser.Email;
-        }
-    }
+        } 
+    }  
 }

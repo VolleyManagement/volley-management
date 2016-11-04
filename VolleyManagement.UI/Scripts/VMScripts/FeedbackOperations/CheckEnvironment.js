@@ -1,21 +1,24 @@
 ﻿;$(document).ready(function () {
 
     var environment = navigator.userAgent;
-    $('#isUserAgree').prop('checked', true);
-    $('#UserEnvironment').val(environment);
+    var isUserAgree = $('#isUserAgree');
+    var UserEnvironment = $('#UserEnvironment');
 
-    $("#isUserAgree").change(function () {
+    isUserAgree.prop('checked', true);
+    UserEnvironment.val(environment);
+
+    isUserAgree.change(function () {
         if (this.checked) {
-            $('#UserEnvironment').val(environment);
+            UserEnvironment.val(environment);
         }
         else {
-            $('#UserEnvironment').val('');
+            UserEnvironment.val('');
         }
     });
 
-    $('#feedbackForm').submit(function() {
-        if (!$('#isUserAgree').prop('checked')) {
-            $('#UserEnvironment').val('');
+    $('#feedbackForm').submit(function () {
+        if (!isUserAgree.prop('checked')) {
+            UserEnvironment.val('');
         }
     });
 });

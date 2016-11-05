@@ -21,4 +21,6 @@
             UserEnvironment.val('');
         }
     });
+
+    $('#Content').focus();
 });

@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VolleyManagement.Domain.UsersAggregate;
-
-namespace VolleyManagement.UnitTests.Services.UsersService
+﻿namespace VolleyManagement.UnitTests.Services.UsersService
 {
-        /// <summary>
-        /// Comparer for user objects.
-        /// </summary>
-        [ExcludeFromCodeCoverage]
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using VolleyManagement.Domain.UsersAggregate;
+
+    /// <summary>
+    /// Comparer for user objects.
+    /// </summary>
+    [ExcludeFromCodeCoverage]
         internal class UserComparer : IComparer<User>, IComparer
         {
             /// <summary>

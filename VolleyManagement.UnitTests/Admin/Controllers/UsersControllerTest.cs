@@ -1,22 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Web.Routing;
-using VolleyManagement.Domain.RolesAggregate;
-using VolleyManagement.UI.Areas.Admin.Models;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-using VolleyManagement.UnitTests.Services.PlayerService;
-using VolleyManagement.UnitTests.Services.UserManager;
-using VolleyManagement.UnitTests.Services.UsersService;
-
-using VolleyManagement.UnitTests.Admin.ViewModels;
-using VolleyManagement.UnitTests.Mvc.ViewModels;
-
-namespace VolleyManagement.UnitTests.Admin.Controllers
+﻿namespace VolleyManagement.UnitTests.Admin.Controllers
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.Mvc;
+    using Comparers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -24,7 +12,11 @@ namespace VolleyManagement.UnitTests.Admin.Controllers
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.UI.Areas.Admin.Controllers;
-    using Comparers;
+    using VolleyManagement.UI.Areas.Admin.Models;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using VolleyManagement.UnitTests.Admin.ViewModels;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.UsersService;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -63,14 +55,12 @@ namespace VolleyManagement.UnitTests.Admin.Controllers
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
 
-      
-
         [TestMethod]
         public void UserDetails_ExistingUser_UserViewModelIsReturned()
         {
             // Arrange
             var user = CreateUser();
-            SetupGetUserDetails(EXISTING_ID,user);
+            SetupGetUserDetails(EXISTING_ID, user);
 
             var expected = CreateUserViewModel();
 
@@ -80,8 +70,6 @@ namespace VolleyManagement.UnitTests.Admin.Controllers
             // Assert
             TestHelper.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
         }
-
-
 
         private User CreateUser()
         {
@@ -95,7 +83,6 @@ namespace VolleyManagement.UnitTests.Admin.Controllers
             var player = CreatePlayerViewModel();
 
             return new UserAdminViewModelBuilder().Build();
-
         }
 
         private PlayerViewModel CreatePlayerViewModel()
@@ -122,6 +109,5 @@ namespace VolleyManagement.UnitTests.Admin.Controllers
         {
             return new UserServiceTestFixture().TestUsers().Build();
         }
-
     }
 }

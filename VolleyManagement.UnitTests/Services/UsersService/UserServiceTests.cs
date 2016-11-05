@@ -1,30 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Ninject;
-using VolleyManagement.Contracts.Authorization;
-using VolleyManagement.Data.Contracts;
-using VolleyManagement.Data.Queries.Common;
-using VolleyManagement.Data.Queries.Team;
-using VolleyManagement.Domain.PlayersAggregate;
-using VolleyManagement.Domain.UsersAggregate;
-using VolleyManagement.Contracts;
-using VolleyManagement.Contracts.Exceptions;
-using VolleyManagement.Domain.RolesAggregate;
-using VolleyManagement.Services.Authorization;
-using VolleyManagement.UI.Infrastructure;
-using VolleyManagement.UnitTests.Services.FeedbackService;
-
-namespace VolleyManagement.UnitTests.Services.UsersService
+﻿namespace VolleyManagement.UnitTests.Services.UsersService
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using Ninject;
+    using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
+    using VolleyManagement.UI.Infrastructure;
+
     [ExcludeFromCodeCoverage]
     [TestClass]
-    class UserServiceTests
+    public class UserServiceTests
     {
         private const int EXISTING_ID = 1;
 
@@ -40,7 +34,6 @@ namespace VolleyManagement.UnitTests.Services.UsersService
             new Mock<IQuery<User, FindByIdCriteria>>();
 
         private readonly UserServiceTestFixture _testFixture = new UserServiceTestFixture();
-
 
         private IKernel _kernel;
 
@@ -142,7 +135,6 @@ namespace VolleyManagement.UnitTests.Services.UsersService
             VerifyExceptionThrown(exception, "Requested operation is not allowed");
         }
 
-
         private void MockAuthServiceThrowsExeption(AuthOperation operation)
         {
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
@@ -163,7 +155,5 @@ namespace VolleyManagement.UnitTests.Services.UsersService
             Assert.IsNotNull(exception, "There is no exception thrown");
             Assert.IsTrue(exception.Message.Equals(expectedMessage), "Expected and actual exceptions messages aren't equal");
         }
-
-
     }
 }

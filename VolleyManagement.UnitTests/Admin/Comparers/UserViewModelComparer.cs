@@ -1,18 +1,16 @@
-﻿using System.Linq;
-using VolleyManagement.UnitTests.Mvc.ViewModels;
-
-namespace VolleyManagement.UnitTests.Admin.Comparers
+﻿namespace VolleyManagement.UnitTests.Admin.Comparers
 {
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
     using VolleyManagement.UI.Areas.Admin.Models;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
 
     /// <summary>
     /// Compares User instances
     /// </summary>
     [ExcludeFromCodeCoverage]
+
     public class UserViewModelComparer : IComparer<UserViewModel>, IComparer
     {
         public int Compare(UserViewModel x, UserViewModel y)
@@ -50,8 +48,7 @@ namespace VolleyManagement.UnitTests.Admin.Comparers
             {
                 result = playerComparer.Compare(x.Player, y.Player) == 0;
             }
-                           
-        
+
             if (result && x.LoginProviders != null)
             {
                 foreach (var xProvider in x.LoginProviders)
@@ -59,7 +56,7 @@ namespace VolleyManagement.UnitTests.Admin.Comparers
                     bool providerFound = false;
                     foreach (var yProvider in y.LoginProviders)
                     {
-                        if (yProvider.LoginProvider == xProvider.LoginProvider 
+                        if (yProvider.LoginProvider == xProvider.LoginProvider
                             && xProvider.ProviderKey == yProvider.ProviderKey)
                         {
                             providerFound = true;
@@ -95,6 +92,7 @@ namespace VolleyManagement.UnitTests.Admin.Comparers
                     }
                 }
             }
+
             return result;
         }
     }

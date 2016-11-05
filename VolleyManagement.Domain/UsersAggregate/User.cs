@@ -1,8 +1,7 @@
-﻿using VolleyManagement.Domain.PlayersAggregate;
-
-namespace VolleyManagement.Domain.UsersAggregate
+﻿namespace VolleyManagement.Domain.UsersAggregate
 {
     using System.Collections.Generic;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>

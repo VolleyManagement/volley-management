@@ -1,20 +1,16 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using VolleyManagement.Domain.RolesAggregate;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-
-namespace VolleyManagement.UI.Areas.Admin.Models
+﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
-    using Domain.PlayersAggregate;
+    using System.Collections.Generic;
     using VolleyManagement.Domain.Dto;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
     /// The user view model.
     /// </summary>
     public class UserViewModel
     {
-
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
@@ -62,9 +58,14 @@ namespace VolleyManagement.UI.Areas.Admin.Models
         /// <returns> The <see cref="UserViewModel"/>. </returns>
         public static UserViewModel From(UserInRoleDto user)
         {
-            return new UserViewModel { Id = user.UserId, Name = user.UserName};
+            return new UserViewModel { Id = user.UserId, Name = user.UserName };
         }
 
+        /// <summary>
+        /// Creates <see cref="UserViewModel"/> instance
+        /// </summary>
+        /// <param name="user"> The source instance. </param>
+        /// <returns> The <see cref="UserViewModel"/>. </returns>
         public static UserViewModel Initialize(User user)
         {
             return new UserViewModel
@@ -91,8 +92,7 @@ namespace VolleyManagement.UI.Areas.Admin.Models
                 Email = user.Email,
                 PersonName = user.PersonName,
                 Phone = user.PhoneNumber,
-                LoginProviders = user.LoginProviders
-               
+                LoginProviders = user.LoginProviders               
             };
 
             if (user.Roles != null)

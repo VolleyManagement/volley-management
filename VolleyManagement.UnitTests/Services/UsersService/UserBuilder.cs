@@ -1,17 +1,17 @@
-﻿using VolleyManagement.Domain.RolesAggregate;
-
-namespace VolleyManagement.UnitTests.Services.UsersService
+﻿namespace VolleyManagement.UnitTests.Services.UsersService
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Contracts.Authentication.Models;
-
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
+
     /// <summary>
     /// Builder for test users
     /// </summary>
     [ExcludeFromCodeCoverage]
+
     internal class UserBuilder
     {
         /// <summary>
@@ -20,7 +20,7 @@ namespace VolleyManagement.UnitTests.Services.UsersService
         private User _user;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserModelBuilder"/> class
+        /// Initializes a new instance of the <see cref="UserBuilder"/> class
         /// </summary>
         public UserBuilder()
         {

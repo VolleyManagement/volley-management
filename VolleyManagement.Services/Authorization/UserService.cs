@@ -1,6 +1,4 @@
-﻿using VolleyManagement.Contracts.Authorization;
-
-namespace VolleyManagement.UI.Infrastructure
+﻿namespace VolleyManagement.UI.Infrastructure
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +6,7 @@ namespace VolleyManagement.UI.Infrastructure
     using Data.Contracts;
     using Data.Queries.Common;
     using Domain.UsersAggregate;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
 
@@ -24,13 +23,15 @@ namespace VolleyManagement.UI.Infrastructure
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
         /// </summary>
+        /// <param name="authService">Authorization service</param>
         /// <param name="getUserByIdQuery">Query for getting User by Id.</param>
         /// <param name="getAllUsersQuery">Query for getting all User.</param>
+        /// <param name="getUserPlayerQuery">Query for getting player assigned to User</param>
         public UserService(
             IAuthorizationService authService,
             IQuery<User, FindByIdCriteria> getUserByIdQuery,
             IQuery<List<User>, GetAllCriteria> getAllUsersQuery,
-            IQuery<Player,FindByIdCriteria> getUserPlayerQuery)
+            IQuery<Player, FindByIdCriteria> getUserPlayerQuery)
         {
             _authService = authService;
             _getUserByIdQuery = getUserByIdQuery;
@@ -57,7 +58,7 @@ namespace VolleyManagement.UI.Infrastructure
         public User GetUserDetails(int userId)
         {
             this._authService.CheckAccess(AuthOperations.AllUsers.ViewDetails);
-            var user= this.GetUser(userId);
+            var user = this.GetUser(userId);
             user.Player = this.GetPlayer(user.PlayerId);
 
             return user;

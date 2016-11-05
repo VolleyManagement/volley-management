@@ -3,21 +3,20 @@
     using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
-    /// The auth provider view model.
+    /// The authorization provider view model.
     /// </summary>
     public class LoginProviderViewModel
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginProviderViewModel"/> class.
         /// </summary>
-        /// <param name="authProvider">
-        /// The auth provider info.
+        /// <param name="loginProvider">
+        /// The login provider info.
         /// </param>
-        public LoginProviderViewModel(LoginProviderInfo authProvider)
+        public LoginProviderViewModel(LoginProviderInfo loginProvider)
         {
-            LoginProvider = authProvider.LoginProvider;
-            ProviderKey = authProvider.ProviderKey;
+            LoginProvider = loginProvider.LoginProvider;
+            ProviderKey = loginProvider.ProviderKey;
         }
 
         /// <summary>

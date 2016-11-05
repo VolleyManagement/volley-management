@@ -10,9 +10,11 @@
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Admin.Models;
 
+    /// <summary>
+    /// Provides User management
+    /// </summary>
     public class UsersController : Controller
     {
-
         private readonly IAuthorizationService _authService;
         private readonly IUserService _userService;
 
@@ -21,21 +23,29 @@
         /// </summary>
         /// <param name="authService">Authorization service</param>
         /// <param name="userService">User service</param>
-        public UsersController(IAuthorizationService authService,
-                               IUserService userService )
+        public UsersController(
+                               IAuthorizationService authService,
+                               IUserService userService)
         {
             this._authService = authService;
             this._userService = userService;
         }
 
-        // GET: Admin/AllUsers
+        /// <summary>
+        /// Get all user list view.
+        /// </summary>
+        /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Index()
         {
             var users = _userService.GetAllUsers().ConvertAll(UserViewModel.Initialize);
             return View(users);
         }
 
-        // GET: Admin/GetDetails
+        /// <summary>
+        /// Get user's details view.
+        /// </summary>
+        /// <param name="id"> User Id. </param>
+        /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult UserDetails(int id)
         {
             var user = _userService.GetUserDetails(id);

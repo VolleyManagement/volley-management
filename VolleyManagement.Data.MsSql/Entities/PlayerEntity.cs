@@ -54,6 +54,9 @@
         /// </summary>
         public virtual ICollection<TeamEntity> LedTeam { get; set; }
 
+        /// <summary>
+        /// Gets or sets player assigned to assigned
+        /// </summary>
         public virtual ICollection<UserEntity> PlayerUser { get; set; }
     }
 }

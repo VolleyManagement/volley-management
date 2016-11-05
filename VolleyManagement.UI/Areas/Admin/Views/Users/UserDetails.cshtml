@@ -64,9 +64,11 @@
     <div class="panel-heading"> @Html.LabelFor(model => Model.Roles)</div>
     @if (Model.Roles == null)
     {
-        <tr>
-            <td colspan="3" class="text-center">No roles assigned to user</td>
-        </tr>
+        <table class="table table-striped">
+            <tr>
+                <td colspan="3" class="text-center">No roles assigned to user</td>
+            </tr>
+        </table>
     }
     else
     {
@@ -91,9 +93,9 @@
     <table class="table table-striped">
         @if (Model.Player == null)
         {
-            <tr>
-                <td colspan="3" class="text-center">No player assigned to user</td>
-            </tr>
+               <tr>
+                   <td colspan="3" class="text-center">No player assigned to user</td>
+               </tr>
         }
         else
         {

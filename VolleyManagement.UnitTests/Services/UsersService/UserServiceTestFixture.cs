@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using VolleyManagement.Domain.RolesAggregate;
-using VolleyManagement.Domain.UsersAggregate;
-
-namespace VolleyManagement.UnitTests.Services.UsersService
+﻿namespace VolleyManagement.UnitTests.Services.UsersService
 {
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+
+    using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
+
     /// <summary>
     /// Class for generating test data
     /// </summary>
@@ -50,7 +46,6 @@ namespace VolleyManagement.UnitTests.Services.UsersService
                         Name = "Administrator"
                     }
                 }
-
             });
             _users.Add(new User()
             {
@@ -75,12 +70,10 @@ namespace VolleyManagement.UnitTests.Services.UsersService
                         Name = "TournamentAdministrator"
                     }
                 }
-
             });
 
             return this;
         }
-
 
         /// <summary>
         /// Builds test data

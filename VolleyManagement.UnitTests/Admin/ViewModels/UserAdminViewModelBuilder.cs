@@ -1,12 +1,11 @@
-﻿using VolleyManagement.Domain.RolesAggregate;
-using VolleyManagement.Domain.UsersAggregate;
-using VolleyManagement.UI.Areas.Admin.Models;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-
-namespace VolleyManagement.UnitTests.Admin.ViewModels
+﻿namespace VolleyManagement.UnitTests.Admin.ViewModels
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
+    using VolleyManagement.UI.Areas.Admin.Models;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
     /// Builder for test MVC user view models
@@ -41,7 +40,7 @@ namespace VolleyManagement.UnitTests.Admin.ViewModels
                 },
                 Roles = new List<Role>
                 {
-                      new Role
+                    new Role
                     {
                         Id = 1,
                         Name = "Administrator"
@@ -137,4 +136,3 @@ namespace VolleyManagement.UnitTests.Admin.ViewModels
         }
     }
 }
-

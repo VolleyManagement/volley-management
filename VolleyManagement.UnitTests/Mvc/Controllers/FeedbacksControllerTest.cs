@@ -31,7 +31,8 @@
         private const string FEEDBACK_SENT_MESSAGE = "FeedbackSentMessage";
         private const string TEST_MAIL = "test@gmail.com";
         private const string TEST_CONTENT = "Test content";
-        private const string EXCEPTION_MESSAGE = "ValidationMessage";
+        private const string EXCEPTION_KEY = "ValidationMessage";
+        private const string EXCEPTION_MESSAGE = "Please, enter the valid email\r\nParameter name: UsersEmail";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
             new Mock<IFeedbackService>();
@@ -190,11 +191,11 @@
             var feedback = CreateInvalidFeedback();
 
             this._feedbackServiceMock.Setup(f => f.Create(It.IsAny<Feedback>()))
-                .Throws(new ArgumentException(EXCEPTION_MESSAGE));
+                .Throws(new ArgumentException(EXCEPTION_KEY));
 
             // Act
             sut.Create(feedback);
-            var res = sut.ModelState[EXCEPTION_MESSAGE].Errors;
+            var res = sut.ModelState[EXCEPTION_KEY].Errors;
 
             // Assert
             Assert.IsFalse(sut.ModelState.IsValid);
@@ -223,7 +224,6 @@
                     .WithEmail(TEST_MAIL)
                     .WithContent(TEST_CONTENT)
                     .WithDate(DateTime.MinValue)
-                    .WithStatus(0)
                     .Build();
         }
 

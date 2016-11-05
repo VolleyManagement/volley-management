@@ -125,19 +125,34 @@
         public static class Feedbacks
         {
             /// <summary>
-            /// Create player operation
+            /// Create feedback operation
             /// </summary>
             public static readonly AuthOperation Create = Tuple.Create(FEEDBACKS, 1);
 
             /// <summary>
-            /// Edit player operation
+            /// Edit feedback operation
             /// </summary>
             public static readonly AuthOperation Edit = Tuple.Create(FEEDBACKS, 2);
 
             /// <summary>
-            /// Delete player operation
+            /// Delete feedback operation
             /// </summary>
             public static readonly AuthOperation Delete = Tuple.Create(FEEDBACKS, 3);
+
+            /// <summary>
+            /// Read feedback
+            /// </summary>
+            public static readonly AuthOperation Read = Tuple.Create(FEEDBACKS, 4);
+
+            /// <summary>
+            /// Answer on feedback
+            /// </summary>
+            public static readonly AuthOperation Reply = Tuple.Create(FEEDBACKS, 5);
+
+            /// <summary>
+            /// Close feedback
+            /// </summary>
+            public static readonly AuthOperation Close = Tuple.Create(FEEDBACKS, 6);
         }
 
         /// <summary>

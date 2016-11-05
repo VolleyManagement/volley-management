@@ -32,7 +32,7 @@
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException(nameof(value));
+                    throw new ArgumentNullException("value");
                 }
 
                 TimeProvider._current = value;

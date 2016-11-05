@@ -1,0 +1,40 @@
+﻿@model VolleyManagement.UI.Areas.Admin.Models.RequestsViewModel
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Request @Model.Id</div>
+    <table class="table table-striped">
+        <tr>
+            <td>ID</td>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>@Model.UsersEmail</td>
+        </tr>
+        <tr>
+            <td>Content</td>
+            <td>@Model.Content</td>
+        </tr>
+        <tr>
+            <td>Environment</td>
+            <td>@*@Model.UserEnvironment*@</td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>@Model.Date</td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>@Model.Status</td>
+        </tr>
+        <tr>
+            <td>Admin name</td>
+            <td>@Model.AdminName</td>
+        </tr>
+        <tr>
+            <td>Reply date</td>
+            <th>@Model.UpdateDate</th>
+        </tr>        
+    </table>
+</div>
+

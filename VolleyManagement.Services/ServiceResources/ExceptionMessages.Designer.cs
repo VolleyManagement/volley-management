@@ -79,11 +79,29 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A feedback with specified identifier was not found.
+        /// </summary>
+        internal static string FeedbackNotFound {
+            get {
+                return ResourceManager.GetString("FeedbackNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Игра с указаным идентификатором не была найдена.
         /// </summary>
         internal static string GameNotFound {
             get {
                 return ResourceManager.GetString("GameNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not authorized.Please login again..
+        /// </summary>
+        internal static string NotAuthorized {
+            get {
+                return ResourceManager.GetString("NotAuthorized", resourceCulture);
             }
         }
         

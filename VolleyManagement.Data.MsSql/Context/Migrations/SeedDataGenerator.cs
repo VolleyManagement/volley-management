@@ -1105,7 +1105,11 @@
                 AuthOperations.AllUsers.ViewList,
                 AuthOperations.AllUsers.ViewDetails,
                 AuthOperations.Feedbacks.Edit,
-                AuthOperations.Feedbacks.Delete
+                AuthOperations.Feedbacks.Delete,
+                AuthOperations.Feedbacks.Read,
+                AuthOperations.Feedbacks.Reply,
+                AuthOperations.Feedbacks.Close,
+                AuthOperations.AdminDashboard.View
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

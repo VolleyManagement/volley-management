@@ -41,6 +41,11 @@ namespace VolleyManagement.Data.MsSql.Entities
         public string CellPhone { get; set; }
 
         /// <summary>
+        /// Gets or sets boolean value pointing is user blocked .
+        /// </summary>
+        public bool IsUserBlocked { get; set; }
+
+        /// <summary>
         /// Login providers
         /// </summary>
         public virtual ICollection<LoginInfoEntity> LoginProviders { get; set; }

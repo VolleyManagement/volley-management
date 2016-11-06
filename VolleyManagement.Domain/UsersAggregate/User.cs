@@ -41,6 +41,11 @@
         public string PhoneNumber { get; set; }
 
         /// <summary>
+        /// It is true for potentially dangerous users.
+        /// </summary>
+        public bool IsUserBlocked { get; set; }
+
+        /// <summary>
         /// External login information for the user
         /// </summary>
         public IEnumerable<LoginProviderInfo> LoginProviders { get; set; }

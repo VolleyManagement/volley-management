@@ -70,8 +70,8 @@
         {
             try
             {
-                HttpRequestBase response = Request;
-                if (_captchaManager.FormSubmit(response))
+                HttpRequestBase request = Request;
+                if (_captchaManager.IsFormSubmit(request))
                 {
                     if (ModelState.IsValid)
                     {

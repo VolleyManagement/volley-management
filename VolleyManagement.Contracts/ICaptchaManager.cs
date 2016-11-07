@@ -12,6 +12,6 @@
         /// </summary>
         /// <param name="request">Request to the browser</param>
         /// <returns>Captcha result</returns>
-        bool FormSubmit(HttpRequestBase request);
+        bool IsFormSubmit(HttpRequestBase request);
     }
 }

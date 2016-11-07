@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="request">Get request from browser</param>
         /// <returns>Captcha result</returns>
-        public bool FormSubmit(HttpRequestBase request)
+        public bool IsFormSubmit(HttpRequestBase request)
         {
             const string SECRET_KEY = "CaptchaSecret";
             var response = request["g-recaptcha-response"];

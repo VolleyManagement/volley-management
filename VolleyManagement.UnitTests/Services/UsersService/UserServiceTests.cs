@@ -117,7 +117,7 @@
             // Arrange
             Exception exception = null;
             var testData = _testFixture.TestUsers().Build();
-            MockAuthServiceThrowsExeption(AuthOperations.AllUsers.ViewList);
+            MockAuthServiceThrowsExeption(AuthOperations.AllUsers.ViewDetails);
 
             var sut = _kernel.Get<UserService>();
 

@@ -6,10 +6,12 @@
     using System.Web;
     using System.Web.Mvc;
 
+    using Contracts;
     using Contracts.Authentication;
     using Contracts.Authentication.Models;
     using Contracts.Authorization;
 
+    using Domain.UsersAggregate;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
@@ -26,18 +28,22 @@
     {
         private readonly IVolleyUserManager<UserModel> _userManager;
         private readonly IRolesService _rolesService;
+        private readonly IUserService _userService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
         /// </summary>
         /// <param name="userManager"> User Manager </param>
         /// <param name="rolesService"> Roles service </param>
+        /// <param name="userService"> User service </param>
         public AccountController(
                     IVolleyUserManager<UserModel> userManager,
-                    IRolesService rolesService)
+                    IRolesService rolesService,
+                    IUserService userService)
         {
             this._userManager = userManager;
             this._rolesService = rolesService;
+            this._userService = userService;
         }
 
         private int CurrentUserId
@@ -190,6 +196,7 @@
         {
             ExternalLoginInfo loginInfo = await AuthManager.GetExternalLoginInfoAsync();
             UserModel user = await _userManager.FindAsync(loginInfo.Login);
+
             if (user == null)
             {
                 user = new UserModel
@@ -216,11 +223,24 @@
             ClaimsIdentity ident = await _userManager.CreateIdentityAsync(
                                                         user,
                                                         DefaultAuthenticationTypes.ApplicationCookie);
+
+            if (isUserBlocked(ident.GetUserId<int>()))
+            {
+                return View("Blocked");
+            }
+
             ident.AddClaims(loginInfo.ExternalIdentity.Claims);
             AuthManager.SignOut();
             AuthManager.SignIn(new AuthenticationProperties { IsPersistent = false }, ident);
 
             return Redirect(GetRedirectUrl(returnUrl));
+        }
+
+        private bool isUserBlocked(int userId)
+        {
+            User currentUser = new User();
+            currentUser = this._userService.GetUser(userId);
+            return currentUser.IsUserBlocked;
         }
 
         private string GetRedirectUrl(string returnUrl)

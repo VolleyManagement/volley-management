@@ -41,7 +41,7 @@ namespace VolleyManagement.Data.MsSql.Entities
         public string CellPhone { get; set; }
 
         /// <summary>
-        /// Gets or sets boolean value pointing is user blocked .
+        /// Gets or sets boolean value pointing is user account blocked .
         /// </summary>
         public bool IsUserBlocked { get; set; }
 

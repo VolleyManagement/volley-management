@@ -15,13 +15,13 @@
         User GetUser(int userId);
 
         /// <summary>
-        /// It blocks a dangerous user.
+        /// It blocks an account of unwished user.
         /// </summary>
         /// <param name="userId">User's Id.</param>
         void SetUserBlocked(int userId);
 
         /// <summary>
-        /// It unblocks a user.
+        /// It unblocks an account of pointed user.
         /// </summary>
         /// <param name="userId">User's Id.</param>
         void SetUserUnblocked(int userId);

@@ -41,7 +41,7 @@
         public string PhoneNumber { get; set; }
 
         /// <summary>
-        /// It is true for potentially dangerous users.
+        /// It is true if user account is blocked.
         /// </summary>
         public bool IsUserBlocked { get; set; }
 

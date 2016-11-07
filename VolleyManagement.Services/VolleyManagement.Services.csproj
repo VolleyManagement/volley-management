@@ -65,6 +65,7 @@
     <Compile Include="FeedbackService.cs" />
     <Compile Include="GameReportService.cs" />
     <Compile Include="GameService.cs" />
+    <Compile Include="RequestService.cs" />
     <Compile Include="ServiceResources\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

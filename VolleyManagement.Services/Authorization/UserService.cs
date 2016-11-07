@@ -59,7 +59,11 @@
         {
             this._authService.CheckAccess(AuthOperations.AllUsers.ViewDetails);
             var user = this.GetUser(userId);
-            user.Player = this.GetPlayer(user.PlayerId);
+
+            if (user != null)
+            {
+                user.Player = this.GetPlayer(user.PlayerId);
+            }
 
             return user;
         }

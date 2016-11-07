@@ -78,31 +78,6 @@
         }
 
         /// <summary>
-        /// Creates feedback.
-        /// </summary>
-        /// <param name="feedbackToCreate">Feedback to create.</param>
-        public void CreateRequest(int playerId)
-        {
-            int userId = this._currentUserService.GetCurrentUserId();
-            User user = this._userService.GetUser(userId);
-            var feedback = new Feedback();
-            feedback.UsersEmail = user.Email;
-            feedback.Content = "Please, link my account to player";
-            feedback.PlayerId = playerId;
-            Create(feedback);
-        }
-
-        public void AcceptRequest()
-        {
-           
-        }
-
-        public void DeclineRequest()
-        {
-
-        }
-
-        /// <summary>
         /// Method to get all feedbacks.
         /// </summary>
         /// <returns>All feedbacks.</returns>

@@ -76,6 +76,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RequestsAggregate\IRequestRepository.cs" />
+    <Compile Include="RequestsAggregate\Request.cs" />
     <Compile Include="RolesAggregate\AuthOperation.cs" />
     <Compile Include="RolesAggregate\AuthOperations.cs" />
     <Compile Include="RolesAggregate\IRoleRepository.cs" />

@@ -31,4 +31,5 @@
     @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) @:|
 }
     <a href="@Model.Referer">@Resources.PlayerViews.Back</a>
+    @Html.ActionLink("LinkWithUser", "LinkWithUser", new { id = Model.Model.Id })
 </p>

@@ -353,6 +353,7 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
     <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
+    <Content Include="Areas\Mvc\Views\Players\LinkPlayerToUser.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Areas\Mvc\Views\Tournaments\_NonPlayoffSchedule.cshtml" />

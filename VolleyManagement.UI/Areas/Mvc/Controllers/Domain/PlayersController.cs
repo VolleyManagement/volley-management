@@ -32,16 +32,24 @@
         /// </summary>
         private readonly IPlayerService _playerService;
         private readonly IAuthorizationService _authService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IRequestService _requestService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class
         /// </summary>
         /// <param name="playerService">Instance of the class that implements IPlayerService.</param>
         /// <param name="authService">The authorization service</param>
-        public PlayersController(IPlayerService playerService, IAuthorizationService authService)
+        public PlayersController(
+            IPlayerService playerService, 
+            IAuthorizationService authService,
+            ICurrentUserService currentUserService,
+            IRequestService requestService)
         {
             this._playerService = playerService;
             this._authService = authService;
+            this._currentUserService = currentUserService;
+            this._requestService = requestService;
         }
 
         /// <summary>
@@ -88,6 +96,22 @@
             var model = new PlayerRefererViewModel(player, returnUrl);
             model.AllowedOperations = this._authService.GetAllowedOperations(AuthOperations.Players.Edit);
             return View(model);
+        }
+
+        /// <summary>
+        /// It links this player to current user.
+        /// </summary>
+        /// <param name="id">Player id.</param>
+        /// <returns></returns>
+        public ActionResult LinkWithUser(int id)
+        {
+            int userId = this._currentUserService.GetCurrentUserId();
+
+            if (userId != -1)
+            {
+                _requestService.Create(userId, id);
+            }
+            return View("LinkPlayerToUser");
         }
 
         /// <summary>

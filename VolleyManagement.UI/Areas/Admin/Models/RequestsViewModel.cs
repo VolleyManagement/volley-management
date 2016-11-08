@@ -29,18 +29,12 @@
             Status = request.Status;
             AdminName = request.AdminName;
             UpdateDate = request.UpdateDate;
-            //// UserEnvironment = request.UserEnvironment;
         }
 
         /// <summary>
         /// Gets or sets the id.
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user environment.
-        /// </summary>
-       //// public string UserEnvironment { get; set; }
 
         /// <summary>
         /// Gets or sets the email.

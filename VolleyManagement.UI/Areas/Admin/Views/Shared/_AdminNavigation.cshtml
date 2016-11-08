@@ -56,13 +56,13 @@
                     <!-- /input-group -->
                 </li>
                 <li>
-                    <a href="Dashboard"><i class='fa fa-dashboard fa-fw'></i>Dashboard</a>
+                    @Html.ActionLink("Dashboard", "Index", "Dashboard", null, new { @class = "" })
                 </li>
                 <li>
-                    <a href="Roles"><i class="fa fa-wrench fa-fw"></i>Manage Roles</a>
+                    @Html.ActionLink("Roles", "Index", "Roles", null, new { @class = "" })
                 </li>
                 <li>
-                    <a href="Requests"><i class="fa fa-wrench fa-fw"></i>Requests</a>
+                   @Html.ActionLink("Roles", "Index", "Requests", null, new { @class = "" })
                 </li>
             </ul>
         </div>

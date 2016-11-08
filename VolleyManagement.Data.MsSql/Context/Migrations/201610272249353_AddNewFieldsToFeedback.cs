@@ -13,7 +13,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         /// </summary>
         public override void Up()
         {
-            AddColumn("dbo.Feedbacks", "UpdateDate", c => c.DateTime(nullable: false, precision: 0, storeType: "datetime2"));
+            AddColumn("dbo.Feedbacks", "UpdateDate", c => c.DateTime(nullable: false, precision: 0, storeType: VolleyDatabaseMetadata.DATETIME2_COLUMN_TYPE));
             AddColumn("dbo.Feedbacks", "AdminName", c => c.String(maxLength: 128));
         }
 

@@ -144,7 +144,7 @@
                 this._unitOfWork.Context.Users
                 .Where(i => i.Id == criteria.Id)
                 .Select(GetUserMapping())
-                .Single();
+                .SingleOrDefault();
         }
 
         /// <summary>
@@ -172,6 +172,7 @@
                     Email = t.Email,
                     PersonName = t.FullName,
                     PhoneNumber = t.CellPhone,
+                    PlayerId = t.PlayerId,
                     LoginProviders = t.LoginProviders.Select(
                                             l => new LoginProviderInfo
                                             {

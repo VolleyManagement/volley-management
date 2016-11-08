@@ -61,7 +61,7 @@
             var user = this.GetUser(userId);
             if (user != null)
             {
-                user.Player = this.GetPlayer(user.PlayerId);
+                user.Player = this.GetPlayer(user.PlayerId.GetValueOrDefault());
             }
             
             return user;

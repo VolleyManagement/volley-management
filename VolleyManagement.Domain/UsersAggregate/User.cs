@@ -45,7 +45,7 @@
         /// <summary>
         /// Player Id
         /// </summary>
-        public int PlayerId { get; set; }
+        public int? PlayerId { get; set; }
 
         /// <summary>
         /// Player instance

@@ -71,14 +71,11 @@
             try
             {
                 HttpRequestBase request = Request;
-                if (_captchaManager.IsFormSubmit(request))
+                if (ModelState.IsValid && _captchaManager.IsFormSubmit(request))
                 {
-                    if (ModelState.IsValid)
-                    {
-                        var domainFeedback = feedbackViewModel.ToDomain();
-                        this._feedbackService.Create(domainFeedback);
-                        return View("FeedbackSentMessage");
-                    } 
+                    var domainFeedback = feedbackViewModel.ToDomain();
+                    this._feedbackService.Create(domainFeedback);
+                    return View("FeedbackSentMessage");
                 }
             }
             catch (ArgumentException ex)

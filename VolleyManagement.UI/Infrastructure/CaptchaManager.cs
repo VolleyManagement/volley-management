@@ -18,17 +18,21 @@
         /// <returns>Captcha result</returns>
         public bool IsFormSubmit(HttpRequestBase request)
         {
+            bool status = false;
             const string SECRET_KEY = "CaptchaSecret";
             var response = request["g-recaptcha-response"];
-            string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];            
-            var client = new WebClient();
-            var result = client.DownloadString(
-                string.Format(
-                    "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}",
-                    secretKey,
-                    response));
-            var obj = JObject.Parse(result);
-            var status = (bool)obj.SelectToken("success");
+            string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
+            using (var client = new WebClient())
+            {
+                var result = client.DownloadString(
+                    string.Format(
+                        "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}",
+                        secretKey,
+                        response));
+                var obj = JObject.Parse(result);
+                status = (bool)obj.SelectToken("success");
+            }
+
             return status;
         }
     }

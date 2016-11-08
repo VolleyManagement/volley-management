@@ -212,12 +212,17 @@
         [TestMethod]
         public void CreatePostAction_CaptchaIsNotApproved_CreateViewReturned()
         {
+            // Arrange
             FeedbacksController sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateValidFeedback();
+
+            // Act
             this._captchaManagerMock
                 .Setup(cm => cm.IsFormSubmit(It.IsAny<HttpRequestBase>()))
                 .Returns(false);
             var res = sut.Create(feedback) as ViewResult;
+
+            // Assert
             Assert.AreNotEqual(FEEDBACK_SENT_MESSAGE, res.ViewName);
         }
         #endregion

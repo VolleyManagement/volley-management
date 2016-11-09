@@ -475,10 +475,13 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="AreaConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\RequestController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\LoginProviderViewModel.cs" />
     <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
+    <Compile Include="Areas\Admin\Models\RequestCollectionViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RequestViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
@@ -669,6 +672,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Admin\Views\Request\" />
     <Folder Include="Content\Site\" />
   </ItemGroup>
   <ItemGroup />

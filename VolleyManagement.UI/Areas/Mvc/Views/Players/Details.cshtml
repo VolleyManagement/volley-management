@@ -26,10 +26,35 @@
     <div class="display-field">@Model.Model.Weight</div>
 </fieldset>
 <p>
-@if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
-{
-    @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) @:|
+    @if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
+    {
+        @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) @:|
 }
-    <a href="@Model.Referer">@Resources.PlayerViews.Back</a>
-    @Html.ActionLink("LinkWithUser", "LinkWithUser", new { id = Model.Model.Id })
+    <a href="@Model.Referer">@Resources.PlayerViews.Back</a>    
+    <br />
+    <button type="button" id="linkUser" class="btn btn-info">Link to my account</button>
+    <span id="ajaxResultMessage"></span>
 </p>
+
+<script>
+    $(document).ready(function () {
+        $("#linkUser").click(function () {
+
+            $.ajax({
+                url: "/Players/LinkWithUser",
+                datatype: 'json',
+                data: { id: '@Model.Model.Id' },
+                success: function (data) {
+                    $('#ajaxResultMessage')
+                        .html('<br />' + data +
+                        '<mark><strong><em> @Model.Model.FirstName @Model.Model.LastName</em></strong></mark>');
+                },
+                error: function () {
+                    $('#ajaxResultMessage').html('ERROR');
+                }
+            });
+        });
+    });
+</script>
+
+@@*Scripts.Render("~/bundles/playerscripts")*@

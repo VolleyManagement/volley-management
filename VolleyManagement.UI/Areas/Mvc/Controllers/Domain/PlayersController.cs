@@ -102,16 +102,18 @@
         /// It links this player to current user.
         /// </summary>
         /// <param name="id">Player id.</param>
-        /// <returns></returns>
-        public ActionResult LinkWithUser(int id)
+        /// <returns>Message to user about binding
+        /// Player and User. </returns>
+        public string LinkWithUser(int id)
         {
             int userId = this._currentUserService.GetCurrentUserId();
 
             if (userId != -1)
             {
-                _requestService.Create(userId, id);
+               _requestService.Create(userId, id);
             }
-            return View("LinkPlayerToUser");
+
+            return "After admin approval you will be linked with";
         }
 
         /// <summary>

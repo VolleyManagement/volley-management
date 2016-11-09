@@ -1,6 +1,8 @@
 ﻿namespace VolleyManagement.Domain.UsersAggregate
 {
     using System.Collections.Generic;
+    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Represents User of the Volley Management system
@@ -41,8 +43,23 @@
         public string PhoneNumber { get; set; }
 
         /// <summary>
+        /// Player Id
+        /// </summary>
+        public int? PlayerId { get; set; }
+
+        /// <summary>
+        /// Player instance
+        /// </summary>
+        public Player Player { get; set; }
+
+        /// <summary>
         /// External login information for the user
         /// </summary>
         public IEnumerable<LoginProviderInfo> LoginProviders { get; set; }
+
+        /// <summary>
+        /// External information of the user roles
+        /// </summary>
+        public IEnumerable<Role> Roles { get; set; }
     }
 }

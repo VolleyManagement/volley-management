@@ -145,6 +145,10 @@
     <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.Designer.cs">
       <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.cs" />
+    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.Designer.cs">
+      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -282,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.resx">
       <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611031410480_AddPlayerToUser.resx">
+      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

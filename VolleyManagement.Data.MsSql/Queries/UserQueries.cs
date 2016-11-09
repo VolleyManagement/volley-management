@@ -12,6 +12,7 @@
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Data.Queries.User;
     using VolleyManagement.Domain.Dto;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
@@ -23,7 +24,8 @@
                              IQueryAsync<User, FindByLoginInfoCriteria>,
                              IQuery<List<UserInRoleDto>, FindByRoleCriteria>,
                              IQuery<List<UserInRoleDto>, GetAllCriteria>,
-                             IQuery<User, FindByIdCriteria>
+                             IQuery<User, FindByIdCriteria>,
+                             IQuery<List<User>, GetAllCriteria>
     {
         #region Fields
 
@@ -124,7 +126,6 @@
         /// <returns> The <see cref="User"/>. </returns>
         public List<UserInRoleDto> Execute(GetAllCriteria criteria)
         {
-            // ToDo: refactor it - it might be not optimal
             var users = _unitOfWork.Context.Users
                                            .Select(GetUserInRoleMapper())
                                            .ToList();
@@ -145,6 +146,17 @@
                 .Select(GetUserMapping())
                 .SingleOrDefault();
         }
+
+        /// <summary>
+        /// Finds user by given criteria.
+        /// </summary>
+        /// <param name="criteria">The criteria.</param>
+        /// <returns>User entity list.</returns>
+        List<User> IQuery<List<User>, GetAllCriteria>.Execute(GetAllCriteria criteria)
+        {
+            return this._unitOfWork.Context.Users.Select(GetUserMapping()).ToList();
+        }
+
         #endregion
 
         #region Mapping
@@ -160,12 +172,18 @@
                     Email = t.Email,
                     PersonName = t.FullName,
                     PhoneNumber = t.CellPhone,
+                    PlayerId = t.PlayerId,
                     LoginProviders = t.LoginProviders.Select(
                                             l => new LoginProviderInfo
-                                                     {
-                                                         ProviderKey = l.ProviderKey,
-                                                         LoginProvider = l.LoginProvider
-                                                     })
+                                            {
+                                                ProviderKey = l.ProviderKey,
+                                                LoginProvider = l.LoginProvider
+                                            }),
+                    Roles = t.Roles.Select(r => new Role
+                    {
+                        Id = r.Id,
+                        Name = r.Name
+                    })
                 };
         }
 

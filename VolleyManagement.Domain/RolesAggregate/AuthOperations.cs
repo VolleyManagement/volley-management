@@ -15,7 +15,8 @@
         private const byte GAMES = 0x03;
         private const byte PLAYERS = 0x04;
         private const byte ADMINDASHBOARD = 0x05;
-        private const byte FEEDBACKS = 0x06;
+        private const byte USERS = 0x06;
+        private const byte FEEDBACKS = 0x07;
 
         #endregion
 
@@ -163,6 +164,22 @@
             /// View admin page operation
             /// </summary>
             public static readonly AuthOperation View = Tuple.Create(ADMINDASHBOARD, 1);
+        }
+
+        /// <summary>
+        /// Contains administrators operations
+        /// </summary>
+        public static class AllUsers
+        {
+            /// <summary>
+            /// View all users page operation
+            /// </summary>
+            public static readonly AuthOperation ViewList = Tuple.Create(USERS, 1);
+
+            /// <summary>
+            /// View all users page operation
+            /// </summary>
+            public static readonly AuthOperation ViewDetails = Tuple.Create(USERS, 2);
         }
     }
 }

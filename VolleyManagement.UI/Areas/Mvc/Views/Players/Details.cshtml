@@ -10,11 +10,13 @@
 <fieldset>
     <legend>@Resources.PlayerViews.PlayerLegend</legend>
 
+    @Html.HiddenFor(model => model.Model.Id)
+
     <div class="display-label">@Html.LabelFor(model => model.Model.FirstName)</div>
-    <div class="display-field">@Model.Model.FirstName</div>
+    <div class="display-field" id="playerFirstName">@Model.Model.FirstName</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Model.LastName)</div>
-    <div class="display-field">@Model.Model.LastName</div>
+    <div class="display-field" id="playerLastName">@Model.Model.LastName</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Model.BirthYear)</div>
     <div class="display-field">@Model.Model.BirthYear</div>
@@ -32,29 +34,8 @@
 }
     <a href="@Model.Referer">@Resources.PlayerViews.Back</a>    
     <br />
-    <button type="button" id="linkUser" class="btn btn-info">Link to my account</button>
+    <button type="button" id="linkUser" class="btn btn-info">@Resources.PlayerViews.LinkToMyAccount</button>
     <span id="ajaxResultMessage"></span>
 </p>
 
-<script>
-    $(document).ready(function () {
-        $("#linkUser").click(function () {
-
-            $.ajax({
-                url: "/Players/LinkWithUser",
-                datatype: 'json',
-                data: { id: '@Model.Model.Id' },
-                success: function (data) {
-                    $('#ajaxResultMessage')
-                        .html('<br />' + data +
-                        '<mark><strong><em> @Model.Model.FirstName @Model.Model.LastName</em></strong></mark>');
-                },
-                error: function () {
-                    $('#ajaxResultMessage').html('ERROR');
-                }
-            });
-        });
-    });
-</script>
-
-@@*Scripts.Render("~/bundles/playerscripts")*@
+@Scripts.Render("~/bundles/playerscripts")

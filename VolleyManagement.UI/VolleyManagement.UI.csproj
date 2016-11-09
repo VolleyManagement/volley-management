@@ -364,6 +364,11 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Users\UserDetails.cshtml" />
+    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
@@ -468,6 +473,8 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\LoginProviderViewModel.cs" />
+    <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
+    <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
@@ -660,6 +667,7 @@
   <ItemGroup>
     <Folder Include="Content\Site\" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

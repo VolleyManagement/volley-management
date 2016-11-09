@@ -63,7 +63,7 @@
             {
                 user.Player = this.GetPlayer(user.PlayerId.GetValueOrDefault());
             }
-            
+
             return user;
         }
 

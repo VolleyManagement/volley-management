@@ -55,15 +55,18 @@
                     </div>
                     <!-- /input-group -->
                 </li>
-                <li>
-                    <a href="/Admin/Dashboard"><i class='fa fa-dashboard fa-fw'></i> Dashboard</a>
-                </li>
-                <li>
-                    <a href="/Admin/Roles"><i class="fa fa-wrench fa-fw"></i> Manage Roles</a>
-                </li>
 
                 <li>
-                    <a href="/Admin/Users"><i class="fa fa-users" aria-hidden="true"></i> All users</a>
+                    @Html.ActionLink("Dashboard", "Index", "Dashboard", null, new { @class = "" })
+                </li>
+                <li>
+                    @Html.ActionLink("Roles", "Index", "Roles", null, new { @class = "" })
+                </li>
+                <li>
+                    @Html.ActionLink("Requests", "Index", "Requests", null, new {@class = ""})
+                </li>
+                <li>
+                    @Html.ActionLink("All users", "Index", "Users", null, new { @class = "" })
                 </li>
             </ul>
         </div>

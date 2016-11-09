@@ -88,6 +88,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string FeedbackStatusParam {
+            get {
+                return ResourceManager.GetString("FeedbackStatusParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UsersEmail.
         /// </summary>
         public static string FeedbackUsersEmailParam {
@@ -210,6 +219,33 @@ namespace VolleyManagement.Domain.Properties {
         public static string LateRegistrationDates {
             get {
                 return ResourceManager.GetString("LateRegistrationDates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Body.
+        /// </summary>
+        public static string MailBodyParam {
+            get {
+                return ResourceManager.GetString("MailBodyParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string MailFromParam {
+            get {
+                return ResourceManager.GetString("MailFromParam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To.
+        /// </summary>
+        public static string MailToParam {
+            get {
+                return ResourceManager.GetString("MailToParam", resourceCulture);
             }
         }
         
@@ -358,7 +394,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Content should be less than {0} symbols.
+        ///   Looks up a localized string similar to Content can&apos;t be empty or contains more than {0} symbols.
         /// </summary>
         public static string ValidationFeedbackContent {
             get {
@@ -367,7 +403,16 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the valid email.
+        ///   Looks up a localized string similar to Feedback status can&apos;t be changed to this status.
+        /// </summary>
+        public static string ValidationFeedbackStatus {
+            get {
+                return ResourceManager.GetString("ValidationFeedbackStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email can&apos;t be empty or contains more than {0} symbols.
         /// </summary>
         public static string ValidationFeedbackUsersEmail {
             get {
@@ -381,6 +426,24 @@ namespace VolleyManagement.Domain.Properties {
         public static string ValidationGroupName {
             get {
                 return ResourceManager.GetString("ValidationGroupName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Body should be less than {0} symbols or not empty.
+        /// </summary>
+        public static string ValidationMailBody {
+            get {
+                return ResourceManager.GetString("ValidationMailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, enter the valid email..
+        /// </summary>
+        public static string ValidationMailEmail {
+            get {
+                return ResourceManager.GetString("ValidationMailEmail", resourceCulture);
             }
         }
         

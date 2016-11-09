@@ -4,7 +4,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System.Data.Entity.Migrations;
 
     /// <summary>
-    /// Added feedbacks
+    /// Create feedbacks table.
     /// </summary>
     public partial class AddFeedbacks : DbMigration
     {
@@ -16,13 +16,13 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             CreateTable(
                 "dbo.Feedbacks",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        UsersEmail = c.String(nullable: false, maxLength: 80),
-                        Content = c.String(nullable: false, maxLength: 5000),
-                        Date = c.DateTime(nullable: false, precision: 0, storeType: "datetime2"),
-                        StatusCode = c.Byte(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    UsersEmail = c.String(nullable: false, maxLength: 80),
+                    Content = c.String(nullable: false, maxLength: 5000),
+                    Date = c.DateTime(nullable: false, precision: 0, storeType: VolleyDatabaseMetadata.DATETIME2_COLUMN_TYPE),
+                    StatusCode = c.Byte(nullable: false),
+                })
                 .PrimaryKey(t => t.Id);
         }
 

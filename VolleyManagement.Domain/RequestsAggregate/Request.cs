@@ -32,7 +32,7 @@
             {
                 if (RequestValidation.ValidateUserId(value))
                 {
-                    throw new ArgumentException(Resources.ValidationUserId, "UserId");
+                    throw new ArgumentException(Resources.ValidationUserId);
                 }
 
                 this._userId = value;
@@ -54,7 +54,7 @@
             {
                 if (RequestValidation.ValidatePlayerId(value))
                 {
-                    throw new ArgumentException(Resources.ValidationPlayerId, "PlayerId");
+                    throw new ArgumentException(Resources.ValidationPlayerId);
                 }
 
                 this._playerId = value;

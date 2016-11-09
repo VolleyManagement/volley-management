@@ -475,7 +475,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Player id is empty.
+        ///   Looks up a localized string similar to Player&apos;s id is wrong.
         /// </summary>
         public static string ValidationPlayerId {
             get {
@@ -520,7 +520,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User id is empty.
+        ///   Looks up a localized string similar to User&apos;s id is wrong.
         /// </summary>
         public static string ValidationUserId {
             get {

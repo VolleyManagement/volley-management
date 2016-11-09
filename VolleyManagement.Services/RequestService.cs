@@ -44,26 +44,26 @@
             IUserRepository userRepository,
             IUserService userService,
             IAuthorizationService authService,
-            IQuery<Request, FindByIdCriteria> getRequestByIdQuery,
-            IQuery<List<Request>, GetAllCriteria> getAllRequestsQuery)
+           IQuery<Request, FindByIdCriteria> getRequestByIdQuery,
+           IQuery<List<Request>, GetAllCriteria> getAllRequestsQuery)
         {
             _requestRepository = requestRepository;
             _userRepository = userRepository;
             _authService = authService;
             _userService = userService;
             _getRequestByIdQuery = getRequestByIdQuery;
-            _getAllRequestsQuery = getAllRequestsQuery;
+           _getAllRequestsQuery = getAllRequestsQuery;
         }
 
         #endregion
 
         /// <summary>
-        /// Approve request by id
+        /// Confirm request by id
         /// </summary>
-        /// <param name="requestId">The id of request to approve.</param>
-        public void Approve(int requestId)
+        /// <param name="requestId">The id of request to Confirm.</param>
+        public void Confirm(int requestId)
         {
-            _authService.CheckAccess(AuthOperations.Requests.Approve);
+            _authService.CheckAccess(AuthOperations.Requests.Confirm);
             var request = Get(requestId);
 
             if (request == null)
@@ -80,15 +80,8 @@
 
             user.PlayerId = request.PlayerId;
 
-            try
-            {
-                _userRepository.Update(user);
-            }
-            catch (ConcurrencyException ex)
-            {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.UserNotFound, ex);
-            }
-
+            _userRepository.Update(user);
+            _requestRepository.Remove(requestId);
             _userRepository.UnitOfWork.Commit();
         }
 

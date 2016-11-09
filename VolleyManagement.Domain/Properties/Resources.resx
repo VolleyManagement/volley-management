@@ -292,9 +292,9 @@
     <value>Please, enter the valid email.</value>
   </data>
   <data name="ValidationPlayerId" xml:space="preserve">
-    <value>Player id is empty</value>
+    <value>Player's id is wrong</value>
   </data>
   <data name="ValidationUserId" xml:space="preserve">
-    <value>User id is empty</value>
+    <value>User's id is wrong</value>
   </data>
 </root>

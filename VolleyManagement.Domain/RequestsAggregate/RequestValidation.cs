@@ -14,7 +14,7 @@
         /// <returns> Validity of User</returns>
         public static bool ValidateUserId(int userId)
         {
-            return userId == 0;
+            return userId <= 0;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@
         /// <returns>Validity of player</returns>
         public static bool ValidatePlayerId(int playerId)
         {
-            return playerId == 0;
+            return playerId <= 0;
         }
     }
 }

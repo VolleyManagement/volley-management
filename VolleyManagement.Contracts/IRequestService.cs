@@ -29,10 +29,10 @@
         void Create(int userId, int playerId);
 
         /// <summary>
-        /// Approve the request
+        /// Confirm the request
         /// </summary>
         /// <param name="requestId">Request's id</param>
-        void Approve(int requestId);
+        void Confirm(int requestId);
 
         /// <summary>
         /// Decline the request

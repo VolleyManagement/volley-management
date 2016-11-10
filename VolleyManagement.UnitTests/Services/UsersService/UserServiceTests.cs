@@ -15,6 +15,7 @@
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.UI.Infrastructure;
+    using VolleyManagement.UnitTests.Services.PlayerService;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -135,6 +136,24 @@
             VerifyExceptionThrown(exception, "Requested operation is not allowed");
         }
 
+        [TestMethod]
+        public void GetUserDetails_UserExists_UserReturned()
+        {
+            // Arrange
+            var player = new PlayerBuilder().WithId(EXISTING_ID).Build();
+            var expected = new UserBuilder().WithId(EXISTING_ID).WithPlayer(player).Build();
+            MockGetUserByIdQuery(expected);
+            MockGetPlayerByIdQuery(player);
+
+            var sut = _kernel.Get<UserService>();
+
+            // Act
+            var actual = sut.GetUserDetails(EXISTING_ID);
+
+            // Assert
+            TestHelper.AreEqual<User>(expected, actual, new UserComparer());
+        }
+
         private void MockAuthServiceThrowsExeption(AuthOperation operation)
         {
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
@@ -148,6 +167,11 @@
         private void MockGetUserByIdQuery(User testData)
         {
             _getByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
+        }
+
+        private void MockGetPlayerByIdQuery(Player testData)
+        {
+            _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
         }
 
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)

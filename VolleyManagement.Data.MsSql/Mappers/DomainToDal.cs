@@ -202,6 +202,8 @@
             to.Content = from.Content;
             to.Date = from.Date;
             to.Status = (byte)from.Status;
+            to.AdminName = from.AdminName;
+            to.UpdateDate = from.UpdateDate;
         }
     }
 }

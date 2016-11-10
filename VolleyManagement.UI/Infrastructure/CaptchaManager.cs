@@ -19,7 +19,7 @@
         public bool IsFormSubmit(HttpRequestBase request)
         {
             bool status = false;
-            const string SECRET_KEY = "GoogleClientSecret";
+            const string SECRET_KEY = "RecaptchaSecretKey";
             var response = request["g-recaptcha-response"];
             string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
             using (var client = new WebClient())

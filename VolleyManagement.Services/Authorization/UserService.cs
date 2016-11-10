@@ -1,8 +1,6 @@
-﻿namespace VolleyManagement.UI.Infrastructure
+﻿namespace VolleyManagement.Services.Authorization
 {
-    using System;
     using System.Collections.Generic;
-    using Contracts;
     using Data.Contracts;
     using Data.Queries.Common;
     using Domain.UsersAggregate;
@@ -20,7 +18,6 @@
         private readonly IQuery<User, FindByIdCriteria> _getUserByIdQuery;
         private readonly IQuery<List<User>, GetAllCriteria> _getAllUsersQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getUserPlayerQuery;
-
         private readonly IQuery<List<User>, UniqueUserCriteria> _getAdminsListQuery;
 
         /// <summary>

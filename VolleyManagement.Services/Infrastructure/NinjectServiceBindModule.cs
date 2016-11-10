@@ -13,7 +13,6 @@
     using VolleyManagement.Services;
     using VolleyManagement.Services.Authentication;
     using VolleyManagement.Services.Authorization;
-    using VolleyManagement.UI.Infrastructure;
 
     /// <summary>
     /// Defines bindings for Service layer

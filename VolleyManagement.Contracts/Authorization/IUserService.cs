@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Contracts
+﻿namespace VolleyManagement.Contracts.Authorization
 {
     using System.Collections.Generic;
     using Domain.UsersAggregate;

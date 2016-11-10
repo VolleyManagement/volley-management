@@ -88,9 +88,9 @@
             {
                 _requestService.Decline(id);
             }
-            catch (InvalidOperationException)
+            catch (MissingEntityException)
             {
-                return View("InvalidOpration");
+                return View("InvalidOperation");
             }
 
             return RedirectToAction("Index");
@@ -107,9 +107,9 @@
             {
                 _requestService.Approve(id);
             }
-            catch (InvalidOperationException)
+            catch (MissingEntityException)
             {
-                return View("InvalidOeration");
+                return View("InvalidOperation");
             }
 
             return RedirectToAction("Index");

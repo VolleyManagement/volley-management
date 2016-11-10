@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
+    using System;
     using System.Linq;
     using System.Web.Mvc;
     using Contracts;
@@ -51,6 +52,11 @@
         public ActionResult UserDetails(int id)
         {
             var user = _userService.GetUser(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
             return View(user);
         }
 
@@ -62,6 +68,12 @@
         public ActionResult PlayerDetails(int id)
         {
             var player = _playerService.Get(id);
+
+            if (player == null)
+            {
+                return HttpNotFound();
+            }
+
             return View(player);
         }
 
@@ -72,7 +84,15 @@
         /// <returns> The <see cref="ActionResult"/>.</returns>
         public ActionResult Decline(int id)
         {
-            _requestService.Decline(id);
+            try
+            {
+                _requestService.Decline(id);
+            }
+            catch (InvalidOperationException)
+            {
+                return View("InvalidOpration");
+            }
+
             return RedirectToAction("Index");
         }
 
@@ -83,7 +103,15 @@
         /// <returns> The <see cref="ActionResult"/>.</returns>
         public ActionResult Confirm(int id)
         {
-            _requestService.Approve(id);
+            try
+            {
+                _requestService.Approve(id);
+            }
+            catch (InvalidOperationException)
+            {
+                return View("InvalidOeration");
+            }
+
             return RedirectToAction("Index");
         }
     }

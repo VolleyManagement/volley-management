@@ -4,12 +4,12 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System.Data.Entity.Migrations;
 
     /// <summary>
-    /// Makes it possible to set feedback to null
+    /// Create feedbacks table.
     /// </summary>
     public partial class AddFeedbacks : DbMigration
     {
         /// <summary>
-        /// Migrates feedback up
+        /// The up migration.
         /// </summary>
         public override void Up()
         {
@@ -20,14 +20,14 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                     Id = c.Int(nullable: false, identity: true),
                     UsersEmail = c.String(nullable: false, maxLength: 80),
                     Content = c.String(nullable: false, maxLength: 5000),
-                    Date = c.DateTime(nullable: false, precision: 0, storeType: "datetime2"),
+                    Date = c.DateTime(nullable: false, precision: 0, storeType: VolleyDatabaseMetadata.DATETIME2_COLUMN_TYPE),
                     StatusCode = c.Byte(nullable: false),
                 })
                 .PrimaryKey(t => t.Id);
         }
 
         /// <summary>
-        /// Migrates feedback down
+        /// The down migration.
         /// </summary>
         public override void Down()
         {

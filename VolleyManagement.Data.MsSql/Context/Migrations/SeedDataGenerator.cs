@@ -1103,6 +1103,9 @@
                 AuthOperations.Players.Delete,
                 AuthOperations.Feedbacks.Edit,
                 AuthOperations.Feedbacks.Delete,
+                AuthOperations.Feedbacks.Read,
+                AuthOperations.Feedbacks.Reply,
+                AuthOperations.Feedbacks.Close,
                 AuthOperations.AdminDashboard.View
             };
 

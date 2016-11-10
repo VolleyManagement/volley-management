@@ -24,8 +24,7 @@
                 Id = 1,
                 UsersEmail = "qwerty@gmail.com",
                 Content = "A perfect application",
-                Date = new DateTime(2007, 05, 03),
-                Status = FeedbackStatusEnum.New
+                Date = new DateTime(2007, 05, 03)
             };
         }
 

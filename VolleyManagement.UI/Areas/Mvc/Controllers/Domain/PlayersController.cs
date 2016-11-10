@@ -13,7 +13,7 @@
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-
+    
     /// <summary>
     /// Defines player controller
     /// </summary>
@@ -104,16 +104,14 @@
         /// <param name="id">Player id.</param>
         /// <returns>Message to user about binding
         /// Player and User. </returns>
-        public string LinkWithUser(int id)
+        public void LinkWithUser(int id)
         {
             int userId = this._currentUserService.GetCurrentUserId();
 
             if (userId != -1)
             {
-               _requestService.Create(userId, id);
+                //_requestService.Create(userId, id);
             }
-
-            return "After admin approval you will be linked with";
         }
 
         /// <summary>

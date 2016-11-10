@@ -8,15 +8,15 @@
 <h2>@ViewBag.Title</h2>
 
 <fieldset>
-    <legend>@Resources.PlayerViews.PlayerLegend</legend>
+    <legend>@Resources.PlayerViews.MessageAboutLinkToPlayer</legend>
 
     @Html.HiddenFor(model => model.Model.Id)
 
     <div class="display-label">@Html.LabelFor(model => model.Model.FirstName)</div>
-    <div class="display-field" id="playerFirstName">@Model.Model.FirstName</div>
+    <div class="display-field">@Model.Model.FirstName</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Model.LastName)</div>
-    <div class="display-field" id="playerLastName">@Model.Model.LastName</div>
+    <div class="display-field">@Model.Model.LastName</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Model.BirthYear)</div>
     <div class="display-field">@Model.Model.BirthYear</div>
@@ -26,6 +26,11 @@
 
     <div class="display-label">@Html.LabelFor(model => model.Model.Weight)</div>
     <div class="display-field">@Model.Model.Weight</div>
+    
+    <div id="linkMessage" hidden>
+        <br />@Resources.PlayerViews.MessageAboutLinkToPlayer
+        <mark><strong><em>@Model.Model.FirstName @Model.Model.LastName</em></strong></mark>
+    </div>
 </fieldset>
 <p>
     @if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))

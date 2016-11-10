@@ -2,18 +2,14 @@
     $("#linkUser").click(function () {
 
         var playerId = $('#Model_Id').val();
-        var playerFirstName = $('#playerFirstName').html();
-        var playerLastName = $('#playerLastName').html();
-
+        var linkMessage = $('#linkMessage').html();  
         $.ajax({
             url: "/Players/LinkWithUser",
             datatype: 'json',
             data: { id: playerId },
-            success: function (data) {
+            success: function () {
                 $('#ajaxResultMessage')
-                    .html('<br />' + data +
-                    '<mark><strong><em> ' + playerFirstName +
-                    ' ' + playerLastName + '</em></strong></mark>');
+                    .html(linkMessage);
             },
             error: function () {
                 $('#ajaxResultMessage').html('ERROR');

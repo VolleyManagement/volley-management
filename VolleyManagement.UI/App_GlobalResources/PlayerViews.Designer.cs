@@ -205,15 +205,6 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to After admin approval you will be linked with.
-        /// </summary>
-        public static string MessageAboutLinkToPlayer {
-            get {
-                return ResourceManager.GetString("MessageAboutLinkToPlayer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Players with this name was not found.
         /// </summary>
         public static string NotFoundPlayerMessage {

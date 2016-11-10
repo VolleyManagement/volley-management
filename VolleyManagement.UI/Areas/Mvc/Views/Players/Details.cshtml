@@ -26,9 +26,8 @@
 
     <div class="display-label">@Html.LabelFor(model => model.Model.Weight)</div>
     <div class="display-field">@Model.Model.Weight</div>
-    
+
     <div id="linkMessage" hidden>
-        <br />@Resources.PlayerViews.MessageAboutLinkToPlayer
         <mark><strong><em>@Model.Model.FirstName @Model.Model.LastName</em></strong></mark>
     </div>
 </fieldset>
@@ -37,7 +36,7 @@
     {
         @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) @:|
 }
-    <a href="@Model.Referer">@Resources.PlayerViews.Back</a>    
+    <a href="@Model.Referer">@Resources.PlayerViews.Back</a>
     <br />
     <button type="button" id="linkUser" class="btn btn-info">@Resources.PlayerViews.LinkToMyAccount</button>
     <span id="ajaxResultMessage"></span>

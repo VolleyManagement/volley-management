@@ -104,7 +104,7 @@
         /// <param name="id">Player id.</param>
         /// <returns>Message to user about binding
         /// Player and User. </returns>
-        public void LinkWithUser(int id)
+        public string LinkWithUser(int id)
         {
             int userId = this._currentUserService.GetCurrentUserId();
 
@@ -112,6 +112,12 @@
             {
                 _requestService.Create(userId, id);
             }
+            else
+            {
+                return App_GlobalResources.ViewModelResources.MassageAboutError;
+            }
+
+            return App_GlobalResources.ViewModelResources.MessageAboutLinkToPlayer;
         }
 
         /// <summary>

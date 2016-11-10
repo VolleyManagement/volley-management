@@ -331,11 +331,29 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t find User Id.
+        /// </summary>
+        public static string MassageAboutError {
+            get {
+                return ResourceManager.GetString("MassageAboutError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; can not contain more than {1} symbols.
         /// </summary>
         public static string MaxLengthErrorMessage {
             get {
                 return ResourceManager.GetString("MaxLengthErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After admin approval you will be linked with.
+        /// </summary>
+        public static string MessageAboutLinkToPlayer {
+            get {
+                return ResourceManager.GetString("MessageAboutLinkToPlayer", resourceCulture);
             }
         }
         

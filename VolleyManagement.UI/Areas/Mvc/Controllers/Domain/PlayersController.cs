@@ -13,7 +13,7 @@
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-    
+
     /// <summary>
     /// Defines player controller
     /// </summary>
@@ -110,7 +110,7 @@
 
             if (userId != -1)
             {
-                //_requestService.Create(userId, id);
+                _requestService.Create(userId, id);
             }
         }
 

@@ -36,6 +36,16 @@ namespace VolleyManagement.Data.MsSql.Entities
         public string FullName { get; set; }
 
         /// <summary>
+        /// Gets or sets player id
+        /// </summary>
+        public int? PlayerId { get; set; }
+
+        /// <summary>
+        /// Gets or sets player belongs to user
+        /// </summary>
+        public virtual PlayerEntity Player { get; set; }
+
+        /// <summary>
         /// Gets or sets telephone of user
         /// </summary>
         public string CellPhone { get; set; }

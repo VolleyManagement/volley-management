@@ -1101,12 +1101,14 @@
                 AuthOperations.Players.Create,
                 AuthOperations.Players.Edit,
                 AuthOperations.Players.Delete,
+                AuthOperations.AdminDashboard.View,
+                AuthOperations.AllUsers.ViewList,
+                AuthOperations.AllUsers.ViewDetails,
                 AuthOperations.Feedbacks.Edit,
                 AuthOperations.Feedbacks.Delete,
                 AuthOperations.Feedbacks.Read,
                 AuthOperations.Feedbacks.Reply,
-                AuthOperations.Feedbacks.Close,
-                AuthOperations.AdminDashboard.View
+                AuthOperations.Feedbacks.Close
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

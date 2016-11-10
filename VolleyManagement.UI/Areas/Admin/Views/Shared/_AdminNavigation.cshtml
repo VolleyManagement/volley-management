@@ -55,6 +55,7 @@
                     </div>
                     <!-- /input-group -->
                 </li>
+
                 <li>
                     @Html.ActionLink("Dashboard", "Index", "Dashboard", null, new { @class = "" })
                 </li>
@@ -62,7 +63,10 @@
                     @Html.ActionLink("Roles", "Index", "Roles", null, new { @class = "" })
                 </li>
                 <li>
-                   @Html.ActionLink("Roles", "Index", "Requests", null, new { @class = "" })
+                    @Html.ActionLink("Requests", "Index", "Requests", null, new {@class = ""})
+                </li>
+                <li>
+                    @Html.ActionLink("All users", "Index", "Users", null, new { @class = "" })
                 </li>
             </ul>
         </div>

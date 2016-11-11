@@ -40,6 +40,8 @@
         /// </summary>
         /// <param name="playerService">Instance of the class that implements IPlayerService.</param>
         /// <param name="authService">The authorization service</param>
+        /// <param name="currentUserService">The interface reference of current user service.</param>
+        /// <param name="requestService">The interface reference of request service.</param>
         public PlayersController(
             IPlayerService playerService, 
             IAuthorizationService authService,
@@ -107,17 +109,19 @@
         public string LinkWithUser(int id)
         {
             int userId = this._currentUserService.GetCurrentUserId();
+            string message;
 
             if (userId != -1)
             {
                 _requestService.Create(userId, id);
+                message = App_GlobalResources.ViewModelResources.MessageAboutLinkToPlayer;
             }
             else
             {
-                return App_GlobalResources.ViewModelResources.MassageAboutError;
+                message = App_GlobalResources.ViewModelResources.MassageAboutError;
             }
 
-            return App_GlobalResources.ViewModelResources.MessageAboutLinkToPlayer;
+            return message;
         }
 
         /// <summary>

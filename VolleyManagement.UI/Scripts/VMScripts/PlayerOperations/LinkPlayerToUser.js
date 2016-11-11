@@ -1,24 +1,29 @@
-﻿; $(document).ready(function () {
-
+﻿;$(document).ready(function () {
     ;(function () {
-        $("#linkUser").click(function () {
+
+        var messagePlace = $('#ajaxResultMessage');
+        var linkButton = $("#linkUser");
+
+        linkButton.click(function () {
 
             var playerId = $('#Model_Id').val();
             var linkMessage = $('#linkMessage').html();
+
             $.ajax({
                 url: "/Players/LinkWithUser",
                 datatype: 'json',
                 data: { id: playerId },
-                success: function (data) {
-                    $('#ajaxResultMessage').html(data + linkMessage);
+                success: function (message) {
+                    messagePlace.html(message + linkMessage);
+                    linkButton.prop('disabled', true);
                 },
                 error: function () {
-                    $('#ajaxResultMessage').html('ERROR');
+                    messagePlace.html('ERROR');
                 }
             });
         });
-    })();
 
+    })();
 });
 
 

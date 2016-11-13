@@ -141,13 +141,17 @@
     <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.Designer.cs">
       <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.cs" />
+    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.Designer.cs">
+      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.cs" />
     <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.Designer.cs">
       <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.cs" />
-    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.Designer.cs">
-      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201611072322528_AddRequestsTable.cs" />
+    <Compile Include="Context\Migrations\201611072322528_AddRequestsTable.Designer.cs">
+      <DependentUpon>201611072322528_AddRequestsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
@@ -158,6 +162,7 @@
     <Compile Include="Entities\GroupEntity.cs" />
     <Compile Include="Entities\DivisionEntity.cs" />
     <Compile Include="Entities\LoginInfoEntity.cs" />
+    <Compile Include="Entities\RequestEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\RoleToOperationEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
@@ -175,6 +180,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Queries\PlayerQueries.cs" />
+    <Compile Include="Queries\RequestQueries.cs" />
     <Compile Include="Queries\RolesQueries.cs" />
     <Compile Include="Queries\TeamQueries.cs" />
     <Compile Include="Queries\TournamentQueries.cs" />
@@ -183,6 +189,7 @@
     <Compile Include="Repositories\FeedbackRepository.cs" />
     <Compile Include="Repositories\GameRepository.cs" />
     <Compile Include="Repositories\PlayerRepository.cs" />
+    <Compile Include="Repositories\RequestRepository.cs" />
     <Compile Include="Repositories\RoleRepostitory.cs" />
     <Compile Include="Repositories\Specifications\FeedbackStorageSpecification.cs" />
     <Compile Include="Repositories\Specifications\PlayerStorageSpecification.cs" />
@@ -284,11 +291,14 @@
     <EmbeddedResource Include="Context\Migrations\201610171943183_AddFeedbacks.resx">
       <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611031410480_AddPlayerToUser.resx">
+      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.resx">
       <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201611031410480_AddPlayerToUser.resx">
-      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201611072322528_AddRequestsTable.resx">
+      <DependentUpon>201611072322528_AddRequestsTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -351,6 +351,10 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
+    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Areas\Mvc\Views\Tournaments\_NonPlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffGameResult.cshtml" />
@@ -471,10 +475,13 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="AreaConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\RequestController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\LoginProviderViewModel.cs" />
     <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
+    <Compile Include="Areas\Admin\Models\RequestCollectionViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RequestViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
@@ -665,6 +672,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Admin\Views\Request\" />
     <Folder Include="Content\Site\" />
   </ItemGroup>
   <ItemGroup />

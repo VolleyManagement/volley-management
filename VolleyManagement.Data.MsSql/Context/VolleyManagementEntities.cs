@@ -96,6 +96,11 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<FeedbackEntity> Feedbacks { get; set; }
 
+        /// <summary>
+        /// Gets or sets the request table.
+        /// </summary>
+        public DbSet<RequestEntity> Requests { get; set; }
+
         #endregion
 
         #region Mapping Configuration

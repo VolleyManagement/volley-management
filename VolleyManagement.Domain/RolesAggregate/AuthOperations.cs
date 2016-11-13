@@ -17,6 +17,7 @@
         private const byte ADMINDASHBOARD = 0x05;
         private const byte USERS = 0x06;
         private const byte FEEDBACKS = 0x07;
+        private const byte REQUESTS = 0x08;
 
         #endregion
 
@@ -180,6 +181,27 @@
             /// View all users page operation
             /// </summary>
             public static readonly AuthOperation ViewDetails = Tuple.Create(USERS, 2);
+        }
+
+        /// <summary>
+        /// Contains administrators operations
+        /// </summary>
+        public static class Requests
+        {
+            /// <summary>
+            /// View all requests page operation
+            /// </summary>
+            public static readonly AuthOperation ViewList = Tuple.Create(REQUESTS, 1);
+
+            /// <summary>
+            /// Approve request
+            /// </summary>
+            public static readonly AuthOperation Approve = Tuple.Create(REQUESTS, 2);
+
+            /// <summary>
+            /// Decline request
+            /// </summary>
+            public static readonly AuthOperation Decline = Tuple.Create(REQUESTS, 3);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Infrastructure
 {
-    using System;
     using Contracts;
+    using Contracts.Exceptions;
     using Data.Contracts;
     using Data.Queries.Common;
     using Domain.UsersAggregate;
@@ -12,14 +12,19 @@
     public class UserService : IUserService
     {
         private readonly IQuery<User, FindByIdCriteria> _getUserByIdQuery;
+        private readonly IUserRepository _userRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
         /// </summary>
         /// <param name="getUserByIdQuery">Query for getting User by Id.</param>
-        public UserService(IQuery<User, FindByIdCriteria> getUserByIdQuery)
+        /// <param name="userRepository">The user repository.</param>
+        public UserService(
+            IQuery<User, FindByIdCriteria> getUserByIdQuery,
+            IUserRepository userRepository)
         {
             this._getUserByIdQuery = getUserByIdQuery;
+            this._userRepository = userRepository;
         }
 
         /// <summary>
@@ -36,19 +41,35 @@
         /// <summary>
         /// It blocks an account of unwished user.
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">User Id.</param>
         public void SetUserBlocked(int userId)
         {
-            throw new NotImplementedException();
+            User user = GetUser(userId);
+            if (user == null)
+            {
+                throw new MissingEntityException(Services.ServiceResources.ExceptionMessages.UserNotFound);
+            }
+
+            user.IsUserBlocked = true;
+            _userRepository.Update(user);
+            _userRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
         /// It unblocks an account pointed user.
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="userId">User Id.</param>
         public void SetUserUnblocked(int userId)
         {
-            throw new NotImplementedException();
+            User user = GetUser(userId);
+            if (user == null)
+            {
+                throw new MissingEntityException(Services.ServiceResources.ExceptionMessages.UserNotFound);
+            }
+
+            user.IsUserBlocked = false;
+            _userRepository.Update(user);
+            _userRepository.UnitOfWork.Commit();
         }
     }
 }

@@ -131,5 +131,14 @@ namespace VolleyManagement.Services.ServiceResources {
                 return ResourceManager.GetString("TeamNotFound", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A user with specified identifier was not found.
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
+            }
+        }
     }
 }

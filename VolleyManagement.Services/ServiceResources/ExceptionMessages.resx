@@ -141,4 +141,7 @@
   <data name="TeamNotFound" xml:space="preserve">
     <value>A team with specified identifier was not found</value>
   </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>A user with specified identifier was not found</value>
+  </data>
 </root>

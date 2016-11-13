@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Web.Mvc;
     using Contracts;
+    using Contracts.Exceptions;
     using Models;
 
     /// <summary>

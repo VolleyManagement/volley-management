@@ -1,0 +1,33 @@
+﻿@model VolleyManagement.Domain.UsersAggregate.User
+
+@{
+    ViewBag.Title = @Resources.UserViews.UserLegend;
+}
+
+<fieldset>
+    <legend>@Resources.UserViews.UserLegend</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.Id)</div>
+    <div class="display-field">@Model.Id</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.UserName)</div>
+    <div class="display-field">@Model.UserName</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Email)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Email)</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.PhoneNumber)</div>
+    <div class="display-field">@Model.PhoneNumber</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.PersonName)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.PersonName)</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.PlayerId)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.PlayerId)</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Player.LastName)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Player.LastName)</div>
+</fieldset>
+<p>
+    @Html.ActionLink(Resources.UserViews.BackToList, "Index")
+</p>

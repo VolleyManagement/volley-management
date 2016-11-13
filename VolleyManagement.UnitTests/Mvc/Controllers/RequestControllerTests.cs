@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Microsoft.OData.Edm.Csdl;
 using VolleyManagement.UnitTests.Services.UsersService;
 
 namespace VolleyManagement.UnitTests.Mvc.Controllers
@@ -58,18 +59,18 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
         #endregion
 
         #region Tests
-
-       [TestMethod]
-        public void UserDetails_ExistingUser_UserViewModelIsReturned()
+      
+        [TestMethod]
+        public void UserDetails_ExistingUser_UserReturned()
         {
             // Arrange
             var expected = GetUser();
-            int id = 1;
-            MockUserService(id);
+            int USER_ID = 1;
+            MockUserService(USER_ID);
             var sut = _kernel.Get<RequestController>();
 
             // Act
-            var actionResult = sut.UserDetails(id);
+            var actionResult = sut.UserDetails(USER_ID);
             var actual = TestExtensions.GetModel<User>(actionResult);
 
             // Assert
@@ -92,6 +93,39 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
         }
 
         [TestMethod]
+        public void PlayerDetails_ExistingPlayer_PlayerReturned()
+        {
+            // Arrange
+            var expected = GetPlayer();
+            int PLAYER_ID = 1;
+            MockPlayerService(PLAYER_ID);
+            var sut = _kernel.Get<RequestController>();
+
+            // Act
+            var actionResult = sut.PlayerDetails(PLAYER_ID);
+            var actual = TestExtensions.GetModel<Player>(actionResult);
+
+            // Assert
+            TestHelper.AreEqual<Player>(expected, actual, new PlayerComparer());
+        }
+
+
+        [TestMethod]
+        public void PlayerDetails_NonExistentUser_HttpNotFoundResultIsReturned()
+        {
+            // Arrange
+            const int PLAYER_ID = 1;
+            MockPlayerServiceReturnsNullUser(PLAYER_ID);
+            var sut = _kernel.Get<RequestController>();
+
+            // Act
+            var actionResult = sut.PlayerDetails(PLAYER_ID);
+
+            // Assert
+            Assert.IsInstanceOfType(actionResult, typeof(HttpNotFoundResult));
+        }
+
+        [TestMethod]
         public void Confirm_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
@@ -105,32 +139,49 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
             AssertValidRedirectResult(actionResult, "Index");
         }
 
-        [TestMethod] // не нужен?
-        public void Close_AnyRequest_RequestConfirmed()
+        //[TestMethod] 
+        //public void Confirm_AnyRequest_RequestConfirmed()
+        //{
+        //    // Arrange
+        //    const int REQUEST_ID = 1;
+        //    _requestServiceMock.Setup(r => r.Get()).Returns(GetRequests);
+        //    var controller = _kernel.Get<RequestController>();
+
+        //    // Act
+        //    var actionResult = controller.Confirm(REQUEST_ID);
+
+        //    // Assert
+        //    AssertConfirmVerify(_requestServiceMock, REQUEST_ID);
+        //}
+
+        //[TestMethod]
+        //public void Confirm_NonExistentRequest_ThrowsException()
+        //{
+        //    // Arrange
+        //    const int REQUEST_ID = 1;
+        //    SetupConfirmThrowsMissingEntityException();
+        //    var controller = _kernel.Get<RequestController>();
+
+        //    // Act
+        //    var actionResult = controller.Confirm(REQUEST_ID);
+
+        //    // Assert
+        //    //AssertValidRedirectResult(actionResult, "InvalidOperation");
+        //    Assert.IsNotNull(actionResult, "InvalidOperation");
+        //}
+
+        [TestMethod]
+        public void Decline_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
             const int REQUEST_ID = 1;
             var controller = _kernel.Get<RequestController>();
 
             // Act
-            var actionResult = controller.Confirm(REQUEST_ID);
+            var actionResult = controller.Decline(REQUEST_ID);
 
             // Assert
-            AssertConfirmVerify(_requestServiceMock, REQUEST_ID);
-        }
-
-        [TestMethod]
-        public void Confirm_NonExistentRequest_ThrowsException()
-        {
-            // Arrange
-            const int REQUEST_ID = 1;
-            SetupConfirmThrowsMissingEntityException();
-
-            // Act
-            var result = _sut.Confirm(REQUEST_ID);
-
-            // Assert
-            Assert.IsNotNull(result, "");
+            AssertValidRedirectResult(actionResult, "Index");
         }
 
         #endregion
@@ -140,6 +191,11 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
         private User GetUser()
         {
             return new User();
+        }
+
+        private Player GetPlayer()
+        {
+            return new Player();
         }
 
         private static List<Request> GetRequests()
@@ -195,7 +251,11 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
             mock.Verify(ps => ps.Approve(It.Is<int>(id => id == requestId)), Times.Once());
         }
 
-        //Assert.AreEqual(expected.Id, actual.Id);
+        private void MockRequestService(int id)
+        {
+            this._userServiceMock.Setup(m => m.GetUser(id)).Returns(new User());
+        }
+
         private void MockUserService(int id)
         {
             this._userServiceMock.Setup(m => m.GetUser(id)).Returns(new User());
@@ -205,6 +265,17 @@ namespace VolleyManagement.UnitTests.Mvc.Controllers
         {
             User user = null;
             this._userServiceMock.Setup(m => m.GetUser(id)).Returns(user);
+        }
+
+        private void MockPlayerService(int id)
+        {
+            this._playerServiceMock.Setup(m => m.Get(id)).Returns(new Player());
+        }
+
+        private void MockPlayerServiceReturnsNullUser(int id)
+        {
+            Player player = null;
+            this._playerServiceMock.Setup(m => m.Get(id)).Returns(player);
         }
 
         private void SetupConfirmThrowsMissingEntityException()

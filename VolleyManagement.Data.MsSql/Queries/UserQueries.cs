@@ -160,6 +160,7 @@
                     Email = t.Email,
                     PersonName = t.FullName,
                     PhoneNumber = t.CellPhone,
+                    IsUserBlocked = t.IsUserBlocked,
                     LoginProviders = t.LoginProviders.Select(
                                             l => new LoginProviderInfo
                                                      {

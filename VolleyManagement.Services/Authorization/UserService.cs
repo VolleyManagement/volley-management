@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Infrastructure
 {
+    using System;
     using Contracts;
     using Data.Contracts;
     using Data.Queries.Common;
@@ -30,6 +31,24 @@
         {
             return this._getUserByIdQuery.Execute(
                     new FindByIdCriteria { Id = userId });
+        }
+
+        /// <summary>
+        /// It blocks an account of unwished user.
+        /// </summary>
+        /// <param name="userId"></param>
+        public void SetUserBlocked(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// It unblocks an account pointed user.
+        /// </summary>
+        /// <param name="userId"></param>
+        public void SetUserUnblocked(int userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

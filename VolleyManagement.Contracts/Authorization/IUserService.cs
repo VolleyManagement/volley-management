@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Domain.UsersAggregate;
-    using VolleyManagement.Domain.PlayersAggregate;
 
     /// <summary>
     /// Provides specified information about user.
@@ -28,5 +27,11 @@
         /// <param name="userId">User Id.</param>
         /// <returns>User instance.</returns>
         User GetUserDetails(int userId);
+
+        /// <summary>
+        /// Get all active users.
+        /// </summary>
+        /// <returns>List of active users.</returns>
+        List<User> GetAllActiveUsers();
     }
 }

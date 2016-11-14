@@ -7,6 +7,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
@@ -23,6 +24,8 @@
         private const int EXISTING_ID = 1;
 
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+
+        private readonly Mock<ICacheProvider> _cacheProviderMock = new Mock<ICacheProvider>();
 
         private readonly Mock<IQuery<List<User>, GetAllCriteria>> _getAllQueryMock =
           new Mock<IQuery<List<User>, GetAllCriteria>>();
@@ -48,6 +51,7 @@
             _kernel.Bind<IQuery<User, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
             _kernel.Bind<IQuery<Player, FindByIdCriteria>>().ToConstant(_getPlayerByIdQueryMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
+            _kernel.Bind<ICacheProvider>().ToConstant(_cacheProviderMock.Object);
         }
 
         [TestMethod]
@@ -85,6 +89,30 @@
             try
             {
                 var actual = sut.GetAllUsers();
+            }
+            catch (AuthorizationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+        }
+
+        [TestMethod]
+        public void GetAllActiveUsers_NoViewRights_AuthorizationExceptionThrow()
+        {
+            // Arrange
+            Exception exception = null;
+            var testData = _testFixture.TestUsers().Build();
+            MockAuthServiceThrowsExeption(AuthOperations.AllUsers.ViewActiveList);
+
+            var sut = _kernel.Get<UserService>();
+
+            // Act
+            try
+            {
+                var actual = sut.GetAllActiveUsers();
             }
             catch (AuthorizationException ex)
             {

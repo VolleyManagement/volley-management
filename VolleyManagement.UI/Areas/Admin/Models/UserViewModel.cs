@@ -92,13 +92,9 @@
                 Email = user.Email,
                 PersonName = user.PersonName,
                 Phone = user.PhoneNumber,
-                LoginProviders = user.LoginProviders               
+                LoginProviders = user.LoginProviders,
+                Roles = user.Roles
             };
-
-            if (user.Roles != null)
-            {
-                userViewModel.Roles = user.Roles;
-            }
 
             if (user.Player != null)
             {

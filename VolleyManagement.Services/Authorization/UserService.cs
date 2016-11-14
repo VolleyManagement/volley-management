@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UI.Infrastructure
 {
-    using System;
     using System.Collections.Generic;
     using Contracts;
     using Data.Contracts;
@@ -19,6 +18,7 @@
         private readonly IQuery<User, FindByIdCriteria> _getUserByIdQuery;
         private readonly IQuery<List<User>, GetAllCriteria> _getAllUsersQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getUserPlayerQuery;
+        private readonly ICacheProvider _cacheProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
@@ -27,16 +27,19 @@
         /// <param name="getUserByIdQuery">Query for getting User by Id.</param>
         /// <param name="getAllUsersQuery">Query for getting all User.</param>
         /// <param name="getUserPlayerQuery">Query for getting player assigned to User</param>
+        /// <param name="cacheProvider">Instance of <see cref="ICacheProvider"/> class.</param>
         public UserService(
             IAuthorizationService authService,
             IQuery<User, FindByIdCriteria> getUserByIdQuery,
             IQuery<List<User>, GetAllCriteria> getAllUsersQuery,
-            IQuery<Player, FindByIdCriteria> getUserPlayerQuery)
+            IQuery<Player, FindByIdCriteria> getUserPlayerQuery,
+            ICacheProvider cacheProvider)
         {
             _authService = authService;
             _getUserByIdQuery = getUserByIdQuery;
             _getAllUsersQuery = getAllUsersQuery;
             _getUserPlayerQuery = getUserPlayerQuery;
+            _cacheProvider = cacheProvider;
         }
 
         /// <summary>
@@ -47,7 +50,7 @@
         public User GetUser(int userId)
         {
             return this._getUserByIdQuery.Execute(
-                    new FindByIdCriteria { Id = userId });
+                new FindByIdCriteria { Id = userId });
         }
 
         /// <summary>
@@ -75,6 +78,22 @@
         {
             this._authService.CheckAccess(AuthOperations.AllUsers.ViewList);
             return this._getAllUsersQuery.Execute(new GetAllCriteria());
+        }
+
+        /// <summary>
+        /// Get all users collection.
+        /// </summary>
+        /// <returns>Use collection.</returns>
+        public List<User> GetAllActiveUsers()
+        {
+            this._authService.CheckAccess(AuthOperations.AllUsers.ViewActiveList);
+            var activeUsers = new List<User>();
+            foreach (var id in _cacheProvider["ActiveUsers"])
+            {
+                activeUsers.Add(GetUser(id));
+            }
+
+            return activeUsers;
         }
 
         /// <summary>

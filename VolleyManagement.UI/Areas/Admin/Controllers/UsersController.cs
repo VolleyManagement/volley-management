@@ -1,13 +1,8 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.UI.Areas.Admin.Models;
 
     /// <summary>
@@ -15,19 +10,14 @@
     /// </summary>
     public class UsersController : Controller
     {
-        private readonly IAuthorizationService _authService;
         private readonly IUserService _userService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
-        /// <param name="authService">Authorization service</param>
         /// <param name="userService">User service</param>
-        public UsersController(
-                               IAuthorizationService authService,
-                               IUserService userService)
+        public UsersController(IUserService userService)
         {
-            this._authService = authService;
             this._userService = userService;
         }
 
@@ -39,6 +29,16 @@
         {
             var users = _userService.GetAllUsers().ConvertAll(UserViewModel.Initialize);
             return View(users);
+        }
+
+        /// <summary>
+        /// Get all active user list view.
+        /// </summary>
+        /// <returns> The <see cref="ActionResult"/>. </returns>
+        public ActionResult ActiveUsers()
+        {           
+            var activeUsers = _userService.GetAllActiveUsers().ConvertAll(UserViewModel.Initialize);
+            return View(activeUsers);
         }
 
         /// <summary>
@@ -57,6 +57,6 @@
             var result = UserViewModel.Map(user);
          
             return View(result);
-        }
+        }      
     }
 }

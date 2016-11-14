@@ -49,6 +49,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -65,6 +66,7 @@
     <Compile Include="FeedbackService.cs" />
     <Compile Include="GameReportService.cs" />
     <Compile Include="GameService.cs" />
+    <Compile Include="CacheProvider.cs" />
     <Compile Include="ServiceResources\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

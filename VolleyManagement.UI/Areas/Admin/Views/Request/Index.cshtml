@@ -1,0 +1,46 @@
+﻿
+@model IList<VolleyManagement.UI.Areas.Admin.Models.RequestViewModel>
+
+@{
+    ViewBag.Title = "Link Index";
+}
+
+<br />
+<div class="panel panel-primary">
+    <div class="panel-heading">Link player to user requests</div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>User Name</th>
+            <th>Player name</th>
+            <th></th>
+        </tr>
+        @if (Model.Count == 0)
+        {
+            <tr>
+                <td colspan="3" class="text-center">No Requests</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var link in Model)
+            {
+                <tr>
+                    <td>@link.Id</td>
+                    <td>
+                        @link.UserName
+                        @Html.ActionLink("Details", "UserDetails", new { id = link.Id }, new { @class = "btn btn-info btn-xs" })
+                    </td>
+                    <td>
+                        @link.PlayerLastName
+                        @Html.ActionLink("Details", "PlayerDetails", new { id = link.Id }, new { @class = "btn btn-info btn-xs" })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Decline", "Decline", new { id = link.Id }, new { @class = "btn btn-danger btn-xs" })
+                        @Html.ActionLink("Confirm", "Confirm", new { id = link.Id }, new { @class = "btn btn-success btn-xs" })
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>

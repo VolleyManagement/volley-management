@@ -345,4 +345,10 @@
   <data name="InvalidEmail" xml:space="preserve">
     <value>Invalid email address</value>
   </data>
+  <data name="MessageAboutLinkToPlayer" xml:space="preserve">
+    <value>After admin approval you will be linked with</value>
+  </data>
+  <data name="MassageAboutError" xml:space="preserve">
+    <value>Can't find User Id</value>
+  </data>
 </root>

@@ -194,9 +194,9 @@
             public static readonly AuthOperation ViewList = Tuple.Create(REQUESTS, 1);
 
             /// <summary>
-            /// Approve request
+            /// Confirm request
             /// </summary>
-            public static readonly AuthOperation Approve = Tuple.Create(REQUESTS, 2);
+            public static readonly AuthOperation Confirm = Tuple.Create(REQUESTS, 2);
 
             /// <summary>
             /// Decline request

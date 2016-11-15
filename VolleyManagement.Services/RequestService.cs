@@ -2,24 +2,87 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.RequestsAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// Defines an implementation of <see cref="IRequestService"/> contract.
     /// </summary>
     public class RequestService : IRequestService
     {
+        #region Fields
+
+        private readonly IRequestRepository _requestRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
+        private readonly IAuthorizationService _authService;
+        private readonly IQuery<Request, FindByIdCriteria> _getRequestByIdQuery;
+        private readonly IQuery<List<Request>, GetAllCriteria> _getAllRequestsQuery;
+
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// Approve request by id
+        /// Initializes a new instance of the <see cref="RequestService"/> class.
         /// </summary>
-        /// <param name="requestId">The id of request to approve.</param>
-        public void Approve(int requestId)
+        /// <param name="requestRepository"> Read the IRequestRepository instance</param>
+        /// <param name="userRepository">Read the IUserRepository instance</param>
+        /// <param name="userService">Instance of the class which implements <see cref="IUserService"/> </param>
+        /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
+        /// <param name="getRequestByIdQuery">Get request by it's id </param>
+        /// <param name="getAllRequestsQuery">Get list of all requests</param>
+        public RequestService(
+            IRequestRepository requestRepository,
+            IUserRepository userRepository,
+            IUserService userService,
+            IAuthorizationService authService,
+           IQuery<Request, FindByIdCriteria> getRequestByIdQuery,
+           IQuery<List<Request>, GetAllCriteria> getAllRequestsQuery)
         {
-            throw new NotImplementedException();
+            _requestRepository = requestRepository;
+            _userRepository = userRepository;
+            _authService = authService;
+            _userService = userService;
+            _getRequestByIdQuery = getRequestByIdQuery;
+           _getAllRequestsQuery = getAllRequestsQuery;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Confirm request by id
+        /// </summary>
+        /// <param name="requestId">The id of request to Confirm.</param>
+        public void Confirm(int requestId)
+        {
+            _authService.CheckAccess(AuthOperations.Requests.Confirm);
+            var request = Get(requestId);
+
+            if (request == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.RequestNotFound, requestId);
+            }
+
+            var user = _userService.GetUser(request.UserId);
+
+            if (user == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.UserNotFound);
+            }
+
+            user.PlayerId = request.PlayerId;
+
+            _userRepository.Update(user);
+            _requestRepository.Remove(requestId);
+            _userRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -29,7 +92,14 @@
         /// <param name="playerId"> Player's id to link</param>
         public void Create(int userId, int playerId)
         {
-            throw new NotImplementedException();
+            var requestToCreate = new Request
+            {
+                PlayerId = playerId,
+                UserId = userId
+            };
+
+            _requestRepository.Add(requestToCreate);
+            _requestRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -38,7 +108,16 @@
         /// <param name="requestId">The id of request to decline.</param>
         public void Decline(int requestId)
         {
-            throw new NotImplementedException();
+            _authService.CheckAccess(AuthOperations.Requests.Decline);
+
+            try
+            {
+                DeleteRequest(requestId);
+            }
+            catch (InvalidKeyValueException ex)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.RequestNotFound, requestId, ex);
+            }
         }
 
         /// <summary>
@@ -47,7 +126,8 @@
         /// <returns>All requests.</returns>
         public List<Request> Get()
         {
-            throw new NotImplementedException();
+            _authService.CheckAccess(AuthOperations.Requests.ViewList);
+            return _getAllRequestsQuery.Execute(new GetAllCriteria());
         }
 
         /// <summary>
@@ -57,7 +137,13 @@
         /// <returns>A found Request.</returns>
         public Request Get(int id)
         {
-            throw new NotImplementedException();
+            return _getRequestByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        private void DeleteRequest(int requestId)
+        {
+                _requestRepository.Remove(requestId);
+                _requestRepository.UnitOfWork.Commit();
         }
     }
 }

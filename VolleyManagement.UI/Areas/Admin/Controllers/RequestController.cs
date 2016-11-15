@@ -1,9 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
-    using System;
     using System.Linq;
     using System.Web.Mvc;
     using Contracts;
+    using Contracts.Exceptions;
     using Models;
 
     /// <summary>
@@ -105,7 +105,7 @@
         {
             try
             {
-                _requestService.Approve(id);
+                _requestService.Confirm(id);
             }
             catch (MissingEntityException)
             {

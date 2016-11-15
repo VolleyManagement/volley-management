@@ -1109,7 +1109,7 @@
                 AuthOperations.Feedbacks.Read,
                 AuthOperations.Feedbacks.Reply,
                 AuthOperations.Feedbacks.Close,
-                AuthOperations.Requests.Approve,
+                AuthOperations.Requests.Confirm,
                 AuthOperations.Requests.Decline,
                 AuthOperations.Requests.ViewList
             };

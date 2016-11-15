@@ -26,7 +26,7 @@
                 Content = "A perfect application",
                 Date = new DateTime(2007, 05, 03),
                 Status = FeedbackStatusEnum.New,
-                UserEnvironment = "Test Environment"
+                UserEnvironment = "Windows10"
             };
         }
 

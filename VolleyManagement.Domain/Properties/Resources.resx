@@ -270,4 +270,10 @@
   <data name="WrongTransferStart" xml:space="preserve">
     <value>Start of the transfer window should be later than the games start</value>
   </data>
+  <data name="FeedbackUserEnvironmentParam" xml:space="preserve">
+    <value>User environment</value>
+  </data>
+  <data name="ValidationFeedbackUserEnvironment" xml:space="preserve">
+    <value>User environment info cannot contain more than {0} symbols</value>
+  </data>
 </root>

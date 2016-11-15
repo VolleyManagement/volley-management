@@ -70,7 +70,7 @@
         /// <summary>
         /// Sets the feedback view model environment.
         /// </summary>
-        /// <param name="content">Feedback view model content.</param>
+        /// <param name="environment">Feedback view model content.</param>
         /// <returns>Feedback view model object.</returns>
         public FeedbackMvcViewModelBuilder WithEnvironment(string environment)
         {

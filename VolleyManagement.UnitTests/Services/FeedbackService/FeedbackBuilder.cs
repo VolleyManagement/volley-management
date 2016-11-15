@@ -25,7 +25,8 @@
                 UsersEmail = "qwerty@gmail.com",
                 Content = "A perfect application",
                 Date = new DateTime(2007, 05, 03),
-                Status = FeedbackStatusEnum.New
+                Status = FeedbackStatusEnum.New,
+                UserEnvironment = "Test Environment"
             };
         }
 
@@ -81,6 +82,17 @@
         public FeedbackBuilder WithStatus(FeedbackStatusEnum status)
         {
             this._feedback.Status = status;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the feedback environment.
+        /// </summary>
+        /// <param name="environment">Feedback environment</param>
+        /// <returns>Feedback object</returns>
+        public FeedbackBuilder WithEnvironment(string environment)
+        {
+            this._feedback.UserEnvironment = environment;
             return this;
         }
 

@@ -238,6 +238,7 @@
                     .WithId(TEST_ID)
                     .WithEmail(string.Empty)
                     .WithContent(string.Empty)
+                    .WithEnvironment(string.Empty)
                     .Build();
         }
 

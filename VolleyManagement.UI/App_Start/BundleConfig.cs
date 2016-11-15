@@ -88,9 +88,9 @@
         private static void RegisterFeedbackScripts(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/feedbackscripts")
-                .Include("~/Scripts/VmScripts/FeedbackOperations/BackButton.js"));
-            bundles.Add(new ScriptBundle("~/bundles/feedbackscripts")
-                .Include("~/Scripts/VmScripts/FeedbackOperations/CheckEnvironment.js"));
+                .Include(
+                    "~/Scripts/VmScripts/FeedbackOperations/BackButton.js",
+                    "~/Scripts/VmScripts/FeedbackOperations/CheckEnvironment.js"));
         }
 
         #endregion

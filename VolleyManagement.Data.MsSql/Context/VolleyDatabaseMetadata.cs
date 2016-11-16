@@ -58,5 +58,7 @@
         public const string DIVISION_TABLE_NAME = "Divisions";
 
         public const string GAME_RESULTS_TABLE_NAME = "GameResults";
+
+        public const string REQUESTS_TABLE_NAME = "Requests";
     }
 }

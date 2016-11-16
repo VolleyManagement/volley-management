@@ -117,7 +117,8 @@
             bundles.Add(new ScriptBundle("~/bundles/adminscripts")
                         .Include(
                             "~/Scripts/metisMenu.min.js",
-                            "~/Scripts/VMScripts/Admin/admin.js"));
+                            "~/Scripts/VMScripts/Admin/admin.js",
+                            "~/Scripts/VMScripts/Admin/BackButton.js"));
         }
 
         #endregion

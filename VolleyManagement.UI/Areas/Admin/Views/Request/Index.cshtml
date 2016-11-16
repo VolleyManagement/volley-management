@@ -1,5 +1,4 @@
-﻿
-@model IList<VolleyManagement.UI.Areas.Admin.Models.RequestViewModel>
+﻿@model VolleyManagement.UI.Areas.Admin.Models.RequestCollectionViewModel
 
 @{
     ViewBag.Title = "Link Index";
@@ -15,7 +14,7 @@
             <th>Player name</th>
             <th></th>
         </tr>
-        @if (Model.Count == 0)
+        @if (Model.Requests.Count() == 0)
         {
             <tr>
                 <td colspan="3" class="text-center">No Requests</td>
@@ -23,17 +22,17 @@
         }
         else
         {
-            foreach (var link in Model)
+            foreach (var link in Model.Requests)
             {
                 <tr>
                     <td>@link.Id</td>
                     <td>
                         @link.UserName
-                        @Html.ActionLink("Details", "UserDetails", new { id = link.Id }, new { @class = "btn btn-info btn-xs" })
+                        @Html.ActionLink("Details", "UserDetails", new { id = link.UserId }, new { @class = "btn btn-info btn-xs" })
                     </td>
                     <td>
                         @link.PlayerLastName
-                        @Html.ActionLink("Details", "PlayerDetails", new { id = link.Id }, new { @class = "btn btn-info btn-xs" })
+                        @Html.ActionLink("Details", "PlayerDetails", new { id = link.PlayerId }, new { @class = "btn btn-info btn-xs" })
                     </td>
                     <td>
                         @Html.ActionLink("Decline", "Decline", new { id = link.Id }, new { @class = "btn btn-danger btn-xs" })

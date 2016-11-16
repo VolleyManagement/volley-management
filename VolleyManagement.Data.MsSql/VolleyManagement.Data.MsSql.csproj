@@ -296,7 +296,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201611031410480_AddPlayerToUser.resx">
       <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
-	</EmbeddedResource>
+    </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201611072322528_AddRequestsTable.resx">
       <DependentUpon>201611072322528_AddRequestsTable.cs</DependentUpon>
     </EmbeddedResource>

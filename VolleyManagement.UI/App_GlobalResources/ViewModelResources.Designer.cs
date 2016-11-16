@@ -331,20 +331,20 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Can&apos;t find User Id.
-        /// </summary>
-        public static string MassageAboutError {
-            get {
-                return ResourceManager.GetString("MassageAboutError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; can not contain more than {1} symbols.
         /// </summary>
         public static string MaxLengthErrorMessage {
             get {
                 return ResourceManager.GetString("MaxLengthErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t find User Id.
+        /// </summary>
+        public static string MessageAboutError {
+            get {
+                return ResourceManager.GetString("MessageAboutError", resourceCulture);
             }
         }
         
@@ -507,6 +507,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string PlayerWeightFieldRange {
             get {
                 return ResourceManager.GetString("PlayerWeightFieldRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request with such id not found.
+        /// </summary>
+        public static string RequestNotFound {
+            get {
+                return ResourceManager.GetString("RequestNotFound", resourceCulture);
             }
         }
         

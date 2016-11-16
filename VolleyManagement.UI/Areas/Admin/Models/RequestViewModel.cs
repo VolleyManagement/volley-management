@@ -25,6 +25,16 @@
         public string UserName { get; set; }
 
         /// <summary>
+        /// Gets or sets user's id.
+        /// </summary>
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets player's id.
+        /// </summary>
+        public int PlayerId { get; set; }
+
+        /// <summary>
         /// Maps domain entity to presentation
         /// </summary>
         /// <param name="request"><see cref="Request"/> domain entity.</param>
@@ -36,6 +46,8 @@
             var requestViewModel = new RequestViewModel()
             {
                 Id = request.Id,
+                UserId = user.Id,
+                PlayerId = player.Id,
                 PlayerLastName = player.LastName,
                 UserName = user.UserName
             };

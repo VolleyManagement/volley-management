@@ -356,8 +356,9 @@
     <Content Include="Areas\Admin\Views\Request\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Request\PlayerDetails.cshtml" />
     <Content Include="Areas\Admin\Views\Request\UserDetails.cshtml" />
+    <Content Include="Areas\Admin\Views\Request\InvalidOperation.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
+    <Content Include="Scripts\VMScripts\Admin\BackButton.js" />
     <Content Include="Areas\Mvc\Views\Tournaments\_NonPlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffGameResult.cshtml" />
@@ -676,7 +677,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Request\" />
     <Folder Include="Content\Site\" />
   </ItemGroup>
   <ItemGroup />

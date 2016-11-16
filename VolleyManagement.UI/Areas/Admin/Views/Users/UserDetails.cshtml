@@ -4,11 +4,8 @@
     ViewBag.Title = "User's details";
 }
 
+<br />
 <div class="panel panel-primary">
-
-
-    
-
     <div class="panel-heading">User @Model.Id
         <div class="pull-right">
             @Html.ActionLink("Block/Unblock", "UserDetails", new { id = Model.Id }, new { @class = "btn btn-success btn-xs" })

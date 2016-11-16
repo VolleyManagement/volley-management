@@ -118,7 +118,7 @@
             }
             else
             {
-                message = App_GlobalResources.ViewModelResources.MassageAboutError;
+                message = App_GlobalResources.ViewModelResources.MessageAboutError;
             }
 
             return message;

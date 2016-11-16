@@ -122,6 +122,7 @@
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />
     <Compile Include="Mvc\Controllers\ContributorsTeamControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\RequestControllerTests.cs" />
     <Compile Include="Mvc\Controllers\RequestsControllerTest.cs" />
     <Compile Include="Mvc\Controllers\FeedbacksControllerTest.cs" />
     <Compile Include="Mvc\Controllers\GameReportsControllerTests.cs" />

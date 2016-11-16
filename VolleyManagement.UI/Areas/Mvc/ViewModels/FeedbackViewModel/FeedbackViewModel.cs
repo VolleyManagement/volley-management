@@ -51,6 +51,11 @@
         /// <returns>Domain object.</returns>
         public Feedback ToDomain()
         {
+            if (this.UserEnvironment == null)
+            {
+                this.UserEnvironment = string.Empty;
+            }
+
             return new Feedback
             {
                 Id = this.Id,

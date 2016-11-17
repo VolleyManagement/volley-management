@@ -10,7 +10,7 @@
             var linkMessage = $('#linkMessage').html();
 
             $.ajax({
-                url: "/Players/LinkWithUser",
+                url: "/Players/LinkPlayerToUser",
                 datatype: 'json',
                 data: { id: playerId },
                 success: function (message) {

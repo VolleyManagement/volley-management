@@ -19,6 +19,10 @@
     /// </summary>
     public class PlayersController : Controller
     {
+        /// <summary>
+        /// User Id for anonym role.
+        /// </summary>
+        private const int ANONYM = -1;
         private const int MAX_PLAYERS_ON_PAGE = 5;
         private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
                                                                 Editing operation is impossible.
@@ -106,12 +110,12 @@
         /// <param name="id">Player id.</param>
         /// <returns>Message to user about binding
         /// Player and User. </returns>
-        public string LinkWithUser(int id)
+        public string LinkPlayerToUser(int id)
         {
             int userId = this._currentUserService.GetCurrentUserId();
             string message;
 
-            if (userId != -1)
+            if (userId != ANONYM)
             {
                 _requestService.Create(userId, id);
                 message = App_GlobalResources.ViewModelResources.MessageAboutLinkToPlayer;

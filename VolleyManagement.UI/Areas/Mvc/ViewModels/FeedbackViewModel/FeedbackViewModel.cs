@@ -34,7 +34,7 @@
         [StringLength(5000)]
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
-        
+
         /// <summary>
         /// Environment (browser  and operating system) of user's computer.
         /// </summary>
@@ -51,17 +51,12 @@
         /// <returns>Domain object.</returns>
         public Feedback ToDomain()
         {
-            if (this.UserEnvironment == null)
-            {
-                this.UserEnvironment = string.Empty;
-            }
-
             return new Feedback
             {
                 Id = this.Id,
                 UsersEmail = this.UsersEmail,
                 Content = this.Content,
-                UserEnvironment = this.UserEnvironment
+                UserEnvironment = this.UserEnvironment ?? string.Empty
             };
         }
 

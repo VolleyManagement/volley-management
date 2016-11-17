@@ -11,7 +11,7 @@
     /// <summary>
     /// Defines implementation of the IRequestRepository contract.
     /// </summary>
-    public class RequestRepository : IRequestRepository
+    internal class RequestRepository : IRequestRepository
     {
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<RequestEntity> _dalRequest;

@@ -13,7 +13,7 @@
     /// Provides Object Query implementation for Requests
     /// </summary>
     public class RequestQueries : IQuery<List<Request>, GetAllCriteria>,
-                           IQuery<Request, FindByIdCriteria>
+                                   IQuery<Request, FindByIdCriteria>
     {
         #region Fields
 

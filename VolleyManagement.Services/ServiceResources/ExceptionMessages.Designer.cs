@@ -133,6 +133,15 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A request with specified identifier was not found.
+        /// </summary>
+        internal static string RequestNotFound {
+            get {
+                return ResourceManager.GetString("RequestNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A team with specified inentifier was not found in this tournament.
         /// </summary>
         internal static string TeamInTournamentNotFound {
@@ -147,6 +156,15 @@ namespace VolleyManagement.Services.ServiceResources {
         internal static string TeamNotFound {
             get {
                 return ResourceManager.GetString("TeamNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A user with specified identifier was not found.
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
     }

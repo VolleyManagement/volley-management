@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Infrastructure
 {
     using System.Collections.Generic;
+    using System.Linq;
     using Contracts;
     using Data.Contracts;
     using Data.Queries.Common;
@@ -87,13 +88,9 @@
         public List<User> GetAllActiveUsers()
         {
             this._authService.CheckAccess(AuthOperations.AllUsers.ViewActiveList);
-            var activeUsers = new List<User>();
-            foreach (var id in _cacheProvider["ActiveUsers"])
-            {
-                activeUsers.Add(GetUser(id));
-            }
-
-            return activeUsers;
+            var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
+            _cacheProvider["ActiveUsers"] = activeUsersList;
+            return activeUsersList.Select(GetUser).ToList();
         }
 
         /// <summary>

@@ -9,10 +9,10 @@
     public interface ICacheProvider
     {
         /// <summary>
-        /// Gets user by its index.
+        /// Gets or sets user by its index.
         /// </summary>
-        /// <param name="value">Key for application.</param>
+        /// <param name="key">Key for application.</param>
         /// <returns>List of all users id.</returns>
-        List<int> this[string value] { get; }
+        object this[string key] { get; set; }
     }
 }

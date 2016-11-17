@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web;
@@ -258,18 +259,26 @@
 
         private void AddToActive(int id)
         {
-            if (!_cacheProvider["ActiveUsers"].Contains(id))
+            var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
+
+            if (!activeUsersList.Contains(id))
             {
-                _cacheProvider["ActiveUsers"].Add(id);
+                activeUsersList.Add(id);
             }
+
+            _cacheProvider["ActiveUsers"] = activeUsersList;
         }
 
         private void DeleteFromActive(int id)
         {
-            if (_cacheProvider["ActiveUsers"].Contains(id))
+            var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
+
+            if (activeUsersList.Contains(id))
             {
-                _cacheProvider["ActiveUsers"].Remove(_cacheProvider["ActiveUsers"].Find(x => x == id));
+                activeUsersList.Remove(activeUsersList.Find(x => x == id));
             }
+
+            _cacheProvider["ActiveUsers"] = activeUsersList;
         }
     }
 }

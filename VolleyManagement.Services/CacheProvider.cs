@@ -1,9 +1,7 @@
 ﻿namespace VolleyManagement.Services
 {
-    using System.Collections.Generic;
     using System.Web;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// Provides the way to work with application.
@@ -11,20 +9,20 @@
     public class CacheProvider : ICacheProvider
     {
         /// <summary>
-        /// Gets list of user indexes from application.
+        /// Gets or sets list of user indexes from application.
         /// </summary>
-        /// <param name="value">Key for application.</param>
+        /// <param name="key">Key for application.</param>
         /// <returns>List of all users id.</returns>
-        public List<int> this[string value]
+        public object this[string key]
         {
             get
             {
-                if (HttpContext.Current.Application[value] == null)
-                {
-                    HttpContext.Current.Application[value] = new List<int>();
-                }
+                return HttpContext.Current.Application[key];
+            }
 
-                return (List<int>)HttpContext.Current.Application[value];
+            set
+            {
+                HttpContext.Current.Application[key] = value;
             }
         }
     }

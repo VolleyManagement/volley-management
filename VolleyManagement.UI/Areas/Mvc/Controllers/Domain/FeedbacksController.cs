@@ -2,6 +2,7 @@
 {
     using System;
     using System.Web;
+    using System.Web.Configuration;
     using System.Web.Mvc;
     using Contracts;
     using Contracts.Authorization;
@@ -56,7 +57,7 @@
             {
                 UsersEmail = GetUserMail()
             };
-
+            GetDataSiteKey(feedbackViewModel);
             return View("Create", feedbackViewModel);
         }
 
@@ -67,7 +68,7 @@
         /// <returns>Feedback creation view.</returns>
         [HttpPost]
         public ActionResult Create(FeedbackViewModel feedbackViewModel)
-        {
+        {             
             try
             {
                 HttpRequestBase request = Request;
@@ -83,6 +84,7 @@
                 ModelState.AddModelError("ValidationMessage", ex.Message);
             }
 
+            GetDataSiteKey(feedbackViewModel);
             return View("Create", feedbackViewModel);
         }
 
@@ -104,6 +106,13 @@
             }
 
             return currentUser.Email;
-        } 
+        }
+
+        private void GetDataSiteKey(FeedbackViewModel feedbackViewModel)
+        {
+            const string SECRET_KEY = "RecaptchaSiteKey";
+            string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
+            feedbackViewModel.ReCapthaKey = secretKey;
+        }
     }  
 }

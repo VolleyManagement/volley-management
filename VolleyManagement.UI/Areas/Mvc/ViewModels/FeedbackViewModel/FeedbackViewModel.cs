@@ -56,7 +56,7 @@
                 Id = this.Id,
                 UsersEmail = this.UsersEmail,
                 Content = this.Content,
-                UserEnvironment = this.UserEnvironment ?? string.Empty
+                UserEnvironment = this.UserEnvironment
             };
         }
 

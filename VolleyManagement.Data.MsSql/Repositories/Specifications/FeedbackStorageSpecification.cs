@@ -22,10 +22,7 @@
             var content = new ExpressionSpecification<FeedbackEntity>(p =>
                                 !string.IsNullOrEmpty(p.Content)
                                 && p.Content.Length <= ValidationConstants.Feedback.MAX_CONTENT_LENGTH);
-            var environment = new ExpressionSpecification<FeedbackEntity>(p =>
-                                p.UserEnvironment.Length <= ValidationConstants.Feedback.MAX_USER_ENVIRONMENT_LENGTH);
-
-            return usersEmail.And(content).And(environment).IsSatisfiedBy(entity);
+            return usersEmail.And(content).IsSatisfiedBy(entity);
         }
     }
 }

@@ -34,6 +34,7 @@
         /// <returns>Validity of user environment.</returns>
         public static bool ValidateUserEnvironment(string environment)
         {
+            environment = environment ?? string.Empty;
             return environment.Length
                    > Constants.Feedback.MAX_USER_ENVIRONMENT_LENGTH;
         }

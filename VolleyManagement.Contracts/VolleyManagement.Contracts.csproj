@@ -74,6 +74,10 @@
     <Compile Include="Exceptions\TournamentValidationException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj">
+      <Project>{2EF46AF0-90F7-46D2-AE35-3AAF8BDCCB28}</Project>
+      <Name>VolleyManagement.Crosscutting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Domain\VolleyManagement.Domain.csproj">
       <Project>{996eee53-56ac-4002-891f-b989659323d1}</Project>
       <Name>VolleyManagement.Domain</Name>

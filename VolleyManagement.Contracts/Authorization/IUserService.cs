@@ -29,6 +29,12 @@
         User GetUserDetails(int userId);
 
         /// <summary>
+        /// Get all active users.
+        /// </summary>
+        /// <returns>List of active users.</returns>
+        List<User> GetAllActiveUsers();
+
+        /// <summary>
         /// Gets list of users which role is Admin.
         /// </summary>
         /// <returns>List of User instances.</returns>

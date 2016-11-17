@@ -47,6 +47,7 @@
                                   Bind<IGameService>().To<GameService>(),
                                   Bind<IGameReportService>().To<GameReportService>(),
                                   Bind<IAuthorizationService>().To<AuthorizationService>(),
+                                  Bind<ICacheProvider>().To<CacheProvider>(),
                                   Bind<IFeedbackService>().To<FeedbackService>(),
                                   Bind<IMailService>().To<GmailAccountMailService>(),
                                   Bind<IUserService>().To<UserService>()

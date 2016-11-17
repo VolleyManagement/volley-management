@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Infrastructure
+﻿namespace VolleyManagement.Services.Authorization
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -7,6 +7,7 @@
     using Data.Queries.Common;
     using Domain.UsersAggregate;
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Data.Queries.User;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
 
@@ -20,6 +21,7 @@
         private readonly IQuery<List<User>, GetAllCriteria> _getAllUsersQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getUserPlayerQuery;
         private readonly ICacheProvider _cacheProvider;
+        private readonly IQuery<List<User>, UniqueUserCriteria> _getAdminsListQuery;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
@@ -29,18 +31,21 @@
         /// <param name="getAllUsersQuery">Query for getting all User.</param>
         /// <param name="getUserPlayerQuery">Query for getting player assigned to User</param>
         /// <param name="cacheProvider">Instance of <see cref="ICacheProvider"/> class.</param>
+        /// /// <param name="getAdminsListQuery">Query for getting list of admins.</param>
         public UserService(
             IAuthorizationService authService,
             IQuery<User, FindByIdCriteria> getUserByIdQuery,
             IQuery<List<User>, GetAllCriteria> getAllUsersQuery,
             IQuery<Player, FindByIdCriteria> getUserPlayerQuery,
-            ICacheProvider cacheProvider)
+            ICacheProvider cacheProvider,
+            IQuery<List<User>, UniqueUserCriteria> getAdminsListQuery)
         {
             _authService = authService;
             _getUserByIdQuery = getUserByIdQuery;
             _getAllUsersQuery = getAllUsersQuery;
             _getUserPlayerQuery = getUserPlayerQuery;
             _cacheProvider = cacheProvider;
+            _getAdminsListQuery = getAdminsListQuery;
         }
 
         /// <summary>
@@ -91,6 +96,16 @@
             var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
             _cacheProvider["ActiveUsers"] = activeUsersList;
             return activeUsersList.Select(GetUser).ToList();
+        }
+
+        /// <summary>
+        /// Gets list of users which role is Admin.
+        /// </summary>
+        /// <returns>List of User entities.</returns>
+        public List<User> GetAdminsList()
+        {
+            return _getAdminsListQuery.Execute(
+                new UniqueUserCriteria { RoleId = 1 });
         }
 
         /// <summary>

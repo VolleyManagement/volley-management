@@ -7,8 +7,8 @@
     using Domain.Properties;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.MailService;
     using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.RolesAggregate;
@@ -23,6 +23,7 @@
 
         private readonly IFeedbackRepository _feedbackRepository;
         private readonly IUserService _userService;
+        private readonly IMailService _mailService;
         private readonly ICurrentUserService _currentUserService;
         private readonly IAuthorizationService _authService;
         private readonly IQuery<Feedback, FindByIdCriteria> _getFeedbackByIdQuery;
@@ -37,6 +38,7 @@
         /// </summary>
         /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
         /// <param name="userService">Instance of class which implements <see cref="IUserService"/></param>
+        /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
         /// <param name="currentUserService">Instance of the class </param>
         /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
         /// <param name="getFeedbackByIdQuery">Get feedback by it's id </param>
@@ -44,6 +46,7 @@
         public FeedbackService(
             IFeedbackRepository feedbackRepository,
             IUserService userService,
+            IMailService mailService,
             ICurrentUserService currentUserService,
             IAuthorizationService authService,
             IQuery<Feedback, FindByIdCriteria> getFeedbackByIdQuery,
@@ -51,6 +54,7 @@
         {
             _feedbackRepository = feedbackRepository;
             _userService = userService;
+            _mailService = mailService;
             _authService = authService;
             _currentUserService = currentUserService;
             _getFeedbackByIdQuery = getFeedbackByIdQuery;
@@ -75,6 +79,9 @@
             UpdateFeedbackDate(feedbackToCreate);
             _feedbackRepository.Add(feedbackToCreate);
             _feedbackRepository.UnitOfWork.Commit();
+
+            NotifyUser(feedbackToCreate.UsersEmail);
+            NotifyAdmins(feedbackToCreate);
         }
 
         /// <summary>
@@ -179,6 +186,46 @@
         #endregion
 
         #region Privates
+
+        /// <summary>
+        /// Send a confirmation email to user.
+        /// </summary>
+        /// <param name="emailTo">Recipient email.</param>
+        private void NotifyUser(string emailTo)
+        {
+            string body = Properties.Resources.FeedbackConfirmationLetterBody;
+            string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
+
+            EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
+            _mailService.Send(emailMessage);
+        }
+
+        /// <summary>
+        /// Send a feedback email to all admins.
+        /// </summary>
+        /// <param name="feedback">Feedback to send.</param>
+        private void NotifyAdmins(Feedback feedback)
+        {
+            string subject = string.Format(
+                Properties.Resources.FeedbackEmailSubjectToAdmins,
+                feedback.Id);
+
+            string body = string.Format(
+                Properties.Resources.FeedbackEmailBodyToAdmins,
+                feedback.Id,
+                feedback.Date,
+                feedback.UsersEmail,
+                feedback.Status,
+                feedback.Content);
+
+            IList<User> adminsList = _userService.GetAdminsList();
+
+            foreach (var admin in adminsList)
+            {
+                EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);
+                _mailService.Send(emailMessage);
+            }
+        }
 
         private bool ShouldChangeLastUpdateInfo(FeedbackStatusEnum newStatusCode)
         {

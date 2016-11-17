@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Contracts
+﻿namespace VolleyManagement.Contracts.Authorization
 {
     using System.Collections.Generic;
     using Domain.UsersAggregate;
@@ -18,7 +18,7 @@
         /// Get user instance by Id.
         /// </summary>
         /// <param name="userId">User Id.</param>
-        /// <returns>User instance.</returns>
+        /// <returns>User entity.</returns>
         User GetUser(int userId);
 
         /// <summary>
@@ -33,5 +33,11 @@
         /// </summary>
         /// <returns>List of active users.</returns>
         List<User> GetAllActiveUsers();
+
+        /// <summary>
+        /// Gets list of users which role is Admin.
+        /// </summary>
+        /// <returns>List of User instances.</returns>
+        List<User> GetAdminsList();
     }
 }

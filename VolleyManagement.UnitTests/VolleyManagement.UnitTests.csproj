@@ -184,7 +184,9 @@
     <Compile Include="Services\GameService\GameBuilder.cs" />
     <Compile Include="Services\GameService\GameComparer.cs" />
     <Compile Include="Services\GameService\GameTestFixture.cs" />
+    <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
+    <Compile Include="Services\UserManager\UserBuilder.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />
     <Compile Include="Services\GameService\GameServiceTestFixture.cs" />
     <Compile Include="Services\GameService\GameServiceTests.cs" />

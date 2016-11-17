@@ -9,10 +9,5 @@
         /// Gets or sets message to user
         /// </summary>
         public string Message { get; set; }
-
-        /// <summary>
-        /// Gets or sets the page title
-        /// </summary>
-        public string Title { get; set; }
     }
 }

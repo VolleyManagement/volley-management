@@ -69,8 +69,7 @@
                     "ErrorPage", 
                     new OperationResulViewModel
                     {
-                        Message = ex.Message,
-                        Title = App_GlobalResources.FeedbackViews.InvalidReplyOperation
+                        Message = ex.Message
                     });
             }
             catch (MissingEntityException ex)
@@ -79,8 +78,7 @@
                     "ErrorPage",
                     new OperationResulViewModel
                     {
-                        Message = ex.Message,
-                        Title = App_GlobalResources.FeedbackViews.FeedbackNotFound
+                        Message = ex.Message
                     });
             }
             
@@ -104,8 +102,7 @@
                    "ErrorPage", 
                    new OperationResulViewModel
                    {
-                       Message = ex.Message,
-                       Title = App_GlobalResources.FeedbackViews.InvalidCloseOperation
+                       Message = ex.Message
                    });
             }
             catch (MissingEntityException ex)
@@ -114,8 +111,7 @@
                     "ErrorPage", 
                     new OperationResulViewModel
                     {
-                        Message = ex.Message,
-                        Title = App_GlobalResources.FeedbackViews.FeedbackNotFound
+                        Message = ex.Message
                     });
             }
 

@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web;
@@ -17,6 +18,7 @@
     using Services.Authorization;
     using ViewModels.Account;
     using ViewModels.Users;
+    using VolleyManagement.Contracts;
 
     /// <summary>
     /// Manages Sign In/Out process
@@ -26,18 +28,26 @@
     {
         private readonly IVolleyUserManager<UserModel> _userManager;
         private readonly IRolesService _rolesService;
+        private readonly ICacheProvider _cacheProvider;
+        private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
         /// </summary>
         /// <param name="userManager"> User Manager </param>
         /// <param name="rolesService"> Roles service </param>
+        /// <param name="cacheProvider">Instance of <see cref="ICacheProvider"/> class.</param>
+        /// <param name="currentUserService">Instance of <see cref="ICurrentUserService"/> class.</param>
         public AccountController(
                     IVolleyUserManager<UserModel> userManager,
-                    IRolesService rolesService)
+                    IRolesService rolesService,
+                    ICacheProvider cacheProvider,
+                    ICurrentUserService currentUserService)
         {
             this._userManager = userManager;
             this._rolesService = rolesService;
+            this._cacheProvider = cacheProvider;
+            this._currentUserService = currentUserService;
         }
 
         private int CurrentUserId
@@ -82,6 +92,7 @@
         [AllowAnonymous]
         public ActionResult Logout(string returnUrl)
         {
+            DeleteFromActive(this._currentUserService.GetCurrentUserId());
             AuthManager.SignOut();
             return this.Redirect(this.GetRedirectUrl(returnUrl));
         }
@@ -97,7 +108,7 @@
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                // ToDo: return View("Error", new string[] { "Access Denied" });
+                return View("AccessDenied");
             }
 
             ViewBag.returnUrl = returnUrl;
@@ -219,6 +230,7 @@
             ident.AddClaims(loginInfo.ExternalIdentity.Claims);
             AuthManager.SignOut();
             AuthManager.SignIn(new AuthenticationProperties { IsPersistent = false }, ident);
+            AddToActive(user.Id);
 
             return Redirect(GetRedirectUrl(returnUrl));
         }
@@ -243,6 +255,30 @@
         private string GetDefaultUrl()
         {
             return Url.Action("Index", "Tournaments");
+        }
+
+        private void AddToActive(int id)
+        {
+            var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
+
+            if (!activeUsersList.Contains(id))
+            {
+                activeUsersList.Add(id);
+            }
+
+            _cacheProvider["ActiveUsers"] = activeUsersList;
+        }
+
+        private void DeleteFromActive(int id)
+        {
+            var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
+
+            if (activeUsersList.Contains(id))
+            {
+                activeUsersList.Remove(activeUsersList.Find(x => x == id));
+            }
+
+            _cacheProvider["ActiveUsers"] = activeUsersList;
         }
     }
 }

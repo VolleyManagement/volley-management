@@ -369,6 +369,7 @@
     <Content Include="Areas\Admin\Views\Requests\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\ErrorPage.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\ActiveUsers.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />

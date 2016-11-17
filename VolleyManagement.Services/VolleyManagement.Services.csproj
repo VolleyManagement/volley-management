@@ -49,6 +49,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,12 +60,19 @@
     <Compile Include="Authentication\VolleyUserManager.cs" />
     <Compile Include="Authentication\VolleyUserStore.cs" />
     <Compile Include="Authorization\AuthorizationService.cs" />
-    <Compile Include="Authorization\UserService.cs" />
     <Compile Include="Authorization\RolesService.cs" />
+    <Compile Include="Authorization\UserService.cs" />
     <Compile Include="ContributorTeamService.cs" />
     <Compile Include="FeedbackService.cs" />
     <Compile Include="GameReportService.cs" />
     <Compile Include="GameService.cs" />
+    <Compile Include="CacheProvider.cs" />
+    <Compile Include="GmailAccountMailService.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ServiceResources\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,6 +110,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="ServiceResources\ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>

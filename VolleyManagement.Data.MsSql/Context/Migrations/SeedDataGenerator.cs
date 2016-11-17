@@ -1104,6 +1104,7 @@
                 AuthOperations.AdminDashboard.View,
                 AuthOperations.AllUsers.ViewList,
                 AuthOperations.AllUsers.ViewDetails,
+                AuthOperations.AllUsers.ViewActiveList,
                 AuthOperations.Feedbacks.Edit,
                 AuthOperations.Feedbacks.Delete,
                 AuthOperations.Feedbacks.Read,

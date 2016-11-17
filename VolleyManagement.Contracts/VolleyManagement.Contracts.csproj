@@ -65,7 +65,6 @@
     <Compile Include="Exceptions\AuthorizationException.cs" />
     <Compile Include="Exceptions\MissingEntityException.cs" />
     <Compile Include="ICacheProvider.cs" />
-    <Compile Include="ICaptchaManager.cs" />
     <Compile Include="IContributorTeamService.cs" />
     <Compile Include="IFeedbackService.cs" />
     <Compile Include="IGameReportService.cs" />

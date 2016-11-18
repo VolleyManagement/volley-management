@@ -43,7 +43,7 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// <summary>
         /// Gets or sets boolean value pointing is user account blocked .
         /// </summary>
-        public bool IsUserBlocked { get; set; }
+        public bool IsBlocked { get; set; }
 
         /// <summary>
         /// Login providers

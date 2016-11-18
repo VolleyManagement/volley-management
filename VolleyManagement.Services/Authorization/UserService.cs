@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UI.Infrastructure
 {
+    using System;
     using Contracts;
     using Contracts.Exceptions;
     using Data.Contracts;
@@ -44,15 +45,8 @@
         /// <param name="userId">User Id.</param>
         public void SetUserBlocked(int userId)
         {
-            User user = GetUser(userId);
-            if (user == null)
-            {
-                throw new MissingEntityException(Services.ServiceResources.ExceptionMessages.UserNotFound);
-            }
-
-            user.IsUserBlocked = true;
-            _userRepository.Update(user);
-            _userRepository.UnitOfWork.Commit();
+            bool isUserBlocked = true;
+            SetBlockStatus(userId, isUserBlocked);
         }
 
         /// <summary>
@@ -61,13 +55,19 @@
         /// <param name="userId">User Id.</param>
         public void SetUserUnblocked(int userId)
         {
+            bool isUserBlocked = false;
+            SetBlockStatus(userId, isUserBlocked);
+        }
+
+        private void SetBlockStatus(int userId, bool isBlocked)
+        {
             User user = GetUser(userId);
             if (user == null)
             {
                 throw new MissingEntityException(Services.ServiceResources.ExceptionMessages.UserNotFound);
             }
 
-            user.IsUserBlocked = false;
+            user.IsBlocked = isBlocked;
             _userRepository.Update(user);
             _userRepository.UnitOfWork.Commit();
         }

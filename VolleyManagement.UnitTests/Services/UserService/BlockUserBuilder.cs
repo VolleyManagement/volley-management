@@ -17,7 +17,7 @@
                 UserName = "TestName",
                 PersonName = "TestFullName",
                 Email = "test@test.test",
-                IsUserBlocked = false
+                IsBlocked = false
             };
         }
 
@@ -72,7 +72,7 @@
         /// <returns>User object.</returns>
         public BlockUserBuilder WithBlockStatus(bool blockStatus)
         {
-            this._user.IsUserBlocked = blockStatus;
+            this._user.IsBlocked = blockStatus;
             return this;
         }
 

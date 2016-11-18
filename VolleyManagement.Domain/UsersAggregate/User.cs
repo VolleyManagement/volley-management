@@ -43,7 +43,7 @@
         /// <summary>
         /// It is true if user account is blocked.
         /// </summary>
-        public bool IsUserBlocked { get; set; }
+        public bool IsBlocked { get; set; }
 
         /// <summary>
         /// External login information for the user

@@ -240,7 +240,7 @@
         {
             User currentUser = new User();
             currentUser = this._userService.GetUser(userId);
-            return currentUser.IsUserBlocked;
+            return currentUser.IsBlocked;
         }
 
         private string GetRedirectUrl(string returnUrl)

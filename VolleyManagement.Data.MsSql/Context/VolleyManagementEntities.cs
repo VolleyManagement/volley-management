@@ -248,7 +248,7 @@ namespace VolleyManagement.Data.MsSql.Context
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<UserEntity>()
-                .Property(u => u.IsUserBlocked);
+                .Property(u => u.IsBlocked);
         }
 
         private static void ConfigureUserLogins(DbModelBuilder modelBuilder)

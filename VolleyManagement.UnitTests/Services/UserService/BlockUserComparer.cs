@@ -60,7 +60,7 @@
                 && x.Email == y.Email
                 && x.UserName == y.UserName
                 && x.PersonName == y.PersonName
-                && x.IsUserBlocked == y.IsUserBlocked;
+                && x.IsBlocked == y.IsBlocked;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         /// </summary>
         public override void Up()
         {
-            AddColumn("dbo.Users", "IsUserBlocked", c => c.Boolean(nullable: false));
+            AddColumn("dbo.Users", "IsBlocked", c => c.Boolean(nullable: false));
         }
 
         /// <summary>

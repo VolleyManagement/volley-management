@@ -19,6 +19,8 @@
         private const int INVALID_USER_ID = -1;
         private const int VALID_USER_ID = 1;
         private const string TEST_NAME = "Test Name";
+        private const bool USER_STATUS_IS_BLOCKED = true;
+        private const bool USER_STATUS_IS_UNBLOCKED = false;
 
         private readonly Mock<IUserRepository> _userRepositoryMock =
             new Mock<IUserRepository>();
@@ -58,6 +60,21 @@
         }
 
         [TestMethod]
+        public void SetUserBlocked_UserExist_UserStatusIsBlocked()
+        {
+            // Arrange
+            var user = new BlockUserBuilder().WithBlockStatus(USER_STATUS_IS_BLOCKED).Build();
+            MockCurrentUser(user, VALID_USER_ID);
+            var sut = _kernel.Get<UserService>();
+
+            // Act
+            sut.SetUserBlocked(VALID_USER_ID);
+
+            // Assert
+            VerifyEditUser(user, Times.Once());
+        }
+
+        [TestMethod]
         public void SetUserBlocked_UserDoesNotExist_ExceptionThrown()
         {
             // Arrange
@@ -86,6 +103,21 @@
         {
             // Arrange
             var user = new BlockUserBuilder().WithId(VALID_USER_ID).Build();
+            MockCurrentUser(user, VALID_USER_ID);
+            var sut = _kernel.Get<UserService>();
+
+            // Act
+            sut.SetUserUnblocked(VALID_USER_ID);
+
+            // Assert
+            VerifyEditUser(user, Times.Once());
+        }
+
+        [TestMethod]
+        public void SetUserUnblocked_UserExist_UserStatusIsUnblocked()
+        {
+            // Arrange
+            var user = new BlockUserBuilder().WithBlockStatus(USER_STATUS_IS_UNBLOCKED).Build();
             MockCurrentUser(user, VALID_USER_ID);
             var sut = _kernel.Get<UserService>();
 

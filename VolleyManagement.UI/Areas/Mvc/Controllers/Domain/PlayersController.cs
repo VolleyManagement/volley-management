@@ -110,14 +110,14 @@
         /// <param name="id">Player id.</param>
         /// <returns>Message to user about binding
         /// Player and User. </returns>
-        public string LinkPlayerToUser(int id)
+        public string LinkWithUser(int playerId)
         {
             int userId = this._currentUserService.GetCurrentUserId();
             string message;
 
             if (userId != ANONYM)
             {
-                _requestService.Create(userId, id);
+                _requestService.Create(userId, playerId);
                 message = App_GlobalResources.ViewModelResources.MessageAboutLinkToPlayer;
             }
             else

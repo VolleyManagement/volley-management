@@ -224,10 +224,9 @@
         }
 
         [TestMethod]
-        public void Details_LinkWithUser_SuccessfullMessageIsReturned()
+        public void LinkWithUser_UserExists_SuccessfullMessageIsReturned()
         {
             // Arrange
-            string actual = string.Empty;
             string expected = LINK_SUCCESSFULL_MESSAGE;
             const int USER_ID = 1;
             const int PLAYER_ID = 1;
@@ -236,17 +235,16 @@
             var sut = _kernel.Get<PlayersController>();
 
             // Act
-            actual = sut.LinkWithUser(PLAYER_ID);
+            string actual = sut.LinkWithUser(PLAYER_ID);
 
             // Assert
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void Details_LinkWithUser_ErrorMessageIsReturned()
+        public void LinkWithUser_UserNotFound_ErrorMessageIsReturned()
         {
             // Arrange
-            string actual = string.Empty;
             string expected = LINK_ERROR_MESSAGE;
             const int USER_ID = -1;
             const int PLAYER_ID = 1;
@@ -255,7 +253,7 @@
             var sut = _kernel.Get<PlayersController>();
 
             // Act
-            actual = sut.LinkWithUser(PLAYER_ID);
+            string actual = sut.LinkWithUser(PLAYER_ID);
 
             // Assert
             Assert.AreEqual(expected, actual);

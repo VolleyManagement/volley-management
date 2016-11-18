@@ -121,7 +121,21 @@
         }
 
         [TestMethod]
-        public void Confirm_NonExistentRequest_ThrowsException()
+        public void Confirm_AnyRequest_RequestConfirmed()
+        {
+            // Arrange
+            const int REQUEST_ID = 1;
+            var sut = _kernel.Get<RequestController>();
+
+            // Act
+            var actionResult = sut.Confirm(REQUEST_ID);
+
+            // Assert
+            AssertVerifyConfirm(_requestServiceMock, REQUEST_ID);
+        }
+
+        [TestMethod]
+        public void Confirm_NonExistentRequest_ThrowsMissingEntityException()
         {
             // Arrange
             const int REQUEST_ID = 1;
@@ -150,7 +164,21 @@
         }
 
         [TestMethod]
-        public void Decline_NonExistentRequest_ThrowsException()
+        public void Decline_AnyRequest_RequestDeclined()
+        {
+            // Arrange
+            const int REQUEST_ID = 1;
+            var sut = _kernel.Get<RequestController>();
+
+            // Act
+            var actionResult = sut.Decline(REQUEST_ID);
+
+            // Assert
+            AssertVerifyDecline(_requestServiceMock, REQUEST_ID);
+        }
+
+        [TestMethod]
+        public void Decline_NonExistentRequest_ThrowsMissingEntityException()
         {
             // Arrange
             const int REQUEST_ID = 1;
@@ -228,6 +256,15 @@
                 .Throws(new MissingEntityException(string.Empty));
         }
 
+        private void AssertVerifyConfirm(Mock<IRequestService> mock, int requestId)
+        {
+            mock.Verify(m => m.Approve(It.Is<int>(id => id == requestId)), Times.Once());
+        }
+
+        private void AssertVerifyDecline(Mock<IRequestService> mock, int requestId)
+        {
+            mock.Verify(m => m.Decline(It.Is<int>(id => id == requestId)), Times.Once());
+        }
         #endregion
     }
 }

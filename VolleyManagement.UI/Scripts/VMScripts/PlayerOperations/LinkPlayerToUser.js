@@ -6,13 +6,13 @@
 
         linkButton.click(function () {
 
-            var playerId = $('#Model_Id').val();
+            var currentPlayerId = $('#Model_Id').val();
             var linkMessage = $('#linkMessage').html();
 
             $.ajax({
                 url: "/Players/LinkWithUser",
                 datatype: 'json',
-                data: { id: playerId },
+                data: { playerId: currentPlayerId },
                 success: function (message) {
                     messagePlace.html(message + linkMessage);
                     linkButton.prop('disabled', true);

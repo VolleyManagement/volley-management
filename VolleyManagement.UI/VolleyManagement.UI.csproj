@@ -476,7 +476,10 @@
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\LoginProviderViewModel.cs" />
     <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
+    <Compile Include="Areas\Admin\Models\MessageViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\TournamentRequestCollectionViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\TournamentRequestViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />

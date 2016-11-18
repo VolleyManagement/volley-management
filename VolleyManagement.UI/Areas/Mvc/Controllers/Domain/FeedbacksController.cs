@@ -1,13 +1,14 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
+    using System.Web;
+    using System.Web.Configuration;
     using System.Web.Mvc;
-
     using Contracts;
     using Contracts.Authorization;
     using Domain.UsersAggregate;
     using ViewModels.FeedbackViewModel;
-    
+
     /// <summary>
     /// Defines feedback controller.
     /// </summary>
@@ -21,6 +22,7 @@
         private readonly IUserService _userService;
         private readonly ICurrentUserService _currentUserService;
         private readonly IFeedbackService _feedbackService;
+        private ICaptchaManager _captchaManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbacksController"/> class.
@@ -31,14 +33,18 @@
         /// that implements IUserService interface.</param>
         /// <param name="currentUserService">Instance of the class
         /// that implements ICurrentUserService interface.</param>
+        /// <param name="captchaManager">Instance of the class
+        /// that implements ICaptchaManager interface.</param>
         public FeedbacksController(
             IFeedbackService feedbackService,
             IUserService userService,
-            ICurrentUserService currentUserService)
+            ICurrentUserService currentUserService,
+            ICaptchaManager captchaManager)
         {
            this._feedbackService = feedbackService;
             this._userService = userService;
             this._currentUserService = currentUserService;
+            this._captchaManager = captchaManager;
         }
 
         /// <summary>
@@ -51,7 +57,7 @@
             {
                 UsersEmail = GetUserMail()
             };
-
+            GetDataSiteKey(feedbackViewModel);
             return View("Create", feedbackViewModel);
         }
 
@@ -62,10 +68,11 @@
         /// <returns>Feedback creation view.</returns>
         [HttpPost]
         public ActionResult Create(FeedbackViewModel feedbackViewModel)
-        {
+        {             
             try
             {
-                if (ModelState.IsValid)
+                HttpRequestBase request = Request;
+                if (ModelState.IsValid && _captchaManager.IsFormSubmit(request))
                 {
                     var domainFeedback = feedbackViewModel.ToDomain();
                     this._feedbackService.Create(domainFeedback);
@@ -77,6 +84,7 @@
                 ModelState.AddModelError("ValidationMessage", ex.Message);
             }
 
+            GetDataSiteKey(feedbackViewModel);
             return View("Create", feedbackViewModel);
         }
 
@@ -99,5 +107,12 @@
 
             return currentUser.Email;
         }
-    }
+
+        private void GetDataSiteKey(FeedbackViewModel feedbackViewModel)
+        {
+            const string SECRET_KEY = "RecaptchaSiteKey";
+            string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
+            feedbackViewModel.ReCapthaKey = secretKey;
+        }
+    }  
 }

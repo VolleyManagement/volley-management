@@ -31,6 +31,8 @@
         {
             IHaveBindingConfiguration configuration = Bind<ICurrentUserService>().To<CurrentUserService>();
             configuration.BindingConfiguration.ScopeCallback = _scopeCallback;
+            IHaveBindingConfiguration configurationCaptcha = Bind<ICaptchaManager>().To<CaptchaManager>();
+            configurationCaptcha.BindingConfiguration.ScopeCallback = _scopeCallback;
         }
     }
 }

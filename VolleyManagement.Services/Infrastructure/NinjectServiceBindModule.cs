@@ -50,7 +50,8 @@
                                   Bind<ICacheProvider>().To<CacheProvider>(),
                                   Bind<IFeedbackService>().To<FeedbackService>(),
                                   Bind<IMailService>().To<GmailAccountMailService>(),
-                                  Bind<IUserService>().To<UserService>()
+                                  Bind<IUserService>().To<UserService>(),
+                                  Bind<ITournamentRequestService>().To<TournamentRequestService>()
                               };
             configs.InScope(_scopeCallback);
         }

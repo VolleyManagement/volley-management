@@ -82,6 +82,8 @@
     <Compile Include="RolesAggregate\Role.cs" />
     <Compile Include="TeamsAggregate\ITeamRepository.cs" />
     <Compile Include="TeamsAggregate\TeamValidation.cs" />
+    <Compile Include="TournamentRequestAggregate\ITournamentRequestRepository.cs" />
+    <Compile Include="TournamentRequestAggregate\TournamentRequest.cs" />
     <Compile Include="TournamentsAggregate\Divisions\Division.cs" />
     <Compile Include="TournamentsAggregate\Divisions\DivisionValidation.cs" />
     <Compile Include="TournamentsAggregate\Groups\Group.cs" />

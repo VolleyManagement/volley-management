@@ -96,6 +96,11 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<FeedbackEntity> Feedbacks { get; set; }
 
+        /// <summary>
+        /// Gets or sets the tournament's requests table.
+        /// </summary>
+        public DbSet<TournamentRequestEntity> TournamentRequests { get; set; }
+
         #endregion
 
         #region Mapping Configuration
@@ -123,6 +128,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureGroups(modelBuilder);
             ConfigureGameResults(modelBuilder);
             ConfigureFeedbacks(modelBuilder);
+            ConfigureTournamentRequests(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -580,6 +586,12 @@ namespace VolleyManagement.Data.MsSql.Context
                 .HasMaxLength(ValidationConstants.User.MAX_FULL_NAME_LENGTH);
         }
 
+        private static void ConfigureTournamentRequests(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TournamentRequestEntity>()
+              .ToTable(VolleyDatabaseMetadata.TOURNAMENT_REQUEST_TABLE_NAME)
+              .HasKey(p => p.Id);
+        }
         #endregion
-    }
+     }
 }

@@ -17,6 +17,7 @@
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.Domain.TournamentRequestAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Domain.UsersAggregate;
 
@@ -59,7 +60,8 @@
                                   Bind<ITeamRepository>().To<TeamRepository>(),
                                   Bind<IRoleRepository>().To<RoleRepostitory>(),
                                   Bind<IGameRepository>().To<GameRepository>(),
-                                  Bind<IFeedbackRepository>().To<FeedbackRepository>()
+                                  Bind<IFeedbackRepository>().To<FeedbackRepository>(),
+                                  Bind<ITournamentRequestRepository>().To<TournamentRequestRepository>(),
                               };
 
             configs.InScope(_scopeCallback);

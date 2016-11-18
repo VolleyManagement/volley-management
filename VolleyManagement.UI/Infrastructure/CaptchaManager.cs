@@ -4,6 +4,7 @@
     using System.Web;
     using System.Web.Configuration;
     using Newtonsoft.Json.Linq;
+    using Contracts;
 
     /// <summary>
     /// Represents an Implementation of ICaptchaManager interface.

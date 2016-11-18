@@ -2,8 +2,8 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Web;
     using System.Web.Mvc;
-
     using Contracts;
     using Contracts.Authorization;
     using Domain.FeedbackAggregate;
@@ -42,6 +42,9 @@
         private readonly Mock<ICurrentUserService> _currentUserServiceMock =
             new Mock<ICurrentUserService>();
 
+        private readonly Mock<ICaptchaManager> _captchaManagerMock =
+            new Mock<ICaptchaManager>();
+
         private IKernel _kernel;
 
         #endregion
@@ -61,6 +64,10 @@
                 .ToConstant(this._userServiceMock.Object);
             this._kernel.Bind<ICurrentUserService>()
                 .ToConstant(this._currentUserServiceMock.Object);
+            this._kernel.Bind<ICaptchaManager>()
+                .ToConstant(this._captchaManagerMock.Object);
+
+            _captchaManagerMock.Setup(m => m.IsFormSubmit(It.IsAny<HttpRequestBase>())).Returns(true);
         }
 
         #endregion
@@ -200,6 +207,22 @@
             Assert.AreEqual(EXCEPTION_MESSAGE, res[0].ErrorMessage);
         }
 
+        [TestMethod]
+        public void CreatePostAction_CaptchaIsNotApproved_CreateViewReturned()
+        {
+            // Arrange
+            FeedbacksController sut = this._kernel.Get<FeedbacksController>();
+            var feedback = CreateValidFeedback();
+
+            // Act
+            this._captchaManagerMock
+                .Setup(cm => cm.IsFormSubmit(It.IsAny<HttpRequestBase>()))
+                .Returns(false);
+            var res = sut.Create(feedback) as ViewResult;
+
+            // Assert
+            Assert.AreNotEqual(FEEDBACK_SENT_MESSAGE, res.ViewName);
+        }
         #endregion
 
         #region Private

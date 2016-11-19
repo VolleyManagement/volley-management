@@ -18,6 +18,7 @@
     public class RequestControllerTests
     {
         #region Fields
+        private const int REQUEST_ID = 1;
 
         private readonly Mock<IRequestService> _requestServiceMock = new Mock<IRequestService>();
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
@@ -110,7 +111,6 @@
         public void Confirm_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
-            const int REQUEST_ID = 1;
             var sut = _kernel.Get<RequestController>();
 
             // Act
@@ -124,7 +124,6 @@
         public void Confirm_AnyRequest_RequestConfirmed()
         {
             // Arrange
-            const int REQUEST_ID = 1;
             var sut = _kernel.Get<RequestController>();
 
             // Act
@@ -138,7 +137,6 @@
         public void Confirm_NonExistentRequest_ThrowsMissingEntityException()
         {
             // Arrange
-            const int REQUEST_ID = 1;
             SetupConfirmThrowsMissingEntityException();
             var sut = _kernel.Get<RequestController>();
 
@@ -153,7 +151,6 @@
         public void Decline_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
-            const int REQUEST_ID = 1;
             var sut = _kernel.Get<RequestController>();
 
             // Act
@@ -167,7 +164,6 @@
         public void Decline_AnyRequest_RequestDeclined()
         {
             // Arrange
-            const int REQUEST_ID = 1;
             var sut = _kernel.Get<RequestController>();
 
             // Act
@@ -181,7 +177,6 @@
         public void Decline_NonExistentRequest_ThrowsMissingEntityException()
         {
             // Arrange
-            const int REQUEST_ID = 1;
             SetupDeclineThrowsMissingEntityException();
             var sut = _kernel.Get<RequestController>();
 

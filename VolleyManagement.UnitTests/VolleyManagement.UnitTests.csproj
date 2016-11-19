@@ -59,14 +59,15 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.VisualStudio.QualityTools.UnitTestFramework.11.0.50727.1\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -113,10 +114,15 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Admin\Comparers\UserViewModelComparer.cs" />
+    <Compile Include="Admin\Controllers\UsersControllerTest.cs" />
+    <Compile Include="Admin\ViewModels\UserAdminViewModelBuilder.cs" />
+    <Compile Include="Mvc\Comparers\RequestsViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />
     <Compile Include="Mvc\Controllers\ContributorsTeamControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\RequestsControllerTest.cs" />
     <Compile Include="Mvc\Controllers\FeedbacksControllerTest.cs" />
     <Compile Include="Mvc\Controllers\GameReportsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\GameResultsControllerTests.cs" />
@@ -162,6 +168,7 @@
     <Compile Include="Services\FeedbackService\FeedbackBuilder.cs" />
     <Compile Include="Services\FeedbackService\FeedbackComparer.cs" />
     <Compile Include="Services\FeedbackService\FeedbackServiceTest.cs" />
+    <Compile Include="Services\FeedbackService\FeedbackServiceTestFixture.cs" />
     <Compile Include="Services\GameReportService\ShortGameResultDtoTetsFixture.cs" />
     <Compile Include="Services\GameReportService\TeamStandingsTestFixture.cs" />
     <Compile Include="Services\AuthService\AuthorizationServiceTests.cs" />
@@ -177,11 +184,17 @@
     <Compile Include="Services\GameService\GameBuilder.cs" />
     <Compile Include="Services\GameService\GameComparer.cs" />
     <Compile Include="Services\GameService\GameTestFixture.cs" />
+    <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
+    <Compile Include="Services\UserManager\UserBuilder.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />
     <Compile Include="Services\GameService\GameServiceTestFixture.cs" />
     <Compile Include="Services\GameService\GameServiceTests.cs" />
     <Compile Include="Services\GameService\ScoreComparer.cs" />
+    <Compile Include="Services\UsersService\UserBuilder.cs" />
+    <Compile Include="Services\UsersService\UserComparer.cs" />
+    <Compile Include="Services\UsersService\UserServiceTestFixture.cs" />
+    <Compile Include="Services\UsersService\UserServiceTests.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelToDomain.cs" />

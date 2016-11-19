@@ -570,8 +570,19 @@ namespace VolleyManagement.Data.MsSql.Context
             // UserEnvironment
             modelBuilder.Entity<FeedbackEntity>()
                 .Property(t => t.UserEnvironment)
-                .IsOptional()
-                .HasMaxLength(ValidationConstants.Feedback.MAX_USER_ENVIRONMENT_LENGTH);
+                .IsOptional();
+
+            // Update Date
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.UpdateDate)
+                .HasColumnType(VolleyDatabaseMetadata.DATETIME2_COLUMN_TYPE);
+
+            // Admin Name
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.AdminName)
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.User.MAX_FULL_NAME_LENGTH);
         }
 
         #endregion

@@ -43,6 +43,11 @@
         [DataType(DataType.MultilineText)]
         public string UserEnvironment { get; set; }
 
+        /// <summary>
+        /// Gets or sets data site key
+        /// </summary>
+        public string ReCapthaKey { get; set; }
+
         #region Factory Methods
 
         /// <summary>

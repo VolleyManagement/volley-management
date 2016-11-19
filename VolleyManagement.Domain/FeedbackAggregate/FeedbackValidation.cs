@@ -43,5 +43,16 @@
 
             return result;
         }
+
+        /// <summary>
+        /// Validates status of feedback.
+        /// </summary>
+        /// <param name="status">Feedback status for validation.</param>
+        /// <param name="newStatus">Feedback's new status for validation.</param>
+        /// <returns>Validity of status.</returns>
+        public static bool ValidateStatus(FeedbackStatusEnum status, FeedbackStatusEnum newStatus)
+        {
+            return (status != FeedbackStatusEnum.New) && (int)newStatus <= (int)status;
+        }
     }
 }

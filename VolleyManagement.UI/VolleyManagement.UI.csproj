@@ -132,9 +132,9 @@
       <HintPath>..\packages\Microsoft.Spatial.6.13.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
@@ -351,10 +351,6 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
-    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
-    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
-    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Areas\Mvc\Views\Tournaments\_NonPlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffGameResult.cshtml" />
@@ -366,11 +362,23 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\UserDetails.cshtml" />
+    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\ActiveUsers.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\VMScripts\Admin\admin.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\CheckEnvironment.js" />
+    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
@@ -465,6 +473,10 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="AreaConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Models\LoginProviderViewModel.cs" />
+    <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
+    <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
@@ -550,6 +562,7 @@
     <Compile Include="Areas\Mvc\Helpers\JQueryUIDateFormatConverter.cs" />
     <Compile Include="Areas\Mvc\Controllers\ErrorController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Infrastructure\CaptchaManager.cs" />
     <Compile Include="Infrastructure\CurrentUserService.cs" />
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -657,6 +670,7 @@
   <ItemGroup>
     <Folder Include="Content\Site\" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

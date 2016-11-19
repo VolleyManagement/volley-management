@@ -36,5 +36,15 @@
         /// Gets or sets user environment
         /// </summary>
         public string UserEnvironment { get; set; }
+
+        /// <summary>
+        /// Gets or sets update date of feedback
+        /// </summary>
+        public DateTime UpdateDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets admin name
+        /// </summary>
+        public string AdminName { get; set; }
     }
 }

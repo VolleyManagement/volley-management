@@ -2,8 +2,8 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Web;
     using System.Web.Mvc;
-
     using Contracts;
     using Contracts.Authorization;
     using Domain.FeedbackAggregate;
@@ -32,8 +32,7 @@
         private const string TEST_MAIL = "test@gmail.com";
         private const string TEST_CONTENT = "Test content";
         private const string TEST_ENVIRONMENT = "Test environment";
-        private const string EXCEPTION_KEY = "ValidationMessage";
-        private const string EXCEPTION_MESSAGE = "Email can't be empty or contains more than 80 symbols\r\nParameter name: UsersEmail";
+        private const string EXCEPTION_MESSAGE = "ValidationMessage";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
             new Mock<IFeedbackService>();
@@ -43,6 +42,9 @@
 
         private readonly Mock<ICurrentUserService> _currentUserServiceMock =
             new Mock<ICurrentUserService>();
+
+        private readonly Mock<ICaptchaManager> _captchaManagerMock =
+            new Mock<ICaptchaManager>();
 
         private IKernel _kernel;
 
@@ -63,6 +65,10 @@
                 .ToConstant(this._userServiceMock.Object);
             this._kernel.Bind<ICurrentUserService>()
                 .ToConstant(this._currentUserServiceMock.Object);
+            this._kernel.Bind<ICaptchaManager>()
+                .ToConstant(this._captchaManagerMock.Object);
+
+            _captchaManagerMock.Setup(m => m.IsFormSubmit(It.IsAny<HttpRequestBase>())).Returns(true);
         }
 
         #endregion
@@ -189,20 +195,35 @@
         {
             // Arrange
             FeedbacksController sut = this._kernel.Get<FeedbacksController>();
-            var feedback = CreateInvalidFeedback();
-
+            var feedback = CreateValidFeedback();
             this._feedbackServiceMock.Setup(f => f.Create(It.IsAny<Feedback>()))
-                .Throws(new ArgumentException(EXCEPTION_KEY));
+                .Throws(new ArgumentException(EXCEPTION_MESSAGE));
 
             // Act
             sut.Create(feedback);
-            var res = sut.ModelState[EXCEPTION_KEY].Errors;
+            var res = sut.ModelState[EXCEPTION_MESSAGE].Errors;
 
             // Assert
             Assert.IsFalse(sut.ModelState.IsValid);
             Assert.AreEqual(EXCEPTION_MESSAGE, res[0].ErrorMessage);
         }
 
+        [TestMethod]
+        public void CreatePostAction_CaptchaIsNotApproved_CreateViewReturned()
+        {
+            // Arrange
+            FeedbacksController sut = this._kernel.Get<FeedbacksController>();
+            var feedback = CreateValidFeedback();
+
+            // Act
+            this._captchaManagerMock
+                .Setup(cm => cm.IsFormSubmit(It.IsAny<HttpRequestBase>()))
+                .Returns(false);
+            var res = sut.Create(feedback) as ViewResult;
+
+            // Assert
+            Assert.AreNotEqual(FEEDBACK_SENT_MESSAGE, res.ViewName);
+        }
         #endregion
 
         #region Private
@@ -227,7 +248,6 @@
                     .WithContent(TEST_CONTENT)
                     .WithEnvironment(TEST_ENVIRONMENT)
                     .WithDate(DateTime.MinValue)
-                    .WithStatus(0)
                     .Build();
         }
 

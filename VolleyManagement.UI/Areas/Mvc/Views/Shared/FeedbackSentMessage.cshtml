@@ -23,3 +23,9 @@
         htmlAttributes: new { @class = "control-label" }):
     <span style="color: blue;">@Model.UserEnvironment</span>
 </div>
+
+<div>
+    <button id="feedback-return" class="btn btn-default">@Resources.FeedbackViews.Return</button>
+</div>
+
+@Scripts.Render("~/bundles/feedbackscripts")

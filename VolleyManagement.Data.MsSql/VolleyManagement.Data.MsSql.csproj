@@ -145,6 +145,14 @@
     <Compile Include="Context\Migrations\201611022058212_AddedUserEnvironmentToFeedback.Designer.cs">
       <DependentUpon>201611022058212_AddedUserEnvironmentToFeedback.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.cs" />
+    <Compile Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.Designer.cs">
+      <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.cs" />
+    <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.Designer.cs">
+      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -163,6 +171,7 @@
     <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\AuthorizationQueries.cs" />
+    <Compile Include="Queries\FeedbackQueries.cs" />
     <Compile Include="Queries\GameResultQueries.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
@@ -281,6 +290,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201611022058212_AddedUserEnvironmentToFeedback.resx">
       <DependentUpon>201611022058212_AddedUserEnvironmentToFeedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201610272249353_AddNewFieldsToFeedback.resx">
+      <DependentUpon>201610272249353_AddNewFieldsToFeedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611031410480_AddPlayerToUser.resx">
+      <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -42,7 +42,8 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 Contributors076Atqc(),
                 Contributors085Net(),
                 Contributors091Atqc(),
-                Contributors096Net()
+                Contributors096Net(),
+                Contributors103Net()
             };
 
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
@@ -291,6 +292,25 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                         new ContributorEntity { Name = "Daria Tatarchenko" },
                         new ContributorEntity { Name = "Mariia Hubenko" },
                         new ContributorEntity { Name = "Mykola Bocharskyi" }
+                    }
+            };
+            return contributors;
+        }
+
+        private static ContributorTeamEntity Contributors103Net()
+        {
+            ContributorTeamEntity contributors = new ContributorTeamEntity()
+            {
+                Name = "Dp-103 .NET",
+                CourseDirection = ".NET",
+                Contributors = new List<ContributorEntity>
+                    {
+                        new ContributorEntity { Name = "Artem Horbunov" },
+                        new ContributorEntity { Name = "Kostiantyn Geiko" },
+                        new ContributorEntity { Name = "Anastasiia Kolobovnykova" },
+                        new ContributorEntity { Name = "Nataliia Karasevych" },
+                        new ContributorEntity { Name = "Vladislav Antonyuk" },
+                        new ContributorEntity { Name = "Dmitro Chepa" }
                     }
             };
             return contributors;

@@ -77,7 +77,8 @@
                     Status = (FeedbackStatusEnum)t.Status,
                     Date = t.Date,
                     AdminName = t.AdminName,
-                    UpdateDate = t.UpdateDate
+                    UpdateDate = t.UpdateDate,
+                    UserEnvironment = t.UserEnvironment
                 };
         }
 

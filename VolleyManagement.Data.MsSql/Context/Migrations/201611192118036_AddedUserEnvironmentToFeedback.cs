@@ -1,5 +1,6 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
+    using System;
     using System.Data.Entity.Migrations;
 
     /// <summary>
@@ -12,7 +13,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         /// </summary>
         public override void Up()
         {
-            AddColumn("dbo.Feedbacks", "UserEnvironment", c => c.String(maxLength: 320));
+            AddColumn("dbo.Feedbacks", "UserEnvironment", c => c.String());
         }
 
         /// <summary>

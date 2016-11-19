@@ -39,6 +39,7 @@
         /// Decline the request
         /// </summary>
         /// <param name="requestId">Request's id</param>
-        void Decline(int requestId);
+        /// <param name="message">Message about reason for decline</param>
+        void Decline(int requestId, string message);
     }
 }

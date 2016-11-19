@@ -34,7 +34,8 @@
         /// Decline the request
         /// </summary>
         /// <param name="requestId">Request's id</param>
-        public void Decline(int requestId)
+        /// <param name="message">Message about reason for decline</param>
+        public void Decline(int requestId, string message)
         {
             throw new NotImplementedException();
         }

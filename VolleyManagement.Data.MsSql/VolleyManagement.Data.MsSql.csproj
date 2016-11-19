@@ -141,9 +141,9 @@
     <Compile Include="Context\Migrations\201610171943183_AddFeedbacks.Designer.cs">
       <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201611131841109_BlockUser.cs" />
-    <Compile Include="Context\Migrations\201611131841109_BlockUser.Designer.cs">
-      <DependentUpon>201611131841109_BlockUser.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201611191229458_BlockUser.cs" />
+    <Compile Include="Context\Migrations\201611191229458_BlockUser.Designer.cs">
+      <DependentUpon>201611191229458_BlockUser.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
@@ -279,8 +279,8 @@
     <EmbeddedResource Include="Context\Migrations\201610171943183_AddFeedbacks.resx">
       <DependentUpon>201610171943183_AddFeedbacks.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201611131841109_BlockUser.resx">
-      <DependentUpon>201611131841109_BlockUser.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201611191229458_BlockUser.resx">
+      <DependentUpon>201611191229458_BlockUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

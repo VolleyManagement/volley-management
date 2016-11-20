@@ -4,23 +4,27 @@
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
+    using Crosscutting.Contracts.MailService;
     using Data.Contracts;
     using Data.Exceptions;
     using Data.Queries.Common;
     using Domain.RolesAggregate;
     using Domain.TournamentRequestAggregate;
     using Domain.TournamentsAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// Defines an implementation of <see cref="ITournamentRequestService"/> contract.
     /// </summary>
     public class TournamentRequestService : ITournamentRequestService
     {
+        private readonly IMailService _mailService;
         private readonly ITournamentRequestRepository _tournamentRequestRepository;
         private readonly ITournamentRepository _tournamentRepository;
         private readonly IAuthorizationService _authService;
         private readonly IQuery<List<TournamentRequest>, GetAllCriteria> _getAllTournamentRequestsQuery;
         private readonly IQuery<TournamentRequest, FindByIdCriteria> _getTournamentRequestByIdQuery;
+        private readonly IUserService _userService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentRequestService"/> class.
@@ -30,18 +34,24 @@
         /// <param name="getAllTournamentRequestsQuery">Get list of all requests</param>
         /// <param name="getTournamentRequestById">Get request by it's id</param>
         /// <param name="tournamentRepository">Read the ITournamentRepository instance</param>
+        /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
+        /// <param name="userService">Instance of class which implements <see cref="IUserService"/></param>
         public TournamentRequestService(
             ITournamentRequestRepository tournamentRequestRepository,
             IAuthorizationService authService,
             IQuery<List<TournamentRequest>, GetAllCriteria> getAllTournamentRequestsQuery,
             IQuery<TournamentRequest, FindByIdCriteria> getTournamentRequestById,
-            ITournamentRepository tournamentRepository)
+            ITournamentRepository tournamentRepository,
+            IMailService mailService,
+            IUserService userService)
         {
             _tournamentRequestRepository = tournamentRequestRepository;
             _authService = authService;
             _getAllTournamentRequestsQuery = getAllTournamentRequestsQuery;
             _getTournamentRequestByIdQuery = getTournamentRequestById;
             _tournamentRepository = tournamentRepository;
+            _mailService = mailService;
+            _userService = userService;
         }
 
         /// <summary>
@@ -60,6 +70,7 @@
 
             _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.TournamentId);
             _tournamentRepository.UnitOfWork.Commit();
+            NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
         }
 
         /// <summary>
@@ -78,6 +89,7 @@
             };
             _tournamentRequestRepository.Add(tournamentRequest);
             _tournamentRequestRepository.UnitOfWork.Commit();
+            NotifyAdmins(tournamentRequest);
         }
 
         /// <summary>
@@ -91,6 +103,7 @@
             try
             {
                 DeleteTournamentRequest(requestId);
+                NotifyUser(_userService.GetUser(Get(requestId).UserId).Email, message);
             }
             catch (InvalidKeyValueException ex)
             {
@@ -122,6 +135,40 @@
         {
             _tournamentRequestRepository.Remove(requestId);
             _tournamentRequestRepository.UnitOfWork.Commit();
+        }
+
+        private void NotifyUser(string emailTo)
+        {
+            string body = Properties.Resources.TournamentRequestConfirmitionLetterBody;
+            string subject = Properties.Resources.TournamentRequestLetterSubject;
+            EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
+            _mailService.Send(emailMessage);
+        }
+
+        private void NotifyUser(string emailTo, string message)
+        {
+            string subject = Properties.Resources.TournamentRequestLetterSubject;
+            EmailMessage emailMessage = new EmailMessage(emailTo, subject, message);
+        }
+
+        private void NotifyAdmins(TournamentRequest request)
+        {
+            string subject = string.Format(
+                Properties.Resources.TournamentRequestEmailSubjectToAdmins,
+                request.Id);
+
+            string body = string.Format(
+                Properties.Resources.TournamentRequestEmailBodyToAdmins,
+                request.Id,
+                request.UserId,
+                request.TournamentId,
+                request.TeamId);
+            IList<User> adminList = _userService.GetAdminsList();
+            foreach (var admin in adminList)
+            {
+                EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);
+                _mailService.Send(emailMessage);
+            }
         }
     }
 }

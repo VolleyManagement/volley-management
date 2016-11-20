@@ -26,6 +26,11 @@
         public int TournamentId { get; set; }
 
         /// <summary>
+        /// Gets or sets person Id.
+        /// </summary>
+        public int PersonId { get; set; }
+
+        /// <summary>
         /// Gets or sets tournament title.
         /// </summary>
         public string TournamentTitle { get; set; }
@@ -57,9 +62,13 @@
             var requestViewModel = new TournamentRequestViewModel()
             {
                 Id = request.Id,
+                PersonId = request.UserId,
+                TournamentId = request.TournamentId,
+                TeamId = request.TeamId,
                 PersonName = user.PersonName,
                 TeamTitle = team.Name,
-                TournamentTitle = tournament.Name
+                TournamentTitle = tournament.Name,
+
             };
             return requestViewModel;
         }

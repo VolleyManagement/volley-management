@@ -19,6 +19,8 @@
     {
         #region Fields
         private const int REQUEST_ID = 1;
+        private const int USER_ID = 1;
+        private const int PLAYER_ID = 1;
 
         private readonly Mock<IRequestService> _requestServiceMock = new Mock<IRequestService>();
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
@@ -48,7 +50,6 @@
         {
             // Arrange
             var expected = GetUser();
-            const int USER_ID = 1;
             SetupUserService(USER_ID);
             var sut = _kernel.Get<RequestController>();
 
@@ -64,7 +65,6 @@
         public void UserDetails_NonExistentUser_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            const int USER_ID = 1;
             SetupUserServiceReturnsNullUser(USER_ID);
             var sut = _kernel.Get<RequestController>();
 
@@ -80,7 +80,6 @@
         {
             // Arrange
             var expected = GetPlayer();
-            const int PLAYER_ID = 1;
             SetupPlayerService(PLAYER_ID);
             var sut = _kernel.Get<RequestController>();
 
@@ -96,7 +95,6 @@
         public void PlayerDetails_NonExistentUser_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            const int PLAYER_ID = 1;
             SetupPlayerServiceReturnsNullPlayer(PLAYER_ID);
             var sut = _kernel.Get<RequestController>();
 

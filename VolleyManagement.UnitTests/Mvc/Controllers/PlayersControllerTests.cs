@@ -29,6 +29,8 @@
     public class PlayersControllerTests
     {
         private const int TEST_PLAYER_ID = 1;
+        private const int TEST_USER_ID = 1;
+        private const int USER_INVALID_ID = -1;
         private const int NON_EXISTENT_PAGE_NUMBER = -1;
         private const string INDEX_ACTION_NAME = "Index";
         private const string ROUTE_VALUES_KEY = "action";
@@ -224,38 +226,32 @@
         }
 
         [TestMethod]
-        public void Details_LinkWithUser_SuccessfullMessageIsReturned()
+        public void LinkWithUser_UserExists_SuccessfullMessageIsReturned()
         {
             // Arrange
-            string actual = string.Empty;
             string expected = LINK_SUCCESSFULL_MESSAGE;
-            const int USER_ID = 1;
-            const int PLAYER_ID = 1;
-            MockCurrenUserService(USER_ID);
-            MockRequestService(USER_ID, PLAYER_ID);
+            MockCurrenUserService(TEST_USER_ID);
+            MockRequestService(TEST_USER_ID, TEST_PLAYER_ID);
             var sut = _kernel.Get<PlayersController>();
 
             // Act
-            actual = sut.LinkWithUser(PLAYER_ID);
+            string actual = sut.LinkWithUser(TEST_PLAYER_ID);
 
             // Assert
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void Details_LinkWithUser_ErrorMessageIsReturned()
+        public void LinkWithUser_UserNotFound_ErrorMessageIsReturned()
         {
             // Arrange
-            string actual = string.Empty;
             string expected = LINK_ERROR_MESSAGE;
-            const int USER_ID = -1;
-            const int PLAYER_ID = 1;
-            MockCurrenUserService(USER_ID);
-            MockRequestService(USER_ID, PLAYER_ID);
+            MockCurrenUserService(USER_INVALID_ID);
+            MockRequestService(USER_INVALID_ID, TEST_PLAYER_ID);
             var sut = _kernel.Get<PlayersController>();
 
             // Act
-            actual = sut.LinkWithUser(PLAYER_ID);
+            string actual = sut.LinkWithUser(TEST_PLAYER_ID);
 
             // Assert
             Assert.AreEqual(expected, actual);

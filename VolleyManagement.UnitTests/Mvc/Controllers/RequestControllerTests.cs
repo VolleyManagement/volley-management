@@ -18,6 +18,9 @@
     public class RequestControllerTests
     {
         #region Fields
+        private const int REQUEST_ID = 1;
+        private const int USER_ID = 1;
+        private const int PLAYER_ID = 1;
 
         private readonly Mock<IRequestService> _requestServiceMock = new Mock<IRequestService>();
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
@@ -47,7 +50,6 @@
         {
             // Arrange
             var expected = GetUser();
-            const int USER_ID = 1;
             SetupUserService(USER_ID);
             var sut = _kernel.Get<RequestController>();
 
@@ -63,7 +65,6 @@
         public void UserDetails_NonExistentUser_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            const int USER_ID = 1;
             SetupUserServiceReturnsNullUser(USER_ID);
             var sut = _kernel.Get<RequestController>();
 
@@ -79,7 +80,6 @@
         {
             // Arrange
             var expected = GetPlayer();
-            const int PLAYER_ID = 1;
             SetupPlayerService(PLAYER_ID);
             var sut = _kernel.Get<RequestController>();
 
@@ -95,7 +95,6 @@
         public void PlayerDetails_NonExistentUser_HttpNotFoundResultIsReturned()
         {
             // Arrange
-            const int PLAYER_ID = 1;
             SetupPlayerServiceReturnsNullPlayer(PLAYER_ID);
             var sut = _kernel.Get<RequestController>();
 
@@ -110,7 +109,6 @@
         public void Confirm_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
-            const int REQUEST_ID = 1;
             var sut = _kernel.Get<RequestController>();
 
             // Act
@@ -121,10 +119,22 @@
         }
 
         [TestMethod]
-        public void Confirm_NonExistentRequest_ThrowsException()
+        public void Confirm_AnyRequest_RequestConfirmed()
         {
             // Arrange
-            const int REQUEST_ID = 1;
+            var sut = _kernel.Get<RequestController>();
+
+            // Act
+            var actionResult = sut.Confirm(REQUEST_ID);
+
+            // Assert
+            AssertVerifyConfirm(_requestServiceMock, REQUEST_ID);
+        }
+
+        [TestMethod]
+        public void Confirm_NonExistentRequest_ThrowsMissingEntityException()
+        {
+            // Arrange
             SetupConfirmThrowsMissingEntityException();
             var sut = _kernel.Get<RequestController>();
 
@@ -139,7 +149,6 @@
         public void Decline_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
-            const int REQUEST_ID = 1;
             var sut = _kernel.Get<RequestController>();
 
             // Act
@@ -150,10 +159,22 @@
         }
 
         [TestMethod]
-        public void Decline_NonExistentRequest_ThrowsException()
+        public void Decline_AnyRequest_RequestDeclined()
         {
             // Arrange
-            const int REQUEST_ID = 1;
+            var sut = _kernel.Get<RequestController>();
+
+            // Act
+            var actionResult = sut.Decline(REQUEST_ID);
+
+            // Assert
+            AssertVerifyDecline(_requestServiceMock, REQUEST_ID);
+        }
+
+        [TestMethod]
+        public void Decline_NonExistentRequest_ThrowsMissingEntityException()
+        {
+            // Arrange
             SetupDeclineThrowsMissingEntityException();
             var sut = _kernel.Get<RequestController>();
 
@@ -228,6 +249,15 @@
                 .Throws(new MissingEntityException(string.Empty));
         }
 
+        private void AssertVerifyConfirm(Mock<IRequestService> mock, int requestId)
+        {
+            mock.Verify(m => m.Confirm(It.Is<int>(id => id == requestId)), Times.Once());
+        }
+
+        private void AssertVerifyDecline(Mock<IRequestService> mock, int requestId)
+        {
+            mock.Verify(m => m.Decline(It.Is<int>(id => id == requestId)), Times.Once());
+        }
         #endregion
     }
 }

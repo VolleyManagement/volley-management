@@ -147,4 +147,7 @@
   <data name="TeamNotFound" xml:space="preserve">
     <value>A team with specified identifier was not found</value>
   </data>
+  <data name="TournamentRequestNotFound" xml:space="preserve">
+    <value>A tornament request with specified identifier was not found</value>
+  </data>
 </root>

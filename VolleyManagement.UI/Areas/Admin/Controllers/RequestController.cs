@@ -5,6 +5,7 @@
     using Contracts;
     using Contracts.Exceptions;
     using Models;
+    using VolleyManagement.Contracts.Authorization;
 
     /// <summary>
     /// Provides Request Manager

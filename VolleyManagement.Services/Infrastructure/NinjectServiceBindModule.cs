@@ -8,11 +8,11 @@
     using VolleyManagement.Contracts.Authentication;
     using VolleyManagement.Contracts.Authentication.Models;
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Crosscutting.Contracts.MailService;
     using VolleyManagement.Crosscutting.Ninject;
     using VolleyManagement.Services;
     using VolleyManagement.Services.Authentication;
     using VolleyManagement.Services.Authorization;
-    using VolleyManagement.UI.Infrastructure;
 
     /// <summary>
     /// Defines bindings for Service layer
@@ -49,7 +49,9 @@
                                   Bind<IAuthorizationService>().To<AuthorizationService>(),
                                   Bind<IUserService>().To<UserService>(),
                                   Bind<IFeedbackService>().To<FeedbackService>(),
-                                  Bind<IRequestService>().To<RequestService>()
+                                  Bind<IRequestService>().To<RequestService>(),
+                                  Bind<ICacheProvider>().To<CacheProvider>(),
+                                  Bind<IMailService>().To<GmailAccountMailService>()
                               };
             configs.InScope(_scopeCallback);
         }

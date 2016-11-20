@@ -181,6 +181,11 @@
             /// View all users page operation
             /// </summary>
             public static readonly AuthOperation ViewDetails = Tuple.Create(USERS, 2);
+
+            /// <summary>
+            /// View all users page operation
+            /// </summary>
+            public static readonly AuthOperation ViewActiveList = Tuple.Create(USERS, 3);
         }
 
         /// <summary>

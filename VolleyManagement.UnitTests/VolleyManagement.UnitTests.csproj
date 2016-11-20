@@ -65,9 +65,9 @@
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -189,7 +189,9 @@
     <Compile Include="Services\RequestsService\RequestComparer.cs" />
     <Compile Include="Services\RequestsService\RequestServiceTestFixture.cs" />
     <Compile Include="Services\RequestsService\RequestServiceTests.cs" />
+    <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
+    <Compile Include="Services\UserManager\UserBuilder.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />
     <Compile Include="Services\GameService\GameServiceTestFixture.cs" />
     <Compile Include="Services\GameService\GameServiceTests.cs" />

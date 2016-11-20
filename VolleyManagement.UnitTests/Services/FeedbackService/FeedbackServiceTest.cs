@@ -12,12 +12,15 @@
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.MailService;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Services.MailService;
+    using VolleyManagement.UnitTests.Services.UserManager;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -61,6 +64,8 @@
 
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
 
+        private readonly Mock<IMailService> _mailServiceMock = new Mock<IMailService>();
+
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
         private readonly FeedbackServiceTestFixture _testFixture = new FeedbackServiceTestFixture();
@@ -83,6 +88,7 @@
             _kernel.Bind<ICurrentUserService>().ToConstant(_currentUserServiceMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
+            _kernel.Bind<IMailService>().ToConstant(_mailServiceMock.Object);
             _timeMock.Setup(tp => tp.UtcNow).Returns(_feedbackTestDate);
         }
 
@@ -191,6 +197,10 @@
                 .Build();
             var sut = _kernel.Get<FeedbackService>();
 
+            var emailMessage = new EmailMessageBuilder().Build();
+            MockMailService(emailMessage);
+            MockUserService();
+
             // Act
             sut.Create(newFeedback);
 
@@ -239,6 +249,7 @@
                 .WithDate(_feedbackTestDate)
                 .Build();
             var sut = _kernel.Get<FeedbackService>();
+            MockUserService();
 
             // Act
             sut.Create(actual);
@@ -827,6 +838,17 @@
                 .Returns(id);
         }
 
+        private void MockMailService(EmailMessage message)
+        {
+            _mailServiceMock.Setup(tr => tr.Send(message));
+        }
+
+        private void MockUserService()
+        {
+            User user = new UserBuilder().Build();
+            List<User> userList = new List<User> { user };
+            _userServiceMock.Setup(tr => tr.GetAdminsList()).Returns(userList);
+}
         #endregion
     }
 }

@@ -59,7 +59,7 @@
     </table>
 
     <div class="panel-heading"> @Html.LabelFor(model => Model.Roles)</div>
-    @if (Model.Roles == null)
+    @if (Model.Roles.Count() == 0)
     {
         <table class="table table-striped">
             <tr>

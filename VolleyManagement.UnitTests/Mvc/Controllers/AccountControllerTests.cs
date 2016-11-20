@@ -16,6 +16,7 @@
     using UI.Areas.Mvc.ViewModels.Users;
     using UI.Infrastructure;
     using ViewModels;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Domain.RolesAggregate;
 
     [ExcludeFromCodeCoverage]
@@ -39,7 +40,11 @@
 
         private Mock<IRolesService> _rolesServiceMock = new Mock<IRolesService>();
 
+        private Mock<ICurrentUserService> _currentUserServiceMock = new Mock<ICurrentUserService>();
+
         private Mock<VolleyExceptionFilterAttribute> _exceptionFilter = new Mock<VolleyExceptionFilterAttribute>();
+
+        private Mock<ICacheProvider> _cacheProviderMock = new Mock<ICacheProvider>();
         #endregion
 
         #region Init
@@ -53,6 +58,10 @@
                    .ToConstant(this._userManagerMock.Object);
             this._kernel.Bind<IRolesService>()
                    .ToConstant(this._rolesServiceMock.Object);
+            this._kernel.Bind<ICacheProvider>()
+                   .ToConstant(_cacheProviderMock.Object);
+            _kernel.Bind<ICurrentUserService>()
+                   .ToConstant(_currentUserServiceMock.Object);
         }
 
         #endregion

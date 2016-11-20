@@ -107,7 +107,7 @@
         /// <summary>
         /// It links this player to current user.
         /// </summary>
-        /// <param name="id">Player id.</param>
+        /// <param name="playerId">Player id.</param>
         /// <returns>Message to user about binding
         /// Player and User. </returns>
         public string LinkWithUser(int playerId)

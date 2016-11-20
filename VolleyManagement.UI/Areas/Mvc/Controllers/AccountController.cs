@@ -224,7 +224,7 @@
                                                         user,
                                                         DefaultAuthenticationTypes.ApplicationCookie);
 
-            if (isUserBlocked(ident.GetUserId<int>()))
+            if (isBlocked(ident.GetUserId<int>()))
             {
                 return View("Blocked");
             }
@@ -236,10 +236,9 @@
             return Redirect(GetRedirectUrl(returnUrl));
         }
 
-        private bool isUserBlocked(int userId)
+        private bool isBlocked(int userId)
         {
-            User currentUser = new User();
-            currentUser = this._userService.GetUser(userId);
+            User currentUser = this._userService.GetUser(userId);
             return currentUser.IsBlocked;
         }
 

@@ -3,8 +3,8 @@
     using System.Net;
     using System.Web;
     using System.Web.Configuration;
-    using Newtonsoft.Json.Linq;
     using Contracts;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Represents an Implementation of ICaptchaManager interface.
@@ -14,6 +14,7 @@
         private const string SECRET_KEY = "RecaptchaSecretKey";
         private const string captchaResponse = "g-recaptcha-response";
         private const string captchaPath = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
+
         /// <summary>
         /// Method, that verifies if captcha is valid 
         /// </summary>

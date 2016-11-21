@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources {
+namespace VolleyManagement.UI.App_GlobalResources
+{
     using System;
     
     
@@ -70,6 +71,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Feedback didn&apos;t found.
+        /// </summary>
+        internal static string FeedbackNotFound {
+            get {
+                return ResourceManager.GetString("FeedbackNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback Sent.
         /// </summary>
         internal static string FeedbackSent {
@@ -84,6 +94,24 @@ namespace Resources {
         internal static string FeedbackWaiting {
             get {
                 return ResourceManager.GetString("FeedbackWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Close Operation.
+        /// </summary>
+        internal static string InvalidCloseOperation {
+            get {
+                return ResourceManager.GetString("InvalidCloseOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Reply Operation.
+        /// </summary>
+        internal static string InvalidReplyOperation {
+            get {
+                return ResourceManager.GetString("InvalidReplyOperation", resourceCulture);
             }
         }
         

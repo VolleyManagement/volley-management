@@ -8,12 +8,9 @@
     using Contracts;
     using Domain.RolesAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-
     using Ninject;
-
-    using VolleyManagement.Domain.Dto;
+    using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.UI.Areas.Admin.Controllers;
     using VolleyManagement.UI.Areas.Admin.Models;
@@ -25,9 +22,11 @@
     {
         #region Fields
 
+        private const int EXISTING_ID = 1;
+        private const string ERROR_PAGE = "ErrorPage";
+        private Mock<IFeedbackService> _feedbacksServiceMock;
         private IKernel _kernel;
 
-        private Mock<IFeedbackService> _feedbacksServiceMock;
         #endregion
 
         #region Init
@@ -67,7 +66,7 @@
             // Arrange
             const int FEEDBACK_ID = 1;
             var feedback = GetAnyFeedback(FEEDBACK_ID);
-            MockGetFeedbacks(FEEDBACK_ID, feedback);
+            MockGetFeedback(FEEDBACK_ID, feedback);
             RequestsViewModel expected = new RequestsViewModel(feedback);
             var controller = _kernel.Get<RequestsController>();
 
@@ -77,6 +76,20 @@
             // Assert
             var actual = TestExtensions.GetModel<RequestsViewModel>(actionResult);
             AreDetailsModelsEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Details_FeedbackDoesNotExist_HttpNotFoundResultIsReturned()
+        {
+            // Arrange
+            MockGetFeedback(EXISTING_ID, null);
+            var controller = _kernel.Get<RequestsController>();
+
+            // Act
+            var result = controller.Details(EXISTING_ID);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
         }
 
         [TestMethod]
@@ -91,6 +104,34 @@
 
             // Assert
             AssertValidRedirectResult(actionResult, "Index");
+        }
+
+        [TestMethod]
+        public void Close_AnyFeedback_FeedbackRedirectToErrorPage()
+        {
+            // Arrange
+            var controller = _kernel.Get<RequestsController>();
+            SetupCloseThrowInvalidOperationException();
+
+            // Act
+           var actionResult = controller.Close(EXISTING_ID) as ViewResult;
+
+            // Assert
+            Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
+        }
+
+        [TestMethod]
+        public void Close_FeedbackDoesNotExist_FeedbackRedirectToErrorPage()
+        {
+            // Arrange
+            var controller = _kernel.Get<RequestsController>();
+            SetupCloseThrowMissingEntityException();
+
+            // Act
+            var actionResult = controller.Close(EXISTING_ID) as ViewResult;
+
+            // Assert
+            Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
         }
 
         [TestMethod]
@@ -129,10 +170,38 @@
             var controller = _kernel.Get<RequestsController>();
 
             // Act
-            var actionResult = controller.Reply(FEEDBACK_ID);
+            var actionResult = controller.Reply(FEEDBACK_ID) as ViewResult;
 
             // Assert
             AssertReplyVerify(_feedbacksServiceMock, FEEDBACK_ID);
+        }
+
+        [TestMethod]
+        public void Reply_AnyFeedback_FeedbackRedirectToErrorPage()
+        {
+            // Arrange
+            var controller = _kernel.Get<RequestsController>();
+            SetupReplyThrowInvalidOperationException();
+
+            // Act
+            var actionResult = controller.Reply(EXISTING_ID) as ViewResult;
+
+            // Assert
+            Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
+        }
+
+        [TestMethod]
+        public void Reply_FeedbackDoesNotExist_FeedbackRedirectToErrorPage()
+        {
+            // Arrange
+            var controller = _kernel.Get<RequestsController>();
+            SetupReplyThrowMissingEntityException();
+
+            // Act
+            var actionResult = controller.Reply(EXISTING_ID) as ViewResult;
+
+            // Assert
+            Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
         }
         #endregion
 
@@ -242,12 +311,37 @@
         {
             mock.Verify(ps => ps.Reply(It.Is<int>(id => id == feedbackId)), Times.Once());
         }
+
         #endregion
 
         #region Mock
-        private void MockGetFeedbacks(int feedbackID, Feedback feedback)
+        private void MockGetFeedback(int feedbackID, Feedback feedback)
         {
             _feedbacksServiceMock.Setup(r => r.GetDetails(feedbackID)).Returns(feedback);
+        }
+
+        private void SetupCloseThrowInvalidOperationException()
+        {
+            _feedbacksServiceMock.Setup(ts => ts.Close(It.IsAny<int>()))
+                .Throws(new InvalidOperationException(string.Empty));
+        }
+
+        private void SetupCloseThrowMissingEntityException()
+        {
+            _feedbacksServiceMock.Setup(ts => ts.Close(It.IsAny<int>()))
+                .Throws(new MissingEntityException(string.Empty));
+        }
+
+        private void SetupReplyThrowInvalidOperationException()
+        {
+            _feedbacksServiceMock.Setup(ts => ts.Reply(It.IsAny<int>()))
+                .Throws(new InvalidOperationException(string.Empty));
+        }
+
+        private void SetupReplyThrowMissingEntityException()
+        {
+            _feedbacksServiceMock.Setup(ts => ts.Reply(It.IsAny<int>()))
+                .Throws(new MissingEntityException(string.Empty));
         }
         #endregion
     }

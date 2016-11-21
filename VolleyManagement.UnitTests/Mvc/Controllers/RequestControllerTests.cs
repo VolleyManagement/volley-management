@@ -193,6 +193,7 @@
         private static void AssertValidRedirectResult(ActionResult actionResult, string view)
         {
             var result = (RedirectToRouteResult)actionResult;
+            Assert.IsNotNull(result, "Method result should be instance of RedirectToRouteResult");
             Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
             Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
             Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));

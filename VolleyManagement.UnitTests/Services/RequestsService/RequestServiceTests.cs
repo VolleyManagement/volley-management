@@ -4,12 +4,10 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using MSTestExtensions;
     using Ninject;
-    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
@@ -26,15 +24,16 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
-    public class RequestServiceTests
+    public class RequestServiceTests : BaseTest
     {
         #region Fields and constants
 
         private const int EXISTING_ID = 1;
-
+        private const int EXISTING_USER_ID = 1;
+        private const int EXISTING_PLAYER_ID = 1;
         private const int INVALID_REQUEST_ID = -1;
-
         private const int INVALID_USER_ID = -1;
+        private const int INVALID_PLAYER_ID = -1;
 
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
         private readonly RequestServiceTestFixture _testFixture = new RequestServiceTestFixture();
@@ -94,26 +93,15 @@
         }
 
         [TestMethod]
-        public void GetAll_NoViewListRights_AuthorizationExceptionThrows()
+        public void GetAll_NoViewListRights_AuthorizationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             MockAuthServiceThrowsException(AuthOperations.Requests.ViewList);
 
             var sut = _kernel.Get<RequestService>();
 
-            // Act
-            try
-            {
-                sut.Get();
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            // Act => Assert
+            Assert.Throws<AuthorizationException>(() => sut.Get(), "Requested operation is not allowed");
         }
 
         [TestMethod]
@@ -133,45 +121,23 @@
         }
 
         [TestMethod]
-        public void Create_InvalidUserId_ExceptionThrows()
+        public void Create_InvalidUserId_ExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var sut = _kernel.Get<RequestService>();
 
-            // Act
-            try
-            {
-                sut.Create(INVALID_REQUEST_ID, EXISTING_ID);
-            }
-            catch (ArgumentException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "User's id is wrong");
+            // Act => Assert
+            Assert.Throws<ArgumentException>(() => sut.Create(INVALID_REQUEST_ID, EXISTING_ID), "User's id is wrong");
         }
 
         [TestMethod]
-        public void Create_InvalidPlayerId_ExceptionThrows()
+        public void Create_InvalidPlayerId_ExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var sut = _kernel.Get<RequestService>();
 
-            // Act
-            try
-            {
-                sut.Create(EXISTING_ID, INVALID_REQUEST_ID);
-            }
-            catch (ArgumentException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Player's id is wrong");
+            // Act => Assert
+            Assert.Throws<ArgumentException>(() => sut.Create(EXISTING_USER_ID, INVALID_PLAYER_ID), "Player's id is wrong");
         }
 
         [TestMethod]
@@ -179,8 +145,8 @@
         {
             // Arrange
             var newRequest = new RequestBuilder()
-                .WithUserId(EXISTING_ID)
-                .WithPlayerId(EXISTING_ID)
+                .WithUserId(EXISTING_USER_ID)
+                .WithPlayerId(EXISTING_PLAYER_ID)
                 .Build();
 
             _requestRepositoryMock.Setup(tr => tr.Add(It.IsAny<Request>()))
@@ -189,7 +155,7 @@
             var sut = _kernel.Get<RequestService>();
 
             // Act
-           sut.Create(EXISTING_ID, EXISTING_ID);
+           sut.Create(EXISTING_USER_ID, EXISTING_PLAYER_ID);
 
             // Assert
             VerifyCreateRequest(newRequest, Times.Once(), "Parameter request is not equal to Instance of request");
@@ -200,7 +166,7 @@
         {
             // Arrange
             Exception exception = null;
-            var user = new UserBuilder().WithId(EXISTING_ID).Build();
+            var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Requests.Confirm);
 
             var sut = _kernel.Get<RequestService>();
@@ -221,48 +187,29 @@
         }
 
         [TestMethod]
-        public void Confirm_NoConfirmRights_AuthorizationExceptionThrows()
+        public void Confirm_NoConfirmRights_AuthorizationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
-            var user = new UserBuilder().WithId(EXISTING_ID).Build();
+            var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Requests.Confirm);
 
             var sut = _kernel.Get<RequestService>();
 
-            // Act
-            try
-            {
-                sut.Confirm(EXISTING_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            // Act => Assert
+            Assert.Throws<AuthorizationException>(() => sut.Confirm(EXISTING_ID), "Requested operation is not allowed");
         }
 
         [TestMethod]
         public void Confirm_RequestDoesNotExist_ExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var sut = _kernel.Get<RequestService>();
 
-            // Act
-            try
-            {
-                sut.Confirm(INVALID_REQUEST_ID);
-            }
-            catch (MissingEntityException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "A request with specified identifier was not found");
+            // Act => Assert
+            Assert.Throws<MissingEntityException>(
+                () =>
+                sut.Confirm(INVALID_REQUEST_ID),
+                "A request with specified identifier was not found");
         }
 
         [TestMethod]
@@ -271,7 +218,7 @@
             // Arrange
             var expected = new RequestBuilder().WithId(EXISTING_ID).Build();
             MockGetRequestByIdQuery(expected);
-            var user = new UserBuilder().WithId(EXISTING_ID).Build();
+            var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
             MockGetUserByIdQuery(EXISTING_ID, user);
             var sut = _kernel.Get<RequestService>();
 
@@ -288,8 +235,8 @@
             // Arrange
             var expected = new RequestBuilder().WithId(EXISTING_ID).Build();
             MockGetRequestByIdQuery(expected);
-            var user = new UserBuilder().WithId(EXISTING_ID).Build();
-            MockGetUserByIdQuery(EXISTING_ID, user);
+            var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
+            MockGetUserByIdQuery(EXISTING_USER_ID, user);
             var sut = _kernel.Get<RequestService>();
 
             // Act
@@ -300,51 +247,32 @@
         }
 
         [TestMethod]
-        public void Confirm_UserDoesNotExist_ExceptionThrows()
+        public void Confirm_UserDoesNotExist_ExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var expected = new RequestBuilder().WithId(EXISTING_ID).Build();
             MockGetRequestByIdQuery(expected);
-            MockGetUserByIdQuery(EXISTING_ID, null);
+            MockGetUserByIdQuery(INVALID_USER_ID, null);
             var sut = _kernel.Get<RequestService>();
 
-            // Act
-            try
-            {
-                sut.Confirm(EXISTING_ID);
-            }
-            catch (MissingEntityException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "A user with specified identifier was not found");
+            // Act => Assert
+            Assert.Throws<MissingEntityException>(
+                () =>
+                sut.Confirm(EXISTING_ID),
+                "A user with specified identifier was not found");
         }
 
         [TestMethod]
-        public void Decline_NoDeclineRights_AuthorizationExceptionThrows()
+        public void Decline_NoDeclineRights_AuthorizationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
-            var user = new UserBuilder().WithId(EXISTING_ID).Build();
+            var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Requests.Decline);
 
             var sut = _kernel.Get<RequestService>();
 
-            // Act
-            try
-            {
-                sut.Decline(EXISTING_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            // Act => Assert
+            Assert.Throws<AuthorizationException>(() => sut.Decline(EXISTING_ID), "Requested operation is not allowed");
         }
 
         [TestMethod]
@@ -385,25 +313,17 @@
         }
 
         [TestMethod]
-        public void Decline_RequestDoesNotExist_ExceptionThrows()
+        public void Decline_RequestDoesNotExist_ExceptionThrown()
         {
             // Arrange
             MockRequestServiceThrowsInvalidKeyValueException();
-            Exception exception = null;
             var sut = _kernel.Get<RequestService>();
 
-            // Act
-            try
-            {
-                sut.Decline(INVALID_REQUEST_ID);
-            }
-            catch (MissingEntityException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "A request with specified identifier was not found");
+            // Act => Assert
+            Assert.Throws<MissingEntityException>(
+            () =>
+            sut.Decline(INVALID_REQUEST_ID),
+            "A request with specified identifier was not found");
         }
 
         [TestMethod]
@@ -438,12 +358,6 @@
         private void MockGetRequestByIdQuery(Request request)
         {
             _getRequestByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(request);
-        }
-
-        private void VerifyExceptionThrown(Exception exception, string expectedMessage)
-        {
-            Assert.IsNotNull(exception, "There is no exception thrown");
-            Assert.IsTrue(exception.Message.Equals(expectedMessage), "Expected and actual exceptions messages aren't equal");
         }
 
         private void MockAuthServiceThrowsException(AuthOperation operation)

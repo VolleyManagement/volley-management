@@ -16,6 +16,7 @@
         /// <summary>
         /// Gets or sets message.
         /// </summary>
+        [Display(Name = "DeclineMessage", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired",
            ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(5000)]

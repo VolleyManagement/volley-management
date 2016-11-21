@@ -1,5 +1,4 @@
-﻿@model IList<VolleyManagement.UI.Areas.Admin.Models.TournamentRequestViewModel>
-
+﻿﻿@model VolleyManagement.UI.Areas.Admin.Models.TournamentRequestCollectionViewModel
 
 @{
     ViewBag.Title = "TournamentIndex";
@@ -16,7 +15,7 @@
             <th>User name</th>
             <th></th>
         </tr>
-        @if (Model.Count == 0)
+        @if (Model.Requests.Count() == 0)
         {
             <tr>
                 <td colspan="3" class="text-center">No Application</td>
@@ -24,7 +23,7 @@
         }
         else
         {
-            foreach (var application in Model)
+            foreach (var application in Model.Requests)
             {
                 <tr>
                     <td>@application.Id</td>

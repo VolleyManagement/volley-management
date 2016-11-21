@@ -123,11 +123,20 @@
   <data name="EnvironmentQuestion" xml:space="preserve">
     <value>Are you agree to provide additional information about your browser and operation system?</value>
   </data>
+  <data name="FeedbackNotFound" xml:space="preserve">
+    <value>Feedback didn't found</value>
+  </data>
   <data name="FeedbackSent" xml:space="preserve">
     <value>Feedback Sent</value>
   </data>
   <data name="FeedbackWaiting" xml:space="preserve">
     <value>We are waiting for your Feedback</value>
+  </data>
+  <data name="InvalidCloseOperation" xml:space="preserve">
+    <value>Invalid Close Operation</value>
+  </data>
+  <data name="InvalidReplyOperation" xml:space="preserve">
+    <value>Invalid Reply Operation</value>
   </data>
   <data name="Return" xml:space="preserve">
     <value>Back to previous page</value>

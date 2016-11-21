@@ -203,6 +203,8 @@
             to.Date = from.Date;
             to.Status = (byte)from.Status;
             to.UserEnvironment = from.UserEnvironment;
+            to.AdminName = from.AdminName;
+            to.UpdateDate = from.UpdateDate;
         }
     }
 }

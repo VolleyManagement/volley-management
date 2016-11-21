@@ -364,11 +364,11 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Users\UserDetails.cshtml" />
-    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\ErrorPage.cshtml" />
     <Content Include="Areas\Admin\Views\Users\ActiveUsers.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\metisMenu.js" />
@@ -378,6 +378,7 @@
     <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\Admin\BackButton.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
@@ -476,6 +477,7 @@
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\LoginProviderViewModel.cs" />
     <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
+    <Compile Include="Areas\Admin\Models\OperationResulViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />

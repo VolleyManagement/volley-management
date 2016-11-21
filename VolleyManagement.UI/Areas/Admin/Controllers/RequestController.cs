@@ -38,7 +38,6 @@
             var requests = new RequestCollectionViewModel()
             {
                 Requests = _requestService.Get()
-                .ToList()
                 .Select(r => RequestViewModel.Map(r, _playerService.Get(r.PlayerId), _userService.GetUser(r.UserId)))
             };
 

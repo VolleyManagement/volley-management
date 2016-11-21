@@ -43,7 +43,7 @@
         /// <returns> View model object</returns>
         public static RequestViewModel Map(Request request, Player player, User user)
         {
-            var requestViewModel = new RequestViewModel()
+            return new RequestViewModel()
             {
                 Id = request.Id,
                 UserId = user.Id,
@@ -51,7 +51,6 @@
                 PlayerLastName = player.LastName,
                 UserName = user.UserName
             };
-            return requestViewModel;
         }
     }
 }

@@ -47,7 +47,6 @@
             var requests = new TournamentRequestCollectionViewModel()
             {
                  Requests = _requestService.Get()
-                .ToList()
                 .Select(r => TournamentRequestViewModel
                 .Map(r, _teamService.Get(r.TeamId), _userService.GetUserDetails(r.UserId), _tournamentService.Get(r.TournamentId)))
             };

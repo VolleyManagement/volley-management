@@ -59,7 +59,7 @@
                                                     User user,
                                                     Tournament tournament)
         {
-            var requestViewModel = new TournamentRequestViewModel()
+            return new TournamentRequestViewModel()
             {
                 Id = request.Id,
                 PersonId = request.UserId,
@@ -67,10 +67,8 @@
                 TeamId = request.TeamId,
                 PersonName = user.PersonName,
                 TeamTitle = team.Name,
-                TournamentTitle = tournament.Name,
-
+                TournamentTitle = tournament.Name
             };
-            return requestViewModel;
         }
 
         /// <summary>

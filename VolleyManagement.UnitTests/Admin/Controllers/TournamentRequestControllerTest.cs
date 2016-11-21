@@ -46,6 +46,7 @@
         private const int REQUEST_ID = 1;
         private const int USER_ID = 1;
         private const string TEST_MESSAGE = "Hello, user!";
+
         private readonly Mock<ITournamentRequestService> _requestServiceMock = new Mock<ITournamentRequestService>();
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
@@ -106,7 +107,7 @@
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
 
-            var expected = CreateViewModel();
+            var expected = CreateTeamViewModel();
 
             // Act
             var actual = TestExtensions.GetModel<TeamViewModel>(this._sut.TeamDetails(SPECIFIED_TEAM_ID));
@@ -281,6 +282,7 @@
         private static void AssertValidRedirectResult(ActionResult actionResult, string view)
         {
             var result = (RedirectToRouteResult)actionResult;
+            Assert.IsNotNull(result, "Method result should be instance of RedirectToRouteResult");
             Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
             Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
             Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));
@@ -318,7 +320,7 @@
             return roster;
         }
 
-        private TeamViewModel CreateViewModel()
+        private TeamViewModel CreateTeamViewModel()
         {
             var cap = CreatePlayerNameModel(PLAYER_FIRSTNAME, PLAYER_LASTNAME, SPECIFIED_PLAYER_ID);
             var players = CreateRoster();

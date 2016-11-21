@@ -15,12 +15,17 @@
     using Moq;
     using Ninject;
     using VolleyManagement.Services;
+    using Crosscutting.Contracts.MailService;
+    using MailService;
+    using UserManager;
+    using Domain.UsersAggregate;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class TournamentRequestServiceTests
     {
         private const int EXISTING_ID = 1;
+        private const int INVALID_REQUEST_ID = -1;
         private readonly TournamentRequestServiceTestFixture _testFixture
             = new TournamentRequestServiceTestFixture();
 
@@ -42,6 +47,12 @@
         private readonly Mock<ITournamentRepository> _tournamentRepositoryMock
             = new Mock<ITournamentRepository>();
 
+        private readonly Mock<IMailService> _mailServiceMock
+            = new Mock<IMailService>();
+
+        private readonly Mock<IUserService> _userServiceMock
+            = new Mock<IUserService>();
+
         private IKernel _kernel;
         [TestInitialize]
         public void TestInit()
@@ -59,7 +70,13 @@
                 .ToConstant(_getRequestByIdQueryMock.Object);
             _kernel.Bind<ITournamentRepository>()
                 .ToConstant(_tournamentRepositoryMock.Object);
+            _kernel.Bind<IMailService>()
+                .ToConstant(_mailServiceMock.Object);
+            _kernel.Bind<IUserService>()
+                .ToConstant(_userServiceMock.Object);
             _tournamentRequestRepositoryMock.Setup(tr => tr.UnitOfWork)
+                .Returns(_unitOfWorkMock.Object);
+            _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork)
                 .Returns(_unitOfWorkMock.Object);
         }
 
@@ -117,6 +134,27 @@
         }
 
         [TestMethod]
+        public void Create_InvalidUserId_ExceptionThrows()
+        {
+            // Arrange
+            Exception exception = null;
+            var sut = _kernel.Get<TournamentRequestService>();
+
+            // Act
+            try
+            {
+                sut.Create(INVALID_REQUEST_ID, EXISTING_ID, EXISTING_ID);
+            }
+            catch (ArgumentException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "User's id is wrong");
+        }
+
+        [TestMethod]
         public void Create_ValidTournamentRequest_RequestAdded()
         {
             // Arrange
@@ -126,7 +164,9 @@
                .WithTournamentId(EXISTING_ID)
                .WithUserId(EXISTING_ID)
                .Build();
-
+            var emailMessage = new EmailMessageBuilder().Build();
+            MockMailService(emailMessage);
+            MockUserService();
             _tournamentRequestRepositoryMock.Setup(
                 tr => tr.Add(
                     It.IsAny<TournamentRequest>()))
@@ -138,6 +178,80 @@
 
             // Assert
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Once(), "Parameter request is not equal to Instance of request");
+        }
+
+        [TestMethod]
+        public void Confirm_NoConfirmRights_AuthorizationExceptionThrows()
+        {
+            Exception exception = null;
+            MockAuthServiceThrownException(AuthOperations.TournamentRequests.Confirm);
+            var sut = _kernel.Get<TournamentRequestService>();
+            try
+            {
+                sut.Confirm(EXISTING_ID);
+            }
+            catch(AuthorizationException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.TournamentRequests.Confirm, Times.Once());
+        }
+
+        [TestMethod]
+        public void Confirm_RequestExists_TeamAdded()
+        {
+            // Assert
+            var expected = new TournamentRequestBuilder().WithId(EXISTING_ID).Build();
+            MockGetRequestByIdQuery(expected);
+            _tournamentRepositoryMock.Setup(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>())); ;
+            var emailMessage = new EmailMessageBuilder().Build();
+            MockGetUser();
+            MockMailService(emailMessage);
+            var sut = _kernel.Get<TournamentRequestService>();
+            
+            // Act
+            sut.Confirm(EXISTING_ID);
+
+            //Arrange
+            VerifyAddedTeam(expected.Id, expected.TournamentId, Times.Once());
+        }
+
+        [TestMethod]
+        public void Confirm_RequestDoesNotExist_ExceptionThrown()
+        {
+            // Arrange
+            Exception exception = null;
+            var sut = _kernel.Get<TournamentRequestService>();
+
+            // Act
+            try
+            {
+              sut.Confirm(INVALID_REQUEST_ID);
+            }
+            catch (MissingEntityException ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(exception, "A tornament request with specified identifier was not found");
+        }
+
+        [TestMethod]
+        public void Decline_RequestExist_RequestDeleted()
+        {
+            // Arrange
+            var sut = _kernel.Get<TournamentRequestService>();
+            EmailMessage emailMessage = new EmailMessageBuilder().Build();
+            MockMailService(emailMessage);
+
+            //Act
+            sut.Decline(EXISTING_ID, emailMessage.Body);
+
+            // Assert
+            VerifyDeleteRequest(EXISTING_ID, Times.Once());
         }
 
         private void VerifyCreateTournamentRequest(
@@ -170,6 +284,12 @@
             Assert.IsTrue(exception.Message.Equals(expectedMessage), "Expected and actual messages aren't equal");
         }
 
+        private void VerifyAddedTeam(int requestId,int tournamentId, Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(requestId, tournamentId), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
         private void MockAuthServiceThrownException(AuthOperation operation)
         {
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
@@ -178,6 +298,35 @@
         private void MockGetRequestByIdQuery(TournamentRequest request)
         {
             _getRequestByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(request);
+        }
+
+        private void MockMailService(EmailMessage message)
+        {
+            _mailServiceMock.Setup(tr => tr.Send(message));
+        }
+
+        private void MockUserService()
+        {
+            User user = new UserBuilder().Build();
+            List<User> userList = new List<User> { user };
+            _userServiceMock.Setup(tr => tr.GetAdminsList()).Returns(userList);
+        }
+
+        private void MockGetUser()
+        {
+            User user = new UserBuilder().Build();
+            _userServiceMock.Setup(tr => tr.GetUser(It.IsAny<int>())).Returns(user);
+        }
+
+        private void VerifyCheckAccess(AuthOperation operation, Times times)
+        {
+            _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
+        }
+
+        private void VerifyDeleteRequest(int requestid, Times repositoryTimes)
+        {
+           _tournamentRequestRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id ==requestid)), repositoryTimes);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), repositoryTimes);
         }
     }
 }

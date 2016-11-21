@@ -149,6 +149,7 @@
         {
             string subject = Properties.Resources.TournamentRequestLetterSubject;
             EmailMessage emailMessage = new EmailMessage(emailTo, subject, message);
+            _mailService.Send(emailMessage);
         }
 
         private void NotifyAdmins(TournamentRequest request)

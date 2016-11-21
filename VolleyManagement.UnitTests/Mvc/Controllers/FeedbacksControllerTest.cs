@@ -31,6 +31,7 @@
         private const string FEEDBACK_SENT_MESSAGE = "FeedbackSentMessage";
         private const string TEST_MAIL = "test@gmail.com";
         private const string TEST_CONTENT = "Test content";
+        private const string TEST_ENVIRONMENT = "Test environment";
         private const string EXCEPTION_MESSAGE = "ValidationMessage";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
@@ -234,6 +235,7 @@
                     .WithId(TEST_ID)
                     .WithEmail(TEST_MAIL)
                     .WithContent(TEST_CONTENT)
+                    .WithEnvironment(TEST_ENVIRONMENT)
                     .Build();
         }
 
@@ -244,6 +246,7 @@
                     .WithId(TEST_ID)
                     .WithEmail(TEST_MAIL)
                     .WithContent(TEST_CONTENT)
+                    .WithEnvironment(TEST_ENVIRONMENT)
                     .WithDate(DateTime.MinValue)
                     .Build();
         }
@@ -255,6 +258,7 @@
                     .WithId(TEST_ID)
                     .WithEmail(string.Empty)
                     .WithContent(string.Empty)
+                    .WithEnvironment(string.Empty)
                     .Build();
         }
 

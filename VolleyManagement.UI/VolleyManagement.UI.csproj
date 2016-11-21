@@ -374,6 +374,7 @@
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\VMScripts\Admin\admin.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\CheckEnvironment.js" />
     <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />

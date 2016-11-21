@@ -22,7 +22,6 @@
             var content = new ExpressionSpecification<FeedbackEntity>(p =>
                                 !string.IsNullOrEmpty(p.Content)
                                 && p.Content.Length <= ValidationConstants.Feedback.MAX_CONTENT_LENGTH);
-
             return usersEmail.And(content).IsSatisfiedBy(entity);
         }
     }

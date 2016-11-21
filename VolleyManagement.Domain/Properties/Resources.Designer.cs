@@ -88,6 +88,14 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User environment.
+        /// </summary>
+        public static string FeedbackUserEnvironmentParam {
+            get {
+                return ResourceManager.GetString("FeedbackUserEnvironmentParam", resourceCulture);
+            }
+        }
+
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string FeedbackStatusParam {
@@ -403,6 +411,14 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User environment info cannot contain more than {0} symbols.
+        /// </summary>
+        public static string ValidationFeedbackUserEnvironment {
+            get {
+                return ResourceManager.GetString("ValidationFeedbackUserEnvironment", resourceCulture);
+            }
+        }
+
         ///   Looks up a localized string similar to Feedback status can&apos;t be changed to this status.
         /// </summary>
         public static string ValidationFeedbackStatus {

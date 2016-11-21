@@ -76,7 +76,7 @@
                 {
                     var domainFeedback = feedbackViewModel.ToDomain();
                     this._feedbackService.Create(domainFeedback);
-                    return View("FeedbackSentMessage");
+                    return View("FeedbackSentMessage", feedbackViewModel);
                 }
             }
             catch (ArgumentException ex)

@@ -567,6 +567,11 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsRequired()
                 .HasColumnName(VolleyDatabaseMetadata.FEEDBACK_STATUS_COLUMN_NAME);
 
+            // UserEnvironment
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.UserEnvironment)
+                .IsOptional();
+
             // Update Date
             modelBuilder.Entity<FeedbackEntity>()
                 .Property(t => t.UpdateDate)

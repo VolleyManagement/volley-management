@@ -71,6 +71,14 @@ namespace VolleyManagement.UI.App_GlobalResources
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you agree to provide additional information about your browser and operation system?.
+        /// </summary>
+        internal static string EnvironmentQuestion {
+            get {
+                return ResourceManager.GetString("EnvironmentQuestion", resourceCulture);
+            }
+        }
+
         ///   Looks up a localized string similar to Feedback didn&apos;t found.
         /// </summary>
         internal static string FeedbackNotFound {

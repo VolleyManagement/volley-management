@@ -1,8 +1,10 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
+    using System;
     using System.Web.Mvc;
     using Contracts;
     using Models;
+    using VolleyManagement.Contracts.Exceptions;
 
     /// <summary>
     /// Provides Feedback management
@@ -38,8 +40,16 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Details(int id)
         {
-            var feedback = new RequestsViewModel(_feedbackService.GetDetails(id));
-            return View(feedback);
+            var feedback = _feedbackService.GetDetails(id);
+
+            if (feedback == null)
+            {
+                return HttpNotFound();
+            }
+
+            var feedbackModel = new RequestsViewModel(feedback);
+
+            return View(feedbackModel);
         }
 
         /// <summary>
@@ -49,7 +59,29 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Reply(int id)
         {
-            _feedbackService.Reply(id);
+            try
+            {
+                _feedbackService.Reply(id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return View(
+                    "ErrorPage", 
+                    new OperationResulViewModel
+                    {
+                        Message = ex.Message
+                    });
+            }
+            catch (MissingEntityException ex)
+            {
+                return View(
+                    "ErrorPage",
+                    new OperationResulViewModel
+                    {
+                        Message = ex.Message
+                    });
+            }
+            
             return RedirectToAction("Index");
         }
 
@@ -60,7 +92,29 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult Close(int id)
         {
-            _feedbackService.Close(id);
+            try
+            {
+                _feedbackService.Close(id);
+            }
+            catch (InvalidOperationException ex)
+            {  
+               return View(
+                   "ErrorPage", 
+                   new OperationResulViewModel
+                   {
+                       Message = ex.Message
+                   });
+            }
+            catch (MissingEntityException ex)
+            {
+                return View(
+                    "ErrorPage", 
+                    new OperationResulViewModel
+                    {
+                        Message = ex.Message
+                    });
+            }
+
             return RedirectToAction("Index");
         }
     }

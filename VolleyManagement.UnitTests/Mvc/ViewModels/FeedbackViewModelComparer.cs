@@ -60,7 +60,8 @@
         {
             return x.Id == y.Id
                 && x.UsersEmail == y.UsersEmail
-                && x.Content == y.Content;
+                && x.Content == y.Content
+                && x.UserEnvironment == y.UserEnvironment;
         }
     }
 }

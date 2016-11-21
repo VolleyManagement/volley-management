@@ -28,6 +28,23 @@
         }
 
         /// <summary>
+        /// Validates user environment of feedback.
+        /// </summary>
+        /// <param name="environment">Feedback user environment for validation.</param>
+        /// <returns>Validity of user environment.</returns>
+        public static bool ValidateUserEnvironment(string environment)
+        {
+            bool result = false;
+            if (environment != null)
+            {
+                result = environment.Length
+                   > Constants.Feedback.MAX_USER_ENVIRONMENT_LENGTH;
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Validates status of feedback.
         /// </summary>
         /// <param name="status">Feedback status for validation.</param>

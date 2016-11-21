@@ -1,10 +1,9 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
 
     /// <summary>
-    /// Added Requests table
+    /// Added requests table.
     /// </summary>
     public partial class AddRequestsTable : DbMigration
     {
@@ -16,12 +15,12 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             CreateTable(
                 "dbo.Requests",
                 c => new
-                {
-                    Id = c.Int(nullable: false, identity: true),
-                    UserId = c.Int(nullable: false),
-                    PlayerId = c.Int(nullable: false),
-                })
-                   .PrimaryKey(t => t.Id);
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserId = c.Int(nullable: false),
+                        PlayerId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
         }
 
         /// <summary>

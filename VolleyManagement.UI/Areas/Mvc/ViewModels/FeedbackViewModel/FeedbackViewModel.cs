@@ -36,6 +36,14 @@
         public string Content { get; set; }
 
         /// <summary>
+        /// Environment (browser  and operating system) of user's computer.
+        /// </summary>
+        [Display(Name = "User's computer Environment")]
+        [StringLength(320)]
+        [DataType(DataType.MultilineText)]
+        public string UserEnvironment { get; set; }
+
+        /// <summary>
         /// Gets or sets data site key
         /// </summary>
         public string ReCapthaKey { get; set; }
@@ -52,7 +60,8 @@
             {
                 Id = this.Id,
                 UsersEmail = this.UsersEmail,
-                Content = this.Content
+                Content = this.Content,
+                UserEnvironment = this.UserEnvironment
             };
         }
 

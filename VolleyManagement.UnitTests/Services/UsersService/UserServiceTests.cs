@@ -18,6 +18,7 @@
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.Services.Authorization;
+    using VolleyManagement.UnitTests.Services.PlayerService;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -135,6 +136,23 @@
         }
 
         [TestMethod]
+        public void GetUserDetails_UserExists_UserReturned()
+        {
+            // Arrange
+            var player = new PlayerBuilder().WithId(EXISTING_ID).Build();
+            var expected = new UserBuilder().WithId(EXISTING_ID).WithPlayer(player).Build();
+            MockGetUserByIdQuery(expected);
+            MockGetPlayerByIdQuery(player);
+            var sut = _kernel.Get<UserService>();
+
+            // Act
+            var actual = sut.GetUserDetails(EXISTING_ID);
+
+            // Assert
+            TestHelper.AreEqual<User>(expected, actual, new UserComparer());
+        }
+
+        [TestMethod]
         public void GetAdminsList_UsersExist_UsersReturned()
         {
             // Arrange
@@ -145,7 +163,6 @@
                                             .TestUsers()
                                             .Build()
                                             .ToList();
-
             var sut = _kernel.Get<UserService>();
 
             // Act
@@ -168,6 +185,11 @@
         private void MockGetUserByIdQuery(User testData)
         {
             _getByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
+        }
+
+        private void MockGetPlayerByIdQuery(Player testData)
+        {
+            _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(testData);
         }
 
         private void MockGetAdminsListQuery(List<User> testData)

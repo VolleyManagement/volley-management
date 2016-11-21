@@ -149,9 +149,13 @@
     <Compile Include="Context\Migrations\201611031410480_AddPlayerToUser.Designer.cs">
       <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201611072322528_AddRequestsTable.cs" />
-    <Compile Include="Context\Migrations\201611072322528_AddRequestsTable.Designer.cs">
-      <DependentUpon>201611072322528_AddRequestsTable.cs</DependentUpon>
+    <Compile Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.cs" />
+    <Compile Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.Designer.cs">
+      <DependentUpon>201611192118036_AddedUserEnvironmentToFeedback.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Context\Migrations\201611212206547_AddRequestsTable.cs" />
+    <Compile Include="Context\Migrations\201611212206547_AddRequestsTable.Designer.cs">
+      <DependentUpon>201611212206547_AddRequestsTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
@@ -297,8 +301,11 @@
     <EmbeddedResource Include="Context\Migrations\201611031410480_AddPlayerToUser.resx">
       <DependentUpon>201611031410480_AddPlayerToUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201611072322528_AddRequestsTable.resx">
-      <DependentUpon>201611072322528_AddRequestsTable.cs</DependentUpon>
+    <EmbeddedResource Include="Context\Migrations\201611192118036_AddedUserEnvironmentToFeedback.resx">
+      <DependentUpon>201611192118036_AddedUserEnvironmentToFeedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611212206547_AddRequestsTable.resx">
+      <DependentUpon>201611212206547_AddRequestsTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

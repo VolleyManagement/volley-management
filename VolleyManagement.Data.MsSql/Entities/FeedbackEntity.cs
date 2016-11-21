@@ -33,6 +33,11 @@
         public byte Status { get; set; }
 
         /// <summary>
+        /// Gets or sets user environment
+        /// </summary>
+        public string UserEnvironment { get; set; }
+
+        /// <summary>
         /// Gets or sets update date of feedback
         /// </summary>
         public DateTime UpdateDate { get; set; }

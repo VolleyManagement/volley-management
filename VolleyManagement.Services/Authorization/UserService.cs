@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Services.Authorization
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Contracts;
@@ -114,23 +115,21 @@
         }
 
         /// <summary>
-        /// It blocks an account of unwished user.
+        /// block or unblock user
         /// </summary>
-        /// <param name="userId">User Id.</param>
-        public void SetUserBlocked(int userId)
+        /// <param name="userId">user id</param>
+        /// <param name="toBlock">set user block or not</param>
+        public void ChangeUserBlocked(int userId, bool toBlock)
         {
-            bool isUserBlocked = true;
-            SetBlockStatus(userId, isUserBlocked);
-        }
+            User user = GetUser(userId);
+            if (user == null)
+            {
+                throw new MissingEntityException(Services.ServiceResources.ExceptionMessages.UserNotFound);
+            }
 
-        /// <summary>
-        /// It unblocks an account pointed user.
-        /// </summary>
-        /// <param name="userId">User Id.</param>
-        public void SetUserUnblocked(int userId)
-        {
-            bool isUserBlocked = false;
-            SetBlockStatus(userId, isUserBlocked);
+            user.IsBlocked = toBlock;
+            _userRepository.Update(user);
+            _userRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -141,19 +140,6 @@
         private Player GetPlayer(int playerId)
         {
             return this._getUserPlayerQuery.Execute(new FindByIdCriteria { Id = playerId });
-        }
-
-        private void SetBlockStatus(int userId, bool isBlocked)
-        {
-            User user = GetUser(userId);
-            if (user == null)
-            {
-                throw new MissingEntityException(Services.ServiceResources.ExceptionMessages.UserNotFound);
-            }
-
-            user.IsBlocked = isBlocked;
-            _userRepository.Update(user);
-            _userRepository.UnitOfWork.Commit();
         }
     }
 }

@@ -22,16 +22,11 @@
         User GetUser(int userId);
 
         /// <summary>
-        /// It blocks an account of unwished user.
+        /// It blocks and unblocks an account of user.
         /// </summary>
         /// <param name="userId">User's Id.</param>
-        void SetUserBlocked(int userId);
-
-        /// <summary>
-        /// It unblocks an account of pointed user.
-        /// </summary>
-        /// <param name="userId">User's Id.</param>
-        void SetUserUnblocked(int userId);
+        /// <param name="toBlock">blocked status of user</param>
+        void ChangeUserBlocked(int userId, bool toBlock);
 
         /// <summary>
         /// Get user instance by Id.

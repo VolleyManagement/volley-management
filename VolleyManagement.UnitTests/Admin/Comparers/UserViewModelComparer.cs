@@ -42,7 +42,8 @@
             bool result = x.Id == y.Id &&
                           x.Name == y.Name &&
                           x.PersonName == y.PersonName &&
-                          x.Phone == y.Phone;
+                          x.Phone == y.Phone &&
+                          x.isBlocked == y.isBlocked;
 
             if (result && x.Player != null)
             {

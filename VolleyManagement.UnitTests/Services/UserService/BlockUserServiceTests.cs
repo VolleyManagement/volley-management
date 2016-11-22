@@ -1,8 +1,12 @@
 ﻿namespace VolleyManagement.UnitTests.Services.UserService
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using Contracts.Authorization;
     using Data.Contracts;
+    using Data.Queries.User;
+    using Domain.PlayersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -25,10 +29,23 @@
         private readonly Mock<IUserRepository> _userRepositoryMock =
             new Mock<IUserRepository>();
 
+        private readonly Mock<IAuthorizationService> _authorizationServiceMock =
+            new Mock<IAuthorizationService>();
+
         private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
+        private readonly Mock<ICacheProvider> _cacheProviderMock = new Mock<ICacheProvider>();
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
         private readonly Mock<IQuery<User, FindByIdCriteria>> _getUserByIdQueryMock =
             new Mock<IQuery<User, FindByIdCriteria>>();
+
+        private readonly Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock =
+            new Mock<IQuery<Player, FindByIdCriteria>>();
+
+        private readonly Mock<IQuery<List<User>, GetAllCriteria>> _getAllUserQueryMock =
+           new Mock<IQuery<List<User>, GetAllCriteria>>();
+
+        private readonly Mock<IQuery<List<User>, UniqueUserCriteria>> _getUserListQueryMock =
+           new Mock<IQuery<List<User>, UniqueUserCriteria>>();
 
         private IKernel _kernel;
 
@@ -37,11 +54,18 @@
         {
             _kernel = new StandardKernel();
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
+            _kernel.Bind<IQuery<List<User>, UniqueUserCriteria>>().ToConstant(_getUserListQueryMock.Object);
+            _kernel.Bind<ICacheProvider>().ToConstant(_cacheProviderMock.Object);
             _kernel.Bind<IUserRepository>().ToConstant(_userRepositoryMock.Object);
+            _kernel.Bind<IAuthorizationService>().ToConstant(_authorizationServiceMock.Object);
             _userRepositoryMock.Setup(fr => fr.UnitOfWork)
                 .Returns(_unitOfWorkMock.Object);
             _kernel.Bind<IQuery<User, FindByIdCriteria>>()
                 .ToConstant(_getUserByIdQueryMock.Object);
+            _kernel.Bind<IQuery<Player, FindByIdCriteria>>()
+                .ToConstant(_getPlayerByIdQueryMock.Object);
+            _kernel.Bind<IQuery<List<User>, GetAllCriteria>>()
+                .ToConstant(_getAllUserQueryMock.Object);
         }
 
         [TestMethod]
@@ -53,7 +77,7 @@
             var sut = _kernel.Get<UserService>();
 
             // Act
-            sut.SetUserBlocked(VALID_USER_ID);
+            sut.ChangeUserBlocked(VALID_USER_ID, true);
 
             // Assert
             VerifyEditUser(user, Times.Once());
@@ -68,7 +92,7 @@
             var sut = _kernel.Get<UserService>();
 
             // Act
-            sut.SetUserBlocked(VALID_USER_ID);
+            sut.ChangeUserBlocked(VALID_USER_ID, true);
 
             // Assert
             VerifyEditUser(user, Times.Once());
@@ -85,7 +109,7 @@
             // Act
             try
             {
-                sut.SetUserBlocked(INVALID_USER_ID);
+                sut.ChangeUserBlocked(INVALID_USER_ID, true);
             }
             catch (MissingEntityException ex)
             {
@@ -107,7 +131,7 @@
             var sut = _kernel.Get<UserService>();
 
             // Act
-            sut.SetUserUnblocked(VALID_USER_ID);
+            sut.ChangeUserBlocked(VALID_USER_ID, false);
 
             // Assert
             VerifyEditUser(user, Times.Once());
@@ -122,7 +146,7 @@
             var sut = _kernel.Get<UserService>();
 
             // Act
-            sut.SetUserUnblocked(VALID_USER_ID);
+            sut.ChangeUserBlocked(VALID_USER_ID, false);
 
             // Assert
             VerifyEditUser(user, Times.Once());
@@ -139,7 +163,7 @@
             // Act
             try
             {
-                sut.SetUserUnblocked(INVALID_USER_ID);
+                sut.ChangeUserBlocked(INVALID_USER_ID, false);
             }
             catch (MissingEntityException ex)
             {

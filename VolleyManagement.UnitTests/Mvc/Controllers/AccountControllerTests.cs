@@ -45,6 +45,8 @@
         private Mock<VolleyExceptionFilterAttribute> _exceptionFilter = new Mock<VolleyExceptionFilterAttribute>();
 
         private Mock<ICacheProvider> _cacheProviderMock = new Mock<ICacheProvider>();
+
+        private Mock<IUserService> _userServiceMock = new Mock<IUserService>();
         #endregion
 
         #region Init
@@ -60,8 +62,10 @@
                    .ToConstant(this._rolesServiceMock.Object);
             this._kernel.Bind<ICacheProvider>()
                    .ToConstant(_cacheProviderMock.Object);
-            _kernel.Bind<ICurrentUserService>()
+            this._kernel.Bind<ICurrentUserService>()
                    .ToConstant(_currentUserServiceMock.Object);
+            this._kernel.Bind<IUserService>()
+                   .ToConstant(_userServiceMock.Object);
         }
 
         #endregion

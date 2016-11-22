@@ -27,6 +27,8 @@
 
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
 
+        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
+
         private readonly Mock<ICacheProvider> _cacheProviderMock = new Mock<ICacheProvider>();
 
         private readonly Mock<IQuery<List<User>, GetAllCriteria>> _getAllQueryMock =
@@ -58,6 +60,7 @@
             _kernel.Bind<IQuery<Player, FindByIdCriteria>>().ToConstant(_getPlayerByIdQueryMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _kernel.Bind<ICacheProvider>().ToConstant(_cacheProviderMock.Object);
+            _kernel.Bind<IUserRepository>().ToConstant(_userRepositoryMock.Object);
         }
 
         [TestMethod]

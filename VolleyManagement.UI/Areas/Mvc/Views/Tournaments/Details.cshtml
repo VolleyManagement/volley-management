@@ -95,8 +95,14 @@
     }
     <div>
         @Html.ActionLink(
-           Resources.TournamentViews.Schedule,
-           "ShowSchedule",
+            Resources.TournamentViews.Schedule,
+            "ShowSchedule",
+            new {tournamentId = Model.Id})
+    </div>
+    <div>
+        @Html.ActionLink(
+           "Apply For Tournament",
+           "ApplyForTournament",
            new { tournamentId = Model.Id })
     </div>
 </fieldset>

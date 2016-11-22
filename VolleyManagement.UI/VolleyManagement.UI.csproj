@@ -370,6 +370,7 @@
     <Content Include="Areas\Admin\Views\Requests\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
     <Content Include="Areas\Admin\Views\Users\ActiveUsers.cshtml" />
+    <Content Include="Areas\Mvc\Views\Tournaments\ApplyForTournament.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
@@ -399,6 +400,7 @@
     <Content Include="Scripts\UserActions.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\AddTeams.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\SwapRounds.js" />
+    <Content Include="Scripts\VMScripts\TournamentOperations\ApplyForTournament.js" />
     <Content Include="Scripts\VMScripts\VMScripts.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -482,6 +484,7 @@
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamCollectionReferrerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamRefererViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentApplyViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListReferrerViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\Games\GameViewModel.cs" />
     <Compile Include="Areas\WebApi\ViewModels\GameReports\PivotStandingsGameViewModel.cs" />

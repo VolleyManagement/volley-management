@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿using VolleyManagement.Domain.TeamsAggregate;
+
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -43,6 +45,11 @@
         /// </summary>
         private readonly IGameService _gameService;
 
+        private readonly ITeamService _teamService;
+
+        private readonly ITournamentRequestService _requestService;
+        private readonly ICurrentUserService _currentUserService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class
         /// </summary>
@@ -52,10 +59,16 @@
         public TournamentsController(
             ITournamentService tournamentService,
             IGameService gameService,
-            IAuthorizationService authService)
+            IAuthorizationService authService,
+            ITeamService teamService,
+            ITournamentRequestService requestService,
+            ICurrentUserService currentUserService)
         {
             this._tournamentService = tournamentService;
             this._gameService = gameService;
+            this._teamService = teamService;
+            this._requestService = requestService;
+            this._currentUserService = currentUserService;
             this._authService = authService;
         }
 
@@ -496,6 +509,52 @@
                 this.ModelState.AddModelError("LoadError", ex.Message);
                 return View();
             }
+        }
+
+        /// <summary>
+        /// Apply for tournament
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>TournamentApply view</returns>
+        public ActionResult ApplyForTournament(int tournamentId)
+        {
+            var tournament = _tournamentService.Get(tournamentId);
+
+            if (tournament == null)
+            {
+                return HttpNotFound();
+            }
+            var teamList = _teamService.Get();
+            var avaliableList = teamList.Except<Team>(_tournamentService.GetAllTournamentTeams(tournamentId));
+
+            var tournamentApplyViewModel = new TournamentApplyViewModel
+            {
+                Id = tournamentId,
+                TournamentTitle = tournament.Name,
+                Teams = avaliableList.Select(t => TeamNameViewModel.Map(t)),
+            };
+            return View(tournamentApplyViewModel);
+        }
+
+        /// <summary>
+        ///Apply for tournament
+        /// </summary>
+        /// <param name="id">Tournament id</param>
+        /// <returns>TournamentApply view</returns>
+        [HttpPost]
+        public JsonResult ApplyForTournament(int tournamentId, int teamId)
+        {
+            JsonResult result = null;
+            try
+            {
+                int userId = this._currentUserService.GetCurrentUserId();
+                this._requestService.Create(userId,tournamentId, teamId);
+            }
+            catch (ArgumentException ex)
+            {
+                result = this.Json(new TeamsAddToTournamentViewModel { Message = ex.Message });
+            }
+            return result;
         }
 
         #region Private

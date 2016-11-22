@@ -1,0 +1,24 @@
+﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentApplyViewModel
+@{
+    ViewBag.Title = "Apply for tournament";
+}
+
+@Html.HiddenFor(model => model.Id, new { id = "tournamentId", Value = @Model.Id })
+
+<h2> Apply Team For Tournament</h2>
+    <p>
+        @Html.DropDownListFor(x => x.SelectedTeamId,
+            new SelectList(Model.Teams, "Id", "Name"), "-- Select Team--")
+    </p>
+
+    <p>
+        <input type="checkbox" name="agree" id="agree"> I accept <a href="License"> tournament regulations.</a>
+    </p>
+<div>
+    <button name="apply-submit" id="apply" class="btn btn-default" disabled>Accept</button>
+    <button id="apply-cancel" class="btn btn-default">Cancel</button>
+
+    <span id="ajaxResultMessage"></span>
+</div>
+
+@Scripts.Render("~/bundles/tournamentapplyscripts")

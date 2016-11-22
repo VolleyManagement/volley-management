@@ -151,7 +151,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на A tornament request with specified identifier was not found.
+        ///   Ищет локализованную строку, похожую на A tournament request with specified identifier was not found.
         /// </summary>
         internal static string TournamentRequestNotFound {
             get {

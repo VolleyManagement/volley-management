@@ -1109,7 +1109,10 @@
                 AuthOperations.Feedbacks.Delete,
                 AuthOperations.Feedbacks.Read,
                 AuthOperations.Feedbacks.Reply,
-                AuthOperations.Feedbacks.Close
+                AuthOperations.Feedbacks.Close,
+                AuthOperations.Requests.Confirm,
+                AuthOperations.Requests.Decline,
+                AuthOperations.Requests.ViewList
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

@@ -65,6 +65,10 @@
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MSTestExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTestExtensions.4.0.0\lib\MSTestExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -122,6 +126,7 @@
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />
     <Compile Include="Mvc\Controllers\ContributorsTeamControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\RequestControllerTests.cs" />
     <Compile Include="Mvc\Controllers\RequestsControllerTest.cs" />
     <Compile Include="Mvc\Controllers\FeedbacksControllerTest.cs" />
     <Compile Include="Mvc\Controllers\GameReportsControllerTests.cs" />
@@ -184,6 +189,10 @@
     <Compile Include="Services\GameService\GameBuilder.cs" />
     <Compile Include="Services\GameService\GameComparer.cs" />
     <Compile Include="Services\GameService\GameTestFixture.cs" />
+    <Compile Include="Services\RequestsService\RequestBuilder.cs" />
+    <Compile Include="Services\RequestsService\RequestComparer.cs" />
+    <Compile Include="Services\RequestsService\RequestServiceTestFixture.cs" />
+    <Compile Include="Services\RequestsService\RequestServiceTests.cs" />
     <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
     <Compile Include="Services\UserManager\UserBuilder.cs" />

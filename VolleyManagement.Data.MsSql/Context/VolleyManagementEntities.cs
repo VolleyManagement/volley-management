@@ -96,6 +96,11 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<FeedbackEntity> Feedbacks { get; set; }
 
+        /// <summary>
+        /// Gets or sets the request table.
+        /// </summary>
+        public DbSet<RequestEntity> Requests { get; set; }
+
         #endregion
 
         #region Mapping Configuration
@@ -123,6 +128,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureGroups(modelBuilder);
             ConfigureGameResults(modelBuilder);
             ConfigureFeedbacks(modelBuilder);
+            ConfigureRequests(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -585,6 +591,13 @@ namespace VolleyManagement.Data.MsSql.Context
                 .HasMaxLength(ValidationConstants.User.MAX_FULL_NAME_LENGTH);
         }
 
+        private static void ConfigureRequests(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RequestEntity>()
+               .ToTable(VolleyDatabaseMetadata.REQUESTS_TABLE_NAME)
+               .HasKey(p => p.Id);
+        }
+
         #endregion
-    }
+        }
 }

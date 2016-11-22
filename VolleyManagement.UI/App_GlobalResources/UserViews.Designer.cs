@@ -61,7 +61,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Назад к списку.
+        ///   Looks up a localized string similar to Back to list.
         /// </summary>
         public static string BackToList {
             get {
@@ -106,7 +106,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пользователь.
+        ///   Looks up a localized string similar to User.
         /// </summary>
         public static string UserLegend {
             get {

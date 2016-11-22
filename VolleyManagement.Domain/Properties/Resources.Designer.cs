@@ -491,6 +491,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player&apos;s id is wrong.
+        /// </summary>
+        public static string ValidationPlayerId {
+            get {
+                return ResourceManager.GetString("ValidationPlayerId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please, enter the valid last name.
         /// </summary>
         public static string ValidationPlayerLastName {
@@ -523,6 +532,15 @@ namespace VolleyManagement.Domain.Properties {
         public static string ValidationTeamName {
             get {
                 return ResourceManager.GetString("ValidationTeamName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User&apos;s id is wrong.
+        /// </summary>
+        public static string ValidationUserId {
+            get {
+                return ResourceManager.GetString("ValidationUserId", resourceCulture);
             }
         }
         

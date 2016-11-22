@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BackToList" xml:space="preserve">
-    <value>Назад к списку</value>
+    <value>Back to list</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>Создать</value>
@@ -133,6 +133,6 @@
     <value>Сохранить</value>
   </data>
   <data name="UserLegend" xml:space="preserve">
-    <value>Пользователь</value>
+    <value>User</value>
   </data>
 </root>

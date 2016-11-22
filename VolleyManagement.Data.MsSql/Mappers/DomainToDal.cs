@@ -1,12 +1,12 @@
 ﻿namespace VolleyManagement.Data.MsSql.Mappers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RequestsAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Domain.UsersAggregate;
@@ -81,6 +81,7 @@
             to.UserName = from.UserName;
             to.Email = from.Email;
             to.CellPhone = from.PhoneNumber;
+            to.PlayerId = from.PlayerId;
             to.LoginProviders = from.LoginProviders
                 .Select(l =>
                 {
@@ -205,6 +206,18 @@
             to.UserEnvironment = from.UserEnvironment;
             to.AdminName = from.AdminName;
             to.UpdateDate = from.UpdateDate;
+        }
+
+        /// <summary>
+        /// Maps Requests model.
+        /// </summary>
+        /// <param name="to">Target of the mapping</param>
+        /// <param name="from">Source of the mapping</param>
+        public static void Map(RequestEntity to, Request from)
+        {
+            to.Id = from.Id;
+            to.UserId = from.UserId;
+            to.PlayerId = from.PlayerId;
         }
     }
 }

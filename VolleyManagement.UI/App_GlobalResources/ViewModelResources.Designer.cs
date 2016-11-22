@@ -340,6 +340,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t find User Id.
+        /// </summary>
+        public static string MessageAboutError {
+            get {
+                return ResourceManager.GetString("MessageAboutError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to After admin approval you will be linked with.
+        /// </summary>
+        public static string MessageAboutLinkToPlayer {
+            get {
+                return ResourceManager.GetString("MessageAboutLinkToPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; must be in a range {1} - {2}.
         /// </summary>
         public static string NotInRange {
@@ -489,6 +507,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string PlayerWeightFieldRange {
             get {
                 return ResourceManager.GetString("PlayerWeightFieldRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request with such id not found.
+        /// </summary>
+        public static string RequestNotFound {
+            get {
+                return ResourceManager.GetString("RequestNotFound", resourceCulture);
             }
         }
         

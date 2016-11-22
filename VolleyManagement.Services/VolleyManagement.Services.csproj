@@ -66,6 +66,7 @@
     <Compile Include="FeedbackService.cs" />
     <Compile Include="GameReportService.cs" />
     <Compile Include="GameService.cs" />
+    <Compile Include="RequestService.cs" />
     <Compile Include="CacheProvider.cs" />
     <Compile Include="GmailAccountMailService.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

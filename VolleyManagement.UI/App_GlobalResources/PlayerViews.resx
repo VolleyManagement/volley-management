@@ -198,7 +198,10 @@
   <data name="TournamentRegulations" xml:space="preserve">
     <value> tournament regulations.</value>
   </data>
-  <data name="ApplyTeamForTournament" xml:space="preserve">
-    <value> Apply Team For Tournament</value>
+  <data name="ApplyTeamFor" xml:space="preserve">
+    <value> Apply team for </value>
+  </data>
+  <data name="Tournament" xml:space="preserve">
+    <value> tournament</value>
   </data>
 </root>

@@ -5,7 +5,7 @@
 
 @Html.HiddenFor(model => model.Id, new { id = "tournamentId", Value = @Model.Id })
 
-<h2>@Resources.PlayerViews.ApplyTeamForTournament</h2>
+<h2>@Resources.PlayerViews.ApplyTeamFor @Model.TournamentTitle @Resources.PlayerViews.Tournament</h2>
     <p>
         @Html.DropDownListFor(x => x.SelectedTeamId,
             new SelectList(Model.Teams, "Id", "Name"), "-- Select Team--")

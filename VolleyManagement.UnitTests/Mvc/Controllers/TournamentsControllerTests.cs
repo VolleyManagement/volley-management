@@ -56,19 +56,22 @@
         private static readonly DateTime _testDate = new DateTime(1996, 07, 25);
 
         private readonly List<AuthOperation> _allowedOperationsShowSchedule = new List<AuthOperation>
-                {
-                    AuthOperations.Games.Create,
-                    AuthOperations.Games.Edit,
-                    AuthOperations.Games.Delete,
-                    AuthOperations.Games.SwapRounds,
-                    AuthOperations.Games.EditResult
-                };
+        {
+            AuthOperations.Games.Create,
+            AuthOperations.Games.Edit,
+            AuthOperations.Games.Delete,
+            AuthOperations.Games.SwapRounds,
+            AuthOperations.Games.EditResult
+        };
 
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
         private readonly Mock<ICurrentUserService> _currentUserServiceMock = new Mock<ICurrentUserService>();
-        private readonly Mock<ITournamentRequestService> _tournamentRequestServiceMock = new Mock<ITournamentRequestService>();
+
+        private readonly Mock<ITournamentRequestService> _tournamentRequestServiceMock =
+            new Mock<ITournamentRequestService>();
+
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
@@ -106,6 +109,7 @@
         }
 
         #region Index
+
         /// <summary>
         /// Test for Index method. Actual tournaments (current and upcoming) are requested. Actual tournaments are returned.
         /// </summary>
@@ -128,9 +132,11 @@
             CollectionAssert.AreEqual(expectedCurrentTournaments, actualCurrentTournaments, new TournamentComparer());
             CollectionAssert.AreEqual(expectedUpcomingTournaments, actualUpcomingTournaments, new TournamentComparer());
         }
+
         #endregion
 
         #region ManageTournamentTeams
+
         /// <summary>
         /// Test for ManageTournamentTeams.
         /// Actual tournament teams are requested. Actual tournament teams are returned.
@@ -176,6 +182,7 @@
             Assert.AreEqual(returnedTeamsList.Model.List.Count, EMPTY_TEAMLIST_COUNT);
             Assert.AreEqual(returnedTeamsList.Referer, this._sut.Request.RawUrl);
         }
+
         #endregion
 
         #region ShowSchedule
@@ -292,7 +299,7 @@
                 new GameServiceTestFixture().TestGameResults().Build());
 
             SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
-            var expectedRoundNames = new string[] { "Round of 32", "Round of 16", "Quarter final", "Semifinal", "Final" };
+            var expectedRoundNames = new string[] {"Round of 32", "Round of 16", "Quarter final", "Semifinal", "Final"};
             var expected = new ScheduleViewModelBuilder().WithRoundNames(expectedRoundNames).Build();
 
             // Act
@@ -301,9 +308,11 @@
             // Assert
             CollectionAssert.AreEqual(actual.RoundNames, expected.RoundNames);
         }
+
         #endregion
 
         #region AddTeamsToTournament
+
         /// <summary>
         /// Test for AddTeamsToTournament.
         /// Tournament teams list view model is valid and no exception is thrown during adding
@@ -317,7 +326,8 @@
             var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
 
             // Act
-            var jsonResult = this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
+            var jsonResult =
+                this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
             var returnedDataResult = jsonResult.Data as TournamentTeamsListViewModel;
 
             // Assert
@@ -340,15 +350,18 @@
                 .Throws(new ArgumentException(string.Empty));
 
             // Act
-            var jsonResult = this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
+            var jsonResult =
+                this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
             var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
 
             // Assert
             Assert.IsNotNull(modelResult.Message);
         }
+
         #endregion
 
         #region ScheduleGameGetAction
+
         /// <summary>
         /// Test for ScheduleGame method (GET action). Wrong tournament Id passed. View with error message is returned.
         /// </summary>
@@ -395,7 +408,7 @@
             const int MIN_ROUND_NUMBER = 1;
             const int TEST_ROUND_COUNT = 3;
 
-            var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
+            var testTournament = new TournamentScheduleDto {Id = TEST_TOURNAMENT_ID, StartDate = _testDate};
             var testTeams = MakeTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
@@ -415,9 +428,11 @@
             // Assert
             AssertEqual(actual, expected);
         }
+
         #endregion
 
         #region ScheduleGamePostAction
+
         /// <summary>
         /// Test for ScheduleGame method (POST action).
         /// Valid game is passed, no exception occurs.
@@ -470,7 +485,7 @@
             var testData = MakeTestGameViewModel();
             var redirect = false;
             this._gameServiceMock.Setup(ts => ts.Create(It.IsAny<Game>()))
-                            .Throws(new ArgumentException(string.Empty));
+                .Throws(new ArgumentException(string.Empty));
 
             // Act
             var result = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(testData, redirect));
@@ -497,9 +512,11 @@
             VerifyCreateGame(Times.Never());
             Assert.IsNotNull(result);
         }
+
         #endregion
 
         #region EditScheduledGameGetAction
+
         /// <summary>
         /// Test for EditScheduledGame method (GET action). Correct game id passed. View with GameViewModel is returned.
         /// </summary>
@@ -521,7 +538,7 @@
             };
             SetupGetGame(TEST_ID, testGame);
 
-            var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
+            var testTournament = new TournamentScheduleDto {Id = TEST_TOURNAMENT_ID, StartDate = _testDate};
             var testTeams = MakeTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
@@ -553,9 +570,11 @@
             // Assert
             VerifyInvalidModelState("LoadError", result);
         }
+
         #endregion
 
         #region EditScheduledGamePostAction
+
         /// <summary>
         /// Test for EditScheduledGame method (POST action).
         /// Valid gameViewModel is passed, no exception occurs.
@@ -630,9 +649,11 @@
             VerifyCreateGame(Times.Never());
             Assert.IsNotNull(result);
         }
+
         #endregion
 
         #region GetFinished
+
         /// <summary>
         /// Test for GetFinished method. Finished tournaments are requested. JsonResult with finished tournaments is returned.
         /// </summary>
@@ -649,9 +670,11 @@
             // Assert
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
+
         #endregion
 
         #region Details
+
         /// <summary>
         /// Test for Details method. Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
@@ -665,7 +688,7 @@
             var result = this._sut.Details(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsInstanceOfType(result, typeof (HttpNotFoundResult));
         }
 
         /// <summary>
@@ -686,9 +709,11 @@
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
             VerifyGetAllowedOperations(Times.Once());
         }
+
         #endregion
 
         #region CreateGetAction
+
         /// <summary>
         /// Test for Create method (GET action). Tournament view model is requested. Tournament view model is returned.
         /// </summary>
@@ -702,23 +727,23 @@
             {
                 ApplyingPeriodStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
                 ApplyingPeriodEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
-                                              + DAYS_FOR_APPLYING_PERIOD),
+                                                + DAYS_FOR_APPLYING_PERIOD),
                 GamesStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
-                                       + DAYS_FOR_APPLYING_PERIOD
-                                       + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
+                                         + DAYS_FOR_APPLYING_PERIOD
+                                         + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START),
                 GamesEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
-                                     + DAYS_FOR_APPLYING_PERIOD
-                                     + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
-                                     + DAYS_FOR_GAMES_PERIOD),
+                                       + DAYS_FOR_APPLYING_PERIOD
+                                       + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                       + DAYS_FOR_GAMES_PERIOD),
                 TransferStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
+                                            + DAYS_FOR_APPLYING_PERIOD
+                                            + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
+                                            + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
+                TransferEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
                                           + DAYS_FOR_APPLYING_PERIOD
                                           + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
-                                          + DAYS_FROM_GAMES_START_TO_TRANSFER_START),
-                TransferEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
-                                        + DAYS_FOR_APPLYING_PERIOD
-                                        + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
-                                        + DAYS_FROM_GAMES_START_TO_TRANSFER_START
-                                        + DAYS_FOR_TRANSFER_PERIOD)
+                                          + DAYS_FROM_GAMES_START_TO_TRANSFER_START
+                                          + DAYS_FOR_TRANSFER_PERIOD)
             };
 
             // Act
@@ -727,9 +752,11 @@
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
+
         #endregion
 
         #region CreatePostAction
+
         /// <summary>
         /// Test for Create method (POST action). Tournament view model is valid and no exception is thrown during creation.
         /// Tournament is created successfully and user is redirected to the Index page.
@@ -785,9 +812,11 @@
             VerifyCreate(Times.Never());
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
+
         #endregion
 
         #region EditGetAction
+
         /// <summary>
         /// Test for Edit method (GET action). Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
@@ -801,7 +830,7 @@
             var result = this._sut.Edit(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsInstanceOfType(result, typeof (HttpNotFoundResult));
         }
 
         /// <summary>
@@ -821,9 +850,11 @@
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
+
         #endregion
 
         #region EditPostAction
+
         /// <summary>
         /// Test for Edit method (POST action). Tournament view model is valid and no exception is thrown during editing.
         /// Tournament is updated successfully and user is redirected to the Index page.
@@ -879,9 +910,11 @@
             VerifyEdit(Times.Never());
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
         }
+
         #endregion
 
         #region DeleteTeamFromTournament
+
         /// <summary>
         /// Test for Delete team from tournament method (POST action)
         /// </summary>
@@ -919,9 +952,11 @@
             // Assert
             Assert.IsFalse(result.HasDeleted);
         }
+
         #endregion
 
         #region DeleteGetAction
+
         /// <summary>
         /// Test for Delete method (GET action). Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
         /// </summary>
@@ -935,7 +970,7 @@
             var result = this._sut.Delete(TEST_TOURNAMENT_ID);
 
             // Assert
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsInstanceOfType(result, typeof (HttpNotFoundResult));
         }
 
         /// <summary>
@@ -955,9 +990,11 @@
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
+
         #endregion
 
         #region DeletePostAction
+
         /// <summary>
         /// Test for DeleteConfirmed method (delete POST action). Tournament with specified identifier does not exist.
         /// HttpNotFoundResult is returned.
@@ -973,7 +1010,7 @@
 
             // Assert
             VerifyDelete(TEST_TOURNAMENT_ID, Times.Never());
-            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+            Assert.IsInstanceOfType(result, typeof (HttpNotFoundResult));
         }
 
         /// <summary>
@@ -994,9 +1031,11 @@
             VerifyDelete(TEST_TOURNAMENT_ID, Times.Once());
             VerifyRedirect(INDEX_ACTION_NAME, result);
         }
+
         #endregion
 
         #region SwapRounds
+
         /// <summary>
         /// Test for SwapRounds method.
         /// Wrong tournament Id passed. View with error message is returned.
@@ -1009,10 +1048,10 @@
 
             // Act
             var result = TestExtensions
-                            .GetModel<ScheduleViewModel>(this._sut.SwapRounds(
-                                                            TEST_TOURNAMENT_ID,
-                                                            FIRST_ROUND_NUMBER,
-                                                            SECOND_ROUND_NUMBER));
+                .GetModel<ScheduleViewModel>(this._sut.SwapRounds(
+                    TEST_TOURNAMENT_ID,
+                    FIRST_ROUND_NUMBER,
+                    SECOND_ROUND_NUMBER));
 
             // Assert
             Assert.IsFalse(_sut.ModelState.IsValid);
@@ -1051,23 +1090,24 @@
             var tournament = new TournamentScheduleDtoBuilder().Build();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, tournament);
             this._gameServiceMock.Setup(tr => tr.SwapRounds(
-                                                            TEST_TOURNAMENT_ID,
-                                                            FIRST_ROUND_NUMBER,
-                                                            SECOND_ROUND_NUMBER))
-                                                                   .Throws(new MissingEntityException());
+                TEST_TOURNAMENT_ID,
+                FIRST_ROUND_NUMBER,
+                SECOND_ROUND_NUMBER))
+                .Throws(new MissingEntityException());
 
             // Act
             var result = TestExtensions.GetModel<ScheduleViewModel>(this._sut.SwapRounds(
-                                                                              TEST_TOURNAMENT_ID,
-                                                                              FIRST_ROUND_NUMBER,
-                                                                              SECOND_ROUND_NUMBER));
+                TEST_TOURNAMENT_ID,
+                FIRST_ROUND_NUMBER,
+                SECOND_ROUND_NUMBER));
 
             // Assert
             Assert.IsFalse(_sut.ModelState.IsValid);
             Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
             Assert.IsNull(result);
         }
-        #endregion
+
+    #endregion
 
         #region Private
         private List<Tournament> MakeTestTournaments()
@@ -1174,6 +1214,11 @@
         private void SetupRequestRawUrl(string rawUrl)
         {
             this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
+        }
+
+        private void SetupTournamentRequestMock(List<Tournament> tournaments)
+        {
+            this._tournamentServiceMock.Setup(tr => tr.GetFinished()).Returns(tournaments);
         }
 
         private void VerifyCreate(Times times)

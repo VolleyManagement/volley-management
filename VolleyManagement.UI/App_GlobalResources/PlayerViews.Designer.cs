@@ -97,11 +97,11 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to  Apply Team For Tournament.
+        ///   Looks up a localized string similar to  Apply team for .
         /// </summary>
-        public static string ApplyTeamForTournament {
+        public static string ApplyTeamFor {
             get {
-                return ResourceManager.GetString("ApplyTeamForTournament", resourceCulture);
+                return ResourceManager.GetString("ApplyTeamFor", resourceCulture);
             }
         }
         
@@ -300,6 +300,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string SearchTitle {
             get {
                 return ResourceManager.GetString("SearchTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  tournament.
+        /// </summary>
+        public static string Tournament {
+            get {
+                return ResourceManager.GetString("Tournament", resourceCulture);
             }
         }
         

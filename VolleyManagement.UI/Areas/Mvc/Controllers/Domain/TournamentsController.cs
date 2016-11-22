@@ -1,6 +1,4 @@
-﻿using VolleyManagement.Domain.TeamsAggregate;
-
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +10,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
@@ -48,6 +47,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         private readonly ITeamService _teamService;
 
         private readonly ITournamentRequestService _requestService;
+
         private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
@@ -56,6 +56,9 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <param name="tournamentService">The tournament service</param>
         /// <param name="gameService">The game service</param>
         /// <param name="authService">The authorization service</param>
+        /// <param name="teamService">The team service</param>
+        /// <param name="requestService">The request service</param>
+        /// <param name="currentUserService">The current user service</param>
         public TournamentsController(
             ITournamentService tournamentService,
             IGameService gameService,
@@ -524,6 +527,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             {
                 return HttpNotFound();
             }
+
             var teamList = _teamService.Get();
             var avaliableList = teamList.Except<Team>(_tournamentService.GetAllTournamentTeams(tournamentId));
 
@@ -537,9 +541,10 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         }
 
         /// <summary>
-        ///Apply for tournament
+        /// Apply for tournament
         /// </summary>
-        /// <param name="id">Tournament id</param>
+        /// <param name="tournamentId">Tournament id</param>
+        /// /// <param name="teamId">Team id</param>
         /// <returns>TournamentApply view</returns>
         [HttpPost]
         public JsonResult ApplyForTournament(int tournamentId, int teamId)
@@ -548,12 +553,13 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
             try
             {
                 int userId = this._currentUserService.GetCurrentUserId();
-                this._requestService.Create(userId,tournamentId, teamId);
+                this._requestService.Create(userId, tournamentId, teamId);
             }
             catch (ArgumentException ex)
             {
                 result = this.Json(new TeamsAddToTournamentViewModel { Message = ex.Message });
             }
+
             return result;
         }
 

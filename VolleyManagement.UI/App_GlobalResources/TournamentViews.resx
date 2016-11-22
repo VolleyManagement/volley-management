@@ -258,4 +258,7 @@
   <data name="FinalGameName" xml:space="preserve">
     <value>Final match</value>
   </data>
+  <data name="ApplyForTournament" xml:space="preserve">
+    <value>Apply For Tournament</value>
+  </data>
 </root>

@@ -67,6 +67,9 @@
         private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
         private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+        private readonly Mock<ICurrentUserService> _currentUserServiceMock = new Mock<ICurrentUserService>();
+        private readonly Mock<ITournamentRequestService> _tournamentRequestServiceMock = new Mock<ITournamentRequestService>();
+        private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -84,6 +87,9 @@
             this._kernel.Bind<ITournamentService>().ToConstant(this._tournamentServiceMock.Object);
             this._kernel.Bind<IGameService>().ToConstant(this._gameServiceMock.Object);
             this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
+            this._kernel.Bind<ICurrentUserService>().ToConstant(this._currentUserServiceMock.Object);
+            this._kernel.Bind<ITournamentRequestService>().ToConstant(this._tournamentRequestServiceMock.Object);
+            this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<TournamentsController>();
             TimeProvider.Current = _timeMock.Object;

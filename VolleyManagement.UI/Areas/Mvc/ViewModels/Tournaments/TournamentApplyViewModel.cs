@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using VolleyManagement.Domain.TeamsAggregate;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-
-namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
+﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
+    using System.Collections.Generic;
+    using System.Web.Mvc;
+    using VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
+
+    /// <summary>
+    /// Represents the information of the teams to apply for the tournament.
+    /// </summary>
     public class TournamentApplyViewModel
     {
         /// <summary>
@@ -27,7 +30,9 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
         /// </summary>
         public IEnumerable<TeamNameViewModel> Teams { get; set; }
 
-        public int SelectedTeamId { set; get; }
-
+        /// <summary>
+        /// Gets or sets the selected team identifier.
+        /// </summary>
+        public int SelectedTeamId { get; set; }
     }
 }

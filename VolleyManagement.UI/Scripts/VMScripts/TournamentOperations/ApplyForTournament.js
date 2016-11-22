@@ -8,7 +8,7 @@
 $(document).ready(function () {
     $("#apply").click(function () {
         var tournamentId = $('#tournamentId').val();
-        var teamId = $("#SelectedTeamId").val();
+        var teamId = $("#TeamId").val();
         $.ajax({
             url: "/Tournaments/ApplyForTournament",
             datatype: 'json',

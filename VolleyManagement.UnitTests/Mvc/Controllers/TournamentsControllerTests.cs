@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
+﻿using VolleyManagement.Domain.UsersAggregate;
+
+namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -36,6 +38,7 @@
     {
         private const int TEST_ID = 1;
         private const int TEST_TOURNAMENT_ID = 1;
+        private const int TEST_USER_ID = 1;
         private const string TEST_TOURNAMENT_NAME = "Name";
         private const int TEST_ROUND_NUMBER = 2;
         private const int EMPTY_TEAMLIST_COUNT = 0;
@@ -1032,6 +1035,38 @@
             VerifyRedirect(INDEX_ACTION_NAME, result);
         }
 
+        [TestMethod]
+        public void ApplyForTournament_TournamentExists_TournamentApplyViewModelReturned()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupTeamServiceReturnsTeamsList(MakeTestTeams());
+            SetupGetTournamentTeams(MakeTestTeams(), TEST_TOURNAMENT_ID);
+
+            var expected = MakeTestTournamentApplyViewModel();
+            // Act
+
+            var actual = TestExtensions.GetModel<TournamentApplyViewModel>(_sut.ApplyForTournament(TEST_TOURNAMENT_ID));
+
+            // Assert
+            TestHelper.AreEqual<TournamentApplyViewModel>(expected, actual, new TournamentApplyViewModelComparer());
+        }
+
+        [TestMethod]
+        public void ApplyForTournament_NonExistingTournament_HttpNotFoundResultIsReturned()
+        {
+            // Arrange
+            SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+
+            // Act
+            var actionResult = _sut.ApplyForTournament(TEST_TOURNAMENT_ID);
+            
+            // Assert
+            Assert.IsInstanceOfType(actionResult, typeof(HttpNotFoundResult));
+        }
+
+
         #endregion
 
         #region SwapRounds
@@ -1130,6 +1165,11 @@
             return new TournamentMvcViewModelBuilder().Build();
         }
 
+        private TournamentApplyViewModel MakeTestTournamentApplyViewModel()
+        {
+            return new TournamentApplyViewModelBuilder().Build();
+        }
+
         private GameViewModel MakeTestGameViewModel()
         {
             return new GameViewModelBuilder().Build();
@@ -1216,9 +1256,14 @@
             this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
         }
 
-        private void SetupTournamentRequestMock(List<Tournament> tournaments)
+        private void SetupUserServiceReturnsValidUserId(int userId)
         {
-            this._tournamentServiceMock.Setup(tr => tr.GetFinished()).Returns(tournaments);
+            this._currentUserServiceMock.Setup(m => m.GetCurrentUserId()).Returns(userId);
+        }
+
+        private void SetupTeamServiceReturnsTeamsList(List<Team> teams)
+        {
+            _teamServiceMock.Setup(ts => ts.Get()).Returns(teams);
         }
 
         private void VerifyCreate(Times times)

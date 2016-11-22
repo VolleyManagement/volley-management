@@ -7,7 +7,7 @@
 
 <h2>@Resources.PlayerViews.ApplyTeamFor @Model.TournamentTitle @Resources.PlayerViews.Tournament</h2>
     <p>
-        @Html.DropDownListFor(x => x.SelectedTeamId,
+        @Html.DropDownListFor(x => x.TeamId,
             new SelectList(Model.Teams, "Id", "Name"), "-- Select Team--")
     </p>
 

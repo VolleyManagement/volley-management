@@ -154,8 +154,11 @@
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TeamNameViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TeamNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentApplyViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentApplyViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentTeamsListViewModelComparer.cs" />

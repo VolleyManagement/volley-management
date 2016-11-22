@@ -29,10 +29,5 @@
         /// Gets or sets the teams list.
         /// </summary>
         public IEnumerable<TeamNameViewModel> Teams { get; set; }
-
-        /// <summary>
-        /// Gets or sets the selected team identifier.
-        /// </summary>
-        public int SelectedTeamId { get; set; }
     }
 }

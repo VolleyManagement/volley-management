@@ -1,0 +1,68 @@
+﻿@using VolleyManagement.Domain.FeedbackAggregate
+@model IList<VolleyManagement.UI.Areas.Admin.Models.RequestsViewModel>
+
+@{
+    ViewBag.Title = "Requests";
+}
+
+<br />
+<li>
+    <a href="Request">
+        <i class="fa fa-link fa-fw"></i>
+        List of requests for linking User to Player
+    </a>
+</li>
+<br />
+
+<div class="panel panel-primary">
+    <div class="panel-heading">Requests</div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>Content</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        @if (Model.Count == 0)
+        {
+            <tr>
+                <td colspan="3" class="text-center">No Requests</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var feedback in Model)
+            {
+                <tr>
+                    <td>@feedback.Id</td>
+                    <td>@feedback.UsersEmail</td>
+                    <td>@feedback.Content</td>
+                    <td>@feedback.Date</td>
+                    <td>@feedback.Status</td>
+                    <td>
+                        @if (feedback.CanReply)
+                        {
+                            @Html.ActionLink("Reply", "Reply", new {id = feedback.Id}, new {@class = "btn btn-danger btn-xs"})
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Reply", "Reply", new { id = feedback.Id }, new { @class = "btn btn-danger btn-xs", @disabled = !feedback.CanClose, onclick = "javascript:return false;" })
+                        }
+                        @Html.ActionLink("Details", "Details", new {id = feedback.Id}, new {@class = "btn btn-primary btn-xs"})
+                        @if (feedback.CanClose)
+                        {
+                            @Html.ActionLink("Close", "Close", new {id = feedback.Id}, new {@class = "btn btn-primary btn-xs"})
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs", @disabled = false, onclick = "javascript:return false;" })
+                        }                  
+                     </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+

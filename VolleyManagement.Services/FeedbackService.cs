@@ -1,10 +1,18 @@
 ﻿namespace VolleyManagement.Services
 {
     using System;
+    using System.Collections.Generic;
     using Contracts;
     using Crosscutting.Contracts.Providers;
-    using Domain.FeedbackAggregate;
     using Domain.Properties;
+    using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.MailService;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Domain.FeedbackAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// Represents an implementation of IFeedbackService contract.
@@ -14,6 +22,12 @@
         #region Fields
 
         private readonly IFeedbackRepository _feedbackRepository;
+        private readonly IUserService _userService;
+        private readonly IMailService _mailService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IAuthorizationService _authService;
+        private readonly IQuery<Feedback, FindByIdCriteria> _getFeedbackByIdQuery;
+        private readonly IQuery<List<Feedback>, GetAllCriteria> _getAllFeedbacksQuery;
 
         #endregion
 
@@ -22,10 +36,29 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="FeedbackService"/> class.
         /// </summary>
-        /// <param name="feedbackRepository"> The feedback repository</param>
-        public FeedbackService(IFeedbackRepository feedbackRepository)
+        /// <param name="feedbackRepository"> Read the IFeedbackRepository instance</param>
+        /// <param name="userService">Instance of class which implements <see cref="IUserService"/></param>
+        /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
+        /// <param name="currentUserService">Instance of the class </param>
+        /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
+        /// <param name="getFeedbackByIdQuery">Get feedback by it's id </param>
+        /// <param name="getAllFeedbacksQuery">Get list of all feedbacks</param>
+        public FeedbackService(
+            IFeedbackRepository feedbackRepository,
+            IUserService userService,
+            IMailService mailService,
+            ICurrentUserService currentUserService,
+            IAuthorizationService authService,
+            IQuery<Feedback, FindByIdCriteria> getFeedbackByIdQuery,
+            IQuery<List<Feedback>, GetAllCriteria> getAllFeedbacksQuery)
         {
             _feedbackRepository = feedbackRepository;
+            _userService = userService;
+            _mailService = mailService;
+            _authService = authService;
+            _currentUserService = currentUserService;
+            _getFeedbackByIdQuery = getFeedbackByIdQuery;
+            _getAllFeedbacksQuery = getAllFeedbacksQuery;
         }
 
         #endregion
@@ -46,11 +79,158 @@
             UpdateFeedbackDate(feedbackToCreate);
             _feedbackRepository.Add(feedbackToCreate);
             _feedbackRepository.UnitOfWork.Commit();
+
+            NotifyUser(feedbackToCreate.UsersEmail);
+            NotifyAdmins(feedbackToCreate);
+        }
+
+        /// <summary>
+        /// Method to get all feedbacks.
+        /// </summary>
+        /// <returns>All feedbacks.</returns>
+        public List<Feedback> Get()
+        {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Read);
+            return _getAllFeedbacksQuery.Execute(new GetAllCriteria());
+        }
+
+        /// <summary>
+        /// Finds a Feedback by id.
+        /// </summary>
+        /// <param name="id">id for search.</param>
+        /// <returns>founded feedback.</returns>
+        public Feedback Get(int id)
+        {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Read);
+            return _getFeedbackByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        /// <summary>
+        /// Get a Feedback's details by id.
+        /// </summary>
+        /// <param name="id">id for details.</param>
+        /// <returns>founded feedback.</returns>
+        public Feedback GetDetails(int id)
+        {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Read);
+            var feedback = Get(id);
+
+            if (feedback == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound);
+            }
+
+            if (feedback.Status == FeedbackStatusEnum.New)
+            {
+                ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Read);
+            }
+
+            return feedback;
+        }
+
+        /// <summary>
+        /// Close a Feedback.
+        /// </summary>
+        /// <param name="id">id for close.</param>
+        public void Close(int id)
+        {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Close);
+            var feedback = Get(id);
+
+            if (feedback == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound);
+            }
+
+            ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Closed);
+        }
+
+        /// <summary>
+        /// Reply the answer to user.
+        /// </summary>
+        /// <param name="id">id for reply.</param>
+        public void Reply(int id)
+        {
+            _authService.CheckAccess(AuthOperations.Feedbacks.Reply);
+
+            var feedback = Get(id);
+
+            if (feedback == null)
+            {
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.FeedbackNotFound);
+            }
+
+            ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Answered);
+        }
+
+        /// <summary>
+        /// Change status of the feedback
+        /// </summary>
+        /// <param name="feedback">id for reply.</param>
+        /// <param name="newStatusCode">Information about mail (body, receiver)</param>
+        private void ChangeFeedbackStatus(Feedback feedback, FeedbackStatusEnum newStatusCode)
+        {
+                feedback.Status = newStatusCode;
+                if (ShouldChangeLastUpdateInfo(newStatusCode))
+                {
+                    int userId = this._currentUserService.GetCurrentUserId();
+                    User user = this._userService.GetUser(userId);
+                    feedback.UpdateDate = TimeProvider.Current.UtcNow;
+                    feedback.AdminName = user.PersonName;
+                }
+
+                _feedbackRepository.Update(feedback);
+                _feedbackRepository.UnitOfWork.Commit();
         }
 
         #endregion
 
         #region Privates
+
+        /// <summary>
+        /// Send a confirmation email to user.
+        /// </summary>
+        /// <param name="emailTo">Recipient email.</param>
+        private void NotifyUser(string emailTo)
+        {
+            string body = Properties.Resources.FeedbackConfirmationLetterBody;
+            string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
+
+            EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
+            _mailService.Send(emailMessage);
+        }
+
+        /// <summary>
+        /// Send a feedback email to all admins.
+        /// </summary>
+        /// <param name="feedback">Feedback to send.</param>
+        private void NotifyAdmins(Feedback feedback)
+        {
+            string subject = string.Format(
+                Properties.Resources.FeedbackEmailSubjectToAdmins,
+                feedback.Id);
+
+            string body = string.Format(
+                Properties.Resources.FeedbackEmailBodyToAdmins,
+                feedback.Id,
+                feedback.Date,
+                feedback.UsersEmail,
+                feedback.Status,
+                feedback.Content);
+
+            IList<User> adminsList = _userService.GetAdminsList();
+
+            foreach (var admin in adminsList)
+            {
+                EmailMessage emailMessage = new EmailMessage(admin.Email, subject, body);
+                _mailService.Send(emailMessage);
+            }
+        }
+
+        private bool ShouldChangeLastUpdateInfo(FeedbackStatusEnum newStatusCode)
+        {
+            return newStatusCode == FeedbackStatusEnum.Closed || newStatusCode == FeedbackStatusEnum.Answered;
+        }
 
         private void UpdateFeedbackDate(Feedback feedbackToUpdate)
         {

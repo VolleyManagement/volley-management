@@ -96,6 +96,11 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<FeedbackEntity> Feedbacks { get; set; }
 
+        /// <summary>
+        /// Gets or sets the request table.
+        /// </summary>
+        public DbSet<RequestEntity> Requests { get; set; }
+
         #endregion
 
         #region Mapping Configuration
@@ -123,6 +128,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureGroups(modelBuilder);
             ConfigureGameResults(modelBuilder);
             ConfigureFeedbacks(modelBuilder);
+            ConfigureRequests(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -569,8 +575,32 @@ namespace VolleyManagement.Data.MsSql.Context
                 .Property(t => t.Status)
                 .IsRequired()
                 .HasColumnName(VolleyDatabaseMetadata.FEEDBACK_STATUS_COLUMN_NAME);
+
+            // UserEnvironment
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.UserEnvironment)
+                .IsOptional();
+
+            // Update Date
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.UpdateDate)
+                .HasColumnType(VolleyDatabaseMetadata.DATETIME2_COLUMN_TYPE);
+
+            // Admin Name
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.AdminName)
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.User.MAX_FULL_NAME_LENGTH);
+        }
+
+        private static void ConfigureRequests(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RequestEntity>()
+               .ToTable(VolleyDatabaseMetadata.REQUESTS_TABLE_NAME)
+               .HasKey(p => p.Id);
         }
 
         #endregion
-    }
+        }
 }

@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        @Html.ActionLink("Volley Management Administration", "Index", "Dashboard", new { @class = "navbar-brand" })
+        @Html.ActionLink("Volley Management Administration", "Index", "Dashboard", null, new { @class = "navbar-brand" })
     </div>
     <!-- /.navbar-header -->
     <ul class="nav navbar-top-links navbar-right">
@@ -55,11 +55,21 @@
                     </div>
                     <!-- /input-group -->
                 </li>
+
                 <li>
-                    <a href="Dashboard"><i class='fa fa-dashboard fa-fw'></i>Dashboard</a>
+                    @Html.ActionLink("Dashboard", "Index", "Dashboard", null, new { @class = "" })
                 </li>
                 <li>
-                    <a href="Roles"><i class="fa fa-wrench fa-fw"></i>Manage Roles</a>
+                    @Html.ActionLink("Roles", "Index", "Roles", null, new { @class = "" })
+                </li>
+                <li>
+                    @Html.ActionLink("Requests", "Index", "Requests", null, new {@class = ""})
+                </li>
+                <li>
+                    @Html.ActionLink("All users", "Index", "Users", null, new {@class = ""})
+                </li>
+                <li>
+                    @Html.ActionLink("Active users", "ActiveUsers", "Users", null, new { @class = "" })
                 </li>
             </ul>
         </div>

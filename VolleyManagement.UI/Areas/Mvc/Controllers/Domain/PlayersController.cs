@@ -19,6 +19,10 @@
     /// </summary>
     public class PlayersController : Controller
     {
+        /// <summary>
+        /// User Id for anonym role.
+        /// </summary>
+        private const int ANONYM = -1;
         private const int MAX_PLAYERS_ON_PAGE = 5;
         private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
                                                                 Editing operation is impossible.
@@ -32,16 +36,26 @@
         /// </summary>
         private readonly IPlayerService _playerService;
         private readonly IAuthorizationService _authService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IRequestService _requestService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlayersController"/> class
         /// </summary>
         /// <param name="playerService">Instance of the class that implements IPlayerService.</param>
         /// <param name="authService">The authorization service</param>
-        public PlayersController(IPlayerService playerService, IAuthorizationService authService)
+        /// <param name="currentUserService">The interface reference of current user service.</param>
+        /// <param name="requestService">The interface reference of request service.</param>
+        public PlayersController(
+            IPlayerService playerService, 
+            IAuthorizationService authService,
+            ICurrentUserService currentUserService,
+            IRequestService requestService)
         {
             this._playerService = playerService;
             this._authService = authService;
+            this._currentUserService = currentUserService;
+            this._requestService = requestService;
         }
 
         /// <summary>
@@ -88,6 +102,30 @@
             var model = new PlayerRefererViewModel(player, returnUrl);
             model.AllowedOperations = this._authService.GetAllowedOperations(AuthOperations.Players.Edit);
             return View(model);
+        }
+
+        /// <summary>
+        /// It links this player to current user.
+        /// </summary>
+        /// <param name="playerId">Player id.</param>
+        /// <returns>Message to user about binding
+        /// Player and User. </returns>
+        public string LinkWithUser(int playerId)
+        {
+            int userId = this._currentUserService.GetCurrentUserId();
+            string message;
+
+            if (userId != ANONYM)
+            {
+                _requestService.Create(userId, playerId);
+                message = App_GlobalResources.ViewModelResources.MessageAboutLinkToPlayer;
+            }
+            else
+            {
+                message = App_GlobalResources.ViewModelResources.MessageAboutError;
+            }
+
+            return message;
         }
 
         /// <summary>

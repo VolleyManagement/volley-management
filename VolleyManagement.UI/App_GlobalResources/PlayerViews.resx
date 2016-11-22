@@ -183,4 +183,7 @@
   <data name="AddPlayerToTeam" xml:space="preserve">
     <value>Add player to team</value>
   </data>
+  <data name="LinkToMyAccount" xml:space="preserve">
+    <value>Link to my account</value>
+  </data>
 </root>

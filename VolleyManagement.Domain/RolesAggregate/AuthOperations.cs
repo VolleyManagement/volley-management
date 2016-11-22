@@ -15,7 +15,9 @@
         private const byte GAMES = 0x03;
         private const byte PLAYERS = 0x04;
         private const byte ADMINDASHBOARD = 0x05;
-        private const byte FEEDBACKS = 0x06;
+        private const byte USERS = 0x06;
+        private const byte FEEDBACKS = 0x07;
+        private const byte REQUESTS = 0x08;
 
         #endregion
 
@@ -124,19 +126,34 @@
         public static class Feedbacks
         {
             /// <summary>
-            /// Create player operation
+            /// Create feedback operation
             /// </summary>
             public static readonly AuthOperation Create = Tuple.Create(FEEDBACKS, 1);
 
             /// <summary>
-            /// Edit player operation
+            /// Edit feedback operation
             /// </summary>
             public static readonly AuthOperation Edit = Tuple.Create(FEEDBACKS, 2);
 
             /// <summary>
-            /// Delete player operation
+            /// Delete feedback operation
             /// </summary>
             public static readonly AuthOperation Delete = Tuple.Create(FEEDBACKS, 3);
+
+            /// <summary>
+            /// Read feedback
+            /// </summary>
+            public static readonly AuthOperation Read = Tuple.Create(FEEDBACKS, 4);
+
+            /// <summary>
+            /// Answer on feedback
+            /// </summary>
+            public static readonly AuthOperation Reply = Tuple.Create(FEEDBACKS, 5);
+
+            /// <summary>
+            /// Close feedback
+            /// </summary>
+            public static readonly AuthOperation Close = Tuple.Create(FEEDBACKS, 6);
         }
 
         /// <summary>
@@ -148,6 +165,48 @@
             /// View admin page operation
             /// </summary>
             public static readonly AuthOperation View = Tuple.Create(ADMINDASHBOARD, 1);
+        }
+
+        /// <summary>
+        /// Contains administrators operations
+        /// </summary>
+        public static class AllUsers
+        {
+            /// <summary>
+            /// View all users page operation
+            /// </summary>
+            public static readonly AuthOperation ViewList = Tuple.Create(USERS, 1);
+
+            /// <summary>
+            /// View all users page operation
+            /// </summary>
+            public static readonly AuthOperation ViewDetails = Tuple.Create(USERS, 2);
+
+            /// <summary>
+            /// View all users page operation
+            /// </summary>
+            public static readonly AuthOperation ViewActiveList = Tuple.Create(USERS, 3);
+        }
+
+        /// <summary>
+        /// Contains administrators operations
+        /// </summary>
+        public static class Requests
+        {
+            /// <summary>
+            /// View all requests page operation
+            /// </summary>
+            public static readonly AuthOperation ViewList = Tuple.Create(REQUESTS, 1);
+
+            /// <summary>
+            /// Confirm request
+            /// </summary>
+            public static readonly AuthOperation Confirm = Tuple.Create(REQUESTS, 2);
+
+            /// <summary>
+            /// Decline request
+            /// </summary>
+            public static readonly AuthOperation Decline = Tuple.Create(REQUESTS, 3);
         }
     }
 }

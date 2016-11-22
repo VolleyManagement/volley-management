@@ -1,0 +1,33 @@
+﻿@model VolleyManagement.Domain.PlayersAggregate.Player
+
+@{
+    ViewBag.Title = @Resources.PlayerViews.PlayerLegend;
+}
+
+<fieldset>
+    <legend>@Resources.PlayerViews.PlayerLegend</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.Id)</div>
+    <div class="display-field">@Model.Id</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.FirstName)</div>
+    <div class="display-field">@Model.FirstName</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.LastName)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.LastName)</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.TeamId)</div>
+    <div class="display-field">@Model.TeamId</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.BirthYear)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.BirthYear)</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Height)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Height)</div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Weight)</div>
+    <div class="display-field">@Html.DisplayFor(model => model.Weight)</div>
+</fieldset>
+<p>
+    @Html.ActionLink(Resources.PlayerViews.BackToList, "Index")
+</p>

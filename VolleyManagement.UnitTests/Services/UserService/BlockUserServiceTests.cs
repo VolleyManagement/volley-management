@@ -10,7 +10,7 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.Infrastructure;
+    using VolleyManagement.Services.Authorization;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

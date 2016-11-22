@@ -270,4 +270,37 @@
   <data name="WrongTransferStart" xml:space="preserve">
     <value>Start of the transfer window should be later than the games start</value>
   </data>
+  <data name="FeedbackUserEnvironmentParam" xml:space="preserve">
+    <value>User environment</value>
+  </data>
+  <data name="ValidationFeedbackUserEnvironment" xml:space="preserve">
+    <value>User environment info cannot contain more than {0} symbols</value>
+  </data>
+  <data name="FeedbackStatusParam" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ValidationFeedbackStatus" xml:space="preserve">
+    <value>Feedback status can't be changed to this status</value>
+  </data>
+  <data name="MailBodyParam" xml:space="preserve">
+    <value>Body</value>
+  </data>
+  <data name="MailFromParam" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="MailToParam" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="ValidationMailBody" xml:space="preserve">
+    <value>Body should be less than {0} symbols or not empty</value>
+  </data>
+  <data name="ValidationMailEmail" xml:space="preserve">
+    <value>Please, enter the valid email.</value>
+  </data>
+  <data name="ValidationPlayerId" xml:space="preserve">
+    <value>Player's id is wrong</value>
+  </data>
+  <data name="ValidationUserId" xml:space="preserve">
+    <value>User's id is wrong</value>
+  </data>
 </root>

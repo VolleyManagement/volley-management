@@ -1,9 +1,8 @@
-﻿using System;
-using VolleyManagement.Domain.PlayersAggregate;
-using VolleyManagement.Domain.Properties;
-
-namespace VolleyManagement.Domain.TournamentRequestAggregate
+﻿namespace VolleyManagement.Domain.TournamentRequestAggregate
 {
+    using System;
+    using VolleyManagement.Domain.Properties;
+
     /// <summary>
     /// Tournament request domain class.
     /// </summary>
@@ -28,7 +27,10 @@ namespace VolleyManagement.Domain.TournamentRequestAggregate
         /// </summary>
         public int TournamentId
         {
-            get { return this._tournamentId; }
+            get
+            {
+                return this._tournamentId;
+            }
 
             set
             {
@@ -46,7 +48,10 @@ namespace VolleyManagement.Domain.TournamentRequestAggregate
         /// </summary>
         public int TeamId
         {
-            get { return this._teamId; }
+            get
+            {
+                return this._teamId;
+            }
 
             set
             {

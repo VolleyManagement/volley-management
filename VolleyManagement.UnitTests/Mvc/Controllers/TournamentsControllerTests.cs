@@ -44,6 +44,7 @@
         private const int EMPTY_TEAMLIST_COUNT = 0;
         private const byte FIRST_ROUND_NUMBER = 1;
         private const byte SECOND_ROUND_NUMBER = 2;
+        private const string INVALID_PARAMETR = "Invalid parametr.Your request didn't create.";
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string JSON_NO_RIGHTS_MESSAGE = "Please, login to apply team for the tournament.";
@@ -1185,7 +1186,7 @@
             var result = _sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
 
             // Assert
-            Assert.IsNotNull(result, JSON_OK_MSG);
+            Assert.IsNotNull(result, INVALID_PARAMETR);
         }
 
         #endregion
@@ -1320,7 +1321,7 @@
         private void SetupTournamentRequestServiceThrowsArgumentException(int userId, int tournamentId, int teamId)
         {
             _tournamentRequestServiceMock.Setup(ts => ts.Create(userId, tournamentId, teamId))
-                .Throws(new ArgumentException(string.Empty));
+                .Throws(new ArgumentException(INVALID_PARAMETR));
         }
 
         private void VerifyCreate(Times times)

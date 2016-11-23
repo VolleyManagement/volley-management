@@ -205,6 +205,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid parametr. Your request didn&apos;t create..
+        /// </summary>
+        public static string InvalidArgumentException {
+            get {
+                return ResourceManager.GetString("InvalidArgumentException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to End of the transfer period should be before the end of the tournament.
         /// </summary>
         public static string InvalidTransferEndpoint {

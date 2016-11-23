@@ -291,4 +291,7 @@
   <data name="ValidationMailEmail" xml:space="preserve">
     <value>Please, enter the valid email.</value>
   </data>
+  <data name="InvalidArgumentException" xml:space="preserve">
+    <value>Invalid parametr. Your request didn't create.</value>
+  </data>
 </root>

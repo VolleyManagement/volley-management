@@ -124,8 +124,8 @@
             }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
-            tournamentViewModel.Authorization = this._authService.GetAllowedOperations(new List<AuthOperation> 
-            { 
+            tournamentViewModel.Authorization = this._authService.GetAllowedOperations(new List<AuthOperation>
+            {
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.ManageTeams
             });
@@ -477,7 +477,7 @@
             {
                 this.ModelState.AddModelError("ValidationError", e.Message);
             }
-            catch (MissingEntityException e) 
+            catch (MissingEntityException e)
             {
                 this.ModelState.AddModelError("LoadError", e.Message);
                 return View();
@@ -551,23 +551,23 @@
         public JsonResult ApplyForTournament(int tournamentId, int teamId)
         {
             JsonResult result = null;
-          try
-          {
-              int userId = this._currentUserService.GetCurrentUserId();
-              if (userId == ANONYM)
-              {
-                  result = this.Json(ViewModelResources.NoRights);
-              }
-              else
-              {
+            try
+            {
+                int userId = this._currentUserService.GetCurrentUserId();
+                if (userId == ANONYM)
+                {
+                    result = this.Json(ViewModelResources.NoRights);
+                }
+                else
+                {
                     this._requestService.Create(userId, tournamentId, teamId);
                     result = this.Json(ViewModelResources.SuccessRequest);
-              }
-          }
-          catch (ArgumentException ex)
-          {
-               result = this.Json(ex.Message);
-          }
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                result = this.Json(ex.Message);
+            }
 
             return result;
         }
@@ -622,7 +622,7 @@
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
-        } 
+        }
 
         /// <summary>
         /// Fills round names for playoff scheme

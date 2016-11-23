@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-
-namespace VolleyManagement.UnitTests.Mvc.ViewModels
+﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
+
     public class TeamNameViewModelBuilder
     {
-
         private TeamNameViewModel _teamNameViewModel;
 
         /// <summary>
@@ -54,8 +50,16 @@ namespace VolleyManagement.UnitTests.Mvc.ViewModels
         {
             return new List<TeamNameViewModel>()
             {
-                _teamNameViewModel,
-                _teamNameViewModel
+                new TeamNameViewModel()
+                {
+                    Id = 1,
+                    Name = "TeamNameA"
+                },
+                new TeamNameViewModel()
+                {
+                    Id = 2,
+                    Name = "TeamNameB"
+                }
             };
         }
 

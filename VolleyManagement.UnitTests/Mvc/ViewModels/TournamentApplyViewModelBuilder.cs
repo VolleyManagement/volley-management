@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
-using VolleyManagement.UnitTests.Services.TeamService;
-
-namespace VolleyManagement.UnitTests.Mvc.ViewModels
+﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+
     [ExcludeFromCodeCoverage]
     public class TournamentApplyViewModelBuilder
     {
@@ -25,8 +19,7 @@ namespace VolleyManagement.UnitTests.Mvc.ViewModels
             _tournamentApplyViewModel = new TournamentApplyViewModel()
             {
                 Id = DEFAULT_ID,
-                TournamentTitle = "New hope",
-                TeamId = DEFAULT_ID,
+                TournamentTitle = "Name",
                 Teams = new TeamNameViewModelBuilder().GetList()
             };
         }
@@ -72,6 +65,5 @@ namespace VolleyManagement.UnitTests.Mvc.ViewModels
         {
             return _tournamentApplyViewModel;
         }
-
     }
 }

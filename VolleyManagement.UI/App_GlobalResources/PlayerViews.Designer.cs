@@ -241,6 +241,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No avaliable teams found. Please, contact admin..
+        /// </summary>
+        public static string NoAvaliableTeams {
+            get {
+                return ResourceManager.GetString("NoAvaliableTeams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Players with this name was not found.
         /// </summary>
         public static string NotFoundPlayerMessage {

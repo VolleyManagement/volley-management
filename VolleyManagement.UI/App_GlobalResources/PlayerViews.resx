@@ -204,4 +204,7 @@
   <data name="Tournament" xml:space="preserve">
     <value> tournament</value>
   </data>
+  <data name="NoAvaliableTeams" xml:space="preserve">
+    <value>No avaliable teams found. Please, contact admin.</value>
+  </data>
 </root>

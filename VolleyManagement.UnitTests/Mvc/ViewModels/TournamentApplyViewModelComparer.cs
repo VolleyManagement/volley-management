@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
-
-namespace VolleyManagement.UnitTests.Mvc.ViewModels
+﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+
     /// <summary>
     /// Comparer for tournament objects.
     /// </summary>

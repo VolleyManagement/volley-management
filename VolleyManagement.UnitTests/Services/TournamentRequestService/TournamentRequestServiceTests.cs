@@ -75,9 +75,9 @@
                 .ToConstant(_mailServiceMock.Object);
             _kernel.Bind<IUserService>()
                 .ToConstant(_userServiceMock.Object);
-            _tournamentRequestRepositoryMock.Setup(tr => tr.UnitOfWork)
-                .Returns(_unitOfWorkMock.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork)
+                .Returns(_unitOfWorkMock.Object);
+            _tournamentRequestRepositoryMock.Setup(tr => tr.UnitOfWork)
                 .Returns(_unitOfWorkMock.Object);
         }
 
@@ -197,7 +197,7 @@
             }
 
             // Assert
-            VerifyCheckAccess(AuthOperations.TournamentRequests.Confirm, Times.Once());
+            VerifyExceptionThrown(exception, "Requested operation is not allowed");
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@
             sut.Confirm(EXISTING_ID);
 
             // Arrange
-            VerifyAddedTeam(expected.Id, expected.TournamentId, Times.Once(), Times.Once());
+            VerifyAddedTeam(expected.Id, expected.TournamentId, Times.Once(), Times.AtLeastOnce());
         }
 
         [TestMethod]

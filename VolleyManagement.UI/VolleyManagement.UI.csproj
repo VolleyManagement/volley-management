@@ -375,6 +375,9 @@
     <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
     <Content Include="Areas\Admin\Views\Users\ActiveUsers.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\ApplyForTournament.cshtml" />
+    <Content Include="Areas\Admin\Views\TournamentRequest\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\TournamentRequest\Decline.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\InvalidOperation.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
@@ -482,7 +485,10 @@
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\LoginProviderViewModel.cs" />
     <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
+    <Compile Include="Areas\Admin\Models\MessageViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\TournamentRequestCollectionViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\TournamentRequestViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />

@@ -351,4 +351,7 @@
   <data name="NoRights" xml:space="preserve">
     <value>Please, login to apply team for the tournament.</value>
   </data>
+  <data name="DeclineMessage" xml:space="preserve">
+    <value>Reason for decline</value>
+  </data>
 </root>

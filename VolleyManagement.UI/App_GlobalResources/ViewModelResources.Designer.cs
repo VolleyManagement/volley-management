@@ -133,6 +133,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reason for decline.
+        /// </summary>
+        public static string DeclineMessage {
+            get {
+                return ResourceManager.GetString("DeclineMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Division.
         /// </summary>
         public static string DivisionDefaultName {

@@ -340,6 +340,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please, login to apply team for the tournament..
+        /// </summary>
+        public static string NoRights {
+            get {
+                return ResourceManager.GetString("NoRights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field &quot;{0}&quot; must be in a range {1} - {2}.
         /// </summary>
         public static string NotInRange {
@@ -498,6 +507,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string Round {
             get {
                 return ResourceManager.GetString("Round", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your request was succesfully created. Please, wait until administrator confirm your request..
+        /// </summary>
+        public static string SuccessRequest {
+            get {
+                return ResourceManager.GetString("SuccessRequest", resourceCulture);
             }
         }
         

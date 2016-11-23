@@ -345,4 +345,10 @@
   <data name="InvalidEmail" xml:space="preserve">
     <value>Invalid email address</value>
   </data>
+  <data name="SuccessRequest" xml:space="preserve">
+    <value>Your request was succesfully created. Please, wait until administrator confirm your request.</value>
+  </data>
+  <data name="NoRights" xml:space="preserve">
+    <value>Please, login to apply team for the tournament.</value>
+  </data>
 </root>

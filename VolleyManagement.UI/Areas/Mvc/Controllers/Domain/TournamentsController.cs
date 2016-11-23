@@ -21,6 +21,7 @@
     /// </summary>
     public class TournamentsController : Controller
     {
+        private const int ANONYM = -1;
         private const int DAYS_TO_APPLYING_PERIOD_START = 14;
         private const int DAYS_FOR_APPLYING_PERIOD = 14;
         private const int DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START = 7;
@@ -550,15 +551,23 @@
         public JsonResult ApplyForTournament(int tournamentId, int teamId)
         {
             JsonResult result = null;
-            try
-            {
-                int userId = this._currentUserService.GetCurrentUserId();
-                this._requestService.Create(userId, tournamentId, teamId);
-            }
-            catch (ArgumentException ex)
-            {
-                result = this.Json(new TeamsAddToTournamentViewModel { Message = ex.Message });
-            }
+          try
+          {
+              int userId = this._currentUserService.GetCurrentUserId();
+              if (userId == ANONYM)
+              {
+                  result = this.Json(ViewModelResources.NoRights);
+              }
+              else
+              {
+                    this._requestService.Create(userId, tournamentId, teamId);
+                    result = this.Json(ViewModelResources.SuccessRequest);
+              }
+          }
+          catch (ArgumentException ex)
+          {
+               result = this.Json(ex.Message);
+          }
 
             return result;
         }

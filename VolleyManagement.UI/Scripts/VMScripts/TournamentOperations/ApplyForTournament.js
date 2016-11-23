@@ -13,15 +13,20 @@ $(document).ready(function () {
             url: "/Tournaments/ApplyForTournament",
             datatype: 'json',
             type: 'POST',
-            data: { tournamentId: tournamentId, teamId: teamId},
-            success: function (data) {
-                $('#ajaxResultMessage')
-                    .html('<br />' + data +
-                    'Your request');
-            },
-            error: function () {
-                $('#ajaxResultMessage').html('ERROR');
-            }
-        });
+            data: { tournamentId: tournamentId, teamId: teamId }
+        })
+                .done(function (data) {
+                    $('#ajaxResultMessage')
+                        .html('<br />' + data);
+                })
+                .fail(function (data) {
+                    $('#ajaxResultMessage').html(data);
+                });
+    });
+});
+
+$(document).ready(function () {
+    $('#apply-cancel').click(function () {
+        window.history.back();
     });
 });

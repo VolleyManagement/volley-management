@@ -267,7 +267,9 @@
             var sut = _kernel.Get<TournamentRequestService>();
             EmailMessage emailMessage = new EmailMessageBuilder().Build();
             MockMailService(emailMessage);
-
+            var expected = new TournamentRequestBuilder().Build();
+            MockGetRequestByIdQuery(expected);
+            MockGetUser();
             // Act
             try
             {

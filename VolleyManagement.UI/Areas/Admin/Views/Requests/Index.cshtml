@@ -1,4 +1,5 @@
-﻿@model IList<VolleyManagement.UI.Areas.Admin.Models.RequestsViewModel>
+﻿@using VolleyManagement.Domain.FeedbackAggregate
+@model IList<VolleyManagement.UI.Areas.Admin.Models.RequestsViewModel>
 
 @{
     ViewBag.Title = "Requests";
@@ -9,6 +10,12 @@
     <a href="TournamentRequest">
         <i class="fa fa-link fa-fw"></i>
         List of requests for applying Team to Tournament
+    </a>
+</li>
+<li>
+    <a href="Request">
+        <i class="fa fa-link fa-fw"></i>
+        List of requests for linking User to Player
     </a>
 </li>
 <br />
@@ -41,13 +48,26 @@
                     <td>@feedback.Date</td>
                     <td>@feedback.Status</td>
                     <td>
-                        @Html.ActionLink("Reply", "Reply", new { id = feedback.Id }, new { @class = "btn btn-danger btn-xs" })
+                        @if (feedback.CanReply)
+                        {
+                            @Html.ActionLink("Reply", "Reply", new { id = feedback.Id }, new { @class = "btn btn-danger btn-xs" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Reply", "Reply", new { id = feedback.Id }, new { @class = "btn btn-danger btn-xs", @disabled = !feedback.CanClose, onclick = "javascript:return false;" })
+                        }
                         @Html.ActionLink("Details", "Details", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
-                        @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
+                        @if (feedback.CanClose)
+                        {
+                            @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs", @disabled = false, onclick = "javascript:return false;" })
+                        }
                     </td>
                 </tr>
             }
         }
     </table>
 </div>
-

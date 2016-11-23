@@ -58,6 +58,7 @@
             RegisterTornamentScripts(bundles);
             RegisterGameScripts(bundles);
             RegisterFeedbackScripts(bundles);
+            RegisterPlayerScripts(bundles);
         }
 
         #region Domain bundles
@@ -90,7 +91,15 @@
         private static void RegisterFeedbackScripts(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/feedbackscripts")
-                .Include("~/Scripts/VmScripts/FeedbackOperations/BackButton.js"));
+                .Include(
+                    "~/Scripts/VmScripts/FeedbackOperations/BackButton.js",
+                    "~/Scripts/VmScripts/FeedbackOperations/CheckEnvironment.js"));
+        }
+
+        private static void RegisterPlayerScripts(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/bundles/playerscripts")
+                .Include("~/Scripts/VmScripts/PlayerOperations/LinkPlayerToUser.js"));
         }
 
         #endregion
@@ -112,7 +121,8 @@
             bundles.Add(new ScriptBundle("~/bundles/adminscripts")
                         .Include(
                             "~/Scripts/metisMenu.min.js",
-                            "~/Scripts/VMScripts/Admin/admin.js"));
+                            "~/Scripts/VMScripts/Admin/admin.js",
+                            "~/Scripts/VMScripts/Admin/BackButton.js"));
         }
 
         #endregion

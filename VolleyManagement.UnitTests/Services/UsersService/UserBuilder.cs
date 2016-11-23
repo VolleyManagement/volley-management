@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Contracts.Authentication.Models;
+    using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
 
@@ -31,6 +32,7 @@
                 Email = "example@i.ua",
                 PersonName = "Eugene",
                 PhoneNumber = "068-11-22-333",
+                IsBlocked = false,
                 LoginProviders = new List<LoginProviderInfo>
                 {
                     new LoginProviderInfo
@@ -124,6 +126,17 @@
         public UserBuilder WithRoles(List<Role> roles)
         {
             _user.Roles = roles;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets player of test user
+        /// </summary>
+        /// <param name="player">Player info for test user</param>
+        /// <returns>User builder object</returns>
+        public UserBuilder WithPlayer(Player player)
+        {
+            _user.Player = player;
             return this;
         }
 

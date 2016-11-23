@@ -4,14 +4,18 @@
     ViewBag.Title = "User's details";
 }
 
+<br />
 <div class="panel panel-primary">
-
-
-    
-
     <div class="panel-heading">User @Model.Id
         <div class="pull-right">
-            @Html.ActionLink("Block/Unblock", "UserDetails", new { id = Model.Id }, new { @class = "btn btn-success btn-xs" })
+            @if (Model.isBlocked)
+            {
+                @Html.ActionLink("Unblock", "ChangeUserBlocked", new { id = Model.Id, toBlock = false, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+            }
+            else
+            {
+                @Html.ActionLink("Block", "ChangeUserBlocked", new { id = Model.Id, toBlock = true, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+            }
         </div>
     </div>
     <table class="table table-striped">

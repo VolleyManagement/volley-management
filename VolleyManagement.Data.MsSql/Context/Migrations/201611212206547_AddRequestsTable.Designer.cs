@@ -7,13 +7,13 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddTournamentRequestTable : IMigrationMetadata
+    public sealed partial class AddRequestsTable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddTournamentRequestTable));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddRequestsTable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201611180948227_AddTournamentRequestTable"; }
+            get { return "201611212206547_AddRequestsTable"; }
         }
         
         string IMigrationMetadata.Source

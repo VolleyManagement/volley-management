@@ -88,6 +88,14 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User environment.
+        /// </summary>
+        public static string FeedbackUserEnvironmentParam {
+            get {
+                return ResourceManager.GetString("FeedbackUserEnvironmentParam", resourceCulture);
+            }
+        }
+
         ///   Looks up a localized string similar to Status.
         /// </summary>
         public static string FeedbackStatusParam {
@@ -412,7 +420,16 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Feedback status can&apos;t be changed to this status.
+        ///   Looks up a localized string similar to User environment info cannot contain more than {0} symbols.
+        /// </summary>
+        public static string ValidationFeedbackUserEnvironment {
+            get {
+                return ResourceManager.GetString("ValidationFeedbackUserEnvironment", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Feedback status can&apos;t be changed to this status.
         /// </summary>
         public static string ValidationFeedbackStatus {
             get {
@@ -484,7 +501,16 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Please, enter the valid last name.
+        ///   Looks up a localized string similar to Player&apos;s id is wrong.
+        /// </summary>
+        public static string ValidationPlayerId {
+            get {
+                return ResourceManager.GetString("ValidationPlayerId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, enter the valid last name.
         /// </summary>
         public static string ValidationPlayerLastName {
             get {
@@ -547,7 +573,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Game can not be deleted because it has already ended.
+        ///   Looks up a localized string similar to Game can not be deleted because it has already ended.
         /// </summary>
         public static string WrongDeletingGame {
             get {

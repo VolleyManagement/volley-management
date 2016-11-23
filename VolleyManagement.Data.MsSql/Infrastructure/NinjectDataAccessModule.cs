@@ -1,12 +1,10 @@
 ﻿namespace VolleyManagement.Data.MsSql.Infrastructure
 {
     using System;
-    using System.Collections.Generic;
     using Ninject.Activation;
     using Ninject.Extensions.Conventions;
     using Ninject.Infrastructure;
     using Ninject.Modules;
-    using Ninject.Planning.Bindings;
     using VolleyManagement.Crosscutting.Ninject;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Queries;
@@ -15,6 +13,7 @@
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.Domain.RequestsAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentRequestAggregate;
@@ -62,6 +61,7 @@
                                   Bind<IGameRepository>().To<GameRepository>(),
                                   Bind<IFeedbackRepository>().To<FeedbackRepository>(),
                                   Bind<ITournamentRequestRepository>().To<TournamentRequestRepository>(),
+                                  Bind<IRequestRepository>().To<RequestRepository>()
                               };
 
             configs.InScope(_scopeCallback);

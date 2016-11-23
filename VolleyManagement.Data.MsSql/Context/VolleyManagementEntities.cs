@@ -101,6 +101,11 @@ namespace VolleyManagement.Data.MsSql.Context
         /// </summary>
         public DbSet<TournamentRequestEntity> TournamentRequests { get; set; }
 
+        /// <summary>
+        /// Gets or sets the request table.
+        /// </summary>
+        public DbSet<RequestEntity> Requests { get; set; }
+
         #endregion
 
         #region Mapping Configuration
@@ -129,6 +134,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureGameResults(modelBuilder);
             ConfigureFeedbacks(modelBuilder);
             ConfigureTournamentRequests(modelBuilder);
+            ConfigureRequests(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -252,6 +258,9 @@ namespace VolleyManagement.Data.MsSql.Context
                 .HasMany(u => u.LoginProviders)
                 .WithRequired(l => l.User)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(u => u.IsBlocked);
         }
 
         private static void ConfigureUserLogins(DbModelBuilder modelBuilder)
@@ -573,6 +582,11 @@ namespace VolleyManagement.Data.MsSql.Context
                 .IsRequired()
                 .HasColumnName(VolleyDatabaseMetadata.FEEDBACK_STATUS_COLUMN_NAME);
 
+            // UserEnvironment
+            modelBuilder.Entity<FeedbackEntity>()
+                .Property(t => t.UserEnvironment)
+                .IsOptional();
+
             // Update Date
             modelBuilder.Entity<FeedbackEntity>()
                 .Property(t => t.UpdateDate)
@@ -592,6 +606,14 @@ namespace VolleyManagement.Data.MsSql.Context
               .ToTable(VolleyDatabaseMetadata.TOURNAMENT_REQUEST_TABLE_NAME)
               .HasKey(p => p.Id);
         }
+
+        private static void ConfigureRequests(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RequestEntity>()
+               .ToTable(VolleyDatabaseMetadata.REQUESTS_TABLE_NAME)
+               .HasKey(p => p.Id);
+        }
+
         #endregion
      }
 }

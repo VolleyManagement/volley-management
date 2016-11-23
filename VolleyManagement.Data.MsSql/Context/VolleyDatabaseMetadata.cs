@@ -60,5 +60,7 @@
         public const string GAME_RESULTS_TABLE_NAME = "GameResults";
 
         public const string TOURNAMENT_REQUEST_TABLE_NAME = "TournamentRequests";
+
+        public const string REQUESTS_TABLE_NAME = "Requests";
     }
 }

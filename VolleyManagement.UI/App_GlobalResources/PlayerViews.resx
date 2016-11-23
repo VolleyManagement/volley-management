@@ -207,4 +207,7 @@
   <data name="NoAvaliableTeams" xml:space="preserve">
     <value>No avaliable teams found. Please, contact admin.</value>
   </data>
+  <data name="LinkToMyAccount" xml:space="preserve">
+    <value>Link to my account</value>
+  </data>
 </root>

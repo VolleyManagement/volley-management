@@ -136,9 +136,9 @@
       <HintPath>..\packages\MSTestExtensions.4.0.0\lib\MSTestExtensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
@@ -355,6 +355,14 @@
     <Content Include="Areas\Mvc\Views\Tournaments\_ScheduleOrEditGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
+    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
+    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
+    <Content Include="Areas\Admin\Views\Request\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Request\PlayerDetails.cshtml" />
+    <Content Include="Areas\Admin\Views\Request\UserDetails.cshtml" />
+    <Content Include="Areas\Admin\Views\Request\InvalidOperation.cshtml" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\Admin\BackButton.js" />
     <Content Include="Areas\Mvc\Views\Tournaments\_NonPlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffSchedule.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_PlayoffGameResult.cshtml" />
@@ -368,11 +376,11 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Users\UserDetails.cshtml" />
-    <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
+    <Content Include="Areas\Admin\Views\Requests\ErrorPage.cshtml" />
     <Content Include="Areas\Admin\Views\Users\ActiveUsers.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\ApplyForTournament.cshtml" />
     <Content Include="Areas\Admin\Views\TournamentRequest\Index.cshtml" />
@@ -382,9 +390,11 @@
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\VMScripts\Admin\admin.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\CheckEnvironment.js" />
     <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
     <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\VMScripts\Admin\BackButton.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Scripts\VMScripts\GameOperations\DeleteGame.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
@@ -401,6 +411,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\scripts.js" />
+    <Content Include="Scripts\VMScripts\PlayerOperations\LinkPlayerToUser.js" />
     <Content Include="Scripts\VMScripts\TeamOperations\List.js" />
     <Content Include="Scripts\VMScripts\TeamOperations\CreateEdit.js" />
     <Content Include="Scripts\TournamentOperationScripts.js" />
@@ -489,6 +500,10 @@
     <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TournamentRequestCollectionViewModel.cs" />
     <Compile Include="Areas\Admin\Models\TournamentRequestViewModel.cs" />
+    <Compile Include="Areas\Admin\Controllers\RequestController.cs" />
+    <Compile Include="Areas\Admin\Models\RequestCollectionViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\OperationResultViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RequestViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
@@ -575,6 +590,7 @@
     <Compile Include="Areas\Mvc\Helpers\JQueryUIDateFormatConverter.cs" />
     <Compile Include="Areas\Mvc\Controllers\ErrorController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Infrastructure\CaptchaManager.cs" />
     <Compile Include="Infrastructure\CurrentUserService.cs" />
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -598,6 +614,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\PageNotFound.cshtml" />
     <Content Include="Views\Shared\AccessDenied.cshtml" />
+    <Content Include="Views\Shared\Blocked.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

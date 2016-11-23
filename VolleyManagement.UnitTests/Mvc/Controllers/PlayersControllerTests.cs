@@ -29,17 +29,23 @@
     public class PlayersControllerTests
     {
         private const int TEST_PLAYER_ID = 1;
+        private const int TEST_USER_ID = 1;
+        private const int USER_INVALID_ID = -1;
         private const int NON_EXISTENT_PAGE_NUMBER = -1;
         private const string INDEX_ACTION_NAME = "Index";
         private const string ROUTE_VALUES_KEY = "action";
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string PLAYER_NAME_TO_SEARCH = "Player Name";
+        private const string LINK_SUCCESSFULL_MESSAGE = "After admin approval you will be linked with";
+        private const string LINK_ERROR_MESSAGE = "Can't find User Id";
 
         private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
+        private readonly Mock<ICurrentUserService> _currentUserServiceMock = new Mock<ICurrentUserService>();
+        private readonly Mock<IRequestService> _requestServiceMock = new Mock<IRequestService>();
 
         private readonly List<AuthOperation> _allowedOperationsIndex = new List<AuthOperation>
                 {
@@ -62,6 +68,8 @@
             this._kernel = new StandardKernel();
             this._kernel.Bind<IPlayerService>().ToConstant(this._playerServiceMock.Object);
             this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
+            this._kernel.Bind<ICurrentUserService>().ToConstant(this._currentUserServiceMock.Object);
+            this._kernel.Bind<IRequestService>().ToConstant(this._requestServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<PlayersController>();
         }
@@ -215,6 +223,38 @@
             // Assert
             TestHelper.AreEqual<PlayerViewModel>(expected, actual.Model, new PlayerViewModelComparer());
             VerifyGetAllowedOperation(_allowedOperationDetails, Times.Once());
+        }
+
+        [TestMethod]
+        public void LinkWithUser_UserExists_SuccessfullMessageIsReturned()
+        {
+            // Arrange
+            string expected = LINK_SUCCESSFULL_MESSAGE;
+            MockCurrenUserService(TEST_USER_ID);
+            MockRequestService(TEST_USER_ID, TEST_PLAYER_ID);
+            var sut = _kernel.Get<PlayersController>();
+
+            // Act
+            string actual = sut.LinkWithUser(TEST_PLAYER_ID);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void LinkWithUser_UserNotFound_ErrorMessageIsReturned()
+        {
+            // Arrange
+            string expected = LINK_ERROR_MESSAGE;
+            MockCurrenUserService(USER_INVALID_ID);
+            MockRequestService(USER_INVALID_ID, TEST_PLAYER_ID);
+            var sut = _kernel.Get<PlayersController>();
+
+            // Act
+            string actual = sut.LinkWithUser(TEST_PLAYER_ID);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -532,6 +572,16 @@
         private void VerifyGetAllowedOperation(AuthOperation allowedOperation, Times times)
         {
             _authServiceMock.Verify(tr => tr.GetAllowedOperations(allowedOperation), times);
+        }
+
+        private void MockCurrenUserService(int userId)
+        {
+            _currentUserServiceMock.Setup(tr => tr.GetCurrentUserId()).Returns(userId);
+        }
+
+        private void MockRequestService(int userId, int playerId)
+        {
+            _requestServiceMock.Setup(tr => tr.Create(userId, playerId));
         }
     }
 }

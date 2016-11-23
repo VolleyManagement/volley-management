@@ -47,11 +47,12 @@
                                   Bind<IGameService>().To<GameService>(),
                                   Bind<IGameReportService>().To<GameReportService>(),
                                   Bind<IAuthorizationService>().To<AuthorizationService>(),
-                                  Bind<ICacheProvider>().To<CacheProvider>(),
-                                  Bind<IFeedbackService>().To<FeedbackService>(),
-                                  Bind<IMailService>().To<GmailAccountMailService>(),
                                   Bind<IUserService>().To<UserService>(),
-                                  Bind<ITournamentRequestService>().To<TournamentRequestService>()
+                                  Bind<IFeedbackService>().To<FeedbackService>(),
+                                  Bind<ITournamentRequestService>().To<TournamentRequestService>(),
+                                  Bind<IRequestService>().To<RequestService>(),
+                                  Bind<ICacheProvider>().To<CacheProvider>(),
+                                  Bind<IMailService>().To<GmailAccountMailService>()
                               };
             configs.InScope(_scopeCallback);
         }

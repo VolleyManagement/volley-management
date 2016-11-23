@@ -19,6 +19,7 @@
     using Moq;
     using Ninject;
     using UserManager;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Services;
 
     [ExcludeFromCodeCoverage]

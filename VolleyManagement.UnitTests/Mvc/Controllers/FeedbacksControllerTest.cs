@@ -2,8 +2,8 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Web;
     using System.Web.Mvc;
-
     using Contracts;
     using Contracts.Authorization;
     using Domain.FeedbackAggregate;
@@ -31,6 +31,7 @@
         private const string FEEDBACK_SENT_MESSAGE = "FeedbackSentMessage";
         private const string TEST_MAIL = "test@gmail.com";
         private const string TEST_CONTENT = "Test content";
+        private const string TEST_ENVIRONMENT = "Test environment";
         private const string EXCEPTION_MESSAGE = "ValidationMessage";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
@@ -41,6 +42,9 @@
 
         private readonly Mock<ICurrentUserService> _currentUserServiceMock =
             new Mock<ICurrentUserService>();
+
+        private readonly Mock<ICaptchaManager> _captchaManagerMock =
+            new Mock<ICaptchaManager>();
 
         private IKernel _kernel;
 
@@ -61,6 +65,10 @@
                 .ToConstant(this._userServiceMock.Object);
             this._kernel.Bind<ICurrentUserService>()
                 .ToConstant(this._currentUserServiceMock.Object);
+            this._kernel.Bind<ICaptchaManager>()
+                .ToConstant(this._captchaManagerMock.Object);
+
+            _captchaManagerMock.Setup(m => m.IsFormSubmit(It.IsAny<HttpRequestBase>())).Returns(true);
         }
 
         #endregion
@@ -200,6 +208,22 @@
             Assert.AreEqual(EXCEPTION_MESSAGE, res[0].ErrorMessage);
         }
 
+        [TestMethod]
+        public void CreatePostAction_CaptchaIsNotApproved_CreateViewReturned()
+        {
+            // Arrange
+            FeedbacksController sut = this._kernel.Get<FeedbacksController>();
+            var feedback = CreateValidFeedback();
+
+            // Act
+            this._captchaManagerMock
+                .Setup(cm => cm.IsFormSubmit(It.IsAny<HttpRequestBase>()))
+                .Returns(false);
+            var res = sut.Create(feedback) as ViewResult;
+
+            // Assert
+            Assert.AreNotEqual(FEEDBACK_SENT_MESSAGE, res.ViewName);
+        }
         #endregion
 
         #region Private
@@ -211,6 +235,7 @@
                     .WithId(TEST_ID)
                     .WithEmail(TEST_MAIL)
                     .WithContent(TEST_CONTENT)
+                    .WithEnvironment(TEST_ENVIRONMENT)
                     .Build();
         }
 
@@ -221,6 +246,7 @@
                     .WithId(TEST_ID)
                     .WithEmail(TEST_MAIL)
                     .WithContent(TEST_CONTENT)
+                    .WithEnvironment(TEST_ENVIRONMENT)
                     .WithDate(DateTime.MinValue)
                     .Build();
         }
@@ -232,6 +258,7 @@
                     .WithId(TEST_ID)
                     .WithEmail(string.Empty)
                     .WithContent(string.Empty)
+                    .WithEnvironment(string.Empty)
                     .Build();
         }
 

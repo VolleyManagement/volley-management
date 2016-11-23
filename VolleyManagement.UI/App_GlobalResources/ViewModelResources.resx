@@ -354,4 +354,13 @@
   <data name="DeclineMessage" xml:space="preserve">
     <value>Reason for decline</value>
   </data>
+  <data name="MessageAboutLinkToPlayer" xml:space="preserve">
+    <value>After admin approval you will be linked with</value>
+  </data>
+  <data name="MessageAboutError" xml:space="preserve">
+    <value>Can't find User Id</value>
+  </data>
+  <data name="RequestNotFound" xml:space="preserve">
+    <value>Request with such id not found</value>
+  </data>
 </root>

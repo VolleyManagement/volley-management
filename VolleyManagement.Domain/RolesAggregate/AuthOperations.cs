@@ -17,6 +17,7 @@
         private const byte ADMINDASHBOARD = 0x05;
         private const byte USERS = 0x06;
         private const byte FEEDBACKS = 0x07;
+        private const byte REQUESTS = 0x08;
         private const byte TOURNAMENTREQUESTS = 0x09;
 
         #endregion
@@ -189,7 +190,7 @@
         }
 
         /// <summary>
-        /// Contains administrators operations
+        /// Contains tournament requests operations
         /// </summary>
         public static class TournamentRequests
         {
@@ -199,14 +200,35 @@
             public static readonly AuthOperation ViewList = Tuple.Create(TOURNAMENTREQUESTS, 1);
 
             /// <summary>
-            /// Confirm request
+            /// Confirm tournament request
             /// </summary>
             public static readonly AuthOperation Confirm = Tuple.Create(TOURNAMENTREQUESTS, 2);
 
             /// <summary>
-            /// Decline request
+            /// Decline tournament request
             /// </summary>
             public static readonly AuthOperation Decline = Tuple.Create(TOURNAMENTREQUESTS, 3);
+        }
+
+        /// <summary>
+        /// Contains requests operations
+        /// </summary>
+        public static class Requests
+        {
+            /// <summary>
+            /// View all requests page operation
+            /// </summary>
+            public static readonly AuthOperation ViewList = Tuple.Create(REQUESTS, 1);
+
+            /// <summary>
+            /// Confirm request
+            /// </summary>
+            public static readonly AuthOperation Confirm = Tuple.Create(REQUESTS, 2);
+
+            /// <summary>
+            /// Decline request
+            /// </summary>
+            public static readonly AuthOperation Decline = Tuple.Create(REQUESTS, 3);
         }
     }
 }

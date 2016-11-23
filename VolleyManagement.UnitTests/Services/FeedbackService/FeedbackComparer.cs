@@ -61,7 +61,8 @@
                 && x.UsersEmail == y.UsersEmail
                 && x.Content == y.Content
                 && x.Date == y.Date
-                && x.Status == y.Status;
+                && x.Status == y.Status
+                && x.UserEnvironment == y.UserEnvironment;
         }
     }
 }

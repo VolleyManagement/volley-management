@@ -1112,7 +1112,10 @@
                 AuthOperations.Feedbacks.Close,
                 AuthOperations.TournamentRequests.ViewList,
                 AuthOperations.TournamentRequests.Confirm,
-                AuthOperations.TournamentRequests.Decline
+                AuthOperations.TournamentRequests.Decline,
+                AuthOperations.Requests.Confirm,
+                AuthOperations.Requests.Decline,
+                AuthOperations.Requests.ViewList
             };
 
             var entries = CreateRolesToOperation(roleId, operationIds);

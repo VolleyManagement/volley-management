@@ -1,12 +1,11 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
 
     /// <summary>
-    /// Added new tournament's request table
+    /// Added requests table.
     /// </summary>
-    public partial class AddTournamentRequestTable : DbMigration
+    public partial class AddRequestsTable : DbMigration
     {
         /// <summary>
         /// The up migration.
@@ -14,15 +13,14 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.TournamentRequests",
+                "dbo.Requests",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         UserId = c.Int(nullable: false),
-                        TournamentId = c.Int(nullable: false),
-                        TeamId = c.Int(nullable: false),
+                        PlayerId = c.Int(nullable: false),
                     })
-                    .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id);
         }
 
         /// <summary>
@@ -30,7 +28,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         /// </summary>
         public override void Down()
         {
-            DropTable("dbo.TournamentRequests");
+            DropTable("dbo.Requests");
         }
     }
 }

@@ -6,19 +6,16 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
-
+    using Contracts;
     using Contracts.Authentication;
     using Contracts.Authentication.Models;
     using Contracts.Authorization;
-
+    using Domain.UsersAggregate;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin.Security;
-
-    using Services.Authorization;
     using ViewModels.Account;
     using ViewModels.Users;
-    using VolleyManagement.Contracts;
 
     /// <summary>
     /// Manages Sign In/Out process
@@ -28,6 +25,7 @@
     {
         private readonly IVolleyUserManager<UserModel> _userManager;
         private readonly IRolesService _rolesService;
+        private readonly IUserService _userService;
         private readonly ICacheProvider _cacheProvider;
         private readonly ICurrentUserService _currentUserService;
 
@@ -36,17 +34,20 @@
         /// </summary>
         /// <param name="userManager"> User Manager </param>
         /// <param name="rolesService"> Roles service </param>
+        /// <param name="userService"> User service </param>
         /// <param name="cacheProvider">Instance of <see cref="ICacheProvider"/> class.</param>
         /// <param name="currentUserService">Instance of <see cref="ICurrentUserService"/> class.</param>
         public AccountController(
                     IVolleyUserManager<UserModel> userManager,
                     IRolesService rolesService,
+                    IUserService userService,
                     ICacheProvider cacheProvider,
                     ICurrentUserService currentUserService)
         {
             this._userManager = userManager;
             this._rolesService = rolesService;
             this._cacheProvider = cacheProvider;
+            this._userService = userService;
             this._currentUserService = currentUserService;
         }
 
@@ -201,6 +202,7 @@
         {
             ExternalLoginInfo loginInfo = await AuthManager.GetExternalLoginInfoAsync();
             UserModel user = await _userManager.FindAsync(loginInfo.Login);
+
             if (user == null)
             {
                 user = new UserModel
@@ -227,12 +229,24 @@
             ClaimsIdentity ident = await _userManager.CreateIdentityAsync(
                                                         user,
                                                         DefaultAuthenticationTypes.ApplicationCookie);
+
+            if (isBlocked(ident.GetUserId<int>()))
+            {
+                return View("Blocked");
+            }
+
             ident.AddClaims(loginInfo.ExternalIdentity.Claims);
             AuthManager.SignOut();
             AuthManager.SignIn(new AuthenticationProperties { IsPersistent = false }, ident);
             AddToActive(user.Id);
 
             return Redirect(GetRedirectUrl(returnUrl));
+        }
+
+        private bool isBlocked(int userId)
+        {
+            User currentUser = this._userService.GetUser(userId);
+            return currentUser.IsBlocked;
         }
 
         private string GetRedirectUrl(string returnUrl)

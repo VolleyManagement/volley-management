@@ -252,6 +252,9 @@ namespace VolleyManagement.Data.MsSql.Context
                 .HasMany(u => u.LoginProviders)
                 .WithRequired(l => l.User)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UserEntity>()
+                .Property(u => u.IsBlocked);
         }
 
         private static void ConfigureUserLogins(DbModelBuilder modelBuilder)

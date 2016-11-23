@@ -43,6 +43,11 @@
         public string PhoneNumber { get; set; }
 
         /// <summary>
+        /// It is true if user account is blocked.
+        /// </summary>
+        public bool IsBlocked { get; set; }
+
+        /// <summary>
         /// Player Id
         /// </summary>
         public int? PlayerId { get; set; }

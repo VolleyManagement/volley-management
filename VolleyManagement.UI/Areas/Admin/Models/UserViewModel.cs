@@ -37,6 +37,11 @@
         public string Phone { get; set; }
 
         /// <summary>
+        /// Gets or sets the is user Blocked.
+        /// </summary>
+        public bool isBlocked { get; set; }
+
+        /// <summary>
         /// Gets or sets Player info
         /// </summary>
         public PlayerViewModel Player { get; set; }
@@ -74,7 +79,8 @@
                 Name = user.UserName,
                 Email = user.Email,
                 PersonName = user.PersonName,
-                Phone = user.PhoneNumber
+                Phone = user.PhoneNumber,
+                isBlocked = user.IsBlocked
             };
         }
 
@@ -92,6 +98,7 @@
                 Email = user.Email,
                 PersonName = user.PersonName,
                 Phone = user.PhoneNumber,
+                isBlocked = user.IsBlocked,
                 LoginProviders = user.LoginProviders,
                 Roles = user.Roles
             };

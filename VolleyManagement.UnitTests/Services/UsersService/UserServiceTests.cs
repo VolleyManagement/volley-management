@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UnitTests.Services.UsersService
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -27,6 +26,8 @@
         private const int EXISTING_ID = 1;
 
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+
+        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
 
         private readonly Mock<ICacheProvider> _cacheProviderMock = new Mock<ICacheProvider>();
 
@@ -59,6 +60,7 @@
             _kernel.Bind<IQuery<Player, FindByIdCriteria>>().ToConstant(_getPlayerByIdQueryMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _kernel.Bind<ICacheProvider>().ToConstant(_cacheProviderMock.Object);
+            _kernel.Bind<IUserRepository>().ToConstant(_userRepositoryMock.Object);
         }
 
         [TestMethod]

@@ -187,6 +187,7 @@
                     Email = t.Email,
                     PersonName = t.FullName,
                     PhoneNumber = t.CellPhone,
+                    IsBlocked = t.IsBlocked,
                     PlayerId = t.PlayerId,
                     LoginProviders = t.LoginProviders.Select(
                                             l => new LoginProviderInfo

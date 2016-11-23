@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Contracts.Authorization
+﻿namespace VolleyManagement.Contracts
 {
     using System.Collections.Generic;
     using Domain.UsersAggregate;
@@ -20,6 +20,13 @@
         /// <param name="userId">User Id.</param>
         /// <returns>User entity.</returns>
         User GetUser(int userId);
+
+        /// <summary>
+        /// It blocks and unblocks an account of user.
+        /// </summary>
+        /// <param name="userId">User's Id.</param>
+        /// <param name="toBlock">blocked status of user</param>
+        void ChangeUserBlocked(int userId, bool toBlock);
 
         /// <summary>
         /// Get user instance by Id.

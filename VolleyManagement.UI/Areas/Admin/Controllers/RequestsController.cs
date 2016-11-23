@@ -67,7 +67,7 @@
             {
                 return View(
                     "ErrorPage", 
-                    new OperationResulViewModel
+                    new OperationResultViewModel
                     {
                         Message = ex.Message
                     });
@@ -76,7 +76,7 @@
             {
                 return View(
                     "ErrorPage",
-                    new OperationResulViewModel
+                    new OperationResultViewModel
                     {
                         Message = ex.Message
                     });
@@ -100,7 +100,7 @@
             {  
                return View(
                    "ErrorPage", 
-                   new OperationResulViewModel
+                   new OperationResultViewModel
                    {
                        Message = ex.Message
                    });
@@ -109,7 +109,7 @@
             {
                 return View(
                     "ErrorPage", 
-                    new OperationResulViewModel
+                    new OperationResultViewModel
                     {
                         Message = ex.Message
                     });

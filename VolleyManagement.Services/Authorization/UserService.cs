@@ -1,8 +1,10 @@
 ﻿namespace VolleyManagement.Services.Authorization
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Contracts;
+    using Contracts.Exceptions;
     using Data.Contracts;
     using Data.Queries.Common;
     using Domain.UsersAggregate;
@@ -18,6 +20,7 @@
     {
         private readonly IAuthorizationService _authService;
         private readonly IQuery<User, FindByIdCriteria> _getUserByIdQuery;
+        private readonly IUserRepository _userRepository;
         private readonly IQuery<List<User>, GetAllCriteria> _getAllUsersQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getUserPlayerQuery;
         private readonly ICacheProvider _cacheProvider;
@@ -31,14 +34,16 @@
         /// <param name="getAllUsersQuery">Query for getting all User.</param>
         /// <param name="getUserPlayerQuery">Query for getting player assigned to User</param>
         /// <param name="cacheProvider">Instance of <see cref="ICacheProvider"/> class.</param>
-        /// /// <param name="getAdminsListQuery">Query for getting list of admins.</param>
+        /// <param name="getAdminsListQuery">Query for getting list of admins.</param>
+        /// <param name="userRepository">The user repository.</param>
         public UserService(
             IAuthorizationService authService,
             IQuery<User, FindByIdCriteria> getUserByIdQuery,
             IQuery<List<User>, GetAllCriteria> getAllUsersQuery,
             IQuery<Player, FindByIdCriteria> getUserPlayerQuery,
             ICacheProvider cacheProvider,
-            IQuery<List<User>, UniqueUserCriteria> getAdminsListQuery)
+            IQuery<List<User>, UniqueUserCriteria> getAdminsListQuery,
+            IUserRepository userRepository)
         {
             _authService = authService;
             _getUserByIdQuery = getUserByIdQuery;
@@ -46,6 +51,7 @@
             _getUserPlayerQuery = getUserPlayerQuery;
             _cacheProvider = cacheProvider;
             _getAdminsListQuery = getAdminsListQuery;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -106,6 +112,24 @@
         {
             return _getAdminsListQuery.Execute(
                 new UniqueUserCriteria { RoleId = 1 });
+        }
+
+        /// <summary>
+        /// block or unblock user
+        /// </summary>
+        /// <param name="userId">user id</param>
+        /// <param name="toBlock">set user block or not</param>
+        public void ChangeUserBlocked(int userId, bool toBlock)
+        {
+            User user = GetUser(userId);
+            if (user == null)
+            {
+                throw new MissingEntityException(Services.ServiceResources.ExceptionMessages.UserNotFound);
+            }
+
+            user.IsBlocked = toBlock;
+            _userRepository.Update(user);
+            _userRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

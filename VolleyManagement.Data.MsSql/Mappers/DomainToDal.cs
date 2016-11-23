@@ -81,6 +81,7 @@
             to.UserName = from.UserName;
             to.Email = from.Email;
             to.CellPhone = from.PhoneNumber;
+            to.IsBlocked = from.IsBlocked;
             to.PlayerId = from.PlayerId;
             to.LoginProviders = from.LoginProviders
                 .Select(l =>

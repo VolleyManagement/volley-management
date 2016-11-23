@@ -30,7 +30,14 @@
                     <td>@user.Email</td>
                     <td>
                         @Html.ActionLink("Details", "UserDetails", new { id = user.Id }, new { @class = "btn btn-primary btn-xs" })
-                        @Html.ActionLink("Block/Unblock", "UserDetails", new { id = user.Id }, new { @class = "btn btn-success btn-xs" })
+                        @if (user.isBlocked)
+                        {
+                            @Html.ActionLink("Unblock", "ChangeUserBlocked", new { id = user.Id, toBlock = false, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Block", "ChangeUserBlocked", new { id = user.Id, toBlock = true, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+                        }
                     </td>
                 </tr>
             }

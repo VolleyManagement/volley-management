@@ -8,6 +8,7 @@
     using Moq;
     using MSTestExtensions;
     using Ninject;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;

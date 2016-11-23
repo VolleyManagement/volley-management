@@ -32,6 +32,7 @@
                 Email = "example@i.ua",
                 PersonName = "Eugene",
                 PhoneNumber = "068-11-22-333",
+                IsBlocked = false,
                 LoginProviders = new List<LoginProviderInfo>
                 {
                     new LoginProviderInfo

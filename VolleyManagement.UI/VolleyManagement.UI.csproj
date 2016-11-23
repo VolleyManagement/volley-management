@@ -488,7 +488,7 @@
     <Compile Include="Areas\Admin\Models\LoginProviderViewModel.cs" />
     <Compile Include="Areas\Admin\Controllers\RequestsController.cs" />
     <Compile Include="Areas\Admin\Models\RequestCollectionViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\OperationResulViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\OperationResultViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />

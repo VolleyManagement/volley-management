@@ -209,6 +209,7 @@
             _tournamentRepositoryMock.Setup(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()));
             var emailMessage = new EmailMessageBuilder().Build();
             MockGetUser();
+            MockRemoveTournamentRequest();
             MockMailService(emailMessage);
             var sut = _kernel.Get<TournamentRequestService>();
 
@@ -216,7 +217,7 @@
             sut.Confirm(EXISTING_ID);
 
             // Arrange
-            VerifyAddedTeam(expected.Id, expected.TournamentId, Times.Once());
+            VerifyAddedTeam(expected.Id, expected.TournamentId, Times.Once(), Times.Once());
         }
 
         [TestMethod]
@@ -267,6 +268,9 @@
             var sut = _kernel.Get<TournamentRequestService>();
             EmailMessage emailMessage = new EmailMessageBuilder().Build();
             MockMailService(emailMessage);
+            var expected = new TournamentRequestBuilder().Build();
+            MockGetRequestByIdQuery(expected);
+            MockGetUser();
 
             // Act
             try
@@ -317,10 +321,10 @@
             Assert.IsTrue(exception.Message.Equals(expectedMessage), "Expected and actual messages aren't equal");
         }
 
-        private void VerifyAddedTeam(int requestId, int tournamentId, Times times)
+        private void VerifyAddedTeam(int requestId, int tournamentId, Times times, Times unitOfWorkTimes)
         {
             _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(requestId, tournamentId), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
         }
 
         private void MockAuthServiceThrownException(AuthOperation operation)
@@ -366,6 +370,11 @@
         {
             _tournamentRequestRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == requestid)), repositoryTimes);
             _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
+        }
+
+        private void MockRemoveTournamentRequest()
+        {
+            _tournamentRequestRepositoryMock.Setup(tr => tr.Remove(It.IsAny<int>()));
         }
     }
 }

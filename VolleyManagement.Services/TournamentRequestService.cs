@@ -71,6 +71,8 @@
             _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.TournamentId);
             _tournamentRepository.UnitOfWork.Commit();
             NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
+            _tournamentRequestRepository.Remove(requestId);
+            _tournamentRequestRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
@@ -100,10 +102,11 @@
         public void Decline(int requestId, string message)
         {
             _authService.CheckAccess(AuthOperations.TournamentRequests.Decline);
+            var email = _userService.GetUser(Get(requestId).UserId).Email;
             try
             {
-                NotifyUser(_userService.GetUser(Get(requestId).UserId).Email, message);
                 DeleteTournamentRequest(requestId);
+                NotifyUser(email, message);
             }
             catch (InvalidKeyValueException ex)
             {

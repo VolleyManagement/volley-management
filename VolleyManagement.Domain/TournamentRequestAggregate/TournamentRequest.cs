@@ -8,6 +8,7 @@
     /// </summary>
     public class TournamentRequest
     {
+        private int _userId;
         private int _teamId;
         private int _tournamentId;
 
@@ -20,7 +21,23 @@
         /// <summary>
         /// Gets or sets user's id
         /// </summary>
-        public int UserId { get; set; }
+        public int UserId
+        {
+            get
+            {
+                return _userId;
+            }
+
+            set
+            {
+                if (TournamentRequestValidation.ValidateUserId(value))
+                {
+                    throw new ArgumentException(Resources.ValidationUserId);
+                }
+
+                this._userId = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets tournament's id
@@ -29,14 +46,14 @@
         {
             get
             {
-                return this._tournamentId;
+                return _tournamentId;
             }
 
             set
             {
-                if (value <= 0)
+                if (TournamentRequestValidation.ValidateTournamentId(value))
                 {
-                    throw new ArgumentException(Resources.InvalidArgumentException);
+                    throw new ArgumentException(Resources.ValidationTournamentId);
                 }
 
                 this._tournamentId = value;
@@ -55,9 +72,9 @@
 
             set
             {
-                if (value <= 0)
+                if (TournamentRequestValidation.ValidateTeamId(value))
                 {
-                    throw new ArgumentException(Resources.InvalidArgumentException);
+                    throw new ArgumentException(Resources.ValidationTeamId);
                 }
 
                 this._teamId = value;

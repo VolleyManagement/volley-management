@@ -294,4 +294,13 @@
   <data name="InvalidArgumentException" xml:space="preserve">
     <value>Invalid parametr. Your request didn't create.</value>
   </data>
+  <data name="ValidationTeamId" xml:space="preserve">
+    <value>Team's id is wrong</value>
+  </data>
+  <data name="ValidationTournamentId" xml:space="preserve">
+    <value>Tournament's id is wrong</value>
+  </data>
+  <data name="ValidationUserId" xml:space="preserve">
+    <value>User's id is wrong</value>
+  </data>
 </root>

@@ -151,4 +151,19 @@ Content: {4}</value>
   <data name="GmailPassword" xml:space="preserve">
     <value>GoogleEmailPassword</value>
   </data>
+  <data name="TournamentRequestConfirmitionLetterBody" xml:space="preserve">
+    <value>Your apply was confirmed!</value>
+  </data>
+  <data name="TournamentRequestEmailBodyToAdmins" xml:space="preserve">
+    <value>Tournament Request №{0}, 
+User: {1}.
+Tournament: {2},
+Team: {3}</value>
+  </data>
+  <data name="TournamentRequestEmailSubjectToAdmins" xml:space="preserve">
+    <value>Tournament Request №{0}</value>
+  </data>
+  <data name="TournamentRequestLetterSubject" xml:space="preserve">
+    <value>User notification</value>
+  </data>
 </root>

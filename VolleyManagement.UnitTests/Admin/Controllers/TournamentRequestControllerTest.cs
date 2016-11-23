@@ -376,7 +376,7 @@
 
         private List<TournamentRequest> MakeTestTournamentsRequests()
         {
-            return new TournamentRequestServiceTestFixture().TestTournamentsRequests().Build();
+            return new TournamentRequestServiceTestFixture().TestRequests().Build();
         }
 
         private void MockTournamentServiceGetTournament(int tournamentId, Tournament tournament)

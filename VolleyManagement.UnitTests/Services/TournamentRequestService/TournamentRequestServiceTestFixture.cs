@@ -1,55 +1,54 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentRequestService
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
+    using Domain.TournamentRequestAggregate;
 
     /// <summary>
-    /// Class for generating test data
+    /// Class for generation test data.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class TournamentRequestServiceTestFixture
+    public class TournamentRequestServiceTestFixture
     {
-        /// <summary>
-        /// Holds collection of tournaments requests
-        /// </summary>
-        private List<TournamentRequest> _tournamentsRequest = new List<TournamentRequest>();
+        private List<TournamentRequest> _request
+            = new List<TournamentRequest>();
 
         /// <summary>
-        /// Adds tournaments to collection
+        /// Return test collection of tournament requests
         /// </summary>
-        /// <returns>Builder object with collection of tournaments</returns>
-        public TournamentRequestServiceTestFixture TestTournamentsRequests()
+        /// <returns>Builder object with collection of tournament requests</returns>
+        public TournamentRequestServiceTestFixture TestRequests()
         {
-            _tournamentsRequest.Add(new TournamentRequest()
+            _request.Add(new TournamentRequest()
             {
                 Id = 1,
-                TeamId = 4,
                 UserId = 1,
-                TournamentId = 1
+                TournamentId = 1,
+                TeamId = 4
             });
+
             return this;
         }
 
         /// <summary>
         /// Add tournament request to collection.
         /// </summary>
-        /// <param name="newTournament">Tournament request to add.</param>
-        /// <returns>Builder object with collection of tournaments requests.</returns>
-        public TournamentRequestServiceTestFixture AddTournament(TournamentRequest newTournament)
+        /// <param name="newTournamentRequest">Request to add</param>
+        /// <returns>Builder object with collection of requests.</returns>
+        public TournamentRequestServiceTestFixture AddTeam(
+            TournamentRequest newTournamentRequest)
         {
-            _tournamentsRequest.Add(newTournament);
+            _request.Add(newTournamentRequest);
             return this;
         }
 
         /// <summary>
         /// Builds test data
         /// </summary>
-        /// <returns>Tournament request collection</returns>
+        /// <returns>Request collection</returns>
         public List<TournamentRequest> Build()
         {
-            return _tournamentsRequest;
+            return _request;
         }
     }
 }

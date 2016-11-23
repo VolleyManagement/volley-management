@@ -114,9 +114,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Admin\Comparers\MessageViewModelComparer.cs" />
     <Compile Include="Admin\Comparers\UserViewModelComparer.cs" />
+    <Compile Include="Admin\Controllers\TournamentRequestControllerTest.cs" />
     <Compile Include="Admin\Controllers\UsersControllerTest.cs" />
+    <Compile Include="Admin\ViewModels\TournamentRequestsViewModelsBuilder.cs" />
     <Compile Include="Admin\ViewModels\UserAdminViewModelBuilder.cs" />
+    <Compile Include="Admin\Comparers\TournamentRequestViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\RequestsViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
@@ -185,6 +189,8 @@
     <Compile Include="Services\GameService\GameComparer.cs" />
     <Compile Include="Services\GameService\GameTestFixture.cs" />
     <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestComparer.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
     <Compile Include="Services\UserManager\UserBuilder.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />

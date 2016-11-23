@@ -345,4 +345,7 @@
   <data name="InvalidEmail" xml:space="preserve">
     <value>Invalid email address</value>
   </data>
+  <data name="DeclineMessage" xml:space="preserve">
+    <value>Reason for decline</value>
+  </data>
 </root>

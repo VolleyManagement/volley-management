@@ -77,6 +77,8 @@
                         .Include("~/Scripts/VmScripts/TournamentOperations/AddTeams.js"));
             bundles.Add(new ScriptBundle("~/bundles/tournamentroundsscripts")
                         .Include("~/Scripts/VmScripts/TournamentOperations/SwapRounds.js"));
+            bundles.Add(new ScriptBundle("~/bundles/tournamentapplyscripts")
+                      .Include("~/Scripts/VmScripts/TournamentOperations/ApplyForTournament.js"));
         }
 
         private static void RegisterGameScripts(BundleCollection bundles)

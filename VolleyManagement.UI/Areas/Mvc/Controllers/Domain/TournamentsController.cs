@@ -10,6 +10,7 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
@@ -20,6 +21,7 @@
     /// </summary>
     public class TournamentsController : Controller
     {
+        private const int ANONYM = -1;
         private const int DAYS_TO_APPLYING_PERIOD_START = 14;
         private const int DAYS_FOR_APPLYING_PERIOD = 14;
         private const int DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START = 7;
@@ -43,19 +45,34 @@
         /// </summary>
         private readonly IGameService _gameService;
 
+        private readonly ITeamService _teamService;
+
+        private readonly ITournamentRequestService _requestService;
+
+        private readonly ICurrentUserService _currentUserService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class
         /// </summary>
         /// <param name="tournamentService">The tournament service</param>
         /// <param name="gameService">The game service</param>
         /// <param name="authService">The authorization service</param>
+        /// <param name="teamService">The team service</param>
+        /// <param name="requestService">The request service</param>
+        /// <param name="currentUserService">The current user service</param>
         public TournamentsController(
             ITournamentService tournamentService,
             IGameService gameService,
-            IAuthorizationService authService)
+            IAuthorizationService authService,
+            ITeamService teamService,
+            ITournamentRequestService requestService,
+            ICurrentUserService currentUserService)
         {
             this._tournamentService = tournamentService;
             this._gameService = gameService;
+            this._teamService = teamService;
+            this._requestService = requestService;
+            this._currentUserService = currentUserService;
             this._authService = authService;
         }
 
@@ -107,8 +124,8 @@
             }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
-            tournamentViewModel.Authorization = this._authService.GetAllowedOperations(new List<AuthOperation> 
-            { 
+            tournamentViewModel.Authorization = this._authService.GetAllowedOperations(new List<AuthOperation>
+            {
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.ManageTeams
             });
@@ -460,7 +477,7 @@
             {
                 this.ModelState.AddModelError("ValidationError", e.Message);
             }
-            catch (MissingEntityException e) 
+            catch (MissingEntityException e)
             {
                 this.ModelState.AddModelError("LoadError", e.Message);
                 return View();
@@ -496,6 +513,63 @@
                 this.ModelState.AddModelError("LoadError", ex.Message);
                 return View();
             }
+        }
+
+        /// <summary>
+        /// Apply for tournament
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>TournamentApply view</returns>
+        public ActionResult ApplyForTournament(int tournamentId)
+        {
+            var tournament = _tournamentService.Get(tournamentId);
+
+            if (tournament == null)
+            {
+                return HttpNotFound();
+            }
+
+            var teamList = _teamService.Get();
+            var avaliableList = teamList.Except<Team>(_tournamentService.GetAllTournamentTeams(tournamentId));
+
+            var tournamentApplyViewModel = new TournamentApplyViewModel
+            {
+                Id = tournamentId,
+                TournamentTitle = tournament.Name,
+                Teams = avaliableList.Select(t => TeamNameViewModel.Map(t)),
+            };
+            return View(tournamentApplyViewModel);
+        }
+
+        /// <summary>
+        /// Apply for tournament
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// /// <param name="teamId">Team id</param>
+        /// <returns>TournamentApply view</returns>
+        [HttpPost]
+        public JsonResult ApplyForTournament(int tournamentId, int teamId)
+        {
+            JsonResult result = null;
+            try
+            {
+                int userId = this._currentUserService.GetCurrentUserId();
+                if (userId == ANONYM)
+                {
+                    result = this.Json(ViewModelResources.NoRights);
+                }
+                else
+                {
+                    this._requestService.Create(userId, tournamentId, teamId);
+                    result = this.Json(ViewModelResources.SuccessRequest);
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                result = this.Json(ex.Message);
+            }
+
+            return result;
         }
 
         #region Private
@@ -548,7 +622,7 @@
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
-        } 
+        }
 
         /// <summary>
         /// Fills round names for playoff scheme

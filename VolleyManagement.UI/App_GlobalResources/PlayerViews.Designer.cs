@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Resources {
+namespace VolleyManagement.UI.App_GlobalResources {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class PlayerViews {
+    public class PlayerViews {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VolleyManagement.UI.App_GlobalResources.PlayerViews", typeof(PlayerViews).Assembly);
@@ -51,7 +51,7 @@ namespace Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,18 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        public static string Accept {
+            get {
+                return ResourceManager.GetString("Accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
-        internal static string Action {
+        public static string Action {
             get {
                 return ResourceManager.GetString("Action", resourceCulture);
             }
@@ -72,25 +81,52 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Add player to team.
         /// </summary>
-        internal static string AddPlayerToTeam {
+        public static string AddPlayerToTeam {
             get {
                 return ResourceManager.GetString("AddPlayerToTeam", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply for tournament.
+        /// </summary>
+        public static string ApplyForTournament {
+            get {
+                return ResourceManager.GetString("ApplyForTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Apply team for .
+        /// </summary>
+        public static string ApplyTeamFor {
+            get {
+                return ResourceManager.GetString("ApplyTeamFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
-        internal static string Back {
+        public static string Back {
             get {
                 return ResourceManager.GetString("Back", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back to previous page.
+        /// </summary>
+        public static string BackPrevPage {
+            get {
+                return ResourceManager.GetString("BackPrevPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back to list.
         /// </summary>
-        internal static string BackToList {
+        public static string BackToList {
             get {
                 return ResourceManager.GetString("BackToList", resourceCulture);
             }
@@ -99,7 +135,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Choose a player.
         /// </summary>
-        internal static string ChoosingPlayer {
+        public static string ChoosingPlayer {
             get {
                 return ResourceManager.GetString("ChoosingPlayer", resourceCulture);
             }
@@ -108,7 +144,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Choose players.
         /// </summary>
-        internal static string ChoosingPlayers {
+        public static string ChoosingPlayers {
             get {
                 return ResourceManager.GetString("ChoosingPlayers", resourceCulture);
             }
@@ -117,7 +153,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Create.
         /// </summary>
-        internal static string Create {
+        public static string Create {
             get {
                 return ResourceManager.GetString("Create", resourceCulture);
             }
@@ -126,7 +162,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Create new player.
         /// </summary>
-        internal static string CreateNewPlayer {
+        public static string CreateNewPlayer {
             get {
                 return ResourceManager.GetString("CreateNewPlayer", resourceCulture);
             }
@@ -135,7 +171,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Creating new player.
         /// </summary>
-        internal static string CreatePlayerTitle {
+        public static string CreatePlayerTitle {
             get {
                 return ResourceManager.GetString("CreatePlayerTitle", resourceCulture);
             }
@@ -144,7 +180,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
-        internal static string Delete {
+        public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
             }
@@ -153,7 +189,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete him?.
         /// </summary>
-        internal static string DeleteConfirm {
+        public static string DeleteConfirm {
             get {
                 return ResourceManager.GetString("DeleteConfirm", resourceCulture);
             }
@@ -162,7 +198,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to delete player.
         /// </summary>
-        internal static string DeleteConfirmationMessage {
+        public static string DeleteConfirmationMessage {
             get {
                 return ResourceManager.GetString("DeleteConfirmationMessage", resourceCulture);
             }
@@ -171,7 +207,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Deleting player.
         /// </summary>
-        internal static string DeletePlayerTitle {
+        public static string DeletePlayerTitle {
             get {
                 return ResourceManager.GetString("DeletePlayerTitle", resourceCulture);
             }
@@ -180,7 +216,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
-        internal static string Edit {
+        public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
             }
@@ -189,16 +225,34 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Editing player.
         /// </summary>
-        internal static string EditPlayerTitle {
+        public static string EditPlayerTitle {
             get {
                 return ResourceManager.GetString("EditPlayerTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  I accept .
+        /// </summary>
+        public static string IAccept {
+            get {
+                return ResourceManager.GetString("IAccept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No avaliable teams found. Please, contact admin..
+        /// </summary>
+        public static string NoAvaliableTeams {
+            get {
+                return ResourceManager.GetString("NoAvaliableTeams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Players with this name was not found.
         /// </summary>
-        internal static string NotFoundPlayerMessage {
+        public static string NotFoundPlayerMessage {
             get {
                 return ResourceManager.GetString("NotFoundPlayerMessage", resourceCulture);
             }
@@ -207,7 +261,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Details of the player.
         /// </summary>
-        internal static string PlayerDetailsTitle {
+        public static string PlayerDetailsTitle {
             get {
                 return ResourceManager.GetString("PlayerDetailsTitle", resourceCulture);
             }
@@ -216,7 +270,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Player.
         /// </summary>
-        internal static string PlayerLegend {
+        public static string PlayerLegend {
             get {
                 return ResourceManager.GetString("PlayerLegend", resourceCulture);
             }
@@ -225,7 +279,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Players.
         /// </summary>
-        internal static string PlayersIndexTitle {
+        public static string PlayersIndexTitle {
             get {
                 return ResourceManager.GetString("PlayersIndexTitle", resourceCulture);
             }
@@ -234,7 +288,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to The player was not found because he was removed. Editing operation is impossible. To create a player use the link..
         /// </summary>
-        internal static string PlayerWasDeleted {
+        public static string PlayerWasDeleted {
             get {
                 return ResourceManager.GetString("PlayerWasDeleted", resourceCulture);
             }
@@ -243,7 +297,7 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
-        internal static string Save {
+        public static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
             }
@@ -252,9 +306,27 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Enter text to search.
         /// </summary>
-        internal static string SearchTitle {
+        public static string SearchTitle {
             get {
                 return ResourceManager.GetString("SearchTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  tournament.
+        /// </summary>
+        public static string Tournament {
+            get {
+                return ResourceManager.GetString("Tournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  tournament regulations..
+        /// </summary>
+        public static string TournamentRegulations {
+            get {
+                return ResourceManager.GetString("TournamentRegulations", resourceCulture);
             }
         }
     }

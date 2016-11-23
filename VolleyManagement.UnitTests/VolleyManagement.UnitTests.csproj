@@ -65,6 +65,10 @@
       <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MSTestExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTestExtensions.4.0.0\lib\MSTestExtensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -158,8 +162,11 @@
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TeamNameViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TeamNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentApplyViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentApplyViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentTeamsListViewModelComparer.cs" />

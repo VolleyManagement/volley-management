@@ -11,39 +11,39 @@
 @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Create))
 {
     <p>
-    @Html.ActionLink(Resources.TeamViews.Create, "Create")
+        @Html.ActionLink(Resources.TeamViews.Create, "Create")
     </p>
 }
 
 <div vm_scope='team_list'>
-<table class="table">
-    <tr>
-        <th>
-            @Resources.TeamViews.TeamName
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model.Model.Teams)
-    {
-        <tr vm_teamId='@item.Id' vm_teamName='@item.Name'>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Delete))
-                {
-                    <button class='deleteTeamButton'>@Resources.TeamViews.Delete</button>
-                }
-                @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Edit))
-                {
-                    @Html.ActionLink(@Resources.TeamViews.Details, "Details", new { id = item.Id, returnUrl = Model.Referer }, null)
-                }
-            </td>
+    <table class="table">
+        <tr>
+            <th>
+                @Resources.TeamViews.TeamName
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model.Model.Teams)
+        {
+            <tr vm_teamid='@item.Id' vm_teamname='@item.Name'>
+                <td class="teamList">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Delete))
+                    {
+                        <button class='deleteTeamButton'>@Resources.TeamViews.Delete</button>
+                    }
+                    @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Edit))
+                    {
+                        @Html.ActionLink(@Resources.TeamViews.Details, "Details", new { id = item.Id, returnUrl = Model.Referer }, null)
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
 </div>
 
 @Scripts.Render("~/bundles/teamlistscripts")

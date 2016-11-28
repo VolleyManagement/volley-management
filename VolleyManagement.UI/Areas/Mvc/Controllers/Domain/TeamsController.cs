@@ -3,7 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.IO;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
@@ -18,22 +20,30 @@
     public class TeamsController : Controller
     {
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
+        private const string PHOTO_DIR = "Teams/";
+        private const string FULL_DIR = "~/App_Data/";
 
         /// <summary>
         /// Holds TeamService instance
         /// </summary>
         private readonly ITeamService _teamService;
         private readonly IAuthorizationService _authService;
+        private readonly IFileService _fileService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
         /// <param name="teamService">Instance of the class that implements ITeamService.</param>
         /// <param name="authService">The authorization service</param>
-        public TeamsController(ITeamService teamService, IAuthorizationService authService)
+        /// <param name="fileService">The interface reference of file service.</param>
+        public TeamsController(
+            ITeamService teamService,
+            IAuthorizationService authService,
+            IFileService fileService)
         {
             this._teamService = teamService;
             this._authService = authService;
+            this._fileService = fileService;
         }
 
         /// <summary>
@@ -236,6 +246,40 @@
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
             return View(refererViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult AddPhoto(HttpPostedFileBase file, TeamViewModel teamViewModel)
+        {
+            try
+            {
+                var photoId = teamViewModel.Id;
+                _fileService.Upload(photoId, file, PHOTO_DIR);
+                teamViewModel.PhotoPath = FULL_DIR + PHOTO_DIR;
+                return View(teamViewModel);
+            }
+            catch (FileNotFoundException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return View(teamViewModel);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeletePhoto(TeamViewModel teamViewModel)
+        {
+            try
+            {
+                var photoId = teamViewModel.Id;
+                _fileService.Delete(photoId, PHOTO_DIR);
+                teamViewModel.PhotoPath = string.Empty;
+                return View(teamViewModel);
+            }
+            catch (FileNotFoundException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+                return View(teamViewModel);
+            }  
         }
 
         /// <summary>

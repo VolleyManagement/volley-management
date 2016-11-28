@@ -18,6 +18,32 @@
         @Html.HiddenFor(model => model.Id)
         @Html.Partial("_CreateEdit", Model)
 
+        <div class="width">
+            <div class="form radius front cab-form">
+                <div class="info float-left">
+                    <form action="@Url.Action("AddPhoto", "Teams")" enctype="multipart/form-data" method="post">
+                        <input name="form_name" type="hidden" value="photo_upload">
+                        <input name="fileToUpload" id="fileToUpload" style="display: none;" type="file">
+                        <input name="button" id="uploadButton" style='background-image: url("~/App_Data/Photo/Teams/0.jpg"); background-size: cover; padding-top: 70px;' type="button" value="Upload photo">
+                        <input name="submit" id="uploadSubmit" style="display: none;" type="submit" value="Submit Query">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $('#fileToUpload').hide();
+            $('#uploadSubmit').hide();
+            $('#uploadButton').on('click', function () {
+                $('#fileToUpload').click();
+            });
+            $('#fileToUpload').change(function () {
+                $('#uploadSubmit').click();
+            });
+        </script>
+
+        <br />
+
         <p>
             <button id="saveTeamButton">@Resources.TeamViews.Save</button>
         </p>

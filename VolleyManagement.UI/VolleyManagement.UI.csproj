@@ -240,6 +240,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Photo\Teams\0.jpg" />
     <Content Include="Content\Admin\admin.css" />
     <Content Include="Content\Admin\vm.css" />
     <Content Include="Content\bootstrap.css" />

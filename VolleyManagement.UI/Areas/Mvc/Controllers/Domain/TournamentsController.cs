@@ -530,13 +530,14 @@
             }
 
             var teamList = _teamService.Get();
-            var avaliableList = teamList.Except<Team>(_tournamentService.GetAllTournamentTeams(tournamentId));
+            var availableList = _tournamentService.GetAllTournamentTeams(tournamentId);
+            var differences = teamList.Where(l2 => availableList.All(l1 => l1.Id != l2.Id));
 
             var tournamentApplyViewModel = new TournamentApplyViewModel
             {
                 Id = tournamentId,
                 TournamentTitle = tournament.Name,
-                Teams = avaliableList.Select(t => TeamNameViewModel.Map(t)),
+                Teams = differences.Select(t => TeamNameViewModel.Map(t)),
             };
             return View(tournamentApplyViewModel);
         }

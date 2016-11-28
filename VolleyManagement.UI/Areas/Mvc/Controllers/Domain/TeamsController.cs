@@ -20,7 +20,7 @@
     public class TeamsController : Controller
     {
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
-        private const string PHOTO_DIR = "Teams/";
+        private const string PHOTO_DIR = "Photo/Teams/";
         private const string FULL_DIR = "~/App_Data/";
 
         /// <summary>
@@ -249,19 +249,20 @@
         }
 
         [HttpPost]
-        public ActionResult AddPhoto(HttpPostedFileBase file, TeamViewModel teamViewModel)
+        public ActionResult AddPhoto(HttpPostedFileBase fileToUpload)
         {
             try
             {
-                var photoId = teamViewModel.Id;
-                _fileService.Upload(photoId, file, PHOTO_DIR);
-                teamViewModel.PhotoPath = FULL_DIR + PHOTO_DIR;
-                return View(teamViewModel);
+                var photoId = 1;
+                _fileService.Upload(photoId, fileToUpload, "~/Content/Photo/Teams/");
+                //teamViewModel.PhotoPath = FULL_DIR + PHOTO_DIR;
+                //RedirectToAction("Edit");
+                return RedirectToAction("Edit");
             }
             catch (FileNotFoundException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
-                return View(teamViewModel);
+                return RedirectToAction("Edit");
             }
         }
 

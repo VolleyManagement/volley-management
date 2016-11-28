@@ -37,7 +37,7 @@
         {
             if (file != null && file.ContentLength > 0 && file.ContentLength < 1000000)
             {
-                var path = Path.Combine(HttpContext.Current.Server.MapPath("~/App_Data/"), fileDir, fileId.ToString(), ".jpg");
+                var path = Path.Combine(HttpContext.Current.Server.MapPath(fileDir), fileId.ToString() + ".jpg");
                 file.SaveAs(path);
             }
             else

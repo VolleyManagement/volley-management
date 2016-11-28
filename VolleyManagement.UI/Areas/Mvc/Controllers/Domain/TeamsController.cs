@@ -1,6 +1,4 @@
-﻿using VolleyManagement.Domain.TeamsAggregate;
-
-namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -11,7 +9,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
 
     /// <summary>
@@ -250,7 +247,6 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                                          .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
-        }
-        
+        }        
     }
 }

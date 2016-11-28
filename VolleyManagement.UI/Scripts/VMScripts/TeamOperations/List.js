@@ -47,7 +47,7 @@
                     else {
                         $('[vm_teamId=' + teamId + ']')
                             .append(resultJson.Message + '<br/> ' +
-                                'The possible reason - cascade delete is prohibited.');
+                                'A team can\'t be deleted. The possible reason - cascade delete is prohibited.<br/>');
                     }
                 }
             });

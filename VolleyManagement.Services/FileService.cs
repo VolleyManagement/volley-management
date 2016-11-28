@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Services
 {
+    using System;
     using System.IO;
     using System.Web;
     using VolleyManagement.Contracts;
@@ -25,7 +26,7 @@
             }
             else
             {
-                throw new FileNotFoundException("File not found");
+                throw new DirectoryNotFoundException("File not found");
             }
         }
 
@@ -44,7 +45,7 @@
             }
             else
             {
-                throw new FileLoadException("File size must be less then 1 MB and greater then 0 MB");
+                throw new NullReferenceException("File size must be less then 1 MB and greater then 0 MB");
             }
         }
     }

@@ -1,17 +1,6 @@
 ﻿$(document).ready(function () {
     'use strict';
 
-    window.onload = function () {
-        privates.getAllTeamsOptions(function (options) {
-            var responseOptions = "<option value = '0'>" + currNs.teamIsNotSelectedMessage + "</option>";
-            $.each(options, function (key, value) {
-                responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
-            })
-            privates.renderNewTournamentTeamsRow(responseOptions);
-            $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
-        });
-    }
-
     var currNs = VM.addNamespace("tournament.addTeams"),
     privates = {};
     privates.tornamentTeamsTable = $("#tornamentRoster");
@@ -48,7 +37,7 @@
     }
 
     privates.getTornamentTeamsRowMarkup = function (responseOptions) {
-        var result = "<tr><td><select id='selected'>" + responseOptions + "</select></td>" +
+        var result = "<tr><td><select>" + responseOptions + "</select></td>" +
                     "<td><button class='deleteTeamButton'>Delete</button></td></tr>";
         return result;
     }
@@ -70,28 +59,13 @@
         }
 
         privates.getAllTeamsOptions(function (options) {
-
             var responseOptions = "<option value = '0'>" + currNs.teamIsNotSelectedMessage + "</option>";
             $.each(options, function (key, value) {
-                if (find(result, value.Id) === (-1)) {
-                    responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
-                }
+                responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
             });
             privates.renderNewTournamentTeamsRow(responseOptions);
             $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
         });
-    }
-
-    function find(array, value) {
-        if (array.indexOf) { 
-            return array.indexOf(value);
-        }
-
-        for (var i = 0; i < array.length; i++) {
-            if (array[i] === value) return i;
-        }
-
-        return -1;
     }
 
     currNs.onAddTeamToTournamentButtonClick = function () {
@@ -105,10 +79,6 @@
                 .done(privates.handleTeamsAddSuccess);
         }
     }
-
-    currNs.onSelectClick = function() {
-
-    };
 
     currNs.onDeleteTeamButtonClick = function (eventData) {
         var currentRow = eventData.target.parentElement.parentElement;
@@ -137,5 +107,4 @@
     $("#addTeamToTournamentButton").bind("click", currNs.onAddTeamToTournamentButtonClick);
     $("#addTeamsButton").bind("click", currNs.onAddTeamsButtonButtonClick);
     $(".deleteTeamFromTournamentButton").bind("click", currNs.onDeleteTeamFromTournamentButtonClick);
-    $('#selected').bind("click", currNs.onSelectClick);
 });

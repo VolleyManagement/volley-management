@@ -42,12 +42,11 @@
                 success: function (resultJson) {
                     if (resultJson.OperationSuccessful) {
                         teamRow.remove();
-                        $('#teamMessagePlace').html(resultJson.Message);
+                        $('[vm_teamId=' + teamId + ']>td:last-child').html(resultJson.Message);
                     }
                     else {
-                        $('[vm_teamId=' + teamId + ']')
-                            .append(resultJson.Message + '<br/> ' +
-                                'A team can\'t be deleted. The possible reason - cascade delete is prohibited.<br/>');
+                        $('[vm_teamId=' + teamId + ']>td:last-child').html(resultJson.Message);
+                      
                     }
                 }
             });

@@ -132,6 +132,9 @@
   <data name="SemifinalRoundName" xml:space="preserve">
     <value>Semifinal</value>
   </data>
+  <data name="TeamDelete" xml:space="preserve">
+    <value>A team can not be deleted. The possible reason - cascade delete is prohibited.</value>
+  </data>
   <data name="TournamentNotFound" xml:space="preserve">
     <value>Tournament was not found</value>
   </data>

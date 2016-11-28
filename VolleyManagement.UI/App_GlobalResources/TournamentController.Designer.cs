@@ -106,6 +106,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A team can not be deleted. The possible reason - cascade delete is prohibited..
+        /// </summary>
+        public static string TeamDelete {
+            get {
+                return ResourceManager.GetString("TeamDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tournament was not found.
         /// </summary>
         public static string TournamentNotFound {

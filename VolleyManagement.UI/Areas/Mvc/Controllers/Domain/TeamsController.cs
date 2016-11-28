@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿using VolleyManagement.Domain.TeamsAggregate;
+
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -249,5 +251,6 @@
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
         }
+        
     }
 }

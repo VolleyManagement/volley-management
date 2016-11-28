@@ -1,4 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+﻿using VolleyManagement.Domain.TeamsAggregate;
+
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -14,10 +16,8 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
-
-    /// <summary>
-    /// Defines TournamentsController
-    /// </summary>
+                        /// Defines TournamentsController
+                        /// </summary>
     public class TournamentsController : Controller
     {
         private const int DAYS_TO_APPLYING_PERIOD_START = 14;
@@ -44,6 +44,11 @@
         private readonly IGameService _gameService;
 
         /// <summary>
+        /// Holds TeamService instance
+        /// </summary>
+        private readonly ITeamService _teamService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class
         /// </summary>
         /// <param name="tournamentService">The tournament service</param>
@@ -52,11 +57,13 @@
         public TournamentsController(
             ITournamentService tournamentService,
             IGameService gameService,
-            IAuthorizationService authService)
+            IAuthorizationService authService,
+            ITeamService teamService)
         {
             this._tournamentService = tournamentService;
             this._gameService = gameService;
             this._authService = authService;
+            this._teamService = teamService;
         }
 
         /// <summary>
@@ -496,6 +503,19 @@
                 this.ModelState.AddModelError("LoadError", ex.Message);
                 return View();
             }
+        }
+
+        /// <summary>
+        /// Returns avaliable list of all teams
+        /// </summary>
+        /// <returns>Json list of teams</returns>
+        public JsonResult GetAllAvaliableTeams(int tournamentId)
+        {
+            var teamList = _teamService.Get();
+            var avaliableList = _tournamentService.GetAllTournamentTeams(tournamentId);
+            var differences = teamList.Where(l2 => !avaliableList.Any(l1 => l1.Id == l2.Id));
+            var teams = differences.Select(t => TeamNameViewModel.Map(t));
+            return Json(teams, JsonRequestBehavior.AllowGet);
         }
 
         #region Private

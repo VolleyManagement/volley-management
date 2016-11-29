@@ -662,20 +662,15 @@
         }
 
         [TestMethod]
-        public void AddPhoto_FileLoadExceptionThrown_RequestRedirectToEdit()
+        [ExpectedException(typeof(FileLoadException))]
+        public void AddPhoto_InvalidFile_FileLoadExceptionThrown()
         {
             // Arrange
             SetupHttpPostedFileBaseMock();
             SetupFileServiceMockThrowsFileLoadException(_httpPostedFileBaseMock.Object);
 
             // Act
-            var actionResult = _sut.AddPhoto(_httpPostedFileBaseMock.Object, PHOTO_ID) as RedirectToRouteResult;
-            var modelState = _sut.ModelState[string.Empty];
-
-            // Assert
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, FILE_LOAD_EX_MESSAGE);
-            VerifyRedirect("Edit", actionResult);
+            _sut.AddPhoto(_httpPostedFileBaseMock.Object, PHOTO_ID);
         }
 
         [TestMethod]
@@ -693,19 +688,14 @@
         }
 
         [TestMethod]
-        public void DeletePhoto_FileNotFoundExceptionThrown_RequestRedirectToEdit()
+        [ExpectedException(typeof(FileNotFoundException))]
+        public void DeletePhoto_InvalidPathToFile_FileNotFoundExceptionThrown()
         {
             // Arrange
             SetupFileServiceMockThrowsFileNotFoundException();
 
             // Act
-            var actionResult = _sut.DeletePhoto(PHOTO_ID) as RedirectToRouteResult;
-            var modelState = _sut.ModelState[string.Empty];
-
-            // Assert
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, FILE_NOT_FOUND_EX_MESSAGE);
-            VerifyRedirect("Edit", actionResult);
+            _sut.DeletePhoto(PHOTO_ID);
         }
 
         private Team CreateTeam()

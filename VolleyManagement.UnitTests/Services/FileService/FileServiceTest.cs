@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -30,6 +31,21 @@
             _kernel.Bind<IFileService>().ToConstant(_fileServiceMock.Object);
         }
 
+        [TestMethod]
+        public void FileExists_FileDoesNotExists_ReturnFalse()
+        {
+            bool expected = false;
+
+            // Arrange
+            var sut = _kernel.Get<FileService>();
+
+            // Act
+            bool actual = sut.FileExists(null);
+
+            // Assert
+            Assert.AreEqual(expected, actual, "File exists");
+        }
+
         #region Upload
 
         [TestMethod]
@@ -40,7 +56,7 @@
             var sut = _kernel.Get<FileService>();
 
             // Act
-            sut.Upload(1, null, null);
+            sut.Upload(null, null);
         }
 
         #endregion
@@ -48,14 +64,14 @@
         #region Delete
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(FileNotFoundException))]
         public void Delete_FileDoesNotExist_ExceptionThrown()
         {
             // Arrange
             var sut = _kernel.Get<FileService>();
 
             // Act
-            sut.Delete(1, null);
+            sut.Delete(null);
         }
 
         #endregion

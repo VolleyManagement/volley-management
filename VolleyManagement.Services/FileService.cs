@@ -19,7 +19,7 @@
         /// <param name="fileDir">Directory of file on server to delete</param>
         public void Delete(int fileId, string fileDir)
         {
-            string fullPath = Path.Combine(HttpContext.Current.Request.MapPath(fileDir), fileId + ".jpg");
+            string fullPath = Path.Combine(HttpContext.Current.Request.MapPath(fileDir), fileId + " .jpg");
             if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);
@@ -40,7 +40,7 @@
         {
             if (file != null && file.ContentLength > 0 && file.ContentLength < MAX_FILE_SIZE)
             {
-                var path = Path.Combine(HttpContext.Current.Server.MapPath(fileDir), fileId + ".jpg");
+                var path = Path.Combine(HttpContext.Current.Server.MapPath(fileDir), fileId + " .jpg");
                 file.SaveAs(path);
             }
             else

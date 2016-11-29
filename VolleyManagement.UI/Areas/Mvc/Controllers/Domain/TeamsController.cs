@@ -21,6 +21,8 @@
     {
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
         private const string PHOTO_DIR = "/Content/Photo/Teams/";
+        private const string JPG = ".jpg";
+        private const string DEFAULT_PHOTO_PATH = "/Content/Photo/Teams/0.jpg";
 
         /// <summary>
         /// Holds TeamService instance
@@ -148,6 +150,16 @@
             }
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
+
+            var photoPath = string.Concat(PHOTO_DIR, id, JPG);
+            // if (_fileService.FileExists(photoPath))
+            // {
+            viewModel.PhotoPath = photoPath;
+            // }
+            // else
+            // {
+            // viewModel.PhotoPath = DEFAULT_PHOTO_PATH;
+            // }
             return View(viewModel);
         }
 
@@ -244,6 +256,17 @@
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
+
+            var photoPath = string.Concat(PHOTO_DIR, id, JPG);
+            // if (_fileService.FileExists(photoPath))
+            // {
+            refererViewModel.Model.PhotoPath = photoPath;
+            // }
+            // else
+            // {
+           // refererViewModel.Model.PhotoPath = DEFAULT_PHOTO_PATH;
+            // }
+
             return View(refererViewModel);
         }
 
@@ -259,6 +282,8 @@
             try
             {
                 _fileService.Upload(photoId, fileToUpload, PHOTO_DIR);
+                // var photoPath = string.Concat(PHOTO_DIR, photoId, JPG);
+                // _fileService.Upload(fileToUpload, photoPath);
             }
             catch (FileLoadException ex)
             {
@@ -278,6 +303,8 @@
         {
             try
             {
+                // var photoPath = string.Concat(PHOTO_DIR, photoId, JPG);
+                // _fileService.Delete(photoPath);
                 _fileService.Delete(photoId, PHOTO_DIR);
             }
             catch (FileNotFoundException ex)

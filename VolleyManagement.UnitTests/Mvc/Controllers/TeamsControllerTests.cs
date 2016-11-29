@@ -46,8 +46,11 @@
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
+        private readonly Mock<HttpServerUtilityBase> _httpServerMock = new Mock<HttpServerUtilityBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
+        private readonly Mock<HttpPostedFileBase> _httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
 
         private IKernel _kernel;
         private TeamsController _sut;
@@ -62,6 +65,10 @@
             this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
+            this._kernel.Bind<HttpContextBase>().ToConstant(this._httpContextMock.Object);
+            this._kernel.Bind<HttpServerUtilityBase>().ToConstant(this._httpServerMock.Object);
+            this._kernel.Bind<HttpPostedFileBase>().ToConstant(this._httpPostedFileBaseMock.Object);
+            this._kernel.Bind<IFileService>().ToConstant(this._fileServiceMock.Object);
             this._sut = this._kernel.Get<TeamsController>();
         }
 
@@ -637,6 +644,46 @@
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
+        [TestMethod]
+        public void AddPhoto_PhotoAdded_RequestRedirectToEdit()
+        {
+            // Arrange
+            SetupHttpServerMock();
+            SetupHttpContextMock();
+            //var httpContextMock = new Mock<HttpContextBase>();
+            //var serverMock = new Mock<HttpServerUtilityBase>();
+            //serverMock.Setup(x => x.MapPath("~/app_data")).Returns(@"c:\work\app_data");
+            //httpContextMock.Setup(x => x.Server).Returns(serverMock.Object);
+            //var sut = new HomeController();
+            //sut.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), sut);
+
+            SetupHttpPosteFileBaseMock();
+            //  var file1Mock = new Mock<HttpPostedFileBase>();
+            //  file1Mock.Setup(x => x.FileName).Returns("1.jpg");
+
+            // Act
+            var actionResult = _sut.AddPhoto(_httpPostedFileBaseMock.Object) as RedirectToRouteResult;
+
+            // Assert
+            VerifyRedirect("Edit/1", actionResult);
+            //AssertValidRedirectResult(actionResult, "Edit/1");
+            //file1Mock.Verify(x => x.SaveAs(@"c:\work\app_data\1.jpg"));
+        }
+
+        private void VerifyRedirect(string actionName, RedirectToRouteResult result)
+        {
+            Assert.AreEqual(actionName, result.RouteValues["action"]);
+        }
+
+        private static void AssertValidRedirectResult(ActionResult actionResult, string view)
+        {
+            var result = (RedirectToRouteResult)actionResult;
+            Assert.IsNotNull(result, "Method result should be instance of RedirectToRouteResult");
+            Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
+            Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
+            Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));
+        }
+
         private Team CreateTeam()
         {
             return new TeamBuilder()
@@ -739,6 +786,21 @@
         private void SetupRequestRawUrl(string rawUrl)
         {
             this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
+        }
+
+        private void SetupHttpContextMock()
+        {
+            this._httpContextMock.Setup(x => x.Server).Returns(_httpServerMock.Object);
+        }
+
+        private void SetupHttpServerMock()
+        {
+            this._httpServerMock.Setup(x => x.MapPath("~/app_data")).Returns(@"c:\work\app_data");
+        }
+
+        private void SetupHttpPosteFileBaseMock()
+        {
+            this._httpPostedFileBaseMock.Setup(x => x.FileName).Returns("1.jpg");
         }
 
         private List<Team> MakeTestTeams()

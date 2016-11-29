@@ -20,8 +20,7 @@
     public class TeamsController : Controller
     {
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
-        private const string PHOTO_DIR = "Photo/Teams/";
-        private const string FULL_DIR = "~/App_Data/";
+        private const string PHOTO_DIR = "~/Content/Photo/Teams/";
 
         /// <summary>
         /// Holds TeamService instance
@@ -256,13 +255,12 @@
                 var photoId = 1;
                 _fileService.Upload(photoId, fileToUpload, "~/Content/Photo/Teams/");
                 //teamViewModel.PhotoPath = FULL_DIR + PHOTO_DIR;
-                //RedirectToAction("Edit");
-                return RedirectToAction("Edit");
+                return RedirectToAction("Edit", "Teams", new { id = photoId });
             }
             catch (FileNotFoundException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
-                return RedirectToAction("Edit");
+                return RedirectToAction("Edit", "Teams", new { id = 1 });
             }
         }
 

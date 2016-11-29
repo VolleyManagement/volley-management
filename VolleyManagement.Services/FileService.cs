@@ -9,6 +9,8 @@
     /// </summary>
     public class FileService : IFileService
     {
+        private const int MAX_FILE_SIZE = 1000000;
+
         /// <summary>
         /// Delete file from the server
         /// </summary>
@@ -16,7 +18,7 @@
         /// <param name="fileDir">Directory of file on server to delete</param>
         public void Delete(int fileId, string fileDir)
         {
-            string fullPath = Path.Combine(HttpContext.Current.Request.MapPath("~/App_Data/"), fileDir, fileId.ToString(), ".jpg");
+            string fullPath = Path.Combine(HttpContext.Current.Request.MapPath(fileDir), fileId + ".jpg");
             if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);
@@ -35,9 +37,9 @@
         /// <param name="fileDir">Directory of file on server to upload</param>
         public void Upload(int fileId, HttpPostedFileBase file, string fileDir)
         {
-            if (file != null && file.ContentLength > 0 && file.ContentLength < 1000000)
+            if (file != null && file.ContentLength > 0 && file.ContentLength < MAX_FILE_SIZE)
             {
-                var path = Path.Combine(HttpContext.Current.Server.MapPath(fileDir), fileId.ToString() + ".jpg");
+                var path = Path.Combine(HttpContext.Current.Server.MapPath(fileDir), fileId + ".jpg");
                 file.SaveAs(path);
             }
             else

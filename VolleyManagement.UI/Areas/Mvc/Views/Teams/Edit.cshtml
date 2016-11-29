@@ -14,8 +14,6 @@
         margin: 0;
     }
 
-
-
     .form {
         width: 540px;
         background: #FFF;
@@ -26,10 +24,6 @@
         -moz-box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.15);
         box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.15);
     }
-
-
-
-
 
     .info input {
         display: inline-block;
@@ -42,7 +36,10 @@
         color: #aeaeae;
     }
 
- 
+    #uploadButton {
+     height: 200px;
+     width: 200px;
+}
 
 </style>
 <div class="width">
@@ -51,7 +48,6 @@
             @using (Html.BeginForm("AddPhoto", "Teams", FormMethod.Post,
                             new { enctype = "multipart/form-data" }))
             {
-                  <!-- <form enctype="multipart/form-data" method="post"> -->
                 <input name="form_name" type="hidden" value="photo_upload">
                 <input name="fileToUpload" id="fileToUpload" type="file">
                 <input name="button" id="uploadButton" style='background-image: url("/Content/Photo/Teams/0.jpg"); background-size: cover; padding-top: 70px;' type="button" value="Upload photo">
@@ -62,14 +58,14 @@
 </div>
 
 <script type="text/javascript">
-            //$('#fileToUpload').hide();
-        //    $('#uploadSubmit').hide();
-            //$('#uploadButton').on('click', function () {
-            //    $('#fileToUpload').click();
-            //});
-            //$('#fileToUpload').change(function () {
-            //    $('#uploadSubmit').click();
-            //});
+            $('#fileToUpload').hide();
+            $('#uploadSubmit').hide();
+            $('#uploadButton').on('click', function () {
+                $('#fileToUpload').click();
+            });
+            $('#fileToUpload').change(function () {
+                $('#uploadSubmit').click();
+            });
 </script>
 
 @using (Html.BeginForm())
@@ -81,9 +77,6 @@
 
         @Html.HiddenFor(model => model.Id)
         @Html.Partial("_CreateEdit", Model)
-
-        
-        <br />
 
         <p>
             <button id="saveTeamButton">@Resources.TeamViews.Save</button>

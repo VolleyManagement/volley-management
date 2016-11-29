@@ -19,12 +19,7 @@
         /// <returns>is file exists</returns>
         public bool FileExists(string filePath)
         {
-            if (File.Exists(filePath))
-            {
-                return true;
-            }
-
-            return false;
+            return File.Exists(filePath);
         }
 
         /// <summary>

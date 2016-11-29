@@ -650,29 +650,14 @@
             // Arrange
             SetupHttpServerMock();
             SetupHttpContextMock();
-            //var httpContextMock = new Mock<HttpContextBase>();
-            //var serverMock = new Mock<HttpServerUtilityBase>();
-            //serverMock.Setup(x => x.MapPath("~/app_data")).Returns(@"c:\work\app_data");
-            //httpContextMock.Setup(x => x.Server).Returns(serverMock.Object);
-            //var sut = new HomeController();
-            //sut.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), sut);
 
             SetupHttpPosteFileBaseMock();
-            //  var file1Mock = new Mock<HttpPostedFileBase>();
-            //  file1Mock.Setup(x => x.FileName).Returns("1.jpg");
 
             // Act
             var actionResult = _sut.AddPhoto(_httpPostedFileBaseMock.Object) as RedirectToRouteResult;
 
             // Assert
             VerifyRedirect("Edit/1", actionResult);
-            //AssertValidRedirectResult(actionResult, "Edit/1");
-            //file1Mock.Verify(x => x.SaveAs(@"c:\work\app_data\1.jpg"));
-        }
-
-        private void VerifyRedirect(string actionName, RedirectToRouteResult result)
-        {
-            Assert.AreEqual(actionName, result.RouteValues["action"]);
         }
 
         private static void AssertValidRedirectResult(ActionResult actionResult, string view)
@@ -682,6 +667,11 @@
             Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
             Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
             Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));
+        }
+
+        private void VerifyRedirect(string actionName, RedirectToRouteResult result)
+        {
+            Assert.AreEqual(actionName, result.RouteValues["action"]);
         }
 
         private Team CreateTeam()

@@ -20,7 +20,7 @@
     public class TeamsController : Controller
     {
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
-        private const string PHOTO_DIR = "~/Content/Photo/Teams/";
+        private const string PHOTO_DIR = "/Content/Photo/Teams/";
 
         /// <summary>
         /// Holds TeamService instance
@@ -247,37 +247,44 @@
             return View(refererViewModel);
         }
 
+        /// <summary>
+        /// Action method adds photo of the team.
+        /// </summary>
+        /// <param name="fileToUpload">The photo that is being uploaded.</param>
+        /// <returns>Redirect to Edit page.</returns>
         [HttpPost]
         public ActionResult AddPhoto(HttpPostedFileBase fileToUpload)
         {
             try
             {
-                var photoId = 1;
-                _fileService.Upload(photoId, fileToUpload, "~/Content/Photo/Teams/");
-                //teamViewModel.PhotoPath = FULL_DIR + PHOTO_DIR;
+                var photoId = 0;
+                _fileService.Upload(photoId, fileToUpload, PHOTO_DIR);
                 return RedirectToAction("Edit", "Teams", new { id = photoId });
             }
             catch (FileNotFoundException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
-                return RedirectToAction("Edit", "Teams", new { id = 1 });
+                return RedirectToAction("Edit", "Teams", new { id = 0 });
             }
         }
 
+        /// <summary>
+        /// Action method deletes photo of the team.
+        /// </summary>
+        /// <returns>Redirect to Edit page.</returns>
         [HttpPost]
-        public ActionResult DeletePhoto(TeamViewModel teamViewModel)
+        public ActionResult DeletePhoto()
         {
             try
             {
-                var photoId = teamViewModel.Id;
+                var photoId = 0;
                 _fileService.Delete(photoId, PHOTO_DIR);
-                teamViewModel.PhotoPath = string.Empty;
-                return View(teamViewModel);
+                return RedirectToAction("Edit", "Teams", new { id = 0 });
             }
             catch (FileNotFoundException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
-                return View(teamViewModel);
+                return RedirectToAction("Edit", "Teams", new { id = 0 });
             }  
         }
 

@@ -57,17 +57,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
-            $('#fileToUpload').hide();
-            $('#uploadSubmit').hide();
-            $('#uploadButton').on('click', function () {
-                $('#fileToUpload').click();
-            });
-            $('#fileToUpload').change(function () {
-                $('#uploadSubmit').click();
-            });
-</script>
-
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
@@ -88,3 +77,4 @@
     @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
 </div>
 
+@Scripts.Render("~/bundles/teamuploadscripts")

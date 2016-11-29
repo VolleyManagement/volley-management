@@ -60,11 +60,6 @@
         [Display(Name = "TeamRoster", ResourceType = typeof(ViewModelResources))]
         public List<PlayerNameViewModel> Roster { get; set; }
 
-        /// <summary>
-        /// Gets or sets the photo path of the team
-        /// </summary>
-        public string PhotoPath { get; set; }
-
         #region Factory Methods
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function() {
     'use strict';
 
     // register namespace
@@ -7,7 +7,7 @@
         handlers = VM.addNamespace("team.listHandlers"),
         privates = {};
 
-    privates.getTeamData = function (teamRowElement) {
+    privates.getTeamData = function(teamRowElement) {
         var result = {
             teamId: 0,
             teamName: ""
@@ -24,7 +24,7 @@
         return result;
     };
 
-    handlers.deleteTeam = function (eventObj) {
+    handlers.deleteTeam = function(eventObj) {
         var teamRow = eventObj.target.parentElement.parentElement,
             teamData = privates.getTeamData(teamRow),
             teamName = teamData.teamName,
@@ -39,15 +39,11 @@
                     id: teamId
                 },
                 dataType: 'json',
-                success: function (resultJson) {
+                success: function(resultJson) {
                     if (resultJson.OperationSuccessful) {
                         teamRow.remove();
-                        $('[vm_teamId=' + teamId + ']>td:last-child').html(resultJson.Message);
                     }
-                    else {
-                        $('[vm_teamId=' + teamId + ']>td:last-child').html(resultJson.Message);
-                      
-                    }
+                    $('[vm_teamId=' + teamId + ']>td:last-child').html(resultJson.Message);
                 }
             });
         }

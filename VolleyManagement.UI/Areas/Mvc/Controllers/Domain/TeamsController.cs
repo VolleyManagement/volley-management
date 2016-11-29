@@ -213,15 +213,19 @@
             }
             catch (MissingEntityException ex)
             {
-                result = new TeamOperationResultViewModel { 
+                result = new TeamOperationResultViewModel 
+                { 
                     Message = ex.Message, 
-                    OperationSuccessful = false };
+                    OperationSuccessful = false 
+                };
             }
-            catch (DataException ex)
+            catch (DataException)
             {
-                result = new TeamOperationResultViewModel { 
+                result = new TeamOperationResultViewModel 
+                { 
                     Message = App_GlobalResources.TournamentController.TeamDelete, 
-                    OperationSuccessful = false };
+                    OperationSuccessful = false 
+                };
             }
 
             return Json(result, JsonRequestBehavior.DenyGet);

@@ -10,6 +10,7 @@
     using Data.Contracts;
     using Data.Exceptions;
     using Data.Queries.Common;
+    using Data.Queries.TournamentRequest;
     using Domain.RolesAggregate;
     using Domain.TournamentRequestAggregate;
     using Domain.TournamentsAggregate;
@@ -17,6 +18,7 @@
     using MailService;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using MSTestExtensions;
     using Ninject;
     using UserManager;
     using VolleyManagement.Contracts;
@@ -24,7 +26,7 @@
 
     [ExcludeFromCodeCoverage]
     [TestClass]
-    public class TournamentRequestServiceTests
+    public class TournamentRequestServiceTests : BaseTest
     {
         private const int EXISTING_ID = 1;
         private const int INVALID_REQUEST_ID = -1;
@@ -45,6 +47,9 @@
 
         private readonly Mock<IQuery<TournamentRequest, FindByIdCriteria>> _getRequestByIdQueryMock
             = new Mock<IQuery<TournamentRequest, FindByIdCriteria>>();
+
+        private readonly Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>> _getRequestByAllQueryMock
+           = new Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>>();
 
         private readonly Mock<ITournamentRepository> _tournamentRepositoryMock
             = new Mock<ITournamentRepository>();
@@ -70,6 +75,8 @@
                 .ToConstant(_getAllRequestsQueryMock.Object);
             _kernel.Bind<IQuery<TournamentRequest, FindByIdCriteria>>()
                 .ToConstant(_getRequestByIdQueryMock.Object);
+            _kernel.Bind<IQuery<TournamentRequest, FindByTeamTournamentCriteria>>()
+                .ToConstant(_getRequestByAllQueryMock.Object);
             _kernel.Bind<ITournamentRepository>()
                 .ToConstant(_tournamentRepositoryMock.Object);
             _kernel.Bind<IMailService>()
@@ -101,22 +108,14 @@
         public void GetAll_NoViewListRights_AuthorizationExceptionThrows()
         {
             // Arrange
-            Exception exception = null;
             MockAuthServiceThrownException(AuthOperations.TournamentRequests.ViewList);
             var sut = _kernel.Get<TournamentRequestService>();
 
-            // Act
-            try
-            {
-                sut.Get();
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            // Act => Assert
+            Assert.Throws<AuthorizationException>(
+                () =>
+                sut.Get(),
+                "Requested operation is not allowed");
         }
 
         [TestMethod]
@@ -139,21 +138,13 @@
         public void Create_InvalidUserId_ExceptionThrows()
         {
             // Arrange
-            Exception exception = null;
             var sut = _kernel.Get<TournamentRequestService>();
 
-            // Act
-            try
-            {
-                sut.Create(INVALID_REQUEST_ID, EXISTING_ID, EXISTING_ID);
-            }
-            catch (ArgumentException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "User's id is wrong");
+            // Act => Assert
+            Assert.Throws<ArgumentException>(
+                () =>
+                 sut.Create(INVALID_REQUEST_ID, EXISTING_ID, EXISTING_ID),
+                "User's id is wrong");
         }
 
         [TestMethod]
@@ -183,28 +174,50 @@
         }
 
         [TestMethod]
-        public void Confirm_NoConfirmRights_AuthorizationExceptionThrows()
+        public void Create_TournamentRequesExist_RequestNotAdded()
         {
-            Exception exception = null;
-            MockAuthServiceThrownException(AuthOperations.TournamentRequests.Confirm);
+            // Arrange
+            var newTournamentRequest = new TournamentRequestBuilder()
+               .WithId(EXISTING_ID)
+               .WithTeamId(EXISTING_ID)
+               .WithTournamentId(EXISTING_ID)
+               .WithUserId(EXISTING_ID)
+               .Build();
+            var emailMessage = new EmailMessageBuilder().Build();
+            MockMailService(emailMessage);
+            MockUserService();
+            _tournamentRequestRepositoryMock.Setup(
+                tr => tr.Add(
+                    It.IsAny<TournamentRequest>()))
+                    .Callback<TournamentRequest>(t => t.Id = EXISTING_ID);
+            MockGetAllTournamentRequestQuery(newTournamentRequest);
             var sut = _kernel.Get<TournamentRequestService>();
-            try
-            {
-                sut.Confirm(EXISTING_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
+
+            // Act
+            sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID);
 
             // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            VerifyCreateTournamentRequest(newTournamentRequest, Times.Never(), "Parameter request is not equal to Instance of request");
+        }
+
+        [TestMethod]
+        public void Confirm_NoConfirmRights_AuthorizationExceptionThrows()
+        {
+            // Arrange
+            MockAuthServiceThrownException(AuthOperations.TournamentRequests.Confirm);
+            var sut = _kernel.Get<TournamentRequestService>();
+
+            // Act => Assert
+            Assert.Throws<AuthorizationException>(
+                () =>
+                sut.Confirm(EXISTING_ID),
+                "Requested operation is not allowed");
         }
 
         [TestMethod]
         public void Confirm_RequestExists_TeamAdded()
         {
-            // Assert
+            // Arrange
             var expected = new TournamentRequestBuilder().WithId(EXISTING_ID).Build();
             MockGetRequestByIdQuery(expected);
             _tournamentRepositoryMock.Setup(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()));
@@ -217,7 +230,7 @@
             // Act
             sut.Confirm(EXISTING_ID);
 
-            // Arrange
+            // Assert
             VerifyAddedTeam(expected.Id, expected.TournamentId, Times.Once(), Times.AtLeastOnce());
         }
 
@@ -225,21 +238,13 @@
         public void Confirm_RequestDoesNotExist_ExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var sut = _kernel.Get<TournamentRequestService>();
 
-            // Act
-            try
-            {
-                sut.Confirm(INVALID_REQUEST_ID);
-            }
-            catch (MissingEntityException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "A tournament request with specified identifier was not found");
+            // Act => Assert
+            Assert.Throws<MissingEntityException>(
+                () =>
+                sut.Confirm(INVALID_REQUEST_ID),
+                "A tournament request with specified identifier was not found");
         }
 
         [TestMethod]
@@ -316,10 +321,9 @@
             _getAllRequestsQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
         }
 
-        private void VerifyExceptionThrown(Exception exception, string expectedMessage)
+        private void MockGetAllTournamentRequestQuery(TournamentRequest testData)
         {
-            Assert.IsNotNull(exception, "There is no exception thrown");
-            Assert.IsTrue(exception.Message.Equals(expectedMessage), "Expected and actual messages aren't equal");
+            _getRequestByAllQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByTeamTournamentCriteria>())).Returns(testData);
         }
 
         private void VerifyAddedTeam(int requestId, int tournamentId, Times times, Times unitOfWorkTimes)

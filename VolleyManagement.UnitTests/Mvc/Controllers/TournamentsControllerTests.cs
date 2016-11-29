@@ -78,7 +78,6 @@
         private readonly Mock<ITournamentRequestService> _tournamentRequestServiceMock =
             new Mock<ITournamentRequestService>();
 
-        private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -98,7 +97,6 @@
             this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
             this._kernel.Bind<ICurrentUserService>().ToConstant(this._currentUserServiceMock.Object);
             this._kernel.Bind<ITournamentRequestService>().ToConstant(this._tournamentRequestServiceMock.Object);
-            this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._sut = this._kernel.Get<TournamentsController>();
             TimeProvider.Current = _timeMock.Object;
@@ -1123,8 +1121,7 @@
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
-            SetupTeamServiceReturnsTeamsList(MakeTestTeams());
-            SetupGetTournamentTeams(MakeTestTeams(), TEST_TOURNAMENT_ID);
+            SetupGetNonTournamentTeams(MakeTestTeams(), TEST_TOURNAMENT_ID);
 
             var expected = MakeTestTournamentApplyViewModel();
 
@@ -1254,6 +1251,13 @@
                 .Returns(teams);
         }
 
+        private void SetupGetNonTournamentTeams(List<Team> teams, int tournamentId)
+        {
+            this._tournamentServiceMock
+                .Setup(tr => tr.GetAllNoTournamentTeams(tournamentId))
+                .Returns(teams);
+        }
+
         private void SetupGetTournamentNumberOfRounds(TournamentScheduleDto tournament, byte numberOfRounds)
         {
             this._tournamentServiceMock
@@ -1311,11 +1315,6 @@
         private void SetupUserServiceReturnsValidUserId(int userId)
         {
             this._currentUserServiceMock.Setup(m => m.GetCurrentUserId()).Returns(userId);
-        }
-
-        private void SetupTeamServiceReturnsTeamsList(List<Team> teams)
-        {
-            _teamServiceMock.Setup(ts => ts.Get()).Returns(teams);
         }
 
         private void SetupTournamentRequestServiceThrowsArgumentException(int userId, int tournamentId, int teamId)

@@ -8,6 +8,7 @@
     using Data.Contracts;
     using Data.Exceptions;
     using Data.Queries.Common;
+    using Data.Queries.TournamentRequest;
     using Domain.RolesAggregate;
     using Domain.TournamentRequestAggregate;
     using Domain.TournamentsAggregate;
@@ -24,6 +25,7 @@
         private readonly IAuthorizationService _authService;
         private readonly IQuery<List<TournamentRequest>, GetAllCriteria> _getAllTournamentRequestsQuery;
         private readonly IQuery<TournamentRequest, FindByIdCriteria> _getTournamentRequestByIdQuery;
+        private readonly IQuery<TournamentRequest, FindByTeamTournamentCriteria> _getTournamentRequestByAllQuery;
         private readonly IUserService _userService;
 
         /// <summary>
@@ -33,6 +35,7 @@
         /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
         /// <param name="getAllTournamentRequestsQuery">Get list of all requests</param>
         /// <param name="getTournamentRequestById">Get request by it's id</param>
+        /// <param name="getTournamentRequestByAll">Get list of all requests by team id and tournament id</param>
         /// <param name="tournamentRepository">Read the ITournamentRepository instance</param>
         /// <param name="mailService">Instance of class which implements <see cref="IMailService"/></param>
         /// <param name="userService">Instance of class which implements <see cref="IUserService"/></param>
@@ -41,6 +44,7 @@
             IAuthorizationService authService,
             IQuery<List<TournamentRequest>, GetAllCriteria> getAllTournamentRequestsQuery,
             IQuery<TournamentRequest, FindByIdCriteria> getTournamentRequestById,
+            IQuery<TournamentRequest, FindByTeamTournamentCriteria> getTournamentRequestByAll,
             ITournamentRepository tournamentRepository,
             IMailService mailService,
             IUserService userService)
@@ -49,6 +53,7 @@
             _authService = authService;
             _getAllTournamentRequestsQuery = getAllTournamentRequestsQuery;
             _getTournamentRequestByIdQuery = getTournamentRequestById;
+            _getTournamentRequestByAllQuery = getTournamentRequestByAll;
             _tournamentRepository = tournamentRepository;
             _mailService = mailService;
             _userService = userService;
@@ -70,7 +75,7 @@
 
             _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.TournamentId);
             _tournamentRepository.UnitOfWork.Commit();
-            NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
+             NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
             _tournamentRequestRepository.Remove(requestId);
             _tournamentRequestRepository.UnitOfWork.Commit();
         }
@@ -83,15 +88,20 @@
         /// <param name="teamId"> Team's id</param>
         public void Create(int userId, int tournamentId, int teamId)
         {
-            TournamentRequest tournamentRequest = new TournamentRequest()
+            var existTournament = _getTournamentRequestByAllQuery.Execute(
+                new FindByTeamTournamentCriteria { TournamentId = tournamentId, TeamId = teamId });
+            if (existTournament == null)
             {
-                TeamId = teamId,
-                UserId = userId,
-                TournamentId = tournamentId
-            };
-            _tournamentRequestRepository.Add(tournamentRequest);
-            _tournamentRequestRepository.UnitOfWork.Commit();
-            NotifyAdmins(tournamentRequest);
+                TournamentRequest tournamentRequest = new TournamentRequest()
+                {
+                    TeamId = teamId,
+                    UserId = userId,
+                    TournamentId = tournamentId
+                };
+                _tournamentRequestRepository.Add(tournamentRequest);
+                _tournamentRequestRepository.UnitOfWork.Commit();
+                NotifyAdmins(tournamentRequest);
+            }
         }
 
         /// <summary>

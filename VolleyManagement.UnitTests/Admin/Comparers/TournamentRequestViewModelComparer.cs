@@ -37,6 +37,8 @@
         private bool AreEqual(TournamentRequestViewModel x, TournamentRequestViewModel y)
         {
            return x.Id == y.Id &&
+                  x.TeamId == y.TeamId &&
+                  x.TournamentId == y.TournamentId &&
                   x.PersonName == y.PersonName &&
                   x.TeamTitle == y.TeamTitle &&
                   x.TournamentTitle == y.TournamentTitle;

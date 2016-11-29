@@ -86,5 +86,12 @@
         /// <param name="tournament">Tournament for which we count rounds</param>
         /// <returns>Number of rounds</returns>
         byte GetNumberOfRounds(TournamentScheduleDto tournament);
+
+        /// <summary>
+        /// Returns all teams that don't take part in specific tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of Tournament for getting teams</param>
+        /// <returns>Teams that don't take part in tournament</returns>
+        IEnumerable<Team> GetAllNoTournamentTeams(int tournamentId);
     }
 }

@@ -3,7 +3,6 @@
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.UI.Areas.Admin.Models;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
@@ -46,9 +45,11 @@
         {
             var requests = new TournamentRequestCollectionViewModel()
             {
-                 Requests = _requestService.Get()
-                .Select(r => TournamentRequestViewModel
-                .Map(r, _teamService.Get(r.TeamId), _userService.GetUserDetails(r.UserId), _tournamentService.Get(r.TournamentId)))
+                 Requests = _requestService.Get().Select(r => TournamentRequestViewModel.Map(
+                     r, 
+                     _teamService.Get(r.TeamId),
+                     _userService.GetUserDetails(r.UserId),
+                     _tournamentService.Get(r.TournamentId)))
             };
 
             return View(requests);

@@ -7,13 +7,15 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.TournamentRequest;
     using VolleyManagement.Domain.TournamentRequestAggregate;
 
     /// <summary>
     /// Provides Object Query implementation for Tournament Requests
     /// </summary>
     public class TournamentRequestQueries : IQuery<List<TournamentRequest>, GetAllCriteria>,
-                                            IQuery<TournamentRequest, FindByIdCriteria>
+                                            IQuery<TournamentRequest, FindByIdCriteria>,
+                                            IQuery<TournamentRequest, FindByTeamTournamentCriteria>
     {
         #region Fields
 
@@ -55,6 +57,20 @@
         {
             return _unitOfWork.Context.TournamentRequests
                                       .Where(r => r.Id == criteria.Id)
+                                      .Select(GetRequestMapping())
+                                      .SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Finds Requests by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="TournamentRequest"/>. </returns>
+        public TournamentRequest Execute(FindByTeamTournamentCriteria criteria)
+        {
+            return _unitOfWork.Context.TournamentRequests
+                                      .Where(r => r.TeamId == criteria.TeamId)
+                                      .Where(r => r.TournamentId == criteria.TournamentId)
                                       .Select(GetRequestMapping())
                                       .SingleOrDefault();
         }

@@ -10,7 +10,6 @@
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
@@ -45,8 +44,6 @@
         /// </summary>
         private readonly IGameService _gameService;
 
-        private readonly ITeamService _teamService;
-
         private readonly ITournamentRequestService _requestService;
 
         private readonly ICurrentUserService _currentUserService;
@@ -57,20 +54,17 @@
         /// <param name="tournamentService">The tournament service</param>
         /// <param name="gameService">The game service</param>
         /// <param name="authService">The authorization service</param>
-        /// <param name="teamService">The team service</param>
         /// <param name="requestService">The request service</param>
         /// <param name="currentUserService">The current user service</param>
         public TournamentsController(
             ITournamentService tournamentService,
             IGameService gameService,
             IAuthorizationService authService,
-            ITeamService teamService,
             ITournamentRequestService requestService,
             ICurrentUserService currentUserService)
         {
             this._tournamentService = tournamentService;
             this._gameService = gameService;
-            this._teamService = teamService;
             this._requestService = requestService;
             this._currentUserService = currentUserService;
             this._authService = authService;
@@ -529,15 +523,12 @@
                 return HttpNotFound();
             }
 
-            var teamList = _teamService.Get();
-            var availableList = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var differences = teamList.Where(l2 => availableList.All(l1 => l1.Id != l2.Id));
-
+            var noTournamentTeams = _tournamentService.GetAllNoTournamentTeams(tournamentId);
             var tournamentApplyViewModel = new TournamentApplyViewModel
             {
                 Id = tournamentId,
                 TournamentTitle = tournament.Name,
-                Teams = differences.Select(t => TeamNameViewModel.Map(t)),
+                Teams = noTournamentTeams.Select(t => TeamNameViewModel.Map(t)),
             };
             return View(tournamentApplyViewModel);
         }

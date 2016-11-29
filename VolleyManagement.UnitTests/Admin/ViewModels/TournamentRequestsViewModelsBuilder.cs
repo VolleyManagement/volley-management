@@ -24,6 +24,9 @@
             _tournamentsRequest.Add(new TournamentRequestViewModel()
             {
                 Id = 1,
+                TeamId = 4,
+                TournamentId = 1,
+                PersonId = 1,
                 TeamTitle = "TestName",
                 PersonName = "Eugene",
                 TournamentTitle = "Name"

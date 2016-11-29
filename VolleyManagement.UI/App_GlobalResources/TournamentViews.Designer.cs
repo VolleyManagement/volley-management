@@ -88,6 +88,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Applications to Tournaments.
+        /// </summary>
+        public static string ApplicationTitle {
+            get {
+                return ResourceManager.GetString("ApplicationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply For Tournament.
         /// </summary>
         public static string ApplyForTournament {
@@ -129,6 +138,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string Cancel {
             get {
                 return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm.
+        /// </summary>
+        public static string Confirm {
+            get {
+                return ResourceManager.GetString("Confirm", resourceCulture);
             }
         }
         
@@ -178,6 +196,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decline.
+        /// </summary>
+        public static string Decline {
+            get {
+                return ResourceManager.GetString("Decline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
@@ -210,6 +237,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string DeleteTournamentTitle {
             get {
                 return ResourceManager.GetString("DeleteTournamentTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Details.
+        /// </summary>
+        public static string Details {
+            get {
+                return ResourceManager.GetString("Details", resourceCulture);
             }
         }
         
@@ -300,6 +336,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string ManageTeams {
             get {
                 return ResourceManager.GetString("ManageTeams", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Application.
+        /// </summary>
+        public static string NoApplication {
+            get {
+                return ResourceManager.GetString("NoApplication", resourceCulture);
             }
         }
         

@@ -6,7 +6,7 @@
 
 <br />
 <div class="panel panel-primary">
-    <div class="panel-heading">Applications to Tournaments</div>
+    <div class="panel-heading">@Resources.TournamentViews.ApplicationTitle</div>
     <table class="table table-striped">
         <tr>
             <th>ID</th>
@@ -18,7 +18,7 @@
         @if (Model.Requests.Count() == 0)
         {
             <tr>
-                <td colspan="3" class="text-center">No Application</td>
+                <td colspan="3" class="text-center">@Resources.TournamentViews.NoApplication</td>
             </tr>
         }
         else
@@ -30,7 +30,7 @@
                     <td>
                         @application.TeamTitle
                         @Html.ActionLink(
-                            "Details",
+                            Resources.TournamentViews.Details,
                             "Details",
                             "Teams",
                             new
@@ -44,7 +44,7 @@
                     <td>
                         @application.TournamentTitle
                         @Html.ActionLink(
-                            "Details",
+                            Resources.TournamentViews.Details,
                             "Details",
                             "Tournaments",
                             new
@@ -56,11 +56,11 @@
                     </td>
                     <td>
                         @application.PersonName
-                        @Html.ActionLink("Details", "UserDetails", "Users", new { id = application.PersonId }, new { @class = "btn btn-info btn-xs" })
+                        @Html.ActionLink(Resources.TournamentViews.Details, "UserDetails", "Users", new { id = application.PersonId }, new { @class = "btn btn-info btn-xs" })
                     </td>
                     <td>
-                        @Html.ActionLink("Confirm", "Confirm", new { id = application.Id }, new { @class = "btn btn-success btn-xs" })
-                        @Html.ActionLink("Decline", "Decline", new { id = application.Id }, new { @class = "btn btn-danger btn-xs" })
+                        @Html.ActionLink(Resources.TournamentViews.Confirm, "Confirm", new { id = application.Id }, new { @class = "btn btn-success btn-xs" })
+                        @Html.ActionLink(Resources.TournamentViews.Decline, "Decline", new { id = application.Id }, new { @class = "btn btn-danger btn-xs" })
                     </td>
                 </tr>
             }

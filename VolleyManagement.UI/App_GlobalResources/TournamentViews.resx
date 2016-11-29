@@ -261,4 +261,19 @@
   <data name="ApplyForTournament" xml:space="preserve">
     <value>Apply For Tournament</value>
   </data>
+  <data name="ApplicationTitle" xml:space="preserve">
+    <value>Applications to Tournaments</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Decline</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="NoApplication" xml:space="preserve">
+    <value>No Application</value>
+  </data>
 </root>

@@ -253,19 +253,18 @@
         /// <param name="fileToUpload">The photo that is being uploaded.</param>
         /// <returns>Redirect to Edit page.</returns>
         [HttpPost]
-        public ActionResult AddPhoto(HttpPostedFileBase fileToUpload)
+        public ActionResult AddPhoto(HttpPostedFileBase fileToUpload, int photoId)
         {
             try
             {
-                var photoId = 0;
                 _fileService.Upload(photoId, fileToUpload, PHOTO_DIR);
-                return RedirectToAction("Edit", "Teams", new { id = photoId });
             }
             catch (FileNotFoundException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
-                return RedirectToAction("Edit", "Teams", new { id = 0 });
             }
+
+            return RedirectToAction("Edit", "Teams", new { id = photoId });
         }
 
         /// <summary>

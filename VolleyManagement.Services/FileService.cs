@@ -10,7 +10,7 @@
     /// </summary>
     public class FileService : IFileService
     {
-        private const int MAX_FILE_SIZE = 1000000;
+        private const int MAX_FILE_SIZE = 1048576;
 
         /// <summary>
         /// Delete file from the server
@@ -26,7 +26,7 @@
             }
             else
             {
-                throw new DirectoryNotFoundException("File not found");
+                throw new FileNotFoundException("File not found");
             }
         }
 

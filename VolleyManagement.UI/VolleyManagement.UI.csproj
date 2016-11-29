@@ -496,6 +496,7 @@
     <Compile Include="Areas\Admin\Models\OperationResultViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestsViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestViewModel.cs" />
+    <Compile Include="Areas\Mvc\Controllers\Constants.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />

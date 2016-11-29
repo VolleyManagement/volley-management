@@ -12,7 +12,7 @@
         <div class="info float-left">
             @using (Html.BeginForm("AddPhoto", "Teams", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
-                <input name="photoId" id="photoId" type="hidden" value="@Model.Id">
+                <input name="id" id="id" type="hidden" value="@Model.Id">
                 <input name="fileToUpload" id="fileToUpload" type="file">
                 <input name="button" id="uploadButton" style='background-image: url(@Model.PhotoPath); background-size: cover; padding-top: 70px;' type="button" value="Upload photo">
                 <input name="submit" id="uploadSubmit" type="submit" value="Submit Query">

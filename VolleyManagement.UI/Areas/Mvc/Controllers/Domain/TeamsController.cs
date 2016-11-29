@@ -20,9 +20,6 @@
     public class TeamsController : Controller
     {
         private const string TEAM_DELETED_SUCCESSFULLY_DESCRIPTION = "Team has been deleted successfully.";
-        private const string PHOTO_DIR = "/Content/Photo/Teams/";
-        private const string JPG = ".jpg";
-        private const string DEFAULT_PHOTO_PATH = "/Content/Photo/Teams/0.jpg";
 
         /// <summary>
         /// Holds TeamService instance
@@ -151,15 +148,9 @@
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
 
-            var photoPath = string.Concat(PHOTO_DIR, id, JPG);
-            // if (_fileService.FileExists(photoPath))
-            // {
-            viewModel.PhotoPath = photoPath;
-            // }
-            // else
-            // {
-            // viewModel.PhotoPath = DEFAULT_PHOTO_PATH;
-            // }
+            var photoPath = string.Format(Constants.PHOTO_DIR, id);
+            viewModel.PhotoPath = _fileService.FileExists(photoPath) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
+
             return View(viewModel);
         }
 
@@ -257,15 +248,8 @@
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
 
-            var photoPath = string.Concat(PHOTO_DIR, id, JPG);
-            // if (_fileService.FileExists(photoPath))
-            // {
-            refererViewModel.Model.PhotoPath = photoPath;
-            // }
-            // else
-            // {
-           // refererViewModel.Model.PhotoPath = DEFAULT_PHOTO_PATH;
-            // }
+            var photoPath = string.Format(Constants.PHOTO_DIR, id);
+            refererViewModel.Model.PhotoPath = _fileService.FileExists(photoPath) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
 
             return View(refererViewModel);
         }
@@ -274,45 +258,43 @@
         /// Action method adds photo of the team.
         /// </summary>
         /// <param name="fileToUpload">The photo that is being uploaded.</param>
-        /// <param name="photoId">Id of the photo.</param>
+        /// <param name="id">Id of the photo.</param>
         /// <returns>Redirect to Edit page.</returns>
         [HttpPost]
-        public ActionResult AddPhoto(HttpPostedFileBase fileToUpload, int photoId)
+        public ActionResult AddPhoto(HttpPostedFileBase fileToUpload, int id)
         {
             try
             {
-                _fileService.Upload(photoId, fileToUpload, PHOTO_DIR);
-                // var photoPath = string.Concat(PHOTO_DIR, photoId, JPG);
-                // _fileService.Upload(fileToUpload, photoPath);
+                 var photoPath = string.Format(Constants.PHOTO_DIR, id);
+                _fileService.Upload(fileToUpload, photoPath);
             }
             catch (FileLoadException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            return RedirectToAction("Edit", "Teams", new { id = photoId });
+            return RedirectToAction("Edit", "Teams", new { id = id });
         }
 
         /// <summary>
         /// Action method deletes photo of the team.
         /// </summary>
-        /// <param name="photoId">Id of the photo.</param>
+        /// <param name="id">Id of the photo.</param>
         /// <returns>Redirect to Edit page.</returns>
         [HttpPost]
-        public ActionResult DeletePhoto(int photoId)
+        public ActionResult DeletePhoto(int id)
         {
             try
             {
-                // var photoPath = string.Concat(PHOTO_DIR, photoId, JPG);
-                // _fileService.Delete(photoPath);
-                _fileService.Delete(photoId, PHOTO_DIR);
+                var photoPath = string.Format(Constants.PHOTO_DIR, id);
+                _fileService.Delete(photoPath);
             }
             catch (FileNotFoundException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            return RedirectToAction("Edit", "Teams", new { id = photoId });
+            return RedirectToAction("Edit", "Teams", new { id = id });
         }
 
         /// <summary>

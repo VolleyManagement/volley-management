@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -34,6 +35,8 @@
         private const int SPECIFIED_TEAM_ID = 4;
         private const int TEAM_ID = 1;
         private const int SPECIFIED_PLAYER_ID = 4;
+        private const int PHOTO_ID = 1;
+        private const string FILE_DIR = "/Content/Photo/Teams/";
         private const string SPECIFIED_PLAYER_NAME = "Test name";
         private const string SPECIFIED_EXCEPTION_MESSAGE = "Test exception message";
         private const string ACHIEVEMENTS = "TestAchievements";
@@ -43,10 +46,11 @@
         private const string COACH = "TestCoach";
         private const int TEST_TEAM_ID = 1;
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
+        private const string FILE_NOT_FOUND_EX_MESSAGE = "File not found";
+        private const string FILE_LOAD_EX_MESSAGE = "File size must be less then 1 MB and greater then 0 MB";
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
-        private readonly Mock<HttpServerUtilityBase> _httpServerMock = new Mock<HttpServerUtilityBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
         private readonly Mock<HttpPostedFileBase> _httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
@@ -66,7 +70,6 @@
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
             this._kernel.Bind<HttpContextBase>().ToConstant(this._httpContextMock.Object);
-            this._kernel.Bind<HttpServerUtilityBase>().ToConstant(this._httpServerMock.Object);
             this._kernel.Bind<HttpPostedFileBase>().ToConstant(this._httpPostedFileBaseMock.Object);
             this._kernel.Bind<IFileService>().ToConstant(this._fileServiceMock.Object);
             this._sut = this._kernel.Get<TeamsController>();
@@ -648,30 +651,61 @@
         public void AddPhoto_PhotoAdded_RequestRedirectToEdit()
         {
             // Arrange
-            SetupHttpServerMock();
-            SetupHttpContextMock();
-
-            SetupHttpPosteFileBaseMock();
+            SetupHttpPostedFileBaseMock();
 
             // Act
-            var actionResult = _sut.AddPhoto(_httpPostedFileBaseMock.Object) as RedirectToRouteResult;
+            var actionResult = _sut.AddPhoto(_httpPostedFileBaseMock.Object, PHOTO_ID) as RedirectToRouteResult;
 
             // Assert
-            VerifyRedirect("Edit/1", actionResult);
+            VerifyFileServiceUpload(Times.Once());
+            VerifyRedirect("Edit", actionResult);
         }
 
-        private static void AssertValidRedirectResult(ActionResult actionResult, string view)
+        [TestMethod]
+        public void AddPhoto_FileLoadExceptionThrown_RequestRedirectToEdit()
         {
-            var result = (RedirectToRouteResult)actionResult;
-            Assert.IsNotNull(result, "Method result should be instance of RedirectToRouteResult");
-            Assert.IsFalse(result.Permanent, "Redirect should not be permanent");
-            Assert.AreEqual(1, result.RouteValues.Count, string.Format("Redirect should forward to Requests.{0} action", view));
-            Assert.AreEqual(view, result.RouteValues["action"], string.Format("Redirect should forward to Requests.{0} action", view));
+            // Arrange
+            SetupHttpPostedFileBaseMock();
+            SetupFileServiceMockThrowsFileLoadException(_httpPostedFileBaseMock.Object);
+
+            // Act
+            var actionResult = _sut.AddPhoto(_httpPostedFileBaseMock.Object, PHOTO_ID) as RedirectToRouteResult;
+            var modelState = _sut.ModelState[string.Empty];
+
+            // Assert
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, FILE_LOAD_EX_MESSAGE);
+            VerifyRedirect("Edit", actionResult);
         }
 
-        private void VerifyRedirect(string actionName, RedirectToRouteResult result)
+        [TestMethod]
+        public void DeletePhoto_PhotoDeleted_RequestRedirectToEdit()
         {
-            Assert.AreEqual(actionName, result.RouteValues["action"]);
+            // Arrange
+            SetupFileServiceMock();
+
+            // Act
+            var actionResult = _sut.DeletePhoto(PHOTO_ID) as RedirectToRouteResult;
+
+            // Assert
+            VerifyFileServiceDelete(Times.Once());
+            VerifyRedirect("Edit", actionResult);
+        }
+
+        [TestMethod]
+        public void DeletePhoto_FileNotFoundExceptionThrown_RequestRedirectToEdit()
+        {
+            // Arrange
+            SetupFileServiceMockThrowsFileNotFoundException();
+
+            // Act
+            var actionResult = _sut.DeletePhoto(PHOTO_ID) as RedirectToRouteResult;
+            var modelState = _sut.ModelState[string.Empty];
+
+            // Assert
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, FILE_NOT_FOUND_EX_MESSAGE);
+            VerifyRedirect("Edit", actionResult);
         }
 
         private Team CreateTeam()
@@ -753,6 +787,21 @@
                 .ToList();
         }
 
+        private void VerifyRedirect(string actionName, RedirectToRouteResult result)
+        {
+            Assert.AreEqual(actionName, result.RouteValues["action"]);
+        }
+
+        private void VerifyFileServiceUpload(Times times)
+        {
+            _fileServiceMock.Verify(ts => ts.Upload(PHOTO_ID, _httpPostedFileBaseMock.Object, FILE_DIR), times);
+        }
+
+        private void VerifyFileServiceDelete(Times times)
+        {
+            _fileServiceMock.Verify(ts => ts.Delete(PHOTO_ID, FILE_DIR), times);
+        }
+
         private void MockTeamServiceGetTeam(Team team)
         {
             _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
@@ -778,19 +827,26 @@
             this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
         }
 
-        private void SetupHttpContextMock()
-        {
-            this._httpContextMock.Setup(x => x.Server).Returns(_httpServerMock.Object);
-        }
-
-        private void SetupHttpServerMock()
-        {
-            this._httpServerMock.Setup(x => x.MapPath("~/app_data")).Returns(@"c:\work\app_data");
-        }
-
-        private void SetupHttpPosteFileBaseMock()
+        private void SetupHttpPostedFileBaseMock()
         {
             this._httpPostedFileBaseMock.Setup(x => x.FileName).Returns("1.jpg");
+        }
+
+        private void SetupFileServiceMockThrowsFileLoadException(HttpPostedFileBase file)
+        {
+            _fileServiceMock.Setup(x => x.Upload(PHOTO_ID, file, FILE_DIR))
+                .Throws(new FileLoadException(FILE_LOAD_EX_MESSAGE));
+        }
+
+        private void SetupFileServiceMockThrowsFileNotFoundException()
+        {
+            _fileServiceMock.Setup(x => x.Delete(PHOTO_ID, FILE_DIR))
+                .Throws(new FileNotFoundException(FILE_NOT_FOUND_EX_MESSAGE));
+        }
+
+        private void SetupFileServiceMock()
+        {
+            _fileServiceMock.Setup(x => x.Delete(PHOTO_ID, FILE_DIR));
         }
 
         private List<Team> MakeTestTeams()

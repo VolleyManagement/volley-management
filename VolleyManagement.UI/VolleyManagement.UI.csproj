@@ -412,7 +412,6 @@
     <Content Include="Scripts\VMScripts\TeamOperations\CreateEdit.js" />
     <Content Include="Scripts\TournamentOperationScripts.js" />
     <Content Include="Scripts\UserActions.js" />
-    <Content Include="Scripts\VMScripts\TeamOperations\TeamEditStyle.css" />
     <Content Include="Scripts\VMScripts\TeamOperations\UploadPhoto.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\AddTeams.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\SwapRounds.js" />

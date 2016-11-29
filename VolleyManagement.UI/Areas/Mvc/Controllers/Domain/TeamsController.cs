@@ -251,6 +251,7 @@
         /// Action method adds photo of the team.
         /// </summary>
         /// <param name="fileToUpload">The photo that is being uploaded.</param>
+        /// <param name="photoId">Id of the photo.</param>
         /// <returns>Redirect to Edit page.</returns>
         [HttpPost]
         public ActionResult AddPhoto(HttpPostedFileBase fileToUpload, int photoId)
@@ -259,7 +260,7 @@
             {
                 _fileService.Upload(photoId, fileToUpload, PHOTO_DIR);
             }
-            catch (FileNotFoundException ex)
+            catch (FileLoadException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
             }
@@ -270,21 +271,21 @@
         /// <summary>
         /// Action method deletes photo of the team.
         /// </summary>
+        /// <param name="photoId">Id of the photo.</param>
         /// <returns>Redirect to Edit page.</returns>
         [HttpPost]
-        public ActionResult DeletePhoto()
+        public ActionResult DeletePhoto(int photoId)
         {
             try
             {
-                var photoId = 0;
                 _fileService.Delete(photoId, PHOTO_DIR);
-                return RedirectToAction("Edit", "Teams", new { id = 0 });
             }
             catch (FileNotFoundException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
-                return RedirectToAction("Edit", "Teams", new { id = 0 });
-            }  
+            }
+
+            return RedirectToAction("Edit", "Teams", new { id = photoId });
         }
 
         /// <summary>

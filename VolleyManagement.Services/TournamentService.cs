@@ -92,6 +92,7 @@
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
+            _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
             _authService = authService;

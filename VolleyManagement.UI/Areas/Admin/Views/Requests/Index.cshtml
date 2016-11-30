@@ -7,6 +7,12 @@
 
 <br />
 <li>
+    <a href="TournamentRequest">
+        <i class="fa fa-link fa-fw"></i>
+        List of requests for applying Team to Tournament
+    </a>
+</li>
+<li>
     <a href="Request">
         <i class="fa fa-link fa-fw"></i>
         List of requests for linking User to Player
@@ -44,25 +50,24 @@
                     <td>
                         @if (feedback.CanReply)
                         {
-                            @Html.ActionLink("Reply", "Reply", new {id = feedback.Id}, new {@class = "btn btn-danger btn-xs"})
+                            @Html.ActionLink("Reply", "Reply", new { id = feedback.Id }, new { @class = "btn btn-danger btn-xs" })
                         }
                         else
                         {
                             @Html.ActionLink("Reply", "Reply", new { id = feedback.Id }, new { @class = "btn btn-danger btn-xs", @disabled = !feedback.CanClose, onclick = "javascript:return false;" })
                         }
-                        @Html.ActionLink("Details", "Details", new {id = feedback.Id}, new {@class = "btn btn-primary btn-xs"})
+                        @Html.ActionLink("Details", "Details", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
                         @if (feedback.CanClose)
                         {
-                            @Html.ActionLink("Close", "Close", new {id = feedback.Id}, new {@class = "btn btn-primary btn-xs"})
+                            @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
                         }
                         else
                         {
                             @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs", @disabled = false, onclick = "javascript:return false;" })
-                        }                  
-                     </td>
+                        }
+                    </td>
                 </tr>
             }
         }
     </table>
 </div>
-

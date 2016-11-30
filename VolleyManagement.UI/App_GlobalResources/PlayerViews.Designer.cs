@@ -61,6 +61,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accept.
+        /// </summary>
+        public static string Accept {
+            get {
+                return ResourceManager.GetString("Accept", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Action.
         /// </summary>
         public static string Action {
@@ -79,11 +88,38 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply for tournament.
+        /// </summary>
+        public static string ApplyForTournament {
+            get {
+                return ResourceManager.GetString("ApplyForTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  Apply team for .
+        /// </summary>
+        public static string ApplyTeamFor {
+            get {
+                return ResourceManager.GetString("ApplyTeamFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
             get {
                 return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back to previous page.
+        /// </summary>
+        public static string BackPrevPage {
+            get {
+                return ResourceManager.GetString("BackPrevPage", resourceCulture);
             }
         }
         
@@ -196,6 +232,26 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  I accept .
+        /// </summary>
+        public static string IAccept {
+            get {
+                return ResourceManager.GetString("IAccept", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No avaliable teams found. Please, contact admin..
+        /// </summary>
+        public static string NoAvaliableTeams
+        {
+            get
+            {
+                return ResourceManager.GetString("NoAvaliableTeams", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Link to my account.
         /// </summary>
         public static string LinkToMyAccount {
@@ -264,6 +320,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string SearchTitle {
             get {
                 return ResourceManager.GetString("SearchTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  tournament.
+        /// </summary>
+        public static string Tournament {
+            get {
+                return ResourceManager.GetString("Tournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  tournament regulations..
+        /// </summary>
+        public static string TournamentRegulations {
+            get {
+                return ResourceManager.GetString("TournamentRegulations", resourceCulture);
             }
         }
     }

@@ -68,7 +68,7 @@
             new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
 
         private readonly Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery =
-           new Mock<IQuery<List<Team>, GetAllCriteria>>();
+            new Mock<IQuery<List<Team>, GetAllCriteria>>();
 
         private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto =
             new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();

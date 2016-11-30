@@ -114,7 +114,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In fifth set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}..
+        ///    Looks up a localized string similar to In fifth set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}..
         /// </summary>
         public static string GameResultFifthSetScoreInvalid {
             get {
@@ -123,7 +123,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3}.
+        ///    Looks up a localized string similar to In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3}.
         /// </summary>
         public static string GameResultOptionalSetScores {
             get {
@@ -132,7 +132,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter a score of the previous optional game.
+        ///    Looks up a localized string similar to Enter a score of the previous optional game.
         /// </summary>
         public static string GameResultPreviousOptionalSetUnplayed {
             get {
@@ -141,7 +141,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3} or {3}: {2}.
+        ///    Looks up a localized string similar to In the set, the number of points for one team must be at least {0} and the points difference should be at least {1}. If the score exceeds {0}, the points difference must be equal to {1}. In case of a technical defeat score of an optional game should be {2}: {3} or {3}: {2}.
         /// </summary>
         public static string GameResultRequiredSetScores {
             get {
@@ -150,7 +150,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The team can not play with itself.
+        ///    Looks up a localized string similar to The team can not play with itself.
         /// </summary>
         public static string GameResultSameTeam {
             get {
@@ -159,7 +159,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The set scores are listed in the wrong order.
+        ///    Looks up a localized string similar to The set scores are listed in the wrong order.
         /// </summary>
         public static string GameResultSetScoresNotOrdered {
             get {
@@ -168,7 +168,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The set score can be one of the following: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. In case of a technical defeat set score must be {0}:{1} or {1}:{0}.
+        ///    Looks up a localized string similar to The set score can be one of the following: 3:0, 3:1, 3:2, 2:3, 1:3, 0:3. In case of a technical defeat set score must be {0}:{1} or {1}:{0}.
         /// </summary>
         public static string GameResultSetsScoreInvalid {
             get {
@@ -177,7 +177,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game score does not match set scores.
+        ///    Looks up a localized string similar to Game score does not match set scores.
         /// </summary>
         public static string GameResultSetsScoreNoMatchSetScores {
             get {
@@ -186,7 +186,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An amount of groups in division should be between {0} and {1}.
+        ///    Looks up a localized string similar to An amount of groups in division should be between {0} and {1}.
         /// </summary>
         public static string GroupCountOutOfRange {
             get {
@@ -195,7 +195,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group names should be unique.
+        ///    Looks up a localized string similar to Group names should be unique.
         /// </summary>
         public static string GroupNamesNotUnique {
             get {
@@ -204,11 +204,20 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Home team can&apos;t be set to freeday.
+        ///    Looks up a localized string similar to Home team can&apos;t be set to freeday.
         /// </summary>
         public static string HomeTeamNullId {
             get {
                 return ResourceManager.GetString("HomeTeamNullId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid parametr. Your request didn&apos;t create..
+        /// </summary>
+        public static string InvalidArgumentException {
+            get {
+                return ResourceManager.GetString("InvalidArgumentException", resourceCulture);
             }
         }
         
@@ -222,7 +231,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start of the applying period must be later than today.
+        ///    Looks up a localized string similar to Start of the applying period must be later than today.
         /// </summary>
         public static string LateRegistrationDates {
             get {
@@ -231,7 +240,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Body.
+        ///    Looks up a localized string similar to Body.
         /// </summary>
         public static string MailBodyParam {
             get {
@@ -240,7 +249,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to From.
+        ///    Looks up a localized string similar to From.
         /// </summary>
         public static string MailFromParam {
             get {
@@ -249,7 +258,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to To.
+        ///    Looks up a localized string similar to To.
         /// </summary>
         public static string MailToParam {
             get {
@@ -258,7 +267,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game cannot be added to the tournament that doesn&apos;t exist.
+        ///    Looks up a localized string similar to Game cannot be added to the tournament that doesn&apos;t exist.
         /// </summary>
         public static string NoSuchToruanment {
             get {
@@ -267,7 +276,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No teams are specified for current game in round {0}.
+        ///    Looks up a localized string similar to No teams are specified for current game in round {0}.
         /// </summary>
         public static string NoTeamsInGame {
             get {
@@ -276,7 +285,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Editing of the old game is not allowed.
+        ///    Looks up a localized string similar to Editing of the old game is not allowed.
         /// </summary>
         public static string PlayoffGameEditingError {
             get {
@@ -285,7 +294,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game date not set..
+        ///    Looks up a localized string similar to Game date not set..
         /// </summary>
         public static string RoundDateNotSet {
             get {
@@ -294,7 +303,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Free day game has already been scheduled in this round.
+        ///    Looks up a localized string similar to Free day game has already been scheduled in this round.
         /// </summary>
         public static string SameFreeDayGameInRound {
             get {
@@ -303,7 +312,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled for round number {2}.
+        ///    Looks up a localized string similar to Game between {0} and {1} has already been scheduled for round number {2}.
         /// </summary>
         public static string SameGameInRound {
             get {
@@ -312,7 +321,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled in another round. Same teams cannot play twice in one round tournament.
+        ///    Looks up a localized string similar to Game between {0} and {1} has already been scheduled in another round. Same teams cannot play twice in one round tournament.
         /// </summary>
         public static string SameGameInTournamentSchemeOne {
             get {
@@ -321,7 +330,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round tournament.
+        ///    Looks up a localized string similar to Game between {0} and {1} has already been scheduled in two other rounds. Same teams connot play more than 2 times in two round tournament.
         /// </summary>
         public static string SameGameInTournamentSchemeTwo {
             get {
@@ -330,7 +339,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team {0} has game scheduled already in this round.
+        ///    Looks up a localized string similar to Team {0} has game scheduled already in this round.
         /// </summary>
         public static string SameTeamInRound {
             get {
@@ -339,7 +348,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team with such name already exists in tournament.
+        ///    Looks up a localized string similar to Team with such name already exists in tournament.
         /// </summary>
         public static string TeamNameInTournamentNotUnique {
             get {
@@ -348,7 +357,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tournament name should be unique.
+        ///    Looks up a localized string similar to Tournament name should be unique.
         /// </summary>
         public static string TournamentNameMustBeUnique {
             get {
@@ -357,7 +366,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If there is a transfer, it&apos;s necessary to specify the end date of the transfer period.
+        ///    Looks up a localized string similar to If there is a transfer, it&apos;s necessary to specify the end date of the transfer period.
         /// </summary>
         public static string TransferEndMissing {
             get {
@@ -366,7 +375,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If there is a transfer, it&apos;s necessary to specify the start date of the transfer period.
+        ///    Looks up a localized string similar to If there is a transfer, it&apos;s necessary to specify the start date of the transfer period.
         /// </summary>
         public static string TransferStartMissing {
             get {
@@ -375,7 +384,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tournament name should be unique.
+        ///    Looks up a localized string similar to Tournament name should be unique.
         /// </summary>
         public static string UniqueNameMessage {
             get {
@@ -384,7 +393,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Coach name can not contain more than  {0} symbols; The field must contain only letters.
+        ///    Looks up a localized string similar to Coach name can not contain more than  {0} symbols; The field must contain only letters.
         /// </summary>
         public static string ValidationCoachName {
             get {
@@ -393,7 +402,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the valid name of the division.
+        ///    Looks up a localized string similar to Please, enter the valid name of the division.
         /// </summary>
         public static string ValidationDivisionName {
             get {
@@ -402,7 +411,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Content can&apos;t be empty or contains more than {0} symbols.
+        ///    Looks up a localized string similar to Content can&apos;t be empty or contains more than {0} symbols.
         /// </summary>
         public static string ValidationFeedbackContent {
             get {
@@ -419,6 +428,7 @@ namespace VolleyManagement.Domain.Properties {
             }
         }
 
+        /// <summary>
         ///   Looks up a localized string similar to Feedback status can&apos;t be changed to this status.
         /// </summary>
         public static string ValidationFeedbackStatus {
@@ -428,7 +438,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email can&apos;t be empty or contains more than {0} symbols.
+        ///    Looks up a localized string similar to Email can&apos;t be empty or contains more than {0} symbols.
         /// </summary>
         public static string ValidationFeedbackUsersEmail {
             get {
@@ -437,7 +447,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the valid name of the group.
+        ///    Looks up a localized string similar to Please, enter the valid name of the group.
         /// </summary>
         public static string ValidationGroupName {
             get {
@@ -446,7 +456,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Body should be less than {0} symbols or not empty.
+        ///    Looks up a localized string similar to Body should be less than {0} symbols or not empty.
         /// </summary>
         public static string ValidationMailBody {
             get {
@@ -473,7 +483,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the valid first name.
+        ///    Looks up a localized string similar to Please, enter the valid first name.
         /// </summary>
         public static string ValidationPlayerFirstName {
             get {
@@ -482,7 +492,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please, enter the valid height.
+        ///    Looks up a localized string similar to Please, enter the valid height.
         /// </summary>
         public static string ValidationPlayerHeight {
             get {
@@ -527,7 +537,16 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Team name can not contain more than  {0} symbols; The field can not be empty.
+        ///    Looks up a localized string similar to Team&apos;s id is wrong.
+        /// </summary>
+        public static string ValidationTeamId {
+            get {
+                return ResourceManager.GetString("ValidationTeamId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to Team name can not contain more than  {0} symbols; The field can not be empty.
         /// </summary>
         public static string ValidationTeamName {
             get {
@@ -536,7 +555,16 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User&apos;s id is wrong.
+        ///    Looks up a localized string similar to Tournament&apos;s id is wrong.
+        /// </summary>
+        public static string ValidationTournamentId {
+            get {
+                return ResourceManager.GetString("ValidationTournamentId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///    Looks up a localized string similar to User&apos;s id is wrong.
         /// </summary>
         public static string ValidationUserId {
             get {

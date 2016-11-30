@@ -297,6 +297,15 @@
   <data name="ValidationMailEmail" xml:space="preserve">
     <value>Please, enter the valid email.</value>
   </data>
+  <data name="InvalidArgumentException" xml:space="preserve">
+    <value>Invalid parametr. Your request didn't create.</value>
+  </data>
+  <data name="ValidationTeamId" xml:space="preserve">
+    <value>Team's id is wrong</value>
+  </data>
+  <data name="ValidationTournamentId" xml:space="preserve">
+    <value>Tournament's id is wrong</value>
+  </data>
   <data name="ValidationPlayerId" xml:space="preserve">
     <value>Player's id is wrong</value>
   </data>

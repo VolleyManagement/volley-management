@@ -28,9 +28,9 @@
         /// <param name="filePath">Path of file on server to delete</param>
         public void Delete(string filePath)
         {
-            if (FileExists(filePath))
+            if (FileExists(HttpContext.Current.Request.MapPath(filePath)))
             {
-                File.Delete(filePath);
+                File.Delete(HttpContext.Current.Request.MapPath(filePath));
             }
             else
             {
@@ -47,7 +47,7 @@
         {
             if (file != null && file.ContentLength > 0 && file.ContentLength < MAX_FILE_SIZE)
             {
-                file.SaveAs(filePath);
+                file.SaveAs(HttpContext.Current.Request.MapPath(filePath));
             }
             else
             {

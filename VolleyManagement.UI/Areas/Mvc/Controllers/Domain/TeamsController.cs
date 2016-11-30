@@ -3,7 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.IO;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
@@ -24,16 +26,22 @@
         /// </summary>
         private readonly ITeamService _teamService;
         private readonly IAuthorizationService _authService;
+        private readonly IFileService _fileService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
         /// <param name="teamService">Instance of the class that implements ITeamService.</param>
         /// <param name="authService">The authorization service</param>
-        public TeamsController(ITeamService teamService, IAuthorizationService authService)
+        /// <param name="fileService">The interface reference of file service.</param>
+        public TeamsController(
+            ITeamService teamService,
+            IAuthorizationService authService,
+            IFileService fileService)
         {
             this._teamService = teamService;
             this._authService = authService;
+            this._fileService = fileService;
         }
 
         /// <summary>
@@ -139,6 +147,10 @@
             }
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
+
+            var photoPath = string.Format(Constants.PHOTO_DIR, id);
+            viewModel.PhotoPath = _fileService.FileExists(photoPath) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
+
             return View(viewModel);
         }
 
@@ -235,7 +247,54 @@
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
+
+            var photoPath = string.Format(Constants.PHOTO_DIR, id);
+            refererViewModel.Model.PhotoPath = _fileService.FileExists(photoPath) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
+
             return View(refererViewModel);
+        }
+
+        /// <summary>
+        /// Action method adds photo of the team.
+        /// </summary>
+        /// <param name="fileToUpload">The photo that is being uploaded.</param>
+        /// <param name="id">Id of the photo.</param>
+        /// <returns>Redirect to Edit page.</returns>
+        [HttpPost]
+        public ActionResult AddPhoto(HttpPostedFileBase fileToUpload, int id)
+        {
+            try
+            {
+                 var photoPath = string.Format(Constants.PHOTO_DIR, id);
+                _fileService.Upload(fileToUpload, photoPath);
+            }
+            catch (FileLoadException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("Edit", "Teams", new { id = id });
+        }
+
+        /// <summary>
+        /// Action method deletes photo of the team.
+        /// </summary>
+        /// <param name="id">Id of the photo.</param>
+        /// <returns>Redirect to Edit page.</returns>
+        [HttpPost]
+        public ActionResult DeletePhoto(int id)
+        {
+            try
+            {
+                var photoPath = string.Format(Constants.PHOTO_DIR, id);
+                _fileService.Delete(photoPath);
+            }
+            catch (FileNotFoundException ex)
+            {
+                this.ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("Edit", "Teams", new { id = id });
         }
 
         /// <summary>

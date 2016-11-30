@@ -7,6 +7,19 @@
 }
 
 <h2>@ViewBag.Title</h2>
+<div class="width">
+    <div class="form radius front cab-form">
+        <div class="info float-left">
+            @using (Html.BeginForm("AddPhoto", "Teams", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input name="id" id="id" type="hidden" value="@Model.Id">
+                <input name="fileToUpload" id="fileToUpload" type="file">
+                <input name="button" id="uploadButton" style='background-image: url(@Model.PhotoPath); background-size: cover; padding-top: 70px;' type="button" value="Upload photo">
+                <input name="submit" id="uploadSubmit" type="submit" value="Submit Query">
+            }
+        </div>
+    </div>
+</div>
 
 @using (Html.BeginForm())
 {
@@ -28,3 +41,5 @@
     @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
 </div>
 
+@Scripts.Render("~/bundles/teamuploadscripts")
+@Styles.Render("/Content/TeamPhoto.css")

@@ -7,6 +7,7 @@
 
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Services;
 
     /// <summary>
     /// Defines bindings for UI layer
@@ -33,6 +34,8 @@
             configuration.BindingConfiguration.ScopeCallback = _scopeCallback;
             IHaveBindingConfiguration configurationCaptcha = Bind<ICaptchaManager>().To<CaptchaManager>();
             configurationCaptcha.BindingConfiguration.ScopeCallback = _scopeCallback;
+            IHaveBindingConfiguration configurationFileService = Bind<IFileService>().To<FileService>();
+            configurationFileService.BindingConfiguration.ScopeCallback = _scopeCallback;
         }
     }
 }

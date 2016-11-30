@@ -70,6 +70,9 @@
 
             bundles.Add(new ScriptBundle("~/bundles/teamlistscripts")
                 .Include("~/Scripts/VmScripts/TeamOperations/List.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/teamuploadscripts")
+                .Include("~/Scripts/VmScripts/TeamOperations/UploadPhoto.js"));
         }
 
         private static void RegisterTornamentScripts(BundleCollection bundles)

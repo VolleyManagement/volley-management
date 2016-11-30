@@ -19,7 +19,7 @@
         /// <returns>is file exists</returns>
         public bool FileExists(string filePath)
         {
-            return File.Exists(filePath);
+            return File.Exists(HttpContext.Current.Request.MapPath(filePath));
         }
 
         /// <summary>
@@ -28,7 +28,7 @@
         /// <param name="filePath">Path of file on server to delete</param>
         public void Delete(string filePath)
         {
-            if (FileExists(HttpContext.Current.Request.MapPath(filePath)))
+            if (FileExists(filePath))
             {
                 File.Delete(HttpContext.Current.Request.MapPath(filePath));
             }

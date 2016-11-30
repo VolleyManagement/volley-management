@@ -44,27 +44,19 @@
         private readonly IGameService _gameService;
 
         /// <summary>
-        /// Holds TeamService instance
-        /// </summary>
-        private readonly ITeamService _teamService;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="TournamentsController"/> class
         /// </summary>
         /// <param name="tournamentService">The tournament service</param>
         /// <param name="gameService">The game service</param>
         /// <param name="authService">The authorization service</param>
-        /// <param name="teamService">The team service</param>
         public TournamentsController(
             ITournamentService tournamentService,
             IGameService gameService,
-            IAuthorizationService authService,
-            ITeamService teamService)
+            IAuthorizationService authService)
         {
             this._tournamentService = tournamentService;
             this._gameService = gameService;
             this._authService = authService;
-            this._teamService = teamService;
         }
 
         /// <summary>
@@ -513,10 +505,8 @@
         /// <returns>Json list of teams</returns>
         public JsonResult GetAllAvailableTeams(int tournamentId)
         {
-            var teamList = _teamService.Get();
-            var availableList = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var differences = teamList.Where(l2 => availableList.All(l1 => l1.Id != l2.Id));
-            var teams = differences.Select(TeamNameViewModel.Map);
+            var nonTournamentTeamsList = _tournamentService.GetAllNoTournamentTeams(tournamentId);
+            var teams = nonTournamentTeamsList.Select(TeamNameViewModel.Map);
             return Json(teams, JsonRequestBehavior.AllowGet);
         }
 

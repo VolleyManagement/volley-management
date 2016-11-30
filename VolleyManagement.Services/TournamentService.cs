@@ -57,7 +57,8 @@
         private readonly IQuery<Tournament, UniqueTournamentCriteria> _uniqueTournamentQuery;
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
-        private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTeamsQuery;
+        private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
+        private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTournamentTeamsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
 
         #endregion
@@ -71,7 +72,8 @@
         /// <param name="uniqueTournamentQuery"> First By Name object query.</param>
         /// <param name="getAllQuery"> Get All object query. </param>
         /// <param name="getByIdQuery">Get tournament by id query.</param>
-        /// <param name="getAllTeamsQuery">Get All Tournament Teams query.</param>
+        /// <param name="getAllTeamsQuery">Get All Teams query.</param>
+        /// <param name="getAllTournamentTeamsQuery">Get All Tournament Teams query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
         /// <param name="authService">Authorization service</param>
         /// <param name="gameService">The game service</param>
@@ -80,7 +82,8 @@
             IQuery<Tournament, UniqueTournamentCriteria> uniqueTournamentQuery,
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
-            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTeamsQuery,
+            IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
+            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTournamentTeamsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IAuthorizationService authService,
             IGameService gameService)
@@ -90,6 +93,7 @@
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
+            _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
             _authService = authService;
             _getTournamentDtoQuery = getTournamentDtoQuery;
             _gameService = gameService;
@@ -133,7 +137,19 @@
         /// <returns>Tournament teams</returns>
         public List<Team> GetAllTournamentTeams(int tournamentId)
         {
-            return _getAllTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+            return _getAllTournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+        }
+
+        /// <summary>
+        /// Returns all teams that don't take part in specific tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of Tournament for getting teams</param>
+        /// <returns>Teams that don't take part in tournament</returns>
+        public IEnumerable<Team> GetAllNoTournamentTeams(int tournamentId)
+        {
+            var allTeamsList = _getAllTeamsQuery.Execute(new GetAllCriteria());
+            var tournamentTeamsList = GetAllTournamentTeams(tournamentId);
+            return allTeamsList.Where(l2 => tournamentTeamsList.All(l1 => l1.Id != l2.Id));
         }
 
         /// <summary>

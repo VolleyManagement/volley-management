@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Data;
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
@@ -211,7 +212,19 @@
             }
             catch (MissingEntityException ex)
             {
-                result = new TeamOperationResultViewModel { Message = ex.Message, OperationSuccessful = false };
+                result = new TeamOperationResultViewModel 
+                { 
+                    Message = ex.Message, 
+                    OperationSuccessful = false 
+                };
+            }
+            catch (DataException)
+            {
+                result = new TeamOperationResultViewModel 
+                { 
+                    Message = App_GlobalResources.TournamentController.TeamDelete, 
+                    OperationSuccessful = false 
+                };
             }
 
             return Json(result, JsonRequestBehavior.DenyGet);

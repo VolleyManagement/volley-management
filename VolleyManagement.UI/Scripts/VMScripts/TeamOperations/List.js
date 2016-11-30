@@ -40,12 +40,10 @@
                 },
                 dataType: 'json',
                 success: function(resultJson) {
-                    alert(resultJson.Message);
                     if (resultJson.OperationSuccessful) {
                         teamRow.remove();
-                    } else {
-                        window.location.pathname = "../Teams";
                     }
+                    $('[vm_teamId=' + teamId + ']>td:last-child').html(resultJson.Message);
                 }
             });
         }

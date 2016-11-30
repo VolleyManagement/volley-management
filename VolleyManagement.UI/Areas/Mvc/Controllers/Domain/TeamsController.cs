@@ -9,7 +9,6 @@
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
 
     /// <summary>
@@ -248,6 +247,6 @@
                                          .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
-        }
+        }        
     }
 }

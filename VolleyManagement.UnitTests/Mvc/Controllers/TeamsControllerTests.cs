@@ -36,7 +36,7 @@
         private const int TEAM_ID = 1;
         private const int SPECIFIED_PLAYER_ID = 4;
         private const int PHOTO_ID = 1;
-        private const string FILE_DIR = "/Content/Photo/Teams/";
+        private const string FILE_DIR = "/Content/Photo/Teams/1.jpg";
         private const string SPECIFIED_PLAYER_NAME = "Test name";
         private const string SPECIFIED_EXCEPTION_MESSAGE = "Test exception message";
         private const string ACHIEVEMENTS = "TestAchievements";
@@ -662,15 +662,20 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FileLoadException))]
-        public void AddPhoto_InvalidFile_FileLoadExceptionThrown()
+        public void AddPhoto_FileLoadExceptionThrown_RequestRedirectToEdit()
         {
             // Arrange
             SetupHttpPostedFileBaseMock();
             SetupFileServiceMockThrowsFileLoadException(_httpPostedFileBaseMock.Object);
 
             // Act
-            _sut.AddPhoto(_httpPostedFileBaseMock.Object, PHOTO_ID);
+            var actionResult = _sut.AddPhoto(_httpPostedFileBaseMock.Object, PHOTO_ID) as RedirectToRouteResult;
+            var modelState = _sut.ModelState[string.Empty];
+
+            // Assert
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, FILE_LOAD_EX_MESSAGE);
+            VerifyRedirect("Edit", actionResult);
         }
 
         [TestMethod]
@@ -688,14 +693,19 @@
         }
 
         [TestMethod]
-        [ExpectedException(typeof(FileNotFoundException))]
-        public void DeletePhoto_InvalidPathToFile_FileNotFoundExceptionThrown()
+        public void DeletePhoto_FileNotFoundExceptionThrown_RequestRedirectToEdit()
         {
             // Arrange
             SetupFileServiceMockThrowsFileNotFoundException();
 
             // Act
-            _sut.DeletePhoto(PHOTO_ID);
+            var actionResult = _sut.DeletePhoto(PHOTO_ID) as RedirectToRouteResult;
+            var modelState = _sut.ModelState[string.Empty];
+
+            // Assert
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, FILE_NOT_FOUND_EX_MESSAGE);
+            VerifyRedirect("Edit", actionResult);
         }
 
         private Team CreateTeam()
@@ -784,12 +794,12 @@
 
         private void VerifyFileServiceUpload(Times times)
         {
-            _fileServiceMock.Verify(ts => ts.Upload(PHOTO_ID, _httpPostedFileBaseMock.Object, FILE_DIR), times);
+            _fileServiceMock.Verify(ts => ts.Upload(_httpPostedFileBaseMock.Object, FILE_DIR), times);
         }
 
         private void VerifyFileServiceDelete(Times times)
         {
-            _fileServiceMock.Verify(ts => ts.Delete(PHOTO_ID, FILE_DIR), times);
+            _fileServiceMock.Verify(ts => ts.Delete(FILE_DIR), times);
         }
 
         private void MockTeamServiceGetTeam(Team team)
@@ -824,19 +834,19 @@
 
         private void SetupFileServiceMockThrowsFileLoadException(HttpPostedFileBase file)
         {
-            _fileServiceMock.Setup(x => x.Upload(PHOTO_ID, file, FILE_DIR))
+            _fileServiceMock.Setup(x => x.Upload(file, FILE_DIR))
                 .Throws(new FileLoadException(FILE_LOAD_EX_MESSAGE));
         }
 
         private void SetupFileServiceMockThrowsFileNotFoundException()
         {
-            _fileServiceMock.Setup(x => x.Delete(PHOTO_ID, FILE_DIR))
+            _fileServiceMock.Setup(x => x.Delete(FILE_DIR))
                 .Throws(new FileNotFoundException(FILE_NOT_FOUND_EX_MESSAGE));
         }
 
         private void SetupFileServiceMock()
         {
-            _fileServiceMock.Setup(x => x.Delete(PHOTO_ID, FILE_DIR));
+            _fileServiceMock.Setup(x => x.Delete(FILE_DIR));
         }
 
         private List<Team> MakeTestTeams()

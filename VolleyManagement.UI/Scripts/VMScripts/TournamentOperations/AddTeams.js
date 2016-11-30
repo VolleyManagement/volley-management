@@ -7,7 +7,7 @@
     
     privates.getAllTeamsOptions = function (callback) {
         var id = $("[id='TournamentId']").val();
-        $.getJSON("/Tournaments/GetAllAvaliableTeams", { tournamentId: id }, callback);
+        $.getJSON("/Tournaments/GetAllAvailableTeams", { tournamentId: id }, callback);
     }
 
     privates.handleTeamsAddSuccess = function (data, status, xhr) {
@@ -48,12 +48,9 @@
 
     privates.addTournamentTeamsRow = function () {
 
-        var result = [];
         var selectedTeams = $("select :selected");
         for (var i = 0; i < selectedTeams.length; i++) {
-            if (selectedTeams[i].value != 0) {
-                result.push(parseInt(selectedTeams[i].value));
-            } else {
+            if (selectedTeams[i].value == 0) {
                 return false;
             }
         }

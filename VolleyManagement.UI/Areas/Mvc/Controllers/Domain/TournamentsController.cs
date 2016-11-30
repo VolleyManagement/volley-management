@@ -564,6 +564,18 @@
             return result;
         }
 
+        /// <summary>
+        /// Returns available list of all teams.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>Json list of teams</returns>
+        public JsonResult GetAllAvailableTeams(int tournamentId)
+        {
+            var nonTournamentTeamsList = _tournamentService.GetAllNoTournamentTeams(tournamentId);
+            var teams = nonTournamentTeamsList.Select(TeamNameViewModel.Map);
+            return Json(teams, JsonRequestBehavior.AllowGet);
+        }
+
         #region Private
         /// <summary>
         /// Gets info about the tournament with a specified identifier.

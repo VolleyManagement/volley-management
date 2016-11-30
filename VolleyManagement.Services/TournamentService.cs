@@ -94,6 +94,7 @@
             _getByIdQuery = getByIdQuery;
             _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
+            _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
             _authService = authService;
             _getTournamentDtoQuery = getTournamentDtoQuery;
             _gameService = gameService;

@@ -3,13 +3,13 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Data;
     using System.Linq;
     using System.Web.Mvc;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
 
     /// <summary>
@@ -212,7 +212,19 @@
             }
             catch (MissingEntityException ex)
             {
-                result = new TeamOperationResultViewModel { Message = ex.Message, OperationSuccessful = false };
+                result = new TeamOperationResultViewModel 
+                { 
+                    Message = ex.Message, 
+                    OperationSuccessful = false 
+                };
+            }
+            catch (DataException)
+            {
+                result = new TeamOperationResultViewModel 
+                { 
+                    Message = App_GlobalResources.TournamentController.TeamDelete, 
+                    OperationSuccessful = false 
+                };
             }
 
             return Json(result, JsonRequestBehavior.DenyGet);
@@ -248,6 +260,6 @@
                                          .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
-        }
+        }        
     }
 }

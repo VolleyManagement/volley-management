@@ -2,12 +2,12 @@
     'use strict';
 
     var currNs = VM.addNamespace("tournament.addTeams"),
-     privates = {};
-
+    privates = {};
     privates.tornamentTeamsTable = $("#tornamentRoster");
-
+    
     privates.getAllTeamsOptions = function (callback) {
-        $.getJSON("/Teams/GetAllTeams", callback);
+        var id = $("[id='TournamentId']").val();
+        $.getJSON("/Tournaments/GetAllAvailableTeams", { tournamentId: id }, callback);
     }
 
     privates.handleTeamsAddSuccess = function (data, status, xhr) {
@@ -47,19 +47,22 @@
     }
 
     privates.addTournamentTeamsRow = function () {
-        var context = $("tr:last", privates.tornamentTeamsTable);
-        var elem = $("select :selected", context);
-        if (elem.val() !== "0") {
-            privates.getAllTeamsOptions(function (options) {
-                var responseOptions = "<option value = '0'>" + currNs.teamIsNotSelectedMessage + "</option>";
-                $.each(options, function (key, value) {
-                    responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
-                })
-                privates.renderNewTournamentTeamsRow(responseOptions);
-                $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
-            });
+
+        var selectedTeams = $("select :selected");
+        for (var i = 0; i < selectedTeams.length; i++) {
+            if (selectedTeams[i].value == 0) {
+                return false;
+            }
         }
-        return false;
+
+        privates.getAllTeamsOptions(function (options) {
+            var responseOptions = "<option value = '0'>" + currNs.teamIsNotSelectedMessage + "</option>";
+            $.each(options, function (key, value) {
+                responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+            });
+            privates.renderNewTournamentTeamsRow(responseOptions);
+            $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
+        });
     }
 
     currNs.onAddTeamToTournamentButtonClick = function () {

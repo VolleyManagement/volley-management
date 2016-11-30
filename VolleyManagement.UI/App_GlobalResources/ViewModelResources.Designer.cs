@@ -396,7 +396,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid date of birth.
+        ///   Looks up a localized string similar to Invalid year of birth.
         /// </summary>
         public static string PlayerBirthFieldRange {
             get {
@@ -405,7 +405,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date of birth.
+        ///   Looks up a localized string similar to Year of birth.
         /// </summary>
         public static string PlayerBirthYear {
             get {

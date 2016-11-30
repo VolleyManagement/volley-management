@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Services
 {
+    using System;
     using System.IO;
     using System.Web;
     using VolleyManagement.Contracts;
@@ -9,19 +10,27 @@
     /// </summary>
     public class FileService : IFileService
     {
-        private const int MAX_FILE_SIZE = 1000000;
+        private const int MAX_FILE_SIZE = 1048576;
+
+        /// <summary>
+        /// Is file exists on the server
+        /// </summary>
+        /// <param name="filePath">path of the essence</param>
+        /// <returns>is file exists</returns>
+        public bool FileExists(string filePath)
+        {
+            return File.Exists(HttpContext.Current.Request.MapPath(filePath));
+        }
 
         /// <summary>
         /// Delete file from the server
         /// </summary>
-        /// <param name="fileId">id of the essence</param>
-        /// <param name="fileDir">Directory of file on server to delete</param>
-        public void Delete(int fileId, string fileDir)
+        /// <param name="filePath">Path of file on server to delete</param>
+        public void Delete(string filePath)
         {
-            string fullPath = Path.Combine(HttpContext.Current.Request.MapPath(fileDir), fileId + ".jpg");
-            if (File.Exists(fullPath))
+            if (FileExists(filePath))
             {
-                File.Delete(fullPath);
+                File.Delete(HttpContext.Current.Request.MapPath(filePath));
             }
             else
             {
@@ -32,19 +41,17 @@
         /// <summary>
         /// Upload file to the server
         /// </summary>
-        /// <param name="fileId">id of the essence</param>
         /// <param name="file">file to upload</param>
-        /// <param name="fileDir">Directory of file on server to upload</param>
-        public void Upload(int fileId, HttpPostedFileBase file, string fileDir)
+        /// <param name="filePath">Path of file on server to upload</param>
+        public void Upload(HttpPostedFileBase file, string filePath)
         {
             if (file != null && file.ContentLength > 0 && file.ContentLength < MAX_FILE_SIZE)
             {
-                var path = Path.Combine(HttpContext.Current.Server.MapPath(fileDir), fileId + ".jpg");
-                file.SaveAs(path);
+                file.SaveAs(HttpContext.Current.Request.MapPath(filePath));
             }
             else
             {
-                throw new FileLoadException("File size must be less then 1 MB and greater then 0 MB");
+                throw new ArgumentException("File size must be less then 1 MB and greater then 0 MB");
             }
         }
     }

@@ -31,47 +31,17 @@
             _kernel.Bind<IFileService>().ToConstant(_fileServiceMock.Object);
         }
 
-        [TestMethod]
-        public void FileExists_FileDoesNotExists_ReturnFalse()
-        {
-            bool expected = false;
-
-            // Arrange
-            var sut = _kernel.Get<FileService>();
-
-            // Act
-            bool actual = sut.FileExists(null);
-
-            // Assert
-            Assert.AreEqual(expected, actual, "File exists");
-        }
-
         #region Upload
 
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Upload_InvalidNullFile_FileLoadException()
+        [ExpectedException(typeof(ArgumentException))]
+        public void Upload_InvalidNullFile_ArgumentException()
         {
             // Arrange
             var sut = _kernel.Get<FileService>();
 
             // Act
             sut.Upload(null, null);
-        }
-
-        #endregion
-
-        #region Delete
-
-        [TestMethod]
-        [ExpectedException(typeof(FileNotFoundException))]
-        public void Delete_FileDoesNotExist_ExceptionThrown()
-        {
-            // Arrange
-            var sut = _kernel.Get<FileService>();
-
-            // Act
-            sut.Delete(null);
         }
 
         #endregion

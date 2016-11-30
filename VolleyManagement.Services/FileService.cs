@@ -51,7 +51,7 @@
             }
             else
             {
-                throw new NullReferenceException("File size must be less then 1 MB and greater then 0 MB");
+                throw new ArgumentException("File size must be less then 1 MB and greater then 0 MB");
             }
         }
     }

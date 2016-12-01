@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data;
-    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -269,7 +268,7 @@
                 var photoPath = string.Format(Constants.PHOTO_DIR, id);
                 _fileService.Upload(fileToUpload, HttpContext.Request.MapPath(photoPath));
             }
-            catch (FileLoadException ex)
+            catch (System.IO.FileLoadException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
             }
@@ -290,7 +289,7 @@
                 var photoPath = string.Format(Constants.PHOTO_DIR, id);
                 _fileService.Delete(HttpContext.Request.MapPath(photoPath));
             }
-            catch (FileNotFoundException ex)
+            catch (System.IO.FileNotFoundException ex)
             {
                 this.ModelState.AddModelError(string.Empty, ex.Message);
             }

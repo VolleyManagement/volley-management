@@ -150,7 +150,7 @@
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
 
             var photoPath = string.Format(Constants.PHOTO_DIR, id);
-            viewModel.PhotoPath = _fileService.FileExists(photoPath) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
+            viewModel.PhotoPath = _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
 
             return View(viewModel);
         }
@@ -250,7 +250,7 @@
             var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
 
             var photoPath = string.Format(Constants.PHOTO_DIR, id);
-            refererViewModel.Model.PhotoPath = _fileService.FileExists(photoPath) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
+            refererViewModel.Model.PhotoPath = _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
 
             return View(refererViewModel);
         }
@@ -266,8 +266,8 @@
         {
             try
             {
-                 var photoPath = string.Format(Constants.PHOTO_DIR, id);
-                _fileService.Upload(fileToUpload, photoPath);
+                var photoPath = string.Format(Constants.PHOTO_DIR, id);
+                _fileService.Upload(fileToUpload, HttpContext.Request.MapPath(photoPath));
             }
             catch (FileLoadException ex)
             {
@@ -288,7 +288,7 @@
             try
             {
                 var photoPath = string.Format(Constants.PHOTO_DIR, id);
-                _fileService.Delete(photoPath);
+                _fileService.Delete(HttpContext.Request.MapPath(photoPath));
             }
             catch (FileNotFoundException ex)
             {

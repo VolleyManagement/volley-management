@@ -19,7 +19,7 @@
         /// <returns>is file exists</returns>
         public bool FileExists(string filePath)
         {
-            return File.Exists(HttpContext.Current.Request.MapPath(filePath));
+            return File.Exists(filePath);
         }
 
         /// <summary>
@@ -30,7 +30,7 @@
         {
             if (FileExists(filePath))
             {
-                File.Delete(HttpContext.Current.Request.MapPath(filePath));
+                File.Delete(filePath);
             }
             else
             {
@@ -47,7 +47,7 @@
         {
             if (file != null && file.ContentLength > 0 && file.ContentLength < MAX_FILE_SIZE)
             {
-                file.SaveAs(HttpContext.Current.Request.MapPath(filePath));
+                file.SaveAs(filePath);
             }
             else
             {

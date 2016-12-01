@@ -31,6 +31,40 @@
             _kernel.Bind<IFileService>().ToConstant(_fileServiceMock.Object);
         }
 
+        #region Delete
+
+        [TestMethod]
+        [ExpectedException(typeof(FileNotFoundException))]
+        public void Delete_InvalidNullFile_FileNotFoundException()
+        {
+            // Arrange
+            var sut = _kernel.Get<FileService>();
+
+            // Act
+            sut.Delete(null);
+        }
+
+        #endregion
+
+        #region FileExists
+
+        [TestMethod]
+        public void FileExists_NoFile_FileNotFound()
+        {
+            bool expected = false;
+
+            // Arrange
+            var sut = _kernel.Get<FileService>();
+
+            // Act
+            bool actual = sut.FileExists(null);
+
+            // Assert
+            Assert.AreEqual(expected, actual, "There is no file on server");
+        }
+
+        #endregion
+
         #region Upload
 
         [TestMethod]

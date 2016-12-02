@@ -310,7 +310,6 @@
     <Content Include="Areas\Mvc\Views\Players\_CreateOrEdit.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Index.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Details.cshtml" />
-    <Content Include="Areas\Mvc\Views\Players\Delete.cshtml" />
     <Content Include="Areas\Mvc\Views\Players\Edit.cshtml" />
     <Content Include="Areas\Mvc\Views\ContributorsTeam\Index.cshtml" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

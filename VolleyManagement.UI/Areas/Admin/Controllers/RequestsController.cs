@@ -62,7 +62,7 @@
         {
             try
             {
-                _feedbackService.Reply(feedbackId);
+                _feedbackService.Reply(feedbackId, feedbackMessage);
             }
             catch (InvalidOperationException ex)
             {

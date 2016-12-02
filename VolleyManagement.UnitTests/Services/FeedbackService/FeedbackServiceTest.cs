@@ -8,6 +8,7 @@
     using Data.Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using MSTestExtensions;
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
@@ -24,7 +25,7 @@
 
     [ExcludeFromCodeCoverage]
     [TestClass]
-    public class FeedbackServiceTest
+    public class FeedbackServiceTest : BaseTest
     {
         #region Fields and constants
 
@@ -43,6 +44,8 @@
         private const int VALID_USER_ID = 1;
 
         private const string TEST_NAME = "Nick";
+
+        private const string MESSAGE = "Test reply message";
 
         private readonly Mock<IFeedbackRepository> _feedbackRepositoryMock
             = new Mock<IFeedbackRepository>();
@@ -125,22 +128,14 @@
         public void GetAll_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.Get();
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            // Act => Assert
+            Assert.Throws<AuthorizationException>(
+                () =>
+                sut.Get(),
+               "Requested operation is not allowed");
         }
 
         #endregion
@@ -167,22 +162,14 @@
         public void Get_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.Get(EXISTING_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            // Act => Assert
+            Assert.Throws<AuthorizationException>(
+                () =>
+                 sut.Get(EXISTING_ID),
+                "Requested operation is not allowed");
         }
 
         #endregion
@@ -266,21 +253,13 @@
         public void Close_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.Close(INVALID_FEEDBACK_ID);
-            }
-            catch (MissingEntityException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "A feedback with specified identifier was not found");
+            // Act => Assert
+            Assert.Throws<MissingEntityException>(
+                () =>
+                 sut.Close(INVALID_FEEDBACK_ID),
+                "A feedback with specified identifier was not found");
         }
 
         [TestMethod]
@@ -347,29 +326,20 @@
         public void Close_ClosedFeedback_InvalidOperationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var feedback = new FeedbackBuilder()
                         .WithId(EXISTING_ID)
                         .WithStatus(FeedbackStatusEnum.Closed)
                         .Build();
             MockGetFeedbackByIdQuery(feedback);
-
             MockCurrentUser(VALID_USER_ID);
 
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.Close(EXISTING_ID);
-            }
-            catch (InvalidOperationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Feedback status can't be changed to this status");
+            // Act => Assert
+            Assert.Throws<InvalidOperationException>(
+                () =>
+                 sut.Close(EXISTING_ID),
+                "Feedback status can't be changed to this status");
         }
 
         [TestMethod]
@@ -419,24 +389,14 @@
         public void Close_NoCloseRights_AuthorizationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
-            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Close);
-
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.Close(EXISTING_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            // Act => Assert
+            Assert.Throws<AuthorizationException>(
+                () =>
+                 sut.Close(EXISTING_ID),
+                "Requested operation is not allowed");
         }
 
         [TestMethod]
@@ -487,45 +447,27 @@
         public void GetDetails_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.GetDetails(INVALID_FEEDBACK_ID);
-            }
-            catch (MissingEntityException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "A feedback with specified identifier was not found");
+            // Act => Assert
+            Assert.Throws<MissingEntityException>(
+                () =>
+                 sut.GetDetails(INVALID_FEEDBACK_ID),
+                "A feedback with specified identifier was not found");
         }
 
         [TestMethod]
         public void GetDetails_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
-            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
-
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.GetDetails(EXISTING_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+            // Act => Assert
+            Assert.Throws<AuthorizationException>(
+                () =>
+                 sut.GetDetails(EXISTING_ID),
+                "Requested operation is not allowed");
         }
 
         [TestMethod]
@@ -560,21 +502,13 @@
         public void Reply_FeedbackDoesNotExist_ExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.Reply(INVALID_FEEDBACK_ID);
-            }
-            catch (MissingEntityException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "A feedback with specified identifier was not found");
+            // Act => Assert
+            Assert.Throws<MissingEntityException>(
+                () =>
+                 sut.Reply(EXISTING_ID, MESSAGE),
+                "A feedback with specified identifier was not found");
         }
 
         [TestMethod]
@@ -583,13 +517,14 @@
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(feedback);
-
+            var emailMessage = new EmailMessageBuilder().Build();
+            MockMailService(emailMessage);
             MockCurrentUser(VALID_USER_ID);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.Reply(EXISTING_ID);
+            sut.Reply(EXISTING_ID, MESSAGE);
 
             // Assert
             VerifyEditFeedback(feedback, Times.Once());
@@ -604,13 +539,14 @@
                          .WithStatus(FeedbackStatusEnum.Read)
                          .Build();
             MockGetFeedbackByIdQuery(feedback);
-
+            var emailMessage = new EmailMessageBuilder().Build();
+            MockMailService(emailMessage);
             MockCurrentUser(VALID_USER_ID);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.Reply(EXISTING_ID);
+            sut.Reply(EXISTING_ID, MESSAGE);
 
             // Assert
             VerifyEditFeedback(feedback, Times.Once());
@@ -620,7 +556,6 @@
         public void Reply_ClosedFeedback_InvalidOperationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             var feedback = new FeedbackBuilder()
                          .WithId(EXISTING_ID)
                          .WithStatus(FeedbackStatusEnum.Closed)
@@ -631,18 +566,11 @@
 
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.Reply(EXISTING_ID);
-            }
-            catch (InvalidOperationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Feedback status can't be changed to this status");
+            // Act => Assert
+            Assert.Throws<InvalidOperationException>(
+                () =>
+                 sut.Reply(EXISTING_ID, MESSAGE),
+                "Feedback status can't be changed to this status");
         }
 
         [TestMethod]
@@ -663,7 +591,7 @@
             // Act
             try
             {
-                sut.Reply(EXISTING_ID);
+                sut.Reply(EXISTING_ID, MESSAGE);
             }
             catch (InvalidOperationException ex)
             {
@@ -680,13 +608,14 @@
             // Arrange
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(feedback);
-
+            var emailMessage = new EmailMessageBuilder().Build();
+            MockMailService(emailMessage);
             MockCurrentUser(VALID_USER_ID);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            sut.Reply(EXISTING_ID);
+            sut.Reply(EXISTING_ID, MESSAGE);
 
             // Assert
             VerifyAdminName(feedback, TEST_NAME);
@@ -697,23 +626,14 @@
         public void Reply_NoReplyRights_AuthorizationExceptionThrown()
         {
             // Arrange
-            Exception exception = null;
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Reply);
-            var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act
-            try
-            {
-                sut.Reply(EXISTING_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Requested operation is not allowed");
+             // Act => Assert
+            Assert.Throws<AuthorizationException>(
+                () =>
+                 sut.Reply(EXISTING_ID, MESSAGE),
+                "Requested operation is not allowed");
         }
 
         [TestMethod]
@@ -728,7 +648,7 @@
             // Act
             try
             {
-                sut.Reply(EXISTING_ID);
+                sut.Reply(EXISTING_ID, MESSAGE);
             }
             catch (AuthorizationException ex)
             {
@@ -765,12 +685,6 @@
              new User { PersonName = TEST_NAME });
         }
 
-        private void VerifyExceptionThrown(Exception exception, string expectedMessage)
-        {
-            Assert.IsNotNull(exception, "There is no exception thrown");
-            Assert.IsTrue(exception.Message.Equals(expectedMessage), "Expected and actual exceptions messages aren't equal");
-        }
-
         private bool FeedbacksAreEqual(Feedback x, Feedback y)
         {
             return new FeedbackComparer().Compare(x, y) == 0;
@@ -801,8 +715,8 @@
 
         private void VerifyExceptionThrown(Exception exception, Exception expected)
         {
-            Assert.IsNotNull(exception);
-            Assert.IsTrue(exception.Message.Equals(expected.Message));
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsNotNull(exception);
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.IsTrue(exception.Message.Equals(expected.Message));
         }
 
         private void VerifyEditFeedback(Feedback feedback, Times times)

@@ -44,6 +44,7 @@
         /// Reply the answer to user.
         /// </summary>
         /// <param name="id">id for reply.</param>
-         void Reply(int id);
+        /// <param name="message">message for reply</param>
+        void Reply(int id, string message);
     }
 }

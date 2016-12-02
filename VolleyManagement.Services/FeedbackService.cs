@@ -149,7 +149,8 @@
         /// Reply the answer to user.
         /// </summary>
         /// <param name="id">id for reply.</param>
-        public void Reply(int id)
+        /// <param name="message">message for reply.</param>
+        public void Reply(int id, string message)
         {
             _authService.CheckAccess(AuthOperations.Feedbacks.Reply);
 
@@ -161,6 +162,7 @@
             }
 
             ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Answered);
+            NotifyUser(feedback.UsersEmail, message);
         }
 
         /// <summary>
@@ -197,6 +199,18 @@
             string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
 
             EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
+            _mailService.Send(emailMessage);
+        }
+
+        /// <summary>
+        /// Send a confirmation email to user.
+        /// </summary>
+        /// <param name="emailTo">Recipient email.</param>
+        /// <param name="message">Message for reply</param>
+        private void NotifyUser(string emailTo, string message)
+        {
+            string subject = Properties.Resources.FeedbacksEmailReplySubject;
+            EmailMessage emailMessage = new EmailMessage(emailTo, subject, message);
             _mailService.Send(emailMessage);
         }
 

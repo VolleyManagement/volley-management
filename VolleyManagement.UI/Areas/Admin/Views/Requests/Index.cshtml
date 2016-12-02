@@ -48,21 +48,15 @@
                     <td>@feedback.Date</td>
                     <td>@feedback.Status</td>
                     <td>
-                        @if (feedback.CanReply)
-                        {
-                            @Html.ActionLink("Reply", "Reply", new { id = feedback.Id }, new { @class = "btn btn-danger btn-xs" })
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Reply", "Reply", new { id = feedback.Id }, new { @class = "btn btn-danger btn-xs", @disabled = !feedback.CanClose, onclick = "javascript:return false;" })
-                        }
                         @Html.ActionLink("Details", "Details", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
                         @if (feedback.CanClose)
                         {
+                            <button id="popup" class="btn btn-danger btn-xs" onclick="div_show(@feedback.Id)">Reply</button>
                             @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
                         }
                         else
                         {
+                            <button id="popup" class="btn btn-danger btn-xs" disabled>Reply</button>
                             @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs", @disabled = false, onclick = "javascript:return false;" })
                         }
                     </td>

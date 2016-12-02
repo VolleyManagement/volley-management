@@ -24,6 +24,7 @@
 
         private const int EXISTING_ID = 1;
         private const string ERROR_PAGE = "ErrorPage";
+        private const string MESSAGE = "Test reply message";
         private Mock<IFeedbackService> _feedbacksServiceMock;
         private IKernel _kernel;
 
@@ -173,7 +174,7 @@
             var actionResult = controller.Reply(FEEDBACK_ID) as ViewResult;
 
             // Assert
-            AssertReplyVerify(_feedbacksServiceMock, FEEDBACK_ID);
+            AssertReplyVerify(_feedbacksServiceMock, FEEDBACK_ID, MESSAGE);
         }
 
         [TestMethod]
@@ -307,9 +308,13 @@
             mock.Verify(ps => ps.Close(It.Is<int>(id => id == feedbackId)), Times.Once());
         }
 
-        private static void AssertReplyVerify(Mock<IFeedbackService> mock, int feedbackId)
+        private static void AssertReplyVerify(Mock<IFeedbackService> mock, int feedbackId, string feedbackMessage)
         {
-            mock.Verify(ps => ps.Reply(It.Is<int>(id => id == feedbackId)), Times.Once());
+            mock.Verify(
+                ps => ps.Reply(
+                It.Is<int>(id => id == feedbackId),
+                It.Is<string>(message => message == feedbackMessage)),
+                Times.Once());
         }
 
         #endregion
@@ -334,13 +339,13 @@
 
         private void SetupReplyThrowInvalidOperationException()
         {
-            _feedbacksServiceMock.Setup(ts => ts.Reply(It.IsAny<int>()))
+            _feedbacksServiceMock.Setup(ts => ts.Reply(It.IsAny<int>(), It.IsAny<string>()))
                 .Throws(new InvalidOperationException(string.Empty));
         }
 
         private void SetupReplyThrowMissingEntityException()
         {
-            _feedbacksServiceMock.Setup(ts => ts.Reply(It.IsAny<int>()))
+            _feedbacksServiceMock.Setup(ts => ts.Reply(It.IsAny<int>(), It.IsAny<string>()))
                 .Throws(new MissingEntityException(string.Empty));
         }
         #endregion

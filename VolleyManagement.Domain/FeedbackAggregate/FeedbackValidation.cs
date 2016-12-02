@@ -52,7 +52,13 @@
         /// <returns>Validity of status.</returns>
         public static bool ValidateStatus(FeedbackStatusEnum status, FeedbackStatusEnum newStatus)
         {
-            return (status != FeedbackStatusEnum.New) && (int)newStatus <= (int)status;
+            if (status == FeedbackStatusEnum.Answered)
+            {
+                return (int)newStatus < (int)status;
+            }
+
+            return (status != FeedbackStatusEnum.New)
+                   && (int)newStatus <= (int)status;
         }
     }
 }

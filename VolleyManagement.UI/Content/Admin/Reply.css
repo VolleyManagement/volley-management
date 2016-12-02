@@ -1,0 +1,61 @@
+﻿#replyPopup{
+width: 100%;
+height: 100%;
+opacity: 0.95;
+top: 0;
+left: 0;
+display: none;
+overflow:auto;
+
+}
+
+img#close{
+position: absolute;
+right: -14px;
+top: -14px;
+cursor: pointer;
+}
+
+div#popupContact{
+position: absolute; 
+left: 50%;
+top: 17%;
+margin-left: -202px;
+font-family: 'Raleway', sans-serif;
+}
+
+form{
+max-width: 300px;
+min-width: 250px;
+padding: 10px 50px;
+border: 2px solid gray;
+border-radius: 10px;
+font-family:raleway;
+background-color: white;
+}
+
+textarea{
+width:82%;
+height: 95px;
+padding: 10px;
+margin-top: 30px;
+border: 1px solid #ccc;
+padding-left: 40px;
+font-size: 16px;
+font-family:raleway;
+margin-bottom: 30px;
+}
+
+#submit{
+text-decoration:none;
+width:100%;
+text-align:center;
+display:block;
+background-color:#FFBC00;
+color: white;
+border: 1px solid #FFCB00;
+padding: 10px 0;
+font-size:20px;
+cursor:pointer;
+border-radius: 5px;
+}

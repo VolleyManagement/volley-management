@@ -113,7 +113,8 @@
                        "~/Content/metisMenu.min.css",
                        "~/Content/font-awesome.min.css",
                        "~/Content/Admin/admin.css",
-                       "~/Content/Admin/vm.css"));
+                       "~/Content/Admin/vm.css",
+                       "~/Content/Admin/Reply.css"));
         }
 
         private static void RegisterAdminScripts(BundleCollection bundles)

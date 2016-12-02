@@ -10,8 +10,8 @@
         /// <summary>
         /// Method, that give result: captcha passed or not
         /// </summary>
-        /// <param name="request">Request to the browser</param>
+        /// <param name="response">Response of Captcha.</param>
         /// <returns>Captcha result</returns>
-        bool IsFormSubmit(HttpRequestBase request);
+        bool IsFormSubmit(string response);
     }
 }

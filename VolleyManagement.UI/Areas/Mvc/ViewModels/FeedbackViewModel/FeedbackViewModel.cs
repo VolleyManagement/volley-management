@@ -47,7 +47,12 @@
         /// Gets or sets data site key
         /// </summary>
         public string ReCapthaKey { get; set; }
-
+        
+        /// <summary>
+        /// Gets or sets Captcha response.
+        /// </summary>
+        public string CaptchaResponse { get; set; }
+        
         #region Factory Methods
 
         /// <summary>

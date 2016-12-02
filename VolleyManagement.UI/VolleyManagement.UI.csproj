@@ -355,7 +355,6 @@
     <Content Include="Areas\Mvc\Views\Tournaments\EditScheduledGame.cshtml" />
     <Content Include="Areas\Mvc\Views\Tournaments\_SwappedRounds.cshtml" />
     <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
-    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
     <Content Include="Areas\Admin\Views\Request\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Request\PlayerDetails.cshtml" />
     <Content Include="Areas\Admin\Views\Request\UserDetails.cshtml" />
@@ -375,7 +374,6 @@
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Users\UserDetails.cshtml" />
-    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Requests\Reply.cshtml" />
@@ -389,9 +387,9 @@
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\VMScripts\Admin\admin.js" />
+    <Content Include="Scripts\VMScripts\FeedbackOperations\AjaxResponse.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\CheckEnvironment.js" />
     <Content Include="Areas\Mvc\Views\Feedbacks\Create.cshtml" />
-    <Content Include="Areas\Mvc\Views\Shared\FeedbackSentMessage.cshtml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\VMScripts\Admin\BackButton.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
@@ -504,6 +502,7 @@
     <Compile Include="Areas\Admin\Models\OperationResultViewModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestViewModel.cs" />
     <Compile Include="Areas\Mvc\Controllers\Domain\FeedbacksController.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackMessageViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayersListReferrerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamCollectionReferrerViewModel.cs" />

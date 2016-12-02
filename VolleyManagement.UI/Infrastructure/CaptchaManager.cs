@@ -18,12 +18,11 @@
         /// <summary>
         /// Method, that verifies if captcha is valid 
         /// </summary>
-        /// <param name="request">Get request from browser</param>
+        /// <param name="response">Response of Captcha.</param>
         /// <returns>Captcha result</returns>
-        public bool IsFormSubmit(HttpRequestBase request)
+        public bool IsFormSubmit(string response)
         {
             bool status = false;
-            var response = request[captchaResponse];
             string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
             using (var client = new WebClient())
             {

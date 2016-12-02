@@ -93,7 +93,8 @@
             bundles.Add(new ScriptBundle("~/bundles/feedbackscripts")
                 .Include(
                     "~/Scripts/VmScripts/FeedbackOperations/BackButton.js",
-                    "~/Scripts/VmScripts/FeedbackOperations/CheckEnvironment.js"));
+                    "~/Scripts/VmScripts/FeedbackOperations/CheckEnvironment.js",
+                    "~/Scripts/VmScripts/FeedbackOperations/AjaxResponse.js"));
         }
 
         private static void RegisterPlayerScripts(BundleCollection bundles)

@@ -41,7 +41,7 @@
             ICurrentUserService currentUserService,
             ICaptchaManager captchaManager)
         {
-           this._feedbackService = feedbackService;
+            this._feedbackService = feedbackService;
             this._userService = userService;
             this._currentUserService = currentUserService;
             this._captchaManager = captchaManager;
@@ -67,16 +67,24 @@
         /// <param name="feedbackViewModel">Feedback view model.</param>
         /// <returns>Feedback creation view.</returns>
         [HttpPost]
-        public ActionResult Create(FeedbackViewModel feedbackViewModel)
-        {             
+        public JsonResult Create(FeedbackViewModel feedbackViewModel)
+        {
+            FeedbackMessageViewModel result;
+
             try
             {
-                HttpRequestBase request = Request;
-                if (ModelState.IsValid && _captchaManager.IsFormSubmit(request))
+                if (ModelState.IsValid && _captchaManager.IsFormSubmit(
+                    feedbackViewModel.CaptchaResponse))
                 {
                     var domainFeedback = feedbackViewModel.ToDomain();
                     this._feedbackService.Create(domainFeedback);
-                    return View("FeedbackSentMessage", feedbackViewModel);
+
+                    result = new FeedbackMessageViewModel
+                    {
+                        ResultMessage = "Your Feedback has been sent successfully",
+                        OperationSuccessful = true
+                    };
+                    return Json(result, JsonRequestBehavior.DenyGet);
                 }
             }
             catch (ArgumentException ex)
@@ -85,7 +93,13 @@
             }
 
             GetDataSiteKey(feedbackViewModel);
-            return View("Create", feedbackViewModel);
+            result = new FeedbackMessageViewModel
+            {
+                ResultMessage = "Please verify that you are not a robot",
+                OperationSuccessful = false
+            };
+
+            return Json(result, JsonRequestBehavior.DenyGet);
         }
 
         /// <summary>
@@ -114,5 +128,5 @@
             string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
             feedbackViewModel.ReCapthaKey = secretKey;
         }
-    }  
+    }
 }

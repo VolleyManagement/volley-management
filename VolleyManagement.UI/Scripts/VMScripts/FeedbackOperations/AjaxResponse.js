@@ -30,6 +30,12 @@ $(document).ready(function () {
                     },
                     error: function () {
                         alert('Error');
+                    },
+                    beforeSend: function () {
+                        $('#waitPlace').html('<img src="/Content/ajax-loader.gif" alt="Wait" />');
+                    },
+                    complete: function () {
+                        $('#waitPlace').html('');
                     }
                 });
             };

@@ -61,6 +61,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This game result can not be change, because of playoff scheme. Edit operation can not be applied..
+        /// </summary>
+        public static string GameResultNotEdited {
+            get {
+                return ResourceManager.GetString("GameResultNotEdited", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The result of the game with the specified ID is not found. Delete operation can not be applied..
         /// </summary>
         public static string GameResultNotFound {

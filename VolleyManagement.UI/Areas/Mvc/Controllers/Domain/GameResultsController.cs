@@ -133,6 +133,10 @@
             {
                 ModelState.AddModelError(string.Empty, App_GlobalResources.GameResultsController.GameResultWasDeleted);
             }
+            catch (ArgumentException)
+            {
+                ModelState.AddModelError(string.Empty, App_GlobalResources.GameResultsController.GameResultNotEdited);
+            }
 
             return View(gameResultViewModel);
         }

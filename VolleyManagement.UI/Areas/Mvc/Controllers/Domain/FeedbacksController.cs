@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
-    using System.Web;
     using System.Web.Configuration;
     using System.Web.Mvc;
     using Contracts;
@@ -69,35 +68,32 @@
         [HttpPost]
         public JsonResult Create(FeedbackViewModel feedbackViewModel)
         {
-            FeedbackMessageViewModel result;
-
-            try
+            FeedbackMessageViewModel result = new FeedbackMessageViewModel
             {
-                if (ModelState.IsValid && _captchaManager.IsFormSubmit(
-                    feedbackViewModel.CaptchaResponse))
-                {
-                    var domainFeedback = feedbackViewModel.ToDomain();
-                    this._feedbackService.Create(domainFeedback);
-
-                    result = new FeedbackMessageViewModel
-                    {
-                        ResultMessage = "Your Feedback has been sent successfully",
-                        OperationSuccessful = true
-                    };
-                    return Json(result, JsonRequestBehavior.DenyGet);
-                }
-            }
-            catch (ArgumentException ex)
-            {
-                ModelState.AddModelError("ValidationMessage", ex.Message);
-            }
-
-            GetDataSiteKey(feedbackViewModel);
-            result = new FeedbackMessageViewModel
-            {
-                ResultMessage = "Please verify that you are not a robot",
+                ResultMessage = App_GlobalResources.TournamentController.CheckCaptcha,
                 OperationSuccessful = false
             };
+
+            if (_captchaManager.IsFormSubmit(feedbackViewModel.CaptchaResponse))
+            {
+                result.ResultMessage = App_GlobalResources.TournamentController.CheckData;
+                result.OperationSuccessful = false;
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        var domainFeedback = feedbackViewModel.ToDomain();
+                        this._feedbackService.Create(domainFeedback);
+
+                        result.ResultMessage = App_GlobalResources.TournamentController.SuccessfulSent;
+                        result.OperationSuccessful = true;
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        ModelState.AddModelError("ValidationMessage", ex.Message);
+                    }
+                }
+            }
 
             return Json(result, JsonRequestBehavior.DenyGet);
         }

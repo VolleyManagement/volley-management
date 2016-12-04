@@ -74,25 +74,24 @@
                 OperationSuccessful = false
             };
 
-            if (_captchaManager.IsFormSubmit(feedbackViewModel.CaptchaResponse))
+            try
             {
-                result.ResultMessage = App_GlobalResources.TournamentController.CheckData;
-                result.OperationSuccessful = false;
-                if (ModelState.IsValid)
+                if (_captchaManager.IsFormSubmit(feedbackViewModel.CaptchaResponse))
                 {
-                    try
+                    result.ResultMessage = App_GlobalResources.TournamentController.CheckData;
+                    result.OperationSuccessful = false;
+                    if (ModelState.IsValid)
                     {
                         var domainFeedback = feedbackViewModel.ToDomain();
                         this._feedbackService.Create(domainFeedback);
-
                         result.ResultMessage = App_GlobalResources.TournamentController.SuccessfulSent;
                         result.OperationSuccessful = true;
                     }
-                    catch (ArgumentException ex)
-                    {
-                        ModelState.AddModelError("ValidationMessage", ex.Message);
-                    }
                 }
+            }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("ValidationMessage", ex.Message);
             }
 
             return Json(result, JsonRequestBehavior.DenyGet);

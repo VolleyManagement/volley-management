@@ -33,10 +33,9 @@
         private const string TEST_CONTENT = "Test content";
         private const string TEST_ENVIRONMENT = "Test environment";
         private const string EXCEPTION_MESSAGE = "ValidationMessage";
-        private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
+        private const string CHECK_DATA_MESSAGE = "Data is not valid.";
         private const string CHECK_CAPTCHA_MESSAGE = "Please verify that you are not a robot.";
         private const string SUCCESS_SENT_MESSAGE = "Your Feedback has been sent successfully.";
-        private const string CHECK_DATA_MESSAGE = "Data is not valid.";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
             new Mock<IFeedbackService>();

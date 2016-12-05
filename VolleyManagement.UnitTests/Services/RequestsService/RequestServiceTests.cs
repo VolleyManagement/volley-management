@@ -14,6 +14,7 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Player;
     using VolleyManagement.Domain.RequestsAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
@@ -50,6 +51,9 @@
         private readonly Mock<IQuery<List<Request>, GetAllCriteria>> _getAllRequestsQueryMock =
           new Mock<IQuery<List<Request>, GetAllCriteria>>();
 
+        private readonly Mock<IQuery<Request, UserPlayersCriteria>> _getRequestUserPlayerQueryMock =
+            new Mock<IQuery<Request, UserPlayersCriteria>>();
+
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private IKernel _kernel;
@@ -69,6 +73,7 @@
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
             _kernel.Bind<IRequestRepository>().ToConstant(_requestRepositoryMock.Object);
             _kernel.Bind<IQuery<Request, FindByIdCriteria>>().ToConstant(_getRequestByIdQueryMock.Object);
+            _kernel.Bind<IQuery<Request, UserPlayersCriteria>>().ToConstant(_getRequestUserPlayerQueryMock.Object);
             _kernel.Bind<IQuery<List<Request>, GetAllCriteria>>().ToConstant(_getAllRequestsQueryMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _requestRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);

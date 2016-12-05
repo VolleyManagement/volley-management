@@ -647,67 +647,6 @@
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
-        [TestMethod]
-        public void AddPhoto_PhotoAdded_RequestRedirectToEdit()
-        {
-            // Arrange
-            SetupHttpPostedFileBaseMock();
-
-            // Act
-            var actionResult = _sut.AddPhoto(_httpPostedFileBaseMock.Object, PHOTO_ID) as RedirectToRouteResult;
-
-            // Assert
-            VerifyFileServiceUpload(Times.Once());
-            VerifyRedirect("Edit", actionResult);
-        }
-
-        [TestMethod]
-        public void AddPhoto_FileLoadExceptionThrown_RequestRedirectToEdit()
-        {
-            // Arrange
-            SetupHttpPostedFileBaseMock();
-            SetupFileServiceMockThrowsFileLoadException(_httpPostedFileBaseMock.Object);
-
-            // Act
-            var actionResult = _sut.AddPhoto(_httpPostedFileBaseMock.Object, PHOTO_ID) as RedirectToRouteResult;
-            var modelState = _sut.ModelState[string.Empty];
-
-            // Assert
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, FILE_LOAD_EX_MESSAGE);
-            VerifyRedirect("Edit", actionResult);
-        }
-
-        [TestMethod]
-        public void DeletePhoto_PhotoDeleted_RequestRedirectToEdit()
-        {
-            // Arrange
-            SetupFileServiceMock();
-
-            // Act
-            var actionResult = _sut.DeletePhoto(PHOTO_ID) as RedirectToRouteResult;
-
-            // Assert
-            VerifyFileServiceDelete(Times.Once());
-            VerifyRedirect("Edit", actionResult);
-        }
-
-        [TestMethod]
-        public void DeletePhoto_FileNotFoundExceptionThrown_RequestRedirectToEdit()
-        {
-            // Arrange
-            SetupFileServiceMockThrowsFileNotFoundException();
-
-            // Act
-            var actionResult = _sut.DeletePhoto(PHOTO_ID) as RedirectToRouteResult;
-            var modelState = _sut.ModelState[string.Empty];
-
-            // Assert
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, FILE_NOT_FOUND_EX_MESSAGE);
-            VerifyRedirect("Edit", actionResult);
-        }
-
         private Team CreateTeam()
         {
             return new TeamBuilder()

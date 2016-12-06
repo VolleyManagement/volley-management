@@ -55,13 +55,14 @@
         /// <summary>
         /// Feedback reply.
         /// </summary>
-        /// <param name="id"> Feedback Id. </param>
+        /// <param name="feedbackId"> feedback id</param>
+        /// <param name="feedbackMessage"> feedback message</param>
         /// <returns> The <see cref="ActionResult"/>. </returns>
-        public ActionResult Reply(int id)
+        public ActionResult Reply(int feedbackId, string feedbackMessage)
         {
             try
             {
-                _feedbackService.Reply(id);
+                _feedbackService.Reply(feedbackId, feedbackMessage);
             }
             catch (InvalidOperationException ex)
             {

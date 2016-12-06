@@ -125,17 +125,15 @@
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
         public void GetAll_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act => Assert
-            Assert.Throws<AuthorizationException>(
-                () =>
-                sut.Get(),
-               "Requested operation is not allowed");
+            // Act
+            sut.Get();
         }
 
         #endregion
@@ -159,17 +157,15 @@
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
         public void Get_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act => Assert
-            Assert.Throws<AuthorizationException>(
-                () =>
-                 sut.Get(EXISTING_ID),
-                "Requested operation is not allowed");
+            // Act
+            sut.Get(EXISTING_ID);
         }
 
         #endregion
@@ -400,24 +396,17 @@
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
         public void Close_NoCloseRights_DbNotChanged()
         {
             // Arrange
-            Exception exception = null;
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Close);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            try
-            {
-                sut.Close(EXISTING_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
+            sut.Close(EXISTING_ID);
 
             // Assert
             VerifyEditFeedback(feedback, Times.Never());
@@ -457,38 +446,29 @@
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
         public void GetDetails_NoReadRights_AuthorizationExceptionThrown()
         {
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
             var sut = _kernel.Get<FeedbackService>();
 
-            // Act => Assert
-            Assert.Throws<AuthorizationException>(
-                () =>
-                 sut.GetDetails(EXISTING_ID),
-                "Requested operation is not allowed");
+            // Act
+            sut.GetDetails(EXISTING_ID);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
         public void GetDetails_NoReadRights_DbNotChanged()
         {
             // Arrange
-            Exception exception = null;
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
 
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            try
-            {
-                sut.GetDetails(EXISTING_ID);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
+            sut.GetDetails(EXISTING_ID);
 
             // Assert
             VerifyEditFeedback(feedback, Times.Never());
@@ -574,10 +554,10 @@
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void Reply_ClosedFeedback_DbNotChanged()
         {
             // Arrange
-            Exception exception = null;
             var feedback = new FeedbackBuilder()
                          .WithId(EXISTING_ID)
                          .WithStatus(FeedbackStatusEnum.Closed)
@@ -589,14 +569,7 @@
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            try
-            {
-                sut.Reply(EXISTING_ID, MESSAGE);
-            }
-            catch (InvalidOperationException ex)
-            {
-                exception = ex;
-            }
+            sut.Reply(EXISTING_ID, MESSAGE);
 
             // Assert
             VerifyEditFeedback(feedback, Times.Never());
@@ -623,37 +596,28 @@
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
         public void Reply_NoReplyRights_AuthorizationExceptionThrown()
         {
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Reply);
             var sut = _kernel.Get<FeedbackService>();
 
-             // Act => Assert
-            Assert.Throws<AuthorizationException>(
-                () =>
-                 sut.Reply(EXISTING_ID, MESSAGE),
-                "Requested operation is not allowed");
+             // Act
+            sut.Reply(EXISTING_ID, MESSAGE);
         }
 
         [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
         public void Reply_NoReplyRights_DbNotChanged()
         {
             // Arrange
-            Exception exception = null;
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Reply);
             var feedback = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             var sut = _kernel.Get<FeedbackService>();
 
             // Act
-            try
-            {
-                sut.Reply(EXISTING_ID, MESSAGE);
-            }
-            catch (AuthorizationException ex)
-            {
-                exception = ex;
-            }
+            sut.Reply(EXISTING_ID, MESSAGE);
 
             // Assert
             VerifyEditFeedback(feedback, Times.Never());

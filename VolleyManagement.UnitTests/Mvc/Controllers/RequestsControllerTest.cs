@@ -156,7 +156,7 @@
             var controller = _kernel.Get<RequestsController>();
 
             // Act
-            var actionResult = controller.Reply(FEEDBACK_ID);
+            var actionResult = controller.Reply(FEEDBACK_ID, "message");
 
             // Assert
             AssertValidRedirectResult(actionResult, "Index");
@@ -170,7 +170,7 @@
             var controller = _kernel.Get<RequestsController>();
 
             // Act
-            var actionResult = controller.Reply(FEEDBACK_ID) as ViewResult;
+            var actionResult = controller.Reply(FEEDBACK_ID, "message") as ViewResult;
 
             // Assert
             AssertReplyVerify(_feedbacksServiceMock, FEEDBACK_ID);
@@ -184,7 +184,7 @@
             SetupReplyThrowInvalidOperationException();
 
             // Act
-            var actionResult = controller.Reply(EXISTING_ID) as ViewResult;
+            var actionResult = controller.Reply(EXISTING_ID, "message") as ViewResult;
 
             // Assert
             Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
@@ -198,7 +198,7 @@
             SetupReplyThrowMissingEntityException();
 
             // Act
-            var actionResult = controller.Reply(EXISTING_ID) as ViewResult;
+            var actionResult = controller.Reply(EXISTING_ID, "message") as ViewResult;
 
             // Assert
             Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);

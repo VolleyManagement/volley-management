@@ -78,14 +78,16 @@
             {
                 if (_captchaManager.IsFormSubmit(feedbackViewModel.CaptchaResponse))
                 {
-                    result.ResultMessage = App_GlobalResources.TournamentController.CheckData;
-                    result.OperationSuccessful = false;
                     if (ModelState.IsValid)
                     {
                         var domainFeedback = feedbackViewModel.ToDomain();
                         this._feedbackService.Create(domainFeedback);
                         result.ResultMessage = App_GlobalResources.TournamentController.SuccessfulSent;
                         result.OperationSuccessful = true;
+                    }
+                    else
+                    {
+                        result.ResultMessage = App_GlobalResources.TournamentController.CheckData;
                     }
                 }
             }

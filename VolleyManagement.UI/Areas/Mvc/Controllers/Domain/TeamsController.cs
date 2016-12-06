@@ -11,7 +11,6 @@
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
 
     /// <summary>
@@ -223,7 +222,11 @@
             }
             catch (MissingEntityException ex)
             {
-                result = new TeamOperationResultViewModel { Message = ex.Message, OperationSuccessful = false };
+                result = new TeamOperationResultViewModel
+                {
+                    Message = ex.Message,
+                    OperationSuccessful = false
+                };
             }
 
             return Json(result, JsonRequestBehavior.DenyGet);
@@ -246,10 +249,20 @@
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
-
             refererViewModel.Model.PhotoPath = photoPath(id);
-
             return View(refererViewModel);
+        }
+
+        /// <summary>
+        /// Returns list of all teams
+        /// </summary>
+        /// <returns>Json list of teams</returns>
+        public JsonResult GetAllTeams()
+        {
+            var teams = this._teamService.Get()
+                                         .ToList()
+                                         .Select(t => TeamNameViewModel.Map(t));
+            return Json(teams, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -293,18 +306,6 @@
             }
 
             return RedirectToAction("Edit", "Teams", new { id = id });
-        }
-
-        /// <summary>
-        /// Returns list of all teams
-        /// </summary>
-        /// <returns>Json list of teams</returns>
-        public JsonResult GetAllTeams()
-        {
-            var teams = this._teamService.Get()
-                                         .ToList()
-                                         .Select(t => TeamNameViewModel.Map(t));
-            return Json(teams, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>

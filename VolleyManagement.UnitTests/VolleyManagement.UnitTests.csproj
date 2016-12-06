@@ -118,9 +118,13 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Admin\Comparers\MessageViewModelComparer.cs" />
     <Compile Include="Admin\Comparers\UserViewModelComparer.cs" />
+    <Compile Include="Admin\Controllers\TournamentRequestControllerTest.cs" />
     <Compile Include="Admin\Controllers\UsersControllerTest.cs" />
+    <Compile Include="Admin\ViewModels\TournamentRequestsViewModelsBuilder.cs" />
     <Compile Include="Admin\ViewModels\UserAdminViewModelBuilder.cs" />
+    <Compile Include="Admin\Comparers\TournamentRequestViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\RequestsViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
@@ -159,8 +163,11 @@
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TeamNameViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TeamNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentApplyViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentApplyViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentTeamsListViewModelComparer.cs" />
@@ -195,6 +202,10 @@
     <Compile Include="Services\RequestsService\RequestServiceTestFixture.cs" />
     <Compile Include="Services\RequestsService\RequestServiceTests.cs" />
     <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTestFixture.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestBuilder.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestComparer.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTests.cs" />
     <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
     <Compile Include="Services\UserManager\UserBuilder.cs" />
     <Compile Include="Services\UserManager\UserModelBuilder.cs" />

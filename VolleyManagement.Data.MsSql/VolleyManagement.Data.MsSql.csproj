@@ -161,6 +161,10 @@
     <Compile Include="Context\Migrations\201611222024248_BlockUser.Designer.cs">
       <DependentUpon>201611222024248_BlockUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201611232119533_AddTournamentRequestTable.cs" />
+    <Compile Include="Context\Migrations\201611232119533_AddTournamentRequestTable.Designer.cs">
+      <DependentUpon>201611232119533_AddTournamentRequestTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -173,6 +177,7 @@
     <Compile Include="Entities\RequestEntity.cs" />
     <Compile Include="Entities\RoleEntity.cs" />
     <Compile Include="Entities\RoleToOperationEntity.cs" />
+    <Compile Include="Entities\TournamentRequestEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
     <Compile Include="Entities\ContributorEntity.cs" />
     <Compile Include="Infrastructure\NinjectDataAccessModule.cs" />
@@ -192,6 +197,7 @@
     <Compile Include="Queries\RolesQueries.cs" />
     <Compile Include="Queries\TeamQueries.cs" />
     <Compile Include="Queries\TournamentQueries.cs" />
+    <Compile Include="Queries\TournamentRequestQueries.cs" />
     <Compile Include="Queries\UserQueries.cs" />
     <Compile Include="Repositories\ContributorTeamRepository.cs" />
     <Compile Include="Repositories\FeedbackRepository.cs" />
@@ -205,6 +211,7 @@
     <Compile Include="Repositories\Specifications\TournamentsStorageSpecification.cs" />
     <Compile Include="Repositories\TeamRepository.cs" />
     <Compile Include="Repositories\TournamentRepository.cs" />
+    <Compile Include="Repositories\TournamentRequestRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="VolleyUnitOfWork.cs" />
     <Compile Include="Entities\ContributorTeamEntity.cs" />
@@ -313,6 +320,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201611222024248_BlockUser.resx">
       <DependentUpon>201611222024248_BlockUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201611232119533_AddTournamentRequestTable.resx">
+      <DependentUpon>201611232119533_AddTournamentRequestTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

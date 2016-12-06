@@ -10,8 +10,8 @@
 
 namespace VolleyManagement.Services.Properties {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -31,7 +31,7 @@ namespace VolleyManagement.Services.Properties {
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace VolleyManagement.Services.Properties {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace VolleyManagement.Services.Properties {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Gmail message is invalid..
         /// </summary>
@@ -68,7 +68,7 @@ namespace VolleyManagement.Services.Properties {
                 return ResourceManager.GetString("ArgumentExceptionInvalidGmailMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Gmail address is invalid..
         /// </summary>
@@ -77,7 +77,7 @@ namespace VolleyManagement.Services.Properties {
                 return ResourceManager.GetString("ArgumentNullExceptionInvalidGmailAddress", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Gmail password is invalid..
         /// </summary>
@@ -86,7 +86,7 @@ namespace VolleyManagement.Services.Properties {
                 return ResourceManager.GetString("ArgumentNullExceptionInvalidGmailPassword", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Thank you for your feedback!.
         /// </summary>
@@ -95,7 +95,7 @@ namespace VolleyManagement.Services.Properties {
                 return ResourceManager.GetString("FeedbackConfirmationLetterBody", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to User notification.
         /// </summary>
@@ -104,7 +104,7 @@ namespace VolleyManagement.Services.Properties {
                 return ResourceManager.GetString("FeedbackConfirmationLetterSubject", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Feedback №{0}, 
         ///Date: {1}.
@@ -117,7 +117,7 @@ namespace VolleyManagement.Services.Properties {
                 return ResourceManager.GetString("FeedbackEmailBodyToAdmins", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Feedback №{0}.
         /// </summary>
@@ -126,7 +126,7 @@ namespace VolleyManagement.Services.Properties {
                 return ResourceManager.GetString("FeedbackEmailSubjectToAdmins", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to GoogleEmailAddress.
         /// </summary>
@@ -135,7 +135,7 @@ namespace VolleyManagement.Services.Properties {
                 return ResourceManager.GetString("GmailAddress", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to EmailMessage.
         /// </summary>
@@ -144,13 +144,52 @@ namespace VolleyManagement.Services.Properties {
                 return ResourceManager.GetString("GmailMessage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to GoogleEmailPassword.
         /// </summary>
         internal static string GmailPassword {
             get {
                 return ResourceManager.GetString("GmailPassword", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Your apply was confirmed!.
+        /// </summary>
+        internal static string TournamentRequestConfirmitionLetterBody {
+            get {
+                return ResourceManager.GetString("TournamentRequestConfirmitionLetterBody", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Request №{0}, 
+        ///User: {1}.
+        ///Tournament: {2},
+        ///Team: {3}.
+        /// </summary>
+        internal static string TournamentRequestEmailBodyToAdmins {
+            get {
+                return ResourceManager.GetString("TournamentRequestEmailBodyToAdmins", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tournament Request №{0}.
+        /// </summary>
+        internal static string TournamentRequestEmailSubjectToAdmins {
+            get {
+                return ResourceManager.GetString("TournamentRequestEmailSubjectToAdmins", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to User notification.
+        /// </summary>
+        internal static string TournamentRequestLetterSubject {
+            get {
+                return ResourceManager.GetString("TournamentRequestLetterSubject", resourceCulture);
             }
         }
     }

@@ -133,6 +133,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reason for decline.
+        /// </summary>
+        public static string DeclineMessage {
+            get {
+                return ResourceManager.GetString("DeclineMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Division.
         /// </summary>
         public static string DivisionDefaultName {
@@ -338,7 +347,18 @@ namespace VolleyManagement.UI.App_GlobalResources {
                 return ResourceManager.GetString("MaxLengthErrorMessage", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Please, login to apply team for the tournament..
+        /// </summary>
+        public static string NoRights
+        {
+            get
+            {
+                return ResourceManager.GetString("NoRights", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t find User Id.
         /// </summary>
@@ -376,7 +396,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid date of birth.
+        ///   Looks up a localized string similar to Invalid year of birth.
         /// </summary>
         public static string PlayerBirthFieldRange {
             get {
@@ -385,7 +405,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date of birth.
+        ///   Looks up a localized string similar to Year of birth.
         /// </summary>
         public static string PlayerBirthYear {
             get {
@@ -525,6 +545,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string Round {
             get {
                 return ResourceManager.GetString("Round", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your request was succesfully created. Please, wait until administrator confirm your request..
+        /// </summary>
+        public static string SuccessRequest {
+            get {
+                return ResourceManager.GetString("SuccessRequest", resourceCulture);
             }
         }
         

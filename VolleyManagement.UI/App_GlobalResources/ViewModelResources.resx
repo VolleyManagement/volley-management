@@ -184,10 +184,10 @@
     <value>FixMe: Password didn't match</value>
   </data>
   <data name="PlayerBirthFieldRange" xml:space="preserve">
-    <value>Invalid date of birth</value>
+    <value>Invalid year of birth</value>
   </data>
   <data name="PlayerBirthYear" xml:space="preserve">
-    <value>Date of birth</value>
+    <value>Year of birth</value>
   </data>
   <data name="PlayerFirstName" xml:space="preserve">
     <value>Name</value>
@@ -344,6 +344,15 @@
   </data>
   <data name="InvalidEmail" xml:space="preserve">
     <value>Invalid email address</value>
+  </data>
+  <data name="SuccessRequest" xml:space="preserve">
+    <value>Your request was succesfully created. Please, wait until administrator confirm your request.</value>
+  </data>
+  <data name="NoRights" xml:space="preserve">
+    <value>Please, login to apply team for the tournament.</value>
+  </data>
+  <data name="DeclineMessage" xml:space="preserve">
+    <value>Reason for decline</value>
   </data>
   <data name="MessageAboutLinkToPlayer" xml:space="preserve">
     <value>After admin approval you will be linked with</value>

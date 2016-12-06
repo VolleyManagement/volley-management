@@ -228,6 +228,14 @@
                     OperationSuccessful = false
                 };
             }
+            catch (DataException)
+            {
+                result = new TeamOperationResultViewModel 
+                { 
+                    Message = App_GlobalResources.TournamentController.TeamDelete, 
+                    OperationSuccessful = false 
+                };
+            }
 
             return Json(result, JsonRequestBehavior.DenyGet);
         }

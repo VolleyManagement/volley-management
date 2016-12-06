@@ -183,6 +183,30 @@
   <data name="AddPlayerToTeam" xml:space="preserve">
     <value>Add player to team</value>
   </data>
+  <data name="BackPrevPage" xml:space="preserve">
+    <value>Back to previous page</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="ApplyForTournament" xml:space="preserve">
+    <value>Apply for tournament</value>
+  </data>
+  <data name="IAccept" xml:space="preserve">
+    <value> I accept </value>
+  </data>
+  <data name="TournamentRegulations" xml:space="preserve">
+    <value> tournament regulations.</value>
+  </data>
+  <data name="ApplyTeamFor" xml:space="preserve">
+    <value> Apply team for </value>
+  </data>
+  <data name="Tournament" xml:space="preserve">
+    <value> tournament</value>
+  </data>
+  <data name="NoAvaliableTeams" xml:space="preserve">
+    <value>No avaliable teams found. Please, contact admin.</value>
+  </data>
   <data name="LinkToMyAccount" xml:space="preserve">
     <value>Link to my account</value>
   </data>

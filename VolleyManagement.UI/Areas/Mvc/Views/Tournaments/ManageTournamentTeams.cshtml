@@ -3,14 +3,12 @@
 
 @{
     ViewBag.Title = "ManageTournamentTeams";
-    Layout = "~/Areas/Mvc/Views/Shared/_MenuLayout.cshtml";
 }
 
 <h2>@TournamentViews.ManageTeams</h2>
 
 <div>
     @Html.HiddenFor(model => model.Model.TournamentId, new { id = "TournamentId" })
-    <button id="addTeamToTournamentButton">Add team to tournament</button>
     <table id="tornamentRoster" class="table">
         <tr>
             <th>@Html.DisplayNameFor(model => model.Model.List.FirstOrDefault().Name)</th>
@@ -19,23 +17,27 @@
         @foreach (var item in Model.Model.List)
         {
             <tr>
-                <td>@Html.ActionLink(item.Name, "Details", "Teams", new { id = item.Id, returnUrl = Model.Referer }, null)</td>
+                <td>@Html.ActionLink(item.Name, "Details", "Teams", new {id = item.Id, returnUrl = Model.Referer}, null)</td>
                 <td><button class="deleteTeamFromTournamentButton" id="@item.Id">Delete</button></td>
             </tr>
         }
     </table>
-    <button id="addTeamsButton">Add teams</button>
+    <div style="margin-bottom: 30px;">
+        <button id="addTeamToTournamentButton" class="btn btn-success">+ Add team </button>
+    </div>
+        <button id="addTeamsButton" class="btn btn-default">Save</button>
+        @Html.ActionLink(@TournamentViews.Cancel, "Details", new { id = Model.Model.TournamentId }, new { @class = "btn btn-default" })
 
-    <script type="text/javascript">
-        (function () {
-            "use strict";
+        <script type="text/javascript">
+            (function () {
+                "use strict";
 
-            var currNs = VM.addNamespace("tournament.addTeams");
-            currNs.deleteConfirmMessage = "@TournamentViews.DeleteTournamentTeamConfirm";
-            currNs.teamIsNotSelectedMessage = "@TournamentViews.TournamentTeamIsNotSelected";
+                var currNs = VM.addNamespace("tournament.addTeams");
+                currNs.deleteConfirmMessage = "@TournamentViews.DeleteTournamentTeamConfirm";
+                currNs.teamIsNotSelectedMessage = "@TournamentViews.TournamentTeamIsNotSelected";
 
-        })();
-    </script>
-</div>
-@Html.ActionLink(@TournamentViews.Cancel, "Details", new { id = Model.Model.TournamentId })
+            })();
+
+        </script>
+    </div>
 @Scripts.Render("~/bundles/tournamentteamsscripts")

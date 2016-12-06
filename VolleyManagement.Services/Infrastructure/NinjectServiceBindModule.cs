@@ -49,6 +49,7 @@
                                   Bind<IAuthorizationService>().To<AuthorizationService>(),
                                   Bind<IUserService>().To<UserService>(),
                                   Bind<IFeedbackService>().To<FeedbackService>(),
+                                  Bind<ITournamentRequestService>().To<TournamentRequestService>(),
                                   Bind<IRequestService>().To<RequestService>(),
                                   Bind<ICacheProvider>().To<CacheProvider>(),
                                   Bind<IMailService>().To<GmailAccountMailService>()

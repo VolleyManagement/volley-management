@@ -15,7 +15,7 @@
     /// </summary>
     public class RequestQueries : IQuery<List<Request>, GetAllCriteria>,
                                   IQuery<Request, FindByIdCriteria>,
-                                  IQuery<Request, UserPlayersCriteria>
+                                  IQuery<Request, UserToPlayerCriteria>
     {
         #region Fields
 
@@ -66,7 +66,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria.</param>
         /// <returns> The <see cref="Request"/>.</returns>
-        public Request Execute(UserPlayersCriteria criteria)
+        public Request Execute(UserToPlayerCriteria criteria)
         {
             return _unitOfWork.Context.Requests
                                       .Where(r => r.PlayerId == criteria.PlayerId)

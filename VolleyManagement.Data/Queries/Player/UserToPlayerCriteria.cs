@@ -5,7 +5,7 @@
     /// <summary>
     /// Provides parameters to retrieve Team roster
     /// </summary>
-    public class UserPlayersCriteria : IQueryCriteria
+    public class UserToPlayerCriteria : IQueryCriteria
     {
         /// <summary>
         /// Gets or sets player id to look for

@@ -51,8 +51,8 @@
         private readonly Mock<IQuery<List<Request>, GetAllCriteria>> _getAllRequestsQueryMock =
           new Mock<IQuery<List<Request>, GetAllCriteria>>();
 
-        private readonly Mock<IQuery<Request, UserPlayersCriteria>> _getRequestUserPlayerQueryMock =
-            new Mock<IQuery<Request, UserPlayersCriteria>>();
+        private readonly Mock<IQuery<Request, UserToPlayerCriteria>> _getRequestUserPlayerQueryMock =
+            new Mock<IQuery<Request, UserToPlayerCriteria>>();
 
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -73,7 +73,7 @@
             _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
             _kernel.Bind<IRequestRepository>().ToConstant(_requestRepositoryMock.Object);
             _kernel.Bind<IQuery<Request, FindByIdCriteria>>().ToConstant(_getRequestByIdQueryMock.Object);
-            _kernel.Bind<IQuery<Request, UserPlayersCriteria>>().ToConstant(_getRequestUserPlayerQueryMock.Object);
+            _kernel.Bind<IQuery<Request, UserToPlayerCriteria>>().ToConstant(_getRequestUserPlayerQueryMock.Object);
             _kernel.Bind<IQuery<List<Request>, GetAllCriteria>>().ToConstant(_getAllRequestsQueryMock.Object);
             _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
             _requestRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);

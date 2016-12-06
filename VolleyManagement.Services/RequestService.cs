@@ -26,7 +26,7 @@
         private readonly IAuthorizationService _authService;
         private readonly IQuery<Request, FindByIdCriteria> _getRequestByIdQuery;
         private readonly IQuery<List<Request>, GetAllCriteria> _getAllRequestsQuery;
-        private readonly IQuery<Request, UserPlayersCriteria> _getRequestUserPlayerQuery;
+        private readonly IQuery<Request, UserToPlayerCriteria> _getRequestUserPlayerQuery;
 
         #endregion
 
@@ -49,7 +49,7 @@
             IAuthorizationService authService,
             IQuery<Request, FindByIdCriteria> getRequestByIdQuery,
             IQuery<List<Request>, GetAllCriteria> getAllRequestsQuery,
-            IQuery<Request, UserPlayersCriteria> getRequestUserPlayerQuery)
+            IQuery<Request, UserToPlayerCriteria> getRequestUserPlayerQuery)
         {
             _requestRepository = requestRepository;
             _userRepository = userRepository;
@@ -98,7 +98,7 @@
         public void Create(int userId, int playerId)
         {
             var requestExists = _getRequestUserPlayerQuery.Execute(
-                new UserPlayersCriteria { UserId = userId, PlayerId = playerId });
+                new UserToPlayerCriteria { UserId = userId, PlayerId = playerId });
             if (requestExists == null)
             {
                 var requestToCreate = new Request

@@ -148,8 +148,7 @@
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
 
-            var photoPath = string.Format(Constants.PHOTO_DIR, id);
-            viewModel.PhotoPath = _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
+            viewModel.PhotoPath = photoPath(id);
 
             return View(viewModel);
         }
@@ -248,8 +247,7 @@
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
             var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
 
-            var photoPath = string.Format(Constants.PHOTO_DIR, id);
-            refererViewModel.Model.PhotoPath = _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : Constants.DEFAULT_PHOTO_PATH;
+            refererViewModel.Model.PhotoPath = photoPath(id);
 
             return View(refererViewModel);
         }
@@ -265,7 +263,7 @@
         {
             try
             {
-                var photoPath = string.Format(Constants.PHOTO_DIR, id);
+                var photoPath = string.Format(Constants.TEAM_PHOTO_PATH, id);
                 _fileService.Upload(fileToUpload, HttpContext.Request.MapPath(photoPath));
             }
             catch (System.IO.FileLoadException ex)
@@ -286,7 +284,7 @@
         {
             try
             {
-                var photoPath = string.Format(Constants.PHOTO_DIR, id);
+                var photoPath = string.Format(Constants.TEAM_PHOTO_PATH, id);
                 _fileService.Delete(HttpContext.Request.MapPath(photoPath));
             }
             catch (System.IO.FileNotFoundException ex)
@@ -307,6 +305,17 @@
                                          .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// return photo path
+        /// </summary>
+        /// <param name="id">team id</param>
+        /// <returns>photo path</returns>
+        private string photoPath(int id)
+        {
+            var photoPath = string.Format(Constants.TEAM_PHOTO_PATH, id);
+            return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
         }
     }
 }

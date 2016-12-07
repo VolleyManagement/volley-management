@@ -8,6 +8,7 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Player;
     using VolleyManagement.Domain.RequestsAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
@@ -25,6 +26,7 @@
         private readonly IAuthorizationService _authService;
         private readonly IQuery<Request, FindByIdCriteria> _getRequestByIdQuery;
         private readonly IQuery<List<Request>, GetAllCriteria> _getAllRequestsQuery;
+        private readonly IQuery<Request, UserToPlayerCriteria> _getRequestUserPlayerQuery;
 
         #endregion
 
@@ -39,20 +41,23 @@
         /// <param name="authService">Instance of class which implements <see cref="IAuthorizationService"/></param>
         /// <param name="getRequestByIdQuery">Get request by it's id </param>
         /// <param name="getAllRequestsQuery">Get list of all requests</param>
+        /// <param name="getRequestUserPlayerQuery">Get request by user's and player's id </param>
         public RequestService(
             IRequestRepository requestRepository,
             IUserRepository userRepository,
             IUserService userService,
             IAuthorizationService authService,
-           IQuery<Request, FindByIdCriteria> getRequestByIdQuery,
-           IQuery<List<Request>, GetAllCriteria> getAllRequestsQuery)
+            IQuery<Request, FindByIdCriteria> getRequestByIdQuery,
+            IQuery<List<Request>, GetAllCriteria> getAllRequestsQuery,
+            IQuery<Request, UserToPlayerCriteria> getRequestUserPlayerQuery)
         {
             _requestRepository = requestRepository;
             _userRepository = userRepository;
             _authService = authService;
             _userService = userService;
             _getRequestByIdQuery = getRequestByIdQuery;
-           _getAllRequestsQuery = getAllRequestsQuery;
+            _getAllRequestsQuery = getAllRequestsQuery;
+            _getRequestUserPlayerQuery = getRequestUserPlayerQuery;
         }
 
         #endregion
@@ -92,14 +97,19 @@
         /// <param name="playerId"> Player's id to link</param>
         public void Create(int userId, int playerId)
         {
-            var requestToCreate = new Request
+            var requestExists = _getRequestUserPlayerQuery.Execute(
+                new UserToPlayerCriteria { UserId = userId, PlayerId = playerId });
+            if (requestExists == null)
             {
-                PlayerId = playerId,
-                UserId = userId
-            };
+                var requestToCreate = new Request
+                {
+                    PlayerId = playerId,
+                    UserId = userId
+                };
 
-            _requestRepository.Add(requestToCreate);
-            _requestRepository.UnitOfWork.Commit();
+                _requestRepository.Add(requestToCreate);
+                _requestRepository.UnitOfWork.Commit();
+            }
         }
 
         /// <summary>

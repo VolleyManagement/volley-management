@@ -61,6 +61,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please verify that you are not a robot..
+        /// </summary>
+        public static string CheckCaptcha {
+            get {
+                return ResourceManager.GetString("CheckCaptcha", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data is not valid..
+        /// </summary>
+        public static string CheckData {
+            get {
+                return ResourceManager.GetString("CheckData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Final.
         /// </summary>
         public static string FinalRoundName {
@@ -102,6 +120,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string SemifinalRoundName {
             get {
                 return ResourceManager.GetString("SemifinalRoundName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Feedback has been sent successfully..
+        /// </summary>
+        public static string SuccessfulSent {
+            get {
+                return ResourceManager.GetString("SuccessfulSent", resourceCulture);
             }
         }
         

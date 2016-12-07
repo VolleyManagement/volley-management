@@ -68,6 +68,7 @@
     <Compile Include="ICaptchaManager.cs" />
     <Compile Include="IContributorTeamService.cs" />
     <Compile Include="IFeedbackService.cs" />
+    <Compile Include="IFileService.cs" />
     <Compile Include="IGameReportService.cs" />
     <Compile Include="IGameService.cs" />
     <Compile Include="IPlayerService.cs" />

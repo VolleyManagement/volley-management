@@ -181,6 +181,7 @@
     <Compile Include="Services\FeedbackService\FeedbackComparer.cs" />
     <Compile Include="Services\FeedbackService\FeedbackServiceTest.cs" />
     <Compile Include="Services\FeedbackService\FeedbackServiceTestFixture.cs" />
+    <Compile Include="Services\FileService\FileServiceTest.cs" />
     <Compile Include="Services\GameReportService\ShortGameResultDtoTetsFixture.cs" />
     <Compile Include="Services\GameReportService\TeamStandingsTestFixture.cs" />
     <Compile Include="Services\AuthService\AuthorizationServiceTests.cs" />

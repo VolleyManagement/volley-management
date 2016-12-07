@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -34,6 +35,8 @@
         private const int SPECIFIED_TEAM_ID = 4;
         private const int TEAM_ID = 1;
         private const int SPECIFIED_PLAYER_ID = 4;
+        private const int PHOTO_ID = 1;
+        private const string FILE_DIR = "/Content/Photo/Teams/1.jpg";
         private const string SPECIFIED_PLAYER_NAME = "Test name";
         private const string SPECIFIED_EXCEPTION_MESSAGE = "Test exception message";
         private const string ACHIEVEMENTS = "TestAchievements";
@@ -43,11 +46,15 @@
         private const string COACH = "TestCoach";
         private const int TEST_TEAM_ID = 1;
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
+        private const string FILE_NOT_FOUND_EX_MESSAGE = "File not found";
+        private const string FILE_LOAD_EX_MESSAGE = "File size must be less then 1 MB and greater then 0 MB";
 
         private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
         private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
+        private readonly Mock<HttpPostedFileBase> _httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
         private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
 
         private IKernel _kernel;
         private TeamsController _sut;
@@ -62,6 +69,9 @@
             this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
             this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
+            this._kernel.Bind<HttpContextBase>().ToConstant(this._httpContextMock.Object);
+            this._kernel.Bind<HttpPostedFileBase>().ToConstant(this._httpPostedFileBaseMock.Object);
+            this._kernel.Bind<IFileService>().ToConstant(this._fileServiceMock.Object);
             this._sut = this._kernel.Get<TeamsController>();
         }
 
@@ -716,6 +726,21 @@
                 .ToList();
         }
 
+        private void VerifyRedirect(string actionName, RedirectToRouteResult result)
+        {
+            Assert.AreEqual(actionName, result.RouteValues["action"]);
+        }
+
+        private void VerifyFileServiceUpload(Times times)
+        {
+            _fileServiceMock.Verify(ts => ts.Upload(_httpPostedFileBaseMock.Object, FILE_DIR), times);
+        }
+
+        private void VerifyFileServiceDelete(Times times)
+        {
+            _fileServiceMock.Verify(ts => ts.Delete(FILE_DIR), times);
+        }
+
         private void MockTeamServiceGetTeam(Team team)
         {
             _teamServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(team);
@@ -739,6 +764,28 @@
         private void SetupRequestRawUrl(string rawUrl)
         {
             this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
+        }
+
+        private void SetupHttpPostedFileBaseMock()
+        {
+            this._httpPostedFileBaseMock.Setup(x => x.FileName).Returns("1.jpg");
+        }
+
+        private void SetupFileServiceMockThrowsFileLoadException(HttpPostedFileBase file)
+        {
+            _fileServiceMock.Setup(x => x.Upload(file, FILE_DIR))
+                .Throws(new FileLoadException(FILE_LOAD_EX_MESSAGE));
+        }
+
+        private void SetupFileServiceMockThrowsFileNotFoundException()
+        {
+            _fileServiceMock.Setup(x => x.Delete(FILE_DIR))
+                .Throws(new FileNotFoundException(FILE_NOT_FOUND_EX_MESSAGE));
+        }
+
+        private void SetupFileServiceMock()
+        {
+            _fileServiceMock.Setup(x => x.Delete(FILE_DIR));
         }
 
         private List<Team> MakeTestTeams()

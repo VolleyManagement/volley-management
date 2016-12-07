@@ -46,6 +46,6 @@ function div_show(id) {
 }
 
 // function to hide Popup
-function div_hide() {
+$("#close").click(function() {
     replyPopup.style.display = "none";
-}
+});

@@ -23,7 +23,7 @@
     <div id="popupContact">
         @using (Html.BeginForm("Reply", "Requests", FormMethod.Post))
         {
-            <img src="close.jpg" id="close" onclick="div_hide()">
+            <img src="close.jpg" id="close">
             <h2>Reply</h2>
             <input type="hidden" name="feedbackId" required id="feedbackId" value="" />
             <textarea name="feedbackMessage" required placeholder="Message" id="feedbackMessage"></textarea>
@@ -59,21 +59,15 @@
                     <td>@feedback.Date</td>
                     <td>@feedback.Status</td>
                     <td>
-                        @if (feedback.CanReply)
-                        {
-                            <button id="popup" class="btn btn-danger btn-xs" onclick="div_show(@feedback.Id)">Reply</button>
-                        }
-                        else
-                        {
-                            <button id="popup" class="btn btn-danger btn-xs" disabled>Reply</button>
-                        }
                         @Html.ActionLink("Details", "Details", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
                         @if (feedback.CanClose)
                         {
+                            <button id="popup" class="btn btn-danger btn-xs" onclick="div_show(@feedback.Id)">Reply</button>
                             @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs" })
                         }
                         else
                         {
+                            <button id="popup" class="btn btn-danger btn-xs" disabled>Reply</button>
                             @Html.ActionLink("Close", "Close", new { id = feedback.Id }, new { @class = "btn btn-primary btn-xs", @disabled = false, onclick = "javascript:return false;" })
                         }
                     </td>

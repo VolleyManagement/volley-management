@@ -142,6 +142,9 @@ Content: {4}</value>
   <data name="FeedbackEmailSubjectToAdmins" xml:space="preserve">
     <value>Feedback №{0}</value>
   </data>
+  <data name="FeedbacksEmailReplySubject" xml:space="preserve">
+    <value>Reply on feedback</value>
+  </data>
   <data name="GmailAddress" xml:space="preserve">
     <value>GoogleEmailAddress</value>
   </data>

@@ -141,7 +141,4 @@
   <data name="Return" xml:space="preserve">
     <value>Back to previous page</value>
   </data>
-  <data name="SuccessfulSent" xml:space="preserve">
-    <value>Your Feedback has been sent successfully.</value>
-  </data>
 </root>

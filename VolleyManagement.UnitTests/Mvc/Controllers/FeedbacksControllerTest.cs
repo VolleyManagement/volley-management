@@ -33,6 +33,9 @@
         private const string TEST_CONTENT = "Test content";
         private const string TEST_ENVIRONMENT = "Test environment";
         private const string EXCEPTION_MESSAGE = "ValidationMessage";
+        private const string CHECK_DATA_MESSAGE = "Data is not valid.";
+        private const string CHECK_CAPTCHA_MESSAGE = "Please verify that you are not a robot.";
+        private const string SUCCESS_SENT_MESSAGE = "Your Feedback has been sent successfully.";
 
         private readonly Mock<IFeedbackService> _feedbackServiceMock =
             new Mock<IFeedbackService>();
@@ -68,7 +71,7 @@
             this._kernel.Bind<ICaptchaManager>()
                 .ToConstant(this._captchaManagerMock.Object);
 
-            _captchaManagerMock.Setup(m => m.IsFormSubmit(It.IsAny<HttpRequestBase>())).Returns(true);
+            _captchaManagerMock.Setup(m => m.IsFormSubmit(It.IsAny<string>())).Returns(true);
         }
 
         #endregion
@@ -126,7 +129,7 @@
         /// Feedback is incorrect, Create view is returned.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_ModelIsInvalid_CreateViewReturned()
+        public void CreatePostAction_ModelIsInvalid_CheckDataMessageReturned()
         {
             // Arrange
             FeedbacksController sut = this._kernel.Get<FeedbacksController>();
@@ -135,10 +138,11 @@
             SetInvalidModelState(sut);
 
             // Act
-            var result = sut.Create(feedback) as ViewResult;
+            var result = sut.Create(feedback) as JsonResult;
+            var returnedDataResult = result.Data as FeedbackMessageViewModel;
 
             // Assert
-            Assert.AreEqual(CREATE_VIEW, result.ViewName);
+            Assert.AreEqual(CHECK_DATA_MESSAGE, returnedDataResult.ResultMessage);
         }
 
         /// <summary>
@@ -146,17 +150,18 @@
         /// Feedback is correct, feedback sent message returned.
         /// </summary>
         [TestMethod]
-        public void CreatePostAction_ModelIsValid_FeedbackThankReturned()
+        public void CreatePostAction_ModelIsValid_SuccessSentMessageReturned()
         {
             // Arrange
             FeedbacksController sut = this._kernel.Get<FeedbacksController>();
             var feedback = CreateValidFeedback();
 
             // Act
-            var result = sut.Create(feedback) as ViewResult;
+            var result = sut.Create(feedback) as JsonResult;
+            var returnedDataResult = result.Data as FeedbackMessageViewModel;
 
             // Assert
-            Assert.AreEqual(FEEDBACK_SENT_MESSAGE, result.ViewName);
+            Assert.AreEqual(SUCCESS_SENT_MESSAGE, returnedDataResult.ResultMessage);
         }
 
         /// <summary>
@@ -209,7 +214,7 @@
         }
 
         [TestMethod]
-        public void CreatePostAction_CaptchaIsNotApproved_CreateViewReturned()
+        public void CreatePostAction_CaptchaIsNotApproved_CheckCaptchaMessageReturned()
         {
             // Arrange
             FeedbacksController sut = this._kernel.Get<FeedbacksController>();
@@ -217,12 +222,13 @@
 
             // Act
             this._captchaManagerMock
-                .Setup(cm => cm.IsFormSubmit(It.IsAny<HttpRequestBase>()))
+                .Setup(cm => cm.IsFormSubmit(It.IsAny<string>()))
                 .Returns(false);
-            var res = sut.Create(feedback) as ViewResult;
+            var res = sut.Create(feedback) as JsonResult;
+            var returnedDataResult = res.Data as FeedbackMessageViewModel;
 
             // Assert
-            Assert.AreNotEqual(FEEDBACK_SENT_MESSAGE, res.ViewName);
+            Assert.AreEqual(CHECK_CAPTCHA_MESSAGE, returnedDataResult.ResultMessage);
         }
         #endregion
 

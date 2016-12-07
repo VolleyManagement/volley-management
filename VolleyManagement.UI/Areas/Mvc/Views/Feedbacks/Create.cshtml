@@ -44,12 +44,11 @@
                 @Html.EditorFor(model => model.UserEnvironment,
                     new
                     {
-                        htmlAttributes =
-                            new
-                            {
-                                @class = "form-control",
-                                @readonly = "readonly"
-                            }
+                        htmlAttributes = new
+                        {
+                            @class = "form-control",
+                            @readonly = "readonly"
+                        }
                     })
             </div>
             <div class="col-md-8">
@@ -59,14 +58,17 @@
 
         <div class="form-group">
             <div class="col-md-offset-4 col-md-8">
-                <div>
-                    @using (Html.BeginForm("FormSubmit", "Feedbacks", FormMethod.Post))
-                    {
-                        <div class="g-recaptcha" data-sitekey= @Model.ReCapthaKey></div>
-                        <input type="submit" value="Send" id="send-feedback" class="btn btn-success" />
-                    }
-                </div>
+                <div class="g-recaptcha" data-sitekey=@Model.ReCapthaKey></div>
+                <span id="capthaResponsePlace" class="field-validation-color"></span>
             </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-4 col-md-8">
+            <input type="submit" value="Send" id="send-feedback" class="btn btn-success indented" />
+            <span id="responsePlace"></span>
+            <span id="waitPlace"></span>
         </div>
     </div>
 }

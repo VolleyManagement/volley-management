@@ -1,0 +1,32 @@
+﻿    .info input {
+        padding: 0;
+        border: 0;
+        margin: 0;
+    }
+
+    .form {
+        width: 540px;
+        background: #FFF;
+        padding: 38px 0px;
+        margin: 0 auto;
+        text-align: center;
+        -webkit-box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.15);
+        -moz-box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.15);
+        box-shadow: 0px 3px 3px 0px rgba(0,0,0,0.15);
+    }
+
+    .info input {
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 20px;
+        width: 100px;
+        height: 94px;
+        background: #efefef;
+        font-size: 12px;
+        color: #aeaeae;
+    }
+
+    #uploadButton {
+     height: 200px;
+     width: 400px;
+}

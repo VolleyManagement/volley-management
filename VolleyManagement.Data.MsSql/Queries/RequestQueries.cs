@@ -7,13 +7,15 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Entities;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Player;
     using VolleyManagement.Domain.RequestsAggregate;
 
     /// <summary>
     /// Provides Object Query implementation for Requests
     /// </summary>
     public class RequestQueries : IQuery<List<Request>, GetAllCriteria>,
-                                   IQuery<Request, FindByIdCriteria>
+                                  IQuery<Request, FindByIdCriteria>,
+                                  IQuery<Request, UserToPlayerCriteria>
     {
         #region Fields
 
@@ -59,11 +61,25 @@
                                       .SingleOrDefault();
         }
 
-        #endregion
+        /// <summary>
+        /// Finds Requests by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria.</param>
+        /// <returns> The <see cref="Request"/>.</returns>
+        public Request Execute(UserToPlayerCriteria criteria)
+        {
+            return _unitOfWork.Context.Requests
+                                      .Where(r => r.PlayerId == criteria.PlayerId)
+                                      .Where(r => r.UserId == criteria.UserId)
+                                      .Select(GetRequestMapping())
+                                      .SingleOrDefault();
+        }
 
-        #region Mapping
+    #endregion
 
-        private static Expression<Func<RequestEntity, Request>> GetRequestMapping()
+    #region Mapping
+
+    private static Expression<Func<RequestEntity, Request>> GetRequestMapping()
         {
             return
                 t =>

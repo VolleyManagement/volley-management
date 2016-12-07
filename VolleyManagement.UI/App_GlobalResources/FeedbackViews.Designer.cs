@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VolleyManagement.UI.App_GlobalResources
-{
+namespace Resources {
     using System;
     
     
@@ -78,7 +77,8 @@ namespace VolleyManagement.UI.App_GlobalResources
                 return ResourceManager.GetString("EnvironmentQuestion", resourceCulture);
             }
         }
-
+        
+        /// <summary>
         ///   Looks up a localized string similar to Feedback didn&apos;t found.
         /// </summary>
         internal static string FeedbackNotFound {
@@ -129,15 +129,6 @@ namespace VolleyManagement.UI.App_GlobalResources
         internal static string Return {
             get {
                 return ResourceManager.GetString("Return", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Your Feedback has been sent successfully..
-        /// </summary>
-        internal static string SuccessfulSent {
-            get {
-                return ResourceManager.GetString("SuccessfulSent", resourceCulture);
             }
         }
     }

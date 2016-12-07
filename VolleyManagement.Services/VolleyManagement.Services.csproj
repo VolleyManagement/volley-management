@@ -64,6 +64,7 @@
     <Compile Include="Authorization\UserService.cs" />
     <Compile Include="ContributorTeamService.cs" />
     <Compile Include="FeedbackService.cs" />
+    <Compile Include="FileService.cs" />
     <Compile Include="GameReportService.cs" />
     <Compile Include="GameService.cs" />
     <Compile Include="RequestService.cs" />

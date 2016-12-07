@@ -6,6 +6,14 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div class="width">
+    <div class="form radius front cab-form">
+        <div class="info float-left">
+            <img src=@Model.Model.PhotoPath height="200" width="200"/>
+        </div>
+    </div>
+</div>
+
 <fieldset>
     <legend>@Resources.TeamViews.TeamLegend @Model.Model.Name</legend>
 
@@ -19,9 +27,9 @@
     @Html.ActionLink(Model.Model.Captain.FullName,
                     "Details",
                     "Players",
-                    new {id = Model.Model.Captain.Id, returnUrl = Model.CurrentReferrer},
+                    new { id = Model.Model.Captain.Id, returnUrl = Model.CurrentReferrer },
                     null)
-    
+
     <div class="display-label">@Html.LabelFor(model => model.Model.Roster)</div>
     <ul>
         @foreach (var item in Model.Model.Roster)
@@ -30,7 +38,7 @@
                 @Html.ActionLink(item.FullName,
                                 "Details",
                                 "Players",
-                                new {id = item.Id, returnUrl = Model.CurrentReferrer},
+                                new { id = item.Id, returnUrl = Model.CurrentReferrer },
                                 null)
             </li>
         }
@@ -40,3 +48,5 @@
     @Html.ActionLink(Resources.TeamViews.Edit, "Edit", new { id = Model.Model.Id }) |
     <a href="@Model.Referer">@Resources.TeamViews.Back</a>
 </p>
+
+@Styles.Render("/Content/TeamPhoto.css")

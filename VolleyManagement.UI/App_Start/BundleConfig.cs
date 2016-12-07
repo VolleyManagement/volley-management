@@ -70,6 +70,9 @@
 
             bundles.Add(new ScriptBundle("~/bundles/teamlistscripts")
                 .Include("~/Scripts/VmScripts/TeamOperations/List.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/teamuploadscripts")
+                .Include("~/Scripts/VmScripts/TeamOperations/UploadPhoto.js"));
         }
 
         private static void RegisterTornamentScripts(BundleCollection bundles)
@@ -93,7 +96,8 @@
             bundles.Add(new ScriptBundle("~/bundles/feedbackscripts")
                 .Include(
                     "~/Scripts/VmScripts/FeedbackOperations/BackButton.js",
-                    "~/Scripts/VmScripts/FeedbackOperations/CheckEnvironment.js"));
+                    "~/Scripts/VmScripts/FeedbackOperations/CheckEnvironment.js",
+                    "~/Scripts/VmScripts/FeedbackOperations/AjaxResponse.js"));
         }
 
         private static void RegisterPlayerScripts(BundleCollection bundles)

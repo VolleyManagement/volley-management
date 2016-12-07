@@ -30,7 +30,6 @@
             AdminName = request.AdminName;
             UpdateDate = request.UpdateDate;
             CanClose = request.Status != FeedbackStatusEnum.Closed;
-            CanReply = request.Status < FeedbackStatusEnum.Answered;
         }
 
         /// <summary>
@@ -67,11 +66,6 @@
         /// Gets or sets the admin name.
         /// </summary>
         public string AdminName { get; set; }
-
-        /// <summary>
-        /// Gets or sets if user can reply.
-        /// </summary>
-        public bool CanReply { get; set; }
 
         /// <summary>
         /// Gets or sets if user can close.

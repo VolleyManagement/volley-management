@@ -245,6 +245,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Admin\admin.css" />
+    <Content Include="Content\Admin\Reply.css" />
     <Content Include="Content\Admin\vm.css" />
     <Content Include="Content\ajax-loader.gif" />
     <Content Include="Content\bootstrap.css" />

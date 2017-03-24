@@ -55,7 +55,7 @@
                 {
                     TournamentId = tournamentId,
                     TournamentName = tournamentName,
-                    Message = App_GlobalResources.GameReportViews.StandingsNotAvaliable
+                    Message = Resources.UI.GameReportViews.StandingsNotAvaliable
                 };
                 return View("StandingsNotAvailable", standingsViewModel);
             }

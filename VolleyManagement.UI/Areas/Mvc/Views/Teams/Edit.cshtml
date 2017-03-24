@@ -3,7 +3,7 @@
 @using System.Web.Optimization
 
 @{
-    ViewBag.Title = Resources.TeamViews.EditTeamTitle;
+    ViewBag.Title = Resources.UI.TeamViews.EditTeamTitle;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -32,19 +32,19 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>@Resources.TeamViews.TeamLegend</legend>
+        <legend>@Resources.UI.TeamViews.TeamLegend</legend>
 
         @Html.HiddenFor(model => model.Id)
         @Html.Partial("_CreateEdit", Model)
 
         <p>
-            <button id="saveTeamButton">@Resources.TeamViews.Save</button>
+            <button id="saveTeamButton">@Resources.UI.TeamViews.Save</button>
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
+    @Html.ActionLink(Resources.UI.TeamViews.BackToList, "Index")
 </div>
 
 @Scripts.Render("~/bundles/teamuploadscripts")

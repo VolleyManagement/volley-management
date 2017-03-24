@@ -46,7 +46,7 @@
             filterContext.Result = this.IsXmlHttpRequest(filterContext.RequestContext)
                                        ? BuildJsonResult(filterContext)
                                        : RedirectToErrorView(filterContext);
-            filterContext.ExceptionHandled = true;
+            //filterContext.ExceptionHandled = true;
 
             // Log exception data
             if (_volleyAppBaseExceptionType.IsInstanceOfType(filterContext.Exception))

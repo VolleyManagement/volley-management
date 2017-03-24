@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using App_GlobalResources;
+    using Resources.UI;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
@@ -431,7 +431,7 @@
 
             if (game == null)
             {
-                this.ModelState.AddModelError("LoadError", App_GlobalResources.TournamentViews.GameNotFoundInTournament);
+                this.ModelState.AddModelError("LoadError", Resources.UI.TournamentViews.GameNotFoundInTournament);
                 return View();
             }
 

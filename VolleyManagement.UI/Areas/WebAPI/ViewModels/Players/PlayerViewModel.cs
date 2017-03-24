@@ -4,7 +4,7 @@
 
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Resources.UI;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
 
     /// <summary>

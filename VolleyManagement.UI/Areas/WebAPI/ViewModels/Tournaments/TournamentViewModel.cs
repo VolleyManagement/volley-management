@@ -6,7 +6,7 @@
     using System.Web;
     using VolleyManagement.Domain.Tournaments;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Resources.UI;
     using tournConst = VolleyManagement.Domain.Constants.Tournament;
 
     /// <summary>

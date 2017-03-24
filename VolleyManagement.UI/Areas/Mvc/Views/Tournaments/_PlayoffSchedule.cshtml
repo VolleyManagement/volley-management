@@ -1,13 +1,13 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.ScheduleViewModel
 
 <h2>
-    @Resources.TournamentViews.ScheduleTitle
+    @Resources.UI.TournamentViews.ScheduleTitle
     @Html.ActionLink(Model.TournamentName, "Details", new { id = Model.TournamentId })
 </h2>
 
 @if (Model.NumberOfRounds == 0)
 {
-    <div class="col-md-6">@Resources.TournamentViews.NoTeamsAvailable</div>
+    <div class="col-md-6">@Resources.UI.TournamentViews.NoTeamsAvailable</div>
 }
 else
 {
@@ -24,11 +24,11 @@ else
                 {
                     if (Model.IsFinal(game))
                     {
-                        <h5>@Resources.TournamentViews.FinalGameName:</h5>
+                        <h5>@Resources.UI.TournamentViews.FinalGameName:</h5>
                     }
                     else if (Model.IsBronzeMatch(game))
                     {
-                        <h5>@Resources.TournamentViews.BronzeGameName:</h5>
+                        <h5>@Resources.UI.TournamentViews.BronzeGameName:</h5>
                     }
                     
                     @Html.Partial("_PlayoffGameResult", game);

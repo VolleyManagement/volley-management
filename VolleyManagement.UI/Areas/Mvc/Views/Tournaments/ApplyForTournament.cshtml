@@ -1,14 +1,14 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentApplyViewModel
 @{
-    ViewBag.Title = @Resources.PlayerViews.ApplyForTournament;
+    ViewBag.Title = @Resources.UI.PlayerViews.ApplyForTournament;
 }
 
 @Html.HiddenFor(model => model.Id, new { id = "tournamentId", Value = @Model.Id })
 
-<h2>@Resources.PlayerViews.ApplyTeamFor @Model.TournamentTitle @Resources.PlayerViews.Tournament</h2>
+<h2>@Resources.UI.PlayerViews.ApplyTeamFor @Model.TournamentTitle @Resources.UI.PlayerViews.Tournament</h2>
 @if (Model.Teams.Count() == 0)
 {
-   @Resources.PlayerViews.NoAvaliableTeams
+   @Resources.UI.PlayerViews.NoAvaliableTeams
 }
 else
 {
@@ -18,12 +18,12 @@ else
     </p>
 
     <p>
-        <input type="checkbox" name="agree" id="agree">@Resources.PlayerViews.IAccept<a href="License">@Resources.PlayerViews.TournamentRegulations</a>
+        <input type="checkbox" name="agree" id="agree">@Resources.UI.PlayerViews.IAccept<a href="License">@Resources.UI.PlayerViews.TournamentRegulations</a>
     </p>
 
         <div>
-            <button name="apply-submit" id="apply" class="btn btn-default" disabled>@Resources.PlayerViews.Accept</button>
-            <button id="apply-cancel" class="btn btn-default">@Resources.PlayerViews.BackPrevPage</button>
+            <button name="apply-submit" id="apply" class="btn btn-default" disabled>@Resources.UI.PlayerViews.Accept</button>
+            <button id="apply-cancel" class="btn btn-default">@Resources.UI.PlayerViews.BackPrevPage</button>
 
             <span id="ajaxResultMessage"></span>
         </div>

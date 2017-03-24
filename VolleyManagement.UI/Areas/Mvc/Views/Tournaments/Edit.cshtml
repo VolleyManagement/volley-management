@@ -1,7 +1,7 @@
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
 
 @{
-    ViewBag.Title = Resources.TournamentViews.EditTournamentTitle;
+    ViewBag.Title = Resources.UI.TournamentViews.EditTournamentTitle;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -9,17 +9,17 @@
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>@Resources.TournamentViews.TournamentLegend</legend>
+        <legend>@Resources.UI.TournamentViews.TournamentLegend</legend>
 
         @Html.HiddenFor(model => model.Id)
 		@Html.Partial("_CreateOrEdit", Model)
 
         <p>
-            <input type="submit" value="@Resources.TournamentViews.Save" />
+            <input type="submit" value="@Resources.UI.TournamentViews.Save" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink(Resources.TournamentViews.BackToList, "Index")
+    @Html.ActionLink(Resources.UI.TournamentViews.BackToList, "Index")
 </div>

@@ -118,11 +118,11 @@
             if (userId != ANONYM)
             {
                 _requestService.Create(userId, playerId);
-                message = App_GlobalResources.ViewModelResources.MessageAboutLinkToPlayer;
+                message = Resources.UI.ViewModelResources.MessageAboutLinkToPlayer;
             }
             else
             {
-                message = App_GlobalResources.ViewModelResources.MessageAboutError;
+                message = Resources.UI.ViewModelResources.MessageAboutError;
             }
 
             return message;
@@ -193,7 +193,7 @@
 
             return Json(new PlayerDeleteResultViewModel
             {
-                Message = App_GlobalResources.ViewModelResources.PlayerWasDeletedSuccessfully,
+                Message = Resources.UI.ViewModelResources.PlayerWasDeletedSuccessfully,
                 HasDeleted = true
             });
         }

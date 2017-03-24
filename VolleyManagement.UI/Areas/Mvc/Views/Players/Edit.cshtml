@@ -1,7 +1,7 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Players.PlayerViewModel
 
 @{
-    ViewBag.Title = Resources.PlayerViews.EditPlayerTitle;
+    ViewBag.Title = Resources.UI.PlayerViews.EditPlayerTitle;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,17 +10,17 @@
 {
     @Html.ValidationSummary(true)
     <fieldset>
-        <legend>@Resources.PlayerViews.PlayerLegend</legend>
+        <legend>@Resources.UI.PlayerViews.PlayerLegend</legend>
 
         @Html.HiddenFor(model => model.Id)
         @Html.Partial("_CreateOrEdit", Model)
 
         <p>
-            <input type="submit" value="@Resources.PlayerViews.Save" />
+            <input type="submit" value="@Resources.UI.PlayerViews.Save" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink(Resources.PlayerViews.BackToList, "Index")
+    @Html.ActionLink(Resources.UI.PlayerViews.BackToList, "Index")
 </div>

@@ -1,7 +1,7 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameViewModel
 
 @{
-    ViewBag.Title = @Resources.TournamentViews.EditScheduledGameTitle;
+    ViewBag.Title = @Resources.UI.TournamentViews.EditScheduledGameTitle;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -17,9 +17,9 @@ else
         @Html.Partial("_ScheduleOrEditGame", Model);
         @Html.HiddenFor(model => model.Id);
             
-        <input class="btn btn-default" type="submit" value="@Resources.TournamentViews.Save" />
+        <input class="btn btn-default" type="submit" value="@Resources.UI.TournamentViews.Save" />
     }
 
     <br />
-    @Html.ActionLink(@Resources.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })
+    @Html.ActionLink(@Resources.UI.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })
 }

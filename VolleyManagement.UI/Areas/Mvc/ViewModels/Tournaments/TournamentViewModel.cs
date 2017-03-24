@@ -8,7 +8,7 @@
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Resources.UI;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
 
     /// <summary>

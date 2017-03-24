@@ -5,7 +5,7 @@
     using System.Linq;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Resources.UI;
 
     /// <summary>
     /// Represents division's view model.

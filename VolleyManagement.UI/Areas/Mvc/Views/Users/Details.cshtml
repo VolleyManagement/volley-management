@@ -1,15 +1,15 @@
 ﻿@model VolleyManagement.Domain.UsersAggregate.User
 
-@using VolleyManagement.Domain.Users
+@using VolleyManagement.Domain.UsersAggregate;
 
 @{
-    ViewBag.Title = "User details";//Resources.UserViews.UserDetailsTitle;
+    ViewBag.Title = "User details";//Resources.UI.UserViews.UserDetailsTitle;
 }
 
 <h2>@ViewBag.Title</h2>
 
 <fieldset>
-    <legend>@Resources.UserViews.UserLegend</legend>
+    <legend>@Resources.UI.UserViews.UserLegend</legend>
 
     <div class="display-label">@Html.LabelFor(model => model.UserName)</div>
     <div class="display-field">@Model.UserName</div>
@@ -25,7 +25,7 @@
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink(Resources.UserViews.BackToList, "Index")
+    @Html.ActionLink(Resources.UI.UserViews.BackToList, "Index")
 </p>
 
 

@@ -149,7 +149,7 @@
         [Authorize]
         public async Task<ActionResult> Edit(UserEditViewModel editViewModel)
         {
-            if (CurrentUserId != editViewModel.Id && !User.IsInRole(Resources.AuthorizationRoles.Admin))
+            if (CurrentUserId != editViewModel.Id && !User.IsInRole(Resources.UI.AuthorizationRoles.Admin))
             {
                 return View("AccessDenied");
             }
@@ -159,7 +159,7 @@
                 var userModel = await _userManager.FindByIdAsync(editViewModel.Id);
                 if (userModel == null)
                 {
-                    throw new ArgumentNullException(Resources.AccountController.InvalidEditEntityId);
+                    throw new ArgumentNullException(Resources.UI.AccountController.InvalidEditEntityId);
                 }
 
                 userModel.PersonName = editViewModel.FullName;

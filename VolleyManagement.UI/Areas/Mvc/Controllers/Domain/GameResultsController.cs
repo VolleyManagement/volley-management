@@ -131,11 +131,11 @@
             }
             catch (MissingEntityException)
             {
-                ModelState.AddModelError(string.Empty, App_GlobalResources.GameResultsController.GameResultWasDeleted);
+                ModelState.AddModelError(string.Empty, Resources.UI.GameResultsController.GameResultWasDeleted);
             }
             catch (ArgumentException)
             {
-                ModelState.AddModelError(string.Empty, App_GlobalResources.GameResultsController.GameResultNotEdited);
+                ModelState.AddModelError(string.Empty, Resources.UI.GameResultsController.GameResultNotEdited);
             }
 
             return View(gameResultViewModel);
@@ -163,7 +163,7 @@
 
             return Json(new GameDeleteResultViewModel
             {
-                Message = App_GlobalResources.GameResultsController.GameWasDeletedSuccessfully,
+                Message = Resources.UI.GameResultsController.GameWasDeletedSuccessfully,
                 HasDeleted = true
             });
         }

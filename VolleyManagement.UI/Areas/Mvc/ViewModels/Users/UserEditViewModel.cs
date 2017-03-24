@@ -5,7 +5,7 @@
     using System.Linq;
     using Contracts.Authentication.Models;
     using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Resources.UI;
 
     /// <summary>
     /// UserViewModel for Create and Edit actions

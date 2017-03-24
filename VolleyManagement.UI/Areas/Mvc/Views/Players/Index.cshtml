@@ -2,7 +2,7 @@
 ﻿@using VolleyManagement.Domain.RolesAggregate;
 
 @{
-    ViewBag.Title = Resources.PlayerViews.PlayersIndexTitle;
+    ViewBag.Title = Resources.UI.PlayerViews.PlayersIndexTitle;
 }
 
 
@@ -11,13 +11,13 @@
 <div>
     @using (@Html.BeginForm("Index"))
     {
-        @Html.Label(Resources.PlayerViews.SearchTitle)
+        @Html.Label(Resources.UI.PlayerViews.SearchTitle)
         @Html.TextBox("textToSearch", Model.Model.TextToSearch)
     }
 </div>
 @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Players.Create))
 {
-    @Html.ActionLink(Resources.PlayerViews.CreateNewPlayer, "Create")
+    @Html.ActionLink(Resources.UI.PlayerViews.CreateNewPlayer, "Create")
 }
 
 <table class="table">
@@ -38,11 +38,11 @@
             <td>            
             @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
             {
-                @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = item.Id }) @:|
+                @Html.ActionLink(Resources.UI.PlayerViews.Edit, "Edit", new { id = item.Id }) @:|
             }
             @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Players.Delete))
             {
-                @Html.ActionLink(Resources.PlayerViews.Delete, "Delete", new { id = item.Id },
+                @Html.ActionLink(Resources.UI.PlayerViews.Delete, "Delete", new { id = item.Id },
                         new { @class = "delete", @id = item.Id })
             }
             </td>        
@@ -93,7 +93,7 @@
 
 @if (Model.Model.List.Count == 0)
 {
-    <p>@Resources.PlayerViews.NotFoundPlayerMessage</p>
+    <p>@Resources.UI.PlayerViews.NotFoundPlayerMessage</p>
 }
 
-@Html.Hidden("DeleteConfirmationMessage", Resources.PlayerViews.DeleteConfirmationMessage)
+@Html.Hidden("DeleteConfirmationMessage", Resources.UI.PlayerViews.DeleteConfirmationMessage)

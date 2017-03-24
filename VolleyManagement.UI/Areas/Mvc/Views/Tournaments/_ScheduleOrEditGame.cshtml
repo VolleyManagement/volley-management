@@ -1,7 +1,7 @@
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameViewModel
 @using VolleyManagement.Domain.TournamentsAggregate;
 
-<legend>@Resources.TournamentViews.ScheduleGameLegend</legend>
+<legend>@Resources.UI.TournamentViews.ScheduleGameLegend</legend>
 @Html.ValidationMessage("ValidationError")
 @Html.HiddenFor(model => model.TournamentId)
 
@@ -34,7 +34,7 @@ else
         @Html.LabelFor(model => model.AwayTeamId)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, Resources.TournamentViews.FreeDay, new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, Resources.UI.TournamentViews.FreeDay, new { @class = "form-control" })
     </div>
 }
 else

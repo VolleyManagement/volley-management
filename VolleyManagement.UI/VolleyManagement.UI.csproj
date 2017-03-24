@@ -48,6 +48,10 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -245,6 +249,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Content\Admin\admin.css" />
     <Content Include="Content\Admin\Reply.css" />
     <Content Include="Content\Admin\vm.css" />
@@ -654,54 +659,66 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\PlayerViews.resx">
+    <EmbeddedResource Include="App_GlobalResources\PlayerViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>PlayerViews.Designer.cs</LastGenOutput>
-    </Content>
-    <Content Include="App_GlobalResources\TeamViews.resx">
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_GlobalResources\TeamViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TeamViews.Designer.cs</LastGenOutput>
-    </Content>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\AccountController.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AccountController.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\AuthorizationRoles.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AuthorizationRoles.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
     </EmbeddedResource>
-    <Content Include="App_GlobalResources\FeedbackViews.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
+    <EmbeddedResource Include="App_GlobalResources\FeedbackViews.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>FeedbackViews.Designer.cs</LastGenOutput>
-    </Content>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\GameReportViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameReportViews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\GameResultsController.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameResultsController.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\GameResultViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>GameResultViews.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentController.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TournamentController.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\TournamentViews.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>TournamentViews.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>TournamentViews.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\UserViews.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>UserViews.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\ViewModelResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ViewModelResources.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources.UI</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

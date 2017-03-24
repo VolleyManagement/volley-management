@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Resources;
 
     /// <summary>
     /// Represents contributors team team view model

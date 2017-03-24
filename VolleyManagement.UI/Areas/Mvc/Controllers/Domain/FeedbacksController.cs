@@ -70,7 +70,7 @@
         {
             FeedbackMessageViewModel result = new FeedbackMessageViewModel
             {
-                ResultMessage = App_GlobalResources.TournamentController.CheckCaptcha,
+                ResultMessage = Resources.UI.TournamentController.CheckCaptcha,
                 OperationSuccessful = false
             };
 
@@ -82,12 +82,12 @@
                     {
                         var domainFeedback = feedbackViewModel.ToDomain();
                         this._feedbackService.Create(domainFeedback);
-                        result.ResultMessage = App_GlobalResources.TournamentController.SuccessfulSent;
+                        result.ResultMessage = Resources.UI.TournamentController.SuccessfulSent;
                         result.OperationSuccessful = true;
                     }
                     else
                     {
-                        result.ResultMessage = App_GlobalResources.TournamentController.CheckData;
+                        result.ResultMessage = Resources.UI.TournamentController.CheckData;
                     }
                 }
             }

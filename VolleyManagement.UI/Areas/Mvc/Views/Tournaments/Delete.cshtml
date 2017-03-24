@@ -3,14 +3,14 @@
 @using VolleyManagement.UI.Areas.Mvc;
 
 @{
-    ViewBag.Title = Resources.TournamentViews.DeleteTournamentTitle;
+    ViewBag.Title = Resources.UI.TournamentViews.DeleteTournamentTitle;
 }
 
 <h2>@ViewBag.Title</h2>
 
-<h3>@Resources.TournamentViews.DeleteConfirm</h3>
+<h3>@Resources.UI.TournamentViews.DeleteConfirm</h3>
 <fieldset>
-    <legend>@Resources.TournamentViews.TournamentLegend</legend>
+    <legend>@Resources.UI.TournamentViews.TournamentLegend</legend>
 
     <div class="display-label">@Html.LabelFor(model => model.Name)</div>
     <div class="display-field">@Model.Name</div>
@@ -29,8 +29,8 @@
 </fieldset>
 @using (Html.BeginForm()) {
     <p>
-        <input type="submit" value="@Resources.TournamentViews.Delete" /> |
-        @Html.ActionLink(Resources.TournamentViews.BackToList, "Index")
+        <input type="submit" value="@Resources.UI.TournamentViews.Delete" /> |
+        @Html.ActionLink(Resources.UI.TournamentViews.BackToList, "Index")
     </p>
 }
 

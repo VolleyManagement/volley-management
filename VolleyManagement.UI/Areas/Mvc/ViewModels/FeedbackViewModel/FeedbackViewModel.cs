@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel
 {
     using System.ComponentModel.DataAnnotations;
-    using App_GlobalResources;
+    using Resources.UI;
     using Domain.FeedbackAggregate;
 
     /// <summary>

@@ -7,7 +7,7 @@
     using System.Web.Mvc;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Resources.UI;
 
     /// <summary>
     /// Game to be scheduled in the tournament view model

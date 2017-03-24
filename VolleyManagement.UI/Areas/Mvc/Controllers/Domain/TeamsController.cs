@@ -232,7 +232,7 @@
             {
                 result = new TeamOperationResultViewModel 
                 { 
-                    Message = App_GlobalResources.TournamentController.TeamDelete, 
+                    Message = Resources.UI.TournamentController.TeamDelete, 
                     OperationSuccessful = false 
                 };
             }

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Resources.UI;
 
     /// <summary>
     /// Represents a view model for <see cref="MessageViewModel"/>.

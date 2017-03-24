@@ -28,6 +28,10 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         /// <param name="context"> Volley Management context</param>
         protected override void Seed(VolleyManagementEntities context)
         {
+            // Commented out because we got exception on app domain restarted on production server
+
+            /*
+
             var contributorTeams = new[]
             {
                 ContributorsProMan(),
@@ -49,7 +53,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             context.ContributorTeams.AddOrUpdate(s => s.Name, contributorTeams);
 
             SeedDataGenerator.GenerateRequiredEntities(context);
-            SeedDataGenerator.GenerateEntities(context);
+            SeedDataGenerator.GenerateEntities(context);*/
         }
 
         private static ContributorTeamEntity ContributorsProMan()

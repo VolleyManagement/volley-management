@@ -4,10 +4,9 @@ Welcome to Volley Management project repository
 
 ### What is this repository for? ###
 
-* Quick summary
 The goal of the project is to create system to manage Volleyball sport events for amateur leagues
-* Version
- - not released yet -
+
+Current Version: Pre-release
 
 ### How do I get set up? ###
 
@@ -42,6 +41,6 @@ This file should be put one level above sln file. (This prevents from accidental
 * [Contribution Guidelines](https://bitbucket.org/VolleyManagement/volleymanagement/src/54f6827b2786bee525681bd273d6190a4b235199/CONTRIBUTING.md?at=master)
 * [Code of Conduct](https://bitbucket.org/VolleyManagement/volleymanagement/src/54f6827b2786bee525681bd273d6190a4b235199/CODE_OF_CONDUCT.md?at=master)
 
-### Who do I talk to? ### 
+### Who do I talk to? ###
 
 * All questions should be directed to [Sergii Diachenko](https://bitbucket.org/sdiachen/)

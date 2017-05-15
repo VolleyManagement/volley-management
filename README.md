@@ -36,14 +36,12 @@ Tests can be triggered via Visual Studio
 To deploy it locally you need to get AppSettingSecret.config file from [Sergii Diachenko](https://bitbucket.org/sdiachen/).
 This file should be put one level above sln file. (This prevents from accidental checkin)
 
-### Contribution guidelines ###
+### Additional references ###
 
-* Writing tests
+* [License](https://bitbucket.org/VolleyManagement/volleymanagement/src/54f6827b2786bee525681bd273d6190a4b235199/LICENSE.md?at=master)
+* [Contribution Guidelines](https://bitbucket.org/VolleyManagement/volleymanagement/src/54f6827b2786bee525681bd273d6190a4b235199/CONTRIBUTING.md?at=master)
+* [Code of Conduct](https://bitbucket.org/VolleyManagement/volleymanagement/src/54f6827b2786bee525681bd273d6190a4b235199/CODE_OF_CONDUCT.md?at=master)
 
-* Code review
+### Who do I talk to? ### 
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-
- All questions should be directed to [Sergii Diachenko](https://bitbucket.org/sdiachen/)
+* All questions should be directed to [Sergii Diachenko](https://bitbucket.org/sdiachen/)

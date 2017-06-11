@@ -9,7 +9,6 @@
     using VolleyManagement.Contracts.Authentication.Models;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Crosscutting.Contracts.MailService;
-    using VolleyManagement.Crosscutting.Ninject;
     using VolleyManagement.Services;
     using VolleyManagement.Services.Authentication;
     using VolleyManagement.Services.Authorization;
@@ -54,7 +53,7 @@
                                   Bind<ICacheProvider>().To<CacheProvider>(),
                                   Bind<IMailService>().To<GmailAccountMailService>()
                               };
-            configs.InScope(_scopeCallback);
+            //configs.InScope(_scopeCallback);
         }
     }
 }

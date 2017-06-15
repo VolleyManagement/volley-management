@@ -1,16 +1,13 @@
-﻿namespace VolleyManagement.UI
-{
-    using System;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Web.Http;
-    using System.Web.Mvc;
-    using System.Web.Optimization;
-    using System.Web.Routing;
-    using VolleyManagement.UI.Helpers;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Optimization;
+using System.Web.Routing;
+using VolleyManagement.UI.Helpers;
 
-    /// <summary>
-    /// The volley management application.
-    /// </summary>
+namespace VolleyManagement.UI
+{
     public class VolleyManagementApplication : System.Web.HttpApplication
     {
         /// <summary>

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Web.Script.Serialization;
+    //Bug:missing [ScriptIgnore]using System.Web.Script.Serialization;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -32,7 +32,7 @@
         /// Gets or sets the list of seasons.
         /// </summary>
         /// <value>The list of seasons.</value>
-        [ScriptIgnore]
+        //Bug:missing [ScriptIgnore]
         public Dictionary<short, string> SeasonsList { get; set; }
 
         /// <summary>
@@ -163,7 +163,7 @@
         /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> object
         /// </summary>
-        [ScriptIgnore]
+        //Bug:missing [ScriptIgnore]
         public AllowedOperations Authorization { get; set; }
 
         #region Factory Methods

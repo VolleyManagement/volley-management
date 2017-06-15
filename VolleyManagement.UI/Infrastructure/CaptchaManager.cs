@@ -3,7 +3,7 @@
     using System.Net;
     using System.Web;
     using System.Web.Configuration;
-    using Contracts;
+    using VolleyManagement.Contracts;
     using Newtonsoft.Json.Linq;
 
     /// <summary>
@@ -22,6 +22,7 @@
         /// <returns>Captcha result</returns>
         public bool IsFormSubmit(string response)
         {
+            //ToDo: Refactor: excpetion handling, naming
             bool status = false;
             string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
             using (var client = new WebClient())

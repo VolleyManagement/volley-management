@@ -181,7 +181,7 @@
     <Compile Include="Entities\TournamentRequestEntity.cs" />
     <Compile Include="Entities\ValidationConstants.cs" />
     <Compile Include="Entities\ContributorEntity.cs" />
-    <Compile Include="Infrastructure\NinjectDataAccessModule.cs" />
+    <Compile Include="Infrastructure\IOCDataAccessModule.cs" />
     <Compile Include="Mappers\DomainToDal.cs" />
     <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -240,6 +240,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

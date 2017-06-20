@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Contracts.Authentication.Models;
+    using VolleyManagement.Contracts.Authentication.Models;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.UsersAggregate;
@@ -25,7 +25,7 @@
         /// </summary>
         public UserBuilder()
         {
-            this._user = new User
+            _user = new User
             {
                 Id = 1,
                 UserName = "Player",
@@ -59,7 +59,7 @@
         /// <returns>user builder object</returns>
         public UserBuilder WithId(int id)
         {
-            this._user.Id = id;
+            _user.Id = id;
             return this;
         }
 
@@ -70,7 +70,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithUserName(string username)
         {
-            this._user.UserName = username;
+            _user.UserName = username;
             return this;
         }
 
@@ -81,7 +81,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithEmail(string email)
         {
-            this._user.Email = email;
+            _user.Email = email;
             return this;
         }
 
@@ -92,7 +92,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithPhoneNumber(string phoneNumber)
         {
-            this._user.PhoneNumber = phoneNumber;
+            _user.PhoneNumber = phoneNumber;
             return this;
         }
 
@@ -103,7 +103,7 @@
         /// <returns>User builder object</returns>
         public UserBuilder WithFullName(string personName)
         {
-            this._user.PersonName = personName;
+            _user.PersonName = personName;
             return this;
         }
 
@@ -146,7 +146,7 @@
         /// <returns>Test user</returns>
         public User Build()
         {
-            return this._user;
+            return _user;
         }
     }
 }

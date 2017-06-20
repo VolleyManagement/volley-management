@@ -93,7 +93,7 @@
             _gameServiceMock.Setup(h => h.Create(It.IsAny<Game>()))
                 .Callback<Game>(r => actualGameResult = r);
 
-            var sut = this._kernel.Get<GameResultsController>();
+            var sut = _kernel.Get<GameResultsController>();
 
             // Act
             var result = sut.Create(gameResult) as RedirectToRouteResult;
@@ -118,7 +118,7 @@
             _gameServiceMock.Setup(h => h.Create(It.IsAny<Game>()))
                 .Callback<Game>(r => actualGameResult = r);
 
-            var sut = this._kernel.Get<GameResultsController>();
+            var sut = _kernel.Get<GameResultsController>();
 
             // Act
             var result = sut.Create(game) as RedirectToRouteResult;
@@ -140,7 +140,7 @@
                                 .WithAwayTeamId(HOME_TEAM_ID)
                                 .Build();
 
-            var sut = this._kernel.Get<GameResultsController>();
+            var sut = _kernel.Get<GameResultsController>();
             _gameServiceMock.Setup(gr => gr.Create(It.IsAny<Game>())).Throws(new ArgumentException());
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
 
@@ -235,7 +235,7 @@
             _gameServiceMock.Setup(grs => grs.EditGameResult(It.IsAny<Game>()))
                                   .Throws(new MissingEntityException());
 
-            var sut = this._kernel.Get<GameResultsController>();
+            var sut = _kernel.Get<GameResultsController>();
 
             // Act
             var result = TestExtensions.GetModel<GameResultViewModel>(sut.Edit(gameResultViewModel));
@@ -271,7 +271,7 @@
         {
             // Arrange
             var gameResultViewModel = new GameResultViewModelBuilder().Build();
-            var sut = this._kernel.Get<GameResultsController>();
+            var sut = _kernel.Get<GameResultsController>();
 
             // Act
             var result = sut.Edit(gameResultViewModel);
@@ -291,7 +291,7 @@
         {
             // Arrange
             var testData = new GameResultViewModelBuilder().Build();
-            var sut = this._kernel.Get<GameResultsController>();
+            var sut = _kernel.Get<GameResultsController>();
             sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
@@ -310,8 +310,8 @@
         public void DeleteGamePostAction_ExistingGame_GameIsDeleted()
         {
             // Arrange
-            this._gameServiceMock.Setup(tr => tr.Delete(GAME_RESULTS_ID));
-            var sut = this._kernel.Get<GameResultsController>();
+            _gameServiceMock.Setup(tr => tr.Delete(GAME_RESULTS_ID));
+            var sut = _kernel.Get<GameResultsController>();
 
             // Act
             var result = sut.Delete(GAME_RESULTS_ID);
@@ -330,7 +330,7 @@
         {
             // Arrange
             SetupDeleteGameThrowsArgumentNullException();
-            var sut = this._kernel.Get<GameResultsController>();
+            var sut = _kernel.Get<GameResultsController>();
 
             // Act
             var result = sut.Delete(GAME_RESULTS_ID);
@@ -349,7 +349,7 @@
         {
             // Arrange
             SetupDeleteGameThrowsArgumentException();
-            var sut = this._kernel.Get<GameResultsController>();
+            var sut = _kernel.Get<GameResultsController>();
 
             // Act
             var result = sut.Delete(GAME_RESULTS_ID);
@@ -367,7 +367,7 @@
         {
             // Arrange
             var testTournamentResults = new GameServiceTestFixture().TestGameResults().Build();
-            var sut = this._kernel.Get<GameResultsController>();
+            var sut = _kernel.Get<GameResultsController>();
             var expected = new TournamentResultsViewModelBuilder().Build();
 
             SetupGameResultsGetTournamentResults(TOURNAMENT_ID, testTournamentResults);
@@ -385,17 +385,17 @@
 
         private void VerifyEditGameResult(Times times)
         {
-            this._gameServiceMock.Verify(ts => ts.EditGameResult(It.IsAny<Game>()), times);
+            _gameServiceMock.Verify(ts => ts.EditGameResult(It.IsAny<Game>()), times);
         }
 
         private void VerifyDelete(int gameId, Times times)
         {
-            this._gameServiceMock.Verify(ts => ts.Delete(It.Is<int>(id => id == gameId)), times);
+            _gameServiceMock.Verify(ts => ts.Delete(It.Is<int>(id => id == gameId)), times);
         }
 
         private void SetupGet(int gameResultId, GameResultDto gameResult)
         {
-            this._gameServiceMock.Setup(tr => tr.Get(gameResultId)).Returns(gameResult);
+            _gameServiceMock.Setup(tr => tr.Get(gameResultId)).Returns(gameResult);
         }
 
         private void SetupGameResultsGetTournamentResults(int tournamentId, List<GameResultDto> testData)
@@ -422,13 +422,13 @@
 
         private void SetupDeleteGameThrowsArgumentNullException()
         {
-            this._gameServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
+            _gameServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
                 .Throws(new ArgumentNullException(string.Empty));
         }
 
         private void SetupDeleteGameThrowsArgumentException()
         {
-            this._gameServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
+            _gameServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
                 .Throws(new ArgumentException(string.Empty));
         }
 

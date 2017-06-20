@@ -20,7 +20,7 @@
         /// </summary>
         public ContributorTeamBuilder()
         {
-            this._contributorTeam = new ContributorTeam
+            _contributorTeam = new ContributorTeam
             {
                 Id = 1,
                 Name = "FirstName",
@@ -56,7 +56,7 @@
         /// <returns>Contributor builder object</returns>
         public ContributorTeamBuilder WithId(int id)
         {
-            this._contributorTeam.Id = id;
+            _contributorTeam.Id = id;
             return this;
         }
 
@@ -67,7 +67,7 @@
         /// <returns>Contributor team builder object</returns>
         public ContributorTeamBuilder WithName(string name)
         {
-            this._contributorTeam.Name = name;
+            _contributorTeam.Name = name;
             return this;
         }
 
@@ -78,7 +78,7 @@
         /// <returns>Contributor team builder object</returns>
         public ContributorTeamBuilder WithcourseDirection(string courseDirection)
         {
-            this._contributorTeam.CourseDirection = courseDirection;
+            _contributorTeam.CourseDirection = courseDirection;
             return this;
         }
 
@@ -89,7 +89,7 @@
         /// <returns>Contributor team builder object</returns>
         public ContributorTeamBuilder Withcontributors(IList<Contributor> contributors)
         {
-            this._contributorTeam.Contributors = contributors;
+            _contributorTeam.Contributors = contributors;
             return this;
         }
 
@@ -99,7 +99,7 @@
         /// <returns>Test contributor team</returns>
         public ContributorTeam Build()
         {
-            return this._contributorTeam;
+            return _contributorTeam;
         }
     }
 }

@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Contracts.Authentication.Models;
+    using VolleyManagement.Contracts.Authentication.Models;
 
     /// <summary>
     /// Builder for test users
@@ -21,7 +21,7 @@
         /// </summary>
         public UserModelBuilder()
         {
-            this._userModel = new UserModel
+            _userModel = new UserModel
             {
                 Id = 1,
                 UserName = "Player",
@@ -46,7 +46,7 @@
         /// <returns>user builder object</returns>
         public UserModelBuilder WithId(int id)
         {
-            this._userModel.Id = id;
+            _userModel.Id = id;
             return this;
         }
 
@@ -57,7 +57,7 @@
         /// <returns>User builder object</returns>
         public UserModelBuilder WithUserName(string username)
         {
-            this._userModel.UserName = username;
+            _userModel.UserName = username;
             return this;
         }
 
@@ -68,7 +68,7 @@
         /// <returns>User builder object</returns>
         public UserModelBuilder WithEmail(string email)
         {
-            this._userModel.Email = email;
+            _userModel.Email = email;
             return this;
         }
 
@@ -79,7 +79,7 @@
         /// <returns>User builder object</returns>
         public UserModelBuilder WithPhoneNumber(string phoneNumber)
         {
-            this._userModel.PhoneNumber = phoneNumber;
+            _userModel.PhoneNumber = phoneNumber;
             return this;
         }
 
@@ -90,7 +90,7 @@
         /// <returns>User builder object</returns>
         public UserModelBuilder WithFullName(string personName)
         {
-            this._userModel.PersonName = personName;
+            _userModel.PersonName = personName;
             return this;
         }
 
@@ -101,7 +101,7 @@
         /// <returns>User builder object</returns>
         public UserModelBuilder WithLoginProviders(List<LoginProviderModel> providers)
         {
-            this._userModel.Logins = providers;
+            _userModel.Logins = providers;
             return this;
         }
 
@@ -111,7 +111,7 @@
         /// <returns>Test user</returns>
         public UserModel Build()
         {
-            return this._userModel;
+            return _userModel;
         }
     }
 }

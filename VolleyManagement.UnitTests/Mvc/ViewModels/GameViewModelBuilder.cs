@@ -32,7 +32,7 @@
                 AwayTeamId = AWAY_TEAM_DEFAULT_ID,
                 HomeTeamId = HOME_TEAM_DEFAULT_ID,
                 Round = DEFAULT_ROUND,
-                GameDate = new DateTime()
+                GameDate = default(DateTime)
             };
         }
 

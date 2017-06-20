@@ -19,7 +19,7 @@
         /// <returns>A signed integer that indicates the relative values of games.</returns>
         public int Compare(GameViewModel x, GameViewModel y)
         {
-            return this.AreEqual(x, y) ? 0 : 1;
+            return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>

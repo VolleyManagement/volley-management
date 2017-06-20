@@ -6,8 +6,6 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
-    using Data.Queries.Player;
-    using Data.Queries.Team;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -16,6 +14,8 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Player;
+    using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.Domain.Properties;
     using VolleyManagement.Domain.RolesAggregate;
@@ -166,7 +166,7 @@
             _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
                 .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
 
-            var captain = (new PlayerBuilder()).WithId(SPECIFIC_PLAYER_ID).WithNoTeam().Build();
+            var captain = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithNoTeam().Build();
             _getPlayerByIdQueryMock.Setup(pr =>
                                           pr.Execute(It.Is<FindByIdCriteria>(cr =>
                                                                              cr.Id == SPECIFIC_PLAYER_ID)))
@@ -431,7 +431,7 @@
         {
             // Arrange
             var newTeam = new TeamBuilder().Build();
-            var captain = (new PlayerBuilder()).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var captain = new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build();
 
             var captainLeadTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             var testTeams = new TeamServiceTestFixture().AddTeam(captainLeadTeam).Build();
@@ -472,7 +472,7 @@
         {
             // Arrange
             var newTeam = new TeamBuilder().WithCaptain(SPECIFIC_PLAYER_ID).Build();
-            var captain = (new PlayerBuilder()).WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var captain = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
             _getPlayerByIdQueryMock.Setup(pr => pr.Execute(It.IsAny<FindByIdCriteria>())).Returns(captain);
             _getTeamByCaptainQueryMock.Setup(tq => tq.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(null as Team);
 
@@ -497,7 +497,7 @@
             _teamRepositoryMock.Setup(tr => tr.Add(It.IsAny<Team>()))
                 .Callback<Team>(t => t.Id = SPECIFIC_TEAM_ID);
 
-            var captain = (new PlayerBuilder())
+            var captain = new PlayerBuilder()
                                         .WithId(SPECIFIC_PLAYER_ID)
                                         .WithNoTeam()
                                         .Build();

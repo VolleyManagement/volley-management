@@ -4,7 +4,6 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.Mvc;
-    using Comparers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
@@ -14,6 +13,7 @@
     using VolleyManagement.UI.Areas.Admin.Controllers;
     using VolleyManagement.UI.Areas.Admin.Models;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using VolleyManagement.UnitTests.Admin.Comparers;
     using VolleyManagement.UnitTests.Admin.ViewModels;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.UsersService;
@@ -35,11 +35,11 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<IUserService>().ToConstant(this._userServiceMock.Object);
-            this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
-            this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
-            this._sut = this._kernel.Get<UsersController>();
+            _kernel = new StandardKernel();
+            _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
+            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
+            _httpContextMock.SetupGet(c => c.Request).Returns(_httpRequestMock.Object);
+            _sut = _kernel.Get<UsersController>();
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@
             SetupGetUserDetails(EXISTING_ID, null);
 
             // Act
-            var result = this._sut.UserDetails(EXISTING_ID);
+            var result = _sut.UserDetails(EXISTING_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -97,12 +97,12 @@
 
         private void SetupGetUserDetails(int userId, User user)
         {
-            this._userServiceMock.Setup(tr => tr.GetUserDetails(userId)).Returns(user);
+            _userServiceMock.Setup(tr => tr.GetUserDetails(userId)).Returns(user);
         }
 
         private void SetupGetAllUsers(List<User> users)
         {
-            this._userServiceMock.Setup(tr => tr.GetAllUsers()).Returns(users);
+            _userServiceMock.Setup(tr => tr.GetAllUsers()).Returns(users);
         }
 
         private List<User> MakeTestUsers()

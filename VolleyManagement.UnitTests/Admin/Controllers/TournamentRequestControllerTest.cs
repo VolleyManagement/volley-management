@@ -7,7 +7,6 @@
     using System.Web.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Mvc.Comparers;
     using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
@@ -24,12 +23,14 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Admin.Comparers;
     using VolleyManagement.UnitTests.Admin.ViewModels;
+    using VolleyManagement.UnitTests.Mvc.Comparers;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.PlayerService;
     using VolleyManagement.UnitTests.Services.TeamService;
     using VolleyManagement.UnitTests.Services.TournamentRequestService;
     using VolleyManagement.UnitTests.Services.TournamentService;
     using VolleyManagement.UnitTests.Services.UsersService;
+
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class TournamentRequestControllerTest
@@ -60,13 +61,13 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<ITournamentRequestService>().ToConstant(this._requestServiceMock.Object);
-            this._kernel.Bind<ITournamentService>().ToConstant(this._tournamentServiceMock.Object);
-            this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
-            this._kernel.Bind<IUserService>().ToConstant(this._userServiceMock.Object);
-            this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
-            this._sut = this._kernel.Get<TournamentRequestController>();
+            _kernel = new StandardKernel();
+            _kernel.Bind<ITournamentRequestService>().ToConstant(_requestServiceMock.Object);
+            _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
+            _kernel.Bind<ITeamService>().ToConstant(_teamServiceMock.Object);
+            _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
+            _httpContextMock.SetupGet(c => c.Request).Returns(_httpRequestMock.Object);
+            _sut = _kernel.Get<TournamentRequestController>();
         }
 
         [TestMethod]
@@ -110,7 +111,7 @@
             var expected = CreateTeamViewModel();
 
             // Act
-            var actual = TestExtensions.GetModel<TeamViewModel>(this._sut.TeamDetails(SPECIFIED_TEAM_ID));
+            var actual = TestExtensions.GetModel<TeamViewModel>(_sut.TeamDetails(SPECIFIED_TEAM_ID));
 
             // Assert
             TestHelper.AreEqual<TeamViewModel>(expected, actual, new TeamViewModelComparer());
@@ -123,7 +124,7 @@
             SetupGet(TEST_TEAM_ID, null);
 
             // Act
-            var result = this._sut.TeamDetails(TEST_TEAM_ID);
+            var result = _sut.TeamDetails(TEST_TEAM_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -136,7 +137,7 @@
             MockTournamentServiceGetTournament(TEST_TOURNAMENT_ID, null as Tournament);
 
             // Act
-            var result = this._sut.TournamentDetails(TEST_TOURNAMENT_ID);
+            var result = _sut.TournamentDetails(TEST_TOURNAMENT_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -273,7 +274,7 @@
             MockUserServiceGetUserDetails(USER_ID, null);
 
             // Act
-            var result = this._sut.UserDetails(USER_ID);
+            var result = _sut.UserDetails(USER_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -295,7 +296,7 @@
 
         private void SetupGet(int teamId, Team team)
         {
-            this._teamServiceMock.Setup(tr => tr.Get(teamId)).Returns(team);
+            _teamServiceMock.Setup(tr => tr.Get(teamId)).Returns(team);
         }
 
         private List<PlayerNameViewModel> CreateRoster()
@@ -381,7 +382,7 @@
 
         private void MockTournamentServiceGetTournament(int tournamentId, Tournament tournament)
         {
-            this._tournamentServiceMock.Setup(tr => tr.Get(tournamentId)).Returns(tournament);
+            _tournamentServiceMock.Setup(tr => tr.Get(tournamentId)).Returns(tournament);
         }
 
         private void AssertVerifyConfirm(int requestId)
@@ -416,7 +417,7 @@
 
         private void MockUserServiceGetUserDetails(int userId, User user)
         {
-            this._userServiceMock.Setup(tr => tr.GetUserDetails(userId)).Returns(user);
+            _userServiceMock.Setup(tr => tr.GetUserDetails(userId)).Returns(user);
         }
 
         private MessageViewModel CreateMessageViewModel()
@@ -449,7 +450,7 @@
 
         private void MockTournamentRequestServiceGet(List<TournamentRequest> requests)
         {
-            this._requestServiceMock.Setup(tr => tr.Get()).Returns(requests);
+            _requestServiceMock.Setup(tr => tr.Get()).Returns(requests);
         }
 
         private List<TournamentRequestViewModel> CreateTournamentRequestViewModelList()

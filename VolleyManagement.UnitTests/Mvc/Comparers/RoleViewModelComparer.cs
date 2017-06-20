@@ -3,7 +3,6 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
     using VolleyManagement.UI.Areas.Admin.Models;
 
     /// <summary>
@@ -29,12 +28,12 @@
                 return 1;
             }
 
-            return this.CompareInternal(x, y);
+            return CompareInternal(x, y);
         }
 
         public int Compare(object x, object y)
         {
-            return this.Compare(x as RoleViewModel, y as RoleViewModel);
+            return Compare(x as RoleViewModel, y as RoleViewModel);
         }
 
         private int CompareInternal(RoleViewModel x, RoleViewModel y)

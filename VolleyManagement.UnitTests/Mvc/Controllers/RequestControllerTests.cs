@@ -36,10 +36,10 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<IUserService>().ToConstant(this._userServiceMock.Object);
-            this._kernel.Bind<IPlayerService>().ToConstant(this._playerServiceMock.Object);
-            this._kernel.Bind<IRequestService>().ToConstant(this._requestServiceMock.Object);
+            _kernel = new StandardKernel();
+            _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
+            _kernel.Bind<IPlayerService>().ToConstant(_playerServiceMock.Object);
+            _kernel.Bind<IRequestService>().ToConstant(_requestServiceMock.Object);
         }
 
         #endregion
@@ -219,24 +219,24 @@
 
         private void SetupUserService(int id)
         {
-            this._userServiceMock.Setup(m => m.GetUser(id)).Returns(new User());
+            _userServiceMock.Setup(m => m.GetUser(id)).Returns(new User());
         }
 
         private void SetupUserServiceReturnsNullUser(int id)
         {
             User user = null;
-            this._userServiceMock.Setup(m => m.GetUser(id)).Returns(user);
+            _userServiceMock.Setup(m => m.GetUser(id)).Returns(user);
         }
 
         private void SetupPlayerService(int id)
         {
-            this._playerServiceMock.Setup(m => m.Get(id)).Returns(new Player());
+            _playerServiceMock.Setup(m => m.Get(id)).Returns(new Player());
         }
 
         private void SetupPlayerServiceReturnsNullPlayer(int id)
         {
             Player player = null;
-            this._playerServiceMock.Setup(m => m.Get(id)).Returns(player);
+            _playerServiceMock.Setup(m => m.Get(id)).Returns(player);
         }
 
         private void SetupConfirmThrowsMissingEntityException()

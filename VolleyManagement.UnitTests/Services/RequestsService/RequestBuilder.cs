@@ -16,7 +16,7 @@
         /// </summary>
         public RequestBuilder()
         {
-            this._request = new Request
+            _request = new Request
             {
                 Id = 1,
                 UserId = 1,

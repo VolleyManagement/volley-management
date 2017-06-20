@@ -10,7 +10,7 @@
 
         public TournamentRequestBuilder()
         {
-            this._tournamentRequest = new TournamentRequest
+            _tournamentRequest = new TournamentRequest
             {
                 Id = 1,
                 TeamId = 1,

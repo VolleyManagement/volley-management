@@ -110,6 +110,7 @@
         }
 
         #region FindById
+
         /// <summary>
         /// Test for FinById method.
         /// </summary>
@@ -148,6 +149,7 @@
         #endregion
 
         #region GetAll
+
         /// <summary>
         /// Test for Get() method. The method should return existing tournaments
         /// (order is important).
@@ -174,6 +176,7 @@
         #endregion
 
         #region GetAllTournamentTeams
+
         /// <summary>
         /// Test for GetAllTournamentTeams method.
         /// The method should return existing teams in specific tournament
@@ -216,6 +219,7 @@
         #endregion
 
         #region Edit
+
         /// <summary>
         /// Test for Edit() method. The method should invoke Update() method of ITournamentRepository
         /// and Commit() method of IUnitOfWork.
@@ -309,6 +313,7 @@
         #endregion
 
         #region Create
+
         /// <summary>
         /// Test for Create() method. Tournament's applying start date comes before current date.
         /// Exception is thrown during tournament creation.
@@ -404,7 +409,8 @@
         /// Exception is thrown during tournament creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(TournamentValidationException),
+        [ExpectedException(
+            typeof(TournamentValidationException),
             "При наличии трансферного периода необходимо указать дату начала периода")]
         public void Create_TournamentNoTransferStart_ExceptionThrown()
         {
@@ -424,7 +430,8 @@
         /// Exception is thrown during tournament creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(TournamentValidationException),
+        [ExpectedException(
+            typeof(TournamentValidationException),
             "При наличии трансферного периода необходимо указать дату окончания периода")]
         public void Create_TournamentNoTransferEnd_ExceptionThrown()
         {
@@ -443,7 +450,8 @@
         /// Test for Create() method. Tournament's transfer end date comes after tournament's games end date.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(TournamentValidationException),
+        [ExpectedException(
+            typeof(TournamentValidationException),
             "Окончание трансферного периода должно быть раньше окончания игр")]
         public void Create_TournamentTransferEndDateAfterGamesEndDate_ExceptionThrown()
         {
@@ -494,7 +502,8 @@
         /// Test for Create() method. Tournament's transfer end date comes before tournament's transfer start date.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(TournamentValidationException),
+        [ExpectedException(
+            typeof(TournamentValidationException),
             "Начало трансферного периода должно быть раньше чем его окончание")]
         public void Create_TournamentTransferEndDateBeforeTransferStartDate_ExceptionThrown()
         {
@@ -741,6 +750,7 @@
         #endregion
 
         #region AddTeamsToTournament
+
         /// <summary>
         /// Test for AddTeamsToTournament method.
         /// Valid teams have to be added.
@@ -843,6 +853,7 @@
         #endregion
 
         #region DeleteTeamFromTournament
+
         /// <summary>
         /// Test for DeleteTeamFromTournament method.
         /// Team have to be removed from tournament
@@ -945,6 +956,7 @@
         #endregion
 
         #region Delete
+
         /// <summary>
         /// Test for Delete Tournament method.
         /// </summary>
@@ -983,6 +995,7 @@
         #endregion
 
         #region GetActual
+
         /// <summary>
         /// GetActual method test. The method should invoke Find() method of ITournamentRepository
         /// </summary>
@@ -1039,6 +1052,7 @@
         #endregion
 
         #region GetFinished
+
         /// <summary>
         /// GetActual method test. The method should invoke Find() method of ITournamentRepository
         /// </summary>
@@ -1082,6 +1096,7 @@
         #endregion
 
         #region Get
+
         /// <summary>
         /// Get method test. The method returns all tournaments.
         /// Then select all not started tournaments

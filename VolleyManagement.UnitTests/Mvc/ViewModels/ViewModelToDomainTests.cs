@@ -1,9 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UnitTests.Services.TournamentService;
 

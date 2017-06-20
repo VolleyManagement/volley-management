@@ -4,13 +4,9 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-
     using Ninject;
-
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.Dto;
     using VolleyManagement.Domain.RolesAggregate;

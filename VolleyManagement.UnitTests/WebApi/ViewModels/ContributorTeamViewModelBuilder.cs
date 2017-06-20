@@ -48,7 +48,7 @@
         /// <returns>Contributor view model builder object</returns>
         public ContributorTeamViewModelBuilder WithName(string name)
         {
-            this._contributorTeamViewModel.Name = name;
+            _contributorTeamViewModel.Name = name;
             return this;
         }
 
@@ -59,7 +59,7 @@
         /// <returns>Contributor view model builder object</returns>
         public ContributorTeamViewModelBuilder WithcourseDirection(string courseDirection)
         {
-            this._contributorTeamViewModel.CourseDirection = courseDirection;
+            _contributorTeamViewModel.CourseDirection = courseDirection;
             return this;
         }
 
@@ -72,7 +72,7 @@
         {
             foreach (var item in contributors)
             {
-                this._contributorTeamViewModel.Contributors.Add(item);
+                _contributorTeamViewModel.Contributors.Add(item);
             }
 
             return this;

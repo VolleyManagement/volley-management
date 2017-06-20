@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Crosscutting.Contracts.Providers;
-    using Data.Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
@@ -14,6 +12,8 @@
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Crosscutting.Contracts.MailService;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
+    using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
     using VolleyManagement.Domain.FeedbackAggregate;
@@ -115,7 +115,7 @@
                                             .Build()
                                             .ToList();
 
-            var sut = _kernel.Get<FeedbackService>();
+            var sut = _kernel.Get<VolleyManagement.Services.FeedbackService>();
 
             // Act
             var actual = sut.Get();
@@ -130,7 +130,7 @@
         {
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
-            var sut = _kernel.Get<FeedbackService>();
+            var sut = _kernel.Get<VolleyManagement.Services.FeedbackService>();
 
             // Act
             sut.Get();
@@ -147,7 +147,7 @@
             var expected = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(expected);
 
-            var sut = _kernel.Get<FeedbackService>();
+            var sut = _kernel.Get<VolleyManagement.Services.FeedbackService>();
 
             // Act
             var actual = sut.Get(EXISTING_ID);
@@ -162,7 +162,7 @@
         {
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
-            var sut = _kernel.Get<FeedbackService>();
+            var sut = _kernel.Get<VolleyManagement.Services.FeedbackService>();
 
             // Act
             sut.Get(EXISTING_ID);
@@ -644,7 +644,7 @@
         {
             SetupCurrentUserServiceGetCurrentUserId(VALID_USER_ID);
 
-            this._userServiceMock.Setup(
+            _userServiceMock.Setup(
              us => us.GetUser(userId)).Returns(
              new User { PersonName = TEST_NAME });
         }
@@ -712,7 +712,7 @@
 
         private void SetupCurrentUserServiceGetCurrentUserId(int id)
         {
-            this._currentUserServiceMock.Setup(cs => cs.GetCurrentUserId())
+            _currentUserServiceMock.Setup(cs => cs.GetCurrentUserId())
                 .Returns(id);
         }
 

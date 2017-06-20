@@ -2,13 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-
     using Ninject;
-
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Queries.Common;
@@ -67,7 +63,7 @@
         public void GetAllRoles_PreexistingRolesStored_AllRolesReturned()
         {
             // Arange
-            this.MockAllRoles(GetDefaultRoles());
+            MockAllRoles(GetDefaultRoles());
             var service = _kernel.Get<RolesService>();
             var expectedResult = GetDefaultRoles();
 
@@ -225,7 +221,7 @@
 
         private void MockAllRoles(List<Role> testData)
         {
-            this._getAllQueryMock.Setup(q => q.Execute(It.IsAny<GetAllCriteria>())).Returns(testData);
+            _getAllQueryMock.Setup(q => q.Execute(It.IsAny<GetAllCriteria>())).Returns(testData);
         }
 
         private void MockSingleRole(Role role)

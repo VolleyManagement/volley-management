@@ -137,6 +137,7 @@
         #endregion
 
         #region Create
+
         /// <summary>
         /// Test for Create method. GameResult object contains valid data. Game result is created successfully.
         /// </summary>
@@ -701,7 +702,7 @@
                 .Build();
 
             SetupGetTournamentDto(new TournamentScheduleDto());
-            SetupGetTournamentResults(tournament.Id, (new GameServiceTestFixture()).TestGameResults().Build());
+            SetupGetTournamentResults(tournament.Id, new GameServiceTestFixture().TestGameResults().Build());
             var sut = _kernel.Get<GameService>();
 
             // Act
@@ -758,7 +759,7 @@
                 .WithRound(1)
                 .Build();
 
-            List<GameResultDto> gameResults = (new GameServiceTestFixture()).TestGameResults().Build();
+            List<GameResultDto> gameResults = new GameServiceTestFixture().TestGameResults().Build();
             SetupGetTournamentDto(new TournamentScheduleDtoBuilder().WithScheme(TournamentSchemeEnum.One).Build());
             SetupGetTournamentResults(1, gameResults);
 
@@ -793,7 +794,7 @@
                 .Build();
 
             SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
-            SetupGetTournamentResults(1, (new GameServiceTestFixture()).TestGameResults().Build());
+            SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
 
             var sut = _kernel.Get<GameService>();
 
@@ -829,7 +830,7 @@
                 .Build();
 
             SetupGetTournamentDto(new TournamentScheduleDto());
-            SetupGetTournamentResults(1, (new GameServiceTestFixture()).TestGameResults().Build());
+            SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
 
             var sut = _kernel.Get<GameService>();
             sut.Create(gameInOneRound);
@@ -1356,6 +1357,7 @@
         #endregion
 
         #region Get
+
         /// <summary>
         /// Test for Get method. Existing game is requested. Game is returned.
         /// </summary>
@@ -1377,6 +1379,7 @@
         #endregion
 
         #region GetTournamentResults
+
         /// <summary>
         /// Test for GetTournamentResults method. Game results of specified tournament are requested. Game results are returned.
         /// </summary>
@@ -1388,7 +1391,7 @@
             var sut = _kernel.Get<GameService>();
 
             SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
-            SetupGetTournamentResults(1, (new GameServiceTestFixture()).TestGameResults().Build());
+            SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
 
             SetupGetTournamentResults(TOURNAMENT_ID, expected);
 
@@ -1650,6 +1653,7 @@
         }
 
         #region Delete
+
         /// <summary>
         /// Test for Delete method. Existing game has to be deleted. Game is deleted.
         /// </summary>
@@ -1761,6 +1765,7 @@
         #endregion
 
         #region SwapRounds
+
         /// <summary>
         /// Test for SwapRounds method. Swap rounds in existing games.
         /// </summary>
@@ -1881,7 +1886,7 @@
             SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
 
             SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
-            SetupGetTournamentResults(1, (new GameServiceTestFixture()).TestGameResults().Build());
+            SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
 
             // Act
             sut.RemoveAllGamesInTournament(TOURNAMENT_ID);

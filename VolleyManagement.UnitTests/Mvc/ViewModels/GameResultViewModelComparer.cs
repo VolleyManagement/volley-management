@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using UI.Areas.Mvc.ViewModels.GameResults;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// Comparer for team objects.

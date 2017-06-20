@@ -20,7 +20,7 @@
         /// <returns>A signed integer that indicates the relative values of contributors.</returns>
         public int Compare(ContributorsTeamViewModel x, ContributorsTeamViewModel y)
         {
-            return this.IsEqual(x, y) ? 0 : 1;
+            return IsEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>

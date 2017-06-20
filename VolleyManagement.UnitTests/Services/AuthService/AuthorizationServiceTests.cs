@@ -534,7 +534,7 @@
 
         private void MockAllowedOperations(List<AuthOperation> operations)
         {
-            this._getByIdQueryMock.Setup(q => q.Execute(It.IsAny<FindByUserIdCriteria>())).Returns(operations);
+            _getByIdQueryMock.Setup(q => q.Execute(It.IsAny<FindByUserIdCriteria>())).Returns(operations);
         }
 
         #endregion

@@ -30,8 +30,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>VolleyManagement.UnitTests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,6 +43,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>VolleyManagement.UnitTests.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
@@ -131,8 +135,8 @@
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />
     <Compile Include="Mvc\Controllers\ContributorsTeamControllerTests.cs" />
     <Compile Include="Mvc\Controllers\RequestControllerTests.cs" />
-    <Compile Include="Mvc\Controllers\RequestsControllerTest.cs" />
-    <Compile Include="Mvc\Controllers\FeedbacksControllerTest.cs" />
+    <Compile Include="Mvc\Controllers\RequestsControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\FeedbacksControllerTests.cs" />
     <Compile Include="Mvc\Controllers\GameReportsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\GameResultsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\PlayersControllerTests.cs" />
@@ -154,7 +158,7 @@
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotGameResultsViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotTableEqualityComparer.cs" />
-    <Compile Include="Mvc\ViewModels\PivotTeamsStandingsEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PivotTeamStandingsViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\ScheduleViewModelBuilder.cs" />
@@ -171,12 +175,12 @@
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentTeamsListViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
+    <Compile Include="Mvc\ViewModels\ViewModelToDomainTests.cs" />
     <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
+    <Compile Include="Mvc\ViewModels\GameResultViewModelBuilder.cs" />
     <Compile Include="Services\FeedbackService\FeedbackBuilder.cs" />
     <Compile Include="Services\FeedbackService\FeedbackComparer.cs" />
     <Compile Include="Services\FeedbackService\FeedbackServiceTest.cs" />
@@ -222,7 +226,7 @@
     <Compile Include="TestCSharp7FeaturesSupport.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
-    <Compile Include="Mvc\ViewModels\PlayerViewModelToDomain.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerViewModelToDomainTest.cs" />
     <Compile Include="Mvc\ViewModels\PlayerDomainToViewModel.cs" />
     <Compile Include="Services\ContributorService\ContributorEqualityComparer.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamBuilder.cs" />
@@ -261,11 +265,11 @@
     <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelServiceTestFixture.cs" />
-    <Compile Include="WebApi\ODataControllers\ContributorControllerTests.cs" />
+    <Compile Include="WebApi\ODataControllers\ContributorsControllerTests.cs" />
     <Compile Include="WebApi\ODataControllers\PlayerControllerTests.cs" />
     <Compile Include="WebApi\ODataControllers\TeamControllerTests.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelBuilder.cs" />
-    <Compile Include="WebApi\ViewModels\ContributorViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TeamViewModelBuilder.cs" />
@@ -313,8 +317,13 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <AdditionalFiles Include="stylecop.json" />
+    <None Include="VolleyManagement.UnitTests.ruleset" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-    using UI.Areas.Mvc.ViewModels.Users;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
 
     /// <summary>
     /// Builder for test MVC user edit view models

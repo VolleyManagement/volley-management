@@ -1,9 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace VolleyManagement.UnitTests
+﻿namespace VolleyManagement.UnitTests
 {
+    using System;
+    using System.Diagnostics;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     /// <summary>
     /// This class provides way to test StyleCop support for C#7
     /// </summary>
@@ -11,20 +11,8 @@ namespace VolleyManagement.UnitTests
     [Ignore]
     public class TestCSharp7FeaturesSupport
     {
-        (string, string, string) LookupName(long id) // tuple return type
+        private interface IFigure
         {
-            var first = "First";
-            var middle = "Middle";
-            var last = "Last";
-            return (first, middle, last); // tuple literal
-        }
-
-        (string first, string middle, string last) LookupName1(long id) // tuple return type
-        {
-            var first = "First";
-            var middle = "Middle";
-            var last = "Last";
-            return (first, middle, last); // tuple literal
         }
 
         [TestMethod]
@@ -34,6 +22,7 @@ namespace VolleyManagement.UnitTests
             var p = new Point { X = 2, Y = 3 };
             p.GetCoordinates(out int x, out int y);
             Debug.WriteLine($"({x}, {y})");
+
             // Same with var
             p.GetCoordinates(out var x1, out var y1);
             Debug.WriteLine($"({x1}, {y1})");
@@ -45,7 +34,7 @@ namespace VolleyManagement.UnitTests
                 case Circle c:
                     Debug.WriteLine($"circle with radius {c.Radius}");
                     break;
-                case Rectangle s when (s.Length == s.Height):
+                case Rectangle s when s.Length == s.Height:
                     Debug.WriteLine($"{s.Length} x {s.Height} square");
                     break;
                 case Rectangle r:
@@ -58,14 +47,14 @@ namespace VolleyManagement.UnitTests
                     throw new ArgumentNullException(nameof(shape));
             }
 
-            //Tuples
+            // Tuples
             var names = LookupName(10);
             Debug.WriteLine($"found {names.Item1} {names.Item3}.");
 
             var names1 = LookupName1(10);
             Debug.WriteLine($"found {names1.first} {names1.last}.");
 
-            //Deconstruction
+            // Deconstruction
             (var pX, var pY) = p;
 
             Debug.WriteLine($"({pX}, {pY})");
@@ -73,13 +62,13 @@ namespace VolleyManagement.UnitTests
             // Local functions
             Debug.WriteLine(Fibonacci(6));
 
-            //Literals
+            // Literals
             var d = 123_456;
             var h = 0xAB_CD_EF;
             var b = 0b1010_1011_1100_1101_1110_1111;
             Debug.WriteLine($"d={d}, h={h}, b={b}");
 
-            //Ref returns and locals
+            // Ref returns and locals
             int[] array = { 1, 15, -39, 0, 7, 14, -12 };
             ref int place = ref Find(7, array); // aliases 7's place in the array
             place = 9; // replaces 7 with 9 in the array
@@ -88,13 +77,21 @@ namespace VolleyManagement.UnitTests
 
         public int Fibonacci(int x)
         {
-            if (x < 0) throw new ArgumentException("Less negativity please!", nameof(x));
+            if (x < 0)
+            {
+                throw new ArgumentException("Less negativity please!", nameof(x));
+            }
+
             return Fib(x).current;
 
             (int current, int previous) Fib(int i)
             {
-                if (i == 0) return (1, 0);
-                var (p, pp) = Fib(i - 1);
+                if (i == 0)
+                {
+                    return (1, 0);
+                }
+
+                var(p, pp) = Fib(i - 1);
                 return (p + pp, p);
             }
         }
@@ -108,7 +105,24 @@ namespace VolleyManagement.UnitTests
                     return ref numbers[i]; // return the storage location, not the value
                 }
             }
+
             throw new IndexOutOfRangeException($"{nameof(number)} not found");
+        }
+
+        private(string, string, string) LookupName(long id) // tuple return type
+        {
+            var first = "First";
+            var middle = "Middle";
+            var last = "Last";
+            return (first, middle, last); // tuple literal
+        }
+
+        private(string first, string middle, string last) LookupName1(long id) // tuple return type
+        {
+            var first = "First";
+            var middle = "Middle";
+            var last = "Last";
+            return (first, middle, last); // tuple literal
         }
 
         private class Point
@@ -131,8 +145,6 @@ namespace VolleyManagement.UnitTests
 
             public string GetLastName() => throw new NotImplementedException();
         }
-
-        private interface IFigure { }
 
         private class Circle : IFigure
         {

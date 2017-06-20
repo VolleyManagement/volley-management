@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Domain.UsersAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// Comparer for user objects.

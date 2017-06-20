@@ -28,7 +28,7 @@
         /// </summary>
         public TournamentBuilder()
         {
-            this._tournament = new Tournament
+            _tournament = new Tournament
             {
                 Id = TOURNAMENT_DEFAULT_ID,
                 Name = "Name",
@@ -76,7 +76,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithId(int id)
         {
-            this._tournament.Id = id;
+            _tournament.Id = id;
             return this;
         }
 
@@ -87,7 +87,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithName(string name)
         {
-            this._tournament.Name = name;
+            _tournament.Name = name;
             return this;
         }
 
@@ -98,7 +98,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithDescription(string description)
         {
-            this._tournament.Description = description;
+            _tournament.Description = description;
             return this;
         }
 
@@ -109,7 +109,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithScheme(TournamentSchemeEnum scheme)
         {
-            this._tournament.Scheme = scheme;
+            _tournament.Scheme = scheme;
             return this;
         }
 
@@ -120,7 +120,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithSeason(short season)
         {
-            this._tournament.Season = season;
+            _tournament.Season = season;
             return this;
         }
 
@@ -131,7 +131,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithRegulationsLink(string regulationsLink)
         {
-            this._tournament.RegulationsLink = regulationsLink;
+            _tournament.RegulationsLink = regulationsLink;
             return this;
         }
 
@@ -142,7 +142,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithGamesStart(DateTime gamesStart)
         {
-            this._tournament.GamesStart = gamesStart;
+            _tournament.GamesStart = gamesStart;
             return this;
         }
 
@@ -153,7 +153,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithGamesEnd(DateTime gamesEnd)
         {
-            this._tournament.GamesEnd = gamesEnd;
+            _tournament.GamesEnd = gamesEnd;
             return this;
         }
 
@@ -164,7 +164,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithApplyingPeriodStart(DateTime applyingPeriodStart)
         {
-            this._tournament.ApplyingPeriodStart = applyingPeriodStart;
+            _tournament.ApplyingPeriodStart = applyingPeriodStart;
             return this;
         }
 
@@ -175,7 +175,7 @@
         /// <returns>Tournament builder object</returns>
         public TournamentBuilder WithApplyingPeriodEnd(DateTime applyingPeriodEnd)
         {
-            this._tournament.ApplyingPeriodEnd = applyingPeriodEnd;
+            _tournament.ApplyingPeriodEnd = applyingPeriodEnd;
             return this;
         }
 
@@ -186,7 +186,7 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithTransferStart(DateTime? transferStart)
         {
-            this._tournament.TransferStart = transferStart;
+            _tournament.TransferStart = transferStart;
             return this;
         }
 
@@ -197,7 +197,7 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithTransferEnd(DateTime? transferEnd)
         {
-            this._tournament.TransferEnd = transferEnd;
+            _tournament.TransferEnd = transferEnd;
             return this;
         }
 
@@ -207,8 +207,8 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithNoTransferPeriod()
         {
-            this._tournament.TransferStart = null;
-            this._tournament.TransferEnd = null;
+            _tournament.TransferStart = null;
+            _tournament.TransferEnd = null;
             return this;
         }
 
@@ -219,7 +219,7 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithDivisions(List<Division> divisions)
         {
-            this._tournament.Divisions = divisions;
+            _tournament.Divisions = divisions;
             return this;
         }
 
@@ -229,7 +229,7 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithNoDivisions()
         {
-            this._tournament.Divisions.Clear();
+            _tournament.Divisions.Clear();
             return this;
         }
 
@@ -239,7 +239,7 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithNonUniqueNameDivisions()
         {
-            this._tournament.Divisions = new List<Division>
+            _tournament.Divisions = new List<Division>
             {
                 new Division { Id = 1, Name = "Division 1", TournamentId = TOURNAMENT_DEFAULT_ID },
                 new Division { Id = 2, Name = "Division 2", TournamentId = TOURNAMENT_DEFAULT_ID },
@@ -257,7 +257,7 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithDivisionGroups(int divisionIdx, List<Group> groups)
         {
-            this._tournament.Divisions[divisionIdx].Groups = groups;
+            _tournament.Divisions[divisionIdx].Groups = groups;
             return this;
         }
 
@@ -267,7 +267,7 @@
         /// <returns>Instance of Tournament builder.</returns>
         public TournamentBuilder WithNoDivisionsGroups()
         {
-            foreach (var division in this._tournament.Divisions)
+            foreach (var division in _tournament.Divisions)
             {
                 division.Groups.Clear();
             }
@@ -283,9 +283,9 @@
         {
             int startId = 1;
 
-            for (int i = 1; i <= this._tournament.Divisions.Count; i++)
+            for (int i = 1; i <= _tournament.Divisions.Count; i++)
             {
-                this._tournament.Divisions[i - 1].Groups = new List<Group>
+                _tournament.Divisions[i - 1].Groups = new List<Group>
                 {
                     new Group { Id = startId++, Name = "Group 1", DivisionId = i },
                     new Group { Id = startId++, Name = "Group 2", DivisionId = i },
@@ -298,8 +298,8 @@
 
         public TournamentBuilder TestTournament()
         {
-            this._tournament.GamesStart = DateTime.Parse(TEST_START_DATE);
-            this._tournament.GamesEnd = DateTime.Parse(TEST_END_DATE);
+            _tournament.GamesStart = DateTime.Parse(TEST_START_DATE);
+            _tournament.GamesEnd = DateTime.Parse(TEST_END_DATE);
             return this;
         }
 
@@ -309,7 +309,7 @@
         /// <returns>Instance of test tournament.</returns>
         public Tournament Build()
         {
-            return this._tournament;
+            return _tournament;
         }
     }
 }

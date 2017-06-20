@@ -20,7 +20,7 @@
         /// <returns>A signed integer that indicates the relative values of teams.</returns>
         public int Compare(TeamViewModel x, TeamViewModel y)
         {
-            return this.IsEqual(x, y) ? 0 : 1;
+            return IsEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>

@@ -5,12 +5,10 @@
     using System.Linq;
     using System.Web.Http.Results;
     using System.Web.OData.Results;
-
-    using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-
+    using VolleyManagement.Contracts;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.UI.Areas.WebApi.ODataControllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;

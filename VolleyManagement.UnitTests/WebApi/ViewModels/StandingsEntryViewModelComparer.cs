@@ -23,7 +23,7 @@
         /// <returns>A signed integer that indicates the relative values of entries.</returns>
         public int Compare(StandingsEntryViewModel x, StandingsEntryViewModel y)
         {
-            return this.AreEqual(x, y) ? 0 : 1;
+            return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>

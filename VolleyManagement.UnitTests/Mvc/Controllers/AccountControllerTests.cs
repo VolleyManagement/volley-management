@@ -4,20 +4,20 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-    using Comparers;
-    using Contracts.Authentication;
-    using Contracts.Authentication.Models;
-    using Contracts.Authorization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using Services.UserManager;
-    using UI.Areas.Mvc.Controllers;
-    using UI.Areas.Mvc.ViewModels.Users;
-    using UI.Infrastructure;
-    using ViewModels;
     using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authentication;
+    using VolleyManagement.Contracts.Authentication.Models;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
+    using VolleyManagement.UI.Infrastructure;
+    using VolleyManagement.UnitTests.Mvc.Comparers;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.UserManager;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -56,15 +56,15 @@
         {
             _kernel = new StandardKernel();
 
-            this._kernel.Bind<IVolleyUserManager<UserModel>>()
-                   .ToConstant(this._userManagerMock.Object);
-            this._kernel.Bind<IRolesService>()
-                   .ToConstant(this._rolesServiceMock.Object);
-            this._kernel.Bind<ICacheProvider>()
+            _kernel.Bind<IVolleyUserManager<UserModel>>()
+                   .ToConstant(_userManagerMock.Object);
+            _kernel.Bind<IRolesService>()
+                   .ToConstant(_rolesServiceMock.Object);
+            _kernel.Bind<ICacheProvider>()
                    .ToConstant(_cacheProviderMock.Object);
-            this._kernel.Bind<ICurrentUserService>()
+            _kernel.Bind<ICurrentUserService>()
                    .ToConstant(_currentUserServiceMock.Object);
-            this._kernel.Bind<IUserService>()
+            _kernel.Bind<IUserService>()
                    .ToConstant(_userServiceMock.Object);
         }
 
@@ -177,7 +177,7 @@
 
         private AccountController CreateController()
         {
-            var sut = this._kernel.Get<AccountController>();
+            var sut = _kernel.Get<AccountController>();
             sut.ControllerContext = GetControllerContext();
             return sut;
         }

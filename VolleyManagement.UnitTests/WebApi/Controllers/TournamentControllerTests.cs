@@ -4,12 +4,10 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.Http.Results;
-    using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using Services.TournamentService;
-    using UI.Areas.WebApi.ViewModels.Tournaments;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Domain.GameReportsAggregate;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.Tournaments;
@@ -17,8 +15,10 @@
     using VolleyManagement.UI.Areas.WebApi.Controllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Services.GameReportService;
     using VolleyManagement.UnitTests.Services.GameService;
+    using VolleyManagement.UnitTests.Services.TournamentService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
 
     /// <summary>
@@ -271,6 +271,7 @@
         #endregion
 
         #region GetSchedule
+
         /// <summary>
         /// Test for GetSchedule method.
         /// Tournament with games; games list returned
@@ -363,7 +364,7 @@
 
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
         {
-            this._gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
+            _gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
         }
         #endregion
     }

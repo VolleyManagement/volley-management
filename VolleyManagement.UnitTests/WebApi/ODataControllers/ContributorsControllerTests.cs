@@ -3,13 +3,9 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
     using Moq;
-
     using Ninject;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.Areas.WebApi.ODataControllers;

@@ -8,11 +8,10 @@
     using System.Net;
     using System.Web.Http.Results;
     using System.Web.OData.Results;
-
-    using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
     using VolleyManagement.UI.Areas.WebApi.ODataControllers;

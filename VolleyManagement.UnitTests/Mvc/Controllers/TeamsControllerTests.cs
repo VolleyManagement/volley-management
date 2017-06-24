@@ -12,7 +12,7 @@
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
+
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
@@ -49,15 +49,12 @@
         private const string FILE_NOT_FOUND_EX_MESSAGE = "File not found";
         private const string FILE_LOAD_EX_MESSAGE = "File size must be less then 1 MB and greater then 0 MB";
 
-        private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
-        private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
-        private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
-        private readonly Mock<HttpPostedFileBase> _httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
-
-        private IKernel _kernel;
-        private TeamsController _sut;
+        private Mock<ITeamService> _teamServiceMock;
+        private Mock<HttpContextBase> _httpContextMock;
+        private Mock<HttpRequestBase> _httpRequestMock;
+        private Mock<HttpPostedFileBase> _httpPostedFileBaseMock;
+        private Mock<IAuthorizationService> _authServiceMock;
+        private Mock<IFileService> _fileServiceMock;
 
         /// <summary>
         /// Initializes test data
@@ -65,14 +62,14 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
+            _teamServiceMock = new Mock<ITeamService>();
+            _httpContextMock = new Mock<HttpContextBase>();
+            _httpRequestMock = new Mock<HttpRequestBase>();
+            _httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
+            _authServiceMock = new Mock<IAuthorizationService>();
+            _fileServiceMock = new Mock<IFileService>();
+
             this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
-            this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
-            this._kernel.Bind<HttpContextBase>().ToConstant(this._httpContextMock.Object);
-            this._kernel.Bind<HttpPostedFileBase>().ToConstant(this._httpPostedFileBaseMock.Object);
-            this._kernel.Bind<IFileService>().ToConstant(this._fileServiceMock.Object);
-            this._sut = this._kernel.Get<TeamsController>();
         }
 
         /// <summary>
@@ -83,7 +80,7 @@
         public void Delete_PlayerExists_PlayerIsDeleted()
         {
             // Act
-            var sut = this._kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE) as JsonResult;
 
             // Assert
@@ -102,7 +99,7 @@
             _teamServiceMock.Setup(ps => ps.Delete(TEAM_UNEXISTING_ID_TO_DELETE)).Throws<MissingEntityException>();
 
             // Act
-            var sut = this._kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE) as JsonResult;
 
             // Assert
@@ -120,7 +117,7 @@
             _teamServiceMock.Setup(ps => ps.Delete(TEAM_UNEXISTING_ID_TO_DELETE)).Throws<MissingEntityException>();
 
             // Act
-            var sut = this._kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             var actual = sut.Delete(TEAM_UNEXISTING_ID_TO_DELETE) as JsonResult;
 
             // Assert
@@ -141,7 +138,7 @@
                                            .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
 
             // Act
-            var sut = this._kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Create(viewModel);
 
             // Assert
@@ -161,7 +158,7 @@
                                            .Throws(new ArgumentException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Create(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -180,7 +177,7 @@
         {
             // Arrange
             var viewModel = new TeamMvcViewModelBuilder().Build();
-            var sut = this._kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
@@ -203,7 +200,7 @@
                                            .Throws(new MissingEntityException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Create(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -226,7 +223,7 @@
                                            .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Create(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -250,7 +247,7 @@
                                            .Throws(new MissingEntityException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Create(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -272,7 +269,7 @@
                                            .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Create(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -308,7 +305,7 @@
                                            .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Create(viewModel);
 
             // Assert
@@ -342,7 +339,7 @@
                                            .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
 
             // Act
-            var sut = this._kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Edit(viewModel);
 
             // Assert
@@ -362,7 +359,7 @@
                                            .Throws(new ArgumentException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Edit(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -381,7 +378,7 @@
         {
             // Arrange
             var viewModel = new TeamMvcViewModelBuilder().Build();
-            var sut = this._kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
@@ -404,7 +401,7 @@
                                            .Throws(new MissingEntityException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Edit(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -427,7 +424,7 @@
                                            .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Edit(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -462,7 +459,7 @@
                                            .Throws(new MissingEntityException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Edit(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -495,7 +492,7 @@
                                            .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Edit(viewModel);
             var modelState = sut.ModelState[string.Empty];
 
@@ -531,7 +528,7 @@
                                            .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
 
             // Act
-            var sut = _kernel.Get<TeamsController>();
+            var sut = BuildSUT();
             sut.Edit(viewModel);
 
             // Assert
@@ -550,7 +547,8 @@
             SetupGet(TEST_TEAM_ID, null);
 
             // Act
-            var result = this._sut.Details(TEST_TEAM_ID);
+            var sut = BuildSUT();
+            var result = sut.Details(TEST_TEAM_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -574,16 +572,19 @@
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
             SetupRequestRawUrl("/Teams");
-            SetupControllerContext();
+            var sut = BuildSUT();
+
+            SetupControllerContext(sut);
 
             var expected = CreateViewModel();
 
             // Act
-            var actual = TestExtensions.GetModel<TeamRefererViewModel>(this._sut.Details(SPECIFIED_TEAM_ID));
+
+            var actual = TestExtensions.GetModel<TeamRefererViewModel>(sut.Details(SPECIFIED_TEAM_ID));
 
             // Assert
             TestHelper.AreEqual<TeamViewModel>(expected, actual.Model, new TeamViewModelComparer());
-            Assert.AreEqual(actual.CurrentReferrer, this._sut.Request.RawUrl);
+            Assert.AreEqual(actual.CurrentReferrer, sut.Request.RawUrl);
         }
 
         /// <summary>
@@ -602,12 +603,14 @@
             MockTeamServiceGetTeam(team);
             _teamServiceMock.Setup(ts => ts.GetTeamCaptain(It.IsAny<Team>())).Returns(captain);
             _teamServiceMock.Setup(ts => ts.GetTeamRoster(It.IsAny<int>())).Returns(roster.ToList());
-            SetupControllerContext();
+
+            var sut = BuildSUT();
+            SetupControllerContext(sut);
 
             var expected = CreateViewModel();
 
-            // Act
-            var actual = TestExtensions.GetModel<TeamViewModel>(this._sut.Edit(SPECIFIED_TEAM_ID));
+            // Act            
+            var actual = TestExtensions.GetModel<TeamViewModel>(sut.Edit(SPECIFIED_TEAM_ID));
 
             // Assert
             TestHelper.AreEqual<TeamViewModel>(expected, actual, new TeamViewModelComparer());
@@ -623,8 +626,8 @@
             SetupGet(TEAM_ID, null as Team);
 
             // Act
-            var controller = _kernel.Get<TeamsController>();
-            var result = controller.Edit(TEAM_ID);
+            var sut = BuildSUT();
+            var result = sut.Edit(TEAM_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -641,10 +644,19 @@
             SetupGetAllTeams(testData);
 
             // Act
-            var result = this._sut.GetAllTeams();
+            var sut = BuildSUT();
+            var result = sut.GetAllTeams();
 
             // Assert
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
+        }
+
+        private TeamsController BuildSUT()
+        {
+            return new TeamsController(
+                _teamServiceMock.Object,
+                _authServiceMock.Object,
+                _fileServiceMock.Object);
         }
 
         private Team CreateTeam()
@@ -751,9 +763,9 @@
             this._teamServiceMock.Setup(tr => tr.Get(teamId)).Returns(team);
         }
 
-        private void SetupControllerContext()
+        private void SetupControllerContext(TeamsController sut)
         {
-            this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
+            sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), sut);
         }
 
         private void SetupGetAllTeams(List<Team> teams)

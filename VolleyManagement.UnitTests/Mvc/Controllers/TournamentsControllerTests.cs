@@ -12,7 +12,7 @@
     using Crosscutting.Contracts.Providers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
+
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.RolesAggregate;
@@ -70,21 +70,18 @@
             AuthOperations.Games.EditResult
         };
 
-        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
-        private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
-        private readonly Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-        private readonly Mock<ICurrentUserService> _currentUserServiceMock = new Mock<ICurrentUserService>();
+        private Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+        private Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
+        private Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
+        private Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+        private Mock<ICurrentUserService> _currentUserServiceMock = new Mock<ICurrentUserService>();
 
-        private readonly Mock<ITournamentRequestService> _tournamentRequestServiceMock =
+        private Mock<ITournamentRequestService> _tournamentRequestServiceMock =
             new Mock<ITournamentRequestService>();
 
-        private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
-        private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
-        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
-
-        private IKernel _kernel;
-        private TournamentsController _sut;
+        private Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
+        private Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
+        private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
         /// <summary>
         /// Initializes test data.
@@ -92,17 +89,20 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<ITournamentService>().ToConstant(this._tournamentServiceMock.Object);
-            this._kernel.Bind<IGameService>().ToConstant(this._gameServiceMock.Object);
-            this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
-            this._kernel.Bind<ICurrentUserService>().ToConstant(this._currentUserServiceMock.Object);
-            this._kernel.Bind<ITournamentRequestService>().ToConstant(this._tournamentRequestServiceMock.Object);
-            this._kernel.Bind<ITeamService>().ToConstant(this._teamServiceMock.Object);
-            this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
-            this._sut = this._kernel.Get<TournamentsController>();
+            _tournamentServiceMock = new Mock<ITournamentService>();
+            _gameServiceMock = new Mock<IGameService>();
+            _teamServiceMock = new Mock<ITeamService>();
+            _authServiceMock = new Mock<IAuthorizationService>();
+            _currentUserServiceMock = new Mock<ICurrentUserService>();
+            _tournamentRequestServiceMock =            new Mock<ITournamentRequestService>();
+            _httpContextMock = new Mock<HttpContextBase>();
+            _httpRequestMock = new Mock<HttpRequestBase>();
+            
+            _httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
+
+            _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
             TimeProvider.Current = _timeMock.Object;
-            this._timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
+            
         }
 
         /// <summary>
@@ -128,10 +128,12 @@
             var expectedUpcomingTournaments = GetTournamentsWithState(testData, TournamentStateEnum.Upcoming);
             SetupGetActual(testData);
 
+            var sut = BuildSUT();
+
             // Act
-            var actualCurrentTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(this._sut.Index())
+            var actualCurrentTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(sut.Index())
                 .CurrentTournaments.ToList();
-            var actualUpcomingTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(this._sut.Index())
+            var actualUpcomingTournaments = TestExtensions.GetModel<TournamentsCollectionsViewModel>(sut.Index())
                 .UpcomingTournaments.ToList();
 
             // Assert
@@ -155,16 +157,18 @@
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
-            SetupControllerContext();
+
+            var sut = BuildSUT();
+            SetupControllerContext(sut);
 
             // Act
             var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListReferrerViewModel>(
-                this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
+                sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
                 .AreEqual(expectedTeamsList, returnedTeamsList.Model));
-            Assert.AreEqual(returnedTeamsList.Referer, this._sut.Request.RawUrl);
+            Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
         }
 
         /// <summary>
@@ -178,15 +182,17 @@
             var testData = new TeamServiceTestFixture().Build();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
-            SetupControllerContext();
+
+            var sut = BuildSUT();
+            SetupControllerContext(sut);
 
             // Act
             var returnedTeamsList = TestExtensions.GetModel<TournamentTeamsListReferrerViewModel>(
-                this._sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
+                sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
             Assert.AreEqual(returnedTeamsList.Model.List.Count, EMPTY_TEAMLIST_COUNT);
-            Assert.AreEqual(returnedTeamsList.Referer, this._sut.Request.RawUrl);
+            Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
         }
 
         #endregion
@@ -204,11 +210,12 @@
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
 
             // Act
-            var result = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+            var sut = BuildSUT();
+            var result = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(_sut.ModelState.IsValid);
-            Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
+            Assert.IsFalse(sut.ModelState.IsValid);
+            Assert.IsTrue(sut.ModelState.ContainsKey("LoadError"));
             Assert.IsNull(result, "Result should be null");
 
             VerifyGetAllowedOperations(_allowedOperationsShowSchedule, Times.Never());
@@ -239,8 +246,10 @@
                 TEST_TOURNAMENT_ID,
                 new GameServiceTestFixture().TestGameResults().Build());
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
 
             // Assert
             Assert.IsTrue(new ScheduleViewModelComparer().AreRoundsEqual(actual.Rounds, expected.Rounds));
@@ -272,9 +281,10 @@
                 new GameServiceTestFixture().TestGameResults().Build());
 
             var expected = new ScheduleViewModelBuilder().WithTournamentScheme(TournamentSchemeEnum.One).Build();
+            var sut = BuildSUT();
 
             // Act
-            var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
 
             // Assert
             Assert.IsTrue(new ScheduleViewModelComparer().AreEqual(actual, expected));
@@ -308,8 +318,10 @@
             var expectedRoundNames = new string[] { "Round of 32", "Round of 16", "Quarter final", "Semifinal", "Final" };
             var expected = new ScheduleViewModelBuilder().WithRoundNames(expectedRoundNames).Build();
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<ScheduleViewModel>(this._sut.ShowSchedule(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<ScheduleViewModel>(sut.ShowSchedule(TEST_TOURNAMENT_ID));
 
             // Assert
             CollectionAssert.AreEqual(actual.RoundNames, expected.RoundNames);
@@ -330,10 +342,11 @@
             // Arrange
             var testData = MakeTestTeams();
             var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
+            var sut = BuildSUT();
 
             // Act
             var jsonResult =
-                this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
+                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
             var returnedDataResult = jsonResult.Data as TournamentTeamsListViewModel;
 
             // Assert
@@ -355,9 +368,11 @@
                 .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>()))
                 .Throws(new ArgumentException(string.Empty));
 
+            var sut = BuildSUT();
+
             // Act
             var jsonResult =
-                this._sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
+                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
             var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
 
             // Assert
@@ -376,12 +391,13 @@
         {
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+            var sut = BuildSUT();
 
             // Act
-            var result = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
+            var result = TestExtensions.GetModel<GameViewModel>(sut.ScheduleGame(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(_sut.ModelState.IsValid);
+            Assert.IsFalse(sut.ModelState.IsValid);
             Assert.IsNull(result);
         }
 
@@ -397,11 +413,13 @@
             SetupGet(TEST_TOURNAMENT_ID, testData);
             SetupGetTournamentTeams(new List<Team>(), TEST_TOURNAMENT_ID);
 
+            var sut = BuildSUT();
+
             // Act
-            var result = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
+            var result = TestExtensions.GetModel<GameViewModel>(sut.ScheduleGame(TEST_TOURNAMENT_ID));
 
             // Assert
-            VerifyInvalidModelState("LoadError", result);
+            VerifyInvalidModelState("LoadError", result, sut);
         }
 
         /// <summary>
@@ -428,8 +446,10 @@
                 Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, TEST_ROUND_COUNT))
             };
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<GameViewModel>(sut.ScheduleGame(TEST_TOURNAMENT_ID));
 
             // Assert
             AssertEqual(actual, expected);
@@ -451,8 +471,10 @@
             var testData = MakeTestGameViewModel();
             var redirect = true;
 
+            var sut = BuildSUT();
+
             // Act
-            var result = this._sut.ScheduleGame(testData, redirect) as RedirectToRouteResult;
+            var result = sut.ScheduleGame(testData, redirect) as RedirectToRouteResult;
 
             // Assert
             VerifyCreateGame(Times.Once());
@@ -471,8 +493,10 @@
             var testData = MakeTestGameViewModel();
             var redirect = false;
 
+            var sut = BuildSUT();
+
             // Act
-            var result = this._sut.ScheduleGame(testData, redirect) as ViewResult;
+            var result = sut.ScheduleGame(testData, redirect) as ViewResult;
 
             // Assert
             VerifyCreateGame(Times.Once());
@@ -493,11 +517,13 @@
             this._gameServiceMock.Setup(ts => ts.Create(It.IsAny<Game>()))
                 .Throws(new ArgumentException(string.Empty));
 
+            var sut = BuildSUT();
+
             // Act
-            var result = TestExtensions.GetModel<GameViewModel>(this._sut.ScheduleGame(testData, redirect));
+            var result = TestExtensions.GetModel<GameViewModel>(sut.ScheduleGame(testData, redirect));
 
             // Assert
-            VerifyInvalidModelState("ValidationError", result);
+            VerifyInvalidModelState("ValidationError", result, sut);
         }
 
         /// <summary>
@@ -509,10 +535,12 @@
             // Arrange
             var testData = MakeTestGameViewModel();
             var redirect = false;
-            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
+
+            var sut = BuildSUT();
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = this._sut.ScheduleGame(testData, redirect) as ViewResult;
+            var result = sut.ScheduleGame(testData, redirect) as ViewResult;
 
             // Assert
             VerifyCreateGame(Times.Never());
@@ -554,8 +582,10 @@
             expected.Teams = new SelectList(testTeams, "Id", "Name");
             expected.Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, TEST_ROUND_COUNT));
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<GameViewModel>(this._sut.EditScheduledGame(TEST_ID));
+            var actual = TestExtensions.GetModel<GameViewModel>(sut.EditScheduledGame(TEST_ID));
 
             // Assert
             AssertEqual(actual, expected);
@@ -569,12 +599,13 @@
         {
             // Arrange
             _gameServiceMock.Setup(gs => gs.Get(TEST_ID)).Returns(null as GameResultDto);
+            var sut = BuildSUT();
 
             // Act
-            var result = TestExtensions.GetModel<GameViewModel>(this._sut.EditScheduledGame(TEST_ID));
+            var result = TestExtensions.GetModel<GameViewModel>(sut.EditScheduledGame(TEST_ID));
 
             // Assert
-            VerifyInvalidModelState("LoadError", result);
+            VerifyInvalidModelState("LoadError", result, sut);
         }
 
         #endregion
@@ -591,9 +622,10 @@
         {
             // Arrange
             var testData = MakeTestGameViewModel();
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.EditScheduledGame(testData) as RedirectToRouteResult;
+            var result = sut.EditScheduledGame(testData) as RedirectToRouteResult;
 
             // Assert
             VerifyEditGame(Times.Once());
@@ -612,11 +644,13 @@
             var testData = MakeTestGameViewModel();
             _gameServiceMock.Setup(gs => gs.Edit(It.IsAny<Game>())).Throws<ArgumentException>();
 
+            var sut = BuildSUT();
+
             // Act
-            var result = TestExtensions.GetModel<GameViewModel>(this._sut.EditScheduledGame(testData));
+            var result = TestExtensions.GetModel<GameViewModel>(sut.EditScheduledGame(testData));
 
             // Assert
-            VerifyInvalidModelState("ValidationError", result);
+            VerifyInvalidModelState("ValidationError", result, sut);
         }
 
         /// <summary>
@@ -631,11 +665,13 @@
             var testData = MakeTestGameViewModel();
             _gameServiceMock.Setup(gs => gs.Edit(It.IsAny<Game>())).Throws<MissingEntityException>();
 
+            var sut = BuildSUT();
+
             // Act
-            var result = TestExtensions.GetModel<GameViewModel>(this._sut.EditScheduledGame(testData));
+            var result = TestExtensions.GetModel<GameViewModel>(sut.EditScheduledGame(testData));
 
             // Assert
-            VerifyInvalidModelState("LoadError", result);
+            VerifyInvalidModelState("LoadError", result, sut);
         }
 
         /// <summary>
@@ -646,10 +682,12 @@
         {
             // Arrange
             var testData = MakeTestGameViewModel();
-            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
+
+            var sut = BuildSUT();
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = this._sut.EditScheduledGame(testData) as ViewResult;
+            var result = sut.EditScheduledGame(testData) as ViewResult;
 
             // Assert
             VerifyCreateGame(Times.Never());
@@ -669,9 +707,10 @@
             // Arrange
             var testData = MakeTestTournaments();
             SetupGetFinished(testData);
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.GetFinished();
+            var result = sut.GetFinished();
 
             // Assert
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
@@ -690,8 +729,10 @@
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
 
+            var sut = BuildSUT();
+
             // Act
-            var result = this._sut.Details(TEST_TOURNAMENT_ID);
+            var result = sut.Details(TEST_TOURNAMENT_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -708,8 +749,10 @@
             var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Details(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Details(TEST_TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -752,8 +795,10 @@
                                           + DAYS_FOR_TRANSFER_PERIOD)
             };
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Create());
+            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Create());
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -772,9 +817,10 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.Create(testData) as RedirectToRouteResult;
+            var result = sut.Create(testData) as RedirectToRouteResult;
 
             // Assert
             VerifyCreate(Times.Once());
@@ -791,9 +837,10 @@
             // Arrange
             var testData = MakeTestTournamentViewModel();
             SetupCreateThrowsTournamentValidationException();
+            var sut = BuildSUT();
 
             // Act
-            var result = TestExtensions.GetModel<TournamentViewModel>(this._sut.Create(testData));
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create(testData));
 
             // Assert
             VerifyCreate(Times.Once());
@@ -809,10 +856,11 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
-            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
+            var sut = BuildSUT();
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = TestExtensions.GetModel<TournamentViewModel>(this._sut.Create(testData));
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create(testData));
 
             // Assert
             VerifyCreate(Times.Never());
@@ -831,9 +879,10 @@
         {
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.Edit(TEST_TOURNAMENT_ID);
+            var result = sut.Edit(TEST_TOURNAMENT_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -850,8 +899,10 @@
             var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Edit(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -870,9 +921,10 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.Edit(testData) as RedirectToRouteResult;
+            var result = sut.Edit(testData) as RedirectToRouteResult;
 
             // Assert
             VerifyEdit(Times.Once());
@@ -889,9 +941,10 @@
             // Arrange
             var testData = MakeTestTournamentViewModel();
             SetupEditThrowsTournamentValidationException();
+            var sut = BuildSUT();
 
             // Act
-            var result = TestExtensions.GetModel<TournamentViewModel>(this._sut.Edit(testData));
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(testData));
 
             // Assert
             VerifyEdit(Times.Once());
@@ -907,10 +960,11 @@
         {
             // Arrange
             var testData = MakeTestTournamentViewModel();
-            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
+            var sut = BuildSUT();
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = TestExtensions.GetModel<TournamentViewModel>(this._sut.Edit(testData));
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(testData));
 
             // Assert
             VerifyEdit(Times.Never());
@@ -930,9 +984,10 @@
             // Arrange
             this._tournamentServiceMock
                 .Setup(ts => ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()));
+            var sut = BuildSUT();
 
             // Act
-            var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_ID);
+            var jsonResult = sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_ID);
             var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
 
             // Assert
@@ -950,9 +1005,10 @@
             this._tournamentServiceMock
                 .Setup(ts => ts.DeleteTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()))
                 .Throws(new MissingEntityException());
+            var sut = BuildSUT();
 
             // Act
-            var jsonResult = this._sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_ID);
+            var jsonResult = sut.DeleteTeamFromTournament(TEST_TOURNAMENT_ID, TEST_ID);
             var result = jsonResult.Data as TeamDeleteFromTournamentViewModel;
 
             // Assert
@@ -971,9 +1027,10 @@
         {
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.Delete(TEST_TOURNAMENT_ID);
+            var result = sut.Delete(TEST_TOURNAMENT_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -989,9 +1046,10 @@
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             var expected = MakeTestTournamentViewModel(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
+            var sut = BuildSUT();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentViewModel>(this._sut.Delete(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<TournamentViewModel>(sut.Delete(TEST_TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
@@ -1010,9 +1068,10 @@
         {
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.DeleteConfirmed(TEST_TOURNAMENT_ID);
+            var result = sut.DeleteConfirmed(TEST_TOURNAMENT_ID);
 
             // Assert
             VerifyDelete(TEST_TOURNAMENT_ID, Times.Never());
@@ -1029,9 +1088,10 @@
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.DeleteConfirmed(TEST_TOURNAMENT_ID) as RedirectToRouteResult;
+            var result = sut.DeleteConfirmed(TEST_TOURNAMENT_ID) as RedirectToRouteResult;
 
             // Assert
             VerifyDelete(TEST_TOURNAMENT_ID, Times.Once());
@@ -1051,17 +1111,18 @@
         {
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+            var sut = BuildSUT();
 
             // Act
             var result = TestExtensions
-                .GetModel<ScheduleViewModel>(this._sut.SwapRounds(
+                .GetModel<ScheduleViewModel>(sut.SwapRounds(
                     TEST_TOURNAMENT_ID,
                     FIRST_ROUND_NUMBER,
                     SECOND_ROUND_NUMBER));
 
             // Assert
-            Assert.IsFalse(_sut.ModelState.IsValid);
-            Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
+            Assert.IsFalse(sut.ModelState.IsValid);
+            Assert.IsTrue(sut.ModelState.ContainsKey("LoadError"));
             Assert.IsNull(result);
         }
 
@@ -1077,8 +1138,10 @@
 
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, tournament);
 
+            var sut = BuildSUT();
+
             // Act
-            var result = this._sut
+            var result = sut
                 .SwapRounds(TEST_TOURNAMENT_ID, FIRST_ROUND_NUMBER, SECOND_ROUND_NUMBER) as RedirectToRouteResult;
 
             // Assert
@@ -1101,15 +1164,17 @@
                 SECOND_ROUND_NUMBER))
                 .Throws(new MissingEntityException());
 
+            var sut = BuildSUT();
+
             // Act
-            var result = TestExtensions.GetModel<ScheduleViewModel>(this._sut.SwapRounds(
+            var result = TestExtensions.GetModel<ScheduleViewModel>(sut.SwapRounds(
                 TEST_TOURNAMENT_ID,
                 FIRST_ROUND_NUMBER,
                 SECOND_ROUND_NUMBER));
 
             // Assert
-            Assert.IsFalse(_sut.ModelState.IsValid);
-            Assert.IsTrue(_sut.ModelState.ContainsKey("LoadError"));
+            Assert.IsFalse(sut.ModelState.IsValid);
+            Assert.IsTrue(sut.ModelState.ContainsKey("LoadError"));
             Assert.IsNull(result);
         }
 
@@ -1126,9 +1191,10 @@
             SetupGetNonTournamentTeams(MakeTestTeams(), TEST_TOURNAMENT_ID);
 
             var expected = MakeTestTournamentApplyViewModel();
+            var sut = BuildSUT();
 
             // Act
-            var actual = TestExtensions.GetModel<TournamentApplyViewModel>(_sut.ApplyForTournament(TEST_TOURNAMENT_ID));
+            var actual = TestExtensions.GetModel<TournamentApplyViewModel>(sut.ApplyForTournament(TEST_TOURNAMENT_ID));
 
             // Assert
             TestHelper.AreEqual<TournamentApplyViewModel>(expected, actual, new TournamentApplyViewModelComparer());
@@ -1139,9 +1205,10 @@
         {
             // Arrange
             SetupGet(TEST_TOURNAMENT_ID, null as Tournament);
+            var sut = BuildSUT();
 
             // Act
-            var actionResult = _sut.ApplyForTournament(TEST_TOURNAMENT_ID);
+            var actionResult = sut.ApplyForTournament(TEST_TOURNAMENT_ID);
 
             // Assert
             Assert.IsInstanceOfType(actionResult, typeof(HttpNotFoundResult));
@@ -1152,9 +1219,10 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(ANONYM_ID);
+            var sut = BuildSUT();
 
             // Act
-            var result = _sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
 
             // Assert
             Assert.IsNotNull(result, JSON_NO_RIGHTS_MESSAGE);
@@ -1165,9 +1233,10 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
+            var sut = BuildSUT();
 
             // Act
-            var result = _sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
 
             // Assert
             VerifyCreateTournamentRequest(TEST_USER_ID, TEST_TOURNAMENT_ID, TEST_TEAM_ID, Times.Once());
@@ -1180,9 +1249,10 @@
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
             SetupTournamentRequestServiceThrowsArgumentException(TEST_USER_ID, TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var sut = BuildSUT();
 
             // Act
-            var result = _sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
 
             // Assert
             Assert.IsNotNull(result, INVALID_PARAMETR);
@@ -1191,6 +1261,17 @@
         #endregion
 
         #region Private
+
+        private TournamentsController BuildSUT()
+        {
+            return new TournamentsController(
+                _tournamentServiceMock.Object,
+                _gameServiceMock.Object,
+                _authServiceMock.Object,
+                _tournamentRequestServiceMock.Object,
+                _currentUserServiceMock.Object);
+        }
+
         private List<Tournament> MakeTestTournaments()
         {
             return new TournamentServiceTestFixture().TestTournaments().Build();
@@ -1304,9 +1385,9 @@
                 .Throws(new TournamentValidationException(string.Empty, string.Empty, string.Empty));
         }
 
-        private void SetupControllerContext()
+        private void SetupControllerContext(TournamentsController sut)
         {
-            this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
+            sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), sut);
         }
 
         private void SetupRequestRawUrl(string rawUrl)
@@ -1365,10 +1446,13 @@
             this._gameServiceMock.Verify(gs => gs.Edit(It.IsAny<Game>()), times);
         }
 
-        private void VerifyInvalidModelState(string expectedKey, GameViewModel gameViewModel)
+        private void VerifyInvalidModelState(
+            string expectedKey, 
+            GameViewModel gameViewModel,
+            TournamentsController sut)
         {
-            Assert.IsFalse(_sut.ModelState.IsValid);
-            Assert.IsTrue(_sut.ModelState.ContainsKey(expectedKey));
+            Assert.IsFalse(sut.ModelState.IsValid);
+            Assert.IsTrue(sut.ModelState.ContainsKey(expectedKey));
             Assert.IsNull(gameViewModel);
         }
 

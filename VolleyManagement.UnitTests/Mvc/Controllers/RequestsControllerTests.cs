@@ -9,7 +9,7 @@
     using Domain.RolesAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
+
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.FeedbackAggregate;
     using VolleyManagement.UI.Areas.Admin.Controllers;
@@ -25,8 +25,9 @@
         private const int EXISTING_ID = 1;
         private const string ERROR_PAGE = "ErrorPage";
         private const string MESSAGE = "Test reply message";
+
         private Mock<IFeedbackService> _feedbacksServiceMock;
-        private IKernel _kernel;
+
 
         #endregion
 
@@ -35,9 +36,7 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-
-            _kernel.RegisterDefaultMock(out _feedbacksServiceMock);
+            _feedbacksServiceMock = new Mock<IFeedbackService>();
         }
 
         #endregion
@@ -51,10 +50,11 @@
             var feedbacks = GetFeedbacks();
             var expected = GetRequestsViewModels();
             _feedbacksServiceMock.Setup(r => r.Get()).Returns(feedbacks);
-            var controller = _kernel.Get<RequestsController>();
+
+            var sut = BuildSut();
 
             // Act
-            var actionResult = controller.Index();
+            var actionResult = sut.Index();
 
             // Assert
             var actual = TestExtensions.GetModel<List<RequestsViewModel>>(actionResult);
@@ -69,10 +69,11 @@
             var feedback = GetAnyFeedback(FEEDBACK_ID);
             MockGetFeedback(FEEDBACK_ID, feedback);
             RequestsViewModel expected = new RequestsViewModel(feedback);
-            var controller = _kernel.Get<RequestsController>();
+
+            var sut = BuildSut();
 
             // Act
-            var actionResult = controller.Details(FEEDBACK_ID);
+            var actionResult = sut.Details(FEEDBACK_ID);
 
             // Assert
             var actual = TestExtensions.GetModel<RequestsViewModel>(actionResult);
@@ -84,10 +85,11 @@
         {
             // Arrange
             MockGetFeedback(EXISTING_ID, null);
-            var controller = _kernel.Get<RequestsController>();
+
+            var sut = BuildSut();
 
             // Act
-            var result = controller.Details(EXISTING_ID);
+            var result = sut.Details(EXISTING_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -98,10 +100,11 @@
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var controller = _kernel.Get<RequestsController>();
+
+            var sut = BuildSut();
 
             // Act
-            var actionResult = controller.Close(FEEDBACK_ID);
+            var actionResult = sut.Close(FEEDBACK_ID);
 
             // Assert
             AssertValidRedirectResult(actionResult, "Index");
@@ -110,12 +113,12 @@
         [TestMethod]
         public void Close_AnyFeedback_FeedbackRedirectToErrorPage()
         {
-            // Arrange
-            var controller = _kernel.Get<RequestsController>();
+            // Arrange            
             SetupCloseThrowInvalidOperationException();
+            var sut = BuildSut();
 
             // Act
-           var actionResult = controller.Close(EXISTING_ID) as ViewResult;
+            var actionResult = sut.Close(EXISTING_ID) as ViewResult;
 
             // Assert
             Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
@@ -125,11 +128,12 @@
         public void Close_FeedbackDoesNotExist_FeedbackRedirectToErrorPage()
         {
             // Arrange
-            var controller = _kernel.Get<RequestsController>();
             SetupCloseThrowMissingEntityException();
 
+            var sut = BuildSut();
+
             // Act
-            var actionResult = controller.Close(EXISTING_ID) as ViewResult;
+            var actionResult = sut.Close(EXISTING_ID) as ViewResult;
 
             // Assert
             Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
@@ -140,10 +144,11 @@
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var controller = _kernel.Get<RequestsController>();
+
+            var sut = BuildSut();
 
             // Act
-            var actionResult = controller.Close(FEEDBACK_ID);
+            var actionResult = sut.Close(FEEDBACK_ID);
 
             // Assert
             AssertCloseVerify(_feedbacksServiceMock, FEEDBACK_ID);
@@ -154,10 +159,10 @@
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var controller = _kernel.Get<RequestsController>();
+            var sut = BuildSut();
 
             // Act
-            var actionResult = controller.Reply(FEEDBACK_ID, "message");
+            var actionResult = sut.Reply(FEEDBACK_ID, "message");
 
             // Assert
             AssertValidRedirectResult(actionResult, "Index");
@@ -168,10 +173,10 @@
         {
             // Arrange
             const int FEEDBACK_ID = 1;
-            var controller = _kernel.Get<RequestsController>();
+            var sut = BuildSut();
 
             // Act
-            var actionResult = controller.Reply(FEEDBACK_ID, MESSAGE) as ViewResult;
+            var actionResult = sut.Reply(FEEDBACK_ID, MESSAGE) as ViewResult;
 
             // Assert
             AssertReplyVerify(_feedbacksServiceMock, FEEDBACK_ID, MESSAGE);
@@ -181,11 +186,12 @@
         public void Reply_AnyFeedback_FeedbackRedirectToErrorPage()
         {
             // Arrange
-            var controller = _kernel.Get<RequestsController>();
+
             SetupReplyThrowInvalidOperationException();
+            var sut = BuildSut();
 
             // Act
-            var actionResult = controller.Reply(EXISTING_ID, "message") as ViewResult;
+            var actionResult = sut.Reply(EXISTING_ID, "message") as ViewResult;
 
             // Assert
             Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
@@ -195,11 +201,11 @@
         public void Reply_FeedbackDoesNotExist_FeedbackRedirectToErrorPage()
         {
             // Arrange
-            var controller = _kernel.Get<RequestsController>();
             SetupReplyThrowMissingEntityException();
+            var sut = BuildSut();
 
             // Act
-            var actionResult = controller.Reply(EXISTING_ID, "message") as ViewResult;
+            var actionResult = sut.Reply(EXISTING_ID, "message") as ViewResult;
 
             // Assert
             Assert.AreEqual(ERROR_PAGE, actionResult.ViewName);
@@ -320,6 +326,11 @@
         #endregion
 
         #region Mock
+        private RequestsController BuildSut()
+        {
+            return new RequestsController(_feedbacksServiceMock.Object);
+        }
+
         private void MockGetFeedback(int feedbackID, Feedback feedback)
         {
             _feedbacksServiceMock.Setup(r => r.GetDetails(feedbackID)).Returns(feedback);

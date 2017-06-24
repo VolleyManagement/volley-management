@@ -7,9 +7,9 @@
     using Comparers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Crosscutting.IOC;
     using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.UI.Areas.Admin.Controllers;
     using VolleyManagement.UI.Areas.Admin.Models;
@@ -24,22 +24,12 @@
     {
         private const int EXISTING_ID = 1;
 
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-        private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
-        private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
-        private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
-
-        private IKernel _kernel;
-        private UsersController _sut;
+        private Mock<IUserService> _userServiceMock;
 
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<IUserService>().ToConstant(this._userServiceMock.Object);
-            this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
-            this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
-            this._sut = this._kernel.Get<UsersController>();
+            _userServiceMock = new Mock<IUserService>();
         }
 
         [TestMethod]
@@ -47,9 +37,10 @@
         {
             // Arrange
             SetupGetUserDetails(EXISTING_ID, null);
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.UserDetails(EXISTING_ID);
+            var result = sut.UserDetails(EXISTING_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -62,13 +53,19 @@
             var user = CreateUser();
             SetupGetUserDetails(EXISTING_ID, user);
 
+            var sut = BuildSUT();
             var expected = CreateUserViewModel();
 
             // Act
-            var actual = TestExtensions.GetModel<UserViewModel>(_sut.UserDetails(EXISTING_ID));
+            var actual = TestExtensions.GetModel<UserViewModel>(sut.UserDetails(EXISTING_ID));
 
             // Assert
             TestHelper.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+        }
+
+        private UsersController BuildSUT()
+        {
+            return new UsersController(_userServiceMock.Object);
         }
 
         private User CreateUser()

@@ -10,7 +10,6 @@
     using Contracts.Authorization;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
     using Services.UserManager;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.Users;
@@ -34,19 +33,13 @@
 
         #region Fields
 
-        private IKernel _kernel;
+        private Mock<IVolleyUserManager<UserModel>> _userManagerMock;
+        private Mock<IRolesService> _rolesServiceMock;
+        private Mock<ICurrentUserService> _currentUserServiceMock;
+        private Mock<VolleyExceptionFilterAttribute> _exceptionFilter;
+        private Mock<ICacheProvider> _cacheProviderMock;
+        private Mock<IUserService> _userServiceMock;
 
-        private Mock<IVolleyUserManager<UserModel>> _userManagerMock = new Mock<IVolleyUserManager<UserModel>>();
-
-        private Mock<IRolesService> _rolesServiceMock = new Mock<IRolesService>();
-
-        private Mock<ICurrentUserService> _currentUserServiceMock = new Mock<ICurrentUserService>();
-
-        private Mock<VolleyExceptionFilterAttribute> _exceptionFilter = new Mock<VolleyExceptionFilterAttribute>();
-
-        private Mock<ICacheProvider> _cacheProviderMock = new Mock<ICacheProvider>();
-
-        private Mock<IUserService> _userServiceMock = new Mock<IUserService>();
         #endregion
 
         #region Init
@@ -54,18 +47,17 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
+            _userManagerMock = new Mock<IVolleyUserManager<UserModel>>();
 
-            this._kernel.Bind<IVolleyUserManager<UserModel>>()
-                   .ToConstant(this._userManagerMock.Object);
-            this._kernel.Bind<IRolesService>()
-                   .ToConstant(this._rolesServiceMock.Object);
-            this._kernel.Bind<ICacheProvider>()
-                   .ToConstant(_cacheProviderMock.Object);
-            this._kernel.Bind<ICurrentUserService>()
-                   .ToConstant(_currentUserServiceMock.Object);
-            this._kernel.Bind<IUserService>()
-                   .ToConstant(_userServiceMock.Object);
+            _rolesServiceMock = new Mock<IRolesService>();
+
+            _currentUserServiceMock = new Mock<ICurrentUserService>();
+
+            _exceptionFilter = new Mock<VolleyExceptionFilterAttribute>();
+
+            _cacheProviderMock = new Mock<ICacheProvider>();
+
+            _userServiceMock = new Mock<IUserService>();
         }
 
         #endregion
@@ -79,6 +71,7 @@
         public void Details_UserExists_UserIsReturned()
         {
             // Arrange
+            MockCurrentUser();
             MockFindById();
             MockGetRole();
 
@@ -104,6 +97,7 @@
         public async Task EditPostAction_UserExists_UserUpdated()
         {
             // Arrange
+            MockCurrentUser();
             MockFindById();
             MockGetRole();
 
@@ -128,12 +122,16 @@
         /// </summary>
         /// <returns>Asynchronous operation</returns>
         [TestMethod]
+        [Ignore] // TODO: SUT should be refactored to be able mock User
         public async Task EditPostAction_UserIdPassed_ExceptionThrown()
         {
             // Arrange
+            MockCurrentUser();
+            MockGetRole();
+
             _userManagerMock.Setup(um => um.FindByIdAsync(USER_ID))
                             .Returns(Task.FromResult<UserModel>(null));
-            MockGetRole();
+
 
             var userEditViewModel = new UserEditMvcViewModelBuilder()
                 .Build();
@@ -175,11 +173,20 @@
                 .Returns(_adminRole);
         }
 
+        private void MockCurrentUser()
+        {
+            _currentUserServiceMock.Setup(s => s.GetCurrentUserId())
+                .Returns(USER_ID);
+        }
+
         private AccountController CreateController()
         {
-            var sut = this._kernel.Get<AccountController>();
-            sut.ControllerContext = GetControllerContext();
-            return sut;
+            return new AccountController(
+                _userManagerMock.Object,
+                _rolesServiceMock.Object,
+                _userServiceMock.Object,
+                _cacheProviderMock.Object,
+                _currentUserServiceMock.Object);
         }
 
         #endregion

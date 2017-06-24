@@ -69,11 +69,17 @@ namespace VolleyManagement.Crosscutting.IOC
             return this;
         }
 
-        /*public IOCContainer Register(Type genericContract, Assembly[] assembliesToCheck)
+        public IOCContainer RegisterConstant<TContract>(TContract implementation)
+            where TContract : class
         {
-            _container.Register(genericContract, assembliesToCheck);
+            _container.RegisterSingleton(implementation);
             return this;
-        }*/
+        }
+
+        public TResult Resolve<TResult>()
+        {
+            return GetResolver().GetService<TResult>();
+        }
 
     }
 }

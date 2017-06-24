@@ -12,7 +12,7 @@
     /// </summary>
     [ExcludeFromCodeCoverage]
     internal class PivotTeamStandingsViewModelEqualityComparer : IEqualityComparer<PivotTeamStandingsViewModel>
-    {
+    {                
         /// <summary>
         /// Determines whether the specified object instances are considered equal.
         /// </summary>

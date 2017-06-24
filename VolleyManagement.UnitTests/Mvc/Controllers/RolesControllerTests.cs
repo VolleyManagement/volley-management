@@ -9,8 +9,6 @@
 
     using Moq;
 
-    using Ninject;
-
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.Dto;
     using VolleyManagement.Domain.RolesAggregate;
@@ -24,11 +22,8 @@
     {
         #region Fields
 
-        private IKernel _kernel;
-
         private Mock<IRolesService> _rolesServiceMock;
-
-        private Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+        private Mock<IAuthorizationService> _authServiceMock;
 
         #endregion
 
@@ -37,11 +32,8 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-
-            _kernel.RegisterDefaultMock(out _rolesServiceMock);
-
-            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
+            _authServiceMock = new Mock<IAuthorizationService>();
+            _rolesServiceMock = new Mock<IRolesService>();
         }
 
         #endregion
@@ -55,7 +47,7 @@
             var roles = GetDefaultRoles();
             _rolesServiceMock.Setup(r => r.GetAllRoles()).Returns(roles);
             var expected = GetDefaultRoleViewModels();
-            var service = _kernel.Get<RolesController>();
+            var service = BuildSUT();
 
             // Act
             var actionResult = service.Index();
@@ -79,7 +71,7 @@
 
             var expected = new RoleDetailsViewModel(role) { Users = new List<string> { "sa", "superuser" } };
 
-            var service = _kernel.Get<RolesController>();
+            var service = BuildSUT();
 
             // Act
             var actionResult = service.Details(ROLE_ID);
@@ -108,7 +100,7 @@
                 UsersOutsideRole = GetDefaultUsersOutsideRole()
             };
 
-            var service = _kernel.Get<RolesController>();
+            var service = BuildSUT();
 
             // Act
             var actionResult = service.Edit(ROLE_ID);
@@ -129,7 +121,7 @@
             modifiedRolesModel.IdsToAdd = new[] { 1, 2 };
             modifiedRolesModel.IdsToDelete = new[] { 3, 4 };
 
-            var service = _kernel.Get<RolesController>();
+            var service = BuildSUT();
 
             // Act
             var actionResult = service.Edit(modifiedRolesModel);
@@ -160,7 +152,7 @@
                 r => r.ChangeRoleMembership(It.IsAny<int>(), It.IsAny<int[]>(), It.IsAny<int[]>()))
                 .Throws(new Exception(ANY_ERROR_MESSAGE));
 
-            var service = _kernel.Get<RolesController>();
+            var service = BuildSUT();
 
             // Act
             service.Edit(modifiedRolesModel);
@@ -343,6 +335,11 @@
         #endregion
 
         #region Private
+
+        private RolesController BuildSUT()
+        {
+            return new RolesController(_rolesServiceMock.Object, _authServiceMock.Object);
+        }
 
         private void VerifyCheckAccess(AuthOperation operation, Times times)
         {

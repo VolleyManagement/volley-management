@@ -4,7 +4,7 @@
     using System.Web.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
+
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
@@ -23,11 +23,9 @@
         private const int USER_ID = 1;
         private const int PLAYER_ID = 1;
 
-        private readonly Mock<IRequestService> _requestServiceMock = new Mock<IRequestService>();
-        private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
-        private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
-
-        private IKernel _kernel;
+        private Mock<IRequestService> _requestServiceMock = new Mock<IRequestService>();
+        private Mock<IUserService> _userServiceMock = new Mock<IUserService>();
+        private Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
 
         #endregion
 
@@ -36,10 +34,9 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<IUserService>().ToConstant(this._userServiceMock.Object);
-            this._kernel.Bind<IPlayerService>().ToConstant(this._playerServiceMock.Object);
-            this._kernel.Bind<IRequestService>().ToConstant(this._requestServiceMock.Object);
+            _requestServiceMock = new Mock<IRequestService>();
+            _userServiceMock = new Mock<IUserService>();
+            _playerServiceMock = new Mock<IPlayerService>();
         }
 
         #endregion
@@ -52,7 +49,7 @@
             // Arrange
             var expected = GetUser();
             SetupUserService(USER_ID);
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.UserDetails(USER_ID);
@@ -67,7 +64,7 @@
         {
             // Arrange
             SetupUserServiceReturnsNullUser(USER_ID);
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.UserDetails(USER_ID);
@@ -82,7 +79,7 @@
             // Arrange
             var expected = GetPlayer();
             SetupPlayerService(PLAYER_ID);
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.PlayerDetails(PLAYER_ID);
@@ -97,7 +94,7 @@
         {
             // Arrange
             SetupPlayerServiceReturnsNullPlayer(PLAYER_ID);
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.PlayerDetails(PLAYER_ID);
@@ -110,7 +107,7 @@
         public void Confirm_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.Confirm(REQUEST_ID);
@@ -123,7 +120,7 @@
         public void Confirm_AnyRequest_RequestConfirmed()
         {
             // Arrange
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.Confirm(REQUEST_ID);
@@ -137,7 +134,7 @@
         {
             // Arrange
             SetupConfirmThrowsMissingEntityException();
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.Confirm(REQUEST_ID);
@@ -150,7 +147,7 @@
         public void Decline_AnyRequest_RequestRedirectToIndex()
         {
             // Arrange
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.Decline(REQUEST_ID);
@@ -163,7 +160,7 @@
         public void Decline_AnyRequest_RequestDeclined()
         {
             // Arrange
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.Decline(REQUEST_ID);
@@ -177,7 +174,7 @@
         {
             // Arrange
             SetupDeclineThrowsMissingEntityException();
-            var sut = _kernel.Get<RequestController>();
+            var sut = BuildSUT();
 
             // Act
             var actionResult = sut.Decline(REQUEST_ID);
@@ -216,6 +213,14 @@
         #endregion
 
         #region Mock
+
+        private RequestController BuildSUT()
+        {
+            return new RequestController(
+                _requestServiceMock.Object, 
+                _userServiceMock.Object, 
+                _playerServiceMock.Object);
+        }
 
         private void SetupUserService(int id)
         {

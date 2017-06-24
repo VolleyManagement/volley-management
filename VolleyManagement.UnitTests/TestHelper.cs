@@ -5,9 +5,7 @@
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using Moq;
-
-    using Ninject;
+    //using Ninject;
 
     /// <summary>
     /// Class for custom asserts.
@@ -36,10 +34,10 @@
         /// <typeparam name="T">Mocked service type</typeparam>
         /// <param name="kernel">Ninject kernel instance</param>
         /// <param name="instance">Mock instance</param>
-        public static void RegisterDefaultMock<T>(this IKernel kernel, out Mock<T> instance) where T : class
+        /*public static void RegisterDefaultMock<T>(this IKernel kernel, out Mock<T> instance) where T : class
         {
             instance = new Mock<T>();
             kernel.Bind<T>().ToConstant(instance.Object);
-        }
+        }*/
     }
 }

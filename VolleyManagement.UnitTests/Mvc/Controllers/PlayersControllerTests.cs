@@ -130,7 +130,7 @@
         /// Players from specified page are returned.
         /// </summary>
         [TestMethod]
-        [Ignore] // Should be refactored to avoid null reference in http context
+        [Ignore] //TODO: Should be refactored to avoid null reference in http context
         public void Index_GetPlayersFromExistingPageNoSearchText_PlayersAreReturned()
         {
             // Arrange
@@ -155,7 +155,7 @@
         /// Players from specified page are returned.
         /// </summary>
         [TestMethod]
-        [Ignore] // Should be refactored to avoid null reference in http context
+        [Ignore] // TODO: Should be refactored to avoid null reference in http context
         public void Index_GetPlayersFromExistingPageWithSearchText_PlayersAreReturned()
         {
             // Arrange

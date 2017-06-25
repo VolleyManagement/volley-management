@@ -7,7 +7,6 @@
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
     using Services.TournamentService;
     using UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.Domain.GameReportsAggregate;
@@ -49,30 +48,12 @@
         /// </summary>
         private const int SECOND_ELEMENT_INDEX = 1;
 
-        /// <summary>
-        /// Test Fixture
-        /// </summary>
+
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
 
-        /// <summary>
-        /// Tournaments Service Mock
-        /// </summary>
-        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
-
-        /// <summary>
-        /// Game report Service
-        /// </summary>
-        private readonly Mock<IGameReportService> _gameReportServiceMock = new Mock<IGameReportService>();
-
-        /// <summary>
-        /// Game Service Mock
-        /// </summary>
-        private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
-
-        /// <summary>
-        /// IoC for tests
-        /// </summary>
-        private IKernel _kernel;
+        private Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
+        private Mock<IGameReportService> _gameReportServiceMock = new Mock<IGameReportService>();
+        private Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
 
         /// <summary>
         /// Initializes test data
@@ -80,13 +61,9 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<ITournamentService>()
-                   .ToConstant(_tournamentServiceMock.Object);
-            _kernel.Bind<IGameService>()
-                   .ToConstant(_gameServiceMock.Object);
-            _kernel.Bind<IGameReportService>()
-                   .ToConstant(_gameReportServiceMock.Object);
+            _tournamentServiceMock = new Mock<ITournamentService>();
+            _gameReportServiceMock = new Mock<IGameReportService>();
+            _gameServiceMock = new Mock<IGameService>();
         }
 
         #region GetAllTournaments
@@ -94,7 +71,7 @@
         public void GetAllTournaments_TournamentsExist_TournamentsReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
+            
             var testData = _testFixture.TestTournaments()
                                             .Build();
             MockGetTournaments(testData);
@@ -102,6 +79,8 @@
                                             .TestTournaments()
                                             .Build()
                                             .ToList();
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetAllTournaments().ToList();
@@ -118,9 +97,11 @@
         public void GetAllTournaments_NoTournamentsAwailable_EmptyCollectionReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
+
             MockGetTournaments(new List<Tournament>());
             var expected = new List<TournamentViewModel>();
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetAllTournaments().ToList();
@@ -139,7 +120,6 @@
         public void GetTournament_SpecificTournamentExist_TournamentReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testData = new TournamentBuilder()
                                .WithId(1)
                                .WithName("test")
@@ -159,6 +139,8 @@
                 RegulationsLink = testData.RegulationsLink
             };
 
+            var sut = BuildSUT();
+
             // Act
             var result = sut.GetTournament(SPECIFIC_TOURNAMENT_ID);
             var actual = result as OkNegotiatedContentResult<TournamentViewModel>;
@@ -172,9 +154,10 @@
         public void GetTournament_NonExistentTournament_NotFoundIsReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testData = null as Tournament;
             MockGetTournament(testData, SPECIFIC_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
 
             // Act
             var result = sut.GetTournament(SPECIFIC_TOURNAMENT_ID);
@@ -187,10 +170,11 @@
         public void GetStandings_StandingsExist_StandingsReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testData = new StandingsTestFixture().TestStandings().Build();
             var expected = new StandingsEntryViewModelServiceTestFixture().TestEntries().Build().ToList();
             MockGetStandings(testData, SPECIFIC_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetTournamentStandings(SPECIFIC_TOURNAMENT_ID).ToList();
@@ -203,9 +187,10 @@
         public void GetStandings_EntriesHaveSameResults_StandingsWithSamePositionReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testData = new StandingsTestFixture().WithRepetitivePointsSetsRatioAndBallsRatio().Build();
             MockGetStandings(testData, SPECIFIC_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetTournamentStandings(SPECIFIC_TOURNAMENT_ID).ToList();
@@ -218,10 +203,11 @@
         public void GetStandings_NoStandingsExist_EmptyListReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testData = new StandingsTestFixture().Build();
             var expected = new StandingsEntryViewModelServiceTestFixture().Build().ToList();
             MockGetStandings(testData, SPECIFIC_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetTournamentStandings(SPECIFIC_TOURNAMENT_ID).ToList();
@@ -234,7 +220,6 @@
         public void GetPivotStandings_PivotStandingsExist_PivotStandingsReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testTeams = new TeamStandingsTestFixture().TestTeamStandings().Build().ToList();
             var testGames = new ShortGameResultDtoTetsFixture().GetShortResults().Build().ToList();
             var testData = new PivotStandingsDto(testTeams, testGames);
@@ -247,6 +232,8 @@
             expected.GamesStandings = expectedGames.ToList();
             expected.TeamsStandings = expectedTeams.ToList();
 
+            var sut = BuildSUT();
+
             // Act
             var actual = sut.GetTournamentPivotStandings(SPECIFIC_TOURNAMENT_ID);
 
@@ -258,9 +245,10 @@
         public void GetPivotStandings_NoStandingsExist_EmptyListReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testData = new PivotStandingsDto(new List<TeamStandingsDto>(), new List<ShortGameResultDto>());
             MockGetPivotStandings(testData, SPECIFIC_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetTournamentPivotStandings(SPECIFIC_TOURNAMENT_ID);
@@ -279,12 +267,13 @@
         public void GetSchedule_TournamentWithGames_GamesListReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testTournament = new TournamentBuilder().Build();
             MockGetTournament(testTournament, TOURNAMENT_ID);
             var testGames = new GameServiceTestFixture().TestGameResults().Build();
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new GameViewModelTestFixture().TestGames().Build().ToList();
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetSchedule(TOURNAMENT_ID).ToList();
@@ -302,11 +291,12 @@
         public void GetSchedule_TournamentWithoutGames_EmptyGamesListReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testTournament = new TournamentBuilder().Build();
             MockGetTournament(testTournament, TOURNAMENT_ID);
             SetupGetTournamentResults(TOURNAMENT_ID, new List<GameResultDto>());
             var expected = new List<GameViewModel>();
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetSchedule(TOURNAMENT_ID).ToList();
@@ -324,12 +314,13 @@
         public void GetSchedule_TournamentWithGamesNoResult_GamesListReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentsController>();
             var testTournament = new TournamentBuilder().Build();
             MockGetTournament(testTournament, TOURNAMENT_ID);
             var testGames = new GameServiceTestFixture().TestGamesWithoutResult().Build();
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new GameViewModelTestFixture().TestGamesWithoutResult().Build().ToList();
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetSchedule(TOURNAMENT_ID).ToList();
@@ -341,6 +332,15 @@
         #endregion
 
         #region Private
+
+        private TournamentsController BuildSUT()
+        {
+            return new TournamentsController(
+                _tournamentServiceMock.Object,
+                _gameServiceMock.Object,
+                _gameReportServiceMock.Object);
+        }
+
         private void MockGetStandings(List<StandingsEntry> testData, int id)
         {
             _gameReportServiceMock.Setup(gr => gr.GetStandings(id)).Returns(testData);

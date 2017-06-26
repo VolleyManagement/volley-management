@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
-    using VolleyManagement.UnitTests.Services.GameReportService;
+    using Domain.GameReportsAggregate;
+    using Services.GameReportService;
+    using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
     /// Represents <see cref="StandingsViewModel"/> builder for unit tests for <see cref="GameReportsController"/>.

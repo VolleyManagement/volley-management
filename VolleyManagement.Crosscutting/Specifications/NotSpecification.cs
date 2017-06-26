@@ -2,7 +2,7 @@
 {
     using System;
 
-    using VolleyManagement.Crosscutting.Contracts.Specifications;
+    using Contracts.Specifications;
 
     /// <summary>
     /// Provides a way to chain two Specifications using NOT operator
@@ -23,7 +23,7 @@
                 throw new ArgumentNullException("original");
             }
 
-            this._original = original;
+            _original = original;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@
         /// <returns> Results of the match </returns>
         public override bool IsSatisfiedBy(T entity)
         {
-            return !this._original.IsSatisfiedBy(entity);
+            return !_original.IsSatisfiedBy(entity);
         }
     }
 }

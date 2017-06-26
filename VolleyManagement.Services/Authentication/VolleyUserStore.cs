@@ -3,20 +3,18 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using Contracts.Authentication;
+    using Contracts.Authentication.Models;
+    using Data.Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.User;
+    using Domain.UsersAggregate;
     using Microsoft.AspNet.Identity;
-
-    using VolleyManagement.Contracts.Authentication;
-    using VolleyManagement.Contracts.Authentication.Models;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.User;
-    using VolleyManagement.Domain.UsersAggregate;
 
     /// <summary>
     /// Stores Volley Users data
     /// </summary>
-    public class VolleyUserStore : IVolleyUserStore
+    public sealed class VolleyUserStore : IVolleyUserStore
     {
         #region Fields
 
@@ -49,11 +47,11 @@
             IQueryAsync<User, FindByEmailCriteria> getByEmailQuery,
             IQueryAsync<User, FindByLoginInfoCriteria> getByLoginInfoQuery)
         {
-            this._userRepository = userRepository;
-            this._getByIdQuery = getByIdQuery;
-            this._getByNameQuery = getByNameQuery;
-            this._getByEmailQuery = getByEmailQuery;
-            this._getByLoginInfoQuery = getByLoginInfoQuery;
+            _userRepository = userRepository;
+            _getByIdQuery = getByIdQuery;
+            _getByNameQuery = getByNameQuery;
+            _getByEmailQuery = getByEmailQuery;
+            _getByLoginInfoQuery = getByLoginInfoQuery;
         }
 
         #endregion

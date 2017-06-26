@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.Domain.ContributorsAggregate;
+    using Domain.ContributorsAggregate;
 
     /// <summary>
     /// Comparer for contributor team objects.

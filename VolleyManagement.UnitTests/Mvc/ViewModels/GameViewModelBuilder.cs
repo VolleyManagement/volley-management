@@ -2,7 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// Builder for test MVC game view models

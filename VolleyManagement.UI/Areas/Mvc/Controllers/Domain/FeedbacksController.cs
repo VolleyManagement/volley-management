@@ -40,10 +40,10 @@
             ICurrentUserService currentUserService,
             ICaptchaManager captchaManager)
         {
-            this._feedbackService = feedbackService;
-            this._userService = userService;
-            this._currentUserService = currentUserService;
-            this._captchaManager = captchaManager;
+            _feedbackService = feedbackService;
+            _userService = userService;
+            _currentUserService = currentUserService;
+            _captchaManager = captchaManager;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@
                     if (ModelState.IsValid)
                     {
                         var domainFeedback = feedbackViewModel.ToDomain();
-                        this._feedbackService.Create(domainFeedback);
+                        _feedbackService.Create(domainFeedback);
                         result.ResultMessage = Resources.UI.TournamentController.SuccessfulSent;
                         result.OperationSuccessful = true;
                     }
@@ -105,7 +105,7 @@
         /// <returns>User email.</returns>
         private string GetUserMail()
         {
-            int userId = this._currentUserService.GetCurrentUserId();
+            int userId = _currentUserService.GetCurrentUserId();
             User currentUser = new User
             {
                 Email = string.Empty
@@ -113,7 +113,7 @@
 
             if (userId != ANONYM)
             {
-                currentUser = this._userService.GetUser(userId);
+                currentUser = _userService.GetUser(userId);
             }
 
             return currentUser.Email;

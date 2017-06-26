@@ -2,12 +2,12 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Contracts;
+    using Data.Contracts;
+    using Domain.ContributorsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.Services;
 
     /// <summary>

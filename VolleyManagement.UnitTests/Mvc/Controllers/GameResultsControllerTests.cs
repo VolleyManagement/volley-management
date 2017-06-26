@@ -5,19 +5,19 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.Mvc;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.GamesAggregate;
+    using Domain.TeamsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.GameService;
-    using VolleyManagement.UnitTests.Services.TeamService;
+    using Services.GameService;
+    using Services.TeamService;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.GameResults;
+    using ViewModels;
 
     /// <summary>
     /// Tests for MVC <see cref="GameResultsControllerTests"/> class.

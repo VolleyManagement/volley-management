@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.Dto;
+    using Domain.Dto;
 
     /// <summary>
     /// Compares Role instances

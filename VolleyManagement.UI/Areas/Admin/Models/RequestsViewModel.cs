@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
-    using VolleyManagement.Domain.FeedbackAggregate;
+    using Domain.FeedbackAggregate;
 
     /// <summary>
     /// The feedback view model.

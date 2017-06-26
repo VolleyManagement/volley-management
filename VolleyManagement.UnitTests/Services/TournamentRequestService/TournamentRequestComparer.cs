@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
+    using Domain.TournamentRequestAggregate;
 
     /// <summary>
     /// Comparer for tournament request objects.

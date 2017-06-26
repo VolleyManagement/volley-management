@@ -4,16 +4,16 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
+    using Comparers;
+    using Contracts;
+    using Contracts.Exceptions;
+    using Domain.FeedbackAggregate;
+    using Domain.RolesAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Admin.Controllers;
-    using VolleyManagement.UI.Areas.Admin.Models;
-    using VolleyManagement.UnitTests.Mvc.Comparers;
+    using UI.Areas.Admin.Controllers;
+    using UI.Areas.Admin.Models;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

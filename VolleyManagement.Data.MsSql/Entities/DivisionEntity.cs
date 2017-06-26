@@ -7,12 +7,14 @@
     /// </summary>
     public class DivisionEntity
     {
+        private List<GroupEntity> _groups;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DivisionEntity"/> class.
         /// </summary>
         public DivisionEntity()
         {
-            Groups = new List<GroupEntity>();
+            _groups = new List<GroupEntity>();
         }
 
         /// <summary>
@@ -38,6 +40,10 @@
         /// <summary>
         /// Gets or sets division's groups
         /// </summary>
-        public virtual List<GroupEntity> Groups { get; set; }
+        public virtual List<GroupEntity> Groups
+        {
+            get => _groups;
+            set => _groups = value;
+        }
     }
 }

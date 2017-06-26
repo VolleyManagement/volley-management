@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
+    using UI.Areas.WebApi.ViewModels.Games;
 
     /// <summary>
     /// Builder for test game view models

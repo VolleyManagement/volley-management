@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
 
-    using VolleyManagement.Domain.Dto;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Domain.Dto;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// The role edit view model.

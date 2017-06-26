@@ -2,20 +2,21 @@
 {
     using System;
 
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Represents errors that occurs during the searching entity id
     /// in database
     /// </summary>
-    public class InvalidKeyValueException : Exception
+    [Serializable]
+    public sealed class InvalidKeyValueException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the InvalidKeyValueException
         /// class.
         /// </summary>
-        public InvalidKeyValueException() :
-            base("Specified key value does not exist in database")
+        public InvalidKeyValueException()
+            : base("Specified key value does not exist in database")
         {
         }
 
@@ -24,8 +25,8 @@
         /// class with message and inner exception
         /// </summary>
         /// <param name="message">Message text</param>
-        public InvalidKeyValueException(string message) :
-            base(message)
+        public InvalidKeyValueException(string message)
+            : base(message)
         {
         }
 
@@ -35,8 +36,8 @@
         /// </summary>
         /// <param name="message">Message text</param>
         /// <param name="innerException">Original exception</param>
-        public InvalidKeyValueException(string message, Exception innerException) :
-            base(message, innerException)
+        public InvalidKeyValueException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
@@ -46,10 +47,10 @@
         /// </summary>
         /// <param name="message">Message text</param>
         /// <param name="entityId">Id related to error occur</param>
-        public InvalidKeyValueException(string message, int entityId) :
-            base(message)
+        public InvalidKeyValueException(string message, int entityId)
+            : base(message)
         {
-            this.AddEntityIdToData(entityId);
+            AddEntityIdToData(entityId);
         }
 
         /// <summary>
@@ -59,15 +60,15 @@
         /// <param name="message">Message text</param>
         /// <param name="entityId">Id related to error occur</param>
         /// <param name="innerException">Original exception</param>
-        public InvalidKeyValueException(string message, int entityId, Exception innerException) :
-            base(message, innerException)
+        public InvalidKeyValueException(string message, int entityId, Exception innerException)
+            : base(message, innerException)
         {
-            this.AddEntityIdToData(entityId);
+            AddEntityIdToData(entityId);
         }
 
         private void AddEntityIdToData(int entityId)
         {
-            this.Data[Constants.ENTITY_ID_KEY] = entityId;
+            Data[Constants.ENTITY_ID_KEY] = entityId;
         }
     }
 }

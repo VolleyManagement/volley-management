@@ -2,11 +2,11 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Domain;
+    using Domain.PlayersAggregate;
+    using Domain.TeamsAggregate;
+    using Players;
     using Resources.UI;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
     /// Represents team view model
@@ -22,9 +22,12 @@
         /// Gets or sets name of the team
         /// </summary>
         [Display(Name = "TeamName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "TeamNameRequired",
+        [Required(
+            ErrorMessageResourceName = "TeamNameRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Team.MAX_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
+        [StringLength(
+            Constants.Team.MAX_NAME_LENGTH,
+            ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
@@ -32,25 +35,32 @@
         /// Gets or sets coach of the team
         /// </summary>
         [Display(Name = "TeamCoach", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Team.MAX_COACH_NAME_LENGTH, ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
+        [StringLength(
+            Constants.Team.MAX_COACH_NAME_LENGTH,
+            ErrorMessageResourceName = "TeamMaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "TeamCoachNameInvalidEntriesError",
-           ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(
+            ViewModelConstants.NAME_VALIDATION_REGEX,
+            ErrorMessageResourceName = "TeamCoachNameInvalidEntriesError",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Coach { get; set; }
 
         /// <summary>
         /// Gets or sets team achievements
         /// </summary>
         [Display(Name = "TeamAchievements", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Team.MAX_ACHIEVEMENTS_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
-             ErrorMessageResourceType = typeof(ViewModelResources))]
+        [StringLength(
+            Constants.Team.MAX_ACHIEVEMENTS_LENGTH,
+            ErrorMessageResourceName = "MaxLengthErrorMessage",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Achievements { get; set; }
 
         /// <summary>
         /// Gets or sets the captain of the team
         /// </summary>
         [Display(Name = "TeamCaptain", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "TeamCaptainRequired",
+        [Required(
+            ErrorMessageResourceName = "TeamCaptainRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public PlayerNameViewModel Captain { get; set; }
 
@@ -109,11 +119,11 @@
         {
             Team domainTeam = new Team
             {
-                Id = this.Id,
-                Name = this.Name,
-                CaptainId = this.Captain.Id,
-                Coach = this.Coach,
-                Achievements = this.Achievements
+                Id = Id,
+                Name = Name,
+                CaptainId = Captain.Id,
+                Coach = Coach,
+                Achievements = Achievements
             };
             return domainTeam;
         }

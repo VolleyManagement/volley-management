@@ -5,6 +5,7 @@
     /// <summary>
     /// Notifies that DB save attempt was un-successful due to invalid values of provided entity
     /// </summary>
+    [Serializable]
     public class InvalidEntityException : Exception
     {
         /// <summary>

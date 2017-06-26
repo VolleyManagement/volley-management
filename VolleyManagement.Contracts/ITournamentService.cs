@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Collections.Generic;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentsAggregate;
 
     /// <summary>
     /// Interface for TournamentService

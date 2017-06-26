@@ -4,19 +4,19 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.Mvc;
+    using Comparers;
+    using Contracts;
+    using Contracts.Authorization;
+    using Domain.UsersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Mvc.ViewModels;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.Areas.Admin.Controllers;
-    using VolleyManagement.UI.Areas.Admin.Models;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
-    using VolleyManagement.UnitTests.Admin.Comparers;
-    using VolleyManagement.UnitTests.Admin.ViewModels;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.UsersService;
+    using Services.UsersService;
+    using UI.Areas.Admin.Controllers;
+    using UI.Areas.Admin.Models;
+    using UI.Areas.Mvc.ViewModels.Players;
+    using ViewModels;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

@@ -4,17 +4,17 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Web;
     using System.Web.Mvc;
+    using Contracts;
+    using Contracts.Authorization;
+    using Domain.FeedbackAggregate;
+    using Domain.UsersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.FeedbackService;
+    using Services.FeedbackService;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
+    using ViewModels;
 
     /// <summary>
     /// Feedbacks controller tests.

@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Contracts.Authorization;
+    using Crosscutting.Contracts.Providers;
+    using Domain;
+    using Domain.GamesAggregate;
 
     /// <summary>
     /// Represents a view model for game result.
@@ -95,7 +95,7 @@
         {
             get
             {
-                return this.Round == 1;
+                return Round == 1;
             }
         }
 
@@ -156,18 +156,18 @@
         {
             return new Game
             {
-                Id = this.Id,
-                TournamentId = this.TournamentId,
-                HomeTeamId = this.HomeTeamId,
-                AwayTeamId = this.AwayTeamId,
-                Round = Convert.ToByte(this.Round),
-                GameDate = this.GameDate,
-                GameNumber = this.GameNumber,
+                Id = Id,
+                TournamentId = TournamentId,
+                HomeTeamId = HomeTeamId,
+                AwayTeamId = AwayTeamId,
+                Round = Convert.ToByte(Round),
+                GameDate = GameDate,
+                GameNumber = GameNumber,
                 Result = new Result
                 {
-                    SetsScore = this.SetsScore,
-                    IsTechnicalDefeat = this.IsTechnicalDefeat,
-                    SetScores = this.SetScores
+                    SetsScore = SetsScore,
+                    IsTechnicalDefeat = IsTechnicalDefeat,
+                    SetScores = SetScores
                 }
             };
         }

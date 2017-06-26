@@ -3,10 +3,7 @@
     using System;
     using System.Web.Mvc;
     using System.Web.Routing;
-
-    using Ninject;
-
-    using VolleyManagement.Crosscutting.Contracts.Infrastructure;
+    using Crosscutting.Contracts.Infrastructure;
 
     /// <summary>
     /// The volley exception filter attribute.
@@ -43,10 +40,11 @@
             }
 
             // Build result
-            filterContext.Result = this.IsXmlHttpRequest(filterContext.RequestContext)
+            filterContext.Result = IsXmlHttpRequest(filterContext.RequestContext)
                                        ? BuildJsonResult(filterContext)
                                        : RedirectToErrorView(filterContext);
-            //filterContext.ExceptionHandled = true;
+
+            // filterContext.ExceptionHandled = true;
 
             // Log exception data
             if (_volleyAppBaseExceptionType.IsInstanceOfType(filterContext.Exception))

@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
+    using UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for tournament objects.

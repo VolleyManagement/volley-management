@@ -7,11 +7,11 @@
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.RolesAggregate;
+    using ViewModels.Teams;
 
     /// <summary>
     /// Defines teams controller
@@ -38,9 +38,9 @@
             IAuthorizationService authService,
             IFileService fileService)
         {
-            this._teamService = teamService;
-            this._authService = authService;
-            this._fileService = fileService;
+            _teamService = teamService;
+            _authService = authService;
+            _fileService = fileService;
         }
 
         /// <summary>
@@ -58,10 +58,10 @@
 
             var teams = new TeamCollectionViewModel()
             {
-                Teams = this._teamService.Get()
+                Teams = _teamService.Get()
                                          .ToList()
                                          .Select(t => TeamViewModel.Map(t, null, null)),
-                AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
                                                                             AuthOperations.Teams.Create,
                                                                             AuthOperations.Teams.Edit,
@@ -69,7 +69,7 @@
                                                                           })
             };
 
-            var referrerViewModel = new TeamCollectionReferrerViewModel(teams, this.HttpContext.Request.RawUrl);
+            var referrerViewModel = new TeamCollectionReferrerViewModel(teams, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }
 
@@ -80,7 +80,7 @@
         public ActionResult Create()
         {
             var teamViewModel = new TeamViewModel();
-            return this.View(teamViewModel);
+            return View(teamViewModel);
         }
 
         /// <summary>
@@ -93,9 +93,9 @@
         {
             JsonResult result = null;
 
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                result = this.Json(this.ModelState);
+                result = Json(ModelState);
             }
             else
             {
@@ -103,29 +103,29 @@
 
                 try
                 {
-                    this._teamService.Create(domainTeam);
+                    _teamService.Create(domainTeam);
                     if (teamViewModel.Roster != null)
                     {
                         _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                    result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    result = Json(ModelState);
                 }
                 catch (MissingEntityException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    result = Json(ModelState);
                 }
                 catch (ValidationException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    result = Json(ModelState);
                 }
             }
 
@@ -147,7 +147,7 @@
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
 
-            viewModel.PhotoPath = photoPath(id);
+            viewModel.PhotoPath = PhotoPath(id);
 
             return View(viewModel);
         }
@@ -162,9 +162,9 @@
         {
             JsonResult result = null;
 
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                result = this.Json(this.ModelState);
+                result = Json(ModelState);
             }
             else
             {
@@ -172,29 +172,29 @@
 
                 try
                 {
-                    this._teamService.Edit(domainTeam);
+                    _teamService.Edit(domainTeam);
                     if (teamViewModel.Roster != null)
                     {
                         _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                    result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    result = Json(ModelState);
                 }
                 catch (MissingEntityException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    result = Json(ModelState);
                 }
                 catch (ValidationException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                    result = Json(ModelState);
                 }
             }
 
@@ -213,7 +213,7 @@
 
             try
             {
-                this._teamService.Delete(id);
+                _teamService.Delete(id);
                 result = new TeamOperationResultViewModel
                 {
                     Message = TEAM_DELETED_SUCCESSFULLY_DESCRIPTION,
@@ -230,10 +230,10 @@
             }
             catch (DataException)
             {
-                result = new TeamOperationResultViewModel 
-                { 
-                    Message = Resources.UI.TournamentController.TeamDelete, 
-                    OperationSuccessful = false 
+                result = new TeamOperationResultViewModel
+                {
+                    Message = Resources.UI.TournamentController.TeamDelete,
+                    OperationSuccessful = false
                 };
             }
 
@@ -256,8 +256,8 @@
             }
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
-            var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
-            refererViewModel.Model.PhotoPath = photoPath(id);
+            var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, HttpContext.Request.RawUrl);
+            refererViewModel.Model.PhotoPath = PhotoPath(id);
             return View(refererViewModel);
         }
 
@@ -267,7 +267,7 @@
         /// <returns>Json list of teams</returns>
         public JsonResult GetAllTeams()
         {
-            var teams = this._teamService.Get()
+            var teams = _teamService.Get()
                                          .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
@@ -289,7 +289,7 @@
             }
             catch (System.IO.FileLoadException ex)
             {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
 
             return RedirectToAction("Edit", "Teams", new { id = id });
@@ -310,7 +310,7 @@
             }
             catch (System.IO.FileNotFoundException ex)
             {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
 
             return RedirectToAction("Edit", "Teams", new { id = id });
@@ -321,7 +321,7 @@
         /// </summary>
         /// <param name="id">team id</param>
         /// <returns>photo path</returns>
-        private string photoPath(int id)
+        private string PhotoPath(int id)
         {
             var photoPath = string.Format(Constants.TEAM_PHOTO_PATH, id);
             return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);

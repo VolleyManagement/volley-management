@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.UnitTests.Services.PlayerService;
+    using Domain.TeamsAggregate;
+    using PlayerService;
 
     /// <summary>
     /// Class for generating test data

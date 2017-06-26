@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.Division
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Provides criteria for getting all divisions of t

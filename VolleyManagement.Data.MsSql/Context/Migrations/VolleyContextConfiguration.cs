@@ -5,7 +5,7 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
 
-    using VolleyManagement.Data.MsSql.Entities;
+    using Entities;
 
     /// <summary>
     /// The volley context configuration.

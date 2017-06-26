@@ -4,20 +4,20 @@
     using System.Security.Claims;
     using System.Threading.Tasks;
     using System.Web.Mvc;
+    using Comparers;
+    using Contracts;
+    using Contracts.Authentication;
+    using Contracts.Authentication.Models;
+    using Contracts.Authorization;
+    using Domain.RolesAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authentication;
-    using VolleyManagement.Contracts.Authentication.Models;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
-    using VolleyManagement.UI.Infrastructure;
-    using VolleyManagement.UnitTests.Mvc.Comparers;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.UserManager;
+    using Services.UserManager;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.Users;
+    using UI.Infrastructure;
+    using ViewModels;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

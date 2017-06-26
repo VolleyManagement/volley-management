@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using VolleyManagement.Domain.Properties;
+    using Properties;
 
     /// <summary>
     /// Contributor domain class.

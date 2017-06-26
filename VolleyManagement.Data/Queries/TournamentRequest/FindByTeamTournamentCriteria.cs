@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.TournamentRequest
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Represents criteria for finding tournament data transfer object

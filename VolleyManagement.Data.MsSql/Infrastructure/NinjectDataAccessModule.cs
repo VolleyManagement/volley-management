@@ -1,24 +1,24 @@
 ﻿namespace VolleyManagement.Data.MsSql.Infrastructure
 {
     using System;
+    using Contracts;
+    using Crosscutting.Ninject;
+    using Domain.ContributorsAggregate;
+    using Domain.FeedbackAggregate;
+    using Domain.GamesAggregate;
+    using Domain.PlayersAggregate;
+    using Domain.RequestsAggregate;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentRequestAggregate;
+    using Domain.TournamentsAggregate;
+    using Domain.UsersAggregate;
     using Ninject.Activation;
     using Ninject.Extensions.Conventions;
     using Ninject.Infrastructure;
     using Ninject.Modules;
-    using VolleyManagement.Crosscutting.Ninject;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Queries;
-    using VolleyManagement.Data.MsSql.Repositories;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RequestsAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Queries;
+    using Repositories;
 
     /// <summary>
     /// Defines bindings for Service layer
@@ -33,7 +33,7 @@
         /// <param name="scopeCallback"> The scope callback. </param>
         public NinjectDataAccessModule(Func<IContext, object> scopeCallback)
         {
-            this._scopeCallback = scopeCallback;
+            _scopeCallback = scopeCallback;
         }
 
         /// <summary>

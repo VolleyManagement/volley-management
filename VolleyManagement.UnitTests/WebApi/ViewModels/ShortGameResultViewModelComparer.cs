@@ -7,7 +7,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports;
+    using UI.Areas.WebApi.ViewModels.GameReports;
 
     /// <summary>
     /// Represents an equality comparer for <see cref="ShortGameResultViewModel"/> objects.

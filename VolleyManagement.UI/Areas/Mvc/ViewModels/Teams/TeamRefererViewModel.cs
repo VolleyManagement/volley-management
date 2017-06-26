@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
 {
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Generic;
+    using Generic;
 
     /// <summary>
     /// Represents TeamViewModel and referrer link.

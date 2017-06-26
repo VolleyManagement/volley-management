@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Tournament;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.Tournament;
+    using Domain.TournamentsAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides Object Query implementation for Tournaments
@@ -32,7 +32,7 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public TournamentQueries(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
         }
 
         #endregion
@@ -87,7 +87,7 @@
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
         public TournamentScheduleDto Execute(TournamentScheduleInfoCriteria criteria)
         {
-            return this._unitOfWork.Context.Tournaments.Where(t => t.Id == criteria.TournamentId)
+            return _unitOfWork.Context.Tournaments.Where(t => t.Id == criteria.TournamentId)
                 .Select(tr => new TournamentScheduleDto()
                 {
                     Id = tr.Id,

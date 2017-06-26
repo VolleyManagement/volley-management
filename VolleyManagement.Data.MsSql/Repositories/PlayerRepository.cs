@@ -3,13 +3,12 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
-
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.MsSql.Mappers;
-    using VolleyManagement.Data.MsSql.Repositories.Specifications;
-    using VolleyManagement.Domain.PlayersAggregate;
+    using Contracts;
+    using Domain.PlayersAggregate;
+    using Entities;
+    using Exceptions;
+    using Mappers;
+    using Specifications;
 
     /// <summary>
     /// Defines implementation of the IPlayerRepository contract.
@@ -29,8 +28,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public PlayerRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            this._dalPlayers = _unitOfWork.Context.Players;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalPlayers = _unitOfWork.Context.Players;
         }
 
         /// <summary>
@@ -38,7 +37,7 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return this._unitOfWork; }
+            get { return _unitOfWork; }
         }
 
         /// <summary>
@@ -55,8 +54,8 @@
                 throw new InvalidEntityException();
             }
 
-            this._dalPlayers.Add(newPlayer);
-            this._unitOfWork.Commit();
+            _dalPlayers.Add(newPlayer);
+            _unitOfWork.Commit();
             newEntity.Id = newPlayer.Id;
         }
 
@@ -89,9 +88,9 @@
         /// <param name="id">The id of player to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Entities.PlayerEntity { Id = id };
-            this._dalPlayers.Attach(dalToRemove);
-            this._dalPlayers.Remove(dalToRemove);
+            var dalToRemove = new PlayerEntity { Id = id };
+            _dalPlayers.Attach(dalToRemove);
+            _dalPlayers.Remove(dalToRemove);
         }
     }
 }

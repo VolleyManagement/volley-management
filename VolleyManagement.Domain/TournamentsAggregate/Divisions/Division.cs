@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using VolleyManagement.Domain.Properties;
+    using Properties;
 
     /// <summary>
     /// Division domain class.
@@ -16,7 +16,7 @@
         /// </summary>
         public Division()
         {
-            this.Groups = new List<Group>();
+            Groups = new List<Group>();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@
         {
             get
             {
-                return this._name;
+                return _name;
             }
 
             set
@@ -43,7 +43,7 @@
                     throw new ArgumentException(Resources.ValidationDivisionName, "Name");
                 }
 
-                this._name = value;
+                _name = value;
             }
         }
 

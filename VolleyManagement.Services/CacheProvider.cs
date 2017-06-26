@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Services
 {
     using System.Web;
-    using VolleyManagement.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Provides the way to work with application.

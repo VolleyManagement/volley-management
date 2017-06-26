@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
+    using UI.Areas.WebApi.ViewModels.Teams;
 
     /// <summary>
     /// Builder for test team view models

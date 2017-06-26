@@ -37,7 +37,7 @@
                     throw new ArgumentException(
                         string.Format(
                             Resources.ValidationFeedbackUsersEmail,
-                            VolleyManagement.Domain.Constants.Feedback.MAX_EMAIL_LENGTH),
+                            Constants.Feedback.MAX_EMAIL_LENGTH),
                             Resources.FeedbackUsersEmailParam);
                 }
 
@@ -62,7 +62,7 @@
                     throw new ArgumentException(
                          string.Format(
                             Resources.ValidationFeedbackContent,
-                            VolleyManagement.Domain.Constants.Feedback.MAX_CONTENT_LENGTH),
+                            Constants.Feedback.MAX_CONTENT_LENGTH),
                             Resources.FeedbackContentParam);
                 }
 

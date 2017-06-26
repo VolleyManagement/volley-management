@@ -2,11 +2,11 @@
 {
     using System.Data.Entity;
     using System.Linq;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.MsSql.Mappers;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
+    using Contracts;
+    using Domain.TournamentRequestAggregate;
+    using Entities;
+    using Exceptions;
+    using Mappers;
 
     /// <summary>
     /// Defines implementation of the ITournamentRequestRepository contract.

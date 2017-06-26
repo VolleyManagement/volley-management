@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Domain.Properties;
+    using Crosscutting.Contracts.Providers;
+    using Properties;
 
     /// <summary>
     /// Tournament domain class.
@@ -15,7 +15,7 @@
         /// </summary>
         public Tournament()
         {
-            this.Divisions = new List<Division>();
+            Divisions = new List<Division>();
         }
 
         /// <summary>

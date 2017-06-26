@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentRequestService
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
+    using Domain.TournamentRequestAggregate;
 
     [ExcludeFromCodeCoverage]
     public class TournamentRequestBuilder

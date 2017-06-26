@@ -6,22 +6,22 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.Player;
+    using Data.Queries.Team;
+    using Domain.PlayersAggregate;
+    using Domain.Properties;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Player;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using PlayerService;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.PlayerService;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -191,7 +191,7 @@
             string invalidAchievements = CreateInvalidTeamAchievements();
             string argExMessage = string.Format(
                     Resources.ValidationTeamAchievements,
-                        VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH);
+                        Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithAchievements(invalidAchievements)
                                         .Build();
@@ -244,7 +244,7 @@
             string invalidName = CreateInvalidTeamName();
             string argExMessage = string.Format(
                     Resources.ValidationTeamName,
-                        VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH);
+                        Domain.Constants.Team.MAX_NAME_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithName(invalidName)
                                         .Build();
@@ -279,7 +279,7 @@
             string invalidName = string.Empty;
             string argExMessage = string.Format(
                     Resources.ValidationTeamName,
-                        VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH);
+                        Domain.Constants.Team.MAX_NAME_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithName(invalidName)
                                         .Build();
@@ -314,7 +314,7 @@
             string invalidCoachName = CreateInvalidTeamCoachName();
             string argExMessage = string.Format(
                     Resources.ValidationCoachName,
-                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
+                        Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
@@ -349,7 +349,7 @@
             string invalidCoachName = "name%-)";
             string argExMessage = string.Format(
                     Resources.ValidationCoachName,
-                        VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
+                        Domain.Constants.Team.MAX_COACH_NAME_LENGTH);
             var testTeam = new TeamBuilder()
                                         .WithCoach(invalidCoachName)
                                         .Build();
@@ -1005,7 +1005,7 @@
         private string CreateInvalidTeamAchievements()
         {
             StringBuilder invalidAchievements = new StringBuilder();
-            for (int i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH + 1; i++)
+            for (int i = 0; i < Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH + 1; i++)
             {
                 invalidAchievements.Append("a");
             }
@@ -1020,7 +1020,7 @@
         private string CreateInvalidTeamName()
         {
             StringBuilder invalidTeamName = new StringBuilder();
-            for (int i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH + 1; i++)
+            for (int i = 0; i < Domain.Constants.Team.MAX_NAME_LENGTH + 1; i++)
             {
                 invalidTeamName.Append("a");
             }
@@ -1035,7 +1035,7 @@
         private string CreateInvalidTeamCoachName()
         {
             StringBuilder invalidTeamCoachName = new StringBuilder();
-            for (int i = 0; i < VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH + 1; i++)
+            for (int i = 0; i < Domain.Constants.Team.MAX_COACH_NAME_LENGTH + 1; i++)
             {
                 invalidTeamCoachName.Append("a");
             }

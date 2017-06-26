@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// Represents an equality comparer for <see cref="GameResultViewModel"/> objects.

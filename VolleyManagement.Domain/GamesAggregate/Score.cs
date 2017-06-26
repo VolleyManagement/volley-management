@@ -41,7 +41,7 @@
         {
             get
             {
-                return this.Home == 0 && this.Away == 0;
+                return Home == 0 && Away == 0;
             }
         }
     }

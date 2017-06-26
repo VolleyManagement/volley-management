@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Generic;
+    using Generic;
 
     /// <summary>
     /// Represents PlayersListViewModel and referrer link.

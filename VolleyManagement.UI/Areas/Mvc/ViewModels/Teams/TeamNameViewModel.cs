@@ -45,8 +45,8 @@
         {
             return new Team
             {
-                Id = this.Id,
-                Name = this.Name
+                Id = Id,
+                Name = Name
             };
         }
     }

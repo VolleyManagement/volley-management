@@ -4,18 +4,18 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Player;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.Player;
+    using Data.Queries.Team;
+    using Domain.PlayersAggregate;
+    using Domain.Properties;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
 
     /// <summary>
     /// Defines TeamService
@@ -296,7 +296,7 @@
                 throw new ArgumentException(
                     string.Format(
                     Resources.ValidationTeamName,
-                    VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH),
+                    Domain.Constants.Team.MAX_NAME_LENGTH),
                     "Name");
             }
         }
@@ -310,7 +310,7 @@
                 throw new ArgumentException(
                     string.Format(
                     Resources.ValidationCoachName,
-                    VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
+                    Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
                     "Coach");
             }
         }
@@ -325,7 +325,7 @@
                 throw new ArgumentException(
                     string.Format(
                     Resources.ValidationTeamAchievements,
-                    VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
+                    Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
                     "Achievements");
             }
         }

@@ -7,12 +7,12 @@
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
+    using Domain.RolesAggregate;
+    using ViewModels.Players;
 
     /// <summary>
     /// Defines player controller
@@ -47,15 +47,15 @@
         /// <param name="currentUserService">The interface reference of current user service.</param>
         /// <param name="requestService">The interface reference of request service.</param>
         public PlayersController(
-            IPlayerService playerService, 
+            IPlayerService playerService,
             IAuthorizationService authService,
             ICurrentUserService currentUserService,
             IRequestService requestService)
         {
-            this._playerService = playerService;
-            this._authService = authService;
-            this._currentUserService = currentUserService;
-            this._requestService = requestService;
+            _playerService = playerService;
+            _authService = authService;
+            _currentUserService = currentUserService;
+            _requestService = requestService;
         }
 
         /// <summary>
@@ -69,13 +69,13 @@
             try
             {
                 PlayersListViewModel playersOnPage = GetPlayersListViewModel(page, textToSearch);
-                playersOnPage.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                playersOnPage.AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
                 {
                     AuthOperations.Players.Create,
                     AuthOperations.Players.Edit,
                     AuthOperations.Players.Delete
                 });
-                var referrerViewModel = new PlayersListReferrerViewModel(playersOnPage, this.HttpContext.Request.RawUrl);
+                var referrerViewModel = new PlayersListReferrerViewModel(playersOnPage, HttpContext.Request.RawUrl);
                 return View(referrerViewModel);
             }
             catch (ArgumentOutOfRangeException)
@@ -100,7 +100,7 @@
             }
 
             var model = new PlayerRefererViewModel(player, returnUrl);
-            model.AllowedOperations = this._authService.GetAllowedOperations(AuthOperations.Players.Edit);
+            model.AllowedOperations = _authService.GetAllowedOperations(AuthOperations.Players.Edit);
             return View(model);
         }
 
@@ -112,7 +112,7 @@
         /// Player and User. </returns>
         public string LinkWithUser(int playerId)
         {
-            int userId = this._currentUserService.GetCurrentUserId();
+            int userId = _currentUserService.GetCurrentUserId();
             string message;
 
             if (userId != ANONYM)
@@ -135,7 +135,7 @@
         public ActionResult Create()
         {
             var playerViewModel = new PlayerViewModel();
-            return this.View(playerViewModel);
+            return View(playerViewModel);
         }
 
         /// <summary>
@@ -146,27 +146,27 @@
         [HttpPost]
         public ActionResult Create(PlayerViewModel playerViewModel)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.View(playerViewModel);
+                return View(playerViewModel);
             }
 
             try
             {
                 var domainPlayer = playerViewModel.ToDomain();
-                this._playerService.Create(domainPlayer);
+                _playerService.Create(domainPlayer);
                 playerViewModel.Id = domainPlayer.Id;
-                return this.RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
             catch (ArgumentException ex)
             {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                return this.View(playerViewModel);
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(playerViewModel);
             }
             catch (ValidationException ex)
             {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                return this.View(playerViewModel);
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(playerViewModel);
             }
         }
 
@@ -180,7 +180,7 @@
         {
             try
             {
-                this._playerService.Delete(id);
+                _playerService.Delete(id);
             }
             catch (MissingEntityException ex)
             {
@@ -213,7 +213,7 @@
             }
 
             var playerViewModel = PlayerViewModel.Map(player);
-            return this.View(playerViewModel);
+            return View(playerViewModel);
         }
 
         /// <summary>
@@ -226,24 +226,24 @@
         {
             try
             {
-                if (this.ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var player = playerViewModel.ToDomain();
-                    this._playerService.Edit(player);
-                    return this.RedirectToAction("Index");
+                    _playerService.Edit(player);
+                    return RedirectToAction("Index");
                 }
 
-                return this.View(playerViewModel);
+                return View(playerViewModel);
             }
             catch (MissingEntityException)
             {
-                this.ModelState.AddModelError(string.Empty, PLAYER_WAS_DELETED_DESCRIPTION);
-                return this.View(playerViewModel);
+                ModelState.AddModelError(string.Empty, PLAYER_WAS_DELETED_DESCRIPTION);
+                return View(playerViewModel);
             }
             catch (ValidationException ex)
             {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                return this.View(playerViewModel);
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(playerViewModel);
             }
         }
 
@@ -258,7 +258,7 @@
         public JsonResult GetFreePlayers(string searchString, string excludeList, string includeList, int? includeTeam)
         {
             searchString = HttpUtility.UrlDecode(searchString).Replace(" ", string.Empty);
-            var query = this._playerService.Get()
+            var query = _playerService.Get()
                             .Where(p => (p.FirstName + p.LastName).Contains(searchString)
                                    || (p.LastName + p.FirstName).Contains(searchString));
 
@@ -270,7 +270,7 @@
                 }
                 else
                 {
-                    var selectedIds = this.ParseIntList(includeList);
+                    var selectedIds = ParseIntList(includeList);
                     query = query.Where(p => p.TeamId == null || p.TeamId == includeTeam.Value || selectedIds.Contains(p.Id));
                 }
             }
@@ -280,13 +280,13 @@
             }
             else
             {
-                var selectedIds = this.ParseIntList(includeList);
+                var selectedIds = ParseIntList(includeList);
                 query = query.Where(p => p.TeamId == null || selectedIds.Contains(p.Id));
             }
 
             if (!string.IsNullOrEmpty(excludeList))
             {
-                var selectedIds = this.ParseIntList(excludeList);
+                var selectedIds = ParseIntList(excludeList);
                 query = query.Where(p => !selectedIds.Contains(p.Id));
             }
 
@@ -300,7 +300,7 @@
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
             textToSearch = textToSearch.Trim();
-            IQueryable<Player> allPlayers = this._playerService.Get().OrderBy(p => p.LastName);
+            IQueryable<Player> allPlayers = _playerService.Get().OrderBy(p => p.LastName);
 
             if (textToSearch != string.Empty)
             {

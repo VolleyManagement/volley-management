@@ -2,15 +2,15 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using Contracts;
+    using Data.Contracts;
+    using Data.Queries.GameResult;
+    using Data.Queries.Team;
     using Data.Queries.Tournament;
+    using Domain.GameReportsAggregate;
+    using Domain.GamesAggregate;
+    using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
 
     /// <summary>
     /// Represents an implementation of IGameReportService contract.

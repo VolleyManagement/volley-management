@@ -14,7 +14,7 @@
         /// </summary>
         static TimeProvider()
         {
-            TimeProvider._current =
+            _current =
               new DefaultTimeProvider();
         }
 
@@ -25,7 +25,7 @@
         {
             get
             {
-                return TimeProvider._current;
+                return _current;
             }
 
             set
@@ -35,7 +35,7 @@
                     throw new ArgumentNullException("value");
                 }
 
-                TimeProvider._current = value;
+                _current = value;
             }
         }
 
@@ -60,7 +60,7 @@
         /// </summary>
         public static void ResetToDefault()
         {
-            TimeProvider._current =
+            _current =
               new DefaultTimeProvider();
         }
     }

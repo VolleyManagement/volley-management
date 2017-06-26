@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
-    using VolleyManagement.UnitTests.Services.ContributorService;
+    using Services.ContributorService;
+    using UI.Areas.Mvc.ViewModels.ContributorsTeam;
 
     /// <summary>
     /// Comparer for contributor team objects.

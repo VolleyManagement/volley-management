@@ -3,19 +3,19 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Data.Contracts;
+    using Data.Queries.GameResult;
+    using Data.Queries.Team;
+    using Data.Queries.Tournament;
+    using Domain.GamesAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentsAggregate;
+    using GameService;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Data.Queries.Tournament;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using TeamService;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.GameService;
-    using VolleyManagement.UnitTests.Services.TeamService;
 
                                        /// <summary>
                                       /// Tests for <see cref="GameReportService"/> class.

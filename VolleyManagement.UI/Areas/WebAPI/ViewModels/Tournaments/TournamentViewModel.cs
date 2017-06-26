@@ -4,10 +4,10 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web;
-    using VolleyManagement.Domain.Tournaments;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Domain.TournamentsAggregate;
     using Resources.UI;
-    using tournConst = VolleyManagement.Domain.Constants.Tournament;
+    using VolleyManagement.Crosscutting.Contracts.Extensions;
+    using tournConst = Domain.Constants.Tournament;
 
     /// <summary>
     /// TournamentViewModel class.
@@ -25,8 +25,10 @@
         /// <value>Name of tournament.</value>
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(60, ErrorMessageResourceName = "MaxLengthErrorMessage", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(@"^[\S\x20]+$", ErrorMessageResourceName = "InvalidEntriesError",
-                              ErrorMessageResourceType = typeof(ViewModelResources))]
+        [RegularExpression(
+            @"^[\S\x20]+$",
+            ErrorMessageResourceName = "InvalidEntriesError",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
         /// <summary>
@@ -43,8 +45,11 @@
         /// </summary>
         /// <value>Season of tournament.</value>
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
-        [Range(tournConst.MINIMAL_SEASON_YEAR, tournConst.MAXIMAL_SEASON_YEAR,
-            ErrorMessageResourceName = "NotInRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(
+            tournConst.MINIMAL_SEASON_YEAR,
+            tournConst.MAXIMAL_SEASON_YEAR,
+            ErrorMessageResourceName = "NotInRange",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public short Season { get; set; }
 
         /// <summary>
@@ -62,7 +67,7 @@
         public string RegulationsLink { get; set; }
 
         /// <summary>
-        /// Start of a tournament registration
+        /// Gets or sets start of a tournament registration
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "ApplyingPeriodStart", ResourceType = typeof(ViewModelResources))]
@@ -70,7 +75,7 @@
         public DateTime ApplyingPeriodStart { get; set; }
 
         /// <summary>
-        /// End of a tournament registration
+        /// Gets or sets end of a tournament registration
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "ApplyingPeriodEnd", ResourceType = typeof(ViewModelResources))]
@@ -78,7 +83,7 @@
         public DateTime ApplyingPeriodEnd { get; set; }
 
         /// <summary>
-        /// Start of a tournament
+        /// Gets or sets start of a tournament
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "GamesStart", ResourceType = typeof(ViewModelResources))]
@@ -86,7 +91,7 @@
         public DateTime GamesStart { get; set; }
 
         /// <summary>
-        /// End of a tournament
+        /// Gets or sets end of a tournament
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "GamesEnd", ResourceType = typeof(ViewModelResources))]
@@ -94,19 +99,19 @@
         public DateTime GamesEnd { get; set; }
 
         /// <summary>
-        /// Transfer enabled state
+        /// Gets or sets a value indicating whether transfer enabled state
         /// </summary>
         public bool IsTransferEnabled { get; set; }
 
         /// <summary>
-        /// Start of a transfer period
+        /// Gets or sets start of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferStart", ResourceType = typeof(ViewModelResources))]
         public DateTime? TransferStart { get; set; }
 
         /// <summary>
-        /// End of a transfer period
+        /// Gets or sets end of a transfer period
         /// </summary>
         [DataType(DataType.Date)]
         [Display(Name = "TransferEnd", ResourceType = typeof(ViewModelResources))]
@@ -147,20 +152,20 @@
         public Tournament ToDomain()
         {
             var tournament = new Tournament();
-            tournament.Id = this.Id;
-            tournament.Name = this.Name;
-            tournament.Description = this.Description;
-            tournament.Season = this.Season;
-            tournament.RegulationsLink = this.RegulationsLink;
+            tournament.Id = Id;
+            tournament.Name = Name;
+            tournament.Description = Description;
+            tournament.Season = Season;
+            tournament.RegulationsLink = RegulationsLink;
             tournament.Scheme = Enum.GetValues(typeof(TournamentSchemeEnum))
                 .Cast<TournamentSchemeEnum>()
-                .FirstOrDefault(v => v.ToDescription() == this.Scheme);
-            tournament.GamesStart = this.GamesStart;
-            tournament.GamesEnd = this.GamesEnd;
-            tournament.ApplyingPeriodStart = this.ApplyingPeriodStart;
-            tournament.ApplyingPeriodEnd = this.ApplyingPeriodEnd;
-            tournament.TransferStart = this.TransferStart;
-            tournament.TransferEnd = this.TransferEnd;
+                .FirstOrDefault(v => v.ToDescription() == Scheme);
+            tournament.GamesStart = GamesStart;
+            tournament.GamesEnd = GamesEnd;
+            tournament.ApplyingPeriodStart = ApplyingPeriodStart;
+            tournament.ApplyingPeriodEnd = ApplyingPeriodEnd;
+            tournament.TransferStart = TransferStart;
+            tournament.TransferEnd = TransferEnd;
 
             return tournament;
         }

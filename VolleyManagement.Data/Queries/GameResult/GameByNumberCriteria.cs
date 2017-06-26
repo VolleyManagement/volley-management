@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Data.Queries.GameResult
 {
     using System.Collections.Generic;
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Represents criteria to get game by number in tournament

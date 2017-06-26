@@ -1,10 +1,9 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System.Data.Entity;
-
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Contracts;
+    using Domain.RolesAggregate;
+    using Entities;
 
     /// <summary>
     /// Defines implementation of the IUserRepository contract.
@@ -42,7 +41,7 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return this._unitOfWork; }
+            get { return _unitOfWork; }
         }
 
         /// <summary>

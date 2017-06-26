@@ -2,7 +2,7 @@
 {
     using System.Linq;
 
-    using VolleyManagement.Data.Contracts;
+    using Data.Contracts;
 
     /// <summary>
     /// Defines specific contract for ContributorRepository

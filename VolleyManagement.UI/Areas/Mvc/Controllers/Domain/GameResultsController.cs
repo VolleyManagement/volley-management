@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.RolesAggregate;
+    using ViewModels.GameResults;
 
     /// <summary>
     /// Represents a controller that contains game results actions.
@@ -150,7 +150,7 @@
         {
             try
             {
-                this._gameService.Delete(id);
+                _gameService.Delete(id);
             }
             catch (ArgumentNullException ex)
             {

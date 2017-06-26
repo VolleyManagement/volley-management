@@ -1,7 +1,7 @@
-﻿using System.Web.Optimization;
-
-namespace VolleyManagement.UI
+﻿namespace VolleyManagement.UI
 {
+    using System.Web.Optimization;
+
     /// <summary>
     /// Bundle configuration class
     /// </summary>

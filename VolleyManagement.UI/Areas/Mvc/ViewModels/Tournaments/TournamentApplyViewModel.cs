@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Web.Mvc;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
+    using Domain.TeamsAggregate;
+    using Teams;
 
     /// <summary>
     /// Represents the information of the teams to apply for the tournament.

@@ -2,10 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using Domain.GamesAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
-    using VolleyManagement.UnitTests.Services.GameService;
+    using Services.GameService;
+    using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// View model game result class test

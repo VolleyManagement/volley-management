@@ -5,8 +5,8 @@
     using System.Data.Entity.Core.Objects;
     using System.Linq;
 
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Domain.ContributorsAggregate;
+    using Contracts;
+    using Domain.ContributorsAggregate;
 
     /// <summary>
     /// Defines implementation of the IContributorRepository contract.
@@ -26,8 +26,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public ContributorTeamRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            this._contribsSet = _unitOfWork.Context.Contributors;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _contribsSet = _unitOfWork.Context.Contributors;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return this._unitOfWork; }
+            get { return _unitOfWork; }
         }
 
         /// <summary>
@@ -44,7 +44,7 @@
         /// <returns>Collection of teams with contributors</returns>
         public IQueryable<ContributorTeam> Find()
         {
-            var result = this._contribsSet.GroupBy(c => c.Team)
+            var result = _contribsSet.GroupBy(c => c.Team)
                                      .Select(gr => new ContributorTeam
                                         {
                                             Id = gr.Key.Id,

@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Domain.TeamsAggregate;
 
     /// <summary>
     /// Comparer for team objects.

@@ -3,8 +3,8 @@
     using System;
     using System.Web.Mvc;
     using Contracts;
+    using Contracts.Exceptions;
     using Models;
-    using VolleyManagement.Contracts.Exceptions;
 
     /// <summary>
     /// Provides Feedback management
@@ -20,7 +20,7 @@
         /// <param name="feedbackService"> The feedbacks service. </param>
         public RequestsController(IFeedbackService feedbackService)
         {
-            this._feedbackService = feedbackService;
+            _feedbackService = feedbackService;
         }
 
         /// <summary>
@@ -67,22 +67,16 @@
             catch (InvalidOperationException ex)
             {
                 return View(
-                    "ErrorPage", 
-                    new OperationResultViewModel
-                    {
-                        Message = ex.Message
-                    });
+                    "ErrorPage",
+                    CreateErrorReply(ex));
             }
             catch (MissingEntityException ex)
             {
                 return View(
                     "ErrorPage",
-                    new OperationResultViewModel
-                    {
-                        Message = ex.Message
-                    });
+                    CreateErrorReply(ex));
             }
-            
+
             return RedirectToAction("Index");
         }
 
@@ -98,25 +92,27 @@
                 _feedbackService.Close(id);
             }
             catch (InvalidOperationException ex)
-            {  
+            {
                return View(
-                   "ErrorPage", 
-                   new OperationResultViewModel
-                   {
-                       Message = ex.Message
-                   });
+                   "ErrorPage",
+                   CreateErrorReply(ex));
             }
             catch (MissingEntityException ex)
             {
                 return View(
-                    "ErrorPage", 
-                    new OperationResultViewModel
-                    {
-                        Message = ex.Message
-                    });
+                    "ErrorPage",
+                    CreateErrorReply(ex));
             }
 
             return RedirectToAction("Index");
+        }
+
+        private static OperationResultViewModel CreateErrorReply(Exception ex)
+        {
+            return new OperationResultViewModel
+            {
+                Message = ex.Message
+            };
         }
     }
 }

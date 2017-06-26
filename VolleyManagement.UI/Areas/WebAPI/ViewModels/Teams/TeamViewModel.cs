@@ -2,11 +2,10 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Domain;
+    using Domain.TeamsAggregate;
+    using Players;
     using Resources.UI;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
 
     /// <summary>
     /// Represents team view model
@@ -27,7 +26,9 @@
         /// Gets or sets the team name.
         /// </summary>
         [Display(Name = "TeamName", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Team.MAX_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+        [StringLength(
+            Constants.Team.MAX_NAME_LENGTH,
+            ErrorMessageResourceName = "MaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
@@ -35,7 +36,9 @@
         /// Gets or sets the team coach.
         /// </summary>
         [Display(Name = "TeamCoach", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Team.MAX_COACH_NAME_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+        [StringLength(
+            Constants.Team.MAX_COACH_NAME_LENGTH,
+            ErrorMessageResourceName = "MaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Coach { get; set; }
 
@@ -43,7 +46,9 @@
         /// Gets or sets the team achievements.
         /// </summary>
         [Display(Name = "TeamAchievements", ResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Team.MAX_ACHIEVEMENTS_LENGTH, ErrorMessageResourceName = "MaxLengthErrorMessage",
+        [StringLength(
+            Constants.Team.MAX_ACHIEVEMENTS_LENGTH,
+            ErrorMessageResourceName = "MaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Achievements { get; set; }
 
@@ -86,11 +91,11 @@
         {
             return new Team
             {
-                Id = this.Id,
-                Name = this.Name,
-                Coach = this.Coach,
-                Achievements = this.Achievements,
-                CaptainId = this.CaptainId
+                Id = Id,
+                Name = Name,
+                Coach = Coach,
+                Achievements = Achievements,
+                CaptainId = CaptainId
             };
         }
         #endregion

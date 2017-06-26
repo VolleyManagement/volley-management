@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// The authorization provider view model.

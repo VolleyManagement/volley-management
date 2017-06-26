@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel;
+    using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
 
     /// <summary>
     /// Implementation of <see cref="IComparer"/> and <see cref="IComparer{T}"/>

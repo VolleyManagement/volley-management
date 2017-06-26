@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Domain.TournamentRequestAggregate
 {
     using System;
-    using VolleyManagement.Domain.Properties;
+    using Properties;
 
     /// <summary>
     /// Tournament request domain class.
@@ -35,7 +35,7 @@
                     throw new ArgumentException(Resources.ValidationUserId);
                 }
 
-                this._userId = value;
+                _userId = value;
             }
         }
 
@@ -56,7 +56,7 @@
                     throw new ArgumentException(Resources.ValidationTournamentId);
                 }
 
-                this._tournamentId = value;
+                _tournamentId = value;
             }
         }
 
@@ -67,7 +67,7 @@
         {
             get
             {
-                return this._teamId;
+                return _teamId;
             }
 
             set
@@ -77,7 +77,7 @@
                     throw new ArgumentException(Resources.ValidationTeamId);
                 }
 
-                this._teamId = value;
+                _teamId = value;
             }
         }
     }

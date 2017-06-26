@@ -4,22 +4,22 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.Http.Results;
+    using Contracts;
+    using Domain.GameReportsAggregate;
+    using Domain.GamesAggregate;
+    using Domain.TournamentsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.Tournaments;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.WebApi.Controllers;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
-    using VolleyManagement.UnitTests.Services.GameReportService;
-    using VolleyManagement.UnitTests.Services.GameService;
-    using VolleyManagement.UnitTests.Services.TournamentService;
-    using VolleyManagement.UnitTests.WebApi.ViewModels;
+    using Services.GameReportService;
+    using Services.GameService;
+    using Services.TournamentService;
+    using UI.Areas.WebApi.Controllers;
+    using UI.Areas.WebApi.ViewModels.GameReports;
+    using UI.Areas.WebApi.ViewModels.Games;
+    using UI.Areas.WebApi.ViewModels.Tournaments;
+    using ViewModels;
+    using VolleyManagement.Crosscutting.Contracts.Extensions;
 
     /// <summary>
     /// Tests for TournamentController class.

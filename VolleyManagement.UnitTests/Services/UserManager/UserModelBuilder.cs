@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Contracts.Authentication.Models;
+    using Contracts.Authentication.Models;
 
     /// <summary>
     /// Builder for test users

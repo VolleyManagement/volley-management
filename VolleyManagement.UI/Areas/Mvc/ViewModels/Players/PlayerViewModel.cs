@@ -2,8 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.PlayersAggregate;
+    using Domain;
+    using Domain.PlayersAggregate;
     using Resources.UI;
 
     /// <summary>
@@ -20,11 +20,16 @@
         /// Gets or sets the player first name
         /// </summary>
         [Display(Name = "PlayerFirstName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "PlayerFirstNameRequired",
+        [Required(
+            ErrorMessageResourceName = "PlayerFirstNameRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_FIRST_NAME_LENGTH, ErrorMessageResourceName = "PlayerMaxLengthErrorMessage",
+        [StringLength(
+            Constants.Player.MAX_FIRST_NAME_LENGTH,
+            ErrorMessageResourceName = "PlayerMaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "PlayerFirstNameInvalidEntriesError",
+        [RegularExpression(
+            ViewModelConstants.NAME_VALIDATION_REGEX,
+            ErrorMessageResourceName = "PlayerFirstNameInvalidEntriesError",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string FirstName { get; set; }
 
@@ -32,11 +37,16 @@
         /// Gets or sets the player last name
         /// </summary>
         [Display(Name = "PlayerLastName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "PlayerLastNameRequired",
+        [Required(
+            ErrorMessageResourceName = "PlayerLastNameRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [StringLength(Constants.Player.MAX_LAST_NAME_LENGTH, ErrorMessageResourceName = "PlayerMaxLengthErrorMessage",
+        [StringLength(
+            Constants.Player.MAX_LAST_NAME_LENGTH,
+            ErrorMessageResourceName = "PlayerMaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [RegularExpression(ViewModelConstants.NAME_VALIDATION_REGEX, ErrorMessageResourceName = "PlayerLastNameInvalidEntriesError",
+        [RegularExpression(
+            ViewModelConstants.NAME_VALIDATION_REGEX,
+            ErrorMessageResourceName = "PlayerLastNameInvalidEntriesError",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string LastName { get; set; }
 
@@ -44,24 +54,33 @@
         /// Gets or sets the player birth year
         /// </summary>
         [Display(Name = "PlayerBirthYear", ResourceType = typeof(ViewModelResources))]
-        [Range(Constants.Player.MIN_BIRTH_YEAR, Constants.Player.MAX_BIRTH_YEAR,
-            ErrorMessageResourceName = "PlayerBirthFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(
+            Constants.Player.MIN_BIRTH_YEAR,
+            Constants.Player.MAX_BIRTH_YEAR,
+            ErrorMessageResourceName = "PlayerBirthFieldRange",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public short? BirthYear { get; set; }
 
         /// <summary>
         /// Gets or sets the player height
         /// </summary>
         [Display(Name = "PlayerHeight", ResourceType = typeof(ViewModelResources))]
-        [Range(Constants.Player.MIN_HEIGHT, Constants.Player.MAX_HEIGHT,
-            ErrorMessageResourceName = "PlayerHeightFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(
+            Constants.Player.MIN_HEIGHT,
+            Constants.Player.MAX_HEIGHT,
+            ErrorMessageResourceName = "PlayerHeightFieldRange",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public short? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the player weight
         /// </summary>
         [Display(Name = "PlayerWeight", ResourceType = typeof(ViewModelResources))]
-        [Range(Constants.Player.MIN_WEIGHT, Constants.Player.MAX_WEIGHT,
-            ErrorMessageResourceName = "PlayerWeightFieldRange", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Range(
+            Constants.Player.MIN_WEIGHT,
+            Constants.Player.MAX_WEIGHT,
+            ErrorMessageResourceName = "PlayerWeightFieldRange",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         public short? Weight { get; set; }
 
         /// <summary>
@@ -99,13 +118,13 @@
         {
             return new Player
             {
-                Id = this.Id,
-                FirstName = this.FirstName,
-                LastName = this.LastName,
-                BirthYear = this.BirthYear,
-                Height = this.Height,
-                Weight = this.Weight,
-                TeamId = this.TeamId
+                Id = Id,
+                FirstName = FirstName,
+                LastName = LastName,
+                BirthYear = BirthYear,
+                Height = Height,
+                Weight = Weight,
+                TeamId = TeamId
             };
         }
         #endregion

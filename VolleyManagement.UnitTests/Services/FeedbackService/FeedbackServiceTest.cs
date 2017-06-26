@@ -4,24 +4,24 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Crosscutting.Contracts.MailService;
+    using Crosscutting.Contracts.Providers;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Domain.FeedbackAggregate;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
+    using MailService;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.MailService;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using UserManager;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.MailService;
-    using VolleyManagement.UnitTests.Services.UserManager;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -115,7 +115,7 @@
                                             .Build()
                                             .ToList();
 
-            var sut = _kernel.Get<VolleyManagement.Services.FeedbackService>();
+            var sut = _kernel.Get<FeedbackService>();
 
             // Act
             var actual = sut.Get();
@@ -130,7 +130,7 @@
         {
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
-            var sut = _kernel.Get<VolleyManagement.Services.FeedbackService>();
+            var sut = _kernel.Get<FeedbackService>();
 
             // Act
             sut.Get();
@@ -147,7 +147,7 @@
             var expected = new FeedbackBuilder().WithId(EXISTING_ID).Build();
             MockGetFeedbackByIdQuery(expected);
 
-            var sut = _kernel.Get<VolleyManagement.Services.FeedbackService>();
+            var sut = _kernel.Get<FeedbackService>();
 
             // Act
             var actual = sut.Get(EXISTING_ID);
@@ -162,7 +162,7 @@
         {
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Feedbacks.Read);
-            var sut = _kernel.Get<VolleyManagement.Services.FeedbackService>();
+            var sut = _kernel.Get<FeedbackService>();
 
             // Act
             sut.Get(EXISTING_ID);

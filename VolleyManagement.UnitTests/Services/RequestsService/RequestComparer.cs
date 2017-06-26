@@ -7,7 +7,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using VolleyManagement.Domain.RequestsAggregate;
+    using Domain.RequestsAggregate;
 
     /// <summary>
     /// Comparer for request objects.

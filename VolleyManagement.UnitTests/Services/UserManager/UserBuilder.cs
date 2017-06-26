@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// Builder for test users

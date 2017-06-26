@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
+    using Domain.ContributorsAggregate;
+    using UI.Areas.Mvc.ViewModels.ContributorsTeam;
 
     /// <summary>
     /// Builder for test MVC contributor team view models

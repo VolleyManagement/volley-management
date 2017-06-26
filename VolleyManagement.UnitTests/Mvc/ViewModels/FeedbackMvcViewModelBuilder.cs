@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel;
+    using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
 
     /// <summary>
     /// Builder for test MVC feedback view model.

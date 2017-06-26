@@ -3,23 +3,23 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Data.Queries.Tournament;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using DivisionConstants = VolleyManagement.Domain.Constants.Division;
-    using GroupConstants = VolleyManagement.Domain.Constants.Group;
-    using TournamentConstants = VolleyManagement.Domain.Constants.Tournament;
-    using TournamentResources = VolleyManagement.Domain.Properties.Resources;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Crosscutting.Contracts.Providers;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.Team;
+    using Data.Queries.Tournament;
+    using Domain.GamesAggregate;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentsAggregate;
+    using DivisionConstants = Domain.Constants.Division;
+    using GroupConstants = Domain.Constants.Group;
+    using TournamentConstants = Domain.Constants.Tournament;
+    using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
     /// Defines TournamentService
@@ -557,7 +557,7 @@
 
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
-            var tournament = this.Get(tournamentId);
+            var tournament = Get(tournamentId);
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
             {
                 if (allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)

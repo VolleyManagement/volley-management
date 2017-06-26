@@ -5,8 +5,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web.Mvc;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Domain.GamesAggregate;
+    using Domain.TournamentsAggregate;
     using Resources.UI;
 
     /// <summary>
@@ -84,7 +84,7 @@
         {
             get
             {
-                return this.Round == 1;
+                return Round == 1;
             }
         }
 
@@ -115,13 +115,13 @@
         {
             return new Game
             {
-                Id = this.Id,
-                Round = this.Round,
-                TournamentId = this.TournamentId,
-                HomeTeamId = this.HomeTeamId,
-                AwayTeamId = this.AwayTeamId,
-                GameDate = this.GameDate,
-                GameNumber = this.GameNumber
+                Id = Id,
+                Round = Round,
+                TournamentId = TournamentId,
+                HomeTeamId = HomeTeamId,
+                AwayTeamId = AwayTeamId,
+                GameDate = GameDate,
+                GameNumber = GameNumber
             };
         }
     }

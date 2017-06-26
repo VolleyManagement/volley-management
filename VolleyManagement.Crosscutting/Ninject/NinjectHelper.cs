@@ -2,12 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
-
     using global::Ninject.Activation;
-
     using global::Ninject.Infrastructure;
+    using Microsoft.Practices.EnterpriseLibrary.Common.Utility;
 
     /// <summary>
     /// Provides common operation for Ninject registration

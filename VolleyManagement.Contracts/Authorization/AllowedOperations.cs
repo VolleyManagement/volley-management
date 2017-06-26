@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// Provides the way to check if specified operation is allowed for user
@@ -23,7 +23,7 @@
                 throw new ArgumentNullException("Allowed operations list shouldn't be null!");
             }
 
-            this._allowedOperations = allowedOperations;
+            _allowedOperations = allowedOperations;
         }
 
         /// <summary>

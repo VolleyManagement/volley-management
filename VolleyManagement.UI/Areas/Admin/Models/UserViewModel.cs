@@ -1,10 +1,10 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
     using System.Collections.Generic;
-    using VolleyManagement.Domain.Dto;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using Domain.Dto;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
+    using Mvc.ViewModels.Players;
 
     /// <summary>
     /// The user view model.
@@ -37,9 +37,9 @@
         public string Phone { get; set; }
 
         /// <summary>
-        /// Gets or sets the is user Blocked.
+        /// Gets or sets a value indicating whether user is Blocked.
         /// </summary>
-        public bool isBlocked { get; set; }
+        public bool IsBlocked { get; set; }
 
         /// <summary>
         /// Gets or sets Player info
@@ -80,7 +80,7 @@
                 Email = user.Email,
                 PersonName = user.PersonName,
                 Phone = user.PhoneNumber,
-                isBlocked = user.IsBlocked
+                IsBlocked = user.IsBlocked
             };
         }
 
@@ -98,7 +98,7 @@
                 Email = user.Email,
                 PersonName = user.PersonName,
                 Phone = user.PhoneNumber,
-                isBlocked = user.IsBlocked,
+                IsBlocked = user.IsBlocked,
                 LoginProviders = user.LoginProviders,
                 Roles = user.Roles
             };

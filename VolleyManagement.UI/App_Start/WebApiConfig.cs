@@ -4,10 +4,10 @@
     using System.Web.OData.Builder;
     using System.Web.OData.Extensions;
 
-    using VolleyManagement.UI.Areas.WebApi;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
+    using Areas.WebApi;
+    using Areas.WebApi.ViewModels.Players;
+    using Areas.WebApi.ViewModels.Teams;
+    using Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
     /// The WebApi config.

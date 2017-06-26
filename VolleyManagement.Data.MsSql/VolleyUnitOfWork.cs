@@ -2,9 +2,8 @@
 {
     using System.Data.Entity.Infrastructure;
     using System.Threading.Tasks;
-
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Context;
+    using Context;
+    using Contracts;
 
     /// <summary>
     /// Defines Entity Framework implementation of the IUnitOfWork contract.
@@ -30,7 +29,7 @@
         /// </summary>
         internal VolleyManagementEntities Context
         {
-            get { return this._context; }
+            get { return _context; }
         }
 
         /// <summary>
@@ -38,7 +37,7 @@
         /// </summary>
         public void Commit()
         {
-            this._context.SaveChanges();
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -47,7 +46,7 @@
         /// <returns>Task to await</returns>
         public Task CommitAsync()
         {
-            return this._context.SaveChangesAsync();
+            return _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -55,7 +54,7 @@
         /// </summary>
         public void Dispose()
         {
-            this._context.Dispose();
+            _context.Dispose();
         }
     }
 }

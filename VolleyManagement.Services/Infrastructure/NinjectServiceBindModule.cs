@@ -1,18 +1,18 @@
 ﻿namespace VolleyManagement.Services.Infrastructure
 {
     using System;
+    using Authentication;
+    using Authorization;
+    using Contracts;
+    using Contracts.Authentication;
+    using Contracts.Authentication.Models;
+    using Contracts.Authorization;
+    using Crosscutting.Contracts.MailService;
+    using Crosscutting.Ninject;
     using Ninject.Activation;
     using Ninject.Infrastructure;
     using Ninject.Modules;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authentication;
-    using VolleyManagement.Contracts.Authentication.Models;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Crosscutting.Contracts.MailService;
-    using VolleyManagement.Crosscutting.Ninject;
-    using VolleyManagement.Services;
-    using VolleyManagement.Services.Authentication;
-    using VolleyManagement.Services.Authorization;
+    using Services;
 
     /// <summary>
     /// Defines bindings for Service layer

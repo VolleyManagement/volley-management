@@ -1,9 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Mappers
 {
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
+    using Domain.TournamentsAggregate;
+    using Domain.UsersAggregate;
+    using ViewModels.Tournaments;
+    using ViewModels.Users;
 
     /// <summary>
     /// Maps view models to domain models

@@ -6,8 +6,8 @@
     using System.Data.Entity.Migrations;
     using System.Diagnostics;
     using System.Linq;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Domain.RolesAggregate;
+    using Entities;
 
     /// <summary>
     /// Generates and seeds test entity data

@@ -1,11 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using VolleyManagement.Domain.GameReportsAggregate;
+    using Domain.GameReportsAggregate;
 
     /// <summary>
     /// Represents a view model for <see cref="PivotGameResultViewModel"/>.
@@ -110,11 +105,11 @@
         public PivotGameResultViewModel ReverseTeams()
         {
             var result = new PivotGameResultViewModel();
-            result.HomeTeamId = this.AwayTeamId;
-            result.AwayTeamId = this.HomeTeamId;
-            result.HomeSetsScore = this.AwaySetsScore;
-            result.AwaySetsScore = this.HomeSetsScore;
-            result.IsTechnicalDefeat = this.IsTechnicalDefeat;
+            result.HomeTeamId = AwayTeamId;
+            result.AwayTeamId = HomeTeamId;
+            result.HomeSetsScore = AwaySetsScore;
+            result.AwaySetsScore = HomeSetsScore;
+            result.IsTechnicalDefeat = IsTechnicalDefeat;
             result.CssClass = GetCssClass(result.HomeSetsScore, result.AwaySetsScore);
             return result;
         }

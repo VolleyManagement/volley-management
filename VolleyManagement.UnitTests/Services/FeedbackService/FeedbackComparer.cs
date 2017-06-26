@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.FeedbackAggregate;
+    using Domain.FeedbackAggregate;
 
     /// <summary>
     /// Comparer for feedback objects.

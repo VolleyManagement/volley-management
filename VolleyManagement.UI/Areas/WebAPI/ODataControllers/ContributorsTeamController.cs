@@ -4,8 +4,8 @@
     using System.Web.Http;
     using System.Web.OData;
 
-    using VolleyManagement.Contracts;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.ContributorsTeam;
+    using Contracts;
+    using ViewModels.ContributorsTeam;
 
     /// <summary>
     /// The contributors team controller.
@@ -21,7 +21,7 @@
         /// <param name="contributorTeamService"> The contributors team service. </param>
         public ContributorsTeamController(IContributorTeamService contributorTeamService)
         {
-            this._contributorTeamService = contributorTeamService;
+            _contributorTeamService = contributorTeamService;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@
         [HttpGet]
         public IQueryable<ContributorsTeamViewModel> GetContributorsTeam()
         {
-            return this._contributorTeamService.Get()
+            return _contributorTeamService.Get()
                                 .ToList()
                                 .Select(c => ContributorsTeamViewModel.Map(c))
                                 .AsQueryable();

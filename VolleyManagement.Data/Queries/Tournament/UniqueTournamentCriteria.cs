@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.Tournament
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Search by name criterion

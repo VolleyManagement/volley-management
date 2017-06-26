@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
+    using UI.Areas.Mvc.ViewModels.Users;
 
     /// <summary>
     /// Builder for test MVC user view models

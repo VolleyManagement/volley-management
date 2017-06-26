@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using System.Web;
-    using VolleyManagement.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Represents an implementation of IFileService contract.

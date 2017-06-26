@@ -5,7 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
+    using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
     /// Represents an equality comparer for <see cref="PivotTeamStandingsViewModel"/> objects.

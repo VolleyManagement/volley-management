@@ -1,8 +1,8 @@
-﻿using System.Web.Mvc;
-using System.Web.Routing;
-
-namespace VolleyManagement.UI
+﻿namespace VolleyManagement.UI
 {
+    using System.Web.Mvc;
+    using System.Web.Routing;
+
     /// <summary>
     /// The route config.
     /// </summary>

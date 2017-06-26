@@ -6,9 +6,9 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
+    using UI.Areas.Mvc.ViewModels.GameReports;
 
     [ExcludeFromCodeCoverage]
     internal class ShortGameResultDtoTetsFixture

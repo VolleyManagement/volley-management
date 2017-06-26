@@ -2,8 +2,8 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Domain.FeedbackAggregate;
+    using Crosscutting.Contracts.Providers;
+    using Domain.FeedbackAggregate;
 
     /// <summary>
     /// Represents a builder of <see cref="Feedback"/> objects for unit

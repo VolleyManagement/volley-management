@@ -3,15 +3,15 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Contracts;
+    using Domain.ContributorsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.ContributorService;
+    using Services.ContributorService;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.ContributorsTeam;
+    using ViewModels;
 
     /// <summary>
     /// Tests for MVC ContributorTeamController class.

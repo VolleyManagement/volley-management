@@ -48,7 +48,7 @@
         public byte AwaySetsScore { get; set; }
 
         /// <summary>
-        /// Gets or set a value indicating whether the technical defeat has taken place.
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
 
@@ -118,7 +118,7 @@
         public byte GameNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets whether it is allowed to edit game's result (for Playoff scheme)
+        /// Gets or sets a value indicating whether it is allowed to edit game's result (for Playoff scheme)
         /// </summary>
         public bool AllowEditResult { get; set; }
     }

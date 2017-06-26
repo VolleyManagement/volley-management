@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using Domain.PlayersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.UnitTests.Services.PlayerService;
+    using Services.PlayerService;
 
     /// <summary>
     /// View model player class test

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
 {
     using System.Collections.Generic;
-    using VolleyManagement.Contracts.Authorization;
+    using Contracts.Authorization;
 
     /// <summary>
     /// Represents team collections

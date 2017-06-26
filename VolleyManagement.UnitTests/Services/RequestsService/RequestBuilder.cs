@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.RequestsService
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.RequestsAggregate;
+    using Domain.RequestsAggregate;
 
     /// <summary>
     /// Request domain object builder

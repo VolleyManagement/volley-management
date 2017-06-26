@@ -1,13 +1,12 @@
 ﻿namespace VolleyManagement.UI.Infrastructure
 {
     using System;
+    using Contracts;
+    using Contracts.Authorization;
     using Ninject.Activation;
     using Ninject.Infrastructure;
     using Ninject.Modules;
-
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Services;
+    using Services;
 
     /// <summary>
     /// Defines bindings for UI layer
@@ -22,7 +21,7 @@
         /// <param name="scopeCallback"> The scope callback. </param>
         public NinjectUIModule(Func<IContext, object> scopeCallback)
         {
-            this._scopeCallback = scopeCallback;
+            _scopeCallback = scopeCallback;
         }
 
         /// <summary>

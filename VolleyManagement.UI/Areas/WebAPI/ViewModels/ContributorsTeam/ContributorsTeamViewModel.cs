@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.ContributorsAggregate;
+    using Domain;
+    using Domain.ContributorsAggregate;
     using Resources;
 
     /// <summary>

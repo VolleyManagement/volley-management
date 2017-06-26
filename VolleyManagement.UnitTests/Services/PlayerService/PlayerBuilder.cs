@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.PlayerService
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.PlayersAggregate;
+    using Domain.PlayersAggregate;
 
     /// <summary>
     /// Player domain object builder

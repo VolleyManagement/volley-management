@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
     using System;
-    using VolleyManagement.Domain.Properties;
+    using Properties;
 
     /// <summary>
     /// Group domain class.
@@ -22,7 +22,7 @@
         {
             get
             {
-                return this._name;
+                return _name;
             }
 
             set
@@ -32,7 +32,7 @@
                     throw new ArgumentException(Resources.ValidationGroupName, "Name");
                 }
 
-                this._name = value;
+                _name = value;
             }
         }
 

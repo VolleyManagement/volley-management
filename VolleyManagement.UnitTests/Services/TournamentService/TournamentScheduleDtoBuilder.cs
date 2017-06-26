@@ -2,7 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Domain.TournamentsAggregate;
 
     public class TournamentScheduleDtoBuilder
     {

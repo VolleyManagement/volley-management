@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Domain;
+    using Domain.GamesAggregate;
 
     /// <summary>
     /// GameViewModel class.

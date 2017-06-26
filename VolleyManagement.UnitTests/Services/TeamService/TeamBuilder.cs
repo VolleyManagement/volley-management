@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Domain.TeamsAggregate;
 
     /// <summary>
     /// Team domain object builder

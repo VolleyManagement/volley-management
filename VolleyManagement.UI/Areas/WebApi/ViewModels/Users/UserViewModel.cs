@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// TournamentViewModel class.
@@ -78,10 +78,10 @@
         {
             return new User
             {
-                Id = this.Id,
-                UserName = this.UserName,
-                PhoneNumber = this.CellPhone,
-                Email = this.Email
+                Id = Id,
+                UserName = UserName,
+                PhoneNumber = CellPhone,
+                Email = Email
             };
         }
 

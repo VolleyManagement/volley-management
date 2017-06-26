@@ -1,14 +1,16 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Optimization;
-using System.Web.Routing;
-using VolleyManagement.UI.Helpers;
-
-namespace VolleyManagement.UI
+﻿namespace VolleyManagement.UI
 {
+    using System;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Web.Http;
+    using System.Web.Mvc;
+    using System.Web.Optimization;
+    using System.Web.Routing;
+    using VolleyManagement.UI.Helpers;
+
+#pragma warning disable SA1649 // File name must match first type name
     public class VolleyManagementApplication : System.Web.HttpApplication
+#pragma warning restore SA1649 // File name must match first type name
     {
         /// <summary>
         /// Fix problem Entity framework
@@ -26,7 +28,9 @@ namespace VolleyManagement.UI
         /// <summary>
         /// The application start.
         /// </summary>
-        [SuppressMessage("StyleCopPlus.StyleCopPlusRules", "SP0100:AdvancedNamingRules",
+        [SuppressMessage(
+            "StyleCopPlus.StyleCopPlusRules",
+            "SP0100:AdvancedNamingRules",
             Justification = "Sergii Diachenko: This is specific naming convention.")]
         protected void Application_Start()
         {

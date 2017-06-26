@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Controllers
 {
     using System.Web.Mvc;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Contracts.Authorization;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// Main view in Admin part of Volley Management web-site
@@ -18,7 +18,7 @@
         /// <param name="authService">Authorization service</param>
         public DashboardController(IAuthorizationService authService)
         {
-            this._authService = authService;
+            _authService = authService;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@
         /// <returns>Action result</returns>
         public ActionResult Index()
         {
-            this._authService.CheckAccess(AuthOperations.AdminDashboard.View);
+            _authService.CheckAccess(AuthOperations.AdminDashboard.View);
 
             return View();
         }

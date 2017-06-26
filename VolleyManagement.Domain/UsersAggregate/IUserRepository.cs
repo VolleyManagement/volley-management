@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Domain.UsersAggregate
 {
-    using VolleyManagement.Data.Contracts;
+    using Data.Contracts;
 
     /// <summary>
     /// Defines specific contract for UserRepository

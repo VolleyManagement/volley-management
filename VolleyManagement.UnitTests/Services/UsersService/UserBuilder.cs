@@ -3,10 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Contracts.Authentication.Models;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Contracts.Authentication.Models;
+    using Domain.PlayersAggregate;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// Builder for test users

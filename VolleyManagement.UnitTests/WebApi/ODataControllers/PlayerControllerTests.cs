@@ -8,16 +8,16 @@
     using System.Net;
     using System.Web.Http.Results;
     using System.Web.OData.Results;
+    using Contracts;
+    using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.UI.Areas.WebApi.ODataControllers;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
-    using VolleyManagement.UnitTests.Services.PlayerService;
-    using VolleyManagement.UnitTests.WebApi.ViewModels;
+    using Services.PlayerService;
+    using UI.Areas.WebApi.ODataControllers;
+    using UI.Areas.WebApi.ViewModels.Players;
+    using ViewModels;
 
     /// <summary>
     /// Tests for PlayerController class.

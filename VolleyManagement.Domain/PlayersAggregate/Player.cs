@@ -2,7 +2,7 @@
 {
     using System;
 
-    using VolleyManagement.Domain.Properties;
+    using Properties;
 
     /// <summary>
     /// Player domain class.
@@ -29,7 +29,7 @@
         {
             get
             {
-                return this._firstName;
+                return _firstName;
             }
 
             set
@@ -39,7 +39,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerFirstName, "FirstName");
                 }
 
-                this._firstName = value;
+                _firstName = value;
             }
         }
 
@@ -51,7 +51,7 @@
         {
             get
             {
-                return this._lastName;
+                return _lastName;
             }
 
             set
@@ -61,7 +61,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerLastName, "LastName");
                 }
 
-                this._lastName = value;
+                _lastName = value;
             }
         }
 
@@ -73,7 +73,7 @@
         {
             get
             {
-                return this._birthYear;
+                return _birthYear;
             }
 
             set
@@ -83,7 +83,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerBirthYear, "BirthYear");
                 }
 
-                this._birthYear = value;
+                _birthYear = value;
             }
         }
 
@@ -95,7 +95,7 @@
         {
             get
             {
-                return this._height;
+                return _height;
             }
 
             set
@@ -105,7 +105,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerHeight, "Height");
                 }
 
-                this._height = value;
+                _height = value;
             }
         }
 
@@ -117,7 +117,7 @@
         {
             get
             {
-                return this._weight;
+                return _weight;
             }
 
             set
@@ -127,7 +127,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerWeight, "Weight");
                 }
 
-                this._weight = value;
+                _weight = value;
             }
         }
 

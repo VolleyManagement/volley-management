@@ -5,15 +5,15 @@
     using System.Linq;
     using System.Web.Http.Results;
     using System.Web.OData.Results;
+    using Contracts;
+    using Domain.TeamsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.UI.Areas.WebApi.ODataControllers;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
-    using VolleyManagement.UnitTests.Services.TeamService;
-    using VolleyManagement.UnitTests.WebApi.ViewModels;
+    using Services.TeamService;
+    using UI.Areas.WebApi.ODataControllers;
+    using UI.Areas.WebApi.ViewModels.Teams;
+    using ViewModels;
 
     /// <summary>
     /// Tests for TeamController class.

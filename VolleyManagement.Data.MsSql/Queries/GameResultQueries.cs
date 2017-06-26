@@ -5,11 +5,11 @@
     using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.GameResult;
+    using Domain.GamesAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides implementation of game result queries.

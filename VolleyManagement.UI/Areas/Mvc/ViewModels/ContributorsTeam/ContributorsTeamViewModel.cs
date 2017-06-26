@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.ContributorsAggregate;
+    using Domain;
+    using Domain.ContributorsAggregate;
     using Resources;
 
     /// <summary>
@@ -59,10 +59,10 @@
         {
             return new ContributorTeam
             {
-                Id = this.Id,
-                Name = this.Name,
-                CourseDirection = this.CourseDirection,
-                Contributors = this.Contributors
+                Id = Id,
+                Name = Name,
+                CourseDirection = CourseDirection,
+                Contributors = Contributors
             };
         }
         #endregion

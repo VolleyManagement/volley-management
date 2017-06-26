@@ -4,7 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for tournament objects.

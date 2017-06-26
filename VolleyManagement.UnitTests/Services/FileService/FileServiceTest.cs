@@ -3,10 +3,10 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
     using VolleyManagement.Services;
 
     [ExcludeFromCodeCoverage]

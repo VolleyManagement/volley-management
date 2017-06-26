@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Domain.UsersAggregate
 {
     using System.Collections.Generic;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
+    using PlayersAggregate;
+    using RolesAggregate;
 
     /// <summary>
     /// Represents User of the Volley Management system

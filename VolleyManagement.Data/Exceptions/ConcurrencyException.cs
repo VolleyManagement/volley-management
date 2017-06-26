@@ -6,6 +6,7 @@
     /// Notifies that update operation has failed
     /// because corresponding record in DB has changed from last known state
     /// </summary>
+    [Serializable]
     public class ConcurrencyException : Exception
     {
         /// <summary>

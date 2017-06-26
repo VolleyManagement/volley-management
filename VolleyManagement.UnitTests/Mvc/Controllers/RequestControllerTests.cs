@@ -2,17 +2,17 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Web.Mvc;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
+    using Domain.UsersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.Areas.Admin.Controllers;
-    using VolleyManagement.UnitTests.Services.PlayerService;
-    using VolleyManagement.UnitTests.Services.UsersService;
+    using Services.PlayerService;
+    using Services.UsersService;
+    using UI.Areas.Admin.Controllers;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

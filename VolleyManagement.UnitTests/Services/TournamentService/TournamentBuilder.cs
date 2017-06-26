@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Crosscutting.Contracts.Providers;
+    using Domain.TournamentsAggregate;
 
     /// <summary>
     /// Builder for test tournaments

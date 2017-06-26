@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel
 {
     using System.ComponentModel.DataAnnotations;
-    using Resources.UI;
     using Domain.FeedbackAggregate;
+    using Resources.UI;
 
     /// <summary>
     /// Represents a view model for <see cref="FeedbackViewModel"/>.
@@ -18,9 +18,11 @@
         /// Gets or sets users Email.
         /// </summary>
         [Display(Name = "UserEmail", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired",
+        [Required(
+            ErrorMessageResourceName = "FieldRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [EmailAddress(ErrorMessageResourceName = "InvalidEmail",
+        [EmailAddress(
+            ErrorMessageResourceName = "InvalidEmail",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(80)]
         public string UsersEmail { get; set; }
@@ -29,14 +31,15 @@
         /// Gets or sets feedback content.
         /// </summary>
         [Display(Name = "FeedbackContent", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired",
+        [Required(
+            ErrorMessageResourceName = "FieldRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(5000)]
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
 
         /// <summary>
-        /// Environment (browser  and operating system) of user's computer.
+        /// Gets or sets environment (browser  and operating system) of user's computer.
         /// </summary>
         [Display(Name = "User's computer Environment")]
         [StringLength(320)]
@@ -47,12 +50,12 @@
         /// Gets or sets data site key
         /// </summary>
         public string ReCapthaKey { get; set; }
-        
+
         /// <summary>
         /// Gets or sets Captcha response.
         /// </summary>
         public string CaptchaResponse { get; set; }
-        
+
         #region Factory Methods
 
         /// <summary>
@@ -63,10 +66,10 @@
         {
             return new Feedback
             {
-                Id = this.Id,
-                UsersEmail = this.UsersEmail,
-                Content = this.Content,
-                UserEnvironment = this.UserEnvironment
+                Id = Id,
+                UsersEmail = UsersEmail,
+                Content = Content,
+                UserEnvironment = UserEnvironment
             };
         }
 

@@ -2,16 +2,16 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using Contracts;
+    using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Ninject;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.Controllers;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
-    using VolleyManagement.UnitTests.Services.GameReportService;
-    using VolleyManagement.UnitTests.Services.TournamentService;
+    using Services.GameReportService;
+    using Services.TournamentService;
+    using UI.Areas.Mvc.Controllers;
+    using UI.Areas.Mvc.ViewModels.GameReports;
+    using ViewModels;
 
     /// <summary>
     /// Tests for <see cref="GameReportsController"/> class.

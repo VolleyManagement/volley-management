@@ -4,12 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.Team;
+    using Domain.PlayersAggregate;
+    using Domain.TeamsAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides Query Object implementation for Player entity

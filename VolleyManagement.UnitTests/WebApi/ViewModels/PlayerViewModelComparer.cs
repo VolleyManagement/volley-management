@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
+    using UI.Areas.WebApi.ViewModels.Players;
 
     /// <summary>
     /// Comparer for player objects.

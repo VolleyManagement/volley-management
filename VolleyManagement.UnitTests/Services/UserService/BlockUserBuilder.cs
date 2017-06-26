@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.UserService
 {
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.UsersAggregate;
 
     internal class BlockUserBuilder
     {

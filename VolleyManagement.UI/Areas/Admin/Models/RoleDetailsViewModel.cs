@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using VolleyManagement.Domain.RolesAggregate;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// The role details view model.

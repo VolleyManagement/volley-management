@@ -9,18 +9,15 @@ namespace VolleyManagement.UI
     using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
-
+    using Data.MsSql.Infrastructure;
+    using Infrastructure;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
     using Ninject;
     using Ninject.Activation;
     using Ninject.Web.Common;
     using Ninject.Web.Mvc.FilterBindingSyntax;
     using Ninject.Web.WebApi;
-
-    using VolleyManagement.Data.MsSql.Infrastructure;
-    using VolleyManagement.Services.Infrastructure;
-    using VolleyManagement.UI.Infrastructure;
+    using Services.Infrastructure;
 
     /// <summary>
     /// Provides IoC for ASP.NET MVC

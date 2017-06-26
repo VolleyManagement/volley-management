@@ -1,9 +1,8 @@
-﻿namespace VolleyManagement.UI
+﻿using System.Web.Mvc;
+using VolleyManagement.UI.Infrastructure;
+
+namespace VolleyManagement.UI
 {
-    using System.Web.Mvc;
-
-    using VolleyManagement.UI.Infrastructure;
-
     /// <summary>
     /// Filter configuration for ASP.NET application
     /// </summary>

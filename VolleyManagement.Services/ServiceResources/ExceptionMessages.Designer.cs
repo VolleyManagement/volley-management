@@ -10,7 +10,8 @@
 
 namespace VolleyManagement.Services.ServiceResources {
     using System;
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -30,7 +31,7 @@ namespace VolleyManagement.Services.ServiceResources {
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal ExceptionMessages() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -44,7 +45,7 @@ namespace VolleyManagement.Services.ServiceResources {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -60,7 +61,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Дивизионы не могут иметь одинаковые названия.
+        ///   Looks up a localized string similar to Дивизионы не могут иметь одинаковые названия.
         /// </summary>
         internal static string DivisionsAreNotUniq {
             get {
@@ -69,7 +70,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Список дивизионов пуст.
+        ///   Looks up a localized string similar to Список дивизионов пуст.
         /// </summary>
         internal static string DivisionsListIsEmpty {
             get {
@@ -78,7 +79,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to A feedback with specified identifier was not found.
+        ///   Looks up a localized string similar to A feedback with specified identifier was not found.
         /// </summary>
         internal static string FeedbackNotFound {
             get {
@@ -87,7 +88,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Игра с указаным идентификатором не была найдена.
+        ///   Looks up a localized string similar to Игра с указаным идентификатором не была найдена.
         /// </summary>
         internal static string GameNotFound {
             get {
@@ -96,7 +97,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to You are not authorized.Please login again..
+        ///   Looks up a localized string similar to You are not authorized.Please login again..
         /// </summary>
         internal static string NotAuthorized {
             get {
@@ -105,7 +106,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Количество дивизионов в турнире должно быть между {0} и {1}.
+        ///   Looks up a localized string similar to Количество дивизионов в турнире должно быть между {0} и {1}.
         /// </summary>
         internal static string OutOfDivisionsCountRange {
             get {
@@ -114,7 +115,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Игрок является капитаном другой команды.
+        ///   Looks up a localized string similar to Игрок является капитаном другой команды.
         /// </summary>
         internal static string PlayerIsCaptainOfAnotherTeam {
             get {
@@ -123,7 +124,7 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to Игрок с указанным идентификатором не был найден.
+        ///   Looks up a localized string similar to Игрок с указанным идентификатором не был найден.
         /// </summary>
         internal static string PlayerNotFound {
             get {
@@ -150,25 +151,23 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///    Looks up a localized string similar to A team with specified identifier was not found.
+        ///   Looks up a localized string similar to A team with specified identifier was not found.
         /// </summary>
         internal static string TeamNotFound {
             get {
                 return ResourceManager.GetString("TeamNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///    Looks up a localized string similar to A tournament request with specified identifier was not found.
+        ///   Looks up a localized string similar to A tournament request with specified identifier was not found.
         /// </summary>
-        internal static string TournamentRequestNotFound
-        {
-            get
-            {
+        internal static string TournamentRequestNotFound {
+            get {
                 return ResourceManager.GetString("TournamentRequestNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to A user with specified identifier was not found.
         /// </summary>

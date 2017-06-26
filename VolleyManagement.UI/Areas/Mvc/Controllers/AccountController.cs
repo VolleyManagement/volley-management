@@ -55,7 +55,7 @@
         {
             get
             {
-                return Convert.ToInt32(User.Identity.GetUserId());
+                return _currentUserService.GetCurrentUserId();
             }
         }
 

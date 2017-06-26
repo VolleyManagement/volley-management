@@ -6,7 +6,11 @@
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
+    using VolleyManagement.Crosscutting.IOC;
+    using VolleyManagement.Data.MsSql.Infrastructure;
+    using VolleyManagement.Services.Infrastructure;
     using VolleyManagement.UI.Helpers;
+    using VolleyManagement.UI.Infrastructure;
 
 #pragma warning disable SA1649 // File name must match first type name
     public class VolleyManagementApplication : System.Web.HttpApplication
@@ -41,6 +45,17 @@
             AreaConfig.RegisterAllAreas();
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateTimeModelBinder());
+
+            var ioc = new IOCContainer();
+
+            ioc
+                .Register(new IOCDataAccessModule())
+                .Register(new IOCServicesModule())
+                .Register(new IOCUIModule());
+
+            DependencyResolver.SetResolver(ioc.GetResolver());
+
+            // GlobalConfiguration.Configuration.DependencyResolver = ioc.GetResolver();
         }
     }
 }

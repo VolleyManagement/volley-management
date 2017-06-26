@@ -66,7 +66,7 @@
             {
                 if ((x.Roster != null && y.Roster == null)
                     || (x.Roster == null && y.Roster != null)
-                    || (x.Roster.Count != y.Roster.Count))
+                    || x.Roster.Count != y.Roster.Count)
                 {
                     result = false;
                 }

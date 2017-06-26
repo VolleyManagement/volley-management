@@ -4,24 +4,23 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Contracts;
-    using Contracts.Authorization;
-    using Contracts.Exceptions;
-    using Crosscutting.Contracts.Providers;
-    using Data.Contracts;
-    using Data.Exceptions;
-    using Data.Queries.Common;
-    using Data.Queries.GameResult;
-    using Data.Queries.Tournament;
-    using Domain.GamesAggregate;
-    using Domain.RolesAggregate;
-    using Domain.TournamentsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Mvc.ViewModels;
-    using Ninject;
-    using TournamentService;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Crosscutting.Contracts.Providers;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.GameResult;
+    using VolleyManagement.Data.Queries.Tournament;
+    using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Tests for <see cref="GameService"/> class.
@@ -33,70 +32,41 @@
         #region Fields and constants
 
         private const int GAME_RESULT_ID = 1;
-
         private const int TOURNAMENT_ID = 1;
-
         private const string TOURNAMENT_DATE_START = "2016-04-02 10:00";
-
         private const string TOURNAMENT_DATE_END = "2016-04-04 10:00";
-
         private const string BEFORE_TOURNAMENT_DATE = "2016-04-02 07:00";
-
         private const string LATE_TOURNAMENT_DATE = "2016-04-06 10:00";
 
         private const double ONE_DAY = 1;
 
         private const int TEST_HOME_SET_SCORS = 3;
-
         private const int TEST_AWAY_SET_SCORS = 2;
 
         private const byte FIRST_ROUND_NUMBER = 1;
-
         private const byte SECOND_ROUND_NUMBER = 2;
 
         private const int SPECIFIC_GAME_ID = 2;
-
         private const int ANOTHER_GAME_ID = SPECIFIC_GAME_ID + 1;
-
-        private readonly Mock<IGameRepository> _gameRepositoryMock = new Mock<IGameRepository>();
-
-        private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
-
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-
-        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
-
-        private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
-
-        private readonly Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock
-            = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock
-            = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
-
-        private readonly Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>> _gamesByTournamentIdRoundsNumberQueryMock
-            = new Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>();
-
-        private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock
-            = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
-
-        private readonly Mock<IQuery<Tournament, FindByIdCriteria>> _tournamentByIdQueryMock
-           = new Mock<IQuery<Tournament, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<List<Game>, GamesByRoundCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock
-           = new Mock<IQuery<List<Game>, GamesByRoundCriteria>>();
-
-        private readonly Mock<IQuery<Game, GameByNumberCriteria>> _gameNumberByTournamentIdQueryMock
-           = new Mock<IQuery<Game, GameByNumberCriteria>>();
-
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private readonly string _wrongRoundDate
             = "Start of the round should not be earlier than the start of the tournament or later than the end of the tournament";
 
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
-        private IKernel _kernel;
+        private Mock<IGameRepository> _gameRepositoryMock;
+        private Mock<IGameService> _gameServiceMock;
+        private Mock<IAuthorizationService> _authServiceMock;
+        private Mock<ITournamentService> _tournamentServiceMock;
+        private Mock<ITournamentRepository> _tournamentRepositoryMock;
+        private Mock<IQuery<GameResultDto, FindByIdCriteria>> _getByIdQueryMock;
+        private Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock;
+        private Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>> _gamesByTournamentIdRoundsNumberQueryMock;
+        private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock;
+        private Mock<IQuery<Tournament, FindByIdCriteria>> _tournamentByIdQueryMock;
+        private Mock<IQuery<List<Game>, GamesByRoundCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock;
+        private Mock<IQuery<Game, GameByNumberCriteria>> _gameNumberByTournamentIdQueryMock;
+        private Mock<IUnitOfWork> _unitOfWorkMock;
 
         #endregion
 
@@ -108,26 +78,20 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IGameRepository>().ToConstant(_gameRepositoryMock.Object);
-            _kernel.Bind<ITournamentRepository>().ToConstant(_tournamentRepositoryMock.Object);
-            _kernel.Bind<IQuery<GameResultDto, FindByIdCriteria>>()
-                .ToConstant(_getByIdQueryMock.Object);
-            _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
-                .ToConstant(_tournamentGameResultsQueryMock.Object);
-            _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>()
-                .ToConstant(_tournamentScheduleDtoByIdQueryMock.Object);
-            _kernel.Bind<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>()
-                .ToConstant(_gamesByTournamentIdRoundsNumberQueryMock.Object);
-            _kernel.Bind<IQuery<List<Game>, GamesByRoundCriteria>>()
-                .ToConstant(_gamesByTournamentIdInRoundsByNumbersQueryMock.Object);
-            _kernel.Bind<IQuery<Game, GameByNumberCriteria>>()
-               .ToConstant(_gameNumberByTournamentIdQueryMock.Object);
-            _kernel.Bind<IQuery<Tournament, FindByIdCriteria>>()
-               .ToConstant(_tournamentByIdQueryMock.Object);
-            _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
-            _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
-            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
+            _gameRepositoryMock = new Mock<IGameRepository>();
+            _gameServiceMock = new Mock<IGameService>();
+            _authServiceMock = new Mock<IAuthorizationService>();
+            _tournamentServiceMock = new Mock<ITournamentService>();
+            _tournamentRepositoryMock = new Mock<ITournamentRepository>();
+            _getByIdQueryMock = new Mock<IQuery<GameResultDto, FindByIdCriteria>>();
+            _tournamentGameResultsQueryMock = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
+            _gamesByTournamentIdRoundsNumberQueryMock = new Mock<IQuery<List<Game>, TournamentRoundsGameResultsCriteria>>();
+            _tournamentScheduleDtoByIdQueryMock = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
+            _tournamentByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
+            _gamesByTournamentIdInRoundsByNumbersQueryMock = new Mock<IQuery<List<Game>, GamesByRoundCriteria>>();
+            _gameNumberByTournamentIdQueryMock = new Mock<IQuery<Game, GameByNumberCriteria>>();
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
@@ -148,7 +112,7 @@
             MockDefaultTournament();
             MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
@@ -170,7 +134,7 @@
             _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
 
             var newGame = new GameBuilder().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
@@ -189,7 +153,7 @@
 
             // Arrange
             var newGame = null as Game;
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -215,10 +179,11 @@
 
             // Arrange
             var newGame = new GameBuilder().WithTheSameTeams().Build();
-            var sut = _kernel.Get<GameService>();
 
             _tournamentScheduleDtoByIdQueryMock.Setup(m => m.Execute(It.IsAny<TournamentScheduleInfoCriteria>()))
                 .Returns(new TournamentScheduleDto());
+
+            var sut = BuildSUT();
 
             // Act
             try
@@ -246,7 +211,8 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithInvalidSetsScore().Build();
-            var sut = _kernel.Get<GameService>();
+
+            var sut = BuildSUT();
 
             // Act
             try
@@ -274,7 +240,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithSetsScoreNoMatchSetScores().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -301,7 +267,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithInvalidRequiredSetScores().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -328,7 +294,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithInvalidOptionalSetScores().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -355,7 +321,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithPreviousOptionalSetUnplayed().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -382,7 +348,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithSetScoresUnorderedForHomeTeam().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -409,7 +375,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithSetScoresUnorderedForAwayTeam().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -435,7 +401,7 @@
             MockDefaultTournament();
             MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
@@ -457,7 +423,8 @@
                 .WithTechnicalDefeatValidSetScoresAwayTeamWin()
                 .WithTournamentId(1)
                 .Build();
-            var sut = _kernel.Get<GameService>();
+
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
@@ -477,7 +444,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetsScore().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -504,7 +471,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatInvalidSetScores().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -531,7 +498,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithTechnicalDefeatValidOptional().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -558,7 +525,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithSetScoresNull().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -585,7 +552,7 @@
             MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().WithHomeTeamId(null).Build();
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
@@ -606,7 +573,7 @@
             // Arrange
             MockDefaultTournament();
             var newGame = new GameBuilder().WithOrdinarySetsScoreInvalid().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -638,10 +605,11 @@
             var newGame = new GameBuilder()
                 .WithNullResult()
                 .Build();
-            var sut = _kernel.Get<GameService>();
             var expectedGameToCreate = new GameBuilder()
                 .WithDefaultResult()
                 .Build();
+
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
@@ -666,7 +634,7 @@
                 .WithStartDate(DateTime.Parse(BEFORE_TOURNAMENT_DATE))
                 .Build();
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -703,7 +671,7 @@
 
             SetupGetTournamentDto(new TournamentScheduleDto());
             SetupGetTournamentResults(tournament.Id, new GameServiceTestFixture().TestGameResults().Build());
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(game);
@@ -727,7 +695,7 @@
                 .WithNoStartDate()
                 .Build();
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -763,7 +731,7 @@
             SetupGetTournamentDto(new TournamentScheduleDtoBuilder().WithScheme(TournamentSchemeEnum.One).Build());
             SetupGetTournamentResults(1, gameResults);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -796,7 +764,7 @@
             SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
             SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -832,7 +800,7 @@
             SetupGetTournamentDto(new TournamentScheduleDto());
             SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
             sut.Create(gameInOneRound);
 
             // Act
@@ -863,11 +831,11 @@
                 .WithRound(2)
                 .Build();
 
-            var sut = _kernel.Get<GameService>();
-
             SetupGetTournamentResults(
                 gameInOtherRound.TournamentId,
                 new GameServiceTestFixture().TestGamesForDuplicateSchemeOne().Build());
+
+            var sut = BuildSUT();
 
             // Act
             try
@@ -897,11 +865,11 @@
                 .WithRound(2)
                 .Build();
 
-            var sut = _kernel.Get<GameService>();
-
             SetupGetTournamentResults(
                gameInOtherRound.TournamentId,
                new GameServiceTestFixture().TestGamesForDuplicateSchemeOne().Build());
+
+            var sut = BuildSUT();
 
             // Act
             try
@@ -934,7 +902,8 @@
             SetupGetTournamentResults(
               duplicate.TournamentId,
               new GameServiceTestFixture().TestGamesForDuplicateSchemeTwo().Build());
-            var sut = _kernel.Get<GameService>();
+
+            var sut = BuildSUT();
 
             // Act
             try
@@ -966,7 +935,8 @@
             SetupGetTournamentResults(
              duplicate.TournamentId,
              new GameServiceTestFixture().TestGamesForDuplicateSchemeTwo().Build());
-            var sut = _kernel.Get<GameService>();
+
+            var sut = BuildSUT();
 
             // Act
             sut.Create(duplicate);
@@ -997,7 +967,7 @@
                        duplicate.TournamentId,
                        gameResults);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1035,7 +1005,7 @@
                 freeDayGameDuplicate.TournamentId,
                 gameResults);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1073,7 +1043,7 @@
                 freeDayGmeInSameRound.TournamentId,
                 gameResults);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1110,7 +1080,7 @@
                 freeDayGmeInSameRound.TournamentId,
                 gameResults);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1147,7 +1117,7 @@
              freeDayGmeInSameRound.TournamentId,
              gameResults);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1185,7 +1155,7 @@
                 freeDayGameInSameRound.TournamentId,
                 gameResults);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1223,7 +1193,7 @@
                 freeDayGmeInSameRound.TournamentId,
                 gameResults);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1249,7 +1219,7 @@
             Exception exception = null;
             MockDefaultTournament();
             var newGame = new GameBuilder().WithFifthSetScoreAsUsualSetScore().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1275,7 +1245,7 @@
             MockDefaultTournament();
             MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().WithFifthSetScoreMoreThanMaxWithValidDifference().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
@@ -1294,7 +1264,7 @@
             Exception exception = null;
             MockDefaultTournament();
             var newGame = new GameBuilder().WithFifthSetScoreMoreThanMaxWithInvalidDifference().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1320,7 +1290,7 @@
             Exception exception = null;
             MockDefaultTournament();
             var newGame = new GameBuilder().WithFifthSetScoreLessThanMax().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1346,7 +1316,7 @@
             MockDefaultTournament();
             MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().WithFifthSetScoreValid().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
@@ -1366,9 +1336,10 @@
         {
             // Arrange
             var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
-            var sut = _kernel.Get<GameService>();
 
             SetupGet(expected);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.Get(GAME_RESULT_ID);
@@ -1388,12 +1359,13 @@
         {
             // Arrange
             var expected = new GameServiceTestFixture().TestGameResults().Build();
-            var sut = _kernel.Get<GameService>();
 
             SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
             SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
 
             SetupGetTournamentResults(TOURNAMENT_ID, expected);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetTournamentResults(TOURNAMENT_ID);
@@ -1418,8 +1390,10 @@
             _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
             var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
-            _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
-            var sut = _kernel.Get<GameService>();
+            _tournamentGameResultsQueryMock
+                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(game);
@@ -1441,8 +1415,10 @@
             _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
             var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
-            _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
-            var sut = _kernel.Get<GameService>();
+            _tournamentGameResultsQueryMock
+                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+
+            var sut = BuildSUT();
 
             // Act
             sut.EditGameResult(game);
@@ -1462,8 +1438,10 @@
             MockGetTournamentByIdQuery();
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
             var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
-            _tournamentGameResultsQueryMock.Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
-            var sut = _kernel.Get<GameService>();
+            _tournamentGameResultsQueryMock
+                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(game);
@@ -1483,7 +1461,7 @@
             // Arrange
             MockDefaultTournament();
             var game = new GameBuilder().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             SetupEditMissingEntityException(game);
 
@@ -1523,7 +1501,7 @@
 
             Game finishedGame = TestGameToEditInPlayoff();
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(finishedGame);
@@ -1563,7 +1541,7 @@
 
             Game finishedGame = TestGameToEditInPlayoff();
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(finishedGame);
@@ -1638,7 +1616,7 @@
                 })
                 .Build();
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(finishedGame);
@@ -1661,13 +1639,14 @@
         public void Delete_ExistingGame_GameDeleted()
         {
             // Arrange
-            var sut = _kernel.Get<GameService>();
             var now = TimeProvider.Current.UtcNow;
 
             var game = new GameResultDtoBuilder().WithDate(now.AddDays(ONE_DAY))
                     .WithAwaySetsScore(0).WithHomeSetsScore(0).Build();
 
             SetupGet(game);
+
+            var sut = BuildSUT();
 
             // Act
             sut.Delete(GAME_RESULT_ID);
@@ -1685,12 +1664,12 @@
         {
             // Arrange
             Exception exception = null;
-            var sut = _kernel.Get<GameService>();
             var now = TimeProvider.Current.UtcNow;
             var game = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
                                                  .WithDate(now.AddDays(-ONE_DAY)).Build();
 
             SetupGet(game);
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1715,12 +1694,12 @@
         {
             // Arrange
             Exception exception = null;
-            var sut = _kernel.Get<GameService>();
             var game = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
                                 .WithAwaySetsScore(TEST_AWAY_SET_SCORS)
                                 .WithHomeSetsScore(TEST_HOME_SET_SCORS).Build();
 
             SetupGet(game);
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1747,7 +1726,7 @@
 
             // Arrange
             int gameNullId = 0;
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1782,7 +1761,8 @@
             _gamesByTournamentIdRoundsNumberQueryMock
                 .Setup(m => m.Execute(It.IsAny<TournamentRoundsGameResultsCriteria>()))
                 .Returns(expectedGames);
-            var sut = _kernel.Get<GameService>();
+
+            var sut = BuildSUT();
 
             // Act
             sut.SwapRounds(TOURNAMENT_ID, FIRST_ROUND_NUMBER, SECOND_ROUND_NUMBER);
@@ -1811,7 +1791,7 @@
             _gamesByTournamentIdRoundsNumberQueryMock
                 .Setup(m => m.Execute(It.IsAny<TournamentRoundsGameResultsCriteria>()))
                 .Returns(games);
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -1843,7 +1823,7 @@
         {
             // Arrange
             var gamesToAdd = new GameTestFixture().TestGames().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.AddGames(gamesToAdd);
@@ -1860,7 +1840,7 @@
         {
             // Arrange
             var gamesToAdd = new GameTestFixture().Build();
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.AddGames(gamesToAdd);
@@ -1881,12 +1861,13 @@
         {
             // Arrange
             var gamesInTournament = new GameServiceTestFixture().TestGameResults().Build();
-            var sut = _kernel.Get<GameService>();
 
             SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
 
             SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
             SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
+
+            var sut = BuildSUT();
 
             // Act
             sut.RemoveAllGamesInTournament(TOURNAMENT_ID);
@@ -1903,10 +1884,11 @@
         {
             // Arrange
             var gamesInTournament = new GameServiceTestFixture().Build();
-            var sut = _kernel.Get<GameService>();
 
             SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
             SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
+
+            var sut = BuildSUT();
 
             // Act
             sut.RemoveAllGamesInTournament(TOURNAMENT_ID);
@@ -1931,7 +1913,7 @@
             var testData = new GameBuilder().WithId(SPECIFIC_GAME_ID).Build();
             MockAuthServiceThrowsExeption(AuthOperations.Games.Create);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(testData);
@@ -1953,7 +1935,7 @@
             var testData = new GameBuilder().WithId(SPECIFIC_GAME_ID).Build();
             MockAuthServiceThrowsExeption(AuthOperations.Games.Delete);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Delete(testData.Id);
@@ -1975,7 +1957,7 @@
             var testData = new GameBuilder().WithId(SPECIFIC_GAME_ID).Build();
             MockAuthServiceThrowsExeption(AuthOperations.Games.Edit);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(testData);
@@ -1997,7 +1979,7 @@
             var testData = new GameBuilder().WithId(SPECIFIC_GAME_ID).Build();
             MockAuthServiceThrowsExeption(AuthOperations.Games.EditResult);
 
-            var sut = _kernel.Get<GameService>();
+            var sut = BuildSUT();
 
             // Act
             sut.EditGameResult(testData);
@@ -2032,7 +2014,8 @@
             _gamesByTournamentIdRoundsNumberQueryMock
                 .Setup(m => m.Execute(It.IsAny<TournamentRoundsGameResultsCriteria>()))
                 .Returns(expectedGames);
-            var sut = _kernel.Get<GameService>();
+
+            var sut = BuildSUT();
 
             // Act
             sut.SwapRounds(TOURNAMENT_ID, FIRST_ROUND_NUMBER, SECOND_ROUND_NUMBER);
@@ -2044,6 +2027,21 @@
         #endregion
 
         #region Private
+
+        private GameService BuildSUT()
+        {
+            return new GameService(
+                _gameRepositoryMock.Object,
+                _getByIdQueryMock.Object,
+                _tournamentGameResultsQueryMock.Object,
+                _tournamentScheduleDtoByIdQueryMock.Object,
+                _gamesByTournamentIdRoundsNumberQueryMock.Object,
+                _authServiceMock.Object,
+                _gamesByTournamentIdInRoundsByNumbersQueryMock.Object,
+                _gameNumberByTournamentIdQueryMock.Object,
+                _tournamentByIdQueryMock.Object,
+                _tournamentRepositoryMock.Object);
+        }
 
         private void MockGetTournamentByIdQuery()
         {

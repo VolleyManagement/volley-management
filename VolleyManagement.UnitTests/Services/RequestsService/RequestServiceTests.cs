@@ -4,22 +4,22 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Contracts;
-    using Contracts.Authorization;
-    using Contracts.Exceptions;
-    using Data.Contracts;
-    using Data.Exceptions;
-    using Data.Queries.Common;
-    using Data.Queries.Player;
-    using Domain.RequestsAggregate;
-    using Domain.RolesAggregate;
-    using Domain.UsersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
-    using Ninject;
-    using UsersService;
+
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Exceptions;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Player;
+    using VolleyManagement.Domain.RequestsAggregate;
+    using VolleyManagement.Domain.RolesAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Services.UsersService;
 
     /// <summary>
     /// Tests for RequestService class.
@@ -37,26 +37,18 @@
         private const int INVALID_USER_ID = -1;
         private const int INVALID_PLAYER_ID = -1;
 
-        private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
-        private readonly RequestServiceTestFixture _testFixture = new RequestServiceTestFixture();
-        private readonly Mock<IRequestRepository> _requestRepositoryMock = new Mock<IRequestRepository>();
-        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-        private readonly Mock<IQuery<Request, FindByIdCriteria>> _getRequestByIdQueryMock =
-            new Mock<IQuery<Request, FindByIdCriteria>>();
+        private RequestServiceTestFixture _testFixture = new RequestServiceTestFixture();
 
-        private readonly Mock<IQuery<User, FindByIdCriteria>> _getUserByIdQueryMock =
-            new Mock<IQuery<User, FindByIdCriteria>>();
+        private Mock<IUserService> _userServiceMock;
+        private Mock<IRequestRepository> _requestRepositoryMock;
+        private Mock<IUserRepository> _userRepositoryMock;
+        private Mock<IAuthorizationService> _authServiceMock;
+        private Mock<IQuery<Request, FindByIdCriteria>> _getRequestByIdQueryMock;
+        private Mock<IQuery<User, FindByIdCriteria>> _getUserByIdQueryMock;
+        private Mock<IQuery<List<Request>, GetAllCriteria>> _getAllRequestsQueryMock;
+        private Mock<IQuery<Request, UserToPlayerCriteria>> _getRequestUserPlayerQueryMock;
 
-        private readonly Mock<IQuery<List<Request>, GetAllCriteria>> _getAllRequestsQueryMock =
-          new Mock<IQuery<List<Request>, GetAllCriteria>>();
-
-        private readonly Mock<IQuery<Request, UserToPlayerCriteria>> _getRequestUserPlayerQueryMock =
-            new Mock<IQuery<Request, UserToPlayerCriteria>>();
-
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
-
-        private IKernel _kernel;
+        private Mock<IUnitOfWork> _unitOfWorkMock;
 
         #endregion
 
@@ -68,14 +60,16 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IUserRepository>().ToConstant(_userRepositoryMock.Object);
-            _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
-            _kernel.Bind<IRequestRepository>().ToConstant(_requestRepositoryMock.Object);
-            _kernel.Bind<IQuery<Request, FindByIdCriteria>>().ToConstant(_getRequestByIdQueryMock.Object);
-            _kernel.Bind<IQuery<Request, UserToPlayerCriteria>>().ToConstant(_getRequestUserPlayerQueryMock.Object);
-            _kernel.Bind<IQuery<List<Request>, GetAllCriteria>>().ToConstant(_getAllRequestsQueryMock.Object);
-            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
+            _userServiceMock = new Mock<IUserService>();
+            _requestRepositoryMock = new Mock<IRequestRepository>();
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _authServiceMock = new Mock<IAuthorizationService>();
+            _getRequestByIdQueryMock = new Mock<IQuery<Request, FindByIdCriteria>>();
+            _getUserByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
+            _getAllRequestsQueryMock = new Mock<IQuery<List<Request>, GetAllCriteria>>();
+            _getRequestUserPlayerQueryMock = new Mock<IQuery<Request, UserToPlayerCriteria>>();
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+
             _requestRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _userRepositoryMock.Setup(pr => pr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
@@ -91,7 +85,7 @@
             MockGetAllRequestsQuery(expected);
 
             // Act
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
             var actual = sut.Get();
 
             // Assert
@@ -104,7 +98,7 @@
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.Requests.ViewList);
 
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<AuthorizationException>(() => sut.Get(), "Requested operation is not allowed");
@@ -117,7 +111,7 @@
             var expected = new RequestBuilder().WithId(EXISTING_ID).Build();
             MockGetRequestByIdQuery(expected);
 
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.Get(EXISTING_ID);
@@ -130,7 +124,7 @@
         public void Create_InvalidUserId_ExceptionThrown()
         {
             // Arrange
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<ArgumentException>(() => sut.Create(INVALID_REQUEST_ID, EXISTING_ID), "User's id is wrong");
@@ -140,7 +134,7 @@
         public void Create_InvalidPlayerId_ExceptionThrown()
         {
             // Arrange
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<ArgumentException>(() => sut.Create(EXISTING_USER_ID, INVALID_PLAYER_ID), "Player's id is wrong");
@@ -158,10 +152,10 @@
             _requestRepositoryMock.Setup(tr => tr.Add(It.IsAny<Request>()))
                .Callback<Request>(t => t.Id = EXISTING_ID);
 
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act
-           sut.Create(EXISTING_USER_ID, EXISTING_PLAYER_ID);
+            sut.Create(EXISTING_USER_ID, EXISTING_PLAYER_ID);
 
             // Assert
             VerifyCreateRequest(newRequest, Times.Once(), "Parameter request is not equal to Instance of request");
@@ -175,7 +169,7 @@
             var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Requests.Confirm);
 
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -199,7 +193,7 @@
             var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Requests.Confirm);
 
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<AuthorizationException>(() => sut.Confirm(EXISTING_ID), "Requested operation is not allowed");
@@ -209,7 +203,7 @@
         public void Confirm_RequestDoesNotExist_ExceptionThrown()
         {
             // Arrange
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<MissingEntityException>(
@@ -226,10 +220,10 @@
             MockGetRequestByIdQuery(expected);
             var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
             MockGetUserByIdQuery(EXISTING_ID, user);
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act
-             sut.Confirm(EXISTING_ID);
+            sut.Confirm(EXISTING_ID);
 
             // Assert
             VerifyEditUser(user, Times.Once());
@@ -243,7 +237,7 @@
             MockGetRequestByIdQuery(expected);
             var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
             MockGetUserByIdQuery(EXISTING_USER_ID, user);
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Confirm(EXISTING_ID);
@@ -259,7 +253,7 @@
             var expected = new RequestBuilder().WithId(EXISTING_ID).Build();
             MockGetRequestByIdQuery(expected);
             MockGetUserByIdQuery(INVALID_USER_ID, null);
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<MissingEntityException>(
@@ -275,7 +269,7 @@
             var user = new UserBuilder().WithId(EXISTING_USER_ID).Build();
             MockAuthServiceThrowsException(AuthOperations.Requests.Decline);
 
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<AuthorizationException>(() => sut.Decline(EXISTING_ID), "Requested operation is not allowed");
@@ -288,7 +282,7 @@
             Exception exception = null;
             MockAuthServiceThrowsException(AuthOperations.Requests.Decline);
 
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -309,7 +303,7 @@
         public void Decline_RequestExists_RequestDeleted()
         {
             // Arrange
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Decline(EXISTING_ID);
@@ -323,7 +317,7 @@
         {
             // Arrange
             MockRequestServiceThrowsInvalidKeyValueException();
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<MissingEntityException>(
@@ -338,7 +332,7 @@
             // Arrange
             MockRequestServiceThrowsInvalidKeyValueException();
             Exception exception = null;
-            var sut = _kernel.Get<RequestService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -356,6 +350,18 @@
         #endregion
 
         #region Private
+        private RequestService BuildSUT()
+        {
+            return new RequestService(
+                _requestRepositoryMock.Object,
+                _userRepositoryMock.Object,
+                _userServiceMock.Object,
+                _authServiceMock.Object,
+                _getRequestByIdQueryMock.Object,
+                _getAllRequestsQueryMock.Object,
+                _getRequestUserPlayerQueryMock.Object);
+        }
+
         private void MockGetAllRequestsQuery(IEnumerable<Request> testData)
         {
             _getAllRequestsQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());

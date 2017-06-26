@@ -2,36 +2,29 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Contracts;
-    using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
-    using Services.GameReportService;
-    using Services.TournamentService;
-    using UI.Areas.Mvc.Controllers;
-    using UI.Areas.Mvc.ViewModels.GameReports;
-    using ViewModels;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Domain.GameReportsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.GameReportService;
+    using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
     /// Tests for <see cref="GameReportsController"/> class.
     /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
-
     public class GameReportsControllerTests
     {
         private const int TOURNAMENT_ID = 1;
-
         private const int TOURNAMENT_PLAYOFF_ID = 4;
-
         private const string TOURNAMENT_NAME = "Name";
 
-        private readonly Mock<IGameReportService> _gameReportServiceMock = new Mock<IGameReportService>();
-
-        private readonly Mock<ITournamentService> _tournamentServiceMock = new Mock<ITournamentService>();
-
-        private IKernel _kernel;
+        private Mock<IGameReportService> _gameReportServiceMock;
+        private Mock<ITournamentService> _tournamentServiceMock;
 
         /// <summary>
         /// Initializes test data.
@@ -39,9 +32,8 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IGameReportService>().ToConstant(_gameReportServiceMock.Object);
-            _kernel.Bind<ITournamentService>().ToConstant(_tournamentServiceMock.Object);
+            _gameReportServiceMock = new Mock<IGameReportService>();
+            _tournamentServiceMock = new Mock<ITournamentService>();
         }
 
         /// <summary>
@@ -56,13 +48,14 @@
             var testPivotStandings = new PivotStandingsDto(teams, gameResults);
 
             var testStandings = new StandingsTestFixture().TestStandings().Build();
-            var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().Build();
 
             MockTournamentServiceReturnTournament();
             SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
@@ -79,10 +72,11 @@
         public void Standings_StandingsForPlayoffScheme_StandingsNotAvailableReturned()
         {
             // Arrange
-            var sut = _kernel.Get<GameReportsController>();
             var expected = new StandingsViewModelBuilder().WithStandingsNotAvailableMessage().Build();
 
             SetupIsStandingsAvailableFalse(TOURNAMENT_PLAYOFF_ID);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_PLAYOFF_ID, TOURNAMENT_NAME));
@@ -99,20 +93,28 @@
         public void Standings_StandingsWithTwoTeamsScoresCompletelyEqual_TeamsHaveSamePosition()
         {
             // Arrange
-            var teams = new TeamStandingsTestFixture().WithTeamStandingsTwoTeamsScoresCompletelyEqual().Build();
-            var gameResults = new ShortGameResultDtoTetsFixture().GetShortResultsForTwoTeamsScoresCompletelyEqual().Build();
+            var teams = new TeamStandingsTestFixture()
+                .WithTeamStandingsTwoTeamsScoresCompletelyEqual()
+                .Build();
+
+            var gameResults = new ShortGameResultDtoTetsFixture()
+                .GetShortResultsForTwoTeamsScoresCompletelyEqual()
+                .Build();
+
             var testPivotStandings = new PivotStandingsDto(teams, gameResults);
 
             var testStandings = new StandingsTestFixture()
                 .WithRepetitivePointsSetsRatioAndBallsRatio()
                 .Build();
-            var sut = _kernel.Get<GameReportsController>();
+
             var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
 
             MockTournamentServiceReturnTournament();
             SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
@@ -121,24 +123,33 @@
             TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
         }
 
+        private GameReportsController BuildSUT()
+        {
+            return new GameReportsController(_gameReportServiceMock.Object, _tournamentServiceMock.Object);
+        }
+
         private void SetupGameReportGetStandings(int tournamentId, List<StandingsEntry> testData)
         {
-            _gameReportServiceMock.Setup(m => m.GetStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
+            _gameReportServiceMock
+                .Setup(m => m.GetStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
         }
 
         private void SetupGameReportGetPivotStandings(int tournamentId, PivotStandingsDto testData)
         {
-            _gameReportServiceMock.Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
+            _gameReportServiceMock
+                .Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
         }
 
         private void SetupIsStandingsAvailableTrue(int tournamentId)
         {
-            _gameReportServiceMock.Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(true);
+            _gameReportServiceMock
+                .Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(true);
         }
 
         private void SetupIsStandingsAvailableFalse(int tournamentId)
         {
-            _gameReportServiceMock.Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(false);
+            _gameReportServiceMock
+                .Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(false);
         }
 
         private void MockTournamentServiceReturnTournament()

@@ -21,7 +21,6 @@
         /// <summary>
         /// Gets or sets the log.
         /// </summary>
-        //// [Inject]
         public ILog Log { get; set; }
 
         #endregion
@@ -69,13 +68,13 @@
         private ActionResult BuildJsonResult(ExceptionContext filterContext)
         {
             return new JsonResult
-                       {
-                           Data =
+            {
+                Data =
                                string.Format(
                                    "Unhandled exception occured. Message: {0}",
                                    filterContext.Exception.Message),
-                           JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                       };
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
         private ActionResult RedirectToErrorView(ExceptionContext filterContext)

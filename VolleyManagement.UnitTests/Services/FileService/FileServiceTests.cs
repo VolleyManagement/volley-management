@@ -3,34 +3,13 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Ninject;
     using VolleyManagement.Services;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
-    public class FileServiceTest
+    public class FileServiceTests
     {
-        #region Fields and constants
-
-        public const int MAX_FILE_SIZE = 1048576;
-
-        private readonly Mock<IFileService> _fileServiceMock
-            = new Mock<IFileService>();
-
-        private IKernel _kernel;
-
-        #endregion
-
-        [TestInitialize]
-        public void TestInit()
-        {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IFileService>().ToConstant(_fileServiceMock.Object);
-        }
-
         #region Delete
 
         [TestMethod]
@@ -38,7 +17,7 @@
         public void Delete_InvalidNullFile_FileNotFoundException()
         {
             // Arrange
-            var sut = _kernel.Get<FileService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Delete(null);
@@ -54,7 +33,7 @@
             bool expected = false;
 
             // Arrange
-            var sut = _kernel.Get<FileService>();
+            var sut = BuildSUT();
 
             // Act
             bool actual = sut.FileExists(null);
@@ -72,12 +51,17 @@
         public void Upload_InvalidNullFile_ArgumentException()
         {
             // Arrange
-            var sut = _kernel.Get<FileService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Upload(null, null);
         }
 
         #endregion
+
+        private FileService BuildSUT()
+        {
+            return new FileService();
+        }
     }
 }

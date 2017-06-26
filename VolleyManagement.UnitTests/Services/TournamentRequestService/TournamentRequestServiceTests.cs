@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
     using Crosscutting.Contracts.MailService;
@@ -20,8 +19,8 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
-    using Ninject;
     using UserManager;
+    using VolleyManagement.Contracts;
     using VolleyManagement.Services;
 
     [ExcludeFromCodeCoverage]
@@ -33,59 +32,40 @@
         private readonly TournamentRequestServiceTestFixture _testFixture
             = new TournamentRequestServiceTestFixture();
 
-        private readonly Mock<ITournamentRequestRepository> _tournamentRequestRepositoryMock
-            = new Mock<ITournamentRequestRepository>();
-
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock
-            = new Mock<IUnitOfWork>();
-
-        private readonly Mock<IAuthorizationService> _authServiceMock
-            = new Mock<IAuthorizationService>();
-
-        private readonly Mock<IQuery<List<TournamentRequest>, GetAllCriteria>> _getAllRequestsQueryMock
-            = new Mock<IQuery<List<TournamentRequest>, GetAllCriteria>>();
-
-        private readonly Mock<IQuery<TournamentRequest, FindByIdCriteria>> _getRequestByIdQueryMock
-            = new Mock<IQuery<TournamentRequest, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>> _getRequestByAllQueryMock
-           = new Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>>();
-
-        private readonly Mock<ITournamentRepository> _tournamentRepositoryMock
-            = new Mock<ITournamentRepository>();
-
-        private readonly Mock<IMailService> _mailServiceMock
-            = new Mock<IMailService>();
-
-        private readonly Mock<IUserService> _userServiceMock
-            = new Mock<IUserService>();
-
-        private IKernel _kernel;
+        private Mock<ITournamentRequestRepository> _tournamentRequestRepositoryMock;
+        private Mock<IUnitOfWork> _unitOfWorkMock;
+        private Mock<IAuthorizationService> _authServiceMock;
+        private Mock<IQuery<List<TournamentRequest>, GetAllCriteria>> _getAllRequestsQueryMock;
+        private Mock<IQuery<TournamentRequest, FindByIdCriteria>> _getRequestByIdQueryMock;
+        private Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>> _getRequestByAllQueryMock;
+        private Mock<ITournamentRepository> _tournamentRepositoryMock;
+        private Mock<IMailService> _mailServiceMock;
+        private Mock<IUserService> _userServiceMock;
 
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<ITournamentRequestRepository>()
-                .ToConstant(_tournamentRequestRepositoryMock.Object);
-            _kernel.Bind<IUnitOfWork>()
-                .ToConstant(_unitOfWorkMock.Object);
-            _kernel.Bind<IAuthorizationService>()
-                .ToConstant(_authServiceMock.Object);
-            _kernel.Bind<IQuery<List<TournamentRequest>, GetAllCriteria>>()
-                .ToConstant(_getAllRequestsQueryMock.Object);
-            _kernel.Bind<IQuery<TournamentRequest, FindByIdCriteria>>()
-                .ToConstant(_getRequestByIdQueryMock.Object);
-            _kernel.Bind<IQuery<TournamentRequest, FindByTeamTournamentCriteria>>()
-                .ToConstant(_getRequestByAllQueryMock.Object);
-            _kernel.Bind<ITournamentRepository>()
-                .ToConstant(_tournamentRepositoryMock.Object);
-            _kernel.Bind<IMailService>()
-                .ToConstant(_mailServiceMock.Object);
-            _kernel.Bind<IUserService>()
-                .ToConstant(_userServiceMock.Object);
+            _tournamentRequestRepositoryMock
+              = new Mock<ITournamentRequestRepository>();
+
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+
+            _authServiceMock = new Mock<IAuthorizationService>();
+
+            _getAllRequestsQueryMock = new Mock<IQuery<List<TournamentRequest>, GetAllCriteria>>();
+
+            _getRequestByIdQueryMock = new Mock<IQuery<TournamentRequest, FindByIdCriteria>>();
+
+            _getRequestByAllQueryMock = new Mock<IQuery<TournamentRequest, FindByTeamTournamentCriteria>>();
+
+            _tournamentRepositoryMock = new Mock<ITournamentRepository>();
+
+            _mailServiceMock = new Mock<IMailService>();
+
+            _userServiceMock = new Mock<IUserService>();
+
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork)
-                .Returns(_unitOfWorkMock.Object);
+                    .Returns(_unitOfWorkMock.Object);
             _tournamentRequestRepositoryMock.Setup(tr => tr.UnitOfWork)
                 .Returns(_unitOfWorkMock.Object);
         }
@@ -95,8 +75,10 @@
         {
             // Arrange
             var expected = _testFixture.TestRequests().Build();
-            var sut = _kernel.Get<TournamentRequestService>();
+
             MockGetAllTournamentRequestQuery(expected);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.Get();
@@ -110,7 +92,7 @@
         {
             // Arrange
             MockAuthServiceThrownException(AuthOperations.TournamentRequests.ViewList);
-            var sut = _kernel.Get<TournamentRequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<AuthorizationException>(
@@ -126,7 +108,7 @@
             var expected = new TournamentRequestBuilder().WithId(EXISTING_ID).Build();
             MockGetRequestByIdQuery(expected);
 
-            var sut = _kernel.Get<TournamentRequestService>();
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.Get(EXISTING_ID);
@@ -139,7 +121,7 @@
         public void Create_InvalidUserId_ExceptionThrows()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentRequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<ArgumentException>(
@@ -165,7 +147,7 @@
                 tr => tr.Add(
                     It.IsAny<TournamentRequest>()))
                     .Callback<TournamentRequest>(t => t.Id = EXISTING_ID);
-            var sut = _kernel.Get<TournamentRequestService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID);
@@ -192,7 +174,7 @@
                     It.IsAny<TournamentRequest>()))
                     .Callback<TournamentRequest>(t => t.Id = EXISTING_ID);
             MockGetAllTournamentRequestQuery(newTournamentRequest);
-            var sut = _kernel.Get<TournamentRequestService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID);
@@ -206,7 +188,7 @@
         {
             // Arrange
             MockAuthServiceThrownException(AuthOperations.TournamentRequests.Confirm);
-            var sut = _kernel.Get<TournamentRequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<AuthorizationException>(
@@ -226,7 +208,7 @@
             MockGetUser();
             MockRemoveTournamentRequest();
             MockMailService(emailMessage);
-            var sut = _kernel.Get<TournamentRequestService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Confirm(EXISTING_ID);
@@ -239,7 +221,7 @@
         public void Confirm_RequestDoesNotExist_ExceptionThrown()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentRequestService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<MissingEntityException>(
@@ -257,7 +239,7 @@
             EmailMessage emailMessage = new EmailMessageBuilder().Build();
             MockMailService(emailMessage);
             MockGetUser();
-            var sut = _kernel.Get<TournamentRequestService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Decline(EXISTING_ID, emailMessage.Body);
@@ -272,12 +254,13 @@
             // Arrange
             MockRequestServiceThrowsInvalidKeyValueException();
             Exception exception = null;
-            var sut = _kernel.Get<TournamentRequestService>();
             EmailMessage emailMessage = new EmailMessageBuilder().Build();
             MockMailService(emailMessage);
             var expected = new TournamentRequestBuilder().Build();
             MockGetRequestByIdQuery(expected);
             MockGetUser();
+
+            var sut = BuildSUT();
 
             // Act
             try
@@ -291,6 +274,19 @@
 
             // Assert
             VerifyDeleteRequest(INVALID_REQUEST_ID, Times.Once(), Times.Never());
+        }
+
+        private TournamentRequestService BuildSUT()
+        {
+            return new TournamentRequestService(
+                _tournamentRequestRepositoryMock.Object,
+                _authServiceMock.Object,
+                _getAllRequestsQueryMock.Object,
+                _getRequestByIdQueryMock.Object,
+                _getRequestByAllQueryMock.Object,
+                _tournamentRepositoryMock.Object,
+                _mailServiceMock.Object,
+                _userServiceMock.Object);
         }
 
         private void VerifyCreateTournamentRequest(

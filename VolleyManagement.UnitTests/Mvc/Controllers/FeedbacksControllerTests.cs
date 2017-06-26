@@ -2,7 +2,6 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using System.Web;
     using System.Web.Mvc;
     using Contracts;
     using Contracts.Authorization;
@@ -10,11 +9,10 @@
     using Domain.UsersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
-    using Services.FeedbackService;
     using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.FeedbackViewModel;
-    using ViewModels;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.FeedbackService;
 
     /// <summary>
     /// Feedbacks controller tests.
@@ -37,19 +35,10 @@
         private const string CHECK_CAPTCHA_MESSAGE = "Please verify that you are not a robot.";
         private const string SUCCESS_SENT_MESSAGE = "Your Feedback has been sent successfully.";
 
-        private readonly Mock<IFeedbackService> _feedbackServiceMock =
-            new Mock<IFeedbackService>();
-
-        private readonly Mock<IUserService> _userServiceMock =
-            new Mock<IUserService>();
-
-        private readonly Mock<ICurrentUserService> _currentUserServiceMock =
-            new Mock<ICurrentUserService>();
-
-        private readonly Mock<ICaptchaManager> _captchaManagerMock =
-            new Mock<ICaptchaManager>();
-
-        private IKernel _kernel;
+        private Mock<IFeedbackService> _feedbackServiceMock;
+        private Mock<IUserService> _userServiceMock;
+        private Mock<ICurrentUserService> _currentUserServiceMock;
+        private Mock<ICaptchaManager> _captchaManagerMock;
 
         #endregion
 
@@ -61,15 +50,10 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IFeedbackService>()
-                .ToConstant(_feedbackServiceMock.Object);
-            _kernel.Bind<IUserService>()
-                .ToConstant(_userServiceMock.Object);
-            _kernel.Bind<ICurrentUserService>()
-                .ToConstant(_currentUserServiceMock.Object);
-            _kernel.Bind<ICaptchaManager>()
-                .ToConstant(_captchaManagerMock.Object);
+            _feedbackServiceMock = new Mock<IFeedbackService>();
+            _userServiceMock = new Mock<IUserService>();
+            _currentUserServiceMock = new Mock<ICurrentUserService>();
+            _captchaManagerMock = new Mock<ICaptchaManager>();
 
             _captchaManagerMock.Setup(m => m.IsFormSubmit(It.IsAny<string>())).Returns(true);
         }
@@ -87,9 +71,10 @@
             CreateGetAction_UserIsNotAuthentificated_FeedbackHasEmptyEmailField()
         {
             // Arrange
-            FeedbacksController sut = _kernel.Get<FeedbacksController>();
             var feedback = CreateInvalidFeedback();
             SetupCurrentUserGetId(ANONYM_ID);
+
+            var sut = BuildSUT();
 
             // Act
             sut.Create();
@@ -107,10 +92,12 @@
             CreateGetAction_UserIsAuthentificated_UsersEmailPrepolulated()
         {
             // Arrange
-            FeedbacksController sut = _kernel.Get<FeedbacksController>();
             SetupCurrentUserGetId(TEST_ID);
+
             _userServiceMock.Setup(us => us.GetUser(TEST_ID))
                 .Returns(new User { Email = TEST_MAIL });
+
+            var sut = BuildSUT();
 
             // Act
             var feedback = TestExtensions
@@ -132,9 +119,9 @@
         public void CreatePostAction_ModelIsInvalid_CheckDataMessageReturned()
         {
             // Arrange
-            FeedbacksController sut = _kernel.Get<FeedbacksController>();
             var feedback = CreateInvalidFeedback();
 
+            var sut = BuildSUT();
             SetInvalidModelState(sut);
 
             // Act
@@ -153,7 +140,7 @@
         public void CreatePostAction_ModelIsValid_SuccessSentMessageReturned()
         {
             // Arrange
-            FeedbacksController sut = _kernel.Get<FeedbacksController>();
+            var sut = BuildSUT();
             var feedback = CreateValidFeedback();
 
             // Act
@@ -172,7 +159,7 @@
         public void CreatePostAction_ModelIsValid_FeedbackCreated()
         {
             // Arrange
-            FeedbacksController sut = _kernel.Get<FeedbacksController>();
+            var sut = BuildSUT();
             var feedback = CreateValidFeedback();
             var expectedFeedback = CreateExpectedFeedback();
 
@@ -199,10 +186,11 @@
         public void CreatePostAction_ArgumentExceptionThrown_ModelChanged()
         {
             // Arrange
-            FeedbacksController sut = _kernel.Get<FeedbacksController>();
             var feedback = CreateValidFeedback();
             _feedbackServiceMock.Setup(f => f.Create(It.IsAny<Feedback>()))
                 .Throws(new ArgumentException(EXCEPTION_MESSAGE));
+
+            var sut = BuildSUT();
 
             // Act
             sut.Create(feedback);
@@ -217,8 +205,8 @@
         public void CreatePostAction_CaptchaIsNotApproved_CheckCaptchaMessageReturned()
         {
             // Arrange
-            FeedbacksController sut = _kernel.Get<FeedbacksController>();
             var feedback = CreateValidFeedback();
+            var sut = BuildSUT();
 
             // Act
             _captchaManagerMock
@@ -266,6 +254,15 @@
                     .WithContent(string.Empty)
                     .WithEnvironment(string.Empty)
                     .Build();
+        }
+
+        private FeedbacksController BuildSUT()
+        {
+            return new FeedbacksController(
+                _feedbackServiceMock.Object,
+                _userServiceMock.Object,
+                _currentUserServiceMock.Object,
+                _captchaManagerMock.Object);
         }
 
         private void SetInvalidModelState(FeedbacksController controller)

@@ -2,21 +2,18 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Web;
     using System.Web.Mvc;
     using Comparers;
     using Contracts;
-    using Contracts.Authorization;
     using Domain.UsersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Mvc.ViewModels;
-    using Ninject;
-    using Services.UsersService;
-    using UI.Areas.Admin.Controllers;
-    using UI.Areas.Admin.Models;
-    using UI.Areas.Mvc.ViewModels.Players;
-    using ViewModels;
+    using VolleyManagement.UI.Areas.Admin.Controllers;
+    using VolleyManagement.UI.Areas.Admin.Models;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using VolleyManagement.UnitTests.Admin.ViewModels;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.UsersService;
 
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -24,22 +21,12 @@
     {
         private const int EXISTING_ID = 1;
 
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-        private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
-        private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
-        private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
-
-        private IKernel _kernel;
-        private UsersController _sut;
+        private Mock<IUserService> _userServiceMock;
 
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
-            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
-            _httpContextMock.SetupGet(c => c.Request).Returns(_httpRequestMock.Object);
-            _sut = _kernel.Get<UsersController>();
+            _userServiceMock = new Mock<IUserService>();
         }
 
         [TestMethod]
@@ -47,9 +34,10 @@
         {
             // Arrange
             SetupGetUserDetails(EXISTING_ID, null);
+            var sut = BuildSUT();
 
             // Act
-            var result = _sut.UserDetails(EXISTING_ID);
+            var result = sut.UserDetails(EXISTING_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -62,13 +50,19 @@
             var user = CreateUser();
             SetupGetUserDetails(EXISTING_ID, user);
 
+            var sut = BuildSUT();
             var expected = CreateUserViewModel();
 
             // Act
-            var actual = TestExtensions.GetModel<UserViewModel>(_sut.UserDetails(EXISTING_ID));
+            var actual = TestExtensions.GetModel<UserViewModel>(sut.UserDetails(EXISTING_ID));
 
             // Assert
             TestHelper.AreEqual<UserViewModel>(expected, actual, new UserViewModelComparer());
+        }
+
+        private UsersController BuildSUT()
+        {
+            return new UsersController(_userServiceMock.Object);
         }
 
         private User CreateUser()

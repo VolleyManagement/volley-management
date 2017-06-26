@@ -3,41 +3,33 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Data.Contracts;
-    using Data.Queries.GameResult;
-    using Data.Queries.Team;
     using Data.Queries.Tournament;
-    using Domain.GamesAggregate;
-    using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
-    using GameService;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
-    using TeamService;
-    using VolleyManagement.Services;
 
-                                       /// <summary>
-                                      /// Tests for <see cref="GameReportService"/> class.
-                                      /// </summary>
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Queries.GameResult;
+    using VolleyManagement.Data.Queries.Team;
+    using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Services.GameService;
+    using VolleyManagement.UnitTests.Services.TeamService;
+
+    /// <summary>
+    /// Tests for <see cref="GameReportService"/> class.
+    /// </summary>
     [ExcludeFromCodeCoverage]
     [TestClass]
     public class GameReportServiceTests
     {
         private const int TOURNAMENT_ID = 1;
-
         private const int TOP_TEAM_INDEX = 0;
 
-        private readonly Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock =
-            new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
-
-        private readonly Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock =
-            new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
-
-        private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentQueryMock =
-            new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
-
-        private IKernel _kernel;
+        private Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock;
+        private Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
+        private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock;
 
         /// <summary>
         /// Initializes test data.
@@ -45,13 +37,9 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>()
-                .ToConstant(_tournamentGameResultsQueryMock.Object);
-            _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>()
-                .ToConstant(_tournamentTeamsQueryMock.Object);
-            _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>()
-              .ToConstant(_tournamentQueryMock.Object);
+            _tournamentScheduleDtoByIdQueryMock = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
+            _tournamentTeamsQueryMock = new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
+            _tournamentGameResultsQueryMock = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
         }
 
         /// <summary>
@@ -64,11 +52,13 @@
             // Arrange
             var gameResultsData = new GameServiceTestFixture().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = 3;
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetStandings(TOURNAMENT_ID).Count;
@@ -87,7 +77,7 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
                 .OrderByPointsAndSetsAndBallsAndName()
                 .Build()
@@ -96,6 +86,8 @@
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetStandings(TOURNAMENT_ID).Select(s => s.Points).ToList();
@@ -114,7 +106,7 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
                 .OrderByPointsAndSetsAndBallsAndName()
                 .Build()
@@ -134,6 +126,8 @@
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetStandings(TOURNAMENT_ID)
@@ -165,7 +159,7 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
                 .OrderByPointsAndSetsAndBallsAndName()
                 .Build()
@@ -179,6 +173,8 @@
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetStandings(TOURNAMENT_ID)
@@ -204,7 +200,7 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
                 .OrderByPointsAndSetsAndBallsAndName()
                 .Build()
@@ -218,6 +214,8 @@
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetStandings(TOURNAMENT_ID)
@@ -243,11 +241,12 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithNoLostSetsForOneTeam().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
             var expected = float.PositiveInfinity;
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetStandings(TOURNAMENT_ID)[TOP_TEAM_INDEX].SetsRatio;
@@ -266,11 +265,12 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithNoLostSetsNoLostBallsForOneTeam().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
             var expected = new { SetsRatio = (float?)float.PositiveInfinity, BallsRatio = (float?)float.PositiveInfinity };
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var result = sut.GetStandings(TOURNAMENT_ID)[TOP_TEAM_INDEX];
@@ -290,11 +290,12 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithResultsForUniquePoints().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
             var expected = new StandingsTestFixture().WithUniquePoints().Build()[TOP_TEAM_INDEX].Points;
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetStandings(TOURNAMENT_ID)[TOP_TEAM_INDEX].Points;
@@ -313,11 +314,12 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithResultsForRepetitivePoints().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
             var expected = new StandingsTestFixture().WithRepetitivePoints().OrderByPoints().Build()[TOP_TEAM_INDEX].SetsRatio;
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetStandings(TOURNAMENT_ID)[TOP_TEAM_INDEX].SetsRatio;
@@ -336,7 +338,7 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithResultsForRepetitivePointsAndSetsRatio().Build();
             var teamData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = new StandingsTestFixture().WithRepetitivePointsAndSetsRatio()
                 .OrderByPointsAndSets()
                 .Build()[TOP_TEAM_INDEX]
@@ -344,6 +346,8 @@
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetStandings(TOURNAMENT_ID)[TOP_TEAM_INDEX].BallsRatio;
@@ -363,7 +367,7 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = new TeamStandingsTestFixture().WithTeamStandingsForAllPossibleScores()
                 .OrderByPoints()
                 .Build()
@@ -372,6 +376,8 @@
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.Select(t => new { t.Points }).ToList();
@@ -391,7 +397,7 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = new TeamStandingsTestFixture().WithTeamStandingsForAllPossibleScores()
                 .OrderByPointsAndSets()
                 .Build()
@@ -400,6 +406,8 @@
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.Select(t => new { t.SetsRatio }).ToList();
@@ -419,7 +427,7 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithAllPossibleScores().Build();
             var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = new TeamStandingsTestFixture().WithTeamStandingsForAllPossibleScores()
                 .OrderByPointsAndSets()
                 .Build()
@@ -428,6 +436,8 @@
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.Select(t => new { t.BallsRatio }).ToList();
@@ -447,11 +457,13 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithNoLostSetsForOneTeam().Build();
             var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
+
             var expected = float.PositiveInfinity;
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.First().SetsRatio;
@@ -472,16 +484,25 @@
             var gameResultsTestData = new GameServiceTestFixture().TestGameResults().Build();
             var teamWithNoResults = new Team { Id = 4 };
             var teamsTestData = new TeamServiceTestFixture().AddTeam(teamWithNoResults).TestTeams().Build();
-            var sut = _kernel.Get<GameReportService>();
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetPivotStandings(TOURNAMENT_ID).Teams.Last().SetsRatio;
 
             // Assert
             Assert.IsNull(actual);
+        }
+
+        private GameReportService BuildSUT()
+        {
+            return new GameReportService(
+                _tournamentGameResultsQueryMock.Object,
+                _tournamentTeamsQueryMock.Object,
+               _tournamentScheduleDtoByIdQueryMock.Object);
         }
 
         private void SetupTournamentGameResultsQuery(int tournamentId, List<GameResultDto> testData)
@@ -500,7 +521,7 @@
 
         private void SetupGetTournamentById(int id, TournamentScheduleDto tournament)
         {
-            _tournamentQueryMock.Setup(m =>
+            _tournamentScheduleDtoByIdQueryMock.Setup(m =>
                 m.Execute(It.Is<TournamentScheduleInfoCriteria>(c => c.TournamentId == id)))
                 .Returns(tournament);
         }

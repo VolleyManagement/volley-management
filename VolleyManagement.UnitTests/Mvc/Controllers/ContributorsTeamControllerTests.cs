@@ -4,14 +4,13 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Contracts;
-    using Domain.ContributorsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
-    using Services.ContributorService;
-    using UI.Areas.Mvc.Controllers;
-    using UI.Areas.Mvc.ViewModels.ContributorsTeam;
-    using ViewModels;
+    using VolleyManagement.Domain.ContributorsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.ContributorService;
 
     /// <summary>
     /// Tests for MVC ContributorTeamController class.
@@ -20,10 +19,7 @@
     [TestClass]
     public class ContributorsTeamControllerTests
     {
-        private readonly Mock<IContributorTeamService> _contributorTeamServiceMock = new Mock<IContributorTeamService>();
-
-        private IKernel _kernel;
-        private ContributorsTeamController _sut;
+        private Mock<IContributorTeamService> _contributorTeamServiceMock;
 
         /// <summary>
         /// Initializes test data.
@@ -31,9 +27,7 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IContributorTeamService>().ToConstant(_contributorTeamServiceMock.Object);
-            _sut = _kernel.Get<ContributorsTeamController>();
+            _contributorTeamServiceMock = new Mock<IContributorTeamService>();
         }
 
         /// <summary>
@@ -47,8 +41,10 @@
             var expected = MakeTestContributorTeamViewModels(testData);
             SetupGetAll(testData);
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(_sut.Index()).ToList();
+            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamViewModelComparer());
@@ -73,6 +69,11 @@
         private void SetupGetAll(List<ContributorTeam> teams)
         {
             _contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams.AsQueryable());
+        }
+
+        private ContributorsTeamController BuildSUT()
+        {
+            return new ContributorsTeamController(_contributorTeamServiceMock.Object);
         }
     }
 }

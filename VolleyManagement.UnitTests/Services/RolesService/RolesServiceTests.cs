@@ -2,15 +2,15 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Contracts.Authorization;
-    using Data.Contracts;
-    using Data.Queries.Common;
-    using Data.Queries.User;
-    using Domain.Dto;
-    using Domain.RolesAggregate;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+
     using Moq;
-    using Ninject;
+    using VolleyManagement.Data.Contracts;
+    using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.User;
+    using VolleyManagement.Domain.Dto;
+    using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Services.Authorization;
 
     /// <summary>
@@ -22,18 +22,11 @@
     {
         #region Fields
 
-        private IKernel _kernel;
-
         private Mock<IQuery<List<Role>, GetAllCriteria>> _getAllQueryMock;
-
         private Mock<IQuery<Role, FindByIdCriteria>> _getByIdQueryMock;
-
         private Mock<IQuery<List<UserInRoleDto>, FindByRoleCriteria>> _getUsersByRoleQueryMock;
-
         private Mock<IQuery<List<UserInRoleDto>, GetAllCriteria>> _getUserInRolesQueryMock;
-
         private Mock<IRoleRepository> _roleRepositoryMock;
-
         private Mock<IUnitOfWork> _uowMock;
 
         #endregion
@@ -43,15 +36,13 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-
-            _kernel.RegisterDefaultMock(out _getAllQueryMock);
-            _kernel.RegisterDefaultMock(out _getByIdQueryMock);
-            _kernel.RegisterDefaultMock(out _getUsersByRoleQueryMock);
-            _kernel.RegisterDefaultMock(out _getUserInRolesQueryMock);
-            _kernel.RegisterDefaultMock(out _roleRepositoryMock);
-
+            _getAllQueryMock = new Mock<IQuery<List<Role>, GetAllCriteria>>();
+            _getByIdQueryMock = new Mock<IQuery<Role, FindByIdCriteria>>();
+            _getUsersByRoleQueryMock = new Mock<IQuery<List<UserInRoleDto>, FindByRoleCriteria>>();
+            _getUserInRolesQueryMock = new Mock<IQuery<List<UserInRoleDto>, GetAllCriteria>>();
+            _roleRepositoryMock = new Mock<IRoleRepository>();
             _uowMock = new Mock<IUnitOfWork>();
+
             _roleRepositoryMock.Setup(r => r.UnitOfWork).Returns(_uowMock.Object);
         }
 
@@ -64,7 +55,7 @@
         {
             // Arange
             MockAllRoles(GetDefaultRoles());
-            var service = _kernel.Get<RolesService>();
+            var service = BuildSUT();
             var expectedResult = GetDefaultRoles();
 
             // Act
@@ -80,7 +71,7 @@
             // Arange
             const int ROLE_ID = 1;
             MockSingleRole(new Role { Id = ROLE_ID, Name = "Admin" });
-            var service = _kernel.Get<RolesService>();
+            var service = BuildSUT();
             var expectedResult = new Role { Id = ROLE_ID, Name = "Admin" };
 
             // Act
@@ -97,7 +88,7 @@
             const int ROLE_ID = 1;
             var usersForRole = GetMembersForRole(ROLE_ID);
             MockUsersForRole(usersForRole);
-            var service = _kernel.Get<RolesService>();
+            var service = BuildSUT();
             var expectedResult = GetMembersForRole(ROLE_ID);
 
             // Act
@@ -115,7 +106,7 @@
             const int OTHER_ROLE_ID = 2;
             var usersForRole = GetUsersForSeveralRoles(ROLE_ID, OTHER_ROLE_ID);
             MockUserInRoles(usersForRole);
-            var service = _kernel.Get<RolesService>();
+            var service = BuildSUT();
 
             var expectedResult = GetUsersForSeveralRoles(ROLE_ID, OTHER_ROLE_ID);
 
@@ -133,7 +124,7 @@
             const int ROLE_ID = 1;
             var usersToAdd = new[] { 2, 3, 4 }; // 3 new users
             var usersToRemove = new int[0]; // No removal of users
-            var service = _kernel.Get<RolesService>();
+            var service = BuildSUT();
 
             // Act
             service.ChangeRoleMembership(ROLE_ID, usersToAdd, usersToRemove);
@@ -152,7 +143,7 @@
             const int ROLE_ID = 1;
             var usersToAdd = new int[0]; // No new users
             var usersToRemove = new[] { 2, 3, 4 }; // 3 users to remove
-            var service = _kernel.Get<RolesService>();
+            var service = BuildSUT();
 
             // Act
             service.ChangeRoleMembership(ROLE_ID, usersToAdd, usersToRemove);
@@ -171,7 +162,7 @@
             const int ROLE_ID = 1;
             var usersToAdd = new int[0]; // No new users
             var usersToRemove = new int[0]; // No removal of users
-            var service = _kernel.Get<RolesService>();
+            var service = BuildSUT();
 
             // Act
             service.ChangeRoleMembership(ROLE_ID, usersToAdd, usersToRemove);
@@ -184,14 +175,13 @@
         #endregion
 
         #region Private
-
         private static List<Role> GetDefaultRoles()
         {
             return new List<Role>
-                       {
-                           new Role { Id = 1, Name = "Admin" },
-                           new Role { Id = 2, Name = "User" }
-                       };
+            {
+                new Role { Id = 1, Name = "Admin" },
+                new Role { Id = 2, Name = "User" }
+            };
         }
 
         private static List<UserInRoleDto> GetMembersForRole(int roleId)
@@ -217,6 +207,16 @@
             }
 
             return result;
+        }
+
+        private RolesService BuildSUT()
+        {
+            return new RolesService(
+                _getAllQueryMock.Object,
+                _getByIdQueryMock.Object,
+                _getUsersByRoleQueryMock.Object,
+                _getUserInRolesQueryMock.Object,
+                _roleRepositoryMock.Object);
         }
 
         private void MockAllRoles(List<Role> testData)

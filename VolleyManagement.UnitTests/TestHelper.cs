@@ -2,9 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
-    using Ninject;
 
     /// <summary>
     /// Class for custom asserts.
@@ -25,19 +24,6 @@
             int compareResult = comparer.Compare(expected, actual);
 
             Assert.AreEqual(equalsResult, compareResult);
-        }
-
-        /// <summary>
-        /// Creates default mock and registers object in the container
-        /// </summary>
-        /// <typeparam name="T">Mocked service type</typeparam>
-        /// <param name="kernel">Ninject kernel instance</param>
-        /// <param name="instance">Mock instance</param>
-        public static void RegisterDefaultMock<T>(this IKernel kernel, out Mock<T> instance)
-            where T : class
-        {
-            instance = new Mock<T>();
-            kernel.Bind<T>().ToConstant(instance.Object);
         }
     }
 }

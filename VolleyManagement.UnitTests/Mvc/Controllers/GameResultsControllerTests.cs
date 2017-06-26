@@ -5,19 +5,18 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web.Mvc;
-    using Contracts;
-    using Contracts.Authorization;
-    using Contracts.Exceptions;
-    using Domain.GamesAggregate;
-    using Domain.TeamsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
-    using Services.GameService;
-    using Services.TeamService;
-    using UI.Areas.Mvc.Controllers;
-    using UI.Areas.Mvc.ViewModels.GameResults;
-    using ViewModels;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.UI.Areas.Mvc.Controllers;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.GameService;
+    using VolleyManagement.UnitTests.Services.TeamService;
 
     /// <summary>
     /// Tests for MVC <see cref="GameResultsControllerTests"/> class.
@@ -46,8 +45,6 @@
 
         #region Fields
 
-        private IKernel _kernel;
-
         private Mock<ITeamService> _teamServiceMock = new Mock<ITeamService>();
 
         private Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
@@ -64,13 +61,9 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<ITeamService>()
-                .ToConstant(_teamServiceMock.Object);
-            _kernel.Bind<IGameService>()
-                .ToConstant(_gameServiceMock.Object);
-            _kernel.Bind<IAuthorizationService>()
-                .ToConstant(_authServiceMock.Object);
+            _gameServiceMock = new Mock<IGameService>();
+            _tournamentServiceMock = new Mock<ITournamentService>();
+            _authServiceMock = new Mock<IAuthorizationService>();
         }
 
         #endregion
@@ -87,13 +80,14 @@
             var gameResult = new GameResultViewModelBuilder()
                                 .WithTournamentId(TOURNAMENT_ID)
                                 .Build();
+
             Game expectedGameResult = gameResult.ToDomain();
 
             Game actualGameResult = null;
             _gameServiceMock.Setup(h => h.Create(It.IsAny<Game>()))
                 .Callback<Game>(r => actualGameResult = r);
 
-            var sut = _kernel.Get<GameResultsController>();
+            var sut = BuildSUT();
 
             // Act
             var result = sut.Create(gameResult) as RedirectToRouteResult;
@@ -118,7 +112,7 @@
             _gameServiceMock.Setup(h => h.Create(It.IsAny<Game>()))
                 .Callback<Game>(r => actualGameResult = r);
 
-            var sut = _kernel.Get<GameResultsController>();
+            var sut = BuildSUT();
 
             // Act
             var result = sut.Create(game) as RedirectToRouteResult;
@@ -140,7 +134,8 @@
                                 .WithAwayTeamId(HOME_TEAM_ID)
                                 .Build();
 
-            var sut = _kernel.Get<GameResultsController>();
+            var sut = BuildSUT();
+
             _gameServiceMock.Setup(gr => gr.Create(It.IsAny<Game>())).Throws(new ArgumentException());
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
 
@@ -158,12 +153,13 @@
         public void CreateGetAction_GameResultViewModelRequested_GameResultViewModelIsReturned()
         {
             // Arrange
-            var controller = _kernel.Get<GameResultsController>();
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
             var expected = new GameResultViewModel
             {
                 TournamentId = TOURNAMENT_ID
             };
+
+            var controller = BuildSUT();
 
             // Act
             var actual = TestExtensions.GetModel<GameResultViewModel>(controller.Create(TOURNAMENT_ID));
@@ -179,7 +175,6 @@
         public void EditGetAction_ValidGameResultId_GameResultViewModelIsReturned()
         {
             // Arrange
-            var controller = _kernel.Get<GameResultsController>();
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
             var testData = new GameServiceTestFixture().TestGameResults().Build();
             var expected = new GameResultViewModelBuilder()
@@ -197,7 +192,10 @@
                         new Score(27, 25)
                     })
                 .Build();
+
             SetupGet(TOURNAMENT_ID, testData.ElementAt(0));
+
+            var controller = BuildSUT();
 
             // Act
             var actual = TestExtensions.GetModel<GameResultViewModel>(controller.Edit(TOURNAMENT_ID));
@@ -216,7 +214,7 @@
             SetupGet(GAME_RESULT_ID, null as GameResultDto);
 
             // Act
-            var controller = _kernel.Get<GameResultsController>();
+            var controller = BuildSUT();
             var result = controller.Edit(GAME_RESULT_ID);
 
             // Assert
@@ -235,7 +233,7 @@
             _gameServiceMock.Setup(grs => grs.EditGameResult(It.IsAny<Game>()))
                                   .Throws(new MissingEntityException());
 
-            var sut = _kernel.Get<GameResultsController>();
+            var sut = BuildSUT();
 
             // Act
             var result = TestExtensions.GetModel<GameResultViewModel>(sut.Edit(gameResultViewModel));
@@ -251,9 +249,11 @@
         [TestMethod]
         public void EditPost_ValidEntity_GameResultViewModelIsReturned()
         {
-            var controller = _kernel.Get<GameResultsController>();
+            // Arrange
             var testData = new GameResultViewModelBuilder().Build();
             _teamServiceMock.Setup(ts => ts.Get()).Returns(new List<Team>());
+
+            var controller = BuildSUT();
 
             // Act
             var result = controller.Edit(testData);
@@ -271,7 +271,8 @@
         {
             // Arrange
             var gameResultViewModel = new GameResultViewModelBuilder().Build();
-            var sut = _kernel.Get<GameResultsController>();
+
+            var sut = BuildSUT();
 
             // Act
             var result = sut.Edit(gameResultViewModel);
@@ -291,7 +292,8 @@
         {
             // Arrange
             var testData = new GameResultViewModelBuilder().Build();
-            var sut = _kernel.Get<GameResultsController>();
+
+            var sut = BuildSUT();
             sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
@@ -311,7 +313,7 @@
         {
             // Arrange
             _gameServiceMock.Setup(tr => tr.Delete(GAME_RESULTS_ID));
-            var sut = _kernel.Get<GameResultsController>();
+            var sut = BuildSUT();
 
             // Act
             var result = sut.Delete(GAME_RESULTS_ID);
@@ -330,7 +332,7 @@
         {
             // Arrange
             SetupDeleteGameThrowsArgumentNullException();
-            var sut = _kernel.Get<GameResultsController>();
+            var sut = BuildSUT();
 
             // Act
             var result = sut.Delete(GAME_RESULTS_ID);
@@ -349,7 +351,7 @@
         {
             // Arrange
             SetupDeleteGameThrowsArgumentException();
-            var sut = _kernel.Get<GameResultsController>();
+            var sut = BuildSUT();
 
             // Act
             var result = sut.Delete(GAME_RESULTS_ID);
@@ -367,10 +369,11 @@
         {
             // Arrange
             var testTournamentResults = new GameServiceTestFixture().TestGameResults().Build();
-            var sut = _kernel.Get<GameResultsController>();
             var expected = new TournamentResultsViewModelBuilder().Build();
 
             SetupGameResultsGetTournamentResults(TOURNAMENT_ID, testTournamentResults);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = TestExtensions.GetModel<TournamentResultsViewModel>(sut.TournamentResults(TOURNAMENT_ID, TOURNAMENT_NAME));
@@ -382,6 +385,14 @@
         #endregion
 
         #region Additional Methods
+
+        private GameResultsController BuildSUT()
+        {
+            return new GameResultsController(
+                _gameServiceMock.Object,
+                _teamServiceMock.Object,
+                _authServiceMock.Object);
+        }
 
         private void VerifyEditGameResult(Times times)
         {

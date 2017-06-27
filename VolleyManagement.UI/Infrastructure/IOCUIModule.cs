@@ -5,9 +5,9 @@
     using VolleyManagement.Crosscutting.IOC;
     using VolleyManagement.Services;
 
-    public class IOCUIModule : IIOCRegistrationModule
+    public class IocUIModule : IIocRegistrationModule
     {
-        public void RegisterDependencies(IOCContainer container)
+        public void RegisterDependencies(IocContainer container)
         {
             container
                 .RegisterScoped<ICurrentUserService, CurrentUserService>()

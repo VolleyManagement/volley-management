@@ -373,7 +373,7 @@
     <Compile Include="Infrastructure\CaptchaManager.cs" />
     <Compile Include="Infrastructure\CurrentUserService.cs" />
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
-    <Compile Include="Infrastructure\IOCUIModule.cs" />
+    <Compile Include="Infrastructure\IocUIModule.cs" />
     <Compile Include="OwinConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UIDependencyResolver.cs" />

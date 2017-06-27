@@ -5,15 +5,15 @@ using SimpleInjector.Integration.Web.Mvc;
 
 namespace VolleyManagement.Crosscutting.IOC
 {
-    public class IOCResolver
+    public class IocResolver
     {
         private SimpleInjectorDependencyResolver _resolver;
 
         /// <summary>
-        /// Creates an instance of <see cref="IOCResolver"/> class
+        /// Creates an instance of <see cref="IocResolver"/> class
         /// </summary>
         /// <param name="container">Container to get resolver</param>
-        public IOCResolver(Container container)
+        public IocResolver(Container container)
         {
             _resolver = new SimpleInjectorDependencyResolver(container);
         }

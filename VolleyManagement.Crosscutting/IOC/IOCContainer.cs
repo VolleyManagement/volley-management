@@ -7,14 +7,14 @@
     /// <summary>
     /// Warapper over application IOC container
     /// </summary>
-    public class IOCContainer
+    public class IocContainer
     {
         private readonly Container _container;
 
         /// <summary>
-        /// Creates an instance of <see cref="IOCContainer"/> object
+        /// Creates an instance of <see cref="IocContainer"/> object
         /// </summary>
-        public IOCContainer()
+        public IocContainer()
         {
             _container = new Container();
             _container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
@@ -24,9 +24,9 @@
         /// Returns object which could be used as dependency resolver in application
         /// </summary>
         /// <returns>object which could be used as dependency resolver in application</returns>
-        public IOCResolver GetResolver()
+        public IocResolver GetResolver()
         {
-            return new IOCResolver(_container);
+            return new IocResolver(_container);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@
         /// </summary>
         /// <param name="module">Dependencies registration module</param>
         /// <returns>Current application IOC container</returns>
-        public IOCContainer Register(IIOCRegistrationModule module)
+        public IocContainer Register(IIocRegistrationModule module)
         {
             module.RegisterDependencies(this);
             return this;
@@ -47,7 +47,7 @@
         /// <typeparam name="TContract">Type of contract</typeparam>
         /// <typeparam name="TImpl">Type of object which implements contact</typeparam>
         /// <returns>Current application IOC container</returns>
-        public IOCContainer RegisterSingleton<TContract, TImpl>()
+        public IocContainer RegisterSingleton<TContract, TImpl>()
             where TImpl : class, TContract
             where TContract : class
         {
@@ -62,7 +62,7 @@
         /// <param name="contract">Type of contract</param>
         /// <param name="implementation">Type of object which implements contact</param>
         /// <returns>Current application IOC container</returns>
-        public IOCContainer RegisterSingleton(Type contract, Type implementation)
+        public IocContainer RegisterSingleton(Type contract, Type implementation)
         {
             _container.Register(contract, implementation, Lifestyle.Singleton);
             return this;
@@ -75,7 +75,7 @@
         /// <typeparam name="TContract">Type of contract</typeparam>
         /// <typeparam name="TImpl">Type of object which implements contact</typeparam>
         /// <returns>Current application IOC container</returns>
-        public IOCContainer RegisterScoped<TContract, TImpl>()
+        public IocContainer RegisterScoped<TContract, TImpl>()
             where TImpl : class, TContract
             where TContract : class
         {
@@ -90,7 +90,7 @@
         /// <param name="contract">Type of contract</param>
         /// <param name="implementation">Type of object which implements contact</param>
         /// <returns>Current application IOC container</returns>
-        public IOCContainer RegisterScoped(Type contract, Type implementation)
+        public IocContainer RegisterScoped(Type contract, Type implementation)
         {
             _container.Register(contract, implementation, Lifestyle.Scoped);
             return this;
@@ -103,7 +103,7 @@
         /// <typeparam name="TContract">Type of contract</typeparam>
         /// <typeparam name="TImpl">Type of object which implements contact</typeparam>
         /// <returns>Current application IOC container</returns>
-        public IOCContainer RegisterTransient<TContract, TImpl>()
+        public IocContainer RegisterTransient<TContract, TImpl>()
             where TImpl : class, TContract
             where TContract : class
         {
@@ -118,7 +118,7 @@
         /// <param name="service">Type of contract</param>
         /// <param name="implementation">Type of object which implements contact</param>
         /// <returns>Current application IOC container</returns>
-        public IOCContainer RegisterTransient(Type service, Type implementation)
+        public IocContainer RegisterTransient(Type service, Type implementation)
         {
             _container.Register(service, implementation, Lifestyle.Transient);
             return this;

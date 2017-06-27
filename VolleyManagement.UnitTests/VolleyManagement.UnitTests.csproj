@@ -307,7 +307,6 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup />
   <Choose>

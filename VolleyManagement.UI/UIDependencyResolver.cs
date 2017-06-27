@@ -7,13 +7,13 @@
 
     public class UIDependencyResolver : IDependencyResolver
     {
-        private IOCResolver _resolver;
+        private IocResolver _resolver;
 
         /// <summary>
         /// Creates an instance of <see cref="UIDependencyResolver"/> class
         /// </summary>
         /// <param name="container">Container to get resolver</param>
-        public UIDependencyResolver(IOCContainer container)
+        public UIDependencyResolver(IocContainer container)
         {
             _resolver = container.GetResolver();
         }

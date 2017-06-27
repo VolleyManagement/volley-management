@@ -43,12 +43,12 @@ namespace VolleyManagement.UI
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateTimeModelBinder());
 
-            var ioc = new IOCContainer();
+            var ioc = new IocContainer();
 
             ioc
                 .Register(new IOCDataAccessModule())
                 .Register(new IOCServicesModule())
-                .Register(new IOCUIModule());
+                .Register(new IocUIModule());
 
             DependencyResolver.SetResolver(new UIDependencyResolver(ioc));
         }

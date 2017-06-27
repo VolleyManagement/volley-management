@@ -9,9 +9,9 @@ using VolleyManagement.Services.Authorization;
 
 namespace VolleyManagement.Services.Infrastructure
 {
-    public class IOCServicesModule : IIOCRegistrationModule
+    public class IOCServicesModule : IIocRegistrationModule
     {
-        public void RegisterDependencies(IOCContainer container)
+        public void RegisterDependencies(IocContainer container)
         {
             container
                 .RegisterScoped<ITournamentService, TournamentService>()

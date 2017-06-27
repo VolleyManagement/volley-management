@@ -17,15 +17,15 @@ using VolleyManagement.Domain.UsersAggregate;
 
 namespace VolleyManagement.Data.MsSql.Infrastructure
 {
-    public class IOCDataAccessModule : IIOCRegistrationModule
+    public class IOCDataAccessModule : IIocRegistrationModule
     {
-        public void RegisterDependencies(IOCContainer container)
+        public void RegisterDependencies(IocContainer container)
         {
             RegisterRepositories(container);
             RegisterQueries(container);
         }
 
-        private void RegisterRepositories(IOCContainer container)
+        private void RegisterRepositories(IocContainer container)
         {
             container
                 .RegisterScoped<IUnitOfWork, VolleyUnitOfWork>()
@@ -41,7 +41,7 @@ namespace VolleyManagement.Data.MsSql.Infrastructure
                 .RegisterScoped<IRequestRepository, RequestRepository>();
         }
 
-        private void RegisterQueries(IOCContainer container)
+        private void RegisterQueries(IocContainer container)
         {
             var queriesAssembly = typeof(TournamentQueries).Assembly;
 
@@ -62,8 +62,6 @@ namespace VolleyManagement.Data.MsSql.Infrastructure
                     container.RegisterScoped(contract, item.Implementation);
                 }
             }
-
-            //container.Register(typeof(IQuery<,>), new Assembly[] { queriesAssembly });
         }
 
         private bool InterfaceIsQuery(Type type)

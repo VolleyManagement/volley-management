@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -49,9 +50,7 @@ namespace VolleyManagement.UI
                 .Register(new IOCServicesModule())
                 .Register(new IOCUIModule());
 
-
-            DependencyResolver.SetResolver(ioc.GetResolver());
-            //GlobalConfiguration.Configuration.DependencyResolver = ioc.GetResolver();
+            DependencyResolver.SetResolver(new UIDependencyResolver(ioc));
         }
     }
 }

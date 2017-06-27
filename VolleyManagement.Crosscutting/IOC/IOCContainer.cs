@@ -1,11 +1,9 @@
-﻿using System;
-using System.Web.Mvc;
-using SimpleInjector;
-using SimpleInjector.Integration.Web;
-using SimpleInjector.Integration.Web.Mvc;
-
-namespace VolleyManagement.Crosscutting.IOC
+﻿namespace VolleyManagement.Crosscutting.IOC
 {
+    using System;
+    using SimpleInjector;
+    using SimpleInjector.Integration.Web;
+
     /// <summary>
     /// Warapper over application IOC container
     /// </summary>
@@ -26,9 +24,9 @@ namespace VolleyManagement.Crosscutting.IOC
         /// Returns object which could be used as dependency resolver in application
         /// </summary>
         /// <returns>object which could be used as dependency resolver in application</returns>
-        public IDependencyResolver GetResolver()
+        public IOCResolver GetResolver()
         {
-            return new SimpleInjectorDependencyResolver(_container);
+            return new IOCResolver(_container);
         }
 
         /// <summary>
@@ -125,17 +123,5 @@ namespace VolleyManagement.Crosscutting.IOC
             _container.Register(service, implementation, Lifestyle.Transient);
             return this;
         }
-
-        /// <summary>
-        /// Returns instance of object which implements <typeparamref name="TResult"/> 
-        /// if all its dependencies could be resolved
-        /// </summary>
-        /// <typeparam name="TResult">Type to be resolved</typeparam>
-        /// <returns>instance of object which implements <typeparamref name="TResult"/></returns>
-        public TResult Resolve<TResult>()
-        {
-            return GetResolver().GetService<TResult>();
-        }
-
     }
 }

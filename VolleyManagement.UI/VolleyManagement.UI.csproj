@@ -376,6 +376,7 @@
     <Compile Include="Infrastructure\IOCUIModule.cs" />
     <Compile Include="OwinConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIDependencyResolver.cs" />
     <Compile Include="ViewModelConstants.cs" />
   </ItemGroup>
   <ItemGroup>

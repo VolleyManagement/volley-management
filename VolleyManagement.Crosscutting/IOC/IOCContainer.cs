@@ -44,14 +44,17 @@
         /// <summary>
         /// Register dependency as singleton (same instance will be used for all dependent objects)
         /// </summary>
+        /// <param name="lifetime">Life time of instance for implementation type</param>
         /// <typeparam name="TContract">Type of contract</typeparam>
-        /// <typeparam name="TImpl">Type of object which implements contact</typeparam>
+        /// <typeparam name="TImpl">Type of object which implements contact</typeparam> 
         /// <returns>Current application IOC container</returns>
-        public IocContainer RegisterSingleton<TContract, TImpl>()
+        public IocContainer Register<TContract, TImpl>(Lifetimes lifetime)
             where TImpl : class, TContract
             where TContract : class
         {
-            _container.Register<TContract, TImpl>(Lifestyle.Singleton);
+            var style = MapLifetime(lifetime);
+            _container.Register<TContract, TImpl>(style);
+
             return this;
         }
 
@@ -61,67 +64,37 @@
         /// </summary>
         /// <param name="contract">Type of contract</param>
         /// <param name="implementation">Type of object which implements contact</param>
+        /// <param name="lifetime">Life time of instance for implementation type</param>
         /// <returns>Current application IOC container</returns>
-        public IocContainer RegisterSingleton(Type contract, Type implementation)
+        public IocContainer Register(Type contract, Type implementation, Lifetimes lifetime)
         {
+            var style = MapLifetime(lifetime);
             _container.Register(contract, implementation, Lifestyle.Singleton);
+
             return this;
         }
 
-        /// <summary>
-        /// Register dependency as scoped (each request will be provided
-        /// with its own instance of contract implementation, which will be used for all dependent objects)
-        /// </summary>
-        /// <typeparam name="TContract">Type of contract</typeparam>
-        /// <typeparam name="TImpl">Type of object which implements contact</typeparam>
-        /// <returns>Current application IOC container</returns>
-        public IocContainer RegisterScoped<TContract, TImpl>()
-            where TImpl : class, TContract
-            where TContract : class
-        {
-            _container.Register<TContract, TImpl>(Lifestyle.Scoped);
-            return this;
-        }
 
-        /// <summary>
-        /// Register dependency as scoped(each request will be provided
-        /// with its own instance of contract implementation, which will be used for all dependent objects)
-        /// </summary>
-        /// <param name="contract">Type of contract</param>
-        /// <param name="implementation">Type of object which implements contact</param>
-        /// <returns>Current application IOC container</returns>
-        public IocContainer RegisterScoped(Type contract, Type implementation)
+        private static Lifestyle MapLifetime(Lifetimes lifetime)
         {
-            _container.Register(contract, implementation, Lifestyle.Scoped);
-            return this;
-        }
+            Lifestyle style;
 
-        /// <summary>
-        /// Register dependency as transient (for each dependent object will be provided with new instance of
-        /// contract implementation)
-        /// </summary>
-        /// <typeparam name="TContract">Type of contract</typeparam>
-        /// <typeparam name="TImpl">Type of object which implements contact</typeparam>
-        /// <returns>Current application IOC container</returns>
-        public IocContainer RegisterTransient<TContract, TImpl>()
-            where TImpl : class, TContract
-            where TContract : class
-        {
-            _container.Register<TContract, TImpl>(Lifestyle.Transient);
-            return this;
-        }
+            switch (lifetime)
+            {
+                case Lifetimes.Singleton:
+                    style = Lifestyle.Singleton;
+                    break;
+                case Lifetimes.Transient:
+                    style = Lifestyle.Transient;
+                    break;
+                case Lifetimes.Scoped:
+                    style = Lifestyle.Scoped;
+                    break;
+                default:
+                    throw new ArgumentException("Unknown lifetime type");
+            }
 
-        /// <summary>
-        /// Register dependency as transient (for each dependent object will be provided with new instance of
-        /// contract implementation 
-        /// </summary>
-        /// <param name="service">Type of contract</param>
-        /// <param name="implementation">Type of object which implements contact</param>
-        /// <returns>Current application IOC container</returns>
-        public IocContainer RegisterTransient(Type service, Type implementation)
-        {
-            _container.Register(service, implementation, Lifestyle.Transient);
-            return this;
+            return style;
         }
     }
 }

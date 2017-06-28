@@ -10,9 +10,9 @@
         public void RegisterDependencies(IocContainer container)
         {
             container
-                .RegisterScoped<ICurrentUserService, CurrentUserService>()
-                .RegisterScoped<ICaptchaManager, CaptchaManager>()
-                .RegisterScoped<IFileService, FileService>();
+                .Register<ICurrentUserService, CurrentUserService>(Lifetimes.Scoped)
+                .Register<ICaptchaManager, CaptchaManager>(Lifetimes.Scoped)
+                .Register<IFileService, FileService>(Lifetimes.Scoped);
         }
     }
 }

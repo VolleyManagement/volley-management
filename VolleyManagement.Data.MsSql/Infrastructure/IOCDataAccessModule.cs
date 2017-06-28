@@ -28,17 +28,17 @@ namespace VolleyManagement.Data.MsSql.Infrastructure
         private void RegisterRepositories(IocContainer container)
         {
             container
-                .RegisterScoped<IUnitOfWork, VolleyUnitOfWork>()
-                .RegisterScoped<ITournamentRepository, TournamentRepository>()
-                .RegisterScoped<IUserRepository, UserRepository>()
-                .RegisterScoped<IPlayerRepository, PlayerRepository>()
-                .RegisterScoped<IContributorTeamRepository, ContributorTeamRepository>()
-                .RegisterScoped<ITeamRepository, TeamRepository>()
-                .RegisterScoped<IRoleRepository, RoleRepostitory>()
-                .RegisterScoped<IGameRepository, GameRepository>()
-                .RegisterScoped<IFeedbackRepository, FeedbackRepository>()
-                .RegisterScoped<ITournamentRequestRepository, TournamentRequestRepository>()
-                .RegisterScoped<IRequestRepository, RequestRepository>();
+                .Register<IUnitOfWork, VolleyUnitOfWork>(Lifetimes.Scoped)
+                .Register<ITournamentRepository, TournamentRepository>(Lifetimes.Scoped)
+                .Register<IUserRepository, UserRepository>(Lifetimes.Scoped)
+                .Register<IPlayerRepository, PlayerRepository>(Lifetimes.Scoped)
+                .Register<IContributorTeamRepository, ContributorTeamRepository>(Lifetimes.Scoped)
+                .Register<ITeamRepository, TeamRepository>(Lifetimes.Scoped)
+                .Register<IRoleRepository, RoleRepostitory>(Lifetimes.Scoped)
+                .Register<IGameRepository, GameRepository>(Lifetimes.Scoped)
+                .Register<IFeedbackRepository, FeedbackRepository>(Lifetimes.Scoped)
+                .Register<ITournamentRequestRepository, TournamentRequestRepository>(Lifetimes.Scoped)
+                .Register<IRequestRepository, RequestRepository>(Lifetimes.Scoped);
         }
 
         private void RegisterQueries(IocContainer container)
@@ -59,7 +59,7 @@ namespace VolleyManagement.Data.MsSql.Infrastructure
             {
                 foreach (var contract in item.Contracts)
                 {
-                    container.RegisterScoped(contract, item.Implementation);
+                    container.Register(contract, item.Implementation, Lifetimes.Scoped);
                 }
             }
         }

@@ -53,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Infrastructure\IOC\IIocContainer.cs" />
+    <Compile Include="Infrastructure\IOC\IIocRegistrationModule.cs" />
+    <Compile Include="Infrastructure\IOC\IocLifetimeEnum.cs" />
     <Compile Include="Infrastructure\Logger\ILog.cs" />
     <Compile Include="Infrastructure\Logger\LogLevel.cs" />
     <Compile Include="MailService\EmailMessage.cs" />

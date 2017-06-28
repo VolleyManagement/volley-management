@@ -2,17 +2,17 @@
 {
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Crosscutting.IOC;
+    using VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC;
     using VolleyManagement.Services;
 
-    public class IOCUIModule : IIOCRegistrationModule
+    public class IocUiModule : IIocRegistrationModule
     {
-        public void RegisterDependencies(IOCContainer container)
+        public void RegisterDependencies(IIocContainer container)
         {
             container
-                .RegisterScoped<ICurrentUserService, CurrentUserService>()
-                .RegisterScoped<ICaptchaManager, CaptchaManager>()
-                .RegisterScoped<IFileService, FileService>();
+                .Register<ICurrentUserService, CurrentUserService>(IocLifetimeEnum.Scoped)
+                .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
+                .Register<IFileService, FileService>(IocLifetimeEnum.Scoped);
         }
     }
 }

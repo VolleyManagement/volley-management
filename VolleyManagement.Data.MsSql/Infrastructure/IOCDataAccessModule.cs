@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq;
-    using VolleyManagement.Crosscutting.IOC;
+    using VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.MsSql.Queries;
     using VolleyManagement.Data.MsSql.Repositories;
@@ -17,38 +17,38 @@
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Domain.UsersAggregate;
 
-    public class IOCDataAccessModule : IIOCRegistrationModule
+    public class IocDataAccessModule : IIocRegistrationModule
     {
-        public void RegisterDependencies(IOCContainer container)
+        public void RegisterDependencies(IIocContainer container)
         {
             RegisterRepositories(container);
             RegisterQueries(container);
         }
 
-        private void RegisterRepositories(IOCContainer container)
+        private void RegisterRepositories(IIocContainer container)
         {
             container
-                .RegisterScoped<IUnitOfWork, VolleyUnitOfWork>()
-                .RegisterScoped<ITournamentRepository, TournamentRepository>()
-                .RegisterScoped<IUserRepository, UserRepository>()
-                .RegisterScoped<IPlayerRepository, PlayerRepository>()
-                .RegisterScoped<IContributorTeamRepository, ContributorTeamRepository>()
-                .RegisterScoped<ITeamRepository, TeamRepository>()
-                .RegisterScoped<IRoleRepository, RoleRepostitory>()
-                .RegisterScoped<IGameRepository, GameRepository>()
-                .RegisterScoped<IFeedbackRepository, FeedbackRepository>()
-                .RegisterScoped<ITournamentRequestRepository, TournamentRequestRepository>()
-                .RegisterScoped<IRequestRepository, RequestRepository>();
+                .Register<IUnitOfWork, VolleyUnitOfWork>(IocLifetimeEnum.Scoped)
+                .Register<ITournamentRepository, TournamentRepository>(IocLifetimeEnum.Scoped)
+                .Register<IUserRepository, UserRepository>(IocLifetimeEnum.Scoped)
+                .Register<IPlayerRepository, PlayerRepository>(IocLifetimeEnum.Scoped)
+                .Register<IContributorTeamRepository, ContributorTeamRepository>(IocLifetimeEnum.Scoped)
+                .Register<ITeamRepository, TeamRepository>(IocLifetimeEnum.Scoped)
+                .Register<IRoleRepository, RoleRepostitory>(IocLifetimeEnum.Scoped)
+                .Register<IGameRepository, GameRepository>(IocLifetimeEnum.Scoped)
+                .Register<IFeedbackRepository, FeedbackRepository>(IocLifetimeEnum.Scoped)
+                .Register<ITournamentRequestRepository, TournamentRequestRepository>(IocLifetimeEnum.Scoped)
+                .Register<IRequestRepository, RequestRepository>(IocLifetimeEnum.Scoped);
         }
 
-        private void RegisterQueries(IOCContainer container)
+        private void RegisterQueries(IIocContainer container)
         {
             var queriesAssembly = typeof(TournamentQueries).Assembly;
 
             var registrations =
                 from type in queriesAssembly.GetExportedTypes()
                 where type.Namespace == "VolleyManagement.Data.MsSql.Queries"
-                where type.GetInterfaces().Any(i => InterfaceIsQuery(i))
+                where type.GetInterfaces().Any(InterfaceIsQuery)
                 select new
                 {
                     Contracts = type.GetInterfaces().Where(InterfaceIsQuery),
@@ -59,11 +59,9 @@
             {
                 foreach (var contract in item.Contracts)
                 {
-                    container.RegisterScoped(contract, item.Implementation);
+                    container.Register(contract, item.Implementation, IocLifetimeEnum.Scoped);
                 }
             }
-
-            // container.Register(typeof(IQuery<,>), new Assembly[] { queriesAssembly });
         }
 
         private bool InterfaceIsQuery(Type type)

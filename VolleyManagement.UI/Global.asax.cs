@@ -6,11 +6,13 @@
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
-    using VolleyManagement.Crosscutting.IOC;
+    using SimpleInjector.Integration.Web;
+    using SimpleInjector.Integration.Web.Mvc;
     using VolleyManagement.Data.MsSql.Infrastructure;
     using VolleyManagement.Services.Infrastructure;
     using VolleyManagement.UI.Helpers;
     using VolleyManagement.UI.Infrastructure;
+    using VolleyManagement.UI.Infrastructure.IOC;
 
 #pragma warning disable SA1649 // File name must match first type name
     public class VolleyManagementApplication : System.Web.HttpApplication
@@ -46,16 +48,22 @@
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateTimeModelBinder());
 
-            var ioc = new IOCContainer();
+            ConfigureIoc();
+        }
+
+        private static void ConfigureIoc()
+        {
+            var ioc = new SimpleInjectorContainer();
+
+            // Need to explicitly specify default scope
+            ioc.InternalContainer.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
             ioc
-                .Register(new IOCDataAccessModule())
-                .Register(new IOCServicesModule())
-                .Register(new IOCUIModule());
+                .Register(new IocDataAccessModule())
+                .Register(new IocServicesModule())
+                .Register(new IocUiModule());
 
-            DependencyResolver.SetResolver(ioc.GetResolver());
-
-            // GlobalConfiguration.Configuration.DependencyResolver = ioc.GetResolver();
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(ioc.InternalContainer));
         }
     }
 }

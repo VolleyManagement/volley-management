@@ -8,6 +8,7 @@
     using Domain.UsersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.UI.Areas.Admin.Controllers;
     using VolleyManagement.UI.Areas.Admin.Models;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
@@ -22,11 +23,13 @@
         private const int EXISTING_ID = 1;
 
         private Mock<IUserService> _userServiceMock;
+        private Mock<ICurrentUserService> _currentUserService;
 
         [TestInitialize]
         public void TestInit()
         {
             _userServiceMock = new Mock<IUserService>();
+            _currentUserService = new Mock<ICurrentUserService>();
         }
 
         [TestMethod]
@@ -62,7 +65,7 @@
 
         private UsersController BuildSUT()
         {
-            return new UsersController(_userServiceMock.Object);
+            return new UsersController(_userServiceMock.Object, _currentUserService.Object);
         }
 
         private User CreateUser()

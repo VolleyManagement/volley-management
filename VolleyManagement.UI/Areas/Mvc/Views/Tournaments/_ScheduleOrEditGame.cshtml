@@ -1,5 +1,6 @@
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameViewModel
 @using VolleyManagement.Domain.TournamentsAggregate;
+@using System.Globalization;
 
 <legend>@Resources.UI.TournamentViews.ScheduleGameLegend</legend>
 @Html.ValidationMessage("ValidationError")
@@ -48,6 +49,8 @@ else
     @Html.LabelFor(model => model.GameDate)
 </div>
 <div class="form-group editor-field">
-    @Html.EditorFor(model => model.GameDate, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.EditorFor(model => model.GameDate, new { htmlAttributes = new {
+        @Value = Model.GameDate.ToString("g", CultureInfo.CreateSpecificCulture("en-GB")),
+        @class = "form-control" } })
     @Html.ValidationMessageFor(model => model.GameDate, "", new { @class = "text-danger" })
 </div>

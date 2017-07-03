@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
+    using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
     /// Represents a comparer for <see cref="StandingsViewModel"/> objects.

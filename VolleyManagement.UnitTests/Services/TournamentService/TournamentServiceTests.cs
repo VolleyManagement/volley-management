@@ -6,7 +6,7 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
+
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
@@ -32,52 +32,30 @@
     public class TournamentServiceTests
     {
         private const int MINIMUM_REGISTRATION_PERIOD_MONTH = 3;
-
         private const int FIRST_TOURNAMENT_ID = 1;
-
         private const int SPECIFIC_TEAM_ID = 2;
-
         private const int SPECIFIC_TOURNAMENT_ID = 2;
-
         private const int EMPTY_TEAM_LIST_COUNT = 0;
-
         private const int EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT = 4;
 
         private readonly DateTime _dateForCurrentState = new DateTime(2015, 09, 30);
-
         private readonly DateTime _dateForFinishedState = new DateTime(2016, 09, 30);
-
         private readonly DateTime _dateForNotStartedState = new DateTime(2015, 02, 28);
 
         private readonly TournamentServiceTestFixture _testFixture = new TournamentServiceTestFixture();
 
-        private readonly Mock<ITournamentRepository> _tournamentRepositoryMock = new Mock<ITournamentRepository>();
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-        private readonly Mock<IGameService> _gameServiceMock = new Mock<IGameService>();
+        private Mock<ITournamentRepository> _tournamentRepositoryMock;
+        private Mock<IAuthorizationService> _authServiceMock;
+        private Mock<IGameService> _gameServiceMock;
+        private Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock;
+        private Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock;
+        private Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock;
+        private Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getAllTournamentTeamsQuery;
+        private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
+        private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
+        private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
-        private readonly Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock =
-            new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
-
-        private readonly Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock =
-            new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
-
-        private readonly Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock =
-            new Mock<IQuery<Tournament, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getAllTournamentTeamsQuery =
-            new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
-
-        private readonly Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery =
-            new Mock<IQuery<List<Team>, GetAllCriteria>>();
-
-        private readonly Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto =
-            new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
-
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
-
-        private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
-
-        private IKernel _kernel;
+        private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
         /// <summary>
         /// Initializes test data.
@@ -85,16 +63,17 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<ITournamentRepository>().ToConstant(_tournamentRepositoryMock.Object);
-            _kernel.Bind<IQuery<Tournament, UniqueTournamentCriteria>>().ToConstant(_uniqueTournamentQueryMock.Object);
-            _kernel.Bind<IQuery<List<Tournament>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
-            _kernel.Bind<IQuery<Tournament, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
-            _kernel.Bind<IQuery<List<Team>, FindByTournamentIdCriteria>>().ToConstant(_getAllTournamentTeamsQuery.Object);
-            _kernel.Bind<IQuery<List<Team>, GetAllCriteria>>().ToConstant(_getAllTeamsQuery.Object);
-            _kernel.Bind<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>().ToConstant(_getTorunamentDto.Object);
-            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
-            _kernel.Bind<IGameService>().ToConstant(_gameServiceMock.Object);
+            _tournamentRepositoryMock = new Mock<ITournamentRepository>();
+            _authServiceMock = new Mock<IAuthorizationService>();
+            _gameServiceMock = new Mock<IGameService>();
+            _uniqueTournamentQueryMock = new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
+            _getAllQueryMock = new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
+            _getByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
+            _getAllTournamentTeamsQuery = new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
+            _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
+            _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _timeMock.SetupGet(tp => tp.UtcNow).Returns(new DateTime(2015, 06, 01));
             TimeProvider.Current = _timeMock.Object;
@@ -110,6 +89,7 @@
         }
 
         #region FindById
+
         /// <summary>
         /// Test for FinById method.
         /// </summary>
@@ -117,7 +97,7 @@
         public void FindById_Existing_TournamentFound()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             var tournament = CreateAnyTournament(FIRST_TOURNAMENT_ID);
             MockGetByIdQuery(tournament);
@@ -137,7 +117,7 @@
         {
             // Arrange
             MockGetByIdQuery(null);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             var tournament = sut.Get(1);
@@ -148,6 +128,7 @@
         #endregion
 
         #region GetAll
+
         /// <summary>
         /// Test for Get() method. The method should return existing tournaments
         /// (order is important).
@@ -159,7 +140,7 @@
             var testData = _testFixture.TestTournaments()
                                        .Build();
             MockGetAllTournamentsQuery(testData);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
                                             .TestTournaments()
                                             .Build()
@@ -174,6 +155,7 @@
         #endregion
 
         #region GetAllTournamentTeams
+
         /// <summary>
         /// Test for GetAllTournamentTeams method.
         /// The method should return existing teams in specific tournament
@@ -184,7 +166,7 @@
             // Arrange
             var testData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQuery(testData);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
             var expected = new TeamServiceTestFixture().TestTeams().Build();
 
             // Act
@@ -205,7 +187,7 @@
             // Arrange
             var testData = new TeamServiceTestFixture().Build();
             MockGetAllTournamentTeamsQuery(testData);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
@@ -216,6 +198,7 @@
         #endregion
 
         #region Edit
+
         /// <summary>
         /// Test for Edit() method. The method should invoke Update() method of ITournamentRepository
         /// and Commit() method of IUnitOfWork.
@@ -228,7 +211,7 @@
                                         .WithId(1)
                                         .WithName("Test Tournament")
                                         .Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(testTournament);
@@ -248,7 +231,7 @@
             // Arrange
             Tournament testTournament = null;
             _tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<NullReferenceException>();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(testTournament);
@@ -268,7 +251,7 @@
             // Arrange
             Tournament testTournament = new TournamentBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Edit);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(testTournament);
@@ -298,7 +281,7 @@
                                                         .Build();
 
             MockGetUniqueTournamentQuery(testData);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(nonUniqueNameTournament);
@@ -309,6 +292,7 @@
         #endregion
 
         #region Create
+
         /// <summary>
         /// Test for Create() method. Tournament's applying start date comes before current date.
         /// Exception is thrown during tournament creation.
@@ -324,7 +308,7 @@
             var newTournament = new TournamentBuilder()
                 .WithApplyingPeriodStart(now.AddDays(APPLYING_PERIOD_START_DAYS_DELTA))
                 .Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -349,7 +333,7 @@
                 .WithApplyingPeriodStart(now.AddDays(APPLYING_PERIOD_START_DAYS_DELTA))
                 .WithApplyingPeriodEnd(now)
                 .Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -372,7 +356,7 @@
             var newTournament = new TournamentBuilder()
                 .WithGamesStart(now.AddMonths(MINIMUM_REGISTRATION_PERIOD_MONTH + GAMES_START_MONTHS_DELTA))
                 .Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -390,7 +374,7 @@
         {
             // Arrange
             var newTournament = new TournamentBuilder().WithNoTransferPeriod().Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -404,13 +388,14 @@
         /// Exception is thrown during tournament creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(TournamentValidationException),
+        [ExpectedException(
+            typeof(TournamentValidationException),
             "При наличии трансферного периода необходимо указать дату начала периода")]
         public void Create_TournamentNoTransferStart_ExceptionThrown()
         {
             // Arrange
             var newTournament = new TournamentBuilder().WithTransferStart(null).Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -424,13 +409,14 @@
         /// Exception is thrown during tournament creation.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(TournamentValidationException),
+        [ExpectedException(
+            typeof(TournamentValidationException),
             "При наличии трансферного периода необходимо указать дату окончания периода")]
         public void Create_TournamentNoTransferEnd_ExceptionThrown()
         {
             // Arrange
             var newTournament = new TournamentBuilder().WithTransferEnd(null).Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -443,7 +429,8 @@
         /// Test for Create() method. Tournament's transfer end date comes after tournament's games end date.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(TournamentValidationException),
+        [ExpectedException(
+            typeof(TournamentValidationException),
             "Окончание трансферного периода должно быть раньше окончания игр")]
         public void Create_TournamentTransferEndDateAfterGamesEndDate_ExceptionThrown()
         {
@@ -458,7 +445,7 @@
                 .WithTransferEnd(now.AddMonths(MINIMUM_REGISTRATION_PERIOD_MONTH + TRANSFER_END_MONTHS_DELTA)
                     .AddDays(TRANSFER_END_DAYS_DELTA))
                 .Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -481,7 +468,7 @@
                 .WithGamesStart(now.AddMonths(MINIMUM_REGISTRATION_PERIOD_MONTH))
                 .WithGamesEnd(now.AddMonths(MINIMUM_REGISTRATION_PERIOD_MONTH))
                 .Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -494,7 +481,8 @@
         /// Test for Create() method. Tournament's transfer end date comes before tournament's transfer start date.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(TournamentValidationException),
+        [ExpectedException(
+            typeof(TournamentValidationException),
             "Начало трансферного периода должно быть раньше чем его окончание")]
         public void Create_TournamentTransferEndDateBeforeTransferStartDate_ExceptionThrown()
         {
@@ -509,7 +497,7 @@
                     .AddDays(TRANSFER_START_DAYS_DELTA))
                 .WithTransferEnd(now.AddMonths(MINIMUM_REGISTRATION_PERIOD_MONTH + TRANSFER_END_MONTHS_DELTA))
                 .Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -536,7 +524,7 @@
                 .WithTransferStart(now.AddMonths(MINIMUM_REGISTRATION_PERIOD_MONTH + TRANSFER_START_MONTHS_DELTA)
                     .AddDays(TRANSFER_START_DAYS_DELTA))
                 .Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -564,7 +552,7 @@
                     .AddDays(GAMES_START_DAYS_DELTA))
                 .WithGamesEnd(now.AddMonths(MINIMUM_REGISTRATION_PERIOD_MONTH + GAMES_END_MONTHS_DELTA))
                 .Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -596,7 +584,7 @@
                                                        .Build();
 
             // Act
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
             sut.Create(newTournament);
 
             // Assert
@@ -616,7 +604,7 @@
             _tournamentRepositoryMock.Setup(tr => tr.Add(null)).Throws<InvalidOperationException>();
 
             // Act
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
             sut.Create(testTournament);
 
             // Assert
@@ -635,7 +623,7 @@
             _uniqueTournamentQueryMock
                 .Setup(tr => tr.Execute(It.Is<UniqueTournamentCriteria>(cr => cr.Name == newTournament.Name)))
                 .Returns(newTournament);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -653,7 +641,7 @@
         {
             // Arrange
             var newTournament = new TournamentBuilder().WithNoDivisions().Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -671,7 +659,7 @@
         {
             // Arrange
             var newTournament = new TournamentBuilder().WithNonUniqueNameDivisions().Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -690,7 +678,7 @@
         {
             // Arrange
             var newTournament = new TournamentBuilder().WithNoDivisionsGroups().Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -709,7 +697,7 @@
         {
             // Arrange
             var newTournament = new TournamentBuilder().WithDivisionsNonUniqueNameGroups().Build();
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(newTournament);
@@ -729,7 +717,7 @@
             // Arrange
             Tournament testTournament = new TournamentBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Create);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(testTournament);
@@ -741,6 +729,7 @@
         #endregion
 
         #region AddTeamsToTournament
+
         /// <summary>
         /// Test for AddTeamsToTournament method.
         /// Valid teams have to be added.
@@ -753,7 +742,7 @@
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
@@ -775,7 +764,7 @@
             // Arrange
             var testData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().TestTeams().Build());
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -803,7 +792,7 @@
             // Arrange
             var testData = new TeamServiceTestFixture().TestTeams().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ManageTeams);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
@@ -831,7 +820,7 @@
             var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQueryTwoCalls(new TeamServiceTestFixture().Build(), testTeamsData);
 
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
@@ -843,6 +832,7 @@
         #endregion
 
         #region DeleteTeamFromTournament
+
         /// <summary>
         /// Test for DeleteTeamFromTournament method.
         /// Team have to be removed from tournament
@@ -853,10 +843,11 @@
             // Arrange
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
-            var sut = _kernel.Get<TournamentService>();
 
             var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQuery(testTeamsData);
+
+            var sut = BuildSUT();
 
             // Act
             sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
@@ -876,10 +867,11 @@
             bool gotException = false;
 
             // Arrange
-            var sut = _kernel.Get<TournamentService>();
             _tournamentRepositoryMock
                 .Setup(tr => tr.RemoveTeamFromTournament(It.IsAny<int>(), It.IsAny<int>()))
                 .Throws(new ConcurrencyException());
+
+            var sut = BuildSUT();
 
             // Act
             try
@@ -906,7 +898,7 @@
         {
             // Arrange
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ManageTeams);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
@@ -933,7 +925,7 @@
             var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQuery(testTeamsData);
 
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.DeleteTeamFromTournament(SPECIFIC_TEAM_ID, FIRST_TOURNAMENT_ID);
@@ -945,6 +937,7 @@
         #endregion
 
         #region Delete
+
         /// <summary>
         /// Test for Delete Tournament method.
         /// </summary>
@@ -952,7 +945,7 @@
         public void Delete_TournamentExist_TournamentRemoved()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Delete(FIRST_TOURNAMENT_ID);
@@ -971,7 +964,7 @@
         {
             // Arrange
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Delete);
-            var sut = _kernel.Get<TournamentService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Delete(FIRST_TOURNAMENT_ID);
@@ -983,13 +976,16 @@
         #endregion
 
         #region GetActual
+
         /// <summary>
         /// GetActual method test. The method should invoke Find() method of ITournamentRepository
         /// </summary>
+        [TestMethod]
+        [Ignore] // TODO: Investigate why it wasn't finished
         public void GetActual_ActualTournamentsRequest_FindCalled()
         {
             // Act
-            var tournamentService = _kernel.Get<TournamentService>();
+            var tournamentService = BuildSUT();
             tournamentService.GetActual();
 
             // Assert
@@ -1003,10 +999,10 @@
         public void GetActual_TournamentsExist_ActualTournamentsReturnes()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentService>();
-            var testData = _testFixture.TestTournaments()
-                                       .Build();
+            var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+
+            var sut = BuildSUT();
 
             var expected = BuildActualTournamentsList();
 
@@ -1025,10 +1021,12 @@
         {
             // Arrange
             MockTimeProviderUtcNow(_dateForCurrentState);
-            var sut = _kernel.Get<TournamentService>();
+
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
             var expected = BuildActualTournamentsList();
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetActual().ToList();
@@ -1039,6 +1037,7 @@
         #endregion
 
         #region GetFinished
+
         /// <summary>
         /// GetActual method test. The method should invoke Find() method of ITournamentRepository
         /// </summary>
@@ -1046,10 +1045,10 @@
         public void GetFinished_FinishTournamentsExist_FinishedTournamentsReturned()
         {
             // Arrange
-            var sut = _kernel.Get<TournamentService>();
             var testData = _testFixture.WithFinishedTournaments().Build();
             MockGetAllTournamentsQuery(testData);
 
+            var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture().WithFinishedTournaments().Build();
 
             // Act
@@ -1067,10 +1066,10 @@
         {
             // Arrange
             MockTimeProviderUtcNow(_dateForFinishedState);
-            var sut = _kernel.Get<TournamentService>();
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
 
+            var sut = BuildSUT();
             var expected = BuildActualTournamentsList();
 
             // Act
@@ -1082,6 +1081,7 @@
         #endregion
 
         #region Get
+
         /// <summary>
         /// Get method test. The method returns all tournaments.
         /// Then select all not started tournaments
@@ -1091,9 +1091,10 @@
         {
             // Arrange
             MockTimeProviderUtcNow(_dateForNotStartedState);
-            var sut = _kernel.Get<TournamentService>();
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.Get().ToList();
@@ -1105,6 +1106,21 @@
         #endregion
 
         #region Private
+
+        private TournamentService BuildSUT()
+        {
+            return new TournamentService(
+                _tournamentRepositoryMock.Object,
+                _uniqueTournamentQueryMock.Object,
+                _getAllQueryMock.Object,
+                _getByIdQueryMock.Object,
+                _getAllTeamsQuery.Object,
+                _getAllTournamentTeamsQuery.Object,
+                _getTorunamentDto.Object,
+                _authServiceMock.Object,
+                _gameServiceMock.Object);
+        }
+
         private bool TournamentsAreEqual(Tournament x, Tournament y)
         {
             return new TournamentComparer().Compare(x, y) == 0;

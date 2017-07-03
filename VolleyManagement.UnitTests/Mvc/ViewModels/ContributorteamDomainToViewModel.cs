@@ -1,10 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Collections.Generic;
+    using Domain.ContributorsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
-    using VolleyManagement.UnitTests.Services.ContributorService;
+    using Services.ContributorService;
+    using UI.Areas.Mvc.ViewModels.ContributorsTeam;
 
     /// <summary>
     /// View model contributor team class test

@@ -5,7 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
+
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
@@ -31,8 +31,6 @@
 
         private const byte BYTE_SIZE_SHIFT = 8;
 
-        private IKernel _kernel;
-
         private Mock<IQuery<List<AuthOperation>, FindByUserIdCriteria>> _getByIdQueryMock;
         private Mock<ICurrentUserService> _currentUserService;
         private Type[] _authOperationsAreas = typeof(AuthOperations).GetNestedTypes();
@@ -44,9 +42,8 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.RegisterDefaultMock(out _getByIdQueryMock);
-            _kernel.RegisterDefaultMock(out _currentUserService);
+            _getByIdQueryMock = new Mock<IQuery<List<AuthOperation>, FindByUserIdCriteria>>();
+            _currentUserService = new Mock<ICurrentUserService>();
         }
 
         #endregion
@@ -68,7 +65,7 @@
             MockAllowedOperations(allowedOperations);
 
             var operationToCheck = Tuple.Create(AREA_1_ID, OPERATION_4_ID);
-            var service = _kernel.Get<AuthorizationService>();
+            var service = BuildSUT();
 
             // Act
             service.CheckAccess(operationToCheck);
@@ -83,7 +80,7 @@
             var allowedOperations = new List<AuthOperation>();
             MockAllowedOperations(allowedOperations);
 
-            var service = _kernel.Get<AuthorizationService>();
+            var service = BuildSUT();
 
             // Act
             service.CheckAccess(operationToCheck);
@@ -103,7 +100,7 @@
             MockAllowedOperations(allowedOperations);
 
             var operationToCheck = Tuple.Create(AREA_1_ID, OPERATION_2_ID);
-            var service = _kernel.Get<AuthorizationService>();
+            var service = BuildSUT();
 
             // Act
             service.CheckAccess(operationToCheck);
@@ -127,7 +124,8 @@
                 Tuple.Create(AREA_1_ID, OPERATION_2_ID),
                 Tuple.Create(AREA_1_ID, OPERATION_3_ID)
             };
-            var service = _kernel.Get<AuthorizationService>();
+
+            var service = BuildSUT();
 
             // Act
             var allowedOperations = service.GetAllowedOperations(requestedOperations);
@@ -157,7 +155,8 @@
                 Tuple.Create(AREA_1_ID, OPERATION_2_ID),
                 Tuple.Create(AREA_1_ID, OPERATION_3_ID)
             };
-            var service = _kernel.Get<AuthorizationService>();
+
+            var service = BuildSUT();
 
             // Act
             var allowedOperations = service.GetAllowedOperations(requestedOperations);
@@ -186,7 +185,8 @@
                 Tuple.Create(AREA_1_ID, OPERATION_3_ID),
                 Tuple.Create(AREA_1_ID, OPERATION_4_ID)
             };
-            var service = _kernel.Get<AuthorizationService>();
+
+            var service = BuildSUT();
 
             // Act
             var allowedOperations = service.GetAllowedOperations(requestedOperations);
@@ -215,7 +215,7 @@
             MockAllowedOperations(allAllowedOperations);
 
             var requestedOperations = new List<AuthOperation>();
-            var service = _kernel.Get<AuthorizationService>();
+            var service = BuildSUT();
 
             // Act
             var allowedOperations = service.GetAllowedOperations(requestedOperations);
@@ -240,7 +240,7 @@
             MockAllowedOperations(allAllowedOperations);
 
             List<AuthOperation> requestedOperations = null;
-            var service = _kernel.Get<AuthorizationService>();
+            var service = BuildSUT();
 
             // Act
             var allowedOperations = service.GetAllowedOperations(requestedOperations);
@@ -259,7 +259,7 @@
             MockAllowedOperations(allAllowedOperations);
 
             var requestedOperation = Tuple.Create(AREA_1_ID, OPERATION_2_ID);
-            var service = _kernel.Get<AuthorizationService>();
+            var service = BuildSUT();
 
             // Act
             var allowedOperations = service.GetAllowedOperations(requestedOperation);
@@ -285,7 +285,8 @@
                 Tuple.Create(AREA_1_ID, OPERATION_3_ID),
                 Tuple.Create(AREA_1_ID, OPERATION_4_ID)
             };
-            var service = _kernel.Get<AuthorizationService>();
+
+            var service = BuildSUT();
 
             // Act
             var allowedOperations = service.GetAllowedOperations(requestedOperations);
@@ -315,7 +316,7 @@
             MockAllowedOperations(allAllowedOperations);
 
             AuthOperation requestedOperations = null;
-            var service = _kernel.Get<AuthorizationService>();
+            var service = BuildSUT();
 
             // Act
             var allowedOperations = service.GetAllowedOperations(requestedOperations);
@@ -532,9 +533,14 @@
 
         #region Private
 
+        private AuthorizationService BuildSUT()
+        {
+            return new AuthorizationService(_currentUserService.Object, _getByIdQueryMock.Object);
+        }
+
         private void MockAllowedOperations(List<AuthOperation> operations)
         {
-            this._getByIdQueryMock.Setup(q => q.Execute(It.IsAny<FindByUserIdCriteria>())).Returns(operations);
+            _getByIdQueryMock.Setup(q => q.Execute(It.IsAny<FindByUserIdCriteria>())).Returns(operations);
         }
 
         #endregion

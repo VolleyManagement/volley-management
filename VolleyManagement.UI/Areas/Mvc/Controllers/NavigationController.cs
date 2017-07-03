@@ -6,7 +6,7 @@
     using System.Web;
     using System.Web.Mvc;
 
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Menu;
+    using ViewModels.Menu;
 
     /// <summary>
     /// Represents navigation menu controller
@@ -19,7 +19,7 @@
         /// <returns> Partial view of the menu. </returns>
         public PartialViewResult Menu()
         {
-            string controllerName = (string)this.Request.RequestContext.RouteData.Values["controller"];
+            string controllerName = (string)Request.RequestContext.RouteData.Values["controller"];
             IQueryable<MenuItemViewModel> items = new List<MenuItemViewModel>
                 {
                     new MenuItemViewModel() { Name = "Tournaments", Controller = "Tournaments", Action = "Index" },

@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
+    using UI.Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for tournament objects.
@@ -19,7 +19,7 @@
         /// <returns>A signed integer that indicates the relative values of tournaments.</returns>
         public int Compare(TournamentViewModel x, TournamentViewModel y)
         {
-            return this.AreEqual(x, y) ? 0 : 1;
+            return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>

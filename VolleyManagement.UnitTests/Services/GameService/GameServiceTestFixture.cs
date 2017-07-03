@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Domain.GamesAggregate;
 
     /// <summary>
     /// Generates test data for <see cref="GameResultDto"/>.
@@ -545,9 +545,9 @@
 
         public GameServiceTestFixture TestGamesForDuplicateSchemeOne()
         {
-            this._gameResults.Clear();
+            _gameResults.Clear();
 
-            this._gameResults.Add(new GameResultDto()
+            _gameResults.Add(new GameResultDto()
             {
                 Id = 1,
                 GameDate = DateTime.Parse(DATE_A),
@@ -563,8 +563,8 @@
 
         public GameServiceTestFixture TestGamesForDuplicateSchemeTwo()
         {
-            this._gameResults.Clear();
-            this._gameResults.Add(
+            _gameResults.Clear();
+            _gameResults.Add(
                 new GameResultDto()
                 {
                     Id = 1,
@@ -575,7 +575,7 @@
                     Round = 1,
                     GameNumber = 0
                 });
-            this._gameResults.Add(
+            _gameResults.Add(
                new GameResultDto()
                {
                    Id = 2,
@@ -592,8 +592,8 @@
 
         public GameServiceTestFixture TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
         {
-            this._gameResults.Clear();
-            this._gameResults.Add(
+            _gameResults.Clear();
+            _gameResults.Add(
                 new GameResultDto()
                 {
                     Id = 1,
@@ -604,7 +604,7 @@
                     Round = 1,
                     GameNumber = 0
                 });
-            this._gameResults.Add(
+            _gameResults.Add(
                new GameResultDto()
                {
                    Id = 2,
@@ -621,8 +621,8 @@
 
         public GameServiceTestFixture TestGamesWithFreeDay()
         {
-            this._gameResults.Clear();
-            this._gameResults.Add(
+            _gameResults.Clear();
+            _gameResults.Add(
                 new GameResultDto()
                 {
                     Id = 1,
@@ -639,8 +639,8 @@
 
         public GameServiceTestFixture TestGamesWithTwoFreeDays()
         {
-            this._gameResults.Clear();
-            this._gameResults.Add(
+            _gameResults.Clear();
+            _gameResults.Add(
                 new GameResultDto()
                 {
                     Id = 1,
@@ -651,7 +651,7 @@
                     Round = 1,
                     GameNumber = 0
                 });
-            this._gameResults.Add(
+            _gameResults.Add(
                new GameResultDto()
                {
                    Id = 2,
@@ -668,8 +668,8 @@
 
         public GameServiceTestFixture TestGamesWithoutResult()
         {
-            this._gameResults.Clear();
-            this._gameResults.Add(
+            _gameResults.Clear();
+            _gameResults.Add(
                 new GameResultDto()
                 {
                     Id = 1,
@@ -695,7 +695,7 @@
                     Round = 1,
                     GameNumber = 0
                 });
-            this._gameResults.Add(
+            _gameResults.Add(
                new GameResultDto()
                {
                    Id = 2,
@@ -727,7 +727,7 @@
 
         public GameServiceTestFixture TestEmptyGamesInPlayoff()
         {
-            this._gameResults.Clear();
+            _gameResults.Clear();
 
             _gameResults.AddRange(
                 new List<GameResultDto>
@@ -803,7 +803,7 @@
 
         public GameServiceTestFixture TestMinimumEvenEmptyGamesPlayoff()
         {
-            this._gameResults.Clear();
+            _gameResults.Clear();
 
             _gameResults.AddRange(
                   new List<GameResultDto>
@@ -847,7 +847,7 @@
 
         public GameServiceTestFixture TestMinimumOddTeamsPlayOffSchedule()
         {
-            this._gameResults.Clear();
+            _gameResults.Clear();
 
             _gameResults.AddRange(
                 new List<GameResultDto>

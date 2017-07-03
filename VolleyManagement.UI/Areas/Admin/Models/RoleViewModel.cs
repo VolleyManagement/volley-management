@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
-    using VolleyManagement.Domain.RolesAggregate;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// The role view model.

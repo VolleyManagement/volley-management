@@ -4,14 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using Contracts;
+    using Contracts.Authorization;
     using Contracts.Exceptions;
     using Data.Contracts;
     using Data.Queries.Common;
+    using Data.Queries.User;
+    using Domain.PlayersAggregate;
+    using Domain.RolesAggregate;
     using Domain.UsersAggregate;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Data.Queries.User;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Provides the way to get specified information about user.
@@ -61,7 +61,7 @@
         /// <returns>User entity.</returns>
         public User GetUser(int userId)
         {
-            return this._getUserByIdQuery.Execute(
+            return _getUserByIdQuery.Execute(
                 new FindByIdCriteria { Id = userId });
         }
 
@@ -72,11 +72,11 @@
         /// <returns>User entity.</returns>
         public User GetUserDetails(int userId)
         {
-            this._authService.CheckAccess(AuthOperations.AllUsers.ViewDetails);
-            var user = this.GetUser(userId);
+            _authService.CheckAccess(AuthOperations.AllUsers.ViewDetails);
+            var user = GetUser(userId);
             if (user != null)
             {
-                user.Player = this.GetPlayer(user.PlayerId.GetValueOrDefault());
+                user.Player = GetPlayer(user.PlayerId.GetValueOrDefault());
             }
 
             return user;
@@ -88,8 +88,8 @@
         /// <returns>Use collection.</returns>
         public List<User> GetAllUsers()
         {
-            this._authService.CheckAccess(AuthOperations.AllUsers.ViewList);
-            return this._getAllUsersQuery.Execute(new GetAllCriteria());
+            _authService.CheckAccess(AuthOperations.AllUsers.ViewList);
+            return _getAllUsersQuery.Execute(new GetAllCriteria());
         }
 
         /// <summary>
@@ -98,7 +98,7 @@
         /// <returns>Use collection.</returns>
         public List<User> GetAllActiveUsers()
         {
-            this._authService.CheckAccess(AuthOperations.AllUsers.ViewActiveList);
+            _authService.CheckAccess(AuthOperations.AllUsers.ViewActiveList);
             var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
             _cacheProvider["ActiveUsers"] = activeUsersList;
             return activeUsersList.Select(GetUser).ToList();
@@ -124,7 +124,7 @@
             User user = GetUser(userId);
             if (user == null)
             {
-                throw new MissingEntityException(Services.ServiceResources.ExceptionMessages.UserNotFound);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.UserNotFound);
             }
 
             user.IsBlocked = toBlock;
@@ -139,7 +139,7 @@
         /// <returns>Player instance.</returns>
         private Player GetPlayer(int playerId)
         {
-            return this._getUserPlayerQuery.Execute(new FindByIdCriteria { Id = playerId });
+            return _getUserPlayerQuery.Execute(new FindByIdCriteria { Id = playerId });
         }
     }
 }

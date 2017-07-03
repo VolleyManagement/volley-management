@@ -7,7 +7,7 @@
 @Html.HiddenFor(model => model.TournamentId)
 
 <div class="form-group">
-    @Resources.GameResultViews.TeamsFields
+    @Resources.UI.GameResultViews.TeamsFields
 
     @Html.LabelFor(model => model.HomeTeamName, Model.HomeTeamName)
     @Html.LabelFor(model => model.AwayTeamName, Model.AwayTeamName)
@@ -20,7 +20,7 @@
 </div>
 
 <div class="form-group">
-    @Resources.GameResultViews.SetsScoreFields
+    @Resources.UI.GameResultViews.SetsScoreFields
     @Html.EditorFor(model => model.SetsScore.Home, new { htmlAttributes = new { @class = "form-control" } })
 
     @Html.EditorFor(model => model.SetsScore.Away, new { htmlAttributes = new { @class = "form-control" } })
@@ -28,7 +28,7 @@
 
 <div class="form-group">
     <label for="@Model.IsTechnicalDefeat">
-        @Resources.GameResultViews.TechnicalDefeatField
+        @Resources.UI.GameResultViews.TechnicalDefeatField
         @Html.EditorFor(model => model.IsTechnicalDefeat)
         @Html.ValidationMessageFor(model => model.IsTechnicalDefeat, "", new { @class = "text-danger" })
     </label>
@@ -37,7 +37,7 @@
 @for (int i = 0; i < Model.SetScores.Count; i++)
 {
     <div class="form-group">
-        @string.Format(Resources.GameResultViews.SetFields, i + 1)
+        @string.Format(Resources.UI.GameResultViews.SetFields, i + 1)
         @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control" } })
 
         @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control" } })

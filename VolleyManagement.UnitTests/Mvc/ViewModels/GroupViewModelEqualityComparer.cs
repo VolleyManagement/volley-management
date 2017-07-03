@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
+    using UI.Areas.Mvc.ViewModels.Division;
 
     /// <summary>
     /// Equality comparer for group view model objects.

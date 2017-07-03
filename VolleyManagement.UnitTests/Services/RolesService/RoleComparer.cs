@@ -3,8 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
-    using VolleyManagement.Domain.RolesAggregate;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// Compares Role instances
@@ -34,7 +33,7 @@
 
         public int Compare(object x, object y)
         {
-            return this.Compare(x as Role, y as Role);
+            return Compare(x as Role, y as Role);
         }
 
         private int CompareInternal(Role x, Role y)

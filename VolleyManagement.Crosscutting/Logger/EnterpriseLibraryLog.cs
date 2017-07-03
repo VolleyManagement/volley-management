@@ -1,8 +1,7 @@
 ﻿namespace VolleyManagement.Crosscutting
 {
+    using Contracts.Infrastructure;
     using Microsoft.Practices.EnterpriseLibrary.Logging;
-
-    using VolleyManagement.Crosscutting.Contracts.Infrastructure;
 
     /// <summary>
     /// The enterprise library log.

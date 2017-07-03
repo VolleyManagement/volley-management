@@ -18,7 +18,7 @@
 
         private AuthOperation(short id)
         {
-            this._id = id;
+            _id = id;
         }
 
         #endregion
@@ -68,9 +68,9 @@
         {
             bool result;
 
-            if (object.ReferenceEquals(x, null))
+            if (ReferenceEquals(x, null))
             {
-                result = object.ReferenceEquals(y, null);
+                result = ReferenceEquals(y, null);
             }
             else
             {
@@ -133,7 +133,7 @@
             }
             else
             {
-                result = this._id == obj._id;
+                result = _id == obj._id;
             }
 
             return result;
@@ -145,7 +145,7 @@
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            return this._id.GetHashCode();
+            return _id.GetHashCode();
         }
 
         #endregion

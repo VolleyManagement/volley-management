@@ -8,13 +8,16 @@ namespace VolleyManagement.Data.MsSql.Entities
     /// </summary>
     public class TournamentEntity
     {
+        private List<DivisionEntity> _divisions;
+        private List<TeamEntity> _teams;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentEntity"/> class.
         /// </summary>
         public TournamentEntity()
         {
-            this.Divisions = new List<DivisionEntity>();
-            this.Teams = new List<TeamEntity>();
+            _divisions = new List<DivisionEntity>();
+            _teams = new List<TeamEntity>();
         }
 
         /// <summary>
@@ -80,7 +83,11 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// <summary>
         /// Gets or sets collection of tournaments divisions
         /// </summary>
-        public virtual List<DivisionEntity> Divisions { get; set; }
+        public virtual List<DivisionEntity> Divisions
+        {
+            get => _divisions;
+            set => _divisions = value;
+        }
 
         /// <summary>
         /// Gets or sets game results of the tournament.
@@ -90,7 +97,11 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// <summary>
         /// Gets or sets collection of tournaments teams
         /// </summary>
-        public virtual List<TeamEntity> Teams { get; set; }
+        public virtual List<TeamEntity> Teams
+        {
+            get => _teams;
+            set => _teams = value;
+        }
 
         /// <summary>
         /// Gets or sets last time, when tournament was updated

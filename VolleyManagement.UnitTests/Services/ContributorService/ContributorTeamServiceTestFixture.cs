@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.ContributorsAggregate;
+    using Domain.ContributorsAggregate;
 
     /// <summary>
     /// Class for generating test data

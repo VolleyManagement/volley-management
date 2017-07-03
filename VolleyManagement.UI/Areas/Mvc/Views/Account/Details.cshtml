@@ -17,4 +17,4 @@
 @Html.LabelFor(u => Model.LoginProviders) : @foreach (string provider in Model.LoginProviders) {
     <span>@provider</span> <br />
 }
-@Html.ActionLink(Resources.UserViews.Edit, "Edit", null, new { @class="btn btn-warning"})
+@Html.ActionLink(Resources.UI.UserViews.Edit, "Edit", null, new { @class="btn btn-warning"})

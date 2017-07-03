@@ -8,7 +8,7 @@
 <div class="panel panel-primary">
     <div class="panel-heading">User @Model.Id
         <div class="pull-right">
-            @if (Model.isBlocked)
+            @if (Model.IsBlocked)
             {
                 @Html.ActionLink("Unblock", "ChangeUserBlocked", new { id = Model.Id, toBlock = false, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
             }

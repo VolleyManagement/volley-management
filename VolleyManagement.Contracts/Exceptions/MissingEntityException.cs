@@ -2,19 +2,20 @@
 {
     using System;
 
-    using VolleyManagement.Domain;
+    using Domain;
 
     /// <summary>
     /// Represents errors that occurs during the searching entity in database
     /// </summary>
+    [Serializable]
     public sealed class MissingEntityException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the MissingEntityException
         /// class.
         /// </summary>
-        public MissingEntityException() :
-            base("Specified entity missing in database")
+        public MissingEntityException()
+            : base("Specified entity missing in database")
         {
         }
 
@@ -22,8 +23,8 @@
         /// Initializes a new instance of the MissingEntityException class.
         /// </summary>
         /// <param name="message">Exception uses to initialize data MissingEntityException</param>
-        public MissingEntityException(string message) :
-            base(message)
+        public MissingEntityException(string message)
+            : base(message)
         {
         }
 
@@ -66,7 +67,7 @@
 
         private void AddEntityIdToData(object entityId)
         {
-            this.Data[Constants.ExceptionManagement.ENTITY_ID_KEY] = entityId;
+            Data[Constants.ExceptionManagement.ENTITY_ID_KEY] = entityId;
         }
     }
 }

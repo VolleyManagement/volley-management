@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Players
 {
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Generic;
+    using Contracts.Authorization;
+    using Domain.PlayersAggregate;
+    using Generic;
 
     /// <summary>
     /// Represents PlayerViewModel and referrer link.

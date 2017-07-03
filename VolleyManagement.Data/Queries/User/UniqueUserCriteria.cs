@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.User
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Unique criteria to find users assigned to specific role

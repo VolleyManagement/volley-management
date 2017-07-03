@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Domain.TournamentsAggregate;
 
     /// <summary>
     /// Comparer for tournament objects.

@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Domain.RequestsAggregate
 {
-    using VolleyManagement.Data.Contracts;
+    using Data.Contracts;
 
     /// <summary>
     /// Defines specific contract for RequestRepository

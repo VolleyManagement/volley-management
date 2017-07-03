@@ -4,8 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.PlayersAggregate;
+    using Contracts.Authorization;
+    using Domain.PlayersAggregate;
 
     /// <summary>
     /// The players list view model.
@@ -23,25 +23,25 @@
         /// <param name="textToSearch">Substring to search</param>
         public PlayersListViewModel(IQueryable<Player> source, int? index, int size, string textToSearch)
         {
-            this.TextToSearch = textToSearch;
-            this.Size = size;
-            this.PageNumber = index ?? FIRST_PAGE;
-            this.NumberOfPages = (int)Math.Ceiling(source.Count() / (double)Size);
+            TextToSearch = textToSearch;
+            Size = size;
+            PageNumber = index ?? FIRST_PAGE;
+            NumberOfPages = (int)Math.Ceiling(source.Count() / (double)Size);
 
-            if ((index > this.NumberOfPages) || (index < FIRST_PAGE))
+            if ((index > NumberOfPages) || (index < FIRST_PAGE))
             {
                 throw new ArgumentOutOfRangeException();
             }
 
-            List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((this.PageNumber - 1) * Size)
+            List<PlayerViewModel> listOfPlayers = new List<PlayerViewModel>(source.Skip((PageNumber - 1) * Size)
                             .Take(Size)
                             .ToList()
                             .Select(p => PlayerViewModel.Map(p)));
 
-            this.List = new List<PlayerNameViewModel>();
+            List = new List<PlayerNameViewModel>();
             foreach (PlayerViewModel player in listOfPlayers)
             {
-                this.List.Add(PlayerNameViewModel.Map(player));
+                List.Add(PlayerNameViewModel.Map(player));
             }
         }
 

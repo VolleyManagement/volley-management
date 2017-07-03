@@ -8,7 +8,7 @@
     /// Represents request view model
     /// </summary>
     public class RequestViewModel
-    {   
+    {
         /// <summary>
         /// Gets or sets request id.
         /// </summary>

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
-    using VolleyManagement.Data.MsSql.Context.Migrations;
+    using Migrations;
 
     /// <summary>
     /// The volley management DB initializer.

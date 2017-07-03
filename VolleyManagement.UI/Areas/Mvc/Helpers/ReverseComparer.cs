@@ -16,7 +16,7 @@
         /// <param name="original">Original comparer</param>
         public ReverseComparer(IComparer<T> original)
         {
-            this._original = original;
+            _original = original;
         }
 
         /// <summary>

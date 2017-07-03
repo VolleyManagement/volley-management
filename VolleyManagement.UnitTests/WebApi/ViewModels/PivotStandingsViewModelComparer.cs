@@ -7,7 +7,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports;
+    using UI.Areas.WebApi.ViewModels.GameReports;
 
     /// <summary>
     /// Represents an equality comparer for <see cref="PivotStandingsViewModel"/> objects.
@@ -23,7 +23,7 @@
         /// <returns>A signed integer that indicates the relative values of entries.</returns>
         public int Compare(PivotStandingsViewModel x, PivotStandingsViewModel y)
         {
-            return this.AreEqual(x, y) ? 0 : 1;
+            return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>

@@ -5,6 +5,7 @@
     /// <summary>
     /// Contains information about thrown authorization exception
     /// </summary>
+    [Serializable]
     public class AuthorizationException : Exception
     {
         /// <summary>

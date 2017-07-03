@@ -3,16 +3,16 @@
 @using VolleyManagement.Crosscutting.Contracts.Providers
 
 @{
-    ViewBag.Title = Resources.GameReportViews.TournamentStandingsTitle;
+    ViewBag.Title = Resources.UI.GameReportViews.TournamentStandingsTitle;
 }
 
 <h2>@ViewBag.Title</h2>
 
 @{
-    string legendText = string.Format(Resources.GameReportViews.TournamentStandingsLegend, Model.TournamentName);
+    string legendText = string.Format(Resources.UI.GameReportViews.TournamentStandingsLegend, Model.TournamentName);
 }
 
     <legend>@legendText</legend>
     <h4> @Model.Message</h4>
 
-<p>@Html.ActionLink(Resources.GameReportViews.BackToTournament, "Details", "Tournaments", new { id = Model.TournamentId }, null)</p>
+<p>@Html.ActionLink(Resources.UI.GameReportViews.BackToTournament, "Details", "Tournaments", new { id = Model.TournamentId }, null)</p>

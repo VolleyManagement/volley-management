@@ -44,18 +44,18 @@
                     ICacheProvider cacheProvider,
                     ICurrentUserService currentUserService)
         {
-            this._userManager = userManager;
-            this._rolesService = rolesService;
-            this._cacheProvider = cacheProvider;
-            this._userService = userService;
-            this._currentUserService = currentUserService;
+            _userManager = userManager;
+            _rolesService = rolesService;
+            _cacheProvider = cacheProvider;
+            _userService = userService;
+            _currentUserService = currentUserService;
         }
 
         private int CurrentUserId
         {
             get
             {
-                return System.Convert.ToInt32(User.Identity.GetUserId());
+                return _currentUserService.GetCurrentUserId();
             }
         }
 
@@ -82,7 +82,7 @@
                 vm.UserName = HttpContext.User.Identity.GetUserName();
             }
 
-            return this.PartialView("Info", vm);
+            return PartialView("Info", vm);
         }
 
         /// <summary>
@@ -93,9 +93,9 @@
         [AllowAnonymous]
         public ActionResult Logout(string returnUrl)
         {
-            DeleteFromActive(this._currentUserService.GetCurrentUserId());
+            DeleteFromActive(_currentUserService.GetCurrentUserId());
             AuthManager.SignOut();
-            return this.Redirect(this.GetRedirectUrl(returnUrl));
+            return Redirect(GetRedirectUrl(returnUrl));
         }
 
         /// <summary>
@@ -149,17 +149,17 @@
         [Authorize]
         public async Task<ActionResult> Edit(UserEditViewModel editViewModel)
         {
-            if (CurrentUserId != editViewModel.Id && !User.IsInRole(Resources.AuthorizationRoles.Admin))
+            if (CurrentUserId != editViewModel.Id && !User.IsInRole(Resources.UI.AuthorizationRoles.Admin))
             {
                 return View("AccessDenied");
             }
 
-            if (this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var userModel = await _userManager.FindByIdAsync(editViewModel.Id);
                 if (userModel == null)
                 {
-                    throw new ArgumentNullException(Resources.AccountController.InvalidEditEntityId);
+                    throw new ArgumentNullException(Resources.UI.AccountController.InvalidEditEntityId);
                 }
 
                 userModel.PersonName = editViewModel.FullName;
@@ -230,7 +230,7 @@
                                                         user,
                                                         DefaultAuthenticationTypes.ApplicationCookie);
 
-            if (isBlocked(ident.GetUserId<int>()))
+            if (IsBlocked(ident.GetUserId<int>()))
             {
                 return View("Blocked");
             }
@@ -243,21 +243,21 @@
             return Redirect(GetRedirectUrl(returnUrl));
         }
 
-        private bool isBlocked(int userId)
+        private bool IsBlocked(int userId)
         {
-            User currentUser = this._userService.GetUser(userId);
+            User currentUser = _userService.GetUser(userId);
             return currentUser.IsBlocked;
         }
 
         private string GetRedirectUrl(string returnUrl)
         {
-            return returnUrl ?? this.GetDefaultUrl();
+            return returnUrl ?? GetDefaultUrl();
         }
 
         private string GetReturnUrl()
         {
             string result = null;
-            var url = this.HttpContext.Request.Url;
+            var url = HttpContext.Request.Url;
             if (url != null)
             {
                 result = url.ToString();

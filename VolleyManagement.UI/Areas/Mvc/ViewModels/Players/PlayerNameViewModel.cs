@@ -2,8 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Domain.PlayersAggregate;
+    using Resources.UI;
 
     /// <summary>
     /// Represents player view model
@@ -59,7 +59,7 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player { Id = this.Id };
+            return new Player { Id = Id };
         }
 
         #endregion

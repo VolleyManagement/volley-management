@@ -3,8 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
-    using VolleyManagement.Domain.Dto;
+    using Domain.Dto;
 
     /// <summary>
     /// Compares Role instances
@@ -29,12 +28,12 @@
                 return 1;
             }
 
-            return this.CompareInternal(x, y);
+            return CompareInternal(x, y);
         }
 
         public int Compare(object x, object y)
         {
-            return this.Compare(x as UserInRoleDto, y as UserInRoleDto);
+            return Compare(x as UserInRoleDto, y as UserInRoleDto);
         }
 
         private int CompareInternal(UserInRoleDto x, UserInRoleDto y)

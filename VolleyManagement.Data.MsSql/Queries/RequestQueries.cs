@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Player;
-    using VolleyManagement.Domain.RequestsAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.Player;
+    using Domain.RequestsAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides Object Query implementation for Requests
@@ -31,7 +31,7 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public RequestQueries(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
         }
 
         #endregion

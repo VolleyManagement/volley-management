@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
+    using Contracts;
+    using ViewModels.GameReports;
 
     /// <summary>
     /// Represents a controller that contains game reports actions.
@@ -55,7 +55,7 @@
                 {
                     TournamentId = tournamentId,
                     TournamentName = tournamentName,
-                    Message = App_GlobalResources.GameReportViews.StandingsNotAvaliable
+                    Message = Resources.UI.GameReportViews.StandingsNotAvaliable
                 };
                 return View("StandingsNotAvailable", standingsViewModel);
             }

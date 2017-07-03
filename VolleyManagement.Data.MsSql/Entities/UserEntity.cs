@@ -7,12 +7,14 @@ namespace VolleyManagement.Data.MsSql.Entities
     /// </summary>
     public class UserEntity
     {
+        private ICollection<LoginInfoEntity> _loginProviders;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UserEntity"/> class.
         /// </summary>
         public UserEntity()
         {
-            LoginProviders = new List<LoginInfoEntity>();
+            _loginProviders = new List<LoginInfoEntity>();
         }
 
         /// <summary>
@@ -51,17 +53,21 @@ namespace VolleyManagement.Data.MsSql.Entities
         public string CellPhone { get; set; }
 
         /// <summary>
-        /// Gets or sets boolean value pointing is user account blocked .
+        /// Gets or sets a value indicating whether user account is blocked .
         /// </summary>
         public bool IsBlocked { get; set; }
 
         /// <summary>
-        /// Login providers
+        /// Gets or sets login providers
         /// </summary>
-        public virtual ICollection<LoginInfoEntity> LoginProviders { get; set; }
+        public virtual ICollection<LoginInfoEntity> LoginProviders
+        {
+            get => _loginProviders;
+            set => _loginProviders = value;
+        }
 
         /// <summary>
-        /// Roles assigned to current user
+        /// Gets or sets roles assigned to current user
         /// </summary>
         public virtual ICollection<RoleEntity> Roles { get; set; }
     }

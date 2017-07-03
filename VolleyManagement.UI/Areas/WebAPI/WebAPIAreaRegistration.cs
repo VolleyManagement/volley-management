@@ -4,10 +4,10 @@
     using System.Web.Mvc;
     using System.Web.OData.Builder;
     using System.Web.OData.Extensions;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.ContributorsTeam;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Tournaments;
+    using ViewModels.ContributorsTeam;
+    using ViewModels.Players;
+    using ViewModels.Teams;
+    using ViewModels.Tournaments;
 
     /// <summary>
     /// The WebApi area registration.

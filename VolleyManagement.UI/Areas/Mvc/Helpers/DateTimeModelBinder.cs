@@ -45,12 +45,12 @@
 
                 // Now set the ModelState value to a full value so that it can always be parsed using InvarianCulture, which is the
                 // default for QueryStringValueProvider.
-                bindingContext.ModelState.SetModelValue(
-                                                        bindingContext.ModelName,
-                                                        new ValueProviderResult(
-                                                            date,
-                                                            realDate.ToString("yyyy-MM-dd hh:mm:ss"),
-                                                            System.Globalization.CultureInfo.CurrentUICulture));
+                var result = new ValueProviderResult(
+                    date,
+                    realDate.ToString("yyyy-MM-dd hh:mm:ss"),
+                    System.Globalization.CultureInfo.CurrentUICulture);
+
+                bindingContext.ModelState.SetModelValue(bindingContext.ModelName, result);
 
                 return realDate;
             }

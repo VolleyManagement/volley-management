@@ -2,7 +2,7 @@
 {
     using System;
 
-    using VolleyManagement.Crosscutting.Contracts.Specifications;
+    using Contracts.Specifications;
 
     /// <summary>
     /// Provides a way to chain two Specifications using AND operator
@@ -31,8 +31,8 @@
                 throw new ArgumentNullException("right");
             }
 
-            this._left = left;
-            this._right = right;
+            _left = left;
+            _right = right;
         }
 
         /// <summary>

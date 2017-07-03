@@ -78,10 +78,10 @@
                 transfer_fields.attr("value", "");
             }
         })
-    })
+    });
 </script>
 <div class="editor-label">
-    @Html.Label(Resources.TournamentViews.RegistrationFieldsTitle)
+    @Html.Label(Resources.UI.TournamentViews.RegistrationFieldsTitle)
 </div>
 <div class="editor-field">
     @Html.TextBoxForShortDate(model => model.ApplyingPeriodStart, Model.ApplyingPeriodStart, new { @readonly = "readonly" })
@@ -96,7 +96,7 @@
 </div>
 
 <div class="editor-label">
-    @Html.Label(Resources.TournamentViews.TournamentFieldsTitle)
+    @Html.Label(Resources.UI.TournamentViews.TournamentFieldsTitle)
 </div>
 <div class="editor-field">
     @Html.TextBoxForShortDate(model => model.GamesStart, Model.GamesStart, new { @readonly = "readonly" })
@@ -111,7 +111,7 @@
 </div>
 <div class="checkbox_transfer">
     @Html.CheckBoxFor(model => model.IsTransferEnabled, new { id = "transferDatesSwitcher" })
-    @Html.Label(Resources.TournamentViews.TransferFieldsTitle, new { @for = "transferDatesSwitcher" })
+    @Html.Label(Resources.UI.TournamentViews.TransferFieldsTitle, new { @for = "transferDatesSwitcher" })
 </div>
 <div class="editor-field">
     @Html.Raw(
@@ -169,8 +169,8 @@
 
                     <div class="add-group-button">
                         <a id=@addGroupButtonId class="link-button"
-                           onClick="addGroup(@i, @GroupConstants.MAX_GROUPS_COUNT, '@Resources.ViewModelResources.GroupDefaultName')">
-                            @Resources.TournamentViews.AddGroup
+                           onClick="addGroup(@i, @GroupConstants.MAX_GROUPS_COUNT, '@Resources.UI.ViewModelResources.GroupDefaultName')">
+                            @Resources.UI.TournamentViews.AddGroup
                         </a>
                     </div>
                 }
@@ -184,10 +184,10 @@
         <a id="Add_Division" class="link-button"
            onClick="addDivision(
                 @DivisionConstants.MAX_DIVISIONS_COUNT,
-                '@Resources.ViewModelResources.DivisionDefaultName',
-                '@Resources.ViewModelResources.Groups',
-                '@Resources.ViewModelResources.GroupDefaultName')">
-            @Resources.TournamentViews.AddDivision
+                '@Resources.UI.ViewModelResources.DivisionDefaultName',
+                '@Resources.UI.ViewModelResources.Groups',
+                '@Resources.UI.ViewModelResources.GroupDefaultName')">
+            @Resources.UI.TournamentViews.AddDivision
         </a>
     </div>
 }

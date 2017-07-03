@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Domain.PlayersAggregate
 {
-    using VolleyManagement.Data.Contracts;
+    using Data.Contracts;
 
     /// <summary>
     /// Defines specific contract for PlayerRepository

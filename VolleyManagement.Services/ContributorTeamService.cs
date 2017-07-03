@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Services
 {
     using System.Linq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Domain.ContributorsAggregate;
+    using Contracts;
+    using Domain.ContributorsAggregate;
 
     /// <summary>
     /// Defines ContributorService

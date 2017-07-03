@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Generic;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
+    using Generic;
+    using Teams;
 
     /// <summary>
     /// Represents TournamentTeamsListViewModel and referrer link.

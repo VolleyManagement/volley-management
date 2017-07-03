@@ -1,7 +1,7 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamRefererViewModel
 
 @{
-    ViewBag.Title = Resources.TeamViews.TeamDetailsTitle;
+    ViewBag.Title = Resources.UI.TeamViews.TeamDetailsTitle;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -15,7 +15,7 @@
 </div>
 
 <fieldset>
-    <legend>@Resources.TeamViews.TeamLegend @Model.Model.Name</legend>
+    <legend>@Resources.UI.TeamViews.TeamLegend @Model.Model.Name</legend>
 
     <div class="display-label">@Html.LabelFor(model => model.Model.Coach)</div>
     <div class="display-field">@Model.Model.Coach</div>
@@ -45,8 +45,8 @@
     </ul>
 </fieldset>
 <p>
-    @Html.ActionLink(Resources.TeamViews.Edit, "Edit", new { id = Model.Model.Id }) |
-    <a href="@Model.Referer">@Resources.TeamViews.Back</a>
+    @Html.ActionLink(Resources.UI.TeamViews.Edit, "Edit", new { id = Model.Model.Id }) |
+    <a href="@Model.Referer">@Resources.UI.TeamViews.Back</a>
 </p>
 
 @Styles.Render("/Content/TeamPhoto.css")

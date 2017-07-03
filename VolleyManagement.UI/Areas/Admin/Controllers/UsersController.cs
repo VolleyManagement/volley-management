@@ -2,10 +2,10 @@
 {
     using System;
     using System.Web.Mvc;
+    using Contracts;
+    using Contracts.Authorization;
     using Contracts.Exceptions;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.UI.Areas.Admin.Models;
+    using Models;
 
     /// <summary>
     /// Provides User management
@@ -20,7 +20,7 @@
         /// <param name="userService">User service</param>
         public UsersController(IUserService userService)
         {
-            this._userService = userService;
+            _userService = userService;
         }
 
         /// <summary>
@@ -84,22 +84,24 @@
             {
                 return View(
                     "ErrorPage",
-                    new OperationResultViewModel
-                    {
-                        Message = ex.Message
-                    });
+                    CreateErrorReply(ex));
             }
             catch (MissingEntityException ex)
             {
                 return View(
                     "ErrorPage",
-                    new OperationResultViewModel
-                    {
-                        Message = ex.Message
-                    });
+                    CreateErrorReply(ex));
             }
 
             return Redirect(backTo);
+        }
+
+        private static OperationResultViewModel CreateErrorReply(Exception ex)
+        {
+            return new OperationResultViewModel
+            {
+                Message = ex.Message
+            };
         }
     }
 }

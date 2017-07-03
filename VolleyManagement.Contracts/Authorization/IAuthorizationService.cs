@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Contracts.Authorization
 {
     using System.Collections.Generic;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// Performs authorization checks

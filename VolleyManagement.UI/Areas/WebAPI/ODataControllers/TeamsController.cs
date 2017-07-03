@@ -5,10 +5,10 @@
     using System.Web.Http;
     using System.Web.OData;
 
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
+    using Contracts;
+    using Contracts.Exceptions;
+    using ViewModels.Players;
+    using ViewModels.Teams;
 
     /// <summary>
     /// The teams controller.
@@ -24,7 +24,7 @@
         /// <param name="teamService"> The team service. </param>
         public TeamsController(ITeamService teamService)
         {
-            this._teamService = teamService;
+            _teamService = teamService;
         }
 
         /// <summary>
@@ -35,25 +35,25 @@
         /// unsuccessfully - Bad request </returns>
         public IHttpActionResult Post(TeamViewModel team)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.BadRequest(this.ModelState);
+                return BadRequest(ModelState);
             }
 
             var teamToCreate = team.ToDomain();
 
             try
             {
-                this._teamService.Create(teamToCreate);
+                _teamService.Create(teamToCreate);
             }
             catch (MissingEntityException ex)
             {
-                this.ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                return this.BadRequest(this.ModelState);
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
             }
 
             team.Id = teamToCreate.Id;
-            return this.Created(team);
+            return Created(team);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@
         [EnableQuery]
         public IQueryable<TeamViewModel> GetTeams()
         {
-            return this._teamService.Get()
+            return _teamService.Get()
                                 .ToList()
                                 .Select(t => TeamViewModel.Map(t))
                                 .AsQueryable();
@@ -77,7 +77,7 @@
         [EnableQuery]
         public IQueryable<PlayerViewModel> GetPlayers([FromODataUri] int key)
         {
-            return this._teamService.GetTeamRoster(key)
+            return _teamService.GetTeamRoster(key)
                 .Select(p => PlayerViewModel.Map(p))
                 .AsQueryable();
         }
@@ -89,14 +89,14 @@
         {
             try
             {
-                this._teamService.Delete(id);
+                _teamService.Delete(id);
             }
             catch (MissingEntityException ex)
             {
-                return this.BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
 
-            return this.StatusCode(HttpStatusCode.NoContent);
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

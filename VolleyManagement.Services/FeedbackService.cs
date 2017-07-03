@@ -3,16 +3,16 @@
     using System;
     using System.Collections.Generic;
     using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Crosscutting.Contracts.MailService;
     using Crosscutting.Contracts.Providers;
+    using Data.Contracts;
+    using Data.Queries.Common;
+    using Domain.FeedbackAggregate;
     using Domain.Properties;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.MailService;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// Represents an implementation of IFeedbackService contract.
@@ -175,8 +175,8 @@
                 feedback.Status = newStatusCode;
                 if (ShouldChangeLastUpdateInfo(newStatusCode))
                 {
-                    int userId = this._currentUserService.GetCurrentUserId();
-                    User user = this._userService.GetUser(userId);
+                    int userId = _currentUserService.GetCurrentUserId();
+                    User user = _userService.GetUser(userId);
                     feedback.UpdateDate = TimeProvider.Current.UtcNow;
                     feedback.AdminName = user.PersonName;
                 }

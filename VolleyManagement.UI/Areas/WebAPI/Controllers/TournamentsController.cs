@@ -7,10 +7,10 @@
     using System.Text;
     using System.Web.Http;
     using System.Xml.Serialization;
+    using Contracts;
+    using ViewModels.GameReports;
+    using ViewModels.Games;
     using ViewModels.Tournaments;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
-    using WebApi.ViewModels.GameReports;
 
     /// <summary>
     /// The tournaments controller.
@@ -32,9 +32,9 @@
                 IGameService gameService,
                 IGameReportService gameReportService)
         {
-            this._tournamentService = tournamentService;
-            this._gameService = gameService;
-            this._gameReportService = gameReportService;
+            _tournamentService = tournamentService;
+            _gameService = gameService;
+            _gameReportService = gameReportService;
         }
 
         /// <summary>
@@ -43,7 +43,7 @@
         /// <returns>Collection of all tournaments</returns>
         public IEnumerable<TournamentViewModel> GetAllTournaments()
         {
-            return this._tournamentService.Get().Select(t => TournamentViewModel.Map(t));
+            return _tournamentService.Get().Select(t => TournamentViewModel.Map(t));
         }
 
         /// <summary>
@@ -53,7 +53,7 @@
         /// <returns>Information about the tournament with specified id</returns>
         public IHttpActionResult GetTournament(int id)
         {
-            var tournament = this._tournamentService.Get(id);
+            var tournament = _tournamentService.Get(id);
             if (tournament == null)
             {
                 return NotFound();
@@ -70,7 +70,7 @@
         [Route("api/v1/Tournaments/{id}/Standings")]
         public IEnumerable<StandingsEntryViewModel> GetTournamentStandings(int id)
         {
-            var entries = this._gameReportService.GetStandings(id)
+            var entries = _gameReportService.GetStandings(id)
                 .Select(t => StandingsEntryViewModel.Map(t))
                 .ToList();
             return StandingsEntryViewModel.SetPositions(entries);
@@ -84,7 +84,7 @@
         [Route("api/v1/Tournaments/{id}/PivotStandings")]
         public PivotStandingsViewModel GetTournamentPivotStandings(int id)
         {
-            return new PivotStandingsViewModel(this._gameReportService.GetPivotStandings(id));
+            return new PivotStandingsViewModel(_gameReportService.GetPivotStandings(id));
         }
 
         /// <summary>
@@ -95,7 +95,7 @@
         [Route("api/Tournament/{tournamentId}/Schedule")]
         public IEnumerable<GameViewModel> GetSchedule(int tournamentId)
         {
-            List<GameViewModel> gamesViewModel = this._gameService.GetTournamentResults(tournamentId)
+            List<GameViewModel> gamesViewModel = _gameService.GetTournamentResults(tournamentId)
                                                         .Select(t => GameViewModel.Map(t)).ToList();
             foreach (var item in gamesViewModel)
             {

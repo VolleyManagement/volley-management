@@ -2,9 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// Class for generating test data

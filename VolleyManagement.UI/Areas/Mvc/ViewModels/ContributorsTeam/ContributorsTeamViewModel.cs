@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Domain;
+    using Domain.ContributorsAggregate;
+    using Resources;
 
     /// <summary>
     /// Represents contributor team view model
@@ -59,10 +59,10 @@
         {
             return new ContributorTeam
             {
-                Id = this.Id,
-                Name = this.Name,
-                CourseDirection = this.CourseDirection,
-                Contributors = this.Contributors
+                Id = Id,
+                Name = Name,
+                CourseDirection = CourseDirection,
+                Contributors = Contributors
             };
         }
         #endregion

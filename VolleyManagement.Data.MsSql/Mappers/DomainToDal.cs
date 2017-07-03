@@ -2,15 +2,15 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RequestsAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.FeedbackAggregate;
+    using Domain.GamesAggregate;
+    using Domain.PlayersAggregate;
+    using Domain.RequestsAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentRequestAggregate;
+    using Domain.TournamentsAggregate;
+    using Domain.UsersAggregate;
+    using Entities;
 
     /// <summary>
     /// Maps Domain models to Dal.

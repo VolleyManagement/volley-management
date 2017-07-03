@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Globalization;
-    using VolleyManagement.Domain.GameReportsAggregate;
+    using Domain.GameReportsAggregate;
 
     /// <summary>
     /// Represents a view model for <see cref="StandingsEntry"/>.

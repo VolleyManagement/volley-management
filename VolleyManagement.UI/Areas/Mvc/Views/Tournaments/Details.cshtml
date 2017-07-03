@@ -1,16 +1,16 @@
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentViewModel
+@using VolleyManagement.Crosscutting.Contracts.Extensions
 @using VolleyManagement.Domain.RolesAggregate
-@using VolleyManagement.Domain.Tournaments
 @using VolleyManagement.UI.Areas.Mvc;
 
 @{
-    ViewBag.Title = Resources.TournamentViews.TournamentDetailsTitle;
+    ViewBag.Title = Resources.UI.TournamentViews.TournamentDetailsTitle;
 }
 
 <h2>@ViewBag.Title</h2>
 
 <fieldset>
-    <legend>@Resources.TournamentViews.TournamentLegend</legend>
+    <legend>@Resources.UI.TournamentViews.TournamentLegend</legend>
 
     <div class="display-label">@Html.LabelFor(model => model.Name)</div>
     <div class="display-field">@Model.Name</div>
@@ -68,7 +68,7 @@
 
     <div>
         @Html.ActionLink(
-            Resources.TournamentViews.ShowGameResults,
+            Resources.UI.TournamentViews.ShowGameResults,
             "TournamentResults",
             "GameResults",
             new { tournamentId = Model.Id, tournamentName = Model.Name },
@@ -76,7 +76,7 @@
     </div>
     <div>
         @Html.ActionLink(
-            Resources.TournamentViews.ShowTournamentStandings,
+            Resources.UI.TournamentViews.ShowTournamentStandings,
             "Standings",
             "GameReports",
             new { tournamentId = Model.Id, tournamentName = Model.Name },
@@ -86,7 +86,7 @@
     {
         <div>
             @Html.ActionLink(
-            Resources.TournamentViews.ManageTeams,
+            Resources.UI.TournamentViews.ManageTeams,
             "ManageTournamentTeams",
             "Tournaments",
             new { tournamentId = Model.Id },
@@ -95,13 +95,13 @@
     }
     <div>
         @Html.ActionLink(
-            Resources.TournamentViews.Schedule,
+            Resources.UI.TournamentViews.Schedule,
             "ShowSchedule",
             new {tournamentId = Model.Id})
     </div>
     <div>
         @Html.ActionLink(
-           Resources.TournamentViews.ApplyForTournament,
+           Resources.UI.TournamentViews.ApplyForTournament,
            "ApplyForTournament",
            new { tournamentId = Model.Id })
     </div>
@@ -109,7 +109,7 @@
 <p>
     @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Edit))
     {
-        @Html.ActionLink(Resources.TournamentViews.Edit, "Edit", new { id = Model.Id }) @:|
+        @Html.ActionLink(Resources.UI.TournamentViews.Edit, "Edit", new { id = Model.Id }) @:|
     }
-    @Html.ActionLink(Resources.TournamentViews.BackToList, "Index")
+    @Html.ActionLink(Resources.UI.TournamentViews.BackToList, "Index")
 </p>

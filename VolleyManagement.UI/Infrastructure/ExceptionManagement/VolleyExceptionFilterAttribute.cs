@@ -3,10 +3,7 @@
     using System;
     using System.Web.Mvc;
     using System.Web.Routing;
-
-    using Ninject;
-
-    using VolleyManagement.Crosscutting.Contracts.Infrastructure;
+    using Crosscutting.Contracts.Infrastructure;
 
     /// <summary>
     /// The volley exception filter attribute.
@@ -24,7 +21,6 @@
         /// <summary>
         /// Gets or sets the log.
         /// </summary>
-        //// [Inject]
         public ILog Log { get; set; }
 
         #endregion
@@ -43,10 +39,11 @@
             }
 
             // Build result
-            filterContext.Result = this.IsXmlHttpRequest(filterContext.RequestContext)
+            filterContext.Result = IsXmlHttpRequest(filterContext.RequestContext)
                                        ? BuildJsonResult(filterContext)
                                        : RedirectToErrorView(filterContext);
-            filterContext.ExceptionHandled = true;
+
+            // filterContext.ExceptionHandled = true;
 
             // Log exception data
             if (_volleyAppBaseExceptionType.IsInstanceOfType(filterContext.Exception))
@@ -71,13 +68,13 @@
         private ActionResult BuildJsonResult(ExceptionContext filterContext)
         {
             return new JsonResult
-                       {
-                           Data =
+            {
+                Data =
                                string.Format(
                                    "Unhandled exception occured. Message: {0}",
                                    filterContext.Exception.Message),
-                           JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                       };
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
         private ActionResult RedirectToErrorView(ExceptionContext filterContext)

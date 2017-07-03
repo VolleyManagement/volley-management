@@ -7,8 +7,10 @@
     /// </summary>
     public static class Constants
     {
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
-                        Justification = "It's a COnstants sub-class")]
+        [SuppressMessage(
+            "StyleCop.CSharp.DocumentationRules",
+            "SA1600:ElementsMustBeDocumented",
+            Justification = "It's a Constants sub-class")]
         public static class ExceptionManagement
         {
             public const string ENTITY_ID_KEY = "EntityId";

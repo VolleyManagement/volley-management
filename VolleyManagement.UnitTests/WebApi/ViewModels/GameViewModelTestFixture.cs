@@ -6,8 +6,8 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
+    using Domain.GamesAggregate;
+    using UI.Areas.WebApi.ViewModels.Games;
 
     /// <summary>
     /// Class for generating test data

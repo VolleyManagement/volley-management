@@ -3,8 +3,8 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.Admin.Models;
-    using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using Mvc.ViewModels;
+    using UI.Areas.Admin.Models;
 
     /// <summary>
     /// Compares User instances
@@ -43,7 +43,7 @@
                           x.Name == y.Name &&
                           x.PersonName == y.PersonName &&
                           x.Phone == y.Phone &&
-                          x.isBlocked == y.isBlocked;
+                          x.IsBlocked == y.IsBlocked;
 
             if (result && x.Player != null)
             {

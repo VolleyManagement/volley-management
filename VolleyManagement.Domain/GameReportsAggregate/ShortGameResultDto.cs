@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using VolleyManagement.Domain.GamesAggregate;
+    using GamesAggregate;
 
     /// <summary>
     /// Represents a data transfer object of game result with scores and technical defeat value.

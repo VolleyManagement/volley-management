@@ -2,13 +2,13 @@
 {
     using System.Data.Entity;
     using System.Linq;
-    using VolleyManagement.Crosscutting.Contracts.Specifications;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.MsSql.Mappers;
-    using VolleyManagement.Data.MsSql.Repositories.Specifications;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Contracts;
+    using Crosscutting.Contracts.Specifications;
+    using Domain.TournamentsAggregate;
+    using Entities;
+    using Exceptions;
+    using Mappers;
+    using Specifications;
 
     /// <summary>
     /// Defines implementation of the ITournamentRepository contract.
@@ -78,9 +78,9 @@
         /// <param name="id">The id of tournament to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Entities.TournamentEntity { Id = id };
-            this._dalTournaments.Attach(dalToRemove);
-            this._dalTournaments.Remove(dalToRemove);
+            var dalToRemove = new TournamentEntity { Id = id };
+            _dalTournaments.Attach(dalToRemove);
+            _dalTournaments.Remove(dalToRemove);
         }
 
         /// <summary>

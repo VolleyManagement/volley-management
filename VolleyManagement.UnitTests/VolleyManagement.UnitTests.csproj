@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props" Condition="Exists('..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props')" />
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VolleyManagement.UnitTests</RootNamespace>
     <AssemblyName>VolleyManagement.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -20,7 +19,8 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>6921d854</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,8 +30,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>..\CodeAnalysisRules\VolleyManagement.UnitTests.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,6 +43,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>..\CodeAnalysisRules\VolleyManagement.UnitTests.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
@@ -72,10 +77,6 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -119,23 +120,24 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Admin\Comparers\MessageViewModelComparer.cs" />
+    <Compile Include="Admin\Comparers\TournamentRequestViewModelComparer.cs" />
     <Compile Include="Admin\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Admin\Controllers\TournamentRequestControllerTest.cs" />
     <Compile Include="Admin\Controllers\UsersControllerTest.cs" />
     <Compile Include="Admin\ViewModels\TournamentRequestsViewModelsBuilder.cs" />
     <Compile Include="Admin\ViewModels\UserAdminViewModelBuilder.cs" />
-    <Compile Include="Admin\Comparers\TournamentRequestViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\RequestsViewModelComparer.cs" />
+    <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserEditViewModelComparer.cs" />
     <Compile Include="Mvc\Comparers\UserViewModelComparer.cs" />
     <Compile Include="Mvc\Controllers\AccountControllerTests.cs" />
     <Compile Include="Mvc\Controllers\ContributorsTeamControllerTests.cs" />
-    <Compile Include="Mvc\Controllers\RequestControllerTests.cs" />
-    <Compile Include="Mvc\Controllers\RequestsControllerTest.cs" />
-    <Compile Include="Mvc\Controllers\FeedbacksControllerTest.cs" />
+    <Compile Include="Mvc\Controllers\FeedbacksControllerTests.cs" />
     <Compile Include="Mvc\Controllers\GameReportsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\GameResultsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\PlayersControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\RequestControllerTests.cs" />
+    <Compile Include="Mvc\Controllers\RequestsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\RolesControllerTests.cs" />
     <Compile Include="Mvc\Controllers\TeamsControllerTests.cs" />
     <Compile Include="Mvc\Controllers\TournamentsControllerTests.cs" />
@@ -147,16 +149,20 @@
     <Compile Include="Mvc\ViewModels\FeedbackMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\FeedbackViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameMvcEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\GameResultViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\GameResultViewModelToDomain.cs" />
+    <Compile Include="Mvc\ViewModels\GameViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\GroupViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotGameResultsViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\PivotTableEqualityComparer.cs" />
-    <Compile Include="Mvc\ViewModels\PivotTeamsStandingsEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PivotTeamStandingsViewModelEqualityComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerDomainToViewModel.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\PlayerNameViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\PlayerViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\PlayerViewModelToDomainTest.cs" />
     <Compile Include="Mvc\ViewModels\ScheduleViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\ScheduleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
@@ -168,81 +174,51 @@
     <Compile Include="Mvc\ViewModels\TeamViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentApplyViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TournamentApplyViewModelComparer.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />
+    <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TournamentResultsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TournamentTeamsListViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\TournamentViewModelToDomain.cs" />
-    <Compile Include="Mvc\ViewModels\TournamentDomainToViewModel.cs" />
     <Compile Include="Mvc\ViewModels\TournamentViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\TournamentMvcViewModelBuilder.cs" />
-    <Compile Include="Mvc\Comparers\RoleViewModelComparer.cs" />
-    <Compile Include="Mvc\ViewModels\GameResultsViewModelBuilder.cs" />
-    <Compile Include="Services\FeedbackService\FeedbackBuilder.cs" />
-    <Compile Include="Services\FeedbackService\FeedbackComparer.cs" />
-    <Compile Include="Services\FeedbackService\FeedbackServiceTest.cs" />
-    <Compile Include="Services\FeedbackService\FeedbackServiceTestFixture.cs" />
-    <Compile Include="Services\FileService\FileServiceTest.cs" />
-    <Compile Include="Services\GameReportService\ShortGameResultDtoTetsFixture.cs" />
-    <Compile Include="Services\GameReportService\TeamStandingsTestFixture.cs" />
-    <Compile Include="Services\AuthService\AuthorizationServiceTests.cs" />
-    <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
-    <Compile Include="Services\GameService\GameMvcComparer.cs" />
-    <Compile Include="Services\GameService\GameResultDtoBuilder.cs" />
-    <Compile Include="Services\GameService\GameResultDtoComparer.cs" />
     <Compile Include="Mvc\ViewModels\UserEditMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\UserMvcViewModelBuilder.cs" />
-    <Compile Include="Services\GameReportService\GameReportServiceTests.cs" />
-    <Compile Include="Services\GameReportService\StandingsEntryComparer.cs" />
-    <Compile Include="Services\GameReportService\StandingsTestFixture.cs" />
-    <Compile Include="Services\GameService\GameBuilder.cs" />
-    <Compile Include="Services\GameService\GameComparer.cs" />
-    <Compile Include="Services\GameService\GameTestFixture.cs" />
-    <Compile Include="Services\RequestsService\RequestBuilder.cs" />
-    <Compile Include="Services\RequestsService\RequestComparer.cs" />
-    <Compile Include="Services\RequestsService\RequestServiceTestFixture.cs" />
-    <Compile Include="Services\RequestsService\RequestServiceTests.cs" />
-    <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
-    <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTestFixture.cs" />
-    <Compile Include="Services\TournamentRequestService\TournamentRequestBuilder.cs" />
-    <Compile Include="Services\TournamentRequestService\TournamentRequestComparer.cs" />
-    <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTests.cs" />
-    <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
-    <Compile Include="Services\UserManager\UserBuilder.cs" />
-    <Compile Include="Services\UserManager\UserModelBuilder.cs" />
-    <Compile Include="Services\GameService\GameServiceTestFixture.cs" />
-    <Compile Include="Services\GameService\GameServiceTests.cs" />
-    <Compile Include="Services\GameService\ScoreComparer.cs" />
-    <Compile Include="Services\UserService\BlockUserBuilder.cs" />
-    <Compile Include="Services\UserService\BlockUserComparer.cs" />
-    <Compile Include="Services\UserService\BlockUserServiceTests.cs" />
-    <Compile Include="Services\UsersService\UserBuilder.cs" />
-    <Compile Include="Services\UsersService\UserComparer.cs" />
-    <Compile Include="Services\UsersService\UserServiceTestFixture.cs" />
-    <Compile Include="Services\UsersService\UserServiceTests.cs" />
-    <Compile Include="TestHelper.cs" />
-    <Compile Include="Mvc\ViewModels\PlayerMvcViewModelBuilder.cs" />
-    <Compile Include="Mvc\ViewModels\PlayerViewModelToDomain.cs" />
-    <Compile Include="Mvc\ViewModels\PlayerDomainToViewModel.cs" />
+    <Compile Include="Mvc\ViewModels\ViewModelToDomainTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AuthService\AuthorizationServiceTests.cs" />
     <Compile Include="Services\ContributorService\ContributorEqualityComparer.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamBuilder.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamComparer.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamServiceTestFixture.cs" />
-    <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
-    <Compile Include="WebApi\ViewModels\ContributorTeamViewModelServiceTestFixture.cs" />
     <Compile Include="Services\ContributorService\ContributorTeamServiceTests.cs" />
+    <Compile Include="Services\FeedbackService\FeedbackBuilder.cs" />
+    <Compile Include="Services\FeedbackService\FeedbackComparer.cs" />
+    <Compile Include="Services\FeedbackService\FeedbackServiceTestFixture.cs" />
+    <Compile Include="Services\FeedbackService\FeedbackServiceTests.cs" />
+    <Compile Include="Services\FileService\FileServiceTests.cs" />
+    <Compile Include="Services\GameReportService\GameReportServiceTests.cs" />
+    <Compile Include="Services\GameReportService\ShortGameResultDtoTetsFixture.cs" />
+    <Compile Include="Services\GameReportService\StandingsEntryComparer.cs" />
+    <Compile Include="Services\GameReportService\StandingsTestFixture.cs" />
+    <Compile Include="Services\GameReportService\TeamStandingsTestFixture.cs" />
+    <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
+    <Compile Include="Services\GameService\GameBuilder.cs" />
+    <Compile Include="Services\GameService\GameComparer.cs" />
+    <Compile Include="Services\GameService\GameMvcComparer.cs" />
+    <Compile Include="Services\GameService\GameResultDtoBuilder.cs" />
+    <Compile Include="Services\GameService\GameResultDtoComparer.cs" />
+    <Compile Include="Services\GameService\GameServiceTestFixture.cs" />
+    <Compile Include="Services\GameService\GameServiceTests.cs" />
+    <Compile Include="Services\GameService\GameTestFixture.cs" />
+    <Compile Include="Services\GameService\ScoreComparer.cs" />
+    <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerComparer.cs" />
     <Compile Include="Services\PlayerService\PlayerServiceTestFixture.cs" />
     <Compile Include="Services\PlayerService\PlayerServiceTests.cs" />
-    <Compile Include="WebApi\ViewModels\GameViewModelBuilder.cs" />
-    <Compile Include="WebApi\ViewModels\GameViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\GameViewModelTestFixture.cs" />
-    <Compile Include="WebApi\ViewModels\PivotStandingsEntryViewModelServiceTestFixture.cs" />
-    <Compile Include="WebApi\ViewModels\PivotStandingsEntryViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\PivotStandingsGameViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\PivotStandingsGameViewModelServiceTestFixture.cs" />
-    <Compile Include="WebApi\ViewModels\PivotStandingsViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\PlayerViewModelServiceTestFixture.cs" />
+    <Compile Include="Services\RequestsService\RequestBuilder.cs" />
+    <Compile Include="Services\RequestsService\RequestComparer.cs" />
+    <Compile Include="Services\RequestsService\RequestServiceTestFixture.cs" />
+    <Compile Include="Services\RequestsService\RequestServiceTests.cs" />
     <Compile Include="Services\RolesService\RoleComparer.cs" />
     <Compile Include="Services\RolesService\RolesServiceTests.cs" />
     <Compile Include="Services\RolesService\UserInRoleComparer.cs" />
@@ -250,39 +226,64 @@
     <Compile Include="Services\TeamService\TeamComparer.cs" />
     <Compile Include="Services\TeamService\TeamServiceTestFixture.cs" />
     <Compile Include="Services\TeamService\TeamServiceTests.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestBuilder.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestComparer.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTestFixture.cs" />
+    <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTests.cs" />
+    <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
+    <Compile Include="Services\TournamentService\TournamentComparer.cs" />
+    <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />
+    <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
+    <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
+    <Compile Include="Services\UserManager\UserBuilder.cs" />
+    <Compile Include="Services\UserManager\UserModelBuilder.cs" />
+    <Compile Include="Services\UserService\BlockUserBuilder.cs" />
+    <Compile Include="Services\UserService\BlockUserComparer.cs" />
+    <Compile Include="Services\UserService\BlockUserServiceTests.cs" />
+    <Compile Include="Services\UsersService\UserBuilder.cs" />
+    <Compile Include="Services\UsersService\UserComparer.cs" />
+    <Compile Include="Services\UsersService\UserServiceTestFixture.cs" />
+    <Compile Include="Services\UsersService\UserServiceTests.cs" />
+    <Compile Include="TestCSharp7FeaturesSupport.cs" />
+    <Compile Include="TestExtensions.cs" />
+    <Compile Include="TestHelper.cs" />
+    <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
+    <Compile Include="WebApi\ViewModels\ContributorTeamViewModelBuilder.cs" />
+    <Compile Include="WebApi\ViewModels\ContributorTeamViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\ContributorTeamViewModelServiceTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\GameViewModelBuilder.cs" />
+    <Compile Include="WebApi\ViewModels\GameViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\GameViewModelTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsEntryViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsEntryViewModelServiceTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsGameViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsGameViewModelServiceTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\PivotStandingsViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />
+    <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\PlayerViewModelServiceTestFixture.cs" />
     <Compile Include="WebApi\ViewModels\ShortGameResultViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\StandingsEntryViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\StandingsEntryViewModelServiceTestFixture.cs" />
-    <Compile Include="WebApi\ViewModels\TeamViewModelServiceTestFixture.cs" />
-    <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
-    <Compile Include="Services\TournamentService\TournamentServiceTestFixture.cs" />
-    <Compile Include="Services\TournamentService\TournamentComparer.cs" />
-    <Compile Include="Services\TournamentService\TournamentServiceTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebApi\ViewModels\TournamentViewModelServiceTestFixture.cs" />
-    <Compile Include="WebApi\ODataControllers\ContributorControllerTests.cs" />
-    <Compile Include="WebApi\ODataControllers\PlayerControllerTests.cs" />
-    <Compile Include="WebApi\ODataControllers\TeamControllerTests.cs" />
-    <Compile Include="WebApi\ViewModels\ContributorTeamViewModelBuilder.cs" />
-    <Compile Include="WebApi\ViewModels\ContributorViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />
-    <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\TeamViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\TeamViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="WebApi\ViewModels\TeamViewModelServiceTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\TournamentViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\TournamentViewModelComparer.cs" />
-    <Compile Include="TestExtensions.cs" />
+    <Compile Include="WebApi\ViewModels\TournamentViewModelServiceTestFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VolleyManagement.Contracts\VolleyManagement.Contracts.csproj">
       <Project>{285d93e6-1ad5-4f78-aef6-72b81d81465d}</Project>
       <Name>VolleyManagement.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VolleyManagement.Crosscutting\VolleyManagement.Crosscutting.csproj">
+      <Project>{2ef46af0-90f7-46d2-ae35-3aaf8bdccb28}</Project>
+      <Name>VolleyManagement.Crosscutting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Data.MsSql\VolleyManagement.Data.MsSql.csproj">
       <Project>{f82ff279-9d06-4494-bc61-1b7ac88a737d}</Project>
-      <Name>VolleyManagement.Dal.MsSql</Name>
+      <Name>VolleyManagement.Data.MsSql</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.Crosscutting.Contracts\VolleyManagement.Crosscutting.Contracts.csproj">
       <Project>{ba2d2bb6-9862-4d96-9d64-54ece7f8ca2c}</Project>
@@ -301,17 +302,23 @@
       <Name>VolleyManagement.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\VolleyManagement.UI\VolleyManagement.UI.csproj">
-      <Project>{dcb1ed18-18f5-42de-8931-dc6d92aca8e1}</Project>
+      <Project>{a0fe5d5b-b9c7-4c0f-9fa9-f0dd5119fccb}</Project>
       <Name>VolleyManagement.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
@@ -338,10 +345,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCopPlus.MSBuild.4.7.49.5\build\StyleCopPlus.MSBuild.props'))" />
-    <Error Condition="!Exists('..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets'))" />
   </Target>
-  <Import Project="..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets" Condition="Exists('..\packages\StyleCop.MSBuild.4.7.49.1\build\StyleCop.MSBuild.Targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

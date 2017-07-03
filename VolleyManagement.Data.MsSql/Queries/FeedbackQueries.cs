@@ -4,12 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Domain.FeedbackAggregate;
+    using Domain.TournamentsAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides Object Query implementation for Roles
@@ -31,7 +30,7 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public FeedbackQueries(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
         }
 
         #endregion

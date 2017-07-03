@@ -25,8 +25,8 @@
         /// <param name="tournamentId">Tournament id</param>
         public TournamentTeamsListViewModel(List<Team> source, int tournamentId)
         {
-            this.TournamentId = tournamentId;
-            this.List = source.Select(t => TeamNameViewModel.Map(t)).ToList();
+            TournamentId = tournamentId;
+            List = source.Select(t => TeamNameViewModel.Map(t)).ToList();
         }
 
         /// <summary>

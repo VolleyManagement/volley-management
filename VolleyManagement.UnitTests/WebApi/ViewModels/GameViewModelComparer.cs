@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
+    using UI.Areas.WebApi.ViewModels.Games;
 
     /// <summary>
     /// Builder for test game view models
@@ -19,7 +19,7 @@
         /// <returns>A signed integer that indicates the relative values of games.</returns>
         public int Compare(GameViewModel x, GameViewModel y)
         {
-            return this.AreEqual(x, y) ? 0 : 1;
+            return AreEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>

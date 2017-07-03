@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TournamentRequestService
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
+    using Domain.TournamentRequestAggregate;
 
     [ExcludeFromCodeCoverage]
     public class TournamentRequestBuilder
@@ -10,7 +10,7 @@
 
         public TournamentRequestBuilder()
         {
-            this._tournamentRequest = new TournamentRequest
+            _tournamentRequest = new TournamentRequest
             {
                 Id = 1,
                 TeamId = 1,

@@ -2,8 +2,8 @@
 {
     using System.Linq;
 
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Domain.PlayersAggregate;
+    using Domain.TeamsAggregate;
 
     /// <summary>
     /// Interface for PlayerService.

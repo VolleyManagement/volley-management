@@ -3,7 +3,7 @@
 @model TournamentsCollectionsViewModel
 
 @{
-    ViewBag.Title = Resources.TournamentViews.TournamentsIndexTitle;
+    ViewBag.Title = Resources.UI.TournamentViews.TournamentsIndexTitle;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -11,30 +11,30 @@
 @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Create))
 {
     <p>
-        @Html.ActionLink(Resources.TournamentViews.CreateNewTournament, "Create")
+        @Html.ActionLink(Resources.UI.TournamentViews.CreateNewTournament, "Create")
     </p>
 }
 <p>
     <h3>
-        @Resources.TournamentViews.CurrentTournamentsHeader
+        @Resources.UI.TournamentViews.CurrentTournamentsHeader
     </h3>    
     @{Html.RenderPartial("TournamentsList", Model.CurrentTournaments);}
 </p>
 <p>
     <h3>
-        @Resources.TournamentViews.UpcomingTournamentsHeader
+        @Resources.UI.TournamentViews.UpcomingTournamentsHeader
     </h3>
     @{Html.RenderPartial("TournamentsList", Model.UpcomingTournaments);}
 </p>
 <p>
-    @Html.ActionLink(Resources.TournamentViews.FinishedTournaments, string.Empty, null, 
+    @Html.ActionLink(Resources.UI.TournamentViews.FinishedTournaments, string.Empty, null, 
         new { @class = "showFinishedTournamenst"})
 </p>
 
 @{ ViewBag.TableId = "id=finished_table"; }
 <p>
     <h3 id="FinishedHeader">
-        @Resources.TournamentViews.FinishedTournamentsHeader
+        @Resources.UI.TournamentViews.FinishedTournamentsHeader
     </h3>
 
     @{Html.RenderPartial("TournamentsList", new List<VolleyManagement.Domain.TournamentsAggregate.Tournament>());}

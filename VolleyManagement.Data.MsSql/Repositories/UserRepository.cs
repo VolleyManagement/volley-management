@@ -4,11 +4,10 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
-
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.MsSql.Mappers;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Contracts;
+    using Domain.UsersAggregate;
+    using Entities;
+    using Mappers;
 
     /// <summary>
     /// Defines implementation of the IUserRepository contract.
@@ -34,7 +33,7 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return this._unitOfWork; }
+            get { return _unitOfWork; }
         }
 
         /// <summary>
@@ -45,8 +44,8 @@
         {
             var newUser = new UserEntity();
             DomainToDal.Map(newUser, newEntity);
-            this._unitOfWork.Context.Users.Add(newUser);
-            this._unitOfWork.Commit();
+            _unitOfWork.Context.Users.Add(newUser);
+            _unitOfWork.Commit();
             newEntity.Id = newUser.Id;
         }
 
@@ -56,7 +55,7 @@
         /// <param name="updatedEntity">Updated user.</param>
         public void Update(User updatedEntity)
         {
-            var userToUpdate = this._unitOfWork.Context.Users.Single(t => t.Id == updatedEntity.Id);
+            var userToUpdate = _unitOfWork.Context.Users.Single(t => t.Id == updatedEntity.Id);
             DomainToDal.Map(userToUpdate, updatedEntity);
             UpdateUserProviders((List<LoginInfoEntity>)userToUpdate.LoginProviders);
         }

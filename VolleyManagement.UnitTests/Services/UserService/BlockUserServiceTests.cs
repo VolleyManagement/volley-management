@@ -9,7 +9,7 @@
     using Domain.PlayersAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
+
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Queries.Common;
@@ -26,46 +26,32 @@
         private const bool USER_STATUS_IS_BLOCKED = true;
         private const bool USER_STATUS_IS_UNBLOCKED = false;
 
-        private readonly Mock<IUserRepository> _userRepositoryMock =
-            new Mock<IUserRepository>();
+        private Mock<IUserRepository> _userRepositoryMock;
 
-        private readonly Mock<IAuthorizationService> _authorizationServiceMock =
-            new Mock<IAuthorizationService>();
-
-        private readonly Mock<IUserService> _userServiceMock = new Mock<IUserService>();
-        private readonly Mock<ICacheProvider> _cacheProviderMock = new Mock<ICacheProvider>();
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
-        private readonly Mock<IQuery<User, FindByIdCriteria>> _getUserByIdQueryMock =
-            new Mock<IQuery<User, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock =
-            new Mock<IQuery<Player, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<List<User>, GetAllCriteria>> _getAllUserQueryMock =
-           new Mock<IQuery<List<User>, GetAllCriteria>>();
-
-        private readonly Mock<IQuery<List<User>, UniqueUserCriteria>> _getUserListQueryMock =
-           new Mock<IQuery<List<User>, UniqueUserCriteria>>();
-
-        private IKernel _kernel;
+        private Mock<IAuthorizationService> _authorizationServiceMock;
+        private Mock<IUserService> _userServiceMock;
+        private Mock<ICacheProvider> _cacheProviderMock;
+        private Mock<IUnitOfWork> _unitOfWorkMock;
+        private Mock<IQuery<User, FindByIdCriteria>> _getUserByIdQueryMock;
+        private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
+        private Mock<IQuery<List<User>, GetAllCriteria>> _getAllUserQueryMock;
+        private Mock<IQuery<List<User>, UniqueUserCriteria>> _getUserListQueryMock;
 
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IUserService>().ToConstant(_userServiceMock.Object);
-            _kernel.Bind<IQuery<List<User>, UniqueUserCriteria>>().ToConstant(_getUserListQueryMock.Object);
-            _kernel.Bind<ICacheProvider>().ToConstant(_cacheProviderMock.Object);
-            _kernel.Bind<IUserRepository>().ToConstant(_userRepositoryMock.Object);
-            _kernel.Bind<IAuthorizationService>().ToConstant(_authorizationServiceMock.Object);
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _authorizationServiceMock = new Mock<IAuthorizationService>();
+            _userServiceMock = new Mock<IUserService>();
+            _cacheProviderMock = new Mock<ICacheProvider>();
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _getUserByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
+            _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
+            _getAllUserQueryMock = new Mock<IQuery<List<User>, GetAllCriteria>>();
+            _getUserListQueryMock = new Mock<IQuery<List<User>, UniqueUserCriteria>>();
+
             _userRepositoryMock.Setup(fr => fr.UnitOfWork)
-                .Returns(_unitOfWorkMock.Object);
-            _kernel.Bind<IQuery<User, FindByIdCriteria>>()
-                .ToConstant(_getUserByIdQueryMock.Object);
-            _kernel.Bind<IQuery<Player, FindByIdCriteria>>()
-                .ToConstant(_getPlayerByIdQueryMock.Object);
-            _kernel.Bind<IQuery<List<User>, GetAllCriteria>>()
-                .ToConstant(_getAllUserQueryMock.Object);
+                    .Returns(_unitOfWorkMock.Object);
         }
 
         [TestMethod]
@@ -74,7 +60,7 @@
             // Arrange
             var user = new BlockUserBuilder().WithId(VALID_USER_ID).Build();
             MockCurrentUser(user, VALID_USER_ID);
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             sut.ChangeUserBlocked(VALID_USER_ID, true);
@@ -89,7 +75,7 @@
             // Arrange
             var user = new BlockUserBuilder().WithBlockStatus(USER_STATUS_IS_BLOCKED).Build();
             MockCurrentUser(user, VALID_USER_ID);
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             sut.ChangeUserBlocked(VALID_USER_ID, true);
@@ -104,7 +90,7 @@
             // Arrange
             Exception exception = null;
             MockUserServiceThrowsException(INVALID_USER_ID);
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -128,7 +114,7 @@
             // Arrange
             var user = new BlockUserBuilder().WithId(VALID_USER_ID).Build();
             MockCurrentUser(user, VALID_USER_ID);
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             sut.ChangeUserBlocked(VALID_USER_ID, false);
@@ -143,7 +129,7 @@
             // Arrange
             var user = new BlockUserBuilder().WithBlockStatus(USER_STATUS_IS_UNBLOCKED).Build();
             MockCurrentUser(user, VALID_USER_ID);
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             sut.ChangeUserBlocked(VALID_USER_ID, false);
@@ -158,7 +144,7 @@
             // Arrange
             Exception exception = null;
             MockUserServiceThrowsException(INVALID_USER_ID);
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -174,6 +160,18 @@
             VerifyExceptionThrown(
                 exception,
                 "A user with specified identifier was not found");
+        }
+
+        private UserService BuildSUT()
+        {
+            return new UserService(
+                _authorizationServiceMock.Object,
+                _getUserByIdQueryMock.Object,
+                _getAllUserQueryMock.Object,
+                _getPlayerByIdQueryMock.Object,
+                _cacheProviderMock.Object,
+                _getUserListQueryMock.Object,
+                _userRepositoryMock.Object);
         }
 
         private void MockCurrentUser(User testData, int userId)

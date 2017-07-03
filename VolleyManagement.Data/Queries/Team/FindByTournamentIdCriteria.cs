@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.Team
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Criteria to find all teams from tournament with specified id

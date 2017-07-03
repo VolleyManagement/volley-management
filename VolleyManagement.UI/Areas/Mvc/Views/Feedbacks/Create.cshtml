@@ -1,10 +1,10 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.FeedbackViewModel.FeedbackViewModel
 
 @{
-    ViewBag.Title = Resources.FeedbackViews.CreateFeedback;
+    ViewBag.Title = Resources.UI.FeedbackViews.CreateFeedback;
 }
 
-<h2>@Resources.FeedbackViews.FeedbackWaiting</h2>
+<h2>@Resources.UI.FeedbackViews.FeedbackWaiting</h2>
 
 @using (Html.BeginForm(null, null, new { @id = string.Empty }, FormMethod.Post, new { @id = "feedbackForm" }))
 {
@@ -38,7 +38,7 @@
 
         <div class="form-group">
             <label for="isUserAgree" class="control-label col-md-4">
-                @Resources.FeedbackViews.EnvironmentQuestion
+                @Resources.UI.FeedbackViews.EnvironmentQuestion
             </label>
             <div class="col-md-8">
                 @Html.EditorFor(model => model.UserEnvironment,
@@ -75,7 +75,7 @@
 
 <div>
     <button id="feedback-return" class="btn btn-default">
-        @Resources.FeedbackViews.Return
+        @Resources.UI.FeedbackViews.Return
     </button>
 </div>
 

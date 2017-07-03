@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GameReportsAggregate;
+    using Domain.GameReportsAggregate;
 
     /// <summary>
     /// Represents a comparer for <see cref="StandingsEntry"/> objects.

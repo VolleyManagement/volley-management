@@ -3,8 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
-    using VolleyManagement.UI.Areas.Admin.Models;
+    using UI.Areas.Admin.Models;
 
     /// <summary>
     /// Compares Role instances
@@ -29,12 +28,12 @@
                 return 1;
             }
 
-            return this.CompareInternal(x, y);
+            return CompareInternal(x, y);
         }
 
         public int Compare(object x, object y)
         {
-            return this.Compare(x as RequestsViewModel, y as RequestsViewModel);
+            return Compare(x as RequestsViewModel, y as RequestsViewModel);
         }
 
         private int CompareInternal(RequestsViewModel x, RequestsViewModel y)

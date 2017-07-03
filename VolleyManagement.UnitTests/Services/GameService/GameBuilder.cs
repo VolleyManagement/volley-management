@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Domain.GamesAggregate;
 
     /// <summary>
     /// Represents a builder of <see cref="Game"/> objects for unit tests for <see cref="GameService"/>.
@@ -191,19 +191,19 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithStartDate(DateTime date)
         {
-            this._game.GameDate = date;
+            _game.GameDate = date;
             return this;
         }
 
         public GameBuilder WithNoStartDate()
         {
-            this._game.GameDate = null;
+            _game.GameDate = null;
             return this;
         }
 
         public GameBuilder WithGameNumber(byte gameNumber)
         {
-            this._game.GameNumber = gameNumber;
+            _game.GameNumber = gameNumber;
             return this;
         }
 
@@ -342,35 +342,35 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithRound(byte roundNumber)
         {
-            this._game.Round = roundNumber;
+            _game.Round = roundNumber;
             return this;
         }
 
         public GameBuilder TestRoundGame()
         {
-            this._game.TournamentId = 1;
-            this._game.HomeTeamId = 1;
-            this._game.AwayTeamId = 2;
-            this._game.Round = 1;
+            _game.TournamentId = 1;
+            _game.HomeTeamId = 1;
+            _game.AwayTeamId = 2;
+            _game.Round = 1;
 
             return this;
         }
 
         public GameBuilder TestRoundGameSwithedTeams()
         {
-            this._game.TournamentId = 1;
-            this._game.HomeTeamId = 2;
-            this._game.AwayTeamId = 1;
-            this._game.Round = 1;
+            _game.TournamentId = 1;
+            _game.HomeTeamId = 2;
+            _game.AwayTeamId = 1;
+            _game.Round = 1;
 
             return this;
         }
 
         public GameBuilder TestFreeDayGame()
         {
-            this._game.HomeTeamId = 1;
-            this._game.AwayTeamId = null;
-            this._game.Round = 1;
+            _game.HomeTeamId = 1;
+            _game.AwayTeamId = null;
+            _game.Round = 1;
 
             return this;
         }

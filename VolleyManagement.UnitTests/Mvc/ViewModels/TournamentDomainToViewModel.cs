@@ -1,12 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System.Diagnostics.CodeAnalysis;
-
+    using Domain.TournamentsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
-    using VolleyManagement.UnitTests.Services.TournamentService;
+    using Services.TournamentService;
+    using UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Tests for DomainToViewModel class.

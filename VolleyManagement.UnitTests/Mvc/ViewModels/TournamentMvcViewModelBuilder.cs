@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using Domain.TournamentsAggregate;
+    using UI.Areas.Mvc.ViewModels.Division;
+    using UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Builder for test MVC tournament view models

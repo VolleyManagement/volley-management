@@ -1,9 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentRequestAggregate;
+    using Domain.TournamentsAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// The tournament's request view model.
@@ -79,9 +79,9 @@
         {
             return new TournamentRequest
             {
-                Id = this.Id,
-                TeamId = this.TeamId,
-                TournamentId = this.TournamentId
+                Id = Id,
+                TeamId = TeamId,
+                TournamentId = TournamentId
             };
         }
     }

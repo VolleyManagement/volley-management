@@ -7,12 +7,12 @@
     using System.Web.Http;
     using System.Web.OData;
 
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.UI.Areas.WebApi.Infrastructure;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
+    using Contracts;
+    using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
+    using Infrastructure;
+    using ViewModels.Players;
+    using ViewModels.Teams;
 
     /// <summary>
     /// The players controller.
@@ -30,8 +30,8 @@
         /// <param name="teamService"> The team service. </param>
         public PlayersController(IPlayerService playerService, ITeamService teamService)
         {
-            this._playerService = playerService;
-            this._teamService = teamService;
+            _playerService = playerService;
+            _teamService = teamService;
         }
 
         /// <summary>
@@ -42,16 +42,16 @@
         /// unsuccessfully - Bad request </returns>
         public IHttpActionResult Post(PlayerViewModel player)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.BadRequest(this.ModelState);
+                return BadRequest(ModelState);
             }
 
             var playerToCreate = player.ToDomain();
-            this._playerService.Create(playerToCreate);
+            _playerService.Create(playerToCreate);
             player.Id = playerToCreate.Id;
 
-            return this.Created(player);
+            return Created(player);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@
         [EnableQuery]
         public IQueryable<PlayerViewModel> GetPlayers()
         {
-            return this._playerService.Get()
+            return _playerService.Get()
                                 .ToList()
                                 .Select(p => PlayerViewModel.Map(p))
                                 .AsQueryable();
@@ -75,34 +75,34 @@
         /// unsuccessfully - Bad request </returns>
         public IHttpActionResult Put(PlayerViewModel player)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.BadRequest(this.ModelState);
+                return BadRequest(ModelState);
             }
 
             try
             {
                 var playerToUpdate = player.ToDomain();
-                this._playerService.Edit(playerToUpdate);
+                _playerService.Edit(playerToUpdate);
                 player.Id = playerToUpdate.Id;
             }
             catch (ArgumentException ex)
             {
-                this.ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.ParamName), ex.Message);
-                return this.BadRequest(this.ModelState);
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.ParamName), ex.Message);
+                return BadRequest(ModelState);
             }
             catch (ValidationException ex)
             {
-                this.ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                return this.BadRequest(this.ModelState);
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
             }
             catch (MissingEntityException ex)
             {
-                this.ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                return this.BadRequest(this.ModelState);
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
             }
 
-            return this.Updated(player);
+            return Updated(player);
         }
 
         /// <summary>
@@ -118,20 +118,20 @@
             Player playerToUpdate;
             try
             {
-                playerToUpdate = this._playerService.Get(key);
+                playerToUpdate = _playerService.Get(key);
             }
             catch (MissingEntityException ex)
             {
-                this.ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                return this.BadRequest(this.ModelState);
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
             }
 
             switch (navigationProperty)
             {
                 case "Teams":
-                    return this.AssignTeamToPlayer(playerToUpdate, link);
+                    return AssignTeamToPlayer(playerToUpdate, link);
                 default:
-                    return this.StatusCode(HttpStatusCode.NotImplemented);
+                    return StatusCode(HttpStatusCode.NotImplemented);
             }
         }
 
@@ -143,7 +143,7 @@
         [EnableQuery]
         public SingleResult<PlayerViewModel> Get([FromODataUri] int key)
         {
-            return SingleResult.Create(this._playerService.Get()
+            return SingleResult.Create(_playerService.Get()
                                                          .Where(p => p.Id == key)
                                                          .ToList()
                                                          .Select(p => PlayerViewModel.Map(p))
@@ -161,8 +161,8 @@
             TeamViewModel team;
             try
             {
-                var player = this._playerService.Get(key);
-                team = TeamViewModel.Map(this._playerService.GetPlayerTeam(player));
+                var player = _playerService.Get(key);
+                team = TeamViewModel.Map(_playerService.GetPlayerTeam(player));
             }
             catch (MissingEntityException)
             {
@@ -179,14 +179,14 @@
         {
             try
             {
-                this._playerService.Delete(key);
+                _playerService.Delete(key);
             }
             catch (MissingEntityException ex)
             {
-                return this.BadRequest(ex.Message);
+                return BadRequest(ex.Message);
             }
 
-            return this.StatusCode(HttpStatusCode.NoContent);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         private IHttpActionResult AssignTeamToPlayer(Player playerToUpdate, Uri link)
@@ -194,24 +194,24 @@
             int teamId;
             try
             {
-                teamId = WebApiHelpers.GetKeyFromUri<int>(this.Request, link);
-                this._teamService.Get(teamId);
+                teamId = WebApiHelpers.GetKeyFromUri<int>(Request, link);
+                _teamService.Get(teamId);
                 playerToUpdate.TeamId = teamId;
-                this._playerService.Edit(playerToUpdate);
+                _playerService.Edit(playerToUpdate);
             }
             catch (MissingEntityException ex)
             {
-                this.ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                return this.BadRequest(this.ModelState);
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
             }
             catch (InvalidOperationException ex)
             {
-                this.ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
-                return this.BadRequest(this.ModelState);
+                ModelState.AddModelError(string.Format("{0}.{1}", CONTROLLER_NAME, ex.Source), ex.Message);
+                return BadRequest(ModelState);
             }
 
             var player = PlayerViewModel.Map(playerToUpdate);
-            return this.Updated(player);
+            return Updated(player);
         }
     }
 }

@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using Contracts.Authorization;
+    using Domain.TournamentsAggregate;
+    using GameResults;
 
     /// <summary>
     /// Represents tournaments schedule
@@ -60,7 +60,7 @@
         /// </summary>
         /// <param name="game">Game to check</param>
         /// <returns>True, if game is the final</returns>
-        public bool IsFinal(GameResultViewModel game) 
+        public bool IsFinal(GameResultViewModel game)
         {
             return NumberOfRounds != 0 &&
                    game.GameNumber == Rounds.Last().Value.Last().GameNumber;

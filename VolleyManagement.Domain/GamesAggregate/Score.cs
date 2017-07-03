@@ -34,7 +34,7 @@
         public byte Away { get; set; }
 
         /// <summary>
-        /// Gets an indicator whether score is empty.
+        /// Gets a value indicating whether gets an indicator whether score is empty.
         /// </summary>
         /// <returns>True if score is empty; otherwise, false.</returns>
         public bool IsEmpty

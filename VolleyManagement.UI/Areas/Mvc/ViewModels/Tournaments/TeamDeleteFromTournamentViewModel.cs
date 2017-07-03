@@ -16,7 +16,7 @@
         public string Message { get; set; }
 
         /// <summary>
-        /// Gets or sets the result of delete
+        /// Gets or sets a value indicating whether gets or sets the result of delete
         /// </summary>
         public bool HasDeleted { get; set; }
     }

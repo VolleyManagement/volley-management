@@ -46,27 +46,27 @@
         }
 
         /// <summary>
-        /// Substring to search player
+        /// Gets or sets substring to search player
         /// </summary>
         public string TextToSearch { get; set; }
 
         /// <summary>
-        /// Index of page
+        /// Gets index of page
         /// </summary>
         public int PageNumber { get; private set; }
 
         /// <summary>
-        /// Number of players on page
+        /// Gets number of players on page
         /// </summary>
         public int Size { get; private set; }
 
         /// <summary>
-        /// Number of pages
+        /// Gets number of pages
         /// </summary>
         public int NumberOfPages { get; private set; }
 
         /// <summary>
-        /// List Of Players
+        /// Gets list Of Players
         /// </summary>
         public List<PlayerNameViewModel> List { get; private set; }
 

@@ -8,7 +8,7 @@
     public class FindByNameCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Name of the entity to search
+        /// Gets or sets name of the entity to search
         /// </summary>
         public string Name { get; set; }
     }

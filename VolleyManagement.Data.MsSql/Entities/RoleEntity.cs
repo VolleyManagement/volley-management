@@ -8,17 +8,17 @@
     public class RoleEntity
     {
         /// <summary>
-        /// Identifier of the role
+        /// Gets or sets identifier of the role
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// User-friendly name of the role
+        /// Gets or sets user-friendly name of the role
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Returns all users assigned to role
+        /// Gets or sets returns all users assigned to role
         /// </summary>
         public virtual ICollection<UserEntity> Users { get; set; }
     }

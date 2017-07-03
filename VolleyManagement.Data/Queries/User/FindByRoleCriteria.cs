@@ -8,7 +8,7 @@
     public class FindByRoleCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Id of the role to search
+        /// Gets or sets id of the role to search
         /// </summary>
         public int RoleId { get; set; }
     }

@@ -116,7 +116,7 @@
         public DateTime? TransferStart { get; set; }
 
         /// <summary>
-        /// Divisions of the tournament
+        /// Gets or sets divisions of the tournament
         /// </summary>
         public List<Division> Divisions { get; set; }
 

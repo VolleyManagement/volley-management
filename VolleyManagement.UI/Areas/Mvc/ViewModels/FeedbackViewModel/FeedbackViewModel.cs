@@ -22,7 +22,8 @@
             ErrorMessageResourceName = "FieldRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
 
-        [EmailAddress(ErrorMessageResourceName = "InvalidEmail",
+        [EmailAddress(
+            ErrorMessageResourceName = "InvalidEmail",
             ErrorMessageResourceType = typeof(ViewModelResources),
             ErrorMessage = null)]
         [StringLength(80)]

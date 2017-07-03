@@ -38,7 +38,7 @@
         public byte AwaySetsScore { get; set; }
 
         /// <summary>
-        /// Gets or set a value indicating whether the technical defeat has taken place.
+        /// Gets or sets a value indicating whether gets or set a value indicating whether the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
 

@@ -11,7 +11,7 @@
         public string ResultMessage { get; set; }
 
         /// <summary>
-        /// Gets or sets the result of Feedback send.
+        /// Gets or sets a value indicating whether gets or sets the result of Feedback send.
         /// </summary>
         public bool OperationSuccessful { get; set; }
     }

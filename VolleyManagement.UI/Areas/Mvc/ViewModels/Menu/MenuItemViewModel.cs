@@ -11,7 +11,7 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets is item menu current
+        /// Gets or sets a value indicating whether gets or sets is item menu current
         /// </summary>
         public bool IsCurrent { get; set; }
 

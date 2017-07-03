@@ -20,7 +20,7 @@
         }
 
         /// <summary>
-        /// Current referrer controller name
+        /// Gets or sets current referrer controller name
         /// </summary>
         public string CurrentReferrer { get; set; }
     }

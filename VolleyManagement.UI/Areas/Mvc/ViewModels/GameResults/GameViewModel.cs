@@ -78,7 +78,7 @@
         public byte GameNumber { get; set; }
 
         /// <summary>
-        /// Gets an identifier whether this game is a first round game.
+        /// Gets a value indicating whether gets an identifier whether this game is a first round game.
         /// </summary>
         public bool IsFirstRoundGame
         {

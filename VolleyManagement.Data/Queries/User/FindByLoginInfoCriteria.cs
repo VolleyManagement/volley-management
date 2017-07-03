@@ -8,12 +8,12 @@
     public class FindByLoginInfoCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Name of the login provider
+        /// Gets or sets name of the login provider
         /// </summary>
         public string LoginProvider { get; set; }
 
         /// <summary>
-        /// Key assigned to user by provider
+        /// Gets or sets key assigned to user by provider
         /// </summary>
         public string ProviderKey { get; set; }
     }

@@ -84,12 +84,12 @@
         public byte GameNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets whether it is allowed to edit game's result (for Playoff scheme)
+        /// Gets or sets a value indicating whether gets or sets whether it is allowed to edit game's result (for Playoff scheme)
         /// </summary>
         public bool AllowEditResult { get; set; }
 
         /// <summary>
-        /// Gets an identifier whether this game is a first round game.
+        /// Gets a value indicating whether gets an identifier whether this game is a first round game.
         /// </summary>
         public bool IsFirstRoundGame
         {

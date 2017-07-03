@@ -18,52 +18,52 @@
         }
 
         /// <summary>
-        /// User Id
+        /// Gets or sets user Id
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// User Name
+        /// Gets or sets user Name
         /// </summary>
         public string UserName { get; set; }
 
         /// <summary>
-        /// User Email
+        /// Gets or sets user Email
         /// </summary>
         public string Email { get; set; }
 
         /// <summary>
-        /// User's full name
+        /// Gets or sets user's full name
         /// </summary>
         public string PersonName { get; set; }
 
         /// <summary>
-        /// Phone number for the user
+        /// Gets or sets phone number for the user
         /// </summary>
         public string PhoneNumber { get; set; }
 
         /// <summary>
-        /// It is true if user account is blocked.
+        /// Gets or sets a value indicating whether it is true if user account is blocked.
         /// </summary>
         public bool IsBlocked { get; set; }
 
         /// <summary>
-        /// Player Id
+        /// Gets or sets player Id
         /// </summary>
         public int? PlayerId { get; set; }
 
         /// <summary>
-        /// Player instance
+        /// Gets or sets player instance
         /// </summary>
         public Player Player { get; set; }
 
         /// <summary>
-        /// External login information for the user
+        /// Gets or sets external login information for the user
         /// </summary>
         public IEnumerable<LoginProviderInfo> LoginProviders { get; set; }
 
         /// <summary>
-        /// External information of the user roles
+        /// Gets or sets external information of the user roles
         /// </summary>
         public IEnumerable<Role> Roles { get; set; }
     }

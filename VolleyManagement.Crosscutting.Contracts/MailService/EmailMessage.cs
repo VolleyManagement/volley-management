@@ -30,17 +30,17 @@
         }
 
         /// <summary>
-        /// Body of the email.
+        /// Gets or sets body of the email.
         /// </summary>
         public string Body { get; set; }
 
         /// <summary>
-        /// Subject of the email.
+        /// Gets or sets subject of the email.
         /// </summary>
         public string Subject { get; set; }
 
         /// <summary>
-        /// Recipient of the email.
+        /// Gets or sets recipient of the email.
         /// </summary>
         public string Recipient { get; set; }
     }

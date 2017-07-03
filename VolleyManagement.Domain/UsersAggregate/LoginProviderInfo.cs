@@ -6,12 +6,12 @@
     public class LoginProviderInfo
     {
         /// <summary>
-        /// Key retrieved from provider
+        /// Gets or sets key retrieved from provider
         /// </summary>
         public string ProviderKey { get; set; }
 
         /// <summary>
-        /// Provider name
+        /// Gets or sets provider name
         /// </summary>
         public string LoginProvider { get; set; }
     }

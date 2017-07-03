@@ -8,7 +8,7 @@
     public class TournamentDivisionsCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Target tournament Id
+        /// Gets or sets target tournament Id
         /// </summary>
         public int TournamentId { get; set; }
     }

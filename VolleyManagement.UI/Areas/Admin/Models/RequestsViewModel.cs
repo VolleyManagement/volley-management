@@ -68,7 +68,7 @@
         public string AdminName { get; set; }
 
         /// <summary>
-        /// Gets or sets if user can close.
+        /// Gets or sets a value indicating whether gets or sets if user can close.
         /// </summary>
         public bool CanClose { get; set; }
     }

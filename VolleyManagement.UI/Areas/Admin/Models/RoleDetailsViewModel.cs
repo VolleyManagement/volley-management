@@ -22,7 +22,7 @@
         }
 
         /// <summary>
-        /// User names in current role
+        /// Gets or sets user names in current role
         /// </summary>
         public List<string> Users { get; set; }
     }

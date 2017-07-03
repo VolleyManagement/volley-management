@@ -8,7 +8,7 @@
     public class FindByEmailCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Email of the user to look for
+        /// Gets or sets email of the user to look for
         /// </summary>
         public string Email { get; set; }
     }

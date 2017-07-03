@@ -9,7 +9,7 @@
     public class GamesByRoundCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Gets orr sets id of the tournament
+        /// Gets or sets gets orr sets id of the tournament
         /// </summary>
         public int TournamentId { get; set; }
 

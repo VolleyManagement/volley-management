@@ -30,12 +30,12 @@
         }
 
         /// <summary>
-        /// Tournament Id
+        /// Gets or sets tournament Id
         /// </summary>
         public int TournamentId { get; set; }
 
         /// <summary>
-        /// List Of Teams
+        /// Gets or sets list Of Teams
         /// </summary>
         public List<TeamNameViewModel> List { get; set; }
 

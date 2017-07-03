@@ -21,9 +21,10 @@
         [Required(
             ErrorMessageResourceName = "FieldRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [EmailAddress(
-            ErrorMessageResourceName = "InvalidEmail",
-            ErrorMessageResourceType = typeof(ViewModelResources))]
+
+        [EmailAddress(ErrorMessageResourceName = "InvalidEmail",
+            ErrorMessageResourceType = typeof(ViewModelResources),
+            ErrorMessage = null)]
         [StringLength(80)]
         public string UsersEmail { get; set; }
 

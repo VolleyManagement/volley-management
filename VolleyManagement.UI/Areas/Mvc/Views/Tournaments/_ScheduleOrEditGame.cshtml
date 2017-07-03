@@ -50,8 +50,6 @@ else
 </div>
 <div class="form-group editor-field">
     @Html.EditorFor(model => model.GameDate, new { htmlAttributes = new {
-        @Value = Model.GameDate.ToString("g", 
-        new DateTimeFormatInfo { ShortDatePattern = "dd/MM/yyyy", ShortTimePattern = "HH:mm" }),
-        @class = "form-control" } })
+    @Value = String.Format("{0:dd'/'MM'/'yyyy HH:mm}", Model.GameDate), @class = "form-control" } })
     @Html.ValidationMessageFor(model => model.GameDate, "", new { @class = "text-danger" })
 </div>

@@ -3,7 +3,6 @@
     using System;
     using System.Web.Mvc;
     using Contracts;
-    using Contracts.Authorization;
     using Contracts.Exceptions;
     using Models;
 
@@ -13,20 +12,15 @@
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
-        private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
         /// <param name="userService">User service</param>
-        /// <param name="currentUserService">Instance of <see cref="ICurrentUserService"/> class.</param>
-        public UsersController(IUserService userService, ICurrentUserService currentUserService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-            _currentUserService = currentUserService;
         }
-
-        private int CurrentUserId => _currentUserService.GetCurrentUserId();
 
         /// <summary>
         /// Get all user list view.
@@ -75,12 +69,6 @@
         /// <returns> The <see cref="ActionResult"/>. </returns>
         public ActionResult ChangeUserBlocked(int id, bool toBlock, string backTo)
         {
-            if (id == CurrentUserId)
-            {
-                TempData["AlertMessage"] = "You can not block yourself!";
-                return Redirect(backTo);
-            }
-
             var user = _userService.GetUserDetails(id);
 
             if (user == null)
@@ -94,26 +82,14 @@
             }
             catch (InvalidOperationException ex)
             {
-                return View(
-                    "ErrorPage",
-                    CreateErrorReply(ex));
+                ModelState.AddModelError("ValidationError", ex.Message);
             }
             catch (MissingEntityException ex)
             {
-                return View(
-                    "ErrorPage",
-                    CreateErrorReply(ex));
+                ModelState.AddModelError("ValidationError", ex.Message);
             }
 
             return Redirect(backTo);
-        }
-
-        private static OperationResultViewModel CreateErrorReply(Exception ex)
-        {
-            return new OperationResultViewModel
-            {
-                Message = ex.Message
-            };
         }
     }
 }

@@ -156,4 +156,7 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>A user with specified identifier was not found</value>
   </data>
+  <data name="UserBlockHimself" xml:space="preserve">
+    <value>You can't block yourself</value>
+  </data>
 </root>

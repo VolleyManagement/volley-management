@@ -73,12 +73,7 @@
                                 @Html.ActionLink(Resources.UI.GameResultViews.Edit, "Edit", new { id = gameResult.Id }, null)
                             }
                         </td>
-                        <td class="results-operation-cell">
-                            @if (Model.Authorization.IsAllowed(AuthOperations.Games.Delete))
-                            {
-                                <a href="#" class="deleteResult_btn" data-id="@gameResult.Id">@Resources.UI.GameResultViews.Delete</a>
-                            }
-                        </td>
+                        <td></td>
                     </tr>
                 }
             </tbody>

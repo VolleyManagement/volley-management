@@ -137,6 +137,7 @@
 
             var tournamentViewModel = new TournamentViewModel()
             {
+                Season = (short)now.Year,
                 ApplyingPeriodStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
                 ApplyingPeriodEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
                                               + DAYS_FOR_APPLYING_PERIOD),

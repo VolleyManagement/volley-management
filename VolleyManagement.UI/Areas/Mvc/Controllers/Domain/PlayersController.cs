@@ -23,7 +23,7 @@
         /// User Id for anonym role.
         /// </summary>
         private const int ANONYM = -1;
-        private const int MAX_PLAYERS_ON_PAGE = 5;
+        private const int MAX_PLAYERS_ON_PAGE = 12;
         private const string PLAYER_WAS_DELETED_DESCRIPTION = @"The player was not found because he was removed.
                                                                 Editing operation is impossible.
                                                                 To create a player use the link.";

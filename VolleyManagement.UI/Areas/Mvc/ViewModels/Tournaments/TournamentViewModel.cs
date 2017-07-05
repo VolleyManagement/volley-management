@@ -44,12 +44,6 @@
         public List<int> TournamentSchemeList { get; set; }
 
         /// <summary>
-        /// Gets or sets the default season
-        /// </summary>
-        /// <value>Default season</value>
-        public string SelectedSeason { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating where Id.
         /// </summary>
         /// <value>Id of tournament.</value>
@@ -254,10 +248,6 @@
             for (int i = 0; i < YEARS_RANGE; i++, year++)
             {
                 var str = string.Format("{0}/{1}", year, year + 1);
-                if (DateTime.Now.Year == year + 1)
-                {
-                    SelectedSeason = str;
-                }
 
                 SeasonsList.Add(year, str);
             }

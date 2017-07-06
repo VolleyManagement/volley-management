@@ -16,6 +16,7 @@
     using Microsoft.Owin.Security;
     using ViewModels.Account;
     using ViewModels.Users;
+    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Manages Sign In/Out process
@@ -28,6 +29,7 @@
         private readonly IUserService _userService;
         private readonly ICacheProvider _cacheProvider;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IAuthorizationService _authService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountController"/> class.
@@ -37,18 +39,21 @@
         /// <param name="userService"> User service </param>
         /// <param name="cacheProvider">Instance of <see cref="ICacheProvider"/> class.</param>
         /// <param name="currentUserService">Instance of <see cref="ICurrentUserService"/> class.</param>
+        /// <param name="authService">Instance of <see cref="IAuthorizationService"/> class.</param>
         public AccountController(
                     IVolleyUserManager<UserModel> userManager,
                     IRolesService rolesService,
                     IUserService userService,
                     ICacheProvider cacheProvider,
-                    ICurrentUserService currentUserService)
+                    ICurrentUserService currentUserService,
+                    IAuthorizationService authService)
         {
             _userManager = userManager;
             _rolesService = rolesService;
             _cacheProvider = cacheProvider;
             _userService = userService;
             _currentUserService = currentUserService;
+            _authService = authService;
         }
 
         private int CurrentUserId
@@ -76,6 +81,7 @@
         {
             var vm = new AuthenticationStatusViewModel();
             vm.IsAuthenticated = HttpContext.User.Identity.IsAuthenticated;
+            vm.Authorization = _authService.GetAllowedOperations(AuthOperations.AdminDashboard.View);
             vm.ReturnUrl = GetReturnUrl();
             if (vm.IsAuthenticated)
             {

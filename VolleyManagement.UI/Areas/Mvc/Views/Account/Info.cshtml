@@ -1,4 +1,5 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Account.AuthenticationStatusViewModel
+﻿@using VolleyManagement.Domain.RolesAggregate;
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.Account.AuthenticationStatusViewModel
 
 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
     <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -7,20 +8,26 @@
     @if (Model.IsAuthenticated)
     {
         <li>
-            <a href="~/Account/Details"><i class="fa fa-user fa-fw"></i> User Profile</a>
+            <a href="@Url.Action("Details", "Account")"><i class="fa fa-user fa-fw"></i> User Profile</a>
         </li>
+        if (Model.Authorization.IsAllowed(AuthOperations.AdminDashboard.View))
+        {
+            <li>
+                <a href="@Url.Action("Index", "Dashboard", new { area = "Admin" })"><i class="fa fa-user fa-fw"></i> Admin Dashboard</a>
+            </li>
+        }
         <li>
             <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
         </li>
         <li class="divider"></li>
         <li>
-            <a href="~/Account/Logout" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <a href="@Url.Action("Logout", "Account")" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
         </li>
     }
     else
     {
         <li>
-            <a href="~/Account/Login" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Login</a>
+            <a href="@Url.Action("Login", "Account")" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Login</a>
         </li>
     }
 

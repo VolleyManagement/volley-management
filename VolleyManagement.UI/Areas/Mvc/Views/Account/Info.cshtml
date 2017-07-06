@@ -1,4 +1,5 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Account.AuthenticationStatusViewModel
+﻿@using VolleyManagement.Domain.RolesAggregate;
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.Account.AuthenticationStatusViewModel
 
 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
     <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -9,6 +10,12 @@
         <li>
             <a href="~/Account/Details"><i class="fa fa-user fa-fw"></i> User Profile</a>
         </li>
+        if (Model.Authorization.IsAllowed(AuthOperations.AdminDashboard.View))
+        {
+            <li>
+                <a href="~/Admin"> Admin Dashboard</a>
+            </li>
+        }
         <li>
             <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
         </li>

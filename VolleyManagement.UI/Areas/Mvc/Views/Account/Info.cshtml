@@ -8,12 +8,12 @@
     @if (Model.IsAuthenticated)
     {
         <li>
-            <a href="~/Account/Details"><i class="fa fa-user fa-fw"></i> User Profile</a>
+            <a href="@Url.Action("Details", "Account")"><i class="fa fa-user fa-fw"></i> User Profile</a>
         </li>
         if (Model.Authorization.IsAllowed(AuthOperations.AdminDashboard.View))
         {
             <li>
-                @Html.ActionLink("Admin Dashboard", "Index", "Dashboard", new { area = "Admin" }, null)
+                <a href="@Url.Action("Index", "Dashboard", new { area = "Admin" })"><i class="fa fa-user fa-fw"></i> Admin Dashboard</a>
             </li>
         }
         <li>
@@ -21,13 +21,13 @@
         </li>
         <li class="divider"></li>
         <li>
-            <a href="~/Account/Logout" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            <a href="@Url.Action("Logout", "Account")" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
         </li>
     }
     else
     {
         <li>
-            <a href="~/Account/Login" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Login</a>
+            <a href="@Url.Action("Login", "Account")" returnurl="@Model.ReturnUrl"><i class="fa fa-sign-out fa-fw"></i> Login</a>
         </li>
     }
 

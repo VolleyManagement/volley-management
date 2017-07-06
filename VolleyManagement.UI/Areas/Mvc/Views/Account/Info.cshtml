@@ -13,7 +13,7 @@
         if (Model.Authorization.IsAllowed(AuthOperations.AdminDashboard.View))
         {
             <li>
-                <a href="~/Admin"> Admin Dashboard</a>
+                @Html.ActionLink("Admin Dashboard", "Index", "Dashboard", new { area = "Admin" }, null)
             </li>
         }
         <li>

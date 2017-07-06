@@ -39,6 +39,7 @@
         /// <param name="userService"> User service </param>
         /// <param name="cacheProvider">Instance of <see cref="ICacheProvider"/> class.</param>
         /// <param name="currentUserService">Instance of <see cref="ICurrentUserService"/> class.</param>
+        /// <param name="authService">Instance of <see cref="IAuthorizationService"/> class.</param>
         public AccountController(
                     IVolleyUserManager<UserModel> userManager,
                     IRolesService rolesService,

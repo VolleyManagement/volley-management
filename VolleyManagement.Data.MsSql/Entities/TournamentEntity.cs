@@ -85,8 +85,8 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// </summary>
         public virtual List<DivisionEntity> Divisions
         {
-            get => _divisions;
-            set => _divisions = value;
+            get { return _divisions; }
+            set { _divisions = value; }
         }
 
         /// <summary>
@@ -99,8 +99,8 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// </summary>
         public virtual List<TeamEntity> Teams
         {
-            get => _teams;
-            set => _teams = value;
+            get { return _teams; }
+            set { _teams = value; }
         }
 
         /// <summary>

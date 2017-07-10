@@ -42,8 +42,8 @@
         /// </summary>
         public virtual List<GroupEntity> Groups
         {
-            get => _groups;
-            set => _groups = value;
+            get { return _groups; }
+            set { _groups = value; }
         }
     }
 }

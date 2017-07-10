@@ -89,7 +89,7 @@
         /// <param name="teamViewModel">Team view model</param>
         /// <returns>Redirect to team index page</returns>
         [HttpPost]
-        public JsonResult Create(TeamViewModel teamViewModel)
+        public JsonResult Create(TeamViewModel teamViewModel,string name)
         {
             JsonResult result = null;
 

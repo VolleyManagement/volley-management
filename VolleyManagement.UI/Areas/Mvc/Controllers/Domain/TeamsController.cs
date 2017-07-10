@@ -89,7 +89,7 @@
         /// <param name="teamViewModel">Team view model</param>
         /// <returns>Redirect to team index page</returns>
         [HttpPost]
-        public JsonResult Create(TeamViewModel teamViewModel,string name)
+        public JsonResult Create(TeamViewModel teamViewModel)
         {
             JsonResult result = null;
 
@@ -103,7 +103,7 @@
 
                 try
                 {
-                    _teamService.Create(domainTeam);
+                    _teamService.Create(domainTeam, teamViewModel.Name);
                     if (teamViewModel.Roster != null)
                     {
                         _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);

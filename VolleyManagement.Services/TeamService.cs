@@ -75,7 +75,8 @@
         /// Create a new team.
         /// </summary>
         /// <param name="teamToCreate">A Team to create.</param>
-        public void Create(Team teamToCreate)
+        /// <param name="name">A Name of team.</param>
+        public void Create(Team teamToCreate, string name)
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
 
@@ -91,6 +92,14 @@
             {
                 var existTeam = GetPlayerLedTeam(captain.Id);
                 VerifyExistingTeamOrThrow(existTeam);
+            }
+
+            var existTeamName = Get();
+
+            if (!VerifyExistingTeamByNameOrThrow(existTeamName, name))
+            {
+                // ToDo: Revisit this case
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamToCreate.CaptainId);
             }
 
             ValidateTeam(teamToCreate);
@@ -228,6 +237,28 @@
                 var ex = new ValidationException(ServiceResources.ExceptionMessages.PlayerIsCaptainOfAnotherTeam);
                 ex.Data[Domain.Constants.ExceptionManagement.ENTITY_ID_KEY] = existTeam.Id;
                 throw ex;
+            }
+        }
+
+        private static bool VerifyExistingTeamByNameOrThrow(List<Team> existTeam, string name)
+        {
+            var counter = 0;
+
+            foreach (Team nam in existTeam)
+            {
+                if (nam.Name.Equals(name))
+                {
+                    counter++;
+                }
+            }
+
+            if (counter == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 

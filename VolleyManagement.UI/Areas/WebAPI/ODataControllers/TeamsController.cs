@@ -44,7 +44,7 @@
 
             try
             {
-                _teamService.Create(teamToCreate);
+                _teamService.Create(teamToCreate, team.Name);
             }
             catch (MissingEntityException ex)
             {

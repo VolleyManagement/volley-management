@@ -95,7 +95,10 @@
                     StartDate = tr.GamesStart,
                     EndDate = tr.GamesEnd,
                     Scheme = (TournamentSchemeEnum)tr.Scheme,
-                    TeamCount = (byte)tr.Teams.Count()
+                    TeamCount = (byte)tr.Divisions
+                                        .SelectMany(d => d.Groups)
+                                        .SelectMany(g => g.Teams)
+                                        .Count()
                 })
                 .SingleOrDefault();
         }

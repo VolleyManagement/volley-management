@@ -391,21 +391,21 @@
                             {
                                 new GroupEntity()
                                 {
-                                    Name = "Group 1"
+                                    Name = "Group 1",
+                                    Teams = new List<TeamEntity>()
+                                    {
+                                        teams[0],
+                                        teams[1],
+                                        teams[2],
+                                        teams[3],
+                                        teams[4],
+                                        teams[5]
+                                    }
                                 }
                             }
                         }
                     },
-                    LastTimeUpdated = new DateTime(2015, 09, 29),
-                    Teams = new List<TeamEntity>()
-                    {
-                        teams[0],
-                        teams[1],
-                        teams[2],
-                        teams[3],
-                        teams[4],
-                        teams[5]
-                    }
+                    LastTimeUpdated = new DateTime(2015, 09, 29)
                 },
 
                 // Current tournament, shceme 1
@@ -429,20 +429,20 @@
                             {
                                 new GroupEntity()
                                 {
-                                    Name = "Group 2"
+                                    Name = "Group 2",
+                                    Teams = new List<TeamEntity>()
+                                    {
+                                        teams[0],
+                                        teams[1],
+                                        teams[2],
+                                        teams[3],
+                                        teams[4]
+                                    }
                                 }
                             }
                         }
                     },
-                    LastTimeUpdated = DateTime.Now.AddDays(-8),
-                    Teams = new List<TeamEntity>()
-                    {
-                        teams[0],
-                        teams[1],
-                        teams[2],
-                        teams[3],
-                        teams[4]
-                    }
+                    LastTimeUpdated = DateTime.Now.AddDays(-8)
                 },
 
                 // Future tournament scheme 1
@@ -466,20 +466,20 @@
                             {
                                 new GroupEntity()
                                 {
-                                    Name = "Group 3"
+                                    Name = "Group 3",
+                                    Teams = new List<TeamEntity>()
+                                    {
+                                        teams[0],
+                                        teams[1],
+                                        teams[2],
+                                        teams[3],
+                                        teams[4]
+                                    }
                                 }
                             }
                         }
                     },
-                    LastTimeUpdated = DateTime.Now.AddMonths(2).AddDays(2),
-                    Teams = new List<TeamEntity>()
-                    {
-                        teams[0],
-                        teams[1],
-                        teams[2],
-                        teams[3],
-                        teams[4]
-                    }
+                    LastTimeUpdated = DateTime.Now.AddMonths(2).AddDays(2)
                 }
             };
         }
@@ -509,18 +509,18 @@
                             {
                                 new GroupEntity()
                                 {
-                                    Name = "Group 4"
+                                    Name = "Group 4",
+                                    Teams = new List<TeamEntity>()
+                                    {
+                                        teams[0],
+                                        teams[2],
+                                        teams[4]
+                                    }
                                 }
                             }
                         }
                     },
-                    LastTimeUpdated = new DateTime(2017, 06, 01),
-                    Teams = new List<TeamEntity>()
-                    {
-                        teams[0],
-                        teams[2],
-                        teams[4]
-                    }
+                    LastTimeUpdated = new DateTime(2017, 06, 01)
                 },
 
                 // Current tournament, scheme 2
@@ -544,20 +544,20 @@
                             {
                                 new GroupEntity()
                                 {
-                                    Name = "Group 5"
+                                    Name = "Group 5",
+                                    Teams = new List<TeamEntity>()
+                                    {
+                                        teams[0],
+                                        teams[1],
+                                        teams[2],
+                                        teams[3],
+                                        teams[4]
+                                    }
                                 }
                             }
                         }
                     },
-                    LastTimeUpdated = DateTime.Now.AddDays(-10),
-                    Teams = new List<TeamEntity>()
-                    {
-                        teams[0],
-                        teams[1],
-                        teams[2],
-                        teams[3],
-                        teams[4]
-                    }
+                    LastTimeUpdated = DateTime.Now.AddDays(-10)
                 },
 
                 // Future tournament, scheme 2
@@ -579,20 +579,20 @@
                             {
                                 new GroupEntity()
                                 {
-                                    Name = "Group 6"
+                                    Name = "Group 6",
+                                    Teams = new List<TeamEntity>()
+                                    {
+                                        teams[5],
+                                        teams[4],
+                                        teams[2],
+                                        teams[3],
+                                        teams[0]
+                                    }
                                 }
                             }
                         }
                     },
-                    LastTimeUpdated = DateTime.Now.AddMonths(2).AddDays(16),
-                    Teams = new List<TeamEntity>()
-                    {
-                        teams[5],
-                        teams[4],
-                        teams[2],
-                        teams[3],
-                        teams[0]
-                    }
+                    LastTimeUpdated = DateTime.Now.AddMonths(2).AddDays(16)
                 }
             };
         }
@@ -622,12 +622,12 @@
                             {
                                 new GroupEntity()
                                 {
-                                    Name = "Group 7"
+                                    Name = "Group 7",
+                                    Teams = teams
                                 }
                             }
                         }
-                    },
-                    Teams = teams
+                    }
                 },
 
                 // Current
@@ -651,12 +651,12 @@
                             {
                                 new GroupEntity()
                                 {
-                                    Name = "Group 8"
+                                    Name = "Group 8",
+                                    Teams = teams
                                 }
                             }
                         }
-                    },
-                    Teams = teams
+                    }
                 },
 
                 // Future
@@ -680,16 +680,16 @@
                             {
                                 new GroupEntity()
                                 {
-                                    Name = "Group 9"
+                                    Name = "Group 9",
+                                    Teams = new List<TeamEntity>
+                                    {
+                                        teams[0],
+                                        teams[1],
+                                        teams[2]
+                                    }
                                 }
                             }
                         }
-                    },
-                    Teams = new List<TeamEntity>
-                    {
-                        teams[0],
-                        teams[1],
-                        teams[2]
                     }
                 }
             };
@@ -735,7 +735,9 @@
         private static List<GameResultEntity> GenerateGamesForSchemeOneAndTwo(TournamentEntity tour, int tourId, int gameId)
         {
             List<GameResultEntity> games = new List<GameResultEntity>();
-            int teamsCount = tour.Teams.Count;
+            List<TeamEntity> teams = GetAllTeamsInTournament(tour);
+
+            int teamsCount = teams.Count;
             int roundsNumber = teamsCount % 2 == 0 ? (teamsCount - 1) : teamsCount;
             int gamesInRound = roundsNumber % 2 == 0 ? (roundsNumber / 2) : ((roundsNumber / 2) + 1);
 
@@ -747,8 +749,8 @@
             int[] tempAway = new int[gamesInRound];
             for (int i = 0, j = 0; i < gamesInRound; i++, j++)
             {
-                homeTeamIds[i] = tour.Teams[j].Id;
-                awayTeamIds[i] = i == gamesInRound - 1 && teamsCount % 2 != 0 ? 0 : tour.Teams[++j].Id;
+                homeTeamIds[i] = teams[j].Id;
+                awayTeamIds[i] = i == gamesInRound - 1 && teamsCount % 2 != 0 ? 0 : teams[++j].Id;
 
                 tempHome[i] = homeTeamIds[i];
                 tempAway[i] = awayTeamIds[i];
@@ -827,7 +829,9 @@
 
         private static List<GameResultEntity> GenerateGamesForSchemePlayoff(TournamentEntity tour, int tourId, int startGameId)
         {
-            int currentNumberOfTeams = tour.Teams.Count;
+            List<TeamEntity> teams = GetAllTeamsInTournament(tour);
+
+            int currentNumberOfTeams = teams.Count;
             List<GameResultEntity> games = GenerateGamesInFirstRoundSchemePlyoff(tour, tourId, startGameId);
             int numberOfGamesInFirstRound = games.Count;
             int numberOfRounds = GetNumberOfRoundsInPlayoffScheme(currentNumberOfTeams);
@@ -955,11 +959,12 @@
 
         private static List<GameResultEntity> GenerateGamesInFirstRoundSchemePlyoff(TournamentEntity tour, int tourId, int startGameId)
         {
+            List<TeamEntity> teams = GetAllTeamsInTournament(tour);
             List<GameResultEntity> gamesInFirstRound = new List<GameResultEntity>();
-            int teamsCount = Convert.ToInt32(Math.Pow(2, GetNumberOfRoundsInPlayoffScheme(tour.Teams.Count)));
-            List<TeamEntity> teamsInTournament = tour.Teams.ToList();
+            int teamsCount = Convert.ToInt32(Math.Pow(2, GetNumberOfRoundsInPlayoffScheme(teams.Count)));
+            List<TeamEntity> teamsInTournament = teams;
 
-            for (int i = 0; i < teamsCount - tour.Teams.Count; i++)
+            for (int i = 0; i < teamsCount - teams.Count; i++)
             {
                 teamsInTournament.Add(null);
             }
@@ -977,15 +982,15 @@
 
                 // Now each next game starts one hour after the previous
                 gamesInFirstRound.Add(new GameResultEntity
-                    {
-                        Id = startGameId++,
-                        HomeTeamId = homeTeamId,
-                        AwayTeamId = awayTeamId,
-                        TournamentId = tourId,
-                        GameNumber = Convert.ToByte(i + 1),
-                        RoundNumber = 1,
-                        StartTime = tour.GamesStart.AddHours(i)
-                    });
+                {
+                    Id = startGameId++,
+                    HomeTeamId = homeTeamId,
+                    AwayTeamId = awayTeamId,
+                    TournamentId = tourId,
+                    GameNumber = Convert.ToByte(i + 1),
+                    RoundNumber = 1,
+                    StartTime = tour.GamesStart.AddHours(i)
+                });
             }
 
             return gamesInFirstRound;
@@ -1429,6 +1434,13 @@
                 }
             };
             return contributors;
+        }
+
+        private static List<TeamEntity> GetAllTeamsInTournament(TournamentEntity tour)
+        {
+            var teams = tour.Divisions.SelectMany(d => d.Groups).SelectMany(k => k.Teams).ToList();
+
+            return teams;
         }
 
         #endregion

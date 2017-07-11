@@ -1,5 +1,7 @@
 ﻿namespace VolleyManagement.Data.MsSql.Entities
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represent entity of a group
     /// </summary>
@@ -24,5 +26,10 @@
         /// Gets or sets group's division
         /// </summary>
         public virtual DivisionEntity Division { get; set; }
+
+        /// <summary>
+        /// Gets or sets collection of tournaments teams
+        /// </summary>
+        public virtual ICollection<TeamEntity> Teams { get; set; }
     }
 }

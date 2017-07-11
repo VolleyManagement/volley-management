@@ -53,8 +53,8 @@
         public virtual ICollection<GameResultEntity> AwayGameResults { get; set; }
 
         /// <summary>
-        /// Gets or sets tournaments in which team takes part.
+        /// Gets or sets groups in which team takes part.
         /// </summary>
-        public virtual ICollection<TournamentEntity> Tournaments { get; set; }
+        public virtual ICollection<GroupEntity> Groups { get; set; }
     }
 }

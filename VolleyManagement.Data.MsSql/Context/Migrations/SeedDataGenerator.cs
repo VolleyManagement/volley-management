@@ -978,7 +978,10 @@
                 int? awayTeamId = teamsInTournament[lastTeamIndex] == null ?
                     null : (int?)teamsInTournament[lastTeamIndex].Id;
                 teamsInTournament.RemoveAt(lastTeamIndex);
-                teamsInTournament.RemoveAt(0);
+                if (teamsInTournament.Count != 0)
+                {
+                    teamsInTournament.RemoveAt(0);
+                }
 
                 // Now each next game starts one hour after the previous
                 gamesInFirstRound.Add(new GameResultEntity

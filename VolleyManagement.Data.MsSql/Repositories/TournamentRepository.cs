@@ -93,7 +93,7 @@
             var tournamentEntity = _dalTournaments.Find(tournamentId);
             var teamEntity = _dalTeams.Find(teamId);
 
-           // tournamentEntity.Teams.Add(teamEntity);
+            // tournamentEntity.Teams.Add(teamEntity);
         }
 
         /// <summary>
@@ -114,16 +114,19 @@
                 throw new ConcurrencyException();
             }
 
+            GroupEntity group = null;
             foreach (var gr in teamEntity.Groups)
             {
                 foreach (var team in gr.Teams)
                 {
                     if (team.Id == teamId)
                     {
-                        gr.Teams.Remove(teamEntity);
+                        group = gr;
                     }
                 }
             }
+
+            group?.Teams.Remove(teamEntity);
         }
 
         private void MapIdentifiers(Tournament to, TournamentEntity from)

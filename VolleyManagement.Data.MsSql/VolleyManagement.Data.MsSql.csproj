@@ -171,6 +171,10 @@
     <Compile Include="Context\Migrations\201611232119533_AddTournamentRequestTable.Designer.cs">
       <DependentUpon>201611232119533_AddTournamentRequestTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201707111817526_AddTeamGroupRelations.cs" />
+    <Compile Include="Context\Migrations\201707111817526_AddTeamGroupRelations.Designer.cs">
+      <DependentUpon>201707111817526_AddTeamGroupRelations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -328,6 +332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201611232119533_AddTournamentRequestTable.resx">
       <DependentUpon>201611232119533_AddTournamentRequestTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201707111817526_AddTeamGroupRelations.resx">
+      <DependentUpon>201707111817526_AddTeamGroupRelations.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

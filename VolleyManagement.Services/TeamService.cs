@@ -16,6 +16,7 @@
     using Domain.Properties;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
+    using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
     /// Defines TeamService
@@ -75,7 +76,7 @@
         /// Create a new team.
         /// </summary>
         /// <param name="teamToCreate">A Team to create.</param>
-        /// <param name="name">A Name of team.</param>
+        /// <param name="name">A Name of team for create.</param>
         public void Create(Team teamToCreate, string name)
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
@@ -96,10 +97,10 @@
 
             var existTeamName = Get();
 
-            if (!VerifyExistingTeamByNameOrThrow(existTeamName, name))
+            if (!ValidateTwoTeamsWithTheSameName(existTeamName, name))
             {
-                // ToDo: Revisit this case
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamNotFound, teamToCreate.CaptainId);
+                throw new ArgumentException(
+                    TournamentResources.TeamNameInTournamentNotUnique, teamToCreate.Name);
             }
 
             ValidateTeam(teamToCreate);
@@ -240,13 +241,12 @@
             }
         }
 
-        private static bool VerifyExistingTeamByNameOrThrow(List<Team> existTeam, string name)
+        private static bool ValidateTwoTeamsWithTheSameName(List<Team> existTeam, string name)
         {
             var counter = 0;
-
-            foreach (Team nam in existTeam)
+            foreach (Team inputTeam in existTeam)
             {
-                if (nam.Name.Equals(name))
+                if (inputTeam.Name.Equals(name))
                 {
                     counter++;
                 }

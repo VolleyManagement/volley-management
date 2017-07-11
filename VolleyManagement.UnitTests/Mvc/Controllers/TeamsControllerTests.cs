@@ -48,6 +48,7 @@
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string FILE_NOT_FOUND_EX_MESSAGE = "File not found";
         private const string FILE_LOAD_EX_MESSAGE = "File size must be less then 1 MB and greater then 0 MB";
+        private const string TEAM_CREATED_NAME = "Sun";
 
         private Mock<ITeamService> _teamServiceMock;
         private Mock<HttpContextBase> _httpContextMock;
@@ -134,7 +135,7 @@
             var viewModel = new TeamMvcViewModelBuilder().WithId(0).Build();
             var expectedDomain = viewModel.ToDomain();
             var comparer = new TeamComparer();
-            _teamServiceMock.Setup(ts => ts.Create(It.Is<Team>(t => comparer.AreEqual(t, expectedDomain))))
+            _teamServiceMock.Setup(ts => ts.Create(It.Is<Team>(t => comparer.AreEqual(t, expectedDomain)), TEAM_CREATED_NAME))
                                            .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
 
             // Act
@@ -154,7 +155,7 @@
         {
             // Arrange
             var viewModel = new TeamMvcViewModelBuilder().Build();
-            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME))
                                            .Throws(new ArgumentException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
@@ -163,7 +164,7 @@
             var modelState = sut.ModelState[string.Empty];
 
             // Assert
-            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
+            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME), Times.Once());
             Assert.AreEqual(modelState.Errors.Count, 1);
             Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
@@ -184,7 +185,7 @@
             var result = sut.Create(viewModel) as JsonResult;
 
             // Assert
-            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Never());
+            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME), Times.Never());
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
@@ -196,7 +197,7 @@
         {
             // Arrange
             var viewModel = new TeamMvcViewModelBuilder().Build();
-            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME))
                                            .Throws(new MissingEntityException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
@@ -205,7 +206,7 @@
             var modelState = sut.ModelState[string.Empty];
 
             // Assert
-            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
+            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME), Times.Once());
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
             Assert.AreEqual(modelState.Errors.Count, 1);
             Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
@@ -219,7 +220,7 @@
         {
             // Arrange
             var viewModel = new TeamMvcViewModelBuilder().Build();
-            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME))
                                            .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
 
             // Act
@@ -228,7 +229,7 @@
             var modelState = sut.ModelState[string.Empty];
 
             // Assert
-            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
+            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME), Times.Once());
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
             Assert.AreEqual(modelState.Errors.Count, 1);
             Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
@@ -301,7 +302,7 @@
             var roster = new List<PlayerNameViewModel>() { rosterPlayer };
             var viewModel = new TeamMvcViewModelBuilder().WithRoster(roster).Build();
 
-            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME))
                                            .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
 
             // Act
@@ -312,6 +313,28 @@
             _teamServiceMock.Verify(
                              ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()),
                              Times.Once());
+        }
+
+        /// <summary>
+        /// Create method test. Two Teams with the same name
+        /// </summary>
+        [TestMethod]
+        public void Create_TeamNameIsNotTheSame()
+        {
+            // Arrange
+            var viewModel = new TeamMvcViewModelBuilder().Build();
+            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME))
+                                           .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
+
+            // Act
+            var sut = BuildSUT();
+            sut.Create(viewModel);
+            var modelState = sut.ModelState[string.Empty];
+
+            // Assert
+            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>(), TEAM_CREATED_NAME), Times.Once());
+            Assert.AreEqual(modelState.Errors.Count, 1);
+            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
         }
 
         /// <summary>
@@ -335,7 +358,7 @@
             var viewModel = CreateViewModel();
             var expectedDomain = viewModel.ToDomain();
             var comparer = new TeamComparer();
-            _teamServiceMock.Setup(ts => ts.Create(It.Is<Team>(t => comparer.AreEqual(t, expectedDomain))))
+            _teamServiceMock.Setup(ts => ts.Create(It.Is<Team>(t => comparer.AreEqual(t, expectedDomain)), TEAM_CREATED_NAME))
                                            .Callback<Team>(t => t.Id = SPECIFIED_TEAM_ID);
 
             // Act

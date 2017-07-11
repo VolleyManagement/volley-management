@@ -20,6 +20,7 @@
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
+    using VolleyManagement.UnitTests.Mvc.Controllers;
     using VolleyManagement.UnitTests.Services.PlayerService;
 
     /// <summary>
@@ -35,6 +36,7 @@
         private const int PLAYER_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int UNASSIGNED_ID = 0;
+        private const string TEAM_CREATED_NAME = "Sun";
 
         private const int ANOTHER_TEAM_ID = SPECIFIC_TEAM_ID + 1;
 
@@ -163,7 +165,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newTeam);
+            sut.Create(newTeam, TEAM_CREATED_NAME);
 
             // Assert
             Assert.AreNotEqual(newTeam.Id, UNASSIGNED_ID);
@@ -192,7 +194,7 @@
             // Act
             try
             {
-                sut.Create(testTeam);
+                sut.Create(testTeam, TEAM_CREATED_NAME);
             }
             catch (ArgumentException ex)
             {
@@ -217,7 +219,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newTeam);
+            sut.Create(newTeam, TEAM_CREATED_NAME);
 
             // Assert
             VerifyCreateTeam(newTeam, Times.Once());
@@ -245,7 +247,7 @@
             // Act
             try
             {
-                sut.Create(testTeam);
+                sut.Create(testTeam, TEAM_CREATED_NAME);
             }
             catch (ArgumentException ex)
             {
@@ -280,7 +282,7 @@
             // Act
             try
             {
-                sut.Create(testTeam);
+                sut.Create(testTeam, TEAM_CREATED_NAME);
             }
             catch (ArgumentException ex)
             {
@@ -315,7 +317,7 @@
             // Act
             try
             {
-                sut.Create(testTeam);
+                sut.Create(testTeam, TEAM_CREATED_NAME);
             }
             catch (ArgumentException ex)
             {
@@ -350,7 +352,7 @@
             // Act
             try
             {
-                sut.Create(testTeam);
+                sut.Create(testTeam, TEAM_CREATED_NAME);
             }
             catch (ArgumentException ex)
             {
@@ -375,7 +377,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newTeam);
+            sut.Create(newTeam, TEAM_CREATED_NAME);
 
             // Assert
             VerifyCreateTeam(newTeam, Times.Once());
@@ -399,7 +401,7 @@
 
             try
             {
-                sut.Create(newTeam);
+                sut.Create(newTeam, TEAM_CREATED_NAME);
             }
             catch (MissingEntityException)
             {
@@ -439,7 +441,7 @@
 
             try
             {
-                sut.Create(newTeam);
+                sut.Create(newTeam, TEAM_CREATED_NAME);
             }
             catch (ValidationException)
             {
@@ -467,7 +469,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newTeam);
+            sut.Create(newTeam, TEAM_CREATED_NAME);
 
             // Assert
             Assert.AreEqual(newTeam.Id, captain.TeamId);
@@ -499,7 +501,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newTeam);
+            sut.Create(newTeam, TEAM_CREATED_NAME);
 
             // Assert
             Assert.AreEqual(captain.TeamId, SPECIFIC_TEAM_ID);
@@ -877,7 +879,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Create(testData);
+            sut.Create(testData, TEAM_CREATED_NAME);
 
             // Assert
             VerifyCreateTeam(testData, Times.Never());

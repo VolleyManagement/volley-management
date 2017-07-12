@@ -72,10 +72,10 @@
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime GameDate { get; set; }
 
+        /// <summary>
+        /// Gets or sets time of the game.
+        /// </summary>
         [DataType(DataType.Time)]
-
-        // [Display(Name = "GameTime", ResourceType = typeof(ViewModelResources))]
-        // [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public TimeSpan GameTime { get; set; }
 
         /// <summary>

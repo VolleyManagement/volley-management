@@ -11,6 +11,7 @@
     using Domain.RolesAggregate;
     using Domain.TournamentsAggregate;
     using Resources.UI;
+    using ViewModels.Division;
     using ViewModels.GameResults;
     using ViewModels.Teams;
     using ViewModels.Tournaments;

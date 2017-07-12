@@ -108,7 +108,8 @@
                 HomeTeamId = game.HomeTeamId,
                 AwayTeamId = game.AwayTeamId,
                 Round = game.Round,
-                GameDate = game.GameDate.Value,
+                GameDate = game.GameDate.Value.Date,
+                GameTime = game.GameDate.Value.TimeOfDay,
                 GameNumber = game.GameNumber
             };
         }

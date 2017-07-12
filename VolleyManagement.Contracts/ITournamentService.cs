@@ -42,6 +42,20 @@
         List<Team> GetAllTournamentTeams(int tournamentId);
 
         /// <summary>
+        /// Returns all divisions for specific tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of Tournament to get divisions</param>
+        /// <returns>Tournament divisions</returns>
+        List<Division> GetAllTournamentDivisions(int tournamentId);
+
+        /// <summary>
+        /// Returns all groups for specific tournament
+        /// </summary>
+        /// <param name="groupId">Id of Division to get groups</param>
+        /// <returns>Tournament groups</returns>
+        List<Group> GetAllTournamentGroups(int groupId);
+
+        /// <summary>
         /// Finds tournament data transfer object by tournament id
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>

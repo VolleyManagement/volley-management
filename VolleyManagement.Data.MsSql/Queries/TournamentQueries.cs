@@ -9,6 +9,8 @@
     using Data.Queries.Tournament;
     using Domain.TournamentsAggregate;
     using Entities;
+    using VolleyManagement.Data.Queries.Division;
+    using VolleyManagement.Data.Queries.Group;
 
     /// <summary>
     /// Provides Object Query implementation for Tournaments
@@ -16,6 +18,8 @@
     public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
                                      IQuery<List<Tournament>, GetAllCriteria>,
                                      IQuery<Tournament, FindByIdCriteria>,
+                                     IQuery<List<Division>, TournamentDivisionsCriteria>,
+                                     IQuery<List<Group>, TournamentGroupsCriteria>,
                                      IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>
     {
         #region Fields
@@ -65,6 +69,30 @@
         public List<Tournament> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments.Select(GetTournamentMapping()).ToList();
+        }
+
+        /// <summary>
+        /// Find Divisions by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Division"/>. </returns>
+        public List<Division> Execute(TournamentDivisionsCriteria criteria)
+        {
+            return _unitOfWork.Context.Divisions
+                                      .Where(d => d.TournamentId == criteria.TournamentId)
+                                      .Select(GetDivisionMapping()).ToList();
+        }
+
+        /// <summary>
+        /// Find Groups by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Division"/>. </returns>
+        public List<Group> Execute(TournamentGroupsCriteria criteria)
+        {
+            return _unitOfWork.Context.Groups
+                                      .Where(d => d.DivisionId == criteria.DivisionId)
+                                      .Select(GetGroupMapping()).ToList();
         }
 
         /// <summary>

@@ -2,13 +2,26 @@
     'use strict';
 
     var currNs = VM.addNamespace("tournament.addTeams"),
-    privates = {};
+        privates = {};
     privates.tornamentTeamsTable = $("#tornamentRoster");
-    
+
     privates.getAllTeamsOptions = function (callback) {
         var id = $("[id='TournamentId']").val();
         $.getJSON("/Tournaments/GetAllAvailableTeams", { tournamentId: id }, callback);
-    }
+    };
+
+    privates.getAllDivisionsOptions = function (callback) {
+        var id = $("[id='TournamentId']").val();
+        $.getJSON("/Tournaments/GetAllAvailableDivisions", { tournamentId: id }, callback);
+    };
+
+    privates.getAllGroupsOptions = function (callback) {
+        var divId = $('select[name="divisions"] :selected').val();
+        if (divId === undefined) {
+            divId = 0;
+        }
+        $.getJSON("/Tournaments/GetAllAvailableGroups", { divisionId: divId }, callback);
+    };
 
     privates.handleTeamsAddSuccess = function (data, status, xhr) {
         if (data.Message) {
@@ -22,11 +35,11 @@
         var result = {
             TournamentId: $("[id='TournamentId']").val(),
             List: []
-        }
-        var selectedTeams = $("select :selected");
-
+        };
+        var selectedTeams = $("select[name=\"teams\"] :selected");
+        var t = "";
         for (var i = 0; i < selectedTeams.length; i++) {
-            if (selectedTeams[i].value != 0) {
+            if (selectedTeams[i].value !== 0) {
                 result.List.push({
                     Id: selectedTeams[i].value
                 });
@@ -34,23 +47,57 @@
         }
 
         return result;
-    }
+    };
 
     privates.getTornamentTeamsRowMarkup = function (responseOptions) {
-        var result = "<tr><td><select>" + responseOptions + "</select></td>" +
-                    "<td><button class='deleteTeamButton'>Delete</button></td></tr>";
+        var result = "<tr><td><select name=\"teams\">" + responseOptions + "</select></td>";
         return result;
-    }
+    };
 
     privates.renderNewTournamentTeamsRow = function (responseOptions) {
         $("tr:last", privates.tornamentTeamsTable).after(privates.getTornamentTeamsRowMarkup(responseOptions));
-    }
+    };
+
+    privates.getTornamentDivisionRowMarkup = function (responseOptions, isDisabled) {
+        var disabled = "";
+        if (isDisabled) {
+            disabled = "disabled";
+        }
+        var result = "<td><select " + disabled + " name=\"divisions\">" + responseOptions + "</select></td>";
+        return privates.getDeleteRowButtonMarkup(result);
+    };
+
+    privates.renderNewTournamentDivisionsRow = function (responseOptions, isDisabled) {
+        $("td:last", privates.tornamentTeamsTable).after(privates.getTornamentDivisionRowMarkup(responseOptions, isDisabled));
+    };
+
+    privates.getTornamentGroupRowMarkup = function (responseOptions, isHidden, isDisabled) {
+        var hidden = "";
+        var disabled = "";
+        if (isHidden) {
+            hidden = "hidden";
+        }
+        if (isDisabled) {
+            disabled = "disabled";
+        }
+        var result = "<td name=\"groups\"><select " + hidden + " " + disabled + " name=\"groups\">" + responseOptions + "</select></td>";
+        return result;
+    };
+
+    privates.renderNewTournamentGroupsRow = function (responseOptions, isHidden, isDisabled) {
+        $("td:last", privates.tornamentTeamsTable).prev().after(privates.getTornamentGroupRowMarkup(responseOptions, isHidden, isDisabled));
+    };
+
+    privates.getDeleteRowButtonMarkup = function (markup) {
+        markup += "<td><button class='deleteTeamButton'>Delete</button></td></tr>";
+        return markup;
+    };
 
     privates.addTournamentTeamsRow = function () {
 
         var selectedTeams = $("select :selected");
         for (var i = 0; i < selectedTeams.length; i++) {
-            if (selectedTeams[i].value == 0) {
+            if (selectedTeams[i].value === 0) {
                 return false;
             }
         }
@@ -61,26 +108,95 @@
                 responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
             });
             privates.renderNewTournamentTeamsRow(responseOptions);
-            $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
         });
-    }
+    };
+
+    privates.addTournamentDivisionsRow = function () {
+
+        var selectedDivisions = $("select :selected");
+        for (var i = 0; i < selectedDivisions.length; i++) {
+            if (selectedDivisions[i].value === 0) {
+                return false;
+            }
+        }
+
+        privates.getAllDivisionsOptions(function (options) {
+            var isDisabled = false;
+            var responseOptions = "";
+            if (options.length === 1) {
+                isDisabled = true;
+            } else {
+                responseOptions += "<option value = '0'>" + "No division is selected" + "</option>";
+            }
+            $.each(options, function (key, value) {
+                responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+            });
+            privates.renderNewTournamentDivisionsRow(responseOptions, isDisabled);
+            $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
+            if (isDisabled) {
+                privates.addTournamentGroupsRow();
+            } else {
+                $('select[name="divisions"]').on('change', privates.addTournamentGroupsRow);
+            }
+        });
+    };
+
+    privates.addTournamentGroupsRow = function () {
+
+        var selectedGroups = $("select :selected");
+        for (var i = 0; i < selectedGroups.length; i++) {
+            if (selectedGroups[i].value === 0) {
+                return false;
+            }
+        }
+
+        privates.getAllGroupsOptions(function (options) {
+            var isHidden = false;
+            var isDisabled = false;
+            var responseOptions = "";
+            if (options.length === 0) {
+                isHidden = true;
+            } else if (options.length === 1) {
+                isDisabled = true;
+                privates.DeleteGroupsMarkup();
+            } else {
+                privates.DeleteGroupsMarkup();
+                responseOptions += "<option value = '0'>" + "No group is selected" + "</option>";
+            }
+            $.each(options, function (key, value) {
+                responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
+            });
+            privates.renderNewTournamentGroupsRow(responseOptions, isHidden, isDisabled);
+            $('select[name="divisions"]').on('change', privates.DeleteGroupsMarkup);
+        });
+
+    };
+
+    privates.DeleteGroupsMarkup = function () {
+        var result = $('td[name="groups"]');
+        result.remove();
+    };
 
     currNs.onAddTeamToTournamentButtonClick = function () {
         privates.addTournamentTeamsRow();
-    }
+        privates.addTournamentDivisionsRow();
+        privates.addTournamentGroupsRow();
+    };
 
     currNs.onAddTeamsButtonButtonClick = function () {
-        var data = privates.getJsonForTournamentTeamsSave();
-        if (data.List.length > 0) {
-            $.post("/Tournaments/AddTeamsToTournament", data)
+        var teamData = privates.getJsonForTournamentTeamsSave();
+
+        if (teamData.List.length > 0) {
+            $.post("/Tournaments/AddTeamsToTournament", teamData)
                 .done(privates.handleTeamsAddSuccess);
         }
-    }
+
+    };
 
     currNs.onDeleteTeamButtonClick = function (eventData) {
         var currentRow = eventData.target.parentElement.parentElement;
         currentRow.remove();
-    }
+    };
 
     currNs.onDeleteTeamFromTournamentButtonClick = function (eventData) {
         var teamId = eventData.target.id;
@@ -92,14 +208,14 @@
                     teamId: teamId,
                     tournamentId: tournamentId
                 })
-            .done(function (data) {
-                alert(data.Message);
-                if (data.HasDeleted) {
-                    $("#" + teamId).parent().parent().remove();
-                }
-            });
+                .done(function (data) {
+                    alert(data.Message);
+                    if (data.HasDeleted) {
+                        $("#" + teamId).parent().parent().remove();
+                    }
+                });
         }
-    }
+    };
 
     $("#addTeamToTournamentButton").bind("click", currNs.onAddTeamToTournamentButtonClick);
     $("#addTeamsButton").bind("click", currNs.onAddTeamsButtonButtonClick);

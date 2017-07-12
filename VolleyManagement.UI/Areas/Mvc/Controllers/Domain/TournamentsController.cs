@@ -578,6 +578,30 @@
             return Json(teams, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Returns available list of all divisions.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>Json list of divisions</returns>
+        public JsonResult GetAllAvailableDivisions(int tournamentId)
+        {
+            var tournamentDivisionsList = _tournamentService.GetAllTournamentDivisions(tournamentId);
+            var divisions = tournamentDivisionsList.Select(DivisionViewModel.Map);
+            return Json(divisions, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Returns available list of all groups.
+        /// </summary>
+        /// <param name="divisionId">Identifier of the division.</param>
+        /// <returns>Json list of groups</returns>
+        public JsonResult GetAllAvailableGroups(int divisionId)
+        {
+            var tournamentGroupList = _tournamentService.GetAllTournamentGroups(divisionId);
+            var groups = tournamentGroupList.Select(GroupViewModel.Map);
+            return Json(groups, JsonRequestBehavior.AllowGet);
+        }
+
         #region Private
 
         /// <summary>

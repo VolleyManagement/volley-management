@@ -155,11 +155,17 @@
                     @for (int j = 0; j < Model.Divisions[i].Groups.Count; j++)
                     {
                         string groupWrapperId = "Division_" + i.ToString() + "_Group_" + j.ToString();
+                        string removeGroupWrapperId = "Remove_" + groupWrapperId;
 
                         <div id=@groupWrapperId class="editor-field group-editor">
                             @Html.HiddenFor(model => model.Divisions[i].Groups[j].Id)
                             @Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new { name = "Divisions[@i].Groups[@j].Name" })
                             @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
+
+                            <a id=@removeGroupWrapperId class="link-button"
+                               onClick="removeGroup(@i, @j)">
+                                Remove group
+                            </a>
                         </div>
                     }
                 </div>

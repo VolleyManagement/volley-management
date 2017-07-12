@@ -68,6 +68,19 @@ function cloneGroupWrapper(divisionIdx, groupIdx, groupDefaultName) {
         .attr("value", groupDefaultName + " " + (groupIdx + 1));
     $(newGroupWrapper.children()[2])
         .attr("data-valmsg-for", "Divisions[" + divisionIdx + "].Groups[" + groupIdx + "].Name");
+    $(newGroupWrapper.children()[3])
+        .attr("id", "Remove_Division_" + divisionIdx + "_Group_" + groupIdx)
+        .attr("onclick", "removeGroup(" + divisionIdx + ", " + groupIdx + ")")
+        .show();
 
     return newGroupWrapper;
+}
+
+function removeGroup(divisionIdx, groupIdx) {
+    var divisionGroupsWrapper = "#Division_" + divisionIdx + "_Groups";
+    var groupWrapperId = "#Division_" + divisionIdx + "_Group_" + groupIdx;
+
+    var groupWrapper = $(groupWrapperId).clone();
+
+    $(groupWrapperId).remove();
 }

@@ -93,7 +93,8 @@
             var tournamentEntity = _dalTournaments.Find(tournamentId);
             var teamEntity = _dalTeams.Find(teamId);
 
-            // tournamentEntity.Teams.Add(teamEntity);
+            // temporary solution that should be rewritten or removed
+            tournamentEntity?.Divisions.First().Groups.First().Teams.Add(teamEntity);
         }
 
         /// <summary>
@@ -104,7 +105,7 @@
         public void RemoveTeamFromTournament(int teamId, int tournamentId)
         {
             var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
-            var teamEntity = tournamentEntity.Divisions
+            var teamEntity = tournamentEntity?.Divisions
                                              .SelectMany(d => d.Groups)
                                              .SelectMany(g => g.Teams)
                                              .SingleOrDefault(t => t.Id == teamId);
@@ -114,19 +115,13 @@
                 throw new ConcurrencyException();
             }
 
-            GroupEntity group = null;
-            foreach (var gr in teamEntity.Groups)
+            foreach (var group in teamEntity.Groups)
             {
-                foreach (var team in gr.Teams)
+                if (group.Division.TournamentId == tournamentId)
                 {
-                    if (team.Id == teamId)
-                    {
-                        group = gr;
-                    }
+                    group.Teams.Remove(teamEntity);
                 }
             }
-
-            group?.Teams.Remove(teamEntity);
         }
 
         private void MapIdentifiers(Tournament to, TournamentEntity from)

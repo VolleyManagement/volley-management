@@ -219,7 +219,7 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(newTeam, TEAM_CREATED_NAME);
+            sut.Create(newTeam, string.Empty);
 
             // Assert
             VerifyCreateTeam(newTeam, Times.Once());

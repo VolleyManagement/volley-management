@@ -117,12 +117,12 @@
             return (first, middle, last); // tuple literal
         }
 
-        private(string first, string middle, string last)LookupName1(long id) // tuple return type
+        private(string first, string middle, string last) LookupName1(long id) // tuple return type
         {
             var first = "First";
             var middle = "Middle";
             var last = "Last";
-            return (first, middle, last) ; // tuple literal
+            return (first, middle, last); // tuple literal
         }
 
         private class Point

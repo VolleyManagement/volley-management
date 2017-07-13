@@ -62,8 +62,8 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// </summary>
         public virtual ICollection<LoginInfoEntity> LoginProviders
         {
-            get { return _loginProviders; }
-            set { _loginProviders = value; }
+            get => _loginProviders;
+            set => _loginProviders = value;
         }
 
         /// <summary>

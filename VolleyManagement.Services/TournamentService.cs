@@ -254,26 +254,34 @@
         }
 
         /// <summary>
-        /// Adds teams to tournament
+        /// Add teams and groups to tournament
         /// </summary>
         /// <param name="teams">Teams for adding to tournament.</param>
         /// <param name="tournamentId">Tournament to assign team.</param>
-        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId)
+        /// <param name="groups">Groups for adding to tournament.</param>
+        /// <param name="divisionId">Division to assign group.</param>
+        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId, IEnumerable<Group> groups, int divisionId)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
             var allTeams = GetAllTournamentTeams(tournamentId);
+            var allGroups = GetAllTournamentGroups(divisionId);
 
             foreach (var team in teams)
             {
-                var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == team.Id);
-                if (tournamentTeam == null)
+                foreach (var group in groups)
                 {
-                    _tournamentRepository.AddTeamToTournament(team.Id, tournamentId);
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        TournamentResources.TeamNameInTournamentNotUnique, tournamentTeam.Name);
+                    var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == team.Id);
+                    var tournamentGroup = allGroups.SingleOrDefault(g => g.Id == group.Id);
+
+                    if (tournamentTeam == null && tournamentGroup != null)
+                    {
+                        _tournamentRepository.AddTeamToTournament(team.Id, tournamentId, group.Id, divisionId);
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            TournamentResources.TeamNameInTournamentNotUnique, tournamentTeam.Name);
+                    }
                 }
             }
 

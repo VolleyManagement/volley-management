@@ -337,6 +337,7 @@
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Generic\RefererViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Generic\ReferrersViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerDeleteResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Players\PlayerNameViewModel.cs" />
@@ -356,6 +357,8 @@
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamDeleteFromTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamsAddToTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentApplyViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentDivisionsListViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentGroupsListViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentsCollectionsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListReferrerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListViewModel.cs" />

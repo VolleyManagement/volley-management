@@ -263,8 +263,10 @@
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
+            var resultDivisions = _tournamentService.GetAllTournamentDivisions(tournamentId);
             var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
-            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, HttpContext.Request.RawUrl);
+            var divisions = new TournamentDivisionsListViewModel(resultDivisions, tournamentId);
+            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, divisions, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }
 
@@ -272,14 +274,15 @@
         /// Adds list of teams to tournament
         /// </summary>
         /// <param name="teams">Object with list of teams and tournament id</param>
+        /// <param name="groups">Object with list of groups</param>
         /// <returns>json result with operation data</returns>
         [HttpPost]
-        public JsonResult AddTeamsToTournament(TournamentTeamsListViewModel teams)
+        public JsonResult AddTeamsToTournament(TournamentTeamsListViewModel teams, TournamentGroupsListViewModel groups)
         {
             JsonResult result = null;
             try
             {
-                _tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId);
+                _tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId, groups.ToDomain(), groups.DivisionId);
                 result = Json(teams, JsonRequestBehavior.AllowGet);
             }
             catch (ArgumentException ex)

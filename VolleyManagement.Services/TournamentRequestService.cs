@@ -73,7 +73,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TournamentRequestNotFound, requestId);
             }
 
-            _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.TournamentId);
+            _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.TournamentId, tournamentRequest.GroupId, tournamentRequest.DivisionId);
             _tournamentRepository.UnitOfWork.Commit();
              NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
             _tournamentRequestRepository.Remove(requestId);

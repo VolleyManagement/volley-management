@@ -8,11 +8,13 @@
     public interface ITournamentRepository : IGenericRepository<Tournament>
     {
         /// <summary>
-        /// Adds team to tournament
+        /// Add team and group to tournament
         /// </summary>
         /// <param name="teamId">Team to add</param>
         /// <param name="tournamentId">Tournament to assign team</param>
-        void AddTeamToTournament(int teamId, int tournamentId);
+        /// <param name="groupId">Group to add</param>
+        /// <param name="divisionId">Division to assign group</param>
+        void AddTeamToTournament(int teamId, int tournamentId, int groupId, int divisionId);
 
         /// <summary>
         /// Removes team from tournament

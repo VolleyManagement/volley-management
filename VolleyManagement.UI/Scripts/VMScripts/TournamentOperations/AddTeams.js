@@ -37,11 +37,28 @@
             List: []
         };
         var selectedTeams = $("select[name=\"teams\"] :selected");
-        var t = "";
         for (var i = 0; i < selectedTeams.length; i++) {
             if (selectedTeams[i].value !== 0) {
                 result.List.push({
                     Id: selectedTeams[i].value
+                });
+            }
+        }
+
+        return result;
+    };
+
+    privates.getJsonForTournamentGroupsSave = function () {
+        var result = {
+            DivisionId: $('select[name="divisions"] :selected').val(),
+            List: []
+        };
+
+        var selectedGroups = $("select[name=\"groups\"] :selected");
+        for (var i = 0; i < selectedGroups.length; i++) {
+            if (selectedGroups[i].value !== 0) {
+                result.List.push({
+                    Id: selectedGroups[i].value
                 });
             }
         }
@@ -185,9 +202,10 @@
 
     currNs.onAddTeamsButtonButtonClick = function () {
         var teamData = privates.getJsonForTournamentTeamsSave();
+        var groupData = privates.getJsonForTournamentGroupsSave();
 
-        if (teamData.List.length > 0) {
-            $.post("/Tournaments/AddTeamsToTournament", teamData)
+        if (teamData.List.length > 0 && groupData.List.length > 0) {
+            $.post("/Tournaments/AddTeamsToTournament", { teams: teamData, groups: groupData })
                 .done(privates.handleTeamsAddSuccess);
         }
 

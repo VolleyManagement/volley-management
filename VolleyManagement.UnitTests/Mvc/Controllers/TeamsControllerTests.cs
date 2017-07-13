@@ -319,7 +319,7 @@
         /// Create method test. Two Teams with the same name
         /// </summary>
         [TestMethod]
-        public void Create_TeamNameIsNotTheSame()
+        public void Create_TeamNameIsTheSameWithAnotherTeam_ValidationExceptionThrown()
         {
             // Arrange
             var viewModel = new TeamMvcViewModelBuilder().Build();

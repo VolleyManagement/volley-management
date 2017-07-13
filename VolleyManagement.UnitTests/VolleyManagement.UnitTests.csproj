@@ -252,6 +252,7 @@
     <Compile Include="Services\UsersService\UserComparer.cs" />
     <Compile Include="Services\UsersService\UserServiceTestFixture.cs" />
     <Compile Include="Services\UsersService\UserServiceTests.cs" />
+    <Compile Include="TestCSharp7FeaturesSupport.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />

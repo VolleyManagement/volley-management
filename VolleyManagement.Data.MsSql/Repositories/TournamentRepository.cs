@@ -124,6 +124,51 @@
             }
         }
 
+        /// <summary>
+        /// Removes group
+        /// </summary>
+        /// <param name="groupId">Group to be removed id</param>
+        /// <param name="divisionId">Division id from which remove group</param>
+        public void RemoveGroup(int groupId, int divisionId)
+        {
+            var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
+            if (divisionEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            var groupEntity = _unitOfWork.Context.Groups.Find(groupId);
+            if (groupEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            divisionEntity.Groups.Remove(groupEntity);
+            _unitOfWork.Context.Groups.Remove(groupEntity);
+            _unitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Remove division
+        /// </summary>
+        /// <param name="divisionId">Division to be removed id</param>
+        public void RemoveDivision(int divisionId)
+        {
+            var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
+            if (divisionEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            for (int i = 0; i < divisionEntity.Groups.Count; i++)
+            {
+                RemoveGroup(divisionEntity.Groups[i].Id, divisionId);
+            }
+
+            _unitOfWork.Context.Divisions.Remove(divisionEntity);
+            _unitOfWork.Commit();
+        }
+
         private void MapIdentifiers(Tournament to, TournamentEntity from)
         {
             to.Id = from.Id;

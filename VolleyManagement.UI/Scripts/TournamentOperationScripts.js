@@ -38,6 +38,10 @@
     $(newDivisionWrapper).append(newDivisionGroupsWrapper);
     $("#Divisions").append(newDivisionWrapper);
 
+    var divisionId = "#" + $(newDivisionGroupsListWrapper).attr("id");
+    var removeLinkId = "#Remove_" + $(divisionId).children()[0].id;
+    $(removeLinkId).hide();
+
     if (divisionsCount + 1 == maxDivisionsCount) {
         $("#Add_Division").hide();
     }
@@ -49,6 +53,12 @@ function addGroup(divisionIdx, maxGroupsCount, groupDefaultName) {
     var newGroupWrapper = cloneGroupWrapper(divisionIdx, groupsCount, groupDefaultName);
 
     $(divisionGroupsWrapper).append(newGroupWrapper);
+
+    if (groupsCount == 1) {
+        var removeLinkId = "#Remove_" + $(divisionGroupsWrapper).children()[0].id;
+
+        $(removeLinkId).show();
+    }
 
     if (groupsCount + 1 == maxGroupsCount) {
         $("#Add_Division_" + divisionIdx + "_Group").hide();
@@ -82,8 +92,11 @@ function removeGroup(divisionIdx, groupIdx) {
 
     $(groupWrapperId).remove();
 
-    if ($(divisionGroupsWrapper).children().size() == 1) {
-        var linkToHide = "#" + $(divisionGroupsWrapper).children()[0].children()[3].attr("id");
+    var groupsCount = $(divisionGroupsWrapper).children().size();
+
+    if (groupsCount == 1) {
+        var group = $(divisionGroupsWrapper).children()[0];
+        var linkToHide = "#Remove_" + group.id;
 
         $(linkToHide).hide();
     }

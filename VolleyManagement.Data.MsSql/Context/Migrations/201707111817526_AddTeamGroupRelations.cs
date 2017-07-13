@@ -10,15 +10,22 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             CreateTable(
                 "dbo.GroupTeam",
                 c => new
-                    {
-                        GroupId = c.Int(nullable: false),
-                        TeamId = c.Int(nullable: false),
-                    })
+                {
+                    GroupId = c.Int(nullable: false),
+                    TeamId = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => new { t.GroupId, t.TeamId })
                 .ForeignKey("dbo.Groups", t => t.GroupId)
                 .ForeignKey("dbo.Teams", t => t.TeamId)
                 .Index(t => t.GroupId)
                 .Index(t => t.TeamId);
+
+            Sql("Insert Into GroupTeam (GroupId, TeamId) " +
+                "SELECT Groups.Id, Teams.Id " +
+                "FROM(Tournaments INNER JOIN(Divisions INNER JOIN Groups ON Divisions.Id = Groups.DivisionId) " +
+                "ON Tournaments.Id = Divisions.TournamentId) " +
+                "INNER JOIN(Teams INNER JOIN TournamentTeam ON Teams.Id = TournamentTeam.TeamId) ON Tournaments.Id = TournamentTeam.TournamentId " +
+                "WHERE(Divisions.TournamentId = TournamentTeam.TournamentId)");
 
             DropTable("dbo.TournamentTeam");
         }
@@ -28,10 +35,10 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             CreateTable(
                 "dbo.TournamentTeam",
                 c => new
-                    {
-                        TournamentId = c.Int(nullable: false),
-                        TeamId = c.Int(nullable: false),
-                    })
+                {
+                    TournamentId = c.Int(nullable: false),
+                    TeamId = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => new { t.TournamentId, t.TeamId });
 
             DropTable("dbo.GroupTeam");

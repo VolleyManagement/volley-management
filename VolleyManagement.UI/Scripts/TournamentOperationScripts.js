@@ -80,7 +80,11 @@ function removeGroup(divisionIdx, groupIdx) {
     var divisionGroupsWrapper = "#Division_" + divisionIdx + "_Groups";
     var groupWrapperId = "#Division_" + divisionIdx + "_Group_" + groupIdx;
 
-    var groupWrapper = $(groupWrapperId).clone();
-
     $(groupWrapperId).remove();
+
+    if ($(divisionGroupsWrapper).children().size() == 1) {
+        var linkToHide = "#" + $(divisionGroupsWrapper).children()[0].children()[3].attr("id");
+
+        $(linkToHide).hide();
+    }
 }

@@ -1474,7 +1474,6 @@
             Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, "Actual AwayTeamId doesn't match expected");
             Assert.AreEqual(x.Round, y.Round, "Actual Round number doesn't match expected");
             Assert.AreEqual(x.GameDate, y.GameDate, "Actual GameDate doesn't match expected");
-            Assert.AreEqual(x.GameTime, y.GameTime, "Actual GameTime doesn't match expected");
             Assert.AreEqual(x.GameNumber, y.GameNumber, "Actual GameNumber doesn't match expected");
 
             Assert.IsTrue(

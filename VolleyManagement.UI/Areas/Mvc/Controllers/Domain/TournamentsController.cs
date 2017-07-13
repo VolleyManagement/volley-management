@@ -446,7 +446,6 @@
             if (game.GameDate.HasValue)
             {
                 gameViewModel.GameDate = game.GameDate.Value;
-                gameViewModel.GameTime = game.GameDate.Value.TimeOfDay;
             }
 
             gameViewModel.Round = game.Round;

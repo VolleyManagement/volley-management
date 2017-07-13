@@ -32,8 +32,7 @@
                 AwayTeamId = AWAY_TEAM_DEFAULT_ID,
                 HomeTeamId = HOME_TEAM_DEFAULT_ID,
                 Round = DEFAULT_ROUND,
-                GameDate = default(DateTime),
-                GameTime = default(TimeSpan)
+                GameDate = default(DateTime)
             };
         }
 

@@ -1,6 +1,5 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
 
     public partial class AddTeamGroupRelations : DbMigration
@@ -22,10 +21,15 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
 
             Sql("Insert Into GroupTeam (GroupId, TeamId) " +
                 "SELECT Groups.Id, Teams.Id " +
-                "FROM(Tournaments INNER JOIN(Divisions INNER JOIN Groups ON Divisions.Id = Groups.DivisionId) " +
-                "ON Tournaments.Id = Divisions.TournamentId) " +
-                "INNER JOIN(Teams INNER JOIN TournamentTeam ON Teams.Id = TournamentTeam.TeamId) ON Tournaments.Id = TournamentTeam.TournamentId " +
-                "WHERE(Divisions.TournamentId = TournamentTeam.TournamentId)");
+                "FROM (Tournaments " +
+                "INNER JOIN (Divisions " +
+                            "INNER JOIN Groups ON Divisions.Id = Groups.DivisionId) " +
+                       "ON Tournaments.Id = Divisions.TournamentId) " +
+                "INNER JOIN (Teams " +
+                            "INNER JOIN TournamentTeam ON Teams.Id = TournamentTeam.TeamId) " +
+                       "ON Tournaments.Id = TournamentTeam.TournamentId " +
+                "WHERE " +
+                    "(Divisions.TournamentId = TournamentTeam.TournamentId)");
 
             DropTable("dbo.TournamentTeam");
         }

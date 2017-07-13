@@ -26,7 +26,7 @@
             InitializeSeasonsList();
             InitializeTournamentSchemeList();
             IsTransferEnabled = true;
-            Divisions = new List<DivisionViewModel>() { new DivisionViewModel() };
+            Divisions = new List<DivisionViewModel>();
         }
 
         // Bug:missing [ScriptIgnore]

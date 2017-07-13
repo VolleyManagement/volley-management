@@ -1,14 +1,23 @@
 ﻿function addDivision(maxDivisionsCount, divisionDefaultName, groupsTitle, groupDefaultName) {
     var divisionsCount = $("#Divisions").children().size();
-    var newDivisionWrapper = $("<div></div>").attr("id", "Division_" + divisionsCount);
-    var newDivisionIdHidden = $("#Divisions_0__Id").clone()
+    var newDivisionWrapper = $("<div></div>").attr("id", "Division_" + divisionsCount + "_Id");
+    var newDivisionIdHidden = $("<input></input>").attr("data-val", "true")
+        .attr("data-val-number", "The field Id must be a number.")
+        .attr("data-val-required", "The Id field is required.")
         .attr("id", "Divisions_" + divisionsCount + "__Id")
-        .attr("name", "Divisions[" + divisionsCount + "].Id");
+        .attr("name", "Divisions[" + divisionsCount + "].Id")
+        .attr("type", "hidden")
+        .attr("value", "0");
     var newDivisionNameWrapper = $("<div></div>").attr("class", "editor-label");
-    var newDivisionNameEditor = $("#Divisions_0__Name").clone()
+    var newDivisionNameEditor = $("<input></input>").attr("class", "text-box single-line")
+        .attr("data-val", "true")
+        .attr("data-val-maxlength", "Division Name can not contain more than 60 symbols")
+        .attr("data-val-maxlength-max", "60")
+        .attr("data-val-required", "Division Name can not be empty")
         .attr("id", "Divisions_" + divisionsCount + "__Name")
         .attr("name", "Divisions[" + divisionsCount + "].Name")
-        .attr("value", divisionDefaultName + " " + (divisionsCount + 1));
+        .attr("type", "text")
+        .attr("value", divisionDefaultName + " " + divisionsCount);
     var newDivisionNameValidation = $("<span></span>")
         .attr("class", "field-validation-valid")
         .attr("data-valmsg-for", "Divisions[" + divisionsCount + "].Name")
@@ -18,9 +27,9 @@
     var newDivisionGroupsTitle = $("<label>" + (groupsTitle) + "</label>")
         .attr("for", "Divisions_" + divisionsCount + "__Groups");
     var newDivisionGroupsListWrapper = $("<div></div>").attr("id", "Division_" + divisionsCount + "_Groups");
-    var newGroupWrapper = cloneGroupWrapper(divisionsCount, 0, groupDefaultName);
+    var newGroupWrapper = createGroup(divisionsCount, 0, groupDefaultName);
     var newDivisionGroupsAddWrapper = $("<div></div>").attr("class", "add-group-button");
-    var newDivisionGroupsAdd = $("#Add_Division_0_Group").clone()
+    var newDivisionGroupsAdd = $("<a> + Add group </a>").attr("class", "link-button")
         .attr("id", "Add_Division_" + divisionsCount + "_Group")
         .attr("onclick", "addGroup(" + divisionsCount + ", " + maxDivisionsCount + ", '" + groupDefaultName + "')")
         .show();
@@ -47,10 +56,45 @@
     }
 }
 
+function createGroup(divisionIdx, groupIdx, groupDefaultName) {
+    var newGroupWrapper = $("<div></div>").attr("id", "Division_" + divisionIdx + "_Group_" + groupIdx)
+        .attr("class", "editor-field group-editor");
+    var newGroupHidden = $("<input></input>").attr("data-val", "true")
+        .attr("data-val-number", "The field Id must be a number.")
+        .attr("data-val-required", "The Id field is required.")
+        .attr("id", "Divisions_" + divisionIdx + "__Groups_" + groupIdx + "__Id")
+        .attr("name", "Divisions[" + divisionIdx + "].Groups[" + groupIdx + "].Id")
+        .attr("type", "hidden")
+        .attr("value", "0");
+    var newGroupNameEditor = $("<input></input>").attr("class", "text-box single-line")
+        .attr("data-val", "true")
+        .attr("data-val-maxlength", "Group name can not contain more than 60 symbols")
+        .attr("data-val-maxlength-max", "60")
+        .attr("data-val-required", "Group name can not be empty")
+        .attr("id", "Divisions_" + divisionIdx + "__Groups_" + groupIdx + "__Name")
+        .attr("name", "Divisions[" + divisionIdx + "].Groups[" + groupIdx + "].Name")
+        .attr("type", "text")
+        .attr("value", groupDefaultName + " " + (groupIdx + 1));
+    var newGroupValidation = $("<span></span>").attr("class", "field-validation-valid")
+        .attr("dara-valmsg-for", "Divisions[" + divisionIdx + "].Groups[" + groupIdx + "].Name")
+        .attr("data-valmsg-replace", "true");
+    var newRemoveGroupLink = $("<a> Remove group</a>").attr("id", "Remove_Division_" + divisionIdx + "_Group_" + groupIdx)
+        .attr("class", "link-button")
+        .attr("onclick", "removeGroup(" + divisionIdx + ", " + groupIdx + ")");
+
+    $(newGroupWrapper).append(newGroupHidden);
+    $(newGroupWrapper).append(newGroupNameEditor);
+    $(newGroupWrapper).append(newGroupValidation);
+    $(newGroupWrapper).append(newRemoveGroupLink);
+
+    return newGroupWrapper;
+}
+
 function addGroup(divisionIdx, maxGroupsCount, groupDefaultName) {
     var divisionGroupsWrapper = "#Division_" + divisionIdx + "_Groups";
     var groupsCount = $(divisionGroupsWrapper).children().size();
-    var newGroupWrapper = cloneGroupWrapper(divisionIdx, groupsCount, groupDefaultName);
+    //var newGroupWrapper = cloneGroupWrapper(divisionIdx, groupsCount, groupDefaultName);
+    var newGroupWrapper = createGroup(divisionIdx, groupsCount, groupDefaultName);
 
     $(divisionGroupsWrapper).append(newGroupWrapper);
 

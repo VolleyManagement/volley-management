@@ -21,7 +21,7 @@
                 "{0} {1}",
                 ViewModelResources.DivisionDefaultName,
                 Constants.Division.MIN_DIVISIONS_COUNT);
-            Groups = new List<GroupViewModel>() { new GroupViewModel() };
+            Groups = new List<GroupViewModel>();
         }
 
         /// <summary>

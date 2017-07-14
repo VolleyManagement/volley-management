@@ -203,7 +203,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Queries\GroupQueries.cs" />
     <Compile Include="Queries\PlayerQueries.cs" />
     <Compile Include="Queries\RequestQueries.cs" />
     <Compile Include="Queries\RolesQueries.cs" />

@@ -60,6 +60,8 @@
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTournamentTeamsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
+        private readonly IQuery<List<Team>, FindByGroupIdCriteria> _getTeamByGroupIdQuery;
+        private readonly IQuery<Division, FindByIdCriteria> _getDivisionByIdQuery;
 
         #endregion
 
@@ -75,6 +77,8 @@
         /// <param name="getAllTeamsQuery">Get All Teams query.</param>
         /// <param name="getAllTournamentTeamsQuery">Get All Tournament Teams query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
+        /// <param name="getTeamByGroupIdQuery">Get Teams by Group id query</param>
+        /// <param name="getDivisionByIdQuery">Get Division by id query</param>
         /// <param name="authService">Authorization service</param>
         /// <param name="gameService">The game service</param>
         public TournamentService(
@@ -85,6 +89,8 @@
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTournamentTeamsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
+            IQuery<List<Team>, FindByGroupIdCriteria> getTeamByGroupIdQuery,
+            IQuery<Division, FindByIdCriteria> getDivisionByIdQuery,
             IAuthorizationService authService,
             IGameService gameService)
         {
@@ -98,6 +104,8 @@
             _authService = authService;
             _getTournamentDtoQuery = getTournamentDtoQuery;
             _gameService = gameService;
+            _getTeamByGroupIdQuery = getTeamByGroupIdQuery;
+            _getDivisionByIdQuery = getDivisionByIdQuery;
         }
 
         #endregion
@@ -302,6 +310,37 @@
             }
 
             return numberOfRounds;
+        }
+
+        /// <summary>
+        /// Checks if there are teams in the group
+        /// </summary>
+        /// <param name="groupId">Id of Group to check</param>
+        /// <returns>True if there are no teams in the group</returns>
+        public bool IsGroupEmpty(int groupId)
+        {
+            var teams = _getTeamByGroupIdQuery.Execute(new FindByGroupIdCriteria { GroupId = groupId });
+            return teams.Count == 0;
+        }
+
+        /// <summary>
+        /// Checks if there are teams in the division
+        /// </summary>
+        /// <param name="divisionId">Id of Division to check</param>
+        /// <returns>True if there are no teams in the group</returns>
+        public bool IsDivisionEmpty(int divisionId)
+        {
+            var division = _getDivisionByIdQuery.Execute(new FindByIdCriteria { Id = divisionId });
+
+            foreach (var group in division.Groups)
+            {
+                if (!IsGroupEmpty(group.Id))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         #endregion

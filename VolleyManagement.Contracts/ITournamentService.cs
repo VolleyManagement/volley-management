@@ -93,5 +93,19 @@
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
         /// <returns>Teams that don't take part in tournament</returns>
         IEnumerable<Team> GetAllNoTournamentTeams(int tournamentId);
+
+        /// <summary>
+        /// Checks if there are teams in the group
+        /// </summary>
+        /// <param name="groupId">Id of Group to check</param>
+        /// <returns>True if there are no teams in the group</returns>
+        bool IsGroupEmpty(int groupId);
+
+        /// <summary>
+        /// Checks if there are teams in the division
+        /// </summary>
+        /// <param name="divisionId">Id of Division to check</param>
+        /// <returns>True if there are no teams in the group</returns>
+        bool IsDivisionEmpty(int divisionId);
     }
 }

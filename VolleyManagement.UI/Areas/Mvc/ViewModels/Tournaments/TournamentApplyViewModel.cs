@@ -26,6 +26,11 @@
         public string TournamentTitle { get; set; }
 
         /// <summary>
+        /// Gets or sets the group identifier.
+        /// </summary>
+        public string GroupId { get; set; }
+
+        /// <summary>
         /// Gets or sets the teams list.
         /// </summary>
         public IEnumerable<TeamNameViewModel> Teams { get; set; }

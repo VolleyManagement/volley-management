@@ -558,7 +558,7 @@
                 }
                 else
                 {
-                    _requestService.Create(userId, tournamentId, teamId);
+                    _requestService.Create(userId, tournamentId, teamId, teamId);
                     result = Json(ViewModelResources.SuccessRequest);
                 }
             }

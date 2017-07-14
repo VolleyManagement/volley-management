@@ -131,17 +131,13 @@
         /// <param name="divisionId">Division id from which remove group</param>
         public void RemoveGroup(int groupId, int divisionId)
         {
-            var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
-            if (divisionEntity == null)
-            {
-                throw new ConcurrencyException();
-            }
-
             var groupEntity = _unitOfWork.Context.Groups.Find(groupId);
             if (groupEntity == null)
             {
                 throw new ConcurrencyException();
             }
+
+            var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
 
             divisionEntity.Groups.Remove(groupEntity);
             _unitOfWork.Context.Groups.Remove(groupEntity);
@@ -152,7 +148,8 @@
         /// Remove division
         /// </summary>
         /// <param name="divisionId">Division to be removed id</param>
-        public void RemoveDivision(int divisionId)
+        /// <param name="tournamentId">Tournament id from which remove division</param>
+        public void RemoveDivision(int divisionId, int tournamentId)
         {
             var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
             if (divisionEntity == null)
@@ -165,6 +162,9 @@
                 RemoveGroup(divisionEntity.Groups[i].Id, divisionId);
             }
 
+            var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
+
+            tournamentEntity.Divisions.Remove(divisionEntity);
             _unitOfWork.Context.Divisions.Remove(divisionEntity);
             _unitOfWork.Commit();
         }

@@ -32,6 +32,7 @@
         /// Remove division
         /// </summary>
         /// <param name="divisionId">Division to be removed id</param>
-        void RemoveDivision(int divisionId);
+        /// <param name="tournamentId">Tournament id from which remove division</param>
+        void RemoveDivision(int divisionId, int tournamentId);
     }
 }

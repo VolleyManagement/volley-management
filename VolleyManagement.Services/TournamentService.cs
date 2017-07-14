@@ -343,6 +343,53 @@
             return true;
         }
 
+        /// <summary>
+        /// Deleting group from division
+        /// </summary>
+        /// <param name="groupId">Group to delete id</param>
+        /// <param name="divisionId">Division id from which delete group</param>
+        public void DeleteGroupFromDivision(int groupId, int divisionId)
+        {
+            _authService.CheckAccess(AuthOperations.Tournaments.Edit);
+
+            if (IsGroupEmpty(groupId))
+            {
+                try
+                {
+                    _tournamentRepository.RemoveGroup(groupId, divisionId);
+                }
+                catch (ConcurrencyException ex)
+                {
+                    throw new MissingEntityException(ServiceResources.ExceptionMessages.GroupNotFound, ex);
+                }
+            }
+            else
+            {
+                throw new TournamentValidationException(ServiceResources.ExceptionMessages.GroupIsNotEmpty);
+            }
+        }
+
+        public void DeleteDivisionFromTournament(int divisionId, int tournamentId)
+        {
+            _authService.CheckAccess(AuthOperations.Tournaments.Edit);
+
+            if (IsDivisionEmpty(divisionId))
+            {
+                try
+                {
+                    _tournamentRepository.RemoveDivision(divisionId, tournamentId);
+                }
+                catch (ConcurrencyException ex)
+                {
+                    throw new MissingEntityException(ServiceResources.ExceptionMessages.DivisionNotFound, ex);
+                }
+            }
+            else
+            {
+                throw new TournamentValidationException(ServiceResources.ExceptionMessages.DivisionIsNotEmpty);
+            }
+        }
+
         #endregion
 
         #region Private

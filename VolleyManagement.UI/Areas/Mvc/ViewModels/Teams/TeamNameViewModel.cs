@@ -33,7 +33,7 @@
             return new TeamNameViewModel
             {
                 Id = team.Id,
-                Name = team.Name
+                Name = team.Name,
             };
         }
 

@@ -9,11 +9,12 @@ $(document).ready(function () {
     $("#apply").click(function () {
         var tournamentId = $('#tournamentId').val();
         var teamId = $("#TeamId").val();
+        var groupId = $("#GroupId").val();
         $.ajax({
             url: "/Tournaments/ApplyForTournament",
             datatype: 'json',
             type: 'POST',
-            data: { tournamentId: tournamentId, teamId: teamId }
+            data: { tournamentId: tournamentId, teamId: teamId, groupId: groupId }
         })
                 .done(function (data) {
                     $('#ajaxResultMessage')

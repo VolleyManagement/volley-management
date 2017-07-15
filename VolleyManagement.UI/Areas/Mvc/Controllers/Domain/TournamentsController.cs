@@ -524,6 +524,8 @@
         {
             var tournament = _tournamentService.Get(tournamentId);
 
+            var groups = _tournamentService.GetAllTournamentGroups(tournamentId);
+
             if (tournament == null)
             {
                 return HttpNotFound();
@@ -535,6 +537,7 @@
                 Id = tournamentId,
                 TournamentTitle = tournament.Name,
                 Teams = noTournamentTeams.Select(t => TeamNameViewModel.Map(t)),
+                Groups = groups.Select(g => GroupViewModel.Map(g)),
             };
             return View(tournamentApplyViewModel);
         }
@@ -543,10 +546,11 @@
         /// Apply for tournament
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
-        /// /// <param name="teamId">Team id</param>
+        /// <param name="teamId">Team id</param>
+        /// <param name="groupId">Group id</param>
         /// <returns>TournamentApply view</returns>
         [HttpPost]
-        public JsonResult ApplyForTournament(int tournamentId, int teamId)
+        public JsonResult ApplyForTournament(int tournamentId, int teamId, int groupId)
         {
             JsonResult result = null;
             try
@@ -558,7 +562,7 @@
                 }
                 else
                 {
-                    _requestService.Create(userId, tournamentId, teamId, teamId);
+                    _requestService.Create(userId, tournamentId, teamId, groupId);
                     result = Json(ViewModelResources.SuccessRequest);
                 }
             }

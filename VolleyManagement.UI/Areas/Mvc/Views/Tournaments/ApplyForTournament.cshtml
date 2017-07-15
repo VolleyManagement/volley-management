@@ -18,13 +18,8 @@ else
     </p>
 
     <p>
-        @Html.DropDownListFor(x => x.TeamId,
-                new SelectList(Model.Teams, "Id", "Name"))
-    </p>
-
-    <p>
-        @Html.DropDownListFor(x => x.TeamId,
-                new SelectList(Model.Teams, "Id", "Name"))
+        @Html.DropDownListFor(x => x.GroupId,
+                new SelectList(Model.Groups, "Id", "Name"))
     </p>
 
     <p>

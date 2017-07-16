@@ -143,9 +143,14 @@
         <script>            
             addDivision(
                 @DivisionConstants.MAX_DIVISIONS_COUNT,
+                @GroupConstants.MAX_GROUPS_COUNT,
+                @DivisionConstants.MIN_DIVISIONS_COUNT,
+                @GroupConstants.MIN_GROUPS_COUNT,
                 '@Resources.UI.ViewModelResources.DivisionDefaultName',
                 '@Resources.UI.ViewModelResources.Groups',
-                '@Resources.UI.ViewModelResources.GroupDefaultName')
+                '@Resources.UI.ViewModelResources.GroupDefaultName',
+                '@Resources.UI.TournamentViews.AddGroup',
+                '@Resources.UI.TournamentViews.RemoveGroup')
         </script>
     }
     else
@@ -176,7 +181,7 @@
                                 
                                 <a id=@removeGroupWrapperId class="link-button"
                                    onClick="removeGroup(@i, @j)">
-                                    Remove group
+                                    @Resources.UI.TournamentViews.RemoveGroup
                                 </a>
                             </div>
                         }
@@ -203,9 +208,14 @@
         <a id="Add_Division" class="link-button"
            onClick="addDivision(
                 @DivisionConstants.MAX_DIVISIONS_COUNT,
+                @GroupConstants.MAX_GROUPS_COUNT,
+                @DivisionConstants.MIN_DIVISIONS_COUNT,
+                @GroupConstants.MIN_GROUPS_COUNT,
                 '@Resources.UI.ViewModelResources.DivisionDefaultName',
                 '@Resources.UI.ViewModelResources.Groups',
-                '@Resources.UI.ViewModelResources.GroupDefaultName')">
+                '@Resources.UI.ViewModelResources.GroupDefaultName',
+                '@Resources.UI.TournamentViews.AddGroup',
+                '@Resources.UI.TournamentViews.RemoveGroup')">
             @Resources.UI.TournamentViews.AddDivision
         </a>
     </div>

@@ -7,14 +7,15 @@
 
 $(document).ready(function () {
     $("#apply").click(function () {
-        var tournamentId = $('#tournamentId').val();
-        var teamId = $("#TeamId").val();
-        var groupId = $("#GroupId").val();
+        var tournamentApply = {
+            GroupId: $("#GroupId").val(),
+        };
+
         $.ajax({
             url: "/Tournaments/ApplyForTournament",
             datatype: 'json',
             type: 'POST',
-            data: { tournamentId: tournamentId, teamId: teamId, groupId: groupId }
+            data: { tournamentApply: tournamentApply, tournamentId: $("#tournamentId").val(), teamId: $("#TeamId").val()}
         })
                 .done(function (data) {
                     $('#ajaxResultMessage')

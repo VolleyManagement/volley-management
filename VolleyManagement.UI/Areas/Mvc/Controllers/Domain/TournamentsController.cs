@@ -524,8 +524,9 @@
         {
             var tournament = _tournamentService.Get(tournamentId);
 
-            var groups = _tournamentService.GetAllTournamentGroups(tournamentId);
+            var divisions = _tournamentService.GetAllTournamentDivisions(tournamentId);
 
+            // var groups = _tournamentService.GetAllTournamentGroups();
             if (tournament == null)
             {
                 return HttpNotFound();
@@ -537,7 +538,7 @@
                 Id = tournamentId,
                 TournamentTitle = tournament.Name,
                 Teams = noTournamentTeams.Select(t => TeamNameViewModel.Map(t)),
-                Groups = groups.Select(g => GroupViewModel.Map(g)),
+                Divisions = divisions.Select(d => DivisionViewModel.Map(d))
             };
             return View(tournamentApplyViewModel);
         }
@@ -545,24 +546,25 @@
         /// <summary>
         /// Apply for tournament
         /// </summary>
-        /// <param name="tournamentId">Tournament id</param>
-        /// <param name="teamId">Team id</param>
-        /// <param name="groupId">Group id</param>
+        /// <param name="tournamentApply">Tournament id</param>
+        /// <param name="tournamentId">Tournaments id</param>
+        /// <param name="teamId">Tournament s id</param>
         /// <returns>TournamentApply view</returns>
         [HttpPost]
-        public JsonResult ApplyForTournament(int tournamentId, int teamId, int groupId)
+        public JsonResult ApplyForTournament(TournamentApplyViewModel tournamentApply, int tournamentId, int teamId)
         {
             JsonResult result = null;
             try
             {
                 int userId = _currentUserService.GetCurrentUserId();
+
                 if (userId == ANONYM)
                 {
                     result = Json(ViewModelResources.NoRights);
                 }
                 else
                 {
-                    _requestService.Create(userId, tournamentId, teamId, groupId);
+                    _requestService.Create(userId, tournamentId, teamId, tournamentApply.GroupId);
                     result = Json(ViewModelResources.SuccessRequest);
                 }
             }

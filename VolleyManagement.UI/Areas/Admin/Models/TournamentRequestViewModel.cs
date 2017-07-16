@@ -66,8 +66,7 @@
                 TournamentId = request.TournamentId,
                 TeamId = request.TeamId,
                 PersonName = user.PersonName,
-                TeamTitle = team.Name,
-                TournamentTitle = tournament.Name
+                TeamTitle = team.Name
             };
         }
 

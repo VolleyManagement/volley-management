@@ -15,11 +15,15 @@ else
     <p>
         @Html.DropDownListFor(x => x.TeamId,
                 new SelectList(Model.Teams, "Id", "Name"))
-    </p>
 
-    <p>
-        @Html.DropDownListFor(x => x.GroupId,
-                new SelectList(Model.Groups, "Id", "Name"))
+        @Html.DropDownListFor(x => x.DivisionId,
+                new SelectList(Model.Divisions, "Id", "Name"))
+
+        @foreach (var team in Model.Divisions)
+        {
+            @Html.DropDownListFor(x => x.GroupId,
+                new SelectList(team.Groups, "Id", "Name"))
+        }
     </p>
 
     <p>

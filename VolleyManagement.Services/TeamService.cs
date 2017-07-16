@@ -256,10 +256,8 @@
             {
                 return true;
             }
-            else
-            {
+
                 return false;
-            }
         }
 
         private void UpdatePlayerTeam(int playerId, int teamId)

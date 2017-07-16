@@ -122,26 +122,6 @@ function removeGroup(divisionIdx, groupIdx, minGroupsCount) {
 
     updateGroups(divisionGroupsWrapperId, divisionIdx, groupIdx, groupsCount);
 
-    //for (var i = groupIdx; i < groupsCount; i++){
-    //    var groupToUpdate = $(divisionGroupsWrapperId).children()[i];
-    //    var firstChild = $(groupToUpdate).children()[0];
-    //    var secondChild = $(groupToUpdate).children()[1];
-    //    var thirdChild = $(groupToUpdate).children()[2];
-    //    var fourthChild = $(groupToUpdate).children()[3];
-    //    $(groupToUpdate).attr("id", "Division_" + divisionIdx + "_Group_" + i);
-
-    //    $(firstChild).attr("id", "Divisions_" + divisionIdx + "__Groups_" + i + "__Id");
-    //    $(firstChild).attr("name", "Divisions[" + divisionIdx + "].Groups[" + i + "].Id");
-
-    //    $(secondChild).attr("id", "Divisions_" + divisionIdx + "__Groups_" + i + "__Name");
-    //    $(secondChild).attr("name", "Divisions[" + divisionIdx + "].Groups[" + i + "].Name");
-
-    //    $(thirdChild).attr("dara-valmsg-for", "Divisions[" + divisionIdx + "].Groups[" + i + "].Name");
-
-    //    $(fourthChild).attr("id", "Remove_Division_" + divisionIdx + "_Group_" + i);
-    //    $(fourthChild).attr("onclick", "removeGroup(" + divisionIdx + ", " + i + ")");
-    //}
-
     hideRemoveLink(divisionGroupsWrapperId, groupsCount, minGroupsCount);
 }
 

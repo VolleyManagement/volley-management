@@ -120,7 +120,7 @@ function removeGroup(divisionIdx, groupIdx, minGroupsCount) {
 
     groupsCount--;
 
-    updateGroups(divisionGroupsWrapperId, divisionIdx, groupIdx, groupsCount);
+    updateGroups(divisionGroupsWrapperId, divisionIdx, groupIdx, groupsCount, minGroupsCount);
 
     hideRemoveLink(divisionGroupsWrapperId, groupsCount, minGroupsCount);
 }
@@ -136,7 +136,7 @@ function hideRemoveLink(elementsPlacement, elementsAmount, minElementsNumber) {
     }
 }
 
-function updateGroups(divisionGroupsWrapperId, divisionIdx, removedGroupIdx, groupsCount, ) {
+function updateGroups(divisionGroupsWrapperId, divisionIdx, removedGroupIdx, groupsCount, minGroupsCount) {
     for (var i = removedGroupIdx; i < groupsCount; i++) {
         var groupToUpdate = $(divisionGroupsWrapperId).children()[i];
         var firstChild = $(groupToUpdate).children()[0];
@@ -154,6 +154,6 @@ function updateGroups(divisionGroupsWrapperId, divisionIdx, removedGroupIdx, gro
         $(thirdChild).attr("dara-valmsg-for", "Divisions[" + divisionIdx + "].Groups[" + i + "].Name");
 
         $(fourthChild).attr("id", "Remove_Division_" + divisionIdx + "_Group_" + i);
-        $(fourthChild).attr("onclick", "removeGroup(" + divisionIdx + ", " + i + ")");
+        $(fourthChild).attr("onclick", "removeGroup(" + divisionIdx + ", " + i + ", " + minGroupsCount + ")");
     }
 }

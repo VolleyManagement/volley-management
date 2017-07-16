@@ -1,4 +1,5 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentApplyViewModel
+﻿@using Resources.UI
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentApplyViewModel
 @{
     ViewBag.Title = @Resources.UI.PlayerViews.ApplyForTournament;
 }
@@ -12,19 +13,9 @@
 }
 else
 {
-    <p>
-        @Html.DropDownListFor(x => x.TeamId,
-                new SelectList(Model.Teams, "Id", "Name"))
-
-        @Html.DropDownListFor(x => x.DivisionId,
-                new SelectList(Model.Divisions, "Id", "Name"))
-
-        @foreach (var team in Model.Divisions)
-        {
-            @Html.DropDownListFor(x => x.GroupId,
-                new SelectList(team.Groups, "Id", "Name"))
-        }
-    </p>
+    <table id="tornamentRoster" class="table">
+        <tr hidden></tr>
+    </table>
 
     <p>
         <input type="checkbox" name="agree" id="agree">@Resources.UI.PlayerViews.IAccept<a href="License">@Resources.UI.PlayerViews.TournamentRegulations</a>
@@ -37,5 +28,15 @@ else
             <span id="ajaxResultMessage"></span>
         </div>
 }
+<script type="text/javascript">
+    (function () {
+        "use strict";
+
+        var currNs = VM.addNamespace("tournament.addTeams");
+        currNs.teamIsNotSelectedMessage = "@TournamentViews.TournamentTeamIsNotSelected";
+        currNs.divisionIsNotSelectedMessage = "@TournamentViews.TournamentDivisionIsNotSelected";
+        currNs.groupIsNotSelectedMessage = "@TournamentViews.TournamentGroupIsNotSelected";
+    })();
+</script>
 
 @Scripts.Render("~/bundles/tournamentapplyscripts")

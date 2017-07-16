@@ -484,11 +484,29 @@ namespace Resources.UI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No division is selected.
+        /// </summary>
+        public static string TournamentDivisionIsNotSelected {
+            get {
+                return ResourceManager.GetString("TournamentDivisionIsNotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tournament.
         /// </summary>
         public static string TournamentFieldsTitle {
             get {
                 return ResourceManager.GetString("TournamentFieldsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No group is selected.
+        /// </summary>
+        public static string TournamentGroupIsNotSelected {
+            get {
+                return ResourceManager.GetString("TournamentGroupIsNotSelected", resourceCulture);
             }
         }
         

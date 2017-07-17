@@ -28,7 +28,7 @@
             PageNumber = index ?? FIRST_PAGE;
             NumberOfPages = (int)Math.Ceiling(source.Count() / (double)Size);
 
-            if ((index > NumberOfPages) || (index < FIRST_PAGE))
+            if ((PageNumber > NumberOfPages) || (PageNumber < FIRST_PAGE))
             {
                 throw new ArgumentOutOfRangeException();
             }

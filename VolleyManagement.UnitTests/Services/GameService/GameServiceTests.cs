@@ -1725,7 +1725,7 @@
             Exception exception = null;
 
             // Arrange
-            int gameNullId = 0;
+            int gameNullId = null;
             var sut = BuildSUT();
 
             // Act

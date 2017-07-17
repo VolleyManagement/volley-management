@@ -25,10 +25,9 @@
             {
                 Id = 1,
                 TeamId = 4,
-                TournamentId = 1,
                 PersonId = 1,
-                TeamTitle = "TestName",
                 PersonName = "Eugene",
+                TeamTitle = "TestName",
                 TournamentTitle = "Name"
             });
 

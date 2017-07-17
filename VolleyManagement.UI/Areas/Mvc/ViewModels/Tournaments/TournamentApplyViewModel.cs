@@ -32,7 +32,7 @@
         public int GroupId { get; set; }
 
         /// <summary>
-        /// Gets or sets the group identifier.
+        /// Gets or sets the division identifier.
         /// </summary>
         public int DivisionId { get; set; }
 

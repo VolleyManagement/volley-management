@@ -19,17 +19,24 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 .Index(t => t.GroupId)
                 .Index(t => t.TeamId);
 
-            Sql("Insert Into GroupTeam (GroupId, TeamId) " +
-                "SELECT Groups.Id, Teams.Id " +
-                "FROM (Tournaments " +
-                "INNER JOIN (Divisions " +
-                            "INNER JOIN Groups ON Divisions.Id = Groups.DivisionId) " +
-                       "ON Tournaments.Id = Divisions.TournamentId) " +
-                "INNER JOIN (Teams " +
-                            "INNER JOIN TournamentTeam ON Teams.Id = TournamentTeam.TeamId) " +
-                       "ON Tournaments.Id = TournamentTeam.TournamentId " +
-                "WHERE " +
-                    "(Divisions.TournamentId = TournamentTeam.TournamentId)");
+            string query_Group_Temp = "(SELECT MIN(Groups.Id) AS GroupId, " +
+                                              "Tournaments.Id AS TournId " +
+                                      "FROM Tournaments " +
+                                            "INNER JOIN Divisions ON Tournaments.Id = Divisions.TournamentId " +
+                                            "INNER JOIN Groups ON Divisions.Id = Groups.DivisionId " +
+                                      "GROUP BY Tournaments.Id)" +
+                                      "AS Group_Temp ";
+
+            string query_TournamentTeam_To_GroupTeam = "INSERT INTO GroupTeam (GroupId, TeamId) " +
+                                                       "SELECT Group_Temp.GroupId AS GroupId, " +
+                                                              "Teams.Id AS TeamId " +
+                                                       "FROM Groups " +
+                                                            "INNER JOIN " + query_Group_Temp + " ON Groups.Id = Group_Temp.GroupId " +
+                                                            "INNER JOIN TournamentTeam ON Group_Temp.TournId = TournamentTeam.TournamentId " +
+                                                            "INNER JOIN Teams ON Teams.Id = TournamentTeam.TeamId " +
+                                                       "WHERE Group_Temp.TournId = TournamentTeam.TournamentId ";
+
+            Sql(query_TournamentTeam_To_GroupTeam);
 
             DropTable("dbo.TournamentTeam");
         }

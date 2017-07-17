@@ -5,7 +5,7 @@
     /// <summary>
     /// Provides criteria for getting all groups of tournament
     /// </summary>
-    public class TournamentGroupsCriteria : IQueryCriteria
+    public class DivisionGroupsCriteria : IQueryCriteria
     {
         /// <summary>
         /// Gets or sets target division Id

@@ -6,16 +6,15 @@
     /// <summary>
     /// Represents TournamentTeamsListViewModel and referrer link.
     /// </summary>
-    public class TournamentTeamsListReferrerViewModel : ReferrersViewModel<TournamentTeamsListViewModel, TournamentDivisionsListViewModel>
+    public class TournamentTeamsListReferrerViewModel : RefererViewModel<TournamentTeamsListViewModel>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentTeamsListReferrerViewModel" /> class.
         /// </summary>
         /// <param name="teams">Tournament teams list view model.</param>
-        /// <param name="divisions">Tournament divisions list view model.</param>
         /// <param name="referrer">Referrer controller name.</param>
-        public TournamentTeamsListReferrerViewModel(TournamentTeamsListViewModel teams, TournamentDivisionsListViewModel divisions, string referrer)
-            : base(teams, divisions, referrer)
+        public TournamentTeamsListReferrerViewModel(TournamentTeamsListViewModel teams, string referrer)
+            : base(teams, referrer)
         {
         }
     }

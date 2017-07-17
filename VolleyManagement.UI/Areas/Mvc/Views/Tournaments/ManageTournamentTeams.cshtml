@@ -8,31 +8,30 @@
 <h2>@TournamentViews.ManageTeams</h2>
 
 <div>
-    @Html.HiddenFor(model => model.FirstModel.TournamentId, new { id = "TournamentId" })
+    @Html.HiddenFor(model => model.Model.TournamentId, new { id = "TournamentId" })
     <table id="tornamentRoster" class="table">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.FirstModel.List.FirstOrDefault().Name)</th>
+            <th>@Html.DisplayNameFor(model => model.Model.List.FirstOrDefault().Name)</th>
             <th class="hidden"></th>
-            <th>@Html.DisplayNameFor(model => model.SecondModel.List.FirstOrDefault().Name)</th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
-        @foreach (var team in Model.FirstModel.List)
+        @foreach (var team in Model.Model.List)
         {
-            foreach (var division in Model.SecondModel.List)
-            {
-                <tr>
-                    <td>@Html.ActionLink(team.Name, "Details", "Teams", new { id = team.Id, returnUrl = Model.Referrer }, null)</td>                
-                    <td>@division.Name</td>
-                    <td></td>
-                    <td><button class="deleteTeamFromTournamentButton" id="@team.Id">Delete</button></td>
-                </tr>
-            }
+            <tr>
+                <td>@Html.ActionLink(team.Name, "Details", "Teams", new { id = team.Id, returnUrl = Model.Referer }, null)</td>                
+                <td></td>
+                <td></td>
+                <td><button class="deleteTeamFromTournamentButton" id="@team.Id">Delete</button></td>
+            </tr>
         }                
     </table>
     <div style="margin-bottom: 30px;">
         <button id="addTeamToTournamentButton" class="btn btn-success">+ Add team </button>
     </div>
         <button id="addTeamsButton" class="btn btn-default">Save</button>
-        @Html.ActionLink(@TournamentViews.Cancel, "Details", new { id = Model.FirstModel.TournamentId }, new { @class = "btn btn-default" })
+        @Html.ActionLink(@TournamentViews.Cancel, "Details", new { id = Model.Model.TournamentId }, new { @class = "btn btn-default" })
 
         <script type="text/javascript">
             (function () {
@@ -41,7 +40,8 @@
                 var currNs = VM.addNamespace("tournament.addTeams");
                 currNs.deleteConfirmMessage = "@TournamentViews.DeleteTournamentTeamConfirm";
                 currNs.teamIsNotSelectedMessage = "@TournamentViews.TournamentTeamIsNotSelected";
-
+                currNs.divisionIsNotSelectedMessage = "@TournamentViews.TournamentDivisionIsNotSelected";
+                currNs.groupIsNotSelectedMessage = "@TournamentViews.TournamentGroupIsNotSelected";
             })();
 
         </script>

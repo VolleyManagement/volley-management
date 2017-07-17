@@ -8,12 +8,12 @@
 $(document).ready(function () {
     $("#apply").click(function () {
         var tournamentId = $('#tournamentId').val();
-        var teamId = $('select[name="teams"] :selected').val();
+        var teamId = $('#TeamId').val();
         var divisionId = $('select[name="divisions"] :selected').val();
         var groupId = $('select[name="groups"] :selected').val();
 
-        if (divisionId === "0" || teamId === "0" || groupId === "0") {
-            alert("Not all parameters selected!");
+        if (divisionId === "0" || groupId === "0") {
+            alert("Not all parameters was selected!");
         } else {
             $.ajax({
                 url: "/Tournaments/ApplyForTournament",
@@ -42,15 +42,9 @@ $(document).ready(function () {
 $(document).ready(function () {
     'use strict';
 
-    var currNs = VM.addNamespace("tournament.addTeams"),
-        privates = {};
+    var privates = {};
 
     privates.tornamentTeamsTable = $("#tornamentRoster");
-
-    privates.getAllTeamsOptions = function (callback) {
-        var id = $("[id='tournamentId']").val();
-        $.getJSON("/Tournaments/GetAllAvailableTeams", { tournamentId: id }, callback);
-    };
 
     privates.getAllDivisionsOptions = function (callback) {
         var id = $("[id='tournamentId']").val();
@@ -60,15 +54,6 @@ $(document).ready(function () {
     privates.getAllGroupsOptions = function (callback) {
         var divId = $('select[name="divisions"] :selected').val();
         $.getJSON("/Tournaments/GetAllAvailableGroups", { divisionId: divId }, callback);
-    };
-
-    privates.getTornamentTeamsRowMarkup = function (responseOptions) {
-        var result = "<tr><td id = 'team'><select name ='teams'>" + responseOptions + "</select></td><tr>";
-        return result;
-    };
-
-    privates.renderNewTournamentTeamsRow = function (responseOptions) {
-        $("tr:last", privates.tornamentTeamsTable).after(privates.getTornamentTeamsRowMarkup(responseOptions));
     };
 
     privates.getTornamentDivisionRowMarkup = function (responseOptions, isDisabled) {
@@ -99,28 +84,7 @@ $(document).ready(function () {
     };
 
     privates.renderNewTournamentGroupsRow = function (responseOptions, isDisabled) {
-        $("td[id = 'division'] :last", privates.tornamentTeamsTable).parent().parent().after(privates.getTornamentGroupRowMarkup(responseOptions, isDisabled));
-    };
-
-    privates.addTournamentTeamsRow = function () {
-
-        var selectedTeams = $("select :selected");
-
-        for (var i = 0; i < selectedTeams.length; i++) {
-            if (selectedTeams[i].value === 0) {
-                return false;
-            }
-        }
-
-        privates.getAllTeamsOptions(function (options) {
-            var responseOptions = "<option value = '0'>" + currNs.teamIsNotSelectedMessage + "</option>";
-
-            $.each(options, function (key, value) {
-                responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
-            });
-
-            privates.renderNewTournamentTeamsRow(responseOptions);
-        });
+        $("td[id = 'division']:last", privates.tornamentTeamsTable).after(privates.getTornamentGroupRowMarkup(responseOptions, isDisabled));
     };
 
     privates.addTournamentDivisionsRow = function () {
@@ -139,7 +103,7 @@ $(document).ready(function () {
             if (options.length === 1) {
                 isDisabled = true;
             } else {
-                responseOptions += "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
+                responseOptions += "<option value = '0'>No division is selected</option>";
             }
 
             $.each(options, function (key, value) {
@@ -161,7 +125,7 @@ $(document).ready(function () {
 
         if (divisionId === "0") {
             privates.DeleteGroupsMarkup();
-            $("td[id = 'division'] :last", privates.tornamentTeamsTable).parent().parent().after("<td id = 'group'></td>");
+            $("td[id = 'division']:last", privates.tornamentTeamsTable).parent().parent().after("<td id = 'group'></td>");
         } else {
             privates.addTournamentGroupsRow();
         }
@@ -184,7 +148,7 @@ $(document).ready(function () {
             if (options.length === 1) {
                 isDisabled = true;
             } else {
-                responseOptions += "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
+                responseOptions += "<option value = '0'>No group is selected</option>";
             }
 
             $.each(options, function (key, value) {
@@ -198,9 +162,8 @@ $(document).ready(function () {
     };
 
     privates.DeleteGroupsMarkup = function () {
-        var result = $('td[id="group"]').remove();
+        var result = $('#group').remove();
     };
 
-    privates.addTournamentTeamsRow();
     privates.addTournamentDivisionsRow();
 });

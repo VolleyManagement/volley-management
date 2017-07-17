@@ -19,7 +19,7 @@
                                      IQuery<List<Tournament>, GetAllCriteria>,
                                      IQuery<Tournament, FindByIdCriteria>,
                                      IQuery<List<Division>, TournamentDivisionsCriteria>,
-                                     IQuery<List<Group>, TournamentGroupsCriteria>,
+                                     IQuery<List<Group>, DivisionGroupsCriteria>,
                                      IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>
     {
         #region Fields
@@ -88,7 +88,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Division"/>. </returns>
-        public List<Group> Execute(TournamentGroupsCriteria criteria)
+        public List<Group> Execute(DivisionGroupsCriteria criteria)
         {
             return _unitOfWork.Context.Groups
                                       .Where(d => d.DivisionId == criteria.DivisionId)

@@ -36,6 +36,7 @@
     {
         private const int TEST_ID = 1;
         private const int TEST_TOURNAMENT_ID = 1;
+        private const int TEST_DIVISION_ID = 1;
         private const int TEST_TEAM_ID = 1;
         private const int TEST_USER_ID = 1;
         private const int ANONYM_ID = -1;
@@ -363,15 +364,16 @@
         {
             // Arrange
             var testData = MakeTestTeams();
+            var testGroupData = MakeTestGroups();
             _tournamentServiceMock
-                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>()))
+                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>(), It.IsAny<List<Group>>(), It.IsAny<int>()))
                 .Throws(new ArgumentException(string.Empty));
 
             var sut = BuildSUT();
 
             // Act
             var jsonResult =
-                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
+                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID), new TournamentGroupsListViewModel(testGroupData, TEST_DIVISION_ID));
             var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
 
             // Assert
@@ -1280,6 +1282,11 @@
         private List<Team> MakeTestTeams()
         {
             return new TeamServiceTestFixture().TestTeams().Build();
+        }
+
+        private List<Group> MakeTestGroups()
+        {
+            return new GroupTestFixture().TestGroups().Build();
         }
 
         private Tournament MakeTestTournament(int tournamentId)

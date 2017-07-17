@@ -13,8 +13,13 @@
 }
 else
 {
-    <table id="tornamentRoster" class="table">
-        <tr hidden></tr>
+    <table id="tornamentRoster">
+        <tr>
+            <td id="team">
+                @Html.DropDownListFor(x => x.TeamId,
+                        new SelectList(Model.Teams, "Id", "Name"))
+            </td>
+        </tr>
     </table>
 
     <p>
@@ -28,15 +33,4 @@ else
             <span id="ajaxResultMessage"></span>
         </div>
 }
-<script type="text/javascript">
-    (function () {
-        "use strict";
-
-        var currNs = VM.addNamespace("tournament.addTeams");
-        currNs.teamIsNotSelectedMessage = "@TournamentViews.TournamentTeamIsNotSelected";
-        currNs.divisionIsNotSelectedMessage = "@TournamentViews.TournamentDivisionIsNotSelected";
-        currNs.groupIsNotSelectedMessage = "@TournamentViews.TournamentGroupIsNotSelected";
-    })();
-</script>
-
 @Scripts.Render("~/bundles/tournamentapplyscripts")

@@ -263,10 +263,8 @@
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var resultDivisions = _tournamentService.GetAllTournamentDivisions(tournamentId);
             var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
-            var divisions = new TournamentDivisionsListViewModel(resultDivisions, tournamentId);
-            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, divisions, HttpContext.Request.RawUrl);
+            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }
 
@@ -526,7 +524,6 @@
 
             var divisions = _tournamentService.GetAllTournamentDivisions(tournamentId);
 
-            // var groups = _tournamentService.GetAllTournamentGroups();
             if (tournament == null)
             {
                 return HttpNotFound();

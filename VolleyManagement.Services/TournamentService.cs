@@ -62,7 +62,7 @@
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTournamentTeamsQuery;
         private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
-        private readonly IQuery<List<Group>, TournamentGroupsCriteria> _getAllTournamentGroupsQuery;
+        private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
 
         #endregion
@@ -91,7 +91,7 @@
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTournamentTeamsQuery,
             IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
-            IQuery<List<Group>, TournamentGroupsCriteria> getAllTournamentGroupsQuery,
+            IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IAuthorizationService authService,
             IGameService gameService)
@@ -167,7 +167,7 @@
         /// <returns>Tournament groups</returns>
         public List<Group> GetAllTournamentGroups(int divisionId)
         {
-            return _getAllTournamentGroupsQuery.Execute(new TournamentGroupsCriteria { DivisionId = divisionId });
+            return _getAllTournamentGroupsQuery.Execute(new DivisionGroupsCriteria { DivisionId = divisionId });
         }
 
         /// <summary>

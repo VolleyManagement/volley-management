@@ -98,13 +98,7 @@
         {
             var tournamentEntity = _dalTournaments.Find(tournamentId);
             var teamEntity = _dalTeams.Find(teamId);
-            var groupEntity = _dalGroups.Find(groupId);
 
-            // var divisionId = _dalGroups.Find(groupId).DivisionId;
-            var divisionEntity = _dalDivisions.Find(divisionId);
-
-            // temporary solution that should be rewritten or removed
-            // tournamentEntity?.Divisions.First().Groups.First().Teams.Add(teamEntity);
             tournamentEntity.Divisions.Find(d => d.Id == divisionId).Groups.Find(g => g.Id == groupId).Teams.Add(teamEntity);
         }
 

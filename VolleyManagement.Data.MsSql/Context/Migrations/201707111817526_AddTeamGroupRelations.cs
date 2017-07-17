@@ -51,12 +51,23 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                     TeamId = c.Int(nullable: false),
                 })
                 .PrimaryKey(t => new { t.TournamentId, t.TeamId });
-
-            DropTable("dbo.GroupTeam");
             CreateIndex("dbo.TournamentTeam", "TeamId");
             CreateIndex("dbo.TournamentTeam", "TournamentId");
             AddForeignKey("dbo.TournamentTeam", "TeamId", "dbo.Teams", "Id");
             AddForeignKey("dbo.TournamentTeam", "TournamentId", "dbo.Tournaments", "Id");
+
+            string query_GroupTeam_To_TournamentTeam = "INSERT INTO TournamentTeam(TeamId, TournamentId) " +
+                                                       "Select	Teams.Id, " +
+                                                               "Tournaments.Id " +
+                                                       "From Tournaments " +
+                                                            "Inner Join Divisions On Divisions.TournamentId = Tournaments.Id " +
+                                                            "Inner Join Groups On Groups.DivisionId = Divisions.Id " +
+                                                            "Inner Join GroupTeam On GroupTeam.GroupId = Groups.Id " +
+                                                            "Inner Join Teams On Teams.Id = GroupTeam.TeamId ";
+
+            Sql(query_GroupTeam_To_TournamentTeam);
+
+            DropTable("dbo.GroupTeam");
         }
     }
 }

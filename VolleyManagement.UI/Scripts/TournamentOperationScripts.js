@@ -1,8 +1,4 @@
-﻿function addDivision(
-            maxDivisionsCount, maxGroupsCount, minDivisionsCount, minGroupsCount,
-            divisionDefaultName, removeDivisionDefaultName,
-            groupsTitle, groupDefaultName,
-            addGroupDefaultName, removeGroupDefaultName) {
+﻿function addDivision(countLimits, divisionsDefault, groupsDefault) {
     var divisionsCount = $("#Divisions").children().size() - 1;
     var newDivisionWrapper = $("<div></div>").attr("id", "Division_" + divisionsCount + "_Id");
     var newDivisionIdHidden = $("<input></input>").attr("data-val", "true")
@@ -21,24 +17,24 @@
         .attr("id", "Divisions_" + divisionsCount + "__Name")
         .attr("name", "Divisions[" + divisionsCount + "].Name")
         .attr("type", "text")
-        .attr("value", divisionDefaultName + " " + (divisionsCount + 1));
+        .attr("value", divisionsDefault.name + " " + (divisionsCount + 1));
     var newDivisionNameValidation = $("<span></span>")
         .attr("class", "field-validation-valid")
         .attr("data-valmsg-for", "Divisions[" + divisionsCount + "].Name")
         .attr("data-valmsg-replace", "true");
-    var newDivisionRemoveLink = $("<a> " + removeDivisionDefaultName + " </a>").attr("id", "Remove_Division_" + divisionsCount + "_Id")
+    var newDivisionRemoveLink = $("<a> " + divisionsDefault.removeName + " </a>").attr("id", "Remove_Division_" + divisionsCount + "_Id")
         .attr("class", "link-button")
-        .attr("onclick", "removeDivision(" + divisionsCount + ", " + minDivisionsCount + ", " + maxGroupsCount + ", " + minGroupsCount + ", '" + groupDefaultName + "', '" + removeGroupDefaultName + "')");
+        .attr("onclick", "removeDivision(" + divisionsCount + ", " + countLimits.minDivisionsCount + ", " + countLimits.maxGroupsCount + ", " + countLimits.minGroupsCount + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
     var newDivisionGroupsWrapper = $("<div></div>").attr("class", "division-groups-wrapper");
     var newDivisionGroupsTitleWrapper = $("<div></div>").attr("class", "editor-label");
-    var newDivisionGroupsTitle = $("<label>" + (groupsTitle) + "</label>")
+    var newDivisionGroupsTitle = $("<label>" + (groupsDefault.title) + "</label>")
         .attr("for", "Divisions_" + divisionsCount + "__Groups");
     var newDivisionGroupsListWrapper = $("<div></div>").attr("id", "Division_" + divisionsCount + "_Groups");
-    var newGroupWrapper = createGroup(divisionsCount, 0, minGroupsCount, groupDefaultName, removeGroupDefaultName);
+    var newGroupWrapper = createGroup(divisionsCount, 0, countLimits.minGroupsCount, groupsDefault.name, groupsDefault.removeName);
     var newDivisionGroupsAddWrapper = $("<div></div>").attr("class", "add-group-button");
-    var newDivisionGroupsAdd = $("<a> " + addGroupDefaultName + " </a>").attr("class", "link-button")
+    var newDivisionGroupsAdd = $("<a> " + groupsDefault.addName + " </a>").attr("class", "link-button")
         .attr("id", "Add_Division_" + divisionsCount + "_Group")
-        .attr("onclick", "addGroup(" + divisionsCount + ", " + maxGroupsCount + ", " + minGroupsCount + ", '" + groupDefaultName + "', '" + removeGroupDefaultName + "')")
+        .attr("onclick", "addGroup(" + divisionsCount + ", " + countLimits.maxGroupsCount + ", " + countLimits.minGroupsCount + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')")
         .show();
 
     $(newDivisionGroupsListWrapper).append(newGroupWrapper);
@@ -59,17 +55,17 @@
 
     var divisionId = "#" + $(newDivisionGroupsListWrapper).attr("id");
     var groupsCount = $(divisionId).children().size();
-    hideRemoveLink(divisionId, groupsCount, minGroupsCount);
+    hideRemoveLink(divisionId, groupsCount, countLimits.minGroupsCount);
 
-    hideRemoveLink("#Divisions", divisionsCount + 1, minDivisionsCount + 1);
+    hideRemoveLink("#Divisions", divisionsCount + 1, countLimits.minDivisionsCount + 1);
 
-    if (divisionsCount - minDivisionsCount == 1) {
+    if (divisionsCount - countLimits.minDivisionsCount == 1) {
         var removeLinkId = "#Remove_" + $("#Divisions").children()[1].id;
 
         $(removeLinkId).show();
     }
 
-    if (divisionsCount == maxDivisionsCount) {
+    if (divisionsCount == countLimits.maxDivisionsCount) {
         $("#Add_Division").hide();
     }
 }

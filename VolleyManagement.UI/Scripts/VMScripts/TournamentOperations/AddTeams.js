@@ -89,7 +89,8 @@
     };
 
     privates.renderNewTournamentDivisionsRow = function (responseOptions, isDisabled) {
-        $("#team", privates.tornamentTeamsTable).parent().append(privates.getTornamentDivisionRowMarkup(responseOptions, isDisabled));
+        var teamTableData = $("#team", privates.tornamentTeamsTable).parent();
+        teamTableData.append(privates.getTornamentDivisionRowMarkup(responseOptions, isDisabled));
     };
 
     privates.getTornamentGroupRowMarkup = function (responseOptions, isDisabled) {
@@ -205,8 +206,8 @@
     };
 
     privates.DeleteGroupsMarkup = function () {
-        var result = $('#group').remove();
-        var result = $('#delete-team-button').remove();
+        $('#group').remove();
+        $('#delete-team-button').remove();
     };
 
     currNs.onAddTeamToTournamentButtonClick = function () {
@@ -229,10 +230,8 @@
         }
     };
 
-    currNs.onDeleteTeamButtonClick = function (eventData) {
-        var currentRow = eventData.target.parentElement.parentElement.remove();
-        $('tr:empty').remove();
-        $("#addTeamToTournamentButton").prop('disabled', false);
+    currNs.onDeleteTeamButtonClick = function () {
+        location.reload();
     };
 
     currNs.onDeleteTeamFromTournamentButtonClick = function (eventData) {

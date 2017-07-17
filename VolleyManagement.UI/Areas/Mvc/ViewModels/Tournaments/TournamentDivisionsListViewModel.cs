@@ -27,7 +27,7 @@
         public TournamentDivisionsListViewModel(List<Division> source, int tournamentId)
         {
             TournamentId = tournamentId;
-            List = source.Select(t => DivisionViewModel.Map(t)).ToList();
+            List = source.Select(DivisionViewModel.Map).ToList();
         }
 
         /// <summary>

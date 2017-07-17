@@ -376,6 +376,15 @@ namespace Resources.UI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove division.
+        /// </summary>
+        public static string RemoveDivision {
+            get {
+                return ResourceManager.GetString("RemoveDivision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove group.
         /// </summary>
         public static string RemoveGroup {

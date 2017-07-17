@@ -1244,7 +1244,7 @@
             var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCreateTournamentRequest(TEST_USER_ID, TEST_TOURNAMENT_ID, TEST_TEAM_ID, TEST_GROUP_ID, Times.Once());
+            VerifyCreateTournamentRequest(TEST_USER_ID, TEST_TEAM_ID, TEST_GROUP_ID, Times.Once());
             Assert.IsNotNull(result, JSON_OK_MSG);
         }
 
@@ -1253,7 +1253,7 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
-            SetupTournamentRequestServiceThrowsArgumentException(TEST_USER_ID, TEST_TOURNAMENT_ID, TEST_TEAM_ID, TEST_GROUP_ID);
+            SetupTournamentRequestServiceThrowsArgumentException(TEST_USER_ID, TEST_TEAM_ID, TEST_GROUP_ID);
             var sut = BuildSUT();
 
             // Act
@@ -1410,9 +1410,9 @@
             _currentUserServiceMock.Setup(m => m.GetCurrentUserId()).Returns(userId);
         }
 
-        private void SetupTournamentRequestServiceThrowsArgumentException(int userId, int tournamentId, int teamId, int groupId)
+        private void SetupTournamentRequestServiceThrowsArgumentException(int userId, int teamId, int groupId)
         {
-            _tournamentRequestServiceMock.Setup(ts => ts.Create(userId, tournamentId, teamId, groupId))
+            _tournamentRequestServiceMock.Setup(ts => ts.Create(userId, teamId, groupId))
                 .Throws(new ArgumentException(INVALID_PARAMETR));
         }
 
@@ -1441,9 +1441,9 @@
             _gameServiceMock.Verify(gs => gs.Create(It.IsAny<Game>()), times);
         }
 
-        private void VerifyCreateTournamentRequest(int userId, int tournamentId, int teamId, int groupId, Times times)
+        private void VerifyCreateTournamentRequest(int userId, int teamId, int groupId, Times times)
         {
-            _tournamentRequestServiceMock.Verify(ts => ts.Create(userId, tournamentId, teamId, groupId), times);
+            _tournamentRequestServiceMock.Verify(ts => ts.Create(userId, teamId, groupId), times);
         }
 
         private void VerifySwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)

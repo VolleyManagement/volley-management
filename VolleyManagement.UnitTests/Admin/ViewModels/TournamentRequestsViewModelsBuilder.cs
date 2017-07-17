@@ -28,7 +28,8 @@
                 PersonId = 1,
                 PersonName = "Eugene",
                 TeamTitle = "TestName",
-                TournamentTitle = "Name"
+                TournamentTitle = "Name",
+                TournamentId = 1
             });
 
             return this;

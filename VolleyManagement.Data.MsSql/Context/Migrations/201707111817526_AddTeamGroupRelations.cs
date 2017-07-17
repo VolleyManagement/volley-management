@@ -19,22 +19,22 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
                 .Index(t => t.GroupId)
                 .Index(t => t.TeamId);
 
-            string query_Group_Temp = "(SELECT MIN(Groups.Id) AS GroupId, " +
-                                              "Tournaments.Id AS TournId " +
-                                      "FROM Tournaments " +
-                                            "INNER JOIN Divisions ON Tournaments.Id = Divisions.TournamentId " +
-                                            "INNER JOIN Groups ON Divisions.Id = Groups.DivisionId " +
-                                      "GROUP BY Tournaments.Id)" +
-                                      "AS Group_Temp ";
+            string query_Group_Temp = @"(SELECT MIN(Groups.Id) AS GroupId, 
+                                                Tournaments.Id AS TournId 
+                                        FROM Tournaments  
+                                            INNER JOIN Divisions ON Tournaments.Id = Divisions.TournamentId  
+                                            INNER JOIN Groups ON Divisions.Id = Groups.DivisionId 
+                                        GROUP BY Tournaments.Id)
+                                        AS Group_Temp ";
 
-            string query_TournamentTeam_To_GroupTeam = "INSERT INTO GroupTeam (GroupId, TeamId) " +
-                                                       "SELECT Group_Temp.GroupId AS GroupId, " +
-                                                              "Teams.Id AS TeamId " +
-                                                       "FROM Groups " +
-                                                            "INNER JOIN " + query_Group_Temp + " ON Groups.Id = Group_Temp.GroupId " +
-                                                            "INNER JOIN TournamentTeam ON Group_Temp.TournId = TournamentTeam.TournamentId " +
-                                                            "INNER JOIN Teams ON Teams.Id = TournamentTeam.TeamId " +
-                                                       "WHERE Group_Temp.TournId = TournamentTeam.TournamentId ";
+            string query_TournamentTeam_To_GroupTeam = @"INSERT INTO GroupTeam (GroupId, TeamId) 
+                                                        SELECT Group_Temp.GroupId AS GroupId, 
+                                                               Teams.Id AS TeamId 
+                                                        FROM Groups 
+                                                             INNER JOIN " + query_Group_Temp + @" ON Groups.Id = Group_Temp.GroupId
+                                                             INNER JOIN TournamentTeam ON Group_Temp.TournId = TournamentTeam.TournamentId 
+                                                             INNER JOIN Teams ON Teams.Id = TournamentTeam.TeamId 
+                                                        WHERE Group_Temp.TournId = TournamentTeam.TournamentId ";
 
             Sql(query_TournamentTeam_To_GroupTeam);
 
@@ -56,14 +56,14 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
             AddForeignKey("dbo.TournamentTeam", "TeamId", "dbo.Teams", "Id");
             AddForeignKey("dbo.TournamentTeam", "TournamentId", "dbo.Tournaments", "Id");
 
-            string query_GroupTeam_To_TournamentTeam = "INSERT INTO TournamentTeam(TeamId, TournamentId) " +
-                                                       "Select	Teams.Id, " +
-                                                               "Tournaments.Id " +
-                                                       "From Tournaments " +
-                                                            "Inner Join Divisions On Divisions.TournamentId = Tournaments.Id " +
-                                                            "Inner Join Groups On Groups.DivisionId = Divisions.Id " +
-                                                            "Inner Join GroupTeam On GroupTeam.GroupId = Groups.Id " +
-                                                            "Inner Join Teams On Teams.Id = GroupTeam.TeamId ";
+            string query_GroupTeam_To_TournamentTeam = @"INSERT INTO TournamentTeam(TeamId, TournamentId) 
+                                                         Select  Teams.Id, 
+                                                               Tournaments.Id 
+                                                         From Tournaments 
+                                                                Inner Join Divisions On Divisions.TournamentId = Tournaments.Id 
+                                                                Inner Join Groups On Groups.DivisionId = Divisions.Id  
+                                                                Inner Join GroupTeam On GroupTeam.GroupId = Groups.Id 
+                                                                Inner Join Teams On Teams.Id = GroupTeam.TeamId ";
 
             Sql(query_GroupTeam_To_TournamentTeam);
 

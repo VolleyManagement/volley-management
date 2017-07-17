@@ -138,7 +138,7 @@
 
 <div class="editor-label">@Html.LabelFor(model => model.Divisions)</div>
 <div id="Divisions">
-    @if (Model.Id == 0)
+    @if (!Model.IsSaved)
     {
         <script>            
             addDivision(

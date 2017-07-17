@@ -792,7 +792,8 @@
                                           + DAYS_FOR_APPLYING_PERIOD
                                           + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
                                           + DAYS_FROM_GAMES_START_TO_TRANSFER_START
-                                          + DAYS_FOR_TRANSFER_PERIOD)
+                                          + DAYS_FOR_TRANSFER_PERIOD),
+                IsSaved = false
             };
 
             var sut = BuildSUT();

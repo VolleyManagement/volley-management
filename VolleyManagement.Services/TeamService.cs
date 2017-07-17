@@ -243,16 +243,10 @@
 
         private static bool ValidateTwoTeamsWithTheSameName(List<Team> existTeam, string name)
         {
-            var counter = 0;
-            foreach (Team inputTeam in existTeam)
-            {
-                if (inputTeam.Name.Equals(name))
-                {
-                    counter++;
-                }
-            }
-
-            if (counter == 0)
+            var counterr = from ex in existTeam
+                           where ex.Name.Equals(name)
+                           select ex;
+            if (counterr.Count() == 0)
             {
                 return true;
             }

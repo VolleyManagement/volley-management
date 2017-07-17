@@ -522,8 +522,6 @@
         {
             var tournament = _tournamentService.Get(tournamentId);
 
-            var divisions = _tournamentService.GetAllTournamentDivisions(tournamentId);
-
             if (tournament == null)
             {
                 return HttpNotFound();
@@ -534,8 +532,7 @@
             {
                 Id = tournamentId,
                 TournamentTitle = tournament.Name,
-                Teams = noTournamentTeams.Select(t => TeamNameViewModel.Map(t)),
-                Divisions = divisions.Select(d => DivisionViewModel.Map(d))
+                Teams = noTournamentTeams.Select(TeamNameViewModel.Map)
             };
             return View(tournamentApplyViewModel);
         }

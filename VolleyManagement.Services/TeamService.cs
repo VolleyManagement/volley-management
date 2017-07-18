@@ -96,7 +96,7 @@
 
             var existTeamName = Get();
 
-            if (!ValidateTwoTeamsWithTheSameName(existTeamName, teamToCreate.Name))
+            if (ValidateTwoTeamsWithTheSameName(existTeamName, teamToCreate.Name))
             {
                 throw new ArgumentException(
                     TournamentResources.TeamNameInTournamentNotUnique, teamToCreate.Name);
@@ -240,17 +240,9 @@
             }
         }
 
-        private static bool ValidateTwoTeamsWithTheSameName(List<Team> existTeam, string name)
+        private static bool ValidateTwoTeamsWithTheSameName(List<Team> existTeams, string name)
         {
-            var counterr = from ex in existTeam
-                           where ex.Name.Equals(name)
-                           select ex;
-            if (counterr.Count() == 0)
-            {
-                return true;
-            }
-
-                return false;
+            return existTeams.Where(t => t.Name.ToLower().Equals(name.ToLower())).Any();
         }
 
         private void UpdatePlayerTeam(int playerId, int teamId)

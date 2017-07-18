@@ -36,7 +36,6 @@
         private const int PLAYER_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int UNASSIGNED_ID = 0;
-        private const string TEAM_CREATED_NAME = "Sun";
 
         private const int ANOTHER_TEAM_ID = SPECIFIC_TEAM_ID + 1;
 

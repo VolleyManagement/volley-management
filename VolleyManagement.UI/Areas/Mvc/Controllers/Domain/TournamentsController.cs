@@ -595,6 +595,21 @@
             }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
+
+            for (int i = 0; i < tournamentViewModel.Divisions.Count; i++)
+            {
+                var division = tournamentViewModel.Divisions[i];
+                division.IsEmpty = _tournamentService.IsDivisionEmpty(division.Id);
+                if (division.IsEmpty)
+                {
+                    for (int j = 0; j < division.Groups.Count; j++)
+                    {
+                        var group = division.Groups[j];
+                        group.IsEmpty = _tournamentService.IsGroupEmpty(group.Id);
+                    }
+                }
+            }
+
             return View(tournamentViewModel);
         }
 

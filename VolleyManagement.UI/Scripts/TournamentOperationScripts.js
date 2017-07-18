@@ -24,13 +24,13 @@
         .attr("data-valmsg-replace", "true");
     var newDivisionRemoveLink = $("<a> " + divisionsDefault.removeName + " </a>").attr("id", "Remove_Division_" + divisionsCount + "_Id")
         .attr("class", "link-button")
-        .attr("onclick", "removeDivision(" + divisionsCount + ", " + countLimits.minDivisionsCount + ", " + countLimits.maxGroupsCount + ", " + countLimits.minGroupsCount + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
+        .attr("onclick", "removeDivision(" + divisionsCount + ", " + countLimits.maxDivisionsCount + ", " + countLimits.minDivisionsCount + ", " + countLimits.maxGroupsCount + ", " + countLimits.minGroupsCount + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
     var newDivisionGroupsWrapper = $("<div></div>").attr("class", "division-groups-wrapper");
     var newDivisionGroupsTitleWrapper = $("<div></div>").attr("class", "editor-label");
     var newDivisionGroupsTitle = $("<label>" + (groupsDefault.title) + "</label>")
         .attr("for", "Divisions_" + divisionsCount + "__Groups");
     var newDivisionGroupsListWrapper = $("<div></div>").attr("id", "Division_" + divisionsCount + "_Groups");
-    var newGroupWrapper = createGroup(divisionsCount, 0, countLimits.minGroupsCount, groupsDefault.name, groupsDefault.removeName);
+    var newGroupWrapper = createGroup(divisionsCount, 0, countLimits.maxGroupsCount, countLimits.minGroupsCount, groupsDefault.name, groupsDefault.removeName);
     var newDivisionGroupsAddWrapper = $("<div></div>").attr("class", "add-group-button");
     var newDivisionGroupsAdd = $("<a> " + groupsDefault.addName + " </a>").attr("class", "link-button")
         .attr("id", "Add_Division_" + divisionsCount + "_Group")
@@ -72,7 +72,7 @@
     }
 }
 
-function createGroup(divisionIdx, groupIdx, minGroupsCount, groupDefaultName, removeGroupDefaultName) {
+function createGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount, groupDefaultName, removeGroupDefaultName) {
     var newGroupWrapper = $("<div></div>").attr("id", "Division_" + divisionIdx + "_Group_" + groupIdx)
         .attr("class", "editor-field group-editor");
     var newGroupHidden = $("<input></input>").attr("data-val", "true")
@@ -96,7 +96,7 @@ function createGroup(divisionIdx, groupIdx, minGroupsCount, groupDefaultName, re
         .attr("data-valmsg-replace", "true");
     var newRemoveGroupLink = $("<a> " + removeGroupDefaultName + "</a>").attr("id", "Remove_Division_" + divisionIdx + "_Group_" + groupIdx)
         .attr("class", "link-button")
-        .attr("onclick", "removeGroup(" + divisionIdx + ", " + groupIdx + ", " + minGroupsCount + ")");
+        .attr("onclick", "removeGroup(" + divisionIdx + ", " + groupIdx + ", " + maxGroupsCount + ", " + minGroupsCount + ")");
 
     $(newGroupWrapper).append(newGroupHidden);
     $(newGroupWrapper).append(newGroupNameEditor);
@@ -109,7 +109,7 @@ function createGroup(divisionIdx, groupIdx, minGroupsCount, groupDefaultName, re
 function addGroup(divisionIdx, maxGroupsCount, minGroupsCount, groupDefaultName, removeGroupDefaultName) {
     var divisionGroupsWrapper = "#Division_" + divisionIdx + "_Groups";
     var groupsCount = $(divisionGroupsWrapper).children().size();
-    var newGroupWrapper = createGroup(divisionIdx, groupsCount, minGroupsCount, groupDefaultName, removeGroupDefaultName);
+    var newGroupWrapper = createGroup(divisionIdx, groupsCount, maxGroupsCount, minGroupsCount, groupDefaultName, removeGroupDefaultName);
 
     $(divisionGroupsWrapper).append(newGroupWrapper);
 
@@ -124,7 +124,7 @@ function addGroup(divisionIdx, maxGroupsCount, minGroupsCount, groupDefaultName,
     }
 }
 
-function removeDivision(divisionIdx, minDivisionsCount, maxGroupsCount, minGroupsCount, groupDefaultName, removeGroupDefaultName) {
+function removeDivision(divisionIdx, maxDivisionsCount, minDivisionsCount, maxGroupsCount, minGroupsCount, groupDefaultName, removeGroupDefaultName) {
     var divisionsId = "#Divisions";
     var divisionWrapperId = "#Division_" + divisionIdx + "_Id";
     var divisionsCount = $(divisionsId).children().size();
@@ -148,9 +148,13 @@ function removeDivision(divisionIdx, minDivisionsCount, maxGroupsCount, minGroup
     });
 
     hideRemoveLink(divisionsId, divisionsCount, minDivisionsCount);
+
+    if (divisionsCount < maxDivisionsCount) {
+        $("#Add_Division").show();
+    }
 }
 
-function removeGroup(divisionIdx, groupIdx, minGroupsCount) {
+function removeGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount) {
     var divisionGroupsWrapperId = "#Division_" + divisionIdx + "_Groups";
     var groupWrapperId = "#Division_" + divisionIdx + "_Group_" + groupIdx;
     var groupsCount = $(divisionGroupsWrapperId).children().size();
@@ -162,6 +166,10 @@ function removeGroup(divisionIdx, groupIdx, minGroupsCount) {
     updateGroups(divisionGroupsWrapperId, divisionIdx, groupIdx, groupsCount, minGroupsCount);
 
     hideRemoveLink(divisionGroupsWrapperId, groupsCount, minGroupsCount);
+
+    if (groupsCount < maxGroupsCount) {
+        $("#Add_Division_" + divisionIdx + "_Group").show();
+    }
 }
 
 function hideRemoveLink(elementsPlacement, elementsAmount, minElementsNumber) {
@@ -206,8 +214,10 @@ function updateDivisionsIds(division, divisionsCount, groupsCount, groupsDefault
 
         $(divisionNameValidation).attr("data-valmsg-for", "Divisions[" + i + "].Name");
 
-        $(divisionRemoveLink).attr("id", "Remove_Division_" + i + "_Id");
-        $(divisionRemoveLink).attr("onclick", "removeDivision(" + i + ", " + divisionsCount.min + ", " + groupsCount.max + ", " + groupsCount.min + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
+        if (divisionRemoveLink != undefined) {
+            $(divisionRemoveLink).attr("id", "Remove_Division_" + i + "_Id");
+            $(divisionRemoveLink).attr("onclick", "removeDivision(" + i + ", " + divisionsCount.min + ", " + groupsCount.max + ", " + groupsCount.min + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
+        }
 
         $(divisionGroupsListWrapper).attr("id", "Division_" + i + "_Groups");
 
@@ -238,7 +248,9 @@ function updateGroups(divisionGroupsWrapperId, divisionIdx, startingGroupIdx, gr
 
         $(groupValidation).attr("dara-valmsg-for", "Divisions[" + divisionIdx + "].Groups[" + i + "].Name");
 
-        $(groupRemoveLink).attr("id", "Remove_Division_" + divisionIdx + "_Group_" + i);
-        $(groupRemoveLink).attr("onclick", "removeGroup(" + divisionIdx + ", " + i + ", " + minGroupsCount + ")");
+        if (groupRemoveLink != undefined) {
+            $(groupRemoveLink).attr("id", "Remove_Division_" + divisionIdx + "_Group_" + i);
+            $(groupRemoveLink).attr("onclick", "removeGroup(" + divisionIdx + ", " + i + ", " + minGroupsCount + ")");
+        }
     }
 }

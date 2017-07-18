@@ -185,10 +185,13 @@
                                     @Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new { name = "Divisions[@i].Groups[@j].Name" })
                                     @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
 
-                                    <a id=@removeGroupWrapperId class="link-button"
-                                       onClick="removeGroup(@i, @j)">
-                                        @Resources.UI.TournamentViews.RemoveGroup
-                                    </a>
+                                    @if (!Model.Divisions[i].Groups[j].IsEmpty)
+                                    {
+                                        <a id=@removeGroupWrapperId class="link-button"
+                                           onClick="removeGroup(@i, @j)">
+                                            @Resources.UI.TournamentViews.RemoveGroup
+                                        </a>
+                                    }
                                 </div>
                             }
                         </div>

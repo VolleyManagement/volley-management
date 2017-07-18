@@ -22,6 +22,7 @@
                 ViewModelResources.DivisionDefaultName,
                 Constants.Division.MIN_DIVISIONS_COUNT);
             Groups = new List<GroupViewModel>();
+            IsEmpty = true;
         }
 
         /// <summary>
@@ -52,6 +53,11 @@
         /// </summary>
         [Display(Name = "Groups", ResourceType = typeof(ViewModelResources))]
         public List<GroupViewModel> Groups { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether division is empty.
+        /// </summary>
+        public bool IsEmpty { get; set; }
 
         #region Factory methods
 

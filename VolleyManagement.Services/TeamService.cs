@@ -76,8 +76,7 @@
         /// Create a new team.
         /// </summary>
         /// <param name="teamToCreate">A Team to create.</param>
-        /// <param name="name">A Name of team for create.</param>
-        public void Create(Team teamToCreate, string name)
+        public void Create(Team teamToCreate)
         {
             _authService.CheckAccess(AuthOperations.Teams.Create);
 
@@ -97,7 +96,7 @@
 
             var existTeamName = Get();
 
-            if (!ValidateTwoTeamsWithTheSameName(existTeamName, name))
+            if (!ValidateTwoTeamsWithTheSameName(existTeamName, teamToCreate.Name))
             {
                 throw new ArgumentException(
                     TournamentResources.TeamNameInTournamentNotUnique, teamToCreate.Name);

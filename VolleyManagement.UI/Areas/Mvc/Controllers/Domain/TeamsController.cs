@@ -103,7 +103,7 @@
 
                 try
                 {
-                    _teamService.Create(domainTeam, teamViewModel.Name);
+                    _teamService.Create(domainTeam);
                     if (teamViewModel.Roster != null)
                     {
                         _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);

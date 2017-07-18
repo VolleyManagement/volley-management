@@ -46,6 +46,8 @@
         private const byte SECOND_ROUND_NUMBER = 2;
         private const string INVALID_PARAMETR = "Invalid parametr.Your request didn't create.";
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
+        private const string ASSERT_FAIL_VIEW_MODEL_IS_NEW = "View model must be new.";
+        private const string ASSERT_FAIL_VIEW_MODEL_IS_NOT_NEW = "View model must be not new.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string JSON_NO_RIGHTS_MESSAGE = "Please, login to apply team for the tournament.";
         private const string JSON_OK_MSG = "Your request was succesfully created. Please, wait until administrator confirm your request.";
@@ -792,8 +794,7 @@
                                           + DAYS_FOR_APPLYING_PERIOD
                                           + DAYS_FROM_APPLYING_PERIOD_END_TO_GAMES_START
                                           + DAYS_FROM_GAMES_START_TO_TRANSFER_START
-                                          + DAYS_FOR_TRANSFER_PERIOD),
-                IsSaved = false
+                                          + DAYS_FOR_TRANSFER_PERIOD)
             };
 
             var sut = BuildSUT();
@@ -803,6 +804,22 @@
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Create method (Get action). Tournament view model is returned. Tournament is new.
+        /// </summary>
+        [TestMethod]
+        public void CreateGetAction_GetTournamentViewModel_TournamentIsNew()
+        {
+            // Arrange
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create());
+
+            // Assert
+            Assert.IsTrue(result.IsNew, ASSERT_FAIL_VIEW_MODEL_IS_NOT_NEW);
         }
 
         #endregion
@@ -907,6 +924,25 @@
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Existing tournament is returned. Tournament is not new.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_GetExistingTournament_TournamentIsNotNew()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(result.IsNew, ASSERT_FAIL_VIEW_MODEL_IS_NEW);
         }
 
         #endregion

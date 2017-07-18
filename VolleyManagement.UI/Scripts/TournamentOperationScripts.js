@@ -1,5 +1,5 @@
-﻿function addDivision(countLimits, divisionsDefault, groupsDefault) {
-    var divisionsCount = $("#Divisions").children().size() - 1;
+﻿function addNewDivisionInTournament(countLimits, divisionsDefault, groupsDefault) {
+    var divisionsCount = $("#Divisions").children().size();
     var newDivisionWrapper = $("<div></div>").attr("id", "Division_" + divisionsCount + "_Id");
     var newDivisionIdHidden = $("<input></input>").attr("data-val", "true")
         .attr("data-val-number", "The field Id must be a number.")
@@ -57,12 +57,14 @@
     var groupsCount = $(divisionId).children().size();
     hideRemoveLink(divisionId, groupsCount, countLimits.minGroupsCount);
 
-    hideRemoveLink("#Divisions", divisionsCount + 1, countLimits.minDivisionsCount + 1);
+    hideRemoveLink("#Divisions", divisionsCount, countLimits.minDivisionsCount);
 
     if (divisionsCount - countLimits.minDivisionsCount == 1) {
-        var removeLinkId = "#Remove_" + $("#Divisions").children()[1].id;
+        for (var i = 0; i < countLimits.minDivisionsCount; i++) {
+            var removeLinkId = "#Remove_" + $("#Divisions").children()[i].id;
 
-        $(removeLinkId).show();
+            $(removeLinkId).show();
+        }
     }
 
     if (divisionsCount == countLimits.maxDivisionsCount) {
@@ -125,15 +127,27 @@ function addGroup(divisionIdx, maxGroupsCount, minGroupsCount, groupDefaultName,
 function removeDivision(divisionIdx, minDivisionsCount, maxGroupsCount, minGroupsCount, groupDefaultName, removeGroupDefaultName) {
     var divisionsId = "#Divisions";
     var divisionWrapperId = "#Division_" + divisionIdx + "_Id";
-    var divisionsCount = $(divisionsId).children().size() - 1;
+    var divisionsCount = $(divisionsId).children().size();
 
     $(divisionWrapperId).remove();
 
     divisionsCount--;
 
-    updateDivisions($(divisionsId), divisionIdx, divisionsCount, minDivisionsCount, maxGroupsCount, minGroupsCount, groupDefaultName, removeGroupDefaultName);
+    updateDivisionsIds({
+            placementId: $(divisionsId),
+            idx: divisionIdx
+    }, {
+            current: divisionsCount,
+            min: minDivisionsCount
+    }, {
+            max: maxGroupsCount,
+            min: minGroupsCount
+    }, {
+            name: groupDefaultName,
+            removeName: removeGroupDefaultName
+    });
 
-    hideRemoveLink(divisionsId, divisionsCount + 1, minDivisionsCount + 1);
+    hideRemoveLink(divisionsId, divisionsCount, minDivisionsCount);
 }
 
 function removeGroup(divisionIdx, groupIdx, minGroupsCount) {
@@ -154,18 +168,16 @@ function hideRemoveLink(elementsPlacement, elementsAmount, minElementsNumber) {
     if (elementsAmount <= minElementsNumber) {
         for (var i = 0; i < elementsAmount; i++){
             var element = $(elementsPlacement).children()[i];
-            if (element != undefined) {
-                var linkToHide = "#Remove_" + element.id;
 
-                $(linkToHide).hide();
-            }
+            var linkToHide = "#Remove_" + element.id;
+            $(linkToHide).hide();
         }
     }
 }
 
-function updateDivisions(divisionsId, removedDivisionIdx, divisionsCount, minDivisionsCount, maxGroupsCount, minGroupsCount, groupDefaultName, removeGroupDefaultName) {
-    for (var i = removedDivisionIdx; i < divisionsCount; i++) {
-        var divisionToUpdate = $(divisionsId).children()[i + 1];
+function updateDivisionsIds(division, divisionsCount, groupsCount, groupsDefault) {
+    for (var i = division.idx; i < divisionsCount.current; i++) {
+        var divisionToUpdate = $(division.placementId).children()[i];
 
         var divisionHidden = $(divisionToUpdate).children()[0];
 
@@ -195,16 +207,16 @@ function updateDivisions(divisionsId, removedDivisionIdx, divisionsCount, minDiv
         $(divisionNameValidation).attr("data-valmsg-for", "Divisions[" + i + "].Name");
 
         $(divisionRemoveLink).attr("id", "Remove_Division_" + i + "_Id");
-        $(divisionRemoveLink).attr("onclick", "removeDivision(" + i + ", " + minDivisionsCount + ", " + maxGroupsCount + ", " + minGroupsCount + ", '" + groupDefaultName + "', '" + removeGroupDefaultName + "')");
+        $(divisionRemoveLink).attr("onclick", "removeDivision(" + i + ", " + divisionsCount.min + ", " + groupsCount.max + ", " + groupsCount.min + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
 
         $(divisionGroupsListWrapper).attr("id", "Division_" + i + "_Groups");
 
-        updateGroups("#" + divisionGroupsListWrapper.id, i, 0, $(divisionGroupsListWrapper).children().size(), minGroupsCount);
+        updateGroups("#" + divisionGroupsListWrapper.id, i, 0, $(divisionGroupsListWrapper).children().size(), groupsCount.min);
 
         $(divisionGroupsTitle).attr("for", "Divisions_" + i + "__Groups");
 
         $(divisionGroupsAdd).attr("id", "Add_Division_" + i + "_Group");
-        $(divisionGroupsAdd).attr("onclick", "addGroup(" + i + ", " + maxGroupsCount + ", " + minGroupsCount + ", '" + groupDefaultName + "', '" + removeGroupDefaultName + "')");
+        $(divisionGroupsAdd).attr("onclick", "addGroup(" + i + ", " + groupsCount.max + ", " + groupsCount.min + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
     }
 }
 

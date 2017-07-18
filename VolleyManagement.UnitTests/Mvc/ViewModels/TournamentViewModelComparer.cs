@@ -62,7 +62,7 @@
                 && x.SeasonsList.SequenceEqual(y.SeasonsList)
                 && x.Scheme == y.Scheme
                 && x.RegulationsLink == y.RegulationsLink
-                && x.IsSaved == y.IsSaved
+                && x.IsNew == y.IsNew
                 && x.IsTransferEnabled == y.IsTransferEnabled
                 && x.ApplyingPeriodEnd.Date == y.ApplyingPeriodEnd.Date
                 && x.ApplyingPeriodStart.Date == y.ApplyingPeriodStart.Date

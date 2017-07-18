@@ -25,7 +25,6 @@
             Scheme = TournamentSchemeEnum.One;
             InitializeSeasonsList();
             InitializeTournamentSchemeList();
-            IsSaved = true;
             IsTransferEnabled = true;
             Divisions = new List<DivisionViewModel>();
         }
@@ -148,9 +147,12 @@
         public DateTime GamesEnd { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether tournament is in database
+        /// Gets a value indicating whether tournament is new
         /// </summary>
-        public bool IsSaved { get; set; }
+        public bool IsNew
+        {
+            get { return Id == 0; }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether transfer enabled state

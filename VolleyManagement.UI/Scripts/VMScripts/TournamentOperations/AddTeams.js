@@ -89,7 +89,7 @@
     };
 
     privates.renderNewTournamentDivisionsRow = function (responseOptions, isDisabled) {
-        var teamTableData = $("#team", privates.tornamentTeamsTable).parent();
+        var teamTableData = $("#team").parent();
         teamTableData.append(privates.getTornamentDivisionRowMarkup(responseOptions, isDisabled));
     };
 
@@ -109,7 +109,7 @@
         $("td[id ='division']:last", privates.tornamentTeamsTable).parent().append(privates.getTornamentGroupRowMarkup(responseOptions, isDisabled));
     };
 
-    privates.addTournamentTeamsRow = function () {
+    privates.addTournamentTeamsRow = function (callbackDivisions) {
 
         var selectedTeams = $("select :selected");
 
@@ -127,7 +127,9 @@
             });
 
             privates.renderNewTournamentTeamsRow(responseOptions);
-        });
+            
+            callbackDivisions(); 
+        });        
     };
 
     privates.addTournamentDivisionsRow = function () {
@@ -211,8 +213,7 @@
     };
 
     currNs.onAddTeamToTournamentButtonClick = function () {
-        privates.addTournamentTeamsRow();
-        privates.addTournamentDivisionsRow();
+        privates.addTournamentTeamsRow(privates.addTournamentDivisionsRow);        
     };
 
     currNs.onAddTeamsButtonButtonClick = function () {
@@ -230,8 +231,10 @@
         }
     };
 
-    currNs.onDeleteTeamButtonClick = function () {
-        location.reload();
+    currNs.onDeleteTeamButtonClick = function (eventData) {
+        var currentRow = eventData.target.parentElement.parentElement.remove();
+        $('tr:empty').remove();
+        $("#addTeamToTournamentButton").prop('disabled', false);
     };
 
     currNs.onDeleteTeamFromTournamentButtonClick = function (eventData) {

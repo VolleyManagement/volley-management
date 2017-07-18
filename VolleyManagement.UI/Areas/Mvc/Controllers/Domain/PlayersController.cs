@@ -299,11 +299,11 @@
 
         private PlayersListViewModel GetPlayersListViewModel(int? page, string textToSearch = "")
         {
-            textToSearch = textToSearch.Trim();
             IQueryable<Player> allPlayers = _playerService.Get().OrderBy(p => p.LastName);
 
-            if (textToSearch != string.Empty)
+            if (!string.IsNullOrEmpty(textToSearch))
             {
+                textToSearch = textToSearch.Trim();
                 allPlayers = allPlayers.Where(p => (p.LastName + " " + p.FirstName).Contains(textToSearch)
                     || (p.FirstName + " " + p.LastName).Contains(textToSearch));
             }

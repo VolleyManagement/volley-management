@@ -264,16 +264,14 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
             var allTeams = GetAllTournamentTeams(tournamentId);
-            var allGroups = GetAllTournamentGroups(divisionId);
 
             foreach (var team in teams)
             {
                 foreach (var group in groups)
                 {
                     var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == team.Id);
-                    var tournamentGroup = allGroups.SingleOrDefault(g => g.Id == group.Id);
 
-                    if (tournamentTeam == null && tournamentGroup != null)
+                    if (tournamentTeam == null)
                     {
                         _tournamentRepository.AddTeamToTournament(team.Id, tournamentId, group.Id, divisionId);
                     }

@@ -86,7 +86,7 @@ namespace VolleyManagement.Data.MsSql.Entities
         public virtual List<DivisionEntity> Divisions
         {
             get => _divisions;
-            set =>_divisions = value;
+            set => _divisions = value;
         }
 
         /// <summary>

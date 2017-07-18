@@ -25,10 +25,9 @@
         /// Create a new request
         /// </summary>
         /// <param name="userId">Id of user that ask for link</param>
-        /// <param name="tournamentId"> Tournament's id</param>
         /// <param name="teamId"> Team's id</param>
         /// <param name="groupId"> Groups id</param>
-        void Create(int userId, int tournamentId, int teamId, int groupId);
+        void Create(int userId, int teamId, int groupId);
 
         /// <summary>
         /// Confirm the request

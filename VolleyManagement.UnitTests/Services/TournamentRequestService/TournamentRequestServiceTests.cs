@@ -126,7 +126,7 @@
             // Act => Assert
             Assert.Throws<ArgumentException>(
                 () =>
-                 sut.Create(INVALID_REQUEST_ID, EXISTING_ID, EXISTING_ID, EXISTING_ID),
+                 sut.Create(INVALID_REQUEST_ID, EXISTING_ID, EXISTING_ID),
                 "User's id is wrong");
         }
 
@@ -137,7 +137,7 @@
             var newTournamentRequest = new TournamentRequestBuilder()
                .WithId(EXISTING_ID)
                .WithTeamId(EXISTING_ID)
-               .WithTournamentId(EXISTING_ID)
+               .WithGroupId(EXISTING_ID)
                .WithUserId(EXISTING_ID)
                .Build();
             var emailMessage = new EmailMessageBuilder().Build();
@@ -150,7 +150,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID, EXISTING_ID);
+            sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID);
 
             // Assert
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Once(), "Parameter request is not equal to Instance of request");
@@ -163,7 +163,7 @@
             var newTournamentRequest = new TournamentRequestBuilder()
                .WithId(EXISTING_ID)
                .WithTeamId(EXISTING_ID)
-               .WithTournamentId(EXISTING_ID)
+               .WithGroupId(EXISTING_ID)
                .WithUserId(EXISTING_ID)
                .Build();
             var emailMessage = new EmailMessageBuilder().Build();
@@ -177,7 +177,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID, EXISTING_ID);
+            sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID);
 
             // Assert
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Never(), "Parameter request is not equal to Instance of request");

@@ -1725,7 +1725,7 @@
             Exception exception = null;
 
             // Arrange
-            int gameNullId = null;
+            int gameNullId = 0;
             var sut = BuildSUT();
 
             // Act
@@ -2179,6 +2179,7 @@
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)
         {
             Assert.IsNotNull(exception);
+
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
         }
 

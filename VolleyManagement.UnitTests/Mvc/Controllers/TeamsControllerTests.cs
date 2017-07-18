@@ -48,7 +48,6 @@
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string FILE_NOT_FOUND_EX_MESSAGE = "File not found";
         private const string FILE_LOAD_EX_MESSAGE = "File size must be less then 1 MB and greater then 0 MB";
-        private const string TEAM_CREATED_NAME = "Sun";
 
         private Mock<ITeamService> _teamServiceMock;
         private Mock<HttpContextBase> _httpContextMock;

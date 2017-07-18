@@ -342,7 +342,7 @@
         {
             // Arrange
             var testData = MakeTestTeams();
-            var testGroupData = MakeTestGroups();
+            var testGroupData = CreateTestGroups();
             var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
             var expectedDataGroupResult = new TournamentGroupsListViewModel(testGroupData, TEST_DIVISION_ID);
             var sut = BuildSUT();
@@ -367,7 +367,7 @@
         {
             // Arrange
             var testData = MakeTestTeams();
-            var testGroupData = MakeTestGroups();
+            var testGroupData = CreateTestGroups();
             _tournamentServiceMock
                 .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>(), It.IsAny<List<Group>>(), It.IsAny<int>()))
                 .Throws(new ArgumentException(string.Empty));
@@ -1287,7 +1287,7 @@
             return new TeamServiceTestFixture().TestTeams().Build();
         }
 
-        private List<Group> MakeTestGroups()
+        private List<Group> CreateTestGroups()
         {
             return new GroupTestFixture().TestGroups().Build();
         }

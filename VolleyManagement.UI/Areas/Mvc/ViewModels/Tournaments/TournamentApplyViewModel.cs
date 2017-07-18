@@ -27,28 +27,8 @@
         public string TournamentTitle { get; set; }
 
         /// <summary>
-        /// Gets or sets the group identifier.
-        /// </summary>
-        public int GroupId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the division identifier.
-        /// </summary>
-        public int DivisionId { get; set; }
-
-        /// <summary>
         /// Gets or sets the teams list.
         /// </summary>
         public IEnumerable<TeamNameViewModel> Teams { get; set; }
-
-        /// <summary>
-        /// Gets or sets the groups list.
-        /// </summary>
-        public IEnumerable<GroupViewModel> Groups { get; set; }
-
-        /// <summary>
-        /// Gets or sets the divisions list.
-        /// </summary>
-        public IEnumerable<DivisionViewModel> Divisions { get; set; }
     }
 }

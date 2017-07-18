@@ -8,7 +8,7 @@
     public class DivisionGroupsCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Gets or sets target division Id
+        /// Gets or sets division Id
         /// </summary>
         public int DivisionId { get; set; }
     }

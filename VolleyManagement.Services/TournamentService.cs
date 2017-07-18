@@ -254,11 +254,11 @@
         }
 
         /// <summary>
-        /// Add teams and groups to tournament
+        /// Adds selected teams to tournament
         /// </summary>
-        /// <param name="teams">Teams for adding to tournament.</param>
+        /// <param name="teams">Teams that will be added to tournament</param>
         /// <param name="tournamentId">Tournament to assign team.</param>
-        /// <param name="groups">Groups for adding to tournament.</param>
+        /// <param name="groups">Groups of tournament to assign to team</param>
         /// <param name="divisionId">Division to assign group.</param>
         public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId, IEnumerable<Group> groups, int divisionId)
         {

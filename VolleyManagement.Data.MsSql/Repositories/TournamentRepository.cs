@@ -96,8 +96,12 @@
         /// <param name="divisionId">Division id, where group is</param>
         public void AddTeamToTournament(int teamId, int tournamentId, int groupId, int divisionId)
         {
-            _dalTournaments.Find(tournamentId).Divisions.Find(d => d.Id == divisionId)
-                .Groups.Find(g => g.Id == groupId).Teams.Add(_dalTeams.Find(teamId));
+            var group = from t in _dalTournaments
+                        join d in _dalDivisions on t.Id equals d.TournamentId
+                        join g in _dalGroups on d.Id equals g.DivisionId
+                        where t.Id == tournamentId && d.Id == divisionId && g.Id == groupId
+                        select g;
+            group.First().Teams.Add(_dalTeams.Find(teamId));
         }
 
         /// <summary>

@@ -357,7 +357,6 @@
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TeamsAddToTournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentApplyViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentDivisionsListViewModel.cs" />
-    <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentGroupsListViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentsCollectionsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListReferrerViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentTeamsListViewModel.cs" />

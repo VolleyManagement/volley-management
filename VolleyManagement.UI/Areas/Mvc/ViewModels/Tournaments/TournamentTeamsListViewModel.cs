@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Web;
     using Domain.TeamsAggregate;
+    using Domain.TournamentsAggregate;
+    using ViewModels.Division;
 
     /// <summary>
     /// Tournament teams list view model.
@@ -23,10 +25,14 @@
         /// </summary>
         /// <param name="source">All needed teams</param>
         /// <param name="tournamentId">Tournament id</param>
-        public TournamentTeamsListViewModel(List<Team> source, int tournamentId)
+        /// <param name="group">All needed groups</param>
+        /// <param name="divisionId">Division id</param>
+        public TournamentTeamsListViewModel(List<Team> source, int tournamentId, List<Group> group, int divisionId)
         {
             TournamentId = tournamentId;
-            List = source.Select(t => TeamNameViewModel.Map(t)).ToList();
+            List = source.Select(TeamNameViewModel.Map).ToList();
+            DivisionId = divisionId;
+            GroupsList = group.Select(GroupViewModel.Map).ToList();
         }
 
         /// <summary>
@@ -35,9 +41,19 @@
         public int TournamentId { get; set; }
 
         /// <summary>
+        /// Gets or sets division Id
+        /// </summary>
+        public int DivisionId { get; set; }
+
+        /// <summary>
         /// Gets or sets list Of Teams
         /// </summary>
         public List<TeamNameViewModel> List { get; set; }
+
+        /// <summary>
+        /// Gets or sets list of Groups
+        /// </summary>
+        public List<GroupViewModel> GroupsList { get; set; }
 
         /// <summary>
         /// Maps presentation list to domain list
@@ -46,6 +62,15 @@
         public List<Team> ToDomain()
         {
             return List.Select(t => t.ToDomain()).ToList();
+        }
+
+        /// <summary>
+        /// Maps presentation list to domain list
+        /// </summary>
+        /// <returns>Domain list of groups</returns>
+        public List<Group> GroupToDomain()
+        {
+            return GroupsList.Select(t => t.ToDomain()).ToList();
         }
     }
 }

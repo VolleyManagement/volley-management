@@ -185,10 +185,14 @@
                                     @Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new { name = "Divisions[@i].Groups[@j].Name" })
                                     @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
 
-                                    @if (!Model.Divisions[i].Groups[j].IsEmpty)
+                                    @if (Model.Divisions[i].Groups[j].IsEmpty)
                                     {
                                         <a id=@removeGroupWrapperId class="link-button"
-                                           onClick="removeGroup(@i, @j)">
+                                           onClick="removeGroupFromDB({
+                                           groupId: @Model.Divisions[i].Groups[j].Id,
+                                           divisionId: @Model.Divisions[i].Id
+                                           }, 
+                                           @i, @j, @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT)">
                                             @Resources.UI.TournamentViews.RemoveGroup
                                         </a>
                                     }
@@ -201,7 +205,8 @@
 
                             <div class="add-group-button">
                                 <a id=@addGroupButtonId class="link-button"
-                                   onClick="addGroup(@i, @GroupConstants.MAX_GROUPS_COUNT, '@Resources.UI.ViewModelResources.GroupDefaultName')">
+                                   onClick="addGroup(@i, @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT, 
+                                   '@Resources.UI.ViewModelResources.GroupDefaultName', '@Resources.UI.TournamentViews.RemoveGroup')">
                                     @Resources.UI.TournamentViews.AddGroup
                                 </a>
                             </div>

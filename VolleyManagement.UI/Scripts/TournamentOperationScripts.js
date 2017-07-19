@@ -27,7 +27,7 @@
         .attr("onclick", "removeDivision(" + divisionsCount + ", " + countLimits.maxDivisionsCount + ", " + countLimits.minDivisionsCount + ", " + countLimits.maxGroupsCount + ", " + countLimits.minGroupsCount + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
     var newDivisionGroupsWrapper = $("<div></div>").attr("class", "division-groups-wrapper");
     var newDivisionGroupsTitleWrapper = $("<div></div>").attr("class", "editor-label");
-    var newDivisionGroupsTitle = $("<label>" + (groupsDefault.title) + "</label>")
+    var newDivisionGroupsTitle = $("<label>" + groupsDefault.title + "</label>")
         .attr("for", "Divisions_" + divisionsCount + "__Groups");
     var newDivisionGroupsListWrapper = $("<div></div>").attr("id", "Division_" + divisionsCount + "_Groups");
     var newGroupWrapper = createGroup(divisionsCount, 0, countLimits.maxGroupsCount, countLimits.minGroupsCount, groupsDefault.name, groupsDefault.removeName);
@@ -154,6 +154,10 @@ function removeDivision(divisionIdx, maxDivisionsCount, minDivisionsCount, maxGr
     }
 }
 
+function removeDivisionFromDB() {
+    
+}
+
 function removeGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount) {
     var divisionGroupsWrapperId = "#Division_" + divisionIdx + "_Groups";
     var groupWrapperId = "#Division_" + divisionIdx + "_Group_" + groupIdx;
@@ -170,6 +174,11 @@ function removeGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount) {
     if (groupsCount < maxGroupsCount) {
         $("#Add_Division_" + divisionIdx + "_Group").show();
     }
+}
+
+function removeGroupFromDB (dbIds, divisionIdx, groupIdx, maxGroupsCount, minGroupsCount) {
+    $.post("Tournaments/DeleteGroupFromDivision", dbIds.groupId)
+        .done(removeGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount));
 }
 
 function hideRemoveLink(elementsPlacement, elementsAmount, minElementsNumber) {

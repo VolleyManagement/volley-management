@@ -254,6 +254,12 @@
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public void DeleteGroupFromDivision(int groupId, int divisionId)
+        {
+            _tournamentService.DeleteGroupFromDivision(groupId, divisionId);
+        }
+
         /// <summary>
         /// Manage tournament teams action
         /// </summary>

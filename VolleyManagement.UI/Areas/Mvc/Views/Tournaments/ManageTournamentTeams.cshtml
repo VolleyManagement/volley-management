@@ -13,14 +13,19 @@
         <tr>
             <th>@Html.DisplayNameFor(model => model.Model.List.FirstOrDefault().Name)</th>
             <th class="hidden"></th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
-        @foreach (var item in Model.Model.List)
+        @foreach (var team in Model.Model.List)
         {
             <tr>
-                <td>@Html.ActionLink(item.Name, "Details", "Teams", new {id = item.Id, returnUrl = Model.Referer}, null)</td>
-                <td><button class="deleteTeamFromTournamentButton" id="@item.Id">Delete</button></td>
+                <td>@Html.ActionLink(team.Name, "Details", "Teams", new { id = team.Id, returnUrl = Model.Referer }, null)</td>                
+                <td></td>
+                <td></td>
+                <td><button class="deleteTeamFromTournamentButton" id="@team.Id">Delete</button></td>
             </tr>
-        }
+        }                
     </table>
     <div style="margin-bottom: 30px;">
         <button id="addTeamToTournamentButton" class="btn btn-success">+ Add team </button>
@@ -35,7 +40,8 @@
                 var currNs = VM.addNamespace("tournament.addTeams");
                 currNs.deleteConfirmMessage = "@TournamentViews.DeleteTournamentTeamConfirm";
                 currNs.teamIsNotSelectedMessage = "@TournamentViews.TournamentTeamIsNotSelected";
-
+                currNs.divisionIsNotSelectedMessage = "@TournamentViews.TournamentDivisionIsNotSelected";
+                currNs.groupIsNotSelectedMessage = "@TournamentViews.TournamentGroupIsNotSelected";
             })();
 
         </script>

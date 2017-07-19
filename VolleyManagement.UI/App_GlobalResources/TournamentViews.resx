@@ -276,4 +276,10 @@
   <data name="NoApplication" xml:space="preserve">
     <value>No Application</value>
   </data>
+  <data name="TournamentDivisionIsNotSelected" xml:space="preserve">
+    <value>No division is selected</value>
+  </data>
+  <data name="TournamentGroupIsNotSelected" xml:space="preserve">
+    <value>No group is selected</value>
+  </data>
 </root>

@@ -10,6 +10,8 @@
     using Data.Contracts;
     using Data.Exceptions;
     using Data.Queries.Common;
+    using Data.Queries.Division;
+    using Data.Queries.Group;
     using Data.Queries.Team;
     using Data.Queries.Tournament;
     using Domain.GamesAggregate;
@@ -59,6 +61,8 @@
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTournamentTeamsQuery;
+        private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
+        private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
 
         #endregion
@@ -74,6 +78,8 @@
         /// <param name="getByIdQuery">Get tournament by id query.</param>
         /// <param name="getAllTeamsQuery">Get All Teams query.</param>
         /// <param name="getAllTournamentTeamsQuery">Get All Tournament Teams query.</param>
+        /// <param name="getAllTournamentDivisionsQuery">Get All Tournament Divisions query.</param>
+        /// <param name="getAllTournamentGroupsQuery">Get All Tournament Groups query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
         /// <param name="authService">Authorization service</param>
         /// <param name="gameService">The game service</param>
@@ -84,6 +90,8 @@
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTournamentTeamsQuery,
+            IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
+            IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IAuthorizationService authService,
             IGameService gameService)
@@ -92,11 +100,12 @@
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
-            _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
-            _authService = authService;
+            _getAllTournamentDivisionsQuery = getAllTournamentDivisionsQuery;
+            _getAllTournamentGroupsQuery = getAllTournamentGroupsQuery;
             _getTournamentDtoQuery = getTournamentDtoQuery;
+            _authService = authService;
             _gameService = gameService;
         }
 
@@ -139,6 +148,26 @@
         public List<Team> GetAllTournamentTeams(int tournamentId)
         {
             return _getAllTournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+        }
+
+        /// <summary>
+        /// Returns all divisions for specific tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of Tournament to get divisions list</param>
+        /// <returns>Tournament divisions</returns>
+        public List<Division> GetAllTournamentDivisions(int tournamentId)
+        {
+            return _getAllTournamentDivisionsQuery.Execute(new TournamentDivisionsCriteria { TournamentId = tournamentId });
+        }
+
+        /// <summary>
+        /// Returns all divisions for specific tournament
+        /// </summary>
+        /// <param name="divisionId">Id of Division to get group list</param>
+        /// <returns>Tournament groups</returns>
+        public List<Group> GetAllTournamentGroups(int divisionId)
+        {
+            return _getAllTournamentGroupsQuery.Execute(new DivisionGroupsCriteria { DivisionId = divisionId });
         }
 
         /// <summary>
@@ -225,26 +254,32 @@
         }
 
         /// <summary>
-        /// Adds teams to tournament
+        /// Adds selected teams to tournament
         /// </summary>
-        /// <param name="teams">Teams for adding to tournament.</param>
+        /// <param name="teams">Teams that will be added to tournament</param>
         /// <param name="tournamentId">Tournament to assign team.</param>
-        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId)
+        /// <param name="groups">Groups of tournament to assign to team</param>
+        /// <param name="divisionId">Division to assign group.</param>
+        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId, IEnumerable<Group> groups, int divisionId)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
             var allTeams = GetAllTournamentTeams(tournamentId);
 
             foreach (var team in teams)
             {
-                var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == team.Id);
-                if (tournamentTeam == null)
+                foreach (var group in groups)
                 {
-                    _tournamentRepository.AddTeamToTournament(team.Id, tournamentId);
-                }
-                else
-                {
-                    throw new ArgumentException(
-                        TournamentResources.TeamNameInTournamentNotUnique, tournamentTeam.Name);
+                    var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == team.Id);
+
+                    if (tournamentTeam == null)
+                    {
+                        _tournamentRepository.AddTeamToTournament(team.Id, tournamentId, group.Id, divisionId);
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            TournamentResources.TeamNameInTournamentNotUnique, tournamentTeam.Name);
+                    }
                 }
             }
 

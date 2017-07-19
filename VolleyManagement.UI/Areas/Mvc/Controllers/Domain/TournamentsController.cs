@@ -11,6 +11,7 @@
     using Domain.RolesAggregate;
     using Domain.TournamentsAggregate;
     using Resources.UI;
+    using ViewModels.Division;
     using ViewModels.GameResults;
     using ViewModels.Teams;
     using ViewModels.Tournaments;
@@ -262,8 +263,11 @@
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
-            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, HttpContext.Request.RawUrl);
+            var divisions = _tournamentService.GetAllTournamentDivisions(tournamentId);
+            var divisionId = divisions.First().Id;
+            var groups = _tournamentService.GetAllTournamentGroups(divisionId);
+            var parameters = new TournamentTeamsListViewModel(resultTeams, tournamentId, groups, divisionId);
+            var referrerViewModel = new TournamentTeamsListReferrerViewModel(parameters, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }
 
@@ -278,7 +282,7 @@
             JsonResult result = null;
             try
             {
-                _tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId);
+                _tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId, teams.GroupToDomain(), teams.DivisionId);
                 result = Json(teams, JsonRequestBehavior.AllowGet);
             }
             catch (ArgumentException ex)
@@ -530,7 +534,7 @@
             {
                 Id = tournamentId,
                 TournamentTitle = tournament.Name,
-                Teams = noTournamentTeams.Select(t => TeamNameViewModel.Map(t)),
+                Teams = noTournamentTeams.Select(TeamNameViewModel.Map)
             };
             return View(tournamentApplyViewModel);
         }
@@ -538,23 +542,24 @@
         /// <summary>
         /// Apply for tournament
         /// </summary>
-        /// <param name="tournamentId">Tournament id</param>
-        /// /// <param name="teamId">Team id</param>
+        /// <param name="groupId">Group id</param>
+        /// <param name="teamId">Tournament s id</param>
         /// <returns>TournamentApply view</returns>
         [HttpPost]
-        public JsonResult ApplyForTournament(int tournamentId, int teamId)
+        public JsonResult ApplyForTournament(int groupId, int teamId)
         {
             JsonResult result = null;
             try
             {
                 int userId = _currentUserService.GetCurrentUserId();
+
                 if (userId == ANONYM)
                 {
                     result = Json(ViewModelResources.NoRights);
                 }
                 else
                 {
-                    _requestService.Create(userId, tournamentId, teamId);
+                    _requestService.Create(userId, teamId, groupId);
                     result = Json(ViewModelResources.SuccessRequest);
                 }
             }
@@ -576,6 +581,30 @@
             var nonTournamentTeamsList = _tournamentService.GetAllNoTournamentTeams(tournamentId);
             var teams = nonTournamentTeamsList.Select(TeamNameViewModel.Map);
             return Json(teams, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Returns available list of all divisions.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>Json list of divisions</returns>
+        public JsonResult GetAllAvailableDivisions(int tournamentId)
+        {
+            var tournamentDivisionsList = _tournamentService.GetAllTournamentDivisions(tournamentId);
+            var divisions = tournamentDivisionsList.Select(DivisionViewModel.Map);
+            return Json(divisions, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Returns available list of all groups.
+        /// </summary>
+        /// <param name="divisionId">Identifier of the division.</param>
+        /// <returns>Json list of groups</returns>
+        public JsonResult GetAllAvailableGroups(int divisionId)
+        {
+            var tournamentGroupList = _tournamentService.GetAllTournamentGroups(divisionId);
+            var groups = tournamentGroupList.Select(GroupViewModel.Map);
+            return Json(groups, JsonRequestBehavior.AllowGet);
         }
 
         #region Private

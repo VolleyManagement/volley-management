@@ -25,11 +25,11 @@
             {
                 Id = 1,
                 TeamId = 4,
-                TournamentId = 1,
                 PersonId = 1,
-                TeamTitle = "TestName",
                 PersonName = "Eugene",
-                TournamentTitle = "Name"
+                TeamTitle = "TestName",
+                TournamentTitle = "Name",
+                TournamentId = 1
             });
 
             return this;

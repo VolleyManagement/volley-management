@@ -16,9 +16,9 @@
         public int UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets tournament's id
+        /// Gets or sets group's id
         /// </summary>
-        public int TournamentId { get; set; }
+        public int GroupId { get; set; }
 
         /// <summary>
         /// Gets or sets team's id

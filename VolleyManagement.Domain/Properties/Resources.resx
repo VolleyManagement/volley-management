@@ -312,4 +312,10 @@
   <data name="ValidationUserId" xml:space="preserve">
     <value>User's id is wrong</value>
   </data>
+  <data name="ValidationDivisionId" xml:space="preserve">
+    <value>Division's id is wrong</value>
+  </data>
+  <data name="ValidationGroupId" xml:space="preserve">
+    <value>Group's id is wrong</value>
+  </data>
 </root>

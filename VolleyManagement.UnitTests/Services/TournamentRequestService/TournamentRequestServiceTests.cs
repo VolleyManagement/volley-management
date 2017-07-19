@@ -137,7 +137,7 @@
             var newTournamentRequest = new TournamentRequestBuilder()
                .WithId(EXISTING_ID)
                .WithTeamId(EXISTING_ID)
-               .WithTournamentId(EXISTING_ID)
+               .WithGroupId(EXISTING_ID)
                .WithUserId(EXISTING_ID)
                .Build();
             var emailMessage = new EmailMessageBuilder().Build();
@@ -163,7 +163,7 @@
             var newTournamentRequest = new TournamentRequestBuilder()
                .WithId(EXISTING_ID)
                .WithTeamId(EXISTING_ID)
-               .WithTournamentId(EXISTING_ID)
+               .WithGroupId(EXISTING_ID)
                .WithUserId(EXISTING_ID)
                .Build();
             var emailMessage = new EmailMessageBuilder().Build();
@@ -203,7 +203,7 @@
             // Arrange
             var expected = new TournamentRequestBuilder().WithId(EXISTING_ID).Build();
             MockGetRequestByIdQuery(expected);
-            _tournamentRepositoryMock.Setup(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()));
+            _tournamentRepositoryMock.Setup(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>()));
             var emailMessage = new EmailMessageBuilder().Build();
             MockGetUser();
             MockRemoveTournamentRequest();
@@ -214,7 +214,7 @@
             sut.Confirm(EXISTING_ID);
 
             // Assert
-            VerifyAddedTeam(expected.Id, expected.TournamentId, Times.Once(), Times.AtLeastOnce());
+            VerifyAddedTeam(expected.Id, expected.TournamentId, expected.GroupId, expected.DivisionId, Times.Once(), Times.AtLeastOnce());
         }
 
         [TestMethod]
@@ -323,9 +323,9 @@
             _getRequestByAllQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByTeamTournamentCriteria>())).Returns(testData);
         }
 
-        private void VerifyAddedTeam(int requestId, int tournamentId, Times times, Times unitOfWorkTimes)
+        private void VerifyAddedTeam(int requestId, int tournamentId, int groupId, int divisionId, Times times, Times unitOfWorkTimes)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(requestId, tournamentId), times);
+            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(requestId, tournamentId, groupId, divisionId), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
         }
 

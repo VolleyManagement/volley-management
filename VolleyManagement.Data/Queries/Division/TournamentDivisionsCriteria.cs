@@ -3,7 +3,7 @@
     using Contracts;
 
     /// <summary>
-    /// Provides criteria for getting all divisions of t
+    /// Provides criteria for getting all divisions of tournament
     /// </summary>
     public class TournamentDivisionsCriteria : IQueryCriteria
     {

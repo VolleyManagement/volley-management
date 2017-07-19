@@ -42,6 +42,20 @@
         List<Team> GetAllTournamentTeams(int tournamentId);
 
         /// <summary>
+        /// Returns all divisions for specific tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of Tournament to get divisions</param>
+        /// <returns>Tournament divisions</returns>
+        List<Division> GetAllTournamentDivisions(int tournamentId);
+
+        /// <summary>
+        /// Returns all groups for specific tournament by division id
+        /// </summary>
+        /// <param name="divisionId">Id of Division to get groups</param>
+        /// <returns>Tournament groups</returns>
+        List<Group> GetAllTournamentGroups(int divisionId);
+
+        /// <summary>
         /// Finds tournament data transfer object by tournament id
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
@@ -67,11 +81,13 @@
         void Delete(int id);
 
         /// <summary>
-        /// Adds teams to tournament
+        /// Adds selected teams to tournament
         /// </summary>
-        /// <param name="teams">Teams to add</param>
-        /// <param name="tournamentId">Tournament to assign teams</param>
-        void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId);
+        /// <param name="teams">Teams that will be added to tournament</param>
+        /// <param name="tournamentId">Tournament to assign to it necessary team</param>
+        /// <param name="groups">Groups of tournament to assign to team</param>
+        /// <param name="divisionId">Division to assign groups</param>
+        void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId, IEnumerable<Group> groups, int divisionId);
 
         /// <summary>
         /// Deletes team from tournament

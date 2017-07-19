@@ -2179,6 +2179,7 @@
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)
         {
             Assert.IsNotNull(exception);
+
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
         }
 

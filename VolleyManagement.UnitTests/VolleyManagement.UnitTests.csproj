@@ -230,6 +230,7 @@
     <Compile Include="Services\TournamentRequestService\TournamentRequestComparer.cs" />
     <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTestFixture.cs" />
     <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTests.cs" />
+    <Compile Include="Services\TournamentService\GroupTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />
     <Compile Include="Services\TournamentService\TournamentScheduleDtoBuilder.cs" />

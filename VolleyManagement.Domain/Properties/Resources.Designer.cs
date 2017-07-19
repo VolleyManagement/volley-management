@@ -403,6 +403,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Division&apos;s id is wrong.
+        /// </summary>
+        public static string ValidationDivisionId {
+            get {
+                return ResourceManager.GetString("ValidationDivisionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please, enter the valid name of the division.
         /// </summary>
         public static string ValidationDivisionName {
@@ -444,6 +453,15 @@ namespace VolleyManagement.Domain.Properties {
         public static string ValidationFeedbackUsersEmail {
             get {
                 return ResourceManager.GetString("ValidationFeedbackUsersEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group&apos;s id is wrong.
+        /// </summary>
+        public static string ValidationGroupId {
+            get {
+                return ResourceManager.GetString("ValidationGroupId", resourceCulture);
             }
         }
         

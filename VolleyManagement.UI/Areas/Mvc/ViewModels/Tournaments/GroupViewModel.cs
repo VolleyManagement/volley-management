@@ -39,9 +39,6 @@
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets the identifier of the division that contains the group.
-        /// </summary>
         public int DivisionId { get; set; }
 
         #region Factory methods

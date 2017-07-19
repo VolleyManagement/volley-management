@@ -94,14 +94,6 @@
                 VerifyExistingTeamOrThrow(existTeam);
             }
 
-            var existTeamName = Get();
-
-            if (ValidateTwoTeamsWithTheSameName(existTeamName, teamToCreate.Name))
-            {
-                throw new ArgumentException(
-                    TournamentResources.TeamNameInTournamentNotUnique, teamToCreate.Name);
-            }
-
             ValidateTeam(teamToCreate);
 
             _teamRepository.Add(teamToCreate);
@@ -240,11 +232,6 @@
             }
         }
 
-        private static bool ValidateTwoTeamsWithTheSameName(List<Team> existTeams, string name)
-        {
-            return existTeams.Where(t => t.Name.ToLower().Equals(name.ToLower())).Any();
-        }
-
         private void UpdatePlayerTeam(int playerId, int teamId)
         {
             Player player = GetPlayerById(playerId);
@@ -345,11 +332,22 @@
         }
         }
 
+        private void ValidateTwoTeamsWithTheSameName(List<Team> existTeams, string name)
+        {
+            if (TeamValidation.ValidateTwoTeamsWithTheSameName(existTeams, name))
+            {
+                throw new ArgumentException(
+                    TournamentResources.TeamNameInTournamentNotUnique, name);
+            }
+        }
+
         private void ValidateTeam(Team teamToValidate)
         {
+            var existTeams = Get();
             ValidateTeamName(teamToValidate.Name);
             ValidateCoachName(teamToValidate.Coach);
             ValidateAchievements(teamToValidate.Achievements);
+            ValidateTwoTeamsWithTheSameName(existTeams, teamToValidate.Name);
         }
     }
 }

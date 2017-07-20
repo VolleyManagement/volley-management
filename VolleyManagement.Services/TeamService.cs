@@ -347,6 +347,7 @@
             ValidateTeamName(teamToValidate.Name);
             ValidateCoachName(teamToValidate.Coach);
             ValidateAchievements(teamToValidate.Achievements);
+            ValidateTwoTeamsWithTheSameName(existTeams, teamToValidate.Name);
         }
     }
 }

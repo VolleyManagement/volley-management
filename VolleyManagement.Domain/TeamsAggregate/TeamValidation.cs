@@ -1,5 +1,7 @@
 ﻿namespace VolleyManagement.Domain.TeamsAggregate
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Text.RegularExpressions;
 
     /// <summary>
@@ -36,6 +38,17 @@
         public static bool ValidateAchievements(string achievements)
         {
             return achievements.Length > Constants.Team.MAX_ACHIEVEMENTS_LENGTH;
+        }
+
+        /// <summary>
+        /// Validates team name with other team name
+        /// </summary>
+        /// <param name="existTeams">List of all Teams in DB</param>
+        /// <param name="name">Name of Team, that is creating</param>
+        /// <returns>Validity of achievements</returns>
+        public static bool ValidateTwoTeamsWithTheSameName(List<Team> existTeams, string name)
+        {
+            return existTeams.Where(t => t.Name.ToLower().Equals(name.ToLower())).Any();
         }
     }
 }

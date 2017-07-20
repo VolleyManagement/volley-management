@@ -16,6 +16,7 @@
     using Domain.Properties;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
+    using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
     /// Defines TeamService
@@ -331,8 +332,18 @@
         }
         }
 
+        private void ValidateTwoTeamsWithTheSameName(List<Team> existTeams, string name)
+        {
+            if (TeamValidation.ValidateTwoTeamsWithTheSameName(existTeams, name))
+            {
+                throw new ArgumentException(
+                    TournamentResources.TeamNameInTournamentNotUnique, name);
+            }
+        }
+
         private void ValidateTeam(Team teamToValidate)
         {
+            var existTeams = Get();
             ValidateTeamName(teamToValidate.Name);
             ValidateCoachName(teamToValidate.Coach);
             ValidateAchievements(teamToValidate.Achievements);

@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using Contracts;
@@ -65,11 +66,15 @@
         public void Update(Tournament updatedEntity)
         {
             var tournamentToUpdate = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
-            updatedEntity.Divisions.Clear();
+            tournamentToUpdate.Divisions.Clear();
             DomainToDal.Map(tournamentToUpdate, updatedEntity);
 
+            var oldTournament = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
+
+            UpdateDivisions(oldTournament.Divisions, tournamentToUpdate.Divisions);
+
             // ToDo: Check Do we really need this?
-            //// _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
+            _unitOfWork.Context.Entry(tournamentToUpdate).State = EntityState.Modified;
         }
 
         /// <summary>
@@ -167,6 +172,23 @@
             tournamentEntity.Divisions.Remove(divisionEntity);
             _unitOfWork.Context.Divisions.Remove(divisionEntity);
             _unitOfWork.Commit();
+        }
+
+        private void UpdateDivisions(List<DivisionEntity> old, List<DivisionEntity> changed)
+        {
+            List<DivisionEntity> updatedDivisions = new List<DivisionEntity>();
+
+            foreach (var changedDiv in changed)
+            {
+                if (changedDiv.Id == 0)
+                {
+                    _unitOfWork.Context.Divisions.Add(changedDiv);
+                    _unitOfWork.Context.SaveChanges();
+
+                    // _unitOfWork.Context.Entry(changedDiv).State = EntityState.Modified;
+                    // updatedDivisions.Add(changedDiv);
+                }
+            }
         }
 
         private void MapIdentifiers(Tournament to, TournamentEntity from)

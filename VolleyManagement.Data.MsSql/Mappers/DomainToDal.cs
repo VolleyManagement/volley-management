@@ -37,6 +37,17 @@
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
             to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
+            foreach (var division in to.Divisions)
+            {
+                division.Tournament = to;
+                division.TournamentId = to.Id;
+                foreach (var group in division.Groups)
+                {
+                    group.Division = division;
+                    group.DivisionId = division.Id;
+                }
+            }
+
             to.LastTimeUpdated = from.LastTimeUpdated;
         }
 

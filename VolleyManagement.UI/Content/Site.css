@@ -1,9 +1,4 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
-/* Set padding to keep content from hitting the edges */
+﻿/* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
@@ -201,7 +196,6 @@ table.standings {
 .feedback-link {
     margin-left: 30px;
     font-size: 14px;
-    border: 2px solid hotpink;
     padding: 5px;
     border-radius: 3px;
 }

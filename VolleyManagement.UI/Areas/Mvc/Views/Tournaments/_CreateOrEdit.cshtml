@@ -17,8 +17,8 @@
 </div>
 <div class="editor-field">
     @Html.EditorFor(model => model.Name)
-    @Html.ValidationMessage(TournamentConstants.UNIQUE_NAME_KEY)
     @Html.ValidationMessageFor(model => model.Name)
+    @Html.ValidationMessage(TournamentConstants.UNIQUE_NAME_KEY)
 </div>
 
 <div class="editor-label">

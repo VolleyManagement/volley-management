@@ -315,28 +315,6 @@
         }
 
         /// <summary>
-        /// Create method test. Two Teams with the same name
-        /// </summary>
-        [TestMethod]
-        public void Create_TeamNameIsTheSameWithAnotherTeam_ValidationExceptionThrown()
-        {
-            // Arrange
-            var viewModel = new TeamMvcViewModelBuilder().Build();
-            _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
-                                           .Throws(new ValidationException(SPECIFIED_EXCEPTION_MESSAGE));
-
-            // Act
-            var sut = BuildSUT();
-            sut.Create(viewModel);
-            var modelState = sut.ModelState[string.Empty];
-
-            // Assert
-            _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
-        }
-
-        /// <summary>
         /// Edit method test. Positive test
         /// </summary>
         [TestMethod]

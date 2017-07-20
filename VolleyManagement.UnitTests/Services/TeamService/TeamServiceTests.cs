@@ -20,7 +20,6 @@
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Mvc.Controllers;
     using VolleyManagement.UnitTests.Services.PlayerService;
 
     /// <summary>

@@ -68,7 +68,7 @@ namespace VolleyManagement.Services.ServiceResources {
                 return ResourceManager.GetString("DivisionsAreNotUniq", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Список дивизионов пуст.
         /// </summary>

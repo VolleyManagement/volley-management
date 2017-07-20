@@ -27,7 +27,7 @@
         public TournamentDivisionsListViewModel(List<Division> source, int tournamentId)
         {
             TournamentId = tournamentId;
-            List = source.Select(DivisionViewModel.Map).ToList();
+            DivisionsList = source.Select(DivisionViewModel.Map).ToList();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@
         /// <summary>
         /// Gets or sets list of Division
         /// </summary>
-        public List<DivisionViewModel> List { get; set; }
+        public List<DivisionViewModel> DivisionsList { get; set; }
 
         /// <summary>
         /// Maps presentation list to domain list
@@ -46,7 +46,7 @@
         /// <returns>Domain list of divisions</returns>
         public List<Division> ToDomain()
         {
-            return List.Select(t => t.ToDomain()).ToList();
+            return DivisionsList.Select(t => t.ToDomain()).ToList();
         }
     }
 }

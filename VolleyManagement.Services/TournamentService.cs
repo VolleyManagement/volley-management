@@ -278,7 +278,7 @@
                     else
                     {
                         throw new ArgumentException(
-                            TournamentResources.TeamNameInTournamentNotUnique, tournamentTeam.Name);
+                            TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique, tournamentTeam.Name);
                     }
                 }
             }

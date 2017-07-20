@@ -4,7 +4,7 @@
     var currNs = VM.addNamespace("tournament.addTeams"),
         privates = {};
 
-    privates.tornamentTeamsTable = $("#tornamentRoster");
+    privates.tornamentTeamsTable = $("#tournamentRoster");
 
     privates.getAllTeamsOptions = function (callback) {
         var id = $("[id='TournamentId']").val();

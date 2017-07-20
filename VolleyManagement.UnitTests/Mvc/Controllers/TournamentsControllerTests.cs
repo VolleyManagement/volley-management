@@ -193,7 +193,7 @@
                 sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.AreEqual(returnedTeamsList.Model.List.Count, EMPTY_TEAMLIST_COUNT);
+            Assert.AreEqual(returnedTeamsList.Model.TeamsList.Count, EMPTY_TEAMLIST_COUNT);
             Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
         }
 

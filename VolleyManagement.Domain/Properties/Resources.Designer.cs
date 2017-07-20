@@ -349,6 +349,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Team with such name in the current group of the tournament already exist.
+        /// </summary>
+        public static string TeamNameInCurrentGroupOfTournamentNotUnique {
+            get {
+                return ResourceManager.GetString("TeamNameInCurrentGroupOfTournamentNotUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team with such name already exists in tournament.
         /// </summary>
         public static string TeamNameInTournamentNotUnique {

@@ -3,7 +3,8 @@
     using Contracts;
 
     /// <summary>
-    /// Provides criteria for getting all groups of tournament
+    /// Provides criteria for getting all groups
+    /// of selected division in the tournament
     /// </summary>
     public class DivisionGroupsCriteria : IQueryCriteria
     {

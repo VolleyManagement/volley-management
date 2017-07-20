@@ -44,7 +44,7 @@ $(document).ready(function () {
 
     var privates = {};
 
-    privates.tornamentTeamsTable = $("#tornamentRoster");
+    privates.tornamentTeamsTable = $("#tournamentRoster");
 
     privates.getAllDivisionsOptions = function (callback) {
         var id = $("[id='tournamentId']").val();

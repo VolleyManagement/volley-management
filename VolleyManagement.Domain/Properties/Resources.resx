@@ -318,4 +318,7 @@
   <data name="ValidationGroupId" xml:space="preserve">
     <value>Group's id is wrong</value>
   </data>
+  <data name="TeamNameInCurrentGroupOfTournamentNotUnique" xml:space="preserve">
+    <value>Team with such name in the current group of the tournament already exist</value>
+  </data>
 </root>

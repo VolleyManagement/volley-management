@@ -30,7 +30,7 @@
         public TournamentTeamsListViewModel(List<Team> source, int tournamentId, List<Group> group, int divisionId)
         {
             TournamentId = tournamentId;
-            List = source.Select(TeamNameViewModel.Map).ToList();
+            TeamsList = source.Select(TeamNameViewModel.Map).ToList();
             DivisionId = divisionId;
             GroupsList = group.Select(GroupViewModel.Map).ToList();
         }
@@ -48,7 +48,7 @@
         /// <summary>
         /// Gets or sets list Of Teams
         /// </summary>
-        public List<TeamNameViewModel> List { get; set; }
+        public List<TeamNameViewModel> TeamsList { get; set; }
 
         /// <summary>
         /// Gets or sets list of Groups
@@ -61,7 +61,7 @@
         /// <returns>Domain list of teams</returns>
         public List<Team> ToDomain()
         {
-            return List.Select(t => t.ToDomain()).ToList();
+            return TeamsList.Select(t => t.ToDomain()).ToList();
         }
 
         /// <summary>

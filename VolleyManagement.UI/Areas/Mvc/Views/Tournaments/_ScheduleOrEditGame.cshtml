@@ -70,7 +70,7 @@ else
 <div class="form-group editor-field">
     @Html.TextBoxForShortDate(model => model.GameDate, Model.GameDate, new { htmlAttributes = new { @class = "form-control" } })
 
-    @Html.EditorFor(model => model.GameTime, new { htmlAttributes = new { @class = "form-control", style = "width:15%"} })
+    @Html.EditorFor(model => model.GameTime, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(model => model.GameDate, "", new { @class = "text-danger" })
 </div>
 

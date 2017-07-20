@@ -3,6 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Mvc;
 
@@ -43,10 +44,10 @@
         /// <typeparam name="T">model type</typeparam>
         /// <param name="task"><see cref="Task"/> Task result</param>
         /// <returns>T result by ViewResult from action view</returns>
-        public static T GetModelAsync<T>(System.Threading.Tasks.Task<ActionResult> task)
+        public static T GetModelAsync<T>(Task<ActionResult> task)
             where T : class
         {
-            if (task.Status == System.Threading.Tasks.TaskStatus.Faulted)
+            if (task.Status == TaskStatus.Faulted)
             {
                 return null;
             }

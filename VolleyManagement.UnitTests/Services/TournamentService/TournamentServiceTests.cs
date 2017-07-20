@@ -978,21 +978,6 @@
         #region GetActual
 
         /// <summary>
-        /// GetActual method test. The method should invoke Find() method of ITournamentRepository
-        /// </summary>
-        [TestMethod]
-        [Ignore] // TODO: Investigate why it wasn't finished
-        public void GetActual_ActualTournamentsRequest_FindCalled()
-        {
-            // Act
-            var tournamentService = BuildSUT();
-            tournamentService.GetActual();
-
-            // Assert
-            ////_tournamentRepositoryMock.Verify(m => m.Find(), Times.Once());
-        }
-
-        /// <summary>
         /// GetActual method test. The method should return actual tournaments
         /// </summary>
         [TestMethod]

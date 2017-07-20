@@ -41,7 +41,6 @@
         private Mock<VolleyExceptionFilterAttribute> _exceptionFilter;
         private Mock<ICacheProvider> _cacheProviderMock;
         private Mock<IUserService> _userServiceMock;
-        private Mock<IAuthorizationService> _authService;
 
         #endregion
 
@@ -61,8 +60,6 @@
             _cacheProviderMock = new Mock<ICacheProvider>();
 
             _userServiceMock = new Mock<IUserService>();
-
-            _authService = new Mock<IAuthorizationService>();
         }
 
         #endregion
@@ -190,8 +187,7 @@
                 _rolesServiceMock.Object,
                 _userServiceMock.Object,
                 _cacheProviderMock.Object,
-                _currentUserServiceMock.Object,
-                _authService.Object);
+                _currentUserServiceMock.Object);
         }
 
         #endregion

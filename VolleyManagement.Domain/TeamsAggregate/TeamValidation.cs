@@ -1,7 +1,5 @@
 ﻿namespace VolleyManagement.Domain.TeamsAggregate
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Text.RegularExpressions;
 
     /// <summary>

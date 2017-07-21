@@ -341,8 +341,8 @@
         {
             if (ValidateTwoTeamsName(existTeams, name))
             {
-                throw new ArgumentException(
-                    TournamentResources.TeamNameInTournamentNotUnique, name);
+                throw new InvalidOperationException(
+                    TournamentResources.TeamNameInTournamentNotUnique);
             }
         }
 

@@ -154,10 +154,6 @@ function removeDivision(divisionIdx, maxDivisionsCount, minDivisionsCount, maxGr
     }
 }
 
-function removeDivisionFromDB() {
-    
-}
-
 function removeGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount) {
     var divisionGroupsWrapperId = "#Division_" + divisionIdx + "_Groups";
     var groupWrapperId = "#Division_" + divisionIdx + "_Group_" + groupIdx;
@@ -174,11 +170,6 @@ function removeGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount) {
     if (groupsCount < maxGroupsCount) {
         $("#Add_Division_" + divisionIdx + "_Group").show();
     }
-}
-
-function removeGroupFromDB (dbIds, divisionIdx, groupIdx, maxGroupsCount, minGroupsCount) {
-    $.post("Tournaments/DeleteGroupFromDivision", dbIds.groupId)
-        .done(removeGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount));
 }
 
 function hideRemoveLink(elementsPlacement, elementsAmount, minElementsNumber) {

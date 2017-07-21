@@ -185,14 +185,10 @@
                                     @Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new { name = "Divisions[@i].Groups[@j].Name" })
                                     @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
 
-                                    @if (Model.Divisions[i].Groups[j].IsEmpty)
+                                    @if (Model.Divisions[i].Groups[j].IsEmpty && Model.Divisions[i].Groups.Count > GroupConstants.MIN_GROUPS_COUNT)
                                     {
                                         <a id=@removeGroupWrapperId class="link-button"
-                                           onClick="removeGroupFromDB({
-                                           groupId: @Model.Divisions[i].Groups[j].Id,
-                                           divisionId: @Model.Divisions[i].Id
-                                           }, 
-                                           @i, @j, @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT)">
+                                           onClick="removeGroup(@i, @j, @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT)">
                                             @Resources.UI.TournamentViews.RemoveGroup
                                         </a>
                                     }

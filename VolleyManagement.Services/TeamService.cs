@@ -222,6 +222,11 @@
             }
         }
 
+        private static bool ValidateTwoTeamsName(List<Team> existTeams, string name)
+        {
+            return existTeams.Where(t => t.Name.ToLower().Equals(name.ToLower())).Any();
+        }
+
         private static void VerifyExistingTeamOrThrow(Team existTeam)
         {
             if (existTeam != null)
@@ -334,7 +339,7 @@
 
         private void ValidateTwoTeamsWithTheSameName(List<Team> existTeams, string name)
         {
-            if (TeamValidation.ValidateTwoTeamsWithTheSameName(existTeams, name))
+            if (ValidateTwoTeamsName(existTeams, name))
             {
                 throw new ArgumentException(
                     TournamentResources.TeamNameInTournamentNotUnique, name);

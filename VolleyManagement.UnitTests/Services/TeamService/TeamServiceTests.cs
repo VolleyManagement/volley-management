@@ -35,6 +35,7 @@
         private const int PLAYER_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int UNASSIGNED_ID = 0;
+        private const string TEAM_NAME_TO_VALIDATE = "empire";
 
         private const int ANOTHER_TEAM_ID = SPECIFIC_TEAM_ID + 1;
 
@@ -860,6 +861,48 @@
 
         #endregion
 
+        #region Team Validation Tests
+
+        /// <summary>
+        /// Successful Test for ValidateTwoTeamsWithTheSameName() method.
+        /// </summary>
+        [TestMethod]
+        public void ValidateTwoTeams_TeamNamePassed_TeamIsCreated()
+        {
+            // Arrange
+            var existTeams = new List<Team>();
+            MockGetAllTeamsQuery(existTeams);
+            bool testBool;
+
+            // Act
+            testBool = ValidateTeamName(existTeams);
+
+            // Assert
+            Assert.IsFalse(testBool);
+        }
+
+        /// <summary>
+        /// Test for ValidateTwoTeamsWithTheSameName() method, when team already exist.
+        /// </summary>
+        [TestMethod]
+        public void ValidateTwoTeams_TeamNameNotPassed_TeamIsNotCreated()
+        {
+            // Arrange
+            var existTeams = new List<Team>();
+            MockGetAllTeamsQuery(existTeams);
+            bool testBool;
+
+            var testData = new TeamBuilder().WithName("Empire").Build();
+            existTeams.Add(testData);
+
+            // Act
+            testBool = ValidateTeamName(existTeams);
+
+            // Assert
+            Assert.IsTrue(testBool);
+        }
+        #endregion
+
         #region Authorization team tests
 
         /// <summary>
@@ -998,6 +1041,19 @@
         {
             _teamRepositoryMock.Verify(tr => tr.Remove(It.Is<int>(id => id == teamId)), repositoryTimes);
             _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
+        }
+
+        private bool ValidateTeamName(List<Team> existTeams)
+        {
+            if (TeamValidation.ValidateTwoTeamsWithTheSameName(existTeams, TEAM_NAME_TO_VALIDATE)
+                .Equals(true))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

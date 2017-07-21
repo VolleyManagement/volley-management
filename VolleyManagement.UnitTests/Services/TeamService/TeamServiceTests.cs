@@ -892,7 +892,7 @@
             MockGetAllTeamsQuery(existTeams);
             bool testBool;
 
-            var testData = new TeamBuilder().WithName("Empire").Build();
+            var testData = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
             existTeams.Add(testData);
 
             // Act
@@ -1045,8 +1045,7 @@
 
         private bool ValidateTeamName(List<Team> existTeams)
         {
-            if (TeamValidation.ValidateTwoTeamsWithTheSameName(existTeams, TEAM_NAME_TO_VALIDATE)
-                .Equals(true))
+            if (TeamValidation.ValidateTwoTeamsWithTheSameName(existTeams, TEAM_NAME_TO_VALIDATE))
             {
                 return true;
             }

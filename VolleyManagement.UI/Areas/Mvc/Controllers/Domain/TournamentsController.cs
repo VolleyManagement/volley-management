@@ -542,11 +542,10 @@
         /// <summary>
         /// Apply for tournament
         /// </summary>
-        /// <param name="groupId">Group id</param>
-        /// <param name="teamId">Tournament s id</param>
+        /// <param name="parameters">Group id and Team id</param>
         /// <returns>TournamentApply view</returns>
         [HttpPost]
-        public JsonResult ApplyForTournament(int groupId, int teamId)
+        public JsonResult ApplyForTournament(TeamGroupViewModel parameters)
         {
             JsonResult result = null;
             try
@@ -559,7 +558,7 @@
                 }
                 else
                 {
-                    _requestService.Create(userId, teamId, groupId);
+                    _requestService.Create(userId, parameters.TeamId, parameters.GroupId);
                     result = Json(ViewModelResources.SuccessRequest);
                 }
             }

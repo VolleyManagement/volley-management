@@ -7,7 +7,6 @@
 
 $(document).ready(function () {
     $("#apply").click(function () {
-        var tournamentId = $('#tournamentId').val();
         var teamId = $('#TeamId').val();
         var divisionId = $('select[name="divisions"] :selected').val();
         var groupId = $('select[name="groups"] :selected').val();
@@ -19,7 +18,7 @@ $(document).ready(function () {
                 url: "/Tournaments/ApplyForTournament",
                 datatype: 'json',
                 type: 'POST',
-                data: { groupId: groupId, tournamentId: tournamentId, teamId: teamId }
+                data: { GroupId: groupId, TeamId: teamId }
             })
                 .done(function (data) {
                     $('#ajaxResultMessage')

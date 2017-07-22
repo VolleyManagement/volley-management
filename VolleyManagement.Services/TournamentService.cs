@@ -356,7 +356,7 @@
             {
                 try
                 {
-                    _tournamentRepository.RemoveGroup(groupId, divisionId);
+                    _tournamentRepository.RemoveGroup(groupId);
                 }
                 catch (ConcurrencyException ex)
                 {
@@ -377,7 +377,7 @@
             {
                 try
                 {
-                    _tournamentRepository.RemoveDivision(divisionId, tournamentId);
+                    _tournamentRepository.RemoveDivision(divisionId);
                 }
                 catch (ConcurrencyException ex)
                 {

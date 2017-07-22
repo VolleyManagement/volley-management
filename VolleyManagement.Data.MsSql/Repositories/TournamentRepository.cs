@@ -66,15 +66,12 @@
         public void Update(Tournament updatedEntity)
         {
             var tournamentToUpdate = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
-            tournamentToUpdate.Divisions.Clear();
+            UpdateDivisions(tournamentToUpdate.Divisions, updatedEntity.Divisions);
+            updatedEntity.Divisions.Clear();
             DomainToDal.Map(tournamentToUpdate, updatedEntity);
 
-            var oldTournament = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
-
-            UpdateDivisions(oldTournament.Divisions, tournamentToUpdate.Divisions);
-
-            // ToDo: Check Do we really need this?
-            _unitOfWork.Context.Entry(tournamentToUpdate).State = EntityState.Modified;
+            //// ToDo: Check Do we really need this?
+            // _unitOfWork.Context.Entry(tournamentToUpdate).State = EntityState.Modified;
         }
 
         /// <summary>
@@ -133,8 +130,7 @@
         /// Removes group
         /// </summary>
         /// <param name="groupId">Group to be removed id</param>
-        /// <param name="divisionId">Division id from which remove group</param>
-        public void RemoveGroup(int groupId, int divisionId)
+        public void RemoveGroup(int groupId)
         {
             var groupEntity = _unitOfWork.Context.Groups.Find(groupId);
             if (groupEntity == null)
@@ -142,9 +138,6 @@
                 throw new ConcurrencyException();
             }
 
-            var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
-
-            divisionEntity.Groups.Remove(groupEntity);
             _unitOfWork.Context.Groups.Remove(groupEntity);
             _unitOfWork.Commit();
         }
@@ -153,8 +146,7 @@
         /// Remove division
         /// </summary>
         /// <param name="divisionId">Division to be removed id</param>
-        /// <param name="tournamentId">Tournament id from which remove division</param>
-        public void RemoveDivision(int divisionId, int tournamentId)
+        public void RemoveDivision(int divisionId)
         {
             var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
             if (divisionEntity == null)
@@ -164,30 +156,53 @@
 
             for (int i = 0; i < divisionEntity.Groups.Count; i++)
             {
-                RemoveGroup(divisionEntity.Groups[i].Id, divisionId);
+                RemoveGroup(divisionEntity.Groups[i].Id);
             }
 
-            var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
-
-            tournamentEntity.Divisions.Remove(divisionEntity);
             _unitOfWork.Context.Divisions.Remove(divisionEntity);
             _unitOfWork.Commit();
         }
 
-        private void UpdateDivisions(List<DivisionEntity> old, List<DivisionEntity> changed)
+        private void UpdateDivisions(List<DivisionEntity> old, List<Division> changed)
         {
-            List<DivisionEntity> updatedDivisions = new List<DivisionEntity>();
-
-            foreach (var changedDiv in changed)
+            var divisionsToRemoveId = new List<int>();
+            foreach (var item in old)
             {
-                if (changedDiv.Id == 0)
+                var updatedDivision = from element in changed
+                                      where item.Id == element.Id
+                                      select element;
+                if (updatedDivision.Count() != 0)
                 {
-                    _unitOfWork.Context.Divisions.Add(changedDiv);
-                    _unitOfWork.Context.SaveChanges();
-
-                    // _unitOfWork.Context.Entry(changedDiv).State = EntityState.Modified;
-                    // updatedDivisions.Add(changedDiv);
+                    UpdateGroups(item.Groups, updatedDivision.First().Groups);
                 }
+                else
+                {
+                    divisionsToRemoveId.Add(item.Id);
+                }
+            }
+
+            foreach (var divisionId in divisionsToRemoveId)
+            {
+                RemoveDivision(divisionId);
+            }
+        }
+
+        private void UpdateGroups(List<GroupEntity> old, List<Group> changed)
+        {
+            var groupsToRemoveId = new List<int>();
+            foreach (var item in old)
+            {
+                if (!Enumerable.Any(from element in changed
+                                   where item.Id == element.Id
+                                   select element))
+                {
+                    groupsToRemoveId.Add(item.Id);
+                }
+            }
+
+            foreach (var groupId in groupsToRemoveId)
+            {
+                RemoveGroup(groupId);
             }
         }
 

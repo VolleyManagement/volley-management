@@ -25,14 +25,12 @@
         /// Removes group
         /// </summary>
         /// <param name="groupId">Group to be removed id</param>
-        /// <param name="divisionId">Division id from which remove group</param>
-        void RemoveGroup(int groupId, int divisionId);
+        void RemoveGroup(int groupId);
 
         /// <summary>
         /// Remove division
         /// </summary>
         /// <param name="divisionId">Division to be removed id</param>
-        /// <param name="tournamentId">Tournament id from which remove division</param>
-        void RemoveDivision(int divisionId, int tournamentId);
+        void RemoveDivision(int divisionId);
     }
 }

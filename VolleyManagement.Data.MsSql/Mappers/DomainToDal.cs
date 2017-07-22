@@ -36,7 +36,11 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-            to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
+            if (from.Divisions.Count != 0)
+            {
+                to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
+            }
+
             to.LastTimeUpdated = from.LastTimeUpdated;
         }
 

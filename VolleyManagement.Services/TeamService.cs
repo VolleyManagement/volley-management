@@ -341,18 +341,24 @@
         {
             if (ValidateTwoTeamsName(existTeams, name))
             {
-                throw new InvalidOperationException(
+                throw new ArgumentException(
                     TournamentResources.TeamNameInTournamentNotUnique);
             }
         }
 
         private void ValidateTeam(Team teamToValidate)
         {
-            var existTeams = Get();
+            var existingTeams = Get();
+            var teamToRemove = existingTeams.SingleOrDefault(r => r.Id == teamToValidate.Id);
+            if (teamToRemove != null)
+            {
+                existingTeams.Remove(teamToRemove);
+            }
+
             ValidateTeamName(teamToValidate.Name);
             ValidateCoachName(teamToValidate.Coach);
             ValidateAchievements(teamToValidate.Achievements);
-            ValidateTwoTeamsWithTheSameName(existTeams, teamToValidate.Name);
+            ValidateTwoTeamsWithTheSameName(existingTeams, teamToValidate.Name);
         }
     }
 }

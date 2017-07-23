@@ -754,7 +754,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData, FIRST_DIVISION_ID);
+            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData);
 
             // Assert
             VerifyTeamsAdded(FIRST_TOURNAMENT_ID, FIRST_DIVISION_ID, Times.Exactly(testData.Count), Times.Once());
@@ -780,7 +780,7 @@
             // Act
             try
             {
-                sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData, FIRST_DIVISION_ID);
+                sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData);
             }
             catch (ArgumentException)
             {
@@ -807,7 +807,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData, FIRST_DIVISION_ID);
+            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData);
 
             // Assert
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
@@ -836,7 +836,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData, FIRST_DIVISION_ID);
+            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData);
 
             // Assert
             VerifyCreateSchedule(FIRST_TOURNAMENT_ID, Times.Once(), Times.Once());

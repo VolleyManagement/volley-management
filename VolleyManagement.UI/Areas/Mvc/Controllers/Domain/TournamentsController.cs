@@ -266,7 +266,7 @@
             var divisions = _tournamentService.GetAllTournamentDivisions(tournamentId);
             var divisionId = divisions.First().Id;
             var groups = _tournamentService.GetAllTournamentGroups(divisionId);
-            var parameters = new TournamentTeamsListViewModel(resultTeams, tournamentId, groups, divisionId);
+            var parameters = new TournamentTeamsListViewModel(resultTeams, tournamentId, groups);
             var referrerViewModel = new TournamentTeamsListReferrerViewModel(parameters, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }
@@ -282,7 +282,7 @@
             JsonResult result = null;
             try
             {
-                _tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId, teams.GroupToDomain(), teams.DivisionId);
+                _tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId, teams.GroupToDomain());
                 result = Json(teams, JsonRequestBehavior.AllowGet);
             }
             catch (ArgumentException ex)

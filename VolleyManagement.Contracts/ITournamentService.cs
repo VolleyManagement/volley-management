@@ -85,9 +85,8 @@
         /// </summary>
         /// <param name="teams">Teams that will be added to tournament</param>
         /// <param name="tournamentId">Tournament to assign to it necessary team</param>
-        /// <param name="groups">Groups of tournament to assign to team</param>
-        /// <param name="divisionId">Division to assign groups</param>
-        void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId, IEnumerable<Group> groups, int divisionId);
+        /// <param name="groups">Users selected tournament groups</param>
+        void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId, IEnumerable<Group> groups);
 
         /// <summary>
         /// Deletes team from tournament

@@ -27,11 +27,10 @@
         /// <param name="tournamentId">Tournament id</param>
         /// <param name="group">All needed groups</param>
         /// <param name="divisionId">Division id</param>
-        public TournamentTeamsListViewModel(List<Team> source, int tournamentId, List<Group> group, int divisionId)
+        public TournamentTeamsListViewModel(List<Team> source, int tournamentId, List<Group> group)
         {
             TournamentId = tournamentId;
             TeamsList = source.Select(TeamNameViewModel.Map).ToList();
-            DivisionId = divisionId;
             GroupsList = group.Select(GroupViewModel.Map).ToList();
         }
 
@@ -39,11 +38,6 @@
         /// Gets or sets tournament Id
         /// </summary>
         public int TournamentId { get; set; }
-
-        /// <summary>
-        /// Gets or sets division Id
-        /// </summary>
-        public int DivisionId { get; set; }
 
         /// <summary>
         /// Gets or sets list Of Teams

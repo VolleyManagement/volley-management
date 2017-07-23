@@ -259,27 +259,23 @@
         /// <param name="teams">Teams that will be added to tournament</param>
         /// <param name="tournamentId">Tournament to assign team.</param>
         /// <param name="groups">Groups of tournament to assign to team</param>
-        /// <param name="divisionId">Division to assign group.</param>
-        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId, IEnumerable<Group> groups, int divisionId)
+        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId, IEnumerable<Group> groups)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
             var allTeams = GetAllTournamentTeams(tournamentId);
 
-            foreach (var team in teams)
+            for (int index = 0; index < teams.Count(); index++)
             {
-                foreach (var group in groups)
-                {
-                    var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == team.Id);
+                var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == teams.ElementAt(index).Id);
 
-                    if (tournamentTeam == null)
-                    {
-                        _tournamentRepository.AddTeamToTournament(team.Id, tournamentId, group.Id, divisionId);
-                    }
-                    else
-                    {
-                        throw new ArgumentException(
-                            TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique, tournamentTeam.Name);
-                    }
+                if (tournamentTeam == null)
+                {
+                    _tournamentRepository.AddTeamToTournament(teams.ElementAt(index).Id, tournamentId, groups.ElementAt(index).Id, groups.ElementAt(index).DivisionId);
+                }
+                else
+                {
+                    throw new ArgumentException(
+                        TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique, tournamentTeam.Name);
                 }
             }
 

@@ -346,7 +346,7 @@
             }
         }
 
-        private void ValidateTeam(Team teamToValidate)
+        private List<Team> ValidateTeamForEdit(Team teamToValidate)
         {
             var existingTeams = Get();
             var teamToRemove = existingTeams.SingleOrDefault(r => r.Id == teamToValidate.Id);
@@ -355,6 +355,12 @@
                 existingTeams.Remove(teamToRemove);
             }
 
+            return existingTeams;
+        }
+
+        private void ValidateTeam(Team teamToValidate)
+        {
+            var existingTeams = ValidateTeamForEdit(teamToValidate);
             ValidateTeamName(teamToValidate.Name);
             ValidateCoachName(teamToValidate.Coach);
             ValidateAchievements(teamToValidate.Achievements);

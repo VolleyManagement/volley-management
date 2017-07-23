@@ -543,7 +543,7 @@
             {
                 sut.Create(newTeam);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 exception = ex;
             }
@@ -764,7 +764,7 @@
             {
                 sut.Edit(teamToEdit);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 exception = ex;
             }
@@ -1168,6 +1168,7 @@
         {
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.Message.Equals(expected.Message));
+            Assert.IsTrue(exception.GetType().Equals(expected.GetType()));
         }
 
         private void VerifyCheckAccess(AuthOperation operation, Times times)

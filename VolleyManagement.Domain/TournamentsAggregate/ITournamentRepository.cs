@@ -13,8 +13,7 @@
         /// <param name="teamId">Teams that will be added to tournament</param>
         /// <param name="tournamentId">Tournament to assign to it necessary team</param>
         /// <param name="groupId">Groups of tournament to assign to team</param>
-        /// <param name="divisionId">Division to assign group</param>
-        void AddTeamToTournament(int teamId, int tournamentId, int groupId, int divisionId);
+        void AddTeamToTournament(int teamId, int tournamentId, int groupId);
 
         /// <summary>
         /// Removes team from tournament

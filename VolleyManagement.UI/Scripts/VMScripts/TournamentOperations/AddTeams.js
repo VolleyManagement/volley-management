@@ -43,7 +43,6 @@
 
         var selectedTeams = $("select[name='teams'] :selected");
         var selectedGroups = $("select[name='groups'] :selected");
-        var selectedDivisions = $("select[name='divisions'] :selected");
 
         for (var i = 0; i < selectedTeams.length; i++) {
             if (selectedTeams[i].value !== "0") {
@@ -56,8 +55,7 @@
         for (var j = 0; j < selectedGroups.length; j++) {
             if (selectedGroups[j].value !== "0") {
                 result.GroupsList.push({
-                    Id: selectedGroups[j].value,
-                    DivisionId: selectedDivisions[j].value
+                    Id: selectedGroups[j].value
                 });
             }
         }     

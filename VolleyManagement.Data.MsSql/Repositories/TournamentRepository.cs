@@ -149,6 +149,7 @@
         public void RemoveDivision(int divisionId)
         {
             var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
+            var groupsToRemoveIds = new List<int>();
             if (divisionEntity == null)
             {
                 throw new ConcurrencyException();
@@ -156,7 +157,12 @@
 
             for (int i = 0; i < divisionEntity.Groups.Count; i++)
             {
-                RemoveGroup(divisionEntity.Groups[i].Id);
+                groupsToRemoveIds.Add(divisionEntity.Groups[i].Id);
+            }
+
+            foreach (var id in groupsToRemoveIds)
+            {
+                RemoveGroup(id);
             }
 
             _unitOfWork.Context.Divisions.Remove(divisionEntity);

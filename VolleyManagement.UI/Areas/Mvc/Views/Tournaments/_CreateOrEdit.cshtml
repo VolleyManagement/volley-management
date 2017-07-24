@@ -165,12 +165,22 @@
             {
                 string divisionWrapperId = String.Format("Division_{0}_Id", i);
                 string divisionGroupsListWrapperId = String.Format("Division_{0}_Groups", i);
+                string removeDivisionGroupsListWrapperId = String.Format("Remove_{0}", divisionGroupsListWrapperId);
 
                 <div id=@divisionWrapperId>
                     @Html.HiddenFor(model => model.Divisions[i].Id)
                     <div class="editor-field">
                         @Html.EditorFor(model => model.Divisions[i].Name, new { Name = "Divisions[@i].Name" })
                         @Html.ValidationMessageFor(model => model.Divisions[i].Name)
+                        @if ( Model.Divisions[i].IsEmpty && Model.Divisions.Count > DivisionConstants.MIN_DIVISIONS_COUNT)
+                        {
+                            <a id=@removeDivisionGroupsListWrapperId class="ui-button"
+                               onclick="removeDivision(@i, @DivisionConstants.MAX_DIVISIONS_COUNT, @DivisionConstants.MIN_DIVISIONS_COUNT,
+                                @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT,
+                                '@Resources.UI.ViewModelResources.GroupDefaultName', '@Resources.UI.TournamentViews.RemoveGroup')">
+                                @Resources.UI.TournamentViews.RemoveDivision
+                            </a>
+                        }
                     </div>
                     <div class="division-groups-wrapper">
                         <div class="editor-label">@Html.LabelFor(model => model.Divisions[i].Groups)</div>
@@ -187,7 +197,7 @@
 
                                     @if (Model.Divisions[i].Groups[j].IsEmpty && Model.Divisions[i].Groups.Count > GroupConstants.MIN_GROUPS_COUNT)
                                     {
-                                        <a id=@removeGroupWrapperId class="link-button"
+                                        <a id=@removeGroupWrapperId class="ui-button"
                                            onClick="removeGroup(@i, @j, @GroupConstants.MAX_GROUPS_COUNT, @GroupConstants.MIN_GROUPS_COUNT)">
                                             @Resources.UI.TournamentViews.RemoveGroup
                                         </a>

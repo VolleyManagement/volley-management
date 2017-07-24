@@ -81,20 +81,6 @@
         void DeleteTeamFromTournament(int teamId, int tournamentId);
 
         /// <summary>
-        /// Deleting group from division
-        /// </summary>
-        /// <param name="groupId">Group to delete id</param>
-        /// <param name="divisionId">Division id from which delete group</param>
-        void DeleteGroupFromDivision(int groupId, int divisionId);
-
-        /// <summary>
-        /// Deleting division from tournament
-        /// </summary>
-        /// <param name="divisionId">Division to delete</param>
-        /// <param name="tournamentId">Tournament id from which delete division</param>
-        void DeleteDivisionFromTournament(int divisionId, int tournamentId);
-
-        /// <summary>
         /// Counts number of rounds for specified tournament
         /// </summary>
         /// <param name="tournament">Tournament for which we count rounds</param>

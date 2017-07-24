@@ -339,7 +339,7 @@
 
         private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)
         {
-            var existingTeams = ValidateTeamForEdit(teamToValidate);
+            var existingTeams = GetListOfTeamsForEdit(teamToValidate);
             if (ValidateTwoTeamsName(existingTeams, teamToValidate.Name))
             {
                 throw new ArgumentException(
@@ -347,13 +347,13 @@
             }
         }
 
-        private List<Team> ValidateTeamForEdit(Team teamToValidate)
+        private List<Team> GetListOfTeamsForEdit(Team teamToValidate)
         {
             var existingTeams = Get();
             var teamToRemove = existingTeams.SingleOrDefault(r => r.Id == teamToValidate.Id);
             if (teamToRemove != null)
             {
-                existingTeams.RemoveAt(teamToRemove.Id - 1);
+                existingTeams.Remove(teamToRemove);
             }
 
             return existingTeams;

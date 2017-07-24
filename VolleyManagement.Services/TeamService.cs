@@ -226,8 +226,9 @@
         {
             var existingTeams = from ex in getExistingTeams
                                 where ex.Id != teamToValidate.Id
+                                where ex.Name.ToLower().Equals(teamToValidate.Name.ToLower())
                                 select ex;
-            return existingTeams.ToList().Where(t => t.Name.ToLower().Equals(teamToValidate.Name.ToLower())).Any();
+            return existingTeams.Count() != 0;
         }
 
         private static void VerifyExistingTeamOrThrow(Team existTeam)

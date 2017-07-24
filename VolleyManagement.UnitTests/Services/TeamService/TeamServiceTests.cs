@@ -529,7 +529,7 @@
             MockGetPlayerByIdQuery(new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build());
             var newTeam = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
             var teamWithSameName = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
-            var existingTeams = new List<Team>();
+            var existingTeams = CreateSeveralTeams();
             existingTeams.Add(teamWithSameName);
             MockGetAllTeamsQuery(existingTeams);
 
@@ -750,7 +750,7 @@
             MockGetPlayerByIdQuery(new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build());
             var teamToEdit = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
             var teamWithSameName = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).Build();
-            var existingTeams = new List<Team>();
+            var existingTeams = CreateSeveralTeams();
             existingTeams.Add(teamWithSameName);
             MockGetAllTeamsQuery(existingTeams);
 
@@ -784,9 +784,8 @@
             // Arrange
             MockGetPlayerByIdQuery(new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build());
             var teamToEdit = new TeamBuilder().WithName(TEAM_NAME_TO_VALIDATE).WithId(SPECIFIC_TEAM_ID).Build();
-            var existingTeams = new List<Team>();
-            existingTeams.Add(teamToEdit);
-            MockGetAllTeamsQuery(existingTeams);
+            MockGetAllTeamsQuery(CreateSeveralTeams());
+            MockGetTeamByIdQuery(teamToEdit);
 
             // Act
             var sut = BuildSUT();
@@ -1113,7 +1112,7 @@
             var existingTeams = new List<Team>();
             existingTeams.AddRange(new List<Team>
             {
-                new TeamBuilder().WithId(SPECIFIC_TEAM_ID - 1).WithName("First").Build(),
+                new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 6).WithName("First").Build(),
                 new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 2).WithName("Second").Build(),
                 new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 4).WithName("Third").Build(),
             });

@@ -222,9 +222,13 @@
             }
         }
 
-        private static bool ValidateTwoTeamsName(List<Team> existingTeams, string name)
+        private static bool ValidateTwoTeamsName(Team teamToValidate, List<Team> getExistingTeams)
         {
-            return existingTeams.Where(t => t.Name.ToLower().Equals(name.ToLower())).Any();
+            var existingTeams = from ex in getExistingTeams
+                                where ex.Id != teamToValidate.Id
+                                where ex.Name.ToLower().Equals(teamToValidate.Name.ToLower())
+                                select ex;
+            return existingTeams.ToList().Where(t => t.Name.ToLower().Equals(teamToValidate.Name.ToLower())).Any();
         }
 
         private static void VerifyExistingTeamOrThrow(Team existTeam)
@@ -339,20 +343,12 @@
 
         private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)
         {
-            var existingTeams = GetListOfTeamsForEdit(teamToValidate);
-            if (ValidateTwoTeamsName(existingTeams, teamToValidate.Name))
+            var existingTeams = Get();
+            if (ValidateTwoTeamsName(teamToValidate, existingTeams))
             {
                 throw new ArgumentException(
                     TournamentResources.TeamNameInTournamentNotUnique);
             }
-        }
-
-        private List<Team> GetListOfTeamsForEdit(Team teamToValidate)
-        {
-            var existingTeams = from ex in Get()
-                                where ex.Id != teamToValidate.Id
-                                select ex;
-            return existingTeams.ToList();
         }
 
         private void ValidateTeam(Team teamToValidate)

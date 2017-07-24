@@ -222,9 +222,9 @@
             }
         }
 
-        private static bool ValidateTwoTeamsName(List<Team> existTeams, string name)
+        private static bool ValidateTwoTeamsName(List<Team> existingTeams, string name)
         {
-            return existTeams.Where(t => t.Name.ToLower().Equals(name.ToLower())).Any();
+            return existingTeams.Where(t => t.Name.ToLower().Equals(name.ToLower())).Any();
         }
 
         private static void VerifyExistingTeamOrThrow(Team existTeam)
@@ -349,14 +349,10 @@
 
         private List<Team> GetListOfTeamsForEdit(Team teamToValidate)
         {
-            var existingTeams = Get();
-            var teamToRemove = existingTeams.SingleOrDefault(r => r.Id == teamToValidate.Id);
-            if (teamToRemove != null)
-            {
-                existingTeams.Remove(teamToRemove);
-            }
-
-            return existingTeams;
+            var existingTeams = from ex in Get()
+                                where ex.Id != teamToValidate.Id
+                                select ex;
+            return existingTeams.ToList();
         }
 
         private void ValidateTeam(Team teamToValidate)

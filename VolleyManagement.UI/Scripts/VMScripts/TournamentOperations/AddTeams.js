@@ -4,10 +4,9 @@
     var currNs = VM.addNamespace("tournament.addTeams"),
         privates = {};
     var divisionCounter = 0;
-    var groupCounter = 0;
-    var deleteRowButtonCounter = 0;
-    var MAX_TEAMS_NUMBER = 0;
     var teamCounter = 0;
+    var MAX_TEAMS_NUMBER = 0;
+    
 
     privates.tornamentTeamsTable = $("#tournamentRoster");
 
@@ -75,40 +74,29 @@
         $("tr:last", privates.tornamentTeamsTable).after(privates.getTornamentTeamsRowMarkup(responseOptions));
     };
 
-    privates.getTornamentDivisionRowMarkup = function (responseOptions, isDisabled) {
-        var disabled = "";
+    privates.getTornamentDivisionRowMarkup = function (responseOptions) {
 
-        if (isDisabled) {
-            disabled = "disabled";
-        }
-
-        var result = "<td><select " + disabled + " name = 'divisions' counter = '" + divisionCounter + "'>" + responseOptions + "</select></td>"
+        var result = "<td><select name = 'divisions' counter = '" + divisionCounter + "'>" + responseOptions + "</select></td>"
             + "<td class = 'markup' counter = '" + divisionCounter +"'></td>"
             + "<td><button class='deleteTeamButton' counter = '" + divisionCounter +"'>Delete</button></td>";
         return result;
     };
 
-    privates.renderNewTournamentDivisionsRow = function (responseOptions, isDisabled) {
+    privates.renderNewTournamentDivisionsRow = function (responseOptions) {
         var teamTableData = $("select[name='teams']:last").parent().parent();
-        teamTableData.append(privates.getTornamentDivisionRowMarkup(responseOptions, isDisabled));
+        teamTableData.append(privates.getTornamentDivisionRowMarkup(responseOptions));
     };
 
-    privates.getTornamentGroupRowMarkup = function (responseOptions, isDisabled, actualDivisionCounter) {
-        var disabled = "";
-        deleteRowButtonCounter = actualDivisionCounter;
-        groupCounter = actualDivisionCounter;
-        if (isDisabled) {
-            disabled = "disabled";
-        }
-
-        var result = "<td><select " + disabled + " name='groups' counter = '" + groupCounter + "' >" + responseOptions + "</select></td>"
-            + "<td><button class='deleteTeamButton' counter = '" + deleteRowButtonCounter + "'>Delete</button></td>";
+    privates.getTornamentGroupRowMarkup = function (responseOptions, actualDivisionCounter) {
+        var result = "<td><select name='groups' counter = '" + actualDivisionCounter + "' >" + responseOptions + "</select></td>"
+            + "<td><button class='deleteTeamButton' counter = '" + actualDivisionCounter + "'>Delete</button></td>";
         return result;
     };
 
-    privates.renderNewTournamentGroupsRow = function (responseOptions, isDisabled) {
+    privates.renderNewTournamentGroupsRow = function (responseOptions) {
         var actualDivisionCounter = $(document.activeElement).attr('counter');
-        $("select[name ='divisions'][counter='" + actualDivisionCounter + "']:last", privates.tornamentTeamsTable).parent().parent().append(privates.getTornamentGroupRowMarkup(responseOptions, isDisabled, actualDivisionCounter));
+        $("select[name ='divisions'][counter='" + actualDivisionCounter + "']:last", privates.tornamentTeamsTable).parent()
+            .parent().append(privates.getTornamentGroupRowMarkup(responseOptions, actualDivisionCounter));
     };
 
     privates.addTournamentTeamsRow = function (callbackDivisions) {
@@ -146,25 +134,14 @@
         }
 
         privates.getAllDivisionsOptions(function (options) {
-            var isDisabled = false;
-            var responseOptions = "";
-
-            if (options.length === 1) {
-                isDisabled = true;
-            } else {
-                responseOptions += "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
-            }
+            var responseOptions = "<option value = '0'>" + currNs.divisionIsNotSelectedMessage + "</option>";
 
             $.each(options, function (key, value) {
                 responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
             });
-            privates.renderNewTournamentDivisionsRow(responseOptions, isDisabled);
+            privates.renderNewTournamentDivisionsRow(responseOptions);
             $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
-            if (isDisabled) {
-                privates.addTournamentGroupsRow();
-            } else {
-                $('select[name="divisions"][counter="' + divisionCounter + '"]').on('change', privates.CheckIfEmptyGroupRowDraw);
-            }            
+            $('select[name="divisions"][counter="' + divisionCounter + '"]').on('change', privates.CheckIfEmptyGroupRowDraw);           
         });
     };
 
@@ -194,21 +171,15 @@
         }
 
         privates.getAllGroupsOptions(function (options) {
-            var isDisabled = false;
-            var responseOptions = "";
 
-            if (options.length === 1) {
-                isDisabled = true;
-            } else {
-                responseOptions += "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
-            }
+            var responseOptions = "<option value = '0'>" + currNs.groupIsNotSelectedMessage + "</option>";
 
             $.each(options, function (key, value) {
                 responseOptions += "<option value='" + value.Id + "'>" + value.Name + "</option>";
             });
        
             privates.RemoveGroupsAndDeleteRowButtonMarkup();
-            privates.renderNewTournamentGroupsRow(responseOptions, isDisabled);
+            privates.renderNewTournamentGroupsRow(responseOptions);
             $(".deleteTeamButton").bind("click", currNs.onDeleteTeamButtonClick);
         });
 

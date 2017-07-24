@@ -1175,7 +1175,7 @@
         {
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.Message.Equals(expected.Message));
-            Assert.IsTrue(exception.GetType().Equals(expected.GetType()));
+            Assert.IsTrue(exception.GetType().Equals(expected.GetType()), "Exception is of the wrong type");
         }
 
         private void VerifyCheckAccess(AuthOperation operation, Times times)

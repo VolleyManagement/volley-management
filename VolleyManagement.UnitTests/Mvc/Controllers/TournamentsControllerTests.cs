@@ -36,7 +36,6 @@
     {
         private const int TEST_ID = 1;
         private const int TEST_TOURNAMENT_ID = 1;
-        private const int TEST_DIVISION_ID = 1;
         private const int TEST_TEAM_ID = 1;
         private const int TEST_GROUP_ID = 1;
         private const int TEST_USER_ID = 1;
@@ -157,7 +156,7 @@
             var testData = MakeTestTeams();
             var testGroupData = CreateTestGroups();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
-            var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData, TEST_DIVISION_ID);
+            var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
 
             var sut = BuildSUT();
@@ -344,7 +343,7 @@
             // Arrange
             var testData = MakeTestTeams();
             var testGroupData = CreateTestGroups();
-            var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData, TEST_DIVISION_ID);
+            var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData);
             var sut = BuildSUT();
 
             // Act
@@ -369,14 +368,14 @@
             var testData = MakeTestTeams();
             var testGroupData = CreateTestGroups();
             _tournamentServiceMock
-                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>(), It.IsAny<List<Group>>(), It.IsAny<int>()))
+                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>(), It.IsAny<List<Group>>()))
                 .Throws(new ArgumentException(string.Empty));
 
             var sut = BuildSUT();
 
             // Act
             var jsonResult =
-                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData, TEST_DIVISION_ID));
+                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData));
             var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
 
             // Assert

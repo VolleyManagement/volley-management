@@ -270,7 +270,7 @@
 
                 if (tournamentTeam == null)
                 {
-                    _tournamentRepository.AddTeamToTournament(teams.ElementAt(index).Id, tournamentId, groups.ElementAt(index).Id);
+                    _tournamentRepository.AddTeamToTournament(teams.ElementAt(index).Id, groups.ElementAt(index).Id);
                 }
                 else
                 {

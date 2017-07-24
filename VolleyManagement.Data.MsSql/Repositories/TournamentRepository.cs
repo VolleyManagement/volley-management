@@ -91,14 +91,13 @@
         /// Add team and group to the tournament
         /// </summary>
         /// <param name="teamId">Team id to add</param>
-        /// <param name="tournamentId">Tournament id, where team is going to play</param>
         /// <param name="groupId">Group id to add</param>
-        public void AddTeamToTournament(int teamId, int tournamentId, int groupId)
+        public void AddTeamToTournament(int teamId, int groupId)
         {
             var group = from t in _dalTournaments
                         join d in _dalDivisions on t.Id equals d.TournamentId
                         join g in _dalGroups on d.Id equals g.DivisionId
-                        where t.Id == tournamentId && g.Id == groupId
+                        where g.Id == groupId
                         select g;
             group.First().Teams.Add(_dalTeams.Find(teamId));
         }

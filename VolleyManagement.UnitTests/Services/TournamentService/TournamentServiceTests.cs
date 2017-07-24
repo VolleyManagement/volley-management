@@ -35,7 +35,6 @@
     {
         private const int MINIMUM_REGISTRATION_PERIOD_MONTH = 3;
         private const int FIRST_TOURNAMENT_ID = 1;
-        private const int FIRST_DIVISION_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int SPECIFIC_TOURNAMENT_ID = 2;
         private const int EMPTY_TEAM_LIST_COUNT = 0;
@@ -757,7 +756,7 @@
             sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData);
 
             // Assert
-            VerifyTeamsAdded(FIRST_TOURNAMENT_ID, FIRST_DIVISION_ID, Times.Exactly(testData.Count), Times.Once());
+            VerifyTeamsAdded(FIRST_TOURNAMENT_ID, Times.Exactly(testData.Count), Times.Once());
         }
 
         /// <summary>
@@ -1269,9 +1268,9 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
-        private void VerifyTeamsAdded(int tourmanentId, int divisionId, Times repositoryTimes, Times uowTimes)
+        private void VerifyTeamsAdded(int tourmanentId, Times repositoryTimes, Times uowTimes)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(It.IsAny<int>(), tourmanentId, It.IsAny<int>(), divisionId), repositoryTimes);
+            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()), repositoryTimes);
             _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
         }
 

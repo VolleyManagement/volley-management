@@ -69,9 +69,6 @@
             UpdateDivisions(tournamentToUpdate.Divisions, updatedEntity.Divisions);
             updatedEntity.Divisions.Clear();
             DomainToDal.Map(tournamentToUpdate, updatedEntity);
-
-            //// ToDo: Check Do we really need this?
-            // _unitOfWork.Context.Entry(tournamentToUpdate).State = EntityState.Modified;
         }
 
         /// <summary>
@@ -139,7 +136,6 @@
             }
 
             _unitOfWork.Context.Groups.Remove(groupEntity);
-            _unitOfWork.Commit();
         }
 
         /// <summary>
@@ -166,7 +162,6 @@
             }
 
             _unitOfWork.Context.Divisions.Remove(divisionEntity);
-            _unitOfWork.Commit();
         }
 
         private void UpdateDivisions(List<DivisionEntity> old, List<Division> changed)

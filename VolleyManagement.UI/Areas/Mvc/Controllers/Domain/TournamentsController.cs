@@ -600,7 +600,7 @@
             {
                 var division = tournamentViewModel.Divisions[i];
                 division.IsEmpty = _tournamentService.IsDivisionEmpty(division.Id);
-                if (division.IsEmpty)
+                if (!division.IsEmpty)
                 {
                     for (int j = 0; j < division.Groups.Count; j++)
                     {

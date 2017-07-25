@@ -83,21 +83,13 @@
         /// <summary>
         /// Create a new request
         /// </summary>
-        /// <param name="userId">Id of user that ask for link</param>
-        /// <param name="teamId"> Team's id</param>
-        /// <param name="groupId"> Groups id</param>
-        public void Create(int userId, int teamId, int groupId)
+        /// <param name="tournamentRequest">Contains Team Id, Group Id, User Id</param>
+        public void Create(TournamentRequest tournamentRequest)
         {
-            var existTournament = _getTournamentRequestByAllQuery.Execute(
-                new FindByTeamTournamentCriteria { GroupId = groupId, TeamId = teamId });
-            if (existTournament == null)
+            var existCurrentUserTournamentRequest = _getTournamentRequestByAllQuery.Execute(
+                new FindByTeamTournamentCriteria { GroupId = tournamentRequest.GroupId, TeamId = tournamentRequest.TeamId });
+            if (existCurrentUserTournamentRequest == null)
             {
-                TournamentRequest tournamentRequest = new TournamentRequest()
-                {
-                    TeamId = teamId,
-                    UserId = userId,
-                    GroupId = groupId
-                };
                 _tournamentRequestRepository.Add(tournamentRequest);
                 _tournamentRequestRepository.UnitOfWork.Commit();
                 NotifyAdmins(tournamentRequest);

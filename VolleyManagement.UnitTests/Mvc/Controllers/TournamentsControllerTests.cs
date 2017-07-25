@@ -12,9 +12,9 @@
     using Crosscutting.Contracts.Providers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.GamesAggregate;
+    using VolleyManagement.Domain.GroupTeamAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
@@ -156,7 +156,7 @@
             var testData = CreateTestTeams();
             var testGroupData = CreateTestGroups();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
-            var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData);
+            var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
 
             var sut = BuildSUT();
@@ -342,8 +342,9 @@
         {
             // Arrange
             var testData = CreateTestTeams();
+            SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             var testGroupData = CreateTestGroups();
-            var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData);
+            var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
             var sut = BuildSUT();
 
             // Act
@@ -368,14 +369,14 @@
             var testData = CreateTestTeams();
             var testGroupData = CreateTestGroups();
             _tournamentServiceMock
-                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>(), It.IsAny<List<Group>>()))
+                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<GroupTeam>>()))
                 .Throws(new ArgumentException(string.Empty));
 
             var sut = BuildSUT();
 
             // Act
             var jsonResult =
-                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData));
+                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
             var modelResult = jsonResult.Data as TeamsAddToTournamentViewModel;
 
             // Assert
@@ -1237,7 +1238,6 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
-            
             var sut = BuildSUT();
 
             // Act

@@ -210,6 +210,7 @@
     <Compile Include="Services\GameService\GameServiceTests.cs" />
     <Compile Include="Services\GameService\GameTestFixture.cs" />
     <Compile Include="Services\GameService\ScoreComparer.cs" />
+    <Compile Include="Services\GroupTeamService\GroupTeamServiceTestFixture.cs" />
     <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerComparer.cs" />

@@ -13,19 +13,19 @@
     public class GroupTeamServiceTestFixture
     {
         /// <summary>
-        /// Holds collection of teams
+        /// Holds collection of teams and groups
         /// </summary>
         private List<GroupTeam> _groupteams = new List<GroupTeam>();
 
         /// <summary>
-        /// Holds collection of teams
+        /// Holds collection of teams and groups
         /// </summary>
         private PlayerBuilder _playerBuilder;
 
         /// <summary>
-        /// Return test collection of teams
+        /// Return test collection of teams and groups
         /// </summary>
-        /// <returns>Builder object with collection of teams</returns>
+        /// <returns>Builder object with collection of teams and groups</returns>
         public GroupTeamServiceTestFixture TestGroupsTeams()
         {
             _playerBuilder = new PlayerBuilder();

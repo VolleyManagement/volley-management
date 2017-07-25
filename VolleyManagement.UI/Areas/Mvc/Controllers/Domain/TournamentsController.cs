@@ -9,6 +9,7 @@
     using Contracts.Exceptions;
     using Crosscutting.Contracts.Providers;
     using Domain.RolesAggregate;
+    using Domain.TournamentRequestAggregate;
     using Domain.TournamentsAggregate;
     using Resources.UI;
     using ViewModels.Division;
@@ -539,10 +540,10 @@
         /// <summary>
         /// Apply for tournament
         /// </summary>
-        /// <param name="parameters">Group id and Team id</param>
+        /// <param name="groupTeam">Group id and Team id</param>
         /// <returns>TournamentApply view</returns>
         [HttpPost]
-        public JsonResult ApplyForTournament(TeamGroupViewModel parameters)
+        public JsonResult ApplyForTournament(GroupTeamViewModel groupTeam)
         {
             JsonResult result = null;
             try
@@ -555,7 +556,13 @@
                 }
                 else
                 {
-                    _requestService.Create(userId, parameters.TeamId, parameters.GroupId);
+                    var tournamentRequest = new TournamentRequest()
+                    {
+                        TeamId = groupTeam.TeamId,
+                        UserId = userId,
+                        GroupId = groupTeam.GroupId
+                    };
+                    _requestService.Create(tournamentRequest);
                     result = Json(ViewModelResources.SuccessRequest);
                 }
             }

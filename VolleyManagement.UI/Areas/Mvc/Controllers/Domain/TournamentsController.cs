@@ -263,27 +263,24 @@
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
             var resultTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var divisions = _tournamentService.GetAllTournamentDivisions(tournamentId);
-            var divisionId = divisions.First().Id;
-            var groups = _tournamentService.GetAllTournamentGroups(divisionId);
-            var parameters = new TournamentTeamsListViewModel(resultTeams, tournamentId, groups);
-            var referrerViewModel = new TournamentTeamsListReferrerViewModel(parameters, HttpContext.Request.RawUrl);
+            var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
+            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }
 
         /// <summary>
         /// Adds list of teams to tournament
         /// </summary>
-        /// <param name="teams">Object with list of teams and tournament id</param>
+        /// <param name="groupTeams">Object with list of team, group and tournament id</param>
         /// <returns>json result with operation data</returns>
         [HttpPost]
-        public JsonResult AddTeamsToTournament(TournamentTeamsListViewModel teams)
+        public JsonResult AddTeamsToTournament(TournamentTeamsListViewModel groupTeams)
         {
             JsonResult result = null;
             try
             {
-                _tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId, teams.GroupToDomain());
-                result = Json(teams, JsonRequestBehavior.AllowGet);
+                _tournamentService.AddTeamsToTournament(groupTeams.ToGroupTeamDomain());
+                result = Json(groupTeams, JsonRequestBehavior.AllowGet);
             }
             catch (ArgumentException ex)
             {

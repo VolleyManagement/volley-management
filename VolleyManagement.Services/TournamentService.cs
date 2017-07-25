@@ -15,6 +15,7 @@
     using Data.Queries.Team;
     using Data.Queries.Tournament;
     using Domain.GamesAggregate;
+    using Domain.GroupTeamAggregate;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
@@ -256,21 +257,19 @@
         /// <summary>
         /// Adds selected teams to tournament
         /// </summary>
-        /// <param name="teams">Teams that will be added to tournament</param>
-        /// <param name="tournamentId">Tournament to assign team.</param>
-        /// <param name="groups">Groups of tournament to assign to team</param>
-        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId, IEnumerable<Group> groups)
+        /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
+        public void AddTeamsToTournament(IEnumerable<GroupTeam> groupTeam)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
-            var allTeams = GetAllTournamentTeams(tournamentId);
+            var allTeams = GetAllTournamentTeams(groupTeam.First().TournamentId);
 
-            for (int index = 0; index < teams.Count(); index++)
+            foreach (var item in groupTeam)
             {
-                var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == teams.ElementAt(index).Id);
+                var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == item.TeamId);
 
                 if (tournamentTeam == null)
                 {
-                    _tournamentRepository.AddTeamToTournament(teams.ElementAt(index).Id, groups.ElementAt(index).Id);
+                    _tournamentRepository.AddTeamToTournament(item.TeamId, item.GroupId);
                 }
                 else
                 {
@@ -279,8 +278,8 @@
                 }
             }
 
-            var count = allTeams.Count() + teams.Count();
-            CreateSchedule(tournamentId, count);
+            var count = allTeams.Count() + groupTeam.Count();
+            CreateSchedule(groupTeam.First().TournamentId, count);
 
             _tournamentRepository.UnitOfWork.Commit();
         }

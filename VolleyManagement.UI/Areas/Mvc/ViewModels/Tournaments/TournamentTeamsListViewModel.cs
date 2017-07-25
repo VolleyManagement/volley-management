@@ -4,9 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
+    using Domain.GroupTeamAggregate;
     using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
     using ViewModels.Division;
+    using ViewModels.Tournaments;
 
     /// <summary>
     /// Tournament teams list view model.
@@ -25,13 +27,10 @@
         /// </summary>
         /// <param name="source">All needed teams</param>
         /// <param name="tournamentId">Tournament id</param>
-        /// <param name="group">All needed groups</param>
-        /// <param name="divisionId">Division id</param>
-        public TournamentTeamsListViewModel(List<Team> source, int tournamentId, List<Group> group)
+        public TournamentTeamsListViewModel(List<Team> source, int tournamentId)
         {
             TournamentId = tournamentId;
             TeamsList = source.Select(TeamNameViewModel.Map).ToList();
-            GroupsList = group.Select(GroupViewModel.Map).ToList();
         }
 
         /// <summary>
@@ -45,9 +44,9 @@
         public List<TeamNameViewModel> TeamsList { get; set; }
 
         /// <summary>
-        /// Gets or sets list of Groups
+        /// Gets or sets list of GroupTeam
         /// </summary>
-        public List<GroupViewModel> GroupsList { get; set; }
+        public List<GroupTeamViewModel> GroupTeamList { get; set; }
 
         /// <summary>
         /// Maps presentation list to domain list
@@ -61,10 +60,10 @@
         /// <summary>
         /// Maps presentation list to domain list
         /// </summary>
-        /// <returns>Domain list of groups</returns>
-        public List<Group> GroupToDomain()
+        /// <returns>Domain list of teams and groups</returns>
+        public List<GroupTeam> ToGroupTeamDomain()
         {
-            return GroupsList.Select(t => t.ToDomain()).ToList();
+            return GroupTeamList.Select(t => t.ToDomain()).ToList();
         }
     }
 }

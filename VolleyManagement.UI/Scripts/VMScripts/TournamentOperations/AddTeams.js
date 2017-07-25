@@ -36,29 +36,26 @@
 
     privates.getJsonForTournamentTeamsSave = function () {
         var result = {
-            TournamentId: $("[id='TournamentId']").val(),
-            TeamsList: [],
-            GroupsList: []
+            GroupTeamList: []
         };
 
+        var tournamentId = $("[id='TournamentId']").val();
         var selectedTeams = $("select[name='teams'] :selected");
         var selectedGroups = $("select[name='groups'] :selected");
 
-        for (var i = 0; i < selectedTeams.length; i++) {
-            if (selectedTeams[i].value !== "0") {
-                result.TeamsList.push({
-                    Id: selectedTeams[i].value                   
-                });
-            }
+        if (selectedTeams.length !== selectedGroups.length) {
+            return null;
         }
 
-        for (var j = 0; j < selectedGroups.length; j++) {
-            if (selectedGroups[j].value !== "0") {
-                result.GroupsList.push({
-                    Id: selectedGroups[j].value
+        for (var i = 0; i < selectedTeams.length; i++) {
+            if (selectedTeams[i].value !== "0" && selectedGroups[i].value !== "0") {
+                result.GroupTeamList.push({
+                    GroupId: selectedGroups[i].value,
+                    TeamId: selectedTeams[i].value,
+                    TournamentId: tournamentId
                 });
             }
-        }     
+        }    
 
         return result;
     };
@@ -208,7 +205,7 @@
     currNs.onAddTeamsButtonButtonClick = function () {
         var teamData = privates.getJsonForTournamentTeamsSave();
 
-        if (teamData.TeamsList.length === teamData.GroupsList.length) {      
+        if (teamData !== null) {      
             $.post("/Tournaments/AddTeamsToTournament", teamData)
                 .done(privates.handleTeamsAddSuccess);
         } else {

@@ -34,6 +34,12 @@
                 Id = 2,
                 Name = "Group 2"
             });
+            _groups.Add(new Group()
+            {
+                DivisionId = 2,
+                Id = 3,
+                Name = "Group 3"
+            });
             return this;
         }
 

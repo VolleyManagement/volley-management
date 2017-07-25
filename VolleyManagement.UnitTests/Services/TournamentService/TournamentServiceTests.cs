@@ -756,7 +756,7 @@
             sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID, testGroupData);
 
             // Assert
-            VerifyTeamsAdded(FIRST_TOURNAMENT_ID, Times.Exactly(testData.Count), Times.Once());
+            VerifyTeamsAdded(Times.Exactly(testData.Count), Times.Once());
         }
 
         /// <summary>
@@ -1268,7 +1268,7 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
-        private void VerifyTeamsAdded(int tourmanentId, Times repositoryTimes, Times uowTimes)
+        private void VerifyTeamsAdded(Times repositoryTimes, Times uowTimes)
         {
             _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()), repositoryTimes);
             _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);

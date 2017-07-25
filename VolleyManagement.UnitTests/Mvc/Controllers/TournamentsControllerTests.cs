@@ -153,7 +153,7 @@
         public void ManageTournamentTeams_TournamentTeamsExist_TeamsInCurrentTournamentAreReturned()
         {
             // Arrange
-            var testData = MakeTestTeams();
+            var testData = CreateTestTeams();
             var testGroupData = CreateTestGroups();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData);
@@ -341,7 +341,7 @@
         public void AddTeamsToTournament_ValidTeamListViewModelNoException_JsonResultIsReturned()
         {
             // Arrange
-            var testData = MakeTestTeams();
+            var testData = CreateTestTeams();
             var testGroupData = CreateTestGroups();
             var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID, testGroupData);
             var sut = BuildSUT();
@@ -365,7 +365,7 @@
         public void AddTeamsToTournament_InValidTeamListViewModelWithException_JsonModelErrorReturned()
         {
             // Arrange
-            var testData = MakeTestTeams();
+            var testData = CreateTestTeams();
             var testGroupData = CreateTestGroups();
             _tournamentServiceMock
                 .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>(), It.IsAny<List<Group>>()))
@@ -436,7 +436,7 @@
             const int TEST_ROUND_COUNT = 3;
 
             var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
-            var testTeams = MakeTestTeams();
+            var testTeams = CreateTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
             SetupGetTournamentNumberOfRounds(testTournament, TEST_ROUND_COUNT);
@@ -576,7 +576,7 @@
             SetupGetGame(TEST_ID, testGame);
 
             var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
-            var testTeams = MakeTestTeams();
+            var testTeams = CreateTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
             SetupGetTournamentNumberOfRounds(testTournament, TEST_ROUND_COUNT);
@@ -1192,7 +1192,7 @@
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
-            SetupGetNonTournamentTeams(MakeTestTeams(), TEST_TOURNAMENT_ID);
+            SetupGetNonTournamentTeams(CreateTestTeams(), TEST_TOURNAMENT_ID);
 
             var expected = MakeTestTournamentApplyViewModel();
             var sut = BuildSUT();
@@ -1237,6 +1237,7 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
+            
             var sut = BuildSUT();
 
             // Act
@@ -1281,7 +1282,7 @@
             return new TournamentServiceTestFixture().TestTournaments().Build();
         }
 
-        private List<Team> MakeTestTeams()
+        private List<Team> CreateTestTeams()
         {
             return new TeamServiceTestFixture().TestTeams().Build();
         }

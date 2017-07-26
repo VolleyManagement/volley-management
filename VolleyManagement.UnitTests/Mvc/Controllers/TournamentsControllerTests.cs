@@ -817,7 +817,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create());
 
             // Assert
-            Assert.IsTrue(result.IsNew, "View model must be new.");
+            Assert.IsTrue(result.IsNew, "Tournament should be new.");
         }
 
         #endregion
@@ -940,7 +940,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.IsNew, "View model must be not new.");
+            Assert.IsFalse(result.IsNew, "Tournament should not be new.");
         }
 
         #endregion

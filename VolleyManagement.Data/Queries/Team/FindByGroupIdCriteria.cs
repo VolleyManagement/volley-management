@@ -3,7 +3,7 @@
     using Contracts;
 
     /// <summary>
-    /// The find by group id criteria.
+    /// Criteria to find all teams from group with specified id.
     /// </summary>
     public class FindByGroupIdCriteria : IQueryCriteria
     {

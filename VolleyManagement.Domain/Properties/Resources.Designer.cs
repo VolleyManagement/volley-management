@@ -61,7 +61,7 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current collection is empty.
+        ///   Looks up a localized string similar to You can&apos;t  add empty teams collection.
         /// </summary>
         public static string CollectionIsEmpty {
             get {

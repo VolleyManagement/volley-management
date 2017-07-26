@@ -61,6 +61,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current collection is empty.
+        /// </summary>
+        public static string CollectionIsEmpty {
+            get {
+                return ResourceManager.GetString("CollectionIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The number of divisions in the tournament must be between {0} and {1}.
         /// </summary>
         public static string DivisionCountOutOfRange {
@@ -282,6 +291,15 @@ namespace VolleyManagement.Domain.Properties {
         public static string NoTeamsInGame {
             get {
                 return ResourceManager.GetString("NoTeamsInGame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of selected groups are not equal to selected teams.
+        /// </summary>
+        public static string NumberOfGroupsAreNotEqualToNumberOfTeams {
+            get {
+                return ResourceManager.GetString("NumberOfGroupsAreNotEqualToNumberOfTeams", resourceCulture);
             }
         }
         

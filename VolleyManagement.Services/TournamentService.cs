@@ -261,6 +261,19 @@
         public void AddTeamsToTournament(IEnumerable<GroupTeam> groupTeam)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
+
+            if (groupTeam.Count() == 0)
+            {
+                throw new ArgumentException(
+                    TournamentResources.CollectionIsEmpty);
+            }
+
+            if (groupTeam.Select(g => g.GroupId).Count() != groupTeam.Select(t => t.TeamId).Count())
+            {
+                throw new ArgumentException(
+                    TournamentResources.NumberOfGroupsAreNotEqualToNumberOfTeams);
+            }
+
             var allTeams = GetAllTournamentTeams(groupTeam.First().TournamentId);
 
             foreach (var item in groupTeam)

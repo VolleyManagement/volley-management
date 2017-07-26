@@ -17,6 +17,7 @@
     using VolleyManagement.Domain.GroupTeamAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.Domain.TournamentRequestAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
@@ -25,6 +26,7 @@
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.Services.TeamService;
+    using VolleyManagement.UnitTests.Services.TournamentRequestService;
     using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
@@ -1238,13 +1240,19 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
+            var newTournamentRequest = new TournamentRequestBuilder()
+               .WithId(TEST_ID)
+               .WithTeamId(TEST_ID)
+               .WithGroupId(TEST_ID)
+               .WithUserId(TEST_ID)
+               .Build();
             var sut = BuildSUT();
 
             // Act
             var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCreateTournamentRequest(TEST_USER_ID, TEST_TEAM_ID, TEST_GROUP_ID, Times.Once());
+            VerifyCreateTournamentRequest(newTournamentRequest, Times.Once());
             Assert.IsNotNull(result, JSON_OK_MSG);
         }
 
@@ -1253,7 +1261,13 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
-            SetupTournamentRequestServiceThrowsArgumentException(TEST_USER_ID, TEST_TEAM_ID, TEST_GROUP_ID);
+            var newTournamentRequest = new TournamentRequestBuilder()
+               .WithId(TEST_ID)
+               .WithTeamId(TEST_ID)
+               .WithGroupId(TEST_ID)
+               .WithUserId(TEST_ID)
+               .Build();
+            SetupTournamentRequestServiceThrowsArgumentException(newTournamentRequest);
             var sut = BuildSUT();
 
             // Act
@@ -1410,9 +1424,9 @@
             _currentUserServiceMock.Setup(m => m.GetCurrentUserId()).Returns(userId);
         }
 
-        private void SetupTournamentRequestServiceThrowsArgumentException(int userId, int teamId, int groupId)
+        private void SetupTournamentRequestServiceThrowsArgumentException(TournamentRequest tournamentRequest)
         {
-            _tournamentRequestServiceMock.Setup(ts => ts.Create(userId, teamId, groupId))
+            _tournamentRequestServiceMock.Setup(ts => ts.Create(tournamentRequest))
                 .Throws(new ArgumentException(INVALID_PARAMETR));
         }
 
@@ -1441,9 +1455,9 @@
             _gameServiceMock.Verify(gs => gs.Create(It.IsAny<Game>()), times);
         }
 
-        private void VerifyCreateTournamentRequest(int userId, int teamId, int groupId, Times times)
+        private void VerifyCreateTournamentRequest(TournamentRequest tournamentRequest, Times times)
         {
-            _tournamentRequestServiceMock.Verify(ts => ts.Create(userId, teamId, groupId), times);
+            _tournamentRequestServiceMock.Verify(ts => ts.Create(tournamentRequest), times);
         }
 
         private void VerifySwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)

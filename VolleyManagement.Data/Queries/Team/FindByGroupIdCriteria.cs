@@ -8,7 +8,7 @@
     public class FindByGroupIdCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Gets or sets Captain ID to search for
+        /// Gets or sets Group ID to search for
         /// </summary>
         public int GroupId { get; set; }
     }

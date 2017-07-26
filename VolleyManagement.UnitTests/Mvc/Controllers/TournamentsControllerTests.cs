@@ -46,8 +46,6 @@
         private const byte SECOND_ROUND_NUMBER = 2;
         private const string INVALID_PARAMETR = "Invalid parametr.Your request didn't create.";
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
-        private const string ASSERT_FAIL_VIEW_MODEL_IS_NEW = "View model must be new.";
-        private const string ASSERT_FAIL_VIEW_MODEL_IS_NOT_NEW = "View model must be not new.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
         private const string JSON_NO_RIGHTS_MESSAGE = "Please, login to apply team for the tournament.";
         private const string JSON_OK_MSG = "Your request was succesfully created. Please, wait until administrator confirm your request.";
@@ -819,7 +817,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create());
 
             // Assert
-            Assert.IsTrue(result.IsNew, ASSERT_FAIL_VIEW_MODEL_IS_NOT_NEW);
+            Assert.IsTrue(result.IsNew, "View model must be new.");
         }
 
         #endregion
@@ -942,7 +940,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.IsNew, ASSERT_FAIL_VIEW_MODEL_IS_NEW);
+            Assert.IsFalse(result.IsNew, "View model must be not new.");
         }
 
         #endregion

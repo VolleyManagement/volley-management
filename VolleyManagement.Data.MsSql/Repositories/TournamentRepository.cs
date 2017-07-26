@@ -88,7 +88,7 @@
         }
 
         /// <summary>
-        /// Add team and group to the tournament
+        /// Add team to the tournament
         /// </summary>
         /// <param name="teamId">Team id to add</param>
         /// <param name="groupId">Group id to add</param>

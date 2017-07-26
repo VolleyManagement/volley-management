@@ -321,4 +321,10 @@
   <data name="TeamNameInCurrentGroupOfTournamentNotUnique" xml:space="preserve">
     <value>Team with such name in the current group of the tournament already exist</value>
   </data>
+  <data name="CollectionIsEmpty" xml:space="preserve">
+    <value>You can't  add empty teams collection</value>
+  </data>
+  <data name="NumberOfGroupsAreNotEqualToNumberOfTeams" xml:space="preserve">
+    <value>Number of selected groups are not equal to selected teams</value>
+  </data>
 </root>

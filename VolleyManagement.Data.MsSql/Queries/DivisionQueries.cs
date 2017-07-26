@@ -12,8 +12,7 @@
     /// <summary>
     /// Provides Object Query implementation for Divisions
     /// </summary>
-    public class DivisionQueries : IQuery<List<Division>, GetAllCriteria>,
-                                   IQuery<Division, FindByIdCriteria>
+    public class DivisionQueries : IQuery<Division, FindByIdCriteria>
     {
         #region Fields
 
@@ -35,16 +34,6 @@
         #endregion
 
         #region Implemenations
-
-        /// <summary>
-        /// Finds Division by given criteria
-        /// </summary>
-        /// <param name="criteria"> The criteria. </param>
-        /// <returns> The <see cref="Division"/>. </returns>
-        public List<Division> Execute(GetAllCriteria criteria)
-        {
-            return _unitOfWork.Context.Divisions.Select(GetDivisionMapping()).ToList();
-        }
 
         /// <summary>
         /// Finds Division by given criteria

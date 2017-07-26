@@ -60,7 +60,7 @@
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTournamentTeamsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
-        private readonly IQuery<List<Team>, FindByGroupIdCriteria> _getTeamByGroupIdQuery;
+        private readonly IQuery<List<Team>, FindTeamsByGroupIdCriteria> _getTeamByGroupIdQuery;
         private readonly IQuery<Division, FindByIdCriteria> _getDivisionByIdQuery;
 
         #endregion
@@ -89,7 +89,7 @@
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTournamentTeamsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
-            IQuery<List<Team>, FindByGroupIdCriteria> getTeamByGroupIdQuery,
+            IQuery<List<Team>, FindTeamsByGroupIdCriteria> getTeamByGroupIdQuery,
             IQuery<Division, FindByIdCriteria> getDivisionByIdQuery,
             IAuthorizationService authService,
             IGameService gameService)
@@ -319,7 +319,7 @@
         /// <returns>True if there are no teams in the group</returns>
         public bool IsGroupEmpty(int groupId)
         {
-            var teams = _getTeamByGroupIdQuery.Execute(new FindByGroupIdCriteria { GroupId = groupId });
+            var teams = _getTeamByGroupIdQuery.Execute(new FindTeamsByGroupIdCriteria { GroupId = groupId });
             return teams.Count == 0;
         }
 

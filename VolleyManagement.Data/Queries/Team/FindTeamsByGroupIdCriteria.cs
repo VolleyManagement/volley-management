@@ -5,7 +5,7 @@
     /// <summary>
     /// Criteria to find all teams from group with specified id.
     /// </summary>
-    public class FindByGroupIdCriteria : IQueryCriteria
+    public class FindTeamsByGroupIdCriteria : IQueryCriteria
     {
         /// <summary>
         /// Gets or sets Group ID to search for

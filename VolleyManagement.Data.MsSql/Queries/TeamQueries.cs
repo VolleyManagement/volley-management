@@ -18,7 +18,7 @@
                                IQuery<List<Team>, GetAllCriteria>,
                                IQuery<Team, FindByCaptainIdCriteria>,
                                IQuery<List<Team>, FindByTournamentIdCriteria>,
-                               IQuery<List<Team>, FindByGroupIdCriteria>
+                               IQuery<List<Team>, FindTeamsByGroupIdCriteria>
     {
         #region Fields
 
@@ -87,7 +87,7 @@
                                       .ToList();
         }
 
-        public List<Team> Execute(FindByGroupIdCriteria criteria)
+        public List<Team> Execute(FindTeamsByGroupIdCriteria criteria)
         {
             return _unitOfWork.Context.Groups
                                       .Where(g => g.Id == criteria.GroupId)

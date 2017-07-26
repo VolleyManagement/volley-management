@@ -53,7 +53,7 @@
         private Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getAllTournamentTeamsQuery;
         private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
-        private Mock<IQuery<List<Team>, FindByGroupIdCriteria>> _getTeamByGroupIdQueryMock;
+        private Mock<IQuery<List<Team>, FindTeamsByGroupIdCriteria>> _getTeamByGroupIdQueryMock;
         private Mock<IQuery<Division, FindByIdCriteria>> _getDivisionByIdQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -73,7 +73,7 @@
             _getByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
             _getAllTournamentTeamsQuery = new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
             _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
-            _getTeamByGroupIdQueryMock = new Mock<IQuery<List<Team>, FindByGroupIdCriteria>>();
+            _getTeamByGroupIdQueryMock = new Mock<IQuery<List<Team>, FindTeamsByGroupIdCriteria>>();
             _getDivisionByIdQueryMock = new Mock<IQuery<Division, FindByIdCriteria>>();
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();

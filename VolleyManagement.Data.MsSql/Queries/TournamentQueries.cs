@@ -20,11 +20,12 @@
                                      IQuery<Tournament, FindByIdCriteria>,
                                      IQuery<List<Division>, TournamentDivisionsCriteria>,
                                      IQuery<List<Group>, DivisionGroupsCriteria>,
-                                     IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>
+                                     IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>,
+                                     IQuery<int, TournamentByGroupCriteria>
     {
         #region Fields
 
-        private readonly VolleyUnitOfWork _unitOfWork;
+    private readonly VolleyUnitOfWork _unitOfWork;
 
         #endregion
 
@@ -59,6 +60,19 @@
 
             // ToDo: Use Automapper to substitute Select clause
             return query.Select(GetTournamentMapping()).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Finds Tournament by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Tournament"/>. </returns>
+        public int Execute(TournamentByGroupCriteria criteria)
+        {
+            var groups = _unitOfWork.Context.Groups.Where(g => g.Id == criteria.GroupId).Select(GetGroupMapping()).ToList();
+            var divisionId = groups.First().DivisionId;
+            var divisions = _unitOfWork.Context.Divisions.Where(d => d.Id == divisionId).Select(GetDivisionMapping()).ToList();
+            return divisions.First().TournamentId;
         }
 
         /// <summary>

@@ -43,18 +43,17 @@
         var selectedTeams = $("select[name='teams'] :selected");
         var selectedGroups = $("select[name='groups'] :selected");
 
-        if (selectedTeams.length !== selectedGroups.length) {
-            return null;
-        }
+        //if (selectedTeams.length !== selectedGroups.length) {
+        //    return null;
+        //}
 
         for (var i = 0; i < selectedTeams.length; i++) {
-            if (selectedTeams[i].value !== "0" && selectedGroups[i].value !== "0") {
+           // if (selectedTeams[i].value !== "0" && selectedGroups[i].value !== "0") {
                 result.GroupTeamList.push({
                     GroupId: selectedGroups[i].value,
-                    TeamId: selectedTeams[i].value,
-                    TournamentId: tournamentId
+                    TeamId: selectedTeams[i].value
                 });
-            }
+          //  }
         }    
 
         return result;
@@ -205,12 +204,12 @@
     currNs.onAddTeamsButtonButtonClick = function () {
         var teamData = privates.getJsonForTournamentTeamsSave();
 
-        if (teamData !== null) {      
+        //if (teamData !== null) {    
             $.post("/Tournaments/AddTeamsToTournament", teamData)
                 .done(privates.handleTeamsAddSuccess);
-        } else {
-            alert("Not all parameters was selected!");
-        }
+        //} else {
+        //    alert("Not all parameters was selected!");
+        //}
     };
 
     currNs.onDeleteTeamButtonClick = function (eventData) {

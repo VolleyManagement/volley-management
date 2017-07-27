@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web;
-    using Domain.GroupTeamAggregate;
+    using Contracts;
     using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
     using ViewModels.Division;
@@ -61,7 +61,7 @@
         /// Maps presentation list to domain list
         /// </summary>
         /// <returns>Domain list of teams and groups</returns>
-        public List<GroupTeam> ToGroupTeamDomain()
+        public List<GroupTeamRelationship> ToGroupTeamDomain()
         {
             return GroupTeamList.Select(t => t.ToDomain()).ToList();
         }

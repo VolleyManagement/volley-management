@@ -230,11 +230,6 @@
             return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
-        public int GetTournamentByGroup(int groupId)
-        {
-            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
-        }
-
         /// <summary>
         /// Edit tournament
         /// </summary>
@@ -355,6 +350,16 @@
         #endregion
 
         #region Private
+
+        /// <summary>
+        /// Finds a TournamentId by its group
+        /// </summary>
+        /// <param name="groupId">id for group</param>
+        /// <returns>Tournament id</returns>
+        private int GetTournamentByGroup(int groupId)
+        {
+            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
+        }
 
         private static UniqueTournamentCriteria BuildUniqueTournamentCriteria(Tournament newTournament, bool isUpdate)
         {

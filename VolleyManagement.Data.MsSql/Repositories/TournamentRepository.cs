@@ -125,6 +125,7 @@
                 if (group.Division.TournamentId == tournamentId)
                 {
                     group.Teams.Remove(teamEntity);
+                    break;
                 }
             }
         }

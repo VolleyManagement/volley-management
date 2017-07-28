@@ -7,7 +7,7 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Contains information about TeamId and GroupId
+    /// Contains information about assignment team to tournament
     /// </summary>
     public class TeamTournamentAssignmentDto
     {

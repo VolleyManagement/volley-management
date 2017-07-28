@@ -266,13 +266,13 @@
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
-        public void AddTeamsToTournament(IEnumerable<TeamToGroupInsert> groupTeam)
+        public void AddTeamsToTournament(IEnumerable<TeamTournamentAssignmentDto> groupTeam)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
 
-            var totalTeamCount = groupTeam.Count();
+            var groupTeamCount = groupTeam.Count();
 
-            if (totalTeamCount == 0)
+            if (groupTeamCount == 0)
             {
                 throw new ArgumentException(
                     TournamentResources.CollectionIsEmpty);
@@ -296,8 +296,8 @@
                 }
             }
 
-            var count = allTeams.Count() + totalTeamCount;
-            CreateSchedule(tournamentId, count);
+            var totalTeamCount = allTeams.Count + groupTeamCount;
+            CreateSchedule(tournamentId, totalTeamCount);
 
             _tournamentRepository.UnitOfWork.Commit();
         }

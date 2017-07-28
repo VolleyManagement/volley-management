@@ -120,13 +120,16 @@
         [TestMethod]
         public void Create_InvalidUserId_ExceptionThrows()
         {
+            var newTournamentRequest = new TournamentRequestBuilder()
+               .Build();
+
             // Arrange
             var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<ArgumentException>(
                 () =>
-                 sut.Create(INVALID_REQUEST_ID, EXISTING_ID, EXISTING_ID),
+                 sut.Create(newTournamentRequest),
                 "User's id is wrong");
         }
 
@@ -150,7 +153,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID);
+            sut.Create(newTournamentRequest);
 
             // Assert
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Once(), "Parameter request is not equal to Instance of request");
@@ -177,7 +180,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID);
+            sut.Create(newTournamentRequest);
 
             // Assert
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Never(), "Parameter request is not equal to Instance of request");

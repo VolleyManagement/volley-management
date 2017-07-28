@@ -145,20 +145,14 @@
         public void RemoveDivision(int divisionId)
         {
             var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
-            var groupsToRemoveIds = new List<int>();
             if (divisionEntity == null)
             {
                 throw new ConcurrencyException();
             }
 
-            for (int i = 0; i < divisionEntity.Groups.Count; i++)
+            foreach (var group in divisionEntity.Groups.ToList())
             {
-                groupsToRemoveIds.Add(divisionEntity.Groups[i].Id);
-            }
-
-            foreach (var id in groupsToRemoveIds)
-            {
-                RemoveGroup(id);
+                RemoveGroup(group.Id);
             }
 
             _unitOfWork.Context.Divisions.Remove(divisionEntity);
@@ -166,8 +160,7 @@
 
         private void UpdateDivisions(List<DivisionEntity> old, List<Division> changed)
         {
-            var divisionsToRemoveId = new List<int>();
-            foreach (var item in old)
+            foreach (var item in old.ToList())
             {
                 var updatedDivision = from element in changed
                                       where item.Id == element.Id
@@ -178,32 +171,21 @@
                 }
                 else
                 {
-                    divisionsToRemoveId.Add(item.Id);
+                    RemoveDivision(item.Id);
                 }
-            }
-
-            foreach (var divisionId in divisionsToRemoveId)
-            {
-                RemoveDivision(divisionId);
             }
         }
 
         private void UpdateGroups(List<GroupEntity> old, List<Group> changed)
         {
-            var groupsToRemoveId = new List<int>();
-            foreach (var item in old)
+            foreach (var item in old.ToList())
             {
                 if (!Enumerable.Any(from element in changed
                                    where item.Id == element.Id
                                    select element))
                 {
-                    groupsToRemoveId.Add(item.Id);
+                    RemoveGroup(item.Id);
                 }
-            }
-
-            foreach (var groupId in groupsToRemoveId)
-            {
-                RemoveGroup(groupId);
             }
         }
 

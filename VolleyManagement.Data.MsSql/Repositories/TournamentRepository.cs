@@ -67,7 +67,6 @@
         {
             var tournamentToUpdate = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
             UpdateDivisions(tournamentToUpdate.Divisions, updatedEntity.Divisions);
-            updatedEntity.Divisions.Clear();
             DomainToDal.Map(tournamentToUpdate, updatedEntity);
         }
 

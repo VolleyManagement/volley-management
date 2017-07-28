@@ -36,11 +36,13 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-            if (from.Divisions.Count != 0)
+            var newDiviosionsList = new List<DivisionEntity>();
+            foreach (var division in from.Divisions)
             {
-                to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
+                newDiviosionsList.Add(Map(division, to.Divisions.ToList()));
             }
 
+            to.Divisions = newDiviosionsList;
             to.LastTimeUpdated = from.LastTimeUpdated;
         }
 
@@ -110,17 +112,29 @@
         {
             if (from.Id == 0)
             {
+                var newGroups = new List<GroupEntity>();
+                foreach (var group in from.Groups)
+                {
+                    newGroups.Add(Map(group));
+                }
+
                 return new DivisionEntity
                 {
                     Id = from.Id,
                     Name = from.Name,
-                    TournamentId = from.TournamentId
+                    TournamentId = from.TournamentId,
+                    Groups = newGroups
                 };
             }
             else
             {
                 var division = oldDivisions.Where(d => d.Id == from.Id).SingleOrDefault();
-                division.Name = from.Name;
+                var newGroups = from.Groups.Where(gr => gr.Id == 0);
+                foreach (var group in newGroups.ToList())
+                {
+                    division.Groups.Add(Map(group));
+                }
+
                 return division;
             }
         }

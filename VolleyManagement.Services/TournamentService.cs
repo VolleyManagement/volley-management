@@ -165,7 +165,7 @@
         }
 
         /// <summary>
-        /// Returns all divisions for specific tournament
+        /// Returns all groups for specific tournament
         /// </summary>
         /// <param name="divisionId">Id of Division to get group list</param>
         /// <returns>Tournament groups</returns>
@@ -266,22 +266,16 @@
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
-        public void AddTeamsToTournament(IEnumerable<GroupTeamRelationship> groupTeam)
+        public void AddTeamsToTournament(IEnumerable<TeamTournamentAssignmentDto> groupTeam)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
 
-            var groupTeamsCount = groupTeam.Count();
+            var groupTeamCount = groupTeam.Count();
 
-            if (groupTeamsCount == 0)
+            if (groupTeamCount == 0)
             {
                 throw new ArgumentException(
                     TournamentResources.CollectionIsEmpty);
-            }
-
-            if (groupTeam.Any(g => g.GroupId == 0 || g.TeamId == 0))
-            {
-                throw new ArgumentException(
-                   TournamentResources.CollectionIsNotFull);
             }
 
             var tournamentId = GetTournamentByGroup(groupTeam.First().GroupId);
@@ -302,8 +296,8 @@
                 }
             }
 
-            var count = allTeams.Count() + groupTeamsCount;
-            CreateSchedule(tournamentId, count);
+            var totalTeamCount = allTeams.Count + groupTeamCount;
+            CreateSchedule(tournamentId, totalTeamCount);
 
             _tournamentRepository.UnitOfWork.Commit();
         }

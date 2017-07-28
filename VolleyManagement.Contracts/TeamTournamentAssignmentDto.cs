@@ -6,7 +6,10 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public class GroupTeamRelationship
+    /// <summary>
+    /// Contains information about TeamId and GroupId
+    /// </summary>
+    public class TeamTournamentAssignmentDto
     {
         /// <summary>
         /// Gets or sets a value of TeamId.

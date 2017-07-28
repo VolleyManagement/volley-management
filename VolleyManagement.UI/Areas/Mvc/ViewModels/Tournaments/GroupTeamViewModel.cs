@@ -22,11 +22,11 @@
         public int GroupId { get; set; }
 
         /// <summary>
-        /// Maps  GroupTeam to GroupTeamViewModel
+        /// Maps TeamTournamentAssignmentDto to GroupTeamViewModel
         /// </summary>
         /// <param name="groupTeam">Domain group and team</param>
         /// <returns>View model object</returns>
-        public static GroupTeamViewModel Map(GroupTeamRelationship groupTeam)
+        public static GroupTeamViewModel Map(TeamTournamentAssignmentDto groupTeam)
         {
             return new GroupTeamViewModel
             {
@@ -39,9 +39,9 @@
         /// Maps presentation entity to domain
         /// </summary>
         /// <returns>Domain object</returns>
-        public GroupTeamRelationship ToDomain()
+        public TeamTournamentAssignmentDto ToDomain()
         {
-            return new GroupTeamRelationship
+            return new TeamTournamentAssignmentDto
             {
                 GroupId = GroupId,
                 TeamId = TeamId

@@ -61,7 +61,7 @@
         /// Maps presentation list to domain list
         /// </summary>
         /// <returns>Domain list of teams and groups</returns>
-        public List<GroupTeamRelationship> ToGroupTeamDomain()
+        public List<TeamTournamentAssignmentDto> ToGroupTeamDomain()
         {
             return GroupTeamList.Select(t => t.ToDomain()).ToList();
         }

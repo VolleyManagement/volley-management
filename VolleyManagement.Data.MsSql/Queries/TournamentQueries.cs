@@ -69,10 +69,13 @@
         /// <returns> The <see cref="Tournament"/>. </returns>
         public int Execute(TournamentByGroupCriteria criteria)
         {
-            var groups = _unitOfWork.Context.Groups.Where(g => g.Id == criteria.GroupId).Select(GetGroupMapping()).ToList();
-            var divisionId = groups.First().DivisionId;
-            var divisions = _unitOfWork.Context.Divisions.Where(d => d.Id == divisionId).Select(GetDivisionMapping()).ToList();
-            return divisions.First().TournamentId;
+            var tournament = from g in _unitOfWork.Context.Groups
+                            join d in _unitOfWork.Context.Divisions on g.DivisionId equals d.Id
+                            join t in _unitOfWork.Context.Tournaments on d.TournamentId equals t.Id
+                            where g.Id == criteria.GroupId
+                            select t;
+
+            return tournament.First().Id;
         }
 
         /// <summary>

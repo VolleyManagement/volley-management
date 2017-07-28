@@ -351,16 +351,6 @@
 
         #region Private
 
-        /// <summary>
-        /// Finds a TournamentId by its group
-        /// </summary>
-        /// <param name="groupId">id for group</param>
-        /// <returns>Tournament id</returns>
-        private int GetTournamentByGroup(int groupId)
-        {
-            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
-        }
-
         private static UniqueTournamentCriteria BuildUniqueTournamentCriteria(Tournament newTournament, bool isUpdate)
         {
             var criteria = new UniqueTournamentCriteria { Name = newTournament.Name };
@@ -371,6 +361,11 @@
             }
 
             return criteria;
+        }
+
+        private int GetTournamentByGroup(int groupId)
+        {
+            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
         }
 
         /// <summary>

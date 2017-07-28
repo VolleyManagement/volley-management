@@ -15,7 +15,6 @@
     using Data.Queries.Team;
     using Data.Queries.Tournament;
     using Domain.GamesAggregate;
-    using Domain.GroupTeamAggregate;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
@@ -65,6 +64,7 @@
         private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
         private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
+        private readonly IQuery<int, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
 
         #endregion
 
@@ -82,6 +82,7 @@
         /// <param name="getAllTournamentDivisionsQuery">Get All Tournament Divisions query.</param>
         /// <param name="getAllTournamentGroupsQuery">Get All Tournament Groups query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
+        /// <param name="getTournamenrByGroupQuery">Get tournament by given group query.</param>
         /// <param name="authService">Authorization service</param>
         /// <param name="gameService">The game service</param>
         public TournamentService(
@@ -94,6 +95,7 @@
             IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
             IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
+            IQuery<int, TournamentByGroupCriteria> getTournamenrByGroupQuery,
             IAuthorizationService authService,
             IGameService gameService)
         {
@@ -106,6 +108,7 @@
             _getAllTournamentDivisionsQuery = getAllTournamentDivisionsQuery;
             _getAllTournamentGroupsQuery = getAllTournamentGroupsQuery;
             _getTournamentDtoQuery = getTournamentDtoQuery;
+            _getTournamenrByGroupQuery = getTournamenrByGroupQuery;
             _authService = authService;
             _gameService = gameService;
         }
@@ -227,6 +230,11 @@
             return _getByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
+        public int GetTournamentByGroup(int groupId)
+        {
+            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
+        }
+
         /// <summary>
         /// Edit tournament
         /// </summary>
@@ -258,23 +266,26 @@
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
-        public void AddTeamsToTournament(IEnumerable<GroupTeam> groupTeam)
+        public void AddTeamsToTournament(IEnumerable<GroupTeamRelationship> groupTeam)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
 
-            if (groupTeam.Count() == 0)
+            var groupTeamsCount = groupTeam.Count();
+
+            if (groupTeamsCount == 0)
             {
                 throw new ArgumentException(
                     TournamentResources.CollectionIsEmpty);
             }
 
-            if (groupTeam.Select(g => g.GroupId).Count() != groupTeam.Select(t => t.TeamId).Count())
+            if (groupTeam.Any(g => g.GroupId == 0 || g.TeamId == 0))
             {
                 throw new ArgumentException(
-                    TournamentResources.NumberOfGroupsAreNotEqualToNumberOfTeams);
+                   TournamentResources.CollectionIsNotFull);
             }
 
-            var allTeams = GetAllTournamentTeams(groupTeam.First().TournamentId);
+            var tournamentId = GetTournamentByGroup(groupTeam.First().GroupId);
+            var allTeams = GetAllTournamentTeams(tournamentId);
 
             foreach (var item in groupTeam)
             {
@@ -291,8 +302,8 @@
                 }
             }
 
-            var count = allTeams.Count() + groupTeam.Count();
-            CreateSchedule(groupTeam.First().TournamentId, count);
+            var count = allTeams.Count() + groupTeamsCount;
+            CreateSchedule(tournamentId, count);
 
             _tournamentRepository.UnitOfWork.Commit();
         }

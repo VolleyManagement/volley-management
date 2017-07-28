@@ -70,6 +70,7 @@
     <Compile Include="Authorization\IUserService.cs" />
     <Compile Include="Exceptions\AuthorizationException.cs" />
     <Compile Include="Exceptions\MissingEntityException.cs" />
+    <Compile Include="GroupTeamRelationship.cs" />
     <Compile Include="ICacheProvider.cs" />
     <Compile Include="ICaptchaManager.cs" />
     <Compile Include="IContributorTeamService.cs" />

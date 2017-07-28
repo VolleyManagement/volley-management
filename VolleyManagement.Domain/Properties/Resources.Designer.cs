@@ -61,11 +61,20 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can&apos;t  add empty teams collection.
+        ///   Looks up a localized string similar to Teams and groups are empty.
         /// </summary>
         public static string CollectionIsEmpty {
             get {
                 return ResourceManager.GetString("CollectionIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Teams or groups were not selected.
+        /// </summary>
+        public static string CollectionIsNotFull {
+            get {
+                return ResourceManager.GetString("CollectionIsNotFull", resourceCulture);
             }
         }
         
@@ -291,15 +300,6 @@ namespace VolleyManagement.Domain.Properties {
         public static string NoTeamsInGame {
             get {
                 return ResourceManager.GetString("NoTeamsInGame", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Number of selected groups are not equal to selected teams.
-        /// </summary>
-        public static string NumberOfGroupsAreNotEqualToNumberOfTeams {
-            get {
-                return ResourceManager.GetString("NumberOfGroupsAreNotEqualToNumberOfTeams", resourceCulture);
             }
         }
         

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Collections.Generic;
-    using Domain.GroupTeamAggregate;
+    using Contracts;
     using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
 
@@ -85,7 +85,7 @@
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
-        void AddTeamsToTournament(IEnumerable<GroupTeam> groupTeam);
+        void AddTeamsToTournament(IEnumerable<GroupTeamRelationship> groupTeam);
 
         /// <summary>
         /// Deletes team from tournament

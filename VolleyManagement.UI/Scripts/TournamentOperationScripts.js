@@ -23,7 +23,7 @@
         .attr("data-valmsg-for", "Divisions[" + divisionsCount + "].Name")
         .attr("data-valmsg-replace", "true");
     var newDivisionRemoveLink = $("<a> " + divisionsDefault.removeName + " </a>").attr("id", "Remove_Division_" + divisionsCount + "_Id")
-        .attr("class", "ui-button")
+        .attr("class", "link-button")
         .attr("onclick", "removeDivision(" + divisionsCount + ", " + countLimits.maxDivisionsCount + ", " + countLimits.minDivisionsCount + ", " + countLimits.maxGroupsCount + ", " + countLimits.minGroupsCount + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
     var newDivisionGroupsWrapper = $("<div></div>").attr("class", "division-groups-wrapper");
     var newDivisionGroupsTitleWrapper = $("<div></div>").attr("class", "editor-label");
@@ -95,7 +95,7 @@ function createGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount, grou
         .attr("dara-valmsg-for", "Divisions[" + divisionIdx + "].Groups[" + groupIdx + "].Name")
         .attr("data-valmsg-replace", "true");
     var newRemoveGroupLink = $("<a> " + removeGroupDefaultName + "</a>").attr("id", "Remove_Division_" + divisionIdx + "_Group_" + groupIdx)
-        .attr("class", "ui-button")
+        .attr("class", "link-button")
         .attr("onclick", "removeGroup(" + divisionIdx + ", " + groupIdx + ", " + maxGroupsCount + ", " + minGroupsCount + ")");
 
     $(newGroupWrapper).append(newGroupHidden);

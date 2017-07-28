@@ -85,7 +85,7 @@
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
-        void AddTeamsToTournament(IEnumerable<GroupTeamRelationship> groupTeam);
+        void AddTeamsToTournament(IEnumerable<TeamToGroupInsert> groupTeam);
 
         /// <summary>
         /// Deletes team from tournament

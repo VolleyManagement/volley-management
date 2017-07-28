@@ -26,7 +26,7 @@
         /// </summary>
         /// <param name="groupTeam">Domain group and team</param>
         /// <returns>View model object</returns>
-        public static GroupTeamViewModel Map(GroupTeamRelationship groupTeam)
+        public static GroupTeamViewModel Map(TeamToGroupInsert groupTeam)
         {
             return new GroupTeamViewModel
             {
@@ -39,9 +39,9 @@
         /// Maps presentation entity to domain
         /// </summary>
         /// <returns>Domain object</returns>
-        public GroupTeamRelationship ToDomain()
+        public TeamToGroupInsert ToDomain()
         {
-            return new GroupTeamRelationship
+            return new TeamToGroupInsert
             {
                 GroupId = GroupId,
                 TeamId = TeamId

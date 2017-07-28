@@ -70,15 +70,6 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Teams or groups were not selected.
-        /// </summary>
-        public static string CollectionIsNotFull {
-            get {
-                return ResourceManager.GetString("CollectionIsNotFull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The number of divisions in the tournament must be between {0} and {1}.
         /// </summary>
         public static string DivisionCountOutOfRange {

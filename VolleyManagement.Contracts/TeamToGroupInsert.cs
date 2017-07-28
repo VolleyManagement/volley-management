@@ -6,7 +6,7 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    public class GroupTeamRelationship
+    public class TeamToGroupInsert
     {
         /// <summary>
         /// Gets or sets a value of TeamId.

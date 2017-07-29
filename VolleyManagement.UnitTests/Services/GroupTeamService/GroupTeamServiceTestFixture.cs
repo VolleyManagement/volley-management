@@ -4,7 +4,7 @@
     using System.Diagnostics.CodeAnalysis;
     using Domain.TeamsAggregate;
     using PlayerService;
-    using VolleyManagement.Domain.GroupTeamAggregate;
+    using VolleyManagement.Contracts;
 
     /// <summary>
     /// Class for generating test data
@@ -15,7 +15,7 @@
         /// <summary>
         /// Holds collection of teams and groups
         /// </summary>
-        private List<GroupTeam> _groupteams = new List<GroupTeam>();
+        private List<TeamTournamentAssignmentDto> _groupteams = new List<TeamTournamentAssignmentDto>();
 
         /// <summary>
         /// Holds collection of teams and groups
@@ -30,23 +30,20 @@
         {
             _playerBuilder = new PlayerBuilder();
 
-            _groupteams.Add(new GroupTeam()
+            _groupteams.Add(new TeamTournamentAssignmentDto()
             {
                 GroupId = 1,
                 TeamId = 1,
-                TournamentId = 1,
             });
-            _groupteams.Add(new GroupTeam()
+            _groupteams.Add(new TeamTournamentAssignmentDto()
             {
                 GroupId = 2,
                 TeamId = 2,
-                TournamentId = 1,
             });
-            _groupteams.Add(new GroupTeam()
+            _groupteams.Add(new TeamTournamentAssignmentDto()
             {
                 GroupId = 1,
                 TeamId = 3,
-                TournamentId = 1,
             });
             return this;
         }
@@ -56,7 +53,7 @@
         /// </summary>
         /// <param name="newGroupTeam">Team to add.</param>
         /// <returns>Builder object with collection of teams.</returns>
-        public GroupTeamServiceTestFixture AddTeam(GroupTeam newGroupTeam)
+        public GroupTeamServiceTestFixture AddTeam(TeamTournamentAssignmentDto newGroupTeam)
         {
             _groupteams.Add(newGroupTeam);
             return this;
@@ -66,7 +63,7 @@
         /// Builds test data
         /// </summary>
         /// <returns>Team collection</returns>
-        public List<GroupTeam> Build()
+        public List<TeamTournamentAssignmentDto> Build()
         {
             return _groupteams;
         }

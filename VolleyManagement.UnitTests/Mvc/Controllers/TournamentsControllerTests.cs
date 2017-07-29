@@ -14,7 +14,6 @@
     using Moq;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.GroupTeamAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentRequestAggregate;
@@ -344,9 +343,11 @@
         {
             // Arrange
             var testData = CreateTestTeams();
+            var testsData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
-            var testGroupData = CreateTestGroups();
             var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
+            _tournamentServiceMock
+                .Setup(ts => ts.AddTeamsToTournament(testsData));
             var sut = BuildSUT();
 
             // Act
@@ -371,7 +372,7 @@
             var testData = CreateTestTeams();
             var testGroupData = CreateTestGroups();
             _tournamentServiceMock
-                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<GroupTeam>>()))
+                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<TeamTournamentAssignmentDto>>()))
                 .Throws(new ArgumentException(string.Empty));
 
             var sut = BuildSUT();
@@ -1241,11 +1242,8 @@
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
             var newTournamentRequest = new TournamentRequestBuilder()
-               .WithId(TEST_ID)
-               .WithTeamId(TEST_ID)
-               .WithGroupId(TEST_ID)
-               .WithUserId(TEST_ID)
                .Build();
+            CreateTestTeams();
             var sut = BuildSUT();
 
             // Act

@@ -343,11 +343,11 @@
         {
             // Arrange
             var testData = CreateTestTeams();
-            var testsData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
+            var groupTeamService = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
             _tournamentServiceMock
-                .Setup(ts => ts.AddTeamsToTournament(testsData));
+                .Setup(ts => ts.AddTeamsToTournament(groupTeamService));
             var sut = BuildSUT();
 
             // Act

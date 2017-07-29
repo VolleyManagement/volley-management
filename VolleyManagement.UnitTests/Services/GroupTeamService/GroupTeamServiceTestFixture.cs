@@ -49,6 +49,22 @@
         }
 
         /// <summary>
+        /// Return test collection of teams and groups
+        /// </summary>
+        /// <returns>Builder object with collection of teams and groups</returns>
+        public GroupTeamServiceTestFixture TestGroupsTeamsWithTeamInSecondDivision()
+        {
+            _playerBuilder = new PlayerBuilder();
+
+            _groupteams.Add(new TeamTournamentAssignmentDto()
+            {
+                GroupId = 4,
+                TeamId = 1,
+            });
+            return this;
+        }
+
+        /// <summary>
         /// Add player to collection.
         /// </summary>
         /// <param name="newGroupTeam">Team to add.</param>

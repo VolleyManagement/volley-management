@@ -750,7 +750,6 @@
             // Arrange
             var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
-            MockGetAllTournamentGroupTeamQuery(new GroupTeamServiceTestFixture().Build());
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
             var sut = BuildSUT();
@@ -908,6 +907,31 @@
             VerifyExceptionThrown(
                 exception,
                 new ArgumentException(argExMessage));
+        }
+
+        /// <summary>
+        /// Test for AddTeamsToTournament method.
+        /// Valid teams have to be added.
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_AddTeamInSecondDivision_TeamIsAdded()
+        {
+            // Arrange
+            var testData = new GroupTeamServiceTestFixture().TestGroupsTeamsWithTeamInSecondDivision().Build();
+            MockGetAllTournamentGroupTeamQuery(testData);
+            var tournament = new TournamentBuilder().Build();
+            MockGetByIdQuery(tournament);
+            var teamsToAddInSecondDivision = new List<Team>();
+            teamsToAddInSecondDivision.Add(new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build());
+            MockGetAllTournamentTeamsQuery(teamsToAddInSecondDivision);
+            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            var sut = BuildSUT();
+
+            // Act
+            sut.AddTeamsToTournament(testData);
+
+            // Assert
+            VerifyTeamsAdded(Times.Exactly(testData.Count), Times.Once());
         }
 
         #endregion

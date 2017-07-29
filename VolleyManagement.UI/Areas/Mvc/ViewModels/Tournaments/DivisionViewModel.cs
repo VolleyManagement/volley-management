@@ -59,6 +59,21 @@
         /// </summary>
         public bool IsEmpty { get; set; }
 
+        /// <summary>
+        /// Gets a value indicating whether count groups is min.
+        /// </summary>
+        public bool IsGroupsCountMin
+        {
+            get { return Groups.Count <= Constants.Group.MIN_GROUPS_COUNT; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether count of groups is max.
+        /// </summary>
+        public bool IsGroupsCountMax
+        {
+            get { return Groups.Count == Constants.Group.MAX_GROUPS_COUNT; }
+        }
         #region Factory methods
 
         /// <summary>

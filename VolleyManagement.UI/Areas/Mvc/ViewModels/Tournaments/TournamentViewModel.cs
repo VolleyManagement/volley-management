@@ -155,6 +155,22 @@
         }
 
         /// <summary>
+        /// Gets a value indicating whether count of divisions is min
+        /// </summary>
+        public bool IsDivisionsCountMin
+        {
+            get { return Divisions.Count <= Constants.Division.MIN_DIVISIONS_COUNT; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether count of divisions is max
+        /// </summary>
+        public bool IsDivisionsCountMax
+        {
+            get { return Divisions.Count == Constants.Division.MAX_DIVISIONS_COUNT; }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether transfer enabled state
         /// </summary>
         public bool IsTransferEnabled { get; set; }

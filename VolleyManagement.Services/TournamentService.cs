@@ -261,11 +261,11 @@
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
-        public void AddTeamsToTournament(IEnumerable<TeamTournamentAssignmentDto> groupTeam)
+        public void AddTeamsToTournament(List<TeamTournamentAssignmentDto> groupTeam)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
 
-            var groupTeamCount = groupTeam.Count();
+            var groupTeamCount = groupTeam.Count;
 
             if (groupTeamCount == 0)
             {

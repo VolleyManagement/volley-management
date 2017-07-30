@@ -347,18 +347,18 @@
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
 
             var expectedDataResult = new TournamentTeamsListViewModelTestFixture()
-                .TestTournamentTeams().Build();
+                .TestTournamentTeams();
 
             var sut = BuildSUT();
 
             // Act
             var jsonResult =
-                sut.AddTeamsToTournament(expectedDataResult.First());
+                sut.AddTeamsToTournament(expectedDataResult);
             var returnedDataResult = jsonResult.Data as TournamentTeamsListViewModel;
 
             // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
-                .AreEqual(returnedDataResult, expectedDataResult.First()));
+                .AreEqual(returnedDataResult, expectedDataResult));
         }
 
         /// <summary>

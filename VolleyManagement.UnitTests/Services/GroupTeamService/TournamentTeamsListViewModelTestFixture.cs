@@ -24,9 +24,9 @@
         /// Return test collection of teams and groupteams
         /// </summary>
         /// <returns>Builder object with collection of teams and groupteams</returns>
-        public TournamentTeamsListViewModelTestFixture TestTournamentTeams()
+        public TournamentTeamsListViewModel TestTournamentTeams()
         {
-            _groupsteams.Add(new TournamentTeamsListViewModel()
+            return new TournamentTeamsListViewModel()
             {
                 TeamsList = new List<TeamNameViewModel>
                 {
@@ -55,8 +55,7 @@
                     },
                 },
                 TournamentId = 1,
-            });
-            return this;
+            };
         }
 
         /// <summary>

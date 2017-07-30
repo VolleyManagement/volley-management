@@ -9,10 +9,11 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
-    /// Class for generating test data
+    /// Class for generating Teams with specific Id, Name
+    /// And for GroupTeams with TeamId and GroupId
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class TournamentTeamsListViewModelTest
+    public class TournamentTeamsListViewModelTestFixture
     {
         /// <summary>
         /// Holds collection of teams and groupteams
@@ -23,7 +24,7 @@
         /// Return test collection of teams and groupteams
         /// </summary>
         /// <returns>Builder object with collection of teams and groupteams</returns>
-        public TournamentTeamsListViewModelTest TestGroupsTeamsWithTeamInSecondDivision()
+        public TournamentTeamsListViewModelTestFixture TestTournamentTeams()
         {
             _groupsteams.Add(new TournamentTeamsListViewModel()
             {

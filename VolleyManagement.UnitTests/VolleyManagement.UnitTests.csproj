@@ -211,7 +211,7 @@
     <Compile Include="Services\GameService\GameTestFixture.cs" />
     <Compile Include="Services\GameService\ScoreComparer.cs" />
     <Compile Include="Services\GroupTeamService\GroupTeamServiceTestFixture.cs" />
-    <Compile Include="Services\GroupTeamService\TournamentTeamsListViewModelTest.cs" />
+    <Compile Include="Services\GroupTeamService\TournamentTeamsListViewModelTestFixture.cs" />
     <Compile Include="Services\MailService\EmailMessageBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerBuilder.cs" />
     <Compile Include="Services\PlayerService\PlayerComparer.cs" />
@@ -232,6 +232,9 @@
     <Compile Include="Services\TournamentRequestService\TournamentRequestComparer.cs" />
     <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTestFixture.cs" />
     <Compile Include="Services\TournamentRequestService\TournamentRequestServiceTests.cs" />
+    <Compile Include="Services\TournamentService\DivisionComparer.cs" />
+    <Compile Include="Services\TournamentService\DivisionTestFixture.cs" />
+    <Compile Include="Services\TournamentService\GroupComparer.cs" />
     <Compile Include="Services\TournamentService\GroupTestFixture.cs" />
     <Compile Include="Services\TournamentService\TournamentBuilder.cs" />
     <Compile Include="Services\TournamentService\TournamentComparer.cs" />

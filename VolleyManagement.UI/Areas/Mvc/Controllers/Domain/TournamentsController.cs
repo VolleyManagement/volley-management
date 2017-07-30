@@ -16,7 +16,6 @@
     using ViewModels.GameResults;
     using ViewModels.Teams;
     using ViewModels.Tournaments;
-    using VolleyManagement.Crosscutting.Contracts.MailService;
 
     /// <summary>
     /// Defines TournamentsController

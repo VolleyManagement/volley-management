@@ -13,13 +13,11 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Crosscutting.Contracts.MailService;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentRequestAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
@@ -30,7 +28,6 @@
     using VolleyManagement.UnitTests.Services.TeamService;
     using VolleyManagement.UnitTests.Services.TournamentRequestService;
     using VolleyManagement.UnitTests.Services.TournamentService;
-    using VolleyManagement.UnitTests.Services.UserManager;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -41,6 +38,7 @@
     {
         private const int TEST_ID = 1;
         private const int TEST_TOURNAMENT_ID = 1;
+        private const int TEST_DIVISION_ID = 1;
         private const int TEST_TEAM_ID = 1;
         private const int TEST_GROUP_ID = 1;
         private const int TEST_USER_ID = 1;
@@ -85,13 +83,9 @@
         private Mock<ITournamentRequestService> _tournamentRequestServiceMock =
             new Mock<ITournamentRequestService>();
 
-        private Mock<TournamentsController> _tournamentControllerMock = new Mock<TournamentsController>();
-
         private Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
-        private Mock<IMailService> _mailServiceMock = new Mock<IMailService>();
-        private Mock<IUserService> _userServiceMock = new Mock<IUserService>();
 
         /// <summary>
         /// Initializes test data.
@@ -106,10 +100,7 @@
             _currentUserServiceMock = new Mock<ICurrentUserService>();
             _httpContextMock = new Mock<HttpContextBase>();
             _httpRequestMock = new Mock<HttpRequestBase>();
-            _mailServiceMock = new Mock<IMailService>();
-            _userServiceMock = new Mock<IUserService>();
             _tournamentRequestServiceMock = new Mock<ITournamentRequestService>();
-            _tournamentControllerMock = new Mock<TournamentsController>();
             _httpContextMock.SetupGet(c => c.Request).Returns(_httpRequestMock.Object);
 
             _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
@@ -353,14 +344,11 @@
         {
             // Arrange
             var testData = CreateTestTeams();
-            var groupTeamService = new GroupTeamServiceTestFixture().TestGroupsTeamsWithTeamInSecondDivisionSecondGroup().Build();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
 
-            var expectedDataResult = new TournamentTeamsListViewModelTest()
-                .TestGroupsTeamsWithTeamInSecondDivision().Build();
+            var expectedDataResult = new TournamentTeamsListViewModelTestFixture()
+                .TestTournamentTeams().Build();
 
-            _tournamentServiceMock
-                .Setup(ts => ts.AddTeamsToTournament(groupTeamService));
             var sut = BuildSUT();
 
             // Act
@@ -1290,6 +1278,57 @@
             Assert.IsNotNull(result, INVALID_PARAMETR);
         }
 
+        [TestMethod]
+        public void GetAllAvailableTeams_TeamsExists_JsonResultIsReturned()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder()
+                .Build();
+            SetupGet(TEST_TOURNAMENT_ID, newTournament);
+            SetupGetNonTournamentTeams(CreateTestTeams(), TEST_TOURNAMENT_ID);
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.GetAllAvailableTeams(TEST_TOURNAMENT_ID);
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void GetAllAvailableDivisions_DivisionsExists_JsonResultIsReturned()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder()
+                .Build();
+            SetupGet(TEST_TOURNAMENT_ID, newTournament);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.GetAllAvailableDivisions(TEST_TOURNAMENT_ID);
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void GetAllAvailableGroups_GroupsExists_JsonResultIsReturned()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder()
+                .Build();
+            SetupGet(TEST_TOURNAMENT_ID, newTournament);
+            SetupGetTournamentGroups(CreateTestGroups(), TEST_DIVISION_ID);
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.GetAllAvailableGroups(TEST_DIVISION_ID);
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
         #endregion
 
         #region Private
@@ -1317,6 +1356,11 @@
         private List<Group> CreateTestGroups()
         {
             return new GroupTestFixture().TestGroups().Build();
+        }
+
+        private List<Division> CreateTestDivisions()
+        {
+            return new DivisionTestFixture().TestDivisions().Build();
         }
 
         private Tournament MakeTestTournament(int tournamentId)
@@ -1369,6 +1413,20 @@
             _tournamentServiceMock
                 .Setup(tr => tr.GetAllTournamentTeams(tournamentId))
                 .Returns(teams);
+        }
+
+        private void SetupGetTournamentDivisions(List<Division> divisions, int tournamentId)
+        {
+            _tournamentServiceMock
+                .Setup(tr => tr.GetAllTournamentDivisions(tournamentId))
+                .Returns(divisions);
+        }
+
+        private void SetupGetTournamentGroups(List<Group> groups, int divisionId)
+        {
+            _tournamentServiceMock
+                .Setup(tr => tr.GetAllTournamentGroups(divisionId))
+                .Returns(groups);
         }
 
         private void SetupGetNonTournamentTeams(List<Team> teams, int tournamentId)

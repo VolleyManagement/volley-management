@@ -38,6 +38,8 @@
         private const int SPECIFIC_TEAM_ID = 2;
         private const int SPECIFIC_TOURNAMENT_ID = 2;
         private const int EMPTY_TEAM_LIST_COUNT = 0;
+        private const int EMPTY_GROUP_LIST_COUNT = 0;
+        private const int EMPTY_DIVISION_LIST_COUNT = 0;
         private const int EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT = 4;
 
         private readonly DateTime _dateForCurrentState = new DateTime(2015, 09, 30);
@@ -204,6 +206,92 @@
 
             // Assert
             Assert.AreEqual(actual.Count, EMPTY_TEAM_LIST_COUNT);
+        }
+        #endregion
+
+        #region GetAllTournamentDivisions
+
+        /// <summary>
+        /// Test for GetAllTournamentDivisions method.
+        /// The method should return existing Divisions in specific tournament
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentDivisions_DivisionsExist_DivisionsReturned()
+        {
+            // Arrange
+            var testData = new DivisionTestFixture().TestDivisions().Build();
+            MockGetAllTournamentDivisionsQuery(testData);
+            var sut = BuildSUT();
+            var expected = new DivisionTestFixture().TestDivisions().Build();
+
+            // Act
+            var actual = sut.GetAllTournamentDivisions(It.IsAny<int>());
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new DivisionComparer());
+        }
+
+        /// <summary>
+        /// Test for GetAllTournamentDivisions method.
+        /// No divisions exists in tournament.
+        /// The method should return empty division list.
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentDivisions_DivisionsNotExist_EmptyDivisionListReturned()
+        {
+            // Arrange
+            var testData = new DivisionTestFixture().Build();
+            MockGetAllTournamentDivisionsQuery(testData);
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetAllTournamentDivisions(It.IsAny<int>());
+
+            // Assert
+            Assert.AreEqual(actual.Count, EMPTY_DIVISION_LIST_COUNT);
+        }
+        #endregion
+
+        #region GetAllTournamentGroups
+
+        /// <summary>
+        /// Test for GetAllTournamentGroups method.
+        /// The method should return existing Groups in specific tournament
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentGroups_GroupsExist_GroupsReturned()
+        {
+            // Arrange
+            var testData = new GroupTestFixture().TestGroups().Build();
+            MockGetAllTournamentGroupsQuery(testData);
+            var sut = BuildSUT();
+            var expected = new GroupTestFixture().TestGroups().Build();
+
+            // Act
+            var actual = sut.GetAllTournamentGroups(It.IsAny<int>());
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new GroupComparer());
+        }
+
+        /// <summary>
+        /// Test for GetAllTournamentGroups method.
+        /// No Groups exists in tournament.
+        /// The method should return empty Group list.
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentGroups_GroupsNotExist_EmptyGroupListReturned()
+        {
+            // Arrange
+            var testData = new GroupTestFixture().Build();
+            MockGetAllTournamentGroupsQuery(testData);
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetAllTournamentGroups(It.IsAny<int>());
+
+            // Assert
+            Assert.AreEqual(actual.Count, EMPTY_GROUP_LIST_COUNT);
         }
         #endregion
 
@@ -827,7 +915,6 @@
                 .Build();
 
             var teamsInTournament = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
-            MockGetAllTournamentGroupTeamQuery(teamsInTournament);
 
             MockGetTournamentIdByGroupId(teamsInTournament.First().GroupId);
             MockGetByIdQuery(tournament);
@@ -914,7 +1001,7 @@
         /// Valid teams have to be added.
         /// </summary>
         [TestMethod]
-        public void AddTeamsToTournament_AddTeamInSecondDivision_TeamIsAdded()
+        public void AddTeamsToTournament_AddTeamInSecondGroupOfSecondDivision_TeamIsAdded()
         {
             // Arrange
             var testData = new GroupTeamServiceTestFixture()
@@ -1257,6 +1344,11 @@
         private void MockGetAllTournamentTeamsQuery(List<Team> testData)
         {
             _getAllTournamentTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>())).Returns(testData);
+        }
+
+        private void MockGetAllTournamentDivisionsQuery(List<Division> testData)
+        {
+            _getAllTournamentDivisionsQuery.Setup(tr => tr.Execute(It.IsAny<TournamentDivisionsCriteria>())).Returns(testData);
         }
 
         private void MockGetAllTournamentGroupsQuery(List<Group> testData)

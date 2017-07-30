@@ -54,10 +54,10 @@
         }
 
         /// <summary>
-        /// Add player to collection.
+        /// Add teams and groups to collection.
         /// </summary>
         /// <param name="newGroupTeam">Team to add.</param>
-        /// <returns>Builder object with collection of teams.</returns>
+        /// <returns>Builder object with collection of teams and groups.</returns>
         public GroupTeamServiceTestFixture AddTeam(TeamTournamentAssignmentDto newGroupTeam)
         {
             _groupteams.Add(newGroupTeam);
@@ -67,7 +67,7 @@
         /// <summary>
         /// Builds test data
         /// </summary>
-        /// <returns>Team collection</returns>
+        /// <returns>Team and Group collection</returns>
         public List<TeamTournamentAssignmentDto> Build()
         {
             return _groupteams;

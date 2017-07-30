@@ -5,6 +5,8 @@
     using Domain.TeamsAggregate;
     using PlayerService;
     using VolleyManagement.Contracts;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Class for generating test data
@@ -48,11 +50,7 @@
             return this;
         }
 
-        /// <summary>
-        /// Return test collection of teams and groups
-        /// </summary>
-        /// <returns>Builder object with collection of teams and groups</returns>
-        public GroupTeamServiceTestFixture TestGroupsTeamsWithTeamInSecondDivision()
+        public GroupTeamServiceTestFixture TestGroupsTeamsWithTeamInSecondDivisionSecondGroup()
         {
             _playerBuilder = new PlayerBuilder();
 

@@ -13,20 +13,24 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using VolleyManagement.Contracts.Authorization;
+    using VolleyManagement.Crosscutting.Contracts.MailService;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
     using VolleyManagement.Domain.TournamentRequestAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
+    using VolleyManagement.Domain.UsersAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.GameService;
+    using VolleyManagement.UnitTests.Services.MailService;
     using VolleyManagement.UnitTests.Services.TeamService;
     using VolleyManagement.UnitTests.Services.TournamentRequestService;
     using VolleyManagement.UnitTests.Services.TournamentService;
+    using VolleyManagement.UnitTests.Services.UserManager;
 
     /// <summary>
     /// Tests for MVC TournamentController class.
@@ -81,9 +85,13 @@
         private Mock<ITournamentRequestService> _tournamentRequestServiceMock =
             new Mock<ITournamentRequestService>();
 
+        private Mock<TournamentsController> _tournamentControllerMock = new Mock<TournamentsController>();
+
         private Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
         private Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
+        private Mock<IMailService> _mailServiceMock = new Mock<IMailService>();
+        private Mock<IUserService> _userServiceMock = new Mock<IUserService>();
 
         /// <summary>
         /// Initializes test data.
@@ -98,8 +106,10 @@
             _currentUserServiceMock = new Mock<ICurrentUserService>();
             _httpContextMock = new Mock<HttpContextBase>();
             _httpRequestMock = new Mock<HttpRequestBase>();
+            _mailServiceMock = new Mock<IMailService>();
+            _userServiceMock = new Mock<IUserService>();
             _tournamentRequestServiceMock = new Mock<ITournamentRequestService>();
-
+            _tournamentControllerMock = new Mock<TournamentsController>();
             _httpContextMock.SetupGet(c => c.Request).Returns(_httpRequestMock.Object);
 
             _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
@@ -343,21 +353,24 @@
         {
             // Arrange
             var testData = CreateTestTeams();
-            var groupTeamService = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
+            var groupTeamService = new GroupTeamServiceTestFixture().TestGroupsTeamsWithTeamInSecondDivisionSecondGroup().Build();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
-            var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
+
+            var expectedDataResult = new TournamentTeamsListViewModelTest()
+                .TestGroupsTeamsWithTeamInSecondDivision().Build();
+
             _tournamentServiceMock
                 .Setup(ts => ts.AddTeamsToTournament(groupTeamService));
             var sut = BuildSUT();
 
             // Act
             var jsonResult =
-                sut.AddTeamsToTournament(expectedDataResult);
+                sut.AddTeamsToTournament(expectedDataResult.First());
             var returnedDataResult = jsonResult.Data as TournamentTeamsListViewModel;
 
             // Assert
             Assert.IsTrue(new TournamentTeamsListViewModelComparer()
-                .AreEqual(returnedDataResult, expectedDataResult));
+                .AreEqual(returnedDataResult, expectedDataResult.First()));
         }
 
         /// <summary>
@@ -1243,7 +1256,9 @@
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
             var newTournamentRequest = new TournamentRequestBuilder()
                .Build();
-            CreateTestTeams();
+            var tournament = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, tournament);
+
             var sut = BuildSUT();
 
             // Act

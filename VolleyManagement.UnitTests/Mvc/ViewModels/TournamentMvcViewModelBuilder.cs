@@ -60,7 +60,8 @@
                         TournamentId = TOURNAMENT_DEFAULT_ID,
                         Groups = new List<GroupViewModel>
                         {
-                            new GroupViewModel { Id = 3, Name = "Group 1", DivisionId = 2 }
+                            new GroupViewModel { Id = 3, Name = "Group 1", DivisionId = 2 },
+                            new GroupViewModel { Id = 4, Name = "Group 2", DivisionId = 2 }
                         }
                     }
                 }

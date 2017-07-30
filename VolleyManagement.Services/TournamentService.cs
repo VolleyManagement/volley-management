@@ -273,7 +273,7 @@
                     TournamentResources.CollectionIsEmpty);
             }
 
-            var tournamentId = GetTournamentByGroup(groupTeam.First().GroupId);
+            var tournamentId = GetTournamentByGroup(groupTeam[0].GroupId);
             var allTeams = GetAllTournamentTeams(tournamentId);
 
             foreach (var item in groupTeam)

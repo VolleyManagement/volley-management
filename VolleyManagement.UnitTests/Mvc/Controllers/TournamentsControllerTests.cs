@@ -347,7 +347,7 @@
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
 
             var expectedDataResult = new TournamentTeamsListViewModelTestFixture()
-                .TestTournamentTeams();
+                .TestTournamentTeams().Build();
 
             var sut = BuildSUT();
 

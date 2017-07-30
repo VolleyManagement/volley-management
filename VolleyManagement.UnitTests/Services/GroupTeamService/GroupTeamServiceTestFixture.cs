@@ -20,18 +20,11 @@
         private List<TeamTournamentAssignmentDto> _groupteams = new List<TeamTournamentAssignmentDto>();
 
         /// <summary>
-        /// Holds collection of teams and groups
-        /// </summary>
-        private PlayerBuilder _playerBuilder;
-
-        /// <summary>
         /// Return test collection of teams and groups
         /// </summary>
         /// <returns>Builder object with collection of teams and groups</returns>
         public GroupTeamServiceTestFixture TestGroupsTeams()
         {
-            _playerBuilder = new PlayerBuilder();
-
             _groupteams.Add(new TeamTournamentAssignmentDto()
             {
                 GroupId = 1,
@@ -52,8 +45,6 @@
 
         public GroupTeamServiceTestFixture TestGroupsTeamsWithTeamInSecondDivisionSecondGroup()
         {
-            _playerBuilder = new PlayerBuilder();
-
             _groupteams.Add(new TeamTournamentAssignmentDto()
             {
                 GroupId = 4,

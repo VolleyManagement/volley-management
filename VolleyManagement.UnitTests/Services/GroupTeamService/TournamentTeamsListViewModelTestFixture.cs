@@ -18,15 +18,15 @@
         /// <summary>
         /// Holds collection of teams and groupteams
         /// </summary>
-        private List<TournamentTeamsListViewModel> _groupsteams = new List<TournamentTeamsListViewModel>();
+        private TournamentTeamsListViewModel _groupsteams = new TournamentTeamsListViewModel();
 
         /// <summary>
         /// Return test collection of teams and groupteams
         /// </summary>
         /// <returns>Builder object with collection of teams and groupteams</returns>
-        public TournamentTeamsListViewModel TestTournamentTeams()
+        public TournamentTeamsListViewModelTestFixture TestTournamentTeams()
         {
-            return new TournamentTeamsListViewModel()
+            _groupsteams = new TournamentTeamsListViewModel()
             {
                 TeamsList = new List<TeamNameViewModel>
                 {
@@ -56,13 +56,14 @@
                 },
                 TournamentId = 1,
             };
+            return this;
         }
 
         /// <summary>
         /// Builds test data
         /// </summary>
         /// <returns>Team and GroupTeam collection</returns>
-        public List<TournamentTeamsListViewModel> Build()
+        public TournamentTeamsListViewModel Build()
         {
             return _groupsteams;
         }

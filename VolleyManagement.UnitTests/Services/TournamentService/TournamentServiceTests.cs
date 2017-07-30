@@ -917,14 +917,19 @@
         public void AddTeamsToTournament_AddTeamInSecondDivision_TeamIsAdded()
         {
             // Arrange
-            var testData = new GroupTeamServiceTestFixture().TestGroupsTeamsWithTeamInSecondDivision().Build();
+            var testData = new GroupTeamServiceTestFixture()
+                .TestGroupsTeamsWithTeamInSecondDivisionSecondGroup().Build();
             MockGetAllTournamentGroupTeamQuery(testData);
+
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
+
             var teamsToAddInSecondDivision = new List<Team>();
             teamsToAddInSecondDivision.Add(new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build());
             MockGetAllTournamentTeamsQuery(teamsToAddInSecondDivision);
+
             MockGetTournamentIdByGroupId(testData.First().GroupId);
+
             var sut = BuildSUT();
 
             // Act

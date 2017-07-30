@@ -122,6 +122,10 @@
         {
             var newTournamentRequest = new TournamentRequestBuilder()
                .Build();
+            _tournamentRequestRepositoryMock.Setup(
+                    tr => tr.Add(
+                        newTournamentRequest))
+                .Callback<TournamentRequest>(t => t.UserId = -1);
 
             // Arrange
             var sut = BuildSUT();

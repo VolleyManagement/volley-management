@@ -1242,15 +1242,20 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
+            var groupTeamViewModel = new GroupTeamViewModel
+            {
+                GroupId = 1,
+                TeamId = 1,
+            };
             var newTournamentRequest = new TournamentRequestBuilder()
                .Build();
-            var tournament = MakeTestTournament(TEST_TOURNAMENT_ID);
-            SetupGet(TEST_TOURNAMENT_ID, tournament);
+
+            _tournamentRequestServiceMock.Setup(m => m.Create(newTournamentRequest));
 
             var sut = BuildSUT();
 
             // Act
-            var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID);
+            var result = sut.ApplyForTournament(groupTeamViewModel);
 
             // Assert
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Once());

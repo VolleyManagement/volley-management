@@ -12,7 +12,6 @@
         {
             _tournamentRequest = new TournamentRequest
             {
-                Id = 1,
                 TeamId = 1,
                 GroupId = 1,
                 UserId = 1,

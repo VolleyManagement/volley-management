@@ -47,13 +47,18 @@
         {
             _groupteams.Add(new TeamTournamentAssignmentDto()
             {
+                GroupId = 1,
+                TeamId = 4,
+            });
+            _groupteams.Add(new TeamTournamentAssignmentDto()
+            {
                 GroupId = 2,
                 TeamId = 2,
             });
             _groupteams.Add(new TeamTournamentAssignmentDto()
             {
-                GroupId = 1,
-                TeamId = 4,
+                GroupId = 2,
+                TeamId = 5,
             });
             return this;
         }

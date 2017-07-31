@@ -275,7 +275,7 @@
 
             var tournamentId = GetTournamentByGroup(groupTeam[0].GroupId);
             var allTeams = GetAllTournamentTeams(tournamentId);
-            int teamAlreadyExist = 0;
+            int numberOfTeamAlreadyExist = 0;
 
             foreach (var item in groupTeam)
             {
@@ -287,11 +287,11 @@
                 }
                 else
                 {
-                    teamAlreadyExist++;
+                    numberOfTeamAlreadyExist++;
                 }
             }
 
-            if (teamAlreadyExist != 0)
+            if (numberOfTeamAlreadyExist != 0)
             {
                 throw new ArgumentException(
                     TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique);

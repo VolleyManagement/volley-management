@@ -1032,7 +1032,7 @@
         /// Valid teams have to be added.
         /// </summary>
         [TestMethod]
-        public void AddTeamsToTournament_AddTwoTeamsOneAlreadyExist_ValidationExceptionThrown()
+        public void AddTeamsToTournament_AddThreeTeamsTwoAlreadyExist_ValidationExceptionThrown()
         {
             // Arrange
             var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
@@ -1068,7 +1068,7 @@
                 exception,
                 new ArgumentException(argExMessage));
 
-            VerifyAddTeamsToTournament(Times.Once());
+            VerifyAddTeamsToTournament(Times.Exactly(2));
         }
 
         #endregion

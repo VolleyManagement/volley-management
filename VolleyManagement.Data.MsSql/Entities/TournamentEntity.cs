@@ -9,7 +9,6 @@ namespace VolleyManagement.Data.MsSql.Entities
     public class TournamentEntity
     {
         private List<DivisionEntity> _divisions;
-        private List<TeamEntity> _teams;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TournamentEntity"/> class.
@@ -17,7 +16,6 @@ namespace VolleyManagement.Data.MsSql.Entities
         public TournamentEntity()
         {
             _divisions = new List<DivisionEntity>();
-            _teams = new List<TeamEntity>();
         }
 
         /// <summary>
@@ -93,15 +91,6 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Gets or sets game results of the tournament.
         /// </summary>
         public virtual ICollection<GameResultEntity> GameResults { get; set; }
-
-        /// <summary>
-        /// Gets or sets collection of tournaments teams
-        /// </summary>
-        public virtual List<TeamEntity> Teams
-        {
-            get => _teams;
-            set => _teams = value;
-        }
 
         /// <summary>
         /// Gets or sets last time, when tournament was updated

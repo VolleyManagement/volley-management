@@ -62,7 +62,8 @@
                         TournamentId = TOURNAMENT_DEFAULT_ID,
                         Groups = new List<Group>
                         {
-                            new Group { Id = 3, Name = "Group 1", DivisionId = 2 }
+                            new Group { Id = 3, Name = "Group 1", DivisionId = 2 },
+                            new Group { Id = 4, Name = "Group 2", DivisionId = 2 }
                         }
                     }
                 }

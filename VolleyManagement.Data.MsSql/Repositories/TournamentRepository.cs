@@ -17,6 +17,8 @@
     {
         private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly DbSet<TeamEntity> _dalTeams;
+        private readonly DbSet<DivisionEntity> _dalDivisions;
+        private readonly DbSet<GroupEntity> _dalGroups;
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly ISpecification<TournamentEntity> _dbStorageSpecification = new TournamentsStorageSpecification();
 
@@ -29,6 +31,8 @@
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalTournaments = _unitOfWork.Context.Tournaments;
             _dalTeams = _unitOfWork.Context.Teams;
+            _dalDivisions = _unitOfWork.Context.Divisions;
+            _dalGroups = _unitOfWork.Context.Groups;
         }
 
         /// <summary>
@@ -84,16 +88,18 @@
         }
 
         /// <summary>
-        /// Adds team to the tournament
+        /// Add team to the tournament
         /// </summary>
         /// <param name="teamId">Team id to add</param>
-        /// <param name="tournamentId">Tournament id, where team is going to play</param>
-        public void AddTeamToTournament(int teamId, int tournamentId)
+        /// <param name="groupId">Group id to add</param>
+        public void AddTeamToTournament(int teamId, int groupId)
         {
-            var tournamentEntity = _dalTournaments.Find(tournamentId);
-            var teamEntity = _dalTeams.Find(teamId);
-
-            tournamentEntity.Teams.Add(teamEntity);
+            var group = from t in _dalTournaments
+                        join d in _dalDivisions on t.Id equals d.TournamentId
+                        join g in _dalGroups on d.Id equals g.DivisionId
+                        where g.Id == groupId
+                        select g;
+            group.First().Teams.Add(_dalTeams.Find(teamId));
         }
 
         /// <summary>
@@ -104,14 +110,24 @@
         public void RemoveTeamFromTournament(int teamId, int tournamentId)
         {
             var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
-            var teamEntity = tournamentEntity.Teams.SingleOrDefault(t => t.Id == teamId);
+            var teamEntity = tournamentEntity?.Divisions
+                                             .SelectMany(d => d.Groups)
+                                             .SelectMany(g => g.Teams)
+                                             .SingleOrDefault(t => t.Id == teamId);
 
             if (teamEntity == null)
             {
                 throw new ConcurrencyException();
             }
 
-            tournamentEntity.Teams.Remove(teamEntity);
+            foreach (var group in teamEntity.Groups)
+            {
+                if (group.Division.TournamentId == tournamentId)
+                {
+                    group.Teams.Remove(teamEntity);
+                    break;
+                }
+            }
         }
 
         private void MapIdentifiers(Tournament to, TournamentEntity from)

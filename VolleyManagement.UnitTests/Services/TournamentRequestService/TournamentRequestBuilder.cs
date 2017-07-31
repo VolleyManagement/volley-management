@@ -12,10 +12,9 @@
         {
             _tournamentRequest = new TournamentRequest
             {
-                Id = 1,
                 TeamId = 1,
-                TournamentId = 1,
-                UserId = 1
+                GroupId = 1,
+                UserId = 1,
             };
         }
 
@@ -31,9 +30,9 @@
             return this;
         }
 
-        public TournamentRequestBuilder WithTournamentId(int tournamentId)
+        public TournamentRequestBuilder WithGroupId(int groupId)
         {
-            _tournamentRequest.TournamentId = tournamentId;
+            _tournamentRequest.GroupId = groupId;
             return this;
         }
 

@@ -4,6 +4,7 @@
     using System.Web.Mvc;
     using Domain.TeamsAggregate;
     using Teams;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
 
     /// <summary>
     /// Represents the information of the teams to apply for the tournament.

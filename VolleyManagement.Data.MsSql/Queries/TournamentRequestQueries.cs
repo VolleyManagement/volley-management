@@ -70,7 +70,7 @@
         {
             return _unitOfWork.Context.TournamentRequests
                                       .Where(r => r.TeamId == criteria.TeamId)
-                                      .Where(r => r.TournamentId == criteria.TournamentId)
+                                      .Where(r => r.GroupId == criteria.GroupId)
                                       .Select(GetRequestMapping())
                                       .SingleOrDefault();
         }
@@ -88,7 +88,7 @@
                     Id = t.Id,
                     UserId = t.UserId,
                     TeamId = t.TeamId,
-                    TournamentId = t.TournamentId
+                    GroupId = t.GroupId
                 };
         }
 

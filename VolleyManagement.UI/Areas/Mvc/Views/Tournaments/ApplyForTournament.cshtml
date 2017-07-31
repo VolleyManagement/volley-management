@@ -1,4 +1,5 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentApplyViewModel
+﻿@using Resources.UI
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments.TournamentApplyViewModel
 @{
     ViewBag.Title = @Resources.UI.PlayerViews.ApplyForTournament;
 }
@@ -12,10 +13,14 @@
 }
 else
 {
-    <p>
-        @Html.DropDownListFor(x => x.TeamId,
-                new SelectList(Model.Teams, "Id", "Name"))
-    </p>
+    <table id="tournamentRoster">
+        <tr>
+            <td id="team">
+                @Html.DropDownListFor(x => x.TeamId,
+                        new SelectList(Model.Teams, "Id", "Name"))
+            </td>
+        </tr>
+    </table>
 
     <p>
         <input type="checkbox" name="agree" id="agree">@Resources.UI.PlayerViews.IAccept<a href="License">@Resources.UI.PlayerViews.TournamentRegulations</a>
@@ -28,5 +33,4 @@ else
             <span id="ajaxResultMessage"></span>
         </div>
 }
-
 @Scripts.Render("~/bundles/tournamentapplyscripts")

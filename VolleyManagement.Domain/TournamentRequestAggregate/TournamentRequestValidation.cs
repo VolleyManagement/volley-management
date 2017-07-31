@@ -34,5 +34,25 @@
         {
             return tournamentId <= 0;
         }
+
+        /// <summary>
+        /// Validates group id.
+        /// </summary>
+        /// <param name="groupId">Group for validation</param>
+        /// <returns>Validity of Group</returns>
+        public static bool ValidateGroupId(int groupId)
+        {
+            return groupId <= 0;
+        }
+
+        /// <summary>
+        /// Validates division id.
+        /// </summary>
+        /// <param name="divisionId">Group for validation</param>
+        /// <returns>Validity of Division</returns>
+        public static bool ValidateDivisionId(int divisionId)
+        {
+            return divisionId <= 0;
+        }
     }
 }

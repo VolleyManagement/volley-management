@@ -79,7 +79,9 @@
         {
             return _unitOfWork.Context.Tournaments
                                       .Where(t => t.Id == criteria.TournamentId)
-                                      .SelectMany(t => t.Teams)
+                                      .SelectMany(t => t.Divisions)
+                                      .SelectMany(d => d.Groups)
+                                      .SelectMany(g => g.Teams)
                                       .Select(GetTeamMapping())
                                       .ToList();
         }

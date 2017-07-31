@@ -26,7 +26,7 @@
         #region Operators overload
 
         /// <summary>
-        /// Implementing of "implicit" operator from <see cref="Int16"/>
+        /// Implementing of "implicit" operator from <see cref="short"/>
         /// </summary>
         /// <param name="id">Identifier of operation</param>
         /// <returns>instance of <see cref="AuthOperation"/> class</returns>
@@ -46,7 +46,7 @@
         }
 
         /// <summary>
-        /// Implementing of "implicit" operator from tuple of <see cref="Byte"/> parameters
+        /// Implementing of "implicit" operator from tuple of <see cref="byte"/> parameters
         /// </summary>
         /// <param name="parameters">Parameters of the instance of <see cref="AuthOperation"/> class</param>
         /// <returns>instance of <see cref="AuthOperation"/> class</returns>

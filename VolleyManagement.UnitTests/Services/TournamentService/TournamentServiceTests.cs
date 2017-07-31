@@ -6,7 +6,6 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
@@ -14,6 +13,8 @@
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Data.Exceptions;
     using VolleyManagement.Data.Queries.Common;
+    using VolleyManagement.Data.Queries.Division;
+    using VolleyManagement.Data.Queries.Group;
     using VolleyManagement.Data.Queries.Team;
     using VolleyManagement.Data.Queries.Tournament;
     using VolleyManagement.Domain.GamesAggregate;
@@ -23,6 +24,7 @@
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.TeamService;
+    using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
     /// Tests for TournamentService class.
@@ -33,9 +35,12 @@
     {
         private const int MINIMUM_REGISTRATION_PERIOD_MONTH = 3;
         private const int FIRST_TOURNAMENT_ID = 1;
+        private const int FIRST_DIVISION_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int SPECIFIC_TOURNAMENT_ID = 2;
         private const int EMPTY_TEAM_LIST_COUNT = 0;
+        private const int EMPTY_GROUP_LIST_COUNT = 0;
+        private const int EMPTY_DIVISION_LIST_COUNT = 0;
         private const int EXPECTED_NOTSTARTED_TOURNAMENTS_COUNT = 4;
 
         private readonly DateTime _dateForCurrentState = new DateTime(2015, 09, 30);
@@ -51,8 +56,12 @@
         private Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock;
         private Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getAllTournamentTeamsQuery;
+        private Mock<IQuery<List<Division>, TournamentDivisionsCriteria>> _getAllTournamentDivisionsQuery;
+        private Mock<IQuery<List<Group>, DivisionGroupsCriteria>> _getAllTournamentGroupsQuery;
+        private Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>> _getAllGroupsTeamsQuery;
         private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
+        private Mock<IQuery<int, TournamentByGroupCriteria>> _getTournamentId;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -70,8 +79,12 @@
             _getAllQueryMock = new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
             _getAllTournamentTeamsQuery = new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
+            _getAllTournamentDivisionsQuery = new Mock<IQuery<List<Division>, TournamentDivisionsCriteria>>();
+            _getAllTournamentGroupsQuery = new Mock<IQuery<List<Group>, DivisionGroupsCriteria>>();
             _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
+            _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
+            _getTournamentId = new Mock<IQuery<int, TournamentByGroupCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -194,6 +207,92 @@
 
             // Assert
             Assert.AreEqual(actual.Count, EMPTY_TEAM_LIST_COUNT);
+        }
+        #endregion
+
+        #region GetAllTournamentDivisions
+
+        /// <summary>
+        /// Test for GetAllTournamentDivisions method.
+        /// The method should return existing Divisions in specific tournament
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentDivisions_DivisionsExist_DivisionsReturned()
+        {
+            // Arrange
+            var testData = new DivisionTestFixture().TestDivisions().Build();
+            MockGetAllTournamentDivisionsQuery(testData);
+            var sut = BuildSUT();
+            var expected = new DivisionTestFixture().TestDivisions().Build();
+
+            // Act
+            var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new DivisionComparer());
+        }
+
+        /// <summary>
+        /// Test for GetAllTournamentDivisions method.
+        /// No divisions exists in tournament.
+        /// The method should return empty division list.
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentDivisions_DivisionsNotExist_EmptyDivisionListReturned()
+        {
+            // Arrange
+            var testData = new DivisionTestFixture().Build();
+            MockGetAllTournamentDivisionsQuery(testData);
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            Assert.AreEqual(actual.Count, EMPTY_DIVISION_LIST_COUNT);
+        }
+        #endregion
+
+        #region GetAllTournamentGroups
+
+        /// <summary>
+        /// Test for GetAllTournamentGroups method.
+        /// The method should return existing Groups in specific tournament
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentGroups_GroupsExist_GroupsReturned()
+        {
+            // Arrange
+            var testData = new GroupTestFixture().TestGroups().Build();
+            MockGetAllTournamentGroupsQuery(testData);
+            var sut = BuildSUT();
+            var expected = new GroupTestFixture().TestGroups().Build();
+
+            // Act
+            var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID);
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new GroupComparer());
+        }
+
+        /// <summary>
+        /// Test for GetAllTournamentGroups method.
+        /// No Groups exists in tournament.
+        /// The method should return empty Group list.
+        /// </summary>
+        [TestMethod]
+        public void GetAllTournamentGroups_GroupsNotExist_EmptyGroupListReturned()
+        {
+            // Arrange
+            var testData = new GroupTestFixture().Build();
+            MockGetAllTournamentGroupsQuery(testData);
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID);
+
+            // Assert
+            Assert.AreEqual(actual.Count, EMPTY_GROUP_LIST_COUNT);
         }
         #endregion
 
@@ -738,17 +837,17 @@
         public void AddTeamsToTournament_ValidTeamList_TeamsAreAdded()
         {
             // Arrange
-            var testData = new TeamServiceTestFixture().TestTeams().Build();
+            var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
             var sut = BuildSUT();
 
             // Act
-            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
+            sut.AddTeamsToTournament(testData);
 
             // Assert
-            VerifyTeamsAdded(FIRST_TOURNAMENT_ID, Times.Exactly(testData.Count), Times.Once());
+            VerifyTeamsAdded(Times.Exactly(testData.Count), Times.Once());
         }
 
         /// <summary>
@@ -762,14 +861,14 @@
             bool gotException = false;
 
             // Arrange
-            var testData = new TeamServiceTestFixture().TestTeams().Build();
-            MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().TestTeams().Build());
+            var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
+            MockGetAllTournamentGroupTeamQuery(new GroupTeamServiceTestFixture().TestGroupsTeams().Build());
             var sut = BuildSUT();
 
             // Act
             try
             {
-                sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
+                sut.AddTeamsToTournament(testData);
             }
             catch (ArgumentException)
             {
@@ -790,12 +889,12 @@
         public void AddTeamsToTournament_NoManageRights_ExceptionThrown()
         {
             // Arrange
-            var testData = new TeamServiceTestFixture().TestTeams().Build();
+            var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ManageTeams);
             var sut = BuildSUT();
 
             // Act
-            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
+            sut.AddTeamsToTournament(testData);
 
             // Assert
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Never());
@@ -811,11 +910,14 @@
         public void AddTeamsToTournament_ValidTeamListPlayOffScheme_ScheduleCreated()
         {
             // Arrange
-            var testData = new TeamServiceTestFixture().TestTeams().Build();
+            var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             var tournament = new TournamentBuilder()
                 .WithScheme(TournamentSchemeEnum.PlayOff)
                 .Build();
 
+            var teamsInTournament = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
+
+            MockGetTournamentIdByGroupId(teamsInTournament.First().GroupId);
             MockGetByIdQuery(tournament);
             var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQueryTwoCalls(new TeamServiceTestFixture().Build(), testTeamsData);
@@ -823,10 +925,150 @@
             var sut = BuildSUT();
 
             // Act
-            sut.AddTeamsToTournament(testData, FIRST_TOURNAMENT_ID);
+            sut.AddTeamsToTournament(testData);
 
             // Assert
             VerifyCreateSchedule(FIRST_TOURNAMENT_ID, Times.Once(), Times.Once());
+        }
+
+        /// <summary>
+        /// Test for AddTeamsToTournament() method. The method check if team already exist
+        /// Throw exeption
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_TeamIsAlreadyExist_ValidationExceptionThrown()
+        {
+            // Arrange
+            var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
+            MockGetAllTournamentGroupTeamQuery(testData);
+            var tournament = new TournamentBuilder().Build();
+            MockGetByIdQuery(tournament);
+            MockGetAllTournamentTeamsQuery(CreateTeamsInTournament());
+            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            var sut = BuildSUT();
+            Exception exception = null;
+            string argExMessage =
+                TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique;
+
+            // Act
+            try
+            {
+                sut.AddTeamsToTournament(testData);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage));
+        }
+
+        /// <summary>
+        /// Test for AddTeamsToTournament() method. The method check if list of new Teams is empty
+        /// Throw exeption
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_CollectionOfNewTeamsIsEmpty_ValidationExceptionThrown()
+        {
+            // Arrange
+            var testData = new GroupTeamServiceTestFixture().Build();
+
+            var sut = BuildSUT();
+            Exception exception = null;
+            string argExMessage =
+                TournamentResources.CollectionIsEmpty;
+
+            // Act
+            try
+            {
+                sut.AddTeamsToTournament(testData);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage));
+        }
+
+        /// <summary>
+        /// Test for AddTeamsToTournament method.
+        /// Valid teams have to be added.
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_AddTeamInSecondGroupOfSecondDivision_TeamIsAdded()
+        {
+            // Arrange
+            var testData = new GroupTeamServiceTestFixture()
+                .TestGroupsTeamsWithTeamInSecondDivisionSecondGroup().Build();
+            MockGetAllTournamentGroupTeamQuery(testData);
+
+            var tournament = new TournamentBuilder().Build();
+            MockGetByIdQuery(tournament);
+
+            var teamsToAddInSecondDivision = new List<Team>();
+            teamsToAddInSecondDivision.Add(new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build());
+            MockGetAllTournamentTeamsQuery(teamsToAddInSecondDivision);
+
+            MockGetTournamentIdByGroupId(testData.First().GroupId);
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.AddTeamsToTournament(testData);
+
+            // Assert
+            VerifyTeamsAdded(Times.Exactly(testData.Count), Times.Once());
+        }
+
+        /// <summary>
+        /// Test for AddTeamsToTournament method.
+        /// Valid teams have to be added.
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_AddThreeTeamsTwoAlreadyExist_ValidationExceptionThrown()
+        {
+            // Arrange
+            var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
+            MockGetAllTournamentGroupTeamQuery(testData);
+
+            var tournament = new TournamentBuilder().Build();
+            MockGetByIdQuery(tournament);
+            MockGetAllTournamentTeamsQuery(CreateTeamsInTournament());
+            MockGetTournamentIdByGroupId(testData.First().GroupId);
+
+            var newTeamsInTournament = new GroupTeamServiceTestFixture()
+                .TestGroupsTeamsWithAlreadyExistTeam().Build();
+
+            var sut = BuildSUT();
+
+            Exception exception = null;
+
+            string argExMessage =
+                TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique;
+
+            // Act
+            try
+            {
+                sut.AddTeamsToTournament(newTeamsInTournament);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage));
+
+            VerifyAddTeamsToTournament(Times.Exactly(2));
         }
 
         #endregion
@@ -1101,7 +1343,10 @@
                 _getByIdQueryMock.Object,
                 _getAllTeamsQuery.Object,
                 _getAllTournamentTeamsQuery.Object,
+                _getAllTournamentDivisionsQuery.Object,
+                _getAllTournamentGroupsQuery.Object,
                 _getTorunamentDto.Object,
+                _getTournamentId.Object,
                 _authServiceMock.Object,
                 _gameServiceMock.Object);
         }
@@ -1131,6 +1376,21 @@
             _getAllTournamentTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>())).Returns(testData);
         }
 
+        private void MockGetAllTournamentDivisionsQuery(List<Division> testData)
+        {
+            _getAllTournamentDivisionsQuery.Setup(tr => tr.Execute(It.IsAny<TournamentDivisionsCriteria>())).Returns(testData);
+        }
+
+        private void MockGetAllTournamentGroupsQuery(List<Group> testData)
+        {
+            _getAllTournamentGroupsQuery.Setup(tr => tr.Execute(It.IsAny<DivisionGroupsCriteria>())).Returns(testData);
+        }
+
+        private void MockGetAllTournamentGroupTeamQuery(List<TeamTournamentAssignmentDto> groupteam)
+        {
+            _getAllGroupsTeamsQuery.Setup(gt => gt.Execute(It.IsAny<GetAllCriteria>())).Returns(groupteam);
+        }
+
         private void MockGetAllTournamentTeamsQueryTwoCalls(List<Team> firstCallTestData, List<Team> secondCallTestData)
         {
             _getAllTournamentTeamsQuery.SetupSequence(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>()))
@@ -1146,6 +1406,11 @@
         private void MockAuthServiceThrowsExeption(AuthOperation operation)
         {
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
+        }
+
+        private void MockGetTournamentIdByGroupId(int testData)
+        {
+            _getTournamentId.Setup(tr => tr.Execute(It.IsAny<TournamentByGroupCriteria>())).Returns(testData);
         }
 
         private Tournament CreateAnyTournament(int id)
@@ -1222,6 +1487,16 @@
                             .Build();
         }
 
+        private List<Team> CreateTeamsInTournament()
+        {
+            var existingTeams = new List<Team>();
+            existingTeams.AddRange(new List<Team>
+            {
+                new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build(),
+            });
+            return existingTeams;
+        }
+
         private void VerifyCreateTournament(Tournament tournament, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
@@ -1234,9 +1509,9 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 
-        private void VerifyTeamsAdded(int tourmanentId, Times repositoryTimes, Times uowTimes)
+        private void VerifyTeamsAdded(Times repositoryTimes, Times uowTimes)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(It.IsAny<int>(), tourmanentId), repositoryTimes);
+            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()), repositoryTimes);
             _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
         }
 
@@ -1262,6 +1537,24 @@
             _gameServiceMock.Verify(gs => gs.RemoveAllGamesInTournament(tourmanentId), times);
             _gameServiceMock.Verify(gs => gs.AddGames(It.IsAny<List<Game>>()), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
+        }
+
+        private void VerifyAddTeamsToTournament(Times times)
+        {
+            _tournamentRepositoryMock.Verify(ts => ts.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()), times);
+        }
+
+        /// <summary>
+        /// Checks if exception was thrown and has appropriate message
+        /// Checks if thrown exceptions are of the same type
+        /// </summary>
+        /// <param name="exception">Exception that has been thrown</param>
+        /// <param name="expected">Expected exception</param>
+        private void VerifyExceptionThrown(Exception exception, Exception expected)
+        {
+            Assert.IsNotNull(exception);
+            Assert.IsTrue(exception.GetType().Equals(expected.GetType()), "Exception is of the wrong type");
+            Assert.IsTrue(exception.Message.Equals(expected.Message));
         }
 
         #endregion

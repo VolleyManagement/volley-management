@@ -12,11 +12,11 @@
     using Crosscutting.Contracts.Providers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.RolesAggregate;
     using VolleyManagement.Domain.TeamsAggregate;
+    using VolleyManagement.Domain.TournamentRequestAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
@@ -24,7 +24,9 @@
     using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.GameService;
+    using VolleyManagement.UnitTests.Services.MailService;
     using VolleyManagement.UnitTests.Services.TeamService;
+    using VolleyManagement.UnitTests.Services.TournamentRequestService;
     using VolleyManagement.UnitTests.Services.TournamentService;
 
     /// <summary>
@@ -36,7 +38,9 @@
     {
         private const int TEST_ID = 1;
         private const int TEST_TOURNAMENT_ID = 1;
+        private const int TEST_DIVISION_ID = 1;
         private const int TEST_TEAM_ID = 1;
+        private const int TEST_GROUP_ID = 1;
         private const int TEST_USER_ID = 1;
         private const int ANONYM_ID = -1;
         private const string TEST_TOURNAMENT_NAME = "Name";
@@ -97,7 +101,6 @@
             _httpContextMock = new Mock<HttpContextBase>();
             _httpRequestMock = new Mock<HttpRequestBase>();
             _tournamentRequestServiceMock = new Mock<ITournamentRequestService>();
-
             _httpContextMock.SetupGet(c => c.Request).Returns(_httpRequestMock.Object);
 
             _timeMock.Setup(tp => tp.UtcNow).Returns(_testDate);
@@ -152,7 +155,8 @@
         public void ManageTournamentTeams_TournamentTeamsExist_TeamsInCurrentTournamentAreReturned()
         {
             // Arrange
-            var testData = MakeTestTeams();
+            var testData = CreateTestTeams();
+            var testGroupData = CreateTestGroups();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
@@ -190,7 +194,7 @@
                 sut.ManageTournamentTeams(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.AreEqual(returnedTeamsList.Model.List.Count, EMPTY_TEAMLIST_COUNT);
+            Assert.AreEqual(returnedTeamsList.Model.TeamsList.Count, EMPTY_TEAMLIST_COUNT);
             Assert.AreEqual(returnedTeamsList.Referer, sut.Request.RawUrl);
         }
 
@@ -339,13 +343,17 @@
         public void AddTeamsToTournament_ValidTeamListViewModelNoException_JsonResultIsReturned()
         {
             // Arrange
-            var testData = MakeTestTeams();
-            var expectedDataResult = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
+            var testData = CreateTestTeams();
+            SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
+
+            var expectedDataResult = new TournamentTeamsListViewModelTestFixture()
+                .TestTournamentTeams().Build();
+
             var sut = BuildSUT();
 
             // Act
             var jsonResult =
-                sut.AddTeamsToTournament(new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID));
+                sut.AddTeamsToTournament(expectedDataResult);
             var returnedDataResult = jsonResult.Data as TournamentTeamsListViewModel;
 
             // Assert
@@ -362,9 +370,10 @@
         public void AddTeamsToTournament_InValidTeamListViewModelWithException_JsonModelErrorReturned()
         {
             // Arrange
-            var testData = MakeTestTeams();
+            var testData = CreateTestTeams();
+            var testGroupData = CreateTestGroups();
             _tournamentServiceMock
-                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<Team>>(), It.IsAny<int>()))
+                .Setup(ts => ts.AddTeamsToTournament(It.IsAny<List<TeamTournamentAssignmentDto>>()))
                 .Throws(new ArgumentException(string.Empty));
 
             var sut = BuildSUT();
@@ -432,7 +441,7 @@
             const int TEST_ROUND_COUNT = 3;
 
             var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
-            var testTeams = MakeTestTeams();
+            var testTeams = CreateTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
             SetupGetTournamentNumberOfRounds(testTournament, TEST_ROUND_COUNT);
@@ -572,7 +581,7 @@
             SetupGetGame(TEST_ID, testGame);
 
             var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
-            var testTeams = MakeTestTeams();
+            var testTeams = CreateTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
             SetupGetTournamentNumberOfRounds(testTournament, TEST_ROUND_COUNT);
@@ -1188,7 +1197,7 @@
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
-            SetupGetNonTournamentTeams(MakeTestTeams(), TEST_TOURNAMENT_ID);
+            SetupGetNonTournamentTeams(CreateTestTeams(), TEST_TOURNAMENT_ID);
 
             var expected = MakeTestTournamentApplyViewModel();
             var sut = BuildSUT();
@@ -1222,7 +1231,7 @@
             var sut = BuildSUT();
 
             // Act
-            var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var result = sut.ApplyForTournament(MakeTestGroupTeamViewModel());
 
             // Assert
             Assert.IsNotNull(result, JSON_NO_RIGHTS_MESSAGE);
@@ -1233,13 +1242,14 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
+
             var sut = BuildSUT();
 
             // Act
-            var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var result = sut.ApplyForTournament(MakeTestGroupTeamViewModel());
 
             // Assert
-            VerifyCreateTournamentRequest(TEST_USER_ID, TEST_TOURNAMENT_ID, TEST_TEAM_ID, Times.Once());
+            VerifyCreateTournamentRequest(Times.Once());
             Assert.IsNotNull(result, JSON_OK_MSG);
         }
 
@@ -1248,14 +1258,65 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
-            SetupTournamentRequestServiceThrowsArgumentException(TEST_USER_ID, TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            SetupTournamentRequestServiceThrowsArgumentException();
             var sut = BuildSUT();
 
             // Act
-            var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID, TEST_TEAM_ID);
+            var result = sut.ApplyForTournament(MakeTestGroupTeamViewModel());
 
             // Assert
             Assert.IsNotNull(result, INVALID_PARAMETR);
+        }
+
+        [TestMethod]
+        public void GetAllAvailableTeams_TeamsExists_JsonResultIsReturned()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder()
+                .Build();
+            SetupGet(TEST_TOURNAMENT_ID, newTournament);
+            SetupGetNonTournamentTeams(CreateTestTeams(), TEST_TOURNAMENT_ID);
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.GetAllAvailableTeams(TEST_TOURNAMENT_ID);
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void GetAllAvailableDivisions_DivisionsExists_JsonResultIsReturned()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder()
+                .Build();
+            SetupGet(TEST_TOURNAMENT_ID, newTournament);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.GetAllAvailableDivisions(TEST_TOURNAMENT_ID);
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void GetAllAvailableGroups_GroupsExists_JsonResultIsReturned()
+        {
+            // Arrange
+            var newTournament = new TournamentBuilder()
+                .Build();
+            SetupGet(TEST_TOURNAMENT_ID, newTournament);
+            SetupGetTournamentGroups(CreateTestGroups(), TEST_DIVISION_ID);
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.GetAllAvailableGroups(TEST_DIVISION_ID);
+
+            // Assert
+            Assert.IsNotNull(result);
         }
 
         #endregion
@@ -1277,9 +1338,19 @@
             return new TournamentServiceTestFixture().TestTournaments().Build();
         }
 
-        private List<Team> MakeTestTeams()
+        private List<Team> CreateTestTeams()
         {
             return new TeamServiceTestFixture().TestTeams().Build();
+        }
+
+        private List<Group> CreateTestGroups()
+        {
+            return new GroupTestFixture().TestGroups().Build();
+        }
+
+        private List<Division> CreateTestDivisions()
+        {
+            return new DivisionTestFixture().TestDivisions().Build();
         }
 
         private Tournament MakeTestTournament(int tournamentId)
@@ -1300,6 +1371,15 @@
         private GameViewModel MakeTestGameViewModel()
         {
             return new GameViewModelBuilder().Build();
+        }
+
+        private GroupTeamViewModel MakeTestGroupTeamViewModel()
+        {
+            return new GroupTeamViewModel
+            {
+                GroupId = 1,
+                TeamId = 1,
+            };
         }
 
         private Game MakeTestGame()
@@ -1332,6 +1412,20 @@
             _tournamentServiceMock
                 .Setup(tr => tr.GetAllTournamentTeams(tournamentId))
                 .Returns(teams);
+        }
+
+        private void SetupGetTournamentDivisions(List<Division> divisions, int tournamentId)
+        {
+            _tournamentServiceMock
+                .Setup(tr => tr.GetAllTournamentDivisions(tournamentId))
+                .Returns(divisions);
+        }
+
+        private void SetupGetTournamentGroups(List<Group> groups, int divisionId)
+        {
+            _tournamentServiceMock
+                .Setup(tr => tr.GetAllTournamentGroups(divisionId))
+                .Returns(groups);
         }
 
         private void SetupGetNonTournamentTeams(List<Team> teams, int tournamentId)
@@ -1400,9 +1494,9 @@
             _currentUserServiceMock.Setup(m => m.GetCurrentUserId()).Returns(userId);
         }
 
-        private void SetupTournamentRequestServiceThrowsArgumentException(int userId, int tournamentId, int teamId)
+        private void SetupTournamentRequestServiceThrowsArgumentException()
         {
-            _tournamentRequestServiceMock.Setup(ts => ts.Create(userId, tournamentId, teamId))
+            _tournamentRequestServiceMock.Setup(ts => ts.Create(It.IsAny<TournamentRequest>()))
                 .Throws(new ArgumentException(INVALID_PARAMETR));
         }
 
@@ -1431,9 +1525,9 @@
             _gameServiceMock.Verify(gs => gs.Create(It.IsAny<Game>()), times);
         }
 
-        private void VerifyCreateTournamentRequest(int userId, int tournamentId, int teamId, Times times)
+        private void VerifyCreateTournamentRequest(Times times)
         {
-            _tournamentRequestServiceMock.Verify(ts => ts.Create(userId, tournamentId, teamId), times);
+            _tournamentRequestServiceMock.Verify(ts => ts.Create(It.IsAny<TournamentRequest>()), times);
         }
 
         private void VerifySwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)

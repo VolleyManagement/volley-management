@@ -165,12 +165,12 @@
             {
                 string divisionWrapperId = String.Format("Division_{0}_Id", i);
                 string divisionGroupsListWrapperId = String.Format("Division_{0}_Groups", i);
-                string removeDivisionGroupsListWrapperId = String.Format("Remove_{0}", divisionGroupsListWrapperId);
+                string removeDivisionGroupsListWrapperId = String.Format("Remove_{0}", divisionWrapperId);
 
                 <div id=@divisionWrapperId>
                     @Html.HiddenFor(model => model.Divisions[i].Id)
                     <div class="editor-field">
-                        @Html.EditorFor(model => model.Divisions[i].Name, new { Name = "Divisions[@i].Name" })
+                        @Html.TextBoxFor(model => model.Divisions[i].Name, new { Name = "Divisions[@i].Name", disabled = "disabled" })
                         @Html.ValidationMessageFor(model => model.Divisions[i].Name)
                         @if (Model.Divisions[i].IsEmpty)
                         {
@@ -192,7 +192,7 @@
 
                                 <div id=@groupWrapperId class="editor-field group-editor">
                                     @Html.HiddenFor(model => model.Divisions[i].Groups[j].Id)
-                                    @Html.EditorFor(model => model.Divisions[i].Groups[j].Name, new { name = "Divisions[@i].Groups[@j].Name" })
+                                    @Html.TextBoxFor(model => model.Divisions[i].Groups[j].Name, new { name= "Divisions[@i].Groups[@j].Name", disabled= "disabled" })
                                     @Html.ValidationMessageFor(model => model.Divisions[i].Groups[j].Name)
 
                                     @if (Model.Divisions[i].Groups[j].IsEmpty)

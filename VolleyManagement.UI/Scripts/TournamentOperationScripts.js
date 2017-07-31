@@ -178,7 +178,7 @@ function removeGroup(divisionIdx, groupIdx, maxGroupsCount, minGroupsCount) {
 }
 
 function hideRemoveLink(elementsPlacement, elementsAmount, minElementsNumber) {
-    if (elementsAmount <= minElementsNumber) {
+    if (elementsAmount == minElementsNumber) {
         for (var i = 0; i < elementsAmount; i++){
             var element = $(elementsPlacement).children()[i];
 

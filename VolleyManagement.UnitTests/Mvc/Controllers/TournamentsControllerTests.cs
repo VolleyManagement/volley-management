@@ -1242,23 +1242,14 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
-            var groupTeamViewModel = new GroupTeamViewModel
-            {
-                GroupId = 1,
-                TeamId = 1,
-            };
-            var newTournamentRequest = new TournamentRequestBuilder()
-               .Build();
-
-            _tournamentRequestServiceMock.Setup(m => m.Create(newTournamentRequest));
 
             var sut = BuildSUT();
 
             // Act
-            var result = sut.ApplyForTournament(groupTeamViewModel);
+            var result = sut.ApplyForTournament(MakeTestGroupTeamViewModel());
 
             // Assert
-            VerifyCreateTournamentRequest(newTournamentRequest, Times.Once());
+            VerifyCreateTournamentRequest(Times.Once());
             Assert.IsNotNull(result, JSON_OK_MSG);
         }
 
@@ -1386,6 +1377,15 @@
         private GameViewModel MakeTestGameViewModel()
         {
             return new GameViewModelBuilder().Build();
+        }
+
+        private GroupTeamViewModel MakeTestGroupTeamViewModel()
+        {
+            return new GroupTeamViewModel
+            {
+                GroupId = 1,
+                TeamId = 1,
+            };
         }
 
         private Game MakeTestGame()
@@ -1531,9 +1531,9 @@
             _gameServiceMock.Verify(gs => gs.Create(It.IsAny<Game>()), times);
         }
 
-        private void VerifyCreateTournamentRequest(TournamentRequest tournamentRequest, Times times)
+        private void VerifyCreateTournamentRequest(Times times)
         {
-            _tournamentRequestServiceMock.Verify(ts => ts.Create(tournamentRequest), times);
+            _tournamentRequestServiceMock.Verify(ts => ts.Create(It.IsAny<TournamentRequest>()), times);
         }
 
         private void VerifySwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)

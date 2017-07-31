@@ -30,14 +30,17 @@
     var newDivisionGroupsTitle = $("<label>" + groupsDefault.title + "</label>")
         .attr("for", "Divisions_" + divisionsCount + "__Groups");
     var newDivisionGroupsListWrapper = $("<div></div>").attr("id", "Division_" + divisionsCount + "_Groups");
-    var newGroupWrapper = createGroup(divisionsCount, 0, countLimits.maxGroupsCount, countLimits.minGroupsCount, groupsDefault.name, groupsDefault.removeName);
+    var newGroupWrappers = [];
+    for (var i = 0; i < countLimits.minGroupsCount; i++){
+        newGroupWrappers[i] = createGroup(divisionsCount, i, countLimits.maxGroupsCount, countLimits.minGroupsCount, groupsDefault.name, groupsDefault.removeName);
+    }
     var newDivisionGroupsAddWrapper = $("<div></div>").attr("class", "add-group-button");
     var newDivisionGroupsAdd = $("<a> " + groupsDefault.addName + " </a>").attr("class", "link-button")
         .attr("id", "Add_Division_" + divisionsCount + "_Group")
         .attr("onclick", "addGroup(" + divisionsCount + ", " + countLimits.maxGroupsCount + ", " + countLimits.minGroupsCount + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')")
         .show();
 
-    $(newDivisionGroupsListWrapper).append(newGroupWrapper);
+    $(newDivisionGroupsListWrapper).append(newGroupWrappers);
     $(newDivisionGroupsTitleWrapper).append(newDivisionGroupsTitle);
     $(newDivisionGroupsAddWrapper).append(newDivisionGroupsAdd);
     $(newDivisionGroupsWrapper).append(newDivisionGroupsTitleWrapper);
@@ -114,9 +117,11 @@ function addGroup(divisionIdx, maxGroupsCount, minGroupsCount, groupDefaultName,
     $(divisionGroupsWrapper).append(newGroupWrapper);
 
     if (groupsCount == minGroupsCount) {
-        var removeLinkId = "#Remove_" + $(divisionGroupsWrapper).children()[0].id;
+        for (var i = 0; i < minGroupsCount; i++) {
+            var removeLinkId = "#Remove_" + $(divisionGroupsWrapper).children()[i].id;
 
-        $(removeLinkId).show();
+            $(removeLinkId).show();
+        }
     }
 
     if (groupsCount + 1 == maxGroupsCount) {

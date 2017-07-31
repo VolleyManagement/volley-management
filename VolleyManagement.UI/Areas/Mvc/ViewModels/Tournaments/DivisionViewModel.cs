@@ -64,7 +64,7 @@
         /// </summary>
         public bool IsGroupsCountMin
         {
-            get { return Groups.Count <= Constants.Group.MIN_GROUPS_COUNT; }
+            get { return Groups.Count == Constants.Group.MIN_GROUPS_COUNT; }
         }
 
         /// <summary>

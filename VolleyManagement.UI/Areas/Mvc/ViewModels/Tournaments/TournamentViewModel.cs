@@ -159,7 +159,7 @@
         /// </summary>
         public bool IsDivisionsCountMin
         {
-            get { return Divisions.Count <= Constants.Division.MIN_DIVISIONS_COUNT; }
+            get { return Divisions.Count == Constants.Division.MIN_DIVISIONS_COUNT; }
         }
 
         /// <summary>

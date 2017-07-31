@@ -1026,6 +1026,50 @@
             VerifyTeamsAdded(Times.Exactly(testData.Count), Times.Once());
         }
 
+        /// <summary>
+        /// Test for AddTeamsToTournament method.
+        /// Valid teams have to be added.
+        /// </summary>
+        [TestMethod]
+        public void AddTeamsToTournament_AddTwoTeamsOneAlreadyExist_ValidationExceptionThrown()
+        {
+            // Arrange
+            var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
+            MockGetAllTournamentGroupTeamQuery(testData);
+
+            var tournament = new TournamentBuilder().Build();
+            MockGetByIdQuery(tournament);
+            MockGetAllTournamentTeamsQuery(CreateTeamsInTournament());
+            MockGetTournamentIdByGroupId(testData.First().GroupId);
+
+            var newTeamsInTournament = new GroupTeamServiceTestFixture()
+                .TestGroupsTeamsWithAlreadyExistTeam().Build();
+
+            var sut = BuildSUT();
+
+            Exception exception = null;
+
+            string argExMessage =
+                TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique;
+
+            // Act
+            try
+            {
+                sut.AddTeamsToTournament(newTeamsInTournament);
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            // Assert
+            VerifyExceptionThrown(
+                exception,
+                new ArgumentException(argExMessage));
+
+            VerifyAddTeamsToTournament(Times.Never());
+        }
+
         #endregion
 
         #region DeleteTeamFromTournament
@@ -1507,6 +1551,11 @@
             _gameServiceMock.Verify(gs => gs.RemoveAllGamesInTournament(tourmanentId), times);
             _gameServiceMock.Verify(gs => gs.AddGames(It.IsAny<List<Game>>()), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
+        }
+
+        private void VerifyAddTeamsToTournament(Times times)
+        {
+            _tournamentRepositoryMock.Verify(ts => ts.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()), times);
         }
 
         /// <summary>

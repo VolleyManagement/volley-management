@@ -43,6 +43,21 @@
             return this;
         }
 
+        public GroupTeamServiceTestFixture TestGroupsTeamsWithAlreadyExistTeam()
+        {
+            _groupteams.Add(new TeamTournamentAssignmentDto()
+            {
+                GroupId = 2,
+                TeamId = 2,
+            });
+            _groupteams.Add(new TeamTournamentAssignmentDto()
+            {
+                GroupId = 1,
+                TeamId = 4,
+            });
+            return this;
+        }
+
         public GroupTeamServiceTestFixture TestGroupsTeamsWithTeamInSecondDivisionSecondGroup()
         {
             _groupteams.Add(new TeamTournamentAssignmentDto()

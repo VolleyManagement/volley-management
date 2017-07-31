@@ -1259,16 +1259,12 @@
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
             var newTournamentRequest = new TournamentRequestBuilder()
-               .WithId(TEST_ID)
-               .WithTeamId(TEST_ID)
-               .WithGroupId(TEST_ID)
-               .WithUserId(TEST_ID)
                .Build();
             SetupTournamentRequestServiceThrowsArgumentException(newTournamentRequest);
             var sut = BuildSUT();
 
             // Act
-            var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID);
+            var result = sut.ApplyForTournament(MakeTestGroupTeamViewModel());
 
             // Assert
             Assert.IsNotNull(result, INVALID_PARAMETR);
@@ -1502,7 +1498,7 @@
 
         private void SetupTournamentRequestServiceThrowsArgumentException(TournamentRequest tournamentRequest)
         {
-            _tournamentRequestServiceMock.Setup(ts => ts.Create(tournamentRequest))
+            _tournamentRequestServiceMock.Setup(ts => ts.Create(It.IsAny<TournamentRequest>()))
                 .Throws(new ArgumentException(INVALID_PARAMETR));
         }
 

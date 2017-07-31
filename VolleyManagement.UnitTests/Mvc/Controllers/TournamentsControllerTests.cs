@@ -1231,7 +1231,7 @@
             var sut = BuildSUT();
 
             // Act
-            var result = sut.ApplyForTournament(TEST_TOURNAMENT_ID);
+            var result = sut.ApplyForTournament(MakeTestGroupTeamViewModel());
 
             // Assert
             Assert.IsNotNull(result, JSON_NO_RIGHTS_MESSAGE);

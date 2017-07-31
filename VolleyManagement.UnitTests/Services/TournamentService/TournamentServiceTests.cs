@@ -35,6 +35,7 @@
     {
         private const int MINIMUM_REGISTRATION_PERIOD_MONTH = 3;
         private const int FIRST_TOURNAMENT_ID = 1;
+        private const int FIRST_DIVISION_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int SPECIFIC_TOURNAMENT_ID = 2;
         private const int EMPTY_TEAM_LIST_COUNT = 0;
@@ -225,7 +226,7 @@
             var expected = new DivisionTestFixture().TestDivisions().Build();
 
             // Act
-            var actual = sut.GetAllTournamentDivisions(It.IsAny<int>());
+            var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID);
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new DivisionComparer());
@@ -245,7 +246,7 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetAllTournamentDivisions(It.IsAny<int>());
+            var actual = sut.GetAllTournamentDivisions(FIRST_TOURNAMENT_ID);
 
             // Assert
             Assert.AreEqual(actual.Count, EMPTY_DIVISION_LIST_COUNT);
@@ -268,7 +269,7 @@
             var expected = new GroupTestFixture().TestGroups().Build();
 
             // Act
-            var actual = sut.GetAllTournamentGroups(It.IsAny<int>());
+            var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID);
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new GroupComparer());
@@ -288,7 +289,7 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetAllTournamentGroups(It.IsAny<int>());
+            var actual = sut.GetAllTournamentGroups(FIRST_DIVISION_ID);
 
             // Assert
             Assert.AreEqual(actual.Count, EMPTY_GROUP_LIST_COUNT);
@@ -1067,7 +1068,7 @@
                 exception,
                 new ArgumentException(argExMessage));
 
-            VerifyAddTeamsToTournament(Times.Never());
+            VerifyAddTeamsToTournament(Times.Once());
         }
 
         #endregion

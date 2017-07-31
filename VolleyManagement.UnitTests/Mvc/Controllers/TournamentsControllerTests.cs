@@ -1258,9 +1258,7 @@
         {
             // Arrange
             SetupCurrentUserServiceReturnsUserId(TEST_USER_ID);
-            var newTournamentRequest = new TournamentRequestBuilder()
-               .Build();
-            SetupTournamentRequestServiceThrowsArgumentException(newTournamentRequest);
+            SetupTournamentRequestServiceThrowsArgumentException();
             var sut = BuildSUT();
 
             // Act
@@ -1496,7 +1494,7 @@
             _currentUserServiceMock.Setup(m => m.GetCurrentUserId()).Returns(userId);
         }
 
-        private void SetupTournamentRequestServiceThrowsArgumentException(TournamentRequest tournamentRequest)
+        private void SetupTournamentRequestServiceThrowsArgumentException()
         {
             _tournamentRequestServiceMock.Setup(ts => ts.Create(It.IsAny<TournamentRequest>()))
                 .Throws(new ArgumentException(INVALID_PARAMETR));

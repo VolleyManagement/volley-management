@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Properties;
 
     /// <summary>
@@ -44,6 +45,19 @@
                 }
 
                 _name = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether division is empty.
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                return !Enumerable.Any(from g in Groups
+                                       where !g.IsEmpty
+                                       select g);
             }
         }
 

@@ -61,7 +61,8 @@
             {
                 Id = group.Id,
                 Name = group.Name,
-                DivisionId = group.DivisionId
+                DivisionId = group.DivisionId,
+                IsEmpty = group.IsEmpty
             };
         }
 

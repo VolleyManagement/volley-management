@@ -37,6 +37,11 @@
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether group is empty.
+        /// </summary>
+        public bool IsEmpty { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the division where group belongs.
         /// </summary>
         public int DivisionId { get; set; }

@@ -87,7 +87,8 @@
             var divisionViewModel = new DivisionViewModel()
             {
                 Id = division.Id,
-                Name = division.Name
+                Name = division.Name,
+                IsEmpty = division.IsEmpty
             };
 
             divisionViewModel.Groups = division.Groups.Select(g => GroupViewModel.Map(g)).ToList();

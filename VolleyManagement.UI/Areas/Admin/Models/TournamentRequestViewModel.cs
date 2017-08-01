@@ -63,10 +63,10 @@
             {
                 Id = request.Id,
                 PersonId = request.UserId,
-                TournamentId = request.TournamentId,
                 TeamId = request.TeamId,
                 PersonName = user.PersonName,
                 TeamTitle = team.Name,
+                TournamentId = tournament.Id,
                 TournamentTitle = tournament.Name
             };
         }

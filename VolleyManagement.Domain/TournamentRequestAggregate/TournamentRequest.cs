@@ -11,6 +11,8 @@
         private int _userId;
         private int _teamId;
         private int _tournamentId;
+        private int _groupId;
+        private int _divisionId;
 
         /// <summary>
         /// Gets or sets Id.
@@ -61,6 +63,27 @@
         }
 
         /// <summary>
+        /// Gets or sets division's id
+        /// </summary>
+        public int DivisionId
+        {
+            get
+            {
+                return _divisionId;
+            }
+
+            set
+            {
+                if (TournamentRequestValidation.ValidateDivisionId(value))
+                {
+                    throw new ArgumentException(Resources.ValidationDivisionId);
+                }
+
+                _divisionId = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets team's id
         /// </summary>
         public int TeamId
@@ -78,6 +101,27 @@
                 }
 
                 _teamId = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets group's id
+        /// </summary>
+        public int GroupId
+        {
+            get
+            {
+                return _groupId;
+            }
+
+            set
+            {
+                if (TournamentRequestValidation.ValidateTeamId(value))
+                {
+                    throw new ArgumentException(Resources.ValidationGroupId);
+                }
+
+                _groupId = value;
             }
         }
     }

@@ -10,7 +10,7 @@
         /// <summary>
         /// Gets or sets tournament id criteria
         /// </summary>
-        public int TournamentId { get; set; }
+        public int GroupId { get; set; }
 
         /// <summary>
         /// Gets or sets team id criteria

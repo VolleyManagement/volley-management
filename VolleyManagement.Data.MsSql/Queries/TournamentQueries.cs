@@ -9,6 +9,8 @@
     using Data.Queries.Tournament;
     using Domain.TournamentsAggregate;
     using Entities;
+    using VolleyManagement.Data.Queries.Division;
+    using VolleyManagement.Data.Queries.Group;
 
     /// <summary>
     /// Provides Object Query implementation for Tournaments
@@ -16,11 +18,14 @@
     public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
                                      IQuery<List<Tournament>, GetAllCriteria>,
                                      IQuery<Tournament, FindByIdCriteria>,
-                                     IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>
+                                     IQuery<List<Division>, TournamentDivisionsCriteria>,
+                                     IQuery<List<Group>, DivisionGroupsCriteria>,
+                                     IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>,
+                                     IQuery<int, TournamentByGroupCriteria>
     {
         #region Fields
 
-        private readonly VolleyUnitOfWork _unitOfWork;
+    private readonly VolleyUnitOfWork _unitOfWork;
 
         #endregion
 
@@ -62,9 +67,49 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
+        public int Execute(TournamentByGroupCriteria criteria)
+        {
+            var tournament = from g in _unitOfWork.Context.Groups
+                            join d in _unitOfWork.Context.Divisions on g.DivisionId equals d.Id
+                            join t in _unitOfWork.Context.Tournaments on d.TournamentId equals t.Id
+                            where g.Id == criteria.GroupId
+                            select t;
+
+            return tournament.First().Id;
+        }
+
+        /// <summary>
+        /// Finds Tournament by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Tournament"/>. </returns>
         public List<Tournament> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments.Select(GetTournamentMapping()).ToList();
+        }
+
+        /// <summary>
+        /// Find Divisions by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Division"/>. </returns>
+        public List<Division> Execute(TournamentDivisionsCriteria criteria)
+        {
+            return _unitOfWork.Context.Divisions
+                                      .Where(d => d.TournamentId == criteria.TournamentId)
+                                      .Select(GetDivisionMapping()).ToList();
+        }
+
+        /// <summary>
+        /// Find Groups by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Division"/>. </returns>
+        public List<Group> Execute(DivisionGroupsCriteria criteria)
+        {
+            return _unitOfWork.Context.Groups
+                                      .Where(d => d.DivisionId == criteria.DivisionId)
+                                      .Select(GetGroupMapping()).ToList();
         }
 
         /// <summary>

@@ -67,10 +67,16 @@
         /// <summary>
         /// Gets or sets date of the game.
         /// </summary>
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [Display(Name = "GameDateTime", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime GameDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets time of the game.
+        /// </summary>
+        [DataType(DataType.Time)]
+        public TimeSpan GameTime { get; set; }
 
         /// <summary>
         /// Gets or sets the game number of the game in the tournament.
@@ -102,7 +108,8 @@
                 HomeTeamId = game.HomeTeamId,
                 AwayTeamId = game.AwayTeamId,
                 Round = game.Round,
-                GameDate = game.GameDate.Value,
+                GameDate = game.GameDate.Value.Date,
+                GameTime = game.GameDate.Value.TimeOfDay,
                 GameNumber = game.GameNumber
             };
         }
@@ -120,7 +127,7 @@
                 TournamentId = TournamentId,
                 HomeTeamId = HomeTeamId,
                 AwayTeamId = AwayTeamId,
-                GameDate = GameDate,
+                GameDate = new DateTime(GameDate.Year, GameDate.Month, GameDate.Day, GameTime.Hours, GameTime.Minutes, GameTime.Seconds),
                 GameNumber = GameNumber
             };
         }

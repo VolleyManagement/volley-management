@@ -120,13 +120,20 @@
         [TestMethod]
         public void Create_InvalidUserId_ExceptionThrows()
         {
+            var newTournamentRequest = new TournamentRequestBuilder()
+               .Build();
+            _tournamentRequestRepositoryMock.Setup(
+                    tr => tr.Add(
+                        newTournamentRequest))
+                .Callback<TournamentRequest>(t => t.UserId = -1);
+
             // Arrange
             var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<ArgumentException>(
                 () =>
-                 sut.Create(INVALID_REQUEST_ID, EXISTING_ID, EXISTING_ID),
+                 sut.Create(newTournamentRequest),
                 "User's id is wrong");
         }
 
@@ -137,7 +144,7 @@
             var newTournamentRequest = new TournamentRequestBuilder()
                .WithId(EXISTING_ID)
                .WithTeamId(EXISTING_ID)
-               .WithTournamentId(EXISTING_ID)
+               .WithGroupId(EXISTING_ID)
                .WithUserId(EXISTING_ID)
                .Build();
             var emailMessage = new EmailMessageBuilder().Build();
@@ -150,7 +157,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID);
+            sut.Create(newTournamentRequest);
 
             // Assert
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Once(), "Parameter request is not equal to Instance of request");
@@ -163,7 +170,7 @@
             var newTournamentRequest = new TournamentRequestBuilder()
                .WithId(EXISTING_ID)
                .WithTeamId(EXISTING_ID)
-               .WithTournamentId(EXISTING_ID)
+               .WithGroupId(EXISTING_ID)
                .WithUserId(EXISTING_ID)
                .Build();
             var emailMessage = new EmailMessageBuilder().Build();
@@ -177,7 +184,7 @@
             var sut = BuildSUT();
 
             // Act
-            sut.Create(EXISTING_ID, EXISTING_ID, EXISTING_ID);
+            sut.Create(newTournamentRequest);
 
             // Assert
             VerifyCreateTournamentRequest(newTournamentRequest, Times.Never(), "Parameter request is not equal to Instance of request");
@@ -214,7 +221,7 @@
             sut.Confirm(EXISTING_ID);
 
             // Assert
-            VerifyAddedTeam(expected.Id, expected.TournamentId, Times.Once(), Times.AtLeastOnce());
+            VerifyAddedTeam(expected.Id, expected.TournamentId, expected.GroupId, Times.Once(), Times.AtLeastOnce());
         }
 
         [TestMethod]
@@ -323,9 +330,9 @@
             _getRequestByAllQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByTeamTournamentCriteria>())).Returns(testData);
         }
 
-        private void VerifyAddedTeam(int requestId, int tournamentId, Times times, Times unitOfWorkTimes)
+        private void VerifyAddedTeam(int requestId, int tournamentId, int groupId, Times times, Times unitOfWorkTimes)
         {
-            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(requestId, tournamentId), times);
+            _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(requestId, groupId), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), unitOfWorkTimes);
         }
 

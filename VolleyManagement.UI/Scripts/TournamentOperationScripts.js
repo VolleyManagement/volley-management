@@ -143,6 +143,7 @@ function removeDivision(divisionIdx, maxDivisionsCount, minDivisionsCount, maxGr
             idx: divisionIdx
     }, {
             current: divisionsCount,
+            max: maxDivisionsCount,
             min: minDivisionsCount
     }, {
             max: maxGroupsCount,
@@ -221,7 +222,7 @@ function updateDivisionsIds(division, divisionsCount, groupsCount, groupsDefault
 
         if (divisionRemoveLink != undefined) {
             $(divisionRemoveLink).attr("id", "Remove_Division_" + i + "_Id");
-            $(divisionRemoveLink).attr("onclick", "removeDivision(" + i + ", " + divisionsCount.min + ", " + groupsCount.max + ", " + groupsCount.min + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
+            $(divisionRemoveLink).attr("onclick", "removeDivision(" + i + ", " + divisionsCount.max + ", " + divisionsCount.min + ", " + groupsCount.max + ", " + groupsCount.min + ", '" + groupsDefault.name + "', '" + groupsDefault.removeName + "')");
         }
 
         $(divisionGroupsListWrapper).attr("id", "Division_" + i + "_Groups");

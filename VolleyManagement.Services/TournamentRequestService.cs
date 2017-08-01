@@ -73,7 +73,7 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.TournamentRequestNotFound, requestId);
             }
 
-            _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.TournamentId);
+            _tournamentRepository.AddTeamToTournament(tournamentRequest.TeamId, tournamentRequest.GroupId);
             _tournamentRepository.UnitOfWork.Commit();
              NotifyUser(_userService.GetUser(Get(requestId).UserId).Email);
             _tournamentRequestRepository.Remove(requestId);
@@ -83,21 +83,13 @@
         /// <summary>
         /// Create a new request
         /// </summary>
-        /// <param name="userId">Id of user that ask for link</param>
-        /// <param name="tournamentId"> Tournament's id</param>
-        /// <param name="teamId"> Team's id</param>
-        public void Create(int userId, int tournamentId, int teamId)
+        /// <param name="tournamentRequest">Contains Team Id, Group Id, User Id</param>
+        public void Create(TournamentRequest tournamentRequest)
         {
-            var existTournament = _getTournamentRequestByAllQuery.Execute(
-                new FindByTeamTournamentCriteria { TournamentId = tournamentId, TeamId = teamId });
-            if (existTournament == null)
+            var existCurrentUserTournamentRequest = _getTournamentRequestByAllQuery.Execute(
+                new FindByTeamTournamentCriteria { GroupId = tournamentRequest.GroupId, TeamId = tournamentRequest.TeamId });
+            if (existCurrentUserTournamentRequest == null)
             {
-                TournamentRequest tournamentRequest = new TournamentRequest()
-                {
-                    TeamId = teamId,
-                    UserId = userId,
-                    TournamentId = tournamentId
-                };
                 _tournamentRequestRepository.Add(tournamentRequest);
                 _tournamentRequestRepository.UnitOfWork.Commit();
                 NotifyAdmins(tournamentRequest);

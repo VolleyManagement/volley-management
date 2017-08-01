@@ -312,4 +312,16 @@
   <data name="ValidationUserId" xml:space="preserve">
     <value>User's id is wrong</value>
   </data>
+  <data name="ValidationDivisionId" xml:space="preserve">
+    <value>Division's id is wrong</value>
+  </data>
+  <data name="ValidationGroupId" xml:space="preserve">
+    <value>Group's id is wrong</value>
+  </data>
+  <data name="TeamNameInCurrentGroupOfTournamentNotUnique" xml:space="preserve">
+    <value>Team with such name in the current group of the tournament already exist</value>
+  </data>
+  <data name="CollectionIsEmpty" xml:space="preserve">
+    <value>Teams and groups are empty</value>
+  </data>
 </root>

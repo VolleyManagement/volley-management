@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -35,7 +36,7 @@
         private const string ROUTE_VALUES_KEY = "action";
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
-        private const string PLAYER_NAME_TO_SEARCH = "Player Name";
+        private const string PLAYER_NAME_TO_SEARCH = "FirstNameA";
         private const string LINK_SUCCESSFULL_MESSAGE = "After admin approval you will be linked with";
         private const string LINK_ERROR_MESSAGE = "Can't find User Id";
 
@@ -130,7 +131,6 @@
         /// Players from specified page are returned.
         /// </summary>
         [TestMethod]
-        [Ignore] // TODO: Should be refactored to avoid null reference in http context
         public void Index_GetPlayersFromExistingPageNoSearchText_PlayersAreReturned()
         {
             // Arrange
@@ -155,7 +155,6 @@
         /// Players from specified page are returned.
         /// </summary>
         [TestMethod]
-        [Ignore] // TODO: Should be refactored to avoid null reference in http context
         public void Index_GetPlayersFromExistingPageWithSearchText_PlayersAreReturned()
         {
             // Arrange
@@ -579,6 +578,7 @@
 
         private void SetupControllerContext(PlayersController sut)
         {
+            _httpContextMock.SetupGet(x => x.Request).Returns(_httpRequestMock.Object);
             sut.ControllerContext = new ControllerContext(_httpContextMock.Object, new RouteData(), sut);
         }
 

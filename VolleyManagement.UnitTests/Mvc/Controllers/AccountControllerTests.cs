@@ -2,7 +2,9 @@
 {
     using System.Diagnostics.CodeAnalysis;
     using System.Security.Claims;
+    using System.Security.Principal;
     using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Mvc;
     using Comparers;
     using Contracts;
@@ -125,7 +127,6 @@
         /// </summary>
         /// <returns>Asynchronous operation</returns>
         [TestMethod]
-        [Ignore] // TODO: SUT should be refactored to be able mock User
         public async Task EditPostAction_UserIdPassed_ExceptionThrown()
         {
             // Arrange
@@ -139,6 +140,7 @@
                 .Build();
 
             var sut = CreateController();
+            sut.ControllerContext = GetControllerContext();
 
             // Act
             await sut.Edit(userEditViewModel);
@@ -155,7 +157,7 @@
         {
             var claim = new Claim("id", USER_ID.ToString());
             var identityMock = Mock.Of<ClaimsIdentity>(ci => ci.FindFirst(It.IsAny<string>()) == claim);
-            var mockContext = Mock.Of<ControllerContext>(cc => cc.HttpContext.User.Identity == identityMock);
+            var mockContext = Mock.Of<ControllerContext>(cc => cc.HttpContext.User.Identity.Equals(identityMock));
             return mockContext;
         }
 

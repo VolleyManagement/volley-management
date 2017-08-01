@@ -258,7 +258,7 @@
             to.Id = from.Id;
             to.UserId = from.UserId;
             to.TeamId = from.TeamId;
-            to.TournamentId = from.TournamentId;
+            to.GroupId = from.GroupId;
         }
     }
 }

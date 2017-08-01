@@ -61,6 +61,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Teams and groups are empty.
+        /// </summary>
+        public static string CollectionIsEmpty {
+            get {
+                return ResourceManager.GetString("CollectionIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The number of divisions in the tournament must be between {0} and {1}.
         /// </summary>
         public static string DivisionCountOutOfRange {
@@ -349,6 +358,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Team with such name in the current group of the tournament already exist.
+        /// </summary>
+        public static string TeamNameInCurrentGroupOfTournamentNotUnique {
+            get {
+                return ResourceManager.GetString("TeamNameInCurrentGroupOfTournamentNotUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team with such name already exists in tournament.
         /// </summary>
         public static string TeamNameInTournamentNotUnique {
@@ -403,6 +421,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Division&apos;s id is wrong.
+        /// </summary>
+        public static string ValidationDivisionId {
+            get {
+                return ResourceManager.GetString("ValidationDivisionId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please, enter the valid name of the division.
         /// </summary>
         public static string ValidationDivisionName {
@@ -444,6 +471,15 @@ namespace VolleyManagement.Domain.Properties {
         public static string ValidationFeedbackUsersEmail {
             get {
                 return ResourceManager.GetString("ValidationFeedbackUsersEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group&apos;s id is wrong.
+        /// </summary>
+        public static string ValidationGroupId {
+            get {
+                return ResourceManager.GetString("ValidationGroupId", resourceCulture);
             }
         }
         

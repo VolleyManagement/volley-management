@@ -16,6 +16,7 @@
     using Domain.Properties;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
+    using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
     /// Defines TeamService
@@ -221,6 +222,15 @@
             }
         }
 
+        private static bool ValidateTwoTeamsName(Team teamToValidate, List<Team> getExistingTeams)
+        {
+            var existingTeams = from ex in getExistingTeams
+                                where ex.Id != teamToValidate.Id
+                                where ex.Name.ToLower().Equals(teamToValidate.Name.ToLower())
+                                select ex;
+            return existingTeams.Count() != 0;
+        }
+
         private static void VerifyExistingTeamOrThrow(Team existTeam)
         {
             if (existTeam != null)
@@ -331,11 +341,22 @@
         }
         }
 
+        private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)
+        {
+            var existingTeams = Get();
+            if (ValidateTwoTeamsName(teamToValidate, existingTeams))
+            {
+                throw new ArgumentException(
+                    TournamentResources.TeamNameInTournamentNotUnique);
+            }
+        }
+
         private void ValidateTeam(Team teamToValidate)
         {
             ValidateTeamName(teamToValidate.Name);
             ValidateCoachName(teamToValidate.Coach);
             ValidateAchievements(teamToValidate.Achievements);
+            ValidateTwoTeamsWithTheSameName(teamToValidate);
         }
     }
 }

@@ -55,9 +55,7 @@
         {
             get
             {
-                return !Enumerable.Any(from g in Groups
-                                       where !g.IsEmpty
-                                       select g);
+                return Groups.All(g => g.IsEmpty);
             }
         }
 

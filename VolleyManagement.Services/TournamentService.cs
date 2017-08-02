@@ -361,37 +361,6 @@
             return numberOfRounds;
         }
 
-        /// <summary>
-        /// Checks if there are teams in the group
-        /// </summary>
-        /// <param name="groupId">Id of Group to check</param>
-        /// <returns>True if there are no teams in the group</returns>
-        public bool IsGroupEmpty(int groupId)
-        {
-            var teams = _getTeamByGroupIdQuery.Execute(new FindTeamsByGroupIdCriteria { GroupId = groupId });
-            return teams.Count == 0;
-        }
-
-        /// <summary>
-        /// Checks if there are teams in the division
-        /// </summary>
-        /// <param name="divisionId">Id of Division to check</param>
-        /// <returns>True if there are no teams in the group</returns>
-        public bool IsDivisionEmpty(int divisionId)
-        {
-            var division = _getDivisionByIdQuery.Execute(new FindByIdCriteria { Id = divisionId });
-
-            foreach (var group in division.Groups)
-            {
-                if (!IsGroupEmpty(group.Id))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
         #endregion
 
         #region Private

@@ -951,7 +951,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.IsDivisionsCountMin);
+            Assert.IsTrue(result.IsDivisionsCountMin, "Count of tournament's divisions is not min.");
         }
 
         /// <summary>
@@ -971,7 +971,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.IsDivisionsCountMin);
+            Assert.IsFalse(result.IsDivisionsCountMin, "Count of tournament's divisions shouldn't be min.");
         }
 
         /// <summary>
@@ -994,7 +994,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.IsDivisionsCountMax);
+            Assert.IsTrue(result.IsDivisionsCountMax, "Count of tournament's divisions is not max.");
         }
 
         /// <summary>
@@ -1014,7 +1014,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.IsDivisionsCountMax);
+            Assert.IsFalse(result.IsDivisionsCountMax, "Count of tournament's divisions shouldn't be max.");
         }
 
         /// <summary>
@@ -1035,7 +1035,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.Divisions[0].IsGroupsCountMin);
+            Assert.IsTrue(result.Divisions[0].IsGroupsCountMin, "Count of division's groups is not min.");
         }
 
         /// <summary>
@@ -1055,7 +1055,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.Divisions[0].IsGroupsCountMin);
+            Assert.IsFalse(result.Divisions[0].IsGroupsCountMin, "Count of division's groups shouldn't be min.");
         }
 
         /// <summary>
@@ -1079,7 +1079,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsTrue(result.Divisions[0].IsGroupsCountMax);
+            Assert.IsTrue(result.Divisions[0].IsGroupsCountMax, "Count of division's groups is not max.");
         }
 
         /// <summary>
@@ -1099,7 +1099,7 @@
             var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
 
             // Assert
-            Assert.IsFalse(result.Divisions[0].IsGroupsCountMin);
+            Assert.IsFalse(result.Divisions[0].IsGroupsCountMax, "Count of division's groups shouldn't be max.");
         }
 
         /// <summary>

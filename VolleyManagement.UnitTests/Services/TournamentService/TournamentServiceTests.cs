@@ -61,6 +61,8 @@
         private Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>> _getAllGroupsTeamsQuery;
         private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
+        private Mock<IQuery<List<Team>, FindTeamsByGroupIdCriteria>> _getTeamByGroupIdQueryMock;
+        private Mock<IQuery<Division, FindByIdCriteria>> _getDivisionByIdQueryMock;
         private Mock<IQuery<int, TournamentByGroupCriteria>> _getTournamentId;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
@@ -82,6 +84,8 @@
             _getAllTournamentDivisionsQuery = new Mock<IQuery<List<Division>, TournamentDivisionsCriteria>>();
             _getAllTournamentGroupsQuery = new Mock<IQuery<List<Group>, DivisionGroupsCriteria>>();
             _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
+            _getTeamByGroupIdQueryMock = new Mock<IQuery<List<Team>, FindTeamsByGroupIdCriteria>>();
+            _getDivisionByIdQueryMock = new Mock<IQuery<Division, FindByIdCriteria>>();
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
             _getTournamentId = new Mock<IQuery<int, TournamentByGroupCriteria>>();
@@ -1346,6 +1350,8 @@
                 _getAllTournamentDivisionsQuery.Object,
                 _getAllTournamentGroupsQuery.Object,
                 _getTorunamentDto.Object,
+                _getTeamByGroupIdQueryMock.Object,
+                _getDivisionByIdQueryMock.Object,
                 _getTournamentId.Object,
                 _authServiceMock.Object,
                 _gameServiceMock.Object);

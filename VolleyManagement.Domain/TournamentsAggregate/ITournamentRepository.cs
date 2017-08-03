@@ -20,5 +20,17 @@
         /// <param name="teamId">Team to remove</param>
         /// <param name="tournamentId">Tournament to un assign team</param>
         void RemoveTeamFromTournament(int teamId, int tournamentId);
+
+        /// <summary>
+        /// Removes group
+        /// </summary>
+        /// <param name="groupId">Group to be removed id</param>
+        void RemoveGroup(int groupId);
+
+        /// <summary>
+        /// Remove division
+        /// </summary>
+        /// <param name="divisionId">Division to be removed id</param>
+        void RemoveDivision(int divisionId);
     }
 }

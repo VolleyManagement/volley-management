@@ -199,6 +199,7 @@
     <Compile Include="Entities\PlayerEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\AuthorizationQueries.cs" />
+    <Compile Include="Queries\DivisionQueries.cs" />
     <Compile Include="Queries\FeedbackQueries.cs" />
     <Compile Include="Queries\GameResultQueries.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

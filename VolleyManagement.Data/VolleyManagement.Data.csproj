@@ -87,6 +87,7 @@
     <Compile Include="Queries\Team\FindByCaptainIdCriteria.cs" />
     <Compile Include="Queries\Common\GetAllCriteria.cs" />
     <Compile Include="Queries\Team\FindByTournamentIdCriteria.cs" />
+    <Compile Include="Queries\Team\FindTeamsByGroupIdCriteria.cs" />
     <Compile Include="Queries\TournamentRequest\FindByTeamTournamentCriteria.cs" />
     <Compile Include="Queries\Tournament\TournamentByGroupCriteria.cs" />
     <Compile Include="Queries\Tournament\TournamentScheduleInfoCriteria.cs" />

@@ -19,6 +19,8 @@
                 "{0} {1}",
                 ViewModelResources.GroupDefaultName,
                 Constants.Group.MIN_GROUPS_COUNT);
+
+            IsEmpty = true;
         }
 
         /// <summary>
@@ -41,6 +43,11 @@
 
         public int DivisionId { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether group is empty.
+        /// </summary>
+        public bool IsEmpty { get; set; }
+
         #region Factory methods
 
         /// <summary>
@@ -54,7 +61,8 @@
             {
                 Id = group.Id,
                 Name = group.Name,
-                DivisionId = group.DivisionId
+                DivisionId = group.DivisionId,
+                IsEmpty = group.IsEmpty
             };
         }
 

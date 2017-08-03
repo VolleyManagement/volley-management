@@ -61,6 +61,24 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The division to delete must not have any teams.
+        /// </summary>
+        internal static string DivisionIsNotEmpty {
+            get {
+                return ResourceManager.GetString("DivisionIsNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A division  with specified identifier was not found.
+        /// </summary>
+        internal static string DivisionNotFound {
+            get {
+                return ResourceManager.GetString("DivisionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Дивизионы не могут иметь одинаковые названия.
         /// </summary>
         internal static string DivisionsAreNotUniq {
@@ -93,6 +111,24 @@ namespace VolleyManagement.Services.ServiceResources {
         internal static string GameNotFound {
             get {
                 return ResourceManager.GetString("GameNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The group to delete must not have any teams.
+        /// </summary>
+        internal static string GroupIsNotEmpty {
+            get {
+                return ResourceManager.GetString("GroupIsNotEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A group with specified identifier was not found.
+        /// </summary>
+        internal static string GroupNotFound {
+            get {
+                return ResourceManager.GetString("GroupNotFound", resourceCulture);
             }
         }
         

@@ -21,7 +21,8 @@
                 "{0} {1}",
                 ViewModelResources.DivisionDefaultName,
                 Constants.Division.MIN_DIVISIONS_COUNT);
-            Groups = new List<GroupViewModel>() { new GroupViewModel() };
+            Groups = new List<GroupViewModel>();
+            IsEmpty = true;
         }
 
         /// <summary>
@@ -53,6 +54,26 @@
         [Display(Name = "Groups", ResourceType = typeof(ViewModelResources))]
         public List<GroupViewModel> Groups { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether division is empty.
+        /// </summary>
+        public bool IsEmpty { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether count groups is min.
+        /// </summary>
+        public bool IsGroupsCountMin
+        {
+            get { return Groups.Count == Constants.Group.MIN_GROUPS_COUNT; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether count of groups is max.
+        /// </summary>
+        public bool IsGroupsCountMax
+        {
+            get { return Groups.Count == Constants.Group.MAX_GROUPS_COUNT; }
+        }
         #region Factory methods
 
         /// <summary>
@@ -66,7 +87,8 @@
             var divisionViewModel = new DivisionViewModel()
             {
                 Id = division.Id,
-                Name = division.Name
+                Name = division.Name,
+                IsEmpty = division.IsEmpty
             };
 
             divisionViewModel.Groups = division.Groups.Select(g => GroupViewModel.Map(g)).ToList();

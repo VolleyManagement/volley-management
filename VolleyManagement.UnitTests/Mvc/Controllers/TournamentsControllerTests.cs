@@ -940,10 +940,9 @@
         public void EditGetAction_TournamentWithOneDivision_DivisionsCountIsMin()
         {
             // Arrange
-            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var testData = MakeTestTournamentWithOneDivision(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
             SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
-            testData.Divisions.Remove(testData.Divisions[1]);
 
             var sut = BuildSUT();
 
@@ -980,13 +979,9 @@
         [TestMethod]
         public void EditGetAction_TournamentWithTenDivisions_DivisionsCountIsMax()
         {
-            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var testData = MakeTestTournamentWithTenDivisions(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
             SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
-            for (int i = 0; i < 8; i++)
-            {
-                testData.Divisions.Add(new Division());
-            }
 
             var sut = BuildSUT();
 
@@ -1024,10 +1019,9 @@
         public void EditGetAction_DivisionWithOneGroup_GroupsCountIsMin()
         {
             // Arrange
-            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var testData = MakeTestTournamentWithOneDivision(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
             SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
-            testData.Divisions[0].Groups.Remove(testData.Divisions[0].Groups[1]);
 
             var sut = BuildSUT();
 
@@ -1065,13 +1059,9 @@
         public void EditGetAction_DivisionWithTenGroups_GroupsCountIsMax()
         {
             // Arrange
-            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            var testData = MakeTestTournamentWithTenDivisions(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
             SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
-            for (int i = 0; i < 8; i++)
-            {
-                testData.Divisions[0].Groups.Add(new Group());
-            }
 
             var sut = BuildSUT();
 
@@ -1560,6 +1550,31 @@
         private Tournament MakeTestTournament(int tournamentId)
         {
             return new TournamentBuilder().WithId(tournamentId).Build();
+        }
+
+        private Tournament MakeTestTournamentWithOneDivision(int tournamentId)
+        {
+            var tournament = MakeTestTournament(tournamentId);
+            tournament.Divisions = CreateTestDivisions();
+            tournament.Divisions.Remove(tournament.Divisions[1]);
+            return tournament;
+        }
+
+        private Tournament MakeTestTournamentWithTenDivisions(int tournamentId)
+        {
+            var tournament = MakeTestTournament(tournamentId);
+            tournament.Divisions = new List<Division>();
+            for (int i = 0; i < 10; i++)
+            {
+                tournament.Divisions.Add(new Division());
+                tournament.Divisions[i].Groups = new List<Group>();
+                for (int j = 0; j < 10; j++)
+                {
+                    tournament.Divisions[i].Groups.Add(new Group());
+                }
+            }
+
+            return tournament;
         }
 
         private TournamentViewModel MakeTestTournamentViewModel()

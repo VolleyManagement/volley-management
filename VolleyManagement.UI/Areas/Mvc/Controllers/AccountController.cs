@@ -107,18 +107,17 @@
         /// <summary>
         /// Starts login interaction
         /// </summary>
-        /// <param name="returnUrl"> The return Url. </param>
         /// <returns> View item </returns>
         [AllowAnonymous]
         [RequireHttps]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 return View("AccessDenied");
             }
 
-            ViewBag.returnUrl = returnUrl;
+            ViewBag.returnUrl = GetReturnUrl();
             return View();
         }
 
@@ -263,7 +262,7 @@
         private string GetReturnUrl()
         {
             string result = null;
-            var url = HttpContext.Request.Url;
+            var url = HttpContext.Request.UrlReferrer;
             if (url != null)
             {
                 result = url.ToString();

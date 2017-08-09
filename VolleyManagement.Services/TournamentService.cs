@@ -64,9 +64,7 @@
         private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
         private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
-        private readonly IQuery<List<Team>, FindTeamsByGroupIdCriteria> _getTeamByGroupIdQuery;
-        private readonly IQuery<Division, FindByIdCriteria> _getDivisionByIdQuery;
-        private readonly IQuery<int, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
+        private readonly IQuery<Tournament, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
 
         #endregion
 
@@ -84,8 +82,6 @@
         /// <param name="getAllTournamentDivisionsQuery">Get All Tournament Divisions query.</param>
         /// <param name="getAllTournamentGroupsQuery">Get All Tournament Groups query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
-        /// <param name="getTeamByGroupIdQuery">Get Teams by Group id query</param>
-        /// <param name="getDivisionByIdQuery">Get Division by id query</param>
         /// <param name="getTournamenrByGroupQuery">Get tournament by given group query.</param>
         /// <param name="authService">Authorization service</param>
         /// <param name="gameService">The game service</param>
@@ -99,9 +95,7 @@
             IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
             IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
-            IQuery<List<Team>, FindTeamsByGroupIdCriteria> getTeamByGroupIdQuery,
-            IQuery<Division, FindByIdCriteria> getDivisionByIdQuery,
-            IQuery<int, TournamentByGroupCriteria> getTournamenrByGroupQuery,
+            IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
             IAuthorizationService authService,
             IGameService gameService)
         {
@@ -117,8 +111,6 @@
             _getTournamenrByGroupQuery = getTournamenrByGroupQuery;
             _authService = authService;
             _gameService = gameService;
-            _getTeamByGroupIdQuery = getTeamByGroupIdQuery;
-            _getDivisionByIdQuery = getDivisionByIdQuery;
         }
 
         #endregion
@@ -281,7 +273,7 @@
                     TournamentResources.CollectionIsEmpty);
             }
 
-            var tournamentId = GetTournamentByGroup(groupTeam[0].GroupId);
+            var tournamentId = GetTournamentByGroup(groupTeam[0].GroupId).Id;
             var allTeams = GetAllTournamentTeams(tournamentId);
             int numberOfTeamAlreadyExist = 0;
 
@@ -361,6 +353,16 @@
             return numberOfRounds;
         }
 
+        /// <summary>
+        /// Gets tournament by its group
+        /// </summary>
+        /// <param name="groupId">id of group </param>
+        /// <returns>Return current tournament.</returns>
+        public Tournament GetTournamentByGroup(int groupId)
+        {
+            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
+        }
+
         #endregion
 
         #region Private
@@ -375,11 +377,6 @@
             }
 
             return criteria;
-        }
-
-        private int GetTournamentByGroup(int groupId)
-        {
-            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
         }
 
         /// <summary>

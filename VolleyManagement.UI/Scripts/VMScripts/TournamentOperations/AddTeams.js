@@ -53,7 +53,11 @@
                     TeamId: selectedTeams[i].value
                 });
             }
-        }    
+        }
+
+        if (result.GroupTeamList.length === 0) {
+            return null;
+        }
 
         return result;
     };
@@ -206,8 +210,6 @@
         if (teamData !== null) {    
             $.post("/Tournaments/AddTeamsToTournament", teamData)
                 .done(privates.handleTeamsAddSuccess);
-        } else {
-            alert("Not all parameters was selected!");
         }
     };
 

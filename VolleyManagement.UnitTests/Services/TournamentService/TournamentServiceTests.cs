@@ -61,9 +61,7 @@
         private Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>> _getAllGroupsTeamsQuery;
         private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
-        private Mock<IQuery<List<Team>, FindTeamsByGroupIdCriteria>> _getTeamByGroupIdQueryMock;
-        private Mock<IQuery<Division, FindByIdCriteria>> _getDivisionByIdQueryMock;
-        private Mock<IQuery<int, TournamentByGroupCriteria>> _getTournamentId;
+        private Mock<IQuery<Tournament, TournamentByGroupCriteria>> _getTournamentId;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -84,11 +82,9 @@
             _getAllTournamentDivisionsQuery = new Mock<IQuery<List<Division>, TournamentDivisionsCriteria>>();
             _getAllTournamentGroupsQuery = new Mock<IQuery<List<Group>, DivisionGroupsCriteria>>();
             _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
-            _getTeamByGroupIdQueryMock = new Mock<IQuery<List<Team>, FindTeamsByGroupIdCriteria>>();
-            _getDivisionByIdQueryMock = new Mock<IQuery<Division, FindByIdCriteria>>();
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
-            _getTournamentId = new Mock<IQuery<int, TournamentByGroupCriteria>>();
+            _getTournamentId = new Mock<IQuery<Tournament, TournamentByGroupCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -843,7 +839,8 @@
             // Arrange
             var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
-            var tournament = new TournamentBuilder().Build();
+            var tournament = new TournamentBuilder().WithScheme(TournamentSchemeEnum.PlayOff).Build();
+            MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
             var sut = BuildSUT();
 
@@ -865,8 +862,11 @@
             bool gotException = false;
 
             // Arrange
+            var tournament = new TournamentBuilder()
+                .Build();
             var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             MockGetAllTournamentGroupTeamQuery(new GroupTeamServiceTestFixture().TestGroupsTeams().Build());
+            MockGetTournamentByGroupId(tournament);
             var sut = BuildSUT();
 
             // Act
@@ -921,7 +921,7 @@
 
             var teamsInTournament = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
 
-            MockGetTournamentIdByGroupId(teamsInTournament.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
             var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQueryTwoCalls(new TeamServiceTestFixture().Build(), testTeamsData);
@@ -948,7 +948,7 @@
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
             MockGetAllTournamentTeamsQuery(CreateTeamsInTournament());
-            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
             var sut = BuildSUT();
             Exception exception = null;
             string argExMessage =
@@ -1020,7 +1020,7 @@
             teamsToAddInSecondDivision.Add(new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build());
             MockGetAllTournamentTeamsQuery(teamsToAddInSecondDivision);
 
-            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
 
             var sut = BuildSUT();
 
@@ -1045,7 +1045,7 @@
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
             MockGetAllTournamentTeamsQuery(CreateTeamsInTournament());
-            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
 
             var newTeamsInTournament = new GroupTeamServiceTestFixture()
                 .TestGroupsTeamsWithAlreadyExistTeam().Build();
@@ -1350,8 +1350,6 @@
                 _getAllTournamentDivisionsQuery.Object,
                 _getAllTournamentGroupsQuery.Object,
                 _getTorunamentDto.Object,
-                _getTeamByGroupIdQueryMock.Object,
-                _getDivisionByIdQueryMock.Object,
                 _getTournamentId.Object,
                 _authServiceMock.Object,
                 _gameServiceMock.Object);
@@ -1414,7 +1412,7 @@
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
         }
 
-        private void MockGetTournamentIdByGroupId(int testData)
+        private void MockGetTournamentByGroupId(Tournament testData)
         {
             _getTournamentId.Setup(tr => tr.Execute(It.IsAny<TournamentByGroupCriteria>())).Returns(testData);
         }

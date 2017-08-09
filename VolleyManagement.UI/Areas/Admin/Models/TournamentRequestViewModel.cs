@@ -21,6 +21,11 @@
         public int TeamId { get; set; }
 
         /// <summary>
+        /// Gets or sets group Id.
+        /// </summary>
+        public int GroupId { get; set; }
+
+        /// <summary>
         /// Gets or sets tournament Id.
         /// </summary>
         public int TournamentId { get; set; }
@@ -81,7 +86,8 @@
             {
                 Id = Id,
                 TeamId = TeamId,
-                TournamentId = TournamentId
+                TournamentId = TournamentId,
+                GroupId = GroupId
             };
         }
     }

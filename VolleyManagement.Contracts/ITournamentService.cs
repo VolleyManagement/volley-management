@@ -17,6 +17,13 @@
         List<Tournament> Get();
 
         /// <summary>
+        /// Gets tournament by its group
+        /// </summary>
+        /// <param name="groupId">id of group </param>
+        /// <returns>Return current tournament.</returns>
+        Tournament GetTournamentByGroup(int groupId);
+
+        /// <summary>
         /// Returns only actual tournaments
         /// </summary>
         /// <returns>Actual tournaments</returns>

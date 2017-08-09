@@ -23,7 +23,7 @@
             {
                 Id = 1,
                 UserId = 1,
-                TournamentId = 1,
+                GroupId = 1,
                 TeamId = 4
             });
 

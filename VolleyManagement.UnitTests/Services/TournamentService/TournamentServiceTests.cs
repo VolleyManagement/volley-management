@@ -839,7 +839,8 @@
             // Arrange
             var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
-            var tournament = new TournamentBuilder().Build();
+            var tournament = new TournamentBuilder().WithScheme(TournamentSchemeEnum.PlayOff).Build();
+            MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
             var sut = BuildSUT();
 
@@ -861,8 +862,11 @@
             bool gotException = false;
 
             // Arrange
+            var tournament = new TournamentBuilder()
+                .Build();
             var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             MockGetAllTournamentGroupTeamQuery(new GroupTeamServiceTestFixture().TestGroupsTeams().Build());
+            MockGetTournamentByGroupId(tournament);
             var sut = BuildSUT();
 
             // Act
@@ -917,7 +921,7 @@
 
             var teamsInTournament = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
 
-            MockGetTournamentIdByGroupId(teamsInTournament.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
             var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQueryTwoCalls(new TeamServiceTestFixture().Build(), testTeamsData);
@@ -944,7 +948,7 @@
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
             MockGetAllTournamentTeamsQuery(CreateTeamsInTournament());
-            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
             var sut = BuildSUT();
             Exception exception = null;
             string argExMessage =
@@ -1016,7 +1020,7 @@
             teamsToAddInSecondDivision.Add(new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build());
             MockGetAllTournamentTeamsQuery(teamsToAddInSecondDivision);
 
-            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
 
             var sut = BuildSUT();
 
@@ -1041,7 +1045,7 @@
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
             MockGetAllTournamentTeamsQuery(CreateTeamsInTournament());
-            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
 
             var newTeamsInTournament = new GroupTeamServiceTestFixture()
                 .TestGroupsTeamsWithAlreadyExistTeam().Build();
@@ -1408,7 +1412,7 @@
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
         }
 
-        private void MockGetTournamentIdByGroupId(int testData)
+        private void MockGetTournamentByGroupId(Tournament testData)
         {
             _getTournamentId.Setup(tr => tr.Execute(It.IsAny<TournamentByGroupCriteria>())).Returns(testData);
         }

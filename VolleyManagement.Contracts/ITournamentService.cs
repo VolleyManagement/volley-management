@@ -23,6 +23,12 @@
         List<Tournament> GetActual();
 
         /// <summary>
+        /// Returns only archived tournaments
+        /// </summary>
+        /// <returns>Archived tournaments</returns>
+        List<Tournament> GetArchived();
+
+        /// <summary>
         /// Returns only finished tournaments
         /// </summary>
         /// <returns>Finished tournaments</returns>

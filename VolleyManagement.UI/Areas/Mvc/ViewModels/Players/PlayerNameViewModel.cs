@@ -19,6 +19,7 @@
         /// Gets or sets the player name
         /// </summary>
         [Display(Name = "PlayerFullName", ResourceType = typeof(ViewModelResources))]
+        [RegularExpression(@"(^(([a-zA-Zа-яА-ЯёЁіІїЇєЄ]+[\s\-\'][a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}))+)$", ErrorMessage = "Player must have First and Second Name")]
         public string FullName { get; set; }
 
         #region Factory Methods
@@ -59,19 +60,20 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player { Id = Id };
+            var splitPlayerName = FullName.Split(' ');
+            return new Player { Id = Id, FirstName = splitPlayerName[0], LastName = splitPlayerName[1] };
         }
 
         #endregion
 
         private static string GetFullName(Player player)
         {
-            return player.LastName + " " + player.FirstName;
+            return player.FirstName + " " + player.LastName;
         }
 
         private static string GetFullName(PlayerViewModel player)
         {
-            return player.LastName + " " + player.FirstName;
+            return player.FirstName + " " + player.LastName;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
     using Contracts;
@@ -69,11 +70,8 @@
         public void Update(Tournament updatedEntity)
         {
             var tournamentToUpdate = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
-            updatedEntity.Divisions.Clear();
+            UpdateDivisions(tournamentToUpdate.Divisions, updatedEntity.Divisions);
             DomainToDal.Map(tournamentToUpdate, updatedEntity);
-
-            // ToDo: Check Do we really need this?
-            //// _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 
         /// <summary>
@@ -126,6 +124,72 @@
                 {
                     group.Teams.Remove(teamEntity);
                     break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes group
+        /// </summary>
+        /// <param name="groupId">Group to be removed id</param>
+        public void RemoveGroup(int groupId)
+        {
+            var groupEntity = _unitOfWork.Context.Groups.Find(groupId);
+            if (groupEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            _unitOfWork.Context.Groups.Remove(groupEntity);
+        }
+
+        /// <summary>
+        /// Remove division
+        /// </summary>
+        /// <param name="divisionId">Division to be removed id</param>
+        public void RemoveDivision(int divisionId)
+        {
+            var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
+            if (divisionEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            foreach (var group in divisionEntity.Groups.ToList())
+            {
+                RemoveGroup(group.Id);
+            }
+
+            _unitOfWork.Context.Divisions.Remove(divisionEntity);
+        }
+
+        private void UpdateDivisions(List<DivisionEntity> old, List<Division> changed)
+        {
+            foreach (var item in old.ToList())
+            {
+                var updatedDivision = from element in changed
+                                      where item.Id == element.Id
+                                      select element;
+                if (updatedDivision.Count() != 0)
+                {
+                    UpdateGroups(item.Groups, updatedDivision.First().Groups);
+                }
+                else
+                {
+                    RemoveDivision(item.Id);
+                }
+            }
+        }
+
+        private void UpdateGroups(List<GroupEntity> old, List<Group> changed)
+        {
+            foreach (var item in old.ToList())
+            {
+                if (!Enumerable.Any(from element in changed
+                                   where item.Id == element.Id
+                                   select element))
+                {
+                    RemoveGroup(item.Id);
                 }
             }
         }

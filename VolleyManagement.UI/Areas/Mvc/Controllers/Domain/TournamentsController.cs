@@ -628,6 +628,7 @@
             }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
+
             return View(tournamentViewModel);
         }
 

@@ -205,6 +205,7 @@
                     Id = g.Id,
                     Name = g.Name,
                     DivisionId = g.DivisionId,
+                    IsEmpty = g.Teams.Count == 0
                 };
         }
 

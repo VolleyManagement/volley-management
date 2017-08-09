@@ -36,7 +36,11 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-            to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
+            foreach (var division in from.Divisions)
+            {
+                to.Divisions.Add(Map(division, to.Divisions.ToList()));
+            }
+
             to.LastTimeUpdated = from.LastTimeUpdated;
         }
 
@@ -110,13 +114,19 @@
                 {
                     Id = from.Id,
                     Name = from.Name,
-                    TournamentId = from.TournamentId
+                    TournamentId = from.TournamentId,
+                    Groups = Map(from.Groups)
                 };
             }
             else
             {
                 var division = oldDivisions.Where(d => d.Id == from.Id).SingleOrDefault();
-                division.Name = from.Name;
+                var newGroups = from.Groups.Where(gr => gr.Id == 0);
+                foreach (var group in newGroups.ToList())
+                {
+                    division.Groups.Add(Map(group));
+                }
+
                 return division;
             }
         }
@@ -147,6 +157,22 @@
                 TournamentId = from.TournamentId,
                 Groups = from.Groups.Select(g => Map(g)).ToList()
             };
+        }
+
+        /// <summary>
+        /// Maps group models
+        /// </summary>
+        /// <param name="from">List of groups to map</param>
+        /// <returns>List of Dal entity</returns>
+        public static List<GroupEntity> Map(List<Group> from)
+        {
+            var groups = new List<GroupEntity>();
+            foreach (var item in from)
+            {
+                groups.Add(Map(item));
+            }
+
+            return groups;
         }
 
         /// <summary>

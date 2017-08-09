@@ -813,6 +813,22 @@
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
         }
 
+        /// <summary>
+        /// Test for Create method (Get action). Tournament view model is returned. Tournament is new.
+        /// </summary>
+        [TestMethod]
+        public void CreateGetAction_GetTournamentViewModel_TournamentIsNew()
+        {
+            // Arrange
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Create());
+
+            // Assert
+            Assert.IsTrue(result.IsNew, "Tournament should be new.");
+        }
+
         #endregion
 
         #region CreatePostAction
@@ -915,6 +931,184 @@
 
             // Assert
             TestHelper.AreEqual<TournamentViewModel>(expected, actual, new TournamentViewModelComparer());
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Tournament has one division. Count of divisions is min.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_TournamentWithOneDivision_DivisionsCountIsMin()
+        {
+            // Arrange
+            var testData = MakeTestTournamentWithOneDivision(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsTrue(result.IsDivisionsCountMin, "Count of tournament's divisions should be min.");
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Tournament has two divisions. Count of divisions is not min.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_TournamentWithTwoDivisions_DivisionsCountIsNotMin()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(result.IsDivisionsCountMin, "Count of tournament's divisions shouldn't be min.");
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Tornament has ten divisions. Count of divisions is max.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_TournamentWithTenDivisions_DivisionsCountIsMax()
+        {
+            var testData = MakeTestTournamentWithTenDivisions(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsTrue(result.IsDivisionsCountMax, "Count of tournament's divisions should be max.");
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Tournament has two divisions. Count of divisions is not max.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_TournamentWithTwoDivisions_DivisionsCountIsNotMax()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(result.IsDivisionsCountMax, "Count of tournament's divisions shouldn't be max.");
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Tournament has a division with one group. Count of groups is min.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_DivisionWithOneGroup_GroupsCountIsMin()
+        {
+            // Arrange
+            var testData = MakeTestTournamentWithOneDivision(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsTrue(result.Divisions[0].IsGroupsCountMin, "Count of division's groups should be min.");
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Tournament has a division with two groups. Count of groups is not min.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_DivisionWithTwoGroups_GroupsCountIsNotMin()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(result.Divisions[0].IsGroupsCountMin, "Count of division's groups shouldn't be min.");
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Tornament has a division with ten groups. Count of groups is max.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_DivisionWithTenGroups_GroupsCountIsMax()
+        {
+            // Arrange
+            var testData = MakeTestTournamentWithTenDivisions(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsTrue(result.Divisions[0].IsGroupsCountMax, "Count of division's groups should be max.");
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Tornament has a division with two groups. Count of groups is not max.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_DivisionWithTwoGroups_GroupsCountIsNotMax()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+            SetupGetTournamentDivisions(CreateTestDivisions(), TEST_TOURNAMENT_ID);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(result.Divisions[0].IsGroupsCountMax, "Count of division's groups shouldn't be max.");
+        }
+
+        /// <summary>
+        /// Test for Edit method (Get action). Existing tournament is returned. Tournament is not new.
+        /// </summary>
+        [TestMethod]
+        public void EditGetAction_GetExistingTournament_TournamentIsNotNew()
+        {
+            // Arrange
+            var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
+            SetupGet(TEST_TOURNAMENT_ID, testData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var result = TestExtensions.GetModel<TournamentViewModel>(sut.Edit(TEST_TOURNAMENT_ID));
+
+            // Assert
+            Assert.IsFalse(result.IsNew, "Tournament should not be new.");
         }
 
         #endregion
@@ -1356,6 +1550,31 @@
         private Tournament MakeTestTournament(int tournamentId)
         {
             return new TournamentBuilder().WithId(tournamentId).Build();
+        }
+
+        private Tournament MakeTestTournamentWithOneDivision(int tournamentId)
+        {
+            var tournament = MakeTestTournament(tournamentId);
+            tournament.Divisions = CreateTestDivisions();
+            tournament.Divisions.Remove(tournament.Divisions[1]);
+            return tournament;
+        }
+
+        private Tournament MakeTestTournamentWithTenDivisions(int tournamentId)
+        {
+            var tournament = MakeTestTournament(tournamentId);
+            tournament.Divisions = new List<Division>();
+            for (int i = 0; i < 10; i++)
+            {
+                tournament.Divisions.Add(new Division());
+                tournament.Divisions[i].Groups = new List<Group>();
+                for (int j = 0; j < 10; j++)
+                {
+                    tournament.Divisions[i].Groups.Add(new Group());
+                }
+            }
+
+            return tournament;
         }
 
         private TournamentViewModel MakeTestTournamentViewModel()

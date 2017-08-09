@@ -26,7 +26,7 @@
             InitializeSeasonsList();
             InitializeTournamentSchemeList();
             IsTransferEnabled = true;
-            Divisions = new List<DivisionViewModel>() { new DivisionViewModel() };
+            Divisions = new List<DivisionViewModel>();
         }
 
         // Bug:missing [ScriptIgnore]
@@ -145,6 +145,30 @@
         [Display(Name = "GamesEnd", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime GamesEnd { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether tournament is new
+        /// </summary>
+        public bool IsNew
+        {
+            get { return Id == 0; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether count of divisions is min
+        /// </summary>
+        public bool IsDivisionsCountMin
+        {
+            get { return Divisions.Count == Constants.Division.MIN_DIVISIONS_COUNT; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether count of divisions is max
+        /// </summary>
+        public bool IsDivisionsCountMax
+        {
+            get { return Divisions.Count == Constants.Division.MAX_DIVISIONS_COUNT; }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether transfer enabled state

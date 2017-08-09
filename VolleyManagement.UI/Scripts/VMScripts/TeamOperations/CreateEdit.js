@@ -10,66 +10,31 @@
     privates.playersData = [];
 
     privates.playerIdAttributeName = "data-vm-playerid";
-    privates.notValidPlayerInputMessage = "You can choose only existing player!";
     privates.selectedPlayers = [];
     privates.teamPlayersTable = $("#teamRoster");
-    privates.defaultTeamPlayerInputClasses = "teamPlayerInput existingPlayerRequired";
-    privates.captainRow = null; // set on render
+    var teamPlayerCounter = 0;
+    var fullnameRegExp = /[a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}[\s\-\'][a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}/g;
+    var fullnameError = "\nUsername must have first and last name!";
+    var captainHasSuchNameError = "\nName was used by captain!";
+    var requiredFieldError = "\nRequired!";
+    var anotherPlayerHasSuchName = "\nName was used by another player!";
 
-    // HELPERS
-    privates.updateSelectedPlayers = function () {
-        privates.selectedPlayers = [];
-        $('.teamPlayerInput', privates.teamPlayersTable).each(function (key, value) {
-            var playerId = privates.getPlayerId(value);
-            if (playerId) {
-                privates.selectedPlayers.push(playerId);
-            }
-        });
-    };
-
-    privates.areAllPlayersSetToInputs = function () {
-
-        var inputs = $('.teamPlayerInput', privates.teamPlayersTable),
-            length = inputs.length,
-            result = true,
-            item,
-            i;
-
-        for (i = 0; i < length; i++) {
-            item = inputs[i];
-            if (!item.classList.contains('captain')) {
-                if (!privates.getPlayerId(item)) {
-                    result = false;
-                    break;
-                }
-            }
-        }
-
-        return result;
-    };
-
+    // Draws markup for new team players - 'Roster'
     privates.getTeamPlayerRowMarkup = function (config) {
         var playerName = config.playerName || "",
             playerId = config.playerId || 0,
-            isCaptain = config.isCaptain || false,
-            rowClass = isCaptain ? "teamPlayer captain" : "teamPlayer",
             customAttributes = privates.playerIdAttributeName + " ='" + playerId + "'",
-            inputClasses = privates.defaultTeamPlayerInputClasses,
-            inputName = playerId,
-            rowOptions = "<button class='viewTeamPlayerDetailsButton'>Details</button>",
-            validationSpan = "<span class='field-validation-valid' data-valmsg-for='" + playerId + "' data-valmsg-replace='true'></span>",
-            result;
+            inputName = playerId;
+        teamPlayerCounter++;
 
-        inputClasses += isCaptain ? " captain" : "";
-        rowOptions += (isCaptain ? "" : " <button class='deleteTeamPlayerButton'>Delete</button>");
-
-        result = "<tr class='" + rowClass + "'>" +
-            "<td><div><input type='text' name='" + inputName + "' class='" + inputClasses + "' value='" + playerName + "' " + customAttributes + "/>" + validationSpan + "</div></td>" +
-            "<td>" + rowOptions + "</td></tr>";
+        var result = "<tr class='teamPlayer'>" +
+            "<td><div><input type='text' name='" + inputName + "' class='teamPlayerInput' counter='" + teamPlayerCounter + "' value='" + playerName + "' "
+            + customAttributes + "/></div></td><td><button class='deleteTeamPlayerButton'>Delete</button></td></tr>";
 
         return result;
     };
 
+    // Gets actual team playerId/captainId
     privates.getPlayerId = function (inputElement) {
         var result;
 
@@ -82,6 +47,7 @@
         return result || 0;
     };
 
+    // Sets actual team playerId/captainId
     privates.setPlayerId = function (inputElement, id) {
         var attr;
 
@@ -96,75 +62,114 @@
         }
     };
 
-    privates.updateCaptainRowValues = function (name, id) {
-        var inputElement = $(".teamPlayerInput", privates.captainRow),
-            sourceInput;
-
-        if (name === undefined || id === undefined) {
-            sourceInput = privates.getCaptainEditInput();
-            id = privates.getPlayerId(sourceInput);
-            name = sourceInput.val();
-        }
-
-        inputElement.val(name);
-        inputElement.attr("name", id);
-        $(inputElement.parent()).children().last().attr("data-valmsg-for", id);
-        privates.setPlayerId(inputElement, id);
-
-        if (!name) {
-            privates.captainRow.hide();
-        } else {
-            privates.captainRow.show();
-        }
-    };
-
-    privates.renderNewTeamPlayerRow = function (config) {
-        config = config || {};
-
-        config.isCaptain = false;
-        $('tr:last', privates.teamPlayersTable).after(privates.getTeamPlayerRowMarkup(config));
-        privates.setRowOptionsListeners($('tr:last', privates.teamPlayersTable));
-    };
-
+    // Sets handlers for player input field
     privates.setTeamPlayerInputListeners = function (inputElement) {
-        inputElement.bind('change', currNs.onTeamPlayerInputChange);
-        inputElement.bind('blur', currNs.onTeamPlayerInputBlur);
+        inputElement.bind("input keyup", function () {
+            var $this = $(this);
+            var delay = 500;
+
+            clearTimeout($this.data('timer'));
+            $this.data('timer', setTimeout(function () {
+                $this.removeData('timer');
+
+                privates.checkIfFullNameCorrect(inputElement);
+                privates.checkIfPlayerHasCaptainName(inputElement);
+                privates.checkIfAnotherPlayerAlreadyHasSuchName(inputElement);
+            }, delay));
+        });
+
         inputElement.autocomplete({
             minLength: 2,
             source: privates.teamPlayerCompleter,
-            select: privates.onTeamPlayerSelect,
+            select: function (event, ui) {
+                privates.onTeamPlayerSelect(event, ui);
+                inputElement.val(ui.item.value);
+                privates.checkIfFullNameCorrect(inputElement);
+            },
             delay: 500
         });
     };
 
+    // Check if fullname correct
+    privates.checkIfFullNameCorrect = function (inputElement) {
+        var incorrectFullNameCounter = inputElement.attr('counter');
+
+        if (inputElement.val().match(fullnameRegExp) === null) {
+            $(".incorrectFullName[incorrectFullNameCounter='" + incorrectFullNameCounter + "']").remove();
+            inputElement.after("<span class = 'incorrectFullName' incorrectFullNameCounter = '" + incorrectFullNameCounter + "'>" + fullnameError + "</span>");
+        } else {
+            $(".incorrectFullName[incorrectFullNameCounter='" + incorrectFullNameCounter + "']").remove();
+        }
+    };
+
+    // Check if player input has captain value
+    privates.checkIfPlayerHasCaptainName = function (inputElement) {
+        var hasSuchNameCounter = inputElement.attr('counter');
+
+        if ($.trim(inputElement.val()) === $.trim($("#Captain_FullName").val())) {
+            $(".hasSuchName[playerCaptainCounter='" + hasSuchNameCounter + "']").remove();
+            inputElement.after("<br/><span class = 'hasSuchName' playerCaptainCounter = '" + hasSuchNameCounter + "'>" + captainHasSuchNameError + "</span>");
+            inputElement.css("border-color", "red");
+        } else {
+            inputElement.css("border-color", "initial");
+            $(".hasSuchName[playerCaptainCounter='" + hasSuchNameCounter + "']").remove();
+        }
+    };
+
+    // Check if player input has value of another player
+    privates.checkIfAnotherPlayerAlreadyHasSuchName = function (inputElement) {
+        var hasSuchNameCounter = inputElement.attr('counter');
+        var actualTeamPlayers = [];
+
+        if (teamPlayerCounter > 1) {
+            for (var j = 1; j <= teamPlayerCounter; j++) {
+                if ($(".teamPlayerInput[counter='" + j + "']").val() !== "" && j !== parseInt(inputElement.attr('counter'))) {
+                    actualTeamPlayers.push($(".teamPlayerInput[counter='" + j + "']").val());
+                }
+            }
+
+            for (var i = 0; i < actualTeamPlayers.length; i++) {
+                if ($.trim(inputElement.val()) === $.trim(actualTeamPlayers[i])) {
+                    inputElement.css("border-color", "red");
+                    $(".hasSuchName[playersCounter='" + hasSuchNameCounter + "']").remove();
+                    inputElement.after("<span class = 'hasSuchName' playersCounter = '" + hasSuchNameCounter + "'>" + anotherPlayerHasSuchName + "</span>");
+                    break;
+                } else {
+                    inputElement.css("border-color", "initial");
+                    $(".hasSuchName[playersCounter='" + hasSuchNameCounter + "']").remove();
+                }
+            }
+        }
+    };
+
+    // Sets handlers for delete button in teamPlayerRow
     privates.setRowOptionsListeners = function (teamPlayerRow) {
         $(".deleteTeamPlayerButton", teamPlayerRow).bind('click', currNs.deleteTeamPlayersRow);
-        $(".viewTeamPlayerDetailsButton", teamPlayerRow).bind('click', currNs.viewTeamPlayerDetails);
     };
 
-    privates.getCaptainEditInput = function () {
-        return $("#Captain_FullName");
-    };
-
+    // Adds row for player
     privates.addTeamPlayersRow = function (config) {
-        var teamPlayerInput = null;
+        config = config || {};
 
-        privates.renderNewTeamPlayerRow(config);
+        $('tr:last', privates.teamPlayersTable).after(privates.getTeamPlayerRowMarkup(config));
+        privates.setRowOptionsListeners($('tr:last', privates.teamPlayersTable));
 
-        teamPlayerInput = $('.teamPlayerInput:last', privates.teamPlayersTable);
+        var teamPlayerInput = $('.teamPlayerInput[counter="' + teamPlayerCounter + '"]', privates.teamPlayersTable);
         privates.setTeamPlayerInputListeners(teamPlayerInput);
-
 
         return false;
     };
 
+    // Grabs all actual data before 'Create'/'Edit' operation
     privates.getJsonForTeamSave = function () {
+
         var result = {
             Name: $("#Name").val(),
             Coach: $("#Coach").val(),
             Achievements: $("#Achievements").val(),
             Captain: {
-                Id: privates.getPlayerId(privates.getCaptainEditInput())
+                Id: privates.getPlayerId($("#Captain_FullName")),
+                FullName: $("#Captain_FullName").val()
             },
             Roster: []
         };
@@ -173,27 +178,31 @@
             result.Id = privates.teamId;
         }
 
-        $.each(privates.selectedPlayers, function (key, value) {
-            result.Roster.push({
-                Id: value
-            });
-        });
+        for (var j = 1; j <= teamPlayerCounter; j++) {
+            var inputTeamPlayer = $(".teamPlayerInput[counter='" + j + "']");
+            if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
+                result.Roster.push({
+                    FullName: inputTeamPlayer.val(),
+                    Id: privates.getPlayerId(inputTeamPlayer)
+                });
+            }
+        }
 
         return result;
     };
 
-
-    privates.teamIsValid = function (teamData) {
-        return $("form").valid();
+    // Check if form valid
+    privates.teamIsValid = function () {
+        var isDataValid = $("form").valid();
+        if ($(".hasSuchName").length > 0 || $(".incorrectFullName").length > 0) {
+            isDataValid = false;
+        }
+        return isDataValid;
     };
 
-    // AUTOCOMPLETE
-
+    // Builds specific url for 'TeamsController' method 'GetFreePlayers'
     privates.getAutocompleteUrl = function (config) {
-
-        var searchString,
-            isCaptain = "false",
-            selectedPlayers,
+        var selectedPlayers,
             result = "";
 
         if (config.searchString) {
@@ -217,12 +226,13 @@
         return result;
     };
 
+    // Gets Json with specific team player or captain from 'GetFreePlayers' method in 'PlyersController'
     privates.executeCompleter = function (url, responseHandler) {
 
         var processedData = [];
 
         if (url) {
-            $.getJSON(url, function (data, status, xhr) {
+            $.getJSON(url, function (data) {
                 $.each(data, function (key, value) {
                     processedData.push({
                         id: value.Id,
@@ -235,8 +245,8 @@
         }
     };
 
+    // Sets url for getJSON and get founded team player with callback 'responseHandler'
     privates.teamPlayerCompleter = function (requestObj, responseHandler) {
-
         var url = privates.getAutocompleteUrl({
             searchString: requestObj.term,
             isCaptain: false
@@ -245,6 +255,7 @@
         privates.executeCompleter(url, responseHandler);
     };
 
+    // Sets url for getJSON and get founded captain with callback 'responseHandlern
     privates.captainCompleter = function (requestObj, responseHandler) {
 
         var url = privates.getAutocompleteUrl({
@@ -255,139 +266,90 @@
         privates.executeCompleter(url, responseHandler);
     };
 
+    // Sets team player id and update its input
     privates.onTeamPlayerSelect = function (eventObj, selectedItem) {
         privates.setPlayerId(eventObj.target, selectedItem.item.id);
-        privates.updateSelectedPlayers();
     };
 
+
+    // Replaces old captain id with founded new after founded captain was selected
     privates.onCaptainSelect = function (eventObj, selectedItem) {
-        var selectedId = selectedItem.item.id,
-            selectedName = selectedItem.item.value;
-
+        var selectedId = selectedItem.item.id;
         privates.setPlayerId(eventObj.target, selectedId);
-
-        if (selectedId) {
-            $("tr .teamPlayerInput", privates.teamPlayersTable).each(function (ind, el) {
-                if (!$(el).hasClass("captain") && privates.getPlayerId(el) === selectedId) {
-                    el.parentNode.parentNode.remove();
-                }
-            });
-        }
-
-        privates.updateCaptainRowValues(selectedName, selectedId);
-        privates.updateSelectedPlayers();
     };
 
-    privates.handleTeamCreateEditSuccess = function(data, status, xhr) {
+    // Handles event of 'Create'/'Edit'
+    privates.handleTeamCreateEditEvent = function (data) {
+        if (data.Success === "False") {
+            alert(data.Message);
+            return false;
+        }
         window.history.back();
     };
 
-    privates.handleTeamCreateEditFail = function (data, status, xhr) {
-        alert("Create/Edit failed");
+    // Adds required field to required inputs
+    privates.AddRequiredValue = function (inputElement) {
+        if (inputElement.val() === "") {
+            $(".required").remove();
+            inputElement.css("border-color", "red");
+            inputElement.after("<span class='required'>" + requiredFieldError + "</span>");
+            inputElement.focus();
+        } else {
+            $(".required").remove();
+            inputElement.css("border-color", "initial");
+        }
     };
 
 
     // NAMESPACE PUBLIC METHODS
 
+    // Adds new team player table row
     currNs.onAddPlayerToTeamButtonClick = function () {
-        if (privates.areAllPlayersSetToInputs()) {
-            privates.addTeamPlayersRow();
+        if (privates.teamIsValid()) {
+            privates.addTeamPlayersRow("", "");
         }
+
         return false;
     };
 
-    currNs.onTeamPlayerInputChange = function (eventData) {
-        privates.setPlayerId(eventData.target, "");
-        privates.updateSelectedPlayers();
-        return false;
-    };
-
+    // Deletes player`s row
     currNs.deleteTeamPlayersRow = function (eventData) {
         var currentRow = eventData.target.parentElement.parentElement;
         currentRow.remove();
-        privates.updateSelectedPlayers();
-
         return false;
     };
 
-    currNs.onTeamPlayerInputBlur = function (eventData) {
-        var inputElement = eventData.target,
-            playerId = privates.getPlayerId(inputElement);
-
-        if (playerId) {
-            eventData.target.name = playerId;
-            eventData.target.parentElement.lastChild.dataset["valmsgFor"] = playerId;
-        }
-        else {
-            if (inputElement.value !== "") {
-                eventData.target.classList.add("existingPlayerRequired");
-            }
-            else {
-                eventData.target.classList.remove("existingPlayerRequired");
-            }
-        }
-
-        return false;
-    };
-
-    currNs.onCaptainBlur = function (eventData) {
-        var inputElement = eventData.target,
-            captainId = privates.getPlayerId(inputElement);
-
-        if (!captainId) {
-            if (inputElement.value === "") {
-                privates.updateCaptainRowValues("", "");
-            }
-        }
-
-        return false;
-    };
-
+    // Creates new team in 'Create' mode
     currNs.createTeam = function () {
         var teamData = privates.getJsonForTeamSave();
 
-        if (privates.teamIsValid(teamData)) {
+        if (privates.teamIsValid()) {
             $.post("/Teams/Create", teamData)
-                .done(privates.handleTeamCreateEditSuccess)
-                .fail(privates.handleTeamCreateEditFail);
+                .always(function (data) {
+                    privates.handleTeamCreateEditEvent(data);
+                });
         }
 
         return false;
     };
 
+    // Saves team in 'Edit' mode
     currNs.saveTeam = function () {
         var teamData = privates.getJsonForTeamSave();
 
-        if (privates.teamIsValid(teamData)) {
+        if (privates.teamIsValid()) {
             $.post("/Teams/Edit", teamData)
-                .done(privates.handleTeamCreateEditSuccess)
-                .fail(privates.handleTeamCreateEditFail);
+                .always(function (data) {
+                    privates.handleTeamCreateEditEvent(data);
+                });
         }
 
         return false;
     };
 
-
-    currNs.viewTeamPlayerDetails = function (eventData) {
-        // TODO: add necessary actions
-        return false;
-    };
-
-
-    // INIT RENDER
-    // STRICTLY BEFORE BINDINGS to avoid wrong page state
+    // Adds existed team players in 'Edit' team mode
     (function () {
-
-        var playersData = currNs.teamRoster || [],
-            inputElement;
-
-        // Team captain row
-        $('tr:first', privates.teamPlayersTable).after(privates.getTeamPlayerRowMarkup({
-            isCaptain: true
-        }));
-
-        privates.captainRow = $('tr.captain', privates.teamPlayersTable);
-        privates.updateCaptainRowValues();
+        var playersData = currNs.teamRoster || [];
 
         // Team players rows
         if (playersData.length > 0) {
@@ -395,50 +357,58 @@
                 if (!val.isCaptain) {
                     privates.addTeamPlayersRow({
                         playerName: val.name,
-                        playerId: val.id,
+                        playerId: val.id
                     });
                 }
             });
         }
-
-        privates.updateSelectedPlayers();
     })();
 
 
-    /// BINDINGS
+    // Adds handlers for captain field
     (function () {
+        var captainNameInput = $("#Captain_FullName");
 
-        var captainNameInput;
+        captainNameInput.bind('blur input keyup', function () {
+            privates.AddRequiredValue(captainNameInput);
+            privates.checkIfFullNameCorrect(captainNameInput);
+        });
 
-        captainNameInput = privates.getCaptainEditInput();
+        captainNameInput.bind("change", function () {
+            var $this = $(this);
+            var delay = 500;
 
-        // Captain input
-        privates.captainRow.bind('click', currNs.viewTeamPlayerDetails);
-        captainNameInput.bind('blur', currNs.onCaptainBlur);
-        captainNameInput.bind('change', currNs.onTeamPlayerInputChange);
+            clearTimeout($this.data('timer'));
+            $this.data('timer', setTimeout(function () {
+                $this.removeData('timer');
+                privates.checkIfFullNameCorrect(captainNameInput);
+            }, delay));
+        });
+
         captainNameInput.autocomplete({
             minLength: 2,
             source: privates.captainCompleter,
-            select: privates.onCaptainSelect,
+            select: function (event, ui) {
+                privates.onCaptainSelect(event, ui);
+                captainNameInput.val(ui.item.value);
+                privates.checkIfFullNameCorrect(captainNameInput);
+            },
             delay: 500
         });
 
-        //BUTTONS
-        // Add player to team button
-        $("#addPlayerToTeamButton").bind('click', currNs.onAddPlayerToTeamButtonClick);
-
-        // Create team button
-        $("#createTeamButton").bind("click", currNs.createTeam);
-
-        $("#saveTeamButton").bind("click", currNs.saveTeam);
-
-        //Validation
-        $.validator.addMethod("PlayerExist", function (value, element) {
-            return +element.dataset["vmPlayerid"];
-        }, privates.notValidPlayerInputMessage);
-
-        $.validator.addClassRules("existingPlayerRequired", { PlayerExist: true });
-
     })();
 
+    // Adds player to team button
+    $("#addPlayerToTeamButton").bind('click', currNs.onAddPlayerToTeamButtonClick);
+
+    // Creates team button in 'Create' team mode
+    $("#createTeamButton").bind("click", currNs.createTeam);
+
+    // Check is team name empty
+    $("input:first").bind('blur change input keyup', function () {
+        privates.AddRequiredValue($("input:first"));
+    });
+
+    // Saves team in 'Edit' team mode
+    $("#saveTeamButton").bind("click", currNs.saveTeam);
 });

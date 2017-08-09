@@ -64,7 +64,7 @@
         private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
         private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
-        private readonly IQuery<int, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
+        private readonly IQuery<Tournament, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
 
         #endregion
 
@@ -95,7 +95,7 @@
             IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
             IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
-            IQuery<int, TournamentByGroupCriteria> getTournamenrByGroupQuery,
+            IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
             IAuthorizationService authService,
             IGameService gameService)
         {
@@ -273,7 +273,7 @@
                     TournamentResources.CollectionIsEmpty);
             }
 
-            var tournamentId = GetTournamentByGroup(groupTeam[0].GroupId);
+            var tournamentId = GetTournamentByGroup(groupTeam[0].GroupId).Id;
             var allTeams = GetAllTournamentTeams(tournamentId);
             int numberOfTeamAlreadyExist = 0;
 
@@ -353,6 +353,16 @@
             return numberOfRounds;
         }
 
+        /// <summary>
+        /// Gets tournament by its group
+        /// </summary>
+        /// <param name="groupId">id of group </param>
+        /// <returns>Return current tournament.</returns>
+        public Tournament GetTournamentByGroup(int groupId)
+        {
+            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
+        }
+
         #endregion
 
         #region Private
@@ -367,11 +377,6 @@
             }
 
             return criteria;
-        }
-
-        private int GetTournamentByGroup(int groupId)
-        {
-            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
         }
 
         /// <summary>

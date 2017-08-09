@@ -49,7 +49,7 @@
                      r,
                      _teamService.Get(r.TeamId),
                      _userService.GetUserDetails(r.UserId),
-                     _tournamentService.Get(r.TournamentId)))
+                     _tournamentService.GetTournamentByGroup(r.GroupId)))
             };
 
             return View(requests);

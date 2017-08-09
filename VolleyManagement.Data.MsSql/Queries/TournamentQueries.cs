@@ -21,7 +21,7 @@
                                      IQuery<List<Division>, TournamentDivisionsCriteria>,
                                      IQuery<List<Group>, DivisionGroupsCriteria>,
                                      IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>,
-                                     IQuery<int, TournamentByGroupCriteria>
+                                     IQuery<Tournament, TournamentByGroupCriteria>
     {
         #region Fields
 
@@ -67,7 +67,7 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
-        public int Execute(TournamentByGroupCriteria criteria)
+        public Tournament Execute(TournamentByGroupCriteria criteria)
         {
             var tournament = from g in _unitOfWork.Context.Groups
                             join d in _unitOfWork.Context.Divisions on g.DivisionId equals d.Id
@@ -75,7 +75,7 @@
                             where g.Id == criteria.GroupId
                             select t;
 
-            return tournament.First().Id;
+            return tournament.Select(GetTournamentMapping()).FirstOrDefault();
         }
 
         /// <summary>

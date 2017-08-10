@@ -13,13 +13,14 @@
     privates.selectedPlayers = [];
     privates.teamPlayersTable = $("#teamRoster");
     var teamPlayerCounter = 0;
-    var fullnameRegExp = /[a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}[\s\-\'][a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}/g;
-    var checkFullNameCorrectValue = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]+/gi;
-    var firstNameLastNameRexExpSplitter = /[\s]/g;
+    var fullnameRegExp = /[a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}[\s][a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}/g;
+    var fullNameCorrectValueCheck = /[\d`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]+/gi;
+    var firstNameLastNameSplitter = /[\s]/g;
     var fullnameError = "\nUsername must have first and last name!";
     var captainHasSuchNameError = "\nName was used by captain!";
     var requiredFieldError = "\nRequired!";
     var anotherPlayerHasSuchName = "\nName was used by another player!";
+    var fullNameContainsSpecialSymbols = "\nFullname can't contain special symbols or digits!";
 
     // Draws markup for new team players - 'Roster'
     privates.getTeamPlayerRowMarkup = function (config) {
@@ -77,6 +78,7 @@
                 privates.checkIfFullNameCorrect(inputElement);
                 privates.checkIfPlayerHasCaptainName(inputElement);
                 privates.checkIfAnotherPlayerAlreadyHasSuchName(inputElement);
+                privates.checkIfFullnameContainsSpecSymbols(inputElement);
             }, delay));
         });
 
@@ -87,6 +89,7 @@
                 privates.onTeamPlayerSelect(event, ui);
                 inputElement.val(ui.item.value);
                 privates.checkIfFullNameCorrect(inputElement);
+                privates.checkIfFullnameContainsSpecSymbols(inputElement);
             },
             delay: 500
         });
@@ -103,6 +106,17 @@
             $(".incorrectFullName[incorrectFullNameCounter='" + incorrectFullNameCounter + "']").remove();
         }
     };
+
+    privates.checkIfFullnameContainsSpecSymbols = function (inputElement) {
+        var incorrectFullNameCounter = inputElement.attr('counter');
+
+        if (inputElement.val().match(fullNameCorrectValueCheck) !== null) {
+            $(".incorrectFullName[fullNameContainsSpecSymbolsCounter='" + incorrectFullNameCounter + "']").remove();
+            inputElement.after("<span class = 'incorrectFullName' incorrectFullNameCounter = '" + incorrectFullNameCounter + "'>" + fullNameContainsSpecialSymbols + "</span>");
+        } else {
+            $(".incorrectFullName[fullNameContainsSpecSymbolsCounter='" + incorrectFullNameCounter + "']").remove();
+        }
+    }
 
     // Check if player input has captain value
     privates.checkIfPlayerHasCaptainName = function (inputElement) {
@@ -164,7 +178,7 @@
 
     // Grabs all actual data before 'Create'/'Edit' operation
     privates.getJsonForTeamSave = function () {
-        var captainFullname = $("#Captain_FullName").val().split(firstNameLastNameRexExpSplitter, 2);
+        var captainFullname = $("#Captain_FullName").val().split(firstNameLastNameSplitter, 2);
         var result = {
             Name: $("#Name").val(),
             Coach: $("#Coach").val(),
@@ -189,7 +203,7 @@
 
         for (var j = 1; j <= teamPlayerCounter; j++) {
             var inputTeamPlayer = $(".teamPlayerInput[counter='" + j + "']");
-            var fullName = inputTeamPlayer.val().split(firstNameLastNameRexExpSplitter, 2);
+            var fullName = inputTeamPlayer.val().split(firstNameLastNameSplitter, 2);
 
             if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
                 result.Roster.push({
@@ -384,6 +398,7 @@
         captainNameInput.bind('blur input keyup', function () {
             privates.AddRequiredValue(captainNameInput);
             privates.checkIfFullNameCorrect(captainNameInput);
+            privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
         });
 
         captainNameInput.bind("change", function () {
@@ -394,6 +409,7 @@
             $this.data('timer', setTimeout(function () {
                 $this.removeData('timer');
                 privates.checkIfFullNameCorrect(captainNameInput);
+                privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
             }, delay));
         });
 
@@ -404,6 +420,7 @@
                 privates.onCaptainSelect(event, ui);
                 captainNameInput.val(ui.item.value);
                 privates.checkIfFullNameCorrect(captainNameInput);
+                privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
             },
             delay: 500
         });

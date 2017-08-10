@@ -27,7 +27,7 @@
     int captainId = 0;
     if (Model.Captain != null)
     {
-        captainFullName = Model.Captain.FullName;
+        captainFullName = Model.Captain.FirstName + " " + Model.Captain.LastName;
         captainId = Model.Captain.Id;
     }
 }
@@ -71,10 +71,9 @@
                     {
             <text>
             ns.teamRoster.push({
-                name: '@(item.FullName)',
+                name: '@(item.FirstName + " " + item.LastName)',
                 id: "@(item.Id)",
-                isCaptain: @(item.Id == captainId ? "true" : "false")
-            });
+                isCaptain: @(item.Id == captainId ? "true" : "false")});
             </text>
                     }
                 }
@@ -86,7 +85,7 @@
     <button id='addPlayerToTeamButton'>Add player to team</button>
     <table id="teamRoster" class="table">
         <tr>
-            <th>@Html.DisplayNameFor(model => model.Roster.FirstOrDefault().FullName)</th>
+            <th><label>Full Name</label></th>
             <th class="hidden"></th>
         </tr>
     </table>

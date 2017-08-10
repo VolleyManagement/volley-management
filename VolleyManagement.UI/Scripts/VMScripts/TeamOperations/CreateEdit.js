@@ -14,6 +14,8 @@
     privates.teamPlayersTable = $("#teamRoster");
     var teamPlayerCounter = 0;
     var fullnameRegExp = /[a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}[\s\-\'][a-zA-Zа-яА-ЯёЁіІїЇєЄ]{2,}/g;
+    var checkFullNameCorrectValue = /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]+/gi;
+    var firstNameLastNameRexExpSplitter = /[\s]/g;
     var fullnameError = "\nUsername must have first and last name!";
     var captainHasSuchNameError = "\nName was used by captain!";
     var requiredFieldError = "\nRequired!";
@@ -162,17 +164,24 @@
 
     // Grabs all actual data before 'Create'/'Edit' operation
     privates.getJsonForTeamSave = function () {
-
+        var captainFullname = $("#Captain_FullName").val().split(firstNameLastNameRexExpSplitter, 2);
         var result = {
             Name: $("#Name").val(),
             Coach: $("#Coach").val(),
             Achievements: $("#Achievements").val(),
             Captain: {
                 Id: privates.getPlayerId($("#Captain_FullName")),
-                FullName: $("#Captain_FullName").val()
+                FirstName: captainFullname[0],
+                LastName: captainFullname[1]
             },
             Roster: []
         };
+
+        result.Roster.push({
+            FirstName: captainFullname[0],
+            LastName: captainFullname[1],
+            Id: privates.getPlayerId($("#Captain_FullName"))
+        });
 
         if (privates.teamUnderEdit) {
             result.Id = privates.teamId;
@@ -180,9 +189,12 @@
 
         for (var j = 1; j <= teamPlayerCounter; j++) {
             var inputTeamPlayer = $(".teamPlayerInput[counter='" + j + "']");
+            var fullName = inputTeamPlayer.val().split(firstNameLastNameRexExpSplitter, 2);
+
             if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
                 result.Roster.push({
-                    FullName: inputTeamPlayer.val(),
+                    FirstName: fullName[0],
+                    LastName: fullName[1],
                     Id: privates.getPlayerId(inputTeamPlayer)
                 });
             }

@@ -183,10 +183,6 @@
                 try
                 {
                     var roster = new List<Player> { teamViewModel.Captain.ToDomain() };
-                    if (roster.First().TeamId == null)
-                    {
-                        roster[0].TeamId = teamViewModel.Id;
-                    }
 
                     if (teamViewModel.Roster != null)
                     {
@@ -205,7 +201,7 @@
                     }
                     else
                     {
-                        _teamService.DeletePlayersFromTeamOnlyWithCaptain(domainTeam);
+                        _teamService.DeletePlayersFromCurrentTeam(domainTeam);
                         _teamService.Edit(domainTeam);
                     }
 

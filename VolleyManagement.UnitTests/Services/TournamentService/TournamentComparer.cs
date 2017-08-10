@@ -59,7 +59,8 @@
                 && x.Description == y.Description
                 && x.Season == y.Season
                 && x.Scheme == y.Scheme
-                && x.RegulationsLink == y.RegulationsLink;
+                && x.RegulationsLink == y.RegulationsLink
+                && x.IsArchived == y.IsArchived;
         }
     }
 }

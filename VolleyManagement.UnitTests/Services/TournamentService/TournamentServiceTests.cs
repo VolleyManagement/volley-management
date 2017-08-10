@@ -1253,7 +1253,8 @@
             // Arrange
             MockTimeProviderUtcNow(_dateForCurrentState);
 
-            var testData = _testFixture.TestTournaments().Build();
+            var testData = _testFixture.TestTournaments().WithArchivedTournaments()
+                                                .Build();
             MockGetAllTournamentsQuery(testData);
             var expected = BuildActualTournamentsList();
 
@@ -1261,6 +1262,31 @@
 
             // Act
             var actual = sut.GetActual().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+        #endregion
+
+        #region GetArchived
+
+        /// <summary>
+        /// GetArchived method test. The method should return archived tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetArchived_ArchivedTournamentsExist_ArchivedTournamentsReturned()
+        {
+            // Arrange
+            MockTimeProviderUtcNow(_dateForCurrentState);
+            var testData = _testFixture.TestTournaments().WithArchivedTournaments()
+                                                .Build();
+            MockGetAllTournamentsQuery(testData);
+            var expected = BuildArchivedTournamentsList();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetArchived().ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
@@ -1491,6 +1517,47 @@
                                             .WithTransferEnd(new DateTime(2015, 09, 10))
                                             .Build())
                             .Build();
+        }
+
+        private List<Tournament> BuildArchivedTournamentsList()
+        {
+            var tournaments = new TournamentServiceTestFixture()
+                            .AddTournament(new TournamentBuilder()
+                                            .WithId(5)
+                                            .WithName("Tournament 5")
+                                            .WithDescription("Tournament 5 description")
+                                            .WithSeason(2014)
+                                            .WithScheme(TournamentSchemeEnum.TwoAndHalf)
+                                            .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('5')")
+                                            .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
+                                            .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
+                                            .WithGamesStart(new DateTime(2015, 06, 30))
+                                            .WithGamesEnd(new DateTime(2015, 11, 30))
+                                            .WithTransferStart(new DateTime(2015, 08, 20))
+                                            .WithTransferEnd(new DateTime(2015, 09, 10))
+                                            .Build())
+                            .AddTournament(new TournamentBuilder()
+                                            .WithId(6)
+                                            .WithName("Tournament 6")
+                                            .WithDescription("Tournament 6 description")
+                                            .WithSeason(2014)
+                                            .WithScheme(TournamentSchemeEnum.PlayOff)
+                                            .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('6')")
+                                            .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
+                                            .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
+                                            .WithGamesStart(new DateTime(2015, 06, 30))
+                                            .WithGamesEnd(new DateTime(2015, 11, 30))
+                                            .WithTransferStart(new DateTime(2015, 08, 20))
+                                            .WithTransferEnd(new DateTime(2015, 09, 10))
+                                            .Build())
+                            .Build();
+
+            foreach (var t in tournaments)
+            {
+                t.IsArchived = true;
+            }
+
+            return tournaments;
         }
 
         private List<Team> CreateTeamsInTournament()

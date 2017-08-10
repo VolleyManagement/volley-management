@@ -98,6 +98,47 @@
         }
 
         /// <summary>
+        /// Add archived tournaments to collection.
+        /// </summary>
+        /// <returns>Builder object with collection of tournaments.</returns>
+        public TournamentServiceTestFixture WithArchivedTournaments()
+        {
+            _tournaments.Add(new Tournament()
+            {
+                Id = 5,
+                Name = "Tournament 5",
+                Description = "Tournament 5 description",
+                Season = 2014,
+                Scheme = TournamentSchemeEnum.TwoAndHalf,
+                RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('5')",
+                ApplyingPeriodStart = new DateTime(2015, 02, 20),
+                ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                GamesStart = new DateTime(2015, 06, 30),
+                GamesEnd = new DateTime(2015, 11, 30),
+                TransferStart = new DateTime(2015, 08, 20),
+                TransferEnd = new DateTime(2015, 09, 10),
+                IsArchived = true
+            });
+            _tournaments.Add(new Tournament()
+            {
+                Id = 6,
+                Name = "Tournament 6",
+                Description = "Tournament 6 description",
+                Season = 2014,
+                Scheme = TournamentSchemeEnum.PlayOff,
+                RegulationsLink = "www.Volleyball.dp.ua/Regulations/Tournaments('6')",
+                ApplyingPeriodStart = new DateTime(2015, 02, 20),
+                ApplyingPeriodEnd = new DateTime(2015, 06, 20),
+                GamesStart = new DateTime(2015, 06, 30),
+                GamesEnd = new DateTime(2015, 11, 30),
+                TransferStart = new DateTime(2015, 08, 20),
+                TransferEnd = new DateTime(2015, 09, 10),
+                IsArchived = true
+            });
+            return this;
+        }
+
+        /// <summary>
         /// Add tournament to collection.
         /// </summary>
         /// <returns>Builder object with collection of tournaments.</returns>

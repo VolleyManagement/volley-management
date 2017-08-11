@@ -107,10 +107,6 @@
                 try
                 {
                     var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
-                    if (teamViewModel.Roster != null)
-                    {
-                        roster.AddRange(roster);
-                    }
 
                     _playerService.Create(roster);
 
@@ -183,11 +179,6 @@
                 try
                 {
                     var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
-
-                    if (teamViewModel.Roster != null)
-                    {
-                        roster.AddRange(roster);
-                    }
 
                     _playerService.Create(roster);
 

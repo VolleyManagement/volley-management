@@ -178,7 +178,7 @@
 
     // Grabs all actual data before 'Create'/'Edit' operation
     privates.getJsonForTeamSave = function () {
-        var captainFullname = $("#Captain_FullName").val().split(firstNameLastNameSplitter, 2);
+        var captainFullname = $("#Captain_FullName").val().trim().split(firstNameLastNameSplitter, 2);
         var result = {
             Name: $("#Name").val(),
             Coach: $("#Coach").val(),
@@ -203,7 +203,7 @@
 
         for (var j = 1; j <= teamPlayerCounter; j++) {
             var inputTeamPlayer = $(".teamPlayerInput[counter='" + j + "']");
-            var fullName = inputTeamPlayer.val().split(firstNameLastNameSplitter, 2);
+            var fullName = inputTeamPlayer.val().trim().split(firstNameLastNameSplitter, 2);
 
             if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
                 result.Roster.push({

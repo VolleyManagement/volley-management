@@ -107,7 +107,7 @@
         /// <summary>
         /// Starts login interaction
         /// </summary>
-        /// <param name="returnUrl"> The return Url. </param>
+        /// <param name="returnUrl">URL to return</param>
         /// <returns> View item </returns>
         [AllowAnonymous]
         [RequireHttps]

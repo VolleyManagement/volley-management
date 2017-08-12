@@ -12,11 +12,9 @@ Current Version: Pre-release
 
 * Summary of set up
 
-Project is VS 2012 solution.
+Project is VS 2017 solution. Any edition will suffice.
 
-* Configuration
-
-TBD
+Target framework is .NET 4.7.
 
 * Dependencies
 
@@ -24,11 +22,15 @@ All dependencies are managed via NuGet
 
 * Database configuration
 
-Database is automatically deployed to server specified by connection string in Web.config file in VolleyManagement.UI project
+Database is automatically deployed to server first time you run application. Specify proper connection string in Web.config file in VolleyManagement.UI project.
+
+By default it is configured to use SQL Server 2016 LocalDB. But you can can change altering connection string.
 
 * How to run tests
 
-Tests can be triggered via Visual Studio
+Project uses MSTest framework. Tests can be triggered via Visual Studio test menu.
+
+🚧 ToDo: Add guide how to run Code Coverage using JetBrains dotCover CLI runner
 
 * Deployment instructions
 

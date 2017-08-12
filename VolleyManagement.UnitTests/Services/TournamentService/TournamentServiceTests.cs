@@ -1253,12 +1253,34 @@
             // Arrange
             MockTimeProviderUtcNow(_dateForCurrentState);
 
-            var testData = _testFixture.TestTournaments().WithArchivedTournaments()
-                                                .Build();
+            var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
             var expected = BuildActualTournamentsList();
 
             var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetActual().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// GetActual method test. Tournament list includes archived tournaments.
+        /// The method should return actual tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetActual_ActualTournamentsWithArchived_ActualTournamentsReturns()
+        {
+            // Arrange
+            var testData = _testFixture.TestTournaments().WithArchivedTournaments()
+                                                        .Build();
+            MockGetAllTournamentsQuery(testData);
+
+            var sut = BuildSUT();
+
+            var expected = BuildActualTournamentsList();
 
             // Act
             var actual = sut.GetActual().ToList();

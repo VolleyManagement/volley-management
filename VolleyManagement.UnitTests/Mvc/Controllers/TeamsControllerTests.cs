@@ -162,13 +162,12 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Create(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>
@@ -204,14 +203,13 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Create(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>
@@ -227,14 +225,13 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Create(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>
@@ -251,13 +248,12 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Create(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Once());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>
@@ -273,13 +269,12 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Create(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Create(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Once());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>
@@ -363,13 +358,12 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Edit(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Edit(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Once());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>
@@ -405,14 +399,13 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Edit(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Edit(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Once());
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>
@@ -428,14 +421,13 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Edit(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Edit(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Edit(It.IsAny<Team>()), Times.Once());
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Never());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>
@@ -463,13 +455,12 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Edit(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Edit(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Once());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>
@@ -496,13 +487,12 @@
 
             // Act
             var sut = BuildSUT();
-            sut.Edit(viewModel);
-            var modelState = sut.ModelState[string.Empty];
+            var jsonResult = sut.Edit(viewModel);
+            var modelResult = jsonResult;
 
             // Assert
             _teamServiceMock.Verify(ts => ts.UpdateRosterTeamId(It.IsAny<List<Player>>(), It.IsAny<int>()), Times.Once());
-            Assert.AreEqual(modelState.Errors.Count, 1);
-            Assert.AreEqual(modelState.Errors[0].ErrorMessage, SPECIFIED_EXCEPTION_MESSAGE);
+            Assert.IsNotNull(modelResult);
         }
 
         /// <summary>

@@ -882,9 +882,9 @@
             List<Player> roster = new List<Player> { captain };
             MockGetTeamRosterQuery(roster);
 
-            MockGetPlayerByIdQuery(new PlayerBuilder()
+            MockGetPlayerByFullNameQuery(new PlayerBuilder()
                                                 .WithId(SPECIFIC_PLAYER_ID)
-                                                .WithTeamId(SPECIFIC_TEAM_ID)
+                                                .WithTeamId(ANOTHER_TEAM_ID)
                                                 .Build());
 
             var existingTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).WithCaptain(SPECIFIC_PLAYER_ID).Build();
@@ -926,19 +926,19 @@
 
             Player captain = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(ANOTHER_TEAM_ID).Build();
             List<Player> roster = new List<Player> { captain };
-            MockGetPlayerByIdQuery(captain);
+            MockGetPlayerByFullNameQuery(captain);
 
-            var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            var teamToSet = new TeamBuilder().WithId(ANOTHER_TEAM_ID).Build();
 
             _getTeamByCaptainQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns(null as Team);
             _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
 
             // Act
             var ts = BuildSUT();
-            ts.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID);
+            ts.UpdateRosterTeamId(roster, ANOTHER_TEAM_ID);
 
             // Assert
-            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Once());
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, ANOTHER_TEAM_ID, Times.Once());
         }
 
         /// <summary>
@@ -954,7 +954,7 @@
 
             Player player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(null).Build();
             List<Player> roster = new List<Player> { player };
-            MockGetPlayerByIdQuery(player);
+            MockGetPlayerByFullNameQuery(player);
 
             var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
@@ -1073,6 +1073,11 @@
         private void MockGetPlayerByIdQuery(Player player)
         {
             _getPlayerByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(player);
+        }
+
+        private void MockGetPlayerByFullNameQuery(Player player)
+        {
+            _getPlayerByFullNameQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByFullNameCriteria>())).Returns(player);
         }
 
         private void MockGetTeamRosterQuery(List<Player> players)

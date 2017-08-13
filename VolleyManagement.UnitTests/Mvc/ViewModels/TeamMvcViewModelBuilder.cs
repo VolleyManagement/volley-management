@@ -30,6 +30,7 @@
                 Captain = new PlayerNameViewModel() { Id = 1, FirstName = "First", LastName = "Player" },
                 Roster = new List<PlayerNameViewModel>()
                 {
+                    new PlayerNameViewModel() { Id = 1, FirstName = "First", LastName = "Player" },
                     new PlayerNameViewModel() { Id = 2, FirstName = "Second", LastName = "Player" },
                     new PlayerNameViewModel() { Id = 3, FirstName = "Third", LastName = "Player" },
                     new PlayerNameViewModel() { Id = 4, FirstName = "Fourth", LastName = "Player" }

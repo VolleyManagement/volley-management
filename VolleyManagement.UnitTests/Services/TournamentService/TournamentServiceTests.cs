@@ -1301,12 +1301,14 @@
         {
             // Arrange
             MockTimeProviderUtcNow(_dateForCurrentState);
-            var testData = _testFixture.TestTournaments().WithArchivedTournaments()
-                                                .Build();
+            var testData = _testFixture.TestTournaments()
+                .WithArchivedTournaments()
+                .Build();
             MockGetAllTournamentsQuery(testData);
-            var expected = BuildArchivedTournamentsList();
 
             var sut = BuildSUT();
+
+            var expected = BuildArchivedTournamentsList();
 
             // Act
             var actual = sut.GetArchived().ToList();
@@ -1329,7 +1331,9 @@
             MockGetAllTournamentsQuery(testData);
 
             var sut = BuildSUT();
-            var expected = new TournamentServiceTestFixture().WithFinishedTournaments().Build();
+            var expected = new TournamentServiceTestFixture()
+                .WithFinishedTournaments()
+                .Build();
 
             // Act
             var actual = sut.GetFinished().ToList();
@@ -1374,7 +1378,9 @@
             MockGetAllTournamentsQuery(testData);
 
             var sut = BuildSUT();
-            var expected = new TournamentServiceTestFixture().WithFinishedTournaments().Build();
+            var expected = new TournamentServiceTestFixture()
+                .WithFinishedTournaments()
+                .Build();
 
             // Act
             var actual = sut.GetFinished().ToList();

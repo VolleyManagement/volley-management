@@ -144,6 +144,15 @@
         }
 
         /// <summary>
+        /// Returns only archived tournaments
+        /// </summary>
+        /// <returns>Archived tournaments</returns>
+        public List<Tournament> GetArchived()
+        {
+            return GetArchivedTournaments();
+        }
+
+        /// <summary>
         /// Get only finished tournaments
         /// </summary>
         /// <returns>Finished tournaments</returns>
@@ -404,7 +413,12 @@
 
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
         {
-            return Get().Where(t => statesFilter.Contains(t.State)).ToList();
+            return Get().Where(t => statesFilter.Contains(t.State) && !t.IsArchived).ToList();
+        }
+
+        private List<Tournament> GetArchivedTournaments()
+        {
+            return Get().Where(t => t.IsArchived).ToList();
         }
 
         private void ValidateTournament(Tournament tournament, bool isUpdate = false)

@@ -95,6 +95,17 @@
         }
 
         /// <summary>
+        /// Gets archived tournaments from TournamentService
+        /// </summary>
+        /// <returns>View with collection of archived tournaments</returns>
+        public ActionResult IndexArchived()
+        {
+            List<Tournament> archivedTournaments = _tournamentService.GetArchived().ToList();
+
+            return View(archivedTournaments);
+        }
+
+        /// <summary>
         /// Get finished tournaments
         /// </summary>
         /// <returns>Json result</returns>

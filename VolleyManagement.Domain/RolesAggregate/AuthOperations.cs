@@ -46,6 +46,11 @@
             /// Manage tournament teams operation
             /// </summary>
             public static readonly AuthOperation ManageTeams = Tuple.Create(TOURNAMENTS, 4);
+
+            /// <summary>
+            /// See archived tournaments list operation
+            /// </summary>
+            public static readonly AuthOperation SeeArchived = Tuple.Create(TOURNAMENTS, 5);
         }
 
         /// <summary>

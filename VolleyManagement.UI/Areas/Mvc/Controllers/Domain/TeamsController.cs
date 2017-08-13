@@ -185,15 +185,11 @@
                     var domainTeam = teamViewModel.ToDomain();
                     domainTeam.CaptainId = roster[0].Id;
 
+                    _teamService.Edit(domainTeam);
+
                     if (teamViewModel.Roster != null)
                     {
-                        _teamService.Edit(domainTeam);
                         _teamService.UpdateRosterTeamId(roster, domainTeam.Id);
-                    }
-                    else
-                    {
-                        _teamService.DeletePlayersFromCurrentTeam(domainTeam);
-                        _teamService.Edit(domainTeam);
                     }
 
                     teamViewModel.Id = domainTeam.Id;

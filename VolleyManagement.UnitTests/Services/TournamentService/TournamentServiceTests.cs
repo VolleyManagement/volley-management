@@ -1271,11 +1271,12 @@
         /// The method should return actual tournaments
         /// </summary>
         [TestMethod]
-        public void GetActual_ActualTournamentsWithArchived_ActualTournamentsReturns()
+        public void GetActual_ActualTournamentsWithArchived__ActualOnlyReturned()
         {
             // Arrange
-            var testData = _testFixture.TestTournaments().WithArchivedTournaments()
-                                                        .Build();
+            var testData = _testFixture.TestTournaments()
+                .WithArchivedTournaments()
+                .Build();
             MockGetAllTournamentsQuery(testData);
 
             var sut = BuildSUT();
@@ -1350,6 +1351,30 @@
 
             var sut = BuildSUT();
             var expected = BuildActualTournamentsList();
+
+            // Act
+            var actual = sut.GetFinished().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// GetFinished method test. Tournament list includes archived tournaments.
+        /// The method should return finished tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetFinished_FinishedTournamentsWithArchived_OnlyFinishedTournamentsReturned()
+        {
+            // Arrange
+            var testData = _testFixture
+                .WithFinishedTournaments()
+                .WithArchivedTournaments()
+                .Build();
+            MockGetAllTournamentsQuery(testData);
+
+            var sut = BuildSUT();
+            var expected = new TournamentServiceTestFixture().WithFinishedTournaments().Build();
 
             // Act
             var actual = sut.GetFinished().ToList();

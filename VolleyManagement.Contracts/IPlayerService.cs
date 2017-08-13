@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.Contracts
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Domain.PlayersAggregate;
@@ -21,6 +22,12 @@
         /// </summary>
         /// <param name="player">New player.</param>
         void Create(Player player);
+
+        /// <summary>
+        /// Create new players.
+        /// </summary>
+        /// <param name="playersToCreate">New players.</param>
+        void Create(List<Player> playersToCreate);
 
         /// <summary>
         /// Edit player profile.

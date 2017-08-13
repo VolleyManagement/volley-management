@@ -354,7 +354,8 @@
         {
             return new PlayerNameViewModel()
             {
-                FullName = string.Format("{1} {0}", firstname, lastname),
+                FirstName = firstname,
+                LastName = lastname,
                 Id = id
             };
         }

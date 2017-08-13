@@ -39,9 +39,9 @@ This file should be put one level above sln file. (This prevents from accidental
 
 ## Additional references ##
 
-* [License](https://bitbucket.org/VolleyManagement/volleymanagement/src/54f6827b2786bee525681bd273d6190a4b235199/LICENSE.md?at=master)
-* [Contribution Guidelines](https://bitbucket.org/VolleyManagement/volleymanagement/src/54f6827b2786bee525681bd273d6190a4b235199/CONTRIBUTING.md?at=master)
-* [Code of Conduct](https://bitbucket.org/VolleyManagement/volleymanagement/src/54f6827b2786bee525681bd273d6190a4b235199/CODE_OF_CONDUCT.md?at=master)
+* [License](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/LICENSE.md)
+* [Contribution Guidelines](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/CONTRIBUTING.md)
+* [Code of Conduct](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/CODE_OF_CONDUCT.md)
 
 ## Who do I talk to? ##
 

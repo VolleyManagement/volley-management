@@ -131,6 +131,8 @@
 
             ValidateTeam(team);
 
+            team.CaptainId = captain.Id;
+
             try
             {
                 _teamRepository.Update(team);
@@ -215,14 +217,14 @@
                 {
                     if (roster.SingleOrDefault(t => t.Id == player.Id) == null)
                     {
-                        SetPlayerTeamIdToNull(player.Id);
+                        SetPlayerTeamIdToNull(player.FirstName, player.LastName);
                     }
                 }
             }
 
             foreach (var player in roster)
             {
-                UpdatePlayerTeam(player.Id, teamId);
+                UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
             }
         }
 
@@ -245,13 +247,20 @@
             }
         }
 
-        private void UpdatePlayerTeam(int playerId, int teamId)
+        private void UpdatePlayerTeam(string firstName, string lastName, int teamId)
         {
-            Player player = GetPlayerById(playerId);
+            Player player = GetPlayerByFullName(firstName, lastName);
 
             if (player == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
+            }
+
+            // Check if player plays in another team
+            if (player.TeamId != null && player.TeamId != teamId)
+            {
+                throw new ArgumentException(
+                    TournamentResources.ValidationPlayerOfAnotherTeam, player.FirstName + " " + player.FirstName);
             }
 
             // Check if player is captain of another team
@@ -279,13 +288,13 @@
             _playerRepository.UnitOfWork.Commit();
         }
 
-        private void SetPlayerTeamIdToNull(int playerId)
+        private void SetPlayerTeamIdToNull(string firstName, string lastName)
         {
-            Player player = GetPlayerById(playerId);
+            Player player = GetPlayerByFullName(firstName, lastName);
 
             if (player == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
             }
 
             player.TeamId = null;
@@ -301,6 +310,11 @@
         private Player GetPlayerById(int id)
         {
             return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        private Player GetPlayerByFullName(string firstName, string lastName)
+        {
+            return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria { FirstName = firstName, LastName = lastName });
         }
 
         private void ValidateTeamName(string teamName)

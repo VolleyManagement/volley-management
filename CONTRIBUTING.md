@@ -10,7 +10,7 @@ More content to be added :timer_clock:
 
 ## Code of Conduct ##
 
-This project and everyone participating in it is governed by the [Code of Conduct](https://bitbucket.org/VolleyManagement/volleymanagement/src/54f6827b2786bee525681bd273d6190a4b235199/CODE_OF_CONDUCT.md?at=master). By participating, you are expected to uphold this code. Please report unacceptable behavior to [Sergii Diachenko](https://bitbucket.org/sdiachen/).
+This project and everyone participating in it is governed by the [Code of Conduct](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [Sergii Diachenko](https://bitbucket.org/sdiachen/).
 
 ## How to reach team and/or ask question? ##
 

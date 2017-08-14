@@ -34,7 +34,7 @@ Project uses MSTest framework. Tests can be triggered via Visual Studio test men
 
 ### Deployment instructions ###
 
-To deploy it locally you need to get AppSettingSecret.config file from [Sergii Diachenko](https://bitbucket.org/sdiachen/).
+To deploy it locally you need to get AppSettingSecret.config file from [Sergii Diachenko](mailto:sdiachenko@outlook.com).
 This file should be put one level above sln file. (This prevents from accidental checkin)
 
 ## Additional references ##
@@ -45,4 +45,4 @@ This file should be put one level above sln file. (This prevents from accidental
 
 ## Who do I talk to? ##
 
-* All questions should be directed to [Sergii Diachenko](https://bitbucket.org/sdiachen/)
+* All questions should be directed to [Sergii Diachenko](mailto:sdiachenko@outlook.com)

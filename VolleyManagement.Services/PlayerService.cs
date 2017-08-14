@@ -228,13 +228,18 @@
         private bool ValidateExistingPlayers(List<Player> playersToCreate)
         {
             var existingPlayers = Get().ToList();
+
+            var teamId = playersToCreate.First().Id != 0
+                ? Get(playersToCreate.First(t => t.Id != 0).Id).TeamId
+                : null;
+
             return existingPlayers
-                        .Select(allPlayer => playersToCreate
-                        .FindAll(t => t.FirstName.ToLower().Equals(allPlayer.FirstName.ToLower())
-                                      && t.LastName.ToLower().Equals(allPlayer.LastName.ToLower())
-                                      && allPlayer.TeamId != null
-                                      && allPlayer.TeamId != playersToCreate.First().TeamId))
-                        .Any(players => players.Any());
+                .Select(allPlayer => playersToCreate
+                    .FindAll(t => t.FirstName.ToLower().Equals(allPlayer.FirstName.ToLower())
+                                  && t.LastName.ToLower().Equals(allPlayer.LastName.ToLower())
+                                  && allPlayer.TeamId != null
+                                  && allPlayer.TeamId != teamId))
+                .Any(players => players.Any());
         }
     }
 }

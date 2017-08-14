@@ -98,7 +98,7 @@
         /// Gets archived tournaments from TournamentService
         /// </summary>
         /// <returns>View with collection of archived tournaments</returns>
-        public ActionResult IndexArchived()
+        public ActionResult Archived()
         {
             List<Tournament> archivedTournaments = _tournamentService.GetArchived().ToList();
 

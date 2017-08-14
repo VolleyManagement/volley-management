@@ -145,13 +145,13 @@
 
         #endregion
 
-        #region IndexArchived
+        #region Archived
 
         /// <summary>
         /// Test IndexArchived method. Archived tournaments are requested. Only archived tournaments are returned.
         /// </summary>
         [TestMethod]
-        public void IndexArchived_GetArchivedTournaments_OnlyArchivedTournamentsReturned()
+        public void Archived_GetArchivedTournaments_OnlyArchivedTournamentsReturned()
         {
             // Arrange
             var testData = MakeTestTournamentsWithArchived();
@@ -161,7 +161,7 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = TestExtensions.GetModel<List<Tournament>>(sut.IndexArchived()).ToList();
+            var actual = TestExtensions.GetModel<List<Tournament>>(sut.Archived()).ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());

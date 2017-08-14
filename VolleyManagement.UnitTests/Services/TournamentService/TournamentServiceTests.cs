@@ -1316,6 +1316,25 @@
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
+
+        /// <summary>
+        /// Test for GetArchived() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't return list of archived tournaments.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void GetArchived_NoGettingRights_ExceptionThrown()
+        {
+            // Arrange
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ViewArchived);
+            var sut = BuildSUT();
+
+            // Act
+            sut.GetArchived();
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
+        }
         #endregion
 
         #region GetFinished

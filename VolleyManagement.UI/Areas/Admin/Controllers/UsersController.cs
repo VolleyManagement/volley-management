@@ -11,6 +11,8 @@
     /// </summary>
     public class UsersController : Controller
     {
+        private const string URL_ADMIN_USERS = "https://localhost:44300/Admin/Users";
+        private const string URL_ACTIVE_USERS = "https://localhost:44300/Admin/Users/ActiveUsers";
         private readonly IUserService _userService;
 
         /// <summary>
@@ -65,11 +67,13 @@
         /// </summary>
         /// <param name="id"> User Id. </param>
         /// <param name="toBlock">block or unblock user</param>
+        /// <param name="backTo"> return to url where button click </param>
         /// <returns> The <see cref="ActionResult"/>. </returns>
-        public ActionResult ChangeUserBlocked(int id, bool toBlock)
+        public ActionResult ChangeUserBlocked(int id, bool toBlock, string backTo)
         {
             var user = _userService.GetUserDetails(id);
             var users = _userService.GetAllUsers().ConvertAll(UserViewModel.Initialize);
+            var result = string.Empty;
 
             if (user == null)
             {
@@ -89,7 +93,20 @@
                 ModelState.AddModelError("ValidationError", ex.Message);
             }
 
-            return View("Index", users);
+            switch (backTo)
+            {
+                case URL_ADMIN_USERS:
+                    result = "Index";
+                    break;
+                case URL_ACTIVE_USERS:
+                    result = "ActiveUsers";
+                    break;
+                default:
+                    result = "Index";
+                    break;
+            }
+
+            return View(result, users);
         }
     }
 }

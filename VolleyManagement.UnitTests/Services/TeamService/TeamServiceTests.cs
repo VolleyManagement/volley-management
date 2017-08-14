@@ -948,8 +948,9 @@
         public void UpdateRosterTeamId_PlayerAndTeamPassed_PlayerUpdated()
         {
             // Arrange
-            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
-            List<Player> testRoster = new List<Player> { testPlayer };
+            var firstPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var secondPlayer = new PlayerBuilder().WithId(PLAYER_ID + 1).WithFirstName("Second").WithTeamId(SPECIFIC_TEAM_ID).Build();
+            List<Player> testRoster = new List<Player> { firstPlayer, secondPlayer };
             MockGetTeamRosterQuery(testRoster);
 
             Player player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(null).Build();
@@ -964,7 +965,81 @@
             ts.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID);
 
             // Assert
-            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Once());
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Exactly(2));
+        }
+
+        /// <summary>
+        /// Test for SetPlayerTeamIdToNull() method.
+        /// Player Not Exist. Throw exception
+        /// </summary>
+        [TestMethod]
+        public void UpdateRosterTeamId_PlayerIsNull_MissingEntityExceptionThrown()
+        {
+            // Arrange
+            bool exception = false;
+
+            var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var testSecondPlayer = new PlayerBuilder().WithId(PLAYER_ID + 1).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            List<Player> testRoster = new List<Player> { testPlayer, testSecondPlayer };
+            MockGetTeamRosterQuery(testRoster);
+
+            Player player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID + 1).WithTeamId(null).Build();
+            List<Player> roster = new List<Player> { player };
+
+            var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
+
+            // Act
+            var sut = BuildSUT();
+            try
+            {
+                sut.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID);
+            }
+            catch (MissingEntityException)
+            {
+                exception = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exception);
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for UpdateRosterTeamId() method.
+        /// Player plays in another Team. Throw exception
+        /// </summary>
+        [TestMethod]
+        public void UpdateRosterTeamId_PlayerIsInAnotherTeam_ArgumentExceptionThrown()
+        {
+            // Arrange
+            bool exception = false;
+
+            Player testPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            List<Player> testRoster = new List<Player> { testPlayer };
+            MockGetTeamRosterQuery(testRoster);
+
+            var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
+
+            Player player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            List<Player> roster = new List<Player> { player };
+            MockGetPlayerByFullNameQuery(player);
+
+            // Act
+            var sut = BuildSUT();
+            try
+            {
+                sut.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID + 1);
+            }
+            catch (ArgumentException)
+            {
+                exception = true;
+            }
+
+            // Assert
+            Assert.IsTrue(exception);
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Never());
         }
 
         #endregion

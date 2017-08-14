@@ -4,9 +4,8 @@
     ViewBag.Title = "All users";
 }
 <h2>@ViewBag.Title</h2>
-@Html.ValidationMessage("ValidationError")
+@Html.ValidationMessage("ValidationError", new { @class = "text-danger" })
 <br />
-
 <div class="panel panel-primary">
     <div class="panel-heading">Registered users</div>
     <table class="table table-striped">
@@ -23,8 +22,7 @@
             </tr>
         }
         else
-        {
-          
+        { 
             foreach (var user in Model)
             {
                 <tr>
@@ -35,11 +33,11 @@
                         @Html.ActionLink("Details", "UserDetails", new { id = user.Id }, new { @class = "btn btn-primary btn-xs" })
                         @if (user.IsBlocked)
                         {
-                            @Html.ActionLink("Unblock", "ChangeUserBlocked", new { id = user.Id, toBlock = false, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+                            @Html.ActionLink("Unblock", "ChangeUserBlocked", new { id = user.Id, toBlock = false }, new { @class = "btn btn-success btn-xs" })
                         }
                         else
                         {
-                            @Html.ActionLink("Block", "ChangeUserBlocked", new { id = user.Id, toBlock = true, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+                            @Html.ActionLink("Block", "ChangeUserBlocked", new { id = user.Id, toBlock = true }, new { @class = "btn btn-success btn-xs" })
                         }
                     </td>
                 </tr>

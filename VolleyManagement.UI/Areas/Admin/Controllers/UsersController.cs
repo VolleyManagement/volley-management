@@ -65,11 +65,11 @@
         /// </summary>
         /// <param name="id"> User Id. </param>
         /// <param name="toBlock">block or unblock user</param>
-        /// <param name="backTo"> return to url where button click </param>
         /// <returns> The <see cref="ActionResult"/>. </returns>
-        public ActionResult ChangeUserBlocked(int id, bool toBlock, string backTo)
+        public ActionResult ChangeUserBlocked(int id, bool toBlock)
         {
             var user = _userService.GetUserDetails(id);
+            var users = _userService.GetAllUsers().ConvertAll(UserViewModel.Initialize);
 
             if (user == null)
             {
@@ -89,7 +89,7 @@
                 ModelState.AddModelError("ValidationError", ex.Message);
             }
 
-            return Redirect(backTo);
+            return View("Index", users);
         }
     }
 }

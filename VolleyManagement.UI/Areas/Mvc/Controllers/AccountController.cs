@@ -84,7 +84,7 @@
             var operations = new List<AuthOperation>
             {
                 AuthOperations.AdminDashboard.View,
-                AuthOperations.Tournaments.SeeArchived
+                AuthOperations.Tournaments.ViewArchived
             };
             vm.Authorization = _authService.GetAllowedOperations(operations);
             vm.ReturnUrl = GetReturnUrl();

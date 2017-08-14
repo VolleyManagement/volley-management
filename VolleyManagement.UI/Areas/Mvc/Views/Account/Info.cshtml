@@ -17,7 +17,7 @@
             </li>
         }
 
-        if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.SeeArchived))
+        if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.ViewArchived))
         {
             <li>
                 <a href="@Url.Action("IndexArchived", "Tournaments")"><i class="fa fa-list-alt"></i>Archived tournaments</a>

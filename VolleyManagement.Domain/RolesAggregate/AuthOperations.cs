@@ -50,7 +50,7 @@
             /// <summary>
             /// See archived tournaments list operation
             /// </summary>
-            public static readonly AuthOperation SeeArchived = Tuple.Create(TOURNAMENTS, 5);
+            public static readonly AuthOperation ViewArchived = Tuple.Create(TOURNAMENTS, 5);
         }
 
         /// <summary>

@@ -65,7 +65,7 @@
 
         private UsersController BuildSUT()
         {
-            return new UsersController(_userServiceMock.Object, _currentUserService.Object);
+            return new UsersController(_userServiceMock.Object);
         }
 
         private User CreateUser()

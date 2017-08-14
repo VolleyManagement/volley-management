@@ -59,3 +59,32 @@ Project uses integration with several external systems:
 In order to test/debug/use features using those integrations you might need to create appropriate profiles at following providers and use secrets provided in order to run system.
 
 🚧 ToDo: Provide short guide on how to accomplish that.
+
+## Styleguides
+### Git Commit Messages
+
+* Use the present tense ("Add feature" not "Added feature")
+* Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
+* Limit the first line to 72 characters or less
+* Reference issues and pull requests liberally after the first line
+* Consider starting the commit message with an applicable emoji:
+    * :art: `:art:` when improving the format/structure of the code
+    * :racehorse: `:racehorse:` when improving performance
+    * :bug: `:bug:` when fixing a bug
+    * :fire: `:fire:` when removing code or files
+    * :green_heart: `:green_heart:` when fixing the CI build
+    * :white_check_mark: `:white_check_mark:` when adding tests
+    * :arrow_up: `:arrow_up:` when upgrading dependencies
+    * :arrow_down: `:arrow_down:` when downgrading dependencies
+    * :shirt: `:shirt:` when removing linter warnings
+### C#
+C# code style is controlled by StyleCop Code Analyzer. You will see errors and warnings if you break code style.
+
+If you feel that some particular rule is too strict or too lose. Also if you have ideas how it can be enhanced please log __enhancement__ issue or contact [Sergii Diachenko](https://bitbucket.org/sdiachen/)
+### Unit Tests
+We put a lot of emphasis on writing useful unit tests which will communicate requirements, ease maintainability and serve as a safety net.
+
+See more details at [Unit Testing Conventions](https://bitbucket.org/VolleyManagement/volleymanagement/wiki/UnitTestingConventions)
+
+## Additional references ##
+Some of the deatils we try to keep up to date at [Development Process](https://bitbucket.org/VolleyManagement/volleymanagement/wiki/DevelopmentProcess) page.

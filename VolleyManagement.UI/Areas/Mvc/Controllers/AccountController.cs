@@ -81,12 +81,7 @@
         {
             var vm = new AuthenticationStatusViewModel();
             vm.IsAuthenticated = HttpContext.User.Identity.IsAuthenticated;
-            var operations = new List<AuthOperation>
-            {
-                AuthOperations.AdminDashboard.View,
-                AuthOperations.Tournaments.ViewArchived
-            };
-            vm.Authorization = _authService.GetAllowedOperations(operations);
+            vm.Authorization = _authService.GetAllowedOperations(AuthOperations.AdminDashboard.View);
             vm.ReturnUrl = GetReturnUrl();
             if (vm.IsAuthenticated)
             {

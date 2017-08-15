@@ -16,13 +16,6 @@
                 <a href="@Url.Action("Index", "Dashboard", new { area = "Admin" })"><i class="fa fa-list-alt"></i> Admin Dashboard</a>
             </li>
         }
-
-        if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.ViewArchived))
-        {
-            <li>
-                <a href="@Url.Action("Archived", "Tournaments")"><i class="fa fa-list-alt"></i> Archived tournaments</a>
-            </li>
-        }
         <li>
             <a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
         </li>

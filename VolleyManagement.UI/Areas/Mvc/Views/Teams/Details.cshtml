@@ -24,7 +24,7 @@
     <div class="display-field">@Model.Model.Achievements</div>
 
     <div class="display-label">@Html.LabelFor(model => model.Model.Captain)</div>
-    @Html.ActionLink(Model.Model.Captain.FullName,
+    @Html.ActionLink(Model.Model.Captain.FirstName + " " + Model.Model.Captain.LastName,
                     "Details",
                     "Players",
                     new { id = Model.Model.Captain.Id, returnUrl = Model.CurrentReferrer },
@@ -35,7 +35,7 @@
         @foreach (var item in Model.Model.Roster)
         {
             <li>
-                @Html.ActionLink(item.FullName,
+                @Html.ActionLink(item.FirstName + " " + item.LastName,
                                 "Details",
                                 "Players",
                                 new { id = item.Id, returnUrl = Model.CurrentReferrer },

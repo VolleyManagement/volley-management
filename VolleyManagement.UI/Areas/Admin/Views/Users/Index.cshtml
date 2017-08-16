@@ -1,10 +1,10 @@
-﻿@model IList<VolleyManagement.UI.Areas.Admin.Models.UserViewModel>
+﻿@using System.Web.Optimization
+@model IList<VolleyManagement.UI.Areas.Admin.Models.UserViewModel>
 
 @{
     ViewBag.Title = "All users";
 }
 <h2>@ViewBag.Title</h2>
-@Html.ValidationMessage("ValidationError", new { @class = "text-danger" })
 <br />
 <div class="panel panel-primary">
     <div class="panel-heading">Registered users</div>
@@ -33,11 +33,11 @@
                         @Html.ActionLink("Details", "UserDetails", new { id = user.Id }, new { @class = "btn btn-primary btn-xs" })
                         @if (user.IsBlocked)
                         {
-                            @Html.ActionLink("Unblock", "ChangeUserBlocked", new { id = user.Id, toBlock = false, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+                            <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@user.Id, false)">Unblock</button>                            
                         }
                         else
                         {
-                            @Html.ActionLink("Block", "ChangeUserBlocked", new { id = user.Id, toBlock = true, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+                            <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@user.Id, true)">Block</button>                            
                         }
                     </td>
                 </tr>
@@ -45,3 +45,4 @@
         }
     </table>
 </div>
+@Scripts.Render("/Scripts/VMScripts/Admin/ChangeUserBlocked.js")

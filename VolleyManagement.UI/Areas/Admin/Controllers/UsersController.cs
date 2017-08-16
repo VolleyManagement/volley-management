@@ -11,8 +11,6 @@
     /// </summary>
     public class UsersController : Controller
     {
-        private const string URL_ADMIN_USERS = "https://localhost:44300/Admin/Users";
-        private const string URL_ACTIVE_USERS = "https://localhost:44300/Admin/Users/ActiveUsers";
         private readonly IUserService _userService;
 
         /// <summary>
@@ -31,7 +29,7 @@
         public ActionResult Index()
         {
             var users = _userService.GetAllUsers().ConvertAll(UserViewModel.Initialize);
-            return View(users);
+            return View("Index", users);
         }
 
         /// <summary>
@@ -41,7 +39,7 @@
         public ActionResult ActiveUsers()
         {
             var activeUsers = _userService.GetAllActiveUsers().ConvertAll(UserViewModel.Initialize);
-            return View(activeUsers);
+            return View("ActiveUsers", activeUsers);
         }
 
         /// <summary>
@@ -63,17 +61,15 @@
         }
 
         /// <summary>
-        /// Get user's details view.
+        /// Change user's state GET action.
         /// </summary>
         /// <param name="id"> User Id. </param>
         /// <param name="toBlock">block or unblock user</param>
-        /// <param name="backTo"> return to url where button click </param>
-        /// <returns> The <see cref="ActionResult"/>. </returns>
-        public ActionResult ChangeUserBlocked(int id, bool toBlock, string backTo)
+        /// <returns>Redirect to Users page</returns>
+        [HttpGet]
+        public ActionResult ChangeUserBlocked(int id, bool toBlock)
         {
             var user = _userService.GetUserDetails(id);
-            var users = _userService.GetAllUsers().ConvertAll(UserViewModel.Initialize);
-            var result = string.Empty;
 
             if (user == null)
             {
@@ -86,27 +82,14 @@
             }
             catch (InvalidOperationException ex)
             {
-                ModelState.AddModelError("ValidationError", ex.Message);
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
             catch (MissingEntityException ex)
             {
-                ModelState.AddModelError("ValidationError", ex.Message);
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
 
-            switch (backTo)
-            {
-                case URL_ADMIN_USERS:
-                    result = "Index";
-                    break;
-                case URL_ACTIVE_USERS:
-                    result = "ActiveUsers";
-                    break;
-                default:
-                    result = "Index";
-                    break;
-            }
-
-            return View(result, users);
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
     }
 }

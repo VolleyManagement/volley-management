@@ -6,6 +6,7 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using MSTestExtensions;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
@@ -1322,18 +1323,14 @@
         /// and shouldn't return list of archived tournaments.
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
         public void GetArchived_NoGettingRights_ExceptionThrown()
         {
             // Arrange
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ViewArchived);
             var sut = BuildSUT();
 
-            // Act
-            sut.GetArchived();
-
-            // Assert
-            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
+            // Act => Assert
+            BaseTest.Assert.Throws<AuthorizationException>(() => sut.GetArchived(), "Requested operation is not allowed");
         }
         #endregion
 

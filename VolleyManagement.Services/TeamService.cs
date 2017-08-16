@@ -217,7 +217,7 @@
                 {
                     if (roster.SingleOrDefault(t => t.Id == player.Id) == null)
                     {
-                        SetPlayerTeamIdToNull(player.FirstName, player.LastName);
+                        SetPlayerTeamIdToNull(player.Id);
                     }
                 }
             }
@@ -288,9 +288,9 @@
             _playerRepository.UnitOfWork.Commit();
         }
 
-        private void SetPlayerTeamIdToNull(string firstName, string lastName)
+        private void SetPlayerTeamIdToNull(int playerId)
         {
-            Player player = GetPlayerByFullName(firstName, lastName);
+            Player player = GetPlayerById(playerId);
 
             if (player == null)
             {

@@ -956,6 +956,7 @@
             Player player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).WithTeamId(null).Build();
             List<Player> roster = new List<Player> { player };
             MockGetPlayerByFullNameQuery(player);
+            MockGetPlayerByIdQuery(player);
 
             var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);

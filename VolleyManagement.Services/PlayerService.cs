@@ -86,7 +86,6 @@
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            // var newplayers = GetPlayersToCreate(playersToCreate);
             if (ValidateExistingPlayers(playersToCreate))
             {
                 throw new ArgumentException(
@@ -199,24 +198,6 @@
         private Team GetTeamById(int id)
         {
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
-        }
-
-        /// <summary>
-        /// Remove existing players from List
-        /// </summary>
-        /// <param name="playersToCreate">List of Players</param>
-        /// <returns> List of New Players </returns>
-        private List<Player> GetPlayersToCreate(List<Player> playersToCreate)
-        {
-            var allPlayers = Get().ToList();
-            var players = playersToCreate.ToList();
-            foreach (var allPlayer in allPlayers)
-            {
-                players.RemoveAll(t => t.FirstName.ToLower().Equals(allPlayer.FirstName.ToLower())
-                                       && t.LastName.ToLower().Equals(allPlayer.LastName.ToLower()));
-            }
-
-            return players;
         }
 
         /// <summary>

@@ -1221,6 +1221,74 @@
         }
         #endregion
 
+        #region Archive
+
+        /// <summary>
+        /// Test for Archive() tournament method.
+        /// </summary>
+        [TestMethod]
+        public void Archive_NotArchivedTournamentExist_ArchivedTournamentBecomes()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder()
+                .WithId(1)
+                .WithName("Test Tournament")
+                .WithArchiveParameter(false)
+                .Build();
+            MockGetByIdQuery(testTournament);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Archive(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyArchiveTournament(testTournament, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Archive() method with no rights for such action. The method should throw AuthorizationException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(AuthorizationException))]
+        public void Archive_NoArchiveRights_ExceptionThrown()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder().Build();
+            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Archive);
+            MockGetByIdQuery(testTournament);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Archive(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyArchiveTournament(testTournament, Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.Edit, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Archive() method with null as input parameter. The method should throw NullReferenceException
+        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(NullReferenceException))]
+        public void Archive_TournamentNullAsParam_ExceptionThrown()
+        {
+            // Arrange
+            Tournament testTournament = null;
+            _tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<NullReferenceException>();
+            var sut = BuildSUT();
+
+            // Act
+            sut.Archive(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyArchiveTournament(testTournament, Times.Never());
+        }
+
+        #endregion
+
         #region GetActual
 
         /// <summary>
@@ -1510,6 +1578,12 @@
         private void VerifyDeleteTournament(int tournamentId, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Remove(tournamentId), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyArchiveTournament(Tournament tournament, Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 

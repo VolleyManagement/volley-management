@@ -238,8 +238,8 @@
         public void Create_TwoOfThreePlayersAreNew_PlayersCreated()
         {
             // Arrange
-            var newPlayers = CreateListOfExistingPlayers();
-            var existingPlayers = CreateTwoOfThreeNewPlayers().AsQueryable();
+            var newPlayers = CreateTwoOfThreeNewPlayers();
+            var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
             MockGetByIdQuery(newPlayers.First());
             _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
                 .Returns(existingPlayers);
@@ -249,7 +249,7 @@
             sut.Create(newPlayers);
 
             // Assert
-            VerifyCreatePlayers(Times.Exactly(3));
+            VerifyCreatePlayers(Times.Exactly(2));
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
@@ -478,9 +478,9 @@
             var newPlayers = new List<Player>();
             newPlayers.AddRange(new List<Player>
             {
-                new PlayerBuilder().WithFirstName("First").WithLastName("Last").Build(),
-                new PlayerBuilder().WithFirstName("Second").WithLastName("Last").Build(),
-                new PlayerBuilder().WithFirstName("Name").WithLastName("Name").Build()
+                new PlayerBuilder().WithId(0).WithFirstName("First").WithLastName("Last").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("Second").WithLastName("Last").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("Name").WithLastName("Name").Build()
             });
             return newPlayers;
         }
@@ -503,8 +503,8 @@
             newPlayers.AddRange(new List<Player>
             {
                 new PlayerBuilder().WithFirstName("First").WithLastName("Last").WithTeamId(null).Build(),
-                new PlayerBuilder().WithFirstName("New Second").WithLastName("Last").Build(),
-                new PlayerBuilder().WithFirstName("New Hank").WithLastName("Ripper").Build()
+                new PlayerBuilder().WithId(0).WithFirstName("New Second").WithLastName("Last").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("New Hank").WithLastName("Ripper").Build()
             });
             return newPlayers;
         }

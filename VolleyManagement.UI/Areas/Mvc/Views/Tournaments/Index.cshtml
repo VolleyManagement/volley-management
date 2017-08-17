@@ -4,12 +4,13 @@
 
 @{
     ViewBag.Title = Resources.UI.TournamentViews.TournamentsIndexTitle;
+    ViewBag.Archive = false;
 }
 
 <h2>@ViewBag.Title</h2>
-
 @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Create))
 {
+    ViewBag.Archive = true;
     <p>
         @Html.ActionLink(Resources.UI.TournamentViews.CreateNewTournament, "Create")
     </p>

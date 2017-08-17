@@ -106,6 +106,17 @@
         }
 
         /// <summary>
+        /// Archive current Tournament
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>Index View of Tournament</returns>
+        public ActionResult Archive(int tournamentId)
+        {
+            // _tournamentService.ArchiveTournament(tournamentId);
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
         /// Gets details for specific tournament
         /// </summary>
         /// <param name="id">Tournament id</param>

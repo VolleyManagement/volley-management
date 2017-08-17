@@ -1256,7 +1256,6 @@
             // Arrange
             var testTournament = new TournamentBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Archive);
-            MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
 
             // Act
@@ -1264,27 +1263,7 @@
 
             // Assert
             VerifyArchiveTournament(testTournament, Times.Never());
-            VerifyCheckAccess(AuthOperations.Tournaments.Edit, Times.Once());
-        }
-
-        /// <summary>
-        /// Test for Archive() method with null as input parameter. The method should throw NullReferenceException
-        /// and shouldn't invoke Commit() method of IUnitOfWork.
-        /// </summary>
-        [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
-        public void Archive_TournamentNullAsParam_ExceptionThrown()
-        {
-            // Arrange
-            Tournament testTournament = null;
-            _tournamentRepositoryMock.Setup(tr => tr.Update(null)).Throws<NullReferenceException>();
-            var sut = BuildSUT();
-
-            // Act
-            sut.Archive(FIRST_TOURNAMENT_ID);
-
-            // Assert
-            VerifyArchiveTournament(testTournament, Times.Never());
+            VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
         }
 
         #endregion

@@ -1319,18 +1319,23 @@
         }
 
         /// <summary>
-        /// Test for GetArchived() method with no rights for such action. The method should throw AuthorizationException
-        /// and shouldn't return list of archived tournaments.
+        /// Test for GetArchived() with any state. The method should invoke CheckAccess method.
         /// </summary>
         [TestMethod]
-        public void GetArchived_NoGettingRights_ExceptionThrown()
+        public void GetArchived_AnyState_AuthorizationCheckInvoked()
         {
             // Arrange
-            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.ViewArchived);
+            var testData = _testFixture.TestTournaments()
+                .WithArchivedTournaments()
+                .Build();
+            MockGetAllTournamentsQuery(testData);
             var sut = BuildSUT();
 
-            // Act => Assert
-            BaseTest.Assert.Throws<AuthorizationException>(() => sut.GetArchived(), "Requested operation is not allowed");
+            // Act
+            sut.GetArchived().ToList();
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
         }
         #endregion
 

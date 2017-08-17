@@ -1246,16 +1246,14 @@
         }
 
         /// <summary>
-        /// Test for Archive() method with no rights for such action. The method should throw AuthorizationException
-        /// and shouldn't invoke Commit() method of IUnitOfWork.
+        /// Test for Archive() method with any state. Whetever 'CheckAccess' method invokes
         /// </summary>
         [TestMethod]
         [ExpectedException(typeof(AuthorizationException))]
-        public void Archive_NoArchiveRights_ExceptionThrown()
+        public void Archive_AnyState_AuthorizationCheckInvoked()
         {
             // Arrange
             var testTournament = new TournamentBuilder().Build();
-            MockAuthServiceThrowsExeption(AuthOperations.Tournaments.Archive);
             var sut = BuildSUT();
 
             // Act

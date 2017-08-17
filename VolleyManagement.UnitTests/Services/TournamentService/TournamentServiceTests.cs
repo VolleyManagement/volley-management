@@ -1249,18 +1249,21 @@
         /// Test for Archive() method with any state. Whetever 'CheckAccess' method invokes
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(AuthorizationException))]
         public void Archive_AnyState_AuthorizationCheckInvoked()
         {
             // Arrange
-            var testTournament = new TournamentBuilder().Build();
+            var testTournament = new TournamentBuilder()
+                .WithId(1)
+                .WithName("Test Tournament")
+                .WithArchiveParameter(false)
+                .Build();
+            MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
 
             // Act
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyArchiveTournament(testTournament, Times.Never());
             VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
         }
 

@@ -108,7 +108,7 @@
                 {
                     var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
 
-                    _playerService.Create(roster.ToList());
+                    _playerService.Create(roster);
 
                     var domainTeam = teamViewModel.ToDomain();
                     domainTeam.CaptainId = roster[0].Id;
@@ -180,7 +180,7 @@
                 {
                     var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
 
-                    _playerService.Create(roster.ToList());
+                    _playerService.Create(roster);
 
                     var domainTeam = teamViewModel.ToDomain();
                     domainTeam.CaptainId = roster[0].Id;

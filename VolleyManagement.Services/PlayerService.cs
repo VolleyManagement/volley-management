@@ -86,15 +86,17 @@
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
+            var newPlayersToCreate = playersToCreate.Where(p => p.Id == 0);
+
             if (ValidateExistingPlayers(playersToCreate))
             {
                 throw new ArgumentException(
                     PlayerResources.ValidationPlayerOfAnotherTeam);
             }
 
-            if (playersToCreate.Any())
+            if (newPlayersToCreate.Any())
             {
-                foreach (var player in playersToCreate)
+                foreach (var player in newPlayersToCreate)
                 {
                     _playerRepository.Add(player);
                 }
@@ -215,18 +217,12 @@
 
             var isExistingPlayers = existingPlayers
                     .Select(allPlayer => playersToCreate
-                    .FindAll(t => t.FirstName.ToLower().Equals(allPlayer.FirstName.ToLower())
+                    .FirstOrDefault(t => t.FirstName.ToLower().Equals(allPlayer.FirstName.ToLower())
                                   && t.LastName.ToLower().Equals(allPlayer.LastName.ToLower())
                                   && allPlayer.TeamId != null
-                                  && allPlayer.TeamId != teamId)).Any(player => player.Any());
+                                  && allPlayer.TeamId != teamId));
 
-            foreach (var existingPlayer in existingPlayers)
-            {
-                playersToCreate.RemoveAll(t => t.FirstName.ToLower().Equals(existingPlayer.FirstName.ToLower())
-                                            && t.LastName.ToLower().Equals(existingPlayer.LastName.ToLower()));
-            }
-
-            return isExistingPlayers;
+            return isExistingPlayers.Any(t => t != null);
         }
     }
 }

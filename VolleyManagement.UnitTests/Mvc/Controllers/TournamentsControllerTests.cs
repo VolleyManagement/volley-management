@@ -724,6 +724,24 @@
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
+        /// <summary>
+        /// Test for Archive method. Service get Id of Tournament to archive
+        /// </summary>
+        [TestMethod]
+        public void Archive_GetTournamentToArchive_ServiceMethodIsCalled()
+        {
+            // Arrange
+            var testData = MakeTestTournaments();
+            SetupArchiveTournament(TEST_TOURNAMENT_ID);
+            var sut = BuildSUT();
+
+            // Act
+            var result = sut.Archive(TEST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyArchiveTournament(Times.Once());
+        }
+
         #endregion
 
         #region Details
@@ -1626,6 +1644,11 @@
             _tournamentServiceMock.Setup(tr => tr.GetFinished()).Returns(tournaments);
         }
 
+        private void SetupArchiveTournament(int tournamentId)
+        {
+            _tournamentServiceMock.Setup(tr => tr.Archive(tournamentId));
+        }
+
         private void SetupGetTournamentTeams(List<Team> teams, int tournamentId)
         {
             _tournamentServiceMock
@@ -1747,6 +1770,11 @@
         private void VerifyCreateTournamentRequest(Times times)
         {
             _tournamentRequestServiceMock.Verify(ts => ts.Create(It.IsAny<TournamentRequest>()), times);
+        }
+
+        private void VerifyArchiveTournament(Times times)
+        {
+            _tournamentServiceMock.Verify(ts => ts.Archive(It.IsAny<int>()), times);
         }
 
         private void VerifySwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)

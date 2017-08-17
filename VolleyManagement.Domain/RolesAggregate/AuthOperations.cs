@@ -50,7 +50,7 @@
             /// <summary>
             /// Archive tournament operation
             /// </summary>
-            public static readonly AuthOperation Archive = Tuple.Create(TOURNAMENTS, 5);
+            public static readonly AuthOperation Archive = Tuple.Create(TOURNAMENTS, 6);
         }
 
         /// <summary>

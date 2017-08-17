@@ -112,7 +112,7 @@
         /// <returns>Index View of Tournament</returns>
         public ActionResult Archive(int tournamentId)
         {
-            // _tournamentService.ArchiveTournament(tournamentId);
+            _tournamentService.Archive(tournamentId);
             return RedirectToAction("Index");
         }
 

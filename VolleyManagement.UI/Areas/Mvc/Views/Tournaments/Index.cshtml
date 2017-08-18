@@ -7,11 +7,11 @@
     ViewBag.UserIsAdmin = false;
 }
 
-<h2>@ViewBag.UserIsAdmin</h2>
+<h2>@ViewBag.Title</h2>
 
 @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Create))
 {
-    ViewBag.Archive = true;
+    ViewBag.UserIsAdmin = true;
     <p>
         @Html.ActionLink(Resources.UI.TournamentViews.CreateNewTournament, "Create")
     </p>

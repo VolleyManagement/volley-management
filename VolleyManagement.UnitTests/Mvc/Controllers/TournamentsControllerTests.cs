@@ -122,7 +122,7 @@
         /// Test for Index method. Actual tournaments (current and upcoming) are requested. Actual tournaments are returned.
         /// </summary>
         [TestMethod]
-        public void Index_GetActualTournaments_ActualTournamentsAreReturned()
+        public void Index_ActualTournamentsExist_ActualTournamentsAreReturned()
         {
             // Arrange
             var testData = MakeTestTournaments();
@@ -151,7 +151,7 @@
         /// Test IndexArchived method. Archived tournaments are requested. Only archived tournaments are returned.
         /// </summary>
         [TestMethod]
-        public void Archived_GetArchivedTournaments_OnlyArchivedTournamentsReturned()
+        public void Archived_ArchivedTournamentsExist_OnlyArchivedTournamentsReturned()
         {
             // Arrange
             var testData = MakeTestTournamentsWithArchived();

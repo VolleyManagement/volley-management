@@ -86,13 +86,13 @@
         {
             _authService.CheckAccess(AuthOperations.Players.Create);
 
-            var newPlayersToCreate = playersToCreate.Where(p => p.Id == 0);
-
             if (ValidateExistingPlayers(playersToCreate))
             {
                 throw new ArgumentException(
                     PlayerResources.ValidationPlayerOfAnotherTeam);
             }
+
+            var newPlayersToCreate = GetNewPlayers(playersToCreate).ToList();
 
             if (newPlayersToCreate.Any())
             {
@@ -200,6 +200,11 @@
         private Team GetTeamById(int id)
         {
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        private IEnumerable<Player> GetNewPlayers(List<Player> playersToCreate)
+        {
+            return playersToCreate.Where(p => p.Id == 0);
         }
 
         /// <summary>

@@ -728,7 +728,7 @@
         /// Test for Archive method. Service get Id of Tournament to archive
         /// </summary>
         [TestMethod]
-        public void Archive_GetTournamentToArchive_ServiceMethodIsCalled()
+        public void Archive_GetTournamentToArchive_ServiceMethodArchiveIsCalled()
         {
             // Arrange
             var testData = MakeTestTournaments();
@@ -739,7 +739,7 @@
             var result = sut.Archive(TEST_TOURNAMENT_ID);
 
             // Assert
-            VerifyArchiveTournament(Times.Once());
+            VerifyArchiveTournament(TEST_TOURNAMENT_ID, Times.Once());
         }
 
         #endregion
@@ -1772,9 +1772,9 @@
             _tournamentRequestServiceMock.Verify(ts => ts.Create(It.IsAny<TournamentRequest>()), times);
         }
 
-        private void VerifyArchiveTournament(Times times)
+        private void VerifyArchiveTournament(int tournamentId, Times times)
         {
-            _tournamentServiceMock.Verify(ts => ts.Archive(It.IsAny<int>()), times);
+            _tournamentServiceMock.Verify(ts => ts.Archive(tournamentId), times);
         }
 
         private void VerifySwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)

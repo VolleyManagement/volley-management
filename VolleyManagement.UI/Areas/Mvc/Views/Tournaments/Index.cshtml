@@ -4,10 +4,11 @@
 
 @{
     ViewBag.Title = Resources.UI.TournamentViews.TournamentsIndexTitle;
-    ViewBag.Archive = false;
+    ViewBag.UserIsAdmin = false;
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>@ViewBag.UserIsAdmin</h2>
+
 @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Create))
 {
     ViewBag.Archive = true;

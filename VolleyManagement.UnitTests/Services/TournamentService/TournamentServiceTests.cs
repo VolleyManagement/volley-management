@@ -1227,14 +1227,12 @@
         /// Test for Archive() tournament method.
         /// </summary>
         [TestMethod]
-        public void Archive_NotArchivedTournamentExist_ArchivedTournamentBecomes()
+        public void Archive_NotArchivedTournament_ArchivedTournament()
         {
             // Arrange
             var testTournament = new TournamentBuilder()
-                .WithId(1)
-                .WithName("Test Tournament")
-                .WithArchiveParameter(false)
-                .Build();
+                                    .WithArchiveParameter(false)
+                                    .Build();
             MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
 
@@ -1253,10 +1251,8 @@
         {
             // Arrange
             var testTournament = new TournamentBuilder()
-                .WithId(1)
-                .WithName("Test Tournament")
-                .WithArchiveParameter(false)
-                .Build();
+                                    .WithArchiveParameter(false)
+                                    .Build();
             MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
 

@@ -1250,9 +1250,7 @@
         public void Archive_AnyState_AuthorizationCheckInvoked()
         {
             // Arrange
-            var testTournament = new TournamentBuilder()
-                                    .WithArchiveParameter(false)
-                                    .Build();
+            var testTournament = new TournamentBuilder().Build();
             MockGetByIdQuery(testTournament);
             var sut = BuildSUT();
 

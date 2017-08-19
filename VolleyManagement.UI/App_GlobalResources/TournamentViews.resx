@@ -288,4 +288,7 @@
   <data name="TournamentGroupIsNotSelected" xml:space="preserve">
     <value>No group is selected</value>
   </data>
+  <data name="ArchivedTournamentsIndexTitle" xml:space="preserve">
+    <value>Archived tournaments</value>
+  </data>
 </root>

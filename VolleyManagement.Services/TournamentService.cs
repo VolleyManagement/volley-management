@@ -149,6 +149,8 @@
         /// <returns>Archived tournaments</returns>
         public List<Tournament> GetArchived()
         {
+            _authService.CheckAccess(AuthOperations.Tournaments.ViewArchived);
+
             return GetArchivedTournaments();
         }
 

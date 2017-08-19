@@ -1316,6 +1316,26 @@
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
+
+        /// <summary>
+        /// Test for GetArchived() with any state. The method should invoke CheckAccess method.
+        /// </summary>
+        [TestMethod]
+        public void GetArchived_AnyState_AuthorizationCheckInvoked()
+        {
+            // Arrange
+            var testData = _testFixture.TestTournaments()
+                .WithArchivedTournaments()
+                .Build();
+            MockGetAllTournamentsQuery(testData);
+            var sut = BuildSUT();
+
+            // Act
+            sut.GetArchived().ToList();
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
+        }
         #endregion
 
         #region GetFinished

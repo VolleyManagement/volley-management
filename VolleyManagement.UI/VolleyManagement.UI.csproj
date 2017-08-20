@@ -566,6 +566,7 @@
     <Content Include="Scripts\UserActions.js" />
     <Content Include="Scripts\VMScripts\Admin\admin.js" />
     <Content Include="Scripts\VMScripts\Admin\BackButton.js" />
+    <Content Include="Scripts\VMScripts\Admin\ChangeUserBlocked.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\AjaxResponse.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\CheckEnvironment.js" />

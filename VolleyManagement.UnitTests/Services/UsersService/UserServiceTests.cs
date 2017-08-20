@@ -32,6 +32,7 @@
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<User, FindByIdCriteria>> _getByIdQueryMock;
         private Mock<IQuery<List<User>, UniqueUserCriteria>> _getAdminsListQueryMock;
+        private Mock<ICurrentUserService> _currentUserServiceMock;
 
         private UserServiceTestFixture _testFixture = new UserServiceTestFixture();
 
@@ -48,6 +49,7 @@
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
             _getAdminsListQueryMock = new Mock<IQuery<List<User>, UniqueUserCriteria>>();
+            _currentUserServiceMock = new Mock<ICurrentUserService>();
         }
 
         [TestMethod]
@@ -170,7 +172,8 @@
                 _getPlayerByIdQueryMock.Object,
                 _cacheProviderMock.Object,
                 _getAdminsListQueryMock.Object,
-                _userRepositoryMock.Object);
+                _userRepositoryMock.Object,
+                _currentUserServiceMock.Object);
         }
 
         private void MockAuthServiceThrowsException(AuthOperation operation)

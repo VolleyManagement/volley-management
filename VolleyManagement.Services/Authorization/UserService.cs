@@ -25,6 +25,7 @@
         private readonly IQuery<Player, FindByIdCriteria> _getUserPlayerQuery;
         private readonly ICacheProvider _cacheProvider;
         private readonly IQuery<List<User>, UniqueUserCriteria> _getAdminsListQuery;
+        private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
@@ -36,6 +37,7 @@
         /// <param name="cacheProvider">Instance of <see cref="ICacheProvider"/> class.</param>
         /// <param name="getAdminsListQuery">Query for getting list of admins.</param>
         /// <param name="userRepository">The user repository.</param>
+        /// <param name="currentUserService">Instance of <see cref="ICurrentUserService"/> class.</param>
         public UserService(
             IAuthorizationService authService,
             IQuery<User, FindByIdCriteria> getUserByIdQuery,
@@ -43,7 +45,8 @@
             IQuery<Player, FindByIdCriteria> getUserPlayerQuery,
             ICacheProvider cacheProvider,
             IQuery<List<User>, UniqueUserCriteria> getAdminsListQuery,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            ICurrentUserService currentUserService)
         {
             _authService = authService;
             _getUserByIdQuery = getUserByIdQuery;
@@ -52,7 +55,10 @@
             _cacheProvider = cacheProvider;
             _getAdminsListQuery = getAdminsListQuery;
             _userRepository = userRepository;
+            _currentUserService = currentUserService;
         }
+
+        private int CurrentUserId => _currentUserService.GetCurrentUserId();
 
         /// <summary>
         /// Gets User entity by Id.
@@ -121,6 +127,11 @@
         /// <param name="toBlock">set user block or not</param>
         public void ChangeUserBlocked(int userId, bool toBlock)
         {
+            if (userId == CurrentUserId)
+            {
+                throw new InvalidOperationException(ServiceResources.ExceptionMessages.UserBlockHimself);
+            }
+
             User user = GetUser(userId);
             if (user == null)
             {

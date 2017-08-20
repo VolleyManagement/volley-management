@@ -1230,17 +1230,21 @@
         public void Archive_NotArchivedTournament_ArchivedTournament()
         {
             // Arrange
-            var testTournament = new TournamentBuilder()
+            var expectedTournament = new TournamentBuilder()
                                     .WithArchiveParameter(false)
                                     .Build();
-            MockGetByIdQuery(testTournament);
+            var actualTournament = new TournamentBuilder()
+                                    .WithArchiveParameter(false)
+                                    .Build();
+            MockGetByIdQuery(actualTournament);
+            MockGetUniqueTournamentQuery(expectedTournament);
             var sut = BuildSUT();
 
             // Act
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyArchiveTournament(testTournament, Times.Once());
+            VerifyArchiveTournament(expectedTournament, Times.Once());
         }
 
         /// <summary>

@@ -106,6 +106,15 @@ namespace Resources.UI {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Archived tournaments.
+        /// </summary>
+        public static string ArchivedTournamentsIndexTitle {
+            get {
+                return ResourceManager.GetString("ArchivedTournamentsIndexTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Team 2.
         /// </summary>
         public static string AwayTeamPlaceholder {

@@ -97,6 +97,7 @@
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.Delete,
                 AuthOperations.Tournaments.ManageTeams,
+                AuthOperations.Tournaments.ViewArchived,
                 AuthOperations.Teams.Create,
                 AuthOperations.Teams.Edit,
                 AuthOperations.Teams.Delete,
@@ -123,6 +124,7 @@
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.Delete,
                 AuthOperations.Tournaments.ManageTeams,
+                AuthOperations.Tournaments.ViewArchived,
                 AuthOperations.Teams.Create,
                 AuthOperations.Teams.Edit,
                 AuthOperations.Teams.Delete,
@@ -362,6 +364,7 @@
             List<TournamentEntity> tours = GenerateTournamentsSchemOne(teams);
             tours.AddRange(GenerateTournamentsSchemeTwo(teams));
             tours.AddRange(GenerateTournamentsSchemePlayoff(teams));
+            tours.Add(GenerateArchivedTournament(teams));
 
             return tours;
         }
@@ -695,6 +698,43 @@
             };
 
             return tournaments;
+        }
+
+        private static TournamentEntity GenerateArchivedTournament(List<TeamEntity> teams)
+        {
+            return new TournamentEntity
+            {
+                Name = "Rouge One",
+                ApplyingPeriodStart = DateTime.Now.AddMonths(1),
+                ApplyingPeriodEnd = DateTime.Now.AddMonths(2),
+                GamesStart = DateTime.Now.AddMonths(2).AddDays(2),
+                GamesEnd = DateTime.Now.AddMonths(2).AddDays(12),
+                TransferStart = DateTime.Now.AddMonths(2).AddDays(2),
+                TransferEnd = DateTime.Now.AddMonths(2).AddDays(7),
+                Scheme = 4,
+                Season = Convert.ToByte(DateTime.Now.Year - 1900),
+                IsArchived = true,
+                Divisions = new List<DivisionEntity>()
+                {
+                    new DivisionEntity()
+                    {
+                        Name = "Division 10",
+                        Groups = new List<GroupEntity>()
+                        {
+                            new GroupEntity()
+                            {
+                                Name = "Group 10",
+                                Teams = new List<TeamEntity>
+                                {
+                                    teams[0],
+                                    teams[1],
+                                    teams[2]
+                                }
+                            }
+                        }
+                    }
+                }
+            };
         }
 
         private static List<GameResultEntity> GenerateGames(List<TournamentEntity> tours)

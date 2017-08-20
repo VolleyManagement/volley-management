@@ -96,5 +96,10 @@ namespace VolleyManagement.Data.MsSql.Entities
         /// Gets or sets last time, when tournament was updated
         /// </summary>
         public DateTime? LastTimeUpdated { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether tournament is archived
+        /// </summary>
+        public bool IsArchived { get; set; }
     }
 }

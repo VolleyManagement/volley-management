@@ -175,7 +175,8 @@
                                     .Where(d => d.TournamentId == t.Id)
                                     .Select(GetDivisionMapping())
                                     .ToList(),
-                    LastTimeUpdated = t.LastTimeUpdated
+                    LastTimeUpdated = t.LastTimeUpdated,
+                    IsArchived = t.IsArchived
                 };
         }
 

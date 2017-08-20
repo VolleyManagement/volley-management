@@ -29,7 +29,7 @@
         public ActionResult Index()
         {
             var users = _userService.GetAllUsers().ConvertAll(UserViewModel.Initialize);
-            return View("Index", users);
+            return View(users);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@
         public ActionResult ActiveUsers()
         {
             var activeUsers = _userService.GetAllActiveUsers().ConvertAll(UserViewModel.Initialize);
-            return View("ActiveUsers", activeUsers);
+            return View(activeUsers);
         }
 
         /// <summary>

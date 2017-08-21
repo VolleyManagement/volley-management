@@ -262,7 +262,7 @@
                 $.each(data, function (key, value) {
                     processedData.push({
                         id: value.Id,
-                        value: value.FullName
+                        value: value.FirstName + " " + value.LastName
                     });
                 });
 

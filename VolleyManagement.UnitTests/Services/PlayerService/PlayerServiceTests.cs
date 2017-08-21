@@ -28,6 +28,7 @@
     {
         private const int SPECIFIC_PLAYER_ID = 2;
         private const int SPECIFIC_TEAM_ID = 2;
+        private const int NUMBER_OF_PLAYERS = 3;
 
         private PlayerServiceTestFixture _testFixture = new PlayerServiceTestFixture();
 
@@ -182,6 +183,111 @@
             // Assert
             Assert.IsTrue(gotException);
             VerifyCreatePlayer(newPlayer, Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method with List. The method should create new players
+        /// </summary>
+        [TestMethod]
+        public void Create_AllPlayersAreNew_PlayersCreated()
+        {
+            // Arrange
+            var newPlayers = CreateSeveralPlayers();
+            var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
+            MockGetByIdQuery(newPlayers.First());
+            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+                .Returns(existingPlayers);
+
+            // Act
+            var sut = BuildSUT();
+            sut.Create(newPlayers);
+
+            // Assert
+            VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS));
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create() method with List. The method should throw ArgumentNullException.
+        /// Players must not be created
+        /// </summary>
+        [TestMethod]
+        public void Create_NoNewPlayers_PlayersNotCreated()
+        {
+            // Arrange
+            bool gotException = false;
+            var newPlayers = CreateListOfExistingPlayers();
+            MockGetByIdQuery(newPlayers.First());
+            var existingPlayers = CreateListOfExistingPlayersWithoutTeam().AsQueryable();
+            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+                .Returns(existingPlayers);
+
+            // Act
+            var sut = BuildSUT();
+            sut.Create(newPlayers);
+
+            // Assert
+            Assert.IsFalse(gotException);
+            VerifyCreatePlayers(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method should create new players
+        /// Players must be created
+        /// </summary>
+        [TestMethod]
+        public void Create_TwoOfThreePlayersAreNew_PlayersCreated()
+        {
+            // Arrange
+            var newPlayers = CreateTwoOfThreeNewPlayers();
+            var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
+            MockGetByIdQuery(newPlayers.First());
+            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+                .Returns(existingPlayers);
+
+            // Act
+            var sut = BuildSUT();
+            sut.Create(newPlayers);
+
+            // Assert
+            VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS - 1));
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method should throw Argument Exception
+        /// </summary>
+        [TestMethod]
+        public void Create_OneOfThePlayersPlaysInAnotherTeam_ArgumentExceptionThown()
+        {
+            bool gotException = false;
+
+            // Arrange
+            var newPlayers = new List<Player>()
+            {
+                new PlayerBuilder()
+                    .WithFirstName("First").WithLastName("Last").WithTeamId(SPECIFIC_TEAM_ID).Build()
+            };
+            var existingPlayers = CreateSeveralPlayers().AsQueryable();
+            MockGetByIdQuery(newPlayers.First());
+            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+                .Returns(existingPlayers);
+
+            var sut = BuildSUT();
+
+            // Act
+            try
+            {
+                sut.Create(newPlayers);
+            }
+            catch (ArgumentException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyCreatePlayers(Times.Never());
         }
 
         /// <summary>
@@ -368,6 +474,56 @@
                 _authServiceMock.Object);
         }
 
+        private List<Player> CreateSeveralPlayers()
+        {
+            var newPlayers = new List<Player>();
+            newPlayers.AddRange(new List<Player>
+            {
+                new PlayerBuilder().WithId(0).WithFirstName("First").WithLastName("Last").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("Second").WithLastName("Last").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("Name").WithLastName("Name").Build()
+            });
+            return newPlayers;
+        }
+
+        private List<Player> CreateListOfExistingPlayers()
+        {
+            var newPlayers = new List<Player>();
+            newPlayers.AddRange(new List<Player>
+            {
+                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").Build(),
+                new PlayerBuilder().WithFirstName("Van").WithLastName("Van").WithId(SPECIFIC_PLAYER_ID).Build(),
+                new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper").WithId(SPECIFIC_PLAYER_ID + 2).Build()
+            });
+            return newPlayers;
+        }
+
+        private List<Player> CreateTwoOfThreeNewPlayers()
+        {
+            var newPlayers = new List<Player>();
+            newPlayers.AddRange(new List<Player>
+            {
+                new PlayerBuilder().WithFirstName("First").WithLastName("Last").WithTeamId(null).Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("New Second").WithLastName("Last").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("New Hank").WithLastName("Ripper").Build()
+            });
+            return newPlayers;
+        }
+
+        private List<Player> CreateListOfExistingPlayersWithoutTeam()
+        {
+            var newPlayers = new List<Player>();
+            newPlayers.AddRange(new List<Player>
+            {
+                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").WithTeamId(null).Build(),
+                new PlayerBuilder().WithFirstName("Van").WithLastName("Van")
+                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID).Build(),
+                new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper")
+                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID + 2).Build()
+            });
+            return newPlayers;
+        }
+
         private void MockGetByIdQuery(Player player)
         {
             _getPlayerByIdQueryMock.Setup(pq => pq.Execute(It.IsAny<FindByIdCriteria>())).Returns(player);
@@ -397,6 +553,11 @@
         {
             _playerRepositoryMock.Verify(pr => pr.Add(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyCreatePlayers(Times times)
+        {
+            _playerRepositoryMock.Verify(pr => pr.Add(It.IsAny<Player>()), times);
         }
 
         private void VerifyEditPlayer(Player player, Times times)

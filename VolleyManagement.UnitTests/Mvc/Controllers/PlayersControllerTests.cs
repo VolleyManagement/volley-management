@@ -507,12 +507,12 @@
 
         private List<PlayerNameViewModel> MakePlayerNameViewModels(List<Player> players)
         {
-            return players.Select(p => new PlayerNameViewModel { Id = p.Id, FullName = p.LastName + " " + p.FirstName }).ToList();
+            return players.Select(p => new PlayerNameViewModel { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName }).ToList();
         }
 
         private List<PlayerNameViewModel> GetPlayerNameViewModelsWithPlayerName(List<PlayerNameViewModel> players, string name)
         {
-            return players.Where(p => p.FullName.Contains(name)).ToList();
+            return players.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
         }
 
         private Player MakeTestPlayer(int playerId)

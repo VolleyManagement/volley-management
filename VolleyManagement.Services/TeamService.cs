@@ -27,6 +27,7 @@
         private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
+        private readonly IQuery<Player, FindByFullNameCriteria> _getPlayerByNameQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<List<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
@@ -39,6 +40,7 @@
         /// <param name="playerRepository">The player repository</param>
         /// <param name="getTeamByIdQuery"> Get By ID query for Teams</param>
         /// <param name="getPlayerByIdQuery"> Get By ID query for Players</param>
+        /// <param name="getPlayerByNameQuery"> Get By Name query for Players</param>
         /// <param name="getTeamByCaptainQuery"> Get By Captain ID query for Teams</param>
         /// <param name="getAllTeamsQuery"> Get All teams query</param>
         /// <param name="getTeamRosterQuery"> Get players for team query</param>
@@ -48,6 +50,7 @@
             IPlayerRepository playerRepository,
             IQuery<Team, FindByIdCriteria> getTeamByIdQuery,
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
+            IQuery<Player, FindByFullNameCriteria> getPlayerByNameQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<List<Player>, TeamPlayersCriteria> getTeamRosterQuery,
@@ -57,6 +60,7 @@
             _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
             _getPlayerByIdQuery = getPlayerByIdQuery;
+            _getPlayerByNameQuery = getPlayerByNameQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getTeamRosterQuery = getTeamRosterQuery;
@@ -126,6 +130,8 @@
             }
 
             ValidateTeam(team);
+
+            team.CaptainId = captain.Id;
 
             try
             {
@@ -218,7 +224,7 @@
 
             foreach (var player in roster)
             {
-                UpdatePlayerTeam(player.Id, teamId);
+                UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
             }
         }
 
@@ -241,13 +247,20 @@
             }
         }
 
-        private void UpdatePlayerTeam(int playerId, int teamId)
+        private void UpdatePlayerTeam(string firstName, string lastName, int teamId)
         {
-            Player player = GetPlayerById(playerId);
+            Player player = GetPlayerByFullName(firstName, lastName);
 
             if (player == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
+            }
+
+            // Check if player plays in another team
+            if (player.TeamId != null && player.TeamId != teamId)
+            {
+                throw new ArgumentException(
+                    TournamentResources.ValidationPlayerOfAnotherTeam, player.FirstName + " " + player.FirstName);
             }
 
             // Check if player is captain of another team
@@ -281,7 +294,7 @@
 
             if (player == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
             }
 
             player.TeamId = null;
@@ -297,6 +310,11 @@
         private Player GetPlayerById(int id)
         {
             return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        private Player GetPlayerByFullName(string firstName, string lastName)
+        {
+            return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria { FirstName = firstName, LastName = lastName });
         }
 
         private void ValidateTeamName(string teamName)

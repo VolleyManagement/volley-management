@@ -55,7 +55,8 @@
         internal bool AreEqual(PlayerNameViewModel x, PlayerNameViewModel y)
         {
             return x.Id == y.Id &&
-                x.FullName == y.FullName;
+                   x.FirstName == y.FirstName &&
+                   x.LastName == y.LastName;
         }
     }
 }

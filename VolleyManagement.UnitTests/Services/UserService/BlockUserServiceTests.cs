@@ -36,6 +36,7 @@
         private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
         private Mock<IQuery<List<User>, GetAllCriteria>> _getAllUserQueryMock;
         private Mock<IQuery<List<User>, UniqueUserCriteria>> _getUserListQueryMock;
+        private Mock<ICurrentUserService> _currentUserServiceMock;
 
         [TestInitialize]
         public void TestInit()
@@ -49,6 +50,7 @@
             _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
             _getAllUserQueryMock = new Mock<IQuery<List<User>, GetAllCriteria>>();
             _getUserListQueryMock = new Mock<IQuery<List<User>, UniqueUserCriteria>>();
+            _currentUserServiceMock = new Mock<ICurrentUserService>();
 
             _userRepositoryMock.Setup(fr => fr.UnitOfWork)
                     .Returns(_unitOfWorkMock.Object);
@@ -171,7 +173,8 @@
                 _getPlayerByIdQueryMock.Object,
                 _cacheProviderMock.Object,
                 _getUserListQueryMock.Object,
-                _userRepositoryMock.Object);
+                _userRepositoryMock.Object,
+                _currentUserServiceMock.Object);
         }
 
         private void MockCurrentUser(User testData, int userId)

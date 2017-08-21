@@ -385,6 +385,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was not found such tournament.
+        /// </summary>
+        public static string TournamentWasNotFound {
+            get {
+                return ResourceManager.GetString("TournamentWasNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to If there is a transfer, it&apos;s necessary to specify the end date of the transfer period.
         /// </summary>
         public static string TransferEndMissing {

@@ -95,6 +95,17 @@
         }
 
         /// <summary>
+        /// Gets archived tournaments from TournamentService
+        /// </summary>
+        /// <returns>View with collection of archived tournaments</returns>
+        public ActionResult Archived()
+        {
+            List<Tournament> archivedTournaments = _tournamentService.GetArchived().ToList();
+
+            return View(archivedTournaments);
+        }
+
+        /// <summary>
         /// Get finished tournaments
         /// </summary>
         /// <returns>Json result</returns>
@@ -103,6 +114,18 @@
             var result = _tournamentService.GetFinished().ToList()
                  .Select(t => TournamentViewModel.Map(t));
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Archive current Tournament
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>Index View of Tournament</returns>
+        [HttpPost]
+        public ActionResult Archive(int tournamentId)
+        {
+            _tournamentService.Archive(tournamentId);
+            return View("Details");
         }
 
         /// <summary>
@@ -123,7 +146,8 @@
             tournamentViewModel.Authorization = _authService.GetAllowedOperations(new List<AuthOperation>
             {
                 AuthOperations.Tournaments.Edit,
-                AuthOperations.Tournaments.ManageTeams
+                AuthOperations.Tournaments.ManageTeams,
+                AuthOperations.Tournaments.ViewArchived,
             });
 
             return View(tournamentViewModel);

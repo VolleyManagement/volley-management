@@ -122,7 +122,7 @@
         /// Test for Index method. Actual tournaments (current and upcoming) are requested. Actual tournaments are returned.
         /// </summary>
         [TestMethod]
-        public void Index_GetActualTournaments_ActualTournamentsAreReturned()
+        public void Index_ActualTournamentsExist_ActualTournamentsAreReturned()
         {
             // Arrange
             var testData = MakeTestTournaments();
@@ -141,6 +141,30 @@
             // Assert
             CollectionAssert.AreEqual(expectedCurrentTournaments, actualCurrentTournaments, new TournamentComparer());
             CollectionAssert.AreEqual(expectedUpcomingTournaments, actualUpcomingTournaments, new TournamentComparer());
+        }
+
+        #endregion
+
+        #region Archived
+
+        /// <summary>
+        /// Test IndexArchived method. Archived tournaments are requested. Only archived tournaments are returned.
+        /// </summary>
+        [TestMethod]
+        public void Archived_ArchivedTournamentsExist_OnlyArchivedTournamentsReturned()
+        {
+            // Arrange
+            var testData = MakeTestTournamentsWithArchived();
+            var expected = GetArchivedTournaments(testData);
+            SetupGetArchived(testData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = TestExtensions.GetModel<List<Tournament>>(sut.Archived()).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
 
         #endregion
@@ -1532,6 +1556,14 @@
             return new TournamentServiceTestFixture().TestTournaments().Build();
         }
 
+        private List<Tournament> MakeTestTournamentsWithArchived()
+        {
+            return new TournamentServiceTestFixture()
+                .TestTournaments()
+                .WithArchivedTournaments()
+                .Build();
+        }
+
         private List<Team> CreateTestTeams()
         {
             return new TeamServiceTestFixture().TestTeams().Build();
@@ -1616,6 +1648,11 @@
             return tournaments.Where(tr => tr.State == state).ToList();
         }
 
+        private List<Tournament> GetArchivedTournaments(List<Tournament> tournaments)
+        {
+            return tournaments.Where(tr => tr.IsArchived).ToList();
+        }
+
         private void SetupGetActual(List<Tournament> tournaments)
         {
             _tournamentServiceMock.Setup(tr => tr.GetActual()).Returns(tournaments);
@@ -1624,6 +1661,11 @@
         private void SetupGetFinished(List<Tournament> tournaments)
         {
             _tournamentServiceMock.Setup(tr => tr.GetFinished()).Returns(tournaments);
+        }
+
+        private void SetupGetArchived(List<Tournament> tournaments)
+        {
+            _tournamentServiceMock.Setup(tr => tr.GetArchived()).Returns(GetArchivedTournaments(tournaments));
         }
 
         private void SetupGetTournamentTeams(List<Team> teams, int tournamentId)

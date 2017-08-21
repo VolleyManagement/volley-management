@@ -212,5 +212,13 @@ namespace VolleyManagement.Services.ServiceResources {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
+
+        internal static string UserBlockHimself
+        {
+            get
+            {
+                return ResourceManager.GetString("UserBlockHimself", resourceCulture);
+            }
+        }
     }
 }

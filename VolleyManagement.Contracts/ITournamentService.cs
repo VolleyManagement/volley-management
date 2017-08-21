@@ -17,10 +17,23 @@
         List<Tournament> Get();
 
         /// <summary>
+        /// Gets tournament by its group
+        /// </summary>
+        /// <param name="groupId">id of group </param>
+        /// <returns>Return current tournament.</returns>
+        Tournament GetTournamentByGroup(int groupId);
+
+        /// <summary>
         /// Returns only actual tournaments
         /// </summary>
         /// <returns>Actual tournaments</returns>
         List<Tournament> GetActual();
+
+        /// <summary>
+        /// Returns only archived tournaments
+        /// </summary>
+        /// <returns>Archived tournaments</returns>
+        List<Tournament> GetArchived();
 
         /// <summary>
         /// Returns only finished tournaments
@@ -80,6 +93,12 @@
         /// </summary>
         /// <param name="id">Tournament id</param>
         void Delete(int id);
+
+        /// <summary>
+        /// Archive specific tournament
+        /// </summary>
+        /// <param name="id">Tournament id</param>
+        void Archive(int id);
 
         /// <summary>
         /// Adds selected teams to tournament

@@ -40,6 +40,7 @@
         private const int SPECIFIED_TEAM_ID = 4;
         private const int SPECIFIED_PLAYER_ID = 4;
         private const int TEST_TEAM_ID = 1;
+        private const int TEST_GROUP_ID = 1;
         private const int TEST_TOURNAMENT_ID = 1;
         private const int REQUEST_ID = 1;
         private const int USER_ID = 1;
@@ -74,8 +75,8 @@
 
             MockTournamentRequestServiceGet(requests);
             MockTeamServiceGetTeam(team);
-            MockTournamentServiceGetTournament(TEST_TOURNAMENT_ID, tournament);
             MockUserServiceGetUserDetails(USER_ID, user);
+            _tournamentServiceMock.Setup(tr => tr.GetTournamentByGroup(TEST_GROUP_ID)).Returns(tournament);
 
             var sut = BuildSUT();
             var expected = CreateTournamentRequestViewModelList();

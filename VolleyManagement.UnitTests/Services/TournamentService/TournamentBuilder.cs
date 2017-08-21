@@ -70,6 +70,12 @@
             };
         }
 
+        public TournamentBuilder WithArchiveParameter(bool isArchive)
+        {
+            _tournament.IsArchived = isArchive;
+            return this;
+        }
+
         /// <summary>
         /// Sets id of test tournament
         /// </summary>

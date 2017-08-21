@@ -61,9 +61,7 @@
         private Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>> _getAllGroupsTeamsQuery;
         private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
-        private Mock<IQuery<List<Team>, FindTeamsByGroupIdCriteria>> _getTeamByGroupIdQueryMock;
-        private Mock<IQuery<Division, FindByIdCriteria>> _getDivisionByIdQueryMock;
-        private Mock<IQuery<int, TournamentByGroupCriteria>> _getTournamentId;
+        private Mock<IQuery<Tournament, TournamentByGroupCriteria>> _getTournamentId;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -84,11 +82,9 @@
             _getAllTournamentDivisionsQuery = new Mock<IQuery<List<Division>, TournamentDivisionsCriteria>>();
             _getAllTournamentGroupsQuery = new Mock<IQuery<List<Group>, DivisionGroupsCriteria>>();
             _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
-            _getTeamByGroupIdQueryMock = new Mock<IQuery<List<Team>, FindTeamsByGroupIdCriteria>>();
-            _getDivisionByIdQueryMock = new Mock<IQuery<Division, FindByIdCriteria>>();
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
-            _getTournamentId = new Mock<IQuery<int, TournamentByGroupCriteria>>();
+            _getTournamentId = new Mock<IQuery<Tournament, TournamentByGroupCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -843,7 +839,8 @@
             // Arrange
             var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
-            var tournament = new TournamentBuilder().Build();
+            var tournament = new TournamentBuilder().WithScheme(TournamentSchemeEnum.PlayOff).Build();
+            MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
             var sut = BuildSUT();
 
@@ -865,8 +862,11 @@
             bool gotException = false;
 
             // Arrange
+            var tournament = new TournamentBuilder()
+                .Build();
             var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
             MockGetAllTournamentGroupTeamQuery(new GroupTeamServiceTestFixture().TestGroupsTeams().Build());
+            MockGetTournamentByGroupId(tournament);
             var sut = BuildSUT();
 
             // Act
@@ -921,7 +921,7 @@
 
             var teamsInTournament = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
 
-            MockGetTournamentIdByGroupId(teamsInTournament.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
             var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
             MockGetAllTournamentTeamsQueryTwoCalls(new TeamServiceTestFixture().Build(), testTeamsData);
@@ -948,7 +948,7 @@
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
             MockGetAllTournamentTeamsQuery(CreateTeamsInTournament());
-            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
             var sut = BuildSUT();
             Exception exception = null;
             string argExMessage =
@@ -1020,7 +1020,7 @@
             teamsToAddInSecondDivision.Add(new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build());
             MockGetAllTournamentTeamsQuery(teamsToAddInSecondDivision);
 
-            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
 
             var sut = BuildSUT();
 
@@ -1045,7 +1045,7 @@
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
             MockGetAllTournamentTeamsQuery(CreateTeamsInTournament());
-            MockGetTournamentIdByGroupId(testData.First().GroupId);
+            MockGetTournamentByGroupId(tournament);
 
             var newTeamsInTournament = new GroupTeamServiceTestFixture()
                 .TestGroupsTeamsWithAlreadyExistTeam().Build();
@@ -1221,6 +1221,52 @@
         }
         #endregion
 
+        #region Archive
+
+        /// <summary>
+        /// Test for Archive() tournament method.
+        /// </summary>
+        [TestMethod]
+        public void Archive_NotArchivedTournament_ArchivedTournament()
+        {
+            // Arrange
+            var expectedTournament = new TournamentBuilder()
+                                    .WithArchiveParameter(false)
+                                    .Build();
+            var actualTournament = new TournamentBuilder()
+                                    .WithArchiveParameter(false)
+                                    .Build();
+            MockGetByIdQuery(actualTournament);
+            MockGetUniqueTournamentQuery(expectedTournament);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Archive(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyArchiveTournament(expectedTournament, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Archive() method with any state. Whetever 'CheckAccess' method invokes
+        /// </summary>
+        [TestMethod]
+        public void Archive_AnyState_AuthorizationCheckInvoked()
+        {
+            // Arrange
+            var testTournament = new TournamentBuilder().Build();
+            MockGetByIdQuery(testTournament);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Archive(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
+        }
+
+        #endregion
+
         #region GetActual
 
         /// <summary>
@@ -1265,6 +1311,77 @@
             // Assert
             CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
+
+        /// <summary>
+        /// GetActual method test. Tournament list includes archived tournaments.
+        /// The method should return actual tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetActual_ActualTournamentsWithArchived__ActualOnlyReturned()
+        {
+            // Arrange
+            var testData = _testFixture.TestTournaments()
+                .WithArchivedTournaments()
+                .Build();
+            MockGetAllTournamentsQuery(testData);
+
+            var sut = BuildSUT();
+
+            var expected = BuildActualTournamentsList();
+
+            // Act
+            var actual = sut.GetActual().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+        #endregion
+
+        #region GetArchived
+
+        /// <summary>
+        /// GetArchived method test. The method should return archived tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetArchived_ArchivedTournamentsExist_ArchivedTournamentsReturned()
+        {
+            // Arrange
+            MockTimeProviderUtcNow(_dateForCurrentState);
+            var testData = _testFixture.TestTournaments()
+                .WithArchivedTournaments()
+                .Build();
+            MockGetAllTournamentsQuery(testData);
+
+            var sut = BuildSUT();
+
+            var expected = BuildArchivedTournamentsList();
+
+            // Act
+            var actual = sut.GetArchived().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// Test for GetArchived() with any state. The method should invoke CheckAccess method.
+        /// </summary>
+        [TestMethod]
+        public void GetArchived_AnyState_AuthorizationCheckInvoked()
+        {
+            // Arrange
+            var testData = _testFixture.TestTournaments()
+                .WithArchivedTournaments()
+                .Build();
+            MockGetAllTournamentsQuery(testData);
+            var sut = BuildSUT();
+
+            // Act
+            sut.GetArchived().ToList();
+
+            // Assert
+            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
+        }
         #endregion
 
         #region GetFinished
@@ -1280,7 +1397,9 @@
             MockGetAllTournamentsQuery(testData);
 
             var sut = BuildSUT();
-            var expected = new TournamentServiceTestFixture().WithFinishedTournaments().Build();
+            var expected = new TournamentServiceTestFixture()
+                .WithFinishedTournaments()
+                .Build();
 
             // Act
             var actual = sut.GetFinished().ToList();
@@ -1302,6 +1421,32 @@
 
             var sut = BuildSUT();
             var expected = BuildActualTournamentsList();
+
+            // Act
+            var actual = sut.GetFinished().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
+        }
+
+        /// <summary>
+        /// GetFinished method test. Tournament list includes archived tournaments.
+        /// The method should return finished tournaments
+        /// </summary>
+        [TestMethod]
+        public void GetFinished_FinishedTournamentsWithArchived_OnlyFinishedTournamentsReturned()
+        {
+            // Arrange
+            var testData = _testFixture
+                .WithFinishedTournaments()
+                .WithArchivedTournaments()
+                .Build();
+            MockGetAllTournamentsQuery(testData);
+
+            var sut = BuildSUT();
+            var expected = new TournamentServiceTestFixture()
+                .WithFinishedTournaments()
+                .Build();
 
             // Act
             var actual = sut.GetFinished().ToList();
@@ -1350,8 +1495,6 @@
                 _getAllTournamentDivisionsQuery.Object,
                 _getAllTournamentGroupsQuery.Object,
                 _getTorunamentDto.Object,
-                _getTeamByGroupIdQueryMock.Object,
-                _getDivisionByIdQueryMock.Object,
                 _getTournamentId.Object,
                 _authServiceMock.Object,
                 _gameServiceMock.Object);
@@ -1414,7 +1557,7 @@
             _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
         }
 
-        private void MockGetTournamentIdByGroupId(int testData)
+        private void MockGetTournamentByGroupId(Tournament testData)
         {
             _getTournamentId.Setup(tr => tr.Execute(It.IsAny<TournamentByGroupCriteria>())).Returns(testData);
         }
@@ -1493,6 +1636,47 @@
                             .Build();
         }
 
+        private List<Tournament> BuildArchivedTournamentsList()
+        {
+            var tournaments = new TournamentServiceTestFixture()
+                            .AddTournament(new TournamentBuilder()
+                                            .WithId(5)
+                                            .WithName("Tournament 5")
+                                            .WithDescription("Tournament 5 description")
+                                            .WithSeason(2014)
+                                            .WithScheme(TournamentSchemeEnum.TwoAndHalf)
+                                            .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('5')")
+                                            .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
+                                            .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
+                                            .WithGamesStart(new DateTime(2015, 06, 30))
+                                            .WithGamesEnd(new DateTime(2015, 11, 30))
+                                            .WithTransferStart(new DateTime(2015, 08, 20))
+                                            .WithTransferEnd(new DateTime(2015, 09, 10))
+                                            .Build())
+                            .AddTournament(new TournamentBuilder()
+                                            .WithId(6)
+                                            .WithName("Tournament 6")
+                                            .WithDescription("Tournament 6 description")
+                                            .WithSeason(2014)
+                                            .WithScheme(TournamentSchemeEnum.PlayOff)
+                                            .WithRegulationsLink("www.Volleyball.dp.ua/Regulations/Tournaments('6')")
+                                            .WithApplyingPeriodStart(new DateTime(2015, 02, 20))
+                                            .WithApplyingPeriodEnd(new DateTime(2015, 06, 20))
+                                            .WithGamesStart(new DateTime(2015, 06, 30))
+                                            .WithGamesEnd(new DateTime(2015, 11, 30))
+                                            .WithTransferStart(new DateTime(2015, 08, 20))
+                                            .WithTransferEnd(new DateTime(2015, 09, 10))
+                                            .Build())
+                            .Build();
+
+            foreach (var t in tournaments)
+            {
+                t.IsArchived = true;
+            }
+
+            return tournaments;
+        }
+
         private List<Team> CreateTeamsInTournament()
         {
             var existingTeams = new List<Team>();
@@ -1512,6 +1696,12 @@
         private void VerifyDeleteTournament(int tournamentId, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Remove(tournamentId), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyArchiveTournament(Tournament tournament, Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
         }
 

@@ -22,12 +22,6 @@
                 <td>
                     @Html.DisplaySeason(tournament.Season)
                 </td>
-                @if (ViewBag.UserIsAdmin)
-                {
-                    <td>
-                        @Html.ActionLink("Archive", "Archive", new { tournamentId = tournament.Id })
-                    </td>
-                }
             </tr>
         }
     </tbody>

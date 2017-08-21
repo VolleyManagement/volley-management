@@ -113,7 +113,7 @@
         public ActionResult Archive(int tournamentId)
         {
             _tournamentService.Archive(tournamentId);
-            return RedirectToAction("Index");
+            return View("Details");
         }
 
         /// <summary>
@@ -134,7 +134,8 @@
             tournamentViewModel.Authorization = _authService.GetAllowedOperations(new List<AuthOperation>
             {
                 AuthOperations.Tournaments.Edit,
-                AuthOperations.Tournaments.ManageTeams
+                AuthOperations.Tournaments.ManageTeams,
+                AuthOperations.Tournaments.ViewArchived,
             });
 
             return View(tournamentViewModel);

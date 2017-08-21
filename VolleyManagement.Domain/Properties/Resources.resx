@@ -327,4 +327,7 @@
   <data name="TournamentWasNotFound" xml:space="preserve">
     <value>There was not found such tournament</value>
   </data>
+  <data name="ValidationPlayerOfAnotherTeam" xml:space="preserve">
+    <value>Player already plays in another team</value>
+  </data>
 </root>

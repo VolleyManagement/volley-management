@@ -159,15 +159,16 @@
             var viewModel = new TeamMvcViewModelBuilder().Build();
             _teamServiceMock.Setup(ts => ts.Create(It.IsAny<Team>()))
                                            .Throws(new ArgumentException(SPECIFIED_EXCEPTION_MESSAGE));
+            var sut = BuildSUT();
 
             // Act
-            var sut = BuildSUT();
             var jsonResult = sut.Create(viewModel);
-            var modelResult = jsonResult;
+            var actualMessage = jsonResult.Data.ToString();
+            var expetedMessage = $"{{ Success = False, Message = {SPECIFIED_EXCEPTION_MESSAGE} }}";
 
             // Assert
             _teamServiceMock.Verify(ts => ts.Create(It.IsAny<Team>()), Times.Once());
-            Assert.IsNotNull(modelResult);
+            Assert.AreEqual(actualMessage, expetedMessage);
         }
 
         /// <summary>

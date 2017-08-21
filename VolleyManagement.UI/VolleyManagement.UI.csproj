@@ -541,6 +541,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Areas\Mvc\Views\Tournaments\Archived.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\GameResults\ResultsValidate.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -565,6 +566,7 @@
     <Content Include="Scripts\UserActions.js" />
     <Content Include="Scripts\VMScripts\Admin\admin.js" />
     <Content Include="Scripts\VMScripts\Admin\BackButton.js" />
+    <Content Include="Scripts\VMScripts\Admin\ChangeUserBlocked.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\AjaxResponse.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\BackButton.js" />
     <Content Include="Scripts\VMScripts\FeedbackOperations\CheckEnvironment.js" />

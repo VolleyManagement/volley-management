@@ -122,7 +122,7 @@
         /// Test for Index method. Actual tournaments (current and upcoming) are requested. Actual tournaments are returned.
         /// </summary>
         [TestMethod]
-        public void Index_GetActualTournaments_ActualTournamentsAreReturned()
+        public void Index_ActualTournamentsExist_ActualTournamentsAreReturned()
         {
             // Arrange
             var testData = MakeTestTournaments();
@@ -141,6 +141,30 @@
             // Assert
             CollectionAssert.AreEqual(expectedCurrentTournaments, actualCurrentTournaments, new TournamentComparer());
             CollectionAssert.AreEqual(expectedUpcomingTournaments, actualUpcomingTournaments, new TournamentComparer());
+        }
+
+        #endregion
+
+        #region Archived
+
+        /// <summary>
+        /// Test IndexArchived method. Archived tournaments are requested. Only archived tournaments are returned.
+        /// </summary>
+        [TestMethod]
+        public void Archived_ArchivedTournamentsExist_OnlyArchivedTournamentsReturned()
+        {
+            // Arrange
+            var testData = MakeTestTournamentsWithArchived();
+            var expected = GetArchivedTournaments(testData);
+            SetupGetArchived(testData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = TestExtensions.GetModel<List<Tournament>>(sut.Archived()).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new TournamentComparer());
         }
 
         #endregion
@@ -722,24 +746,6 @@
 
             // Assert
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
-        }
-
-        /// <summary>
-        /// Test for Archive method. Service get Id of Tournament to archive
-        /// </summary>
-        [TestMethod]
-        public void Archive_GetTournamentToArchive_ServiceMethodArchiveIsCalled()
-        {
-            // Arrange
-            var testData = MakeTestTournaments();
-            SetupArchiveTournament(TEST_TOURNAMENT_ID);
-            var sut = BuildSUT();
-
-            // Act
-            var result = sut.Archive(TEST_TOURNAMENT_ID);
-
-            // Assert
-            VerifyArchiveTournament(TEST_TOURNAMENT_ID, Times.Once());
         }
 
         #endregion
@@ -1550,6 +1556,14 @@
             return new TournamentServiceTestFixture().TestTournaments().Build();
         }
 
+        private List<Tournament> MakeTestTournamentsWithArchived()
+        {
+            return new TournamentServiceTestFixture()
+                .TestTournaments()
+                .WithArchivedTournaments()
+                .Build();
+        }
+
         private List<Team> CreateTestTeams()
         {
             return new TeamServiceTestFixture().TestTeams().Build();
@@ -1634,6 +1648,11 @@
             return tournaments.Where(tr => tr.State == state).ToList();
         }
 
+        private List<Tournament> GetArchivedTournaments(List<Tournament> tournaments)
+        {
+            return tournaments.Where(tr => tr.IsArchived).ToList();
+        }
+
         private void SetupGetActual(List<Tournament> tournaments)
         {
             _tournamentServiceMock.Setup(tr => tr.GetActual()).Returns(tournaments);
@@ -1644,9 +1663,9 @@
             _tournamentServiceMock.Setup(tr => tr.GetFinished()).Returns(tournaments);
         }
 
-        private void SetupArchiveTournament(int tournamentId)
+        private void SetupGetArchived(List<Tournament> tournaments)
         {
-            _tournamentServiceMock.Setup(tr => tr.Archive(tournamentId));
+            _tournamentServiceMock.Setup(tr => tr.GetArchived()).Returns(GetArchivedTournaments(tournaments));
         }
 
         private void SetupGetTournamentTeams(List<Team> teams, int tournamentId)
@@ -1770,11 +1789,6 @@
         private void VerifyCreateTournamentRequest(Times times)
         {
             _tournamentRequestServiceMock.Verify(ts => ts.Create(It.IsAny<TournamentRequest>()), times);
-        }
-
-        private void VerifyArchiveTournament(int tournamentId, Times times)
-        {
-            _tournamentServiceMock.Verify(ts => ts.Archive(tournamentId), times);
         }
 
         private void VerifySwapRounds(int tournamentId, byte firstRoundNumber, byte secondRoundNumber)

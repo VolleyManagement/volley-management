@@ -1007,6 +1007,34 @@
             VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Never());
         }
 
+        /// <summary>
+        /// Test for SetPlayerTeamIdToNull() method.
+        /// Player Not Exist. Player never get Edit
+        /// </summary>
+        [TestMethod]
+        public void UpdateRosterTeamId_PlayerIsNull_PlayerNeverGetEdit()
+        {
+            // Arrange
+            var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            var testSecondPlayer = new PlayerBuilder().WithId(PLAYER_ID + 1).WithTeamId(SPECIFIC_TEAM_ID).Build();
+            List<Player> testRoster = new List<Player> { testPlayer, testSecondPlayer };
+            MockGetTeamRosterQuery(testRoster);
+
+            Player player = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID + 1).WithTeamId(null).Build();
+            List<Player> roster = new List<Player> { player };
+
+            var teamToSet = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
+            _getTeamByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(teamToSet);
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID);
+
+            // Assert
+            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Never());
+        }
+
         #endregion
 
         #region Authorization team tests

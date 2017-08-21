@@ -974,7 +974,7 @@
         /// Player Not Exist. Throw exception
         /// </summary>
         [TestMethod]
-        public void UpdateRosterTeamId_PlayerIsNull_MissingEntityExceptionThrown()
+        public void UpdateRosterTeamId_PlayerIsNotExist_MissingEntityExceptionThrown()
         {
             // Arrange
             bool exception = false;
@@ -1004,7 +1004,6 @@
 
             // Assert
             Assert.IsTrue(exception);
-            VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Never());
         }
 
         /// <summary>
@@ -1012,7 +1011,7 @@
         /// Player Not Exist. Player never get Edit
         /// </summary>
         [TestMethod]
-        public void UpdateRosterTeamId_PlayerIsNull_PlayerNeverGetEdit()
+        public void UpdateRosterTeamId_PlayerIsNotExist_PlayerNeverGetEdit()
         {
             // Arrange
             var testPlayer = new PlayerBuilder().WithId(PLAYER_ID).WithTeamId(SPECIFIC_TEAM_ID).Build();

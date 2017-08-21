@@ -1029,7 +1029,13 @@
             var sut = BuildSUT();
 
             // Act
-            sut.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID);
+            try
+            {
+                sut.UpdateRosterTeamId(roster, SPECIFIC_TEAM_ID);
+            }
+            catch (MissingEntityException)
+            {
+            }
 
             // Assert
             VerifyEditPlayer(SPECIFIC_PLAYER_ID, SPECIFIC_TEAM_ID, Times.Never());

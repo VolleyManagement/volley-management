@@ -274,7 +274,7 @@
         /// <param name="id">The id of tournament to archive.</param>
         public void Archive(int id)
         {
-            _authService.CheckAccess(AuthOperations.Tournaments.Archive);
+            _authService.CheckAccess(AuthOperations.Tournaments.ViewArchived);
 
             var getTournamentToArchive = Get(id);
 

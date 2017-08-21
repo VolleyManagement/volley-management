@@ -110,6 +110,7 @@
         /// </summary>
         /// <param name="tournamentId">Tournament id</param>
         /// <returns>Index View of Tournament</returns>
+        [HttpPost]
         public ActionResult Archive(int tournamentId)
         {
             _tournamentService.Archive(tournamentId);

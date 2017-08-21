@@ -3,8 +3,7 @@
         url: "/Admin/Users/ChangeUserBlocked",
         data: {
             id: userId,
-            toBlock: isBlock,
-            backTo: returnUrl
+            toBlock: isBlock
         },
         success: function (result) {
             $(".text-danger").remove();

@@ -28,6 +28,7 @@
     {
         private const int SPECIFIC_PLAYER_ID = 2;
         private const int SPECIFIC_TEAM_ID = 2;
+        private const int NUMBER_OF_PLAYERS = 3;
 
         private PlayerServiceTestFixture _testFixture = new PlayerServiceTestFixture();
 
@@ -202,7 +203,7 @@
             sut.Create(newPlayers);
 
             // Assert
-            VerifyCreatePlayers(Times.Exactly(3));
+            VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS));
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
@@ -249,7 +250,7 @@
             sut.Create(newPlayers);
 
             // Assert
-            VerifyCreatePlayers(Times.Exactly(2));
+            VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS - 1));
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 

@@ -3,7 +3,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FullName)
+            <label>Full name</label>
         </th>
         <th></th>
         <th></th>
@@ -12,7 +12,7 @@
 @foreach (var item in Model) {
     <tr id="player_@item.Id">
         <td>
-            @Html.DisplayFor(modelItem => item.FullName)
+            <label>Full name</label>
         </td>
         <td class="hidden">
             @item.Id
@@ -21,7 +21,7 @@
             <input type="button"
                    name="choosePlayerButton"
                    value="@Resources.UI.PlayerViews.AddPlayerToTeam"
-                   onclick="VM.team.handlers.addPlayerToTeam('@item.FullName', @item.Id)" />
+                   onclick="VM.team.handlers.addPlayerToTeam('@item.FirstName'+ ' ' +'@item.LastName', @item.Id)" />
         </td>  
     </tr>
 }

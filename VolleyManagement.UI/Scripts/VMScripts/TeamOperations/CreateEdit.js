@@ -202,10 +202,10 @@
         }
 
         for (var j = 1; j <= teamPlayerCounter; j++) {
-            var inputTeamPlayer = $(".teamPlayerInput[counter='" + j + "']");
-            var fullName = inputTeamPlayer.val().trim().split(firstNameLastNameSplitter, 2);
+            var inputTeamPlayer = $(".teamPlayerInput[counter='" + j + "']");           
 
             if (inputTeamPlayer.val() !== "" && inputTeamPlayer.val() !== undefined) {
+                var fullName = inputTeamPlayer.val().trim().split(firstNameLastNameSplitter, 2);
                 result.Roster.push({
                     FirstName: fullName[0],
                     LastName: fullName[1],

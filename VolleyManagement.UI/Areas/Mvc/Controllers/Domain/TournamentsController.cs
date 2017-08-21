@@ -117,6 +117,18 @@
         }
 
         /// <summary>
+        /// Archive current Tournament
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>Index View of Tournament</returns>
+        [HttpPost]
+        public ActionResult Archive(int tournamentId)
+        {
+            _tournamentService.Archive(tournamentId);
+            return View("Details");
+        }
+
+        /// <summary>
         /// Gets details for specific tournament
         /// </summary>
         /// <param name="id">Tournament id</param>
@@ -134,7 +146,8 @@
             tournamentViewModel.Authorization = _authService.GetAllowedOperations(new List<AuthOperation>
             {
                 AuthOperations.Tournaments.Edit,
-                AuthOperations.Tournaments.ManageTeams
+                AuthOperations.Tournaments.ManageTeams,
+                AuthOperations.Tournaments.ViewArchived,
             });
 
             return View(tournamentViewModel);

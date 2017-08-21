@@ -269,6 +269,28 @@
         }
 
         /// <summary>
+        /// Archive tournament by id.
+        /// </summary>
+        /// <param name="id">The id of tournament to archive.</param>
+        public void Archive(int id)
+        {
+            _authService.CheckAccess(AuthOperations.Tournaments.ViewArchived);
+
+            var getTournamentToArchive = Get(id);
+
+            if (getTournamentToArchive == null)
+            {
+                throw new ArgumentException(
+                    TournamentResources.TournamentWasNotFound);
+            }
+
+            getTournamentToArchive.IsArchived = true;
+
+            _tournamentRepository.Update(getTournamentToArchive);
+            _tournamentRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>

@@ -105,6 +105,17 @@
            "ApplyForTournament",
            new { tournamentId = Model.Id })
     </div>
+    @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.ViewArchived))
+    {
+        <div>
+            @Html.ActionLink(
+            "Archive Tournament",
+            "Archive",
+            "Tournaments",
+            new { tournamentId = Model.Id },
+            null)
+        </div>
+    }
 </fieldset>
 <p>
     @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Edit))

@@ -95,6 +95,12 @@
         void Delete(int id);
 
         /// <summary>
+        /// Archive specific tournament
+        /// </summary>
+        /// <param name="id">Tournament id</param>
+        void Archive(int id);
+
+        /// <summary>
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>

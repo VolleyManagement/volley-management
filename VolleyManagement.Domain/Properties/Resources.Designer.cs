@@ -565,6 +565,15 @@ namespace VolleyManagement.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please, enter the valid Team.
+        /// </summary>
+        public static string ValidationPlayerOfAnotherTeam {
+            get {
+                return ResourceManager.GetString("ValidationPlayerOfAnotherTeam", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Please, enter the valid weight.
         /// </summary>
         public static string ValidationPlayerWeight {

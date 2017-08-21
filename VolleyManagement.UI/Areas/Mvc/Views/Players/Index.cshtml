@@ -23,7 +23,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Model.List.FirstOrDefault().FullName)
+            <label>Full name</label>
         </th>
         <th></th>
     </tr>
@@ -32,7 +32,7 @@
     {
         <tr>
             <td>
-                @Html.ActionLink(item.FullName, "Details", new { id = item.Id, returnUrl = Model.Referer },
+                @Html.ActionLink(item.FirstName+" "+item.LastName, "Details", new { id = item.Id, returnUrl = Model.Referer },
                 new { @class = "playerName", @id = item.Id + "playerName" })
             </td>
             <td>            

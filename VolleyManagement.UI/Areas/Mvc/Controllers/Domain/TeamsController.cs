@@ -10,6 +10,7 @@
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
     using Domain.RolesAggregate;
     using ViewModels.Teams;
 
@@ -26,6 +27,7 @@
         private readonly ITeamService _teamService;
         private readonly IAuthorizationService _authService;
         private readonly IFileService _fileService;
+        private readonly IPlayerService _playerService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
@@ -33,14 +35,17 @@
         /// <param name="teamService">Instance of the class that implements ITeamService.</param>
         /// <param name="authService">The authorization service</param>
         /// <param name="fileService">The interface reference of file service.</param>
+        /// <param name="playerService">The interface reference of player service.</param>
         public TeamsController(
             ITeamService teamService,
             IAuthorizationService authService,
-            IFileService fileService)
+            IFileService fileService,
+            IPlayerService playerService)
         {
             _teamService = teamService;
             _authService = authService;
             _fileService = fileService;
+            _playerService = playerService;
         }
 
         /// <summary>
@@ -99,14 +104,20 @@
             }
             else
             {
-                var domainTeam = teamViewModel.ToDomain();
-
                 try
                 {
+                    var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
+
+                    _playerService.Create(roster);
+
+                    var domainTeam = teamViewModel.ToDomain();
+                    domainTeam.CaptainId = roster[0].Id;
+
                     _teamService.Create(domainTeam);
+
                     if (teamViewModel.Roster != null)
                     {
-                        _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
+                        _teamService.UpdateRosterTeamId(roster, domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
@@ -114,18 +125,15 @@
                 }
                 catch (ArgumentException ex)
                 {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                    result = Json(ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
                 catch (MissingEntityException ex)
                 {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                    result = Json(ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
                 catch (ValidationException ex)
                 {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                    result = Json(ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
             }
 
@@ -168,14 +176,20 @@
             }
             else
             {
-                var domainTeam = teamViewModel.ToDomain();
-
                 try
                 {
+                    var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
+
+                    _playerService.Create(roster);
+
+                    var domainTeam = teamViewModel.ToDomain();
+                    domainTeam.CaptainId = roster[0].Id;
+
                     _teamService.Edit(domainTeam);
+
                     if (teamViewModel.Roster != null)
                     {
-                        _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
+                        _teamService.UpdateRosterTeamId(roster, domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
@@ -183,18 +197,15 @@
                 }
                 catch (ArgumentException ex)
                 {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                    result = Json(ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
                 catch (MissingEntityException ex)
                 {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                    result = Json(ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
                 catch (ValidationException ex)
                 {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                    result = Json(ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
             }
 

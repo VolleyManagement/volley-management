@@ -16,10 +16,14 @@
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the player name
+        /// Gets or sets the player firstname
         /// </summary>
-        [Display(Name = "PlayerFullName", ResourceType = typeof(ViewModelResources))]
-        public string FullName { get; set; }
+        public string FirstName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the player lastname
+        /// </summary>
+        public string LastName { get; set; }
 
         #region Factory Methods
 
@@ -33,7 +37,8 @@
             PlayerNameViewModel playerNameViewModel = new PlayerNameViewModel()
             {
                 Id = player.Id,
-                FullName = GetFullName(player)
+                FirstName = player.FirstName,
+                LastName = player.LastName
             };
             return playerNameViewModel;
         }
@@ -48,7 +53,8 @@
             PlayerNameViewModel playerNameViewModel = new PlayerNameViewModel()
             {
                 Id = player.Id,
-                FullName = GetFullName(player)
+                FirstName = player.FirstName,
+                LastName = player.LastName
             };
             return playerNameViewModel;
         }
@@ -59,19 +65,9 @@
         /// <returns> Domain object </returns>
         public Player ToDomain()
         {
-            return new Player { Id = Id };
+            return new Player { Id = Id, FirstName = FirstName, LastName = LastName };
         }
 
         #endregion
-
-        private static string GetFullName(Player player)
-        {
-            return player.LastName + " " + player.FirstName;
-        }
-
-        private static string GetFullName(PlayerViewModel player)
-        {
-            return player.LastName + " " + player.FirstName;
-        }
     }
 }

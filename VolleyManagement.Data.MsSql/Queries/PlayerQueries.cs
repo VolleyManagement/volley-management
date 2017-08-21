@@ -14,6 +14,7 @@
     /// Provides Query Object implementation for Player entity
     /// </summary>
     public class PlayerQueries : IQuery<Player, FindByIdCriteria>,
+                                 IQuery<Player, FindByFullNameCriteria>,
                                  IQuery<IQueryable<Player>, GetAllCriteria>,
                                  IQuery<List<Player>, TeamPlayersCriteria>
     {
@@ -49,6 +50,20 @@
                                       .Where(t => t.Id == criteria.Id)
                                       .Select(GetPlayerMapping())
                                       .SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Finds Players by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Player"/>. </returns>
+        public Player Execute(FindByFullNameCriteria criteria)
+        {
+            return _unitOfWork.Context.Players
+                .Where(t => t.FirstName == criteria.FirstName)
+                .Where(t => t.LastName == criteria.LastName)
+                .Select(GetPlayerMapping())
+                .SingleOrDefault();
         }
 
         /// <summary>

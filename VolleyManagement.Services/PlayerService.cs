@@ -1,6 +1,7 @@
 ﻿namespace VolleyManagement.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using Contracts;
@@ -13,6 +14,7 @@
     using Domain.PlayersAggregate;
     using Domain.RolesAggregate;
     using Domain.TeamsAggregate;
+    using PlayerResources = Domain.Properties.Resources;
 
     /// <summary>
     /// Defines PlayerService
@@ -74,6 +76,33 @@
 
             _playerRepository.Add(playerToCreate);
             _playerRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Create new players.
+        /// </summary>
+        /// <param name="playersToCreate">New players.</param>
+        public void Create(List<Player> playersToCreate)
+        {
+            _authService.CheckAccess(AuthOperations.Players.Create);
+
+            if (ValidateExistingPlayers(playersToCreate))
+            {
+                throw new ArgumentException(
+                    PlayerResources.ValidationPlayerOfAnotherTeam);
+            }
+
+            var newPlayersToCreate = GetNewPlayers(playersToCreate).ToList();
+
+            if (newPlayersToCreate.Any())
+            {
+                foreach (var player in newPlayersToCreate)
+                {
+                    _playerRepository.Add(player);
+                }
+
+                _playerRepository.UnitOfWork.Commit();
+            }
         }
 
         /// <summary>
@@ -171,6 +200,34 @@
         private Team GetTeamById(int id)
         {
             return _getTeamByIdQuery.Execute(new FindByIdCriteria { Id = id });
+        }
+
+        private IEnumerable<Player> GetNewPlayers(List<Player> playersToCreate)
+        {
+            return playersToCreate.Where(p => p.Id == 0);
+        }
+
+        /// <summary>
+        /// Validate if Player of Another Team
+        /// </summary>
+        /// <param name="playersToCreate">List of Players</param>
+        /// <returns> Return true if Player has TeamId </returns>
+        private bool ValidateExistingPlayers(List<Player> playersToCreate)
+        {
+            var existingPlayers = Get().ToList();
+
+            var teamId = playersToCreate.First().Id != 0
+                ? Get(playersToCreate.First(t => t.Id != 0).Id).TeamId
+                : null;
+
+            var isExistingPlayers = existingPlayers
+                    .Select(allPlayer => playersToCreate
+                    .FirstOrDefault(t => t.FirstName.ToLower().Equals(allPlayer.FirstName.ToLower())
+                                  && t.LastName.ToLower().Equals(allPlayer.LastName.ToLower())
+                                  && allPlayer.TeamId != null
+                                  && allPlayer.TeamId != teamId));
+
+            return isExistingPlayers.Any(t => t != null);
         }
     }
 }

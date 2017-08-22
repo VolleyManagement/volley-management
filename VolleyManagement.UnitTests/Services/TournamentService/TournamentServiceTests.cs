@@ -1191,13 +1191,20 @@
         public void Delete_TournamentExist_TournamentRemoved()
         {
             // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            var existingTeams = CreateTeamsInTournament();
+            MockGetAllTournamentTeamsQuery(existingTeams);
             var sut = BuildSUT();
 
             // Act
             sut.Delete(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+            _tournamentRepositoryMock.Verify(tr => tr.Remove(FIRST_TOURNAMENT_ID), Times.Once());
         }
 
         /// <summary>
@@ -1262,7 +1269,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
+            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
         }
 
         #endregion

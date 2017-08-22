@@ -264,6 +264,13 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.Delete);
 
+            var allTeamsInTournament = GetAllTournamentTeams(id);
+
+            foreach (var team in allTeamsInTournament)
+            {
+                DeleteTeamFromTournament(team.Id, id);
+            }
+
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
         }

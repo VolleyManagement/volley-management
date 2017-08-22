@@ -1244,7 +1244,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyArchiveTournament(expectedTournament, Times.Once());
+            VerifyArchiveTournament(actualTournament, Times.Once());
         }
 
         /// <summary>
@@ -1262,7 +1262,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
+            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
         }
 
         #endregion

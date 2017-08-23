@@ -38,6 +38,7 @@
         private const int FIRST_DIVISION_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int SPECIFIC_TOURNAMENT_ID = 2;
+        private const int SPECIFIC_NUMBER_OF_TIMES = 2;
         private const int EMPTY_TEAM_LIST_COUNT = 0;
         private const int EMPTY_GROUP_LIST_COUNT = 0;
         private const int EMPTY_DIVISION_LIST_COUNT = 0;
@@ -1185,10 +1186,31 @@
         #region Delete
 
         /// <summary>
-        /// Test for Delete Tournament method.
+        /// Test for Delete Tournament without Teams method.
         /// </summary>
         [TestMethod]
-        public void Delete_TournamentExist_TournamentRemoved()
+        public void Delete_DeleteTournamentsWithNoTeams_TournamentRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete Tournament with Teams method.
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithTeams_TournamentRemoved()
         {
             // Arrange
             var tournament = new TournamentBuilder()
@@ -1204,7 +1226,7 @@
             sut.Delete(FIRST_TOURNAMENT_ID);
 
             // Assert
-            _tournamentRepositoryMock.Verify(tr => tr.Remove(FIRST_TOURNAMENT_ID), Times.Once());
+            VerifyDeleteTournamentWithOneTeam(FIRST_TOURNAMENT_ID, Times.Once(), Times.Exactly(SPECIFIC_NUMBER_OF_TIMES));
         }
 
         /// <summary>
@@ -1704,6 +1726,12 @@
         {
             _tournamentRepositoryMock.Verify(tr => tr.Remove(tournamentId), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyDeleteTournamentWithOneTeam(int tournamentId, Times times, Times timesCommit)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.Remove(tournamentId), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), timesCommit);
         }
 
         private void VerifyArchiveTournament(Tournament tournament, Times times)

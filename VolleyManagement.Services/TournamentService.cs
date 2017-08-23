@@ -266,9 +266,12 @@
 
             var allTeamsInTournament = GetAllTournamentTeams(id);
 
-            foreach (var team in allTeamsInTournament)
+            if (allTeamsInTournament != null)
             {
-                DeleteTeamFromTournament(team.Id, id);
+                foreach (var team in allTeamsInTournament)
+                {
+                    DeleteTeamFromTournament(team.Id, id);
+                }
             }
 
             _tournamentRepository.Remove(id);

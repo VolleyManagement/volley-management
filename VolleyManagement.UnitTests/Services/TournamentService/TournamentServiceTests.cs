@@ -1221,7 +1221,7 @@
             sut.Delete(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyDeleteTournamentWithOneTeam(FIRST_TOURNAMENT_ID, Times.Once(), Times.Exactly(SPECIFIC_NUMBER_OF_TIMES));
+            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
         }
 
         /// <summary>
@@ -1707,6 +1707,7 @@
             existingTeams.AddRange(new List<Team>
             {
                 new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build(),
+                new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 1).Build(),
             });
             return existingTeams;
         }
@@ -1721,12 +1722,6 @@
         {
             _tournamentRepositoryMock.Verify(tr => tr.Remove(tournamentId), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
-        }
-
-        private void VerifyDeleteTournamentWithOneTeam(int tournamentId, Times times, Times timesCommit)
-        {
-            _tournamentRepositoryMock.Verify(tr => tr.Remove(tournamentId), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), timesCommit);
         }
 
         private void VerifyArchiveTournament(Tournament tournament, Times times)

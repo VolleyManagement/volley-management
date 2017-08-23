@@ -264,15 +264,7 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.Delete);
 
-            var allTeamsInTournament = GetAllTournamentTeams(id);
-
-            if (allTeamsInTournament != null)
-            {
-                foreach (var team in allTeamsInTournament)
-                {
-                    DeleteTeamFromTournament(team.Id, id);
-                }
-            }
+            RemoveAllTeamsFromTournament(id);
 
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
@@ -450,6 +442,26 @@
         private List<Tournament> GetArchivedTournaments()
         {
             return Get().Where(t => t.IsArchived).ToList();
+        }
+
+        private void RemoveAllTeamsFromTournament(int tournamentId)
+        {
+            var allTeamsInTournament = GetAllTournamentTeams(tournamentId);
+
+            if (allTeamsInTournament != null)
+            {
+                foreach (var team in allTeamsInTournament)
+                {
+                    try
+                    {
+                        _tournamentRepository.RemoveTeamFromTournament(team.Id, tournamentId);
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamInTournamentNotFound, ex);
+                    }
+                }
+            }
         }
 
         private void ValidateTournament(Tournament tournament, bool isUpdate = false)

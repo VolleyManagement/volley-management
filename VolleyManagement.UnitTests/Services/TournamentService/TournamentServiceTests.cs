@@ -1192,11 +1192,6 @@
         public void Delete_DeleteTournamentsWithNoTeams_TournamentRemoved()
         {
             // Arrange
-            var tournament = new TournamentBuilder()
-                .WithScheme(TournamentSchemeEnum.PlayOff)
-                .Build();
-
-            MockGetByIdQuery(tournament);
             var sut = BuildSUT();
 
             // Act

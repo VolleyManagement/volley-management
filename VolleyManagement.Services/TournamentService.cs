@@ -132,7 +132,9 @@
         /// <returns>actual tournaments</returns>
         public List<Tournament> GetActual()
         {
-            return GetFilteredTournaments(_actualStates);
+            var filteredTournaments = GetFilteredTournaments(_actualStates);
+
+            return ArchiveOld(filteredTournaments);
         }
 
         /// <summary>
@@ -269,6 +271,17 @@
         }
 
         /// <summary>
+        /// Archive tournament.
+        /// </summary>
+        /// <param name="tournament">Tournament to archive.</param>
+        public void Archive(Tournament tournament)
+        {
+            tournament.IsArchived = true;
+
+            _tournamentRepository.Update(tournament);
+        }
+
+        /// <summary>
         /// Archive tournament by id.
         /// </summary>
         /// <param name="id">The id of tournament to archive.</param>
@@ -284,10 +297,27 @@
                     TournamentResources.TournamentWasNotFound);
             }
 
-            getTournamentToArchive.IsArchived = true;
-
-            _tournamentRepository.Update(getTournamentToArchive);
+            Archive(getTournamentToArchive);
             _tournamentRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Archive old tournaments.
+        /// </summary>
+        /// <param name="tournaments">List of tournaments.</param>
+        /// <returns>List of tournaments without old ones.</returns>
+        public List<Tournament> ArchiveOld(List<Tournament> tournaments)
+        {
+            var old = tournaments.Where(t => CheckIfTournamentIsOld(t));
+
+            foreach (var item in old)
+            {
+                Archive(item);
+            }
+
+            _tournamentRepository.UnitOfWork.Commit();
+
+            return tournaments.Where(t => !t.IsArchived).ToList();
         }
 
         /// <summary>
@@ -440,6 +470,11 @@
         private List<Tournament> GetArchivedTournaments()
         {
             return Get().Where(t => t.IsArchived).ToList();
+        }
+
+        private bool CheckIfTournamentIsOld(Tournament tournament)
+        {
+            return TimeProvider.Current.UtcNow.Year - tournament.GamesEnd.Year >= 1;
         }
 
         private void ValidateTournament(Tournament tournament, bool isUpdate = false)

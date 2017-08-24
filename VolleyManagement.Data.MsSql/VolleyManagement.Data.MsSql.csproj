@@ -183,10 +183,6 @@
     <Compile Include="Context\Migrations\201708091004233_AddIsArchivedFlag.Designer.cs">
       <DependentUpon>201708091004233_AddIsArchivedFlag.cs</DependentUpon>
     </Compile>
-    <Compile Include="Context\Migrations\201708221415413_Add Cascade Delete For Tournaments.cs" />
-    <Compile Include="Context\Migrations\201708221415413_Add Cascade Delete For Tournaments.Designer.cs">
-      <DependentUpon>201708221415413_Add Cascade Delete For Tournaments.cs</DependentUpon>
-    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -354,9 +350,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201708091004233_AddIsArchivedFlag.resx">
       <DependentUpon>201708091004233_AddIsArchivedFlag.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Context\Migrations\201708221415413_Add Cascade Delete For Tournaments.resx">
-      <DependentUpon>201708221415413_Add Cascade Delete For Tournaments.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -217,7 +217,7 @@ namespace VolleyManagement.Data.MsSql.Context
                 .HasMany(d => d.Divisions)
                 .WithRequired(d => d.Tournament)
                 .HasForeignKey(d => d.TournamentId)
-                .WillCascadeOnDelete(true);
+                .WillCascadeOnDelete(false);
         }
 
         private static void ConfigureUsers(DbModelBuilder modelBuilder)
@@ -503,7 +503,7 @@ namespace VolleyManagement.Data.MsSql.Context
                 .HasRequired(g => g.Division)
                 .WithMany(d => d.Groups)
                 .HasForeignKey(g => g.DivisionId)
-                .WillCascadeOnDelete(true);
+                .WillCascadeOnDelete(false);
         }
 
         private static void ConfigureGameResults(DbModelBuilder modelBuilder)

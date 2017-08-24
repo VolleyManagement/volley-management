@@ -19,7 +19,7 @@ namespace VolleyManagement.Services.ServiceResources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ExceptionMessages {
@@ -57,6 +57,15 @@ namespace VolleyManagement.Services.ServiceResources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A division with specified inentifier was not found in this tournament.
+        /// </summary>
+        internal static string DivisionInTournamentNotFound {
+            get {
+                return ResourceManager.GetString("DivisionInTournamentNotFound", resourceCulture);
             }
         }
         
@@ -111,6 +120,15 @@ namespace VolleyManagement.Services.ServiceResources {
         internal static string GameNotFound {
             get {
                 return ResourceManager.GetString("GameNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game Result with specified inentifier was not found in this tournament.
+        /// </summary>
+        internal static string GameResultNotFound {
+            get {
+                return ResourceManager.GetString("GameResultNotFound", resourceCulture);
             }
         }
         
@@ -205,19 +223,20 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t block yourself.
+        /// </summary>
+        internal static string UserBlockHimself {
+            get {
+                return ResourceManager.GetString("UserBlockHimself", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A user with specified identifier was not found.
         /// </summary>
         internal static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
-            }
-        }
-
-        internal static string UserBlockHimself
-        {
-            get
-            {
-                return ResourceManager.GetString("UserBlockHimself", resourceCulture);
             }
         }
     }

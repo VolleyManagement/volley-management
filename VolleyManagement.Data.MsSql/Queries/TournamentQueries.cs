@@ -11,6 +11,7 @@
     using Entities;
     using VolleyManagement.Data.Queries.Division;
     using VolleyManagement.Data.Queries.Group;
+    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Provides Object Query implementation for Tournaments
@@ -21,7 +22,8 @@
                                      IQuery<List<Division>, TournamentDivisionsCriteria>,
                                      IQuery<List<Group>, DivisionGroupsCriteria>,
                                      IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>,
-                                     IQuery<Tournament, TournamentByGroupCriteria>
+                                     IQuery<Tournament, TournamentByGroupCriteria>,
+                                     IQuery<List<Game>, TournamentGamesCriteria>
     {
         #region Fields
 
@@ -110,6 +112,18 @@
             return _unitOfWork.Context.Groups
                                       .Where(d => d.DivisionId == criteria.DivisionId)
                                       .Select(GetGroupMapping()).ToList();
+        }
+
+        /// <summary>
+        /// Find GameResults by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Game"/>. </returns>
+        public List<Game> Execute(TournamentGamesCriteria criteria)
+        {
+            return _unitOfWork.Context.GameResults
+                .Where(d => d.TournamentId == criteria.TournamentId)
+                .Select(GetGameResultspMapping()).ToList();
         }
 
         /// <summary>
@@ -206,8 +220,19 @@
                     Id = g.Id,
                     Name = g.Name,
                     DivisionId = g.DivisionId,
-                    IsEmpty = g.Teams.Count == 0
+                    IsEmpty = g.Teams.Count == 0,
                 };
+        }
+
+        private static Expression<Func<GameResultEntity, Game>> GetGameResultspMapping()
+        {
+            return
+                g =>
+                    new Game
+                    {
+                        Id = g.Id,
+                        TournamentId = g.TournamentId
+                    };
         }
 
         #endregion

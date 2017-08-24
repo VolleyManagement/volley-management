@@ -65,6 +65,7 @@
         private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
         private readonly IQuery<Tournament, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
+        private readonly IQuery<List<Game>, TournamentGamesCriteria> _getAllTournamentGamesQuery;
 
         #endregion
 
@@ -83,6 +84,7 @@
         /// <param name="getAllTournamentGroupsQuery">Get All Tournament Groups query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
         /// <param name="getTournamenrByGroupQuery">Get tournament by given group query.</param>
+        /// <param name="getAllTournamentGamesQuery">Get game results by given tournament query.</param>
         /// <param name="authService">Authorization service</param>
         /// <param name="gameService">The game service</param>
         public TournamentService(
@@ -96,6 +98,7 @@
             IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
+            IQuery<List<Game>, TournamentGamesCriteria> getAllTournamentGamesQuery,
             IAuthorizationService authService,
             IGameService gameService)
         {
@@ -109,6 +112,7 @@
             _getAllTournamentGroupsQuery = getAllTournamentGroupsQuery;
             _getTournamentDtoQuery = getTournamentDtoQuery;
             _getTournamenrByGroupQuery = getTournamenrByGroupQuery;
+            _getAllTournamentGamesQuery = getAllTournamentGamesQuery;
             _authService = authService;
             _gameService = gameService;
         }
@@ -183,6 +187,11 @@
         public List<Group> GetAllTournamentGroups(int divisionId)
         {
             return _getAllTournamentGroupsQuery.Execute(new DivisionGroupsCriteria { DivisionId = divisionId });
+        }
+
+        public List<Game> GetTournamentGameResults(int tournamentId)
+        {
+            return _getAllTournamentGamesQuery.Execute(new TournamentGamesCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>
@@ -264,8 +273,7 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.Delete);
 
-            RemoveAllTeamsFromTournament(id);
-
+            RemoveAllRelatedDataFromTournament(id);
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -444,10 +452,15 @@
             return Get().Where(t => t.IsArchived).ToList();
         }
 
-        private void RemoveAllTeamsFromTournament(int tournamentId)
+        private void RemoveAllRelatedDataFromTournament(int tournamentId)
         {
-            var allTeamsInTournament = GetAllTournamentTeams(tournamentId);
+            RemoveAllTeamsFromTournament(GetAllTournamentTeams(tournamentId), tournamentId);
+            RemoveAllDivisionsFromTournament(GetAllTournamentDivisions(tournamentId));
+            RemoveAllGameResultsFromTournament(GetTournamentGameResults(tournamentId));
+        }
 
+        private void RemoveAllTeamsFromTournament(List<Team> allTeamsInTournament, int tournamentId)
+        {
             if (allTeamsInTournament != null)
             {
                 foreach (var team in allTeamsInTournament)
@@ -459,6 +472,42 @@
                     catch (ConcurrencyException ex)
                     {
                         throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamInTournamentNotFound, ex);
+                    }
+                }
+            }
+        }
+
+        private void RemoveAllDivisionsFromTournament(List<Division> allDivisionsInTournament)
+        {
+            if (allDivisionsInTournament != null)
+            {
+                foreach (var division in allDivisionsInTournament)
+                {
+                    try
+                    {
+                        _tournamentRepository.RemoveDivision(division.Id);
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.DivisionInTournamentNotFound, ex);
+                    }
+                }
+            }
+        }
+
+        private void RemoveAllGameResultsFromTournament(List<Game> allGameResultsInTournament)
+        {
+            if (allGameResultsInTournament != null)
+            {
+                foreach (var gameResults in allGameResultsInTournament)
+                {
+                    try
+                    {
+                        _tournamentRepository.RemoveGameResults(gameResults.Id);
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.GameResultNotFound, ex);
                     }
                 }
             }

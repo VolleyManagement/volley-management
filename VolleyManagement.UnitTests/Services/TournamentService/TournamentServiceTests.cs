@@ -23,6 +23,7 @@
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.Services.TeamService;
     using TournamentResources = Domain.Properties.Resources;
 
@@ -38,6 +39,7 @@
         private const int FIRST_DIVISION_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int SPECIFIC_TOURNAMENT_ID = 2;
+        private const int SPECIFIC_GAME_ID = 2;
         private const int SPECIFIC_NUMBER_OF_TIMES = 2;
         private const int EMPTY_TEAM_LIST_COUNT = 0;
         private const int EMPTY_GROUP_LIST_COUNT = 0;
@@ -63,6 +65,7 @@
         private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
         private Mock<IQuery<Tournament, TournamentByGroupCriteria>> _getTournamentId;
+        private Mock<IQuery<List<Game>, TournamentGamesCriteria>> _getAllTournamentGamesQuery;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -86,6 +89,7 @@
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
             _getTournamentId = new Mock<IQuery<Tournament, TournamentByGroupCriteria>>();
+            _getAllTournamentGamesQuery = new Mock<IQuery<List<Game>, TournamentGamesCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -1225,6 +1229,50 @@
         }
 
         /// <summary>
+        /// Test for Delete Tournament with Divisions method.
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithDivisions_TournamentRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            MockGetAllTournamentDivisionsQuery(tournament.Divisions);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete Tournament with Game Results method.
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithGameResults_TournamentRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            MockGetAllTournamentGameResultsQuery(CreateSeveralGameResults());
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
         /// Test for Delete() method with no rights for such action. The method should throw AuthorizationException
         /// and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
@@ -1286,7 +1334,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
+            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
         }
 
         #endregion
@@ -1520,6 +1568,7 @@
                 _getAllTournamentGroupsQuery.Object,
                 _getTorunamentDto.Object,
                 _getTournamentId.Object,
+                _getAllTournamentGamesQuery.Object,
                 _authServiceMock.Object,
                 _gameServiceMock.Object);
         }
@@ -1569,6 +1618,11 @@
             _getAllTournamentTeamsQuery.SetupSequence(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>()))
                 .Returns(firstCallTestData)
                 .Returns(secondCallTestData);
+        }
+
+        private void MockGetAllTournamentGameResultsQuery(List<Game> testData)
+        {
+            _getAllTournamentGamesQuery.Setup(tr => tr.Execute(It.IsAny<TournamentGamesCriteria>())).Returns(testData);
         }
 
         private void MockTimeProviderUtcNow(DateTime date)
@@ -1712,6 +1766,17 @@
             return existingTeams;
         }
 
+        private List<Game> CreateSeveralGameResults()
+        {
+            var existingGameResults = new List<Game>();
+            existingGameResults.AddRange(new List<Game>
+            {
+                new GameBuilder().Build(),
+                new GameBuilder().WithId(SPECIFIC_GAME_ID).Build(),
+            });
+            return existingGameResults;
+        }
+
         private void VerifyCreateTournament(Tournament tournament, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Add(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
@@ -1721,7 +1786,7 @@
         private void VerifyDeleteTournament(int tournamentId, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Remove(tournamentId), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
         private void VerifyArchiveTournament(Tournament tournament, Times times)

@@ -80,9 +80,24 @@
         /// <param name="id">The id of tournament to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new TournamentEntity { Id = id };
+            var dalToRemove = _dalTournaments.Single(t => t.Id == id);
             _dalTournaments.Attach(dalToRemove);
             _dalTournaments.Remove(dalToRemove);
+        }
+
+        /// <summary>
+        /// Remove game results
+        /// </summary>
+        /// <param name="gameResultsId">Game Results Id to be removed</param>
+        public void RemoveGameResults(int gameResultsId)
+        {
+            var gameResultsEntity = _unitOfWork.Context.GameResults.Find(gameResultsId);
+            if (gameResultsEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            _unitOfWork.Context.GameResults.Remove(gameResultsEntity);
         }
 
         /// <summary>

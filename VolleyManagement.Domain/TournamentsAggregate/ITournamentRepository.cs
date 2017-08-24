@@ -8,6 +8,12 @@
     public interface ITournamentRepository : IGenericRepository<Tournament>
     {
         /// <summary>
+        /// Remove game results
+        /// </summary>
+        /// <param name="gameResultsId">Game Results Id to be removed</param>
+        void RemoveGameResults(int gameResultsId);
+
+        /// <summary>
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="teamId">Teams that will be added to tournament</param>

@@ -22,8 +22,7 @@
                                      IQuery<List<Division>, TournamentDivisionsCriteria>,
                                      IQuery<List<Group>, DivisionGroupsCriteria>,
                                      IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>,
-                                     IQuery<Tournament, TournamentByGroupCriteria>,
-                                     IQuery<List<Game>, TournamentGamesCriteria>
+                                     IQuery<Tournament, TournamentByGroupCriteria>
     {
         #region Fields
 
@@ -112,18 +111,6 @@
             return _unitOfWork.Context.Groups
                                       .Where(d => d.DivisionId == criteria.DivisionId)
                                       .Select(GetGroupMapping()).ToList();
-        }
-
-        /// <summary>
-        /// Find GameResults by given criteria
-        /// </summary>
-        /// <param name="criteria"> The criteria. </param>
-        /// <returns> The <see cref="Game"/>. </returns>
-        public List<Game> Execute(TournamentGamesCriteria criteria)
-        {
-            return _unitOfWork.Context.GameResults
-                .Where(d => d.TournamentId == criteria.TournamentId)
-                .Select(GetGameResultspMapping()).ToList();
         }
 
         /// <summary>
@@ -222,17 +209,6 @@
                     DivisionId = g.DivisionId,
                     IsEmpty = g.Teams.Count == 0,
                 };
-        }
-
-        private static Expression<Func<GameResultEntity, Game>> GetGameResultspMapping()
-        {
-            return
-                g =>
-                    new Game
-                    {
-                        Id = g.Id,
-                        TournamentId = g.TournamentId
-                    };
         }
 
         #endregion

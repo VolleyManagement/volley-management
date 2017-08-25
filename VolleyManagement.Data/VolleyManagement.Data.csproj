@@ -91,7 +91,6 @@
     <Compile Include="Queries\Team\FindTeamsByGroupIdCriteria.cs" />
     <Compile Include="Queries\TournamentRequest\FindByTeamTournamentCriteria.cs" />
     <Compile Include="Queries\Tournament\TournamentByGroupCriteria.cs" />
-    <Compile Include="Queries\Tournament\TournamentGamesCriteria.cs" />
     <Compile Include="Queries\Tournament\TournamentScheduleInfoCriteria.cs" />
     <Compile Include="Queries\Tournament\UniqueTournamentCriteria.cs" />
     <Compile Include="Queries\User\FindByEmailCriteria.cs" />

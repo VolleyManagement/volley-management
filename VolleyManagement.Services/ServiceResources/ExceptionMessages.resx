@@ -174,7 +174,4 @@
   <data name="DivisionInTournamentNotFound" xml:space="preserve">
     <value>A division with specified inentifier was not found in this tournament</value>
   </data>
-  <data name="GameResultNotFound" xml:space="preserve">
-    <value>Game Result with specified inentifier was not found in this tournament</value>
-  </data>
 </root>

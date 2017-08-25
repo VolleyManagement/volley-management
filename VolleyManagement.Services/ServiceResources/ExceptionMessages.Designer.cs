@@ -124,15 +124,6 @@ namespace VolleyManagement.Services.ServiceResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Game Result with specified inentifier was not found in this tournament.
-        /// </summary>
-        internal static string GameResultNotFound {
-            get {
-                return ResourceManager.GetString("GameResultNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The group to delete must not have any teams.
         /// </summary>
         internal static string GroupIsNotEmpty {

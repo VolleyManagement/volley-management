@@ -132,9 +132,7 @@
         /// <returns>actual tournaments</returns>
         public List<Tournament> GetActual()
         {
-            var filteredTournaments = GetFilteredTournaments(_actualStates);
-
-            return ArchiveOld(filteredTournaments);
+            return GetFilteredTournaments(_actualStates);
         }
 
         /// <summary>
@@ -154,7 +152,9 @@
         /// <returns>Finished tournaments</returns>
         public List<Tournament> GetFinished()
         {
-            return GetFilteredTournaments(_finishedStates);
+            var filteredTournaments = GetFilteredTournaments(_finishedStates);
+
+            return ArchiveOld(filteredTournaments);
         }
 
         /// <summary>
@@ -310,12 +310,15 @@
         {
             var old = tournaments.Where(t => CheckIfTournamentIsOld(t));
 
-            foreach (var item in old)
+            if (old.Count() != 0)
             {
-                Archive(item);
-            }
+                foreach (var item in old)
+                {
+                    Archive(item);
+                }
 
-            _tournamentRepository.UnitOfWork.Commit();
+                _tournamentRepository.UnitOfWork.Commit();
+            }
 
             return tournaments.Where(t => !t.IsArchived).ToList();
         }
@@ -474,7 +477,7 @@
 
         private bool CheckIfTournamentIsOld(Tournament tournament)
         {
-            return TimeProvider.Current.UtcNow.Year - tournament.GamesEnd.Year >= 1;
+            return tournament.GamesEnd.AddYears(1) <= TimeProvider.Current.UtcNow;
         }
 
         private void ValidateTournament(Tournament tournament, bool isUpdate = false)

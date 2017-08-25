@@ -95,10 +95,22 @@
         void Delete(int id);
 
         /// <summary>
+        /// Archive tournament.
+        /// </summary>
+        /// <param name="tournament">Tournament to archive.</param>
+        void Archive(Tournament tournament);
+
+        /// <summary>
         /// Archive specific tournament
         /// </summary>
         /// <param name="id">Tournament id</param>
         void Archive(int id);
+
+        /// <summary>
+        /// Archive old tournaments.
+        /// </summary>
+        /// <param name="tournaments">List of tournaments.</param>
+        void ArchiveOld(List<Tournament> tournaments);
 
         /// <summary>
         /// Adds selected teams to tournament

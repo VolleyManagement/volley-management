@@ -1224,6 +1224,28 @@
 
             // Assert
             VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete teams from current Tournament
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithTeams_TeamsRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            var existingTeams = CreateTeamsInTournament();
+            MockGetAllTournamentTeamsQuery(existingTeams);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
             VerifyTeamsRemoved(FIRST_TOURNAMENT_ID, Times.Exactly(SPECIFIC_NUMBER_OF_TIMES));
         }
 
@@ -1247,6 +1269,27 @@
 
             // Assert
             VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete divisions from current Tournament
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithDivisions_DivisionsRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            MockGetAllTournamentDivisionsQuery(tournament.Divisions);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
             VerifyDivisionsDeleted(Times.Exactly(SPECIFIC_NUMBER_OF_TIMES));
         }
 
@@ -1269,6 +1312,26 @@
 
             // Assert
             VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete Game results from current Tournament
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithGameResults_GameResultsRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
             _gameServiceMock.Verify(gs => gs.RemoveAllGamesInTournament(FIRST_TOURNAMENT_ID), Times.Once());
         }
 
@@ -1334,7 +1397,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
+            VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
         }
 
         #endregion

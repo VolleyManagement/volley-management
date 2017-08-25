@@ -81,7 +81,6 @@
         public void Remove(int id)
         {
             var dalToRemove = _dalTournaments.Single(t => t.Id == id);
-            _dalTournaments.Attach(dalToRemove);
             _dalTournaments.Remove(dalToRemove);
         }
 

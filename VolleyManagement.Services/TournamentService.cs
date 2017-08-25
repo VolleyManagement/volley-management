@@ -123,7 +123,10 @@
         /// <returns>All tournaments</returns>
         public List<Tournament> Get()
         {
-            return _getAllQuery.Execute(new GetAllCriteria());
+            var tournaments = _getAllQuery.Execute(new GetAllCriteria());
+            ArchiveOld(tournaments);
+
+            return tournaments;
         }
 
         /// <summary>
@@ -152,9 +155,7 @@
         /// <returns>Finished tournaments</returns>
         public List<Tournament> GetFinished()
         {
-            var filteredTournaments = GetFilteredTournaments(_finishedStates);
-
-            return ArchiveOld(filteredTournaments);
+            return GetFilteredTournaments(_finishedStates);
         }
 
         /// <summary>
@@ -305,10 +306,9 @@
         /// Archive old tournaments.
         /// </summary>
         /// <param name="tournaments">List of tournaments.</param>
-        /// <returns>List of tournaments without old ones.</returns>
-        public List<Tournament> ArchiveOld(List<Tournament> tournaments)
+        public void ArchiveOld(List<Tournament> tournaments)
         {
-            var old = tournaments.Where(t => CheckIfTournamentIsOld(t));
+            var old = tournaments.Where(t => !t.IsArchived && CheckIfTournamentIsOld(t));
 
             if (old.Count() != 0)
             {
@@ -319,8 +319,6 @@
 
                 _tournamentRepository.UnitOfWork.Commit();
             }
-
-            return tournaments.Where(t => !t.IsArchived).ToList();
         }
 
         /// <summary>

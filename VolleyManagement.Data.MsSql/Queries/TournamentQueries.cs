@@ -11,7 +11,6 @@
     using Entities;
     using VolleyManagement.Data.Queries.Division;
     using VolleyManagement.Data.Queries.Group;
-    using VolleyManagement.Domain.GamesAggregate;
 
     /// <summary>
     /// Provides Object Query implementation for Tournaments
@@ -207,7 +206,7 @@
                     Id = g.Id,
                     Name = g.Name,
                     DivisionId = g.DivisionId,
-                    IsEmpty = g.Teams.Count == 0,
+                    IsEmpty = g.Teams.Count == 0
                 };
         }
 

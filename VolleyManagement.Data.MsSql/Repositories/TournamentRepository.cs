@@ -86,21 +86,6 @@
         }
 
         /// <summary>
-        /// Remove game results
-        /// </summary>
-        /// <param name="gameResultsId">Game Results Id to be removed</param>
-        public void RemoveGameResults(int gameResultsId)
-        {
-            var gameResultsEntity = _unitOfWork.Context.GameResults.Find(gameResultsId);
-            if (gameResultsEntity == null)
-            {
-                throw new ConcurrencyException();
-            }
-
-            _unitOfWork.Context.GameResults.Remove(gameResultsEntity);
-        }
-
-        /// <summary>
         /// Add team to the tournament
         /// </summary>
         /// <param name="teamId">Team id to add</param>

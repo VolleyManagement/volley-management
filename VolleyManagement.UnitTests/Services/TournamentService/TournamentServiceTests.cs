@@ -1250,28 +1250,6 @@
         }
 
         /// <summary>
-        /// Test for Delete Tournament with Divisions method.
-        /// </summary>
-        [TestMethod]
-        public void Delete_DeleteTournamentsWithDivisions_TournamentRemoved()
-        {
-            // Arrange
-            var tournament = new TournamentBuilder()
-                .WithScheme(TournamentSchemeEnum.PlayOff)
-                .Build();
-
-            MockGetByIdQuery(tournament);
-            MockGetAllTournamentDivisionsQuery(tournament.Divisions);
-            var sut = BuildSUT();
-
-            // Act
-            sut.Delete(FIRST_TOURNAMENT_ID);
-
-            // Assert
-            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
-        }
-
-        /// <summary>
         /// Test for Delete divisions from current Tournament
         /// </summary>
         [TestMethod]
@@ -1291,27 +1269,6 @@
 
             // Assert
             VerifyDivisionsDeleted(Times.Exactly(SPECIFIC_NUMBER_OF_TIMES));
-        }
-
-        /// <summary>
-        /// Test for Delete Tournament with Game Results method.
-        /// </summary>
-        [TestMethod]
-        public void Delete_DeleteTournamentsWithGameResults_TournamentRemoved()
-        {
-            // Arrange
-            var tournament = new TournamentBuilder()
-                .WithScheme(TournamentSchemeEnum.PlayOff)
-                .Build();
-
-            MockGetByIdQuery(tournament);
-            var sut = BuildSUT();
-
-            // Act
-            sut.Delete(FIRST_TOURNAMENT_ID);
-
-            // Assert
-            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
         }
 
         /// <summary>

@@ -267,6 +267,7 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.Delete);
 
+            RemoveAllRelatedDataFromTournament(id);
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -476,6 +477,50 @@
         private bool CheckIfTournamentIsOld(Tournament tournament)
         {
             return tournament.GamesEnd.AddYears(1) <= TimeProvider.Current.UtcNow;
+        }
+
+        private void RemoveAllRelatedDataFromTournament(int tournamentId)
+        {
+            RemoveAllTeamsFromTournament(GetAllTournamentTeams(tournamentId), tournamentId);
+            RemoveAllDivisionsFromTournament(GetAllTournamentDivisions(tournamentId));
+
+            _gameService.RemoveAllGamesInTournament(tournamentId);
+        }
+
+        private void RemoveAllTeamsFromTournament(List<Team> allTeamsInTournament, int tournamentId)
+        {
+            if (allTeamsInTournament != null)
+            {
+                foreach (var team in allTeamsInTournament)
+                {
+                    try
+                    {
+                        _tournamentRepository.RemoveTeamFromTournament(team.Id, tournamentId);
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamInTournamentNotFound, ex);
+                    }
+                }
+            }
+        }
+
+        private void RemoveAllDivisionsFromTournament(List<Division> allDivisionsInTournament)
+        {
+            if (allDivisionsInTournament != null)
+            {
+                foreach (var division in allDivisionsInTournament)
+                {
+                    try
+                    {
+                        _tournamentRepository.RemoveDivision(division.Id);
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.DivisionInTournamentNotFound, ex);
+                    }
+                }
+            }
         }
 
         private void ValidateTournament(Tournament tournament, bool isUpdate = false)

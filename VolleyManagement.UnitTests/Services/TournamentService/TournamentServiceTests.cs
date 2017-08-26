@@ -23,6 +23,7 @@
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.Services;
     using VolleyManagement.UnitTests.Mvc.ViewModels;
+    using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.Services.TeamService;
     using TournamentResources = Domain.Properties.Resources;
 
@@ -38,6 +39,8 @@
         private const int FIRST_DIVISION_ID = 1;
         private const int SPECIFIC_TEAM_ID = 2;
         private const int SPECIFIC_TOURNAMENT_ID = 2;
+        private const int SPECIFIC_GAME_ID = 2;
+        private const int SPECIFIC_NUMBER_OF_TIMES = 2;
         private const int EMPTY_TEAM_LIST_COUNT = 0;
         private const int EMPTY_GROUP_LIST_COUNT = 0;
         private const int EMPTY_DIVISION_LIST_COUNT = 0;
@@ -1185,10 +1188,10 @@
         #region Delete
 
         /// <summary>
-        /// Test for Delete Tournament method.
+        /// Test for Delete Tournament without Teams method.
         /// </summary>
         [TestMethod]
-        public void Delete_TournamentExist_TournamentRemoved()
+        public void Delete_DeleteTournamentsWithNoTeams_TournamentRemoved()
         {
             // Arrange
             var sut = BuildSUT();
@@ -1198,6 +1201,95 @@
 
             // Assert
             VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete Tournament with Teams method.
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithTeams_TournamentRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            var existingTeams = CreateTeamsInTournament();
+            MockGetAllTournamentTeamsQuery(existingTeams);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyDeleteTournament(FIRST_TOURNAMENT_ID, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Delete teams from current Tournament
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithTeams_TeamsRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            var existingTeams = CreateTeamsInTournament();
+            MockGetAllTournamentTeamsQuery(existingTeams);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyTeamsRemoved(FIRST_TOURNAMENT_ID, Times.Exactly(SPECIFIC_NUMBER_OF_TIMES));
+        }
+
+        /// <summary>
+        /// Test for Delete divisions from current Tournament
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithDivisions_DivisionsRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            MockGetAllTournamentDivisionsQuery(tournament.Divisions);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyDivisionsDeleted(Times.Exactly(SPECIFIC_NUMBER_OF_TIMES));
+        }
+
+        /// <summary>
+        /// Test for Delete Game results from current Tournament
+        /// </summary>
+        [TestMethod]
+        public void Delete_DeleteTournamentsWithGameResults_GameResultsRemoved()
+        {
+            // Arrange
+            var tournament = new TournamentBuilder()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetByIdQuery(tournament);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Delete(FIRST_TOURNAMENT_ID);
+
+            // Assert
+            _gameServiceMock.Verify(gs => gs.RemoveAllGamesInTournament(FIRST_TOURNAMENT_ID), Times.Once());
         }
 
         /// <summary>
@@ -1754,8 +1846,20 @@
             existingTeams.AddRange(new List<Team>
             {
                 new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build(),
+                new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 1).Build(),
             });
             return existingTeams;
+        }
+
+        private List<Game> CreateSeveralGameResults()
+        {
+            var existingGameResults = new List<Game>();
+            existingGameResults.AddRange(new List<Game>
+            {
+                new GameBuilder().Build(),
+                new GameBuilder().WithId(SPECIFIC_GAME_ID).Build(),
+            });
+            return existingGameResults;
         }
 
         private void VerifyCreateTournament(Tournament tournament, Times times)
@@ -1767,7 +1871,7 @@
         private void VerifyDeleteTournament(int tournamentId, Times times)
         {
             _tournamentRepositoryMock.Verify(tr => tr.Remove(tournamentId), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
         private void VerifyArchiveTournament(Tournament tournament, Times times)
@@ -1785,6 +1889,18 @@
         {
             _tournamentRepositoryMock.Verify(tr => tr.RemoveTeamFromTournament(teamId, tourmanentId), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), uowTimes);
+        }
+
+        private void VerifyTeamsRemoved(int tourmanentId, Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.RemoveTeamFromTournament(It.IsAny<int>(), tourmanentId), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
+        }
+
+        private void VerifyDivisionsDeleted(Times times)
+        {
+            _tournamentRepositoryMock.Verify(tr => tr.RemoveDivision(It.IsAny<int>()), times);
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
         private void VerifyEditTournament(Tournament tournament, Times times)

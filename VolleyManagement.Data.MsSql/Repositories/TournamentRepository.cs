@@ -80,7 +80,12 @@
         /// <param name="id">The id of tournament to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = _dalTournaments.Single(t => t.Id == id);
+            var dalToRemove = _unitOfWork.Context.Tournaments.Find(id);
+            if (dalToRemove == null)
+            {
+                throw new ConcurrencyException();
+            }
+
             _dalTournaments.Remove(dalToRemove);
         }
 

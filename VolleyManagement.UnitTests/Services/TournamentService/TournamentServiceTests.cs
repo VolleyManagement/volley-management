@@ -1262,7 +1262,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCheckAccess(AuthOperations.Tournaments.ViewArchived, Times.Once());
+            VerifyCheckAccess(AuthOperations.Tournaments.Archive, Times.Once());
         }
 
         #endregion

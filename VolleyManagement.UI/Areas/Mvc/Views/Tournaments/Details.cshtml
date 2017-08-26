@@ -112,7 +112,7 @@
            "ApplyForTournament",
            new { tournamentId = Model.Id })
     </div>
-    @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.ViewArchived))
+    @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Archive))
     {
         <div>
             @Ajax.ActionLink(

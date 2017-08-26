@@ -11,7 +11,7 @@
 
 <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
 <script>
-    var onDeleteSuccess = function() {
+    var onArchiveSuccess = function() {
         alert('Tournament was successfully archived');
     };
 </script>
@@ -124,7 +124,7 @@
                 },
                 new AjaxOptions {
                     HttpMethod = "POST",
-                    OnSuccess = "onDeleteSuccess"
+                    OnSuccess = "onArchiveSuccess"
                 }
                 )
         </div>

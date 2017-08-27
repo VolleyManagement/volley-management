@@ -276,17 +276,6 @@
         }
 
         /// <summary>
-        /// Archive tournament.
-        /// </summary>
-        /// <param name="tournament">Tournament to archive.</param>
-        public void Archive(Tournament tournament)
-        {
-            tournament.IsArchived = true;
-
-            _tournamentRepository.Update(tournament);
-        }
-
-        /// <summary>
         /// Archive tournament by id.
         /// </summary>
         /// <param name="id">The id of tournament to archive.</param>
@@ -307,10 +296,11 @@
         }
 
         /// <summary>
-        /// Archive old tournaments.
+        /// Archive old tournaments every time user gets any list of tournaments.
         /// </summary>
         public void ArchiveOld()
         {
+            // Gets old tournaments that need to be archioved
             var old = Get().Where(t => !t.IsArchived && CheckIfTournamentIsOld(t));
 
             if (old.Count() != 0)
@@ -466,6 +456,17 @@
             return Convert.ToByte(2 * GetNumberOfRoundsByScheme1(teamCount));
         }
 
+        /// <summary>
+        /// Archive tournament.
+        /// </summary>
+        /// <param name="tournament">Tournament to archive.</param>
+        private void Archive(Tournament tournament)
+        {
+            tournament.IsArchived = true;
+
+            _tournamentRepository.Update(tournament);
+        }
+
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
         {
             return Get().Where(t => statesFilter.Contains(t.State) && !t.IsArchived).ToList();
@@ -478,7 +479,8 @@
 
         private bool CheckIfTournamentIsOld(Tournament tournament)
         {
-            return tournament.GamesEnd.AddYears(1) <= TimeProvider.Current.UtcNow;
+            return tournament.GamesEnd.AddYears(TournamentConstants.YEARS_AFTER_END_TO_BE_OLD)
+                <= TimeProvider.Current.UtcNow;
         }
 
         private void RemoveAllRelatedDataFromTournament(int tournamentId)

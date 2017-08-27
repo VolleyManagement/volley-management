@@ -1316,37 +1316,10 @@
         #region Archive
 
         /// <summary>
-        /// Test for Archive(Tournament tournament) method.
-        /// </summary>
-        [TestMethod]
-        public void Archive_NotArchivedTournament_ArchivedTournament()
-        {
-            // Arrange
-            var expectedTournament = new TournamentBuilder()
-                                    .WithArchiveParameter(false)
-                                    .Build();
-            var actualTournament = new TournamentBuilder()
-                                    .WithArchiveParameter(false)
-                                    .Build();
-            MockGetByIdQuery(actualTournament);
-            MockGetUniqueTournamentQuery(expectedTournament);
-            var sut = BuildSUT();
-
-            // Act
-            sut.Archive(actualTournament);
-
-            // Assert
-            VerifyArchiveTournament(actualTournament, Times.Once());
-        }
-        #endregion
-
-        #region ArchiveById
-
-        /// <summary>
         /// Test for Archive(int id) tournament method.
         /// </summary>
         [TestMethod]
-        public void ArchiveById_NotArchivedTournament_CommitInvoked()
+        public void Archive_NotArchivedTournament_CommitInvoked()
         {
             // Arrange
             var expectedTournament = new TournamentBuilder()
@@ -1370,7 +1343,7 @@
         /// Test for Archive() method with any state. Whetever 'CheckAccess' method invokes
         /// </summary>
         [TestMethod]
-        public void ArchiveById_AnyState_AuthorizationCheckInvoked()
+        public void Archive_AnyState_AuthorizationCheckInvoked()
         {
             // Arrange
             var testTournament = new TournamentBuilder().Build();
@@ -1874,11 +1847,6 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
-        private void VerifyArchiveTournament(Tournament tournament, Times times)
-        {
-            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
-        }
-
         private void VerifyTeamsAdded(Times repositoryTimes, Times uowTimes)
         {
             _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()), repositoryTimes);
@@ -1926,6 +1894,10 @@
             _tournamentRepositoryMock.Verify(ts => ts.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()), times);
         }
 
+        /// <summary>
+        /// Verify if Commit() is invoked certain amount of times
+        /// </summary>
+        /// <param name="times">Amount of times Commit has to be invoked</param>
         private void VerifyCommit(Times times)
         {
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);

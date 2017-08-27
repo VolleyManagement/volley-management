@@ -28,6 +28,9 @@
                 <td>
                     @Html.DisplaySeason(tournament.Season)
                 </td>
+                <td>
+                    @Html.ActionLink("Delete", "Delete", new { id = tournament.Id })
+                </td>
             </tr>
         }
     </tbody>

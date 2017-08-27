@@ -1336,7 +1336,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyArchiveTournament(expectedTournament, Times.Once());
+            VerifyArchiveTournament(actualTournament, Times.Once());
         }
 
         /// <summary>

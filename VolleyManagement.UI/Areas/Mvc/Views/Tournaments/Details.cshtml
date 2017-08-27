@@ -9,6 +9,13 @@
 
 <h2>@ViewBag.Title</h2>
 
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
+<script>
+    var onArchiveSuccess = function() {
+        alert('Tournament was successfully archived');
+    };
+</script>
+
 <fieldset>
     <legend>@Resources.UI.TournamentViews.TournamentLegend</legend>
 
@@ -105,15 +112,21 @@
            "ApplyForTournament",
            new { tournamentId = Model.Id })
     </div>
-    @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.ViewArchived))
+    @if (Model.Authorization.IsAllowed(AuthOperations.Tournaments.Archive))
     {
         <div>
-            @Html.ActionLink(
-            "Archive Tournament",
-            "Archive",
-            "Tournaments",
-            new { tournamentId = Model.Id },
-            null)
+            @Ajax.ActionLink(
+                "Archive Tournament",
+                "Archive",
+                "Tournaments",
+                new {
+                    tournamentId = Model.Id
+                },
+                new AjaxOptions {
+                    HttpMethod = "POST",
+                    OnSuccess = "onArchiveSuccess"
+                }
+                )
         </div>
     }
 </fieldset>

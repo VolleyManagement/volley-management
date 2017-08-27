@@ -748,14 +748,32 @@
             Assert.IsNotNull(result, ASSERT_FAIL_JSON_RESULT_MESSAGE);
         }
 
-        #endregion
-
-        #region Details
-
         /// <summary>
-        /// Test for Details method. Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
+        /// Test for Archive method. Service get Id of Tournament to archive
         /// </summary>
         [TestMethod]
+        public void Archive_GetTournamentToArchive_ServiceMethodArchiveIsCalled()
+        {
+            // Arrange
+            MakeTestTournaments();
+            SetupArchiveTournament(TEST_TOURNAMENT_ID);
+            var sut = BuildSUT();
+
+            // Act
+            sut.Archive(TEST_TOURNAMENT_ID);
+
+            // Assert
+            VerifyArchiveTournament(TEST_TOURNAMENT_ID, Times.Once());
+        }
+
+    #endregion
+
+    #region Details
+
+    /// <summary>
+    /// Test for Details method. Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
+    /// </summary>
+    [TestMethod]
         public void Details_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -1653,6 +1671,11 @@
             return tournaments.Where(tr => tr.IsArchived).ToList();
         }
 
+        private void SetupArchiveTournament(int tournamentId)
+        {
+            _tournamentServiceMock.Setup(tr => tr.Archive(tournamentId));
+        }
+
         private void SetupGetActual(List<Tournament> tournaments)
         {
             _tournamentServiceMock.Setup(tr => tr.GetActual()).Returns(tournaments);
@@ -1759,6 +1782,11 @@
         {
             _tournamentRequestServiceMock.Setup(ts => ts.Create(It.IsAny<TournamentRequest>()))
                 .Throws(new ArgumentException(INVALID_PARAMETR));
+        }
+
+        private void VerifyArchiveTournament(int tournamentId, Times times)
+        {
+            _tournamentServiceMock.Verify(ts => ts.Archive(tournamentId), times);
         }
 
         private void VerifyCreate(Times times)

@@ -125,7 +125,7 @@
         public ActionResult Archive(int tournamentId)
         {
             _tournamentService.Archive(tournamentId);
-            return View("Details");
+            return new EmptyResult();
         }
 
         /// <summary>

@@ -123,10 +123,7 @@
         /// <returns>All tournaments</returns>
         public List<Tournament> Get()
         {
-            var tournaments = _getAllQuery.Execute(new GetAllCriteria());
-            ArchiveOld(tournaments);
-
-            return tournaments;
+            return _getAllQuery.Execute(new GetAllCriteria());
         }
 
         /// <summary>
@@ -135,6 +132,8 @@
         /// <returns>actual tournaments</returns>
         public List<Tournament> GetActual()
         {
+            ArchiveOld();
+
             return GetFilteredTournaments(_actualStates);
         }
 
@@ -146,6 +145,8 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ViewArchived);
 
+            ArchiveOld();
+
             return GetArchivedTournaments();
         }
 
@@ -155,6 +156,8 @@
         /// <returns>Finished tournaments</returns>
         public List<Tournament> GetFinished()
         {
+            ArchiveOld();
+
             return GetFilteredTournaments(_finishedStates);
         }
 
@@ -306,10 +309,9 @@
         /// <summary>
         /// Archive old tournaments.
         /// </summary>
-        /// <param name="tournaments">List of tournaments.</param>
-        public void ArchiveOld(List<Tournament> tournaments)
+        public void ArchiveOld()
         {
-            var old = tournaments.Where(t => !t.IsArchived && CheckIfTournamentIsOld(t));
+            var old = Get().Where(t => !t.IsArchived && CheckIfTournamentIsOld(t));
 
             if (old.Count() != 0)
             {

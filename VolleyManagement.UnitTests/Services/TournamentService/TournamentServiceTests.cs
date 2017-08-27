@@ -1403,7 +1403,7 @@
             MockTimeProviderUtcNow(_dateForFinishedState);
 
             // Act
-            sut.ArchiveOld(testData);
+            sut.ArchiveOld();
 
             // Assert
             VerifyCommit(Times.Once());
@@ -1423,7 +1423,7 @@
             MockTimeProviderUtcNow(_dateForFinishedState);
 
             // Act
-            sut.ArchiveOld(testData);
+            sut.ArchiveOld();
 
             // Assert
             VerifyCommit(Times.Never());

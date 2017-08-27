@@ -109,8 +109,7 @@
         /// <summary>
         /// Archive old tournaments.
         /// </summary>
-        /// <param name="tournaments">List of tournaments.</param>
-        void ArchiveOld(List<Tournament> tournaments);
+        void ArchiveOld();
 
         /// <summary>
         /// Adds selected teams to tournament

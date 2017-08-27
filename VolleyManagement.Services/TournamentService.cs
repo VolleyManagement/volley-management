@@ -65,6 +65,7 @@
         private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
         private readonly IQuery<Tournament, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
+        private readonly IQuery<List<Tournament>, OldTournamentsCriteria> _getOldTournamentsQuery;
 
         #endregion
 
@@ -83,6 +84,7 @@
         /// <param name="getAllTournamentGroupsQuery">Get All Tournament Groups query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
         /// <param name="getTournamenrByGroupQuery">Get tournament by given group query.</param>
+        /// <param name="getOldTournamentsQuery">Get old tournaments query.</param>
         /// <param name="authService">Authorization service</param>
         /// <param name="gameService">The game service</param>
         public TournamentService(
@@ -96,6 +98,7 @@
             IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
+            IQuery<List<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery,
             IAuthorizationService authService,
             IGameService gameService)
         {
@@ -109,6 +112,7 @@
             _getAllTournamentGroupsQuery = getAllTournamentGroupsQuery;
             _getTournamentDtoQuery = getTournamentDtoQuery;
             _getTournamenrByGroupQuery = getTournamenrByGroupQuery;
+            _getOldTournamentsQuery = getOldTournamentsQuery;
             _authService = authService;
             _gameService = gameService;
         }
@@ -123,6 +127,8 @@
         /// <returns>All tournaments</returns>
         public List<Tournament> Get()
         {
+            ArchiveOld();
+
             return _getAllQuery.Execute(new GetAllCriteria());
         }
 
@@ -132,8 +138,6 @@
         /// <returns>actual tournaments</returns>
         public List<Tournament> GetActual()
         {
-            ArchiveOld();
-
             return GetFilteredTournaments(_actualStates);
         }
 
@@ -145,8 +149,6 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ViewArchived);
 
-            ArchiveOld();
-
             return GetArchivedTournaments();
         }
 
@@ -156,8 +158,6 @@
         /// <returns>Finished tournaments</returns>
         public List<Tournament> GetFinished()
         {
-            ArchiveOld();
-
             return GetFilteredTournaments(_finishedStates);
         }
 
@@ -301,7 +301,7 @@
         public void ArchiveOld()
         {
             // Gets old tournaments that need to be archioved
-            var old = Get().Where(t => !t.IsArchived && CheckIfTournamentIsOld(t));
+            var old = _getOldTournamentsQuery.Execute(new OldTournamentsCriteria());
 
             if (old.Count() != 0)
             {
@@ -475,12 +475,6 @@
         private List<Tournament> GetArchivedTournaments()
         {
             return Get().Where(t => t.IsArchived).ToList();
-        }
-
-        private bool CheckIfTournamentIsOld(Tournament tournament)
-        {
-            return tournament.GamesEnd.AddYears(TournamentConstants.YEARS_AFTER_END_TO_BE_OLD)
-                <= TimeProvider.Current.UtcNow;
         }
 
         private void RemoveAllRelatedDataFromTournament(int tournamentId)

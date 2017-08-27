@@ -90,6 +90,7 @@
     <Compile Include="Queries\Team\FindByTournamentIdCriteria.cs" />
     <Compile Include="Queries\Team\FindTeamsByGroupIdCriteria.cs" />
     <Compile Include="Queries\TournamentRequest\FindByTeamTournamentCriteria.cs" />
+    <Compile Include="Queries\Tournament\OldTournamentsCriteria.cs" />
     <Compile Include="Queries\Tournament\TournamentByGroupCriteria.cs" />
     <Compile Include="Queries\Tournament\TournamentScheduleInfoCriteria.cs" />
     <Compile Include="Queries\Tournament\UniqueTournamentCriteria.cs" />

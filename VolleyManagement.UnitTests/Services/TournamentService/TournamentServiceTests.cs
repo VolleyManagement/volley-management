@@ -65,6 +65,7 @@
         private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
         private Mock<IQuery<Tournament, TournamentByGroupCriteria>> _getTournamentId;
+        private Mock<IQuery<List<Tournament>, OldTournamentsCriteria>> _getOldTournamentsQuery;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -88,6 +89,7 @@
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
             _getTournamentId = new Mock<IQuery<Tournament, TournamentByGroupCriteria>>();
+            _getOldTournamentsQuery = new Mock<IQuery<List<Tournament>, OldTournamentsCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -153,8 +155,11 @@
         public void GetAll_TournamentsExist_TournamentsReturned()
         {
             // Arrange
+            MockTimeProviderUtcNow(_dateForCurrentState);
+
             var testData = _testFixture.TestTournaments()
                                        .Build();
+            MockGetOldTournamentsQuery(testData);
             MockGetAllTournamentsQuery(testData);
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
@@ -1369,6 +1374,7 @@
         {
             // Arrange
             var testData = _testFixture.WithFinishedTournaments().Build();
+            MockGetOldTournamentsQuery(testData);
             MockGetAllTournamentsQuery(testData);
 
             var sut = BuildSUT();
@@ -1389,6 +1395,7 @@
         public void ArchiveOld_NoOldTournamentsExist_NoTournamentsArchived()
         {
             var testData = _testFixture.Build();
+            MockGetOldTournamentsQuery(testData);
             MockGetAllTournamentsQuery(testData);
 
             var sut = BuildSUT();
@@ -1456,10 +1463,13 @@
         public void GetActual_ActualTournamentsWithArchived__ActualOnlyReturned()
         {
             // Arrange
+            MockTimeProviderUtcNow(_dateForCurrentState);
+
             var testData = _testFixture.TestTournaments()
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(testData);
 
             var sut = BuildSUT();
 
@@ -1487,6 +1497,7 @@
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(testData);
 
             var sut = BuildSUT();
 
@@ -1554,6 +1565,7 @@
             MockTimeProviderUtcNow(_dateForFinishedState);
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(testData);
 
             var sut = BuildSUT();
             var expected = BuildActualTournamentsList();
@@ -1604,6 +1616,7 @@
             // Arrange
             MockTimeProviderUtcNow(_dateForNotStartedState);
             var testData = _testFixture.TestTournaments().Build();
+            MockGetOldTournamentsQuery(testData);
             MockGetAllTournamentsQuery(testData);
 
             var sut = BuildSUT();
@@ -1632,6 +1645,7 @@
                 _getAllTournamentGroupsQuery.Object,
                 _getTorunamentDto.Object,
                 _getTournamentId.Object,
+                _getOldTournamentsQuery.Object,
                 _authServiceMock.Object,
                 _gameServiceMock.Object);
         }
@@ -1644,6 +1658,11 @@
         private void MockGetAllTournamentsQuery(IEnumerable<Tournament> testData)
         {
             _getAllQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
+        }
+
+        private void MockGetOldTournamentsQuery(IEnumerable<Tournament> testData)
+        {
+            _getOldTournamentsQuery.Setup(tr => tr.Execute(It.IsAny<OldTournamentsCriteria>())).Returns(testData.ToList());
         }
 
         private void MockGetByIdQuery(Tournament testData)

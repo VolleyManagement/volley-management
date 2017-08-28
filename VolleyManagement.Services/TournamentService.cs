@@ -300,18 +300,23 @@
         /// </summary>
         public void ArchiveOld()
         {
-            // Gets old tournaments that need to be archioved
-            var old = _getOldTournamentsQuery.Execute(new OldTournamentsCriteria());
+            var criteria = new OldTournamentsCriteria();
+            criteria.CheckDate = TimeProvider.Current.UtcNow.AddYears(-TournamentConstants.YEARS_AFTER_END_TO_BE_OLD);
 
-            if (old.Count() != 0)
+            // Gets old tournaments that need to be archived
+            var old = _getOldTournamentsQuery.Execute(criteria);
+
+            if (!Enumerable.Any(old))
             {
-                foreach (var item in old)
-                {
-                    Archive(item);
-                }
-
-                _tournamentRepository.UnitOfWork.Commit();
+                return;
             }
+
+            foreach (var item in old)
+            {
+                Archive(item);
+            }
+
+            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

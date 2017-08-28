@@ -9,10 +9,8 @@
     using Data.Queries.Tournament;
     using Domain.TournamentsAggregate;
     using Entities;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
     using VolleyManagement.Data.Queries.Division;
     using VolleyManagement.Data.Queries.Group;
-    using TournamentConstants = Domain.Constants.Tournament;
 
     /// <summary>
     /// Provides Object Query implementation for Tournaments
@@ -98,8 +96,7 @@
         /// <returns> The <see cref="Tournament"/>. </returns>
         public List<Tournament> Execute(OldTournamentsCriteria criteria)
         {
-            var checkTime = TimeProvider.Current.UtcNow.AddYears(-TournamentConstants.YEARS_AFTER_END_TO_BE_OLD);
-            return _unitOfWork.Context.Tournaments.Where(t => !t.IsArchived && t.GamesEnd <= checkTime)
+            return _unitOfWork.Context.Tournaments.Where(t => !t.IsArchived && t.GamesEnd <= criteria.CheckDate)
                                       .Select(GetTournamentMapping()).ToList();
         }
 

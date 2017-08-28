@@ -1421,6 +1421,7 @@
             // Arrange
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(testData);
 
             var sut = BuildSUT();
 
@@ -1444,6 +1445,7 @@
 
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(testData);
             var expected = BuildActualTournamentsList();
 
             var sut = BuildSUT();
@@ -1521,6 +1523,7 @@
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(testData);
             var sut = BuildSUT();
 
             // Act
@@ -1542,6 +1545,7 @@
             // Arrange
             var testData = _testFixture.WithFinishedTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(testData);
 
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
@@ -1590,6 +1594,7 @@
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(testData);
 
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()

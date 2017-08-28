@@ -112,7 +112,7 @@
         public JsonResult GetFinished()
         {
             var result = _tournamentService.GetFinished().ToList()
-                         .Select(t => TournamentViewModel.Map(t));
+                 .Select(t => TournamentViewModel.Map(t));
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

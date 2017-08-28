@@ -68,6 +68,9 @@
 
     // Sets handlers for player input field
     privates.setTeamPlayerInputListeners = function (inputElement) {
+        var temporaryPlayerName = inputElement.val().toLowerCase();
+        var temporaryPlayerId = privates.getPlayerId(inputElement);
+
         inputElement.bind("input keyup", function () {
             var $this = $(this);
             var delay = 500;
@@ -80,7 +83,7 @@
                 privates.checkIfPlayerHasCaptainName(inputElement);
                 privates.checkIfAnotherPlayerAlreadyHasSuchName(inputElement);
                 privates.checkIfFullnameContainsSpecSymbols(inputElement);
-                privates.setsPlayerIdWithFoundedPlayerId(inputElement);
+                privates.setsPlayerIdWithFoundedPlayerId(temporaryPlayerName, temporaryPlayerId, inputElement);
             }, delay));
         });
 
@@ -97,9 +100,17 @@
         });
     };
 
-    privates.setsPlayerIdWithFoundedPlayerId = function (inputElement) {
+    privates.setsPlayerIdWithFoundedPlayerId = function (temporaryPlayerName, temporaryPlayerId, inputElement) {
         var fullName = inputElement.val().toLowerCase().trim();
         var defaultPlayerId = 0;
+
+        if (privates.teamUnderEdit) {
+            if (temporaryPlayerName !== fullName) {
+                privates.setPlayerId(inputElement, defaultPlayerId);
+            } else {
+                privates.setPlayerId(inputElement, temporaryPlayerId);
+            }
+        }
 
         if (fullName === processedFoundedPlayerData[0].value.toLowerCase()) {
             privates.setPlayerId(inputElement, processedFoundedPlayerData[0].id);
@@ -323,6 +334,9 @@
             alert(data.Message);
             return false;
         }
+        if (privates.teamUnderEdit) {
+            window.history.back();
+        }
         window.location.href = "../Teams";
         return false;
     };
@@ -408,24 +422,26 @@
     // Adds handlers for captain field
     (function () {
         var captainNameInput = $("#Captain_FullName");
+        var temporaryPlayerName = captainNameInput.val().toLowerCase();
+        var temporaryPlayerId = privates.getPlayerId($("#Captain_FullName"));
 
         captainNameInput.bind('blur input keyup', function () {
             privates.AddRequiredValue(captainNameInput);
             privates.checkIfFullNameCorrect(captainNameInput);
             privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
-            privates.setsPlayerIdWithFoundedPlayerId(captainNameInput);
+            privates.setsPlayerIdWithFoundedPlayerId(temporaryPlayerName, temporaryPlayerId, captainNameInput);
         });
 
         captainNameInput.bind("change", function () {
             var $this = $(this);
             var delay = 500;
-
+            
             clearTimeout($this.data('timer'));
             $this.data('timer', setTimeout(function () {
                 $this.removeData('timer');
                 privates.checkIfFullNameCorrect(captainNameInput);
                 privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
-                privates.setsPlayerIdWithFoundedPlayerId(captainNameInput);
+                privates.setsPlayerIdWithFoundedPlayerId(temporaryPlayerName, temporaryPlayerId, captainNameInput);
             }, delay));
         });
 

@@ -335,10 +335,10 @@
             return false;
         }
         if (privates.teamUnderEdit) {
-            window.history.back();
+            window.history.go(-2);
+        } else {
+            window.location.href = "../Teams";
         }
-        window.location.href = "../Teams";
-        return false;
     };
 
     // Adds required field to required inputs

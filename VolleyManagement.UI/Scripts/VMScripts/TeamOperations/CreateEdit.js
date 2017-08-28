@@ -21,6 +21,7 @@
     var requiredFieldError = "\nRequired!";
     var anotherPlayerHasSuchName = "\nName was used by another player!";
     var fullNameContainsSpecialSymbols = "\nFullname can't contain special symbols or digits!";
+    var processedFoundedPlayerData = [];
 
     // Draws markup for new team players - 'Roster'
     privates.getTeamPlayerRowMarkup = function (config) {
@@ -79,6 +80,7 @@
                 privates.checkIfPlayerHasCaptainName(inputElement);
                 privates.checkIfAnotherPlayerAlreadyHasSuchName(inputElement);
                 privates.checkIfFullnameContainsSpecSymbols(inputElement);
+                privates.setsPlayerIdWithFoundedPlayerId(inputElement);
             }, delay));
         });
 
@@ -93,6 +95,17 @@
             },
             delay: 500
         });
+    };
+
+    privates.setsPlayerIdWithFoundedPlayerId = function (inputElement) {
+        var fullName = inputElement.val().toLowerCase().trim();
+        var defaultPlayerId = 0;
+
+        if (fullName === processedFoundedPlayerData[0].value.toLowerCase()) {
+            privates.setPlayerId(inputElement, processedFoundedPlayerData[0].id);
+        } else {
+            privates.setPlayerId(inputElement, defaultPlayerId);
+        }
     };
 
     // Check if fullname correct
@@ -255,18 +268,18 @@
     // Gets Json with specific team player or captain from 'GetFreePlayers' method in 'PlyersController'
     privates.executeCompleter = function (url, responseHandler) {
 
-        var processedData = [];
+       processedFoundedPlayerData = [];
 
         if (url) {
             $.getJSON(url, function (data) {
                 $.each(data, function (key, value) {
-                    processedData.push({
+                    processedFoundedPlayerData.push({
                         id: value.Id,
                         value: value.FirstName + " " + value.LastName
                     });
                 });
 
-                responseHandler(processedData);
+                responseHandler(processedFoundedPlayerData);
             });
         }
     };
@@ -310,7 +323,8 @@
             alert(data.Message);
             return false;
         }
-        window.history.back();
+        window.location.href = "../Teams";
+        return false;
     };
 
     // Adds required field to required inputs
@@ -399,6 +413,7 @@
             privates.AddRequiredValue(captainNameInput);
             privates.checkIfFullNameCorrect(captainNameInput);
             privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
+            privates.setsPlayerIdWithFoundedPlayerId(captainNameInput);
         });
 
         captainNameInput.bind("change", function () {
@@ -410,6 +425,7 @@
                 $this.removeData('timer');
                 privates.checkIfFullNameCorrect(captainNameInput);
                 privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
+                privates.setsPlayerIdWithFoundedPlayerId(captainNameInput);
             }, delay));
         });
 

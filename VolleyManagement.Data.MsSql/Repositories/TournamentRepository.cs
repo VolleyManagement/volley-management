@@ -80,8 +80,12 @@
         /// <param name="id">The id of tournament to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new TournamentEntity { Id = id };
-            _dalTournaments.Attach(dalToRemove);
+            var dalToRemove = _unitOfWork.Context.Tournaments.Find(id);
+            if (dalToRemove == null)
+            {
+                throw new ConcurrencyException();
+            }
+
             _dalTournaments.Remove(dalToRemove);
         }
 

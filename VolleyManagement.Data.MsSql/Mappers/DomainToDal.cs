@@ -42,6 +42,7 @@
             }
 
             to.LastTimeUpdated = from.LastTimeUpdated;
+            to.IsArchived = from.IsArchived;
         }
 
         /// <summary>

@@ -4,17 +4,17 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Runtime.Serialization;
     using Contracts.Authorization;
     using Division;
     using Domain;
     using Domain.TournamentsAggregate;
     using Resources.UI;
 
-    // Bug:missing [ScriptIgnore]using System.Web.Script.Serialization;
-
     /// <summary>
     /// TournamentViewModel for Create and Edit actions
     /// </summary>
+    [DataContract]
     public class TournamentViewModel
     {
         /// <summary>
@@ -29,12 +29,12 @@
             Divisions = new List<DivisionViewModel>();
         }
 
-        // Bug:missing [ScriptIgnore]
 
         /// <summary>
         /// Gets or sets the list of seasons.
         /// </summary>
         /// <value>The list of seasons.</value>
+        [System.Web.Script.Serialization.ScriptIgnore]
         public Dictionary<short, string> SeasonsList { get; set; }
 
         /// <summary>

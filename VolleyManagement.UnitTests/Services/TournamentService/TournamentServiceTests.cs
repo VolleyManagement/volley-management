@@ -159,7 +159,7 @@
 
             var testData = _testFixture.TestTournaments()
                                        .Build();
-            MockGetOldTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
             MockGetAllTournamentsQuery(testData);
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
@@ -1421,7 +1421,7 @@
             // Arrange
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
-            MockGetOldTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
 
@@ -1445,7 +1445,7 @@
 
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
-            MockGetOldTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
             var expected = BuildActualTournamentsList();
 
             var sut = BuildSUT();
@@ -1471,7 +1471,7 @@
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
-            MockGetOldTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
 
@@ -1499,7 +1499,7 @@
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
-            MockGetOldTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
 
@@ -1545,7 +1545,7 @@
             // Arrange
             var testData = _testFixture.WithFinishedTournaments().Build();
             MockGetAllTournamentsQuery(testData);
-            MockGetOldTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
@@ -1569,7 +1569,7 @@
             MockTimeProviderUtcNow(_dateForFinishedState);
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
-            MockGetOldTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
             var expected = BuildActualTournamentsList();
@@ -1594,7 +1594,7 @@
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
-            MockGetOldTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
@@ -1924,7 +1924,19 @@
         /// <param name="times">Amount of times Commit has to be invoked</param>
         private void VerifyCommit(Times times)
         {
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+            var message = string.Empty;
+
+            if (times.Equals(Times.Once()))
+            {
+                message = "Commit method wasn't invoked exactly once.";
+            }
+            else
+            if (times.Equals(Times.Never()))
+            {
+                message = "Commit mothod was invoked but it shouldn't.";
+            }
+
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times, message);
         }
 
         /// <summary>

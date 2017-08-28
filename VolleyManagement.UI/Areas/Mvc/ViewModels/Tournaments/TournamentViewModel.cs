@@ -29,7 +29,6 @@
             Divisions = new List<DivisionViewModel>();
         }
 
-
         /// <summary>
         /// Gets or sets the list of seasons.
         /// </summary>

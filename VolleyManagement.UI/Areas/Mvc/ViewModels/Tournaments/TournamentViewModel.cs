@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using System.Runtime.Serialization;
     using Contracts.Authorization;
     using Division;
     using Domain;
@@ -14,7 +13,6 @@
     /// <summary>
     /// TournamentViewModel for Create and Edit actions
     /// </summary>
-    [DataContract]
     public class TournamentViewModel
     {
         /// <summary>

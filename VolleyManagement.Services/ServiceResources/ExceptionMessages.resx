@@ -171,4 +171,7 @@
   <data name="UserBlockHimself" xml:space="preserve">
     <value>You can't block yourself</value>
   </data>
+  <data name="DivisionInTournamentNotFound" xml:space="preserve">
+    <value>A division with specified inentifier was not found in this tournament</value>
+  </data>
 </root>

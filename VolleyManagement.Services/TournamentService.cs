@@ -264,6 +264,7 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.Delete);
 
+            RemoveAllRelatedDataFromTournament(id);
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -274,7 +275,7 @@
         /// <param name="id">The id of tournament to archive.</param>
         public void Archive(int id)
         {
-            _authService.CheckAccess(AuthOperations.Tournaments.ViewArchived);
+            _authService.CheckAccess(AuthOperations.Tournaments.Archive);
 
             var getTournamentToArchive = Get(id);
 
@@ -440,6 +441,50 @@
         private List<Tournament> GetArchivedTournaments()
         {
             return Get().Where(t => t.IsArchived).ToList();
+        }
+
+        private void RemoveAllRelatedDataFromTournament(int tournamentId)
+        {
+            RemoveAllTeamsFromTournament(GetAllTournamentTeams(tournamentId), tournamentId);
+            RemoveAllDivisionsFromTournament(GetAllTournamentDivisions(tournamentId));
+
+            _gameService.RemoveAllGamesInTournament(tournamentId);
+        }
+
+        private void RemoveAllTeamsFromTournament(List<Team> allTeamsInTournament, int tournamentId)
+        {
+            if (allTeamsInTournament != null)
+            {
+                foreach (var team in allTeamsInTournament)
+                {
+                    try
+                    {
+                        _tournamentRepository.RemoveTeamFromTournament(team.Id, tournamentId);
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamInTournamentNotFound, ex);
+                    }
+                }
+            }
+        }
+
+        private void RemoveAllDivisionsFromTournament(List<Division> allDivisionsInTournament)
+        {
+            if (allDivisionsInTournament != null)
+            {
+                foreach (var division in allDivisionsInTournament)
+                {
+                    try
+                    {
+                        _tournamentRepository.RemoveDivision(division.Id);
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.DivisionInTournamentNotFound, ex);
+                    }
+                }
+            }
         }
 
         private void ValidateTournament(Tournament tournament, bool isUpdate = false)

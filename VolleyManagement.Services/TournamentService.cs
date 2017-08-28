@@ -296,9 +296,10 @@
         }
 
         /// <summary>
-        /// Method for autho-archiving old tournaments
-        /// Archive old tournaments every time user gets any list of tournaments.
-        /// Check if there are any old notarchived tournaments in db.
+        /// Method for autho-archiving old tournaments.
+        /// Finds old tournaments to be archived.
+        /// As we don't have reliable task scheduling at the moment of writing,
+        /// we call this method every time user retrieves list of tournaments to make sure we do not show outdated tournaments.
         /// </summary>
         public void ArchiveOld()
         {

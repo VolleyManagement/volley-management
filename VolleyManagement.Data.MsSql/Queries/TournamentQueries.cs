@@ -96,7 +96,9 @@
         /// <returns> The <see cref="Tournament"/>. </returns>
         public List<Tournament> Execute(OldTournamentsCriteria criteria)
         {
-            return _unitOfWork.Context.Tournaments.Where(t => !t.IsArchived && t.GamesEnd <= criteria.CheckDate)
+            return _unitOfWork.Context.Tournaments
+                                      .Where(t => t.IsArchived == false)
+                                      .Where(t => t.GamesEnd <= criteria.CheckDate)
                                       .Select(GetTournamentMapping()).ToList();
         }
 

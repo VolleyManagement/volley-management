@@ -296,7 +296,9 @@
         }
 
         /// <summary>
+        /// Method for autho-archiving old tournaments
         /// Archive old tournaments every time user gets any list of tournaments.
+        /// Check if there are any old notarchived tournaments in db.
         /// </summary>
         public void ArchiveOld()
         {
@@ -306,17 +308,15 @@
             // Gets old tournaments that need to be archived
             var old = _getOldTournamentsQuery.Execute(criteria);
 
-            if (!Enumerable.Any(old))
+            if (Enumerable.Any(old))
             {
-                return;
-            }
+                foreach (var item in old)
+                {
+                    Archive(item);
+                }
 
-            foreach (var item in old)
-            {
-                Archive(item);
+                _tournamentRepository.UnitOfWork.Commit();
             }
-
-            _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>

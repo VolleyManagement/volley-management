@@ -147,7 +147,7 @@
             {
                 AuthOperations.Tournaments.Edit,
                 AuthOperations.Tournaments.ManageTeams,
-                AuthOperations.Tournaments.ViewArchived,
+                AuthOperations.Tournaments.Archive
             });
 
             return View(tournamentViewModel);

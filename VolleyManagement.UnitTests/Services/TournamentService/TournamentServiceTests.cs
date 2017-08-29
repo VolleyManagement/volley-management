@@ -65,6 +65,7 @@
         private Mock<IQuery<List<Team>, GetAllCriteria>> _getAllTeamsQuery;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _getTorunamentDto;
         private Mock<IQuery<Tournament, TournamentByGroupCriteria>> _getTournamentId;
+        private Mock<IQuery<List<Tournament>, OldTournamentsCriteria>> _getOldTournamentsQuery;
         private Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
 
         private Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
@@ -88,6 +89,7 @@
             _getTorunamentDto = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _getAllGroupsTeamsQuery = new Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>>();
             _getTournamentId = new Mock<IQuery<Tournament, TournamentByGroupCriteria>>();
+            _getOldTournamentsQuery = new Mock<IQuery<List<Tournament>, OldTournamentsCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _tournamentRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -153,8 +155,11 @@
         public void GetAll_TournamentsExist_TournamentsReturned()
         {
             // Arrange
+            MockTimeProviderUtcNow(_dateForCurrentState);
+
             var testData = _testFixture.TestTournaments()
                                        .Build();
+            MockGetOldTournamentsQuery(new List<Tournament>());
             MockGetAllTournamentsQuery(testData);
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
@@ -1316,10 +1321,10 @@
         #region Archive
 
         /// <summary>
-        /// Test for Archive() tournament method.
+        /// Test for Archive(int id) tournament method.
         /// </summary>
         [TestMethod]
-        public void Archive_NotArchivedTournament_ArchivedTournament()
+        public void Archive_NotArchivedTournament_CommitInvoked()
         {
             // Arrange
             var expectedTournament = new TournamentBuilder()
@@ -1336,7 +1341,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyArchiveTournament(actualTournament, Times.Once());
+            VerifyCommit(Times.Once(), "The tournament was not archived.");
         }
 
         /// <summary>
@@ -1359,6 +1364,52 @@
 
         #endregion
 
+        #region ArchiveOld
+
+        /// <summary>
+        /// Test for ArchiveOld() method. Old tournaments exist. Old tournaments archived
+        /// </summary>
+        [TestMethod]
+        public void ArchiveOld_OldTournamentsExist_OldTournamentsArchived()
+        {
+            // Arrange
+            var testData = _testFixture.WithFinishedTournaments().Build();
+            MockGetOldTournamentsQuery(testData);
+            MockGetAllTournamentsQuery(testData);
+
+            var sut = BuildSUT();
+
+            MockTimeProviderUtcNow(_dateForFinishedState);
+
+            // Act
+            sut.ArchiveOld();
+
+            // Assert
+            VerifyCommit(Times.Once(), "Old tournaments were not archived.");
+        }
+
+        /// <summary>
+        /// Test for ArchiveOld() method. Old tournaments don't exist. No tournaments archived
+        /// </summary>
+        [TestMethod]
+        public void ArchiveOld_NoOldTournamentsExist_NoTournamentsArchived()
+        {
+            var testData = _testFixture.Build();
+            MockGetOldTournamentsQuery(testData);
+            MockGetAllTournamentsQuery(testData);
+
+            var sut = BuildSUT();
+
+            MockTimeProviderUtcNow(_dateForFinishedState);
+
+            // Act
+            sut.ArchiveOld();
+
+            // Assert
+            VerifyCommit(Times.Never(), "No tournaments should be archived.");
+        }
+        #endregion
+
         #region GetActual
 
         /// <summary>
@@ -1370,6 +1421,7 @@
             // Arrange
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
 
@@ -1393,6 +1445,7 @@
 
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
             var expected = BuildActualTournamentsList();
 
             var sut = BuildSUT();
@@ -1412,10 +1465,13 @@
         public void GetActual_ActualTournamentsWithArchived__ActualOnlyReturned()
         {
             // Arrange
+            MockTimeProviderUtcNow(_dateForCurrentState);
+
             var testData = _testFixture.TestTournaments()
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
 
@@ -1443,6 +1499,7 @@
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
 
@@ -1466,6 +1523,7 @@
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(testData);
             var sut = BuildSUT();
 
             // Act
@@ -1487,6 +1545,7 @@
             // Arrange
             var testData = _testFixture.WithFinishedTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
@@ -1510,6 +1569,7 @@
             MockTimeProviderUtcNow(_dateForFinishedState);
             var testData = _testFixture.TestTournaments().Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
             var expected = BuildActualTournamentsList();
@@ -1534,6 +1594,7 @@
                 .WithArchivedTournaments()
                 .Build();
             MockGetAllTournamentsQuery(testData);
+            MockGetOldTournamentsQuery(new List<Tournament>());
 
             var sut = BuildSUT();
             var expected = new TournamentServiceTestFixture()
@@ -1560,6 +1621,7 @@
             // Arrange
             MockTimeProviderUtcNow(_dateForNotStartedState);
             var testData = _testFixture.TestTournaments().Build();
+            MockGetOldTournamentsQuery(testData);
             MockGetAllTournamentsQuery(testData);
 
             var sut = BuildSUT();
@@ -1588,6 +1650,7 @@
                 _getAllTournamentGroupsQuery.Object,
                 _getTorunamentDto.Object,
                 _getTournamentId.Object,
+                _getOldTournamentsQuery.Object,
                 _authServiceMock.Object,
                 _gameServiceMock.Object);
         }
@@ -1600,6 +1663,11 @@
         private void MockGetAllTournamentsQuery(IEnumerable<Tournament> testData)
         {
             _getAllQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>())).Returns(testData.ToList());
+        }
+
+        private void MockGetOldTournamentsQuery(IEnumerable<Tournament> testData)
+        {
+            _getOldTournamentsQuery.Setup(tr => tr.Execute(It.IsAny<OldTournamentsCriteria>())).Returns(testData.ToList());
         }
 
         private void MockGetByIdQuery(Tournament testData)
@@ -1803,12 +1871,6 @@
             _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
         }
 
-        private void VerifyArchiveTournament(Tournament tournament, Times times)
-        {
-            _tournamentRepositoryMock.Verify(tr => tr.Update(It.Is<Tournament>(t => TournamentsAreEqual(t, tournament))), times);
-            _unitOfWorkMock.Verify(uow => uow.Commit(), times);
-        }
-
         private void VerifyTeamsAdded(Times repositoryTimes, Times uowTimes)
         {
             _tournamentRepositoryMock.Verify(tr => tr.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()), repositoryTimes);
@@ -1854,6 +1916,16 @@
         private void VerifyAddTeamsToTournament(Times times)
         {
             _tournamentRepositoryMock.Verify(ts => ts.AddTeamToTournament(It.IsAny<int>(), It.IsAny<int>()), times);
+        }
+
+        /// <summary>
+        /// Verify if Commit() is invoked certain amount of times
+        /// </summary>
+        /// <param name="times">Amount of times Commit has to be invoked</param>
+        /// <param name="message">Message to show if verify failed</param>
+        private void VerifyCommit(Times times, string message)
+        {
+            _unitOfWorkMock.Verify(uow => uow.Commit(), times, message);
         }
 
         /// <summary>

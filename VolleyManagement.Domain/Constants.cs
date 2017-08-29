@@ -42,6 +42,11 @@
             public const short MAXIMAL_SEASON_YEAR = 2155;
 
             /// <summary>
+            /// Constant defines an amount of years after tournament's end so it becomes old
+            /// </summary>
+            public const short YEARS_AFTER_END_TO_BE_OLD = 1;
+
+            /// <summary>
             /// Constant defines the minimum number of the months of a registration
             /// </summary>
             public const byte MINIMUN_REGISTRATION_PERIOD_MONTH = 3;

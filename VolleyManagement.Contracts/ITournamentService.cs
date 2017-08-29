@@ -101,6 +101,11 @@
         void Archive(int id);
 
         /// <summary>
+        /// Archive old tournaments.
+        /// </summary>
+        void ArchiveOld();
+
+        /// <summary>
         /// Adds selected teams to tournament
         /// </summary>
         /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>

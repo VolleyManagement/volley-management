@@ -21,7 +21,8 @@
                                      IQuery<List<Division>, TournamentDivisionsCriteria>,
                                      IQuery<List<Group>, DivisionGroupsCriteria>,
                                      IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>,
-                                     IQuery<Tournament, TournamentByGroupCriteria>
+                                     IQuery<Tournament, TournamentByGroupCriteria>,
+                                     IQuery<List<Tournament>, OldTournamentsCriteria>
     {
         #region Fields
 
@@ -86,6 +87,20 @@
         public List<Tournament> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments.Select(GetTournamentMapping()).ToList();
+        }
+
+        /// <summary>
+        /// Finds List of Tournament by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Tournament"/>. </returns>
+        public List<Tournament> Execute(OldTournamentsCriteria criteria)
+        {
+            return _unitOfWork.Context.Tournaments
+                                      .Where(t => t.IsArchived == false)
+                                      .Where(t => t.GamesEnd <= criteria.CheckDate)
+                                      .Select(GetTournamentMapping())
+                                      .ToList();
         }
 
         /// <summary>

@@ -21,6 +21,7 @@
     var requiredFieldError = "\nRequired!";
     var anotherPlayerHasSuchName = "\nName was used by another player!";
     var fullNameContainsSpecialSymbols = "\nFullname can't contain special symbols or digits!";
+    var processedFoundedPlayerData = [];
 
     // Draws markup for new team players - 'Roster'
     privates.getTeamPlayerRowMarkup = function (config) {
@@ -67,6 +68,9 @@
 
     // Sets handlers for player input field
     privates.setTeamPlayerInputListeners = function (inputElement) {
+        var temporaryPlayerName = inputElement.val().toLowerCase();
+        var temporaryPlayerId = privates.getPlayerId(inputElement);
+
         inputElement.bind("input keyup", function () {
             var $this = $(this);
             var delay = 500;
@@ -79,6 +83,7 @@
                 privates.checkIfPlayerHasCaptainName(inputElement);
                 privates.checkIfAnotherPlayerAlreadyHasSuchName(inputElement);
                 privates.checkIfFullnameContainsSpecSymbols(inputElement);
+                privates.setsPlayerIdWithFoundedPlayerId(temporaryPlayerName, temporaryPlayerId, inputElement);
             }, delay));
         });
 
@@ -93,6 +98,25 @@
             },
             delay: 500
         });
+    };
+
+    privates.setsPlayerIdWithFoundedPlayerId = function (temporaryPlayerName, temporaryPlayerId, inputElement) {
+        var fullName = inputElement.val().toLowerCase().trim();
+        var defaultPlayerId = 0;
+
+        if (privates.teamUnderEdit) {
+            if (temporaryPlayerName !== fullName) {
+                privates.setPlayerId(inputElement, defaultPlayerId);
+            } else {
+                privates.setPlayerId(inputElement, temporaryPlayerId);
+            }
+        }
+
+        if (fullName === processedFoundedPlayerData[0].value.toLowerCase()) {
+            privates.setPlayerId(inputElement, processedFoundedPlayerData[0].id);
+        } else {
+            privates.setPlayerId(inputElement, defaultPlayerId);
+        }
     };
 
     // Check if fullname correct
@@ -255,18 +279,18 @@
     // Gets Json with specific team player or captain from 'GetFreePlayers' method in 'PlyersController'
     privates.executeCompleter = function (url, responseHandler) {
 
-        var processedData = [];
+       processedFoundedPlayerData = [];
 
         if (url) {
             $.getJSON(url, function (data) {
                 $.each(data, function (key, value) {
-                    processedData.push({
+                    processedFoundedPlayerData.push({
                         id: value.Id,
                         value: value.FirstName + " " + value.LastName
                     });
                 });
 
-                responseHandler(processedData);
+                responseHandler(processedFoundedPlayerData);
             });
         }
     };
@@ -310,7 +334,11 @@
             alert(data.Message);
             return false;
         }
-        window.history.back();
+        if (privates.teamUnderEdit) {
+            window.history.go(-2);
+        } else {
+            window.location.href = "../Teams";
+        }
     };
 
     // Adds required field to required inputs
@@ -394,22 +422,26 @@
     // Adds handlers for captain field
     (function () {
         var captainNameInput = $("#Captain_FullName");
+        var temporaryPlayerName = captainNameInput.val().toLowerCase();
+        var temporaryPlayerId = privates.getPlayerId($("#Captain_FullName"));
 
         captainNameInput.bind('blur input keyup', function () {
             privates.AddRequiredValue(captainNameInput);
             privates.checkIfFullNameCorrect(captainNameInput);
             privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
+            privates.setsPlayerIdWithFoundedPlayerId(temporaryPlayerName, temporaryPlayerId, captainNameInput);
         });
 
         captainNameInput.bind("change", function () {
             var $this = $(this);
             var delay = 500;
-
+            
             clearTimeout($this.data('timer'));
             $this.data('timer', setTimeout(function () {
                 $this.removeData('timer');
                 privates.checkIfFullNameCorrect(captainNameInput);
                 privates.checkIfFullnameContainsSpecSymbols(captainNameInput);
+                privates.setsPlayerIdWithFoundedPlayerId(temporaryPlayerName, temporaryPlayerId, captainNameInput);
             }, delay));
         });
 

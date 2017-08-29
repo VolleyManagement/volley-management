@@ -10,8 +10,6 @@
     using Domain.TournamentsAggregate;
     using Resources.UI;
 
-    // Bug:missing [ScriptIgnore]using System.Web.Script.Serialization;
-
     /// <summary>
     /// TournamentViewModel for Create and Edit actions
     /// </summary>
@@ -29,12 +27,11 @@
             Divisions = new List<DivisionViewModel>();
         }
 
-        // Bug:missing [ScriptIgnore]
-
         /// <summary>
         /// Gets or sets the list of seasons.
         /// </summary>
         /// <value>The list of seasons.</value>
+        [System.Web.Script.Serialization.ScriptIgnore]
         public Dictionary<short, string> SeasonsList { get; set; }
 
         /// <summary>

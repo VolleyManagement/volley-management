@@ -1341,7 +1341,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCommit(Times.Once(), "Commit method wasn't invoked exactly once.");
+            VerifyCommit(Times.Once(), "The tournament was not archived.");
         }
 
         /// <summary>
@@ -1385,7 +1385,7 @@
             sut.ArchiveOld();
 
             // Assert
-            VerifyCommit(Times.Once(), "Commit method wasn't invoked exactly once.");
+            VerifyCommit(Times.Once(), "Old tournaments were not archived.");
         }
 
         /// <summary>
@@ -1406,7 +1406,7 @@
             sut.ArchiveOld();
 
             // Assert
-            VerifyCommit(Times.Never(), "Commit mothod was invoked but it shouldn't.");
+            VerifyCommit(Times.Never(), "No tournaments should be archived.");
         }
         #endregion
 

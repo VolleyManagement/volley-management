@@ -1341,7 +1341,7 @@
             sut.Archive(FIRST_TOURNAMENT_ID);
 
             // Assert
-            VerifyCommit(Times.Once());
+            VerifyCommit(Times.Once(), "Commit method wasn't invoked exactly once.");
         }
 
         /// <summary>
@@ -1385,7 +1385,7 @@
             sut.ArchiveOld();
 
             // Assert
-            VerifyCommit(Times.Once());
+            VerifyCommit(Times.Once(), "Commit method wasn't invoked exactly once.");
         }
 
         /// <summary>
@@ -1406,7 +1406,7 @@
             sut.ArchiveOld();
 
             // Assert
-            VerifyCommit(Times.Never());
+            VerifyCommit(Times.Never(), "Commit mothod was invoked but it shouldn't.");
         }
         #endregion
 
@@ -1922,20 +1922,9 @@
         /// Verify if Commit() is invoked certain amount of times
         /// </summary>
         /// <param name="times">Amount of times Commit has to be invoked</param>
-        private void VerifyCommit(Times times)
+        /// <param name="message">Message to show if verify failed</param>
+        private void VerifyCommit(Times times, string message)
         {
-            var message = string.Empty;
-
-            if (times.Equals(Times.Once()))
-            {
-                message = "Commit method wasn't invoked exactly once.";
-            }
-            else
-            if (times.Equals(Times.Never()))
-            {
-                message = "Commit mothod was invoked but it shouldn't.";
-            }
-
             _unitOfWorkMock.Verify(uow => uow.Commit(), times, message);
         }
 

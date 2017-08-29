@@ -99,7 +99,8 @@
             return _unitOfWork.Context.Tournaments
                                       .Where(t => t.IsArchived == false)
                                       .Where(t => t.GamesEnd <= criteria.CheckDate)
-                                      .Select(GetTournamentMapping()).ToList();
+                                      .Select(GetTournamentMapping())
+                                      .ToList();
         }
 
         /// <summary>

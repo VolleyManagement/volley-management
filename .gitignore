@@ -108,6 +108,10 @@ csx
 # Windows Store app package directory
 AppPackages/
 
+# Cake Build files
+
+BuildScripts/tools/
+
 # Others
 sql/
 *.Cache

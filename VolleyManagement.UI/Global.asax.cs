@@ -8,6 +8,7 @@
     using System.Web.Routing;
     using SimpleInjector.Integration.Web;
     using SimpleInjector.Integration.Web.Mvc;
+    using SimpleInjector.Integration.WebApi;
     using VolleyManagement.Data.MsSql.Infrastructure;
     using VolleyManagement.Services.Infrastructure;
     using VolleyManagement.UI.Helpers;
@@ -64,6 +65,8 @@
                 .Register(new IocUiModule());
 
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(ioc.InternalContainer));
+
+            GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(ioc.InternalContainer);
         }
     }
 }

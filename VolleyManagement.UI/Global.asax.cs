@@ -66,6 +66,7 @@
 
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(ioc.InternalContainer));
 
+            // Need for Simple Injector invoking on Web Api controller constructor call 
             GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(ioc.InternalContainer);
         }
     }

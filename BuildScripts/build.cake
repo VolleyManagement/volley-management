@@ -3,7 +3,7 @@
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
-var target = Argument("target", "Default");
+var target = Argument("target", "IIS");
 var configuration = Argument("configuration", "Release");
 
 //////////////////////////////////////////////////////////////////////
@@ -11,8 +11,11 @@ var configuration = Argument("configuration", "Release");
 //////////////////////////////////////////////////////////////////////
 
 // Define directories.
-var buildDir = Directory("./../bin") + Directory(configuration);
-var webBuildDir = Directory("./../VolleyManagement.UI/bin");
+var srcPath="./../";
+var webBuildDir = Directory(srcPath+"VolleyManagement.UI/bin");
+
+// Define files
+var slnPath=srcPath+"VolleyManagement.sln";
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -21,7 +24,6 @@ var webBuildDir = Directory("./../VolleyManagement.UI/bin");
 Task("Clean")
     .Does(() =>
     {
-        CleanDirectory(buildDir);
         CleanDirectory(webBuildDir);
     });
 
@@ -29,22 +31,24 @@ Task("Restore-NuGet-Packages")
     .IsDependentOn("Clean")
     .Does(() =>
     {
-        NuGetRestore("./../VolleyManagement.sln");
+        NuGetRestore(slnPath);
     });
 
 Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(()=>
     {
-
+        MSBuild(slnPath, configurator =>
+            
+        );
     });
 
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
 
-Task("Default")
-    .IsDependentOn("Restore-NuGet-Packages");
+Task("IIS")
+    .IsDependentOn("Build");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

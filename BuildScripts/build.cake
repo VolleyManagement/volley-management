@@ -3,7 +3,7 @@
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
-var target = Argument("target", "IIS");
+var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
 //////////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ Task("Build")
     .Does(()=>
     {
         MSBuild(slnPath, configurator =>
-            
+            configurator.SetConfiguration("Release")
         );
     });
 
@@ -49,6 +49,9 @@ Task("Build")
 
 Task("IIS")
     .IsDependentOn("Build");
+
+Task("Default")
+    .IsDependentOn("IIS");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION

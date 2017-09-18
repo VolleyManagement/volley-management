@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI
+namespace VolleyManagement.UI
 {
     using System.Web.Http;
     using System.Web.OData.Builder;
@@ -22,7 +22,7 @@
         {
             // Attribute routing.
             config.MapHttpAttributeRoutes();
-
+            config.EnableCors();
             WebApiAreaRegistration.RegisterOData(config);
         }
 

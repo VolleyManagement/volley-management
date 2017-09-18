@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.Controllers
+namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
     using System.Collections.Generic;
     using System.IO;
@@ -6,6 +6,7 @@
     using System.Net.Http;
     using System.Text;
     using System.Web.Http;
+    using System.Web.Http.Cors;
     using System.Xml.Serialization;
     using Contracts;
     using ViewModels.GameReports;
@@ -15,6 +16,7 @@
     /// <summary>
     /// The tournaments controller.
     /// </summary>
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class TournamentsController : ApiController
     {
         private readonly ITournamentService _tournamentService;

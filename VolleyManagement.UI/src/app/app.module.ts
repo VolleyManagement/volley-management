@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { StandingsComponent } from './Components/Standings/standings.component';
 
 import { StandingsService } from './Services/standings.service';
+import { FormatterHelper } from './Helpers/FormatterHelper';
 
 @NgModule({
     declarations: [
@@ -19,7 +20,9 @@ import { StandingsService } from './Services/standings.service';
         HttpModule,
         AppRoutingModule
     ],
-    providers: [StandingsService],
+    providers: [
+        StandingsService,
+        FormatterHelper],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

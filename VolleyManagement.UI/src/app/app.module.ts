@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './Modules/app-routing';
 
 import { AppComponent } from './app.component';
+import { PivotStandingsComponent } from './Components/PivotStanding/pivotstandings.component';
 import { StandingsComponent } from './Components/Standings/standings.component';
 
 import { StandingsService } from './Services/standings.service';
@@ -13,6 +14,7 @@ import { FormatterHelper } from './Helpers/FormatterHelper';
 @NgModule({
     declarations: [
         AppComponent,
+        PivotStandingsComponent,
         StandingsComponent
     ],
     imports: [

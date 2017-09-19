@@ -602,6 +602,8 @@
     <Content Include="Scripts\VMScripts\VMScripts.js" />
     <Content Include="src\app\app.component.css" />
     <Content Include="src\app\app.component.html" />
+    <Content Include="src\app\Components\PivotStanding\pivotstandings.component.css" />
+    <Content Include="src\app\Components\PivotStanding\pivotstandings.component.html" />
     <Content Include="src\app\Components\Standings\standings.component.css" />
     <Content Include="src\app\Components\Standings\standings.component.html" />
     <Content Include="src\favicon.ico" />
@@ -756,6 +758,7 @@
     <TypeScriptCompile Include="src\app\app.component.spec.ts" />
     <TypeScriptCompile Include="src\app\app.component.ts" />
     <TypeScriptCompile Include="src\app\app.module.ts" />
+    <TypeScriptCompile Include="src\app\Components\PivotStanding\pivotstandings.component.ts" />
     <TypeScriptCompile Include="src\app\Components\Standings\standings.component.ts" />
     <TypeScriptCompile Include="src\app\Constants\Constants.ts" />
     <TypeScriptCompile Include="src\app\Constants\CssClassConstants.ts" />

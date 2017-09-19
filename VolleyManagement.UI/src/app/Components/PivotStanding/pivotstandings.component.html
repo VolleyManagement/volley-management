@@ -1,0 +1,29 @@
+<h1>Pivot Standings</h1>
+
+<div>
+  <table class="standings">
+    <thead>
+      <tr class="standings-header-row">
+        <th colspan="2" class="standings-header-cell">N/A</th>
+        <th class="standings-header-cell" *ngFor="let item of pivotStandings?.TeamsStandings">{{item.TeamName}}</th>
+        <th class="standings-header-cell">Points</th>
+    </thead>
+    <tbody>
+      <tr class="standings-row" *ngFor="let item of pivotStandings?.TeamsStandings; let i = index;">
+        <td class="standings-cell">{{i+1}}</td>
+        <td class="standings-cell">{{pivotStandings?.TeamsStandings[i].TeamName}}</td>
+        <td class="standings-cell {{pivotTable[i][j]?.Results.CssClass}}" *ngFor="let item of pivotStandings?.TeamsStandings; let j = index;">
+          <div>{{pivotTable[i][j]?.Results.FormattedResult}}</div>
+        </td>
+        <td class="standings-cell">
+          <div>
+            {{pivotStandings?.TeamsStandings[i].Points}}
+          </div>
+          <div>
+            {{pivotStandings?.TeamsStandings[i].SetsRatioText}}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

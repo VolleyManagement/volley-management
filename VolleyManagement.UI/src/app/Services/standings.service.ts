@@ -12,23 +12,21 @@ import { Constants } from '../Constants/Constants';
 
 @Injectable()
 export class StandingsService {
-    private placeHolderToReplace = '${id}';
-    private pivotStandingsUrl = 'Tournaments/${id}/PivotStandings';
-    private standingsUrl = 'Tournaments/${id}/Standings';
-
     private headers = new Headers({ 'Content-Type': 'applcation/json' });
+    private pivotStandingsUrl = id => `Tournaments/${id}/PivotStandings`;
+    private standingsUrl = id => `Tournaments/${id}/Standings`;
 
     constructor(private http: Http) { }
 
     getPivotStandings(id: number): Observable<PivotStandings> {
-        const url = Constants.BASE_API_URL.concat(this.pivotStandingsUrl.replace(this.placeHolderToReplace, id.toString()));
+        const url = Constants.BASE_API_URL.concat(this.pivotStandingsUrl(id));
         return this.http
             .get(url)
             .map(response => response.json() as PivotStandings);
     }
 
     getStandings(id: number): Observable<StandingsEntry[]> {
-        const url = Constants.BASE_API_URL.concat(this.standingsUrl.replace(this.placeHolderToReplace, id.toString()));
+        const url = Constants.BASE_API_URL.concat(this.standingsUrl(id));
         return this.http
             .get(url)
             .map(response => response.json() as StandingsEntry[]);

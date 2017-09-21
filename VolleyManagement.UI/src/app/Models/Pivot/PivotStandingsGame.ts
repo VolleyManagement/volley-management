@@ -56,18 +56,27 @@ export class PivotStandingsGame {
 
     private static getCssClass(homeScore?: number, awayScore?: number): string {
         let cssClass = CssClassConstants.NORESULT;
-        if (homeScore === Constants.THREE && awayScore === Constants.ZERO) {
-            cssClass = CssClassConstants.WIN_3_0;
-        } else if (homeScore === Constants.THREE && awayScore === Constants.ONE) {
-            cssClass = CssClassConstants.WIN_3_1;
-        } else if (homeScore === Constants.THREE && awayScore === Constants.TWO) {
-            cssClass = CssClassConstants.WIN_3_2;
-        } else if (homeScore === Constants.TWO && awayScore === Constants.THREE) {
-            cssClass = CssClassConstants.LOSS_2_3;
-        } else if (homeScore === Constants.ONE && awayScore === Constants.THREE) {
-            cssClass = CssClassConstants.LOSS_1_3;
-        } else if (homeScore === Constants.ZERO && awayScore === Constants.THREE) {
-            cssClass = CssClassConstants.LOSS_0_3;
+        const setDifference = homeScore - awayScore;
+
+        switch (setDifference) {
+            case 3:
+                cssClass = CssClassConstants.WIN_3_0;
+                break;
+            case 2:
+                cssClass = CssClassConstants.WIN_3_1;
+                break;
+            case 1:
+                cssClass = CssClassConstants.WIN_3_2;
+                break;
+            case -1:
+                cssClass = CssClassConstants.LOSS_2_3;
+                break;
+            case -2:
+                cssClass = CssClassConstants.LOSS_1_3;
+                break;
+            case -3:
+                cssClass = CssClassConstants.LOSS_0_3;
+                break;
         }
 
         return cssClass;

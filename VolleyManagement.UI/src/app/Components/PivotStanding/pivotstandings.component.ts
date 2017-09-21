@@ -28,14 +28,14 @@ export class PivotStandingsComponent implements OnInit {
             .subscribe(standings => {
                 this.pivotStandings = standings;
                 this.pivotStandings.TeamsStandings.forEach(entry => {
-                    entry.SetsRatioText = this.formatter.setRatioText(entry.SetsRatio);
+                    entry.SetsRatioText = this.formatter.formatDecimal(entry.SetsRatio);
                 });
-                this.pivotTable = this.getPivotTable();
+                this.pivotTable = this.getPivotTable(this.pivotStandings);
             });
     }
 
-    getPivotTable(): PivotStandingsGame[][] {
-        const teamsCount = this.pivotStandings.TeamsStandings.length;
+    getPivotTable(pivot: PivotStandings): PivotStandingsGame[][] {
+        const teamsCount = pivot.TeamsStandings.length;
         const table = new Array(teamsCount);
         for (let i = 0; i < teamsCount; i++) {
             table[i] = new Array(teamsCount);
@@ -47,12 +47,12 @@ export class PivotStandingsComponent implements OnInit {
                     if (i === j) {
                         table[i][j] = PivotStandingsGame.getNonPlayableCell();
                     } else {
-                        const rowTeamId = this.pivotStandings.TeamsStandings[i].TeamId;
-                        const colTeamId = this.pivotStandings.TeamsStandings[j].TeamId;
-                        const homeGameResult = this.pivotStandings.GamesStandings.find(function (game) {
+                        const rowTeamId = pivot.TeamsStandings[i].TeamId;
+                        const colTeamId = pivot.TeamsStandings[j].TeamId;
+                        const homeGameResult = pivot.GamesStandings.find(function (game) {
                             return (game.HomeTeamId === rowTeamId && game.AwayTeamId === colTeamId);
                         });
-                        const awayGameResult = this.pivotStandings.GamesStandings.find(function (game) {
+                        const awayGameResult = pivot.GamesStandings.find(function (game) {
                             return (game.HomeTeamId === colTeamId && game.AwayTeamId === rowTeamId);
                         });
 

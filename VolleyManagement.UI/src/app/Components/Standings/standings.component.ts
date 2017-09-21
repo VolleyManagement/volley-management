@@ -26,8 +26,8 @@ export class StandingsComponent {
             .subscribe(standings => {
                 this.standingsEntry = standings;
                 this.standingsEntry.forEach(entry => {
-                    entry.SetsRatioText = this.formatter.setRatioText(entry.SetsRatio);
-                    entry.BallsRatioText = this.formatter.setRatioText(entry.BallsRatio);
+                    entry.SetsRatioText = this.formatter.formatDecimal(entry.SetsRatio);
+                    entry.BallsRatioText = this.formatter.formatDecimal(entry.BallsRatio);
                 });
             });
     }

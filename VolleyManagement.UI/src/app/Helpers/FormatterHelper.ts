@@ -13,7 +13,7 @@ export class FormatterHelper {
         });
     }
 
-    setRatioText(value: number): string {
+    formatDecimal(value: number): string {
         const formatter = FormatterHelper.getFormatter();
 
         return isFinite(value) ?

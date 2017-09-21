@@ -17,6 +17,6 @@ export class StandingsEntry {
         public BallsWon: number,
         public BallsLost: number,
         public BallsRatio: number,
-        public BallsRatioText: string,
+        public BallsRatioText: string
     ) { }
 }

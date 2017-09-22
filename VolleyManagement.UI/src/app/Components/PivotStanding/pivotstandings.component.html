@@ -1,7 +1,8 @@
 <h1>Pivot Standings</h1>
 
 <div>
-  <table class="standings">
+  <p *ngIf="!pivotStandings">No tournament table</p>
+  <table class="standings" *ngIf="pivotStandings">
     <thead>
       <tr class="standings-header-row">
         <th colspan="2" class="standings-header-cell">N/A</th>

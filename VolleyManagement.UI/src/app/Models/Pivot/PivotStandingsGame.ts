@@ -9,39 +9,6 @@ export class PivotStandingsGame {
         public Results: ShortGameResult
     ) { }
 
-    public static create(gameResult: PivotStandingsGame, isReverseGame: boolean): PivotStandingsGame {
-        if (isReverseGame) {
-            return new PivotStandingsGame(
-                gameResult.AwayTeamId,
-                gameResult.HomeTeamId,
-                new ShortGameResult(
-                    gameResult.Results[0].AwaySetsScore,
-                    gameResult.Results[0].HomeSetsScore,
-                    gameResult.Results[0].IsTechnicalDefeat,
-                    PivotStandingsGame.formattedResult(
-                        gameResult.Results[0].AwaySetsScore,
-                        gameResult.Results[0].HomeSetsScore,
-                        gameResult.Results[0].IsTechnicalDefeat),
-                    PivotStandingsGame.getCssClass(
-                        gameResult.Results[0].AwaySetsScore,
-                        gameResult.Results[0].HomeSetsScore)));
-        }
-        return new PivotStandingsGame(
-            gameResult.HomeTeamId,
-            gameResult.AwayTeamId,
-            new ShortGameResult(
-                gameResult.Results[0].HomeSetsScore,
-                gameResult.Results[0].AwaySetsScore,
-                gameResult.Results[0].IsTechnicalDefeat,
-                PivotStandingsGame.formattedResult(
-                    gameResult.Results[0].HomeSetsScore,
-                    gameResult.Results[0].AwaySetsScore,
-                    gameResult.Results[0].IsTechnicalDefeat),
-                PivotStandingsGame.getCssClass(
-                    gameResult.Results[0].HomeSetsScore,
-                    gameResult.Results[0].AwaySetsScore)));
-    }
-
     public static getNonPlayableCell(): PivotStandingsGame {
         return new PivotStandingsGame(
             0,
@@ -92,5 +59,40 @@ export class PivotStandingsGame {
         }
 
         return result;
+    }
+
+    public clone(): PivotStandingsGame {
+        return new PivotStandingsGame(
+            this.HomeTeamId,
+            this.AwayTeamId,
+            new ShortGameResult(
+                this.Results.HomeSetsScore,
+                this.Results.AwaySetsScore,
+                this.Results.IsTechnicalDefeat,
+                PivotStandingsGame.formattedResult(
+                    this.Results.HomeSetsScore,
+                    this.Results.AwaySetsScore,
+                    this.Results.IsTechnicalDefeat),
+                PivotStandingsGame.getCssClass(
+                    this.Results.HomeSetsScore,
+                    this.Results.AwaySetsScore)));
+    }
+
+
+    public transposeResult(): PivotStandingsGame {
+        return new PivotStandingsGame(
+            this.AwayTeamId,
+            this.HomeTeamId,
+            new ShortGameResult(
+                this.Results.AwaySetsScore,
+                this.Results.HomeSetsScore,
+                this.Results.IsTechnicalDefeat,
+                PivotStandingsGame.formattedResult(
+                    this.Results.AwaySetsScore,
+                    this.Results.HomeSetsScore,
+                    this.Results.IsTechnicalDefeat),
+                PivotStandingsGame.getCssClass(
+                    this.Results.AwaySetsScore,
+                    this.Results.HomeSetsScore)));
     }
 }

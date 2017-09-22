@@ -57,11 +57,11 @@ export class PivotStandingsComponent implements OnInit {
                         });
 
                         if (homeGameResult !== undefined && homeGameResult !== null) {
-                            table[i][j] = PivotStandingsGame.create(homeGameResult, false);
-                            table[j][i] = PivotStandingsGame.create(homeGameResult, true);
+                            table[i][j] = homeGameResult.clone();
+                            table[j][i] = homeGameResult.transposeResult();
                         } else if (awayGameResult !== undefined && awayGameResult !== null) {
-                            table[i][j] = PivotStandingsGame.create(awayGameResult, true);
-                            table[j][i] = PivotStandingsGame.create(awayGameResult, false);
+                            table[i][j] = awayGameResult.transposeResult();
+                            table[j][i] = awayGameResult.clone();
                         }
                     }
                 }

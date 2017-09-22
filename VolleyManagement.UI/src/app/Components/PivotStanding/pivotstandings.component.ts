@@ -33,30 +33,29 @@ export class PivotStandingsComponent implements OnInit {
 
     getPivotTable(pivot: PivotStandings): PivotStandingsGame[][] {
         const teamsCount = pivot.TeamsStandings.length;
-        const table = new Array(teamsCount);
-        for (let i = 0; i < teamsCount; i++) {
-            table[i] = new Array(teamsCount);
-        }
+
+        const table = Array.apply(null, Array(teamsCount)).map(() => {
+            return new Array(teamsCount);
+        });
+
         for (let i = 0; i < teamsCount; i++) {
             for (let j = 0; j < teamsCount; j++) {
                 const tableCell = table[i][j];
-                if (tableCell === undefined || tableCell === null) {
+                if (!tableCell) {
                     if (i === j) {
                         table[i][j] = PivotStandingsGame.getNonPlayableCell();
                     } else {
                         const rowTeamId = pivot.TeamsStandings[i].TeamId;
                         const colTeamId = pivot.TeamsStandings[j].TeamId;
-                        const homeGameResult = pivot.GamesStandings.find(function (game) {
-                            return (game.HomeTeamId === rowTeamId && game.AwayTeamId === colTeamId);
-                        });
-                        const awayGameResult = pivot.GamesStandings.find(function (game) {
-                            return (game.HomeTeamId === colTeamId && game.AwayTeamId === rowTeamId);
-                        });
+                        const homeGameResult = pivot.GamesStandings.
+                            find(game => (game.HomeTeamId === rowTeamId && game.AwayTeamId === colTeamId));
+                        const awayGameResult = pivot.GamesStandings.
+                            find(game => (game.HomeTeamId === colTeamId && game.AwayTeamId === rowTeamId));
 
-                        if (homeGameResult !== undefined && homeGameResult !== null) {
+                        if (homeGameResult) {
                             table[i][j] = homeGameResult.clone();
                             table[j][i] = homeGameResult.transposeResult();
-                        } else if (awayGameResult !== undefined && awayGameResult !== null) {
+                        } else if (awayGameResult) {
                             table[i][j] = awayGameResult.transposeResult();
                             table[j][i] = awayGameResult.clone();
                         }

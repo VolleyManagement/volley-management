@@ -50,10 +50,10 @@
         <td class="standings-cell">{{entry.GamesWithScoreNilThree}}</td>
         <td class="standings-cell">{{entry.SetsWon}}</td>
         <td class="standings-cell">{{entry.SetsLost}}</td>
-        <td class="standings-cell">{{entry.SetsRatioText}}</td>
+        <td class="standings-cell">{{entry.SetsRatio | number:'.0-3'}}</td>
         <td class="standings-cell">{{entry.BallsWon}}</td>
         <td class="standings-cell">{{entry.BallsLost}}</td>
-        <td class="standings-cell">{{entry.BallsRatioText}}</td>
+        <td class="standings-cell">{{entry.BallsRatio | number:'.0-3'}}</td>
       </tr>
     </tbody>
   </table>

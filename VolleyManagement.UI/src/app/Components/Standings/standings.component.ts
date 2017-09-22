@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { StandingsService } from '../../Services/standings.service';
 import { StandingsEntry } from '../../Models/Standings/StandingsEntry';
-import { FormatterHelper } from '../../Helpers/FormatterHelper';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -17,18 +17,13 @@ export class StandingsComponent {
 
     constructor(
         private standingsService: StandingsService,
-        private route: ActivatedRoute,
-        private formatter: FormatterHelper) { }
+        private route: ActivatedRoute) { }
 
     ngOnInit(): void {
         this.route.paramMap
             .switchMap((params: ParamMap) => this.standingsService.getStandings(+params.get('id')))
             .subscribe(standings => {
                 this.standingsEntry = standings;
-                this.standingsEntry.forEach(entry => {
-                    entry.SetsRatioText = this.formatter.formatDecimal(entry.SetsRatio);
-                    entry.BallsRatioText = this.formatter.formatDecimal(entry.BallsRatio);
-                });
             });
     }
 }

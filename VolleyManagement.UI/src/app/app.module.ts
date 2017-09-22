@@ -9,7 +9,6 @@ import { PivotStandingsComponent } from './Components/PivotStanding/pivotstandin
 import { StandingsComponent } from './Components/Standings/standings.component';
 
 import { StandingsService } from './Services/standings.service';
-import { FormatterHelper } from './Helpers/FormatterHelper';
 
 @NgModule({
     declarations: [
@@ -22,9 +21,7 @@ import { FormatterHelper } from './Helpers/FormatterHelper';
         HttpModule,
         AppRoutingModule
     ],
-    providers: [
-        StandingsService,
-        FormatterHelper],
+    providers: [StandingsService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

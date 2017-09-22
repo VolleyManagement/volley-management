@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
+
 import { StandingsService } from '../../Services/standings.service';
 import { PivotStandings } from '../../Models/Pivot/PivotStandings';
 import { PivotStandingsGame } from '../../Models/Pivot/PivotStandingsGame';
 import { ShortGameResult } from '../../Models/Pivot/ShortGameResult';
 import 'rxjs/add/operator/switchMap';
-import { FormatterHelper } from '../../Helpers/FormatterHelper';
 
 @Component({
     selector: 'app-pivottable-component',
@@ -19,17 +20,13 @@ export class PivotStandingsComponent implements OnInit {
 
     constructor(
         private standingsService: StandingsService,
-        private route: ActivatedRoute,
-        private formatter: FormatterHelper) { }
+        private route: ActivatedRoute) { }
 
     ngOnInit(): void {
         this.route.paramMap
             .switchMap((params: ParamMap) => this.standingsService.getPivotStandings(+params.get('id')))
             .subscribe(standings => {
                 this.pivotStandings = standings;
-                this.pivotStandings.TeamsStandings.forEach(entry => {
-                    entry.SetsRatioText = this.formatter.formatDecimal(entry.SetsRatio);
-                });
                 this.pivotTable = this.getPivotTable(this.pivotStandings);
             });
     }

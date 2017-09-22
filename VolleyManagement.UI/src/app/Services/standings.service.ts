@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
+import { Http, Response } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -11,10 +11,8 @@ import { PivotStandingsGame } from '../Models/Pivot/PivotStandingsGame';
 import { StandingsEntry } from '../Models/Standings/StandingsEntry';
 import { Constants } from '../Constants/Constants';
 
-
 @Injectable()
 export class StandingsService {
-    private headers = new Headers({ 'Content-Type': 'applcation/json' });
     private pivotStandingsUrl = id => `Tournaments/${id}/PivotStandings`;
     private standingsUrl = id => `Tournaments/${id}/Standings`;
 

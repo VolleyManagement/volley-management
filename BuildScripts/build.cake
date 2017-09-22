@@ -11,11 +11,14 @@ var configuration = Argument("configuration", "Release");
 //////////////////////////////////////////////////////////////////////
 
 // Define directories.
-var srcPath="./../";
-var webBuildDir = Directory(srcPath+"VolleyManagement.UI/bin");
+var srcPath     = "./../";
+var srcDir      = Directory(srcPath);
+var buildDir    = srcDir + Directory("bin/") + Directory(configuration);
+var webBuildDir = srcDir + Directory("VolleyManagement.UI/bin");
+var testsDir    = srcDir + Directory("bin/UnitTests/") + Directory(configuration);
 
 // Define files
-var slnPath=srcPath+"VolleyManagement.sln";
+var slnPath = srcPath + "VolleyManagement.sln";
 
 //////////////////////////////////////////////////////////////////////
 // TASKS
@@ -24,7 +27,9 @@ var slnPath=srcPath+"VolleyManagement.sln";
 Task("Clean")
     .Does(() =>
     {
+        CleanDirectory(buildDir);
         CleanDirectory(webBuildDir);
+        CleanDirectory(testsDir);
     });
 
 Task("Restore-NuGet-Packages")
@@ -39,8 +44,16 @@ Task("Build")
     .Does(()=>
     {
         MSBuild(slnPath, configurator =>
-            configurator.SetConfiguration("Release")
+            configurator.SetConfiguration(configuration)
         );
+    });
+
+Task("UnitTests")
+    .IsDependentOn("Build")
+    .Does(()=>
+    {
+        // There is a known issue with Cake+MSTest+VS 2017. One more point to move to xUnit :)
+        // VSTest(testsDir.Path.FullPath + "/*.UnitTests.dll");
     });
 
 //////////////////////////////////////////////////////////////////////
@@ -48,7 +61,7 @@ Task("Build")
 //////////////////////////////////////////////////////////////////////
 
 Task("IIS")
-    .IsDependentOn("Build");
+    .IsDependentOn("UnitTests");
 
 Task("Default")
     .IsDependentOn("IIS");

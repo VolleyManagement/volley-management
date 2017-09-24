@@ -4,24 +4,23 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Contracts.ExternalResources;
     using Crosscutting.Contracts.Providers;
     using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Domain.FeedbackAggregate;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
+    using MailService;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
-
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.MailService;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using UserManager;
     using VolleyManagement.Services;
-    using VolleyManagement.UnitTests.Services.MailService;
-    using VolleyManagement.UnitTests.Services.UserManager;
 
     [ExcludeFromCodeCoverage]
     [TestClass]

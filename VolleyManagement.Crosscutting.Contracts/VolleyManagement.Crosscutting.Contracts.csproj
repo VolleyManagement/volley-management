@@ -58,28 +58,12 @@
     <Compile Include="Infrastructure\IOC\IocLifetimeEnum.cs" />
     <Compile Include="Infrastructure\Logger\ILog.cs" />
     <Compile Include="Infrastructure\Logger\LogLevel.cs" />
-    <Compile Include="MailService\EmailMessage.cs" />
-    <Compile Include="MailService\IMailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Providers\DefaultTimeProvider.cs" />
     <Compile Include="Providers\TimeProvider.cs" />
     <Compile Include="Specifications\ISpecification.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PropertyMapping\" />
-    <Folder Include="Validation\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.MailService
 {
     using System.Diagnostics.CodeAnalysis;
-    using Crosscutting.Contracts.MailService;
+    using Contracts.ExternalResources;
 
     /// <summary>
     /// Represents a builder of <see cref="EmailMessage"/> objects for unit

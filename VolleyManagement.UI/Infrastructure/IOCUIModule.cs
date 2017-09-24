@@ -3,8 +3,9 @@
     using Contracts;
     using Contracts.Authorization;
     using Contracts.ExternalResources;
+    using Crosscutting.Contracts.FeatureToggles;
     using Crosscutting.Contracts.Infrastructure.IOC;
-    using FeatureToggles;
+    using FeatureToggle.Core.Fluent;
     using Services;
     using Services.Mail;
 
@@ -17,7 +18,7 @@
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped);
 
-            if (new IISDeployment().FeatureEnabled)
+            if (Is<IISDeployment>.Enabled)
             {
                 container.Register<IMailService, GmailAccountMailService>(IocLifetimeEnum.Scoped);
             }

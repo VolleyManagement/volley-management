@@ -405,7 +405,6 @@
     <Compile Include="Infrastructure\CaptchaManager.cs" />
     <Compile Include="Infrastructure\CurrentUserService.cs" />
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
-    <Compile Include="Infrastructure\FeatureToggles\IISDeployment.cs" />
     <Compile Include="Infrastructure\IocUIModule.cs" />
     <Compile Include="Infrastructure\IOC\SimpleInjectorContainer.cs" />
     <Compile Include="OwinConfig.cs" />

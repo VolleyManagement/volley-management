@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="FeatureToggles\IISDeployment.cs" />
     <Compile Include="Infrastructure\IOC\IIocContainer.cs" />
     <Compile Include="Infrastructure\IOC\IIocRegistrationModule.cs" />
     <Compile Include="Infrastructure\IOC\IocLifetimeEnum.cs" />

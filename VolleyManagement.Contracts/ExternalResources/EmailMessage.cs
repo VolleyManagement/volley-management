@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Crosscutting.Contracts.MailService
+﻿namespace VolleyManagement.Contracts.ExternalResources
 {
     using System;
 
@@ -19,9 +19,7 @@
                 || string.IsNullOrEmpty(body)
                 || string.IsNullOrEmpty(subject))
             {
-                throw new ArgumentException(
-                    Properties.Resources.ArgumentExceptionInvalidEmailMessageArguments,
-                    Properties.Resources.ArgumentExceptionEmailMessage);
+                throw new ArgumentException("Invalid email message arguments");
             }
 
             Body = body;

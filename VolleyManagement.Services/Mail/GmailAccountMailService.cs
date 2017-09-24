@@ -1,10 +1,10 @@
-﻿namespace VolleyManagement.Services
+﻿namespace VolleyManagement.Services.Mail
 {
     using System;
     using System.Net;
     using System.Net.Mail;
     using System.Web.Configuration;
-    using Crosscutting.Contracts.MailService;
+    using Contracts.ExternalResources;
 
     /// <summary>
     /// Defines GmailAccountMailService.

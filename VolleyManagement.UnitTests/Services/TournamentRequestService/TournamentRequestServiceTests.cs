@@ -4,9 +4,10 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
-    using Crosscutting.Contracts.MailService;
+    using Contracts.ExternalResources;
     using Data.Contracts;
     using Data.Exceptions;
     using Data.Queries.Common;
@@ -20,7 +21,6 @@
     using Moq;
     using MSTestExtensions;
     using UserManager;
-    using VolleyManagement.Contracts;
     using VolleyManagement.Services;
 
     [ExcludeFromCodeCoverage]

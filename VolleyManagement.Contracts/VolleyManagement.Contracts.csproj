@@ -70,6 +70,8 @@
     <Compile Include="Authorization\IUserService.cs" />
     <Compile Include="Exceptions\AuthorizationException.cs" />
     <Compile Include="Exceptions\MissingEntityException.cs" />
+    <Compile Include="ExternalResources\EmailMessage.cs" />
+    <Compile Include="ExternalResources\IMailService.cs" />
     <Compile Include="TeamTournamentAssignmentDto.cs" />
     <Compile Include="ICacheProvider.cs" />
     <Compile Include="ICaptchaManager.cs" />

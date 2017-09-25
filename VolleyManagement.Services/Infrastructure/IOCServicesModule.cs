@@ -1,13 +1,14 @@
 ﻿namespace VolleyManagement.Services.Infrastructure
 {
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authentication;
-    using VolleyManagement.Contracts.Authentication.Models;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Crosscutting.Contracts.Infrastructure.IOC;
-    using VolleyManagement.Crosscutting.Contracts.MailService;
-    using VolleyManagement.Services.Authentication;
-    using VolleyManagement.Services.Authorization;
+    using Authentication;
+    using Authorization;
+    using Contracts;
+    using Contracts.Authentication;
+    using Contracts.Authentication.Models;
+    using Contracts.Authorization;
+    using Contracts.ExternalResources;
+    using Crosscutting.Contracts.Infrastructure.IOC;
+    using Mail;
 
     public class IocServicesModule : IIocRegistrationModule
     {
@@ -28,8 +29,7 @@
                 .Register<IFeedbackService, FeedbackService>(IocLifetimeEnum.Scoped)
                 .Register<ITournamentRequestService, TournamentRequestService>(IocLifetimeEnum.Scoped)
                 .Register<IRequestService, RequestService>(IocLifetimeEnum.Scoped)
-                .Register<ICacheProvider, CacheProvider>(IocLifetimeEnum.Scoped)
-                .Register<IMailService, GmailAccountMailService>(IocLifetimeEnum.Scoped);
+                .Register<ICacheProvider, CacheProvider>(IocLifetimeEnum.Scoped);
         }
     }
 }

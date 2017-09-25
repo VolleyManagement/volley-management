@@ -109,7 +109,6 @@ csx
 AppPackages/
 
 # Cake Build files
-
 BuildScripts/tools/
 
 # Others
@@ -162,3 +161,6 @@ $RECYCLE.BIN/
 .DS_Store
 /.vs/config/applicationhost.config
 /.vs/VolleyManagement/v15/sqlite3/storage.ide
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+.vs/VolleyManagement/v15/sqlite3/storage.ide-journal

@@ -81,12 +81,6 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.OData.Core, Version=6.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.OData.Core.6.13.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.OData.Edm, Version=6.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.OData.Edm.6.13.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Edm.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -132,9 +126,6 @@
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.OData, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.OData.5.7.0\lib\net45\System.Web.OData.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Routing" />
@@ -373,12 +364,12 @@
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserEditViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\ContributorsTeamController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\HomeController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\PlayersController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\TeamsController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\TournamentsController.cs" />
     <Compile Include="Areas\WebAPI\Infrastructure\WebApiHelpers.cs" />
-    <Compile Include="Areas\WebAPI\ODataControllers\ContributorsTeamController.cs" />
-    <Compile Include="Areas\WebAPI\ODataControllers\PlayersController.cs" />
-    <Compile Include="Areas\WebAPI\ODataControllers\TeamsController.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\GameReports\PivotStandingsEntryViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\GameReports\PivotStandingsGameViewModel.cs" />

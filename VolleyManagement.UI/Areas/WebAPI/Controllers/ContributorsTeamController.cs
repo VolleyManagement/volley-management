@@ -1,18 +1,14 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ODataControllers
+﻿namespace VolleyManagement.UI.Areas.WebAPI.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.OData;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
 
-    using Contracts;
-    using ViewModels.ContributorsTeam;
-
-    /// <summary>
-    /// The contributors team controller.
-    /// </summary>
-    public class ContributorsTeamController : ODataController
+    public class ContributorsTeamController : ApiController
     {
-        private const string CONTROLLER_NAME = "contributorsTeam";
         private readonly IContributorTeamService _contributorTeamService;
 
         /// <summary>
@@ -28,14 +24,12 @@
         /// Gets contributors teams
         /// </summary>
         /// <returns> Contributors teams list. </returns>
-        [EnableQuery]
         [HttpGet]
-        public IQueryable<ContributorsTeamViewModel> GetContributorsTeam()
+        public async Task<IEnumerable<ContributorsTeamViewModel>> GetContributorsTeam()
         {
-            return _contributorTeamService.Get()
-                                .ToList()
-                                .Select(c => ContributorsTeamViewModel.Map(c))
-                                .AsQueryable();
+            var list = await _contributorTeamService.Get();
+
+            return list.Select(c => ContributorsTeamViewModel.Map(c));
         }
     }
 }

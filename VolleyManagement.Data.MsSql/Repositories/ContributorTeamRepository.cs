@@ -1,10 +1,10 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
-    using System.Data.Entity.Core.Objects;
     using System.Linq;
-
+    using System.Threading.Tasks;
     using Contracts;
     using Domain.ContributorsAggregate;
 
@@ -42,22 +42,22 @@
         /// Gets all teams with contributors inside.
         /// </summary>
         /// <returns>Collection of teams with contributors</returns>
-        public IQueryable<ContributorTeam> Find()
+        public async Task<List<ContributorTeam>> Find()
         {
             var result = _contribsSet.GroupBy(c => c.Team)
                                      .Select(gr => new ContributorTeam
-                                        {
-                                            Id = gr.Key.Id,
-                                            Name = gr.Key.Name,
-                                            CourseDirection = gr.Key.CourseDirection,
-                                            Contributors = gr.Select(c => new Contributor
-                                            {
-                                                Id = c.Id,
-                                                Name = c.Name
-                                            })
-                                        });
+                                     {
+                                         Id = gr.Key.Id,
+                                         Name = gr.Key.Name,
+                                         CourseDirection = gr.Key.CourseDirection,
+                                         Contributors = gr.Select(c => new Contributor
+                                         {
+                                             Id = c.Id,
+                                             Name = c.Name
+                                         })
+                                     });
 
-            return result;
+            return await result.ToListAsync();
         }
 
         /// <summary>

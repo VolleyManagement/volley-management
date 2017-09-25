@@ -1,23 +1,20 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ODataControllers
+﻿namespace VolleyManagement.UI.Areas.WebAPI.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Net;
+    using System.Threading.Tasks;
     using System.Web.Http;
-    using System.Web.OData;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.Domain.PlayersAggregate;
+    using VolleyManagement.UI.Areas.WebApi.Infrastructure;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
 
-    using Contracts;
-    using Contracts.Exceptions;
-    using Domain.PlayersAggregate;
-    using Infrastructure;
-    using ViewModels.Players;
-    using ViewModels.Teams;
-
-    /// <summary>
-    /// The players controller.
-    /// </summary>
-    public class PlayersController : ODataController
+    public class PlayersController : ApiController
     {
         private const string CONTROLLER_NAME = "players";
         private readonly IPlayerService _playerService;
@@ -35,12 +32,42 @@
         }
 
         /// <summary>
+        /// Gets players
+        /// </summary>
+        /// <returns> Player list. </returns>
+        public async Task<List<PlayerViewModel>> GetPlayers()
+        {
+            var result = _playerService.Get()
+                                .ToList()
+                                .Select(p => PlayerViewModel.Map(p));
+
+            return await Task.FromResult(result.ToList());
+        }
+
+        /// <summary>
+        /// The get player.
+        /// </summary>
+        /// <param name="key"> The key. </param>
+        /// <returns> The <see cref="SingleResult"/>. </returns>
+        public async Task<PlayerViewModel> Get(int key)
+        {
+            var result = _playerService
+                .Get()
+                .Where(p => p.Id == key)
+                .ToList()
+                .Select(p => PlayerViewModel.Map(p))
+                .First();
+
+            return await Task.FromResult(result);
+        }
+
+        /// <summary>
         /// Creates Player
         /// </summary>
         /// <param name="player"> The  player as ViewModel. </param>
         /// <returns> Has been saved successfully - Created OData result
         /// unsuccessfully - Bad request </returns>
-        public IHttpActionResult Post(PlayerViewModel player)
+        public async Task<IHttpActionResult> Post(PlayerViewModel player)
         {
             if (!ModelState.IsValid)
             {
@@ -51,20 +78,7 @@
             _playerService.Create(playerToCreate);
             player.Id = playerToCreate.Id;
 
-            return Created(player);
-        }
-
-        /// <summary>
-        /// Gets players
-        /// </summary>
-        /// <returns> Player list. </returns>
-        [EnableQuery]
-        public IQueryable<PlayerViewModel> GetPlayers()
-        {
-            return _playerService.Get()
-                                .ToList()
-                                .Select(p => PlayerViewModel.Map(p))
-                                .AsQueryable();
+            return await Task.FromResult(Ok(player));
         }
 
         /// <summary>
@@ -73,7 +87,7 @@
         /// <param name="player">The player view model to update</param>
         /// <returns> Updated player
         /// unsuccessfully - Bad request </returns>
-        public IHttpActionResult Put(PlayerViewModel player)
+        public async Task<IHttpActionResult> Put(PlayerViewModel player)
         {
             if (!ModelState.IsValid)
             {
@@ -102,7 +116,7 @@
                 return BadRequest(ModelState);
             }
 
-            return Updated(player);
+            return await Task.FromResult(Ok(player));
         }
 
         /// <summary>
@@ -113,7 +127,7 @@
         /// <param name="link">Link to the entity.</param>
         /// <returns><see cref="IHttpActionResult"/></returns>
         [AcceptVerbs("POST", "PUT")]
-        public IHttpActionResult CreateRef([FromODataUri] int key, string navigationProperty, [FromBody] Uri link)
+        public IHttpActionResult CreateRef(int key, string navigationProperty, [FromBody] Uri link)
         {
             Player playerToUpdate;
             try
@@ -136,27 +150,11 @@
         }
 
         /// <summary>
-        /// The get player.
-        /// </summary>
-        /// <param name="key"> The key. </param>
-        /// <returns> The <see cref="SingleResult"/>. </returns>
-        [EnableQuery]
-        public SingleResult<PlayerViewModel> Get([FromODataUri] int key)
-        {
-            return SingleResult.Create(_playerService.Get()
-                                                         .Where(p => p.Id == key)
-                                                         .ToList()
-                                                         .Select(p => PlayerViewModel.Map(p))
-                                                         .AsQueryable());
-        }
-
-        /// <summary>
         /// Gets player Team.
         /// </summary>
         /// <param name="key">ID of the player.</param>
         /// <returns>Team that linked to the player.</returns>
-        [EnableQuery]
-        public SingleResult<TeamViewModel> GetTeams([FromODataUri] int key)
+        public async Task<TeamViewModel> GetTeams(int key)
         {
             TeamViewModel team;
             try
@@ -169,13 +167,13 @@
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return WebApiHelpers.ObjectToSingleResult(team);
+            return await Task.FromResult(team);
         }
 
         /// <summary> Deletes tournament </summary>
         /// <param name="key"> The key. </param>
         /// <returns> The <see cref="IHttpActionResult"/>. </returns>
-        public IHttpActionResult Delete([FromODataUri] int key)
+        public async Task<IHttpActionResult> Delete(int key)
         {
             try
             {
@@ -186,7 +184,7 @@
                 return BadRequest(ex.Message);
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return await Task.FromResult(StatusCode(HttpStatusCode.NoContent));
         }
 
         private IHttpActionResult AssignTeamToPlayer(Player playerToUpdate, Uri link)
@@ -211,7 +209,8 @@
             }
 
             var player = PlayerViewModel.Map(playerToUpdate);
-            return Updated(player);
+
+            return Ok(player);
         }
     }
 }

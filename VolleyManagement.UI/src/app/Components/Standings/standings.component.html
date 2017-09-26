@@ -1,9 +1,8 @@
-<h1>Tournament Standings</h1>
-
-<div>
+<div *ngIf="standingsEntry">
   <legend></legend>
-
-  <p *ngIf="!standingsEntry">No Game Results</p>
+  <p *ngIf="!standingsEntry">
+    No Game Results
+  </p>
 
   <table class="standings" *ngIf="standingsEntry">
     <thead>

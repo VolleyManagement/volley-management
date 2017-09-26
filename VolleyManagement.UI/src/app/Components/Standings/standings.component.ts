@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnChanges, Input } from '@angular/core';
+import { ParamMap } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { StandingsService } from '../../Services/standings.service';
 import { StandingsEntry } from '../../Models/Standings/StandingsEntry';
@@ -12,18 +12,19 @@ import 'rxjs/add/operator/switchMap';
     styleUrls: ['./standings.component.css']
 })
 
-export class StandingsComponent {
+export class StandingsComponent implements OnChanges {
+
+    @Input() standingsId: number;
     standingsEntry: StandingsEntry[];
 
-    constructor(
-        private standingsService: StandingsService,
-        private route: ActivatedRoute) { }
+    constructor(private standingsService: StandingsService) { }
 
-    ngOnInit(): void {
-        this.route.paramMap
-            .switchMap((params: ParamMap) => this.standingsService.getStandings(+params.get('id')))
-            .subscribe(standings => {
-                this.standingsEntry = standings;
-            });
+    ngOnChanges(): void {
+        if (this.standingsId) {
+            this.standingsService.getStandings(this.standingsId)
+                .subscribe(standings => {
+                    this.standingsEntry = standings;
+                });
+        }
     }
 }

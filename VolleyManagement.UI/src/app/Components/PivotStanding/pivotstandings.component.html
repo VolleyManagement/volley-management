@@ -1,7 +1,7 @@
-<h1>Pivot Standings</h1>
-
-<div>
-  <p *ngIf="!pivotStandings">No tournament table</p>
+<div *ngIf="pivotStandings">
+  <div *ngIf="!pivotStandings">
+    <p> No tournament table</p>
+  </div>
   <table class="standings" *ngIf="pivotStandings">
     <thead>
       <tr class="standings-header-row">
@@ -17,11 +17,11 @@
           <div>{{pivotTable[i][j]?.Results.FormattedResult}}</div>
         </td>
         <td class="standings-cell">
-          <div>
+          <div class="boldText">
             {{pivotStandings?.TeamsStandings[i].Points}}
           </div>
           <div>
-            {{pivotStandings?.TeamsStandings[i].SetsRatio | number:'.0-3'}}
+            ({{pivotStandings?.TeamsStandings[i].SetsRatio | number:'.0-3'}})
           </div>
         </td>
       </tr>

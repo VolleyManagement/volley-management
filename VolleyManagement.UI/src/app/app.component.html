@@ -1,11 +1,2 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-</div>
-<nav>
-  <a routerLink="/PivotTable/2" routerlinkActive="active">Open tornament pivot table</a>
-  <a routerLink="/Standings/2" routerlinkActive="active">Open tornament standings</a>
-</nav>
-<router-outlet></router-outlet>
+<app-standings-component [standingsId]='standingsId'></app-standings-component>
+<app-pivottable-component [pivotId]='pivotId'></app-pivottable-component>

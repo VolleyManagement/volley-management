@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnChanges, Input } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
 import { StandingsService } from '../../Services/standings.service';
 import { PivotStandings } from '../../Models/Pivot/PivotStandings';
 import { PivotStandingsGame } from '../../Models/Pivot/PivotStandingsGame';
 import { ShortGameResult } from '../../Models/Pivot/ShortGameResult';
-import 'rxjs/add/operator/switchMap';
 
 @Component({
     selector: 'app-pivottable-component',
@@ -14,21 +12,22 @@ import 'rxjs/add/operator/switchMap';
     styleUrls: ['./pivotstandings.component.css']
 })
 
-export class PivotStandingsComponent implements OnInit {
+export class PivotStandingsComponent implements OnChanges {
+
+    @Input() pivotId: number;
     pivotStandings: PivotStandings;
     pivotTable: PivotStandingsGame[][];
 
-    constructor(
-        private standingsService: StandingsService,
-        private route: ActivatedRoute) { }
+    constructor(private standingsService: StandingsService) { }
 
-    ngOnInit(): void {
-        this.route.paramMap
-            .switchMap((params: ParamMap) => this.standingsService.getPivotStandings(+params.get('id')))
-            .subscribe(standings => {
-                this.pivotStandings = standings;
-                this.pivotTable = this.getPivotTable(this.pivotStandings);
-            });
+    ngOnChanges(): void {
+        if (this.pivotId) {
+            this.standingsService.getPivotStandings(this.pivotId)
+                .subscribe(standings => {
+                    this.pivotStandings = standings;
+                    this.pivotTable = this.getPivotTable(this.pivotStandings);
+                });
+        }
     }
 
     getPivotTable(pivot: PivotStandings): PivotStandingsGame[][] {

@@ -70,3 +70,7 @@ table.standings {
   color: #000000;
   margin: 0;
 }
+
+.boldText{
+  font-weight: bold;
+}

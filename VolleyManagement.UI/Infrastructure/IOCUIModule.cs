@@ -4,6 +4,7 @@
     using Contracts.Authorization;
     using Contracts.ExternalResources;
     using Crosscutting.Contracts.FeatureToggles;
+    using Crosscutting.Contracts.Infrastructure;
     using Crosscutting.Contracts.Infrastructure.IOC;
     using FeatureToggle.Core.Fluent;
     using Services;
@@ -16,7 +17,8 @@
             container
                 .Register<ICurrentUserService, CurrentUserService>(IocLifetimeEnum.Scoped)
                 .Register<ICaptchaManager, CaptchaManager>(IocLifetimeEnum.Scoped)
-                .Register<IFileService, FileService>(IocLifetimeEnum.Scoped);
+                .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
+                .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
 
             if (Is<IISDeployment>.Enabled)
             {

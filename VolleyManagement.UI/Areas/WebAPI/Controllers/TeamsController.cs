@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
-    using System.Threading.Tasks;
     using System.Web.Http;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
@@ -30,7 +29,7 @@
         /// <param name="team"> The  team as ViewModel. </param>
         /// <returns> Has been saved successfully - Created OData result
         /// unsuccessfully - Bad request </returns>
-        public async Task<IHttpActionResult> Post(TeamViewModel team)
+        public IHttpActionResult Post(TeamViewModel team)
         {
             if (!ModelState.IsValid)
             {
@@ -50,19 +49,18 @@
             }
 
             team.Id = teamToCreate.Id;
-            return await Task.FromResult(Ok(team));
+            return Ok(team);
         }
 
         /// <summary>
         /// Gets teams.
         /// </summary>
         /// <returns>Team list. </returns>
-        public IQueryable<TeamViewModel> GetTeams()
+        public IEnumerable<TeamViewModel> GetTeams()
         {
             return _teamService.Get()
                                 .ToList()
-                                .Select(t => TeamViewModel.Map(t))
-                                .AsQueryable();
+                                .Select(t => TeamViewModel.Map(t));
         }
 
         /// <summary>
@@ -70,19 +68,19 @@
         /// </summary>
         /// <param name="key">Id of the team.</param>
         /// <returns>Players in team roster.</returns>
-        public async Task<IEnumerable<PlayerViewModel>> GetPlayers(int key)
+        public IEnumerable<PlayerViewModel> GetPlayers(int key)
         {
             var result = _teamService
                 .GetTeamRoster(key)
                 .Select(p => PlayerViewModel.Map(p));
 
-            return await Task.FromResult(result);
+            return result;
         }
 
         /// <summary> Deletes team </summary>
         /// <param name="id"> The id. </param>
         /// <returns> The <see cref="IHttpActionResult"/>. </returns>
-        public async Task<IHttpActionResult> Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
             try
             {
@@ -93,7 +91,7 @@
                 return BadRequest(ex.Message);
             }
 
-            return await Task.FromResult(StatusCode(HttpStatusCode.NoContent));
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

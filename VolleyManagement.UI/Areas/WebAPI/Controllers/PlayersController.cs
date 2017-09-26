@@ -5,7 +5,6 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Net;
-    using System.Threading.Tasks;
     using System.Web.Http;
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Exceptions;
@@ -35,13 +34,13 @@
         /// Gets players
         /// </summary>
         /// <returns> Player list. </returns>
-        public async Task<List<PlayerViewModel>> GetPlayers()
+        public List<PlayerViewModel> GetPlayers()
         {
             var result = _playerService.Get()
                                 .ToList()
                                 .Select(p => PlayerViewModel.Map(p));
 
-            return await Task.FromResult(result.ToList());
+            return result.ToList();
         }
 
         /// <summary>
@@ -49,7 +48,7 @@
         /// </summary>
         /// <param name="key"> The key. </param>
         /// <returns> The <see cref="SingleResult"/>. </returns>
-        public async Task<PlayerViewModel> Get(int key)
+        public PlayerViewModel Get(int key)
         {
             var result = _playerService
                 .Get()
@@ -58,7 +57,7 @@
                 .Select(p => PlayerViewModel.Map(p))
                 .First();
 
-            return await Task.FromResult(result);
+            return result;
         }
 
         /// <summary>
@@ -67,7 +66,7 @@
         /// <param name="player"> The  player as ViewModel. </param>
         /// <returns> Has been saved successfully - Created OData result
         /// unsuccessfully - Bad request </returns>
-        public async Task<IHttpActionResult> Post(PlayerViewModel player)
+        public IHttpActionResult Post(PlayerViewModel player)
         {
             if (!ModelState.IsValid)
             {
@@ -78,7 +77,7 @@
             _playerService.Create(playerToCreate);
             player.Id = playerToCreate.Id;
 
-            return await Task.FromResult(Ok(player));
+            return Ok(player);
         }
 
         /// <summary>
@@ -87,7 +86,7 @@
         /// <param name="player">The player view model to update</param>
         /// <returns> Updated player
         /// unsuccessfully - Bad request </returns>
-        public async Task<IHttpActionResult> Put(PlayerViewModel player)
+        public IHttpActionResult Put(PlayerViewModel player)
         {
             if (!ModelState.IsValid)
             {
@@ -116,7 +115,7 @@
                 return BadRequest(ModelState);
             }
 
-            return await Task.FromResult(Ok(player));
+            return Ok(player);
         }
 
         /// <summary>
@@ -154,7 +153,7 @@
         /// </summary>
         /// <param name="key">ID of the player.</param>
         /// <returns>Team that linked to the player.</returns>
-        public async Task<TeamViewModel> GetTeams(int key)
+        public TeamViewModel GetTeams(int key)
         {
             TeamViewModel team;
             try
@@ -167,13 +166,13 @@
                 throw new HttpResponseException(HttpStatusCode.NotFound);
             }
 
-            return await Task.FromResult(team);
+            return team;
         }
 
         /// <summary> Deletes tournament </summary>
         /// <param name="key"> The key. </param>
         /// <returns> The <see cref="IHttpActionResult"/>. </returns>
-        public async Task<IHttpActionResult> Delete(int key)
+        public IHttpActionResult Delete(int key)
         {
             try
             {
@@ -184,7 +183,7 @@
                 return BadRequest(ex.Message);
             }
 
-            return await Task.FromResult(StatusCode(HttpStatusCode.NoContent));
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         private IHttpActionResult AssignTeamToPlayer(Player playerToUpdate, Uri link)

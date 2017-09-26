@@ -4,7 +4,7 @@
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
-    using Crosscutting.Contracts.MailService;
+    using Contracts.ExternalResources;
     using Data.Contracts;
     using Data.Exceptions;
     using Data.Queries.Common;

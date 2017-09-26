@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Web.Http;
     using VolleyManagement.Contracts;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
@@ -25,9 +24,9 @@
         /// </summary>
         /// <returns> Contributors teams list. </returns>
         [HttpGet]
-        public async Task<IEnumerable<ContributorsTeamViewModel>> GetContributorsTeam()
+        public IEnumerable<ContributorsTeamViewModel> GetContributorsTeam()
         {
-            var list = await _contributorTeamService.Get();
+            var list = _contributorTeamService.Get();
 
             return list.Select(c => ContributorsTeamViewModel.Map(c));
         }

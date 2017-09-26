@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Threading.Tasks;
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
@@ -34,9 +33,8 @@
         /// <summary>
         /// Test for Index method. All contributors are requested. All contributors are returned.
         /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
         [TestMethod]
-        public async Task Index_GetAllContributors_AllContributorsAreReturned()
+        public void Index_GetAllContributors_AllContributorsAreReturned()
         {
             // Arrange
             var testData = MakeTestContributorTeams();
@@ -46,7 +44,7 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(await sut.Index()).ToList();
+            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamViewModelComparer());
@@ -70,7 +68,7 @@
 
         private void SetupGetAll(List<ContributorTeam> teams)
         {
-            _contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(Task.FromResult(teams));
+            _contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams);
         }
 
         private ContributorsTeamController BuildSUT()

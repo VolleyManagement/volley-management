@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Domain.ContributorsAggregate;
 
     /// <summary>
@@ -13,6 +12,6 @@
         /// Gets list of all contributors team.
         /// </summary>
         /// <returns>Return list of all contributors.</returns>
-        Task<List<ContributorTeam>> Get();
+        List<ContributorTeam> Get();
     }
 }

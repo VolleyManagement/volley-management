@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using System.Web.Mvc;
     using System.Web.UI;
     using Contracts;
@@ -32,9 +31,9 @@
         /// </summary>
         /// <returns>View with collection of contributors teams</returns>
         [OutputCache(Duration = 86400, Location = OutputCacheLocation.Any)]
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var contributorsTeam = await _contributorTeamService.Get();
+            var contributorsTeam = _contributorTeamService.Get();
 
             var contributorsTeamViewModel = new List<ContributorsTeamViewModel>();
 

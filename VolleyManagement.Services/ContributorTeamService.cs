@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Services
 {
     using System.Collections.Generic;
-    using System.Threading.Tasks;
     using Contracts;
     using Domain.ContributorsAggregate;
 
@@ -25,9 +24,9 @@
         /// Method to get all contributors team.
         /// </summary>
         /// <returns>All teams.</returns>
-        public async Task<List<ContributorTeam>> Get()
+        public List<ContributorTeam> Get()
         {
-            return await _contributorTeamRepository.Find();
+            return _contributorTeamRepository.Find();
         }
     }
 }

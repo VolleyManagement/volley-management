@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
-    using System.Threading.Tasks;
     using Contracts;
     using Domain.ContributorsAggregate;
 
@@ -42,7 +41,7 @@
         /// Gets all teams with contributors inside.
         /// </summary>
         /// <returns>Collection of teams with contributors</returns>
-        public async Task<List<ContributorTeam>> Find()
+        public List<ContributorTeam> Find()
         {
             var result = _contribsSet.GroupBy(c => c.Team)
                                      .Select(gr => new ContributorTeam
@@ -57,7 +56,7 @@
                                          })
                                      });
 
-            return await result.ToListAsync();
+            return result.ToList();
         }
 
         /// <summary>

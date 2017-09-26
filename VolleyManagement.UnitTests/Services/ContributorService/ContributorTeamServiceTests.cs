@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Threading.Tasks;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using VolleyManagement.Data.Contracts;
@@ -36,9 +35,8 @@
         /// <summary>
         /// Test for Get() method. The method should return existing contributors teams
         /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
         [TestMethod]
-        public async Task GetAll_ContributorsTeamExist_ContributorsTeamReturned()
+        public void GetAll_ContributorsTeamExist_ContributorsTeamReturned()
         {
             // Arrange
             var testData = _testFixture.TestContributors()
@@ -53,7 +51,7 @@
                                             .ToList();
 
             // Act
-            var actual = await sut.Get();
+            var actual = sut.Get();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamComparer());
@@ -66,7 +64,7 @@
 
         private void MockRepositoryFindAll(List<ContributorTeam> testData)
         {
-            _contributorTeamRepositoryMock.Setup(tr => tr.Find()).Returns(Task.FromResult(testData));
+            _contributorTeamRepositoryMock.Setup(tr => tr.Find()).Returns(testData);
         }
 
         private bool PlayersAreEqual(ContributorTeam x, ContributorTeam y)

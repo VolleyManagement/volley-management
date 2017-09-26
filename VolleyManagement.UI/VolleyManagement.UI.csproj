@@ -762,7 +762,6 @@
     <TypeScriptCompile Include="src\app\Components\Standings\standings.component.ts" />
     <TypeScriptCompile Include="src\app\Constants\Constants.ts" />
     <TypeScriptCompile Include="src\app\Constants\CssClassConstants.ts" />
-    <TypeScriptCompile Include="src\app\Helpers\FormatterHelper.ts" />
     <TypeScriptCompile Include="src\app\Models\Pivot\PivotStandings.ts" />
     <TypeScriptCompile Include="src\app\Models\Pivot\PivotStandingsEntry.ts" />
     <TypeScriptCompile Include="src\app\Models\Pivot\PivotStandingsGame.ts" />

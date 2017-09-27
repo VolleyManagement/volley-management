@@ -22,7 +22,6 @@ namespace VolleyManagement.UI
         {
             // Attribute routing.
             config.MapHttpAttributeRoutes();
-            config.EnableCors();
             WebApiAreaRegistration.RegisterOData(config);
         }
 

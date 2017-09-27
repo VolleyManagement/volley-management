@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { TournamentJson } from './Models/TournamentJson/TournamentJson';
+import { TournamentMetadataJson } from './Models/TournamentMetadataJson/TournamentMetadataJson';
 import { JsonService } from './Services/json.service';
 import { PivotStandingsComponent } from './Components/PivotStanding/pivotstandings.component';
 import { StandingsComponent } from './Components/Standings/standings.component';
@@ -16,16 +16,14 @@ export class AppComponent implements OnInit {
   title = 'app';
   private pivotTable: PivotStandingsComponent;
   private standings: StandingsComponent;
-  public tournamentJson: TournamentJson;
+  public tournamentJson: TournamentMetadataJson;
   private pivotId: number;
   private standingsId: number;
 
   constructor(private jsonService: JsonService) { }
 
   ngOnInit(): void {
-    const tournamentJsonUrl = document.
-      getElementsByTagName('vm-app')[0].
-      getAttribute('metadatafile');
+    const tournamentJsonUrl = this.getTournamentMetadataFileName();
 
     this.getTournamentData(tournamentJsonUrl)
       .subscribe(json => {
@@ -34,7 +32,11 @@ export class AppComponent implements OnInit {
       });
   }
 
-  private getTournamentData(jsonUrl: string): Observable<TournamentJson> {
+  private getTournamentMetadataFileName(): string {
+    return document.getElementsByTagName('vm-app')[0].getAttribute('metadatafile');
+  }
+
+  private getTournamentData(jsonUrl: string): Observable<TournamentMetadataJson> {
     return this.jsonService.getTournamentJson(jsonUrl);
   }
 

@@ -5,16 +5,16 @@ import { environment } from '../../environments/environment';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
-import { TournamentJson } from '../Models/TournamentJson/TournamentJson';
+import { TournamentMetadataJson } from '../Models/TournamentMetadataJson/TournamentMetadataJson';
 
 @Injectable()
 export class JsonService {
     constructor(private http: Http) { }
 
-    getTournamentJson(fileName: string): Observable<TournamentJson> {
+    getTournamentJson(fileName: string): Observable<TournamentMetadataJson> {
         const url = environment.jsonBaseUrl.concat(fileName);
         return this.http
             .get(url)
-            .map(response => response.json() as TournamentJson);
+            .map(response => response.json() as TournamentMetadataJson);
     }
 }

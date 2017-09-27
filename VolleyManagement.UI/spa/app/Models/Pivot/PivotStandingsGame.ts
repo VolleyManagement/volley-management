@@ -4,33 +4,33 @@ export class PivotStandingsGame {
     constructor(
         public HomeTeamId: number,
         public AwayTeamId: number,
-        public Results: ShortGameResult
+        public Results: ShortGameResult[]
     ) { }
 
     public static getNonPlayableCell(): PivotStandingsGame {
         return new PivotStandingsGame(
             0,
             0,
-            ShortGameResult.getNonPlayableCell());
+            [ShortGameResult.getNonPlayableCell()]);
     }
 
     public clone(): PivotStandingsGame {
         return new PivotStandingsGame(
             this.HomeTeamId,
             this.AwayTeamId,
-            new ShortGameResult(
-                this.Results.HomeSetsScore,
-                this.Results.AwaySetsScore,
-                this.Results.IsTechnicalDefeat));
+            this.Results.map(item => new ShortGameResult(
+                item.HomeSetsScore,
+                item.AwaySetsScore,
+                item.IsTechnicalDefeat)));
     }
 
     public transposeResult(): PivotStandingsGame {
         return new PivotStandingsGame(
             this.AwayTeamId,
             this.HomeTeamId,
-            new ShortGameResult(
-                this.Results.AwaySetsScore,
-                this.Results.HomeSetsScore,
-                this.Results.IsTechnicalDefeat));
+            this.Results.map(item => new ShortGameResult(
+                item.AwaySetsScore,
+                item.HomeSetsScore,
+                item.IsTechnicalDefeat)));
     }
 }

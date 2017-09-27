@@ -13,8 +13,8 @@
       <tr class="standings-row" *ngFor="let item of pivotStandings?.TeamsStandings; let i = index;">
         <td class="standings-cell">{{i+1}}</td>
         <td class="standings-cell">{{pivotStandings?.TeamsStandings[i].TeamName}}</td>
-        <td class="standings-cell {{pivotTable[i][j]?.Results.CssClass}}" *ngFor="let item of pivotStandings?.TeamsStandings; let j = index;">
-          <div>{{pivotTable[i][j]?.Results.FormattedResult}}</div>
+        <td class="standings-cell {{pivotTable[i][j]?.Results[0].CssClass}}" *ngFor="let item of pivotStandings?.TeamsStandings; let j = index;">
+          <div *ngFor="let item of pivotTable[i][j]?.Results">{{item.FormattedResult}}</div>
         </td>
         <td class="standings-cell">
           <div class="boldText">

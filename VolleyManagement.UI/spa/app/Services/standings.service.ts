@@ -27,7 +27,7 @@ export class StandingsService {
                 const teamStandings: PivotStandingsEntry[] = data.TeamsStandings;
                 const gameStandings: PivotStandingsGame[] = new Array();
                 data.GamesStandings.forEach((item) => {
-                    gameStandings.push(new PivotStandingsGame(item.HomeTeamId, item.AwayTeamId, item.Results[0]));
+                    gameStandings.push(new PivotStandingsGame(item.HomeTeamId, item.AwayTeamId, item.Results));
                 });
 
                 return new PivotStandings(teamStandings, gameStandings);

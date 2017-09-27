@@ -1,19 +1,15 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ODataControllers
+﻿namespace VolleyManagement.UI.Areas.WebAPI.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
-    using System.Web.OData;
+    using VolleyManagement.Contracts;
+    using VolleyManagement.Contracts.Exceptions;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
+    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
 
-    using Contracts;
-    using Contracts.Exceptions;
-    using ViewModels.Players;
-    using ViewModels.Teams;
-
-    /// <summary>
-    /// The teams controller.
-    /// </summary>
-    public class TeamsController : ODataController
+    public class TeamsController : ApiController
     {
         private const string CONTROLLER_NAME = "teams";
         private readonly ITeamService _teamService;
@@ -53,20 +49,18 @@
             }
 
             team.Id = teamToCreate.Id;
-            return Created(team);
+            return Ok(team);
         }
 
         /// <summary>
         /// Gets teams.
         /// </summary>
         /// <returns>Team list. </returns>
-        [EnableQuery]
-        public IQueryable<TeamViewModel> GetTeams()
+        public IEnumerable<TeamViewModel> GetTeams()
         {
             return _teamService.Get()
                                 .ToList()
-                                .Select(t => TeamViewModel.Map(t))
-                                .AsQueryable();
+                                .Select(t => TeamViewModel.Map(t));
         }
 
         /// <summary>
@@ -74,18 +68,19 @@
         /// </summary>
         /// <param name="key">Id of the team.</param>
         /// <returns>Players in team roster.</returns>
-        [EnableQuery]
-        public IQueryable<PlayerViewModel> GetPlayers([FromODataUri] int key)
+        public IEnumerable<PlayerViewModel> GetPlayers(int key)
         {
-            return _teamService.GetTeamRoster(key)
-                .Select(p => PlayerViewModel.Map(p))
-                .AsQueryable();
+            var result = _teamService
+                .GetTeamRoster(key)
+                .Select(p => PlayerViewModel.Map(p));
+
+            return result;
         }
 
         /// <summary> Deletes team </summary>
         /// <param name="id"> The id. </param>
         /// <returns> The <see cref="IHttpActionResult"/>. </returns>
-        public IHttpActionResult Delete([FromODataUri] int id)
+        public IHttpActionResult Delete(int id)
         {
             try
             {

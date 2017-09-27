@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Web.Mvc;
     using System.Web.UI;
     using Contracts;
@@ -34,7 +33,8 @@
         [OutputCache(Duration = 86400, Location = OutputCacheLocation.Any)]
         public ActionResult Index()
         {
-            var contributorsTeam = _contributorTeamService.Get().ToList();
+            var contributorsTeam = _contributorTeamService.Get();
+
             var contributorsTeamViewModel = new List<ContributorsTeamViewModel>();
 
             foreach (var item in contributorsTeam)

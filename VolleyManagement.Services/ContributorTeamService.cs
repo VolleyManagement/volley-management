@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Services
 {
-    using System.Linq;
+    using System.Collections.Generic;
     using Contracts;
     using Domain.ContributorsAggregate;
 
@@ -24,7 +24,7 @@
         /// Method to get all contributors team.
         /// </summary>
         /// <returns>All teams.</returns>
-        public IQueryable<ContributorTeam> Get()
+        public List<ContributorTeam> Get()
         {
             return _contributorTeamRepository.Find();
         }

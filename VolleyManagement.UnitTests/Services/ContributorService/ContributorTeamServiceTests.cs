@@ -5,7 +5,6 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using VolleyManagement.Contracts;
     using VolleyManagement.Data.Contracts;
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.Services;
@@ -42,6 +41,7 @@
             // Arrange
             var testData = _testFixture.TestContributors()
                                        .Build();
+
             MockRepositoryFindAll(testData);
 
             var sut = BuildSUT();
@@ -51,7 +51,7 @@
                                             .ToList();
 
             // Act
-            var actual = sut.Get().ToList();
+            var actual = sut.Get();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamComparer());
@@ -62,9 +62,9 @@
             return new ContributorTeamService(_contributorTeamRepositoryMock.Object);
         }
 
-        private void MockRepositoryFindAll(IEnumerable<ContributorTeam> testData)
+        private void MockRepositoryFindAll(List<ContributorTeam> testData)
         {
-            _contributorTeamRepositoryMock.Setup(tr => tr.Find()).Returns(testData.AsQueryable());
+            _contributorTeamRepositoryMock.Setup(tr => tr.Find()).Returns(testData);
         }
 
         private bool PlayersAreEqual(ContributorTeam x, ContributorTeam y)

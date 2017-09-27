@@ -68,7 +68,7 @@
 
         private void SetupGetAll(List<ContributorTeam> teams)
         {
-            _contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams.AsQueryable());
+            _contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams);
         }
 
         private ContributorsTeamController BuildSUT()

@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.Domain.ContributorsAggregate
 {
-    using System.Linq;
-
+    using System.Collections.Generic;
     using Data.Contracts;
 
     /// <summary>
@@ -13,6 +12,6 @@
         /// Gets all contributors team.
         /// </summary>
         /// <returns>Collection of contributors from the repository.</returns>
-        IQueryable<ContributorTeam> Find();
+        List<ContributorTeam> Find();
     }
 }

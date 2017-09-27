@@ -1,11 +1,8 @@
 namespace VolleyManagement.Data.MsSql.Context.Migrations
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-
-    using Entities;
+    using Crosscutting.Contracts.FeatureToggles;
+    using FeatureToggle.Core.Fluent;
 
     /// <summary>
     /// The volley context configuration.
@@ -29,7 +26,11 @@ namespace VolleyManagement.Data.MsSql.Context.Migrations
         protected override void Seed(VolleyManagementEntities context)
         {
             SeedDataGenerator.GenerateRequiredEntities(context);
-            SeedDataGenerator.GenerateDebugEntities(context);
+
+            if (Is<IISDeployment>.Enabled)
+            {
+                SeedDataGenerator.GenerateDebugEntities(context);
+            }
         }
     }
 }

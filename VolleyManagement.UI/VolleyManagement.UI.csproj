@@ -64,6 +64,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FeatureToggle, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FeatureToggle.3.5.1\lib\net40\FeatureToggle.dll</HintPath>
+    </Reference>
+    <Reference Include="FeatureToggle.Core, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FeatureToggle.Core.3.5.1\lib\portable-net40+sl50+wp81+wpa+win\FeatureToggle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Glimpse.AspNet, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Glimpse.AspNet.1.8.0\lib\net45\Glimpse.AspNet.dll</HintPath>
     </Reference>
@@ -83,12 +89,6 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.3\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.OData.Core, Version=6.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.OData.Core.6.13.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.OData.Edm, Version=6.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.OData.Edm.6.13.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.OData.Edm.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -109,6 +109,9 @@
     </Reference>
     <Reference Include="Microsoft.Spatial, Version=6.13.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Spatial.6.13.0\lib\portable-net40+sl5+wp8+win8+wpa\Microsoft.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -152,9 +155,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -381,12 +381,12 @@
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserEditViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\ContributorsTeamController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\HomeController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\PlayersController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\TeamsController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\TournamentsController.cs" />
     <Compile Include="Areas\WebAPI\Infrastructure\WebApiHelpers.cs" />
-    <Compile Include="Areas\WebAPI\ODataControllers\ContributorsTeamController.cs" />
-    <Compile Include="Areas\WebAPI\ODataControllers\PlayersController.cs" />
-    <Compile Include="Areas\WebAPI\ODataControllers\TeamsController.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\ContributorsTeam\ContributorsTeamViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\GameReports\PivotStandingsEntryViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\GameReports\PivotStandingsGameViewModel.cs" />
@@ -409,6 +409,7 @@
     <Compile Include="Infrastructure\ExceptionManagement\VolleyExceptionFilterAttribute.cs" />
     <Compile Include="Infrastructure\IocUIModule.cs" />
     <Compile Include="Infrastructure\IOC\SimpleInjectorContainer.cs" />
+    <Compile Include="Infrastructure\SimpleTraceLog.cs" />
     <Compile Include="OwinConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelConstants.cs" />

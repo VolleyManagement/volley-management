@@ -5,12 +5,11 @@
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
-    using Crosscutting.Contracts.MailService;
+    using Contracts.ExternalResources;
     using Crosscutting.Contracts.Providers;
     using Data.Contracts;
     using Data.Queries.Common;
     using Domain.FeedbackAggregate;
-    using Domain.Properties;
     using Domain.RolesAggregate;
     using Domain.UsersAggregate;
 

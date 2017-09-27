@@ -2,12 +2,6 @@
 {
     using System.Web.Http;
     using System.Web.Mvc;
-    using System.Web.OData.Builder;
-    using System.Web.OData.Extensions;
-    using ViewModels.ContributorsTeam;
-    using ViewModels.Players;
-    using ViewModels.Teams;
-    using ViewModels.Tournaments;
 
     /// <summary>
     /// The WebApi area registration.
@@ -23,33 +17,6 @@
             {
                 return "WebApi";
             }
-        }
-
-        /// <summary>
-        /// Registers OData routing
-        /// </summary>
-        /// <param name="config">The config.</param>
-        public static void RegisterOData(HttpConfiguration config)
-        {
-            var builder = new ODataConventionModelBuilder();
-            builder.EnableLowerCamelCase();
-
-            builder.EntitySet<TournamentViewModel>("Tournaments");
-            builder.EntitySet<PlayerViewModel>("Players");
-            builder.EntitySet<ContributorsTeamViewModel>("ContributorsTeam");
-            builder.EntitySet<TeamViewModel>("Teams");
-
-            builder.EntityType<TournamentViewModel>()
-                .Collection
-                .Function("GetActual")
-                .Returns<TournamentViewModel>();
-
-            builder.EntityType<TournamentViewModel>()
-                .Collection
-                .Function("GetFinished")
-                .Returns<TournamentViewModel>();
-
-            config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
 
         /// <summary>

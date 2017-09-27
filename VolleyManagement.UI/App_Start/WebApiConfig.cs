@@ -1,13 +1,6 @@
-namespace VolleyManagement.UI
+﻿namespace VolleyManagement.UI
 {
     using System.Web.Http;
-    using System.Web.OData.Builder;
-    using System.Web.OData.Extensions;
-
-    using Areas.WebApi;
-    using Areas.WebApi.ViewModels.Players;
-    using Areas.WebApi.ViewModels.Teams;
-    using Areas.WebApi.ViewModels.Tournaments;
 
     /// <summary>
     /// The WebApi config.
@@ -22,25 +15,6 @@ namespace VolleyManagement.UI
         {
             // Attribute routing.
             config.MapHttpAttributeRoutes();
-            WebApiAreaRegistration.RegisterOData(config);
-        }
-
-        private static void RegisterOData(HttpConfiguration config)
-        {
-            var builder = new ODataConventionModelBuilder();
-            builder.EnableLowerCamelCase();
-
-            builder.EntitySet<TournamentViewModel>("Tournaments");
-            builder.EntitySet<PlayerViewModel>("Players");
-            builder.EntitySet<TeamViewModel>("Teams");
-
-            builder.Namespace = "TournamentService";
-            builder.EntityType<TournamentViewModel>()
-                .Collection
-                .Function("GetActualAndExpected")
-                .Returns<TournamentViewModel>();
-
-            config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
     }
 }

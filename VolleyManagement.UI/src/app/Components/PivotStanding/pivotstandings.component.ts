@@ -1,5 +1,6 @@
-import { Component, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, Input, OnDestroy } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+import { ISubscription } from 'rxjs/Subscription';
 
 import { StandingsService } from '../../Services/standings.service';
 import { PivotStandings } from '../../Models/Pivot/PivotStandings';
@@ -12,22 +13,28 @@ import { ShortGameResult } from '../../Models/Pivot/ShortGameResult';
     styleUrls: ['./pivotstandings.component.css']
 })
 
-export class PivotStandingsComponent implements OnChanges {
+export class PivotStandingsComponent implements OnChanges, OnDestroy {
 
     @Input() pivotId: number;
     pivotStandings: PivotStandings;
     pivotTable: PivotStandingsGame[][];
 
+    private subscription: ISubscription;
+
     constructor(private standingsService: StandingsService) { }
 
     ngOnChanges(): void {
         if (this.pivotId) {
-            this.standingsService.getPivotStandings(this.pivotId)
+            this.subscription = this.standingsService.getPivotStandings(this.pivotId)
                 .subscribe(standings => {
                     this.pivotStandings = standings;
                     this.pivotTable = this.getPivotTable(this.pivotStandings);
                 });
         }
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 
     getPivotTable(pivot: PivotStandings): PivotStandingsGame[][] {

@@ -768,7 +768,6 @@
     <TypeScriptCompile Include="src\app\Models\Pivot\ShortGameResult.ts" />
     <TypeScriptCompile Include="src\app\Models\Standings\StandingsEntry.ts" />
     <TypeScriptCompile Include="src\app\Models\TournamentJson\TournamentJson.ts" />
-    <TypeScriptCompile Include="src\app\Modules\app-routing.ts" />
     <TypeScriptCompile Include="src\app\Services\json.service.ts" />
     <TypeScriptCompile Include="src\app\Services\standings.service.ts" />
     <TypeScriptCompile Include="src\environments\environment.prod.ts" />

@@ -30,7 +30,7 @@ export class StandingsService {
                     gameStandings.push(new PivotStandingsGame(item.HomeTeamId, item.AwayTeamId, item.Results));
                 });
 
-                return new PivotStandings(teamStandings, gameStandings);
+                return { TeamsStandings: teamStandings, GamesStandings: gameStandings };
             });
     }
 

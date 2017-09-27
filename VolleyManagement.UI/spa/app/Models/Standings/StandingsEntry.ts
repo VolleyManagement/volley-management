@@ -1,22 +1,20 @@
-export class StandingsEntry {
-    constructor(
-        public TeamName: string,
-        public GamesTotal: number,
-        public GamesWon: number,
-        public GamesLost: number,
-        public GamesWithScoreThreeNil: number,
-        public GamesWithScoreThreeOne: number,
-        public GamesWithScoreThreeTwo: number,
-        public GamesWithScoreTwoThree: number,
-        public GamesWithScoreOneThree: number,
-        public GamesWithScoreNilThree: number,
-        public SetsWon: number,
-        public SetsLost: number,
-        public SetsRatio: number,
-        public SetsRatioText: string,
-        public BallsWon: number,
-        public BallsLost: number,
-        public BallsRatio: number,
-        public BallsRatioText: string
-    ) { }
+export interface StandingsEntry {
+    TeamName: string;
+    GamesTotal: number;
+    GamesWon: number;
+    GamesLost: number;
+    GamesWithScoreThreeNil: number;
+    GamesWithScoreThreeOne: number;
+    GamesWithScoreThreeTwo: number;
+    GamesWithScoreTwoThree: number;
+    GamesWithScoreOneThree: number;
+    GamesWithScoreNilThree: number;
+    SetsWon: number;
+    SetsLost: number;
+    SetsRatio: number;
+    SetsRatioText: string;
+    BallsWon: number;
+    BallsLost: number;
+    BallsRatio: number;
+    BallsRatioText: string;
 }

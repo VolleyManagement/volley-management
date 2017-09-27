@@ -1,11 +1,9 @@
 import { PivotStandingsGame } from './PivotStandingsGame';
 
-export class PivotStandingsEntry {
-    constructor(
-        public TeamId: number,
-        public TeamName: string,
-        public Points: number,
-        public SetsRatio: number,
-        public SetsRatioText: string
-    ) { }
+export interface PivotStandingsEntry {
+    TeamId: number;
+    TeamName: string;
+    Points: number;
+    SetsRatio: number;
+    SetsRatioText: string;
 }

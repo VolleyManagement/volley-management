@@ -8,7 +8,7 @@ import { PivotStandingsGame } from '../../Models/Pivot/PivotStandingsGame';
 import { ShortGameResult } from '../../Models/Pivot/ShortGameResult';
 
 @Component({
-    selector: 'pivottable-component',
+    selector: 'pivottable',
     templateUrl: './pivotstandings.component.html',
     styleUrls: ['./pivotstandings.component.css']
 })

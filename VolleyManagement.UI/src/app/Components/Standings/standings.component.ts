@@ -7,7 +7,7 @@ import { StandingsEntry } from '../../Models/Standings/StandingsEntry';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
-    selector: 'app-standings-component',
+    selector: 'standings-component',
     templateUrl: './standings.component.html',
     styleUrls: ['./standings.component.css']
 })

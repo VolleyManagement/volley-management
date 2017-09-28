@@ -1,0 +1,59 @@
+<div *ngIf="standingsEntry">
+  <legend></legend>
+  <p *ngIf="!standingsEntry">
+    No Game Results
+  </p>
+
+  <table class="standings" *ngIf="standingsEntry">
+    <thead>
+      <tr class="standings-header-row">
+        <th colspan="3" class="standings-header-cell">N/A</th>
+        <th colspan="9" class="standings-header-cell">Games</th>
+        <th colspan="3" class="standings-header-cell">Sets</th>
+        <th colspan="3" class="standings-header-cell">Balls</th>
+      </tr>
+      <tr class="standings-header-row">
+        <th class="standings-header-cell">Position</th>
+        <th class="standings-header-cell">Team</th>
+        <th class="standings-header-cell">Points</th>
+        <th class="standings-header-cell">Total</th>
+        <th class="standings-header-cell">Won</th>
+        <th class="standings-header-cell">Lost</th>
+        <th class="standings-header-cell">3:0</th>
+        <th class="standings-header-cell">3:1</th>
+        <th class="standings-header-cell">3:2</th>
+        <th class="standings-header-cell">2:3</th>
+        <th class="standings-header-cell">1:3</th>
+        <th class="standings-header-cell">0:3</th>
+        <th class="standings-header-cell">Won</th>
+        <th class="standings-header-cell">Lost</th>
+        <th class="standings-header-cell">Ratio</th>
+        <th class="standings-header-cell">Won</th>
+        <th class="standings-header-cell">Lost</th>
+        <th class="standings-header-cell">Ratio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="standings-row" *ngFor="let entry of standingsEntry">
+        <td class="standings-cell">{{entry.Position}}</td>
+        <td class="standings-cell">{{entry.TeamName}}</td>
+        <td class="standings-cell">{{entry.Points}}</td>
+        <td class="standings-cell">{{entry.GamesTotal}}</td>
+        <td class="standings-cell">{{entry.GamesWon}}</td>
+        <td class="standings-cell">{{entry.GamesLost}}</td>
+        <td class="standings-cell">{{entry.GamesWithScoreThreeNil}}</td>
+        <td class="standings-cell">{{entry.GamesWithScoreThreeOne}}</td>
+        <td class="standings-cell">{{entry.GamesWithScoreThreeTwo}}</td>
+        <td class="standings-cell">{{entry.GamesWithScoreTwoThree}}</td>
+        <td class="standings-cell">{{entry.GamesWithScoreOneThree}}</td>
+        <td class="standings-cell">{{entry.GamesWithScoreNilThree}}</td>
+        <td class="standings-cell">{{entry.SetsWon}}</td>
+        <td class="standings-cell">{{entry.SetsLost}}</td>
+        <td class="standings-cell">{{entry.SetsRatio | number:'.0-3'}}</td>
+        <td class="standings-cell">{{entry.BallsWon}}</td>
+        <td class="standings-cell">{{entry.BallsLost}}</td>
+        <td class="standings-cell">{{entry.BallsRatio | number:'.0-3'}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

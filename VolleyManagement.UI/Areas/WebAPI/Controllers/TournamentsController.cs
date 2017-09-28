@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.Controllers
+namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
     using System.Collections.Generic;
     using System.IO;

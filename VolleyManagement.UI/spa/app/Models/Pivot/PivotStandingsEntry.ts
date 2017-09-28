@@ -1,5 +1,3 @@
-import { PivotStandingsGame } from './PivotStandingsGame';
-
 export interface PivotStandingsEntry {
     TeamId: number;
     TeamName: string;

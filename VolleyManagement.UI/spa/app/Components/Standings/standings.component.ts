@@ -26,9 +26,7 @@ export class StandingsComponent implements OnChanges, OnDestroy {
     ngOnChanges(): void {
         if (this.standingsId) {
             this.subscription = this.standingsService.getStandings(this.standingsId)
-                .subscribe(standings => {
-                    this.standingsEntry = standings;
-                });
+                .subscribe(standings => this.standingsEntry = standings);
         }
     }
 

@@ -25,6 +25,7 @@ export class StandingsService {
             .map((response: Response) => {
                 const data = response.json() as PivotStandings;
                 const teamStandings: PivotStandingsEntry[] = data.TeamsStandings;
+                this.setTeamsPositions(teamStandings);
                 const gameStandings: PivotStandingsGame[] = new Array();
                 data.GamesStandings.forEach((item) => {
                     gameStandings.push(new PivotStandingsGame(item.HomeTeamId, item.AwayTeamId, item.Results));
@@ -39,5 +40,9 @@ export class StandingsService {
         return this.http
             .get(url)
             .map(response => response.json() as StandingsEntry[]);
+    }
+
+    private setTeamsPositions(teamStandings: PivotStandingsEntry[]) {
+        teamStandings.forEach((item, index) => item.Position = index + 1);
     }
 }

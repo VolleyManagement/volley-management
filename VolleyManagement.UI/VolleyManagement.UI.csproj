@@ -764,8 +764,9 @@
     <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandingsEntry.ts" />
     <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandingsGame.ts" />
     <TypeScriptCompile Include="spa\app\Models\Pivot\ShortGameResult.ts" />
+    <TypeScriptCompile Include="spa\app\Models\Schedule\GameResult.ts" />
+    <TypeScriptCompile Include="spa\app\Models\Schedule\SetScore.ts" />
     <TypeScriptCompile Include="spa\app\Models\Standings\StandingsEntry.ts" />
-    <TypeScriptCompile Include="spa\app\Models\TournamentJson\TournamentJson.ts" />
     <TypeScriptCompile Include="spa\app\Models\TournamentMetadataJson\TournamentMetadataJson.ts" />
     <TypeScriptCompile Include="spa\app\Services\json.service.ts" />
     <TypeScriptCompile Include="spa\app\Services\standings.service.ts" />

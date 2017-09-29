@@ -769,6 +769,7 @@
     <TypeScriptCompile Include="spa\app\Models\Standings\StandingsEntry.ts" />
     <TypeScriptCompile Include="spa\app\Models\TournamentMetadataJson\TournamentMetadataJson.ts" />
     <TypeScriptCompile Include="spa\app\Services\json.service.ts" />
+    <TypeScriptCompile Include="spa\app\Services\schedule.service.ts" />
     <TypeScriptCompile Include="spa\app\Services\standings.service.ts" />
     <TypeScriptCompile Include="spa\environments\environment.prod.ts" />
     <TypeScriptCompile Include="spa\environments\environment.ts" />

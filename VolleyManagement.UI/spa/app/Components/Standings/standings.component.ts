@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ParamMap } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { ISubscription } from 'rxjs/Subscription';
@@ -14,7 +14,7 @@ import 'rxjs/add/operator/switchMap';
     styleUrls: ['./standings.component.css']
 })
 
-export class StandingsComponent implements OnChanges, OnDestroy {
+export class StandingsComponent implements OnInit, OnDestroy {
 
     @Input() standingsId: number;
     standingsEntry: StandingsEntry[];
@@ -23,7 +23,7 @@ export class StandingsComponent implements OnChanges, OnDestroy {
 
     constructor(private standingsService: StandingsService) { }
 
-    ngOnChanges(): void {
+    ngOnInit(): void {
         if (this.standingsId) {
             this.subscription = this.standingsService.getStandings(this.standingsId)
                 .subscribe(standings => this.standingsEntry = standings);

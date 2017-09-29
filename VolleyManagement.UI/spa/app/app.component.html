@@ -1,3 +1,3 @@
-<standings [standingsId]='standingsId'></standings>
-<pivottable [pivotId]='pivotId'></pivottable>
 <!-- <schedule-component></schedule-component> -->
+<standings *ngIf="standingsId" [standingsId]='standingsId'></standings>
+<pivottable *ngIf="pivotId" [pivotId]='pivotId'></pivottable>

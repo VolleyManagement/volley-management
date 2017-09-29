@@ -602,6 +602,8 @@
     <Content Include="spa\app\app.component.html" />
     <Content Include="spa\app\Components\PivotStanding\pivotstandings.component.css" />
     <Content Include="spa\app\Components\PivotStanding\pivotstandings.component.html" />
+    <Content Include="spa\app\Components\Schedule\schedule.component.css" />
+    <Content Include="spa\app\Components\Schedule\schedule.component.html" />
     <Content Include="spa\app\Components\Standings\standings.component.css" />
     <Content Include="spa\app\Components\Standings\standings.component.html" />
     <Content Include="spa\favicon.ico" />
@@ -757,6 +759,8 @@
     <TypeScriptCompile Include="spa\app\app.component.ts" />
     <TypeScriptCompile Include="spa\app\app.module.ts" />
     <TypeScriptCompile Include="spa\app\Components\PivotStanding\pivotstandings.component.ts" />
+    <TypeScriptCompile Include="spa\app\Components\Schedule\schedule.component.spec.ts" />
+    <TypeScriptCompile Include="spa\app\Components\Schedule\schedule.component.ts" />
     <TypeScriptCompile Include="spa\app\Components\Standings\standings.component.ts" />
     <TypeScriptCompile Include="spa\app\Constants\Constants.ts" />
     <TypeScriptCompile Include="spa\app\Constants\CssClassConstants.ts" />

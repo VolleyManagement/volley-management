@@ -1,11 +1,9 @@
-import { SetScore } from './SetScore';
+import { Result } from './Result';
 
 export interface GameResult {
     Id: number;
     HomeTeamName: string;
     AwayTeamName: string;
     GameDate: string;
-    TotalScore: SetScore;
-    SetScores: SetScore[];
-    IsTechnicalDefeat: boolean;
+    Result: Result;
 }

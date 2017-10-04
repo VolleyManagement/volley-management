@@ -5,7 +5,7 @@ import { environment } from '../../environments/environment';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
-import { GameResult } from '../Models/Schedule/GameResult';
+import { ScheduleByRounds } from '../Models/Schedule/ScheduleByRounds';
 
 @Injectable()
 export class ScheduleService {
@@ -13,10 +13,10 @@ export class ScheduleService {
 
     constructor(private http: Http) { }
 
-    getSchedule(id: number): Observable<GameResult[]> {
+    getSchedule(id: number): Observable<ScheduleByRounds[]> {
         const url = environment.apiUrlNoVersion.concat(this.scheduleUrl(id));
         return this.http
             .get(url)
-            .map(response => response.json() as GameResult[]);
+            .map(response => response.json() as ScheduleByRounds[]);
     }
 }

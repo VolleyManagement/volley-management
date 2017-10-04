@@ -5,5 +5,6 @@ export interface GameResult {
     HomeTeamName: string;
     AwayTeamName: string;
     GameDate: string;
+    Round: number;
     Result: Result;
 }

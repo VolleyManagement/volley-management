@@ -760,6 +760,7 @@
     <TypeScriptCompile Include="spa\app\Components\Standings\standings.component.ts" />
     <TypeScriptCompile Include="spa\app\Constants\Constants.ts" />
     <TypeScriptCompile Include="spa\app\Constants\CssClassConstants.ts" />
+    <TypeScriptCompile Include="spa\app\CustomPipes\CustomDecimalPipe.ts" />
     <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandings.ts" />
     <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandingsEntry.ts" />
     <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandingsGame.ts" />

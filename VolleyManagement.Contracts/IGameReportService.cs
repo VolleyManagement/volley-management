@@ -13,14 +13,14 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>Standings of the tournament with specified identifier.</returns>
-        List<StandingsEntry> GetStandings(int tournamentId);
+        List<List<StandingsEntry>> GetStandings(int tournamentId);
 
         /// <summary>
         /// Gets pivot standings of the tournament specified by identifier.
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>Pivot standings of the tournament with specified identifier.</returns>
-        PivotStandingsDto GetPivotStandings(int tournamentId);
+        List<PivotStandingsDto> GetPivotStandings(int tournamentId);
 
         /// <summary>
         /// Check if the standing available in the tournament

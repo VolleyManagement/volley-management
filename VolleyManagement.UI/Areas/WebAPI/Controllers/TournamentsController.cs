@@ -68,12 +68,19 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         /// <param name="id">Id of tournament</param>
         /// <returns>Standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/Standings")]
-        public IEnumerable<StandingsEntryViewModel> GetTournamentStandings(int id)
+        public List<List<StandingsEntryViewModel>> GetTournamentStandings(int id)
         {
-            var entries = _gameReportService.GetStandings(id)
-                .Select(t => StandingsEntryViewModel.Map(t))
-                .ToList();
-            return StandingsEntryViewModel.SetPositions(entries);
+            var result = new List<List<StandingsEntryViewModel>>();
+            var entries = _gameReportService.GetStandings(id);
+            foreach (var entry in entries)
+            {
+                var standings = entry.Select(t => StandingsEntryViewModel.Map(t))
+                                     .ToList();
+                StandingsEntryViewModel.SetPositions(standings);
+                result.Add(standings);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -82,9 +89,15 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         /// <param name="id">Id of tournament</param>
         /// <returns>Pivot standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/PivotStandings")]
-        public PivotStandingsViewModel GetTournamentPivotStandings(int id)
+        public IEnumerable<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
         {
-            return new PivotStandingsViewModel(_gameReportService.GetPivotStandings(id));
+            var pivotData = _gameReportService.GetPivotStandings(id);
+            var result = new List<PivotStandingsViewModel>();
+            result.AddRange(pivotData.
+                                Select(item => new PivotStandingsViewModel(item)).
+                                ToList());
+
+            return result;
         }
 
         /// <summary>

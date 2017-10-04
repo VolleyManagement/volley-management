@@ -4,6 +4,7 @@
     using System.Linq;
     using Contracts;
     using Data.Contracts;
+    using Data.Queries.Division;
     using Data.Queries.GameResult;
     using Data.Queries.Team;
     using Data.Queries.Tournament;
@@ -22,6 +23,8 @@
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
+        private readonly IQuery<List<Team>, FindTeamsByDivisionIdCriteria> _teamsByDivisionIdQuery;
+        private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _divisionsByTournamentIdQuery;
 
         #endregion
 
@@ -33,14 +36,20 @@
         /// <param name="tournamentGameResultsQuery">Query for getting tournament's game results.</param>
         /// <param name="tournamentTeamsQuery">Query for getting tournament's game teams.</param>
         /// <param name="tournamentScheduleDtoByIdQuery">Get tournament data transfer object query.</param>
+        /// <param name="teamsByDivisionIdQuery">Get teams by group id</param>
+        /// <param name="divisionsByTournamentIdQuery">Get divisions by tournament id</param>
         public GameReportService(
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> tournamentTeamsQuery,
-            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> tournamentScheduleDtoByIdQuery)
+            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> tournamentScheduleDtoByIdQuery,
+            IQuery<List<Team>, FindTeamsByDivisionIdCriteria> teamsByDivisionIdQuery,
+            IQuery<List<Division>, TournamentDivisionsCriteria> divisionsByTournamentIdQuery)
         {
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
             _tournamentTeamsQuery = tournamentTeamsQuery;
             _tournamentScheduleDtoByIdQuery = tournamentScheduleDtoByIdQuery;
+            _teamsByDivisionIdQuery = teamsByDivisionIdQuery;
+            _divisionsByTournamentIdQuery = divisionsByTournamentIdQuery;
         }
 
         #endregion
@@ -52,33 +61,43 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>Standings of the tournament with specified identifier.</returns>
-        public List<StandingsEntry> GetStandings(int tournamentId)
+        public List<List<StandingsEntry>> GetStandings(int tournamentId)
         {
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var tournamentTeams = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+            var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
+            var standingsByDiviosions = new List<List<StandingsEntry>>();
 
-            var standings = CreateEntriesForTeams(tournamentTeams);
-
-            foreach (var gameResult in gameResults)
+            foreach (var teams in teamsInTournamentByDivisions)
             {
-                if (gameResult.AwayTeamId != null)
-                {
-                    StandingsEntry standingsHomeTeamEntry = standings.Single(se => se.TeamId == gameResult.HomeTeamId);
-                    StandingsEntry standingsAwayTeamEntry = standings.Single(se => se.TeamId == gameResult.AwayTeamId);
+                var standings = CreateEntriesForTeams(teams);
 
-                    CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
+                var gameResultsForDivision = GetGamesResultsForDivision(gameResults, teams);
+
+                foreach (var gameResult in gameResultsForDivision)
+                {
+                    if (gameResult.AwayTeamId != null)
+                    {
+                        StandingsEntry standingsHomeTeamEntry = standings.Single(se => se.TeamId == gameResult.HomeTeamId);
+                        StandingsEntry standingsAwayTeamEntry = standings.Single(se => se.TeamId == gameResult.AwayTeamId);
+
+                        CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
+                    }
                 }
+
+                CalculateSetsStatistics(gameResultsForDivision, standings);
+                CalculateBallsStatistics(gameResultsForDivision, standings);
+
+                // order all standings entries by points, then by sets ratio and then by balls ratio in descending order
+                var orderedStandings = standings.OrderByDescending(ts => ts.Points)
+                    .ThenByDescending(ts => ts.SetsRatio)
+                    .ThenByDescending(ts => ts.BallsRatio)
+                    .ThenBy(ts => ts.TeamName)
+                    .ToList();
+
+                standingsByDiviosions.Add(orderedStandings);
             }
 
-            CalculateSetsStatistics(gameResults, standings);
-            CalculateBallsStatistics(gameResults, standings);
-
-            // order all standings entries by points, then by sets ratio and then by balls ratio in descending order
-            return standings.OrderByDescending(ts => ts.Points)
-                .ThenByDescending(ts => ts.SetsRatio)
-                .ThenByDescending(ts => ts.BallsRatio)
-                .ThenBy(ts => ts.TeamName)
-                .ToList();
+            return standingsByDiviosions;
         }
 
         /// <summary>
@@ -86,24 +105,37 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>Pivot standings of the tournament with specified identifier.</returns>
-        public PivotStandingsDto GetPivotStandings(int tournamentId)
+        public List<PivotStandingsDto> GetPivotStandings(int tournamentId)
         {
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var tournamentTeams = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+            var tournamentInfo = _tournamentScheduleDtoByIdQuery
+                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
 
-            var teamStandings = CreateTeamStandings(tournamentTeams, gameResults);
+            var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentInfo.Id);
 
-            var shortGameResults = gameResults.Where(g => g.AwayTeamId != null).Select(
-                g => new ShortGameResultDto
-                {
-                    HomeTeamId = g.HomeTeamId.Value,
-                    AwayTeamId = g.AwayTeamId.Value,
-                    HomeSetsScore = g.HomeSetsScore,
-                    AwaySetsScore = g.AwaySetsScore,
-                    IsTechnicalDefeat = g.IsTechnicalDefeat
-                }).ToList();
+            var pivotStandings = new List<PivotStandingsDto>();
 
-            return new PivotStandingsDto(teamStandings, shortGameResults);
+            foreach (var teams in teamsInTournamentByDivisions)
+            {
+                var gameResultsForDivision = GetGamesResultsForDivision(gameResults, teams);
+
+                var teamStandingsInDivision = CreateTeamStandings(teams, gameResultsForDivision);
+
+                var shortGameResults = gameResultsForDivision.Where(g => g.AwayTeamId != null).
+                    Select(g => new ShortGameResultDto
+                    {
+                        HomeTeamId = g.HomeTeamId.Value,
+                        AwayTeamId = g.AwayTeamId.Value,
+                        HomeSetsScore = g.HomeSetsScore,
+                        AwaySetsScore = g.AwaySetsScore,
+                        IsTechnicalDefeat = g.IsTechnicalDefeat
+                    }).
+                    ToList();
+
+                pivotStandings.Add(new PivotStandingsDto(teamStandingsInDivision, shortGameResults));
+            }
+
+            return pivotStandings;
         }
 
         /// <summary>
@@ -354,6 +386,24 @@
         private bool HasTeamPlayedGames(StandingsEntry entry)
         {
             return entry.GamesTotal == 0;
+        }
+
+        private List<List<Team>> GetTeamsInTournamentByDivisions(int tournamentId)
+        {
+            var teamsByDivisions = new List<List<Team>>();
+
+            var divisions = _divisionsByTournamentIdQuery.Execute(new TournamentDivisionsCriteria { TournamentId = tournamentId });
+            divisions.ForEach(division => teamsByDivisions.Add(_teamsByDivisionIdQuery.Execute(new FindTeamsByDivisionIdCriteria { DivisionId = division.Id })));
+
+            return teamsByDivisions;
+        }
+
+        private List<GameResultDto> GetGamesResultsForDivision(List<GameResultDto> gameResults, List<Team> teams)
+        {
+            var teamsIds = teams.Select(t => t.Id).ToList();
+            return gameResults.Where(gr => teamsIds.Contains(gr.AwayTeamId.GetValueOrDefault()) &&
+                                            teamsIds.Contains(gr.HomeTeamId.GetValueOrDefault())).
+                               ToList();
         }
         #endregion
     }

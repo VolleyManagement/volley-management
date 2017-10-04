@@ -22,6 +22,8 @@
     }
     else
     {
+        foreach (var standing in Model.Standings)
+        {
         <table class="standings">
             <thead>
                 <tr class="standings-header-row">
@@ -54,79 +56,82 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var entry in Model.Standings)
+                @foreach (var entry in standing)
                 {
-                    <tr class="standings-row">
-                        <td class="standings-cell">@entry.Position</td>
-                        <td class="standings-cell">@entry.TeamName</td>
-                        <td class="standings-cell">@entry.Points</td>
-                        <td class="standings-cell">@entry.GamesTotal</td>
-                        <td class="standings-cell">@entry.GamesWon</td>
-                        <td class="standings-cell">@entry.GamesLost</td>
-                        <td class="standings-cell">@entry.GamesWithScoreThreeNil</td>
-                        <td class="standings-cell">@entry.GamesWithScoreThreeOne</td>
-                        <td class="standings-cell">@entry.GamesWithScoreThreeTwo</td>
-                        <td class="standings-cell">@entry.GamesWithScoreTwoThree</td>
-                        <td class="standings-cell">@entry.GamesWithScoreOneThree</td>
-                        <td class="standings-cell">@entry.GamesWithScoreNilThree</td>
-                        <td class="standings-cell">@entry.SetsWon</td>
-                        <td class="standings-cell">@entry.SetsLost</td>
-                        <td class="standings-cell">@entry.SetsRatioText</td>
-                        <td class="standings-cell">@entry.BallsWon</td>
-                        <td class="standings-cell">@entry.BallsLost</td>
-                        <td class="standings-cell">@entry.BallsRatioText</td>
-                    </tr>
+                <tr class="standings-row">
+                    <td class="standings-cell">@entry.Position</td>
+                    <td class="standings-cell">@entry.TeamName</td>
+                    <td class="standings-cell">@entry.Points</td>
+                    <td class="standings-cell">@entry.GamesTotal</td>
+                    <td class="standings-cell">@entry.GamesWon</td>
+                    <td class="standings-cell">@entry.GamesLost</td>
+                    <td class="standings-cell">@entry.GamesWithScoreThreeNil</td>
+                    <td class="standings-cell">@entry.GamesWithScoreThreeOne</td>
+                    <td class="standings-cell">@entry.GamesWithScoreThreeTwo</td>
+                    <td class="standings-cell">@entry.GamesWithScoreTwoThree</td>
+                    <td class="standings-cell">@entry.GamesWithScoreOneThree</td>
+                    <td class="standings-cell">@entry.GamesWithScoreNilThree</td>
+                    <td class="standings-cell">@entry.SetsWon</td>
+                    <td class="standings-cell">@entry.SetsLost</td>
+                    <td class="standings-cell">@entry.SetsRatioText</td>
+                    <td class="standings-cell">@entry.BallsWon</td>
+                    <td class="standings-cell">@entry.BallsLost</td>
+                    <td class="standings-cell">@entry.BallsRatioText</td>
+                </tr>
                 }
             </tbody>
         </table>
+        }
     }
 </fieldset>
 
 <fieldset>
-    @{
-        int rows = Model.PivotTable.TeamsStandings.Count;
-        int columns = Model.PivotTable.TeamsStandings.Count;
-    }
-    <table class="standings">
-        <thead>
-            <tr class="standings-header-row">
-                <th colspan="2" class="standings-header-cell">
-                    @string.Format(Resources.UI.GameReportViews.LastUpdated,
-                                   Model.LastTimeUpdated)
-                </th>
-                @foreach (var item in Model.PivotTable.TeamsStandings)
-                {
+    @foreach (var pivotTable in Model.PivotTable)
+    {
+        int rows = pivotTable.TeamsStandings.Count;
+        int columns = pivotTable.TeamsStandings.Count;
+
+        <table class="standings">
+            <thead>
+                <tr class="standings-header-row">
+                    <th colspan="2" class="standings-header-cell">
+                        @string.Format(Resources.UI.GameReportViews.LastUpdated,
+                         Model.LastTimeUpdated)
+                    </th>
+                    @foreach (var item in pivotTable.TeamsStandings)
+                    {
                     <th class="standings-header-cell">@item.TeamName</th>
-                }
-                <th class="standings-header-cell">@Resources.UI.GameReportViews.PointsHeader</th>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < rows; i++)
-            {
+                    }
+                    <th class="standings-header-cell">@Resources.UI.GameReportViews.PointsHeader</th>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < rows; i++)
+                {
                 <tr class="standings-row">
-                    <td class="standings-cell">@Model.PivotTable.TeamsStandings[i].Position</td>
-                    <td class="standings-cell">@Model.PivotTable.TeamsStandings[i].TeamName</td>
+                    <td class="standings-cell">@pivotTable.TeamsStandings[i].Position</td>
+                    <td class="standings-cell">@pivotTable.TeamsStandings[i].TeamName</td>
                     @for (int j = 0; j < columns; j++)
                     {
-                        <td class="standings-cell">
-                            @foreach (var item in Model.PivotTable[i, j])
-                            {
-                                <div class="@item.CssClass">@item.FormattedResult</div>
-                            }
-                        </td>
+                    <td class="standings-cell">
+                        @foreach (var item in pivotTable[i, j])
+                        {
+                        <div class="@item.CssClass">@item.FormattedResult</div>
+                        }
+                    </td>
                     }
                     <td class="standings-cell">
                         <div>
-                            @Model.PivotTable.TeamsStandings[i].Points
+                            @pivotTable.TeamsStandings[i].Points
                         </div>
                         <div>
-                            @Model.PivotTable.TeamsStandings[i].SetsRatioText
+                            @pivotTable.TeamsStandings[i].SetsRatioText
                         </div>
                     </td>
                 </tr>
-            }
-        </tbody>
-    </table>
+                }
+            </tbody>
+        </table>
+    }
 </fieldset>
 
 <p>@Html.ActionLink(Resources.UI.GameReportViews.BackToTournament, "Details", "Tournaments", new { id = Model.TournamentId }, null)</p>

@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -36,14 +36,27 @@
             if (_gameReportService.IsStandingAvailable(tournamentId))
             {
                 var tournament = _tournamentService.Get(tournamentId);
+                var standings = _gameReportService.GetStandings(tournamentId);
+                var pivots = _gameReportService.GetPivotStandings(tournamentId);
+                var mapedStandings = new List<List<StandingsEntryViewModel>>();
+                var pivotTables = new List<PivotTableViewModel>();
+
+                standings.ForEach(item =>
+                {
+                    mapedStandings.Add(TeamStandingsViewModelBase.SetPositions(item.Select(se => StandingsEntryViewModel.Map(se)).ToList()));
+                });
+
+                pivots.ForEach(item =>
+                {
+                    pivotTables.Add(new PivotTableViewModel(item));
+                });
+
                 var standingsViewModel = new StandingsViewModel
                 {
                     TournamentId = tournamentId,
                     TournamentName = tournamentName,
-                    Standings = TeamStandingsViewModelBase.SetPositions(
-                        _gameReportService.GetStandings(tournamentId)
-                        .Select(se => StandingsEntryViewModel.Map(se)).ToList()),
-                    PivotTable = new PivotTableViewModel(_gameReportService.GetPivotStandings(tournamentId)),
+                    Standings = mapedStandings,
+                    PivotTable = pivotTables,
                     LastTimeUpdated = tournament.LastTimeUpdated
                 };
 

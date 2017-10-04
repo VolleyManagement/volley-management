@@ -18,28 +18,32 @@ export class StandingsService {
 
     constructor(private http: Http) { }
 
-    getPivotStandings(id: number): Observable<PivotStandings> {
+    getPivotStandings(id: number): Observable<PivotStandings[]> {
         const url = environment.apiUrl.concat(this.pivotStandingsUrl(id));
         return this.http
             .get(url)
             .map((response: Response) => {
-                const data = response.json() as PivotStandings;
-                const teamStandings: PivotStandingsEntry[] = data.TeamsStandings;
-                this.setTeamsPositions(teamStandings);
-                const gameStandings: PivotStandingsGame[] = new Array();
-                data.GamesStandings.forEach((item) => {
-                    gameStandings.push(new PivotStandingsGame(item.HomeTeamId, item.AwayTeamId, item.Results));
+                const data = response.json() as PivotStandings[];
+                const result: PivotStandings[] = new Array();
+                data.forEach(pivot => {
+                    const teamStandings: PivotStandingsEntry[] = pivot.TeamsStandings;
+                    this.setTeamsPositions(teamStandings);
+                    const gameStandings: PivotStandingsGame[] = new Array();
+                    pivot.GamesStandings.forEach((item) => {
+                        gameStandings.push(new PivotStandingsGame(item.HomeTeamId, item.AwayTeamId, item.Results));
+                    });
+                    result.push({ TeamsStandings: teamStandings, GamesStandings: gameStandings });
                 });
 
-                return { TeamsStandings: teamStandings, GamesStandings: gameStandings };
+                return result;
             });
     }
 
-    getStandings(id: number): Observable<StandingsEntry[]> {
+    getStandings(id: number): Observable<StandingsEntry[][]> {
         const url = environment.apiUrl.concat(this.standingsUrl(id));
         return this.http
             .get(url)
-            .map(response => response.json() as StandingsEntry[]);
+            .map(response => response.json() as StandingsEntry[][]);
     }
 
     private setTeamsPositions(teamStandings: PivotStandingsEntry[]) {

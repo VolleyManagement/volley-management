@@ -6,8 +6,10 @@ tr.results-header-row, tr.standings-header-row {
 
 th.results-header-cell, th.standings-header-cell {
   padding: 3px 5px;
-  border: 1px solid #fff;
   text-align: center;
+  width: 50px;
+  max-width: 50px;
+  height: 120px;
 }
 
 th.results-operation-header-cell {
@@ -73,4 +75,8 @@ table.standings {
 
 .boldText{
   font-weight: bold;
+}
+
+.vertical-text{
+  transform: rotate(-90deg);
 }

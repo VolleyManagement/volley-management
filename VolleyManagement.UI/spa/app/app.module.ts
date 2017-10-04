@@ -8,13 +8,14 @@ import { StandingsComponent } from './Components/Standings/standings.component';
 
 import { StandingsService } from './Services/standings.service';
 import { JsonService } from './Services/json.service';
-
+import { CustomDecimalPipe } from './CustomPipes/CustomDecimalPipe';
 
 @NgModule({
     declarations: [
         AppComponent,
         PivotStandingsComponent,
-        StandingsComponent
+        StandingsComponent,
+        CustomDecimalPipe
     ],
     imports: [
         BrowserModule,

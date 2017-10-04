@@ -2,19 +2,19 @@
   <div *ngIf="!pivotStandings">
     <p> No tournament table</p>
   </div>
-  <table class="standings" *ngIf="pivotStandings">
+  <table class="standings" *ngFor="let pivotStand of pivotStandings;let k = index;">
     <thead>
       <tr class="standings-header-row">
         <th colspan="2" class="standings-header-cell">N/A</th>
-        <th class="standings-header-cell" *ngFor="let team of pivotStandings?.TeamsStandings">{{team.TeamName}}</th>
+        <th class="standings-header-cell vertical-text" *ngFor="let team of pivotStand?.TeamsStandings">{{team.TeamName}}</th>
         <th class="standings-header-cell">Points</th>
     </thead>
     <tbody>
-      <tr class="standings-row" *ngFor="let teamStandings of pivotStandings?.TeamsStandings; let i = index;">
+      <tr class="standings-row" *ngFor="let teamStandings of pivotStand?.TeamsStandings; let i = index;">
         <td class="standings-cell">{{teamStandings.Position}}</td>
         <td class="standings-cell">{{teamStandings.TeamName}}</td>
-        <td class="standings-cell {{pivotTable[i][j]?.Results[0].CssClass}}" *ngFor="let teamStandingsColumn of pivotStandings?.TeamsStandings; let j = index;">
-          <div *ngFor="let gameResult of pivotTable[i][j]?.Results">{{gameResult.FormattedResult}}</div>
+        <td class="standings-cell {{pivotTable[k][i][j]?.Results[0].CssClass}}" *ngFor="let teamStandingsColumn of pivotStand?.TeamsStandings; let j = index;">
+          <div *ngFor="let gameResult of pivotTable[k][i][j]?.Results">{{gameResult.FormattedResult}}</div>
         </td>
         <td class="standings-cell">
           <div class="boldText">

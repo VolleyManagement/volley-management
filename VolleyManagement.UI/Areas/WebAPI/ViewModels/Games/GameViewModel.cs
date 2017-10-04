@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
+namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
 {
     using System;
     using System.Collections.Generic;
@@ -37,6 +37,11 @@
         public GameResult Result { get; set; }
 
         /// <summary>
+        /// Gets or sets the round for the game.
+        /// </summary>
+        public int Round { get; set; }
+
+        /// <summary>
         /// Maps domain model of game result to view model of game.
         /// </summary>
         /// <param name="gameResult">Domain model of game.</param>
@@ -49,6 +54,7 @@
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
                 GameDate = gameResult.GameDate.HasValue ? gameResult.GameDate.Value.ToString("yyyy-MM-ddTHH:mm:sszzz") : string.Empty,
+                Round = gameResult.Round,
                 Result = new GameResult
                 {
                     TotalScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },

@@ -93,7 +93,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         /// <param name="tournamentId">Id of tournament.</param>
         /// <returns>Information about games with specified tournament id.</returns>
         [Route("api/Tournament/{tournamentId}/Schedule")]
-        public IEnumerable<GameViewModel> GetSchedule(int tournamentId)
+        public IEnumerable<IGrouping<int, GameViewModel>> GetSchedule(int tournamentId)
         {
             List<GameViewModel> gamesViewModel = _gameService.GetTournamentResults(tournamentId)
                                                         .Select(t => GameViewModel.Map(t)).ToList();
@@ -105,7 +105,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                 }
             }
 
-            return gamesViewModel;
+            return gamesViewModel.GroupBy(gr => gr.Round);
         }
     }
 }

@@ -4,7 +4,7 @@ import { DecimalPipe } from '@angular/common';
 @Pipe({
     name: 'customNumber'
 })
-export class CustomDecimalPipe extends DecimalPipe implements PipeTransform {
+export class SetsBallsRatioPipe extends DecimalPipe implements PipeTransform {
     transform(value: string, digits?: string): any {
         return value === 'Infinity' ? 'Max' : super.transform(value, digits);
     }

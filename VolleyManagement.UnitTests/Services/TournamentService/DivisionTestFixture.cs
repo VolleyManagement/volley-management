@@ -56,6 +56,30 @@
         }
 
         /// <summary>
+        /// Return test collection of Divisions with 1 division
+        /// </summary>
+        /// <returns>Builder object with collection of Divisions</returns>
+        public DivisionTestFixture TestDivision()
+        {
+            _divisions.Add(new Division()
+            {
+                Id = 1,
+                Name = "Division 1",
+                TournamentId = 1,
+                Groups =
+                {
+                    new Group()
+                    {
+                        Id = 1,
+                        Name = "Group1",
+                        DivisionId = 1
+                    },
+                }
+            });
+            return this;
+        }
+
+        /// <summary>
         /// Add Division to collection.
         /// </summary>
         /// <param name="newDivision">Division to add.</param>

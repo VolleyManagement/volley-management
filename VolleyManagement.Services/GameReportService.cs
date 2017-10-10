@@ -108,10 +108,7 @@
         public List<PivotStandingsDto> GetPivotStandings(int tournamentId)
         {
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
-            var tournamentInfo = _tournamentScheduleDtoByIdQuery
-                .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
-
-            var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentInfo.Id);
+            var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
 
             var pivotStandings = new List<PivotStandingsDto>();
 

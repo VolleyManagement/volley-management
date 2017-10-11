@@ -392,6 +392,7 @@
     <Compile Include="Areas\WebAPI\ViewModels\GameReports\StandingsEntryViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Games\GameViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Players\PlayerViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleByRoundViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Teams\TeamViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Users\UserViewModel.cs" />

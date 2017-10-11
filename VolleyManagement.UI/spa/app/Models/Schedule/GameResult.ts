@@ -7,4 +7,5 @@ export interface GameResult {
     GameDate: string;
     Round: number;
     Result: Result;
+    IsGameWasPlayedAndHasResult: boolean;
 }

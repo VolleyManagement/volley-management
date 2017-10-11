@@ -1,12 +1,12 @@
 <div class="schedule-table" *ngFor="let gameResultByRounds of gameResults; let i = index;">
-  <div *ngIf="gameResultByRounds.length">
+  <div *ngIf="gameResultByRounds">
     <p class="headercenter">Тур {{gameResultByRounds.Round}}</p>
     <div class="group group2">
       <!-- <p class="groupHeader">II группа</p>
     <p class="groupDate">Суббота</p>
     <p class="groupDate">19 ноября 2016</p> -->
       <div>
-        <div class="games" *ngFor="let gameResult of gameResultByRounds;">
+        <div class="games" *ngFor="let gameResult of gameResultByRounds.GameResults;">
           <table class="game-sch">
             <tbody *ngIf="!gameResult.AwayTeamName">
               <tr class="team-sch">
@@ -18,7 +18,7 @@
             </tbody>
           </table>
           <table class="game-sch" *ngIf="gameResult.AwayTeamName">
-            <tbody *ngIf="gameResult.Result && (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat)">
+            <tbody *ngIf="gameResult.IsGameWasPlayedAndHasResult">
               <tr class="team-sch" [class.win]="gameResult.Result.TotalScore.Home > gameResult.Result.TotalScore.Away">
                 <td class="teamname" colspan="5">
                   {{gameResult.HomeTeamName}}
@@ -38,27 +38,25 @@
               <tr class="sets" *ngIf="gameResult.Result && gameResult.Result.IsTechnicalDefeat">
                 <td class="set">
                   <div>
-                    <span class="t1">техн.</span>
+                    <span>техн.</span>
                   </div>
                 </td>
                 <td class="set">
                   <div>
-                    <span class="t1">техн.</span>
+                    <span>техн.</span>
                   </div>
                 </td>
                 <td class="set">
                   <div>
-                    <span class="t1">техн.</span>
+                    <span>техн.</span>
                   </div>
                 </td>
                 <td class="set">
                   <div class="hidden">
-                    <span class="t1">--:--</span>
                   </div>
                 </td>
                 <td class="set">
                   <div class="hidden">
-                    <span class="t1">--:--</span>
                   </div>
                 </td>
                 <td>
@@ -69,11 +67,10 @@
               <tr class="sets" *ngIf="gameResult.Result && !gameResult.Result.TotalScore.IsEmpty">
                 <td class="set" *ngFor="let setScore of gameResult.Result.SetScores">
                   <div class="" *ngIf="!setScore.IsEmpty; else noSetScore">
-                    <span class="t1">{{setScore.Home}}</span>:<span class="t2">{{setScore.Away}}</span>
+                    <span>{{setScore.Home}}</span>:<span>{{setScore.Away}}</span>
                   </div>
                   <ng-template #noSetScore>
                     <div class="hidden">
-                      <span class="t1">0</span>:<span class="t2">0</span>
                     </div>
                   </ng-template>
                 </td>

@@ -17,11 +17,7 @@ export class ScheduleComponent implements OnInit {
 
   ngOnInit() {
     this.scheduleService.getSchedule(this.scheduleId)
-      .subscribe(gameResults => {
-        this.gameResults = gameResults;
-        this.gameResults.forEach((item, index) => {
-          item.Round = item[0] ? item[0].Round : index + 1;
-        });
-      });
+      .subscribe(scheduleByRounds => this.gameResults = scheduleByRounds);
   }
+
 }

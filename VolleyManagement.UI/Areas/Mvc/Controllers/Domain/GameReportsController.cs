@@ -41,15 +41,12 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 var mapedStandings = new List<List<StandingsEntryViewModel>>();
                 var pivotTables = new List<PivotTableViewModel>();
 
-                standings.ForEach(item =>
-                {
-                    mapedStandings.Add(TeamStandingsViewModelBase.SetPositions(item.Select(se => StandingsEntryViewModel.Map(se)).ToList()));
-                });
+                mapedStandings = standings.Select(item => TeamStandingsViewModelBase.
+                                                            SetPositions(item.Select(se => StandingsEntryViewModel.Map(se)).
+                                                                              ToList())).
+                                           ToList();
 
-                pivots.ForEach(item =>
-                {
-                    pivotTables.Add(new PivotTableViewModel(item));
-                });
+                pivotTables = pivots.Select(item => new PivotTableViewModel(item)).ToList();
 
                 var standingsViewModel = new StandingsViewModel
                 {

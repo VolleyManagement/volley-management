@@ -92,12 +92,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         public IEnumerable<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
         {
             var pivotData = _gameReportService.GetPivotStandings(id);
-            var result = new List<PivotStandingsViewModel>();
-            result.AddRange(pivotData.
-                                Select(item => new PivotStandingsViewModel(item)).
-                                ToList());
-
-            return result;
+            return pivotData.Select(item => new PivotStandingsViewModel(item)).ToList();
         }
 
         /// <summary>

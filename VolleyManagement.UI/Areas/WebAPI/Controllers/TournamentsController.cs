@@ -1,12 +1,8 @@
 namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Net.Http;
-    using System.Text;
     using System.Web.Http;
-    using System.Xml.Serialization;
     using Contracts;
     using ViewModels.GameReports;
     using ViewModels.Games;

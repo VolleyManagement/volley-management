@@ -8,14 +8,14 @@ import { StandingsComponent } from './Components/Standings/standings.component';
 
 import { StandingsService } from './Services/standings.service';
 import { JsonService } from './Services/json.service';
-import { SetsBallsRatioPipe } from './CustomPipes/SetsBallsRatioPipe';
+import { InfinityDecimalPipe } from './CustomPipes/InfinityDecimalPipe';
 
 @NgModule({
     declarations: [
         AppComponent,
         PivotStandingsComponent,
         StandingsComponent,
-        SetsBallsRatioPipe
+        InfinityDecimalPipe
     ],
     imports: [
         BrowserModule,

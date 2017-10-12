@@ -20,21 +20,18 @@ export class ScheduleService {
             .get(url)
             .map(response => {
                 const data = response.json() as ScheduleByRounds[];
-                const sheduleByRounds: ScheduleByRounds[] = new Array();
-                data.forEach(item => {
-                    const games: GameResult[] = new Array();
-                    item.GameResults.forEach(game => {
-                        games.push(new GameResult(game.Id,
-                            game.HomeTeamName,
-                            game.AwayTeamName,
-                            game.GameDate,
-                            game.Round,
-                            game.Result));
-                    });
-                    sheduleByRounds.push({ Round: item.Round, GameResults: games });
-                });
+                let scheduleByRounds: ScheduleByRounds[] = new Array();
+                scheduleByRounds = data.map(d => ({
+                    Round: d.Round,
+                    GameResults: d.GameResults.map(game => new GameResult(game.Id,
+                        game.HomeTeamName,
+                        game.AwayTeamName,
+                        game.GameDate,
+                        game.Round,
+                        game.Result))
+                }));
 
-                return sheduleByRounds;
+                return scheduleByRounds;
             });
     }
 }

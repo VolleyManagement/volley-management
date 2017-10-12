@@ -27,11 +27,8 @@ export class PivotStandingsComponent implements OnChanges, OnDestroy {
         if (this.pivotId) {
             this.subscription = this.standingsService.getPivotStandings(this.pivotId)
                 .subscribe(standings => {
-                    this.pivotTable = new Array();
                     this.pivotStandings = standings;
-                    this.pivotStandings.forEach(item => {
-                        this.pivotTable.push(this.getPivotTable(item));
-                    });
+                    this.pivotTable = this.pivotStandings.map(item => this.getPivotTable(item));
                 });
         }
     }

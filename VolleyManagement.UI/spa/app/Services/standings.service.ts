@@ -24,18 +24,22 @@ export class StandingsService {
             .get(url)
             .map((response: Response) => {
                 const data = response.json() as PivotStandings[];
-                const result: PivotStandings[] = new Array();
-                data.forEach(pivot => {
-                    const teamStandings: PivotStandingsEntry[] = pivot.TeamsStandings;
-                    this.setTeamsPositions(teamStandings);
-                    const gameStandings: PivotStandingsGame[] = new Array();
-                    pivot.GamesStandings.forEach((item) => {
-                        gameStandings.push(new PivotStandingsGame(item.HomeTeamId, item.AwayTeamId, item.Results));
-                    });
-                    result.push({ TeamsStandings: teamStandings, GamesStandings: gameStandings });
-                });
 
-                return result;
+                return data.map(pivot => ({
+                    TeamsStandings: pivot.TeamsStandings.map((item, index) => ({
+                        TeamId: item.TeamId,
+                        TeamName: item.TeamName,
+                        Points: item.Points,
+                        SetsRatio: item.SetsRatio,
+                        SetsRatioText: item.SetsRatioText,
+                        Position: index + 1
+                    })),
+                    GamesStandings: pivot.GamesStandings.map(item =>
+                        new PivotStandingsGame(
+                            item.HomeTeamId,
+                            item.AwayTeamId,
+                            item.Results))
+                }));
             });
     }
 

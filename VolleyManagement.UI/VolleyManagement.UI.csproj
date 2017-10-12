@@ -392,6 +392,7 @@
     <Compile Include="Areas\WebAPI\ViewModels\GameReports\StandingsEntryViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Games\GameViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Players\PlayerViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleByRoundViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Teams\TeamViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Users\UserViewModel.cs" />
@@ -602,6 +603,8 @@
     <Content Include="spa\app\app.component.html" />
     <Content Include="spa\app\Components\PivotStanding\pivotstandings.component.css" />
     <Content Include="spa\app\Components\PivotStanding\pivotstandings.component.html" />
+    <Content Include="spa\app\Components\Schedule\schedule.component.css" />
+    <Content Include="spa\app\Components\Schedule\schedule.component.html" />
     <Content Include="spa\app\Components\Standings\standings.component.css" />
     <Content Include="spa\app\Components\Standings\standings.component.html" />
     <Content Include="spa\favicon.ico" />
@@ -757,6 +760,8 @@
     <TypeScriptCompile Include="spa\app\app.component.ts" />
     <TypeScriptCompile Include="spa\app\app.module.ts" />
     <TypeScriptCompile Include="spa\app\Components\PivotStanding\pivotstandings.component.ts" />
+    <TypeScriptCompile Include="spa\app\Components\Schedule\schedule.component.spec.ts" />
+    <TypeScriptCompile Include="spa\app\Components\Schedule\schedule.component.ts" />
     <TypeScriptCompile Include="spa\app\Components\Standings\standings.component.ts" />
     <TypeScriptCompile Include="spa\app\Constants\Constants.ts" />
     <TypeScriptCompile Include="spa\app\Constants\CssClassConstants.ts" />
@@ -765,10 +770,14 @@
     <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandingsEntry.ts" />
     <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandingsGame.ts" />
     <TypeScriptCompile Include="spa\app\Models\Pivot\ShortGameResult.ts" />
+    <TypeScriptCompile Include="spa\app\Models\Schedule\GameResult.ts" />
+    <TypeScriptCompile Include="spa\app\Models\Schedule\Result.ts" />
+    <TypeScriptCompile Include="spa\app\Models\Schedule\ScheduleByRounds.ts" />
+    <TypeScriptCompile Include="spa\app\Models\Schedule\SetScore.ts" />
     <TypeScriptCompile Include="spa\app\Models\Standings\StandingsEntry.ts" />
-    <TypeScriptCompile Include="spa\app\Models\TournamentJson\TournamentJson.ts" />
     <TypeScriptCompile Include="spa\app\Models\TournamentMetadataJson\TournamentMetadataJson.ts" />
     <TypeScriptCompile Include="spa\app\Services\json.service.ts" />
+    <TypeScriptCompile Include="spa\app\Services\schedule.service.ts" />
     <TypeScriptCompile Include="spa\app\Services\standings.service.ts" />
     <TypeScriptCompile Include="spa\environments\environment.prod.ts" />
     <TypeScriptCompile Include="spa\environments\environment.ts" />

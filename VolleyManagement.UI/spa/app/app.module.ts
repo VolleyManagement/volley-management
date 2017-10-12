@@ -5,9 +5,11 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { PivotStandingsComponent } from './Components/PivotStanding/pivotstandings.component';
 import { StandingsComponent } from './Components/Standings/standings.component';
+import { ScheduleComponent } from './Components/Schedule/schedule.component';
 
 import { StandingsService } from './Services/standings.service';
 import { JsonService } from './Services/json.service';
+import { ScheduleService } from './Services/schedule.service';
 import { InfinityDecimalPipe } from './CustomPipes/InfinityDecimalPipe';
 
 @NgModule({
@@ -15,6 +17,7 @@ import { InfinityDecimalPipe } from './CustomPipes/InfinityDecimalPipe';
         AppComponent,
         PivotStandingsComponent,
         StandingsComponent,
+        ScheduleComponent,
         InfinityDecimalPipe
     ],
     imports: [
@@ -23,7 +26,8 @@ import { InfinityDecimalPipe } from './CustomPipes/InfinityDecimalPipe';
     ],
     providers: [
         StandingsService,
-        JsonService],
+        JsonService,
+        ScheduleService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

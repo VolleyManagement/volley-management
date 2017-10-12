@@ -13,8 +13,8 @@ import { StandingsEntry } from '../Models/Standings/StandingsEntry';
 
 @Injectable()
 export class StandingsService {
-    private pivotStandingsUrl = id => `Tournaments/${id}/PivotStandings`;
-    private standingsUrl = id => `Tournaments/${id}/Standings`;
+    private pivotStandingsUrl = id => `api/v1/Tournaments/${id}/PivotStandings`;
+    private standingsUrl = id => `api/v1/Tournaments/${id}/Standings`;
 
     constructor(private http: Http) { }
 

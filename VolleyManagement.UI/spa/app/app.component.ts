@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   public tournamentJson: TournamentMetadataJson;
   private pivotId: number;
   private standingsId: number;
+  private scheduleId: number;
 
   constructor(private jsonService: JsonService) { }
 
@@ -47,6 +48,9 @@ export class AppComponent implements OnInit {
         break;
       case 'standings':
         this.standingsId = id;
+        break;
+      case 'schedule':
+        this.scheduleId = id;
         break;
     }
   }

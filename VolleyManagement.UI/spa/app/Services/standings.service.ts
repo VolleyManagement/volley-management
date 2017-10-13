@@ -13,33 +13,41 @@ import { StandingsEntry } from '../Models/Standings/StandingsEntry';
 
 @Injectable()
 export class StandingsService {
-    private pivotStandingsUrl = id => `Tournaments/${id}/PivotStandings`;
-    private standingsUrl = id => `Tournaments/${id}/Standings`;
+    private pivotStandingsUrl = id => `api/v1/Tournaments/${id}/PivotStandings`;
+    private standingsUrl = id => `api/v1/Tournaments/${id}/Standings`;
 
     constructor(private http: Http) { }
 
-    getPivotStandings(id: number): Observable<PivotStandings> {
+    getPivotStandings(id: number): Observable<PivotStandings[]> {
         const url = environment.apiUrl.concat(this.pivotStandingsUrl(id));
         return this.http
             .get(url)
             .map((response: Response) => {
-                const data = response.json() as PivotStandings;
-                const teamStandings: PivotStandingsEntry[] = data.TeamsStandings;
-                this.setTeamsPositions(teamStandings);
-                const gameStandings: PivotStandingsGame[] = new Array();
-                data.GamesStandings.forEach((item) => {
-                    gameStandings.push(new PivotStandingsGame(item.HomeTeamId, item.AwayTeamId, item.Results));
-                });
+                const data = response.json() as PivotStandings[];
 
-                return { TeamsStandings: teamStandings, GamesStandings: gameStandings };
+                return data.map(pivot => ({
+                    TeamsStandings: pivot.TeamsStandings.map((item, index) => ({
+                        TeamId: item.TeamId,
+                        TeamName: item.TeamName,
+                        Points: item.Points,
+                        SetsRatio: item.SetsRatio,
+                        SetsRatioText: item.SetsRatioText,
+                        Position: index + 1
+                    })),
+                    GamesStandings: pivot.GamesStandings.map(item =>
+                        new PivotStandingsGame(
+                            item.HomeTeamId,
+                            item.AwayTeamId,
+                            item.Results))
+                }));
             });
     }
 
-    getStandings(id: number): Observable<StandingsEntry[]> {
+    getStandings(id: number): Observable<StandingsEntry[][]> {
         const url = environment.apiUrl.concat(this.standingsUrl(id));
         return this.http
             .get(url)
-            .map(response => response.json() as StandingsEntry[]);
+            .map(response => response.json() as StandingsEntry[][]);
     }
 
     private setTeamsPositions(teamStandings: PivotStandingsEntry[]) {

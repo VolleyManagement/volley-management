@@ -10,13 +10,15 @@ import { ScheduleComponent } from './Components/Schedule/schedule.component';
 import { StandingsService } from './Services/standings.service';
 import { JsonService } from './Services/json.service';
 import { ScheduleService } from './Services/schedule.service';
+import { InfinityDecimalPipe } from './CustomPipes/InfinityDecimalPipe';
 
 @NgModule({
     declarations: [
         AppComponent,
         PivotStandingsComponent,
         StandingsComponent,
-        ScheduleComponent
+        ScheduleComponent,
+        InfinityDecimalPipe
     ],
     imports: [
         BrowserModule,

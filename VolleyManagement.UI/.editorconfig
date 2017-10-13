@@ -15,3 +15,7 @@ trim_trailing_whitespace = false
 [*.cs]
 indent_style = space 
 indent_size = 4
+
+[*.cshtml]
+indent_style = space 
+indent_size = 4

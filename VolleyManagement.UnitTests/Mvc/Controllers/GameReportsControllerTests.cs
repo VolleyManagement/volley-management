@@ -45,9 +45,9 @@
             // Arrange
             var teams = new TeamStandingsTestFixture().TestTeamStandings().Build();
             var gameResults = new ShortGameResultDtoTetsFixture().GetShortResults().Build();
-            var testPivotStandings = new PivotStandingsDto(teams, gameResults);
+            var testPivotStandings = new List<PivotStandingsDto> { new PivotStandingsDto(teams, gameResults) };
 
-            var testStandings = new StandingsTestFixture().TestStandings().Build();
+            var testStandings = new List<List<StandingsEntry>> { new StandingsTestFixture().TestStandings().Build() };
             var expected = new StandingsViewModelBuilder().Build();
 
             MockTournamentServiceReturnTournament();
@@ -101,11 +101,12 @@
                 .GetShortResultsForTwoTeamsScoresCompletelyEqual()
                 .Build();
 
-            var testPivotStandings = new PivotStandingsDto(teams, gameResults);
+            var testPivotStandings = new List<PivotStandingsDto> { new PivotStandingsDto(teams, gameResults) };
 
-            var testStandings = new StandingsTestFixture()
-                .WithRepetitivePointsSetsRatioAndBallsRatio()
-                .Build();
+            var testStandings = new List<List<StandingsEntry>>
+            {
+                new StandingsTestFixture().WithRepetitivePointsSetsRatioAndBallsRatio().Build()
+            };
 
             var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
 
@@ -128,13 +129,13 @@
             return new GameReportsController(_gameReportServiceMock.Object, _tournamentServiceMock.Object);
         }
 
-        private void SetupGameReportGetStandings(int tournamentId, List<StandingsEntry> testData)
+        private void SetupGameReportGetStandings(int tournamentId, List<List<StandingsEntry>> testData)
         {
             _gameReportServiceMock
                 .Setup(m => m.GetStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
         }
 
-        private void SetupGameReportGetPivotStandings(int tournamentId, PivotStandingsDto testData)
+        private void SetupGameReportGetPivotStandings(int tournamentId, List<PivotStandingsDto> testData)
         {
             _gameReportServiceMock
                 .Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);

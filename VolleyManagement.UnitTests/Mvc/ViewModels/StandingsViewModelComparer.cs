@@ -60,9 +60,9 @@
                 return x.TournamentId == y.TournamentId
                 && x.TournamentName == y.TournamentName
                 && x.Message == y.Message
-                && x.Standings.SequenceEqual(y.Standings, new StandingsEntryViewModelEqualityComparer())
-                && x.PivotTable.TeamsStandings.SequenceEqual(y.PivotTable.TeamsStandings, new PivotTeamStandingsViewModelEqualityComparer())
-                && PivotTableEqualityComparer.AreResultTablesEquals(x.PivotTable, y.PivotTable);
+                && x.Standings.FirstOrDefault().SequenceEqual(y.Standings.FirstOrDefault(), new StandingsEntryViewModelEqualityComparer())
+                && x.PivotTable.FirstOrDefault().TeamsStandings.SequenceEqual(y.PivotTable.FirstOrDefault().TeamsStandings, new PivotTeamStandingsViewModelEqualityComparer())
+                && PivotTableEqualityComparer.AreResultTablesEquals(x.PivotTable.FirstOrDefault(), y.PivotTable.FirstOrDefault());
             }
 
                 return x.TournamentId == y.TournamentId

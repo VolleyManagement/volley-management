@@ -17,7 +17,7 @@ import 'rxjs/add/operator/switchMap';
 export class StandingsComponent implements OnInit, OnDestroy {
 
     @Input() standingsId: number;
-    standingsEntry: StandingsEntry[];
+    standingsEntry: StandingsEntry[][];
 
     private subscription: ISubscription;
 

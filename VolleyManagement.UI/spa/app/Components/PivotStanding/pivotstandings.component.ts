@@ -16,8 +16,8 @@ import { ShortGameResult } from '../../Models/Pivot/ShortGameResult';
 export class PivotStandingsComponent implements OnInit, OnDestroy {
 
     @Input() pivotId: number;
-    pivotStandings: PivotStandings;
-    pivotTable: PivotStandingsGame[][];
+    pivotStandings: PivotStandings[];
+    pivotTable: PivotStandingsGame[][][];
 
     private subscription: ISubscription;
 
@@ -28,7 +28,7 @@ export class PivotStandingsComponent implements OnInit, OnDestroy {
             this.subscription = this.standingsService.getPivotStandings(this.pivotId)
                 .subscribe(standings => {
                     this.pivotStandings = standings;
-                    this.pivotTable = this.getPivotTable(this.pivotStandings);
+                    this.pivotTable = this.pivotStandings.map(item => this.getPivotTable(item));
                 });
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
     using System;
     using System.Collections.Generic;
@@ -21,12 +21,12 @@
         /// <summary>
         /// Gets or sets the collection of entries in tournament's standings.
         /// </summary>
-        public List<StandingsEntryViewModel> Standings { get; set; }
+        public List<List<StandingsEntryViewModel>> Standings { get; set; }
 
         /// <summary>
         /// Gets or sets data for pivot table.
         /// </summary>
-        public PivotTableViewModel PivotTable { get; set; }
+        public List<PivotTableViewModel> PivotTable { get; set; }
 
         /// <summary>
         /// Gets or sets the message.

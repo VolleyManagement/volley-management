@@ -18,7 +18,8 @@
                                IQuery<List<Team>, GetAllCriteria>,
                                IQuery<Team, FindByCaptainIdCriteria>,
                                IQuery<List<Team>, FindByTournamentIdCriteria>,
-                               IQuery<List<Team>, FindTeamsByGroupIdCriteria>
+                               IQuery<List<Team>, FindTeamsByGroupIdCriteria>,
+                               IQuery<List<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>
     {
         #region Fields
 
@@ -93,6 +94,17 @@
                                       .Where(g => g.Id == criteria.GroupId)
                                       .SelectMany(g => g.Teams)
                                       .Select(GetTeamMapping())
+                                      .ToList();
+        }
+
+        public List<List<Team>> Execute(FindTeamsInDivisionsByTournamentIdCriteria criteria)
+        {
+            return _unitOfWork.Context.Tournaments
+                                      .Where(t => t.Id == criteria.TournamentId)
+                                      .Select(t => t.Divisions)
+                                      .SelectMany(d => d.Select(g => g.Groups))
+                                      .Select(g => g.SelectMany(t => t.Teams))
+                                      .Select(c => c.AsQueryable().Select(GetTeamMapping()).ToList())
                                       .ToList();
         }
 

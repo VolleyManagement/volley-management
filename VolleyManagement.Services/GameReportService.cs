@@ -318,19 +318,10 @@
         private int GetTeamWonBalls(int teamId, List<GameResultDto> games)
         {
             var results = games.Where(g => g.HomeTeamId == teamId).ToList();
-            int wonBalls = results.Sum(
-                item => item.HomeSet1Score
-                + item.HomeSet2Score
-                + item.HomeSet3Score
-                + item.HomeSet4Score
-                + item.HomeSet5Score);
+            int wonBalls = results.Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
+
             results = games.Where(g => g.AwayTeamId == teamId).ToList();
-            wonBalls += results.Sum(
-                item => item.AwaySet1Score
-                + item.AwaySet2Score
-                + item.AwaySet3Score
-                + item.AwaySet4Score
-                + item.AwaySet5Score);
+            wonBalls += results.Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
             return wonBalls;
         }
 
@@ -398,6 +389,24 @@
             return gameResults.Where(gr => teamsIds.Contains(gr.AwayTeamId.GetValueOrDefault()) &&
                                             teamsIds.Contains(gr.HomeTeamId.GetValueOrDefault())).
                                ToList();
+        }
+
+        private int CalculateHomeSetBallsForNonTechnicalDefeatSets(GameResultDto item)
+        {
+            return (!item.IsSet1TechnicalDefeat ? item.HomeSet1Score : 0)
+                   + (!item.IsSet2TechnicalDefeat ? item.HomeSet2Score : 0)
+                   + (!item.IsSet3TechnicalDefeat ? item.HomeSet3Score : 0)
+                   + (!item.IsSet4TechnicalDefeat ? item.HomeSet4Score : 0)
+                   + (!item.IsSet5TechnicalDefeat ? item.HomeSet5Score : 0);
+        }
+
+        private int CalculateAwaySetBallsForNonTechnicalDefeatSets(GameResultDto item)
+        {
+            return (!item.IsSet1TechnicalDefeat ? item.AwaySet1Score : 0)
+                + (!item.IsSet2TechnicalDefeat ? item.AwaySet2Score : 0)
+                + (!item.IsSet3TechnicalDefeat ? item.AwaySet3Score : 0)
+                + (!item.IsSet4TechnicalDefeat ? item.AwaySet4Score : 0)
+                + (!item.IsSet5TechnicalDefeat ? item.AwaySet5Score : 0);
         }
         #endregion
     }

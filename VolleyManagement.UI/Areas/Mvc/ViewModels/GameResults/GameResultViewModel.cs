@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using System;
     using System.Collections.Generic;
@@ -139,11 +139,11 @@
                 AllowEditResult = gameResult.AllowEditResult,
                 SetScores = new List<Score>
                     {
-                        new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },
-                        new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score },
-                        new Score { Home = gameResult.HomeSet3Score, Away = gameResult.AwaySet3Score },
-                        new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score },
-                        new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score }
+                        new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score, IsTechnicalDefeat = gameResult.IsSet1TechnicalDefeat },
+                        new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score, IsTechnicalDefeat = gameResult.IsSet2TechnicalDefeat },
+                        new Score { Home = gameResult.HomeSet3Score, Away = gameResult.AwaySet3Score, IsTechnicalDefeat = gameResult.IsSet3TechnicalDefeat },
+                        new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score, IsTechnicalDefeat = gameResult.IsSet4TechnicalDefeat },
+                        new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score, IsTechnicalDefeat = gameResult.IsSet5TechnicalDefeat }
                     }
             };
         }

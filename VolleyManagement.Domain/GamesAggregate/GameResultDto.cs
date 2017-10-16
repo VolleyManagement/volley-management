@@ -121,5 +121,30 @@
         /// Gets or sets a value indicating whether it is allowed to edit game's result (for Playoff scheme)
         /// </summary>
         public bool AllowEditResult { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet1TechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet2TechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet3TechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet4TechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet5TechnicalDefeat { get; set; }
     }
 }

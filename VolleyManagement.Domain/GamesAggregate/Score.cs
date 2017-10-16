@@ -17,10 +17,12 @@
         /// </summary>
         /// <param name="home">Score of the home team.</param>
         /// <param name="away">Score of the away team.</param>
-        public Score(byte home, byte away)
+        /// <param name="isTechnicalDefeat">Indicating whether the technical defeat has taken place.</param>
+        public Score(byte home, byte away, bool isTechnicalDefeat = false)
         {
             Home = home;
             Away = away;
+            IsTechnicalDefeat = isTechnicalDefeat;
         }
 
         /// <summary>
@@ -44,5 +46,10 @@
                 return Home == 0 && Away == 0;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsTechnicalDefeat { get; set; }
     }
 }

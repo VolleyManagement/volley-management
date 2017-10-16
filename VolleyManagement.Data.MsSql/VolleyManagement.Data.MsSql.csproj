@@ -181,6 +181,10 @@
     <Compile Include="Context\Migrations\201708091004233_AddIsArchivedFlag.Designer.cs">
       <DependentUpon>201708091004233_AddIsArchivedFlag.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.cs" />
+    <Compile Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.Designer.cs">
+      <DependentUpon>201710160802100_TechnicalDefeatForSet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -348,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Context\Migrations\201708091004233_AddIsArchivedFlag.resx">
       <DependentUpon>201708091004233_AddIsArchivedFlag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.resx">
+      <DependentUpon>201710160802100_TechnicalDefeatForSet.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

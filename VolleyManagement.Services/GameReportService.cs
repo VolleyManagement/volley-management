@@ -328,19 +328,10 @@
         private int GetTeamLostBalls(int teamId, List<GameResultDto> games)
         {
             var results = games.Where(g => g.HomeTeamId == teamId).ToList();
-            int lostBalls = results.Sum(
-                item => item.AwaySet1Score
-                + item.AwaySet2Score
-                + item.AwaySet3Score
-                + item.AwaySet4Score
-                + item.AwaySet5Score);
+            int lostBalls = results.Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
+
             results = games.Where(g => g.AwayTeamId == teamId).ToList();
-            lostBalls += results.Sum(
-                item => item.HomeSet1Score
-                + item.HomeSet2Score
-                + item.HomeSet3Score
-                + item.HomeSet4Score
-                + item.HomeSet5Score);
+            lostBalls += results.Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
             return lostBalls;
         }
 

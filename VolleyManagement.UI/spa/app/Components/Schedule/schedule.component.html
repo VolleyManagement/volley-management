@@ -1,41 +1,60 @@
-<div class="schedule-table" *ngFor="let gameResultByRounds of gameResults; let i = index;">
+<div class="schedule-table"
+     *ngFor="let gameResultByRounds of gameResults; let i = index;">
   <div *ngIf="gameResultByRounds">
     <p class="headercenter">Тур {{gameResultByRounds.Round}}</p>
     <div class="group group2">
-      <!-- <p class="groupHeader">II группа</p>
-    <p class="groupDate">Суббота</p>
-    <p class="groupDate">19 ноября 2016</p> -->
+      <!-- <p class="group-header">II группа</p>
+    <p class="group-date">Суббота</p>
+    <p class="group-date">19 ноября 2016</p> -->
       <div>
-        <div class="games" *ngFor="let gameResult of gameResultByRounds.GameResults;">
+        <div class="games"
+             *ngFor="let gameResult of gameResultByRounds.GameResults;">
           <table class="game-sch">
             <tbody *ngIf="!gameResult.AwayTeamName">
               <tr class="team-sch">
-                <strong>{{gameResult.HomeTeamName}}</strong>
+                <strong>{{ gameResult.HomeTeamName }}</strong>
               </tr>
               <tr class="team-sch">
                 Day Off
               </tr>
             </tbody>
           </table>
-          <table class="game-sch" *ngIf="gameResult.AwayTeamName">
+          <table class="game-sch"
+                 *ngIf="gameResult.AwayTeamName">
+
             <tbody *ngIf="gameResult.IsGameWasPlayedAndHasResult">
-              <tr class="team-sch" [class.win]="gameResult.Result.TotalScore.Home > gameResult.Result.TotalScore.Away">
-                <td class="teamname" colspan="5">
+
+              <tr class="team-sch"
+                  [class.win]="gameResult.Result.TotalScore.Home > gameResult.Result.TotalScore.Away">
+
+                <td class="teamname"
+                    colspan="5">
                   {{gameResult.HomeTeamName}}
                 </td>
+
                 <td class="teamscore">
                   {{gameResult.Result.TotalScore.Home}}
                 </td>
+
               </tr>
-              <tr class="team-sch" [class.win]="gameResult.Result.TotalScore.Home < gameResult.Result.TotalScore.Away">
-                <td class="teamname" colspan="5">
-                  {{gameResult.AwayTeamName}}
+
+              <tr class="team-sch"
+                  [class.win]="gameResult.Result.TotalScore.Home < gameResult.Result.TotalScore.Away">
+
+                <td class="teamname"
+                    colspan="5">
+                  {{ gameResult.AwayTeamName }}
                 </td>
+
                 <td class="teamscore">
-                  {{gameResult.Result.TotalScore.Away}}
+                  {{ gameResult.Result.TotalScore.Away }}
                 </td>
+
               </tr>
-              <tr class="sets" *ngIf="gameResult.Result && gameResult.Result.IsTechnicalDefeat">
+
+              <tr class="sets"
+                  *ngIf="gameResult.Result && gameResult.Result.IsTechnicalDefeat">
+
                 <td class="set">
                   <div>
                     <span>техн.</span>
@@ -60,22 +79,30 @@
                   </div>
                 </td>
                 <td>
-                  <div class="gameTime">техн.</div>
+                  <div class="game-time">техн.</div>
                 </td>
               </tr>
 
-              <tr class="sets" *ngIf="gameResult.Result && !gameResult.Result.TotalScore.IsEmpty">
-                <td class="set" *ngFor="let setScore of gameResult.Result.SetScores">
-                  <div class="" *ngIf="!setScore.IsEmpty; else noSetScore">
-                    <span>{{setScore.Home}}</span>:<span>{{setScore.Away}}</span>
+              <tr class="sets"
+                  *ngIf="gameResult.Result && !gameResult.Result.TotalScore.IsEmpty">
+
+                <td class="set"
+                    *ngFor="let setScore of gameResult.Result.SetScores">
+
+                  <div *ngIf="!setScore.IsEmpty; else noSetScore">
+
+                    {{setScore.Home}} : {{setScore.Away}}
+
                   </div>
+
                   <ng-template #noSetScore>
-                    <div class="hidden">
-                    </div>
+                    <div class="hidden"></div>
                   </ng-template>
+
                 </td>
+
                 <td>
-                  <div class="gameTime"></div>
+                  <div class="game-time"></div>
                 </td>
               </tr>
             </tbody>

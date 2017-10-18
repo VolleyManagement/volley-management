@@ -51,5 +51,16 @@
         /// Gets or sets a value indicating whether the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets formatted game score
+        /// </summary>
+        public string GetFormattedScore
+        {
+            get
+            {
+                return IsTechnicalDefeat ? $"{Home}:{Away}*" : $"{Home}:{Away}";
+            }
+        }
     }
 }

@@ -71,13 +71,8 @@
             {
                 if (!score.IsEmpty)
                 {
-                    var scoreToShow = score.Home + ":" + score.Away;
-                    if (score.IsTechnicalDefeat)
-                    {
-                        scoreToShow += "*";
-                    }
-                    <div class="col-md-2">
-                        @scoreToShow
+                <div class="col-md-2">
+                    @score.GetFormattedScore
                     </div>
                 }
             }
@@ -114,11 +109,10 @@
         </div>
         }
         @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit) &&
-                                        Model.AllowedOperations.IsAllowed(AuthOperations.Games.Delete))
+                                            Model.AllowedOperations.IsAllowed(AuthOperations.Games.Delete))
         {
 
-            if (Model.GameDate > DateTime.Now &&
-                       Model.SetsScore.IsEmpty)
+            if (Model.IsScheduleEditable)
             {
             <div class="col-md-2">
                 @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })

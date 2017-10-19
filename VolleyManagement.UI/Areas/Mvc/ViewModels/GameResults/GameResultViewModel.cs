@@ -19,8 +19,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// </summary>
         public GameResultViewModel()
         {
-            SetsScore = new Score();
-            SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+            SetsScore = new ScoreViewModel();
+            SetScores = Enumerable.Repeat(new ScoreViewModel(), Constants.GameResult.MAX_SETS_COUNT).ToList();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <summary>
         /// Gets or sets the final score of the game.
         /// </summary>
-        public Score SetsScore { get; set; }
+        public ScoreViewModel SetsScore { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the technical defeat has taken place.
@@ -66,7 +66,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <summary>
         /// Gets or sets the set scores.
         /// </summary>
-        public List<Score> SetScores { get; set; }
+        public List<ScoreViewModel> SetScores { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time of the game.
@@ -145,10 +145,10 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = gameResult.GameNumber,
                 Round = gameResult.Round,
 
-                SetsScore = new Score { Home = gameResult.Result.SetsScore.Home, Away = gameResult.Result.SetsScore.Away },
+                SetsScore = new ScoreViewModel { Home = gameResult.Result.SetsScore.Home, Away = gameResult.Result.SetsScore.Away },
                 IsTechnicalDefeat = gameResult.Result.SetsScore.IsTechnicalDefeat,
                 AllowEditResult = gameResult.AllowEditResult,
-                SetScores = gameResult.Result.SetScores.Select(item => new Score
+                SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
                 {
                     Home = item.Home,
                     Away = item.Away,
@@ -174,9 +174,9 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = GameNumber,
                 Result = new Result
                 {
-                    SetsScore = SetsScore,
+                    SetsScore = SetsScore.ToDomain(),
                     IsTechnicalDefeat = IsTechnicalDefeat,
-                    SetScores = SetScores
+                    SetScores = SetScores.Select(item => item.ToDomain()).ToList()
                 }
             };
         }

@@ -36,32 +36,9 @@
         public byte Away { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether gets an indicator whether score is empty.
-        /// </summary>
-        /// <returns>True if score is empty; otherwise, false.</returns>
-        public bool IsEmpty
-        {
-            get
-            {
-                return Home == 0 && Away == 0;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
-
-        /// <summary>
-        /// Gets formatted game score
-        /// </summary>
-        public string GetFormattedScore
-        {
-            get
-            {
-                return IsTechnicalDefeat ? $"{Home}:{Away}*" : $"{Home}:{Away}";
-            }
-        }
 
         /// <summary>
         /// Gets the score of the home team for statistics.

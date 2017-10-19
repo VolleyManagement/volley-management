@@ -64,10 +64,9 @@
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
             var gameResults = _dalGameResults
-                .Where(gr => gr.TournamentId == criteria.TournamentId)
-                .Select(GetGameResultDtoMapping());
+                .Where(gr => gr.TournamentId == criteria.TournamentId).ToList();
 
-            List<GameResultDto> list = gameResults.Any() ? gameResults.ToList() : new List<GameResultDto>();
+            List<GameResultDto> list = gameResults.Any() ? gameResults.ConvertAll(GetGameResultDtoMap()) : new List<GameResultDto>();
             return list;
         }
 
@@ -228,6 +227,33 @@
                          new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score, IsTechnicalDefeat = gr.IsSet3TechnicalDefeat },
                          new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score, IsTechnicalDefeat = gr.IsSet4TechnicalDefeat },
                          new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score, IsTechnicalDefeat = gr.IsSet5TechnicalDefeat }
+                    },
+                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore },
+                    IsTechnicalDefeat = gr.IsTechnicalDefeat
+                }
+            };
+        }
+
+        private Converter<GameResultEntity, GameResultDto> GetGameResultDtoMap()
+        {
+            return gr => new GameResultDto
+            {
+                Id = gr.Id,
+                TournamentId = gr.TournamentId,
+                HomeTeamId = gr.HomeTeamId,
+                AwayTeamId = gr.AwayTeamId,
+                GameDate = gr.StartTime,
+                Round = gr.RoundNumber,
+                GameNumber = gr.GameNumber,
+                Result = new Result
+                {
+                    SetScores = new List<Score>
+                    {
+                        new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score, IsTechnicalDefeat = gr.IsSet1TechnicalDefeat },
+                        new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score, IsTechnicalDefeat = gr.IsSet2TechnicalDefeat },
+                        new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score, IsTechnicalDefeat = gr.IsSet3TechnicalDefeat },
+                        new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score, IsTechnicalDefeat = gr.IsSet4TechnicalDefeat },
+                        new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score, IsTechnicalDefeat = gr.IsSet5TechnicalDefeat }
                     },
                     SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore },
                     IsTechnicalDefeat = gr.IsTechnicalDefeat

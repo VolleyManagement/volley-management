@@ -5,6 +5,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
     using System.Linq;
     using Domain;
     using Domain.GamesAggregate;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// GameViewModel class.
@@ -57,9 +58,9 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
                 Round = gameResult.Round,
                 Result = new GameResult
                 {
-                    TotalScore = new Score { Home = gameResult.Result.SetsScore.Home, Away = gameResult.Result.SetsScore.Away },
+                    TotalScore = new ScoreViewModel { Home = gameResult.Result.SetsScore.Home, Away = gameResult.Result.SetsScore.Away },
                     IsTechnicalDefeat = gameResult.Result.SetsScore.IsTechnicalDefeat,
-                    SetScores = gameResult.Result.SetScores.Select(item => new Score
+                    SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
                     {
                         Home = item.Home,
                         Away = item.Away,
@@ -79,19 +80,19 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
             /// </summary>
             public GameResult()
             {
-                TotalScore = new Score();
-                SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+                TotalScore = new ScoreViewModel();
+                SetScores = Enumerable.Repeat(new ScoreViewModel(), Constants.GameResult.MAX_SETS_COUNT).ToList();
             }
 
             /// <summary>
             /// Gets or sets the final score of the game.
             /// </summary>
-            public Score TotalScore { get; set; }
+            public ScoreViewModel TotalScore { get; set; }
 
             /// <summary>
             /// Gets or sets the set scores.
             /// </summary>
-            public List<Score> SetScores { get; set; }
+            public List<ScoreViewModel> SetScores { get; set; }
 
             /// <summary>
             /// Gets or sets a value indicating whether the technical defeat has taken place.

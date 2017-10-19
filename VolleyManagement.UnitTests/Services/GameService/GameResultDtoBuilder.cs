@@ -33,19 +33,48 @@
                 AwayTeamId = 2,
                 HomeTeamName = "TeamNameA",
                 AwayTeamName = "AwayTeamName",
-                HomeSetsScore = 3,
-                AwaySetsScore = 0,
-                IsTechnicalDefeat = false,
-                HomeSet1Score = 25,
-                AwaySet1Score = 20,
-                HomeSet2Score = 26,
-                AwaySet2Score = 24,
-                HomeSet3Score = 30,
-                AwaySet3Score = 28,
-                HomeSet4Score = 0,
-                AwaySet4Score = 0,
-                HomeSet5Score = 0,
-                AwaySet5Score = 0,
+                Result = new Result
+                {
+                    SetsScore = new Score
+                    {
+                        Home = 3,
+                        Away = 0,
+                        IsTechnicalDefeat = false,
+                    },
+                    SetScores = new System.Collections.Generic.List<Score>
+                    {
+                        new Score
+                        {
+                            Home = 25,
+                            Away = 20,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 26,
+                            Away = 24,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 30,
+                            Away = 28,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 0,
+                            Away = 0,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 0,
+                            Away = 0,
+                            IsTechnicalDefeat = false,
+                        }
+                    }
+                },
                 GameDate = DateTime.Parse(DATE),
                 Round = 1,
                 GameNumber = 0
@@ -129,7 +158,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSetsScore(byte score)
         {
-            _gameResult.HomeSetsScore = score;
+            _gameResult.Result.SetsScore.Home = score;
             return this;
         }
 
@@ -140,7 +169,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySetsScore(byte score)
         {
-            _gameResult.AwaySetsScore = score;
+            _gameResult.Result.SetsScore.Away = score;
             return this;
         }
 
@@ -150,7 +179,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithTechnicalDefeat()
         {
-            _gameResult.IsTechnicalDefeat = true;
+            _gameResult.Result.SetsScore.IsTechnicalDefeat = true;
             return this;
         }
 
@@ -160,7 +189,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithNoTechnicalDefeat()
         {
-            _gameResult.IsTechnicalDefeat = false;
+            _gameResult.Result.SetsScore.IsTechnicalDefeat = false;
             return this;
         }
 
@@ -171,7 +200,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet1Score(byte score)
         {
-            _gameResult.HomeSet1Score = score;
+            _gameResult.Result.SetScores[0].Home = score;
             return this;
         }
 
@@ -182,7 +211,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet1Score(byte score)
         {
-            _gameResult.AwaySet1Score = score;
+            _gameResult.Result.SetScores[0].Away = score;
             return this;
         }
 
@@ -193,7 +222,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet2Score(byte score)
         {
-            _gameResult.HomeSet2Score = score;
+            _gameResult.Result.SetScores[1].Home = score;
             return this;
         }
 
@@ -204,7 +233,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet2Score(byte score)
         {
-            _gameResult.AwaySet2Score = score;
+            _gameResult.Result.SetScores[1].Away = score;
             return this;
         }
 
@@ -215,7 +244,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet3Score(byte score)
         {
-            _gameResult.HomeSet3Score = score;
+            _gameResult.Result.SetScores[2].Home = score;
             return this;
         }
 
@@ -226,7 +255,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet3Score(byte score)
         {
-            _gameResult.AwaySet3Score = score;
+            _gameResult.Result.SetScores[2].Away = score;
             return this;
         }
 
@@ -237,7 +266,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet4Score(byte score)
         {
-            _gameResult.HomeSet4Score = score;
+            _gameResult.Result.SetScores[3].Home = score;
             return this;
         }
 
@@ -248,7 +277,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet4Score(byte score)
         {
-            _gameResult.AwaySet4Score = score;
+            _gameResult.Result.SetScores[3].Away = score;
             return this;
         }
 
@@ -259,7 +288,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSet5Score(byte score)
         {
-            _gameResult.HomeSet5Score = score;
+            _gameResult.Result.SetScores[4].Home = score;
             return this;
         }
 
@@ -270,7 +299,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySet5Score(byte score)
         {
-            _gameResult.AwaySet5Score = score;
+            _gameResult.Result.SetScores[4].Away = score;
             return this;
         }
 

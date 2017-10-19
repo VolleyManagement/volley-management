@@ -30,14 +30,14 @@
                 AwayTeamName = "AwayTeam",
                 GameDate = DateTime.Parse("2016-04-03 10:00"),
                 Round = 1,
-                SetsScore = new Score(3, 1),
-                SetScores = new List<Score>()
+                SetsScore = new ScoreViewModel(3, 1),
+                SetScores = new List<ScoreViewModel>()
                     {
-                        new Score(27, 25),
-                        new Score(33, 31),
-                        new Score(27, 25),
-                        new Score(24, 26),
-                        new Score()
+                        new ScoreViewModel(27, 25),
+                        new ScoreViewModel(33, 31),
+                        new ScoreViewModel(27, 25),
+                        new ScoreViewModel(24, 26),
+                        new ScoreViewModel()
                     },
                 IsTechnicalDefeat = false,
                 TournamentId = 1
@@ -151,7 +151,7 @@
         /// <returns>Game result view model builder object</returns>
         public GameResultViewModelBuilder WithSetsScore(byte homeSetScore, byte awaySetsScore)
         {
-            _gameResultsViewModel.SetsScore = new Score(homeSetScore, awaySetsScore);
+            _gameResultsViewModel.SetsScore = new ScoreViewModel(homeSetScore, awaySetsScore);
             return this;
         }
 
@@ -160,7 +160,7 @@
         /// </summary>
         /// <param name="setScores">Value indicates set scores of game results</param>
         /// <returns>Game result view model builder object</returns>
-        public GameResultViewModelBuilder WithSetScores(List<Score> setScores)
+        public GameResultViewModelBuilder WithSetScores(List<ScoreViewModel> setScores)
         {
             _gameResultsViewModel.SetScores = setScores;
             return this;

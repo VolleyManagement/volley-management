@@ -183,13 +183,13 @@
                 .WithHomeTeamName("TeamNameA")
                 .WithId(GAME_RESULTS_ID)
                 .WithSetsScore(3, 2)
-                .WithSetScores(new List<Score>
+                .WithSetScores(new List<ScoreViewModel>
                     {
-                        new Score(25, 20),
-                        new Score(24, 26),
-                        new Score(28, 30),
-                        new Score(25, 22),
-                        new Score(27, 25)
+                        new ScoreViewModel(25, 20),
+                        new ScoreViewModel(24, 26),
+                        new ScoreViewModel(28, 30),
+                        new ScoreViewModel(25, 22),
+                        new ScoreViewModel(27, 25)
                     })
                 .Build();
 

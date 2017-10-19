@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
+
 import { ISubscription } from 'rxjs/Subscription';
 
 import { StandingsService } from '../../Services/standings.service';
@@ -10,12 +11,14 @@ import { ShortGameResult } from '../../Models/Pivot/ShortGameResult';
 @Component({
     selector: 'pivottable',
     templateUrl: './pivotstandings.component.html',
-    styleUrls: ['./pivotstandings.component.css']
+    styleUrls: ['./pivotstandings.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class PivotStandingsComponent implements OnInit, OnDestroy {
 
     @Input() pivotId: number;
+
     pivotStandings: PivotStandings[];
     pivotTable: PivotStandingsGame[][][];
 
@@ -25,7 +28,8 @@ export class PivotStandingsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         if (this.pivotId) {
-            this.subscription = this.standingsService.getPivotStandings(this.pivotId)
+            this.subscription = this.standingsService
+                .getPivotStandings(this.pivotId)
                 .subscribe(standings => {
                     this.pivotStandings = standings;
                     this.pivotTable = this.pivotStandings.map(item => this.getPivotTable(item));
@@ -53,10 +57,10 @@ export class PivotStandingsComponent implements OnInit, OnDestroy {
                     } else {
                         const rowTeamId = pivot.TeamsStandings[i].TeamId;
                         const colTeamId = pivot.TeamsStandings[j].TeamId;
-                        const homeGameResult = pivot.GamesStandings.
-                            find(game => (game.HomeTeamId === rowTeamId && game.AwayTeamId === colTeamId));
-                        const awayGameResult = pivot.GamesStandings.
-                            find(game => (game.HomeTeamId === colTeamId && game.AwayTeamId === rowTeamId));
+                        const homeGameResult = pivot.GamesStandings
+                            .find(game => (game.HomeTeamId === rowTeamId && game.AwayTeamId === colTeamId));
+                        const awayGameResult = pivot.GamesStandings
+                            .find(game => (game.HomeTeamId === colTeamId && game.AwayTeamId === rowTeamId));
 
                         if (homeGameResult) {
                             table[i][j] = homeGameResult.clone();
@@ -69,6 +73,7 @@ export class PivotStandingsComponent implements OnInit, OnDestroy {
                 }
             }
         }
+
         return table;
     }
 }

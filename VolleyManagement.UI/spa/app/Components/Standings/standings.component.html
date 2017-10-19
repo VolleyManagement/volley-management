@@ -1,16 +1,23 @@
-<div *ngIf="standingsEntry">
+<div *ngIf="standingsEntry"
+     class="standings-entry">
+
     <legend></legend>
     <p *ngIf="!standingsEntry">
         No Game Results
     </p>
 
-    <table class="standings" *ngFor="let standings of standingsEntry">
+    <table class="standings"
+           *ngFor="let standings of standingsEntry">
         <thead>
             <tr class="standings-header-row">
-                <th colspan="3" class="standings-header-cell">N/A</th>
-                <th colspan="9" class="standings-header-cell">Games</th>
-                <th colspan="3" class="standings-header-cell">Sets</th>
-                <th colspan="3" class="standings-header-cell">Balls</th>
+                <th colspan="3"
+                    class="standings-header-cell">N/A</th>
+                <th colspan="9"
+                    class="standings-header-cell">Games</th>
+                <th colspan="3"
+                    class="standings-header-cell">Sets</th>
+                <th colspan="3"
+                    class="standings-header-cell">Balls</th>
             </tr>
             <tr class="standings-header-row">
                 <th class="standings-header-cell">Position</th>
@@ -34,7 +41,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="standings-row" *ngFor="let entry of standings">
+            <tr class="standings-row"
+                *ngFor="let entry of standings">
                 <td class="standings-cell">{{entry.Position}}</td>
                 <td class="standings-cell">{{entry.TeamName}}</td>
                 <td class="standings-cell">{{entry.Points}}</td>

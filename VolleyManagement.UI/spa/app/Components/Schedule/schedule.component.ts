@@ -1,29 +1,33 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
+
 import { ISubscription } from 'rxjs/Subscription';
 
 import { ScheduleByRounds } from '../../Models/Schedule/ScheduleByRounds';
 import { ScheduleService } from '../../Services/schedule.service';
 
 @Component({
-  selector: 'schedule',
-  templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.css']
+    selector: 'schedule',
+    templateUrl: './schedule.component.html',
+    styleUrls: ['./schedule.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class ScheduleComponent implements OnInit, OnDestroy {
 
-  @Input() scheduleId: number;
-  gameResults: ScheduleByRounds[];
+    @Input() scheduleId: number;
 
-  private subscription: ISubscription;
+    gameResults: ScheduleByRounds[];
 
-  constructor(private scheduleService: ScheduleService) { }
+    private subscription: ISubscription;
 
-  ngOnInit() {
-    this.subscription = this.scheduleService.getSchedule(this.scheduleId)
-      .subscribe(scheduleByRounds => this.gameResults = scheduleByRounds);
-  }
+    constructor(private scheduleService: ScheduleService) { }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+    ngOnInit() {
+        this.subscription = this.scheduleService
+            .getSchedule(this.scheduleId)
+            .subscribe(scheduleByRounds => this.gameResults = scheduleByRounds);
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 }

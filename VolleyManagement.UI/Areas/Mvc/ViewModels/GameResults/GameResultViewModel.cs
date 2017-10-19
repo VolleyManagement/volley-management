@@ -145,17 +145,15 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = gameResult.GameNumber,
                 Round = gameResult.Round,
 
-                SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
-                IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
+                SetsScore = new Score { Home = gameResult.Result.SetsScore.Home, Away = gameResult.Result.SetsScore.Away },
+                IsTechnicalDefeat = gameResult.Result.SetsScore.IsTechnicalDefeat,
                 AllowEditResult = gameResult.AllowEditResult,
-                SetScores = new List<Score>
-                    {
-                        new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score, IsTechnicalDefeat = gameResult.IsSet1TechnicalDefeat },
-                        new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score, IsTechnicalDefeat = gameResult.IsSet2TechnicalDefeat },
-                        new Score { Home = gameResult.HomeSet3Score, Away = gameResult.AwaySet3Score, IsTechnicalDefeat = gameResult.IsSet3TechnicalDefeat },
-                        new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score, IsTechnicalDefeat = gameResult.IsSet4TechnicalDefeat },
-                        new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score, IsTechnicalDefeat = gameResult.IsSet5TechnicalDefeat }
-                    }
+                SetScores = gameResult.Result.SetScores.Select(item => new Score
+                {
+                    Home = item.Home,
+                    Away = item.Away,
+                    IsTechnicalDefeat = item.IsTechnicalDefeat
+                }).ToList()
             };
         }
 

@@ -62,5 +62,27 @@
                 return IsTechnicalDefeat ? $"{Home}:{Away}*" : $"{Home}:{Away}";
             }
         }
+
+        /// <summary>
+        /// Gets the score of the home team for statistics.
+        /// </summary>
+        public byte HomeBallsForStatistics
+        {
+            get
+            {
+                return IsTechnicalDefeat ? (byte)0 : Home;
+            }
+        }
+
+        /// <summary>
+        /// Gets the score of the away team  for statistics.
+        /// </summary>
+        public byte AwayBallsForStatistics
+        {
+            get
+            {
+                return IsTechnicalDefeat ? (byte)0 : Away;
+            }
+        }
     }
 }

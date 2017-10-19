@@ -123,9 +123,9 @@
                     {
                         HomeTeamId = g.HomeTeamId.Value,
                         AwayTeamId = g.AwayTeamId.Value,
-                        HomeSetsScore = g.HomeSetsScore,
-                        AwaySetsScore = g.AwaySetsScore,
-                        IsTechnicalDefeat = g.IsTechnicalDefeat
+                        HomeSetsScore = g.Result.SetsScore.Home,
+                        AwaySetsScore = g.Result.SetsScore.Away,
+                        IsTechnicalDefeat = g.Result.SetsScore.IsTechnicalDefeat
                     }).
                     ToList();
 
@@ -219,7 +219,7 @@
             homeTeamEntry.GamesTotal++;
             awayTeamEntry.GamesTotal++;
 
-            switch (gameResult.HomeSetsScore - gameResult.AwaySetsScore)
+            switch (gameResult.Result.SetsScore.Home - gameResult.Result.SetsScore.Away)
             {
                 case 3: // sets score - 3:0
                     homeTeamEntry.Points += 3;
@@ -291,16 +291,16 @@
         private int GetTeamWonSets(int teamId, List<GameResultDto> games)
         {
             int result = 0;
-            result += games.Where(g => g.HomeTeamId == teamId).Select(g => (int)g.HomeSetsScore).Sum();
-            result += games.Where(g => g.AwayTeamId == teamId).Select(g => (int)g.AwaySetsScore).Sum();
+            result += games.Where(g => g.HomeTeamId == teamId).Select(g => (int)g.Result.SetsScore.Home).Sum();
+            result += games.Where(g => g.AwayTeamId == teamId).Select(g => (int)g.Result.SetsScore.Away).Sum();
             return result;
         }
 
         private int GetTeamLostSets(int teamId, List<GameResultDto> games)
         {
             int result = 0;
-            result += games.Where(g => g.HomeTeamId == teamId).Select(g => (int)g.AwaySetsScore).Sum();
-            result += games.Where(g => g.AwayTeamId == teamId).Select(g => (int)g.HomeSetsScore).Sum();
+            result += games.Where(g => g.HomeTeamId == teamId).Select(g => (int)g.Result.SetsScore.Away).Sum();
+            result += games.Where(g => g.AwayTeamId == teamId).Select(g => (int)g.Result.SetsScore.Home).Sum();
             return result;
         }
 
@@ -384,20 +384,12 @@
 
         private int CalculateHomeSetBallsForNonTechnicalDefeatSets(GameResultDto item)
         {
-            return (!item.IsSet1TechnicalDefeat ? item.HomeSet1Score : 0)
-                   + (!item.IsSet2TechnicalDefeat ? item.HomeSet2Score : 0)
-                   + (!item.IsSet3TechnicalDefeat ? item.HomeSet3Score : 0)
-                   + (!item.IsSet4TechnicalDefeat ? item.HomeSet4Score : 0)
-                   + (!item.IsSet5TechnicalDefeat ? item.HomeSet5Score : 0);
+            return item.Result.SetScores.Sum(r => r.HomeBallsForStatistics);
         }
 
         private int CalculateAwaySetBallsForNonTechnicalDefeatSets(GameResultDto item)
         {
-            return (!item.IsSet1TechnicalDefeat ? item.AwaySet1Score : 0)
-                + (!item.IsSet2TechnicalDefeat ? item.AwaySet2Score : 0)
-                + (!item.IsSet3TechnicalDefeat ? item.AwaySet3Score : 0)
-                + (!item.IsSet4TechnicalDefeat ? item.AwaySet4Score : 0)
-                + (!item.IsSet5TechnicalDefeat ? item.AwaySet5Score : 0);
+            return item.Result.SetScores.Sum(r => r.AwayBallsForStatistics);
         }
         #endregion
     }

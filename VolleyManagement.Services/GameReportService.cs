@@ -291,16 +291,16 @@
         private int GetTeamWonSets(int teamId, List<GameResultDto> games)
         {
             int result = 0;
-            result += games.Where(g => g.HomeTeamId == teamId).Select(g => (int)g.Result.SetsScore.Home).Sum();
-            result += games.Where(g => g.AwayTeamId == teamId).Select(g => (int)g.Result.SetsScore.Away).Sum();
+            result += games.Where(g => g.HomeTeamId == teamId).Sum(g => (int)g.Result.SetsScore.Home);
+            result += games.Where(g => g.AwayTeamId == teamId).Sum(g => (int)g.Result.SetsScore.Away);
             return result;
         }
 
         private int GetTeamLostSets(int teamId, List<GameResultDto> games)
         {
             int result = 0;
-            result += games.Where(g => g.HomeTeamId == teamId).Select(g => (int)g.Result.SetsScore.Away).Sum();
-            result += games.Where(g => g.AwayTeamId == teamId).Select(g => (int)g.Result.SetsScore.Home).Sum();
+            result += games.Where(g => g.HomeTeamId == teamId).Sum(g => (int)g.Result.SetsScore.Away);
+            result += games.Where(g => g.AwayTeamId == teamId).Sum(g => (int)g.Result.SetsScore.Home);
             return result;
         }
 

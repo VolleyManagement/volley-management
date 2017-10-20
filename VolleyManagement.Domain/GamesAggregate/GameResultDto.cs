@@ -61,5 +61,11 @@
         /// Gets or sets a value of game result
         /// </summary>
         public Result Result { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether game has result.
+        /// </summary>
+        /// <returns>True if score is empty; otherwise, false.</returns>
+        public bool HasResult => !Result.SetsScore.IsEmpty;
     }
 }

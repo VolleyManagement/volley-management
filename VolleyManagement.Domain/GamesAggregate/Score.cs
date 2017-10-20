@@ -61,5 +61,17 @@
                 return IsTechnicalDefeat ? (byte)0 : Away;
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether gets an indicator whether score is empty.
+        /// </summary>
+        /// <returns>True if score is empty; otherwise, false.</returns>
+        public bool IsEmpty
+        {
+            get
+            {
+                return Home == 0 && Away == 0;
+            }
+        }
     }
 }

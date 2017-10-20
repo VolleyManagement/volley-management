@@ -245,6 +245,8 @@
                 GameDate = gr.StartTime,
                 Round = gr.RoundNumber,
                 GameNumber = gr.GameNumber,
+                HomeTeamName = gr.HomeTeam?.Name,
+                AwayTeamName = gr.AwayTeam?.Name,
                 Result = new Result
                 {
                     SetScores = new List<Score>

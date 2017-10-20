@@ -540,7 +540,7 @@
 
         private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
-            if (!gameToDelete.HasResult || gameToDelete.GameDate < TimeProvider.Current.UtcNow)
+            if (gameToDelete.HasResult || gameToDelete.GameDate < TimeProvider.Current.UtcNow)
             {
                 throw new ArgumentException(Resources.WrongDeletingGame);
             }

@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using System;
     using System.Collections.Generic;
@@ -19,8 +19,8 @@
         /// </summary>
         public GameResultViewModel()
         {
-            SetsScore = new Score();
-            SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+            SetsScore = new ScoreViewModel();
+            SetScores = Enumerable.Repeat(new ScoreViewModel(), Constants.GameResult.MAX_SETS_COUNT).ToList();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@
         /// <summary>
         /// Gets or sets the final score of the game.
         /// </summary>
-        public Score SetsScore { get; set; }
+        public ScoreViewModel SetsScore { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the technical defeat has taken place.
@@ -66,7 +66,7 @@
         /// <summary>
         /// Gets or sets the set scores.
         /// </summary>
-        public List<Score> SetScores { get; set; }
+        public List<ScoreViewModel> SetScores { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time of the game.
@@ -111,6 +111,17 @@
         }
 
         /// <summary>
+        /// Gets a value indicating whether schedule is editable
+        /// </summary>
+        public bool IsScheduleEditable
+        {
+            get
+            {
+                return GameDate > DateTime.Now && SetsScore.IsEmpty;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> create object
         /// </summary>
         public AllowedOperations AllowedOperations { get; set; }
@@ -134,17 +145,15 @@
                 GameNumber = gameResult.GameNumber,
                 Round = gameResult.Round,
 
-                SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
-                IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
+                SetsScore = new ScoreViewModel { Home = gameResult.Result.SetsScore.Home, Away = gameResult.Result.SetsScore.Away },
+                IsTechnicalDefeat = gameResult.Result.SetsScore.IsTechnicalDefeat,
                 AllowEditResult = gameResult.AllowEditResult,
-                SetScores = new List<Score>
-                    {
-                        new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },
-                        new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score },
-                        new Score { Home = gameResult.HomeSet3Score, Away = gameResult.AwaySet3Score },
-                        new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score },
-                        new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score }
-                    }
+                SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
+                {
+                    Home = item.Home,
+                    Away = item.Away,
+                    IsTechnicalDefeat = item.IsTechnicalDefeat
+                }).ToList()
             };
         }
 
@@ -165,9 +174,9 @@
                 GameNumber = GameNumber,
                 Result = new Result
                 {
-                    SetsScore = SetsScore,
+                    SetsScore = SetsScore.ToDomain(),
                     IsTechnicalDefeat = IsTechnicalDefeat,
-                    SetScores = SetScores
+                    SetScores = SetScores.Select(item => item.ToDomain()).ToList()
                 }
             };
         }

@@ -350,6 +350,7 @@
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameDeleteResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\GameViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameResults\ScoreViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameResults\TournamentResultsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Generic\RefererViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Menu\MenuItemViewModel.cs" />

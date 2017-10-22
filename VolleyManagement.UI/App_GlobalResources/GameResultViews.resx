@@ -183,6 +183,9 @@
   <data name="SetsScoreFields" xml:space="preserve">
     <value>Score by sets:</value>
   </data>
+  <data name="SetTechnicalDefeat" xml:space="preserve">
+    <value>Set Technical Defeat:</value>
+  </data>
   <data name="TeamsFields" xml:space="preserve">
     <value>Teams:</value>
   </data>

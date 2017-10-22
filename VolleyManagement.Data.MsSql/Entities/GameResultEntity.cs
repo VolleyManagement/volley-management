@@ -38,7 +38,7 @@
         public byte AwaySetsScore { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or set a value indicating whether the technical defeat has taken place.
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
 
@@ -121,5 +121,30 @@
         /// Gets or sets the away team which played the game.
         /// </summary>
         public virtual TeamEntity AwayTeam { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet1TechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet2TechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet3TechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet4TechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsSet5TechnicalDefeat { get; set; }
     }
 }

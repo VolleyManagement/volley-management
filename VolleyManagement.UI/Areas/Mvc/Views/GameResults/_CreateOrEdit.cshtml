@@ -1,4 +1,4 @@
-﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
+@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameResultViewModel
 
 @using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
 @using DomainResources = VolleyManagement.Domain.Properties.Resources;
@@ -41,6 +41,7 @@
         @Html.EditorFor(model => model.SetScores[i].Home, new { htmlAttributes = new { @class = "form-control" } })
 
         @Html.EditorFor(model => model.SetScores[i].Away, new { htmlAttributes = new { @class = "form-control" } })
+        @Resources.UI.GameResultViews.SetTechnicalDefeat @Html.CheckBoxFor(model=> model.SetScores[i].IsTechnicalDefeat , new { htmlAttributes = new { @class = "form-control" } })
     </div>
 }
 

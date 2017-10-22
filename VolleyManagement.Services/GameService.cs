@@ -540,8 +540,7 @@
 
         private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
-            if (gameToDelete.HomeSetsScore != 0 || gameToDelete.AwaySetsScore != 0
-                || gameToDelete.GameDate < TimeProvider.Current.UtcNow)
+            if (gameToDelete.HasResult || gameToDelete.GameDate < TimeProvider.Current.UtcNow)
             {
                 throw new ArgumentException(Resources.WrongDeletingGame);
             }
@@ -856,7 +855,7 @@
                 game => game.HomeTeamId.HasValue
                 && game.GameDate.HasValue
                 && NextGames(allGames, game)
-                .All(next => next.HomeSetsScore == 0 && next.AwaySetsScore == 0))
+                .All(next => next.Result.SetsScore.Home == 0 && next.Result.SetsScore.Away == 0))
                 .ToList();
 
             foreach (var game in gamesToAllowEditingResults)

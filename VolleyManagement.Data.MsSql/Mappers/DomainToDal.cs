@@ -218,6 +218,11 @@
             to.StartTime = from.GameDate;
             to.RoundNumber = from.Round;
             to.GameNumber = from.GameNumber;
+            to.IsSet1TechnicalDefeat = from.Result.SetScores[0].IsTechnicalDefeat;
+            to.IsSet2TechnicalDefeat = from.Result.SetScores[1].IsTechnicalDefeat;
+            to.IsSet3TechnicalDefeat = from.Result.SetScores[2].IsTechnicalDefeat;
+            to.IsSet4TechnicalDefeat = from.Result.SetScores[3].IsTechnicalDefeat;
+            to.IsSet5TechnicalDefeat = from.Result.SetScores[4].IsTechnicalDefeat;
         }
 
         /// <summary>

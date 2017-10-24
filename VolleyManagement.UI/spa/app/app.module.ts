@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { LoadingModule } from 'ngx-loading';
 
 import { AppComponent } from './app.component';
 import { PivotStandingsComponent } from './Components/PivotStanding/pivotstandings.component';
@@ -22,7 +23,8 @@ import { InfinityDecimalPipe } from './CustomPipes/InfinityDecimalPipe';
     ],
     imports: [
         BrowserModule,
-        HttpModule
+        HttpModule,
+        LoadingModule
     ],
     providers: [
         StandingsService,

@@ -20,18 +20,21 @@ export class AppComponent implements OnInit {
     private pivotId: number;
     private standingsId: number;
     private scheduleId: number;
+    public isShowLoader = false;
 
     constructor(private jsonService: JsonService) { }
 
-    ngOnInit(): void {
-        const tournamentJsonUrl = this.getTournamentMetadataFileName();
+  ngOnInit(): void {
+    this.isShowLoader = true;
+    const tournamentJsonUrl = this.getTournamentMetadataFileName();
 
-        this.getTournamentData(tournamentJsonUrl)
-            .subscribe(json => {
-                this.tournamentJson = json;
-                this.getTableToShow(this.tournamentJson.mode, this.tournamentJson.id);
-            });
-    }
+    this.getTournamentData(tournamentJsonUrl)
+      .subscribe(json => {
+        this.tournamentJson = json;
+        this.getTableToShow(this.tournamentJson.mode, this.tournamentJson.id);
+        this.isShowLoader = false;
+      });
+  }
 
     private getTournamentMetadataFileName(): string {
         return document.getElementsByTagName('vm-app')[0].getAttribute('metadatafile');

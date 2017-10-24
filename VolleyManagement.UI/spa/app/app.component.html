@@ -1,6 +1,8 @@
-<div class="my-container">
+<div class="my-container" *ngIf="isCss3Supported; else css3NotSupportedBlock">
     <ngx-loading [show]="isShowLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 </div>
+<ng-template #css3NotSupportedBlock>Loading Data...</ng-template>
+
 <standings *ngIf="standingsId" [standingsId]='standingsId'></standings>
 <pivottable *ngIf="pivotId" [pivotId]='pivotId'></pivottable>
 <schedule *ngIf="scheduleId" [scheduleId]='scheduleId'></schedule>

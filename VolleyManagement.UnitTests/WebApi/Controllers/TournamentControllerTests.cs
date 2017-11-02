@@ -270,7 +270,7 @@
             MockGetTournament(testTournament, TOURNAMENT_ID);
             var testGames = new GameServiceTestFixture().TestGameResults().Build();
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
-            var expected = new GameViewModelTestFixture().TestGames().Build().ToList();
+            var expected = new ScheduleByRoundViewModelTestFixture().TestGames().Build().ToList();
 
             var sut = BuildSUT();
 
@@ -279,7 +279,7 @@
 
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
-            CollectionAssert.AreEqual(expected, actual, new GameViewModelComparer());
+            CollectionAssert.AreEqual(expected, actual, new ScheduleByRoundViewModelComparer());
         }
 
         /// <summary>
@@ -317,7 +317,7 @@
             MockGetTournament(testTournament, TOURNAMENT_ID);
             var testGames = new GameServiceTestFixture().TestGamesWithoutResult().Build();
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
-            var expected = new GameViewModelTestFixture().TestGamesWithoutResult().Build().ToList();
+            var expected = new ScheduleByRoundViewModelTestFixture().TestGamesWithoutResult().Build().ToList();
 
             var sut = BuildSUT();
 
@@ -326,7 +326,7 @@
 
             // Assert
             _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
-            CollectionAssert.AreEqual(expected, actual, new GameViewModelComparer());
+            CollectionAssert.AreEqual(expected, actual, new ScheduleByRoundViewModelComparer());
         }
         #endregion
 

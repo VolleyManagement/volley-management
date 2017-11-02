@@ -602,6 +602,7 @@
     <Content Include="Scripts\VMScripts\VMScripts.js" />
     <Content Include="spa\app\app.component.css" />
     <Content Include="spa\app\app.component.html" />
+    <Content Include="spa\app\Components\Loader\loader.component.html" />
     <Content Include="spa\app\Components\PivotStanding\pivotstandings.component.css" />
     <Content Include="spa\app\Components\PivotStanding\pivotstandings.component.html" />
     <Content Include="spa\app\Components\Schedule\schedule.component.css" />
@@ -636,6 +637,7 @@
     <Content Include="spa\tsconfig.spec.json" />
     <Content Include="tsconfig.json" />
     <Content Include="tslint.json" />
+    <Content Include="spa\app\Components\Loader\loader.component.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -760,6 +762,7 @@
     <TypeScriptCompile Include="spa\app\app.component.spec.ts" />
     <TypeScriptCompile Include="spa\app\app.component.ts" />
     <TypeScriptCompile Include="spa\app\app.module.ts" />
+    <TypeScriptCompile Include="spa\app\Components\Loader\loader.component.ts" />
     <TypeScriptCompile Include="spa\app\Components\PivotStanding\pivotstandings.component.ts" />
     <TypeScriptCompile Include="spa\app\Components\Schedule\schedule.component.spec.ts" />
     <TypeScriptCompile Include="spa\app\Components\Schedule\schedule.component.ts" />

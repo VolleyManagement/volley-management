@@ -600,18 +600,6 @@
     <Content Include="Scripts\VMScripts\TournamentOperations\ApplyForTournament.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\SwapRounds.js" />
     <Content Include="Scripts\VMScripts\VMScripts.js" />
-    <Content Include="spa\app\app.component.css" />
-    <Content Include="spa\app\app.component.html" />
-    <Content Include="spa\app\Components\Loader\loader.component.html" />
-    <Content Include="spa\app\Components\PivotStanding\pivotstandings.component.css" />
-    <Content Include="spa\app\Components\PivotStanding\pivotstandings.component.html" />
-    <Content Include="spa\app\Components\Schedule\schedule.component.css" />
-    <Content Include="spa\app\Components\Schedule\schedule.component.html" />
-    <Content Include="spa\app\Components\Standings\standings.component.css" />
-    <Content Include="spa\app\Components\Standings\standings.component.html" />
-    <Content Include="spa\favicon.ico" />
-    <Content Include="spa\index.html" />
-    <Content Include="spa\styles.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -632,12 +620,8 @@
     <Content Include="Views\web.config" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Scripts\jquery.min.map" />
-    <Content Include="spa\assets\.gitkeep" />
-    <Content Include="spa\tsconfig.app.json" />
-    <Content Include="spa\tsconfig.spec.json" />
     <Content Include="tsconfig.json" />
     <Content Include="tslint.json" />
-    <Content Include="spa\app\Components\Loader\loader.component.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -757,38 +741,6 @@
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="spa\app\app.component.spec.ts" />
-    <TypeScriptCompile Include="spa\app\app.component.ts" />
-    <TypeScriptCompile Include="spa\app\app.module.ts" />
-    <TypeScriptCompile Include="spa\app\Components\Loader\loader.component.ts" />
-    <TypeScriptCompile Include="spa\app\Components\PivotStanding\pivotstandings.component.ts" />
-    <TypeScriptCompile Include="spa\app\Components\Schedule\schedule.component.spec.ts" />
-    <TypeScriptCompile Include="spa\app\Components\Schedule\schedule.component.ts" />
-    <TypeScriptCompile Include="spa\app\Components\Standings\standings.component.ts" />
-    <TypeScriptCompile Include="spa\app\Constants\Constants.ts" />
-    <TypeScriptCompile Include="spa\app\Constants\CssClassConstants.ts" />
-    <TypeScriptCompile Include="spa\app\CustomPipes\InfinityDecimalPipe.ts" />
-    <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandings.ts" />
-    <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandingsEntry.ts" />
-    <TypeScriptCompile Include="spa\app\Models\Pivot\PivotStandingsGame.ts" />
-    <TypeScriptCompile Include="spa\app\Models\Pivot\ShortGameResult.ts" />
-    <TypeScriptCompile Include="spa\app\Models\Schedule\GameResult.ts" />
-    <TypeScriptCompile Include="spa\app\Models\Schedule\Result.ts" />
-    <TypeScriptCompile Include="spa\app\Models\Schedule\ScheduleByRounds.ts" />
-    <TypeScriptCompile Include="spa\app\Models\Schedule\SetScore.ts" />
-    <TypeScriptCompile Include="spa\app\Models\Standings\StandingsEntry.ts" />
-    <TypeScriptCompile Include="spa\app\Models\TournamentMetadataJson\TournamentMetadataJson.ts" />
-    <TypeScriptCompile Include="spa\app\Services\json.service.ts" />
-    <TypeScriptCompile Include="spa\app\Services\schedule.service.ts" />
-    <TypeScriptCompile Include="spa\app\Services\standings.service.ts" />
-    <TypeScriptCompile Include="spa\environments\environment.prod.ts" />
-    <TypeScriptCompile Include="spa\environments\environment.ts" />
-    <TypeScriptCompile Include="spa\main.ts" />
-    <TypeScriptCompile Include="spa\polyfills.ts" />
-    <TypeScriptCompile Include="spa\test.ts" />
-    <TypeScriptCompile Include="spa\typings.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

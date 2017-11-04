@@ -318,20 +318,20 @@
         private int GetTeamWonBalls(int teamId, List<GameResultDto> games)
         {
             var results = games.Where(g => g.HomeTeamId == teamId).ToList();
-            int wonBalls = results.Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
+            int wonBalls = results.Where(item => !item.Result.SetsScore.IsTechnicalDefeat).Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
 
             results = games.Where(g => g.AwayTeamId == teamId).ToList();
-            wonBalls += results.Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
+            wonBalls += results.Where(item => !item.Result.SetsScore.IsTechnicalDefeat).Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
             return wonBalls;
         }
 
         private int GetTeamLostBalls(int teamId, List<GameResultDto> games)
         {
             var results = games.Where(g => g.HomeTeamId == teamId).ToList();
-            int lostBalls = results.Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
+            int lostBalls = results.Where(item => !item.Result.SetsScore.IsTechnicalDefeat).Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
 
             results = games.Where(g => g.AwayTeamId == teamId).ToList();
-            lostBalls += results.Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
+            lostBalls += results.Where(item => !item.Result.SetsScore.IsTechnicalDefeat).Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
             return lostBalls;
         }
 

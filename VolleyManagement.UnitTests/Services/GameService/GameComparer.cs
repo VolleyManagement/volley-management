@@ -59,7 +59,7 @@
                 && x.HomeTeamId == y.HomeTeamId
                 && x.AwayTeamId == y.AwayTeamId
                 && new ScoreComparer().Equals(x.Result.SetsScore, y.Result.SetsScore)
-                && x.Result.IsTechnicalDefeat == y.Result.IsTechnicalDefeat
+                && x.Result.SetsScore.IsTechnicalDefeat == y.Result.SetsScore.IsTechnicalDefeat
                 && x.Result.SetScores.SequenceEqual(y.Result.SetScores, new ScoreComparer())
                 && x.GameDate == y.GameDate
                 && x.Round == y.Round

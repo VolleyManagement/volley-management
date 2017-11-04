@@ -36,8 +36,7 @@
                 AwayTeamId = 2,
                 Result = new Result
                 {
-                    SetsScore = new Score(3, 0),
-                    IsTechnicalDefeat = false,
+                    SetsScore = new Score(3, 0, false),
                     SetScores = new List<Score>
                     {
                         new Score(25, 20),
@@ -118,8 +117,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithDefaultResult()
         {
-            _game.Result.SetsScore = new Score(0, 0);
-            _game.Result.IsTechnicalDefeat = false;
+            _game.Result.SetsScore = new Score(0, 0, false);
             foreach (var score in _game.Result.SetScores)
             {
                 score.Away = 0;
@@ -146,7 +144,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeat()
         {
-            _game.Result.IsTechnicalDefeat = true;
+            _game.Result.SetsScore.IsTechnicalDefeat = true;
             return this;
         }
 
@@ -156,7 +154,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithNoTechnicalDefeat()
         {
-            _game.Result.IsTechnicalDefeat = false;
+            _game.Result.SetsScore.IsTechnicalDefeat = false;
             return this;
         }
 
@@ -400,8 +398,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatValidSetScoresHomeTeamWin()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(3, 0);
+            _game.Result.SetsScore = new Score(3, 0, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 0),
@@ -420,8 +417,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatValidSetScoresAwayTeamWin()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(0, 3);
+            _game.Result.SetsScore = new Score(0, 3, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 25),
@@ -440,8 +436,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatInvalidSetsScore()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(2, 0);
+            _game.Result.SetsScore = new Score(2, 0, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 0),
@@ -460,8 +455,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatInvalidSetScores()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(3, 0);
+            _game.Result.SetsScore = new Score(3, 0, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 0),
@@ -480,8 +474,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatValidOptional()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(3, 0);
+            _game.Result.SetsScore = new Score(3, 0, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 0),
@@ -500,8 +493,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithSetScoresNull()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(0, 3);
+            _game.Result.SetsScore = new Score(0, 3, true);
             _game.Result.SetScores = null;
 
             return this;

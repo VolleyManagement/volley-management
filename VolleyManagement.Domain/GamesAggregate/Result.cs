@@ -22,11 +22,6 @@
         public Score SetsScore { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the technical defeat has taken place.
-        /// </summary>
-        public bool IsTechnicalDefeat { get; set; }
-
-        /// <summary>
         /// Gets or sets the set scores.
         /// </summary>
         public List<Score> SetScores { get; set; }
@@ -38,8 +33,8 @@
         {
             SetsScore = new Score(
                 Constants.GameResult.EMPTY_SCORE,
-                Constants.GameResult.EMPTY_SCORE);
-            IsTechnicalDefeat = Constants.GameResult.DEFAULT_TECHNICAL_DEFEAT;
+                Constants.GameResult.EMPTY_SCORE,
+                Constants.GameResult.DEFAULT_TECHNICAL_DEFEAT);
             for (int i = 0; i < Constants.GameResult.MAX_SETS_COUNT; i++)
             {
                 SetScores.Add(

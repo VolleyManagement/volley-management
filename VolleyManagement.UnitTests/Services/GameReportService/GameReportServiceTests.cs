@@ -273,7 +273,7 @@
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithNoLostSetsNoLostBallsForOneTeam().Build();
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
-            var expected = new { SetsRatio = (float?)float.PositiveInfinity, BallsRatio = (float?)float.PositiveInfinity };
+            var expected = new { SetsRatio = (float?)float.PositiveInfinity, BallsRatio = (float?)null };
 
             SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
@@ -363,6 +363,35 @@
 
             // Assert
             Assert.AreNotEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for GetStandings() method. There is one set with technical defeat in results.
+        /// Balls in technical defeat set dont count for statistics.
+        /// </summary>
+        [TestMethod]
+        public void GetStandings_OneTeamHasTechnicalDefeatInSet_BallsDontCount()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().WithTechnicalDefeatInSet().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
+
+            var expected = new StandingsTestFixture().WithTeamStandingsForOneSetTechnicalDefeat()
+                .OrderByPointsAndSets()
+                .Build()
+                .Select(item => item.BallsRatio)
+                .ToList();
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID).First().Select(item => item.BallsRatio).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         /// <summary>
@@ -504,6 +533,36 @@
 
             // Assert
             Assert.IsNull(actual);
+        }
+
+        /// <summary>
+        /// Test for GetPivotStandings() method.
+        /// There is one game with technical defeat in results.
+        /// Balls in technical defeat game dont count for statistics.
+        /// </summary>
+        [TestMethod]
+        public void GetPivotStandings_OneTeamHasTechnicalDefeat_BallDoesntCount()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().TestGameResults().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
+
+            var expected = new TeamStandingsTestFixture().WithTeamStandingsForOneGameTechnicalDefeat()
+                .OrderByPointsAndSets()
+                .Build()
+                .Select(t => new { t.BallsRatio })
+                .ToList();
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID).First().Teams.Select(t => new { t.BallsRatio }).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         private GameReportService BuildSUT()

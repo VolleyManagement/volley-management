@@ -245,7 +245,7 @@
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelServiceTestFixture.cs" />
     <Compile Include="WebApi\ViewModels\GameViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\GameViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\GameViewModelTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\ScheduleByRoundViewModelTestFixture.cs" />
     <Compile Include="WebApi\ViewModels\PivotStandingsEntryViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\PivotStandingsEntryViewModelServiceTestFixture.cs" />
     <Compile Include="WebApi\ViewModels\PivotStandingsGameViewModelComparer.cs" />
@@ -254,6 +254,7 @@
     <Compile Include="WebApi\ViewModels\PlayerViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelServiceTestFixture.cs" />
+    <Compile Include="WebApi\ViewModels\ScheduleByRoundViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\ShortGameResultViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\StandingsEntryViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\StandingsEntryViewModelServiceTestFixture.cs" />

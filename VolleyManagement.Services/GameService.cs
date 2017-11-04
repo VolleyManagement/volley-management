@@ -320,9 +320,9 @@
 
         private void ValidateResult(Result result)
         {
-            ValidateSetsScore(result.SetsScore, result.IsTechnicalDefeat);
+            ValidateSetsScore(result.SetsScore, result.SetsScore.IsTechnicalDefeat);
             ValidateSetsScoreMatchesSetScores(result.SetsScore, result.SetScores);
-            ValidateSetScoresValues(result.SetScores, result.IsTechnicalDefeat);
+            ValidateSetScoresValues(result.SetScores, result.SetsScore.IsTechnicalDefeat);
             ValidateSetScoresOrder(result.SetScores);
         }
 

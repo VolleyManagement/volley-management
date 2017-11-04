@@ -1036,6 +1036,178 @@
             return this;
         }
 
+        /// <summary>
+        /// Generates <see cref="GameResultDto"/> objects filled with test data.
+        /// </summary>
+        /// <returns>Instance of <see cref="GameServiceTestFixture"/>.</returns>
+        public GameServiceTestFixture WithTechnicalDefeatInSet()
+        {
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    SetsScore = new Score
+                    {
+                        Home = 3,
+                        Away = 2,
+                        IsTechnicalDefeat = false,
+                    },
+                    SetScores = new List<Score>
+                    {
+                        new Score
+                        {
+                            Home = 25,
+                            Away = 20,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 24,
+                            Away = 26,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 28,
+                            Away = 30,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 25,
+                            Away = 22,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 27,
+                            Away = 25,
+                            IsTechnicalDefeat = false,
+                        }
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 0
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameC",
+                Result = new Result
+                {
+                    SetsScore = new Score
+                    {
+                        Home = 3,
+                        Away = 1,
+                        IsTechnicalDefeat = false,
+                    },
+                    SetScores = new List<Score>
+                    {
+                        new Score
+                        {
+                            Home = 26,
+                            Away = 28,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 25,
+                            Away = 15,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 25,
+                            Away = 21,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 29,
+                            Away = 27,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 0,
+                            Away = 0,
+                            IsTechnicalDefeat = false,
+                        }
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 2,
+                GameNumber = 0
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 3,
+                TournamentId = 1,
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeTeamName = "TeamNameB",
+                AwayTeamName = "TeamNameC",
+                Result = new Result
+                {
+                    SetsScore = new Score
+                    {
+                        Home = 0,
+                        Away = 3,
+                        IsTechnicalDefeat = false,
+                    },
+                    SetScores = new List<Score>
+                    {
+                        new Score
+                        {
+                            Home = 10,
+                            Away = 25,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 10,
+                            Away = 25,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 0,
+                            Away = 25,
+                            IsTechnicalDefeat = true,
+                        },
+                        new Score
+                        {
+                            Home = 0,
+                            Away = 0,
+                            IsTechnicalDefeat = false,
+                        },
+                        new Score
+                        {
+                            Home = 0,
+                            Away = 0,
+                            IsTechnicalDefeat = false,
+                        }
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_C),
+                Round = 3,
+                GameNumber = 0
+            });
+
+            return this;
+        }
+
         public GameServiceTestFixture TestGamesForDuplicateSchemeOne()
         {
             _gameResults.Clear();

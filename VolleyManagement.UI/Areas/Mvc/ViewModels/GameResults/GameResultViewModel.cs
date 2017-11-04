@@ -175,7 +175,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 Result = new Result
                 {
                     SetsScore = SetsScore.ToDomain(),
-                    IsTechnicalDefeat = IsTechnicalDefeat,
                     SetScores = SetScores.Select(item => item.ToDomain()).ToList()
                 }
             };

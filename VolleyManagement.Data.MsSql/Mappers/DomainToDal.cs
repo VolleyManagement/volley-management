@@ -204,7 +204,7 @@
             to.AwayTeamId = from.AwayTeamId;
             to.HomeSetsScore = from.Result.SetsScore.Home;
             to.AwaySetsScore = from.Result.SetsScore.Away;
-            to.IsTechnicalDefeat = from.Result.IsTechnicalDefeat;
+            to.IsTechnicalDefeat = from.Result.SetsScore.IsTechnicalDefeat;
             to.HomeSet1Score = from.Result.SetScores[0].Home;
             to.AwaySet1Score = from.Result.SetScores[0].Away;
             to.HomeSet2Score = from.Result.SetScores[1].Home;

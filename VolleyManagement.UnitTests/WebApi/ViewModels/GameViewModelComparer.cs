@@ -9,7 +9,7 @@
     /// Builder for test game view models
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class GameViewModelComparer : IComparer<GameViewModel>, IComparer
+    internal class GameViewModelComparer : IComparer<GameViewModel>, IComparer, IEqualityComparer<GameViewModel>
     {
         /// <summary>
         /// Compares two game objects.
@@ -51,6 +51,27 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given games have the same properties.</returns>
+        public bool Equals(GameViewModel x, GameViewModel y)
+        {
+            return AreEqual(x, y);
+        }
+
+        /// <summary>
+        /// Get hashcode of given object
+        /// </summary>
+        /// <param name="obj">Instance of <see cref="GameViewModel"/> to get hashcode </param>
+        /// <returns>hashcode</returns>
+        public int GetHashCode(GameViewModel obj)
+        {
+            return obj.Id.GetHashCode();
+        }
+
+        /// <summary>
+        /// Finds out whether two game objects have the same properties.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
+        /// <returns>True if given games have the same properties.</returns>
         private bool AreEqual(GameViewModel x, GameViewModel y)
         {
             return x.AwayTeamName == y.AwayTeamName
@@ -79,6 +100,11 @@
                     && x.SetScores[2].Away == y.SetScores[2].Away
                     && x.SetScores[3].Away == y.SetScores[3].Away
                     && x.SetScores[4].Away == y.SetScores[4].Away
+                    && x.SetScores[0].IsTechnicalDefeat == y.SetScores[0].IsTechnicalDefeat
+                    && x.SetScores[1].IsTechnicalDefeat == y.SetScores[1].IsTechnicalDefeat
+                    && x.SetScores[2].IsTechnicalDefeat == y.SetScores[2].IsTechnicalDefeat
+                    && x.SetScores[3].IsTechnicalDefeat == y.SetScores[3].IsTechnicalDefeat
+                    && x.SetScores[4].IsTechnicalDefeat == y.SetScores[4].IsTechnicalDefeat
                     && x.TotalScore.Home == y.TotalScore.Home
                     && x.TotalScore.Away == y.TotalScore.Away
                     && x.IsTechnicalDefeat == y.IsTechnicalDefeat;

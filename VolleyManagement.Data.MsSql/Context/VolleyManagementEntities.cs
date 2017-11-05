@@ -526,6 +526,22 @@ namespace VolleyManagement.Data.MsSql.Context
                 .Property(gr => gr.GameNumber)
                 .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);
 
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.PenaltyTeam)
+                .IsRequired()
+                .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);
+
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.PenaltyAmount)
+                .IsRequired()
+                .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);
+
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.PenaltyDescription)
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.GameResult.MAX_PENALTY_DESCRIPTION_LENGTH);
+
             // FK GameResult -> Tournament
             modelBuilder.Entity<GameResultEntity>()
                 .HasRequired(gr => gr.Tournament)

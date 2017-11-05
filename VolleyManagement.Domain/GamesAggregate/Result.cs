@@ -27,10 +27,16 @@
         public List<Score> SetScores { get; set; }
 
         /// <summary>
+        /// Gets or sets penalty for game
+        /// </summary>
+        public Penalty Penalty { get; set; }
+
+        /// <summary>
         /// Initialize Result object with default scores.
         /// </summary>
         private void InitializeEmptyResult()
         {
+            Penalty = null;
             SetsScore = new Score(
                 Constants.GameResult.EMPTY_SCORE,
                 Constants.GameResult.EMPTY_SCORE,

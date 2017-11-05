@@ -394,6 +394,56 @@
             CollectionAssert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void GetStandings_HomeTeamHasPenalty_PenaltyDeductedFromTotalPoints()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().WithHomeTeamPenalty().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
+
+            var expected = new StandingsTestFixture().WithTeamAPenalty()
+                .OrderByPoints()
+                .Build()
+                .Select(item => item.Points)
+                .ToList();
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID).First().Select(item => item.Points).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetStandings_AwayTeamHasPenalty_PenaltyDeductedFromTotalPoints()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().WithAwayTeamPenalty().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
+
+            var expected = new StandingsTestFixture().WithTeamCPenalty()
+                .OrderByPoints()
+                .Build()
+                .Select(item => item.Points)
+                .ToList();
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID).First().Select(item => item.Points).ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
         /// <summary>
         /// Test for GetPivotStandings() method.
         /// Game results with all possible scores are available for the specified tournament.

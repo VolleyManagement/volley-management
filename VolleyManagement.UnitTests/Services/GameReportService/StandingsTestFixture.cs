@@ -518,6 +518,140 @@
             return this;
         }
 
+        public StandingsTestFixture WithTeamAPenalty()
+        {
+            _standings.Clear();
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameC",
+                Points = 4,
+                GamesTotal = 2,
+                GamesWon = 1,
+                GamesLost = 1,
+                GamesWithScoreThreeNil = 1,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 1,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 4,
+                SetsLost = 3,
+                SetsRatio = 4.0f / 3,
+                BallsWon = 141,
+                BallsLost = 125,
+                BallsRatio = 141.0f / 125
+            });
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameA",
+                Points = 3,
+                GamesTotal = 2,
+                GamesWon = 2,
+                GamesLost = 0,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 1,
+                GamesWithScoreThreeTwo = 1,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 3,
+                SetsLost = 1,
+                SetsRatio = 6.0f / 3,
+                BallsWon = 234,
+                BallsLost = 214,
+                BallsRatio = 234.0f / 214
+            });
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameB",
+                Points = 2,
+                GamesTotal = 2,
+                GamesWon = 0,
+                GamesLost = 2,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 1,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 1,
+                SetsWon = 2,
+                SetsLost = 6,
+                SetsRatio = 2.0f / 6,
+                BallsWon = 143,
+                BallsLost = 179,
+                BallsRatio = 143.0f / 179
+            });
+
+            return this;
+        }
+
+        public StandingsTestFixture WithTeamCPenalty()
+        {
+            _standings.Clear();
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameA",
+                Points = 5,
+                GamesTotal = 2,
+                GamesWon = 2,
+                GamesLost = 0,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 1,
+                GamesWithScoreThreeTwo = 1,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 3,
+                SetsLost = 1,
+                SetsRatio = 6.0f / 3,
+                BallsWon = 234,
+                BallsLost = 214,
+                BallsRatio = 234.0f / 214
+            });
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameC",
+                Points = 2,
+                GamesTotal = 2,
+                GamesWon = 1,
+                GamesLost = 1,
+                GamesWithScoreThreeNil = 1,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 1,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 4,
+                SetsLost = 3,
+                SetsRatio = 4.0f / 3,
+                BallsWon = 141,
+                BallsLost = 125,
+                BallsRatio = 141.0f / 125
+            });
+            _standings.Add(new StandingsEntry
+            {
+                TeamName = "TeamNameB",
+                Points = 2,
+                GamesTotal = 2,
+                GamesWon = 0,
+                GamesLost = 2,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 1,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 1,
+                SetsWon = 2,
+                SetsLost = 6,
+                SetsRatio = 2.0f / 6,
+                BallsWon = 143,
+                BallsLost = 179,
+                BallsRatio = 143.0f / 179
+            });
+
+            return this;
+        }
+
         /// <summary>
         /// Orders standings by points in descending order.
         /// </summary>

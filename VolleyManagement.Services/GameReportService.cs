@@ -216,55 +216,58 @@
                 SetDataFromNullToZero(awayTeamEntry);
             }
 
-            homeTeamEntry.GamesTotal++;
-            awayTeamEntry.GamesTotal++;
-
-            switch (gameResult.Result.SetsScore.Home - gameResult.Result.SetsScore.Away)
+            if (gameResult.HasResult)
             {
-                case 3: // sets score - 3:0
-                    homeTeamEntry.Points += 3;
-                    homeTeamEntry.GamesWon++;
-                    homeTeamEntry.GamesWithScoreThreeNil++;
-                    awayTeamEntry.GamesLost++;
-                    awayTeamEntry.GamesWithScoreNilThree++;
-                    break;
-                case 2: // sets score - 3:1
-                    homeTeamEntry.Points += 3;
-                    homeTeamEntry.GamesWon++;
-                    homeTeamEntry.GamesWithScoreThreeOne++;
-                    awayTeamEntry.GamesLost++;
-                    awayTeamEntry.GamesWithScoreOneThree++;
-                    break;
-                case 1: // sets score - 3:2
-                    homeTeamEntry.Points += 2;
-                    homeTeamEntry.GamesWon++;
-                    homeTeamEntry.GamesWithScoreThreeTwo++;
-                    awayTeamEntry.Points++;
-                    awayTeamEntry.GamesLost++;
-                    awayTeamEntry.GamesWithScoreTwoThree++;
-                    break;
-                case -1: // sets score - 2:3
-                    homeTeamEntry.Points++;
-                    homeTeamEntry.GamesLost++;
-                    homeTeamEntry.GamesWithScoreTwoThree++;
-                    awayTeamEntry.Points += 2;
-                    awayTeamEntry.GamesWon++;
-                    awayTeamEntry.GamesWithScoreThreeTwo++;
-                    break;
-                case -2: // sets score - 1:3
-                    homeTeamEntry.GamesLost++;
-                    homeTeamEntry.GamesWithScoreOneThree++;
-                    awayTeamEntry.Points += 3;
-                    awayTeamEntry.GamesWon++;
-                    awayTeamEntry.GamesWithScoreThreeOne++;
-                    break;
-                case -3: // sets score - 0:3
-                    homeTeamEntry.GamesLost++;
-                    homeTeamEntry.GamesWithScoreNilThree++;
-                    awayTeamEntry.Points += 3;
-                    awayTeamEntry.GamesWon++;
-                    awayTeamEntry.GamesWithScoreThreeNil++;
-                    break;
+                homeTeamEntry.GamesTotal++;
+                awayTeamEntry.GamesTotal++;
+
+                switch (gameResult.Result.SetsScore.Home - gameResult.Result.SetsScore.Away)
+                {
+                    case 3: // sets score - 3:0
+                        homeTeamEntry.Points += 3;
+                        homeTeamEntry.GamesWon++;
+                        homeTeamEntry.GamesWithScoreThreeNil++;
+                        awayTeamEntry.GamesLost++;
+                        awayTeamEntry.GamesWithScoreNilThree++;
+                        break;
+                    case 2: // sets score - 3:1
+                        homeTeamEntry.Points += 3;
+                        homeTeamEntry.GamesWon++;
+                        homeTeamEntry.GamesWithScoreThreeOne++;
+                        awayTeamEntry.GamesLost++;
+                        awayTeamEntry.GamesWithScoreOneThree++;
+                        break;
+                    case 1: // sets score - 3:2
+                        homeTeamEntry.Points += 2;
+                        homeTeamEntry.GamesWon++;
+                        homeTeamEntry.GamesWithScoreThreeTwo++;
+                        awayTeamEntry.Points++;
+                        awayTeamEntry.GamesLost++;
+                        awayTeamEntry.GamesWithScoreTwoThree++;
+                        break;
+                    case -1: // sets score - 2:3
+                        homeTeamEntry.Points++;
+                        homeTeamEntry.GamesLost++;
+                        homeTeamEntry.GamesWithScoreTwoThree++;
+                        awayTeamEntry.Points += 2;
+                        awayTeamEntry.GamesWon++;
+                        awayTeamEntry.GamesWithScoreThreeTwo++;
+                        break;
+                    case -2: // sets score - 1:3
+                        homeTeamEntry.GamesLost++;
+                        homeTeamEntry.GamesWithScoreOneThree++;
+                        awayTeamEntry.Points += 3;
+                        awayTeamEntry.GamesWon++;
+                        awayTeamEntry.GamesWithScoreThreeOne++;
+                        break;
+                    case -3: // sets score - 0:3
+                        homeTeamEntry.GamesLost++;
+                        homeTeamEntry.GamesWithScoreNilThree++;
+                        awayTeamEntry.Points += 3;
+                        awayTeamEntry.GamesWon++;
+                        awayTeamEntry.GamesWithScoreThreeNil++;
+                        break;
+                }
             }
         }
 

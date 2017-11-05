@@ -3,9 +3,9 @@
   <div *ngIf="gameResultByRounds">
     <p class="headercenter">Тур {{gameResultByRounds.Round}}</p>
     <div class="group group2">
-      <!-- <p class="group-header">II группа</p>
-    <p class="group-date">Суббота</p>
-    <p class="group-date">19 ноября 2016</p> -->
+      <!-- <p class="group-header">II группа</p> -->
+    <p class="group-date">{{gameResultByRounds.GameResults[0].GameDate|date: 'EEEE':'':'ru'}}</p>
+    <p class="group-date">{{gameResultByRounds.GameResults[0].GameDate|date: 'dd-MM-yyyy'}}</p>
       <div>
         <div class="games"
              *ngFor="let gameResult of gameResultByRounds.GameResults;">
@@ -120,7 +120,7 @@
               </tr>
               <tr>
                 <td>
-                  {{gameResult.GameDate}}
+                  {{gameResult.GameDate | date: 'HH:mm'}}
                 </td>
               </tr>
             </tbody>

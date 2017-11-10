@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
-
+import { DatePipe } from '@angular/common';
 import { ISubscription } from 'rxjs/Subscription';
 
 import { ScheduleByRounds } from '../../Models/Schedule/ScheduleByRounds';

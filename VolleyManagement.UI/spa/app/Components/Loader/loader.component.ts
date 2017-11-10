@@ -8,7 +8,7 @@ import { Component, OnInit, Input} from '@angular/core';
 
 export class LoaderComponent implements OnInit {
   @Input() isShowLoader: boolean;
-  private isCss3Supported = false;
+  public isCss3Supported = false;
 
   constructor() { }
 

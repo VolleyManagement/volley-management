@@ -399,7 +399,7 @@
         /// Standings returned with zeroes and ordered by team names.
         /// </summary>
         [TestMethod]
-        public void GetStandings_NoGamesResult_StandingsReturned()
+        public void GetStandings_NoGameResults_StandingsAreEmpty()
         {
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().TestGamesWithoutResult().Build();

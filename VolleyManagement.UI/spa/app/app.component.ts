@@ -17,9 +17,9 @@ export class AppComponent implements OnInit {
   private pivotTable: PivotStandingsComponent;
   private standings: StandingsComponent;
   public tournamentJson: TournamentMetadataJson;
-  private pivotId: number;
-  private standingsId: number;
-  private scheduleId: number;
+  public pivotId: number;
+  public standingsId: number;
+  public scheduleId: number;
   public isShowLoader = false;
 
   constructor(private jsonService: JsonService) { }
@@ -44,17 +44,19 @@ export class AppComponent implements OnInit {
     return this.jsonService.getTournamentJson(jsonUrl);
   }
 
-  private getTableToShow(mode: string, id: number): void {
-    switch (mode) {
-      case 'pivotTable':
-        this.pivotId = id;
-        break;
-      case 'standings':
-        this.standingsId = id;
-        break;
-      case 'schedule':
-        this.scheduleId = id;
-        break;
-    }
+  private getTableToShow(modes: string[], id: number): void {
+    modes.forEach(mode=>{
+      switch (mode) {
+        case 'pivot':
+          this.pivotId = id;
+          break;
+        case 'standings':
+          this.standingsId = id;
+          break;
+        case 'schedule':
+          this.scheduleId = id;
+          break;
+      }
+    });    
   }
 }

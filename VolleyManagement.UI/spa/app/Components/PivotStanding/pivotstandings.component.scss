@@ -4,7 +4,7 @@
   /* STYLES */
   .standings {
     margin: 0 0 20px 0;
-    font-size: 13px;
+    font-size: 10px;
     tr {
       &.results-header-row,
       &.standings-header-row {
@@ -23,7 +23,6 @@
       th {
         &.results-header-cell,
         &.standings-header-cell {
-          padding: 3px 5px;
           text-align: center;
           width: 50px;
           max-width: 50px;
@@ -37,8 +36,6 @@
       td {
         &.results-cell,
         &.standings-cell {
-          padding: 3px 5px;
-          border: 1px solid $data-cells-border-color;
           text-align: center;
           vertical-align: middle;
         }

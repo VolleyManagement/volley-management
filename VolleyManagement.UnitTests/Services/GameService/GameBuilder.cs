@@ -205,6 +205,17 @@
             return this;
         }
 
+        public GameBuilder WithAPenalty()
+        {
+            _game.Result.Penalty = new Penalty
+            {
+                IsHomeTeam = true,
+                Amount = 2,
+                Description = "Penalty reason"
+            };
+            return this;
+        }
+
         /// <summary>
         /// Builds instance of <see cref="GameBuilder"/>.
         /// </summary>

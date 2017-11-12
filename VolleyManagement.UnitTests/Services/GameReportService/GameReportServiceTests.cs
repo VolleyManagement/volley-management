@@ -438,10 +438,40 @@
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetStandings(TOURNAMENT_ID).First().Select(item => item.Points).ToList();
+            var standings = sut.GetStandings(TOURNAMENT_ID);
+
+            var actual = standings.First().Select(item => item.Points).ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Test for GetStandings() method. Game scheduled by not played.
+        /// Standings returned with zeroes and ordered by team names.
+        /// </summary>
+        [TestMethod]
+        public void GetStandings_NoGameResults_StandingsAreEmpty()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture().TestGamesWithoutResult().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
+
+            var expected = new StandingsTestFixture().WithNoResults()
+                .OrderByPointsAndSetsAndBallsAndName()
+                .Build()
+                .ToList();
+
+            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, new List<List<Team>> { teamsTestData });
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID).First().ToList();
+
+            // Assert
+            CollectionAssert.AreEqual(expected, actual, new StandingsEntryComparer());
         }
 
         /// <summary>

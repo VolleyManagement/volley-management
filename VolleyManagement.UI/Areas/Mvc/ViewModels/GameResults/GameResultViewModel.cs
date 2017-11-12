@@ -83,6 +83,14 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// </summary>
         public byte GameNumber { get; set; }
 
+        public bool HasPenalty { get; set; }
+
+        public bool IsHomeTeamPenalty { get; set; }
+
+        public byte PenaltyAmount { get; set; }
+
+        public string PenaltyDescrition { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether gets or sets whether it is allowed to edit game's result (for Playoff scheme)
         /// </summary>
@@ -133,7 +141,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <returns>View model of game result.</returns>
         public static GameResultViewModel Map(GameResultDto gameResult)
         {
-            return new GameResultViewModel
+            var result = new GameResultViewModel
             {
                 Id = gameResult.Id,
                 TournamentId = gameResult.TournamentId,
@@ -155,6 +163,17 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                     IsTechnicalDefeat = item.IsTechnicalDefeat
                 }).ToList()
             };
+
+            if (gameResult.HasResult && gameResult.Result.Penalty != null)
+            {
+                var penalty = gameResult.Result.Penalty;
+                result.HasPenalty = true;
+                result.IsHomeTeamPenalty = penalty.IsHomeTeam;
+                result.PenaltyAmount = penalty.Amount;
+                result.PenaltyDescrition = penalty.Description;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -163,6 +182,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <returns>Domain model of game.</returns>
         public Game ToDomain()
         {
+            var penalty = MapPenalty();
             return new Game
             {
                 Id = Id,
@@ -178,6 +198,23 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                     SetScores = SetScores.Select(item => item.ToDomain()).ToList()
                 }
             };
+        }
+
+        private Penalty MapPenalty()
+        {
+            Penalty result = null;
+
+            if (HasPenalty)
+            {
+                result = new Penalty
+                {
+                    IsHomeTeam = IsHomeTeamPenalty,
+                    Amount = PenaltyAmount,
+                    Description = PenaltyDescrition
+                };
+            }
+
+            return result;
         }
     }
 }

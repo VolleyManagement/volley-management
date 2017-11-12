@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
 import { ScheduleByRounds } from '../Models/Schedule/ScheduleByRounds';
+import { ScheduleByDate } from '../Models/Schedule/ScheduleByDate';
 import { GameResult } from '../Models/Schedule/GameResult';
 
 @Injectable()
@@ -23,12 +24,17 @@ export class ScheduleService {
                 let scheduleByRounds: ScheduleByRounds[] = new Array();
                 scheduleByRounds = data.map(d => ({
                     Round: d.Round,
-                    GameResults: d.GameResults.map(game => new GameResult(game.Id,
-                        game.HomeTeamName,
-                        game.AwayTeamName,
-                        game.GameDate,
-                        game.Round,
-                        game.Result))
+                    ScheduleByDate: d.ScheduleByDate.map(gamesByDate => ({
+                        GameDate: gamesByDate.GameDate,
+                        GameResults: gamesByDate.GameResults.map(game => new GameResult(game.Id,
+                            game.HomeTeamName,
+                            game.AwayTeamName,
+                            game.GameDate,
+                            game.Round,
+                            game.Result,
+                            game.DivisionId,
+                            game.GroupId))
+                    }))
                 }));
 
                 return scheduleByRounds;

@@ -24,6 +24,9 @@
 
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<GameResultEntity> _dalGameResults;
+        private readonly DbSet<TournamentEntity> _dalTournaments;
+        private readonly DbSet<DivisionEntity> _dalDivisions;
+        private readonly DbSet<GroupEntity> _dalGroups;
 
         #endregion
 
@@ -37,6 +40,9 @@
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalGameResults = _unitOfWork.Context.GameResults;
+            _dalTournaments = _unitOfWork.Context.Tournaments;
+            _dalDivisions = _unitOfWork.Context.Divisions;
+            _dalGroups = _unitOfWork.Context.Groups;
         }
 
         #endregion
@@ -63,10 +69,20 @@
         /// <returns>List of domain models of game result.</returns>
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
+            // Join GameResult tables with tournaments then with Divisions and then with Groups
+            // After that select only groupId and divisionId where Groups navigation property Teams
+            // contains reference on teamId
             var gameResults = _dalGameResults
-                .Where(gr => gr.TournamentId == criteria.TournamentId).ToList();
+            .Where(gr => gr.TournamentId == criteria.TournamentId)
+            .Join(_dalTournaments, results => results.TournamentId, tournament => tournament.Id, (results, tournament) => new { results, tournament })
+            .Join(_dalDivisions, firstJoin => firstJoin.tournament.Id, division => division.TournamentId, (firstJoin, division) => new { firstJoin, division })
+            .Join(_dalGroups, secondJoin => secondJoin.division.Id, group => group.DivisionId, (secondJoin, groups) => new { secondJoin, groups })
+            .Where(thirdJoin => (thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.HomeTeamId.Value) &&
+            (!thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue || (thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue && thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.AwayTeamId.Value)))))
+            .Select(r => new { results = r.secondJoin.firstJoin.results, divisionId = r.secondJoin.division.Id, groupId = r.groups.Id })
+            .ToList();
 
-            List<GameResultDto> list = gameResults.Any() ? gameResults.ConvertAll(GetGameResultDtoMap()) : new List<GameResultDto>();
+            List<GameResultDto> list = gameResults.Any() ? gameResults.ConvertAll(item => Map(item.results, item.divisionId, item.groupId)) : new List<GameResultDto>();
             return list;
         }
 
@@ -260,6 +276,35 @@
             };
         }
 
+        private GameResultDto Map(GameResultEntity gr, int divisionId, int groupId)
+        {
+            return new GameResultDto
+            {
+                Id = gr.Id,
+                TournamentId = gr.TournamentId,
+                HomeTeamId = gr.HomeTeamId,
+                AwayTeamId = gr.AwayTeamId,
+                GameDate = gr.StartTime,
+                Round = gr.RoundNumber,
+                GameNumber = gr.GameNumber,
+                HomeTeamName = gr.HomeTeam?.Name,
+                AwayTeamName = gr.AwayTeam?.Name,
+                Result = new Result
+                {
+                    SetScores = new List<Score>
+                    {
+                        new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score, IsTechnicalDefeat = gr.IsSet1TechnicalDefeat },
+                        new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score, IsTechnicalDefeat = gr.IsSet2TechnicalDefeat },
+                        new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score, IsTechnicalDefeat = gr.IsSet3TechnicalDefeat },
+                        new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score, IsTechnicalDefeat = gr.IsSet4TechnicalDefeat },
+                        new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score, IsTechnicalDefeat = gr.IsSet5TechnicalDefeat }
+                    },
+                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore, IsTechnicalDefeat = gr.IsTechnicalDefeat }
+                },
+                DivisionId = divisionId,
+                GroupId = groupId
+            };
+        }
         #endregion
     }
 }

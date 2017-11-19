@@ -57,8 +57,9 @@
         private bool AreEqual(ScheduleByRoundViewModel x, ScheduleByRoundViewModel y)
         {
             return x.Round == y.Round &&
-            x.GameResults.AsQueryable<GameViewModel>()
-            .SequenceEqual(y.GameResults.AsQueryable<GameViewModel>(), new GameViewModelComparer());
+            x.ScheduleByDate[0].GameDate == y.ScheduleByDate[0].GameDate &&
+            x.ScheduleByDate[0].GameResults.AsQueryable<GameViewModel>()
+            .SequenceEqual(y.ScheduleByDate[0].GameResults.AsQueryable<GameViewModel>(), new GameViewModelComparer());
         }
     }
 }

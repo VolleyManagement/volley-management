@@ -20,27 +20,7 @@
         /// If both x and y are null, the method returns true.</returns>
         public bool Equals(GameResultViewModel x, GameResultViewModel y)
         {
-            return x.SetScores[0].Home == y.SetScores[0].Home
-                && x.SetScores[1].Home == y.SetScores[1].Home
-                && x.SetScores[2].Home == y.SetScores[2].Home
-                && x.SetScores[3].Home == y.SetScores[3].Home
-                && x.SetScores[4].Home == y.SetScores[4].Home
-                && x.SetScores[0].Away == y.SetScores[0].Away
-                && x.SetScores[1].Away == y.SetScores[1].Away
-                && x.SetScores[2].Away == y.SetScores[2].Away
-                && x.SetScores[3].Away == y.SetScores[3].Away
-                && x.SetScores[4].Away == y.SetScores[4].Away
-                && x.AwayTeamId == y.AwayTeamId
-                && x.SetsScore.Home == y.SetsScore.Home
-                && x.SetsScore.Away == y.SetsScore.Away
-                && x.HomeTeamId == y.HomeTeamId
-                && x.Id == y.Id
-                && x.IsTechnicalDefeat == y.IsTechnicalDefeat
-                && x.TournamentId == y.TournamentId
-                && x.GameDate == y.GameDate
-                && x.Round == y.Round
-                && x.HomeTeamName == y.HomeTeamName
-                && y.AwayTeamName == y.AwayTeamName;
+            return new GameResultViewModelComparer().Compare(x, y) == 0;
         }
 
         /// <summary>

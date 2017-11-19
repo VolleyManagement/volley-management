@@ -3,9 +3,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web.Mvc;
     using Contracts.Authorization;
-    using Crosscutting.Contracts.Providers;
     using Domain;
     using Domain.GamesAggregate;
 
@@ -195,7 +193,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 Result = new Result
                 {
                     SetsScore = SetsScore.ToDomain(),
-                    SetScores = SetScores.Select(item => item.ToDomain()).ToList()
+                    SetScores = SetScores.Select(item => item.ToDomain()).ToList(),
+                    Penalty = penalty
                 }
             };
         }

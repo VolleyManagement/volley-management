@@ -2,10 +2,8 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using UI.Areas.WebApi.ViewModels.Games;
     using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
     /// <summary>
@@ -57,8 +55,9 @@
         private bool AreEqual(ScheduleByRoundViewModel x, ScheduleByRoundViewModel y)
         {
             return x.Round == y.Round &&
-            x.GameResults.AsQueryable<GameViewModel>()
-            .SequenceEqual(y.GameResults.AsQueryable<GameViewModel>(), new GameViewModelComparer());
+            x.ScheduleByDate[0].GameDate == y.ScheduleByDate[0].GameDate &&
+            x.ScheduleByDate[0].GameResults.AsQueryable()
+            .SequenceEqual(y.ScheduleByDate[0].GameResults.AsQueryable(), new GameViewModelComparer());
         }
     }
 }

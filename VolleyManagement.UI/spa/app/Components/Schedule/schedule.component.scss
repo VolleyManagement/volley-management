@@ -2,13 +2,17 @@
   /* VARIABLES */
   $schedule-table-text-color: black;
   $header-bg-color: #DDEBF7;
+  $group1-bg-color: #4472C4;
   $group2-bg-color: #70AD47;
-  $group-date-bg-color: #C6E0B4;
+  $group1-date-bg-color: #B4C6E7;
+  $group2-date-bg-color: #C6E0B4;
   $game-schedule-border-color: #E8E8E8;
+  $game-hover-bg-color: #009933;
+
   /* STYLES */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: $schedule-table-text-color;
-  width: 280px;
+  width: 560px;
   float: none;
   clear: both;
   .headercenter {
@@ -20,13 +24,16 @@
     font-style: normal;
     font-weight: normal;
   }
+  .group2 {
+    background-color: $group2-bg-color;
+  }
+  .group1 {
+    background-color: $group1-bg-color;
+  }
   .group {
     width: 280px;
     float: left;
     font-size: 11pt;
-    &.group2 {
-      background-color: $group2-bg-color;
-    }
     .group-header {
       margin: 0px;
       text-align: center;
@@ -35,7 +42,12 @@
       margin: 0px;
       text-align: center;
       font-size: 9pt;
-      background-color: $group-date-bg-color;
+    }
+    .group-date-group2  {
+      background-color: $group2-date-bg-color;
+    }
+    .group-date-group1 {
+      background-color: $group1-date-bg-color;
     }
   }
   .games {
@@ -73,6 +85,9 @@
           font-size: 8pt;
           text-align: left;
         }
+      }
+      :hover{
+        background-color: $game-hover-bg-color;
       }
     }
   }

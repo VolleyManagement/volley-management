@@ -22,6 +22,12 @@
 
         private const string DATE_C = "2016-04-10T10:00:00+03:00";
 
+        private readonly DateTime _date_A_For_Round = new DateTime(2016, 04, 03);
+
+        private readonly DateTime _date_B_For_Round = new DateTime(2016, 04, 07);
+
+        private readonly DateTime _date_C_For_Round = new DateTime(2016, 04, 10);
+
         /// <summary>
         /// Holds collection of games
         /// </summary>
@@ -37,15 +43,22 @@
                 new ScheduleByRoundViewModel
                 {
                     Round = 1,
-                    GameResults = new List<GameViewModel>
+                    ScheduleByDate = new List<ScheduleByDateInRoundViewModel>()
                     {
-                        new GameViewModel()
+                        new ScheduleByDateInRoundViewModel
                         {
-                            Id = 1,
-                            HomeTeamName = "TeamNameA",
-                            AwayTeamName = "TeamNameB",
-                            GameDate = DATE_A,
-                            Result = null
+                            GameDate = _date_A_For_Round,
+                            GameResults = new List<GameViewModel>
+                            {
+                                new GameViewModel()
+                                {
+                                    Id = 1,
+                                    HomeTeamName = "TeamNameA",
+                                    AwayTeamName = "TeamNameB",
+                                    GameDate = DATE_A,
+                                    Result = null
+                                }
+                            }
                         }
                     }
                 });
@@ -53,15 +66,22 @@
                 new ScheduleByRoundViewModel
                 {
                     Round = 2,
-                    GameResults = new List<GameViewModel>
+                    ScheduleByDate = new List<ScheduleByDateInRoundViewModel>()
                     {
-                        new GameViewModel()
+                        new ScheduleByDateInRoundViewModel
                         {
-                            Id = 2,
-                            HomeTeamName = "TeamNameA",
-                            AwayTeamName = "TeamNameC",
-                            GameDate = DATE_B,
-                            Result = null
+                            GameDate = _date_B_For_Round,
+                            GameResults = new List<GameViewModel>
+                            {
+                                new GameViewModel()
+                                {
+                                    Id = 2,
+                                    HomeTeamName = "TeamNameA",
+                                    AwayTeamName = "TeamNameC",
+                                    GameDate = DATE_B,
+                                    Result = null
+                                }
+                            }
                         }
                     }
                 });
@@ -74,86 +94,107 @@
             _games.Add(new ScheduleByRoundViewModel
             {
                 Round = 1,
-                GameResults = new List<GameViewModel>
-                {
-                    new GameViewModel()
+                ScheduleByDate = new List<ScheduleByDateInRoundViewModel>()
                     {
-                        Id = 1,
-                        HomeTeamName = "TeamNameA",
-                        AwayTeamName = "TeamNameB",
-                        GameDate = DATE_A,
-                        Result = new GameViewModel.GameResult
+                        new ScheduleByDateInRoundViewModel
                         {
-                            TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 2),
-                            SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>()
+                    GameDate = _date_A_For_Round,
+                    GameResults = new List<GameViewModel>
+                    {
+                        new GameViewModel()
+                        {
+                            Id = 1,
+                            HomeTeamName = "TeamNameA",
+                            AwayTeamName = "TeamNameB",
+                            GameDate = DATE_A,
+                            Result = new GameViewModel.GameResult
                             {
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 20),
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(24, 26),
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(28, 30),
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 22),
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(27, 25)
+                                TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 2),
+                                SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>()
+                                {
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 20),
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(24, 26),
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(28, 30),
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 22),
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(27, 25)
+                                },
+                                IsTechnicalDefeat = false,
                             },
-                            IsTechnicalDefeat = false,
-                        },
-                        Round = 1
+                            Round = 1
+                        }
                     }
+                }
                 }
             });
             _games.Add(new ScheduleByRoundViewModel
             {
                 Round = 2,
-                GameResults = new List<GameViewModel>
-                {
-                    new GameViewModel()
+                ScheduleByDate = new List<ScheduleByDateInRoundViewModel>()
                     {
-                        Id = 2,
-                        HomeTeamName = "TeamNameA",
-                        AwayTeamName = "TeamNameC",
-                        GameDate = DATE_B,
-                        Result = new GameViewModel.GameResult
+                        new ScheduleByDateInRoundViewModel
                         {
-                            TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 1),
-                            SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>()
+                    GameDate = _date_B_For_Round,
+                    GameResults = new List<GameViewModel>
+                    {
+                        new GameViewModel()
+                        {
+                            Id = 2,
+                            HomeTeamName = "TeamNameA",
+                            AwayTeamName = "TeamNameC",
+                            GameDate = DATE_B,
+                            Result = new GameViewModel.GameResult
                             {
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(26, 28),
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 15),
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 21),
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(29, 27),
-                                new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 1),
+                                SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>()
+                                {
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(26, 28),
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 15),
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 21),
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(29, 27),
+                                    new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                },
+                                IsTechnicalDefeat = false,
                             },
-                            IsTechnicalDefeat = false,
-                        },
-                        Round = 2
+                            Round = 2
+                        }
                     }
+                }
                 }
             });
             _games.Add(new ScheduleByRoundViewModel
             {
                 Round = 3,
-                GameResults = new List<GameViewModel>
+                ScheduleByDate = new List<ScheduleByDateInRoundViewModel>()
+                {
+                    new ScheduleByDateInRoundViewModel
+                    {
+                        GameDate = _date_C_For_Round,
+                        GameResults = new List<GameViewModel>
                         {
                             new GameViewModel()
                             {
-                                Id = 3,
-                                HomeTeamName = "TeamNameB",
-                                AwayTeamName = "TeamNameC",
-                                GameDate = DATE_C,
-                                Result = new GameViewModel.GameResult
-                                {
-                                    TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 3),
-                                    SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>()
+                                    Id = 3,
+                                    HomeTeamName = "TeamNameB",
+                                    AwayTeamName = "TeamNameC",
+                                    GameDate = DATE_C,
+                                    Result = new GameViewModel.GameResult
                                     {
-                                        new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 25),
-                                        new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 25),
-                                        new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 25),
-                                        new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
-                                        new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                        TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 3),
+                                        SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>()
+                                        {
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 25),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 25),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 25),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                        },
+                                        IsTechnicalDefeat = true,
                                     },
-                                    IsTechnicalDefeat = true,
-                                },
-                                Round = 3
+                                    Round = 3
                             }
                         }
+                    }
+                }
             });
 
             return this;
@@ -166,7 +207,7 @@
         /// <returns>Builder object with collection of games.</returns>
         public ScheduleByRoundViewModelTestFixture AddGame(GameViewModel newGame)
         {
-            _games[0].GameResults.Add(newGame);
+            _games[0].ScheduleByDate[0].GameResults.Add(newGame);
             return this;
         }
 

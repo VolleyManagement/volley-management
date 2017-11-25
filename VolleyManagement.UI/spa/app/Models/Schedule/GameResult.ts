@@ -8,7 +8,9 @@ export class GameResult {
         public AwayTeamName: string,
         public GameDate: string,
         public Round: number,
-        public Result: Result
+        public Result: Result,
+        public DivisionId: number,
+        public GroupId: number
     ) {
         this.IsGameWasPlayedAndHasResult = this.isGameWasPlayedAndHasResult();
      }

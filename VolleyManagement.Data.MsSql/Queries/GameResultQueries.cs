@@ -23,6 +23,9 @@
 
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<GameResultEntity> _dalGameResults;
+        private readonly DbSet<TournamentEntity> _dalTournaments;
+        private readonly DbSet<DivisionEntity> _dalDivisions;
+        private readonly DbSet<GroupEntity> _dalGroups;
 
         #endregion
 
@@ -36,6 +39,9 @@
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalGameResults = _unitOfWork.Context.GameResults;
+            _dalTournaments = _unitOfWork.Context.Tournaments;
+            _dalDivisions = _unitOfWork.Context.Divisions;
+            _dalGroups = _unitOfWork.Context.Groups;
         }
 
         #endregion
@@ -63,12 +69,21 @@
         /// <returns>List of domain models of game result.</returns>
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
+            // Join GameResult tables with tournaments then with Divisions and then with Groups
+            // After that select only groupId and divisionId where Groups navigation property Teams
+            // contains reference on teamId
             var gameResults = _dalGameResults
-                                .Where(gr => gr.TournamentId == criteria.TournamentId)
-                                .ToList()
-                                .ConvertAll(GetGameResultDtoMap());
+            .Where(gr => gr.TournamentId == criteria.TournamentId)
+            .Join(_dalTournaments, results => results.TournamentId, tournament => tournament.Id, (results, tournament) => new { results, tournament })
+            .Join(_dalDivisions, firstJoin => firstJoin.tournament.Id, division => division.TournamentId, (firstJoin, division) => new { firstJoin, division })
+            .Join(_dalGroups, secondJoin => secondJoin.division.Id, group => group.DivisionId, (secondJoin, groups) => new { secondJoin, groups })
+            .Where(thirdJoin => (thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.HomeTeamId.Value) &&
+            (!thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue || (thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue && thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.AwayTeamId.Value)))))
+            .Select(r => new { results = r.secondJoin.firstJoin.results, divisionId = r.secondJoin.division.Id, groupId = r.groups.Id })
+            .ToList();
 
-            return gameResults;
+            List<GameResultDto> list = gameResults.ConvertAll(item => Map(item.results, item.divisionId, item.groupId));
+            return list;
         }
 
         /// <summary>
@@ -193,6 +208,13 @@
             return result;
         }
 
+        private GameResultDto Map(GameResultEntity gr, int divisionId, int groupId)
+        {
+            var result = GetGameResultDtoMap()(gr);
+            result.DivisionId = divisionId;
+            result.GroupId = groupId;
+            return result;
+        }
         #endregion
     }
 }

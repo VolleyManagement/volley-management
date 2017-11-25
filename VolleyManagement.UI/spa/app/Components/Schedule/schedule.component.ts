@@ -39,7 +39,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
         this.groupOne = this.gameResults[0].ScheduleByDate[0].GameResults[0].GroupId;
         this.gameResults[0].ScheduleByDate.forEach((item, index, arr) => {
             const gameResult = item.GameResults.find(it => it.GroupId !== this.groupOne);
-            if (gameResult !== undefined) {
+            if (gameResult) {
                 this.groupTwo  = gameResult.GroupId;
                 return;
             }

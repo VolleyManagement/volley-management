@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
     var resValidateNs = VM.addNamespace("GameResult.Validate"),
         privates = {};
 
@@ -37,14 +37,18 @@
                 "Home": parseInt($("#HomeTeamId").val()),
                 "Away": parseInt($("#AwayTeamId").val())
             },
-            "IsTechnicalDefeat": $("#IsTechnicalDefeat")[0].checked
+            "IsTechnicalDefeat": $("#IsTechnicalDefeat")[0].checked,
+            "HasPenalty": $("#HasPenalty")[0].checked,
+            "IsHomeTeamPenalty": $("#IsHomeTeamPenalty")[0].checked,
+            "PenaltyAmount": parseInt($("#PenaltyAmount").val()),
+            "PenaltyDescrition": $("#PenaltyDescrition").val()
         };
     }
 
     // Methods provides units of rules.
 
     privates.AreTheSameTeams = function (HomeId, AwayId) {
-        return HomeId == AwayId;
+        return HomeId === AwayId;
     }
 
     privates.IsSetsScoreValid = function (setsScore, isTechnicalDefeat) {
@@ -57,7 +61,7 @@
             "Away": 0
         }
 
-        for (i = 0; i < setScores.length; i++) {
+        for (var i = 0; i < setScores.length; i++) {
             if (setScores[i].Home > setScores[i].Away) {
                 score.Home++;
             }
@@ -66,7 +70,7 @@
             }
         }
 
-        return score.Home == setsScore.Home && score.Away == setsScore.Away;
+        return score.Home === setsScore.Home && score.Away === setsScore.Away;
     }
 
     privates.IsRequiredSetScoreValid = function (setScore, isTechnicalDefeat) {
@@ -79,8 +83,8 @@
     }
 
     privates.IsSetUnplayed = function (setScore) {
-        return setScore.Home == gameResultConstants.UNPLAYED_SET_HOME_SCORE
-            && setScore.Away == gameResultConstants.UNPLAYED_SET_AWAY_SCORE;
+        return setScore.Home === gameResultConstants.UNPLAYED_SET_HOME_SCORE
+            && setScore.Away === gameResultConstants.UNPLAYED_SET_AWAY_SCORE;
     }
 
     privates.AreSetScoresOrdered = function (setScores) {
@@ -98,7 +102,7 @@
 
                 score.Home++;
 
-                if (score.Home == gameResultConstants.SETS_COUNT_TO_WIN) {
+                if (score.Home === gameResultConstants.SETS_COUNT_TO_WIN) {
                     hasMatchEnded = true;
                 }
             }
@@ -109,7 +113,7 @@
 
                 score.Away++;
 
-                if (score.Away == gameResultConstants.SETS_COUNT_TO_WIN) {
+                if (score.Away === gameResultConstants.SETS_COUNT_TO_WIN) {
                     hasMatchEnded = true;
                 }
             }
@@ -119,35 +123,35 @@
     }
 
     privates.IsTechnicalDefeatSetsScoreValid = function (setsScore) {
-        return (setsScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE
-            && setsScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE)
-            || (setsScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE
-            && setsScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE);
+        return (setsScore.Home === gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE
+            && setsScore.Away === gameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE)
+            || (setsScore.Home === gameResultConstants.TECHNICAL_DEFEAT_SETS_LOSER_SCORE
+            && setsScore.Away === gameResultConstants.TECHNICAL_DEFEAT_SETS_WINNER_SCORE);
     }
 
     privates.IsOrdinarySetsScoreValid = function (setsScore) {
-        return (setsScore.Home == gameResultConstants.SETS_COUNT_TO_WIN
+        return (setsScore.Home === gameResultConstants.SETS_COUNT_TO_WIN
             && setsScore.Away < gameResultConstants.SETS_COUNT_TO_WIN)
             || (setsScore.Home < gameResultConstants.SETS_COUNT_TO_WIN
-            && setsScore.Away == gameResultConstants.SETS_COUNT_TO_WIN);
+            && setsScore.Away === gameResultConstants.SETS_COUNT_TO_WIN);
     }
 
     privates.IsTechnicalDefeatRequiredSetScoreValid = function (setScore) {
-        return (setScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE
-            && setScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE)
-            || (setScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE
-            && setScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE);
+        return (setScore.Home === gameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE
+            && setScore.Away === gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE)
+            || (setScore.Home === gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE
+            && setScore.Away === gameResultConstants.TECHNICAL_DEFEAT_SET_WINNER_SCORE);
     }
 
     privates.IsTechnicalDefeatOptionalSetScoreValid = function (setScore) {
-        return setScore.Home == gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE
-            && setScore.Away == gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE;
+        return setScore.Home === gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE
+            && setScore.Away === gameResultConstants.TECHNICAL_DEFEAT_SET_LOSER_SCORE;
     }
 
     privates.IsOrdinaryRequiredSetScoreValid = function (setScore, setOrderNumber) {
         var isValid = false;
         setOrderNumber = setOrderNumber || 0;
-        if (setOrderNumber == gameResultConstants.MAX_SETS_COUNT) {
+        if (setOrderNumber === gameResultConstants.MAX_SETS_COUNT) {
             isValid = privates.IsSetScoreValid(setScore, gameResultConstants.FIFTH_SET_POINTS_MIN_VALUE_TO_WIN);
         }
         else {
@@ -182,8 +186,8 @@
     }
 
     privates.IsSetScoreEqualToMin = function (setScore, minSetScore) {
-        return setScore.Home == minSetScore
-            || setScore.Away == minSetScore;
+        return setScore.Home === minSetScore
+            || setScore.Away === minSetScore;
     }
 
     privates.IsSetScoreGreaterThanMin = function (setScore, minSetScore) {
@@ -295,7 +299,7 @@
 
     $("#backToSchedule").click(function () {
         var formChanged = $("#createForm").serialize();
-        if (privates.formLoaded != formChanged) {
+        if (privates.formLoaded !== formChanged) {
             return confirm("You've made changes. Do you want to discard them?");
         }
     });

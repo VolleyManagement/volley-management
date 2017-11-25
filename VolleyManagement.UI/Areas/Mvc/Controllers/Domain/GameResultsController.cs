@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;

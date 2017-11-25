@@ -268,6 +268,20 @@
                         awayTeamEntry.GamesWithScoreThreeNil++;
                         break;
                 }
+
+                var penalty = gameResult.Result.Penalty;
+
+                if (penalty != null)
+                {
+                    if (penalty.IsHomeTeam)
+                    {
+                        homeTeamEntry.Points -= penalty.Amount;
+                    }
+                    else
+                    {
+                        awayTeamEntry.Points -= penalty.Amount;
+                    }
+                }
             }
         }
 

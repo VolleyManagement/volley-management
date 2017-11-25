@@ -1,9 +1,11 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using Data.Queries.Tournament;
+    using Domain.GameReportsAggregate;
     using Domain.TournamentsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
@@ -60,8 +62,8 @@
 
             var expected = 3;
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -71,11 +73,7 @@
             // Assert
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Test for GetStandings() method. Game results with all possible scores are available for the specified tournament.
-        /// Points statistics in tournament standings is calculated correctly.
-        /// </summary>
+        
         [TestMethod]
         public void GetStandings_GameResultsAllPossibleScores_CorrectPointsStats()
         {
@@ -84,13 +82,12 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
 
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
-                .OrderByPointsAndSetsAndBallsAndName()
-                .Build()
-                .Select(s => s.Points)
-                .ToList();
+                                                     .Build()
+                                                     .Select(s => s.Points)
+                                                     .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -100,11 +97,7 @@
             // Assert
             CollectionAssert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Test for GetStandings() method. Game results with all possible scores are available for the specified tournament.
-        /// Games statistics in tournament standings is calculated correctly.
-        /// </summary>
+        
         [TestMethod]
         public void GetStandings_GameResultsAllPossibleScores_CorrectGamesStats()
         {
@@ -113,7 +106,6 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
 
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
-                .OrderByPointsAndSetsAndBallsAndName()
                 .Build()
                 .Select(s => new
                 {
@@ -129,8 +121,8 @@
                 })
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -167,7 +159,6 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
 
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
-                .OrderByPointsAndSetsAndBallsAndName()
                 .Build()
                 .Select(s => new
                 {
@@ -177,8 +168,8 @@
                 })
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -209,7 +200,6 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
 
             var expected = new StandingsTestFixture().WithStandingsForAllPossibleScores()
-                .OrderByPointsAndSetsAndBallsAndName()
                 .Build()
                 .Select(s => new
                 {
@@ -219,8 +209,8 @@
                 })
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -251,8 +241,8 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
             var expected = float.PositiveInfinity;
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -275,8 +265,8 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
             var expected = new { SetsRatio = (float?)float.PositiveInfinity, BallsRatio = (float?)null };
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -288,81 +278,94 @@
             Assert.AreEqual(expected, actual);
         }
 
-        /// <summary>
-        /// Test for GetStandings() method. Standings entries are not ordered.
-        /// Team with maximum points is not positioned at the top of the standings.
-        /// </summary>
         [TestMethod]
-        public void GetStandings_EntriesNotOrdered_NotTopTeamMaxPoints()
+        public void GetStandings_GameResultsAllPossibleScores_TeamsOrderedByPoints()
         {
             // Arrange
             var gameResultsTestData = new GameServiceTestFixture().WithResultsForUniquePoints().Build();
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
 
-            var expected = new StandingsTestFixture().WithUniquePoints().Build()[TOP_TEAM_INDEX].Points;
+            var expected = new StandingsTestFixture().WithUniquePoints().Build();
+            expected = expected.OrderByDescending(s => s.Points).ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetStandings(TOURNAMENT_ID).First()[TOP_TEAM_INDEX].Points;
+            var actual = sut.GetStandings(TOURNAMENT_ID);
 
             // Assert
-            Assert.AreNotEqual(expected, actual);
+            AssertPositionsAreEqual(actual, expected);
         }
 
-        /// <summary>
-        /// Test for GetStandings() method. Standings entries are ordered by points.
-        /// Team with maximum sets ratio is not positioned at the top of the standings.
-        /// </summary>
         [TestMethod]
-        public void GetStandings_EntriesOrderedByPoints_NotTopTeamMaxSetsRatio()
+        public void GetStandings_SeveralTeamsWithSamePoints_TeamsOrderedByWonGames()
         {
             // Arrange
-            var gameResultsTestData = new GameServiceTestFixture().WithResultsForRepetitivePoints().Build();
+            var gameResultsTestData = new GameServiceTestFixture().WithResultsForSamePoints().Build();
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
-            var expected = new StandingsTestFixture().WithRepetitivePoints().OrderByPoints().Build()[TOP_TEAM_INDEX].SetsRatio;
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            var expected = new StandingsTestFixture().WithSamePoints().Build();
+            expected = expected.OrderByDescending(s => s.Points)
+                               .ThenByDescending(s => s.GamesWon)
+                               .ToList();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetStandings(TOURNAMENT_ID).First()[TOP_TEAM_INDEX].SetsRatio;
+            var actual = sut.GetStandings(TOURNAMENT_ID);
 
             // Assert
-            Assert.AreNotEqual(expected, actual);
+            AssertPositionsAreEqual(actual, expected);
         }
 
-        /// <summary>
-        /// Test for GetStandings() method. Standings entries are ordered by points and then by sets ratio.
-        /// Team with maximum balls ratio is not positioned at the top of the standings.
-        /// </summary>
         [TestMethod]
-        public void GetStandings_EntriesOrderedByPointsSetsRatio_NotTopTeamMaxBallsRatio()
+        public void GetStandings_SeveralTeamsWithSamePointsAndWonGames_TeamsOrderedBySetsRatio()
         {
             // Arrange
-            var gameResultsTestData = new GameServiceTestFixture().WithResultsForRepetitivePointsAndSetsRatio().Build();
+            var gameResultsTestData = new GameServiceTestFixture()
+                .WithResultsForSamePointsAndWonGames().Build();
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
 
-            var expected = new StandingsTestFixture().WithRepetitivePointsAndSetsRatio()
-                .OrderByPointsAndSets()
-                .Build()[TOP_TEAM_INDEX]
-                .BallsRatio;
+            var expected = new StandingsTestFixture().WithSamePointsAndWonGames().Build();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
             // Act
-            var actual = sut.GetStandings(TOURNAMENT_ID).First()[TOP_TEAM_INDEX].BallsRatio;
+            var actual = sut.GetStandings(TOURNAMENT_ID);
 
             // Assert
-            Assert.AreNotEqual(expected, actual);
+            AssertPositionsAreEqual(actual, expected);
+        }
+
+        [TestMethod]
+        public void GetStandings_SeveralTeamsWithSamePointsWonGamesAndSetsRatio_TeamsOrderedByBallsRatio()
+        {
+            // Arrange
+            var gameResultsTestData = new GameServiceTestFixture()
+                .WithResultsForSamePointsWonGamesAndSetsRatio().Build();
+            var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
+
+            var expected = new StandingsTestFixture().WithSamePointsWonGamesAndSetsRatio().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertPositionsAreEqual(actual, expected);
         }
 
         /// <summary>
@@ -377,13 +380,12 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
 
             var expected = new StandingsTestFixture().WithTeamStandingsForOneSetTechnicalDefeat()
-                .OrderByPointsAndSets()
                 .Build()
                 .Select(item => item.BallsRatio)
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -406,12 +408,11 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeams().Build();
 
             var expected = new StandingsTestFixture().WithNoResults()
-                .OrderByPointsAndSetsAndBallsAndName()
                 .Build()
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, new List<List<Team>> { teamsTestData });
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, new List<List<Team>> { teamsTestData });
 
             var sut = BuildSUT();
 
@@ -440,8 +441,8 @@
                 .Select(t => new { t.Points })
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -470,8 +471,8 @@
                 .Select(t => new { t.SetsRatio })
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -500,8 +501,8 @@
                 .Select(t => new { t.BallsRatio })
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -526,8 +527,8 @@
 
             var expected = float.PositiveInfinity;
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -551,8 +552,8 @@
             var teamWithNoResults = new List<Team> { new Team { Id = 4 } };
             var teamsTestData = new TeamServiceTestFixture().AddTeams(teamWithNoResults).TestTeamsByDivisions().BuildWithDivisions();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -581,8 +582,8 @@
                 .Select(t => new { t.BallsRatio })
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -591,6 +592,13 @@
 
             // Assert
             CollectionAssert.AreEqual(expected, actual);
+        }
+
+        private static void AssertPositionsAreEqual(List<List<StandingsEntry>> actual, List<StandingsEntry> expected)
+        {
+            var actualPositions = actual[0].Select((s, i) => (Position: i, s.TeamName, s.Points)).ToList();
+            var expectedPositions = expected.Select((s, i) => (Position: i, s.TeamName, s.Points)).ToList();
+            CollectionAssert.AreEqual(expectedPositions, actualPositions);
         }
 
         private GameReportService BuildSUT()
@@ -603,28 +611,14 @@
                _divisionsByTournamentIdQueryMock.Object);
         }
 
-        private void SetupTournamentGameResultsQuery(int tournamentId, List<GameResultDto> testData)
+        private void MockTournamentGameResultsQuery(int tournamentId, List<GameResultDto> testData)
         {
             _tournamentGameResultsQueryMock.Setup(m =>
                 m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
                 .Returns(testData);
         }
 
-        private void SetupTournamentTeamsQuery(int tournamentId, List<Team> testData)
-        {
-            _tournamentTeamsQueryMock.Setup(m =>
-                m.Execute(It.Is<FindByTournamentIdCriteria>(c => c.TournamentId == tournamentId)))
-                .Returns(testData);
-        }
-
-        private void SetupGetTournamentById(int id, TournamentScheduleDto tournament)
-        {
-            _tournamentScheduleDtoByIdQueryMock.Setup(m =>
-                m.Execute(It.Is<TournamentScheduleInfoCriteria>(c => c.TournamentId == id)))
-                .Returns(tournament);
-        }
-
-        private void SetupTournamentTeamsGroupedByDivisionsQuery(int tournamentId, List<List<Team>> testData)
+        private void MockTournamentTeamsGroupedByDivisionsQuery(int tournamentId, List<List<Team>> testData)
         {
             _teamsByDivisionIdQueryMock.SetupSequence(m =>
                 m.Execute(It.Is<FindTeamsInDivisionsByTournamentIdCriteria>(c => c.TournamentId == tournamentId)))

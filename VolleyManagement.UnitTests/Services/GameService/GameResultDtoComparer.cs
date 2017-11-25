@@ -59,9 +59,9 @@
                 && x.AwayTeamId == y.AwayTeamId
                 && x.HomeTeamName == y.HomeTeamName
                 && x.AwayTeamName == y.AwayTeamName
-                && x.Result.SetsScore.Home == y.Result.SetsScore.Home
-                && x.Result.SetsScore.Away == y.Result.SetsScore.Away
-                && x.Result.SetsScore.IsTechnicalDefeat == y.Result.SetsScore.IsTechnicalDefeat
+                && x.Result.GameScore.Home == y.Result.GameScore.Home
+                && x.Result.GameScore.Away == y.Result.GameScore.Away
+                && x.Result.GameScore.IsTechnicalDefeat == y.Result.GameScore.IsTechnicalDefeat
                 && x.Result.SetScores[0].Home == y.Result.SetScores[0].Home
                 && x.Result.SetScores[0].Away == y.Result.SetScores[0].Away
                 && x.Result.SetScores[1].Home == y.Result.SetScores[1].Home

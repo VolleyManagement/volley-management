@@ -19,7 +19,7 @@
         /// <summary>
         /// Gets or sets the final score of the game.
         /// </summary>
-        public Score SetsScore { get; set; }
+        public Score GameScore { get; set; }
 
         /// <summary>
         /// Gets or sets the set scores.
@@ -31,7 +31,7 @@
         /// </summary>
         private void InitializeEmptyResult()
         {
-            SetsScore = new Score(
+            GameScore = new Score(
                 Constants.GameResult.EMPTY_SCORE,
                 Constants.GameResult.EMPTY_SCORE,
                 Constants.GameResult.DEFAULT_TECHNICAL_DEFEAT);

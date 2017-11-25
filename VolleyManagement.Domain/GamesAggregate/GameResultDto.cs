@@ -66,6 +66,6 @@
         /// Gets a value indicating whether game has result.
         /// </summary>
         /// <returns>True if score is empty; otherwise, false.</returns>
-        public bool HasResult => !Result.SetsScore.IsEmpty;
+        public bool HasResult => !Result.GameScore.IsEmpty;
     }
 }

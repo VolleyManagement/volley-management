@@ -35,7 +35,7 @@
                 AwayTeamName = "AwayTeamName",
                 Result = new Result
                 {
-                    SetsScore = new Score
+                    GameScore = new Score
                     {
                         Home = 3,
                         Away = 0,
@@ -158,7 +158,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithHomeSetsScore(byte score)
         {
-            _gameResult.Result.SetsScore.Home = score;
+            _gameResult.Result.GameScore.Home = score;
             return this;
         }
 
@@ -169,7 +169,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithAwaySetsScore(byte score)
         {
-            _gameResult.Result.SetsScore.Away = score;
+            _gameResult.Result.GameScore.Away = score;
             return this;
         }
 
@@ -179,7 +179,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithTechnicalDefeat()
         {
-            _gameResult.Result.SetsScore.IsTechnicalDefeat = true;
+            _gameResult.Result.GameScore.IsTechnicalDefeat = true;
             return this;
         }
 
@@ -189,7 +189,7 @@
         /// <returns>Instance of <see cref="GameResultDtoBuilder"/>.</returns>
         public GameResultDtoBuilder WithNoTechnicalDefeat()
         {
-            _gameResult.Result.SetsScore.IsTechnicalDefeat = false;
+            _gameResult.Result.GameScore.IsTechnicalDefeat = false;
             return this;
         }
 

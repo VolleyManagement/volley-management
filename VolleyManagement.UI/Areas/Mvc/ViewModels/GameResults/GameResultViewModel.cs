@@ -145,8 +145,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = gameResult.GameNumber,
                 Round = gameResult.Round,
 
-                SetsScore = new ScoreViewModel { Home = gameResult.Result.SetsScore.Home, Away = gameResult.Result.SetsScore.Away },
-                IsTechnicalDefeat = gameResult.Result.SetsScore.IsTechnicalDefeat,
+                SetsScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
+                IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
                 AllowEditResult = gameResult.AllowEditResult,
                 SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
                 {
@@ -174,7 +174,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = GameNumber,
                 Result = new Result
                 {
-                    SetsScore = SetsScore.ToDomain(),
+                    GameScore = SetsScore.ToDomain(),
                     SetScores = SetScores.Select(item => item.ToDomain()).ToList()
                 }
             };

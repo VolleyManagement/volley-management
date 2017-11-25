@@ -320,9 +320,9 @@
 
         private void ValidateResult(Result result)
         {
-            ValidateSetsScore(result.SetsScore, result.SetsScore.IsTechnicalDefeat);
-            ValidateSetsScoreMatchesSetScores(result.SetsScore, result.SetScores);
-            ValidateSetScoresValues(result.SetScores, result.SetsScore.IsTechnicalDefeat);
+            ValidateSetsScore(result.GameScore, result.GameScore.IsTechnicalDefeat);
+            ValidateSetsScoreMatchesSetScores(result.GameScore, result.SetScores);
+            ValidateSetScoresValues(result.SetScores, result.GameScore.IsTechnicalDefeat);
             ValidateSetScoresOrder(result.SetScores);
         }
 
@@ -699,8 +699,8 @@
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
 
                 if (finishedGame.AwayTeamId.HasValue
-                    && finishedGame.Result.SetsScore.Home == 0
-                    && finishedGame.Result.SetsScore.Away == 0)
+                    && finishedGame.Result.GameScore.Home == 0
+                    && finishedGame.Result.GameScore.Away == 0)
                 {
                     foreach (Game game in gamesToUpdate)
                     {
@@ -771,7 +771,7 @@
             }
             else
             {
-                winnerTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
+                winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
                 finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
             }
 
@@ -795,7 +795,7 @@
 
             ValidateEditingSchemePlayoff(nextGame);
 
-            int loserTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
+            int loserTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
                 finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
 
             if (finishedGame.GameNumber % 2 != 0)
@@ -842,8 +842,8 @@
 
         private void ValidateEditingSchemePlayoff(Game nextGame)
         {
-            if (nextGame.Result != null && nextGame.Result.SetsScore.Home != 0
-                && nextGame.Result.SetsScore.Away != 0)
+            if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
+                && nextGame.Result.GameScore.Away != 0)
             {
                 throw new ArgumentException(Resources.PlayoffGameEditingError);
             }
@@ -855,7 +855,7 @@
                 game => game.HomeTeamId.HasValue
                 && game.GameDate.HasValue
                 && NextGames(allGames, game)
-                .All(next => next.Result.SetsScore.Home == 0 && next.Result.SetsScore.Away == 0))
+                .All(next => next.Result.GameScore.Home == 0 && next.Result.GameScore.Away == 0))
                 .ToList();
 
             foreach (var game in gamesToAllowEditingResults)

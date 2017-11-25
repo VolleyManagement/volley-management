@@ -85,45 +85,6 @@
             TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
         }
 
-        /// <summary>
-        /// Test for Standings() method. Tournament standings view model are requested.
-        /// Tournament standings view model with 2 team scores completely equal returned.
-        /// </summary>
-        [TestMethod]
-        public void Standings_StandingsWithTwoTeamsScoresCompletelyEqual_TeamsHaveSamePosition()
-        {
-            // Arrange
-            var teams = new TeamStandingsTestFixture()
-                .WithTeamStandingsTwoTeamsScoresCompletelyEqual()
-                .Build();
-
-            var gameResults = new ShortGameResultDtoTetsFixture()
-                .GetShortResultsForTwoTeamsScoresCompletelyEqual()
-                .Build();
-
-            var testPivotStandings = new List<PivotStandingsDto> { new PivotStandingsDto(teams, gameResults) };
-
-            var testStandings = new List<List<StandingsEntry>>
-            {
-                new StandingsTestFixture().WithRepetitivePointsSetsRatioAndBallsRatio().Build()
-            };
-
-            var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
-
-            MockTournamentServiceReturnTournament();
-            SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
-            SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
-            SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
-
-            // Assert
-            TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
-        }
-
         private GameReportsController BuildSUT()
         {
             return new GameReportsController(_gameReportServiceMock.Object, _tournamentServiceMock.Object);

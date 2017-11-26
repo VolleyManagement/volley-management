@@ -112,13 +112,34 @@
             MockDefaultTournament();
             MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().Build();
+            var expectedGame = new GameBuilder().Build();
             var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once());
+            VerifyCreateGame(expectedGame, Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create method. GameResult object contains Penalty data. Game result is created successfully.
+        /// </summary>
+        [TestMethod]
+        public void Create_GameWithPenalty_GameCreated()
+        {
+            // Arrange
+            MockDefaultTournament();
+            MockGetTournamentByIdQuery();
+            var newGame = new GameBuilder().WithAPenalty().Build();
+            var expectedGame = new GameBuilder().WithAPenalty().Build();
+            var sut = BuildSUT();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyCreateGame(expectedGame, Times.Once());
         }
 
         /// <summary>
@@ -401,13 +422,14 @@
             MockDefaultTournament();
             MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
+            var expectedGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
             var sut = BuildSUT();
 
             // Act
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once());
+            VerifyCreateGame(expectedGame, Times.Once());
         }
 
         /// <summary>
@@ -423,6 +445,10 @@
                 .WithTechnicalDefeatValidSetScoresAwayTeamWin()
                 .WithTournamentId(1)
                 .Build();
+            var expectedGame = new GameBuilder()
+                .WithTechnicalDefeatValidSetScoresAwayTeamWin()
+                .WithTournamentId(1)
+                .Build();
 
             var sut = BuildSUT();
 
@@ -430,7 +456,7 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyCreateGame(newGame, Times.Once());
+            VerifyCreateGame(expectedGame, Times.Once());
         }
 
         /// <summary>
@@ -550,7 +576,14 @@
             // Arrange
             MockDefaultTournament();
             MockGetTournamentByIdQuery();
-            var newGame = new GameBuilder().WithHomeTeamId(null).Build();
+            var newGame = new GameBuilder()
+                                .WithHomeTeamId(null)
+                                .WithAwayTeamId(1)
+                                .Build();
+            var expectedGame = new GameBuilder()
+                                .WithHomeTeamId(1)
+                                .WithAwayTeamId(null)
+                                .Build();
 
             var sut = BuildSUT();
 
@@ -559,7 +592,7 @@
 
             // Assert
             VerifyFreeDayGame(newGame);
-            VerifyCreateGame(newGame, Times.Once());
+            VerifyCreateGame(expectedGame, Times.Once());
         }
 
         /// <summary>

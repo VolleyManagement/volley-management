@@ -110,13 +110,23 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                 }
             }
 
-            return gamesViewModel.GroupBy(gr => gr.Round)
-                                 .Select(group => new ScheduleByRoundViewModel()
+            // Group game results by date after that group them by round
+            var result = gamesViewModel
+                                 .GroupBy(gr => new { year = gr.Date.Year, month = gr.Date.Month, day = gr.Date.Day })
+                                 .Select(group => new ScheduleByDateInRoundViewModel
                                  {
-                                     Round = group.Key,
+                                     GameDate = new System.DateTime(group.Key.year, group.Key.month, group.Key.day),
                                      GameResults = group.ToList()
                                  })
-                                 .ToList();
+                                 .GroupBy(item => item.GameResults.First().Round)
+                                 .Select(item => new ScheduleByRoundViewModel
+                                 {
+                                     Round = item.Key,
+                                     ScheduleByDate = item.ToList()
+                                 }).
+                                 ToList();
+
+            return result;
         }
     }
 }

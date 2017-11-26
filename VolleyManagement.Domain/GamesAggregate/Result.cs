@@ -27,18 +27,23 @@
         public List<Score> SetScores { get; set; }
 
         /// <summary>
+        /// Gets or sets penalty for game
+        /// </summary>
+        public Penalty Penalty { get; set; }
+
+        /// <summary>
         /// Initialize Result object with default scores.
         /// </summary>
         private void InitializeEmptyResult()
         {
-            GameScore = new Score(
+            Penalty = null;
+            GameScore = (
                 Constants.GameResult.EMPTY_SCORE,
                 Constants.GameResult.EMPTY_SCORE,
                 Constants.GameResult.DEFAULT_TECHNICAL_DEFEAT);
             for (int i = 0; i < Constants.GameResult.MAX_SETS_COUNT; i++)
             {
-                SetScores.Add(
-                    new Score(
+                SetScores.Add((
                        Constants.GameResult.EMPTY_SCORE,
                        Constants.GameResult.EMPTY_SCORE));
             }

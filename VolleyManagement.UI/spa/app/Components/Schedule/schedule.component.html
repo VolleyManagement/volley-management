@@ -2,14 +2,16 @@
      *ngFor="let gameResultByRounds of gameResults; let i = index;">
   <div *ngIf="gameResultByRounds">
     <p class="headercenter">Тур {{gameResultByRounds.Round}}</p>
-    <div class="group group2">
-      <!-- <p class="group-header">II группа</p> -->
-    <p class="group-date">{{gameResultByRounds.GameResults[0].GameDate|date: 'EEEE':'':'ru'}}</p>
-    <p class="group-date">{{gameResultByRounds.GameResults[0].GameDate|date: 'dd-MM-yyyy'}}</p>
+    <div class="group"  *ngFor="let gameResultScheduleByDate of gameResultByRounds.ScheduleByDate; let i = index;">
+        <div *ngIf="i%2===0; then primaryBlock; else secondaryBlock"></div>
+        <ng-template #primaryBlock><p class="group-header group1">I группа</p></ng-template>
+        <ng-template #secondaryBlock><p class="group-header group2">II группа</p></ng-template>
+    <p class="group-date group-date-group1">{{gameResultScheduleByDate.GameDate|date: 'EEEE':'':'ru'}}</p>
+    <p class="group-date group-date-group1">{{gameResultScheduleByDate.GameDate|date: 'dd-MM-yyyy'}}</p>
       <div>
         <div class="games"
-             *ngFor="let gameResult of gameResultByRounds.GameResults;">
-          <table class="game-sch">
+             *ngFor="let gameResult of gameResultScheduleByDate.GameResults;">
+          <table class="game-sch" [class.group1]="gameResult.GroupId == groupOne" [class.group2]="gameResult.GroupId == groupTwo">
             <tbody *ngIf="!gameResult.AwayTeamName">
               <tr class="team-sch">
                 <strong>{{ gameResult.HomeTeamName }}</strong>
@@ -19,7 +21,7 @@
               </tr>
             </tbody>
           </table>
-          <table class="game-sch"
+          <table class="game-sch" [class.group1]="gameResult.GroupId == groupOne" [class.group2]="gameResult.GroupId == groupTwo"
                  *ngIf="gameResult.AwayTeamName">
 
             <tbody *ngIf="gameResult.IsGameWasPlayedAndHasResult">

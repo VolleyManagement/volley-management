@@ -45,7 +45,7 @@ export class AppComponent implements OnInit {
   }
 
   private getTableToShow(modes: string[], id: number): void {
-    modes.forEach(mode=>{
+    modes.forEach(mode => {
       switch (mode) {
         case 'pivot':
           this.pivotId = id;
@@ -57,6 +57,6 @@ export class AppComponent implements OnInit {
           this.scheduleId = id;
           break;
       }
-    });    
+    });
   }
 }

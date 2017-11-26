@@ -46,10 +46,10 @@
                 @foreach (var gameResult in Model.GameResults)
                 {
                     setsScoreText = gameResult.IsTechnicalDefeat
-                        ? gameResult.SetsScore.Home > gameResult.SetsScore.Away
-                            ? string.Format("{0}*:{1}", gameResult.SetsScore.Home, gameResult.SetsScore.Away)
-                            : string.Format("{0}:{1}*", gameResult.SetsScore.Home, gameResult.SetsScore.Away)
-                        : string.Format("{0}:{1}", gameResult.SetsScore.Home, gameResult.SetsScore.Away);
+                        ? gameResult.GameScore.Home > gameResult.GameScore.Away
+                            ? string.Format("{0}*:{1}", gameResult.GameScore.Home, gameResult.GameScore.Away)
+                            : string.Format("{0}:{1}*", gameResult.GameScore.Home, gameResult.GameScore.Away)
+                        : string.Format("{0}:{1}", gameResult.GameScore.Home, gameResult.GameScore.Away);
 
                     set1ScoreText = string.Format("{0}:{1}", gameResult.SetScores[0].Home, gameResult.SetScores[0].Away);
                     set2ScoreText = string.Format("{0}:{1}", gameResult.SetScores[1].Home, gameResult.SetScores[1].Away);

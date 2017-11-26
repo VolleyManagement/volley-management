@@ -33,6 +33,11 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
         public string GameDate { get; set; }
 
         /// <summary>
+        /// Gets or sets the date and time of the game.
+        /// </summary>
+        public DateTime Date { get; set; }
+
+        /// <summary>
         /// Gets or sets the game result.
         /// </summary>
         public GameResult Result { get; set; }
@@ -41,6 +46,16 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
         /// Gets or sets the round for the game.
         /// </summary>
         public int Round { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the division where game result belongs.
+        /// </summary>
+        public int DivisionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the пкщгз where game result belongs.
+        /// </summary>
+        public int GroupId { get; set; }
 
         /// <summary>
         /// Maps domain model of game result to view model of game.
@@ -66,7 +81,10 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
                         Away = item.Away,
                         IsTechnicalDefeat = item.IsTechnicalDefeat
                     }).ToList()
-                }
+                },
+                DivisionId = gameResult.DivisionId,
+                GroupId = gameResult.GroupId,
+                Date = gameResult.GameDate.GetValueOrDefault()
             };
         }
 

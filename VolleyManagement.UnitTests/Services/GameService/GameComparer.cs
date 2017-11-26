@@ -59,8 +59,8 @@
                 && x.TournamentId == y.TournamentId
                 && x.HomeTeamId == y.HomeTeamId
                 && x.AwayTeamId == y.AwayTeamId
-                && new ScoreComparer().Equals(x.Result.SetsScore, y.Result.SetsScore)
-                && x.Result.SetsScore.IsTechnicalDefeat == y.Result.SetsScore.IsTechnicalDefeat
+                && new ScoreComparer().Equals(x.Result.GameScore, y.Result.GameScore)
+                && x.Result.GameScore.IsTechnicalDefeat == y.Result.GameScore.IsTechnicalDefeat
                 && x.Result.SetScores.SequenceEqual(y.Result.SetScores, new ScoreComparer())
                 && PenaltiesAreEqual(x.Result.Penalty, y.Result.Penalty)
                 && x.GameDate == y.GameDate

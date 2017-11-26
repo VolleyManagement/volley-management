@@ -226,7 +226,7 @@
                         TournamentId = 1,
                         Result = new Result
                         {
-                            SetsScore = new Score
+                            GameScore = new Score
                             {
                                 Home = 3,
                                 Away = 0

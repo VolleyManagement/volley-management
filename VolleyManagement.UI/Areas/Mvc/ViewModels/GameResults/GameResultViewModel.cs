@@ -17,7 +17,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// </summary>
         public GameResultViewModel()
         {
-            SetsScore = new ScoreViewModel();
+            GameScore = new ScoreViewModel();
             SetScores = Enumerable.Repeat(new ScoreViewModel(), Constants.GameResult.MAX_SETS_COUNT).ToList();
         }
 
@@ -54,7 +54,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// <summary>
         /// Gets or sets the final score of the game.
         /// </summary>
-        public ScoreViewModel SetsScore { get; set; }
+        public ScoreViewModel GameScore { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the technical defeat has taken place.
@@ -123,7 +123,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         {
             get
             {
-                return GameDate > DateTime.Now && SetsScore.IsEmpty;
+                return GameDate > DateTime.Now && GameScore.IsEmpty;
             }
         }
 
@@ -151,8 +151,8 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = gameResult.GameNumber,
                 Round = gameResult.Round,
 
-                SetsScore = new ScoreViewModel { Home = gameResult.Result.SetsScore.Home, Away = gameResult.Result.SetsScore.Away },
-                IsTechnicalDefeat = gameResult.Result.SetsScore.IsTechnicalDefeat,
+                GameScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
+                IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
                 AllowEditResult = gameResult.AllowEditResult,
                 SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
                 {
@@ -192,7 +192,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = GameNumber,
                 Result = new Result
                 {
-                    SetsScore = SetsScore.ToDomain(),
+                    SetsScore = GameScore.ToDomain(),
                     SetScores = SetScores.Select(item => item.ToDomain()).ToList(),
                     Penalty = penalty
                 }

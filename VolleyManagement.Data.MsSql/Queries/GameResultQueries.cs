@@ -183,7 +183,7 @@
                     new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score, IsTechnicalDefeat = gr.IsSet4TechnicalDefeat },
                     new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score, IsTechnicalDefeat = gr.IsSet5TechnicalDefeat }
                 },
-                SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore, IsTechnicalDefeat = gr.IsTechnicalDefeat },
+                GameScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore, IsTechnicalDefeat = gr.IsTechnicalDefeat },
                 Penalty = MapPenalty(gr)
             };
         }

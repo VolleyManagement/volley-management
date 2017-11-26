@@ -202,9 +202,9 @@
             to.TournamentId = from.TournamentId;
             to.HomeTeamId = from.HomeTeamId;
             to.AwayTeamId = from.AwayTeamId;
-            to.HomeSetsScore = from.Result.SetsScore.Home;
-            to.AwaySetsScore = from.Result.SetsScore.Away;
-            to.IsTechnicalDefeat = from.Result.SetsScore.IsTechnicalDefeat;
+            to.HomeSetsScore = from.Result.GameScore.Home;
+            to.AwaySetsScore = from.Result.GameScore.Away;
+            to.IsTechnicalDefeat = from.Result.GameScore.IsTechnicalDefeat;
             to.HomeSet1Score = from.Result.SetScores[0].Home;
             to.AwaySet1Score = from.Result.SetScores[0].Away;
             to.IsSet1TechnicalDefeat = from.Result.SetScores[0].IsTechnicalDefeat;

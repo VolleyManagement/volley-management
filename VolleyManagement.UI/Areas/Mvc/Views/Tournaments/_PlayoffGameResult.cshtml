@@ -117,7 +117,7 @@
                     <strong>  @Model.HomeTeamName </strong>
                 </div>
                 <div class="col-md-2">
-                    <strong>  @Model.SetsScore.Home </strong>
+                    <strong>  @Model.GameScore.Home </strong>
                 </div>
             </div>
 
@@ -126,7 +126,7 @@
                     <strong>  @Model.AwayTeamName </strong>
                 </div>
                 <div class="col-md-2">
-                    <strong>  @Model.SetsScore.Away </strong>
+                    <strong>  @Model.GameScore.Away </strong>
                 </div>
             </div>
 
@@ -145,14 +145,14 @@
                 </div>
             }
         }
-        else if (!Model.SetsScore.IsEmpty)
+        else if (!Model.GameScore.IsEmpty)
         {
             <div class="row">
                 <div class="col-md-10">
                     <strong>  @Model.HomeTeamName </strong>
                 </div>
                 <div class="col-md-2">
-                    <strong>   @Model.SetsScore.Home </strong>
+                    <strong>   @Model.GameScore.Home </strong>
                 </div>
             </div>
 
@@ -161,7 +161,7 @@
                     <strong>  @Model.AwayTeamName </strong>
                 </div>
                 <div class="col-md-2">
-                    <strong>  @Model.SetsScore.Away </strong>
+                    <strong>  @Model.GameScore.Away </strong>
                 </div>
             </div>
 

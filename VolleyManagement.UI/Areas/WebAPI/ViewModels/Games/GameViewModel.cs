@@ -73,8 +73,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
                 Round = gameResult.Round,
                 Result = new GameResult
                 {
-                    TotalScore = new ScoreViewModel { Home = gameResult.Result.SetsScore.Home, Away = gameResult.Result.SetsScore.Away },
-                    IsTechnicalDefeat = gameResult.Result.SetsScore.IsTechnicalDefeat,
+                    TotalScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
+                    IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
                     SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
                     {
                         Home = item.Home,

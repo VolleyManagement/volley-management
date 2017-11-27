@@ -73,7 +73,7 @@
             // Assert
             Assert.AreEqual(expected, actual);
         }
-        
+
         [TestMethod]
         public void GetStandings_GameResultsAllPossibleScores_CorrectPointsStats()
         {
@@ -97,7 +97,7 @@
             // Assert
             CollectionAssert.AreEqual(expected, actual);
         }
-        
+
         [TestMethod]
         public void GetStandings_GameResultsAllPossibleScores_CorrectGamesStats()
         {
@@ -404,13 +404,12 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
 
             var expected = new StandingsTestFixture().WithTeamAPenalty()
-                .OrderByPoints()
                 .Build()
                 .Select(item => item.Points)
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 
@@ -429,13 +428,12 @@
             var teamsTestData = new TeamServiceTestFixture().TestTeamsByDivisions().BuildWithDivisions();
 
             var expected = new StandingsTestFixture().WithTeamCPenalty()
-                .OrderByPoints()
                 .Build()
                 .Select(item => item.Points)
                 .ToList();
 
-            SetupTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            SetupTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsGroupedByDivisionsQuery(TOURNAMENT_ID, teamsTestData);
 
             var sut = BuildSUT();
 

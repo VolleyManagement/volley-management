@@ -192,7 +192,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = GameNumber,
                 Result = new Result
                 {
-                    SetsScore = GameScore.ToDomain(),
+                    GameScore = GameScore.ToDomain(),
                     SetScores = SetScores.Select(item => item.ToDomain()).ToList(),
                     Penalty = penalty
                 }

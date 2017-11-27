@@ -2,7 +2,7 @@ namespace VolleyManagement.Data.MsSql.Context
 {
     using System.Data.Entity;
     using System.Data.Entity.ModelConfiguration.Conventions;
-    using VolleyManagement.Data.MsSql.Entities;
+    using Entities;
 
     /// <summary>
     /// Volley management database context
@@ -126,7 +126,7 @@ namespace VolleyManagement.Data.MsSql.Context
             ConfigureRoleToOperations(modelBuilder);
             ConfigurePlayers(modelBuilder);
             ConfigureTeams(modelBuilder);
-            ConfigureTournamentTeamRelationship(modelBuilder);
+            ConfigureGroupTeamRelationship(modelBuilder);
             ConfigureContributors(modelBuilder);
             ConfigureContributorTeams(modelBuilder);
             ConfigureDivisions(modelBuilder);
@@ -457,16 +457,16 @@ namespace VolleyManagement.Data.MsSql.Context
                         });
         }
 
-        private static void ConfigureTournamentTeamRelationship(DbModelBuilder modelBuilder)
+        private static void ConfigureGroupTeamRelationship(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TournamentEntity>()
+            modelBuilder.Entity<GroupEntity>()
                 .HasMany<TeamEntity>(t => t.Teams)
-                .WithMany(t => t.Tournaments)
+                .WithMany(t => t.Groups)
                 .Map(tt =>
                 {
-                    tt.MapLeftKey(VolleyDatabaseMetadata.TEAM_TO_TOURNAMENT_FK);
-                    tt.MapRightKey(VolleyDatabaseMetadata.TOURNAMENT_TO_TEAM_FK);
-                    tt.ToTable(VolleyDatabaseMetadata.TOURNAMENTS_TO_TEAMS_TABLE_NAME);
+                    tt.MapLeftKey(VolleyDatabaseMetadata.TEAM_TO_GROUP_FK);
+                    tt.MapRightKey(VolleyDatabaseMetadata.GROUP_TO_TEAM_FK);
+                    tt.ToTable(VolleyDatabaseMetadata.GROUPS_TO_TEAMS_TABLE_NAME);
                 });
         }
 
@@ -525,6 +525,22 @@ namespace VolleyManagement.Data.MsSql.Context
             modelBuilder.Entity<GameResultEntity>()
                 .Property(gr => gr.GameNumber)
                 .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);
+
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.PenaltyTeam)
+                .IsRequired()
+                .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);
+
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.PenaltyAmount)
+                .IsRequired()
+                .HasColumnType(VolleyDatabaseMetadata.TINYINT_COLUMN_TYPE);
+
+            modelBuilder.Entity<GameResultEntity>()
+                .Property(gr => gr.PenaltyDescription)
+                .IsUnicode()
+                .IsVariableLength()
+                .HasMaxLength(ValidationConstants.GameResult.MAX_PENALTY_DESCRIPTION_LENGTH);
 
             // FK GameResult -> Tournament
             modelBuilder.Entity<GameResultEntity>()

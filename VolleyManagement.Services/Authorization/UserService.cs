@@ -4,14 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
     using Contracts;
+    using Contracts.Authorization;
     using Contracts.Exceptions;
     using Data.Contracts;
     using Data.Queries.Common;
+    using Data.Queries.User;
+    using Domain.PlayersAggregate;
+    using Domain.RolesAggregate;
     using Domain.UsersAggregate;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Data.Queries.User;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
 
     /// <summary>
     /// Provides the way to get specified information about user.
@@ -25,6 +25,7 @@
         private readonly IQuery<Player, FindByIdCriteria> _getUserPlayerQuery;
         private readonly ICacheProvider _cacheProvider;
         private readonly IQuery<List<User>, UniqueUserCriteria> _getAdminsListQuery;
+        private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserService"/> class.
@@ -36,6 +37,7 @@
         /// <param name="cacheProvider">Instance of <see cref="ICacheProvider"/> class.</param>
         /// <param name="getAdminsListQuery">Query for getting list of admins.</param>
         /// <param name="userRepository">The user repository.</param>
+        /// <param name="currentUserService">Instance of <see cref="ICurrentUserService"/> class.</param>
         public UserService(
             IAuthorizationService authService,
             IQuery<User, FindByIdCriteria> getUserByIdQuery,
@@ -43,7 +45,8 @@
             IQuery<Player, FindByIdCriteria> getUserPlayerQuery,
             ICacheProvider cacheProvider,
             IQuery<List<User>, UniqueUserCriteria> getAdminsListQuery,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            ICurrentUserService currentUserService)
         {
             _authService = authService;
             _getUserByIdQuery = getUserByIdQuery;
@@ -52,7 +55,10 @@
             _cacheProvider = cacheProvider;
             _getAdminsListQuery = getAdminsListQuery;
             _userRepository = userRepository;
+            _currentUserService = currentUserService;
         }
+
+        private int CurrentUserId => _currentUserService.GetCurrentUserId();
 
         /// <summary>
         /// Gets User entity by Id.
@@ -61,7 +67,7 @@
         /// <returns>User entity.</returns>
         public User GetUser(int userId)
         {
-            return this._getUserByIdQuery.Execute(
+            return _getUserByIdQuery.Execute(
                 new FindByIdCriteria { Id = userId });
         }
 
@@ -72,11 +78,11 @@
         /// <returns>User entity.</returns>
         public User GetUserDetails(int userId)
         {
-            this._authService.CheckAccess(AuthOperations.AllUsers.ViewDetails);
-            var user = this.GetUser(userId);
+            _authService.CheckAccess(AuthOperations.AllUsers.ViewDetails);
+            var user = GetUser(userId);
             if (user != null)
             {
-                user.Player = this.GetPlayer(user.PlayerId.GetValueOrDefault());
+                user.Player = GetPlayer(user.PlayerId.GetValueOrDefault());
             }
 
             return user;
@@ -88,8 +94,8 @@
         /// <returns>Use collection.</returns>
         public List<User> GetAllUsers()
         {
-            this._authService.CheckAccess(AuthOperations.AllUsers.ViewList);
-            return this._getAllUsersQuery.Execute(new GetAllCriteria());
+            _authService.CheckAccess(AuthOperations.AllUsers.ViewList);
+            return _getAllUsersQuery.Execute(new GetAllCriteria());
         }
 
         /// <summary>
@@ -98,7 +104,7 @@
         /// <returns>Use collection.</returns>
         public List<User> GetAllActiveUsers()
         {
-            this._authService.CheckAccess(AuthOperations.AllUsers.ViewActiveList);
+            _authService.CheckAccess(AuthOperations.AllUsers.ViewActiveList);
             var activeUsersList = _cacheProvider["ActiveUsers"] as List<int> ?? new List<int>();
             _cacheProvider["ActiveUsers"] = activeUsersList;
             return activeUsersList.Select(GetUser).ToList();
@@ -121,10 +127,15 @@
         /// <param name="toBlock">set user block or not</param>
         public void ChangeUserBlocked(int userId, bool toBlock)
         {
+            if (userId == CurrentUserId)
+            {
+                throw new InvalidOperationException(ServiceResources.ExceptionMessages.UserBlockHimself);
+            }
+
             User user = GetUser(userId);
             if (user == null)
             {
-                throw new MissingEntityException(Services.ServiceResources.ExceptionMessages.UserNotFound);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.UserNotFound);
             }
 
             user.IsBlocked = toBlock;
@@ -139,7 +150,7 @@
         /// <returns>Player instance.</returns>
         private Player GetPlayer(int playerId)
         {
-            return this._getUserPlayerQuery.Execute(new FindByIdCriteria { Id = playerId });
+            return _getUserPlayerQuery.Execute(new FindByIdCriteria { Id = playerId });
         }
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VolleyManagement.UI.App_GlobalResources {
+namespace Resources.UI {
     using System;
     
     
@@ -239,24 +239,22 @@ namespace VolleyManagement.UI.App_GlobalResources {
                 return ResourceManager.GetString("IAccept", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to No avaliable teams found. Please, contact admin..
-        /// </summary>
-        public static string NoAvaliableTeams
-        {
-            get
-            {
-                return ResourceManager.GetString("NoAvaliableTeams", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Link to my account.
         /// </summary>
         public static string LinkToMyAccount {
             get {
                 return ResourceManager.GetString("LinkToMyAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No avaliable teams found. Please, contact admin..
+        /// </summary>
+        public static string NoAvaliableTeams {
+            get {
+                return ResourceManager.GetString("NoAvaliableTeams", resourceCulture);
             }
         }
         

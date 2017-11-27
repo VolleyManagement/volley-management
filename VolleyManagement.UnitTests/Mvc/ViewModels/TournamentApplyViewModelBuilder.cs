@@ -2,7 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using UI.Areas.Mvc.ViewModels.Tournaments;
 
     [ExcludeFromCodeCoverage]
     public class TournamentApplyViewModelBuilder

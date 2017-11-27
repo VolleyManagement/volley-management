@@ -3,8 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Users;
+    using UI.Areas.Mvc.ViewModels.Users;
 
     /// <summary>
     /// Compares User instances
@@ -29,12 +28,12 @@
                 return 1;
             }
 
-            return this.CompareInternal(x, y);
+            return CompareInternal(x, y);
         }
 
         public int Compare(object x, object y)
         {
-            return this.Compare(x as UserEditViewModel, y as UserEditViewModel);
+            return Compare(x as UserEditViewModel, y as UserEditViewModel);
         }
 
         private int CompareInternal(UserEditViewModel x, UserEditViewModel y)

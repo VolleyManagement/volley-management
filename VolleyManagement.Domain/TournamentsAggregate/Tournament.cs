@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Domain.Properties;
+    using Crosscutting.Contracts.Providers;
+    using Properties;
 
     /// <summary>
     /// Tournament domain class.
@@ -15,7 +15,7 @@
         /// </summary>
         public Tournament()
         {
-            this.Divisions = new List<Division>();
+            Divisions = new List<Division>();
         }
 
         /// <summary>
@@ -116,9 +116,14 @@
         public DateTime? TransferStart { get; set; }
 
         /// <summary>
-        /// Divisions of the tournament
+        /// Gets or sets divisions of the tournament
         /// </summary>
         public List<Division> Divisions { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether tournament is archived
+        /// </summary>
+        public bool IsArchived { get; set; }
 
         /// <summary>
         /// Gets or sets last time, when tournament was updated

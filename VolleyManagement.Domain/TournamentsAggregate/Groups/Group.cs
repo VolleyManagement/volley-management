@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Domain.TournamentsAggregate
 {
     using System;
-    using VolleyManagement.Domain.Properties;
+    using Properties;
 
     /// <summary>
     /// Group domain class.
@@ -22,7 +22,7 @@
         {
             get
             {
-                return this._name;
+                return _name;
             }
 
             set
@@ -32,9 +32,14 @@
                     throw new ArgumentException(Resources.ValidationGroupName, "Name");
                 }
 
-                this._name = value;
+                _name = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether group is empty.
+        /// </summary>
+        public bool IsEmpty { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the division where group belongs.

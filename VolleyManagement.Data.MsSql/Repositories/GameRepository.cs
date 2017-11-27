@@ -3,11 +3,11 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.MsSql.Mappers;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Contracts;
+    using Domain.GamesAggregate;
+    using Entities;
+    using Exceptions;
+    using Mappers;
 
     /// <summary>
     /// Defines implementation of the <see cref="IGameRepository"/> contract.

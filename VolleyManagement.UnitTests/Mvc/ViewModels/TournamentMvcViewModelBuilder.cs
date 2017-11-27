@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Division;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using Domain.TournamentsAggregate;
+    using UI.Areas.Mvc.ViewModels.Division;
+    using UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Builder for test MVC tournament view models
@@ -60,7 +60,8 @@
                         TournamentId = TOURNAMENT_DEFAULT_ID,
                         Groups = new List<GroupViewModel>
                         {
-                            new GroupViewModel { Id = 3, Name = "Group 1", DivisionId = 2 }
+                            new GroupViewModel { Id = 3, Name = "Group 1", DivisionId = 2 },
+                            new GroupViewModel { Id = 4, Name = "Group 2", DivisionId = 2 }
                         }
                     }
                 }

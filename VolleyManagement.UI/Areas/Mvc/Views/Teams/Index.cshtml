@@ -1,7 +1,7 @@
 ﻿@using System.Web.Optimization
 @using VolleyManagement.Domain.RolesAggregate;
 @using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-@model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamCollectionReferrerViewModel
+@model TeamCollectionReferrerViewModel
 
 @{
     ViewBag.Title = "Teams";
@@ -11,7 +11,7 @@
 @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Create))
 {
     <p>
-        @Html.ActionLink(Resources.TeamViews.Create, "Create")
+        @Html.ActionLink(Resources.UI.TeamViews.Create, "Create")
     </p>
 }
 
@@ -19,7 +19,7 @@
     <table class="table">
         <tr>
             <th>
-                @Resources.TeamViews.TeamName
+                @Resources.UI.TeamViews.TeamName
             </th>
             <th></th>
         </tr>
@@ -33,11 +33,11 @@
                 <td>
                     @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Delete))
                     {
-                        <button class='deleteTeamButton'>@Resources.TeamViews.Delete</button>
+                        <button class='deleteTeamButton'>@Resources.UI.TeamViews.Delete</button>
                     }
                     @if (Model.Model.AllowedOperations.IsAllowed(AuthOperations.Teams.Edit))
                     {
-                        @Html.ActionLink(@Resources.TeamViews.Details, "Details", new { id = item.Id, returnUrl = Model.Referer }, null)
+                        @Html.ActionLink(@Resources.UI.TeamViews.Details, "Details", new { id = item.Id, returnUrl = Model.Referer }, null)
                     }
                 </td>
                 <td></td>
@@ -48,4 +48,4 @@
 </div>
 
 @Scripts.Render("~/bundles/teamlistscripts")
-@Html.Hidden("DeleteConfirmationMessage", Resources.TeamViews.DeleteConfirmationMessage)
+@Html.Hidden("DeleteConfirmationMessage", Resources.UI.TeamViews.DeleteConfirmationMessage)

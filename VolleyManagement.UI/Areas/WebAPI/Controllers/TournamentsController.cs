@@ -1,16 +1,13 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.Controllers
+namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Net.Http;
-    using System.Text;
     using System.Web.Http;
-    using System.Xml.Serialization;
+    using Contracts;
+    using ViewModels.GameReports;
+    using ViewModels.Games;
     using ViewModels.Tournaments;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
-    using WebApi.ViewModels.GameReports;
+    using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
     /// <summary>
     /// The tournaments controller.
@@ -32,9 +29,9 @@
                 IGameService gameService,
                 IGameReportService gameReportService)
         {
-            this._tournamentService = tournamentService;
-            this._gameService = gameService;
-            this._gameReportService = gameReportService;
+            _tournamentService = tournamentService;
+            _gameService = gameService;
+            _gameReportService = gameReportService;
         }
 
         /// <summary>
@@ -43,7 +40,7 @@
         /// <returns>Collection of all tournaments</returns>
         public IEnumerable<TournamentViewModel> GetAllTournaments()
         {
-            return this._tournamentService.Get().Select(t => TournamentViewModel.Map(t));
+            return _tournamentService.Get().Select(t => TournamentViewModel.Map(t));
         }
 
         /// <summary>
@@ -53,7 +50,7 @@
         /// <returns>Information about the tournament with specified id</returns>
         public IHttpActionResult GetTournament(int id)
         {
-            var tournament = this._tournamentService.Get(id);
+            var tournament = _tournamentService.Get(id);
             if (tournament == null)
             {
                 return NotFound();
@@ -68,12 +65,19 @@
         /// <param name="id">Id of tournament</param>
         /// <returns>Standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/Standings")]
-        public IEnumerable<StandingsEntryViewModel> GetTournamentStandings(int id)
+        public List<List<StandingsEntryViewModel>> GetTournamentStandings(int id)
         {
-            var entries = this._gameReportService.GetStandings(id)
-                .Select(t => StandingsEntryViewModel.Map(t))
-                .ToList();
-            return StandingsEntryViewModel.SetPositions(entries);
+            var result = new List<List<StandingsEntryViewModel>>();
+            var entries = _gameReportService.GetStandings(id);
+            foreach (var entry in entries)
+            {
+                var standings = entry.Select(t => StandingsEntryViewModel.Map(t))
+                                     .ToList();
+                StandingsEntryViewModel.SetPositions(standings);
+                result.Add(standings);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -82,9 +86,10 @@
         /// <param name="id">Id of tournament</param>
         /// <returns>Pivot standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/PivotStandings")]
-        public PivotStandingsViewModel GetTournamentPivotStandings(int id)
+        public IEnumerable<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
         {
-            return new PivotStandingsViewModel(this._gameReportService.GetPivotStandings(id));
+            var pivotData = _gameReportService.GetPivotStandings(id);
+            return pivotData.Select(item => new PivotStandingsViewModel(item));
         }
 
         /// <summary>
@@ -93,9 +98,9 @@
         /// <param name="tournamentId">Id of tournament.</param>
         /// <returns>Information about games with specified tournament id.</returns>
         [Route("api/Tournament/{tournamentId}/Schedule")]
-        public IEnumerable<GameViewModel> GetSchedule(int tournamentId)
+        public List<ScheduleByRoundViewModel> GetSchedule(int tournamentId)
         {
-            List<GameViewModel> gamesViewModel = this._gameService.GetTournamentResults(tournamentId)
+            List<GameViewModel> gamesViewModel = _gameService.GetTournamentResults(tournamentId)
                                                         .Select(t => GameViewModel.Map(t)).ToList();
             foreach (var item in gamesViewModel)
             {
@@ -105,7 +110,23 @@
                 }
             }
 
-            return gamesViewModel;
+            // Group game results by date after that group them by round
+            var result = gamesViewModel
+                                 .GroupBy(gr => new { year = gr.Date.Year, month = gr.Date.Month, day = gr.Date.Day })
+                                 .Select(group => new ScheduleByDateInRoundViewModel
+                                 {
+                                     GameDate = new System.DateTime(group.Key.year, group.Key.month, group.Key.day),
+                                     GameResults = group.ToList()
+                                 })
+                                 .GroupBy(item => item.GameResults.First().Round)
+                                 .Select(item => new ScheduleByRoundViewModel
+                                 {
+                                     Round = item.Key,
+                                     ScheduleByDate = item.ToList()
+                                 }).
+                                 ToList();
+
+            return result;
         }
     }
 }

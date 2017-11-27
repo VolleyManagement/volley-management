@@ -10,9 +10,12 @@
     using Microsoft.AspNet.Identity;
 
     // ReSharper disable UnusedMember.Global
-    [SuppressMessage("Microsoft.StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
+    [SuppressMessage(
+        "Microsoft.StyleCop.CSharp.DocumentationRules",
+        "SA1600:ElementsMustBeDocumented",
         Justification = "Sergii Diachenko: this interface was generated based on ASP.NET Identity User Manager class")]
-    public interface IVolleyUserManager<T> : IDisposable where T : class, IUser<int>
+    public interface IVolleyUserManager<T> : IDisposable
+        where T : class, IUser<int>
     {
         IPasswordHasher PasswordHasher { get; set; }
 
@@ -180,5 +183,6 @@
 
         Task<int> GetAccessFailedCountAsync(int userId);
     }
+
     // ReSharper restore UnusedMember.Global
 }

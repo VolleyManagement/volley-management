@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using Domain.GamesAggregate;
+    using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// Builder for test MVC tournament results view models
@@ -42,14 +42,14 @@
                          HomeTeamName = "TeamNameA",
                          AwayTeamName = "TeamNameB",
                          IsTechnicalDefeat = false,
-                         SetsScore = new Score(3, 2),
-                         SetScores = new List<Score>
+                         GameScore = new ScoreViewModel(3, 2),
+                         SetScores = new List<ScoreViewModel>
                          {
-                             new Score(25, 20),
-                             new Score(24, 26),
-                             new Score(28, 30),
-                             new Score(25, 22),
-                             new Score(27, 25)
+                             new ScoreViewModel(25, 20),
+                             new ScoreViewModel(24, 26),
+                             new ScoreViewModel(28, 30),
+                             new ScoreViewModel(25, 22),
+                             new ScoreViewModel(27, 25)
                          },
                          GameDate = DateTime.Parse(DATE_A),
                          Round = 1,
@@ -63,14 +63,14 @@
                          HomeTeamName = "TeamNameA",
                          AwayTeamName = "TeamNameC",
                          IsTechnicalDefeat = false,
-                         SetsScore = new Score(3, 1),
-                         SetScores = new List<Score>
+                         GameScore = new ScoreViewModel(3, 1),
+                         SetScores = new List<ScoreViewModel>
                          {
-                             new Score(26, 28),
-                             new Score(25, 15),
-                             new Score(25, 21),
-                             new Score(29, 27),
-                             new Score()
+                             new ScoreViewModel(26, 28),
+                             new ScoreViewModel(25, 15),
+                             new ScoreViewModel(25, 21),
+                             new ScoreViewModel(29, 27),
+                             new ScoreViewModel()
                          },
                          GameDate = DateTime.Parse(DATE_B),
                          Round = 2,
@@ -84,14 +84,14 @@
                          HomeTeamName = "TeamNameB",
                          AwayTeamName = "TeamNameC",
                          IsTechnicalDefeat = true,
-                         SetsScore = new Score(0, 3),
-                         SetScores = new List<Score>
+                         GameScore = new ScoreViewModel(0, 3),
+                         SetScores = new List<ScoreViewModel>
                          {
-                             new Score(0, 25),
-                             new Score(0, 25),
-                             new Score(0, 25),
-                             new Score(),
-                             new Score()
+                             new ScoreViewModel(0, 25),
+                             new ScoreViewModel(0, 25),
+                             new ScoreViewModel(0, 25),
+                             new ScoreViewModel(),
+                             new ScoreViewModel()
                          },
                          GameDate = DateTime.Parse(DATE_C),
                          Round = 3,

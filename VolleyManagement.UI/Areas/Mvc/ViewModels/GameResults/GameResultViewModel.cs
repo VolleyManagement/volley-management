@@ -1,13 +1,11 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web.Mvc;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Contracts.Authorization;
+    using Domain;
+    using Domain.GamesAggregate;
 
     /// <summary>
     /// Represents a view model for game result.
@@ -19,8 +17,8 @@
         /// </summary>
         public GameResultViewModel()
         {
-            SetsScore = new Score();
-            SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+            GameScore = new ScoreViewModel();
+            SetScores = Enumerable.Repeat(new ScoreViewModel(), Constants.GameResult.MAX_SETS_COUNT).ToList();
         }
 
         /// <summary>
@@ -56,7 +54,7 @@
         /// <summary>
         /// Gets or sets the final score of the game.
         /// </summary>
-        public Score SetsScore { get; set; }
+        public ScoreViewModel GameScore { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the technical defeat has taken place.
@@ -66,7 +64,7 @@
         /// <summary>
         /// Gets or sets the set scores.
         /// </summary>
-        public List<Score> SetScores { get; set; }
+        public List<ScoreViewModel> SetScores { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time of the game.
@@ -83,19 +81,27 @@
         /// </summary>
         public byte GameNumber { get; set; }
 
+        public bool HasPenalty { get; set; }
+
+        public bool IsHomeTeamPenalty { get; set; }
+
+        public byte PenaltyAmount { get; set; }
+
+        public string PenaltyDescrition { get; set; }
+
         /// <summary>
-        /// Gets or sets whether it is allowed to edit game's result (for Playoff scheme)
+        /// Gets or sets a value indicating whether gets or sets whether it is allowed to edit game's result (for Playoff scheme)
         /// </summary>
         public bool AllowEditResult { get; set; }
 
         /// <summary>
-        /// Gets an identifier whether this game is a first round game.
+        /// Gets a value indicating whether gets an identifier whether this game is a first round game.
         /// </summary>
         public bool IsFirstRoundGame
         {
             get
             {
-                return this.Round == 1;
+                return Round == 1;
             }
         }
 
@@ -111,6 +117,17 @@
         }
 
         /// <summary>
+        /// Gets a value indicating whether schedule is editable
+        /// </summary>
+        public bool IsScheduleEditable
+        {
+            get
+            {
+                return GameDate > DateTime.Now && GameScore.IsEmpty;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> create object
         /// </summary>
         public AllowedOperations AllowedOperations { get; set; }
@@ -122,7 +139,7 @@
         /// <returns>View model of game result.</returns>
         public static GameResultViewModel Map(GameResultDto gameResult)
         {
-            return new GameResultViewModel
+            var result = new GameResultViewModel
             {
                 Id = gameResult.Id,
                 TournamentId = gameResult.TournamentId,
@@ -134,18 +151,27 @@
                 GameNumber = gameResult.GameNumber,
                 Round = gameResult.Round,
 
-                SetsScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
-                IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
+                GameScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
+                IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
                 AllowEditResult = gameResult.AllowEditResult,
-                SetScores = new List<Score>
-                    {
-                        new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },
-                        new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score },
-                        new Score { Home = gameResult.HomeSet3Score, Away = gameResult.AwaySet3Score },
-                        new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score },
-                        new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score }
-                    }
+                SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
+                {
+                    Home = item.Home,
+                    Away = item.Away,
+                    IsTechnicalDefeat = item.IsTechnicalDefeat
+                }).ToList()
             };
+
+            if (gameResult.HasResult && gameResult.Result.Penalty != null)
+            {
+                var penalty = gameResult.Result.Penalty;
+                result.HasPenalty = true;
+                result.IsHomeTeamPenalty = penalty.IsHomeTeam;
+                result.PenaltyAmount = penalty.Amount;
+                result.PenaltyDescrition = penalty.Description;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -154,22 +180,40 @@
         /// <returns>Domain model of game.</returns>
         public Game ToDomain()
         {
+            var penalty = MapPenalty();
             return new Game
             {
-                Id = this.Id,
-                TournamentId = this.TournamentId,
-                HomeTeamId = this.HomeTeamId,
-                AwayTeamId = this.AwayTeamId,
-                Round = Convert.ToByte(this.Round),
-                GameDate = this.GameDate,
-                GameNumber = this.GameNumber,
+                Id = Id,
+                TournamentId = TournamentId,
+                HomeTeamId = HomeTeamId,
+                AwayTeamId = AwayTeamId,
+                Round = Convert.ToByte(Round),
+                GameDate = GameDate,
+                GameNumber = GameNumber,
                 Result = new Result
                 {
-                    SetsScore = this.SetsScore,
-                    IsTechnicalDefeat = this.IsTechnicalDefeat,
-                    SetScores = this.SetScores
+                    GameScore = GameScore.ToDomain(),
+                    SetScores = SetScores.Select(item => item.ToDomain()).ToList(),
+                    Penalty = penalty
                 }
             };
+        }
+
+        private Penalty MapPenalty()
+        {
+            Penalty result = null;
+
+            if (HasPenalty)
+            {
+                result = new Penalty
+                {
+                    IsHomeTeam = IsHomeTeamPenalty,
+                    Amount = PenaltyAmount,
+                    Description = PenaltyDescrition
+                };
+            }
+
+            return result;
         }
     }
 }

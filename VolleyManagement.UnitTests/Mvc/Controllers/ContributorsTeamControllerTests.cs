@@ -6,7 +6,6 @@
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
     using VolleyManagement.Domain.ContributorsAggregate;
     using VolleyManagement.UI.Areas.Mvc.Controllers;
     using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
@@ -20,10 +19,7 @@
     [TestClass]
     public class ContributorsTeamControllerTests
     {
-        private readonly Mock<IContributorTeamService> _contributorTeamServiceMock = new Mock<IContributorTeamService>();
-
-        private IKernel _kernel;
-        private ContributorsTeamController _sut;
+        private Mock<IContributorTeamService> _contributorTeamServiceMock;
 
         /// <summary>
         /// Initializes test data.
@@ -31,9 +27,7 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<IContributorTeamService>().ToConstant(this._contributorTeamServiceMock.Object);
-            this._sut = this._kernel.Get<ContributorsTeamController>();
+            _contributorTeamServiceMock = new Mock<IContributorTeamService>();
         }
 
         /// <summary>
@@ -47,8 +41,10 @@
             var expected = MakeTestContributorTeamViewModels(testData);
             SetupGetAll(testData);
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(this._sut.Index()).ToList();
+            var actual = TestExtensions.GetModel<IEnumerable<ContributorsTeamViewModel>>(sut.Index()).ToList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new ContributorTeamViewModelComparer());
@@ -72,7 +68,12 @@
 
         private void SetupGetAll(List<ContributorTeam> teams)
         {
-            this._contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams.AsQueryable());
+            _contributorTeamServiceMock.Setup(cts => cts.Get()).Returns(teams);
+        }
+
+        private ContributorsTeamController BuildSUT()
+        {
+            return new ContributorsTeamController(_contributorTeamServiceMock.Object);
         }
     }
 }

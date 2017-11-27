@@ -5,12 +5,14 @@
     using System.ComponentModel.DataAnnotations;
     using System.Data;
     using System.Linq;
+    using System.Web;
     using System.Web.Mvc;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.PlayersAggregate;
+    using Domain.RolesAggregate;
+    using ViewModels.Teams;
 
     /// <summary>
     /// Defines teams controller
@@ -24,16 +26,26 @@
         /// </summary>
         private readonly ITeamService _teamService;
         private readonly IAuthorizationService _authService;
+        private readonly IFileService _fileService;
+        private readonly IPlayerService _playerService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class
         /// </summary>
         /// <param name="teamService">Instance of the class that implements ITeamService.</param>
         /// <param name="authService">The authorization service</param>
-        public TeamsController(ITeamService teamService, IAuthorizationService authService)
+        /// <param name="fileService">The interface reference of file service.</param>
+        /// <param name="playerService">The interface reference of player service.</param>
+        public TeamsController(
+            ITeamService teamService,
+            IAuthorizationService authService,
+            IFileService fileService,
+            IPlayerService playerService)
         {
-            this._teamService = teamService;
-            this._authService = authService;
+            _teamService = teamService;
+            _authService = authService;
+            _fileService = fileService;
+            _playerService = playerService;
         }
 
         /// <summary>
@@ -51,10 +63,10 @@
 
             var teams = new TeamCollectionViewModel()
             {
-                Teams = this._teamService.Get()
+                Teams = _teamService.Get()
                                          .ToList()
                                          .Select(t => TeamViewModel.Map(t, null, null)),
-                AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
                                                                             AuthOperations.Teams.Create,
                                                                             AuthOperations.Teams.Edit,
@@ -62,7 +74,7 @@
                                                                           })
             };
 
-            var referrerViewModel = new TeamCollectionReferrerViewModel(teams, this.HttpContext.Request.RawUrl);
+            var referrerViewModel = new TeamCollectionReferrerViewModel(teams, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }
 
@@ -73,7 +85,7 @@
         public ActionResult Create()
         {
             var teamViewModel = new TeamViewModel();
-            return this.View(teamViewModel);
+            return View(teamViewModel);
         }
 
         /// <summary>
@@ -86,39 +98,42 @@
         {
             JsonResult result = null;
 
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                result = this.Json(this.ModelState);
+                result = Json(ModelState);
             }
             else
             {
-                var domainTeam = teamViewModel.ToDomain();
-
                 try
                 {
-                    this._teamService.Create(domainTeam);
+                    var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
+
+                    _playerService.Create(roster);
+
+                    var domainTeam = teamViewModel.ToDomain();
+                    domainTeam.CaptainId = roster[0].Id;
+
+                    _teamService.Create(domainTeam);
+
                     if (teamViewModel.Roster != null)
                     {
-                        _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
+                        _teamService.UpdateRosterTeamId(roster, domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                    result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
                 catch (MissingEntityException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
                 catch (ValidationException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
             }
 
@@ -139,6 +154,9 @@
             }
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
+
+            viewModel.PhotoPath = PhotoPath(id);
+
             return View(viewModel);
         }
 
@@ -152,39 +170,42 @@
         {
             JsonResult result = null;
 
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                result = this.Json(this.ModelState);
+                result = Json(ModelState);
             }
             else
             {
-                var domainTeam = teamViewModel.ToDomain();
-
                 try
                 {
-                    this._teamService.Edit(domainTeam);
+                    var roster = teamViewModel.Roster.Select(t => t.ToDomain()).ToList();
+
+                    _playerService.Create(roster);
+
+                    var domainTeam = teamViewModel.ToDomain();
+                    domainTeam.CaptainId = roster[0].Id;
+
+                    _teamService.Edit(domainTeam);
+
                     if (teamViewModel.Roster != null)
                     {
-                        _teamService.UpdateRosterTeamId(teamViewModel.Roster.Select(t => t.ToDomain()).ToList(), domainTeam.Id);
+                        _teamService.UpdateRosterTeamId(roster, domainTeam.Id);
                     }
 
                     teamViewModel.Id = domainTeam.Id;
-                    result = this.Json(teamViewModel, JsonRequestBehavior.AllowGet);
+                    result = Json(teamViewModel, JsonRequestBehavior.AllowGet);
                 }
                 catch (ArgumentException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
                 catch (MissingEntityException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
                 catch (ValidationException ex)
                 {
-                    this.ModelState.AddModelError(string.Empty, ex.Message);
-                    result = this.Json(this.ModelState);
+                    result = Json(new { Success = "False", ex.Message });
                 }
             }
 
@@ -203,7 +224,7 @@
 
             try
             {
-                this._teamService.Delete(id);
+                _teamService.Delete(id);
                 result = new TeamOperationResultViewModel
                 {
                     Message = TEAM_DELETED_SUCCESSFULLY_DESCRIPTION,
@@ -212,18 +233,18 @@
             }
             catch (MissingEntityException ex)
             {
-                result = new TeamOperationResultViewModel 
-                { 
-                    Message = ex.Message, 
-                    OperationSuccessful = false 
+                result = new TeamOperationResultViewModel
+                {
+                    Message = ex.Message,
+                    OperationSuccessful = false
                 };
             }
             catch (DataException)
             {
-                result = new TeamOperationResultViewModel 
-                { 
-                    Message = App_GlobalResources.TournamentController.TeamDelete, 
-                    OperationSuccessful = false 
+                result = new TeamOperationResultViewModel
+                {
+                    Message = Resources.UI.TournamentController.TeamDelete,
+                    OperationSuccessful = false
                 };
             }
 
@@ -246,7 +267,8 @@
             }
 
             var viewModel = TeamViewModel.Map(team, _teamService.GetTeamCaptain(team), _teamService.GetTeamRoster(id));
-            var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, this.HttpContext.Request.RawUrl);
+            var refererViewModel = new TeamRefererViewModel(viewModel, returnUrl, HttpContext.Request.RawUrl);
+            refererViewModel.Model.PhotoPath = PhotoPath(id);
             return View(refererViewModel);
         }
 
@@ -256,10 +278,64 @@
         /// <returns>Json list of teams</returns>
         public JsonResult GetAllTeams()
         {
-            var teams = this._teamService.Get()
+            var teams = _teamService.Get()
                                          .ToList()
                                          .Select(t => TeamNameViewModel.Map(t));
             return Json(teams, JsonRequestBehavior.AllowGet);
-        }        
+        }
+
+        /// <summary>
+        /// Action method adds photo of the team.
+        /// </summary>
+        /// <param name="fileToUpload">The photo that is being uploaded.</param>
+        /// <param name="id">Id of the photo.</param>
+        /// <returns>Redirect to Edit page.</returns>
+        [HttpPost]
+        public ActionResult AddPhoto(HttpPostedFileBase fileToUpload, int id)
+        {
+            try
+            {
+                var photoPath = string.Format(Constants.TEAM_PHOTO_PATH, id);
+                _fileService.Upload(fileToUpload, HttpContext.Request.MapPath(photoPath));
+            }
+            catch (System.IO.FileLoadException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("Edit", "Teams", new { id = id });
+        }
+
+        /// <summary>
+        /// Action method deletes photo of the team.
+        /// </summary>
+        /// <param name="id">Id of the photo.</param>
+        /// <returns>Redirect to Edit page.</returns>
+        [HttpPost]
+        public ActionResult DeletePhoto(int id)
+        {
+            try
+            {
+                var photoPath = string.Format(Constants.TEAM_PHOTO_PATH, id);
+                _fileService.Delete(HttpContext.Request.MapPath(photoPath));
+            }
+            catch (System.IO.FileNotFoundException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("Edit", "Teams", new { id = id });
+        }
+
+        /// <summary>
+        /// return photo path
+        /// </summary>
+        /// <param name="id">team id</param>
+        /// <returns>photo path</returns>
+        private string PhotoPath(int id)
+        {
+            var photoPath = string.Format(Constants.TEAM_PHOTO_PATH, id);
+            return _fileService.FileExists(HttpContext.Request.MapPath(photoPath)) ? photoPath : string.Format(Constants.TEAM_PHOTO_PATH, 0);
+        }
     }
 }

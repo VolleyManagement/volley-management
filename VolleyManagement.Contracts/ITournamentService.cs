@@ -1,8 +1,9 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Collections.Generic;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Contracts;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentsAggregate;
 
     /// <summary>
     /// Interface for TournamentService
@@ -16,10 +17,23 @@
         List<Tournament> Get();
 
         /// <summary>
+        /// Gets tournament by its group
+        /// </summary>
+        /// <param name="groupId">id of group </param>
+        /// <returns>Return current tournament.</returns>
+        Tournament GetTournamentByGroup(int groupId);
+
+        /// <summary>
         /// Returns only actual tournaments
         /// </summary>
         /// <returns>Actual tournaments</returns>
         List<Tournament> GetActual();
+
+        /// <summary>
+        /// Returns only archived tournaments
+        /// </summary>
+        /// <returns>Archived tournaments</returns>
+        List<Tournament> GetArchived();
 
         /// <summary>
         /// Returns only finished tournaments
@@ -40,6 +54,20 @@
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
         /// <returns>Tournament teams</returns>
         List<Team> GetAllTournamentTeams(int tournamentId);
+
+        /// <summary>
+        /// Returns all divisions for specific tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of Tournament to get divisions</param>
+        /// <returns>Tournament divisions</returns>
+        List<Division> GetAllTournamentDivisions(int tournamentId);
+
+        /// <summary>
+        /// Returns all groups for specific tournament by division id
+        /// </summary>
+        /// <param name="divisionId">Id of Division to get groups</param>
+        /// <returns>Tournament groups</returns>
+        List<Group> GetAllTournamentGroups(int divisionId);
 
         /// <summary>
         /// Finds tournament data transfer object by tournament id
@@ -67,11 +95,21 @@
         void Delete(int id);
 
         /// <summary>
-        /// Adds teams to tournament
+        /// Archive specific tournament
         /// </summary>
-        /// <param name="teams">Teams to add</param>
-        /// <param name="tournamentId">Tournament to assign teams</param>
-        void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId);
+        /// <param name="id">Tournament id</param>
+        void Archive(int id);
+
+        /// <summary>
+        /// Archive old tournaments.
+        /// </summary>
+        void ArchiveOld();
+
+        /// <summary>
+        /// Adds selected teams to tournament
+        /// </summary>
+        /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
+        void AddTeamsToTournament(List<TeamTournamentAssignmentDto> groupTeam);
 
         /// <summary>
         /// Deletes team from tournament

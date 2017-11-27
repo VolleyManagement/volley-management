@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.GameResult
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Represents criteria to retrieve tournament's game results by its identifier.

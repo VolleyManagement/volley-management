@@ -64,8 +64,8 @@
                 && x.SetScores[3].Away == y.SetScores[3].Away
                 && x.SetScores[4].Away == y.SetScores[4].Away
                 && x.AwayTeamId == y.AwayTeamId
-                && x.SetsScore.Home == y.SetsScore.Home
-                && x.SetsScore.Away == y.SetsScore.Away
+                && x.GameScore.Home == y.GameScore.Home
+                && x.GameScore.Away == y.GameScore.Away
                 && x.HomeTeamId == y.HomeTeamId
                 && x.Id == y.Id
                 && x.IsTechnicalDefeat == y.IsTechnicalDefeat
@@ -73,7 +73,11 @@
                 && x.GameDate == y.GameDate
                 && x.Round == y.Round
                 && x.HomeTeamName == y.HomeTeamName
-                && y.AwayTeamName == y.AwayTeamName;
+                && x.AwayTeamName == y.AwayTeamName
+                && x.HasPenalty == y.HasPenalty
+                && x.IsHomeTeamPenalty == y.IsHomeTeamPenalty
+                && x.PenaltyAmount == y.PenaltyAmount
+                && x.PenaltyDescrition == y.PenaltyDescrition;
         }
     }
 }

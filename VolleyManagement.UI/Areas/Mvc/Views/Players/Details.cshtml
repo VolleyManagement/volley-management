@@ -2,13 +2,13 @@
 ﻿@using VolleyManagement.Domain.RolesAggregate;
 
 @{
-    ViewBag.Title = Resources.PlayerViews.PlayerDetailsTitle;
+    ViewBag.Title = Resources.UI.PlayerViews.PlayerDetailsTitle;
 }
 
 <h2>@ViewBag.Title</h2>
 
 <fieldset>
-    <legend>@Resources.PlayerViews.PlayerLegend</legend>
+    <legend>@Resources.UI.PlayerViews.PlayerLegend</legend>
 
     @Html.HiddenFor(model => model.Model.Id)
 
@@ -34,11 +34,11 @@
 <p>
     @if (Model.AllowedOperations.IsAllowed(AuthOperations.Players.Edit))
     {
-        @Html.ActionLink(Resources.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) @:|
+        @Html.ActionLink(Resources.UI.PlayerViews.Edit, "Edit", new { id = Model.Model.Id }) @:|
 }
-    <a href="@Model.Referer">@Resources.PlayerViews.Back</a>
+    <a href="@Model.Referer">@Resources.UI.PlayerViews.Back</a>
     <br />
-    <button type="button" id="linkUser" class="btn btn-info">@Resources.PlayerViews.LinkToMyAccount</button>
+    <button type="button" id="linkUser" class="btn btn-info">@Resources.UI.PlayerViews.LinkToMyAccount</button>
     <span id="ajaxResultMessage"></span>
 </p>
 

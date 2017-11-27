@@ -3,13 +3,12 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
-
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.MsSql.Mappers;
-    using VolleyManagement.Data.MsSql.Repositories.Specifications;
-    using VolleyManagement.Domain.FeedbackAggregate;
+    using Contracts;
+    using Domain.FeedbackAggregate;
+    using Entities;
+    using Exceptions;
+    using Mappers;
+    using Specifications;
 
     /// <summary>
     /// Defines implementation of the IFeedbackRepository contract.
@@ -29,8 +28,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public FeedbackRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            this._dalFeedbacks = _unitOfWork.Context.Feedbacks;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalFeedbacks = _unitOfWork.Context.Feedbacks;
         }
 
         /// <summary>
@@ -38,7 +37,7 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return this._unitOfWork; }
+            get { return _unitOfWork; }
         }
 
         /// <summary>
@@ -55,8 +54,8 @@
                 throw new InvalidEntityException();
             }
 
-            this._dalFeedbacks.Add(newFeedback);
-            this._unitOfWork.Commit();
+            _dalFeedbacks.Add(newFeedback);
+            _unitOfWork.Commit();
             newEntity.Id = newFeedback.Id;
         }
 
@@ -82,9 +81,9 @@
         /// <param name="id">The id of Feedback to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Entities.FeedbackEntity { Id = id };
-            this._dalFeedbacks.Attach(dalToRemove);
-            this._dalFeedbacks.Remove(dalToRemove);
+            var dalToRemove = new FeedbackEntity { Id = id };
+            _dalFeedbacks.Attach(dalToRemove);
+            _dalFeedbacks.Remove(dalToRemove);
         }
     }
 }

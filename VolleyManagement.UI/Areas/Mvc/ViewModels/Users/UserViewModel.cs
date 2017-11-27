@@ -4,8 +4,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using Contracts.Authentication.Models;
-    using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Domain.UsersAggregate;
+    using Resources.UI;
 
     /// <summary>
     /// UserViewModel for Create and Edit actions
@@ -23,8 +23,7 @@
         /// </summary>
         /// <value>User login.</value>
         [Display(Name = "UserName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired",
-            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(20)]
         public string UserName { get; set; }
 
@@ -33,8 +32,7 @@
         /// </summary>
         /// <value>Password of user.</value>
         [Display(Name = "UserPassword", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired",
-            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(20, MinimumLength = 6)]
         public string Password { get; set; }
 
@@ -43,10 +41,8 @@
         /// </summary>
         /// <value>ConfirmPassword of user.</value>
         [Display(Name = "ConfirmUserPassword", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired",
-            ErrorMessageResourceType = typeof(ViewModelResources))]
-        [Compare("Password", ErrorMessageResourceName = "PasswordDidNotMatch",
-            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Compare("Password", ErrorMessageResourceName = "PasswordDidNotMatch", ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(20, MinimumLength = 6)]
         public string ConfirmPassword { get; set; }
 
@@ -71,8 +67,7 @@
         /// </summary>
         /// <value>Email of user.</value>
         [Display(Name = "UserEmail", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired",
-            ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(80)]
         public string Email { get; set; }
 
@@ -107,7 +102,7 @@
         /// </summary>
         /// <param name="user"> Contract object </param>
         /// <returns> View model object </returns>
-        public static UserViewModel Map(VolleyManagement.Contracts.Authentication.Models.UserModel user)
+        public static UserViewModel Map(UserModel user)
         {
             return new UserViewModel
             {
@@ -129,10 +124,10 @@
         {
             return new User
             {
-                Id = this.Id,
-                UserName = this.UserName,
-                PhoneNumber = this.CellPhone,
-                Email = this.Email
+                Id = Id,
+                UserName = UserName,
+                PhoneNumber = CellPhone,
+                Email = Email
             };
         }
 

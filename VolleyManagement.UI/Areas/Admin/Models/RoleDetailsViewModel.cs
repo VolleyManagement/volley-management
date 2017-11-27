@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    using VolleyManagement.Domain.RolesAggregate;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// The role details view model.
@@ -22,7 +22,7 @@
         }
 
         /// <summary>
-        /// User names in current role
+        /// Gets or sets user names in current role
         /// </summary>
         public List<string> Users { get; set; }
     }

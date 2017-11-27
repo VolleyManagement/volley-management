@@ -2,7 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using VolleyManagement.Domain.Properties;
+    using System.Linq;
+    using Properties;
 
     /// <summary>
     /// Division domain class.
@@ -16,7 +17,7 @@
         /// </summary>
         public Division()
         {
-            this.Groups = new List<Group>();
+            Groups = new List<Group>();
         }
 
         /// <summary>
@@ -33,7 +34,7 @@
         {
             get
             {
-                return this._name;
+                return _name;
             }
 
             set
@@ -43,7 +44,18 @@
                     throw new ArgumentException(Resources.ValidationDivisionName, "Name");
                 }
 
-                this._name = value;
+                _name = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether division is empty.
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                return Groups.All(g => g.IsEmpty);
             }
         }
 

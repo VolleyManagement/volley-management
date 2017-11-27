@@ -2,12 +2,12 @@
 {
     using System.Collections.Generic;
 
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.User;
-    using VolleyManagement.Domain.Dto;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Contracts.Authorization;
+    using Data.Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.User;
+    using Domain.Dto;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// Manages roles in the application
@@ -49,7 +49,7 @@
             _getByIdQuery = getByIdQuery;
             _getUsersByRoleQuery = getUsersByRoleQuery;
             _getUserInRolesQuery = getUserInRolesQuery;
-            this._roleRepository = roleRepository;
+            _roleRepository = roleRepository;
         }
 
         #endregion

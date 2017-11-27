@@ -6,12 +6,18 @@
     using System.Web.Mvc;
     using System.Web.Optimization;
     using System.Web.Routing;
+    using SimpleInjector.Integration.Web;
+    using SimpleInjector.Integration.Web.Mvc;
+    using SimpleInjector.Integration.WebApi;
+    using VolleyManagement.Data.MsSql.Infrastructure;
+    using VolleyManagement.Services.Infrastructure;
     using VolleyManagement.UI.Helpers;
+    using VolleyManagement.UI.Infrastructure;
+    using VolleyManagement.UI.Infrastructure.IOC;
 
-    /// <summary>
-    /// The volley management application.
-    /// </summary>
+#pragma warning disable SA1649 // File name must match first type name
     public class VolleyManagementApplication : System.Web.HttpApplication
+#pragma warning restore SA1649 // File name must match first type name
     {
         /// <summary>
         /// Fix problem Entity framework
@@ -29,7 +35,9 @@
         /// <summary>
         /// The application start.
         /// </summary>
-        [SuppressMessage("StyleCopPlus.StyleCopPlusRules", "SP0100:AdvancedNamingRules",
+        [SuppressMessage(
+            "StyleCopPlus.StyleCopPlusRules",
+            "SP0100:AdvancedNamingRules",
             Justification = "Sergii Diachenko: This is specific naming convention.")]
         protected void Application_Start()
         {
@@ -40,6 +48,26 @@
             AreaConfig.RegisterAllAreas();
             ModelBinders.Binders.Add(typeof(DateTime), new DateTimeModelBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new DateTimeModelBinder());
+
+            ConfigureIoc();
+        }
+
+        private static void ConfigureIoc()
+        {
+            var ioc = new SimpleInjectorContainer();
+
+            // Need to explicitly specify default scope
+            ioc.InternalContainer.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+
+            ioc
+                .Register(new IocDataAccessModule())
+                .Register(new IocServicesModule())
+                .Register(new IocUiModule());
+
+            DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(ioc.InternalContainer));
+
+            // Need for Simple Injector invoking on Web Api controller constructor call
+            GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(ioc.InternalContainer);
         }
     }
 }

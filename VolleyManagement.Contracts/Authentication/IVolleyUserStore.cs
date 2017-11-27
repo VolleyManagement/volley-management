@@ -2,7 +2,7 @@
 {
     using Microsoft.AspNet.Identity;
 
-    using VolleyManagement.Contracts.Authentication.Models;
+    using Models;
 
     /// <summary>
     /// Stores Volley Users data

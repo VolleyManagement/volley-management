@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Domain.TournamentRequestAggregate
 {
-    using VolleyManagement.Data.Contracts;
+    using Data.Contracts;
 
     /// <summary>
     /// Defines specific contract for TournamentRequestRepository

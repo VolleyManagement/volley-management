@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
     /// Comparer for player objects.
@@ -55,7 +55,8 @@
         internal bool AreEqual(PlayerNameViewModel x, PlayerNameViewModel y)
         {
             return x.Id == y.Id &&
-                x.FullName == y.FullName;
+                   x.FirstName == y.FirstName &&
+                   x.LastName == y.LastName;
         }
     }
 }

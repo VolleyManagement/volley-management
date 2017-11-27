@@ -4,16 +4,18 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using App_GlobalResources;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Crosscutting.Contracts.Providers;
+    using Domain.RolesAggregate;
+    using Domain.TournamentRequestAggregate;
+    using Domain.TournamentsAggregate;
+    using Resources.UI;
+    using ViewModels.Division;
+    using ViewModels.GameResults;
+    using ViewModels.Teams;
+    using ViewModels.Tournaments;
 
     /// <summary>
     /// Defines TournamentsController
@@ -63,11 +65,11 @@
             ITournamentRequestService requestService,
             ICurrentUserService currentUserService)
         {
-            this._tournamentService = tournamentService;
-            this._gameService = gameService;
-            this._requestService = requestService;
-            this._currentUserService = currentUserService;
-            this._authService = authService;
+            _tournamentService = tournamentService;
+            _gameService = gameService;
+            _requestService = requestService;
+            _currentUserService = currentUserService;
+            _authService = authService;
         }
 
         /// <summary>
@@ -78,10 +80,10 @@
         {
             var tournamentsCollections = new TournamentsCollectionsViewModel
             {
-                Authorization = this._authService.GetAllowedOperations(AuthOperations.Tournaments.Create)
+                Authorization = _authService.GetAllowedOperations(AuthOperations.Tournaments.Create)
             };
 
-            var actualTournaments = this._tournamentService.GetActual().ToArray();
+            var actualTournaments = _tournamentService.GetActual().ToArray();
 
             tournamentsCollections.CurrentTournaments = actualTournaments
                 .Where(tr => tr.State == TournamentStateEnum.Current);
@@ -93,6 +95,17 @@
         }
 
         /// <summary>
+        /// Gets archived tournaments from TournamentService
+        /// </summary>
+        /// <returns>View with collection of archived tournaments</returns>
+        public ActionResult Archived()
+        {
+            List<Tournament> archivedTournaments = _tournamentService.GetArchived().ToList();
+
+            return View(archivedTournaments);
+        }
+
+        /// <summary>
         /// Get finished tournaments
         /// </summary>
         /// <returns>Json result</returns>
@@ -101,6 +114,18 @@
             var result = _tournamentService.GetFinished().ToList()
                  .Select(t => TournamentViewModel.Map(t));
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Archive current Tournament
+        /// </summary>
+        /// <param name="tournamentId">Tournament id</param>
+        /// <returns>Index View of Tournament</returns>
+        [HttpPost]
+        public ActionResult Archive(int tournamentId)
+        {
+            _tournamentService.Archive(tournamentId);
+            return new EmptyResult();
         }
 
         /// <summary>
@@ -118,10 +143,11 @@
             }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
-            tournamentViewModel.Authorization = this._authService.GetAllowedOperations(new List<AuthOperation>
+            tournamentViewModel.Authorization = _authService.GetAllowedOperations(new List<AuthOperation>
             {
                 AuthOperations.Tournaments.Edit,
-                AuthOperations.Tournaments.ManageTeams
+                AuthOperations.Tournaments.ManageTeams,
+                AuthOperations.Tournaments.Archive
             });
 
             return View(tournamentViewModel);
@@ -137,6 +163,7 @@
 
             var tournamentViewModel = new TournamentViewModel()
             {
+                Season = (short)now.Year,
                 ApplyingPeriodStart = now.AddDays(DAYS_TO_APPLYING_PERIOD_START),
                 ApplyingPeriodEnd = now.AddDays(DAYS_TO_APPLYING_PERIOD_START
                                               + DAYS_FOR_APPLYING_PERIOD),
@@ -158,7 +185,7 @@
                                         + DAYS_FOR_TRANSFER_PERIOD)
             };
 
-            return this.View(tournamentViewModel);
+            return View(tournamentViewModel);
         }
 
         /// <summary>
@@ -171,19 +198,19 @@
         {
             try
             {
-                if (this.ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var tournament = tournamentViewModel.ToDomain();
-                    this._tournamentService.Create(tournament);
-                    return this.RedirectToAction("Index");
+                    _tournamentService.Create(tournament);
+                    return RedirectToAction("Index");
                 }
 
-                return this.View(tournamentViewModel);
+                return View(tournamentViewModel);
             }
             catch (TournamentValidationException e)
             {
-                this.ModelState.AddModelError(e.ValidationKey, e.Message);
-                return this.View(tournamentViewModel);
+                ModelState.AddModelError(e.ValidationKey, e.Message);
+                return View(tournamentViewModel);
             }
         }
 
@@ -207,19 +234,19 @@
         {
             try
             {
-                if (this.ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
                     var tournament = tournamentViewModel.ToDomain();
-                    this._tournamentService.Edit(tournament);
-                    return this.RedirectToAction("Index");
+                    _tournamentService.Edit(tournament);
+                    return RedirectToAction("Index");
                 }
 
-                return this.View(tournamentViewModel);
+                return View(tournamentViewModel);
             }
             catch (TournamentValidationException ex)
             {
-                this.ModelState.AddModelError(string.Empty, ex.Message);
-                return this.View(tournamentViewModel);
+                ModelState.AddModelError(string.Empty, ex.Message);
+                return View(tournamentViewModel);
             }
         }
 
@@ -238,7 +265,8 @@
         /// </summary>
         /// <param name="id">Tournament id</param>
         /// <returns>Index view</returns>
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
             var tournament = _tournamentService.Get(id);
@@ -248,7 +276,7 @@
                 return HttpNotFound();
             }
 
-            this._tournamentService.Delete(id);
+            _tournamentService.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -259,29 +287,29 @@
         /// <returns>View with list of existing teams and adding team form</returns>
         public ActionResult ManageTournamentTeams(int tournamentId)
         {
-            var resultTeams = this._tournamentService.GetAllTournamentTeams(tournamentId);
+            var resultTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
             var teams = new TournamentTeamsListViewModel(resultTeams, tournamentId);
-            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, this.HttpContext.Request.RawUrl);
+            var referrerViewModel = new TournamentTeamsListReferrerViewModel(teams, HttpContext.Request.RawUrl);
             return View(referrerViewModel);
         }
 
         /// <summary>
         /// Adds list of teams to tournament
         /// </summary>
-        /// <param name="teams">Object with list of teams and tournament id</param>
+        /// <param name="groupTeams">Object with list of team, group and tournament id</param>
         /// <returns>json result with operation data</returns>
         [HttpPost]
-        public JsonResult AddTeamsToTournament(TournamentTeamsListViewModel teams)
+        public JsonResult AddTeamsToTournament(TournamentTeamsListViewModel groupTeams)
         {
             JsonResult result = null;
             try
             {
-                this._tournamentService.AddTeamsToTournament(teams.ToDomain(), teams.TournamentId);
-                result = this.Json(teams, JsonRequestBehavior.AllowGet);
+                _tournamentService.AddTeamsToTournament(groupTeams.ToGroupTeamDomain());
+                result = Json(groupTeams, JsonRequestBehavior.AllowGet);
             }
             catch (ArgumentException ex)
             {
-                result = this.Json(new TeamsAddToTournamentViewModel { Message = ex.Message });
+                result = Json(new TeamsAddToTournamentViewModel { Message = ex.Message });
             }
 
             return result;
@@ -299,7 +327,7 @@
             JsonResult result = null;
             try
             {
-                this._tournamentService.DeleteTeamFromTournament(teamId, tournamentId);
+                _tournamentService.DeleteTeamFromTournament(teamId, tournamentId);
                 result = Json(new TeamDeleteFromTournamentViewModel
                 {
                     Message = ViewModelResources.TeamWasDeletedSuccessfully,
@@ -322,14 +350,14 @@
         /// Gets the view for view model of the schedule with specified identifier.
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
-        /// <returns>View for view model of the schedule with specified identifier.</returns>    
+        /// <returns>View for view model of the schedule with specified identifier.</returns>
         public ActionResult ShowSchedule(int tournamentId)
         {
             var tournament = _tournamentService.GetTournamentScheduleInfo(tournamentId);
 
             if (tournament == null)
             {
-                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
                 return View();
             }
 
@@ -345,7 +373,7 @@
                      d => d.Key,
                      c => c.OrderBy(t => t.GameNumber).ThenBy(t => t.GameDate)
                     .Select(x => GameResultViewModel.Map(x)).ToList()),
-                AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
                                                                             AuthOperations.Games.Create,
                                                                             AuthOperations.Games.Edit,
@@ -364,7 +392,7 @@
             {
                 foreach (var game in scheduleViewModel.Rounds.ElementAt(i).Value)
                 {
-                    game.AllowedOperations = this._authService.GetAllowedOperations(new List<AuthOperation>()
+                    game.AllowedOperations = _authService.GetAllowedOperations(new List<AuthOperation>()
                                                                           {
                                                                             AuthOperations.Games.Edit,
                                                                             AuthOperations.Games.Delete,
@@ -414,7 +442,7 @@
             }
             catch (ArgumentException e)
             {
-                this.ModelState.AddModelError("ValidationError", e.Message);
+                ModelState.AddModelError("ValidationError", e.Message);
             }
 
             return ScheduleGame(gameViewModel.TournamentId);
@@ -431,7 +459,7 @@
 
             if (game == null)
             {
-                this.ModelState.AddModelError("LoadError", App_GlobalResources.TournamentViews.GameNotFoundInTournament);
+                ModelState.AddModelError("LoadError", TournamentViews.GameNotFoundInTournament);
                 return View();
             }
 
@@ -444,6 +472,7 @@
             if (game.GameDate.HasValue)
             {
                 gameViewModel.GameDate = game.GameDate.Value;
+                gameViewModel.GameTime = game.GameDate.Value.TimeOfDay;
             }
 
             gameViewModel.Round = game.Round;
@@ -469,11 +498,11 @@
             }
             catch (ArgumentException e)
             {
-                this.ModelState.AddModelError("ValidationError", e.Message);
+                ModelState.AddModelError("ValidationError", e.Message);
             }
             catch (MissingEntityException e)
             {
-                this.ModelState.AddModelError("LoadError", e.Message);
+                ModelState.AddModelError("LoadError", e.Message);
                 return View();
             }
 
@@ -493,18 +522,18 @@
 
             if (tournament == null)
             {
-                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
                 return View();
             }
 
             try
             {
-                this._gameService.SwapRounds(tournamentId, firstRoundNumber, secondRoundNumber);
+                _gameService.SwapRounds(tournamentId, firstRoundNumber, secondRoundNumber);
                 return RedirectToAction("ShowSchedule", new { tournamentId = tournamentId });
             }
             catch (MissingEntityException ex)
             {
-                this.ModelState.AddModelError("LoadError", ex.Message);
+                ModelState.AddModelError("LoadError", ex.Message);
                 return View();
             }
         }
@@ -528,7 +557,7 @@
             {
                 Id = tournamentId,
                 TournamentTitle = tournament.Name,
-                Teams = noTournamentTeams.Select(t => TeamNameViewModel.Map(t)),
+                Teams = noTournamentTeams.Select(TeamNameViewModel.Map)
             };
             return View(tournamentApplyViewModel);
         }
@@ -536,29 +565,35 @@
         /// <summary>
         /// Apply for tournament
         /// </summary>
-        /// <param name="tournamentId">Tournament id</param>
-        /// /// <param name="teamId">Team id</param>
+        /// <param name="groupTeam">Group id and Team id</param>
         /// <returns>TournamentApply view</returns>
         [HttpPost]
-        public JsonResult ApplyForTournament(int tournamentId, int teamId)
+        public JsonResult ApplyForTournament(GroupTeamViewModel groupTeam)
         {
             JsonResult result = null;
             try
             {
-                int userId = this._currentUserService.GetCurrentUserId();
+                int userId = _currentUserService.GetCurrentUserId();
+
                 if (userId == ANONYM)
                 {
-                    result = this.Json(ViewModelResources.NoRights);
+                    result = Json(ViewModelResources.NoRights);
                 }
                 else
                 {
-                    this._requestService.Create(userId, tournamentId, teamId);
-                    result = this.Json(ViewModelResources.SuccessRequest);
+                    var tournamentRequest = new TournamentRequest()
+                    {
+                        TeamId = groupTeam.TeamId,
+                        UserId = userId,
+                        GroupId = groupTeam.GroupId
+                    };
+                    _requestService.Create(tournamentRequest);
+                    result = Json(ViewModelResources.SuccessRequest);
                 }
             }
             catch (ArgumentException ex)
             {
-                result = this.Json(ex.Message);
+                result = Json(ex.Message);
             }
 
             return result;
@@ -576,7 +611,32 @@
             return Json(teams, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Returns available list of all divisions.
+        /// </summary>
+        /// <param name="tournamentId">Identifier of the tournament.</param>
+        /// <returns>Json list of divisions</returns>
+        public JsonResult GetAllAvailableDivisions(int tournamentId)
+        {
+            var tournamentDivisionsList = _tournamentService.GetAllTournamentDivisions(tournamentId);
+            var divisions = tournamentDivisionsList.Select(DivisionViewModel.Map);
+            return Json(divisions, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Returns available list of all groups.
+        /// </summary>
+        /// <param name="divisionId">Identifier of the division.</param>
+        /// <returns>Json list of groups</returns>
+        public JsonResult GetAllAvailableGroups(int divisionId)
+        {
+            var tournamentGroupList = _tournamentService.GetAllTournamentGroups(divisionId);
+            var groups = tournamentGroupList.Select(GroupViewModel.Map);
+            return Json(groups, JsonRequestBehavior.AllowGet);
+        }
+
         #region Private
+
         /// <summary>
         /// Gets info about the tournament with a specified identifier.
         /// </summary>
@@ -592,6 +652,7 @@
             }
 
             var tournamentViewModel = TournamentViewModel.Map(tournament);
+
             return View(tournamentViewModel);
         }
 
@@ -606,7 +667,7 @@
 
             if (tournament == null)
             {
-                this.ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
+                ModelState.AddModelError("LoadError", TournamentController.TournamentNotFound);
                 return null;
             }
 
@@ -614,7 +675,7 @@
             var roundsNumber = _tournamentService.GetNumberOfRounds(tournament);
             if (roundsNumber <= 0)
             {
-                this.ModelState.AddModelError("LoadError", TournamentController.SchedulingError);
+                ModelState.AddModelError("LoadError", TournamentController.SchedulingError);
                 return null;
             }
 

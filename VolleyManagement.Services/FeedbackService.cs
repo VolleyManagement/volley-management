@@ -3,16 +3,15 @@
     using System;
     using System.Collections.Generic;
     using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Contracts.ExternalResources;
     using Crosscutting.Contracts.Providers;
-    using Domain.Properties;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.MailService;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Data.Contracts;
+    using Data.Queries.Common;
+    using Domain.FeedbackAggregate;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// Represents an implementation of IFeedbackService contract.
@@ -149,7 +148,8 @@
         /// Reply the answer to user.
         /// </summary>
         /// <param name="id">id for reply.</param>
-        public void Reply(int id)
+        /// <param name="message">message for reply.</param>
+        public void Reply(int id, string message)
         {
             _authService.CheckAccess(AuthOperations.Feedbacks.Reply);
 
@@ -161,6 +161,7 @@
             }
 
             ChangeFeedbackStatus(feedback, FeedbackStatusEnum.Answered);
+            NotifyUser(feedback.UsersEmail, message);
         }
 
         /// <summary>
@@ -173,8 +174,8 @@
                 feedback.Status = newStatusCode;
                 if (ShouldChangeLastUpdateInfo(newStatusCode))
                 {
-                    int userId = this._currentUserService.GetCurrentUserId();
-                    User user = this._userService.GetUser(userId);
+                    int userId = _currentUserService.GetCurrentUserId();
+                    User user = _userService.GetUser(userId);
                     feedback.UpdateDate = TimeProvider.Current.UtcNow;
                     feedback.AdminName = user.PersonName;
                 }
@@ -197,6 +198,18 @@
             string subject = Properties.Resources.FeedbackConfirmationLetterSubject;
 
             EmailMessage emailMessage = new EmailMessage(emailTo, subject, body);
+            _mailService.Send(emailMessage);
+        }
+
+        /// <summary>
+        /// Send a confirmation email to user.
+        /// </summary>
+        /// <param name="emailTo">Recipient email.</param>
+        /// <param name="message">Message for reply</param>
+        private void NotifyUser(string emailTo, string message)
+        {
+            string subject = Properties.Resources.FeedbacksEmailReplySubject;
+            EmailMessage emailMessage = new EmailMessage(emailTo, subject, message);
             _mailService.Send(emailMessage);
         }
 

@@ -3,20 +3,20 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.GameResult;
-    using VolleyManagement.Data.Queries.Tournament;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using GameResultConstants = VolleyManagement.Domain.Constants.GameResult;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Crosscutting.Contracts.Providers;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.GameResult;
+    using Data.Queries.Tournament;
+    using Domain.GamesAggregate;
+    using Domain.Properties;
+    using Domain.RolesAggregate;
+    using Domain.TournamentsAggregate;
+    using GameResultConstants = Domain.Constants.GameResult;
 
     /// <summary>
     /// Defines an implementation of <see cref="IGameService"/> contract.
@@ -320,9 +320,9 @@
 
         private void ValidateResult(Result result)
         {
-            ValidateSetsScore(result.SetsScore, result.IsTechnicalDefeat);
-            ValidateSetsScoreMatchesSetScores(result.SetsScore, result.SetScores);
-            ValidateSetScoresValues(result.SetScores, result.IsTechnicalDefeat);
+            ValidateSetsScore(result.GameScore, result.GameScore.IsTechnicalDefeat);
+            ValidateSetsScoreMatchesSetScores(result.GameScore, result.SetScores);
+            ValidateSetScoresValues(result.SetScores, result.GameScore.IsTechnicalDefeat);
             ValidateSetScoresOrder(result.SetScores);
         }
 
@@ -540,8 +540,7 @@
 
         private void ValidateGameInRoundOnDelete(GameResultDto gameToDelete)
         {
-            if (gameToDelete.HomeSetsScore != 0 || gameToDelete.AwaySetsScore != 0
-                || gameToDelete.GameDate < TimeProvider.Current.UtcNow)
+            if (gameToDelete.HasResult || gameToDelete.GameDate < TimeProvider.Current.UtcNow)
             {
                 throw new ArgumentException(Resources.WrongDeletingGame);
             }
@@ -700,8 +699,8 @@
                 gamesToUpdate.AddRange(GetGamesToUpdate(finishedGame, gamesInCurrentAndNextRounds));
 
                 if (finishedGame.AwayTeamId.HasValue
-                    && finishedGame.Result.SetsScore.Home == 0
-                    && finishedGame.Result.SetsScore.Away == 0)
+                    && finishedGame.Result.GameScore.Home == 0
+                    && finishedGame.Result.GameScore.Away == 0)
                 {
                     foreach (Game game in gamesToUpdate)
                     {
@@ -772,7 +771,7 @@
             }
             else
             {
-                winnerTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
+                winnerTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
                 finishedGame.HomeTeamId.Value : finishedGame.AwayTeamId.Value;
             }
 
@@ -796,7 +795,7 @@
 
             ValidateEditingSchemePlayoff(nextGame);
 
-            int loserTeamId = finishedGame.Result.SetsScore.Home > finishedGame.Result.SetsScore.Away ?
+            int loserTeamId = finishedGame.Result.GameScore.Home > finishedGame.Result.GameScore.Away ?
                 finishedGame.AwayTeamId.Value : finishedGame.HomeTeamId.Value;
 
             if (finishedGame.GameNumber % 2 != 0)
@@ -843,8 +842,8 @@
 
         private void ValidateEditingSchemePlayoff(Game nextGame)
         {
-            if (nextGame.Result != null && nextGame.Result.SetsScore.Home != 0
-                && nextGame.Result.SetsScore.Away != 0)
+            if (nextGame.Result != null && nextGame.Result.GameScore.Home != 0
+                && nextGame.Result.GameScore.Away != 0)
             {
                 throw new ArgumentException(Resources.PlayoffGameEditingError);
             }
@@ -856,7 +855,7 @@
                 game => game.HomeTeamId.HasValue
                 && game.GameDate.HasValue
                 && NextGames(allGames, game)
-                .All(next => next.HomeSetsScore == 0 && next.AwaySetsScore == 0))
+                .All(next => next.Result.GameScore.Home == 0 && next.Result.GameScore.Away == 0))
                 .ToList();
 
             foreach (var game in gamesToAllowEditingResults)

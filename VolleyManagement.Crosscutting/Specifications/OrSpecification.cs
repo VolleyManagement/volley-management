@@ -2,7 +2,7 @@
 {
     using System;
 
-    using VolleyManagement.Crosscutting.Contracts.Specifications;
+    using Contracts.Specifications;
 
     /// <summary>
     /// Provides a way to chain two Specifications using OR operator
@@ -31,8 +31,8 @@
                 throw new ArgumentNullException("right");
             }
 
-            this._left = left;
-            this._right = right;
+            _left = left;
+            _right = right;
         }
 
         /// <summary>
@@ -42,8 +42,8 @@
         /// <returns> Results of the match </returns>
         public override bool IsSatisfiedBy(T entity)
         {
-            return this._left.IsSatisfiedBy(entity)
-                   || this._right.IsSatisfiedBy(entity);
+            return _left.IsSatisfiedBy(entity)
+                   || _right.IsSatisfiedBy(entity);
         }
     }
 }

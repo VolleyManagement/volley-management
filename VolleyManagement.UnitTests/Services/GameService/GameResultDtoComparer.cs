@@ -3,7 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Domain.GamesAggregate;
 
     /// <summary>
     /// Represents a comparer for <see cref="GameResultDto"/> objects.
@@ -59,19 +59,19 @@
                 && x.AwayTeamId == y.AwayTeamId
                 && x.HomeTeamName == y.HomeTeamName
                 && x.AwayTeamName == y.AwayTeamName
-                && x.HomeSetsScore == y.HomeSetsScore
-                && x.AwaySetsScore == y.AwaySetsScore
-                && x.IsTechnicalDefeat == y.IsTechnicalDefeat
-                && x.HomeSet1Score == y.HomeSet1Score
-                && x.AwaySet1Score == y.AwaySet1Score
-                && x.HomeSet2Score == y.HomeSet2Score
-                && x.AwaySet2Score == y.AwaySet2Score
-                && x.HomeSet3Score == y.HomeSet3Score
-                && x.AwaySet3Score == y.AwaySet3Score
-                && x.HomeSet4Score == y.HomeSet4Score
-                && x.AwaySet4Score == y.AwaySet4Score
-                && x.HomeSet5Score == y.HomeSet5Score
-                && x.AwaySet5Score == y.AwaySet5Score
+                && x.Result.GameScore.Home == y.Result.GameScore.Home
+                && x.Result.GameScore.Away == y.Result.GameScore.Away
+                && x.Result.GameScore.IsTechnicalDefeat == y.Result.GameScore.IsTechnicalDefeat
+                && x.Result.SetScores[0].Home == y.Result.SetScores[0].Home
+                && x.Result.SetScores[0].Away == y.Result.SetScores[0].Away
+                && x.Result.SetScores[1].Home == y.Result.SetScores[1].Home
+                && x.Result.SetScores[1].Away == y.Result.SetScores[1].Away
+                && x.Result.SetScores[2].Home == y.Result.SetScores[2].Home
+                && x.Result.SetScores[2].Away == y.Result.SetScores[2].Away
+                && x.Result.SetScores[3].Home == y.Result.SetScores[3].Home
+                && x.Result.SetScores[3].Away == y.Result.SetScores[3].Away
+                && x.Result.SetScores[4].Home == y.Result.SetScores[4].Home
+                && x.Result.SetScores[4].Away == y.Result.SetScores[4].Away
                 && x.GameDate == y.GameDate
                 && x.Round == y.Round
                 && x.GameNumber == y.GameNumber;

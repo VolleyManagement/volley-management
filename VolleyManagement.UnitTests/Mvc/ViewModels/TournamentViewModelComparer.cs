@@ -5,7 +5,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments;
+    using UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
     /// Comparer for tournament objects.
@@ -62,6 +62,9 @@
                 && x.SeasonsList.SequenceEqual(y.SeasonsList)
                 && x.Scheme == y.Scheme
                 && x.RegulationsLink == y.RegulationsLink
+                && x.IsNew == y.IsNew
+                && x.IsDivisionsCountMin == y.IsDivisionsCountMin
+                && x.IsDivisionsCountMax == y.IsDivisionsCountMax
                 && x.IsTransferEnabled == y.IsTransferEnabled
                 && x.ApplyingPeriodEnd.Date == y.ApplyingPeriodEnd.Date
                 && x.ApplyingPeriodStart.Date == y.ApplyingPeriodStart.Date

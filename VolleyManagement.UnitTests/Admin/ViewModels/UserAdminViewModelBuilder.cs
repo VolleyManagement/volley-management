@@ -2,10 +2,10 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.Areas.Admin.Models;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Players;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
+    using UI.Areas.Admin.Models;
+    using UI.Areas.Mvc.ViewModels.Players;
 
     /// <summary>
     /// Builder for test MVC user view models
@@ -30,7 +30,7 @@
                 Email = "example@i.ua",
                 PersonName = "Eugene",
                 Phone = "068-11-22-333",
-                isBlocked = false,
+                IsBlocked = false,
                 LoginProviders = new List<LoginProviderInfo>
                 {
                     new LoginProviderInfo

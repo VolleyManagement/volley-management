@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Resources.UI;
 
     /// <summary>
     /// Represents a view model for <see cref="MessageViewModel"/>.
@@ -17,8 +17,9 @@
         /// Gets or sets message.
         /// </summary>
         [Display(Name = "DeclineMessage", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired",
-           ErrorMessageResourceType = typeof(ViewModelResources))]
+        [Required(
+            ErrorMessageResourceName = "FieldRequired",
+            ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(5000)]
         [DataType(DataType.MultilineText)]
         public string Message { get; set; }

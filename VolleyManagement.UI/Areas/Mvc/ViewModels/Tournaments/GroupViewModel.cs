@@ -1,9 +1,9 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Division
 {
     using System.ComponentModel.DataAnnotations;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Domain;
+    using Domain.TournamentsAggregate;
+    using Resources.UI;
 
     /// <summary>
     /// Represents division's view model.
@@ -15,10 +15,12 @@
         /// </summary>
         public GroupViewModel()
         {
-            this.Name = string.Format(
+            Name = string.Format(
                 "{0} {1}",
                 ViewModelResources.GroupDefaultName,
                 Constants.Group.MIN_GROUPS_COUNT);
+
+            IsEmpty = true;
         }
 
         /// <summary>
@@ -30,16 +32,21 @@
         /// Gets or sets the group's name.
         /// </summary>
         [Display(Name = "GroupName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "GroupNameRequired",
+        [Required(
+            ErrorMessageResourceName = "GroupNameRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [MaxLength(Constants.Group.MAX_NAME_LENGTH, ErrorMessageResourceName = "GroupNameMaxLengthErrorMessage",
+        [MaxLength(
+            Constants.Group.MAX_NAME_LENGTH,
+            ErrorMessageResourceName = "GroupNameMaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets the identifier of the division that contains the group.
-        /// </summary>
         public int DivisionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether group is empty.
+        /// </summary>
+        public bool IsEmpty { get; set; }
 
         #region Factory methods
 
@@ -54,7 +61,8 @@
             {
                 Id = group.Id,
                 Name = group.Name,
-                DivisionId = group.DivisionId
+                DivisionId = group.DivisionId,
+                IsEmpty = group.IsEmpty
             };
         }
 
@@ -66,9 +74,9 @@
         {
             return new Group()
             {
-                Id = this.Id,
-                Name = this.Name,
-                DivisionId = this.DivisionId
+                Id = Id,
+                Name = Name,
+                DivisionId = DivisionId
             };
         }
 

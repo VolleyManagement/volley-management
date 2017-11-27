@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.Common
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Query criterion to read all Tournaments

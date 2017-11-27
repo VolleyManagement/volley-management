@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.ContributorsTeam;
+    using Domain.ContributorsAggregate;
+    using UI.Areas.Mvc.ViewModels.ContributorsTeam;
 
     /// <summary>
     /// Builder for test MVC contributor team view models
@@ -68,7 +68,7 @@
         /// <returns>Contributor view model builder object</returns>
         public ContributorTeamMvcViewModelBuilder WithName(string name)
         {
-            this._contributorTeamViewModel.Name = name;
+            _contributorTeamViewModel.Name = name;
             return this;
         }
 
@@ -79,7 +79,7 @@
         /// <returns>Contributor view model builder object</returns>
         public ContributorTeamMvcViewModelBuilder WithCourseDirection(string courseDirection)
         {
-            this._contributorTeamViewModel.CourseDirection = courseDirection;
+            _contributorTeamViewModel.CourseDirection = courseDirection;
             return this;
         }
 
@@ -90,7 +90,7 @@
         /// <returns>Contributor view model builder object</returns>
         public ContributorTeamMvcViewModelBuilder WithContributors(List<Contributor> contributors)
         {
-            this._contributorTeamViewModel.Contributors = contributors;
+            _contributorTeamViewModel.Contributors = contributors;
             return this;
         }
 

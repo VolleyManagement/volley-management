@@ -1,0 +1,8 @@
+<div class="my-loader" *ngIf="isCss3Supported; else css3NotSupportedBlock">
+  <ngx-loading [show]="isShowLoader" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+</div>
+<ng-template #css3NotSupportedBlock>
+  <div>
+    <div class="loadDataMessage">Loading Data...</div>
+  </div>
+</ng-template>

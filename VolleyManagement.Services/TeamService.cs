@@ -4,18 +4,19 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Player;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.Properties;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.Player;
+    using Data.Queries.Team;
+    using Domain.PlayersAggregate;
+    using Domain.Properties;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
+    using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
     /// Defines TeamService
@@ -26,6 +27,7 @@
         private readonly IPlayerRepository _playerRepository;
         private readonly IQuery<Team, FindByIdCriteria> _getTeamByIdQuery;
         private readonly IQuery<Player, FindByIdCriteria> _getPlayerByIdQuery;
+        private readonly IQuery<Player, FindByFullNameCriteria> _getPlayerByNameQuery;
         private readonly IQuery<Team, FindByCaptainIdCriteria> _getTeamByCaptainQuery;
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<List<Player>, TeamPlayersCriteria> _getTeamRosterQuery;
@@ -38,6 +40,7 @@
         /// <param name="playerRepository">The player repository</param>
         /// <param name="getTeamByIdQuery"> Get By ID query for Teams</param>
         /// <param name="getPlayerByIdQuery"> Get By ID query for Players</param>
+        /// <param name="getPlayerByNameQuery"> Get By Name query for Players</param>
         /// <param name="getTeamByCaptainQuery"> Get By Captain ID query for Teams</param>
         /// <param name="getAllTeamsQuery"> Get All teams query</param>
         /// <param name="getTeamRosterQuery"> Get players for team query</param>
@@ -47,6 +50,7 @@
             IPlayerRepository playerRepository,
             IQuery<Team, FindByIdCriteria> getTeamByIdQuery,
             IQuery<Player, FindByIdCriteria> getPlayerByIdQuery,
+            IQuery<Player, FindByFullNameCriteria> getPlayerByNameQuery,
             IQuery<Team, FindByCaptainIdCriteria> getTeamByCaptainQuery,
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<List<Player>, TeamPlayersCriteria> getTeamRosterQuery,
@@ -56,6 +60,7 @@
             _playerRepository = playerRepository;
             _getTeamByIdQuery = getTeamByIdQuery;
             _getPlayerByIdQuery = getPlayerByIdQuery;
+            _getPlayerByNameQuery = getPlayerByNameQuery;
             _getTeamByCaptainQuery = getTeamByCaptainQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getTeamRosterQuery = getTeamRosterQuery;
@@ -125,6 +130,8 @@
             }
 
             ValidateTeam(team);
+
+            team.CaptainId = captain.Id;
 
             try
             {
@@ -217,8 +224,17 @@
 
             foreach (var player in roster)
             {
-                UpdatePlayerTeam(player.Id, teamId);
+                UpdatePlayerTeam(player.FirstName, player.LastName, teamId);
             }
+        }
+
+        private static bool ValidateTwoTeamsName(Team teamToValidate, List<Team> getExistingTeams)
+        {
+            var existingTeams = from ex in getExistingTeams
+                                where ex.Id != teamToValidate.Id
+                                where ex.Name.ToLower().Equals(teamToValidate.Name.ToLower())
+                                select ex;
+            return existingTeams.Count() != 0;
         }
 
         private static void VerifyExistingTeamOrThrow(Team existTeam)
@@ -231,13 +247,20 @@
             }
         }
 
-        private void UpdatePlayerTeam(int playerId, int teamId)
+        private void UpdatePlayerTeam(string firstName, string lastName, int teamId)
         {
-            Player player = GetPlayerById(playerId);
+            Player player = GetPlayerByFullName(firstName, lastName);
 
             if (player == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
+            }
+
+            // Check if player plays in another team
+            if (player.TeamId != null && player.TeamId != teamId)
+            {
+                throw new ArgumentException(
+                    TournamentResources.ValidationPlayerOfAnotherTeam, player.FirstName + " " + player.FirstName);
             }
 
             // Check if player is captain of another team
@@ -271,7 +294,7 @@
 
             if (player == null)
             {
-                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound, playerId);
+                throw new MissingEntityException(ServiceResources.ExceptionMessages.PlayerNotFound);
             }
 
             player.TeamId = null;
@@ -289,6 +312,11 @@
             return _getPlayerByIdQuery.Execute(new FindByIdCriteria { Id = id });
         }
 
+        private Player GetPlayerByFullName(string firstName, string lastName)
+        {
+            return _getPlayerByNameQuery.Execute(new FindByFullNameCriteria { FirstName = firstName, LastName = lastName });
+        }
+
         private void ValidateTeamName(string teamName)
         {
             if (TeamValidation.ValidateTeamName(teamName))
@@ -296,7 +324,7 @@
                 throw new ArgumentException(
                     string.Format(
                     Resources.ValidationTeamName,
-                    VolleyManagement.Domain.Constants.Team.MAX_NAME_LENGTH),
+                    Domain.Constants.Team.MAX_NAME_LENGTH),
                     "Name");
             }
         }
@@ -310,7 +338,7 @@
                 throw new ArgumentException(
                     string.Format(
                     Resources.ValidationCoachName,
-                    VolleyManagement.Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
+                    Domain.Constants.Team.MAX_COACH_NAME_LENGTH),
                     "Coach");
             }
         }
@@ -325,10 +353,20 @@
                 throw new ArgumentException(
                     string.Format(
                     Resources.ValidationTeamAchievements,
-                    VolleyManagement.Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
+                    Domain.Constants.Team.MAX_ACHIEVEMENTS_LENGTH),
                     "Achievements");
             }
         }
+        }
+
+        private void ValidateTwoTeamsWithTheSameName(Team teamToValidate)
+        {
+            var existingTeams = Get();
+            if (ValidateTwoTeamsName(teamToValidate, existingTeams))
+            {
+                throw new ArgumentException(
+                    TournamentResources.TeamNameInTournamentNotUnique);
+            }
         }
 
         private void ValidateTeam(Team teamToValidate)
@@ -336,6 +374,7 @@
             ValidateTeamName(teamToValidate.Name);
             ValidateCoachName(teamToValidate.Coach);
             ValidateAchievements(teamToValidate.Achievements);
+            ValidateTwoTeamsWithTheSameName(teamToValidate);
         }
     }
 }

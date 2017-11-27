@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VolleyManagement.UI.App_GlobalResources {
+namespace Resources.UI {
     using System;
     
     
@@ -347,18 +347,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
                 return ResourceManager.GetString("MaxLengthErrorMessage", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Please, login to apply team for the tournament..
-        /// </summary>
-        public static string NoRights
-        {
-            get
-            {
-                return ResourceManager.GetString("NoRights", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t find User Id.
         /// </summary>
@@ -374,6 +363,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string MessageAboutLinkToPlayer {
             get {
                 return ResourceManager.GetString("MessageAboutLinkToPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please, login to apply team for the tournament..
+        /// </summary>
+        public static string NoRights {
+            get {
+                return ResourceManager.GetString("NoRights", resourceCulture);
             }
         }
         

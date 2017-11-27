@@ -4,17 +4,14 @@
     using System.Threading.Tasks;
     using System.Web.Configuration;
     using System.Web.Mvc;
-
+    using Contracts.Authentication.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
     using Microsoft.Owin.Security.Cookies;
     using Microsoft.Owin.Security.Google;
-
     using Owin;
-
-    using VolleyManagement.Contracts.Authentication.Models;
-    using VolleyManagement.Services.Authentication;
+    using Services.Authentication;
 
     /// <summary>
     /// The OWIN config.
@@ -35,7 +32,7 @@
         {
             var cookieOptions = new CookieAuthenticationOptions { LoginPath = new PathString("/Account/Login") };
             cookieOptions.AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie;
-            cookieOptions.Provider = new CookieAuthenticationProvider { OnValidateIdentity = this.OnValidateIdentity };
+            cookieOptions.Provider = new CookieAuthenticationProvider { OnValidateIdentity = OnValidateIdentity };
 
             app.UseCookieAuthentication(cookieOptions);
 
@@ -64,7 +61,7 @@
 
         private Task OnValidateIdentity(CookieValidateIdentityContext ctx)
         {
-            this.RegisterUserManagerInOwinContext(ctx.OwinContext);
+            RegisterUserManagerInOwinContext(ctx.OwinContext);
             SecurityStampValidator.OnValidateIdentity<VolleyUserManager, UserModel, int>(
                 validateInterval: TimeSpan.FromMinutes(30),
                 regenerateIdentityCallback: async (manager, user) =>

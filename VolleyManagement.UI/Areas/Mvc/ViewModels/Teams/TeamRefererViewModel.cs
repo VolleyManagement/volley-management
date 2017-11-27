@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
 {
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Generic;
+    using Generic;
 
     /// <summary>
     /// Represents TeamViewModel and referrer link.
@@ -20,7 +20,7 @@
         }
 
         /// <summary>
-        /// Current referrer controller name
+        /// Gets or sets current referrer controller name
         /// </summary>
         public string CurrentReferrer { get; set; }
     }

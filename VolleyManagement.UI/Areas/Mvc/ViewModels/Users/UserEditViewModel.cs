@@ -4,8 +4,8 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using Contracts.Authentication.Models;
-    using VolleyManagement.Domain.UsersAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Domain.UsersAggregate;
+    using Resources.UI;
 
     /// <summary>
     /// UserViewModel for Create and Edit actions
@@ -39,7 +39,8 @@
         /// </summary>
         /// <value>Email of user.</value>
         [Display(Name = "UserEmail", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "FieldRequired",
+        [Required(
+            ErrorMessageResourceName = "FieldRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         [StringLength(80)]
         public string Email { get; set; }
@@ -67,7 +68,7 @@
         /// </summary>
         /// <param name="user"> Contract object </param>
         /// <returns> View model object </returns>
-        public static UserEditViewModel Map(VolleyManagement.Contracts.Authentication.Models.UserModel user)
+        public static UserEditViewModel Map(UserModel user)
         {
             return new UserEditViewModel
             {

@@ -2,8 +2,8 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using Crosscutting.Contracts.Providers;
     using Domain.FeedbackAggregate;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
 
     /// <summary>
     /// Represents a builder of <see cref="Feedback"/> objects for unit
@@ -19,7 +19,7 @@
         /// </summary>
         public FeedbackBuilder()
         {
-            this._feedback = new Feedback
+            _feedback = new Feedback
             {
                 Id = 1,
                 UsersEmail = "qwerty@gmail.com",
@@ -37,7 +37,7 @@
         /// <returns>Instance of <see cref="FeedbackBuilder"/>.</returns>
         public FeedbackBuilder WithId(int id)
         {
-            this._feedback.Id = id;
+            _feedback.Id = id;
             return this;
         }
 
@@ -48,7 +48,7 @@
         /// <returns>Feedback object</returns>
         public FeedbackBuilder WithEmail(string email)
         {
-            this._feedback.UsersEmail = email;
+            _feedback.UsersEmail = email;
             return this;
         }
 
@@ -59,7 +59,7 @@
         /// <returns>Feedback object</returns>
         public FeedbackBuilder WithContent(string content)
         {
-            this._feedback.Content = content;
+            _feedback.Content = content;
             return this;
         }
 
@@ -70,7 +70,7 @@
         /// <returns>Feedback object</returns>
         public FeedbackBuilder WithDate(DateTime date)
         {
-            this._feedback.Date = date;
+            _feedback.Date = date;
             return this;
         }
 
@@ -81,7 +81,7 @@
         /// <returns>Feedback object</returns>
         public FeedbackBuilder WithStatus(FeedbackStatusEnum status)
         {
-            this._feedback.Status = status;
+            _feedback.Status = status;
             return this;
         }
 
@@ -92,7 +92,7 @@
         /// <returns>Feedback object</returns>
         public FeedbackBuilder WithEnvironment(string environment)
         {
-            this._feedback.UserEnvironment = environment;
+            _feedback.UserEnvironment = environment;
             return this;
         }
 
@@ -102,7 +102,7 @@
         /// <returns>Test feedback</returns>
         public Feedback Build()
         {
-            return this._feedback;
+            return _feedback;
         }
     }
 }

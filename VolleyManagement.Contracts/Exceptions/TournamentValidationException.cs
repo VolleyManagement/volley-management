@@ -1,16 +1,17 @@
 ﻿namespace VolleyManagement.Contracts.Exceptions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Diagnostics.CodeAnalysis;
     using System.Runtime.Serialization;
-    using System.Text;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents errors that occurs during the validation of the
     /// tournament.
     /// </summary>
+    [SuppressMessage(
+        "Microsoft.Usage",
+        "CA2240:ImplementISerializableCorrectly",
+        Justification = "It asks to override GetObjectData - we do not use it serialization scenarios and we're going to aovid using exceptions")]
     [Serializable]
     public class TournamentValidationException : Exception
     {
@@ -67,6 +68,7 @@
         /// <param name="info">The SerializationInfo that holds the serialized data about the exception being thrown.</param>
         /// <param name="context">StreamingContext that contains the information about the source or destination.</param>
         public TournamentValidationException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 

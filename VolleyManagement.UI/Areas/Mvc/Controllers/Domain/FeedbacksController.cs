@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
-    using System.Web;
     using System.Web.Configuration;
     using System.Web.Mvc;
     using Contracts;
@@ -41,10 +40,10 @@
             ICurrentUserService currentUserService,
             ICaptchaManager captchaManager)
         {
-           this._feedbackService = feedbackService;
-            this._userService = userService;
-            this._currentUserService = currentUserService;
-            this._captchaManager = captchaManager;
+            _feedbackService = feedbackService;
+            _userService = userService;
+            _currentUserService = currentUserService;
+            _captchaManager = captchaManager;
         }
 
         /// <summary>
@@ -67,16 +66,29 @@
         /// <param name="feedbackViewModel">Feedback view model.</param>
         /// <returns>Feedback creation view.</returns>
         [HttpPost]
-        public ActionResult Create(FeedbackViewModel feedbackViewModel)
-        {             
+        public JsonResult Create(FeedbackViewModel feedbackViewModel)
+        {
+            FeedbackMessageViewModel result = new FeedbackMessageViewModel
+            {
+                ResultMessage = Resources.UI.TournamentController.CheckCaptcha,
+                OperationSuccessful = false
+            };
+
             try
             {
-                HttpRequestBase request = Request;
-                if (ModelState.IsValid && _captchaManager.IsFormSubmit(request))
+                if (_captchaManager.IsFormSubmit(feedbackViewModel.CaptchaResponse))
                 {
-                    var domainFeedback = feedbackViewModel.ToDomain();
-                    this._feedbackService.Create(domainFeedback);
-                    return View("FeedbackSentMessage", feedbackViewModel);
+                    if (ModelState.IsValid)
+                    {
+                        var domainFeedback = feedbackViewModel.ToDomain();
+                        _feedbackService.Create(domainFeedback);
+                        result.ResultMessage = Resources.UI.TournamentController.SuccessfulSent;
+                        result.OperationSuccessful = true;
+                    }
+                    else
+                    {
+                        result.ResultMessage = Resources.UI.TournamentController.CheckData;
+                    }
                 }
             }
             catch (ArgumentException ex)
@@ -84,8 +96,7 @@
                 ModelState.AddModelError("ValidationMessage", ex.Message);
             }
 
-            GetDataSiteKey(feedbackViewModel);
-            return View("Create", feedbackViewModel);
+            return Json(result, JsonRequestBehavior.DenyGet);
         }
 
         /// <summary>
@@ -94,7 +105,7 @@
         /// <returns>User email.</returns>
         private string GetUserMail()
         {
-            int userId = this._currentUserService.GetCurrentUserId();
+            int userId = _currentUserService.GetCurrentUserId();
             User currentUser = new User
             {
                 Email = string.Empty
@@ -102,7 +113,7 @@
 
             if (userId != ANONYM)
             {
-                currentUser = this._userService.GetUser(userId);
+                currentUser = _userService.GetUser(userId);
             }
 
             return currentUser.Email;
@@ -114,5 +125,5 @@
             string secretKey = WebConfigurationManager.AppSettings[SECRET_KEY];
             feedbackViewModel.ReCapthaKey = secretKey;
         }
-    }  
+    }
 }

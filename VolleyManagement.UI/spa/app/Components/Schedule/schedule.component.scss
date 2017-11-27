@@ -1,0 +1,94 @@
+.schedule-table {
+  /* VARIABLES */
+  $schedule-table-text-color: black;
+  $header-bg-color: #DDEBF7;
+  $group1-bg-color: #4472C4;
+  $group2-bg-color: #70AD47;
+  $group1-date-bg-color: #B4C6E7;
+  $group2-date-bg-color: #C6E0B4;
+  $game-schedule-border-color: #E8E8E8;
+  $game-hover-bg-color: #009933;
+
+  /* STYLES */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: $schedule-table-text-color;
+  width: 560px;
+  float: none;
+  clear: both;
+  .headercenter {
+    margin: 0;
+    font-size: 11pt;
+    background-color: $header-bg-color;
+    vertical-align: middle;
+    text-align: center;
+    font-style: normal;
+    font-weight: normal;
+  }
+  .group2 {
+    background-color: $group2-bg-color;
+  }
+  .group1 {
+    background-color: $group1-bg-color;
+  }
+  .group {
+    width: 280px;
+    float: left;
+    font-size: 11pt;
+    .group-header {
+      margin: 0px;
+      text-align: center;
+    }
+    .group-date {
+      margin: 0px;
+      text-align: center;
+      font-size: 9pt;
+    }
+    .group-date-group2  {
+      background-color: $group2-date-bg-color;
+    }
+    .group-date-group1 {
+      background-color: $group1-date-bg-color;
+    }
+  }
+  .games {
+    .game-sch {
+      width: 100%;
+      border-spacing: 0px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      empty-cells: hide;
+      border: 1px solid $game-schedule-border-color;
+      th,
+      td {
+        border: none;
+      }
+      .team-sch {
+        &.win {
+          font-weight: bold;
+        }
+        .teamname {
+          padding-left: 5px;
+        }
+        .teamscore {
+          text-align: center;
+        }
+      }
+      .sets {
+        .set {
+          font-size: 8pt;
+          text-align: center;
+          .hidden {
+            display: none;
+          }
+        }
+        .game-time {
+          font-size: 8pt;
+          text-align: left;
+        }
+      }
+      :hover{
+        background-color: $game-hover-bg-color;
+      }
+    }
+  }
+}

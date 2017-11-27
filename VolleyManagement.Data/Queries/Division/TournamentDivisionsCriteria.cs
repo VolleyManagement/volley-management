@@ -1,14 +1,14 @@
 ﻿namespace VolleyManagement.Data.Queries.Division
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
-    /// Provides criteria for getting all divisions of t
+    /// Provides criteria for getting all divisions of tournament
     /// </summary>
     public class TournamentDivisionsCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Target tournament Id
+        /// Gets or sets target tournament Id
         /// </summary>
         public int TournamentId { get; set; }
     }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VolleyManagement.UI.App_GlobalResources {
+namespace Resources.UI {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace VolleyManagement.UI.App_GlobalResources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class GameResultViews {
@@ -255,6 +255,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string SetsScoreFields {
             get {
                 return ResourceManager.GetString("SetsScoreFields", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Technical Defeat:.
+        /// </summary>
+        public static string SetTechnicalDefeat {
+            get {
+                return ResourceManager.GetString("SetTechnicalDefeat", resourceCulture);
             }
         }
         

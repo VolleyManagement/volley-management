@@ -3,28 +3,49 @@
 @using System.Web.Optimization
 
 @{
-    ViewBag.Title = Resources.TeamViews.EditTeamTitle;
+    ViewBag.Title = Resources.UI.TeamViews.EditTeamTitle;
 }
 
 <h2>@ViewBag.Title</h2>
+<div class="width">
+    <div class="form radius front cab-form">
+        <div class="info float-left">
+            @using (Html.BeginForm("AddPhoto", "Teams", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input name="id" id="id" type="hidden" value="@Model.Id">
+                <input name="fileToUpload" id="fileToUpload" type="file">
+                <input name="button" id="uploadButton" style='background-image: url(@Model.PhotoPath); background-size: cover; padding-top: 70px;' type="button" value="Upload photo">
+                <input name="submit" id="uploadSubmit" type="submit" value="Submit Query">
+            }
+
+            @using (Html.BeginForm("DeletePhoto", "Teams", FormMethod.Post))
+            {
+                <input name="id" id="id" type="hidden" value="@Model.Id">
+                <input name="submitDelete" id="deleteSubmit" type="submit" value="Delete photo">
+            }
+        </div>
+    </div>
+</div>
 
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>@Resources.TeamViews.TeamLegend</legend>
+        <legend>@Resources.UI.TeamViews.TeamLegend</legend>
 
         @Html.HiddenFor(model => model.Id)
         @Html.Partial("_CreateEdit", Model)
 
         <p>
-            <button id="saveTeamButton">@Resources.TeamViews.Save</button>
+            <button id="saveTeamButton">@Resources.UI.TeamViews.Save</button>
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
+    @Html.ActionLink(Resources.UI.TeamViews.BackToList, "Index")
 </div>
 
+@Scripts.Render("~/bundles/teamuploadscripts")
+@Styles.Render("/Content/TeamPhoto.css")

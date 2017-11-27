@@ -1,4 +1,5 @@
-﻿@model VolleyManagement.UI.Areas.Admin.Models.UserViewModel
+﻿@using System.Web.Optimization
+@model VolleyManagement.UI.Areas.Admin.Models.UserViewModel
 
 @{
     ViewBag.Title = "User's details";
@@ -8,13 +9,13 @@
 <div class="panel panel-primary">
     <div class="panel-heading">User @Model.Id
         <div class="pull-right">
-            @if (Model.isBlocked)
+            @if (Model.IsBlocked)
             {
-                @Html.ActionLink("Unblock", "ChangeUserBlocked", new { id = Model.Id, toBlock = false, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+                <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@Model.Id, false)">Unblock</button>
             }
             else
             {
-                @Html.ActionLink("Block", "ChangeUserBlocked", new { id = Model.Id, toBlock = true, backTo = Request.Url.AbsoluteUri }, new { @class = "btn btn-success btn-xs" })
+                <button class="btn btn-success btn-xs" onclick="changeUserBlocked(@Model.Id, true)">Block</button>
             }
         </div>
     </div>
@@ -132,6 +133,6 @@
 
 
 </div>
-
+@Scripts.Render("/Scripts/VMScripts/Admin/ChangeUserBlocked.js")
 
 

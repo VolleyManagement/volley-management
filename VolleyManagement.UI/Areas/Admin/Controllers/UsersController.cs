@@ -2,10 +2,9 @@
 {
     using System;
     using System.Web.Mvc;
+    using Contracts;
     using Contracts.Exceptions;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.UI.Areas.Admin.Models;
+    using Models;
 
     /// <summary>
     /// Provides User management
@@ -20,7 +19,7 @@
         /// <param name="userService">User service</param>
         public UsersController(IUserService userService)
         {
-            this._userService = userService;
+            _userService = userService;
         }
 
         /// <summary>
@@ -62,15 +61,16 @@
         }
 
         /// <summary>
-        /// Get user's details view.
+        /// Change user's state GET action.
         /// </summary>
         /// <param name="id"> User Id. </param>
         /// <param name="toBlock">block or unblock user</param>
-        /// <param name="backTo"> return to url where button click </param>
-        /// <returns> The <see cref="ActionResult"/>. </returns>
-        public ActionResult ChangeUserBlocked(int id, bool toBlock, string backTo)
+        /// <returns>Redirect to Users page</returns>
+        [HttpGet]
+        public ActionResult ChangeUserBlocked(int id, bool toBlock)
         {
             var user = _userService.GetUserDetails(id);
+
             if (user == null)
             {
                 return HttpNotFound();
@@ -82,24 +82,14 @@
             }
             catch (InvalidOperationException ex)
             {
-                return View(
-                    "ErrorPage",
-                    new OperationResultViewModel
-                    {
-                        Message = ex.Message
-                    });
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
             catch (MissingEntityException ex)
             {
-                return View(
-                    "ErrorPage",
-                    new OperationResultViewModel
-                    {
-                        Message = ex.Message
-                    });
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
 
-            return Redirect(backTo);
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
     }
 }

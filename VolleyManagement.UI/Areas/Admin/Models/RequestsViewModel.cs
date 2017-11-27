@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.UI.Areas.Admin.Models
 {
-    using VolleyManagement.Domain.FeedbackAggregate;
+    using Domain.FeedbackAggregate;
 
     /// <summary>
     /// The feedback view model.
@@ -30,7 +30,6 @@
             AdminName = request.AdminName;
             UpdateDate = request.UpdateDate;
             CanClose = request.Status != FeedbackStatusEnum.Closed;
-            CanReply = request.Status < FeedbackStatusEnum.Answered;
         }
 
         /// <summary>
@@ -69,12 +68,7 @@
         public string AdminName { get; set; }
 
         /// <summary>
-        /// Gets or sets if user can reply.
-        /// </summary>
-        public bool CanReply { get; set; }
-
-        /// <summary>
-        /// Gets or sets if user can close.
+        /// Gets or sets a value indicating whether gets or sets if user can close.
         /// </summary>
         public bool CanClose { get; set; }
     }

@@ -1,10 +1,11 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
+namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Domain;
+    using Domain.GamesAggregate;
+    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// GameViewModel class.
@@ -32,9 +33,29 @@
         public string GameDate { get; set; }
 
         /// <summary>
+        /// Gets or sets the date and time of the game.
+        /// </summary>
+        public DateTime Date { get; set; }
+
+        /// <summary>
         /// Gets or sets the game result.
         /// </summary>
         public GameResult Result { get; set; }
+
+        /// <summary>
+        /// Gets or sets the round for the game.
+        /// </summary>
+        public int Round { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the division where game result belongs.
+        /// </summary>
+        public int DivisionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the пкщгз where game result belongs.
+        /// </summary>
+        public int GroupId { get; set; }
 
         /// <summary>
         /// Maps domain model of game result to view model of game.
@@ -49,19 +70,21 @@
                 HomeTeamName = gameResult.HomeTeamName,
                 AwayTeamName = gameResult.AwayTeamName,
                 GameDate = gameResult.GameDate.HasValue ? gameResult.GameDate.Value.ToString("yyyy-MM-ddTHH:mm:sszzz") : string.Empty,
+                Round = gameResult.Round,
                 Result = new GameResult
                 {
-                    TotalScore = new Score { Home = gameResult.HomeSetsScore, Away = gameResult.AwaySetsScore },
-                    IsTechnicalDefeat = gameResult.IsTechnicalDefeat,
-                    SetScores = new List<Score>
-                        {
-                            new Score { Home = gameResult.HomeSet1Score, Away = gameResult.AwaySet1Score },
-                            new Score { Home = gameResult.HomeSet2Score, Away = gameResult.AwaySet2Score },
-                            new Score { Home = gameResult.HomeSet3Score, Away = gameResult.AwaySet3Score },
-                            new Score { Home = gameResult.HomeSet4Score, Away = gameResult.AwaySet4Score },
-                            new Score { Home = gameResult.HomeSet5Score, Away = gameResult.AwaySet5Score }
-                        }
-                }
+                    TotalScore = new ScoreViewModel { Home = gameResult.Result.GameScore.Home, Away = gameResult.Result.GameScore.Away },
+                    IsTechnicalDefeat = gameResult.Result.GameScore.IsTechnicalDefeat,
+                    SetScores = gameResult.Result.SetScores.Select(item => new ScoreViewModel
+                    {
+                        Home = item.Home,
+                        Away = item.Away,
+                        IsTechnicalDefeat = item.IsTechnicalDefeat
+                    }).ToList()
+                },
+                DivisionId = gameResult.DivisionId,
+                GroupId = gameResult.GroupId,
+                Date = gameResult.GameDate.GetValueOrDefault()
             };
         }
 
@@ -75,19 +98,19 @@
             /// </summary>
             public GameResult()
             {
-                TotalScore = new Score();
-                SetScores = Enumerable.Repeat(new Score(), Constants.GameResult.MAX_SETS_COUNT).ToList();
+                TotalScore = new ScoreViewModel();
+                SetScores = Enumerable.Repeat(new ScoreViewModel(), Constants.GameResult.MAX_SETS_COUNT).ToList();
             }
 
             /// <summary>
             /// Gets or sets the final score of the game.
             /// </summary>
-            public Score TotalScore { get; set; }
+            public ScoreViewModel TotalScore { get; set; }
 
             /// <summary>
             /// Gets or sets the set scores.
             /// </summary>
-            public List<Score> SetScores { get; set; }
+            public List<ScoreViewModel> SetScores { get; set; }
 
             /// <summary>
             /// Gets or sets a value indicating whether the technical defeat has taken place.

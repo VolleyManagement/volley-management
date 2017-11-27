@@ -2,7 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.Teams;
+    using UI.Areas.Mvc.ViewModels.Teams;
 
     public class TeamNameViewModelBuilder
     {

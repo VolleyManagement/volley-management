@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VolleyManagement.UI.App_GlobalResources {
+namespace Resources.UI {
     using System;
     
     
@@ -57,6 +57,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This game result can not be change, because of playoff scheme. Edit operation can not be applied..
+        /// </summary>
+        public static string GameResultNotEdited {
+            get {
+                return ResourceManager.GetString("GameResultNotEdited", resourceCulture);
             }
         }
         

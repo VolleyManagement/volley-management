@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
 
     $('#side-menu').metisMenu();
 
@@ -7,8 +7,8 @@ $(function() {
 //Loads the correct sidebar on window load,
 //collapses the sidebar on window resize.
 // Sets the min-height of #page-wrapper to window size
-$(function() {
-    $(window).bind("load resize", function() {
+$(function () {
+    $(window).bind("load resize", function () {
         topOffset = 50;
         width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
         if (width < 768) {
@@ -34,4 +34,18 @@ $(function() {
     if (element.is('li')) {
         element.addClass('active');
     }*/
+});
+
+var replyPopup = document.getElementById('replyPopup');
+var feedbackId = document.getElementById('feedbackId');
+
+// function to display popup
+function div_show(id) {
+    replyPopup.style.display = "block";
+    feedbackId.value = id;
+}
+
+// function to hide Popup
+$("#close").click(function() {
+    replyPopup.style.display = "none";
 });

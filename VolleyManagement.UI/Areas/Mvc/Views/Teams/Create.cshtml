@@ -2,7 +2,7 @@
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.Teams.TeamViewModel
 
 @{
-    ViewBag.Title = Resources.TeamViews.CreateTeamTitle;
+    ViewBag.Title = Resources.UI.TeamViews.CreateTeamTitle;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -12,16 +12,16 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>@Resources.TeamViews.TeamLegend</legend>
+        <legend>@Resources.UI.TeamViews.TeamLegend</legend>
 
         @Html.Partial("_CreateEdit", Model)
 
         <p>
-            <button id="createTeamButton">@Resources.TeamViews.Create</button>
+            <button id="createTeamButton">@Resources.UI.TeamViews.Create</button>
         </p>
     </fieldset>
 
     <div>
-        @Html.ActionLink(Resources.TeamViews.BackToList, "Index")
+        @Html.ActionLink(Resources.UI.TeamViews.BackToList, "Index")
     </div>
 }

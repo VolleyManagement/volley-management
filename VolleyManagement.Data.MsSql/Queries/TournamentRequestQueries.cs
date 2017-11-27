@@ -4,11 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.TournamentRequest;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.TournamentRequest;
+    using Domain.TournamentRequestAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides Object Query implementation for Tournament Requests
@@ -31,7 +31,7 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public TournamentRequestQueries(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
         }
 
         #endregion
@@ -70,7 +70,7 @@
         {
             return _unitOfWork.Context.TournamentRequests
                                       .Where(r => r.TeamId == criteria.TeamId)
-                                      .Where(r => r.TournamentId == criteria.TournamentId)
+                                      .Where(r => r.GroupId == criteria.GroupId)
                                       .Select(GetRequestMapping())
                                       .SingleOrDefault();
         }
@@ -88,7 +88,7 @@
                     Id = t.Id,
                     UserId = t.UserId,
                     TeamId = t.TeamId,
-                    TournamentId = t.TournamentId
+                    GroupId = t.GroupId
                 };
         }
 

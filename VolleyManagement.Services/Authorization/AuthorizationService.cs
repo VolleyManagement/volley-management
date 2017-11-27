@@ -3,11 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Data.Contracts;
+    using Data.Queries.Common;
+    using Domain.RolesAggregate;
 
     /// <summary>
     /// Provides way to check permissions for particular operation
@@ -38,8 +38,8 @@
                 throw new ArgumentException("getFeaturesQuery");
             }
 
-            this._userService = userService;
-            this._getOperationsQuery = getOperationsQuery;
+            _userService = userService;
+            _getOperationsQuery = getOperationsQuery;
         }
 
         #endregion
@@ -50,7 +50,7 @@
         /// <param name="operation">Operation to check</param>
         public void CheckAccess(AuthOperation operation)
         {
-            var allowedOperations = this.GetAllUserOperations();
+            var allowedOperations = GetAllUserOperations();
             if (!allowedOperations.Contains(operation))
             {
                 throw new AuthorizationException();
@@ -90,15 +90,15 @@
                 throw new ArgumentNullException("Requested operation shouldn't be null!");
             }
 
-            return this.GetAllowedOperations(new List<AuthOperation> { requestedOperation });
+            return GetAllowedOperations(new List<AuthOperation> { requestedOperation });
         }
 
         #region Private
 
         private List<AuthOperation> GetAllUserOperations()
         {
-            var userId = this._userService.GetCurrentUserId();
-            return this._getOperationsQuery.Execute(new FindByUserIdCriteria() { UserId = userId });
+            var userId = _userService.GetCurrentUserId();
+            return _getOperationsQuery.Execute(new FindByUserIdCriteria() { UserId = userId });
         }
 
         #endregion

@@ -5,9 +5,9 @@
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Web.Mvc;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Domain.GamesAggregate;
+    using Domain.TournamentsAggregate;
+    using Resources.UI;
 
     /// <summary>
     /// Game to be scheduled in the tournament view model
@@ -67,10 +67,16 @@
         /// <summary>
         /// Gets or sets date of the game.
         /// </summary>
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         [Display(Name = "GameDateTime", ResourceType = typeof(ViewModelResources))]
         [Required(ErrorMessageResourceName = "FieldRequired", ErrorMessageResourceType = typeof(ViewModelResources))]
         public DateTime GameDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets time of the game.
+        /// </summary>
+        [DataType(DataType.Time)]
+        public TimeSpan GameTime { get; set; }
 
         /// <summary>
         /// Gets or sets the game number of the game in the tournament.
@@ -78,13 +84,13 @@
         public byte GameNumber { get; set; }
 
         /// <summary>
-        /// Gets an identifier whether this game is a first round game.
+        /// Gets a value indicating whether gets an identifier whether this game is a first round game.
         /// </summary>
         public bool IsFirstRoundGame
         {
             get
             {
-                return this.Round == 1;
+                return Round == 1;
             }
         }
 
@@ -102,7 +108,8 @@
                 HomeTeamId = game.HomeTeamId,
                 AwayTeamId = game.AwayTeamId,
                 Round = game.Round,
-                GameDate = game.GameDate.Value,
+                GameDate = game.GameDate.Value.Date,
+                GameTime = game.GameDate.Value.TimeOfDay,
                 GameNumber = game.GameNumber
             };
         }
@@ -115,13 +122,13 @@
         {
             return new Game
             {
-                Id = this.Id,
-                Round = this.Round,
-                TournamentId = this.TournamentId,
-                HomeTeamId = this.HomeTeamId,
-                AwayTeamId = this.AwayTeamId,
-                GameDate = this.GameDate,
-                GameNumber = this.GameNumber
+                Id = Id,
+                Round = Round,
+                TournamentId = TournamentId,
+                HomeTeamId = HomeTeamId,
+                AwayTeamId = AwayTeamId,
+                GameDate = new DateTime(GameDate.Year, GameDate.Month, GameDate.Day, GameTime.Hours, GameTime.Minutes, GameTime.Seconds),
+                GameNumber = GameNumber
             };
         }
     }

@@ -3,23 +3,25 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Crosscutting.Contracts.Providers;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Data.Queries.Tournament;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using DivisionConstants = VolleyManagement.Domain.Constants.Division;
-    using GroupConstants = VolleyManagement.Domain.Constants.Group;
-    using TournamentConstants = VolleyManagement.Domain.Constants.Tournament;
-    using TournamentResources = VolleyManagement.Domain.Properties.Resources;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Crosscutting.Contracts.Providers;
+    using Data.Contracts;
+    using Data.Exceptions;
+    using Data.Queries.Common;
+    using Data.Queries.Division;
+    using Data.Queries.Group;
+    using Data.Queries.Team;
+    using Data.Queries.Tournament;
+    using Domain.GamesAggregate;
+    using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentsAggregate;
+    using DivisionConstants = Domain.Constants.Division;
+    using GroupConstants = Domain.Constants.Group;
+    using TournamentConstants = Domain.Constants.Tournament;
+    using TournamentResources = Domain.Properties.Resources;
 
     /// <summary>
     /// Defines TournamentService
@@ -59,7 +61,11 @@
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
         private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTournamentTeamsQuery;
+        private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
+        private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
+        private readonly IQuery<Tournament, TournamentByGroupCriteria> _getTournamenrByGroupQuery;
+        private readonly IQuery<List<Tournament>, OldTournamentsCriteria> _getOldTournamentsQuery;
 
         #endregion
 
@@ -74,7 +80,11 @@
         /// <param name="getByIdQuery">Get tournament by id query.</param>
         /// <param name="getAllTeamsQuery">Get All Teams query.</param>
         /// <param name="getAllTournamentTeamsQuery">Get All Tournament Teams query.</param>
+        /// <param name="getAllTournamentDivisionsQuery">Get All Tournament Divisions query.</param>
+        /// <param name="getAllTournamentGroupsQuery">Get All Tournament Groups query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
+        /// <param name="getTournamenrByGroupQuery">Get tournament by given group query.</param>
+        /// <param name="getOldTournamentsQuery">Get old tournaments query.</param>
         /// <param name="authService">Authorization service</param>
         /// <param name="gameService">The game service</param>
         public TournamentService(
@@ -84,7 +94,11 @@
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
             IQuery<List<Team>, FindByTournamentIdCriteria> getAllTournamentTeamsQuery,
+            IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
+            IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
+            IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
+            IQuery<List<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery,
             IAuthorizationService authService,
             IGameService gameService)
         {
@@ -92,11 +106,14 @@
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
-            _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
             _getAllTeamsQuery = getAllTeamsQuery;
             _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
-            _authService = authService;
+            _getAllTournamentDivisionsQuery = getAllTournamentDivisionsQuery;
+            _getAllTournamentGroupsQuery = getAllTournamentGroupsQuery;
             _getTournamentDtoQuery = getTournamentDtoQuery;
+            _getTournamenrByGroupQuery = getTournamenrByGroupQuery;
+            _getOldTournamentsQuery = getOldTournamentsQuery;
+            _authService = authService;
             _gameService = gameService;
         }
 
@@ -110,6 +127,8 @@
         /// <returns>All tournaments</returns>
         public List<Tournament> Get()
         {
+            ArchiveOld();
+
             return _getAllQuery.Execute(new GetAllCriteria());
         }
 
@@ -120,6 +139,17 @@
         public List<Tournament> GetActual()
         {
             return GetFilteredTournaments(_actualStates);
+        }
+
+        /// <summary>
+        /// Returns only archived tournaments
+        /// </summary>
+        /// <returns>Archived tournaments</returns>
+        public List<Tournament> GetArchived()
+        {
+            _authService.CheckAccess(AuthOperations.Tournaments.ViewArchived);
+
+            return GetArchivedTournaments();
         }
 
         /// <summary>
@@ -139,6 +169,26 @@
         public List<Team> GetAllTournamentTeams(int tournamentId)
         {
             return _getAllTournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+        }
+
+        /// <summary>
+        /// Returns all divisions for specific tournament
+        /// </summary>
+        /// <param name="tournamentId">Id of Tournament to get divisions list</param>
+        /// <returns>Tournament divisions</returns>
+        public List<Division> GetAllTournamentDivisions(int tournamentId)
+        {
+            return _getAllTournamentDivisionsQuery.Execute(new TournamentDivisionsCriteria { TournamentId = tournamentId });
+        }
+
+        /// <summary>
+        /// Returns all groups for specific tournament
+        /// </summary>
+        /// <param name="divisionId">Id of Division to get group list</param>
+        /// <returns>Tournament groups</returns>
+        public List<Group> GetAllTournamentGroups(int divisionId)
+        {
+            return _getAllTournamentGroupsQuery.Execute(new DivisionGroupsCriteria { DivisionId = divisionId });
         }
 
         /// <summary>
@@ -220,36 +270,98 @@
         {
             _authService.CheckAccess(AuthOperations.Tournaments.Delete);
 
+            RemoveAllRelatedDataFromTournament(id);
             _tournamentRepository.Remove(id);
             _tournamentRepository.UnitOfWork.Commit();
         }
 
         /// <summary>
-        /// Adds teams to tournament
+        /// Archive tournament by id.
         /// </summary>
-        /// <param name="teams">Teams for adding to tournament.</param>
-        /// <param name="tournamentId">Tournament to assign team.</param>
-        public void AddTeamsToTournament(IEnumerable<Team> teams, int tournamentId)
+        /// <param name="id">The id of tournament to archive.</param>
+        public void Archive(int id)
+        {
+            _authService.CheckAccess(AuthOperations.Tournaments.Archive);
+
+            var getTournamentToArchive = Get(id);
+
+            if (getTournamentToArchive == null)
+            {
+                throw new ArgumentException(
+                    TournamentResources.TournamentWasNotFound);
+            }
+
+            Archive(getTournamentToArchive);
+            _tournamentRepository.UnitOfWork.Commit();
+        }
+
+        /// <summary>
+        /// Method for autho-archiving old tournaments.
+        /// Finds old tournaments to be archived.
+        /// As we don't have reliable task scheduling at the moment of writing,
+        /// we call this method every time user retrieves list of tournaments to make sure we do not show outdated tournaments.
+        /// </summary>
+        public void ArchiveOld()
+        {
+            var criteria = new OldTournamentsCriteria();
+            criteria.CheckDate = TimeProvider.Current.UtcNow.AddYears(-TournamentConstants.YEARS_AFTER_END_TO_BE_OLD);
+
+            // Gets old tournaments that need to be archived
+            var old = _getOldTournamentsQuery.Execute(criteria);
+
+            if (Enumerable.Any(old))
+            {
+                foreach (var item in old)
+                {
+                    Archive(item);
+                }
+
+                _tournamentRepository.UnitOfWork.Commit();
+            }
+        }
+
+        /// <summary>
+        /// Adds selected teams to tournament
+        /// </summary>
+        /// <param name="groupTeam">Teams related to specific groups that will be added to tournament</param>
+        public void AddTeamsToTournament(List<TeamTournamentAssignmentDto> groupTeam)
         {
             _authService.CheckAccess(AuthOperations.Tournaments.ManageTeams);
-            var allTeams = GetAllTournamentTeams(tournamentId);
 
-            foreach (var team in teams)
+            var groupTeamCount = groupTeam.Count;
+
+            if (groupTeamCount == 0)
             {
-                var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == team.Id);
+                throw new ArgumentException(
+                    TournamentResources.CollectionIsEmpty);
+            }
+
+            var tournamentId = GetTournamentByGroup(groupTeam[0].GroupId).Id;
+            var allTeams = GetAllTournamentTeams(tournamentId);
+            int numberOfTeamAlreadyExist = 0;
+
+            foreach (var item in groupTeam)
+            {
+                var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == item.TeamId);
+
                 if (tournamentTeam == null)
                 {
-                    _tournamentRepository.AddTeamToTournament(team.Id, tournamentId);
+                    _tournamentRepository.AddTeamToTournament(item.TeamId, item.GroupId);
                 }
                 else
                 {
-                    throw new ArgumentException(
-                        TournamentResources.TeamNameInTournamentNotUnique, tournamentTeam.Name);
+                    numberOfTeamAlreadyExist++;
                 }
             }
 
-            var count = allTeams.Count() + teams.Count();
-            CreateSchedule(tournamentId, count);
+            if (numberOfTeamAlreadyExist != 0)
+            {
+                throw new ArgumentException(
+                    TournamentResources.TeamNameInCurrentGroupOfTournamentNotUnique);
+            }
+
+            var totalTeamCount = allTeams.Count + groupTeamCount;
+            CreateSchedule(tournamentId, totalTeamCount);
 
             _tournamentRepository.UnitOfWork.Commit();
         }
@@ -304,6 +416,16 @@
             return numberOfRounds;
         }
 
+        /// <summary>
+        /// Gets tournament by its group
+        /// </summary>
+        /// <param name="groupId">id of group </param>
+        /// <returns>Return current tournament.</returns>
+        public Tournament GetTournamentByGroup(int groupId)
+        {
+            return _getTournamenrByGroupQuery.Execute(new TournamentByGroupCriteria { GroupId = groupId });
+        }
+
         #endregion
 
         #region Private
@@ -340,9 +462,69 @@
             return Convert.ToByte(2 * GetNumberOfRoundsByScheme1(teamCount));
         }
 
+        /// <summary>
+        /// Archive tournament.
+        /// </summary>
+        /// <param name="tournament">Tournament to archive.</param>
+        private void Archive(Tournament tournament)
+        {
+            tournament.IsArchived = true;
+
+            _tournamentRepository.Update(tournament);
+        }
+
         private List<Tournament> GetFilteredTournaments(IEnumerable<TournamentStateEnum> statesFilter)
         {
-            return Get().Where(t => statesFilter.Contains(t.State)).ToList();
+            return Get().Where(t => statesFilter.Contains(t.State) && !t.IsArchived).ToList();
+        }
+
+        private List<Tournament> GetArchivedTournaments()
+        {
+            return Get().Where(t => t.IsArchived).ToList();
+        }
+
+        private void RemoveAllRelatedDataFromTournament(int tournamentId)
+        {
+            RemoveAllTeamsFromTournament(GetAllTournamentTeams(tournamentId), tournamentId);
+            RemoveAllDivisionsFromTournament(GetAllTournamentDivisions(tournamentId));
+
+            _gameService.RemoveAllGamesInTournament(tournamentId);
+        }
+
+        private void RemoveAllTeamsFromTournament(List<Team> allTeamsInTournament, int tournamentId)
+        {
+            if (allTeamsInTournament != null)
+            {
+                foreach (var team in allTeamsInTournament)
+                {
+                    try
+                    {
+                        _tournamentRepository.RemoveTeamFromTournament(team.Id, tournamentId);
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.TeamInTournamentNotFound, ex);
+                    }
+                }
+            }
+        }
+
+        private void RemoveAllDivisionsFromTournament(List<Division> allDivisionsInTournament)
+        {
+            if (allDivisionsInTournament != null)
+            {
+                foreach (var division in allDivisionsInTournament)
+                {
+                    try
+                    {
+                        _tournamentRepository.RemoveDivision(division.Id);
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        throw new MissingEntityException(ServiceResources.ExceptionMessages.DivisionInTournamentNotFound, ex);
+                    }
+                }
+            }
         }
 
         private void ValidateTournament(Tournament tournament, bool isUpdate = false)
@@ -557,7 +739,7 @@
 
         private void CreateSchedule(int tournamentId, int allTeamsCount)
         {
-            var tournament = this.Get(tournamentId);
+            var tournament = Get(tournamentId);
             if (tournament.Scheme == TournamentSchemeEnum.PlayOff)
             {
                 if (allTeamsCount > DONT_CREATE_SCHEDULE_TEAMS_COUNT)

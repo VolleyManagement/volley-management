@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Crosscutting.Specifications
 {
-    using VolleyManagement.Crosscutting.Contracts.Specifications;
+    using Contracts.Specifications;
 
     /// <summary>
     /// The composite specification.

@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.User
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Criteria to find users assigned to specific role
@@ -8,7 +8,7 @@
     public class FindByRoleCriteria : IQueryCriteria
     {
         /// <summary>
-        /// Id of the role to search
+        /// Gets or sets id of the role to search
         /// </summary>
         public int RoleId { get; set; }
     }

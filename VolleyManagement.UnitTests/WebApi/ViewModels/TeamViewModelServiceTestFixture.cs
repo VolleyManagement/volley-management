@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Teams;
+    using UI.Areas.WebApi.ViewModels.Teams;
 
     /// <summary>
     /// Class for generating test data

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -11,7 +12,6 @@
     using Contracts;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Domain.PlayersAggregate;
@@ -36,16 +36,9 @@
         private const string ROUTE_VALUES_KEY = "action";
         private const string ASSERT_FAIL_VIEW_MODEL_MESSAGE = "View model must be returned to user.";
         private const string ASSERT_FAIL_JSON_RESULT_MESSAGE = "Json result must be returned to user.";
-        private const string PLAYER_NAME_TO_SEARCH = "Player Name";
+        private const string PLAYER_NAME_TO_SEARCH = "FirstNameA";
         private const string LINK_SUCCESSFULL_MESSAGE = "After admin approval you will be linked with";
         private const string LINK_ERROR_MESSAGE = "Can't find User Id";
-
-        private readonly Mock<IPlayerService> _playerServiceMock = new Mock<IPlayerService>();
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
-        private readonly Mock<HttpContextBase> _httpContextMock = new Mock<HttpContextBase>();
-        private readonly Mock<HttpRequestBase> _httpRequestMock = new Mock<HttpRequestBase>();
-        private readonly Mock<ICurrentUserService> _currentUserServiceMock = new Mock<ICurrentUserService>();
-        private readonly Mock<IRequestService> _requestServiceMock = new Mock<IRequestService>();
 
         private readonly List<AuthOperation> _allowedOperationsIndex = new List<AuthOperation>
                 {
@@ -56,8 +49,12 @@
 
         private readonly AuthOperation _allowedOperationDetails = AuthOperations.Players.Edit;
 
-        private IKernel _kernel;
-        private PlayersController _sut;
+        private Mock<IPlayerService> _playerServiceMock;
+        private Mock<IAuthorizationService> _authServiceMock;
+        private Mock<HttpContextBase> _httpContextMock;
+        private Mock<HttpRequestBase> _httpRequestMock;
+        private Mock<ICurrentUserService> _currentUserServiceMock;
+        private Mock<IRequestService> _requestServiceMock;
 
         /// <summary>
         /// Initializes test data
@@ -65,13 +62,12 @@
         [TestInitialize]
         public void TestInit()
         {
-            this._kernel = new StandardKernel();
-            this._kernel.Bind<IPlayerService>().ToConstant(this._playerServiceMock.Object);
-            this._kernel.Bind<IAuthorizationService>().ToConstant(this._authServiceMock.Object);
-            this._kernel.Bind<ICurrentUserService>().ToConstant(this._currentUserServiceMock.Object);
-            this._kernel.Bind<IRequestService>().ToConstant(this._requestServiceMock.Object);
-            this._httpContextMock.SetupGet(c => c.Request).Returns(this._httpRequestMock.Object);
-            this._sut = this._kernel.Get<PlayersController>();
+            _playerServiceMock = new Mock<IPlayerService>();
+            _authServiceMock = new Mock<IAuthorizationService>();
+            _httpContextMock = new Mock<HttpContextBase>();
+            _httpRequestMock = new Mock<HttpRequestBase>();
+            _currentUserServiceMock = new Mock<ICurrentUserService>();
+            _requestServiceMock = new Mock<IRequestService>();
         }
 
         /// <summary>
@@ -82,7 +78,8 @@
         public void DeletePostAction_ExistingPlayer_PlayerIsDeleted()
         {
             // Act
-            var result = this._sut.Delete(TEST_PLAYER_ID);
+            var sut = BuildSUT();
+            var result = sut.Delete(TEST_PLAYER_ID);
 
             // Assert
             VerifyDelete(TEST_PLAYER_ID, Times.Once());
@@ -99,8 +96,10 @@
             // Arrange
             SetupDeleteThrowsMissingEntityException();
 
+            var sut = BuildSUT();
+
             // Act
-            var result = this._sut.Delete(TEST_PLAYER_ID);
+            var result = sut.Delete(TEST_PLAYER_ID);
 
             // Assert
             VerifyDelete(TEST_PLAYER_ID, Times.Once());
@@ -117,8 +116,10 @@
             // Arrange
             SetupDeleteThrowsValidationException();
 
+            var sut = BuildSUT();
+
             // Act
-            var result = this._sut.Delete(TEST_PLAYER_ID);
+            var result = sut.Delete(TEST_PLAYER_ID);
 
             // Assert
             VerifyDelete(TEST_PLAYER_ID, Times.Once());
@@ -136,10 +137,13 @@
             var testData = MakeTestPlayers();
             var expected = MakePlayerNameViewModels(testData);
             SetupGetAll(testData);
-            SetupControllerContext();
+
+            var sut = BuildSUT();
+            SetupControllerContext(sut);
 
             // Act
-            var actual = TestExtensions.GetModel<PlayersListReferrerViewModel>(this._sut.Index(null, string.Empty)).Model.List;
+            var actual = TestExtensions.GetModel<PlayersListReferrerViewModel>(
+                sut.Index(null, string.Empty)).Model.List;
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new PlayerNameViewModelComparer());
@@ -158,16 +162,20 @@
             var expected = GetPlayerNameViewModelsWithPlayerName(MakePlayerNameViewModels(testData), PLAYER_NAME_TO_SEARCH);
             SetupGetAll(testData);
             SetupRequestRawUrl("/Players");
-            SetupControllerContext();
+
+            var sut = BuildSUT();
+            SetupControllerContext(sut);
 
             // Act
-            var actual = TestExtensions.GetModel<PlayersListReferrerViewModel>(this._sut.Index(null, PLAYER_NAME_TO_SEARCH));
+            var actual = TestExtensions.GetModel<PlayersListReferrerViewModel>(
+                sut.Index(null, PLAYER_NAME_TO_SEARCH));
+
             var playersList = actual.Model.List;
 
             // Assert
             CollectionAssert.AreEqual(expected, playersList, new PlayerNameViewModelComparer());
             VerifyGetAllowedOperations(_allowedOperationsIndex, Times.Once());
-            Assert.AreEqual(actual.Referer, this._sut.Request.RawUrl);
+            Assert.AreEqual(actual.Referer, sut.Request.RawUrl);
         }
 
         /// <summary>
@@ -181,8 +189,10 @@
             var testData = MakeTestPlayers();
             SetupGetAll(testData);
 
+            var sut = BuildSUT();
+
             // Act
-            var result = this._sut.Index(NON_EXISTENT_PAGE_NUMBER) as RedirectToRouteResult;
+            var result = sut.Index(NON_EXISTENT_PAGE_NUMBER) as RedirectToRouteResult;
 
             // Assert
             VerifyRedirect(INDEX_ACTION_NAME, result);
@@ -198,8 +208,10 @@
             // Arrange
             SetupGet(TEST_PLAYER_ID, null);
 
+            var sut = BuildSUT();
+
             // Act
-            var result = this._sut.Details(TEST_PLAYER_ID);
+            var result = sut.Details(TEST_PLAYER_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -217,8 +229,10 @@
             var expected = MakeTestPlayerViewModel(TEST_PLAYER_ID);
             SetupGet(TEST_PLAYER_ID, testData);
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<PlayerRefererViewModel>(this._sut.Details(TEST_PLAYER_ID));
+            var actual = TestExtensions.GetModel<PlayerRefererViewModel>(sut.Details(TEST_PLAYER_ID));
 
             // Assert
             TestHelper.AreEqual<PlayerViewModel>(expected, actual.Model, new PlayerViewModelComparer());
@@ -232,7 +246,8 @@
             string expected = LINK_SUCCESSFULL_MESSAGE;
             MockCurrenUserService(TEST_USER_ID);
             MockRequestService(TEST_USER_ID, TEST_PLAYER_ID);
-            var sut = _kernel.Get<PlayersController>();
+
+            var sut = BuildSUT();
 
             // Act
             string actual = sut.LinkWithUser(TEST_PLAYER_ID);
@@ -248,7 +263,8 @@
             string expected = LINK_ERROR_MESSAGE;
             MockCurrenUserService(USER_INVALID_ID);
             MockRequestService(USER_INVALID_ID, TEST_PLAYER_ID);
-            var sut = _kernel.Get<PlayersController>();
+
+            var sut = BuildSUT();
 
             // Act
             string actual = sut.LinkWithUser(TEST_PLAYER_ID);
@@ -264,11 +280,11 @@
         public void CreateGetAction_GetView_ReturnsViewWithDefaultData()
         {
             // Arrange
-            var controller = _kernel.Get<PlayersController>();
+            var sut = BuildSUT();
             var expected = new PlayerViewModel();
 
             // Act
-            var actual = TestExtensions.GetModel<PlayerViewModel>(controller.Create());
+            var actual = TestExtensions.GetModel<PlayerViewModel>(sut.Create());
 
             // Assert
             TestHelper.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
@@ -283,10 +299,12 @@
         {
             // Arrange
             var testData = MakeTestPlayerViewModel();
-            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
+            var sut = BuildSUT();
+
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Create(testData));
+            var result = TestExtensions.GetModel<PlayerViewModel>(sut.Create(testData));
 
             // Assert
             VerifyCreate(Times.Never());
@@ -302,9 +320,10 @@
         {
             // Arrange
             var testData = MakeTestPlayerViewModel();
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.Create(testData) as RedirectToRouteResult;
+            var result = sut.Create(testData) as RedirectToRouteResult;
 
             // Assert
             VerifyCreate(Times.Once());
@@ -322,8 +341,10 @@
             var testData = MakeTestPlayerViewModel();
             SetupCreateThrowsArgumentException();
 
+            var sut = BuildSUT();
+
             // Act
-            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Create(testData));
+            var result = TestExtensions.GetModel<PlayerViewModel>(sut.Create(testData));
 
             // Assert
             VerifyCreate(Times.Once());
@@ -341,8 +362,10 @@
             var testData = MakeTestPlayerViewModel();
             SetupCreateThrowsValidationException();
 
+            var sut = BuildSUT();
+
             // Act
-            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Create(testData));
+            var result = TestExtensions.GetModel<PlayerViewModel>(sut.Create(testData));
 
             // Assert
             VerifyCreate(Times.Once());
@@ -357,9 +380,10 @@
         {
             // Arrange
             SetupGet(TEST_PLAYER_ID, null);
+            var sut = BuildSUT();
 
             // Act
-            var result = this._sut.Edit(TEST_PLAYER_ID);
+            var result = sut.Edit(TEST_PLAYER_ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
@@ -376,8 +400,10 @@
             var expected = MakeTestPlayerViewModel(TEST_PLAYER_ID);
             SetupGet(TEST_PLAYER_ID, testData);
 
+            var sut = BuildSUT();
+
             // Act
-            var actual = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(TEST_PLAYER_ID));
+            var actual = TestExtensions.GetModel<PlayerViewModel>(sut.Edit(TEST_PLAYER_ID));
 
             // Assert
             TestHelper.AreEqual<PlayerViewModel>(expected, actual, new PlayerViewModelComparer());
@@ -393,8 +419,10 @@
             // Arrange
             var testData = MakeTestPlayerViewModel();
 
+            var sut = BuildSUT();
+
             // Act
-            var result = this._sut.Edit(testData) as RedirectToRouteResult;
+            var result = sut.Edit(testData) as RedirectToRouteResult;
 
             // Assert
             VerifyEdit(Times.Once());
@@ -412,8 +440,10 @@
             var testData = MakeTestPlayerViewModel();
             SetupEditThrowsMissingEntityException();
 
+            var sut = BuildSUT();
+
             // Act
-            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(testData));
+            var result = TestExtensions.GetModel<PlayerViewModel>(sut.Edit(testData));
 
             // Assert
             VerifyEdit(Times.Once());
@@ -431,8 +461,10 @@
             var testData = MakeTestPlayerViewModel();
             SetupEditThrowsValidationException();
 
+            var sut = BuildSUT();
+
             // Act
-            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(testData));
+            var result = TestExtensions.GetModel<PlayerViewModel>(sut.Edit(testData));
 
             // Assert
             VerifyEdit(Times.Once());
@@ -448,14 +480,24 @@
         {
             // Arrange
             var testData = MakeTestPlayerViewModel();
-            this._sut.ModelState.AddModelError(string.Empty, string.Empty);
+            var sut = BuildSUT();
+            sut.ModelState.AddModelError(string.Empty, string.Empty);
 
             // Act
-            var result = TestExtensions.GetModel<PlayerViewModel>(this._sut.Edit(testData));
+            var result = TestExtensions.GetModel<PlayerViewModel>(sut.Edit(testData));
 
             // Assert
             VerifyEdit(Times.Never());
             Assert.IsNotNull(result, ASSERT_FAIL_VIEW_MODEL_MESSAGE);
+        }
+
+        private PlayersController BuildSUT()
+        {
+            return new PlayersController(
+                _playerServiceMock.Object,
+                _authServiceMock.Object,
+                _currentUserServiceMock.Object,
+                _requestServiceMock.Object);
         }
 
         private List<Player> MakeTestPlayers()
@@ -465,12 +507,12 @@
 
         private List<PlayerNameViewModel> MakePlayerNameViewModels(List<Player> players)
         {
-            return players.Select(p => new PlayerNameViewModel { Id = p.Id, FullName = p.LastName + " " + p.FirstName }).ToList();
+            return players.Select(p => new PlayerNameViewModel { Id = p.Id, FirstName = p.FirstName, LastName = p.LastName }).ToList();
         }
 
         private List<PlayerNameViewModel> GetPlayerNameViewModelsWithPlayerName(List<PlayerNameViewModel> players, string name)
         {
-            return players.Where(p => p.FullName.Contains(name)).ToList();
+            return players.Where(p => p.FirstName.Contains(name) || p.LastName.Contains(name)).ToList();
         }
 
         private Player MakeTestPlayer(int playerId)
@@ -490,73 +532,74 @@
 
         private void SetupGetAll(List<Player> teams)
         {
-            this._playerServiceMock.Setup(ps => ps.Get()).Returns(teams.AsQueryable());
+            _playerServiceMock.Setup(ps => ps.Get()).Returns(teams.AsQueryable());
         }
 
         private void SetupGet(int playerId, Player player)
         {
-            this._playerServiceMock.Setup(tr => tr.Get(playerId)).Returns(player);
+            _playerServiceMock.Setup(tr => tr.Get(playerId)).Returns(player);
         }
 
         private void SetupCreateThrowsArgumentException()
         {
-            this._playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
+            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
                 .Throws(new ArgumentException(string.Empty, string.Empty));
         }
 
         private void SetupCreateThrowsValidationException()
         {
-            this._playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
+            _playerServiceMock.Setup(ts => ts.Create(It.IsAny<Player>()))
                 .Throws(new ValidationException(string.Empty));
         }
 
         private void SetupEditThrowsMissingEntityException()
         {
-            this._playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
+            _playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
                 .Throws(new MissingEntityException(string.Empty));
         }
 
         private void SetupEditThrowsValidationException()
         {
-            this._playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
+            _playerServiceMock.Setup(ts => ts.Edit(It.IsAny<Player>()))
                 .Throws(new ValidationException(string.Empty));
         }
 
         private void SetupDeleteThrowsMissingEntityException()
         {
-            this._playerServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
+            _playerServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
                 .Throws(new MissingEntityException(string.Empty));
         }
 
         private void SetupDeleteThrowsValidationException()
         {
-            this._playerServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
+            _playerServiceMock.Setup(ts => ts.Delete(It.IsAny<int>()))
                 .Throws(new ValidationException(string.Empty));
         }
 
-        private void SetupControllerContext()
+        private void SetupControllerContext(PlayersController sut)
         {
-            this._sut.ControllerContext = new ControllerContext(this._httpContextMock.Object, new RouteData(), this._sut);
+            _httpContextMock.SetupGet(x => x.Request).Returns(_httpRequestMock.Object);
+            sut.ControllerContext = new ControllerContext(_httpContextMock.Object, new RouteData(), sut);
         }
 
         private void SetupRequestRawUrl(string rawUrl)
         {
-            this._httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
+            _httpRequestMock.Setup(x => x.RawUrl).Returns(rawUrl);
         }
 
         private void VerifyCreate(Times times)
         {
-            this._playerServiceMock.Verify(ps => ps.Create(It.IsAny<Player>()), times);
+            _playerServiceMock.Verify(ps => ps.Create(It.IsAny<Player>()), times);
         }
 
         private void VerifyEdit(Times times)
         {
-            this._playerServiceMock.Verify(ts => ts.Edit(It.IsAny<Player>()), times);
+            _playerServiceMock.Verify(ts => ts.Edit(It.IsAny<Player>()), times);
         }
 
         private void VerifyDelete(int playerId, Times times)
         {
-            this._playerServiceMock.Verify(ts => ts.Delete(It.Is<int>(id => id == playerId)), times);
+            _playerServiceMock.Verify(ts => ts.Delete(It.Is<int>(id => id == playerId)), times);
         }
 
         private void VerifyRedirect(string actionName, RedirectToRouteResult result)

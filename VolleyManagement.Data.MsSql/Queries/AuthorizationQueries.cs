@@ -3,10 +3,10 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.RolesAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Domain.RolesAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides query object implementation for authorization

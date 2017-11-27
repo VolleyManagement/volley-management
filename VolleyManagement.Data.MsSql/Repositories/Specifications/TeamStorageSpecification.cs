@@ -1,8 +1,8 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories.Specifications
 {
-    using VolleyManagement.Crosscutting.Contracts.Specifications;
-    using VolleyManagement.Crosscutting.Specifications;
-    using VolleyManagement.Data.MsSql.Entities;
+    using Crosscutting.Contracts.Specifications;
+    using Crosscutting.Specifications;
+    using Entities;
 
     /// <summary>
     /// Specifies Team storage requirements

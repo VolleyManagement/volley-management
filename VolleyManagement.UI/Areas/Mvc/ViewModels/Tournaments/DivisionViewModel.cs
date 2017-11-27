@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Domain;
+    using Domain.TournamentsAggregate;
+    using Resources.UI;
 
     /// <summary>
     /// Represents division's view model.
@@ -17,11 +17,12 @@
         /// </summary>
         public DivisionViewModel()
         {
-            this.Name = string.Format(
+            Name = string.Format(
                 "{0} {1}",
                 ViewModelResources.DivisionDefaultName,
                 Constants.Division.MIN_DIVISIONS_COUNT);
-            this.Groups = new List<GroupViewModel>() { new GroupViewModel() };
+            Groups = new List<GroupViewModel>();
+            IsEmpty = true;
         }
 
         /// <summary>
@@ -33,9 +34,12 @@
         /// Gets or sets the division's name.
         /// </summary>
         [Display(Name = "DivisionName", ResourceType = typeof(ViewModelResources))]
-        [Required(ErrorMessageResourceName = "DivisionNameRequired",
+        [Required(
+            ErrorMessageResourceName = "DivisionNameRequired",
             ErrorMessageResourceType = typeof(ViewModelResources))]
-        [MaxLength(Constants.Division.MAX_NAME_LENGTH, ErrorMessageResourceName = "DivisionNameMaxLengthErrorMessage",
+        [MaxLength(
+            Constants.Division.MAX_NAME_LENGTH,
+            ErrorMessageResourceName = "DivisionNameMaxLengthErrorMessage",
             ErrorMessageResourceType = typeof(ViewModelResources))]
         public string Name { get; set; }
 
@@ -45,11 +49,31 @@
         public int TournamentId { get; set; }
 
         /// <summary>
-        /// List of groups
+        /// Gets or sets list of groups
         /// </summary>
         [Display(Name = "Groups", ResourceType = typeof(ViewModelResources))]
         public List<GroupViewModel> Groups { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether division is empty.
+        /// </summary>
+        public bool IsEmpty { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether count groups is min.
+        /// </summary>
+        public bool IsGroupsCountMin
+        {
+            get { return Groups.Count == Constants.Group.MIN_GROUPS_COUNT; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether count of groups is max.
+        /// </summary>
+        public bool IsGroupsCountMax
+        {
+            get { return Groups.Count == Constants.Group.MAX_GROUPS_COUNT; }
+        }
         #region Factory methods
 
         /// <summary>
@@ -63,7 +87,8 @@
             var divisionViewModel = new DivisionViewModel()
             {
                 Id = division.Id,
-                Name = division.Name
+                Name = division.Name,
+                IsEmpty = division.IsEmpty
             };
 
             divisionViewModel.Groups = division.Groups.Select(g => GroupViewModel.Map(g)).ToList();
@@ -78,12 +103,12 @@
         {
             var division = new Division()
             {
-                Id = this.Id,
-                Name = this.Name,
-                TournamentId = this.TournamentId
+                Id = Id,
+                Name = Name,
+                TournamentId = TournamentId
             };
 
-            division.Groups = this.Groups.Select(g => g.ToDomain()).ToList();
+            division.Groups = Groups.Select(g => g.ToDomain()).ToList();
             return division;
         }
 

@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Domain.TournamentRequestAggregate
 {
     using System;
-    using VolleyManagement.Domain.Properties;
+    using Properties;
 
     /// <summary>
     /// Tournament request domain class.
@@ -11,6 +11,8 @@
         private int _userId;
         private int _teamId;
         private int _tournamentId;
+        private int _groupId;
+        private int _divisionId;
 
         /// <summary>
         /// Gets or sets Id.
@@ -35,7 +37,7 @@
                     throw new ArgumentException(Resources.ValidationUserId);
                 }
 
-                this._userId = value;
+                _userId = value;
             }
         }
 
@@ -56,7 +58,28 @@
                     throw new ArgumentException(Resources.ValidationTournamentId);
                 }
 
-                this._tournamentId = value;
+                _tournamentId = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets division's id
+        /// </summary>
+        public int DivisionId
+        {
+            get
+            {
+                return _divisionId;
+            }
+
+            set
+            {
+                if (TournamentRequestValidation.ValidateDivisionId(value))
+                {
+                    throw new ArgumentException(Resources.ValidationDivisionId);
+                }
+
+                _divisionId = value;
             }
         }
 
@@ -67,7 +90,7 @@
         {
             get
             {
-                return this._teamId;
+                return _teamId;
             }
 
             set
@@ -77,7 +100,28 @@
                     throw new ArgumentException(Resources.ValidationTeamId);
                 }
 
-                this._teamId = value;
+                _teamId = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets group's id
+        /// </summary>
+        public int GroupId
+        {
+            get
+            {
+                return _groupId;
+            }
+
+            set
+            {
+                if (TournamentRequestValidation.ValidateTeamId(value))
+                {
+                    throw new ArgumentException(Resources.ValidationGroupId);
+                }
+
+                _groupId = value;
             }
         }
     }

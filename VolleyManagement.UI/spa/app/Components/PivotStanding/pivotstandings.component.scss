@@ -1,0 +1,80 @@
+.pivot-standings-table {
+  /* VARIABLES */
+  @import "../standings-color-schema.scss"; // $header-cells-text-color: #fff;
+  /* STYLES */
+  .standings {
+    margin: 0 0 20px 0;
+    font-size: 10px;
+    tr {
+      &.results-header-row,
+      &.standings-header-row {
+        background-color: $header-cells-bg-color;
+        color: $header-cells-text-color;
+        font-weight: bold;
+      }
+      &.results-row:nth-child(odd),
+      &.standings-row:nth-child(odd) {
+        background-color: $odd-row-data-cells-bg-color;
+      }
+      &.results-row:nth-child(even),
+      &.standings-row:nth-child(even) {
+        background-color: $even-row-data-cells-bg-color;
+      }
+      th {
+        &.results-header-cell,
+        &.standings-header-cell {
+          text-align: center;
+          width: 50px;
+          max-width: 50px;
+          height: 120px;
+        }
+        &.results-operation-header-cell {
+          border: none;
+          background-color: $results-operation-header-cells-bg-color;
+        }
+      }
+      td {
+        &.results-cell,
+        &.standings-cell {
+          text-align: center;
+          vertical-align: middle;
+        }
+      }
+    }
+    .win_3_0 {
+      background-color: $win-3-0-color;
+      margin: 0;
+    }
+    .win_3_1 {
+      background-color: $win_3_1-color;
+      margin: 0;
+    }
+    .win_3_2 {
+      background-color: $win_3_2-color;
+      padding: 0;
+    }
+    .loss_2_3 {
+      background-color: $loss_2_3-color;
+      margin: 0;
+    }
+    .loss_1_3 {
+      background-color: $loss_1_3-color;
+      margin: 0;
+    }
+    .loss_0_3 {
+      background-color: $loss_0_3-color;
+      margin: 0;
+    }
+    .non-playable {
+      background-color: $non-playable-color;
+      color: $non-playable-text-color;
+      margin: 0;
+    }
+    .boldText {
+      font-weight: bold;
+    }
+    .vertical-text {
+      transform: rotate(-90deg);
+    }
+  }
+}

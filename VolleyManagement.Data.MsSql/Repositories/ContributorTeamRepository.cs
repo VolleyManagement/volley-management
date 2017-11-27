@@ -1,12 +1,11 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
-    using System.Data.Entity.Core.Objects;
     using System.Linq;
-
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Domain.ContributorsAggregate;
+    using Contracts;
+    using Domain.ContributorsAggregate;
 
     /// <summary>
     /// Defines implementation of the IContributorRepository contract.
@@ -26,8 +25,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public ContributorTeamRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            this._contribsSet = _unitOfWork.Context.Contributors;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _contribsSet = _unitOfWork.Context.Contributors;
         }
 
         /// <summary>
@@ -35,29 +34,29 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return this._unitOfWork; }
+            get { return _unitOfWork; }
         }
 
         /// <summary>
         /// Gets all teams with contributors inside.
         /// </summary>
         /// <returns>Collection of teams with contributors</returns>
-        public IQueryable<ContributorTeam> Find()
+        public List<ContributorTeam> Find()
         {
-            var result = this._contribsSet.GroupBy(c => c.Team)
+            var result = _contribsSet.GroupBy(c => c.Team)
                                      .Select(gr => new ContributorTeam
-                                        {
-                                            Id = gr.Key.Id,
-                                            Name = gr.Key.Name,
-                                            CourseDirection = gr.Key.CourseDirection,
-                                            Contributors = gr.Select(c => new Contributor
-                                            {
-                                                Id = c.Id,
-                                                Name = c.Name
-                                            })
-                                        });
+                                     {
+                                         Id = gr.Key.Id,
+                                         Name = gr.Key.Name,
+                                         CourseDirection = gr.Key.CourseDirection,
+                                         Contributors = gr.Select(c => new Contributor
+                                         {
+                                             Id = c.Id,
+                                             Name = c.Name
+                                         })
+                                     });
 
-            return result;
+            return result.ToList();
         }
 
         /// <summary>

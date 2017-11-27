@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
 
-    using VolleyManagement.Domain.Dto;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.Dto;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
 
     /// <summary>
     /// Provides Roles management

@@ -2,48 +2,47 @@
 
 Welcome to Volley Management project repository
 
-### What is this repository for? ###
+## What is this repository for? ##
 
-* Quick summary
 The goal of the project is to create system to manage Volleyball sport events for amateur leagues
-* Version
- - not released yet -
 
-### How do I get set up? ###
+Current Version: Pre-release
 
-* Summary of set up
+## How do I get set up? ##
 
-Project is VS 2012 solution.
+### Summary of set up ###
 
-* Configuration
+Project is VS 2017 solution. Any edition will suffice.
 
-TBD
+Target framework is .NET 4.7.
 
-* Dependencies
+### Dependencies ###
 
 All dependencies are managed via NuGet
 
-* Database configuration
+### Database configuration ###
 
-Database is automatically deployed to server specified by connection string in Web.config file in VolleyManagement.UI project
+Database is automatically deployed to server first time you run application. Specify proper connection string in Web.config file in VolleyManagement.UI project.
 
-* How to run tests
+By default it is configured to use SQL Server 2016 LocalDB. But you can can change altering connection string.
 
-Tests can be triggered via Visual Studio
+### How to run tests ###
 
-* Deployment instructions
+Project uses MSTest framework. Tests can be triggered via Visual Studio test menu.
 
-To deploy it locally you need to get AppSettingSecret.config file from [Sergii Diachenko](https://bitbucket.org/sdiachen/).
+🚧 ToDo: Add guide how to run Code Coverage using JetBrains dotCover CLI runner
+
+### Deployment instructions ###
+
+To deploy it locally you need to get AppSettingSecret.config file from [Sergii Diachenko](mailto:sdiachenko@outlook.com).
 This file should be put one level above sln file. (This prevents from accidental checkin)
 
-### Contribution guidelines ###
+## Additional references ##
 
-* Writing tests
+* [License](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/LICENSE.md)
+* [Contribution Guidelines](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/CONTRIBUTING.md)
+* [Code of Conduct](https://bitbucket.org/VolleyManagement/volleymanagement/src/master/CODE_OF_CONDUCT.md)
 
-* Code review
+## Who do I talk to? ##
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-
- All questions should be directed to [Sergii Diachenko](https://bitbucket.org/sdiachen/)
+* All questions should be directed to [Sergii Diachenko](mailto:sdiachenko@outlook.com)

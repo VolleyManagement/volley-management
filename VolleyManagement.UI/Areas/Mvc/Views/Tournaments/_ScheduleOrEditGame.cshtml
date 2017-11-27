@@ -1,7 +1,13 @@
 @model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameViewModel
 @using VolleyManagement.Domain.TournamentsAggregate;
+@using VolleyManagement.UI.Helpers
+@using VolleyManagement.UI.HtmlHelpers
 
-<legend>@Resources.TournamentViews.ScheduleGameLegend</legend>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+<script src="//code.jquery.com/jquery-1.8.3.js" type="text/javascript"></script>
+<script src="//code.jquery.com/ui/1.9.2/jquery-ui.js" type="text/javascript"></script>
+
+<legend>@Resources.UI.TournamentViews.ScheduleGameLegend</legend>
 @Html.ValidationMessage("ValidationError")
 @Html.HiddenFor(model => model.TournamentId)
 
@@ -34,7 +40,7 @@ else
         @Html.LabelFor(model => model.AwayTeamId)
     </div>
     <div class="editor-field">
-        @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, Resources.TournamentViews.FreeDay, new { @class = "form-control" })
+        @Html.DropDownListFor(model => model.AwayTeamId, Model.Teams, Resources.UI.TournamentViews.FreeDay, new { @class = "form-control" })
     </div>
 }
 else
@@ -43,11 +49,28 @@ else
     @Html.HiddenFor(model => model.AwayTeamId);
 }
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.datepicker.setDefaults($.datepicker.regional['@JQueryUIDateFormatConverter.Localization'] = {
+            monthNames: @JQueryUIDateFormatConverter.MonthNames,
+            monthNamesShort: @JQueryUIDateFormatConverter.AbbreviatedMonthNames,
+            dayNames: @JQueryUIDateFormatConverter.DayNames,
+            dayNamesShort: @JQueryUIDateFormatConverter.AbbreviatedDayNames,
+            dayNamesMin: @JQueryUIDateFormatConverter.ShortestDayNames,
+            dateFormat: '@JQueryUIDateFormatConverter.JqueryUICurrentDateFormat()'
+        });
+
+        $("#GameDate").datepicker();
+    });
+</script>
 
 <div class="editor-label">
     @Html.LabelFor(model => model.GameDate)
 </div>
 <div class="form-group editor-field">
-    @Html.EditorFor(model => model.GameDate, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.TextBoxForShortDate(model => model.GameDate, Model.GameDate, new { htmlAttributes = new { @class = "form-control" } })
+
+    @Html.EditorFor(model => model.GameTime, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(model => model.GameDate, "", new { @class = "text-danger" })
 </div>
+

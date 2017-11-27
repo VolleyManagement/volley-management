@@ -6,14 +6,13 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
-
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.User;
-    using VolleyManagement.Domain.Dto;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.User;
+    using Domain.Dto;
+    using Domain.RolesAggregate;
+    using Domain.UsersAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides Object Query implementation for Users
@@ -42,7 +41,7 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public UserQueries(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
         }
 
         #endregion
@@ -141,7 +140,7 @@
         public User Execute(FindByIdCriteria criteria)
         {
             return
-                this._unitOfWork.Context.Users
+                _unitOfWork.Context.Users
                 .Where(i => i.Id == criteria.Id)
                 .Select(GetUserMapping())
                 .SingleOrDefault();
@@ -154,7 +153,7 @@
         /// <returns>User entity list.</returns>
         List<User> IQuery<List<User>, GetAllCriteria>.Execute(GetAllCriteria criteria)
         {
-            return this._unitOfWork.Context.Users.Select(GetUserMapping()).ToList();
+            return _unitOfWork.Context.Users.Select(GetUserMapping()).ToList();
         }
 
         /// <summary>

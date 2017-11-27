@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.Domain.GameReportsAggregate;
+    using Domain.GameReportsAggregate;
 
     /// <summary>
     /// Generates <see cref="TeamStandingsDto"/> test data for unit tests for <see cref="GameReportService"/>.
@@ -110,6 +110,42 @@
                 SetsRatio = 2.0f / 6,
                 BallsRatio = 192.0f / 204
             });
+            return this;
+        }
+
+        /// <summary>
+        /// Adds team standings that correspond game results with one game with technical defeat
+        /// to collection of <see cref="TeamStandingsDto"/> objects.
+        /// </summary>
+        /// <returns>Instance of <see cref="TeamStandingsTestFixture"/>.</returns>
+        public TeamStandingsTestFixture WithTeamStandingsForOneGameTechnicalDefeat()
+        {
+            _teamStandings.Clear();
+            _teamStandings.Add(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 5,
+                SetsRatio = 6.0f / 3,
+                BallsRatio = 234.0f / 214
+            });
+            _teamStandings.Add(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 3,
+                SetsRatio = 4.0f / 3,
+                BallsRatio = 91.0f / 105
+            });
+            _teamStandings.Add(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 1,
+                SetsRatio = 2.0f / 6,
+                BallsRatio = 123.0f / 129
+            });
+
             return this;
         }
 

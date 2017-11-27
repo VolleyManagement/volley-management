@@ -7,7 +7,6 @@
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
-    using Ninject;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
     using VolleyManagement.Data.Contracts;
@@ -28,31 +27,19 @@
     public class PlayerServiceTests
     {
         private const int SPECIFIC_PLAYER_ID = 2;
-
         private const int SPECIFIC_TEAM_ID = 2;
+        private const int NUMBER_OF_PLAYERS = 3;
 
-        private readonly PlayerServiceTestFixture _testFixture = new PlayerServiceTestFixture();
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+        private PlayerServiceTestFixture _testFixture = new PlayerServiceTestFixture();
 
-        private readonly Mock<IPlayerRepository> _playerRepositoryMock = new Mock<IPlayerRepository>();
-
-        private readonly Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock =
-            new Mock<IQuery<Player, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<IQueryable<Player>, GetAllCriteria>> _getAllPlayersQueryMock =
-            new Mock<IQuery<IQueryable<Player>, GetAllCriteria>>();
-
-        private readonly Mock<ITeamRepository> _teamRepositoryMock = new Mock<ITeamRepository>();
-
-        private readonly Mock<IQuery<Team, FindByIdCriteria>> _getTeamByIdQueryMock =
-            new Mock<IQuery<Team, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<Team, FindByCaptainIdCriteria>> _getTeamByCaptainQueryMock =
-            new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
-
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock = new Mock<IUnitOfWork>();
-
-        private IKernel _kernel;
+        private Mock<IAuthorizationService> _authServiceMock;
+        private Mock<IPlayerRepository> _playerRepositoryMock;
+        private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
+        private Mock<IQuery<IQueryable<Player>, GetAllCriteria>> _getAllPlayersQueryMock;
+        private Mock<ITeamRepository> _teamRepositoryMock;
+        private Mock<IQuery<Team, FindByIdCriteria>> _getTeamByIdQueryMock;
+        private Mock<IQuery<Team, FindByCaptainIdCriteria>> _getTeamByCaptainQueryMock;
+        private Mock<IUnitOfWork> _unitOfWorkMock;
 
         /// <summary>
         /// Initializes test data.
@@ -60,14 +47,15 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IPlayerRepository>().ToConstant(_playerRepositoryMock.Object);
-            _kernel.Bind<IQuery<Player, FindByIdCriteria>>().ToConstant(_getPlayerByIdQueryMock.Object);
-            _kernel.Bind<IQuery<IQueryable<Player>, GetAllCriteria>>().ToConstant(_getAllPlayersQueryMock.Object);
-            _kernel.Bind<ITeamRepository>().ToConstant(_teamRepositoryMock.Object);
-            _kernel.Bind<IQuery<Team, FindByIdCriteria>>().ToConstant(_getTeamByIdQueryMock.Object);
-            _kernel.Bind<IQuery<Team, FindByCaptainIdCriteria>>().ToConstant(_getTeamByCaptainQueryMock.Object);
-            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
+            _authServiceMock = new Mock<IAuthorizationService>();
+            _playerRepositoryMock = new Mock<IPlayerRepository>();
+            _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
+            _getAllPlayersQueryMock = new Mock<IQuery<IQueryable<Player>, GetAllCriteria>>();
+            _teamRepositoryMock = new Mock<ITeamRepository>();
+            _getTeamByIdQueryMock = new Mock<IQuery<Team, FindByIdCriteria>>();
+            _getTeamByCaptainQueryMock = new Mock<IQuery<Team, FindByCaptainIdCriteria>>();
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+
             _playerRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
             _teamRepositoryMock.Setup(tr => tr.UnitOfWork).Returns(_unitOfWorkMock.Object);
         }
@@ -83,7 +71,7 @@
             var testData = _testFixture.TestPlayers()
                                        .Build();
             MockGetAllQuery(testData);
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
             var expected = new PlayerServiceTestFixture()
                                             .TestPlayers()
                                             .Build()
@@ -105,7 +93,7 @@
             // Arrange
             var testData = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
             MockGetByIdQuery(testData);
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
             var expected = new PlayerBuilder().WithId(SPECIFIC_PLAYER_ID).Build();
 
             // Act
@@ -125,7 +113,7 @@
             var testTeam = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
             var testPlayer = new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build();
             MockGetTeamByIdQuery(testTeam);
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
             var expected = new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build();
 
             // Act
@@ -143,7 +131,7 @@
         {
             // Arrange
             var testPlayer = new PlayerBuilder().WithNoTeam().Build();
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetPlayerTeam(testPlayer);
@@ -162,7 +150,7 @@
             var newPlayer = new PlayerBuilder().WithTeamId(SPECIFIC_TEAM_ID).Build();
 
             // Act
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
             sut.Create(newPlayer);
 
             // Assert
@@ -180,7 +168,7 @@
 
             // Arrange
             Player newPlayer = null;
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -198,6 +186,111 @@
         }
 
         /// <summary>
+        /// Test for Create() method with List. The method should create new players
+        /// </summary>
+        [TestMethod]
+        public void Create_AllPlayersAreNew_PlayersCreated()
+        {
+            // Arrange
+            var newPlayers = CreateSeveralPlayers();
+            var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
+            MockGetByIdQuery(newPlayers.First());
+            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+                .Returns(existingPlayers);
+
+            // Act
+            var sut = BuildSUT();
+            sut.Create(newPlayers);
+
+            // Assert
+            VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS));
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create() method with List. The method should throw ArgumentNullException.
+        /// Players must not be created
+        /// </summary>
+        [TestMethod]
+        public void Create_NoNewPlayers_PlayersNotCreated()
+        {
+            // Arrange
+            bool gotException = false;
+            var newPlayers = CreateListOfExistingPlayers();
+            MockGetByIdQuery(newPlayers.First());
+            var existingPlayers = CreateListOfExistingPlayersWithoutTeam().AsQueryable();
+            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+                .Returns(existingPlayers);
+
+            // Act
+            var sut = BuildSUT();
+            sut.Create(newPlayers);
+
+            // Assert
+            Assert.IsFalse(gotException);
+            VerifyCreatePlayers(Times.Never());
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method should create new players
+        /// Players must be created
+        /// </summary>
+        [TestMethod]
+        public void Create_TwoOfThreePlayersAreNew_PlayersCreated()
+        {
+            // Arrange
+            var newPlayers = CreateTwoOfThreeNewPlayers();
+            var existingPlayers = CreateListOfExistingPlayers().AsQueryable();
+            MockGetByIdQuery(newPlayers.First());
+            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+                .Returns(existingPlayers);
+
+            // Act
+            var sut = BuildSUT();
+            sut.Create(newPlayers);
+
+            // Assert
+            VerifyCreatePlayers(Times.Exactly(NUMBER_OF_PLAYERS - 1));
+            _unitOfWorkMock.Verify(uow => uow.Commit(), Times.Once());
+        }
+
+        /// <summary>
+        /// Test for Create() method. The method should throw Argument Exception
+        /// </summary>
+        [TestMethod]
+        public void Create_OneOfThePlayersPlaysInAnotherTeam_ArgumentExceptionThown()
+        {
+            bool gotException = false;
+
+            // Arrange
+            var newPlayers = new List<Player>()
+            {
+                new PlayerBuilder()
+                    .WithFirstName("First").WithLastName("Last").WithTeamId(SPECIFIC_TEAM_ID).Build()
+            };
+            var existingPlayers = CreateSeveralPlayers().AsQueryable();
+            MockGetByIdQuery(newPlayers.First());
+            _getAllPlayersQueryMock.Setup(tr => tr.Execute(It.IsAny<GetAllCriteria>()))
+                .Returns(existingPlayers);
+
+            var sut = BuildSUT();
+
+            // Act
+            try
+            {
+                sut.Create(newPlayers);
+            }
+            catch (ArgumentException)
+            {
+                gotException = true;
+            }
+
+            // Assert
+            Assert.IsTrue(gotException);
+            VerifyCreatePlayers(Times.Never());
+        }
+
+        /// <summary>
         /// Test for Create() method with no rights for such action. The method should throw AuthorizationException
         /// and shouldn't invoke Commit() method of IUnitOfWork.
         /// </summary>
@@ -208,7 +301,7 @@
             // Arrange
             Player testPlayer = new PlayerBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Players.Create);
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Create(testPlayer);
@@ -229,7 +322,7 @@
             // Arrange
             Player testPlayer = new PlayerBuilder().Build();
             MockAuthServiceThrowsExeption(AuthOperations.Players.Edit);
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Edit(testPlayer);
@@ -249,7 +342,7 @@
         {
             // Arrange
             MockAuthServiceThrowsExeption(AuthOperations.Players.Delete);
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
 
             // Act
             sut.Delete(SPECIFIC_PLAYER_ID);
@@ -269,7 +362,7 @@
             _getTeamByCaptainQueryMock.Setup(tm => tm.Execute(It.IsAny<FindByCaptainIdCriteria>())).Returns((Team)null);
 
             // Act
-            var ps = _kernel.Get<PlayerService>();
+            var ps = BuildSUT();
             ps.Delete(SPECIFIC_PLAYER_ID);
 
             // Assert
@@ -288,7 +381,7 @@
             // Arrange
             _playerRepositoryMock.Setup(p => p.Remove(It.IsAny<int>()))
                 .Throws<InvalidKeyValueException>();
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -317,7 +410,7 @@
             // Arrange
             var existTeam = new TeamBuilder().WithCaptain(PLAYER_ID).Build();
             MockGetTeamByCaptainIdQuery(existTeam);
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
 
             // Act
             try
@@ -344,7 +437,7 @@
         {
             // Arrange
             _playerRepositoryMock.Setup(pr => pr.Update(It.IsAny<Player>())).Throws(new InvalidKeyValueException());
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
             var playerWithWrongId = new PlayerBuilder().WithTeamId(null).Build();
 
             // Act
@@ -363,11 +456,72 @@
 
             // Act
             var playerToEdit = new PlayerBuilder().WithTeamId(teamId).Build();
-            var sut = _kernel.Get<PlayerService>();
+            var sut = BuildSUT();
             sut.Edit(playerToEdit);
 
             // Assert
             VerifyEditPlayer(playerToEdit, Times.Once());
+        }
+
+        private PlayerService BuildSUT()
+        {
+            return new PlayerService(
+                _playerRepositoryMock.Object,
+                _getTeamByIdQueryMock.Object,
+                _getPlayerByIdQueryMock.Object,
+                _getAllPlayersQueryMock.Object,
+                _getTeamByCaptainQueryMock.Object,
+                _authServiceMock.Object);
+        }
+
+        private List<Player> CreateSeveralPlayers()
+        {
+            var newPlayers = new List<Player>();
+            newPlayers.AddRange(new List<Player>
+            {
+                new PlayerBuilder().WithId(0).WithFirstName("First").WithLastName("Last").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("Second").WithLastName("Last").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("Name").WithLastName("Name").Build()
+            });
+            return newPlayers;
+        }
+
+        private List<Player> CreateListOfExistingPlayers()
+        {
+            var newPlayers = new List<Player>();
+            newPlayers.AddRange(new List<Player>
+            {
+                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").Build(),
+                new PlayerBuilder().WithFirstName("Van").WithLastName("Van").WithId(SPECIFIC_PLAYER_ID).Build(),
+                new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper").WithId(SPECIFIC_PLAYER_ID + 2).Build()
+            });
+            return newPlayers;
+        }
+
+        private List<Player> CreateTwoOfThreeNewPlayers()
+        {
+            var newPlayers = new List<Player>();
+            newPlayers.AddRange(new List<Player>
+            {
+                new PlayerBuilder().WithFirstName("First").WithLastName("Last").WithTeamId(null).Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("New Second").WithLastName("Last").Build(),
+                new PlayerBuilder().WithId(0).WithFirstName("New Hank").WithLastName("Ripper").Build()
+            });
+            return newPlayers;
+        }
+
+        private List<Player> CreateListOfExistingPlayersWithoutTeam()
+        {
+            var newPlayers = new List<Player>();
+            newPlayers.AddRange(new List<Player>
+            {
+                new PlayerBuilder().WithFirstName("Ant").WithLastName("Man").WithTeamId(null).Build(),
+                new PlayerBuilder().WithFirstName("Van").WithLastName("Van")
+                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID).Build(),
+                new PlayerBuilder().WithFirstName("Hank").WithLastName("Ripper")
+                    .WithTeamId(null).WithId(SPECIFIC_PLAYER_ID + 2).Build()
+            });
+            return newPlayers;
         }
 
         private void MockGetByIdQuery(Player player)
@@ -399,6 +553,11 @@
         {
             _playerRepositoryMock.Verify(pr => pr.Add(It.Is<Player>(p => PlayersAreEqual(p, player))), times);
             _unitOfWorkMock.Verify(uow => uow.Commit(), times);
+        }
+
+        private void VerifyCreatePlayers(Times times)
+        {
+            _playerRepositoryMock.Verify(pr => pr.Add(It.IsAny<Player>()), times);
         }
 
         private void VerifyEditPlayer(Player player, Times times)

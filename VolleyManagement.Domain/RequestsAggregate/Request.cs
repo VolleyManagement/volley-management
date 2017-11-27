@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Domain.RequestsAggregate
 {
     using System;
-    using VolleyManagement.Domain.Properties;
+    using Properties;
 
     /// <summary>
     /// Request domain class.
@@ -25,7 +25,7 @@
         {
             get
             {
-                return this._userId;
+                return _userId;
             }
 
             set
@@ -35,7 +35,7 @@
                     throw new ArgumentException(Resources.ValidationUserId);
                 }
 
-                this._userId = value;
+                _userId = value;
             }
         }
 
@@ -47,7 +47,7 @@
         {
             get
             {
-                return this._playerId;
+                return _playerId;
             }
 
             set
@@ -57,7 +57,7 @@
                     throw new ArgumentException(Resources.ValidationPlayerId);
                 }
 
-                this._playerId = value;
+                _playerId = value;
             }
         }
     }

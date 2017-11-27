@@ -11,7 +11,7 @@
         /// </summary>
         public BlockUserBuilder()
         {
-            this._user = new User
+            _user = new User
             {
                 Id = 1,
                 UserName = "TestName",
@@ -28,7 +28,7 @@
         /// <returns>User object.</returns>
         public BlockUserBuilder WithId(int id)
         {
-            this._user.Id = id;
+            _user.Id = id;
             return this;
         }
 
@@ -39,7 +39,7 @@
         /// <returns>User object.</returns>
         public BlockUserBuilder WithEmail(string email)
         {
-            this._user.Email = email;
+            _user.Email = email;
             return this;
         }
 
@@ -50,7 +50,7 @@
         /// <returns>User object.</returns>
         public BlockUserBuilder WithName(string userName)
         {
-            this._user.UserName = userName;
+            _user.UserName = userName;
             return this;
         }
 
@@ -61,7 +61,7 @@
         /// <returns>User object.</returns>
         public BlockUserBuilder WithPersonName(string personName)
         {
-            this._user.PersonName = personName;
+            _user.PersonName = personName;
             return this;
         }
 
@@ -72,7 +72,7 @@
         /// <returns>User object.</returns>
         public BlockUserBuilder WithBlockStatus(bool blockStatus)
         {
-            this._user.IsBlocked = blockStatus;
+            _user.IsBlocked = blockStatus;
             return this;
         }
 
@@ -82,7 +82,7 @@
         /// <returns>Test user.</returns>
         public User Build()
         {
-            return this._user;
+            return _user;
         }
     }
 }

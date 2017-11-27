@@ -17,10 +17,12 @@
         /// </summary>
         /// <param name="home">Score of the home team.</param>
         /// <param name="away">Score of the away team.</param>
-        public Score(byte home, byte away)
+        /// <param name="isTechnicalDefeat">Indicating whether the technical defeat has taken place.</param>
+        public Score(byte home, byte away, bool isTechnicalDefeat = false)
         {
             Home = home;
             Away = away;
+            IsTechnicalDefeat = isTechnicalDefeat;
         }
 
         /// <summary>
@@ -34,15 +36,34 @@
         public byte Away { get; set; }
 
         /// <summary>
-        /// Gets an indicator whether score is empty.
+        /// Gets or sets a value indicating whether the technical defeat has taken place.
+        /// </summary>
+        public bool IsTechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets the score of the home team for statistics.
+        /// </summary>
+        public byte HomeBallsForStatistics => IsTechnicalDefeat ? (byte)0 : Home;
+
+        /// <summary>
+        /// Gets the score of the away team  for statistics.
+        /// </summary>
+        public byte AwayBallsForStatistics => IsTechnicalDefeat ? (byte)0 : Away;
+
+        /// <summary>
+        /// Gets a value indicating whether gets an indicator whether score is empty.
         /// </summary>
         /// <returns>True if score is empty; otherwise, false.</returns>
-        public bool IsEmpty
+        public bool IsEmpty => Home == 0 && Away == 0;
+
+        public static implicit operator Score((byte Home, byte Away) tuple)
         {
-            get
-            {
-                return this.Home == 0 && this.Away == 0;
-            }
+            return new Score(tuple.Home, tuple.Away);
+        }
+
+        public static implicit operator Score((byte Home, byte Away, bool IsTechnicalDefeat) tuple)
+        {
+            return new Score(tuple.Home, tuple.Away, tuple.IsTechnicalDefeat);
         }
     }
 }

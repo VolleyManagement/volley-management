@@ -4,12 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Team;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.Team;
+    using Domain.PlayersAggregate;
+    using Domain.TeamsAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides Query Object implementation for Player entity
@@ -17,7 +17,9 @@
     public class TeamQueries : IQuery<Team, FindByIdCriteria>,
                                IQuery<List<Team>, GetAllCriteria>,
                                IQuery<Team, FindByCaptainIdCriteria>,
-                               IQuery<List<Team>, FindByTournamentIdCriteria>
+                               IQuery<List<Team>, FindByTournamentIdCriteria>,
+                               IQuery<List<Team>, FindTeamsByGroupIdCriteria>,
+                               IQuery<List<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>
     {
         #region Fields
 
@@ -79,8 +81,30 @@
         {
             return _unitOfWork.Context.Tournaments
                                       .Where(t => t.Id == criteria.TournamentId)
-                                      .SelectMany(t => t.Teams)
+                                      .SelectMany(t => t.Divisions)
+                                      .SelectMany(d => d.Groups)
+                                      .SelectMany(g => g.Teams)
                                       .Select(GetTeamMapping())
+                                      .ToList();
+        }
+
+        public List<Team> Execute(FindTeamsByGroupIdCriteria criteria)
+        {
+            return _unitOfWork.Context.Groups
+                                      .Where(g => g.Id == criteria.GroupId)
+                                      .SelectMany(g => g.Teams)
+                                      .Select(GetTeamMapping())
+                                      .ToList();
+        }
+
+        public List<List<Team>> Execute(FindTeamsInDivisionsByTournamentIdCriteria criteria)
+        {
+            return _unitOfWork.Context.Tournaments
+                                      .Where(t => t.Id == criteria.TournamentId)
+                                      .Select(t => t.Divisions)
+                                      .SelectMany(d => d.Select(g => g.Groups))
+                                      .Select(g => g.SelectMany(t => t.Teams))
+                                      .Select(c => c.AsQueryable().Select(GetTeamMapping()).ToList())
                                       .ToList();
         }
 

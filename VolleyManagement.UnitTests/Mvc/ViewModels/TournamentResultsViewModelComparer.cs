@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// Represents a comparer for <see cref="TournamentResultsViewModel"/> objects.

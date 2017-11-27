@@ -3,10 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Domain.GamesAggregate;
 
     [ExcludeFromCodeCoverage]
     public class GameTestFixture
@@ -77,13 +74,13 @@
 
         public GameTestFixture Add(Game game)
         {
-            this._games.Add(game);
+            _games.Add(game);
             return this;
         }
 
         public GameTestFixture TestEmptyGamePlayoffSchedule()
         {
-            this._games.Clear();
+            _games.Clear();
             _games.AddRange(
                 new List<Game>
                 {
@@ -166,7 +163,7 @@
 
         public GameTestFixture TestMinimumEvenTeamsPlayOffSchedule()
         {
-            this._games.Clear();
+            _games.Clear();
 
             _games.AddRange(
                 new List<Game>
@@ -214,7 +211,7 @@
 
         public GameTestFixture TestMinimumOddTeamsPlayOffSchedule()
         {
-            this._games.Clear();
+            _games.Clear();
 
             _games.AddRange(
                 new List<Game>
@@ -229,7 +226,7 @@
                         TournamentId = 1,
                         Result = new Result
                         {
-                            SetsScore = new Score
+                            GameScore = new Score
                             {
                                 Home = 3,
                                 Away = 0

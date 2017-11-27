@@ -18,7 +18,7 @@
 
         private AuthOperation(short id)
         {
-            this._id = id;
+            _id = id;
         }
 
         #endregion
@@ -26,7 +26,7 @@
         #region Operators overload
 
         /// <summary>
-        /// Implementing of "implicit" operator from <see cref="Int16"/>
+        /// Implementing of "implicit" operator from <see cref="short"/>
         /// </summary>
         /// <param name="id">Identifier of operation</param>
         /// <returns>instance of <see cref="AuthOperation"/> class</returns>
@@ -46,7 +46,7 @@
         }
 
         /// <summary>
-        /// Implementing of "implicit" operator from tuple of <see cref="Byte"/> parameters
+        /// Implementing of "implicit" operator from tuple of <see cref="byte"/> parameters
         /// </summary>
         /// <param name="parameters">Parameters of the instance of <see cref="AuthOperation"/> class</param>
         /// <returns>instance of <see cref="AuthOperation"/> class</returns>
@@ -68,9 +68,9 @@
         {
             bool result;
 
-            if (object.ReferenceEquals(x, null))
+            if (ReferenceEquals(x, null))
             {
-                result = object.ReferenceEquals(y, null);
+                result = ReferenceEquals(y, null);
             }
             else
             {
@@ -133,7 +133,7 @@
             }
             else
             {
-                result = this._id == obj._id;
+                result = _id == obj._id;
             }
 
             return result;
@@ -145,7 +145,7 @@
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            return this._id.GetHashCode();
+            return _id.GetHashCode();
         }
 
         #endregion

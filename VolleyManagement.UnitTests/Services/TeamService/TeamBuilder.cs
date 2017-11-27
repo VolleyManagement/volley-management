@@ -1,8 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
     using System.Diagnostics.CodeAnalysis;
-
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Domain.TeamsAggregate;
 
     /// <summary>
     /// Team domain object builder
@@ -20,7 +19,7 @@
         /// </summary>
         public TeamBuilder()
         {
-            this._team = new Team
+            _team = new Team
             {
                 Id = 1,
                 Name = "TeamNameA",

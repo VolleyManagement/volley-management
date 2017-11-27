@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Domain.RolesAggregate
 {
-    using VolleyManagement.Data.Contracts;
+    using Data.Contracts;
 
     /// <summary>
     /// Represents management operations over Role entity

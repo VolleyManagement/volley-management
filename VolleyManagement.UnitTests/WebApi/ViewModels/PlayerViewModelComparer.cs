@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.Players;
+    using UI.Areas.WebApi.ViewModels.Players;
 
     /// <summary>
     /// Comparer for player objects.
@@ -20,7 +20,7 @@
         /// <returns>A signed integer that indicates the relative values of players.</returns>
         public int Compare(PlayerViewModel x, PlayerViewModel y)
         {
-            return this.IsEqual(x, y) ? 0 : 1;
+            return IsEqual(x, y) ? 0 : 1;
         }
 
         /// <summary>

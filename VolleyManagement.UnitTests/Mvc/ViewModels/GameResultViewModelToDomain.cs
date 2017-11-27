@@ -2,10 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using Domain.GamesAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
-    using VolleyManagement.UnitTests.Services.GameService;
+    using Services.GameService;
+    using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
     /// View model game result class test
@@ -32,13 +32,13 @@
                 .WithTechnicalDefeat(false)
                 .WithDate(DateTime.Parse("2016-04-12 12:15"))
                 .WithRound(1)
-                .WithSetScores(new List<Score>
+                .WithSetScores(new List<ScoreViewModel>
                     {
-                        new Score(25, 20),
-                        new Score(26, 24),
-                        new Score(30, 28),
-                        new Score(0, 0),
-                        new Score(0, 0)
+                        new ScoreViewModel(25, 20),
+                        new ScoreViewModel(26, 24),
+                        new ScoreViewModel(30, 28),
+                        new ScoreViewModel(0, 0),
+                        new ScoreViewModel(0, 0)
                     })
                 .Build();
 

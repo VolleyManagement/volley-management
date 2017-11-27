@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.Team
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// The find by captain id criteria.

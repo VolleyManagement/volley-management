@@ -276,4 +276,19 @@
   <data name="NoApplication" xml:space="preserve">
     <value>No Application</value>
   </data>
+  <data name="RemoveGroup" xml:space="preserve">
+    <value>Remove group</value>
+  </data>
+  <data name="RemoveDivision" xml:space="preserve">
+    <value>Remove division</value>
+  </data>
+  <data name="TournamentDivisionIsNotSelected" xml:space="preserve">
+    <value>No division is selected</value>
+  </data>
+  <data name="TournamentGroupIsNotSelected" xml:space="preserve">
+    <value>No group is selected</value>
+  </data>
+  <data name="ArchivedTournamentsIndexTitle" xml:space="preserve">
+    <value>Archived tournaments</value>
+  </data>
 </root>

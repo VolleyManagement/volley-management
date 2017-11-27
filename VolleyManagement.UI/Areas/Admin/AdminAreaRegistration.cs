@@ -8,7 +8,7 @@
     public class AdminAreaRegistration : AreaRegistration
     {
         /// <summary>
-        /// Name of the area
+        /// Gets name of the area
         /// </summary>
         public override string AreaName
         {

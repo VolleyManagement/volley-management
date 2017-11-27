@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.MailService
 {
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Crosscutting.Contracts.MailService;
+    using Contracts.ExternalResources;
 
     /// <summary>
     /// Represents a builder of <see cref="EmailMessage"/> objects for unit
@@ -17,7 +17,7 @@
         /// </summary>
         public EmailMessageBuilder()
         {
-            this._emailMessage = new EmailMessage(
+            _emailMessage = new EmailMessage(
                 recipient: "example2@gmail.com",
                 subject: "Subject",
                 body: "Body");
@@ -29,7 +29,7 @@
         /// <returns>Test feedback</returns>
         public EmailMessage Build()
         {
-            return this._emailMessage;
+            return _emailMessage;
         }
     }
 }

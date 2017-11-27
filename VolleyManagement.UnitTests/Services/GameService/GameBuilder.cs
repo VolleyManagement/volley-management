@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Domain.GamesAggregate;
 
     /// <summary>
     /// Represents a builder of <see cref="Game"/> objects for unit tests for <see cref="GameService"/>.
@@ -36,8 +36,7 @@
                 AwayTeamId = 2,
                 Result = new Result
                 {
-                    SetsScore = new Score(3, 0),
-                    IsTechnicalDefeat = false,
+                    GameScore = new Score(3, 0, false),
                     SetScores = new List<Score>
                     {
                         new Score(25, 20),
@@ -118,8 +117,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithDefaultResult()
         {
-            _game.Result.SetsScore = new Score(0, 0);
-            _game.Result.IsTechnicalDefeat = false;
+            _game.Result.GameScore = new Score(0, 0, false);
             foreach (var score in _game.Result.SetScores)
             {
                 score.Away = 0;
@@ -136,7 +134,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithSetsScore(Score score)
         {
-            _game.Result.SetsScore = score;
+            _game.Result.GameScore = score;
             return this;
         }
 
@@ -146,7 +144,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeat()
         {
-            _game.Result.IsTechnicalDefeat = true;
+            _game.Result.GameScore.IsTechnicalDefeat = true;
             return this;
         }
 
@@ -156,7 +154,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithNoTechnicalDefeat()
         {
-            _game.Result.IsTechnicalDefeat = false;
+            _game.Result.GameScore.IsTechnicalDefeat = false;
             return this;
         }
 
@@ -191,19 +189,30 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithStartDate(DateTime date)
         {
-            this._game.GameDate = date;
+            _game.GameDate = date;
             return this;
         }
 
         public GameBuilder WithNoStartDate()
         {
-            this._game.GameDate = null;
+            _game.GameDate = null;
             return this;
         }
 
         public GameBuilder WithGameNumber(byte gameNumber)
         {
-            this._game.GameNumber = gameNumber;
+            _game.GameNumber = gameNumber;
+            return this;
+        }
+
+        public GameBuilder WithAPenalty()
+        {
+            _game.Result.Penalty = new Penalty
+            {
+                IsHomeTeam = true,
+                Amount = 2,
+                Description = "Penalty reason"
+            };
             return this;
         }
 
@@ -237,7 +246,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithInvalidSetsScore()
         {
-            _game.Result.SetsScore = new Score(1, 0);
+            _game.Result.GameScore = new Score(1, 0);
             return this;
         }
 
@@ -247,7 +256,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithSetsScoreNoMatchSetScores()
         {
-            _game.Result.SetsScore = new Score(3, 1);
+            _game.Result.GameScore = new Score(3, 1);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 20),
@@ -284,7 +293,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithInvalidOptionalSetScores()
         {
-            _game.Result.SetsScore = new Score(3, 2);
+            _game.Result.GameScore = new Score(3, 2);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 20),
@@ -303,7 +312,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithPreviousOptionalSetUnplayed()
         {
-            _game.Result.SetsScore = new Score(3, 1);
+            _game.Result.GameScore = new Score(3, 1);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 23),
@@ -322,7 +331,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithSetScoresUnorderedForHomeTeam()
         {
-            _game.Result.SetsScore = new Score(3, 1);
+            _game.Result.GameScore = new Score(3, 1);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 20),
@@ -342,35 +351,35 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithRound(byte roundNumber)
         {
-            this._game.Round = roundNumber;
+            _game.Round = roundNumber;
             return this;
         }
 
         public GameBuilder TestRoundGame()
         {
-            this._game.TournamentId = 1;
-            this._game.HomeTeamId = 1;
-            this._game.AwayTeamId = 2;
-            this._game.Round = 1;
+            _game.TournamentId = 1;
+            _game.HomeTeamId = 1;
+            _game.AwayTeamId = 2;
+            _game.Round = 1;
 
             return this;
         }
 
         public GameBuilder TestRoundGameSwithedTeams()
         {
-            this._game.TournamentId = 1;
-            this._game.HomeTeamId = 2;
-            this._game.AwayTeamId = 1;
-            this._game.Round = 1;
+            _game.TournamentId = 1;
+            _game.HomeTeamId = 2;
+            _game.AwayTeamId = 1;
+            _game.Round = 1;
 
             return this;
         }
 
         public GameBuilder TestFreeDayGame()
         {
-            this._game.HomeTeamId = 1;
-            this._game.AwayTeamId = null;
-            this._game.Round = 1;
+            _game.HomeTeamId = 1;
+            _game.AwayTeamId = null;
+            _game.Round = 1;
 
             return this;
         }
@@ -381,7 +390,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithSetScoresUnorderedForAwayTeam()
         {
-            _game.Result.SetsScore = new Score(2, 3);
+            _game.Result.GameScore = new Score(2, 3);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 25),
@@ -400,8 +409,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatValidSetScoresHomeTeamWin()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(3, 0);
+            _game.Result.GameScore = new Score(3, 0, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 0),
@@ -420,8 +428,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatValidSetScoresAwayTeamWin()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(0, 3);
+            _game.Result.GameScore = new Score(0, 3, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 25),
@@ -440,8 +447,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatInvalidSetsScore()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(2, 0);
+            _game.Result.GameScore = new Score(2, 0, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 0),
@@ -460,8 +466,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatInvalidSetScores()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(3, 0);
+            _game.Result.GameScore = new Score(3, 0, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(25, 0),
@@ -480,8 +485,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithTechnicalDefeatValidOptional()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(3, 0);
+            _game.Result.GameScore = new Score(3, 0, true);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 0),
@@ -500,8 +504,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithSetScoresNull()
         {
-            _game.Result.IsTechnicalDefeat = true;
-            _game.Result.SetsScore = new Score(0, 3);
+            _game.Result.GameScore = new Score(0, 3, true);
             _game.Result.SetScores = null;
 
             return this;
@@ -513,7 +516,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithOrdinarySetsScoreInvalid()
         {
-            _game.Result.SetsScore = new Score(4, 1);
+            _game.Result.GameScore = new Score(4, 1);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 25),
@@ -532,7 +535,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithFifthSetScoreAsUsualSetScore()
         {
-            _game.Result.SetsScore = new Score(3, 2);
+            _game.Result.GameScore = new Score(3, 2);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 25),
@@ -551,7 +554,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithFifthSetScoreMoreThanMaxWithValidDifference()
         {
-            _game.Result.SetsScore = new Score(3, 2);
+            _game.Result.GameScore = new Score(3, 2);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 25),
@@ -570,7 +573,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithFifthSetScoreMoreThanMaxWithInvalidDifference()
         {
-            _game.Result.SetsScore = new Score(3, 2);
+            _game.Result.GameScore = new Score(3, 2);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 25),
@@ -589,7 +592,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithFifthSetScoreLessThanMax()
         {
-            _game.Result.SetsScore = new Score(3, 2);
+            _game.Result.GameScore = new Score(3, 2);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 25),
@@ -608,7 +611,7 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithFifthSetScoreValid()
         {
-            _game.Result.SetsScore = new Score(3, 2);
+            _game.Result.GameScore = new Score(3, 2);
             _game.Result.SetScores = new List<Score>
             {
                 new Score(0, 25),

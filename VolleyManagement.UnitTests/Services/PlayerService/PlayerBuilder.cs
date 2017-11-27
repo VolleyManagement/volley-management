@@ -1,8 +1,7 @@
 ﻿namespace VolleyManagement.UnitTests.Services.PlayerService
 {
     using System.Diagnostics.CodeAnalysis;
-
-    using VolleyManagement.Domain.PlayersAggregate;
+    using Domain.PlayersAggregate;
 
     /// <summary>
     /// Player domain object builder
@@ -20,7 +19,7 @@
         /// </summary>
         public PlayerBuilder()
         {
-            this._player = new Player
+            _player = new Player
             {
                 Id = 1,
                 FirstName = "FirstName",

@@ -1,14 +1,14 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using VolleyManagement.Contracts;
-    using VolleyManagement.Contracts.Authorization;
-    using VolleyManagement.Contracts.Exceptions;
-    using VolleyManagement.Domain.RolesAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults;
+    using Contracts;
+    using Contracts.Authorization;
+    using Contracts.Exceptions;
+    using Domain.RolesAggregate;
+    using ViewModels.GameResults;
 
     /// <summary>
     /// Represents a controller that contains game results actions.
@@ -131,7 +131,11 @@
             }
             catch (MissingEntityException)
             {
-                ModelState.AddModelError(string.Empty, App_GlobalResources.GameResultsController.GameResultWasDeleted);
+                ModelState.AddModelError(string.Empty, Resources.UI.GameResultsController.GameResultWasDeleted);
+            }
+            catch (ArgumentException)
+            {
+                ModelState.AddModelError(string.Empty, Resources.UI.GameResultsController.GameResultNotEdited);
             }
 
             return View(gameResultViewModel);
@@ -146,7 +150,7 @@
         {
             try
             {
-                this._gameService.Delete(id);
+                _gameService.Delete(id);
             }
             catch (ArgumentNullException ex)
             {
@@ -159,7 +163,7 @@
 
             return Json(new GameDeleteResultViewModel
             {
-                Message = App_GlobalResources.GameResultsController.GameWasDeletedSuccessfully,
+                Message = Resources.UI.GameResultsController.GameWasDeletedSuccessfully,
                 HasDeleted = true
             });
         }

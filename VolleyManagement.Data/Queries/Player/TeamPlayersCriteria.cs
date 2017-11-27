@@ -1,6 +1,6 @@
 ﻿namespace VolleyManagement.Data.Queries.Player
 {
-    using VolleyManagement.Data.Contracts;
+    using Contracts;
 
     /// <summary>
     /// Provides parameters to retrieve Team roster

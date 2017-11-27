@@ -1,15 +1,17 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.TournamentResultsViewModel
 @using VolleyManagement.Domain.RolesAggregate
 
+<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+
 @{
-    ViewBag.Title = Resources.GameResultViews.TournamentResultsTitle;
+    ViewBag.Title = Resources.UI.GameResultViews.TournamentResultsTitle;
 }
 
 <h2>@ViewBag.Title</h2>
 
 <fieldset>
     @{
-        string legendText = string.Format(Resources.GameResultViews.TournamentResultsLegend, Model.Name);
+        string legendText = string.Format(Resources.UI.GameResultViews.TournamentResultsLegend, Model.Name);
         string setsScoreText = string.Empty;
         string set1ScoreText = string.Empty;
         string set2ScoreText = string.Empty;
@@ -22,20 +24,20 @@
     <legend>@legendText</legend>
     @if (Model.GameResults.Count == 0)
     {
-        <p>@Resources.GameResultViews.NoGameResults</p>
+        <p>@Resources.UI.GameResultViews.NoGameResults</p>
     }
     else
     {
         <table class="results">
             <thead>
                 <tr class="results-header-row">
-                    <th class="results-header-cell">@Resources.GameResultViews.ResultNumberHeader</th>
-                    <th class="results-header-cell">@Resources.GameResultViews.GameResultHeader</th>
-                    <th class="results-header-cell">@Resources.GameResultViews.Set1ScoreHeader</th>
-                    <th class="results-header-cell">@Resources.GameResultViews.Set2ScoreHeader</th>
-                    <th class="results-header-cell">@Resources.GameResultViews.Set3ScoreHeader</th>
-                    <th class="results-header-cell">@Resources.GameResultViews.Set4ScoreHeader</th>
-                    <th class="results-header-cell">@Resources.GameResultViews.Set5ScoreHeader</th>
+                    <th class="results-header-cell">@Resources.UI.GameResultViews.ResultNumberHeader</th>
+                    <th class="results-header-cell">@Resources.UI.GameResultViews.GameResultHeader</th>
+                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set1ScoreHeader</th>
+                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set2ScoreHeader</th>
+                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set3ScoreHeader</th>
+                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set4ScoreHeader</th>
+                    <th class="results-header-cell">@Resources.UI.GameResultViews.Set5ScoreHeader</th>
                     <th class="results-operation-header-cell"></th>
                     <th class="results-operation-header-cell"></th>
                 </tr>
@@ -44,10 +46,10 @@
                 @foreach (var gameResult in Model.GameResults)
                 {
                     setsScoreText = gameResult.IsTechnicalDefeat
-                        ? gameResult.SetsScore.Home > gameResult.SetsScore.Away
-                            ? string.Format("{0}*:{1}", gameResult.SetsScore.Home, gameResult.SetsScore.Away)
-                            : string.Format("{0}:{1}*", gameResult.SetsScore.Home, gameResult.SetsScore.Away)
-                        : string.Format("{0}:{1}", gameResult.SetsScore.Home, gameResult.SetsScore.Away);
+                        ? gameResult.GameScore.Home > gameResult.GameScore.Away
+                            ? string.Format("{0}*:{1}", gameResult.GameScore.Home, gameResult.GameScore.Away)
+                            : string.Format("{0}:{1}*", gameResult.GameScore.Home, gameResult.GameScore.Away)
+                        : string.Format("{0}:{1}", gameResult.GameScore.Home, gameResult.GameScore.Away);
 
                     set1ScoreText = string.Format("{0}:{1}", gameResult.SetScores[0].Home, gameResult.SetScores[0].Away);
                     set2ScoreText = string.Format("{0}:{1}", gameResult.SetScores[1].Home, gameResult.SetScores[1].Away);
@@ -70,15 +72,10 @@
                         <td class="results-first-operation-cell">
                             @if (Model.Authorization.IsAllowed(AuthOperations.Games.EditResult))
                             {
-                                @Html.ActionLink(Resources.GameResultViews.Edit, "Edit", new { id = gameResult.Id }, null)
+                                @Html.ActionLink(Resources.UI.GameResultViews.Edit, "Edit", new { id = gameResult.Id }, null)
                             }
                         </td>
-                        <td class="results-operation-cell">
-                            @if (Model.Authorization.IsAllowed(AuthOperations.Games.Delete))
-                            {
-                                <a href="#" class="deleteResult_btn" data-id="@gameResult.Id">@Resources.GameResultViews.Delete</a>
-                            }
-                        </td>
+                        <td></td>
                     </tr>
                 }
             </tbody>
@@ -86,9 +83,9 @@
     }
 </fieldset>
 
-<p>@Html.ActionLink(Resources.GameResultViews.BackToTournament, "Details", "Tournaments", new { id = Model.Id }, null)</p>
+<p>@Html.ActionLink(Resources.UI.GameResultViews.BackToTournament, "Details", "Tournaments", new { id = Model.Id }, null)</p>
 
 <script>
-    var DELETE_CONFIRMATION_MESSAGE = "@Resources.GameResultViews.DeleteConfirmationText";
-    var DELETE_FAILED_MESSAGE = "@Resources.GameResultsController.GameResultNotFoundView";
+    var DELETE_CONFIRMATION_MESSAGE = "@Resources.UI.GameResultViews.DeleteConfirmationText";
+    var DELETE_FAILED_MESSAGE = "@Resources.UI.GameResultsController.GameResultNotFoundView";
 </script>

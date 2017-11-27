@@ -6,12 +6,12 @@
     public class LoginProviderModel
     {
         /// <summary>
-        /// Provider for the linked login, i.e. Facebook, Google, etc.
+        /// Gets or sets provider for the linked login, i.e. Facebook, Google, etc.
         /// </summary>
         public string LoginProvider { get; set; }
 
         /// <summary>
-        /// User specific key for the login provider
+        /// Gets or sets user specific key for the login provider
         /// </summary>
         public string ProviderKey { get; set; }
     }

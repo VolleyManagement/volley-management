@@ -6,17 +6,17 @@
     public class RoleToOperationEntity
     {
         /// <summary>
-        /// Identifier of the operation to role entry
+        /// Gets or sets identifier of the operation to role entry
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Identifier of the Role
+        /// Gets or sets identifier of the Role
         /// </summary>
         public virtual int RoleId { get; set; }
 
         /// <summary>
-        /// Identifier of the operation
+        /// Gets or sets identifier of the operation
         /// </summary>
         public short OperationId { get; set; }
     }

@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.Domain.Tournaments
+﻿namespace VolleyManagement.Crosscutting.Contracts.Extensions
 {
     using System;
     using System.ComponentModel;
@@ -7,6 +7,7 @@
     /// <summary>
     /// Extension methods for enumeration
     /// </summary>
+    [Obsolete("Should be removed")]
     public static class EnumExtensions
     {
         /// <summary>
@@ -26,7 +27,8 @@
         /// <typeparam name="T">Type of attribute.</typeparam>
         /// <param name="value">Enumeration value.</param>
         /// <returns>Specific attribute</returns>
-        private static T GetAttribute<T>(this Enum value) where T : Attribute
+        private static T GetAttribute<T>(this Enum value)
+            where T : Attribute
         {
             var type = value.GetType();
             var memberInfo = type.GetMember(value.ToString());

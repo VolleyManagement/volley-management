@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using VolleyManagement.Domain.GameReportsAggregate;
+    using Domain.GameReportsAggregate;
 
     /// <summary>
     /// Represents a data transfer object of team with total score and statistics values.

@@ -4,11 +4,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Data.Queries.Tournament;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.Tournament;
+    using Domain.TournamentsAggregate;
+    using Entities;
+    using VolleyManagement.Data.Queries.Division;
+    using VolleyManagement.Data.Queries.Group;
 
     /// <summary>
     /// Provides Object Query implementation for Tournaments
@@ -16,11 +18,15 @@
     public class TournamentQueries : IQuery<Tournament, UniqueTournamentCriteria>,
                                      IQuery<List<Tournament>, GetAllCriteria>,
                                      IQuery<Tournament, FindByIdCriteria>,
-                                     IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>
+                                     IQuery<List<Division>, TournamentDivisionsCriteria>,
+                                     IQuery<List<Group>, DivisionGroupsCriteria>,
+                                     IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>,
+                                     IQuery<Tournament, TournamentByGroupCriteria>,
+                                     IQuery<List<Tournament>, OldTournamentsCriteria>
     {
         #region Fields
 
-        private readonly VolleyUnitOfWork _unitOfWork;
+    private readonly VolleyUnitOfWork _unitOfWork;
 
         #endregion
 
@@ -32,7 +38,7 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public TournamentQueries(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
         }
 
         #endregion
@@ -62,9 +68,63 @@
         /// </summary>
         /// <param name="criteria"> The criteria. </param>
         /// <returns> The <see cref="Tournament"/>. </returns>
+        public Tournament Execute(TournamentByGroupCriteria criteria)
+        {
+            var tournament = from g in _unitOfWork.Context.Groups
+                            join d in _unitOfWork.Context.Divisions on g.DivisionId equals d.Id
+                            join t in _unitOfWork.Context.Tournaments on d.TournamentId equals t.Id
+                            where g.Id == criteria.GroupId
+                            select t;
+
+            return tournament.Select(GetTournamentMapping()).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Finds Tournament by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Tournament"/>. </returns>
         public List<Tournament> Execute(GetAllCriteria criteria)
         {
             return _unitOfWork.Context.Tournaments.Select(GetTournamentMapping()).ToList();
+        }
+
+        /// <summary>
+        /// Finds List of Tournament by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Tournament"/>. </returns>
+        public List<Tournament> Execute(OldTournamentsCriteria criteria)
+        {
+            return _unitOfWork.Context.Tournaments
+                                      .Where(t => t.IsArchived == false)
+                                      .Where(t => t.GamesEnd <= criteria.CheckDate)
+                                      .Select(GetTournamentMapping())
+                                      .ToList();
+        }
+
+        /// <summary>
+        /// Find Divisions by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Division"/>. </returns>
+        public List<Division> Execute(TournamentDivisionsCriteria criteria)
+        {
+            return _unitOfWork.Context.Divisions
+                                      .Where(d => d.TournamentId == criteria.TournamentId)
+                                      .Select(GetDivisionMapping()).ToList();
+        }
+
+        /// <summary>
+        /// Find Groups by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria. </param>
+        /// <returns> The <see cref="Division"/>. </returns>
+        public List<Group> Execute(DivisionGroupsCriteria criteria)
+        {
+            return _unitOfWork.Context.Groups
+                                      .Where(d => d.DivisionId == criteria.DivisionId)
+                                      .Select(GetGroupMapping()).ToList();
         }
 
         /// <summary>
@@ -87,7 +147,7 @@
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
         public TournamentScheduleDto Execute(TournamentScheduleInfoCriteria criteria)
         {
-            return this._unitOfWork.Context.Tournaments.Where(t => t.Id == criteria.TournamentId)
+            return _unitOfWork.Context.Tournaments.Where(t => t.Id == criteria.TournamentId)
                 .Select(tr => new TournamentScheduleDto()
                 {
                     Id = tr.Id,
@@ -95,7 +155,10 @@
                     StartDate = tr.GamesStart,
                     EndDate = tr.GamesEnd,
                     Scheme = (TournamentSchemeEnum)tr.Scheme,
-                    TeamCount = (byte)tr.Teams.Count()
+                    TeamCount = (byte)tr.Divisions
+                                        .SelectMany(d => d.Groups)
+                                        .SelectMany(g => g.Teams)
+                                        .Count()
                 })
                 .SingleOrDefault();
         }
@@ -127,7 +190,8 @@
                                     .Where(d => d.TournamentId == t.Id)
                                     .Select(GetDivisionMapping())
                                     .ToList(),
-                    LastTimeUpdated = t.LastTimeUpdated
+                    LastTimeUpdated = t.LastTimeUpdated,
+                    IsArchived = t.IsArchived
                 };
         }
 
@@ -157,6 +221,7 @@
                     Id = g.Id,
                     Name = g.Name,
                     DivisionId = g.DivisionId,
+                    IsEmpty = g.Teams.Count == 0
                 };
         }
 

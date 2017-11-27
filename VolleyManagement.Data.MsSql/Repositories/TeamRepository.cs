@@ -3,13 +3,12 @@
     using System;
     using System.Data.Entity;
     using System.Linq;
-
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.MsSql.Mappers;
-    using VolleyManagement.Data.MsSql.Repositories.Specifications;
-    using VolleyManagement.Domain.TeamsAggregate;
+    using Contracts;
+    using Domain.TeamsAggregate;
+    using Entities;
+    using Exceptions;
+    using Mappers;
+    using Specifications;
 
     /// <summary>
     /// Defines implementation of the ITeamRepository contract.
@@ -29,8 +28,8 @@
         /// <param name="unitOfWork">The unit of work.</param>
         public TeamRepository(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
-            this._dalTeams = _unitOfWork.Context.Teams;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalTeams = _unitOfWork.Context.Teams;
         }
 
         /// <summary>
@@ -38,7 +37,7 @@
         /// </summary>
         public IUnitOfWork UnitOfWork
         {
-            get { return this._unitOfWork; }
+            get { return _unitOfWork; }
         }
 
         /// <summary>
@@ -55,8 +54,8 @@
                 throw new InvalidEntityException();
             }
 
-            this._dalTeams.Add(newTeam);
-            this._unitOfWork.Commit();
+            _dalTeams.Add(newTeam);
+            _unitOfWork.Commit();
 
             newEntity.Id = newTeam.Id;
         }
@@ -84,8 +83,8 @@
         public void Remove(int id)
         {
             var dalToRemove = new TeamEntity { Id = id };
-            this._dalTeams.Attach(dalToRemove);
-            this._dalTeams.Remove(dalToRemove);
+            _dalTeams.Attach(dalToRemove);
+            _dalTeams.Remove(dalToRemove);
         }
     }
 }

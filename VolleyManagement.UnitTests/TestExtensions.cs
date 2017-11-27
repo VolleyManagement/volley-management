@@ -3,6 +3,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Mvc;
 
@@ -18,7 +19,8 @@
         /// <typeparam name="T">Model type</typeparam>
         /// <param name="response">Http response message</param>
         /// <returns>T model</returns>
-        public static T GetModelFromResponse<T>(HttpResponseMessage response) where T : class
+        public static T GetModelFromResponse<T>(HttpResponseMessage response)
+            where T : class
         {
             ObjectContent content = response.Content as ObjectContent;
             return (T)content.Value;
@@ -30,7 +32,8 @@
         /// <typeparam name="T">model type</typeparam>
         /// <param name="result">object to convert and return</param>
         /// <returns>T result by ViewResult from action view</returns>
-        public static T GetModel<T>(object result) where T : class
+        public static T GetModel<T>(object result)
+            where T : class
         {
             return (T)(result as ViewResult).ViewData.Model;
         }
@@ -41,9 +44,10 @@
         /// <typeparam name="T">model type</typeparam>
         /// <param name="task"><see cref="Task"/> Task result</param>
         /// <returns>T result by ViewResult from action view</returns>
-        public static T GetModelAsync<T>(System.Threading.Tasks.Task<ActionResult> task) where T : class
+        public static T GetModelAsync<T>(Task<ActionResult> task)
+            where T : class
         {
-            if (task.Status == System.Threading.Tasks.TaskStatus.Faulted)
+            if (task.Status == TaskStatus.Faulted)
             {
                 return null;
             }

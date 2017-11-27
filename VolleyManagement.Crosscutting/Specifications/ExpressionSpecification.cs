@@ -21,7 +21,7 @@
                 throw new ArgumentNullException("expression");
             }
 
-            this._expression = expression;
+            _expression = expression;
         }
 
         /// <summary>

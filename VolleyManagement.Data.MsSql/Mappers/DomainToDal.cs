@@ -2,15 +2,15 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Domain.FeedbackAggregate;
-    using VolleyManagement.Domain.GamesAggregate;
-    using VolleyManagement.Domain.PlayersAggregate;
-    using VolleyManagement.Domain.RequestsAggregate;
-    using VolleyManagement.Domain.TeamsAggregate;
-    using VolleyManagement.Domain.TournamentRequestAggregate;
-    using VolleyManagement.Domain.TournamentsAggregate;
-    using VolleyManagement.Domain.UsersAggregate;
+    using Domain.FeedbackAggregate;
+    using Domain.GamesAggregate;
+    using Domain.PlayersAggregate;
+    using Domain.RequestsAggregate;
+    using Domain.TeamsAggregate;
+    using Domain.TournamentRequestAggregate;
+    using Domain.TournamentsAggregate;
+    using Domain.UsersAggregate;
+    using Entities;
 
     /// <summary>
     /// Maps Domain models to Dal.
@@ -36,8 +36,13 @@
             to.ApplyingPeriodEnd = from.ApplyingPeriodEnd;
             to.TransferStart = from.TransferStart;
             to.TransferEnd = from.TransferEnd;
-            to.Divisions = from.Divisions.Select(d => Map(d)).ToList();
+            foreach (var division in from.Divisions)
+            {
+                to.Divisions.Add(Map(division, to.Divisions.ToList()));
+            }
+
             to.LastTimeUpdated = from.LastTimeUpdated;
+            to.IsArchived = from.IsArchived;
         }
 
         /// <summary>
@@ -110,13 +115,19 @@
                 {
                     Id = from.Id,
                     Name = from.Name,
-                    TournamentId = from.TournamentId
+                    TournamentId = from.TournamentId,
+                    Groups = Map(from.Groups)
                 };
             }
             else
             {
                 var division = oldDivisions.Where(d => d.Id == from.Id).SingleOrDefault();
-                division.Name = from.Name;
+                var newGroups = from.Groups.Where(gr => gr.Id == 0);
+                foreach (var group in newGroups.ToList())
+                {
+                    division.Groups.Add(Map(group));
+                }
+
                 return division;
             }
         }
@@ -150,6 +161,22 @@
         }
 
         /// <summary>
+        /// Maps group models
+        /// </summary>
+        /// <param name="from">List of groups to map</param>
+        /// <returns>List of Dal entity</returns>
+        public static List<GroupEntity> Map(List<Group> from)
+        {
+            var groups = new List<GroupEntity>();
+            foreach (var item in from)
+            {
+                groups.Add(Map(item));
+            }
+
+            return groups;
+        }
+
+        /// <summary>
         /// Maps group model
         /// </summary>
         /// <param name="from">Group to map</param>
@@ -175,22 +202,38 @@
             to.TournamentId = from.TournamentId;
             to.HomeTeamId = from.HomeTeamId;
             to.AwayTeamId = from.AwayTeamId;
-            to.HomeSetsScore = from.Result.SetsScore.Home;
-            to.AwaySetsScore = from.Result.SetsScore.Away;
-            to.IsTechnicalDefeat = from.Result.IsTechnicalDefeat;
+            to.HomeSetsScore = from.Result.GameScore.Home;
+            to.AwaySetsScore = from.Result.GameScore.Away;
+            to.IsTechnicalDefeat = from.Result.GameScore.IsTechnicalDefeat;
             to.HomeSet1Score = from.Result.SetScores[0].Home;
             to.AwaySet1Score = from.Result.SetScores[0].Away;
+            to.IsSet1TechnicalDefeat = from.Result.SetScores[0].IsTechnicalDefeat;
             to.HomeSet2Score = from.Result.SetScores[1].Home;
             to.AwaySet2Score = from.Result.SetScores[1].Away;
+            to.IsSet2TechnicalDefeat = from.Result.SetScores[1].IsTechnicalDefeat;
             to.HomeSet3Score = from.Result.SetScores[2].Home;
             to.AwaySet3Score = from.Result.SetScores[2].Away;
+            to.IsSet3TechnicalDefeat = from.Result.SetScores[2].IsTechnicalDefeat;
             to.HomeSet4Score = from.Result.SetScores[3].Home;
             to.AwaySet4Score = from.Result.SetScores[3].Away;
+            to.IsSet4TechnicalDefeat = from.Result.SetScores[3].IsTechnicalDefeat;
             to.HomeSet5Score = from.Result.SetScores[4].Home;
             to.AwaySet5Score = from.Result.SetScores[4].Away;
+            to.IsSet5TechnicalDefeat = from.Result.SetScores[4].IsTechnicalDefeat;
             to.StartTime = from.GameDate;
             to.RoundNumber = from.Round;
             to.GameNumber = from.GameNumber;
+            if (from.Result.Penalty != null)
+            {
+                to.PenaltyTeam = (byte)(from.Result.Penalty.IsHomeTeam ? 1 : 2);
+                to.PenaltyAmount = from.Result.Penalty.Amount;
+                to.PenaltyDescription = from.Result.Penalty.Description;
+            }
+            else
+            {
+                to.PenaltyTeam = 0;
+                to.PenaltyAmount = 0;
+            }
         }
 
         /// <summary>
@@ -232,7 +275,7 @@
             to.Id = from.Id;
             to.UserId = from.UserId;
             to.TeamId = from.TeamId;
-            to.TournamentId = from.TournamentId;
+            to.GroupId = from.GroupId;
         }
     }
 }

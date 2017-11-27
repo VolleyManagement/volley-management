@@ -2,7 +2,7 @@
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Domain.TournamentsAggregate;
 
     public class TournamentScheduleDtoBuilder
     {
@@ -19,7 +19,7 @@
         /// </summary>
         public TournamentScheduleDtoBuilder()
         {
-            this._tournamentScheduleDto = new TournamentScheduleDto()
+            _tournamentScheduleDto = new TournamentScheduleDto()
             {
                 Id = DEFAULT_ID,
                 Name = "Tour1",
@@ -36,7 +36,7 @@
         /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
         public TournamentScheduleDtoBuilder WithId(int id)
         {
-            this._tournamentScheduleDto.Id = id;
+            _tournamentScheduleDto.Id = id;
             return this;
         }
 
@@ -47,7 +47,7 @@
         /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
         public TournamentScheduleDtoBuilder WithStartDate(DateTime date)
         {
-            this._tournamentScheduleDto.StartDate = date;
+            _tournamentScheduleDto.StartDate = date;
             return this;
         }
 
@@ -58,7 +58,7 @@
         /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
         public TournamentScheduleDtoBuilder WithEndDate(DateTime date)
         {
-            this._tournamentScheduleDto.EndDate = date;
+            _tournamentScheduleDto.EndDate = date;
             return this;
         }
 
@@ -69,7 +69,7 @@
         /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
         public TournamentScheduleDtoBuilder WithName(string name)
         {
-            this._tournamentScheduleDto.Name = name;
+            _tournamentScheduleDto.Name = name;
             return this;
         }
 
@@ -80,7 +80,7 @@
         /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
         public TournamentScheduleDtoBuilder WithTeamCount(byte teamCount)
         {
-            this._tournamentScheduleDto.TeamCount = teamCount;
+            _tournamentScheduleDto.TeamCount = teamCount;
             return this;
         }
 
@@ -91,7 +91,7 @@
         /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
         public TournamentScheduleDtoBuilder WithScheme(TournamentSchemeEnum scheme)
         {
-            this._tournamentScheduleDto.Scheme = scheme;
+            _tournamentScheduleDto.Scheme = scheme;
             return this;
         }
 
@@ -101,9 +101,9 @@
         /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
         public TournamentScheduleDtoBuilder TestTournamemtSchedultDto()
         {
-            this._tournamentScheduleDto.Id = DEFAULT_ID;
-            this._tournamentScheduleDto.StartDate = DateTime.Parse(TEST_START_DATE);
-            this._tournamentScheduleDto.EndDate = DateTime.Parse(TEST_END_DATE);
+            _tournamentScheduleDto.Id = DEFAULT_ID;
+            _tournamentScheduleDto.StartDate = DateTime.Parse(TEST_START_DATE);
+            _tournamentScheduleDto.EndDate = DateTime.Parse(TEST_END_DATE);
 
             return this;
         }
@@ -114,7 +114,7 @@
         /// <returns>Instance of <see cref="TournamentScheduleDtoBuilder"/></returns>
         public TournamentScheduleDto Build()
         {
-            return this._tournamentScheduleDto;
+            return _tournamentScheduleDto;
         }
     }
 }

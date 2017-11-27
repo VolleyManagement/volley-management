@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Domain.TournamentsAggregate;
 
     /// <summary>
     /// Comparer for tournament objects.
@@ -59,7 +59,8 @@
                 && x.Description == y.Description
                 && x.Season == y.Season
                 && x.Scheme == y.Scheme
-                && x.RegulationsLink == y.RegulationsLink;
+                && x.RegulationsLink == y.RegulationsLink
+                && x.IsArchived == y.IsArchived;
         }
     }
 }

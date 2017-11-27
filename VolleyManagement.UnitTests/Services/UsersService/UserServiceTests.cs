@@ -6,7 +6,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using MSTestExtensions;
-    using Ninject;
+
     using VolleyManagement.Contracts;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Contracts.Exceptions;
@@ -25,27 +25,16 @@
     {
         private const int EXISTING_ID = 1;
 
-        private readonly Mock<IAuthorizationService> _authServiceMock = new Mock<IAuthorizationService>();
+        private Mock<IAuthorizationService> _authServiceMock;
+        private Mock<IUserRepository> _userRepositoryMock;
+        private Mock<ICacheProvider> _cacheProviderMock;
+        private Mock<IQuery<List<User>, GetAllCriteria>> _getAllQueryMock;
+        private Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock;
+        private Mock<IQuery<User, FindByIdCriteria>> _getByIdQueryMock;
+        private Mock<IQuery<List<User>, UniqueUserCriteria>> _getAdminsListQueryMock;
+        private Mock<ICurrentUserService> _currentUserServiceMock;
 
-        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
-
-        private readonly Mock<ICacheProvider> _cacheProviderMock = new Mock<ICacheProvider>();
-
-        private readonly Mock<IQuery<List<User>, GetAllCriteria>> _getAllQueryMock =
-          new Mock<IQuery<List<User>, GetAllCriteria>>();
-
-        private readonly Mock<IQuery<Player, FindByIdCriteria>> _getPlayerByIdQueryMock =
-            new Mock<IQuery<Player, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<User, FindByIdCriteria>> _getByIdQueryMock =
-            new Mock<IQuery<User, FindByIdCriteria>>();
-
-        private readonly Mock<IQuery<List<User>, UniqueUserCriteria>> _getAdminsListQueryMock =
-            new Mock<IQuery<List<User>, UniqueUserCriteria>>();
-
-        private readonly UserServiceTestFixture _testFixture = new UserServiceTestFixture();
-
-        private IKernel _kernel;
+        private UserServiceTestFixture _testFixture = new UserServiceTestFixture();
 
         /// <summary>
         /// Initializes test data.
@@ -53,14 +42,14 @@
         [TestInitialize]
         public void TestInit()
         {
-            _kernel = new StandardKernel();
-            _kernel.Bind<IQuery<List<User>, GetAllCriteria>>().ToConstant(_getAllQueryMock.Object);
-            _kernel.Bind<IQuery<User, FindByIdCriteria>>().ToConstant(_getByIdQueryMock.Object);
-            _kernel.Bind<IQuery<List<User>, UniqueUserCriteria>>().ToConstant(_getAdminsListQueryMock.Object);
-            _kernel.Bind<IQuery<Player, FindByIdCriteria>>().ToConstant(_getPlayerByIdQueryMock.Object);
-            _kernel.Bind<IAuthorizationService>().ToConstant(_authServiceMock.Object);
-            _kernel.Bind<ICacheProvider>().ToConstant(_cacheProviderMock.Object);
-            _kernel.Bind<IUserRepository>().ToConstant(_userRepositoryMock.Object);
+            _authServiceMock = new Mock<IAuthorizationService>();
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _cacheProviderMock = new Mock<ICacheProvider>();
+            _getAllQueryMock = new Mock<IQuery<List<User>, GetAllCriteria>>();
+            _getPlayerByIdQueryMock = new Mock<IQuery<Player, FindByIdCriteria>>();
+            _getByIdQueryMock = new Mock<IQuery<User, FindByIdCriteria>>();
+            _getAdminsListQueryMock = new Mock<IQuery<List<User>, UniqueUserCriteria>>();
+            _currentUserServiceMock = new Mock<ICurrentUserService>();
         }
 
         [TestMethod]
@@ -75,7 +64,7 @@
                                             .Build()
                                             .ToList();
 
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetAllUsers();
@@ -90,7 +79,7 @@
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.AllUsers.ViewList);
 
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<AuthorizationException>(() => sut.GetAllUsers(), "Requested operation is not allowed");
@@ -103,9 +92,9 @@
             var testData = _testFixture.TestUsers().Build();
             MockAuthServiceThrowsException(AuthOperations.AllUsers.ViewActiveList);
 
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
-             // Act => Assert
+            // Act => Assert
             Assert.Throws<AuthorizationException>(() => sut.GetAllActiveUsers(), "Requested operation is not allowed");
         }
 
@@ -116,7 +105,7 @@
             var expected = new UserBuilder().WithId(EXISTING_ID).Build();
             MockGetUserByIdQuery(expected);
 
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetUser(EXISTING_ID);
@@ -131,7 +120,7 @@
             // Arrange
             MockAuthServiceThrowsException(AuthOperations.AllUsers.ViewDetails);
 
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act => Assert
             Assert.Throws<AuthorizationException>(() => sut.GetUserDetails(EXISTING_ID), "Requested operation is not allowed");
@@ -145,7 +134,7 @@
             var expected = new UserBuilder().WithId(EXISTING_ID).WithPlayer(player).Build();
             MockGetUserByIdQuery(expected);
             MockGetPlayerByIdQuery(player);
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetUserDetails(EXISTING_ID);
@@ -165,13 +154,26 @@
                                             .TestUsers()
                                             .Build()
                                             .ToList();
-            var sut = _kernel.Get<UserService>();
+            var sut = BuildSUT();
 
             // Act
             var actual = sut.GetAdminsList();
 
             // Assert
             CollectionAssert.AreEqual(expected, actual, new UserComparer());
+        }
+
+        private UserService BuildSUT()
+        {
+            return new UserService(
+                _authServiceMock.Object,
+                _getByIdQueryMock.Object,
+                _getAllQueryMock.Object,
+                _getPlayerByIdQueryMock.Object,
+                _cacheProviderMock.Object,
+                _getAdminsListQueryMock.Object,
+                _userRepositoryMock.Object,
+                _currentUserServiceMock.Object);
         }
 
         private void MockAuthServiceThrowsException(AuthOperation operation)

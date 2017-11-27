@@ -1,0 +1,6 @@
+<div class='angularContainer'>
+  <loader *ngIf="isShowLoader" [isShowLoader]='isShowLoader'></loader>
+  <standings *ngIf="standingsId" [standingsId]='standingsId'></standings>
+  <pivottable *ngIf="pivotId" [pivotId]='pivotId'></pivottable>
+  <schedule *ngIf="scheduleId" [scheduleId]='scheduleId'></schedule>
+</div>

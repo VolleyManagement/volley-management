@@ -7,8 +7,10 @@
     /// </summary>
     public static class Constants
     {
-        [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:ElementsMustBeDocumented",
-                        Justification = "It's a COnstants sub-class")]
+        [SuppressMessage(
+            "StyleCop.CSharp.DocumentationRules",
+            "SA1600:ElementsMustBeDocumented",
+            Justification = "It's a Constants sub-class")]
         public static class ExceptionManagement
         {
             public const string ENTITY_ID_KEY = "EntityId";
@@ -38,6 +40,11 @@
             public const short MINIMAL_SEASON_YEAR = 1900;
 
             public const short MAXIMAL_SEASON_YEAR = 2155;
+
+            /// <summary>
+            /// Constant defines an amount of years after tournament's end so it becomes old
+            /// </summary>
+            public const short YEARS_AFTER_END_TO_BE_OLD = 1;
 
             /// <summary>
             /// Constant defines the minimum number of the months of a registration

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VolleyManagement.UI.App_GlobalResources {
+namespace Resources.UI {
     using System;
     
     
@@ -102,6 +102,15 @@ namespace VolleyManagement.UI.App_GlobalResources {
         public static string ApplyForTournament {
             get {
                 return ResourceManager.GetString("ApplyForTournament", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Archived tournaments.
+        /// </summary>
+        public static string ArchivedTournamentsIndexTitle {
+            get {
+                return ResourceManager.GetString("ArchivedTournamentsIndexTitle", resourceCulture);
             }
         }
         
@@ -376,6 +385,24 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove division.
+        /// </summary>
+        public static string RemoveDivision {
+            get {
+                return ResourceManager.GetString("RemoveDivision", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove group.
+        /// </summary>
+        public static string RemoveGroup {
+            get {
+                return ResourceManager.GetString("RemoveGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Result.
         /// </summary>
         public static string Result {
@@ -484,11 +511,29 @@ namespace VolleyManagement.UI.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No division is selected.
+        /// </summary>
+        public static string TournamentDivisionIsNotSelected {
+            get {
+                return ResourceManager.GetString("TournamentDivisionIsNotSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tournament.
         /// </summary>
         public static string TournamentFieldsTitle {
             get {
                 return ResourceManager.GetString("TournamentFieldsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No group is selected.
+        /// </summary>
+        public static string TournamentGroupIsNotSelected {
+            get {
+                return ResourceManager.GetString("TournamentGroupIsNotSelected", resourceCulture);
             }
         }
         

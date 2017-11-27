@@ -1,14 +1,15 @@
 ﻿namespace VolleyManagement.Data.MsSql.Repositories
 {
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
-    using VolleyManagement.Crosscutting.Contracts.Specifications;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.Exceptions;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.MsSql.Mappers;
-    using VolleyManagement.Data.MsSql.Repositories.Specifications;
-    using VolleyManagement.Domain.TournamentsAggregate;
+    using Contracts;
+    using Crosscutting.Contracts.Specifications;
+    using Domain.TournamentsAggregate;
+    using Entities;
+    using Exceptions;
+    using Mappers;
+    using Specifications;
 
     /// <summary>
     /// Defines implementation of the ITournamentRepository contract.
@@ -17,6 +18,8 @@
     {
         private readonly DbSet<TournamentEntity> _dalTournaments;
         private readonly DbSet<TeamEntity> _dalTeams;
+        private readonly DbSet<DivisionEntity> _dalDivisions;
+        private readonly DbSet<GroupEntity> _dalGroups;
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly ISpecification<TournamentEntity> _dbStorageSpecification = new TournamentsStorageSpecification();
 
@@ -29,6 +32,8 @@
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalTournaments = _unitOfWork.Context.Tournaments;
             _dalTeams = _unitOfWork.Context.Teams;
+            _dalDivisions = _unitOfWork.Context.Divisions;
+            _dalGroups = _unitOfWork.Context.Groups;
         }
 
         /// <summary>
@@ -65,11 +70,8 @@
         public void Update(Tournament updatedEntity)
         {
             var tournamentToUpdate = _dalTournaments.Single(t => t.Id == updatedEntity.Id);
-            updatedEntity.Divisions.Clear();
+            UpdateDivisions(tournamentToUpdate.Divisions, updatedEntity.Divisions);
             DomainToDal.Map(tournamentToUpdate, updatedEntity);
-
-            // ToDo: Check Do we really need this?
-            //// _dalTournaments.Context.ObjectStateManager.ChangeObjectState(tournamentToUpdate, EntityState.Modified);
         }
 
         /// <summary>
@@ -78,22 +80,28 @@
         /// <param name="id">The id of tournament to remove.</param>
         public void Remove(int id)
         {
-            var dalToRemove = new Entities.TournamentEntity { Id = id };
-            this._dalTournaments.Attach(dalToRemove);
-            this._dalTournaments.Remove(dalToRemove);
+            var dalToRemove = _unitOfWork.Context.Tournaments.Find(id);
+            if (dalToRemove == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            _dalTournaments.Remove(dalToRemove);
         }
 
         /// <summary>
-        /// Adds team to the tournament
+        /// Add team to the tournament
         /// </summary>
         /// <param name="teamId">Team id to add</param>
-        /// <param name="tournamentId">Tournament id, where team is going to play</param>
-        public void AddTeamToTournament(int teamId, int tournamentId)
+        /// <param name="groupId">Group id to add</param>
+        public void AddTeamToTournament(int teamId, int groupId)
         {
-            var tournamentEntity = _dalTournaments.Find(tournamentId);
-            var teamEntity = _dalTeams.Find(teamId);
-
-            tournamentEntity.Teams.Add(teamEntity);
+            var group = from t in _dalTournaments
+                        join d in _dalDivisions on t.Id equals d.TournamentId
+                        join g in _dalGroups on d.Id equals g.DivisionId
+                        where g.Id == groupId
+                        select g;
+            group.First().Teams.Add(_dalTeams.Find(teamId));
         }
 
         /// <summary>
@@ -104,14 +112,90 @@
         public void RemoveTeamFromTournament(int teamId, int tournamentId)
         {
             var tournamentEntity = _unitOfWork.Context.Tournaments.Find(tournamentId);
-            var teamEntity = tournamentEntity.Teams.SingleOrDefault(t => t.Id == teamId);
+            var teamEntity = tournamentEntity?.Divisions
+                                             .SelectMany(d => d.Groups)
+                                             .SelectMany(g => g.Teams)
+                                             .SingleOrDefault(t => t.Id == teamId);
 
             if (teamEntity == null)
             {
                 throw new ConcurrencyException();
             }
 
-            tournamentEntity.Teams.Remove(teamEntity);
+            foreach (var group in teamEntity.Groups)
+            {
+                if (group.Division.TournamentId == tournamentId)
+                {
+                    group.Teams.Remove(teamEntity);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes group
+        /// </summary>
+        /// <param name="groupId">Group to be removed id</param>
+        public void RemoveGroup(int groupId)
+        {
+            var groupEntity = _unitOfWork.Context.Groups.Find(groupId);
+            if (groupEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            _unitOfWork.Context.Groups.Remove(groupEntity);
+        }
+
+        /// <summary>
+        /// Remove division
+        /// </summary>
+        /// <param name="divisionId">Division to be removed id</param>
+        public void RemoveDivision(int divisionId)
+        {
+            var divisionEntity = _unitOfWork.Context.Divisions.Find(divisionId);
+            if (divisionEntity == null)
+            {
+                throw new ConcurrencyException();
+            }
+
+            foreach (var group in divisionEntity.Groups.ToList())
+            {
+                RemoveGroup(group.Id);
+            }
+
+            _unitOfWork.Context.Divisions.Remove(divisionEntity);
+        }
+
+        private void UpdateDivisions(List<DivisionEntity> old, List<Division> changed)
+        {
+            foreach (var item in old.ToList())
+            {
+                var updatedDivision = from element in changed
+                                      where item.Id == element.Id
+                                      select element;
+                if (updatedDivision.Count() != 0)
+                {
+                    UpdateGroups(item.Groups, updatedDivision.First().Groups);
+                }
+                else
+                {
+                    RemoveDivision(item.Id);
+                }
+            }
+        }
+
+        private void UpdateGroups(List<GroupEntity> old, List<Group> changed)
+        {
+            foreach (var item in old.ToList())
+            {
+                if (!Enumerable.Any(from element in changed
+                                   where item.Id == element.Id
+                                   select element))
+                {
+                    RemoveGroup(item.Id);
+                }
+            }
         }
 
         private void MapIdentifiers(Tournament to, TournamentEntity from)

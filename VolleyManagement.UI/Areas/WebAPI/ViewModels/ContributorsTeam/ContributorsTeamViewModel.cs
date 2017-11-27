@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using VolleyManagement.Domain;
-    using VolleyManagement.Domain.ContributorsAggregate;
-    using VolleyManagement.UI.App_GlobalResources;
+    using Domain;
+    using Domain.ContributorsAggregate;
+    using Resources;
 
     /// <summary>
     /// Represents contributors team team view model

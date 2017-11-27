@@ -2,9 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using VolleyManagement.Domain.GameReportsAggregate;
-    using VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports;
-    using VolleyManagement.UnitTests.Services.GameReportService;
+    using Domain.GameReportsAggregate;
+    using Services.GameReportService;
+    using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
     /// Represents <see cref="StandingsViewModel"/> builder for unit tests for <see cref="GameReportsController"/>.
@@ -23,77 +23,83 @@
             {
                 TournamentId = 1,
                 TournamentName = "Name",
-                Standings = new List<StandingsEntryViewModel>
+                Standings = new List<List<StandingsEntryViewModel>>()
                 {
-                    new StandingsEntryViewModel
-                    {
-                        TeamName = "TeamNameA",
-                        Position = 1,
-                        Points = 5,
-                        GamesTotal = 2,
-                        GamesWon = 2,
-                        GamesLost = 0,
-                        GamesWithScoreThreeNil = 0,
-                        GamesWithScoreThreeOne = 1,
-                        GamesWithScoreThreeTwo = 1,
-                        GamesWithScoreTwoThree = 0,
-                        GamesWithScoreOneThree = 0,
-                        GamesWithScoreNilThree = 0,
-                        SetsWon = 6,
-                        SetsLost = 3,
-                        SetsRatio = 6.0f / 3,
-                        BallsWon = 234,
-                        BallsLost = 214,
-                        BallsRatio = 234.0f / 214
-                    },
-                    new StandingsEntryViewModel
-                    {
-                        TeamName = "TeamNameC",
-                        Position = 2,
-                        Points = 3,
-                        GamesTotal = 2,
-                        GamesWon = 1,
-                        GamesLost = 1,
-                        GamesWithScoreThreeNil = 1,
-                        GamesWithScoreThreeOne = 0,
-                        GamesWithScoreThreeTwo = 0,
-                        GamesWithScoreTwoThree = 0,
-                        GamesWithScoreOneThree = 1,
-                        GamesWithScoreNilThree = 0,
-                        SetsWon = 4,
-                        SetsLost = 3,
-                        SetsRatio = 4.0f / 3,
-                        BallsWon = 166,
-                        BallsLost = 105,
-                        BallsRatio = 166.0f / 105
-                    },
-                    new StandingsEntryViewModel
-                    {
-                        TeamName = "TeamNameB",
-                        Position = 3,
-                        Points = 1,
-                        GamesTotal = 2,
-                        GamesWon = 0,
-                        GamesLost = 2,
-                        GamesWithScoreThreeNil = 0,
-                        GamesWithScoreThreeOne = 0,
-                        GamesWithScoreThreeTwo = 0,
-                        GamesWithScoreTwoThree = 1,
-                        GamesWithScoreOneThree = 0,
-                        GamesWithScoreNilThree = 1,
-                        SetsWon = 2,
-                        SetsLost = 6,
-                        SetsRatio = 2.0f / 6,
-                        BallsWon = 123,
-                        BallsLost = 204,
-                        BallsRatio = 123.0f / 204
-                    }
+                        new List<StandingsEntryViewModel>()
+                        {
+                            new StandingsEntryViewModel
+                            {
+                                TeamName = "TeamNameA",
+                                Position = 1,
+                                Points = 5,
+                                GamesTotal = 2,
+                                GamesWon = 2,
+                                GamesLost = 0,
+                                GamesWithScoreThreeNil = 0,
+                                GamesWithScoreThreeOne = 1,
+                                GamesWithScoreThreeTwo = 1,
+                                GamesWithScoreTwoThree = 0,
+                                GamesWithScoreOneThree = 0,
+                                GamesWithScoreNilThree = 0,
+                                SetsWon = 6,
+                                SetsLost = 3,
+                                SetsRatio = 6.0f / 3,
+                                BallsWon = 234,
+                                BallsLost = 214,
+                                BallsRatio = 234.0f / 214
+                            },
+                            new StandingsEntryViewModel
+                            {
+                                TeamName = "TeamNameC",
+                                Position = 2,
+                                Points = 3,
+                                GamesTotal = 2,
+                                GamesWon = 1,
+                                GamesLost = 1,
+                                GamesWithScoreThreeNil = 1,
+                                GamesWithScoreThreeOne = 0,
+                                GamesWithScoreThreeTwo = 0,
+                                GamesWithScoreTwoThree = 0,
+                                GamesWithScoreOneThree = 1,
+                                GamesWithScoreNilThree = 0,
+                                SetsWon = 4,
+                                SetsLost = 3,
+                                SetsRatio = 4.0f / 3,
+                                BallsWon = 166,
+                                BallsLost = 105,
+                                BallsRatio = 166.0f / 105
+                            },
+                            new StandingsEntryViewModel
+                            {
+                                TeamName = "TeamNameB",
+                                Position = 3,
+                                Points = 1,
+                                GamesTotal = 2,
+                                GamesWon = 0,
+                                GamesLost = 2,
+                                GamesWithScoreThreeNil = 0,
+                                GamesWithScoreThreeOne = 0,
+                                GamesWithScoreThreeTwo = 0,
+                                GamesWithScoreTwoThree = 1,
+                                GamesWithScoreOneThree = 0,
+                                GamesWithScoreNilThree = 1,
+                                SetsWon = 2,
+                                SetsLost = 6,
+                                SetsRatio = 2.0f / 6,
+                                BallsWon = 123,
+                                BallsLost = 204,
+                                BallsRatio = 123.0f / 204
+                            }
+                        }
                 },
 
-                PivotTable = new PivotTableViewModel
+                PivotTable = new List<PivotTableViewModel>()
                 {
-                    TeamsStandings = GetPivotTeamsStandings(),
-                    AllGameResults = GetPivotTable()
+                    new PivotTableViewModel
+                    {
+                        TeamsStandings = GetPivotTeamsStandings(),
+                        AllGameResults = GetPivotTable()
+                    }
                 }
             };
         }
@@ -108,77 +114,82 @@
             {
                 TournamentId = 1,
                 TournamentName = "Name",
-                Standings = new List<StandingsEntryViewModel>
+                Standings = new List<List<StandingsEntryViewModel>>()
                 {
-                    new StandingsEntryViewModel
-                    {
-                        TeamName = "TeamNameB",
-                        Position = 1,
-                        Points = 3,
-                        GamesTotal = 1,
-                        GamesWon = 1,
-                        GamesLost = 0,
-                        GamesWithScoreThreeNil = 0,
-                        GamesWithScoreThreeOne = 1,
-                        GamesWithScoreThreeTwo = 0,
-                        GamesWithScoreTwoThree = 0,
-                        GamesWithScoreOneThree = 0,
-                        GamesWithScoreNilThree = 0,
-                        SetsWon = 3,
-                        SetsLost = 1,
-                        SetsRatio = 3.0f / 1,
-                        BallsWon = 102,
-                        BallsLost = 96,
-                        BallsRatio = 102.0f / 96
-                    },
-                    new StandingsEntryViewModel
-                    {
-                        TeamName = "TeamNameC",
-                        Position = 1,
-                        Points = 3,
-                        GamesTotal = 1,
-                        GamesWon = 1,
-                        GamesLost = 0,
-                        GamesWithScoreThreeNil = 0,
-                        GamesWithScoreThreeOne = 1,
-                        GamesWithScoreThreeTwo = 0,
-                        GamesWithScoreTwoThree = 0,
-                        GamesWithScoreOneThree = 0,
-                        GamesWithScoreNilThree = 0,
-                        SetsWon = 3,
-                        SetsLost = 1,
-                        SetsRatio = 3.0f / 1,
-                        BallsWon = 102,
-                        BallsLost = 96,
-                        BallsRatio = 102.0f / 96
-                    },
-                    new StandingsEntryViewModel
-                    {
-                        TeamName = "TeamNameA",
-                        Position = 3,
-                        Points = 0,
-                        GamesTotal = 2,
-                        GamesWon = 0,
-                        GamesLost = 2,
-                        GamesWithScoreThreeNil = 0,
-                        GamesWithScoreThreeOne = 0,
-                        GamesWithScoreThreeTwo = 0,
-                        GamesWithScoreTwoThree = 0,
-                        GamesWithScoreOneThree = 2,
-                        GamesWithScoreNilThree = 0,
-                        SetsWon = 2,
-                        SetsLost = 6,
-                        SetsRatio = 2.0f / 6,
-                        BallsWon = 192,
-                        BallsLost = 204,
-                        BallsRatio = 192.0f / 204
-                    }
+                        new List<StandingsEntryViewModel>()
+                        {
+                            new StandingsEntryViewModel
+                            {
+                                TeamName = "TeamNameB",
+                                Position = 1,
+                                Points = 3,
+                                GamesTotal = 1,
+                                GamesWon = 1,
+                                GamesLost = 0,
+                                GamesWithScoreThreeNil = 0,
+                                GamesWithScoreThreeOne = 1,
+                                GamesWithScoreThreeTwo = 0,
+                                GamesWithScoreTwoThree = 0,
+                                GamesWithScoreOneThree = 0,
+                                GamesWithScoreNilThree = 0,
+                                SetsWon = 3,
+                                SetsLost = 1,
+                                SetsRatio = 3.0f / 1,
+                                BallsWon = 102,
+                                BallsLost = 96,
+                                BallsRatio = 102.0f / 96
+                            },
+                            new StandingsEntryViewModel
+                            {
+                                TeamName = "TeamNameC",
+                                Position = 1,
+                                Points = 3,
+                                GamesTotal = 1,
+                                GamesWon = 1,
+                                GamesLost = 0,
+                                GamesWithScoreThreeNil = 0,
+                                GamesWithScoreThreeOne = 1,
+                                GamesWithScoreThreeTwo = 0,
+                                GamesWithScoreTwoThree = 0,
+                                GamesWithScoreOneThree = 0,
+                                GamesWithScoreNilThree = 0,
+                                SetsWon = 3,
+                                SetsLost = 1,
+                                SetsRatio = 3.0f / 1,
+                                BallsWon = 102,
+                                BallsLost = 96,
+                                BallsRatio = 102.0f / 96
+                            },
+                            new StandingsEntryViewModel
+                            {
+                                TeamName = "TeamNameA",
+                                Position = 3,
+                                Points = 0,
+                                GamesTotal = 2,
+                                GamesWon = 0,
+                                GamesLost = 2,
+                                GamesWithScoreThreeNil = 0,
+                                GamesWithScoreThreeOne = 0,
+                                GamesWithScoreThreeTwo = 0,
+                                GamesWithScoreTwoThree = 0,
+                                GamesWithScoreOneThree = 2,
+                                GamesWithScoreNilThree = 0,
+                                SetsWon = 2,
+                                SetsLost = 6,
+                                SetsRatio = 2.0f / 6,
+                                BallsWon = 192,
+                                BallsLost = 204,
+                                BallsRatio = 192.0f / 204
+                            }
+                        }
                 },
-
-                PivotTable = new PivotTableViewModel
+                PivotTable = new List<PivotTableViewModel>()
                 {
+                    new PivotTableViewModel
+                    {
                     TeamsStandings = GetPivotTeamsStandingsTwoTeamsScoresCompletelyEqual(),
                     AllGameResults = GetPivotTableTwoTeamsScoresCompletelyEqual()
+                    }
                 }
             };
             return this;
@@ -228,7 +239,7 @@
         /// <returns>Instance of <see cref="StandingsViewModelBuilder"/>.</returns>
         public StandingsViewModelBuilder WithEntries(List<StandingsEntryViewModel> entries)
         {
-            _standingsViewModel.Standings = entries;
+            _standingsViewModel.Standings = new List<List<StandingsEntryViewModel>>() { entries };
             return this;
         }
 

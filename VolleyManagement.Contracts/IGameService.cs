@@ -1,7 +1,7 @@
 ﻿namespace VolleyManagement.Contracts
 {
     using System.Collections.Generic;
-    using VolleyManagement.Domain.GamesAggregate;
+    using Domain.GamesAggregate;
 
     /// <summary>
     /// Defines a contract for GameResultService.

@@ -1,7 +1,7 @@
 ﻿@model VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults.GameViewModel
 
 @{
-    ViewBag.Title = @Resources.TournamentViews.ScheduleGameTitle;
+    ViewBag.Title = Resources.UI.TournamentViews.ScheduleGameTitle;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -19,16 +19,16 @@ else
     
         <div class="row">
             <div class="col-md-1">
-                <input id="create" class="btn btn-default" type="submit" value="@Resources.TournamentViews.Create" />
+                <input id="create" class="btn btn-default" type="submit" value="@Resources.UI.TournamentViews.Create" />
             </div>
             <div class="col-md-2">
-                <input id="createOneMore" class="btn btn-default" type="submit" value="@Resources.TournamentViews.CreateOneMore" />
+                <input id="createOneMore" class="btn btn-default" type="submit" value="@Resources.UI.TournamentViews.CreateOneMore" />
             </div>
         </div>
     }
     
     <br/>
-    @Html.ActionLink(@Resources.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })
+    @Html.ActionLink(Resources.UI.TournamentViews.Cancel, "ShowSchedule", new { tournamentId = Model.TournamentId })
 }
 
 <br/>

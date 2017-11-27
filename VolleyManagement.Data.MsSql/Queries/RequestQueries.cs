@@ -4,16 +4,18 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using VolleyManagement.Data.Contracts;
-    using VolleyManagement.Data.MsSql.Entities;
-    using VolleyManagement.Data.Queries.Common;
-    using VolleyManagement.Domain.RequestsAggregate;
+    using Contracts;
+    using Data.Queries.Common;
+    using Data.Queries.Player;
+    using Domain.RequestsAggregate;
+    using Entities;
 
     /// <summary>
     /// Provides Object Query implementation for Requests
     /// </summary>
     public class RequestQueries : IQuery<List<Request>, GetAllCriteria>,
-                                   IQuery<Request, FindByIdCriteria>
+                                  IQuery<Request, FindByIdCriteria>,
+                                  IQuery<Request, UserToPlayerCriteria>
     {
         #region Fields
 
@@ -29,7 +31,7 @@
         /// <param name="unitOfWork"> The unit of work. </param>
         public RequestQueries(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _unitOfWork = (VolleyUnitOfWork)unitOfWork;
         }
 
         #endregion
@@ -59,11 +61,25 @@
                                       .SingleOrDefault();
         }
 
-        #endregion
+        /// <summary>
+        /// Finds Requests by given criteria
+        /// </summary>
+        /// <param name="criteria"> The criteria.</param>
+        /// <returns> The <see cref="Request"/>.</returns>
+        public Request Execute(UserToPlayerCriteria criteria)
+        {
+            return _unitOfWork.Context.Requests
+                                      .Where(r => r.PlayerId == criteria.PlayerId)
+                                      .Where(r => r.UserId == criteria.UserId)
+                                      .Select(GetRequestMapping())
+                                      .SingleOrDefault();
+        }
 
-        #region Mapping
+    #endregion
 
-        private static Expression<Func<RequestEntity, Request>> GetRequestMapping()
+    #region Mapping
+
+    private static Expression<Func<RequestEntity, Request>> GetRequestMapping()
         {
             return
                 t =>

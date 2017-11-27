@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DivisionIsNotEmpty" xml:space="preserve">
+    <value>The division to delete must not have any teams</value>
+  </data>
+  <data name="DivisionNotFound" xml:space="preserve">
+    <value>A division  with specified identifier was not found</value>
+  </data>
   <data name="DivisionsAreNotUniq" xml:space="preserve">
     <value>Дивизионы не могут иметь одинаковые названия</value>
   </data>
@@ -128,6 +134,12 @@
   </data>
   <data name="GameNotFound" xml:space="preserve">
     <value>Игра с указаным идентификатором не была найдена</value>
+  </data>
+  <data name="GroupIsNotEmpty" xml:space="preserve">
+    <value>The group to delete must not have any teams</value>
+  </data>
+  <data name="GroupNotFound" xml:space="preserve">
+    <value>A group with specified identifier was not found</value>
   </data>
   <data name="NotAuthorized" xml:space="preserve">
     <value>You are not authorized.Please login again.</value>
@@ -155,5 +167,11 @@
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>A user with specified identifier was not found</value>
+  </data>
+  <data name="UserBlockHimself" xml:space="preserve">
+    <value>You can't block yourself</value>
+  </data>
+  <data name="DivisionInTournamentNotFound" xml:space="preserve">
+    <value>A division with specified inentifier was not found in this tournament</value>
   </data>
 </root>

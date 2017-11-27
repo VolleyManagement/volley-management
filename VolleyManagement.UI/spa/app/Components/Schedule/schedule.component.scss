@@ -1,4 +1,4 @@
-.schedule-table {
+.schedule-wrapper {
   /* VARIABLES */
   $schedule-table-text-color: black;
   $header-bg-color: #DDEBF7;
@@ -6,52 +6,46 @@
   $group-date-bg-color: #C6E0B4;
   $game-schedule-border-color: #E8E8E8;
   /* STYLES */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: $schedule-table-text-color;
-  width: 280px;
-  float: none;
-  clear: both;
-  .headercenter {
-    margin: 0;
-    font-size: 11pt;
-    background-color: $header-bg-color;
-    vertical-align: middle;
-    text-align: center;
-    font-style: normal;
-    font-weight: normal;
-  }
-  .group {
+  .schedule-table {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: $schedule-table-text-color;
     width: 280px;
-    float: left;
-    font-size: 11pt;
-    &.group2 {
+    float: none;
+    clear: both;
+    .headercenter {
+      margin: 0;
+      font-size: 11pt;
+      background-color: $header-bg-color;
+      vertical-align: middle;
+      text-align: center;
+      font-style: normal;
+      font-weight: normal;
+    }
+    .group-data {
+      width: 280px;
+      float: left;
+      font-size: 11pt;
       background-color: $group2-bg-color;
-    }
-    .group-header {
-      margin: 0px;
-      text-align: center;
-    }
-    .group-date {
-      margin: 0px;
-      text-align: center;
-      font-size: 9pt;
-      background-color: $group-date-bg-color;
-    }
-  }
-  .games {
-    .game-sch {
-      width: 100%;
-      border-spacing: 0px;
-      border-collapse: collapse;
-      table-layout: fixed;
-      empty-cells: hide;
-      border: 1px solid $game-schedule-border-color;
-      th,
-      td {
-        border: none;
+      .group-date {
+        margin: 0px;
+        text-align: center;
+        font-size: 9pt;
+        background-color: $group-date-bg-color;
       }
-      .team-sch {
-        &.win {
+    }
+    .games {
+      .game-sch {
+        width: 100%;
+        border-spacing: 0px;
+        border-collapse: collapse;
+        table-layout: fixed;
+        empty-cells: hide;
+        border: 1px solid $game-schedule-border-color;
+        th,
+        td {
+          border: none;
+        }
+        .win {
           font-weight: bold;
         }
         .teamname {
@@ -60,18 +54,14 @@
         .teamscore {
           text-align: center;
         }
-      }
-      .sets {
-        .set {
-          font-size: 8pt;
-          text-align: center;
-          .hidden {
-            display: none;
+        .sets {
+          td {
+            font-size: 8pt;
+            text-align: center;
+            &.game-time {
+              text-align: left;
+            }
           }
-        }
-        .game-time {
-          font-size: 8pt;
-          text-align: left;
         }
       }
     }

@@ -1,41 +1,19 @@
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { AppToolsService } from '../../Services/app-tools.service';
 
 @Component({
   selector: 'loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss']
 })
-
 export class LoaderComponent implements OnInit {
+
   @Input() isShowLoader: boolean;
   public isCss3Supported = false;
 
-  constructor() { }
+  constructor(private _appTools: AppToolsService) { }
 
   ngOnInit() {
-    this.isCss3Supported = this.checkCss3Support();
-  }
-
-  private checkCss3Support(): boolean {
-    let propertyToCheck = 'border-radius';
-    const div = document.createElement('div');
-    const vendors = 'Khtml Ms O Moz Webkit'.split(' ');
-    let len = vendors.length;
-    let result = false;
-
-    if (propertyToCheck in div.style) {
-      result = true;
-    }
-
-    propertyToCheck = propertyToCheck.replace(/^[a-z]/, function (val) {
-      return val.toUpperCase();
-    });
-
-    while (len--) {
-      if (vendors[len] + propertyToCheck in div.style) {
-        result = true;
-      }
-    }
-    return result;
+    this.isCss3Supported = this._appTools.isCss3Supported();
   }
 }

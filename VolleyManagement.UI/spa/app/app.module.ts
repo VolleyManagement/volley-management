@@ -4,24 +4,33 @@ import { HttpModule } from '@angular/http';
 import { LoadingModule } from 'ngx-loading';
 
 import { AppComponent } from './app.component';
-import { PivotStandingsComponent } from './Components/PivotStanding/pivotstandings.component';
-import { StandingsComponent } from './Components/Standings/standings.component';
-import { ScheduleComponent } from './Components/Schedule/schedule.component';
-import { LoaderComponent } from './Components/loader/loader.component';
 
 import { StandingsService } from './Services/standings.service';
 import { JsonService } from './Services/json.service';
 import { ScheduleService } from './Services/schedule.service';
+import { AppToolsService } from './Services/app-tools.service';
+
 import { InfinityDecimalPipe } from './CustomPipes/InfinityDecimalPipe';
+
+import { PivotStandingsComponent } from './Components/PivotStanding/pivotstandings.component';
+import { StandingsComponent } from './Components/Standings/standings.component';
+import { ScheduleComponent } from './Components/Schedule/schedule.component';
+import { LoaderComponent } from './Components/loader/loader.component';
+import { GameReportsBoardComponent } from './Components/GameReportsBoard/game-reports-board.component';
+import { TournamentDataService } from './Services/tournament-data.service';
+import { GameResultCellDirective } from './Components/PivotStanding/game-result-cell.directive';
 
 @NgModule({
     declarations: [
         AppComponent,
+
+        GameResultCellDirective,
         PivotStandingsComponent,
         StandingsComponent,
         ScheduleComponent,
         InfinityDecimalPipe,
-        LoaderComponent
+        LoaderComponent,
+        GameReportsBoardComponent
     ],
     imports: [
         BrowserModule,
@@ -29,8 +38,10 @@ import { InfinityDecimalPipe } from './CustomPipes/InfinityDecimalPipe';
         LoadingModule
     ],
     providers: [
-        StandingsService,
         JsonService,
+        AppToolsService,
+        TournamentDataService,
+        StandingsService,
         ScheduleService],
     bootstrap: [AppComponent]
 })

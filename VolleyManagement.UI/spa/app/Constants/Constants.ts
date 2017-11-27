@@ -1,7 +1,7 @@
-export class Constants {
-    static readonly DEFAULT_LOCALE = 'uk-UA';
-    static readonly ZERO = 0;
-    static readonly ONE = 1;
-    static readonly TWO = 2;
-    static readonly THREE = 3;
-}
+export const APP_CONSTANTS = {
+    DEFAULT_LOCALE: 'uk-UA',
+    ZERO: 0,
+    ONE: 1,
+    TWO: 2,
+    THREE: 3
+};

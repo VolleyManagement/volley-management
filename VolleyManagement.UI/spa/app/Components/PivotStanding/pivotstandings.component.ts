@@ -1,45 +1,48 @@
-import { Component, OnInit, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
+import { Component, Directive, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { ISubscription } from 'rxjs/Subscription';
+import 'rxjs/add/operator/toPromise';
 
 import { StandingsService } from '../../Services/standings.service';
 import { PivotStandings } from '../../Models/Pivot/PivotStandings';
 import { PivotStandingsGame } from '../../Models/Pivot/PivotStandingsGame';
 import { ShortGameResult } from '../../Models/Pivot/ShortGameResult';
 
+import { CSS_CLASSES } from '../../Constants/CssClassConstants';
+import { APP_CONSTANTS } from '../../Constants/Constants';
+
+const NON_PLAYABLE_GAME_RESULT: ShortGameResult = {
+    HomeSetsScore: 0,
+    AwaySetsScore: 0,
+    IsTechnicalDefeat: false
+};
+
+
 @Component({
     selector: 'pivottable',
     templateUrl: './pivotstandings.component.html',
-    styleUrls: ['./pivotstandings.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./pivotstandings.component.scss']
 })
-
-export class PivotStandingsComponent implements OnInit, OnDestroy {
+export class PivotStandingsComponent implements OnInit {
 
     @Input() pivotId: number;
+    @Output() ready: EventEmitter<void> = new EventEmitter<void>();
 
     pivotStandings: PivotStandings[];
     pivotTable: PivotStandingsGame[][][];
 
-    private subscription: ISubscription;
-
-    constructor(private standingsService: StandingsService) { }
+    constructor(private _standingsService: StandingsService) { }
 
     ngOnInit(): void {
-        if (this.pivotId) {
-            this.subscription = this.standingsService
-                .getPivotStandings(this.pivotId)
-                .subscribe(standings => {
-                    this.pivotStandings = standings;
-                    this.pivotTable = this.pivotStandings.map(item => this.getPivotTable(item));
-                });
-        }
+        this._standingsService
+            .getPivotStandings(this.pivotId)
+            .toPromise()
+            .then(data => {
+                this.pivotStandings = data;
+                this.pivotTable = data.map(item => this.getPivotTable(item));
+                this.ready.emit();
+            });
     }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
 
     getPivotTable(pivot: PivotStandings): PivotStandingsGame[][] {
         const teamsCount = pivot.TeamsStandings.length;
@@ -53,10 +56,11 @@ export class PivotStandingsComponent implements OnInit, OnDestroy {
                 const tableCell = table[i][j];
                 if (!tableCell) {
                     if (i === j) {
-                        table[i][j] = PivotStandingsGame.getNonPlayableCell();
+                        table[i][j] = this._getNonPlayableCell();
                     } else {
                         const rowTeamId = pivot.TeamsStandings[i].TeamId;
                         const colTeamId = pivot.TeamsStandings[j].TeamId;
+
                         const homeGameResult = pivot.GamesStandings
                             .find(game => (game.HomeTeamId === rowTeamId && game.AwayTeamId === colTeamId));
                         const awayGameResult = pivot.GamesStandings
@@ -75,5 +79,25 @@ export class PivotStandingsComponent implements OnInit, OnDestroy {
         }
 
         return table;
+    }
+
+    getFormattedResult(gameResult: ShortGameResult): string {
+        const homeSetsScore = gameResult.HomeSetsScore;
+        const awaySetsScore = gameResult.AwaySetsScore;
+        const isTechnicalDefeat = gameResult.IsTechnicalDefeat;
+
+        let result = '';
+        if (homeSetsScore !== APP_CONSTANTS.ZERO || awaySetsScore !== APP_CONSTANTS.ZERO) {
+            result = `${homeSetsScore} : ${awaySetsScore}${isTechnicalDefeat ? '*' : ''}`;
+        }
+
+        return result;
+    }
+
+    private _getNonPlayableCell(): PivotStandingsGame {
+        return new PivotStandingsGame(
+            0,
+            0,
+            [NON_PLAYABLE_GAME_RESULT]);
     }
 }

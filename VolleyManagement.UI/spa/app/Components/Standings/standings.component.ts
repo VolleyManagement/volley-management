@@ -1,39 +1,31 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { ParamMap } from '@angular/router';
-import { DecimalPipe } from '@angular/common';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 
-import { ISubscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/toPromise';
 
 import { StandingsService } from '../../Services/standings.service';
 import { StandingsEntry } from '../../Models/Standings/StandingsEntry';
-
 
 @Component({
     selector: 'standings',
     templateUrl: './standings.component.html',
     styleUrls: ['./standings.component.scss']
 })
-
-export class StandingsComponent implements OnInit, OnDestroy {
+export class StandingsComponent implements OnInit {
 
     @Input() standingsId: number;
+    @Output() ready: EventEmitter<void> = new EventEmitter<void>();
 
-    standingsEntry: StandingsEntry[][];
+    data: StandingsEntry[][];
 
-    private subscription: ISubscription;
-
-    constructor(private standingsService: StandingsService) { }
+    constructor(private _service: StandingsService) { }
 
     ngOnInit(): void {
-        if (this.standingsId) {
-            this.subscription = this.standingsService
-                .getStandings(this.standingsId)
-                .subscribe(standings => this.standingsEntry = standings);
-        }
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
+        this._service
+            .getStandings(this.standingsId)
+            .toPromise()
+            .then(data => {
+                this.data = data;
+                this.ready.emit();
+            });
     }
 }

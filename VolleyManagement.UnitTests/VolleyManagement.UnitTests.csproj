@@ -30,7 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\CodeAnalysisRules\VolleyManagement.UnitTests.ruleset</CodeAnalysisRuleSet>
@@ -181,17 +181,26 @@
     <Compile Include="Services\FeedbackService\FeedbackServiceTestFixture.cs" />
     <Compile Include="Services\FeedbackService\FeedbackServiceTests.cs" />
     <Compile Include="Services\FileService\FileServiceTests.cs" />
-    <Compile Include="Services\GameReportService\GameReportServiceTests.cs" />
-    <Compile Include="Services\GameReportService\ShortGameResultDtoTetsFixture.cs" />
-    <Compile Include="Services\GameReportService\StandingsEntryComparer.cs" />
-    <Compile Include="Services\GameReportService\StandingsTestFixture.cs" />
-    <Compile Include="Services\GameReportService\TeamStandingsTestFixture.cs" />
+    <Compile Include="Services\GameReportService\Fixture\TeamInTournamentTestFixture.cs" />
+    <Compile Include="Services\GameReportService\GameReportsServiceTestsBase.cs" />
+    <Compile Include="Services\GameReportService\GetPivotStandingsTests.cs" />
+    <Compile Include="Services\GameReportService\Comparers\TournamentStandingsComparer.cs" />
+    <Compile Include="Services\GameReportService\GetStandingsTests.cs" />
+    <Compile Include="Services\GameReportService\Comparers\StandingsDtoComparer.cs" />
+    <Compile Include="Services\GameReportService\Comparers\PivotStandingsComparer.cs" />
+    <Compile Include="Services\GameReportService\Comparers\ShortGameResultDtoComparer.cs" />
+    <Compile Include="Services\GameReportService\Fixture\ShortGameResultDtoTetsFixture.cs" />
+    <Compile Include="Services\GameReportService\Comparers\StandingsEntryComparer.cs" />
+    <Compile Include="Services\GameReportService\Fixture\StandingsTestFixture.cs" />
+    <Compile Include="Services\GameReportService\Comparers\TeamStandingsDtoComparer.cs" />
+    <Compile Include="Services\GameReportService\Fixture\PivotStandingsTestFixture.cs" />
     <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
     <Compile Include="Services\GameService\GameBuilder.cs" />
     <Compile Include="Services\GameService\GameComparer.cs" />
     <Compile Include="Services\GameService\GameMvcComparer.cs" />
     <Compile Include="Services\GameService\GameResultDtoBuilder.cs" />
     <Compile Include="Services\GameService\GameResultDtoComparer.cs" />
+    <Compile Include="Services\GameReportService\Fixture\GameResultsTestFixture.cs" />
     <Compile Include="Services\GameService\GameServiceTestFixture.cs" />
     <Compile Include="Services\GameService\GameServiceTests.cs" />
     <Compile Include="Services\GameService\GameTestFixture.cs" />
@@ -269,10 +278,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
@@ -305,9 +310,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

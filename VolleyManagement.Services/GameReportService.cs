@@ -4,7 +4,6 @@
     using System.Linq;
     using Contracts;
     using Data.Contracts;
-    using Data.Queries.Division;
     using Data.Queries.GameResult;
     using Data.Queries.Team;
     using Data.Queries.Tournament;
@@ -21,10 +20,8 @@
         #region Queries
 
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
-        private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
+        private readonly IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
-        private readonly IQuery<List<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria> _teamsInDivisionsByTournamentIdQuery;
-        private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _divisionsByTournamentIdQuery;
 
         #endregion
 
@@ -36,20 +33,14 @@
         /// <param name="tournamentGameResultsQuery">Query for getting tournament's game results.</param>
         /// <param name="tournamentTeamsQuery">Query for getting tournament's game teams.</param>
         /// <param name="tournamentScheduleDtoByIdQuery">Get tournament data transfer object query.</param>
-        /// <param name="teamsInDivisionsByTournamentIdQuery">Get teams by group id</param>
-        /// <param name="divisionsByTournamentIdQuery">Get divisions by tournament id</param>
         public GameReportService(
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
-            IQuery<List<Team>, FindByTournamentIdCriteria> tournamentTeamsQuery,
-            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> tournamentScheduleDtoByIdQuery,
-            IQuery<List<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria> teamsInDivisionsByTournamentIdQuery,
-            IQuery<List<Division>, TournamentDivisionsCriteria> divisionsByTournamentIdQuery)
+            IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
+            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> tournamentScheduleDtoByIdQuery)
         {
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
             _tournamentTeamsQuery = tournamentTeamsQuery;
             _tournamentScheduleDtoByIdQuery = tournamentScheduleDtoByIdQuery;
-            _teamsInDivisionsByTournamentIdQuery = teamsInDivisionsByTournamentIdQuery;
-            _divisionsByTournamentIdQuery = divisionsByTournamentIdQuery;
         }
 
         #endregion
@@ -375,9 +366,9 @@
             return entry.GamesTotal == 0;
         }
 
-        private List<List<Team>> GetTeamsInTournamentByDivisions(int tournamentId)
+        private List<TeamTournamentDto> GetTeamsInTournamentByDivisions(int tournamentId)
         {
-            var teamsByDivisions = _teamsInDivisionsByTournamentIdQuery.Execute(new FindTeamsInDivisionsByTournamentIdCriteria { TournamentId = tournamentId });
+            var teamsByDivisions = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
 
             return teamsByDivisions;
         }

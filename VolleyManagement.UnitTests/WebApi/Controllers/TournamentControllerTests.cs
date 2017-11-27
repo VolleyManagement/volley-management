@@ -202,7 +202,7 @@
         public void GetPivotStandings_PivotStandingsExist_PivotStandingsReturned()
         {
             // Arrange
-            var testTeams = new TeamStandingsTestFixture().TestTeamStandings().Build().ToList();
+            var testTeams = new PivotStandingsTestFixture().TestTeamStandings().Build().ToList();
             var testGames = new ShortGameResultDtoTetsFixture().GetShortResults().Build().ToList();
             var testData = new PivotStandingsDto(testTeams, testGames);
 

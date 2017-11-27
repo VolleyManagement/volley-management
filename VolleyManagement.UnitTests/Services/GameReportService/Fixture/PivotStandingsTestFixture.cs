@@ -9,15 +9,15 @@
     /// Generates <see cref="TeamStandingsDto"/> test data for unit tests for <see cref="GameReportService"/>.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class TeamStandingsTestFixture
+    internal class PivotStandingsTestFixture
     {
         private List<TeamStandingsDto> _teamStandings = new List<TeamStandingsDto>();
 
         /// <summary>
         /// Generates <see cref="TeamStandingsDto"/> objects filled with test data.
         /// </summary>
-        /// <returns>Instance of <see cref="TeamStandingsTestFixture"/></returns>
-        public TeamStandingsTestFixture TestTeamStandings()
+        /// <returns>Instance of <see cref="PivotStandingsTestFixture"/></returns>
+        public PivotStandingsTestFixture TestTeamStandings()
         {
             _teamStandings.Add(new TeamStandingsDto
             {
@@ -51,8 +51,8 @@
         /// Adds team standings that correspond game results with all possible scores
         /// to collection of <see cref="TeamStandingsDto"/> objects.
         /// </summary>
-        /// <returns>Instance of <see cref="TeamStandingsTestFixture"/>.</returns>
-        public TeamStandingsTestFixture WithTeamStandingsForAllPossibleScores()
+        /// <returns>Instance of <see cref="PivotStandingsTestFixture"/>.</returns>
+        public PivotStandingsTestFixture WithTeamStandingsForAllPossibleScores()
         {
             _teamStandings.Clear();
             _teamStandings.Add(new TeamStandingsDto
@@ -83,7 +83,7 @@
             return this;
         }
 
-        public TeamStandingsTestFixture WithTeamStandingsTwoTeamsScoresCompletelyEqual()
+        public PivotStandingsTestFixture WithTeamStandingsTwoTeamsScoresCompletelyEqual()
         {
             _teamStandings.Clear();
             _teamStandings.Add(new TeamStandingsDto
@@ -117,8 +117,8 @@
         /// Adds team standings that correspond game results with one game with technical defeat
         /// to collection of <see cref="TeamStandingsDto"/> objects.
         /// </summary>
-        /// <returns>Instance of <see cref="TeamStandingsTestFixture"/>.</returns>
-        public TeamStandingsTestFixture WithTeamStandingsForOneGameTechnicalDefeat()
+        /// <returns>Instance of <see cref="PivotStandingsTestFixture"/>.</returns>
+        public PivotStandingsTestFixture WithTeamStandingsForOneGameTechnicalDefeat()
         {
             _teamStandings.Clear();
             _teamStandings.Add(new TeamStandingsDto
@@ -150,47 +150,16 @@
         }
 
         /// <summary>
-        /// Orders team standings by points in descending order.
+        /// Builds instance of <see cref="PivotStandingsTestFixture"/>.
         /// </summary>
-        /// <returns>Instance of <see cref="TeamStandingsTestFixture"/>.</returns>
-        public TeamStandingsTestFixture OrderByPoints()
+        /// <returns>Collection of <see cref="TeamStandingsDto"/> objects filled with test data.</returns>
+        public TournamentStandings<PivotStandingsDto> Build()
         {
-            _teamStandings = _teamStandings.OrderByDescending(ts => ts.Points).ToList();
-            return this;
-        }
-
-        /// <summary>
-        /// Orders standings by points, then by sets ratio in descending order.
-        /// </summary>
-        /// <returns>Instance of <see cref="TeamStandingsTestFixture"/>.</returns>
-        public TeamStandingsTestFixture OrderByPointsAndSets()
-        {
-            _teamStandings = _teamStandings.OrderByDescending(ts => ts.Points).ThenByDescending(ts => ts.SetsRatio).ToList();
-            return this;
-        }
-
-        /// <summary>
-        /// Orders standings by points, then by sets ratio ,then by balls ratio in descending order and then by team name.
-        /// </summary>
-        /// <returns>Instance of <see cref="TeamStandingsTestFixture"/>.</returns>
-        public TeamStandingsTestFixture OrderByPointsSetsBallsAndName()
-        {
-            _teamStandings = _teamStandings
+            var standings = _teamStandings
                 .OrderByDescending(ts => ts.Points)
                 .ThenByDescending(ts => ts.SetsRatio)
                 .ThenByDescending(ts => ts.BallsRatio)
-                .ThenBy(ts => ts.TeamName)
-                .ToList();
-            return this;
-        }
-
-        /// <summary>
-        /// Builds instance of <see cref="TeamStandingsTestFixture"/>.
-        /// </summary>
-        /// <returns>Collection of <see cref="TeamStandingsDto"/> objects filled with test data.</returns>
-        public List<TeamStandingsDto> Build()
-        {
-            return _teamStandings;
+                .ToList(); ;
         }
     }
 }

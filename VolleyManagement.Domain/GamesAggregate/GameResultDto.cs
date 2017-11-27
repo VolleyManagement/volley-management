@@ -18,6 +18,16 @@
         public int TournamentId { get; set; }
 
         /// <summary>
+        /// Gets or sets the identifier of the division where game result belongs.
+        /// </summary>
+        public int DivisionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the пкщгз where game result belongs.
+        /// </summary>
+        public int GroupId { get; set; }
+
+        /// <summary>
         /// Gets or sets the identifier of the home team which played the game.
         /// </summary>
         public int? HomeTeamId { get; set; }
@@ -67,15 +77,5 @@
         /// </summary>
         /// <returns>True if score is empty; otherwise, false.</returns>
         public bool HasResult => !Result.GameScore.IsEmpty;
-
-        /// <summary>
-        /// Gets or sets the identifier of the division where game result belongs.
-        /// </summary>
-        public int DivisionId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the identifier of the пкщгз where game result belongs.
-        /// </summary>
-        public int GroupId { get; set; }
     }
 }

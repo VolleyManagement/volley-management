@@ -60,7 +60,7 @@
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
-        private readonly IQuery<List<Team>, FindByTournamentIdCriteria> _getAllTournamentTeamsQuery;
+        private readonly IQuery<List<Team>, FindByTournamentIdCriteriaOld> _getAllTournamentTeamsQuery;
         private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
         private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
@@ -93,7 +93,7 @@
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
-            IQuery<List<Team>, FindByTournamentIdCriteria> getAllTournamentTeamsQuery,
+            IQuery<List<Team>, FindByTournamentIdCriteriaOld> getAllTournamentTeamsQuery,
             IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
             IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
@@ -168,7 +168,7 @@
         /// <returns>Tournament teams</returns>
         public List<Team> GetAllTournamentTeams(int tournamentId)
         {
-            return _getAllTournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
+            return _getAllTournamentTeamsQuery.Execute(new FindByTournamentIdCriteriaOld { TournamentId = tournamentId });
         }
 
         /// <summary>

@@ -78,7 +78,7 @@
         /// <summary>
         /// Gets or sets the ratio of number of sets the team won to number of sets the team lost.
         /// </summary>
-        public float? SetsRatio { get; set; }
+        public float? SetsRatio => CalculateRatio(SetsWon, SetsLost);
 
         /// <summary>
         /// Gets or sets the total number of balls the team won.
@@ -93,6 +93,14 @@
         /// <summary>
         /// Gets or sets the ratio of number of balls the team won to number of balls the team lost.
         /// </summary>
-        public float? BallsRatio { get; set; }
+        public float? BallsRatio => CalculateRatio(BallsWon, BallsLost);
+
+        private float? CalculateRatio(int? won, int? lost)
+        {
+            if (!won.HasValue || !lost.HasValue) return null;
+
+            var result = (float)won.GetValueOrDefault() / lost.GetValueOrDefault();
+            return float.IsNaN(result) ? (float?)null : result;
+        }
     }
 }

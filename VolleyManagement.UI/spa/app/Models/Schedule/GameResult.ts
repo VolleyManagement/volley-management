@@ -7,4 +7,6 @@ export interface GameResult {
     GameDate: string;
     Round: number;
     Result: Result;
+    DivisionId: number;
+    GroupId: number;
 }

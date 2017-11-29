@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameService
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
@@ -58,12 +59,35 @@
                 && x.TournamentId == y.TournamentId
                 && x.HomeTeamId == y.HomeTeamId
                 && x.AwayTeamId == y.AwayTeamId
-                && new ScoreComparer().Equals(x.Result.SetsScore, y.Result.SetsScore)
-                && x.Result.SetsScore.IsTechnicalDefeat == y.Result.SetsScore.IsTechnicalDefeat
+                && new ScoreComparer().Equals(x.Result.GameScore, y.Result.GameScore)
+                && x.Result.GameScore.IsTechnicalDefeat == y.Result.GameScore.IsTechnicalDefeat
                 && x.Result.SetScores.SequenceEqual(y.Result.SetScores, new ScoreComparer())
+                && PenaltiesAreEqual(x.Result.Penalty, y.Result.Penalty)
                 && x.GameDate == y.GameDate
                 && x.Round == y.Round
                 && x.GameNumber == y.GameNumber;
+        }
+
+        private bool PenaltiesAreEqual(Penalty x, Penalty y)
+        {
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+
+            return x.IsHomeTeam == y.IsHomeTeam
+                   && x.Amount == y.Amount
+                   && string.Compare(x.Description, y.Description, StringComparison.Ordinal) == 0;
         }
     }
 }

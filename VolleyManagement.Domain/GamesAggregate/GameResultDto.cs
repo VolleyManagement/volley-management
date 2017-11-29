@@ -66,6 +66,16 @@
         /// Gets a value indicating whether game has result.
         /// </summary>
         /// <returns>True if score is empty; otherwise, false.</returns>
-        public bool HasResult => !Result.SetsScore.IsEmpty;
+        public bool HasResult => !Result.GameScore.IsEmpty;
+
+        /// <summary>
+        /// Gets or sets the identifier of the division where game result belongs.
+        /// </summary>
+        public int DivisionId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the identifier of the пкщгз where game result belongs.
+        /// </summary>
+        public int GroupId { get; set; }
     }
 }

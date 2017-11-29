@@ -18,6 +18,9 @@ export class ScheduleComponent implements OnInit {
 
     data: ScheduleByRounds[];
 
+    groupOne: number;
+    groupTwo: number;
+
     constructor(private scheduleService: ScheduleService) { }
 
     ngOnInit() {
@@ -27,11 +30,24 @@ export class ScheduleComponent implements OnInit {
             .then(data => {
                 this.data = data;
                 this.ready.emit();
+                this._setGroupIds();
             });
     }
 
     gameIsPlayed(gameResult: GameResult) {
         return gameResult.AwayTeamName &&
             (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
+    }
+
+    private _setGroupIds() {
+        this.groupOne = this.data[0].ScheduleByDate[0].GameResults[0].GroupId;
+
+        this.data[0].ScheduleByDate.forEach((item, index, arr) => {
+            const gameResult = item.GameResults.find(it => it.GroupId !== this.groupOne);
+            if (gameResult) {
+                this.groupTwo = gameResult.GroupId;
+                return;
+            }
+        });
     }
 }

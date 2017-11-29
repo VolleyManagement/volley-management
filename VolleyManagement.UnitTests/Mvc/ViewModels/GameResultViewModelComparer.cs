@@ -73,7 +73,11 @@
                 && x.GameDate == y.GameDate
                 && x.Round == y.Round
                 && x.HomeTeamName == y.HomeTeamName
-                && y.AwayTeamName == y.AwayTeamName;
+                && x.AwayTeamName == y.AwayTeamName
+                && x.HasPenalty == y.HasPenalty
+                && x.IsHomeTeamPenalty == y.IsHomeTeamPenalty
+                && x.PenaltyAmount == y.PenaltyAmount
+                && x.PenaltyDescrition == y.PenaltyDescrition;
         }
     }
 }

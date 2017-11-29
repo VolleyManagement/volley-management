@@ -185,6 +185,10 @@
     <Compile Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.Designer.cs">
       <DependentUpon>201710160802100_TechnicalDefeatForSet.cs</DependentUpon>
     </Compile>
+    <Compile Include="Context\Migrations\201711042048383_GamePenalty.cs" />
+    <Compile Include="Context\Migrations\201711042048383_GamePenalty.Designer.cs">
+      <DependentUpon>201711042048383_GamePenalty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Context\Migrations\SeedDataGenerator.cs" />
     <Compile Include="Context\Migrations\VolleyContextConfiguration.cs" />
     <Compile Include="Context\VolleyDatabaseMetadata.cs" />
@@ -356,14 +360,13 @@
     <EmbeddedResource Include="Context\Migrations\201710160802100_TechnicalDefeatForSet.resx">
       <DependentUpon>201710160802100_TechnicalDefeatForSet.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Context\Migrations\201711042048383_GamePenalty.resx">
+      <DependentUpon>201711042048383_GamePenalty.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

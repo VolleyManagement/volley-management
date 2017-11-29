@@ -3,9 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Domain.GamesAggregate;
 
     [ExcludeFromCodeCoverage]
@@ -229,7 +226,7 @@
                         TournamentId = 1,
                         Result = new Result
                         {
-                            SetsScore = new Score
+                            GameScore = new Score
                             {
                                 Home = 3,
                                 Away = 0

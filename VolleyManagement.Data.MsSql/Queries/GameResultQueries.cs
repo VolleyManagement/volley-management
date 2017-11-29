@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
-    using System.Linq.Expressions;
     using Contracts;
     using Data.Queries.Common;
     using Data.Queries.GameResult;
@@ -24,6 +23,9 @@
 
         private readonly VolleyUnitOfWork _unitOfWork;
         private readonly DbSet<GameResultEntity> _dalGameResults;
+        private readonly DbSet<TournamentEntity> _dalTournaments;
+        private readonly DbSet<DivisionEntity> _dalDivisions;
+        private readonly DbSet<GroupEntity> _dalGroups;
 
         #endregion
 
@@ -37,6 +39,9 @@
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
             _dalGameResults = _unitOfWork.Context.GameResults;
+            _dalTournaments = _unitOfWork.Context.Tournaments;
+            _dalDivisions = _unitOfWork.Context.Divisions;
+            _dalGroups = _unitOfWork.Context.Groups;
         }
 
         #endregion
@@ -52,7 +57,8 @@
         {
             return _dalGameResults
                 .Where(gr => gr.Id == criteria.Id)
-                .Select(GetGameResultDtoMapping())
+                .ToList()
+                .Select(gr => GetGameResultDtoMap()(gr))
                 .SingleOrDefault();
         }
 
@@ -63,10 +69,20 @@
         /// <returns>List of domain models of game result.</returns>
         public List<GameResultDto> Execute(TournamentGameResultsCriteria criteria)
         {
+            // Join GameResult tables with tournaments then with Divisions and then with Groups
+            // After that select only groupId and divisionId where Groups navigation property Teams
+            // contains reference on teamId
             var gameResults = _dalGameResults
-                .Where(gr => gr.TournamentId == criteria.TournamentId).ToList();
+            .Where(gr => gr.TournamentId == criteria.TournamentId)
+            .Join(_dalTournaments, results => results.TournamentId, tournament => tournament.Id, (results, tournament) => new { results, tournament })
+            .Join(_dalDivisions, firstJoin => firstJoin.tournament.Id, division => division.TournamentId, (firstJoin, division) => new { firstJoin, division })
+            .Join(_dalGroups, secondJoin => secondJoin.division.Id, group => group.DivisionId, (secondJoin, groups) => new { secondJoin, groups })
+            .Where(thirdJoin => (thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.HomeTeamId.Value) &&
+            (!thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue || (thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue && thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.AwayTeamId.Value)))))
+            .Select(r => new { results = r.secondJoin.firstJoin.results, divisionId = r.secondJoin.division.Id, groupId = r.groups.Id })
+            .ToList();
 
-            List<GameResultDto> list = gameResults.Any() ? gameResults.ConvertAll(GetGameResultDtoMap()) : new List<GameResultDto>();
+            List<GameResultDto> list = gameResults.ConvertAll(item => Map(item.results, item.divisionId, item.groupId));
             return list;
         }
 
@@ -114,7 +130,8 @@
             return _dalGameResults
                 .Where(gr => gr.TournamentId == criteria.TournamentId
                 && gr.GameNumber == criteria.GameNumber)
-                .Select(GetGameMappingExpression())
+                .ToList()
+                .Select(gr => GetGameMapping()(gr))
                 .SingleOrDefault();
         }
 
@@ -122,65 +139,7 @@
 
         #region Mapping
 
-        private static Expression<Func<GameResultEntity, GameResultDto>> GetGameResultDtoMapping()
-        {
-            return gr => new GameResultDto
-            {
-                Id = gr.Id,
-                TournamentId = gr.TournamentId,
-                HomeTeamId = gr.HomeTeamId,
-                AwayTeamId = gr.AwayTeamId,
-                HomeTeamName = gr.HomeTeam.Name,
-                AwayTeamName = gr.AwayTeam.Name,
-                Result = new Result
-                {
-                    SetsScore = new Score
-                    {
-                        Home = gr.HomeSetsScore,
-                        Away = gr.AwaySetsScore,
-                        IsTechnicalDefeat = gr.IsTechnicalDefeat
-                    },
-                    SetScores = new List<Score>
-                    {
-                        new Score
-                        {
-                            Home = gr.HomeSet1Score,
-                            Away = gr.AwaySet1Score,
-                            IsTechnicalDefeat = gr.IsSet1TechnicalDefeat
-                        },
-                        new Score
-                        {
-                            Home = gr.HomeSet2Score,
-                            Away = gr.AwaySet2Score,
-                            IsTechnicalDefeat = gr.IsSet2TechnicalDefeat
-                        },
-                        new Score
-                        {
-                            Home = gr.HomeSet3Score,
-                            Away = gr.AwaySet3Score,
-                            IsTechnicalDefeat = gr.IsSet3TechnicalDefeat
-                        },
-                        new Score
-                        {
-                            Home = gr.HomeSet4Score,
-                            Away = gr.AwaySet4Score,
-                            IsTechnicalDefeat = gr.IsSet4TechnicalDefeat
-                        },
-                        new Score
-                        {
-                            Home = gr.HomeSet5Score,
-                            Away = gr.AwaySet5Score,
-                            IsTechnicalDefeat = gr.IsSet5TechnicalDefeat
-                        },
-                    }
-                },
-                GameDate = gr.StartTime,
-                Round = gr.RoundNumber,
-                GameNumber = gr.GameNumber
-            };
-        }
-
-        private static Expression<Func<GameResultEntity, Game>> GetGameMappingExpression()
+        private static Converter<GameResultEntity, Game> GetGameMapping()
         {
             return gr => new Game
             {
@@ -191,48 +150,11 @@
                 GameDate = gr.StartTime,
                 Round = gr.RoundNumber,
                 GameNumber = gr.GameNumber,
-                Result = new Result
-                {
-                    SetScores = new List<Score>
-                    {
-                         new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score, IsTechnicalDefeat = gr.IsSet1TechnicalDefeat },
-                         new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score, IsTechnicalDefeat = gr.IsSet2TechnicalDefeat },
-                         new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score, IsTechnicalDefeat = gr.IsSet3TechnicalDefeat },
-                         new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score, IsTechnicalDefeat = gr.IsSet4TechnicalDefeat },
-                         new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score, IsTechnicalDefeat = gr.IsSet5TechnicalDefeat }
-                    },
-                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore, IsTechnicalDefeat = gr.IsTechnicalDefeat }
-                }
+                Result = MapResult(gr)
             };
         }
 
-        private Converter<GameResultEntity, Game> GetGameMapping()
-        {
-            return gr => new Game
-            {
-                Id = gr.Id,
-                TournamentId = gr.TournamentId,
-                HomeTeamId = gr.HomeTeamId,
-                AwayTeamId = gr.AwayTeamId,
-                GameDate = gr.StartTime,
-                Round = gr.RoundNumber,
-                GameNumber = gr.GameNumber,
-                Result = new Result
-                {
-                    SetScores = new List<Score>
-                    {
-                         new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score, IsTechnicalDefeat = gr.IsSet1TechnicalDefeat },
-                         new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score, IsTechnicalDefeat = gr.IsSet2TechnicalDefeat },
-                         new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score, IsTechnicalDefeat = gr.IsSet3TechnicalDefeat },
-                         new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score, IsTechnicalDefeat = gr.IsSet4TechnicalDefeat },
-                         new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score, IsTechnicalDefeat = gr.IsSet5TechnicalDefeat }
-                    },
-                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore, IsTechnicalDefeat = gr.IsTechnicalDefeat }
-                }
-            };
-        }
-
-        private Converter<GameResultEntity, GameResultDto> GetGameResultDtoMap()
+        private static Converter<GameResultEntity, GameResultDto> GetGameResultDtoMap()
         {
             return gr => new GameResultDto
             {
@@ -245,21 +167,54 @@
                 GameNumber = gr.GameNumber,
                 HomeTeamName = gr.HomeTeam?.Name,
                 AwayTeamName = gr.AwayTeam?.Name,
-                Result = new Result
-                {
-                    SetScores = new List<Score>
-                    {
-                        new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score, IsTechnicalDefeat = gr.IsSet1TechnicalDefeat },
-                        new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score, IsTechnicalDefeat = gr.IsSet2TechnicalDefeat },
-                        new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score, IsTechnicalDefeat = gr.IsSet3TechnicalDefeat },
-                        new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score, IsTechnicalDefeat = gr.IsSet4TechnicalDefeat },
-                        new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score, IsTechnicalDefeat = gr.IsSet5TechnicalDefeat }
-                    },
-                    SetsScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore, IsTechnicalDefeat = gr.IsTechnicalDefeat }
-                }
+                Result = MapResult(gr)
             };
         }
 
+        private static Result MapResult(GameResultEntity gr)
+        {
+            return new Result
+            {
+                SetScores = new List<Score>
+                {
+                    new Score { Home = gr.HomeSet1Score, Away = gr.AwaySet1Score, IsTechnicalDefeat = gr.IsSet1TechnicalDefeat },
+                    new Score { Home = gr.HomeSet2Score, Away = gr.AwaySet2Score, IsTechnicalDefeat = gr.IsSet2TechnicalDefeat },
+                    new Score { Home = gr.HomeSet3Score, Away = gr.AwaySet3Score, IsTechnicalDefeat = gr.IsSet3TechnicalDefeat },
+                    new Score { Home = gr.HomeSet4Score, Away = gr.AwaySet4Score, IsTechnicalDefeat = gr.IsSet4TechnicalDefeat },
+                    new Score { Home = gr.HomeSet5Score, Away = gr.AwaySet5Score, IsTechnicalDefeat = gr.IsSet5TechnicalDefeat }
+                },
+                GameScore = new Score { Home = gr.HomeSetsScore, Away = gr.AwaySetsScore, IsTechnicalDefeat = gr.IsTechnicalDefeat },
+                Penalty = MapPenalty(gr)
+            };
+        }
+
+        private static Penalty MapPenalty(GameResultEntity gr)
+        {
+            Penalty result;
+            if (gr.PenaltyTeam != 0)
+            {
+                result = new Penalty
+                {
+                    IsHomeTeam = gr.PenaltyTeam == 1,
+                    Amount = gr.PenaltyAmount,
+                    Description = gr.PenaltyDescription
+                };
+            }
+            else
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
+        private GameResultDto Map(GameResultEntity gr, int divisionId, int groupId)
+        {
+            var result = GetGameResultDtoMap()(gr);
+            result.DivisionId = divisionId;
+            result.GroupId = groupId;
+            return result;
+        }
         #endregion
     }
 }

@@ -98,6 +98,14 @@
         }
 
         /// <summary>
+        /// GameResult entity validation constants
+        /// </summary>
+        public static class GameResult
+        {
+            public const int MAX_PENALTY_DESCRIPTION_LENGTH = 255;
+        }
+
+        /// <summary>
         /// Feedback entity validation constants
         /// </summary>
         public static class Feedback

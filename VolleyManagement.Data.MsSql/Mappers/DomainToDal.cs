@@ -202,27 +202,38 @@
             to.TournamentId = from.TournamentId;
             to.HomeTeamId = from.HomeTeamId;
             to.AwayTeamId = from.AwayTeamId;
-            to.HomeSetsScore = from.Result.SetsScore.Home;
-            to.AwaySetsScore = from.Result.SetsScore.Away;
-            to.IsTechnicalDefeat = from.Result.SetsScore.IsTechnicalDefeat;
+            to.HomeSetsScore = from.Result.GameScore.Home;
+            to.AwaySetsScore = from.Result.GameScore.Away;
+            to.IsTechnicalDefeat = from.Result.GameScore.IsTechnicalDefeat;
             to.HomeSet1Score = from.Result.SetScores[0].Home;
             to.AwaySet1Score = from.Result.SetScores[0].Away;
+            to.IsSet1TechnicalDefeat = from.Result.SetScores[0].IsTechnicalDefeat;
             to.HomeSet2Score = from.Result.SetScores[1].Home;
             to.AwaySet2Score = from.Result.SetScores[1].Away;
+            to.IsSet2TechnicalDefeat = from.Result.SetScores[1].IsTechnicalDefeat;
             to.HomeSet3Score = from.Result.SetScores[2].Home;
             to.AwaySet3Score = from.Result.SetScores[2].Away;
+            to.IsSet3TechnicalDefeat = from.Result.SetScores[2].IsTechnicalDefeat;
             to.HomeSet4Score = from.Result.SetScores[3].Home;
             to.AwaySet4Score = from.Result.SetScores[3].Away;
+            to.IsSet4TechnicalDefeat = from.Result.SetScores[3].IsTechnicalDefeat;
             to.HomeSet5Score = from.Result.SetScores[4].Home;
             to.AwaySet5Score = from.Result.SetScores[4].Away;
+            to.IsSet5TechnicalDefeat = from.Result.SetScores[4].IsTechnicalDefeat;
             to.StartTime = from.GameDate;
             to.RoundNumber = from.Round;
             to.GameNumber = from.GameNumber;
-            to.IsSet1TechnicalDefeat = from.Result.SetScores[0].IsTechnicalDefeat;
-            to.IsSet2TechnicalDefeat = from.Result.SetScores[1].IsTechnicalDefeat;
-            to.IsSet3TechnicalDefeat = from.Result.SetScores[2].IsTechnicalDefeat;
-            to.IsSet4TechnicalDefeat = from.Result.SetScores[3].IsTechnicalDefeat;
-            to.IsSet5TechnicalDefeat = from.Result.SetScores[4].IsTechnicalDefeat;
+            if (from.Result.Penalty != null)
+            {
+                to.PenaltyTeam = (byte)(from.Result.Penalty.IsHomeTeam ? 1 : 2);
+                to.PenaltyAmount = from.Result.Penalty.Amount;
+                to.PenaltyDescription = from.Result.Penalty.Description;
+            }
+            else
+            {
+                to.PenaltyTeam = 0;
+                to.PenaltyAmount = 0;
+            }
         }
 
         /// <summary>

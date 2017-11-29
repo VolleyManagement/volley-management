@@ -6,6 +6,9 @@ import { Observable } from 'rxjs/Observable';
 import { JsonService } from './json.service';
 
 import { ScheduleByRounds } from '../Models/Schedule/ScheduleByRounds';
+import { ScheduleByDate } from '../Models/Schedule/ScheduleByDate';
+import { GameResult } from '../Models/Schedule/GameResult';
+
 
 @Injectable()
 export class ScheduleService {

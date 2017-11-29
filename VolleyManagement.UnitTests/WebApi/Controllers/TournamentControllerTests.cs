@@ -181,22 +181,6 @@
         }
 
         [TestMethod]
-        public void GetStandings_EntriesHaveSameResults_StandingsWithSamePositionReturned()
-        {
-            // Arrange
-            var testData = new List<List<StandingsEntry>> { new StandingsTestFixture().WithRepetitivePointsSetsRatioAndBallsRatio().Build() };
-            MockGetStandings(testData, SPECIFIC_TOURNAMENT_ID);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetTournamentStandings(SPECIFIC_TOURNAMENT_ID).First().ToList();
-
-            // Assert
-            Assert.AreEqual(actual[FIRST_ELEMENT_INDEX].Position, actual[SECOND_ELEMENT_INDEX].Position);
-        }
-
-        [TestMethod]
         public void GetStandings_NoStandingsExist_EmptyListReturned()
         {
             // Arrange

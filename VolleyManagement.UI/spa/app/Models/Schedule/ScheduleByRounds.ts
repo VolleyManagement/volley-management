@@ -1,6 +1,6 @@
-import { GameResult } from './GameResult';
+import { ScheduleByDate } from './ScheduleByDate';
 
 export interface ScheduleByRounds {
     Round: number;
-    GameResults: GameResult[];
+    ScheduleByDate: ScheduleByDate[];
 }

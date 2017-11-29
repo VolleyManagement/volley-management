@@ -4,31 +4,42 @@
 
     <p class="headercenter">Тур {{ gameResultByRounds.Round }}</p>
 
-    <div class="group-data">
-      <!-- <p class="group-header">II группа</p> -->
-      <p class="group-date">{{ gameResultByRounds.GameResults[0].GameDate | date: 'EEEE':'':'ru' }}</p>
-      <p class="group-date">{{ gameResultByRounds.GameResults[0].GameDate | date: 'dd-MM-yyyy' }}</p>
+    <div class="group-data"
+         *ngFor="let gameResultScheduleByDate of gameResultByRounds.ScheduleByDate; let i = index;">
+
+      <p *ngIf="i%2===0"
+         class="group-header group1">I группа</p>
+
+      <p *ngIf="i%2!==0"
+         class="group-header group2">II группа</p>
+
+      <p class="group-date group-date-group1">{{ gameResultScheduleByDate.GameResults[0].GameDate | date: 'EEEE':'':'ru' }}</p>
+      <p class="group-date group-date-group1">{{ gameResultScheduleByDate.GameResults[0].GameDate | date: 'dd-MM-yyyy' }}</p>
 
       <div class="games"
-           *ngFor="let gameResult of gameResultByRounds.GameResults">
+           *ngFor="let gameResult of gameResultScheduleByDate.GameResults">
 
         <table class="game-sch"
-               *ngIf="!gameResult.AwayTeamName">
+               *ngIf="!gameResult.AwayTeamName"
+               [class.group1]="gameResult.GroupId == groupOne"
+               [class.group2]="gameResult.GroupId == groupTwo"></table>>
 
-          <tbody>
-            <tr class="team-sch bold-text">
-              <td>{{ gameResult.HomeTeamName }}</td>
-            </tr>
+        <tbody>
+          <tr class="team-sch bold-text">
+            <td>{{ gameResult.HomeTeamName }}</td>
+          </tr>
 
-            <tr>
-              <td>Day Off</td>
-            </tr>
-          </tbody>
+          <tr>
+            <td>Day Off</td>
+          </tr>
+        </tbody>
 
         </table>
 
         <table class="game-sch"
-               *ngIf="gameIsPlayed(gameResult)">
+               *ngIf="gameIsPlayed(gameResult)"
+               [class.group1]="gameResult.GroupId == groupOne"
+               [class.group2]="gameResult.GroupId == groupTwo">
 
           <tbody>
             <tr [class.win]="gameResult.Result.TotalScore.Home > gameResult.Result.TotalScore.Away">
@@ -87,7 +98,9 @@
         </table>
 
         <table class="game-sch"
-               *ngIf="!gameIsPlayed(gameResult)">
+               *ngIf="!gameIsPlayed(gameResult)"
+               [class.group1]="gameResult.GroupId == groupOne"
+               [class.group2]="gameResult.GroupId == groupTwo">
           <tbody>
             <tr>
               <td class="teamname">

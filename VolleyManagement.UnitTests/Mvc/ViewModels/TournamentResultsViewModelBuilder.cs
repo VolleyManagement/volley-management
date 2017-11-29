@@ -42,7 +42,7 @@
                          HomeTeamName = "TeamNameA",
                          AwayTeamName = "TeamNameB",
                          IsTechnicalDefeat = false,
-                         SetsScore = new ScoreViewModel(3, 2),
+                         GameScore = new ScoreViewModel(3, 2),
                          SetScores = new List<ScoreViewModel>
                          {
                              new ScoreViewModel(25, 20),
@@ -63,7 +63,7 @@
                          HomeTeamName = "TeamNameA",
                          AwayTeamName = "TeamNameC",
                          IsTechnicalDefeat = false,
-                         SetsScore = new ScoreViewModel(3, 1),
+                         GameScore = new ScoreViewModel(3, 1),
                          SetScores = new List<ScoreViewModel>
                          {
                              new ScoreViewModel(26, 28),
@@ -84,7 +84,7 @@
                          HomeTeamName = "TeamNameB",
                          AwayTeamName = "TeamNameC",
                          IsTechnicalDefeat = true,
-                         SetsScore = new ScoreViewModel(0, 3),
+                         GameScore = new ScoreViewModel(0, 3),
                          SetScores = new List<ScoreViewModel>
                          {
                              new ScoreViewModel(0, 25),

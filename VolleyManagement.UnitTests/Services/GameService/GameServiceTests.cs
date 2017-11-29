@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Moq;
     using Contracts;
     using Contracts.Authorization;
     using Contracts.Exceptions;
@@ -18,9 +16,11 @@
     using Domain.GamesAggregate;
     using Domain.RolesAggregate;
     using Domain.TournamentsAggregate;
-    using VolleyManagement.Services;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
     using Mvc.ViewModels;
     using TournamentService;
+    using VolleyManagement.Services;
 
     /// <summary>
     /// Tests for <see cref="GameService"/> class.

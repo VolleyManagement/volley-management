@@ -780,11 +780,11 @@
                     GameScore = (3, 0),
                     SetScores = new List<Score>
                     {
-                        (29,27),
-                        (25,23),
-                        (25,23),
-                        (0,0),
-                        (0,0)
+                        (29, 27),
+                        (25, 23),
+                        (25, 23),
+                        (0, 0),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_B),
@@ -804,11 +804,11 @@
                     GameScore = (3, 2),
                     SetScores = new List<Score>
                     {
-                        (25,21),
-                        (26,28),
-                        (25,23),
-                        (26,28),
-                        (15,10)
+                        (25, 21),
+                        (26, 28),
+                        (25, 23),
+                        (26, 28),
+                        (15, 10)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -828,11 +828,11 @@
                     GameScore = (3, 2),
                     SetScores = new List<Score>
                     {
-                        (25,21),
-                        (26,28),
-                        (25,23),
-                        (26,28),
-                        (15,10)
+                        (25, 21),
+                        (26, 28),
+                        (25, 23),
+                        (26, 28),
+                        (15, 10)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -852,11 +852,11 @@
                     GameScore = (2, 3),
                     SetScores = new List<Score>
                     {
-                        (25,21),
-                        (26,28),
-                        (25,23),
-                        (26,28),
-                        (10,15)
+                        (25, 21),
+                        (26, 28),
+                        (25, 23),
+                        (26, 28),
+                        (10, 15)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -883,11 +883,11 @@
                     GameScore = (3, 1),
                     SetScores = new List<Score>
                     {
-                        (19,25),
-                        (29,27),
-                        (25,23),
-                        (25,23),
-                        (0,0)
+                        (19, 25),
+                        (29, 27),
+                        (25, 23),
+                        (25, 23),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_B),
@@ -907,11 +907,11 @@
                     GameScore = (3, 0),
                     SetScores = new List<Score>
                     {
-                        (25,21),
-                        (26,28),
-                        (25,23),
-                        (0,0),
-                        (0,0)
+                        (25, 21),
+                        (26, 28),
+                        (25, 23),
+                        (0, 0),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -938,11 +938,11 @@
                     GameScore = (3, 1),
                     SetScores = new List<Score>
                     {
-                        (25,21),
-                        (26,28),
-                        (25,23),
-                        (25,10),
-                        (0,0)
+                        (25, 21),
+                        (26, 28),
+                        (25, 23),
+                        (25, 10),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_B),
@@ -962,11 +962,11 @@
                     GameScore = (3, 1),
                     SetScores = new List<Score>
                     {
-                        (25,21),
-                        (26,28),
-                        (25,23),
-                        (28,26),
-                        (0,0)
+                        (25, 21),
+                        (26, 28),
+                        (25, 23),
+                        (28, 26),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -1161,7 +1161,7 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    SetsScore = new Score
+                    GameScore = new Score
                     {
                         Home = 3,
                         Away = 2,
@@ -1215,7 +1215,7 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    SetsScore = new Score
+                    GameScore = new Score
                     {
                         Home = 3,
                         Away = 1,
@@ -1275,7 +1275,7 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    SetsScore = new Score
+                    GameScore = new Score
                     {
                         Home = 0,
                         Away = 3,
@@ -1339,7 +1339,7 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    SetsScore = new Score
+                    GameScore = new Score
                     {
                         Home = 3,
                         Away = 2,
@@ -1393,7 +1393,7 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    SetsScore = new Score
+                    GameScore = new Score
                     {
                         Home = 3,
                         Away = 1,
@@ -1453,7 +1453,7 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    SetsScore = new Score
+                    GameScore = new Score
                     {
                         Home = 0,
                         Away = 3,

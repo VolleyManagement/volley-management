@@ -30,7 +30,7 @@
                 AwayTeamName = "AwayTeam",
                 GameDate = DateTime.Parse("2016-04-03 10:00"),
                 Round = 1,
-                SetsScore = new ScoreViewModel(3, 1),
+                GameScore = new ScoreViewModel(3, 1),
                 SetScores = new List<ScoreViewModel>()
                     {
                         new ScoreViewModel(27, 25),
@@ -151,7 +151,7 @@
         /// <returns>Game result view model builder object</returns>
         public GameResultViewModelBuilder WithSetsScore(byte homeSetScore, byte awaySetsScore)
         {
-            _gameResultsViewModel.SetsScore = new ScoreViewModel(homeSetScore, awaySetsScore);
+            _gameResultsViewModel.GameScore = new ScoreViewModel(homeSetScore, awaySetsScore);
             return this;
         }
 

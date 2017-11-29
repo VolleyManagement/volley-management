@@ -22,17 +22,17 @@
         <table class="game-sch"
                *ngIf="!gameResult.AwayTeamName"
                [class.group1]="gameResult.GroupId == groupOne"
-               [class.group2]="gameResult.GroupId == groupTwo"></table>>
+               [class.group2]="gameResult.GroupId == groupTwo">
 
-        <tbody>
-          <tr class="team-sch bold-text">
-            <td>{{ gameResult.HomeTeamName }}</td>
-          </tr>
+          <tbody>
+            <tr class="team-sch bold-text">
+              <td>{{ gameResult.HomeTeamName }}</td>
+            </tr>
 
-          <tr>
-            <td>Day Off</td>
-          </tr>
-        </tbody>
+            <tr>
+              <td>Day Off</td>
+            </tr>
+          </tbody>
 
         </table>
 

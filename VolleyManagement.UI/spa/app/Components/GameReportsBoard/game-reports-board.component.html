@@ -1,6 +1,8 @@
-<div class="game-reports">
+<div class="game-reports"
+     #containerEl>
         <loader *ngIf="isShowLoader"
-                [isShowLoader]="isShowLoader"></loader>
+                [height]="loaderHeight"
+                [visible]="isLoaderVisible"></loader>
 
         <standings *ngIf="standingsId"
                    [standingsId]="standingsId"

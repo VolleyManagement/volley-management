@@ -1,12 +1,20 @@
-<div class="app-loader">
+<div class="app-loader"
+     *ngIf="visible">
+
   <div class="loader"
+       [style.height]="height + 'px'"
        *ngIf="isCss3Supported; else css3NotSupportedBlock">
-    <ngx-loading [show]="isShowLoader"
+
+    <ngx-loading [show]="visible"
                  [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+
   </div>
+
   <ng-template #css3NotSupportedBlock>
-    <div class="alt-message-wrapper">
+    <div class="alt-message-wrapper"
+         [style.height]="height + 'px'">
       <div class="message">Loading Data...</div>
     </div>
   </ng-template>
+
 </div>

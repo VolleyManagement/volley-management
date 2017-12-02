@@ -11,11 +11,11 @@
     [ExcludeFromCodeCoverage]
     internal class StandingsTestFixture
     {
-        private readonly List<StandingsEntry> _standings = new List<StandingsEntry>();
+        private readonly List<(int DivisionId, StandingsEntry Standings)> _standings = new List<(int DivisionId, StandingsEntry Standings)>();
 
-        public StandingsTestFixture TestStandings()
+        public StandingsTestFixture DefaultStandings()
         {
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameA",
                 Points = 5,
@@ -33,7 +33,7 @@
                 BallsWon = 234,
                 BallsLost = 214
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameC",
                 Points = 3,
@@ -51,7 +51,7 @@
                 BallsWon = 166,
                 BallsLost = 105
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameB",
                 Points = 1,
@@ -75,14 +75,14 @@
 
         public StandingsTestFixture Add(StandingsEntry newStandingEntry)
         {
-            _standings.Add(newStandingEntry);
+            AddStandings(newStandingEntry);
             return this;
         }
 
         public StandingsTestFixture WithStandingsForAllPossibleScores()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameA",
                 Points = 7,
@@ -100,25 +100,7 @@
                 BallsWon = 363,
                 BallsLost = 355
             });
-            _standings.Add(new StandingsEntry
-            {
-                TeamName = "TeamNameB",
-                Points = 4,
-                GamesTotal = 4,
-                GamesWon = 2,
-                GamesLost = 2,
-                GamesWithScoreThreeNil = 0,
-                GamesWithScoreThreeOne = 0,
-                GamesWithScoreThreeTwo = 2,
-                GamesWithScoreTwoThree = 0,
-                GamesWithScoreOneThree = 0,
-                GamesWithScoreNilThree = 2,
-                SetsWon = 6,
-                SetsLost = 10,
-                BallsWon = 349,
-                BallsLost = 345
-            });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameC",
                 Points = 7,
@@ -136,6 +118,24 @@
                 BallsWon = 350,
                 BallsLost = 362
             });
+            AddStandings(new StandingsEntry
+            {
+                TeamName = "TeamNameB",
+                Points = 4,
+                GamesTotal = 4,
+                GamesWon = 2,
+                GamesLost = 2,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 2,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 2,
+                SetsWon = 6,
+                SetsLost = 10,
+                BallsWon = 349,
+                BallsLost = 345
+            });
 
             return this;
         }
@@ -143,7 +143,7 @@
         public StandingsTestFixture WithUniquePoints()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameC",
                 Points = 3,
@@ -161,7 +161,7 @@
                 BallsWon = 102,
                 BallsLost = 96
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameB",
                 Points = 2,
@@ -179,7 +179,7 @@
                 BallsWon = 121,
                 BallsLost = 122
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameA",
                 Points = 1,
@@ -204,7 +204,7 @@
         public StandingsTestFixture WithSamePoints()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameC",
                 Points = 4,
@@ -219,10 +219,10 @@
                 GamesWithScoreNilThree = 0,
                 SetsWon = 6,
                 SetsLost = 4,
-                BallsWon = 220,
-                BallsLost = 234
+                BallsWon = 234,
+                BallsLost = 220
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameA",
                 Points = 4,
@@ -240,7 +240,7 @@
                 BallsWon = 191,
                 BallsLost = 188
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameB",
                 Points = 4,
@@ -255,8 +255,8 @@
                 GamesWithScoreNilThree = 1,
                 SetsWon = 7,
                 SetsLost = 11,
-                BallsWon = 422,
-                BallsLost = 411
+                BallsWon = 408,
+                BallsLost = 425
             });
 
             return this;
@@ -265,7 +265,7 @@
         public StandingsTestFixture WithSamePointsAndWonGames()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameC",
                 Points = 3,
@@ -280,16 +280,16 @@
                 GamesWithScoreNilThree = 0,
                 SetsWon = 3,
                 SetsLost = 0,
-                BallsWon = 78,
-                BallsLost = 78
+                BallsWon = 76,
+                BallsLost = 72
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameA",
-                Points = 0,
-                GamesTotal = 2,
+                Points = 3,
+                GamesTotal = 1,
                 GamesWon = 0,
-                GamesLost = 2,
+                GamesLost = 1,
                 GamesWithScoreThreeNil = 0,
                 GamesWithScoreThreeOne = 0,
                 GamesWithScoreThreeTwo = 0,
@@ -301,7 +301,7 @@
                 BallsWon = 193,
                 BallsLost = 200
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameB",
                 Points = 3,
@@ -319,24 +319,6 @@
                 BallsWon = 98,
                 BallsLost = 97
             });
-            _standings.Add(new StandingsEntry
-            {
-                TeamName = "TeamNameC",
-                Points = 3,
-                GamesTotal = 1,
-                GamesWon = 1,
-                GamesLost = 0,
-                GamesWithScoreThreeNil = 0,
-                GamesWithScoreThreeOne = 1,
-                GamesWithScoreThreeTwo = 0,
-                GamesWithScoreTwoThree = 0,
-                GamesWithScoreOneThree = 1,
-                GamesWithScoreNilThree = 1,
-                SetsWon = 1,
-                SetsLost = 6,
-                BallsWon = 167,
-                BallsLost = 176
-            });
 
             return this;
         }
@@ -344,7 +326,7 @@
         public StandingsTestFixture WithSamePointsWonGamesAndSetsRatio()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameC",
                 Points = 3,
@@ -362,7 +344,7 @@
                 BallsWon = 101,
                 BallsLost = 82
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameA",
                 Points = 3,
@@ -380,7 +362,7 @@
                 BallsWon = 104,
                 BallsLost = 98
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameB",
                 Points = 0,
@@ -402,10 +384,10 @@
             return this;
         }
 
-        public StandingsTestFixture WithTeamStandingsForOneSetTechnicalDefeat()
+        public StandingsTestFixture WithOneSetTechnicalDefeat()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameA",
                 Points = 5,
@@ -418,33 +400,33 @@
                 GamesWithScoreTwoThree = 0,
                 GamesWithScoreOneThree = 0,
                 GamesWithScoreNilThree = 0,
-                SetsWon = 3,
-                SetsLost = 1,
+                SetsWon = 6,
+                SetsLost = 3,
                 BallsWon = 234,
-                BallsLost = 214
+                BallsLost = 248
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameC",
-                Points = 4,
+                Points = 3,
                 GamesTotal = 2,
                 GamesWon = 1,
                 GamesLost = 1,
-                GamesWithScoreThreeNil = 1,
-                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 1,
                 GamesWithScoreThreeTwo = 0,
                 GamesWithScoreTwoThree = 0,
                 GamesWithScoreOneThree = 1,
                 GamesWithScoreNilThree = 0,
                 SetsWon = 4,
-                SetsLost = 3,
-                BallsWon = 141,
-                BallsLost = 125
+                SetsLost = 4,
+                BallsWon = 166,
+                BallsLost = 135
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameB",
-                Points = 2,
+                Points = 1,
                 GamesTotal = 2,
                 GamesWon = 0,
                 GamesLost = 2,
@@ -452,12 +434,12 @@
                 GamesWithScoreThreeOne = 0,
                 GamesWithScoreThreeTwo = 0,
                 GamesWithScoreTwoThree = 1,
-                GamesWithScoreOneThree = 0,
-                GamesWithScoreNilThree = 1,
-                SetsWon = 2,
+                GamesWithScoreOneThree = 1,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 3,
                 SetsLost = 6,
-                BallsWon = 143,
-                BallsLost = 179
+                BallsWon = 187,
+                BallsLost = 204
             });
 
             return this;
@@ -466,7 +448,25 @@
         public StandingsTestFixture WithTeamAPenalty()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
+            {
+                TeamName = "TeamNameA",
+                Points = 3,
+                GamesTotal = 2,
+                GamesWon = 2,
+                GamesLost = 0,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 1,
+                GamesWithScoreThreeTwo = 1,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 0,
+                SetsWon = 6,
+                SetsLost = 3,
+                BallsWon = 234,
+                BallsLost = 214
+            });
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameC",
                 Points = 3,
@@ -481,28 +481,10 @@
                 GamesWithScoreNilThree = 0,
                 SetsWon = 4,
                 SetsLost = 3,
-                BallsWon = 141,
+                BallsWon = 166,
                 BallsLost = 125
             });
-            _standings.Add(new StandingsEntry
-            {
-                TeamName = "TeamNameA",
-                Points = 3,
-                GamesTotal = 2,
-                GamesWon = 2,
-                GamesLost = 0,
-                GamesWithScoreThreeNil = 0,
-                GamesWithScoreThreeOne = 1,
-                GamesWithScoreThreeTwo = 1,
-                GamesWithScoreTwoThree = 0,
-                GamesWithScoreOneThree = 0,
-                GamesWithScoreNilThree = 0,
-                SetsWon = 3,
-                SetsLost = 1,
-                BallsWon = 234,
-                BallsLost = 214
-            });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameB",
                 Points = 1,
@@ -518,7 +500,7 @@
                 SetsWon = 2,
                 SetsLost = 6,
                 BallsWon = 143,
-                BallsLost = 179
+                BallsLost = 204
             });
 
             return this;
@@ -527,7 +509,7 @@
         public StandingsTestFixture WithTeamCPenalty()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameA",
                 Points = 5,
@@ -540,12 +522,12 @@
                 GamesWithScoreTwoThree = 0,
                 GamesWithScoreOneThree = 0,
                 GamesWithScoreNilThree = 0,
-                SetsWon = 3,
-                SetsLost = 1,
+                SetsWon = 6,
+                SetsLost = 3,
                 BallsWon = 234,
                 BallsLost = 214
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameC",
                 Points = 1,
@@ -560,10 +542,10 @@
                 GamesWithScoreNilThree = 0,
                 SetsWon = 4,
                 SetsLost = 3,
-                BallsWon = 141,
+                BallsWon = 166,
                 BallsLost = 125
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamName = "TeamNameB",
                 Points = 1,
@@ -579,7 +561,7 @@
                 SetsWon = 2,
                 SetsLost = 6,
                 BallsWon = 143,
-                BallsLost = 179
+                BallsLost = 204
             });
 
             return this;
@@ -588,62 +570,20 @@
         public StandingsTestFixture WithNoResults()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamId = 1,
-                TeamName = "TeamNameA",
-                Points = 0,
-                GamesTotal = 0,
-                GamesWon = 0,
-                GamesLost = 0,
-                GamesWithScoreThreeNil = 0,
-                GamesWithScoreThreeOne = 0,
-                GamesWithScoreThreeTwo = 0,
-                GamesWithScoreTwoThree = 0,
-                GamesWithScoreOneThree = 0,
-                GamesWithScoreNilThree = 0,
-                SetsWon = 0,
-                SetsLost = 0,
-                BallsWon = 0,
-                BallsLost = 0
+                TeamName = "TeamNameA"
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamId = 2,
-                TeamName = "TeamNameB",
-                Points = 0,
-                GamesTotal = 0,
-                GamesWon = 0,
-                GamesLost = 0,
-                GamesWithScoreThreeNil = 0,
-                GamesWithScoreThreeOne = 0,
-                GamesWithScoreThreeTwo = 0,
-                GamesWithScoreTwoThree = 0,
-                GamesWithScoreOneThree = 0,
-                GamesWithScoreNilThree = 0,
-                SetsWon = 0,
-                SetsLost = 0,
-                BallsWon = 0,
-                BallsLost = 0
+                TeamName = "TeamNameB"
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamId = 3,
-                TeamName = "TeamNameC",
-                Points = 0,
-                GamesTotal = 0,
-                GamesWon = 0,
-                GamesLost = 0,
-                GamesWithScoreThreeNil = 0,
-                GamesWithScoreThreeOne = 0,
-                GamesWithScoreThreeTwo = 0,
-                GamesWithScoreTwoThree = 0,
-                GamesWithScoreOneThree = 0,
-                GamesWithScoreNilThree = 0,
-                SetsWon = 0,
-                SetsLost = 0,
-                BallsWon = 0,
-                BallsLost = 0
+                TeamName = "TeamNameC"
             });
 
             return this;
@@ -652,7 +592,7 @@
         public StandingsTestFixture WithMaxSetsRatioForOneTeam()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
@@ -671,43 +611,43 @@
                 BallsWon = 81,
                 BallsLost = 72
             });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
-                Points = 0,
+                Points = 3,
                 GamesTotal = 1,
-                GamesWon = 0,
-                GamesLost = 1,
-                GamesWithScoreThreeNil = 0,
-                GamesWithScoreThreeOne = 0,
-                GamesWithScoreThreeTwo = 0,
-                GamesWithScoreTwoThree = 0,
-                GamesWithScoreOneThree = 0,
-                GamesWithScoreNilThree = 1,
-                SetsWon = 0,
-                SetsLost = 3,
-                BallsWon = 72,
-                BallsLost = 81
-            });
-            _standings.Add(new StandingsEntry
-            {
-                TeamId = 3,
-                TeamName = "TeamNameC",
-                Points = 0,
-                GamesTotal = 0,
-                GamesWon = 0,
+                GamesWon = 1,
                 GamesLost = 0,
                 GamesWithScoreThreeNil = 0,
-                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeOne = 1,
                 GamesWithScoreThreeTwo = 0,
                 GamesWithScoreTwoThree = 0,
                 GamesWithScoreOneThree = 0,
                 GamesWithScoreNilThree = 0,
-                SetsWon = 0,
-                SetsLost = 0,
-                BallsWon = 0,
-                BallsLost = 0
+                SetsWon = 3,
+                SetsLost = 1,
+                BallsWon = 102,
+                BallsLost = 82
+            });
+            AddStandings(new StandingsEntry
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 0,
+                GamesTotal = 2,
+                GamesWon = 0,
+                GamesLost = 2,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 1,
+                GamesWithScoreNilThree = 1,
+                SetsWon = 1,
+                SetsLost = 6,
+                BallsWon = 154,
+                BallsLost = 183
             });
 
             return this;
@@ -716,7 +656,7 @@
         public StandingsTestFixture WithMaxBallsRatioForOneTeam()
         {
             _standings.Clear();
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
@@ -735,43 +675,43 @@
                 BallsWon = 75,
                 BallsLost = 0
             });
-            _standings.Add(new StandingsEntry
-            {
-                TeamId = 2,
-                TeamName = "TeamNameB",
-                Points = 0,
-                GamesTotal = 1,
-                GamesWon = 0,
-                GamesLost = 1,
-                GamesWithScoreThreeNil = 0,
-                GamesWithScoreThreeOne = 0,
-                GamesWithScoreThreeTwo = 0,
-                GamesWithScoreTwoThree = 0,
-                GamesWithScoreOneThree = 0,
-                GamesWithScoreNilThree = 1,
-                SetsWon = 0,
-                SetsLost = 3,
-                BallsWon = 72,
-                BallsLost = 156
-            });
-            _standings.Add(new StandingsEntry
+            AddStandings(new StandingsEntry
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
-                Points = 0,
-                GamesTotal = 0,
-                GamesWon = 0,
+                Points = 3,
+                GamesTotal = 1,
+                GamesWon = 1,
                 GamesLost = 0,
-                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeNil = 1,
                 GamesWithScoreThreeOne = 0,
                 GamesWithScoreThreeTwo = 0,
                 GamesWithScoreTwoThree = 0,
                 GamesWithScoreOneThree = 0,
                 GamesWithScoreNilThree = 0,
-                SetsWon = 0,
+                SetsWon = 3,
                 SetsLost = 0,
                 BallsWon = 81,
                 BallsLost = 72
+            });
+            AddStandings(new StandingsEntry
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 0,
+                GamesTotal = 2,
+                GamesWon = 0,
+                GamesLost = 2,
+                GamesWithScoreThreeNil = 0,
+                GamesWithScoreThreeOne = 0,
+                GamesWithScoreThreeTwo = 0,
+                GamesWithScoreTwoThree = 0,
+                GamesWithScoreOneThree = 0,
+                GamesWithScoreNilThree = 2,
+                SetsWon = 0,
+                SetsLost = 6,
+                BallsWon = 72,
+                BallsLost = 156
             });
 
             return this;
@@ -780,16 +720,26 @@
         public TournamentStandings<StandingsDto> Build()
         {
             var result = new TournamentStandings<StandingsDto>();
-            result.Divisions.Add(new StandingsDto());
-            result.Divisions[0].DivisionId = 1;
-            result.Divisions[0].DivisionName = "Division 1";
-            result.Divisions[0].Standings =
-                _standings.OrderByDescending(s => s.Points)
-                .ThenByDescending(s => s.GamesWon)
-                .ThenByDescending(s => s.SetsRatio)
-                .ThenByDescending(s => s.BallsRatio)
+
+            var uniqueDivisions = _standings.Select(t => t.DivisionId).Distinct().ToList();
+
+            result.Divisions = uniqueDivisions.Select(divId =>
+                {
+                    return new StandingsDto
+                    {
+                        DivisionId = divId,
+                        DivisionName = $"Division {divId}",
+                        Standings = _standings.Where(t => t.DivisionId == divId).Select(t => t.Standings).ToList()
+                    };
+                })
                 .ToList();
+
             return result;
+        }
+
+        private void AddStandings(StandingsEntry standing, int divisionId = 1)
+        {
+            _standings.Add((divisionId, standing));
         }
     }
 }

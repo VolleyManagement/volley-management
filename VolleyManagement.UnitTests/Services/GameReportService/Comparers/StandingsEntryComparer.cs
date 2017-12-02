@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.GameReportsAggregate;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
     /// Represents a comparer for <see cref="StandingsEntry"/> objects.
@@ -19,7 +20,28 @@
         /// <returns>A signed integer that indicates the relative values of <see cref="StandingsEntry"/> x and y.</returns>
         public int Compare(StandingsEntry x, StandingsEntry y)
         {
-            return AreEqual(x, y) ? 0 : 1;
+            Assert.AreEqual(x.TeamName, y.TeamName, "TeamNames do not match");
+
+            Assert.AreEqual(x.Points, y.Points, "Points do not match");
+
+            Assert.AreEqual(x.GamesTotal, y.GamesTotal, "GamesTotal do not match");
+            Assert.AreEqual(x.GamesWon, y.GamesWon, "GamesWon do not match");
+            Assert.AreEqual(x.GamesLost, y.GamesLost, "GamesLost do not match");
+
+            Assert.AreEqual(x.GamesWithScoreThreeNil, y.GamesWithScoreThreeNil, "GamesWithScoreThreeNil do not match");
+            Assert.AreEqual(x.GamesWithScoreThreeOne, y.GamesWithScoreThreeOne, "GamesWithScoreThreeOne do not match");
+            Assert.AreEqual(x.GamesWithScoreThreeTwo, y.GamesWithScoreThreeTwo, "GamesWithScoreThreeTwo do not match");
+            Assert.AreEqual(x.GamesWithScoreTwoThree, y.GamesWithScoreTwoThree, "GamesWithScoreTwoThree do not match");
+            Assert.AreEqual(x.GamesWithScoreOneThree, y.GamesWithScoreOneThree, "GamesWithScoreOneThree do not match");
+            Assert.AreEqual(x.GamesWithScoreNilThree, y.GamesWithScoreNilThree, "GamesWithScoreNilThree do not match");
+
+            Assert.AreEqual(x.SetsWon, y.SetsWon, "SetsWon do not match");
+            Assert.AreEqual(x.SetsLost, y.SetsLost, "SetsLost do not match");
+
+            Assert.AreEqual(x.BallsWon, y.BallsWon, "BallsWon do not match");
+            Assert.AreEqual(x.BallsLost, y.BallsLost, "BallsLost do not match");
+
+            return 0;
         }
 
         /// <summary>
@@ -43,33 +65,6 @@
             }
 
             return Compare(firstStandingsEntry, secondStandingsEntry);
-        }
-
-        /// <summary>
-        /// Finds out whether two <see cref="StandingsEntry"/> objects are equal.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given <see cref="StandingsEntry"/> objects are equal.</returns>
-        internal bool AreEqual(StandingsEntry x, StandingsEntry y)
-        {
-            return x.TeamName == y.TeamName
-                && x.Points == y.Points
-                && x.GamesTotal == y.GamesTotal
-                && x.GamesWon == y.GamesWon
-                && x.GamesLost == y.GamesLost
-                && x.GamesWithScoreThreeNil == y.GamesWithScoreThreeNil
-                && x.GamesWithScoreThreeOne == y.GamesWithScoreThreeOne
-                && x.GamesWithScoreThreeTwo == y.GamesWithScoreThreeTwo
-                && x.GamesWithScoreTwoThree == y.GamesWithScoreTwoThree
-                && x.GamesWithScoreOneThree == y.GamesWithScoreOneThree
-                && x.GamesWithScoreNilThree == y.GamesWithScoreNilThree
-                && x.SetsWon == y.SetsWon
-                && x.SetsLost == y.SetsLost
-                && x.SetsRatio == y.SetsRatio
-                && x.BallsWon == y.BallsWon
-                && x.BallsLost == y.BallsLost
-                && x.BallsRatio == y.BallsRatio;
         }
     }
 }

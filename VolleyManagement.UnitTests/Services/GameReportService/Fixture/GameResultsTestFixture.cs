@@ -37,6 +37,7 @@
                 GroupId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 2,
+                Result = null,
                 GameDate = DateTime.Parse(DATE_A),
                 Round = 1,
                 GameNumber = 0
@@ -49,6 +50,7 @@
                 GroupId = 1,
                 HomeTeamId = 1,
                 AwayTeamId = 3,
+                Result = null,
                 GameDate = DateTime.Parse(DATE_B),
                 Round = 2,
                 GameNumber = 0
@@ -61,6 +63,7 @@
                 GroupId = 1,
                 HomeTeamId = 2,
                 AwayTeamId = 3,
+                Result = null,
                 GameDate = DateTime.Parse(DATE_C),
                 Round = 3,
                 GameNumber = 0
@@ -210,7 +213,7 @@
                 AwayTeamId = 3,
                 Result = new Result
                 {
-                    GameScore = (0,3),
+                    GameScore = (0, 3),
                     SetScores = new List<Score>
                     {
                         (14,25),
@@ -239,49 +242,41 @@
                 AwayTeamId = 2,
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 3,
-                        Away = 0,
-                        IsTechnicalDefeat = false
-                    },
+                    GameScore = (3, 0),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 20,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 26,
-                            Away = 24,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 30,
-                            Away = 28,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        }
+                        (25, 20),
+                        (26, 24),
+                        (30, 28),
+                        (0, 0),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
                 Round = 1,
-                GameNumber = 0
+                GameNumber = 1
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                Result = new Result
+                {
+                    GameScore = (3, 1),
+                    SetScores = new List<Score>
+                    {
+                        (25, 20),
+                        (26, 24),
+                        (26, 28),
+                        (25, 10),
+                        (0, 0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 2,
+                GameNumber = 2
             });
 
             return this;
@@ -298,49 +293,19 @@
                 AwayTeamId = 2,
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 3,
-                        Away = 0,
-                        IsTechnicalDefeat = true
-                    },
+                    GameScore = (3, 0),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        }
+                        (25, 0),
+                        (25, 0),
+                        (25, 0),
+                        (0, 0),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
                 Round = 1,
-                GameNumber = 0
+                GameNumber = 1
             });
 
             _gameResults.Add(new GameResultDto
@@ -351,102 +316,19 @@
                 AwayTeamId = 2,
                 Result = new Result
                 {
-                    SetsScore = new Score
-                    {
-                        Home = 3,
-                        Away = 0,
-                        IsTechnicalDefeat = false,
-                    },
+                    GameScore = (3, 0),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 20,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 26,
-                            Away = 24,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 30,
-                            Away = 28,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        }
+                        (25, 20),
+                        (26, 24),
+                        (30, 28),
+                        (0, 0),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
-                Round = 1,
-                GameNumber = 0
-            });
-
-            _gameResults.Add(new GameResultDto
-            {
-                Id = 2,
-                TournamentId = 1,
-                HomeTeamId = 3,
-                AwayTeamId = 2,
-                Result = new Result
-                {
-                    SetsScore = new Score
-                    {
-                        Home = 3,
-                        Away = 0,
-                        IsTechnicalDefeat = false,
-                    },
-                    SetScores = new List<Score>
-                    {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 20,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 26,
-                            Away = 24,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 30,
-                            Away = 28,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        }
-                    }
-                },
-                GameDate = DateTime.Parse(DATE_A),
-                Round = 1,
-                GameNumber = 0
+                Round = 2,
+                GameNumber = 2
             });
 
             return this;
@@ -782,6 +664,7 @@
 
         public GameResultsTestFixture WithTechnicalDefeatInSet()
         {
+            // Third game has set with technical defeat
             _gameResults.Add(new GameResultDto
             {
                 Id = 1,
@@ -792,44 +675,14 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 3,
-                        Away = 2,
-                        IsTechnicalDefeat = false
-                    },
+                    GameScore = (3, 2),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 20,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 24,
-                            Away = 26,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 28,
-                            Away = 30,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 22,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 27,
-                            Away = 25,
-                            IsTechnicalDefeat = false
-                        }
+                        (25, 20),
+                        (24, 60),
+                        (28, 30),
+                        (25, 22),
+                        (27, 25)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -846,44 +699,14 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 3,
-                        Away = 1,
-                        IsTechnicalDefeat = false
-                    },
+                    GameScore = (3, 1),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 26,
-                            Away = 28,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 15,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 21,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 29,
-                            Away = 27,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        }
+                        (26, 28),
+                        (25, 15),
+                        (25, 21),
+                        (29, 27),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_B),
@@ -900,44 +723,14 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 0,
-                        Away = 3,
-                        IsTechnicalDefeat = false
-                    },
+                    GameScore = (1, 3),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 10,
-                            Away = 25,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 10,
-                            Away = 25,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 25,
-                            IsTechnicalDefeat = true
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        }
+                        (10, 25),
+                        (10, 25),
+                        (25, 0, true),
+                        (10, 25),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_C),
@@ -960,44 +753,14 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    SetsScore = new Score
-                    {
-                        Home = 3,
-                        Away = 2,
-                        IsTechnicalDefeat = false,
-                    },
+                    GameScore = (3, 2),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 20,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 24,
-                            Away = 26,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 28,
-                            Away = 30,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 22,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 27,
-                            Away = 25,
-                            IsTechnicalDefeat = false,
-                        }
+                        (25, 20),
+                        (24, 26),
+                        (28, 30),
+                        (25, 22),
+                        (27, 25)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -1014,44 +777,14 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    SetsScore = new Score
-                    {
-                        Home = 3,
-                        Away = 1,
-                        IsTechnicalDefeat = false,
-                    },
+                    GameScore = (3, 1),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 26,
-                            Away = 28,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 15,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 21,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 29,
-                            Away = 27,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        }
+                        (26, 28),
+                        (25, 15),
+                        (25, 21),
+                        (29, 27),
+                        (0, 0)
                     },
                     Penalty = new Penalty
                     {
@@ -1074,44 +807,14 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    SetsScore = new Score
-                    {
-                        Home = 0,
-                        Away = 3,
-                        IsTechnicalDefeat = false,
-                    },
+                    GameScore = (0, 3),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 10,
-                            Away = 25,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 10,
-                            Away = 25,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 25,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        }
+                        (10, 25),
+                        (10, 25),
+                        (0, 25),
+                        (0, 0),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_C),
@@ -1134,44 +837,14 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    SetsScore = new Score
-                    {
-                        Home = 3,
-                        Away = 2,
-                        IsTechnicalDefeat = false,
-                    },
+                    GameScore = (3, 2),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 20,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 24,
-                            Away = 26,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 28,
-                            Away = 30,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 22,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 27,
-                            Away = 25,
-                            IsTechnicalDefeat = false,
-                        }
+                        (25, 20),
+                        (24, 26),
+                        (28, 30),
+                        (25, 22),
+                        (27, 25)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -1188,44 +861,14 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    SetsScore = new Score
-                    {
-                        Home = 3,
-                        Away = 1,
-                        IsTechnicalDefeat = false,
-                    },
+                    GameScore = (3, 1),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 26,
-                            Away = 28,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 15,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 21,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 29,
-                            Away = 27,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        }
+                        (26, 28),
+                        (25, 15),
+                        (25, 21),
+                        (29, 27),
+                        (0, 0)
                     },
                     Penalty = new Penalty
                     {
@@ -1248,44 +891,14 @@
                 AwayTeamName = "TeamNameC",
                 Result = new Result
                 {
-                    SetsScore = new Score
-                    {
-                        Home = 0,
-                        Away = 3,
-                        IsTechnicalDefeat = false,
-                    },
+                    GameScore = (0, 3),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 10,
-                            Away = 25,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 10,
-                            Away = 25,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 25,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false,
-                        }
+                        (10, 25),
+                        (10, 25),
+                        (0, 25),
+                        (0, 0),
+                        (0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_C),

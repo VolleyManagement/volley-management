@@ -24,13 +24,6 @@
         private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock;
 
-        protected static void AssertPositionsAreEqual(List<List<StandingsEntry>> actual, List<StandingsEntry> expected)
-        {
-            var actualPositions = actual[0].Select((s, i) => (Position: i, s.TeamName, s.Points)).ToList();
-            var expectedPositions = expected.Select((s, i) => (Position: i, s.TeamName, s.Points)).ToList();
-            CollectionAssert.AreEqual(expectedPositions, actualPositions);
-        }
-
         protected void InitializeTest()
         {
             _tournamentScheduleDtoByIdQueryMock = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();

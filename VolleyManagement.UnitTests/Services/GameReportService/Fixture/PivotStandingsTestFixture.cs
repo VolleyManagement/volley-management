@@ -11,15 +11,23 @@
     [ExcludeFromCodeCoverage]
     internal class PivotStandingsTestFixture
     {
-        private List<TeamStandingsDto> _teamStandings = new List<TeamStandingsDto>();
+        private readonly List<(int DivisionId, TeamStandingsDto Standings)> _teamStandings = new List<(int DivisionId, TeamStandingsDto Standings)>();
+
+        private readonly List<(int DivisionId, ShortGameResultDto Result)> _gameResults = new List<(int DivisionId, ShortGameResultDto Result)>();
+
+        public PivotStandingsTestFixture WithEmptyStandings()
+        {
+            // do nothing it will build itself with proper empty object
+            return this;
+        }
 
         /// <summary>
         /// Generates <see cref="TeamStandingsDto"/> objects filled with test data.
         /// </summary>
         /// <returns>Instance of <see cref="PivotStandingsTestFixture"/></returns>
-        public PivotStandingsTestFixture TestTeamStandings()
+        public PivotStandingsTestFixture DefaultStandings(int divisionId = 1)
         {
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
@@ -27,7 +35,7 @@
                 SetsRatio = 6.0f / 3,
                 BallsRatio = 234.0f / 214
             });
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
@@ -35,7 +43,7 @@
                 SetsRatio = 4.0f / 3,
                 BallsRatio = 166.0f / 105
             });
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
@@ -47,15 +55,20 @@
             return this;
         }
 
+        public PivotStandingsTestFixture WithNoResults()
+        {
+            throw new System.NotImplementedException();
+        }
+
         /// <summary>
         /// Adds team standings that correspond game results with all possible scores
         /// to collection of <see cref="TeamStandingsDto"/> objects.
         /// </summary>
         /// <returns>Instance of <see cref="PivotStandingsTestFixture"/>.</returns>
-        public PivotStandingsTestFixture WithTeamStandingsForAllPossibleScores()
+        public PivotStandingsTestFixture WithStandingsForAllPossibleScores()
         {
             _teamStandings.Clear();
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
@@ -63,7 +76,7 @@
                 SetsRatio = 9.0f / 7,
                 BallsRatio = 363.0f / 355
             });
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
@@ -71,7 +84,7 @@
                 SetsRatio = 6.0f / 10,
                 BallsRatio = 349.0f / 345
             });
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
@@ -86,7 +99,7 @@
         public PivotStandingsTestFixture WithTeamStandingsTwoTeamsScoresCompletelyEqual()
         {
             _teamStandings.Clear();
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
@@ -94,7 +107,7 @@
                 SetsRatio = 3.0f / 1,
                 BallsRatio = 102.0f / 96
             });
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
@@ -102,7 +115,7 @@
                 SetsRatio = 3.0f / 1,
                 BallsRatio = 102.0f / 96
             });
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
@@ -121,7 +134,7 @@
         public PivotStandingsTestFixture WithTeamStandingsForOneGameTechnicalDefeat()
         {
             _teamStandings.Clear();
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
@@ -129,7 +142,7 @@
                 SetsRatio = 6.0f / 3,
                 BallsRatio = 234.0f / 214
             });
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
@@ -137,7 +150,7 @@
                 SetsRatio = 4.0f / 3,
                 BallsRatio = 91.0f / 105
             });
-            _teamStandings.Add(new TeamStandingsDto
+            AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
@@ -155,11 +168,34 @@
         /// <returns>Collection of <see cref="TeamStandingsDto"/> objects filled with test data.</returns>
         public TournamentStandings<PivotStandingsDto> Build()
         {
-            var standings = _teamStandings
-                .OrderByDescending(ts => ts.Points)
-                .ThenByDescending(ts => ts.SetsRatio)
-                .ThenByDescending(ts => ts.BallsRatio)
-                .ToList(); ;
+            var result = new TournamentStandings<PivotStandingsDto>();
+
+            var uniqueDivisions = _teamStandings.Select(t => t.DivisionId)
+                .Union(_gameResults.Select(gr => gr.DivisionId)).Distinct().ToList();
+
+            result.Divisions = uniqueDivisions.Select(divId =>
+                {
+                    return new PivotStandingsDto(
+                        _teamStandings.Where(t => t.DivisionId == divId).Select(t => t.Standings).ToList(),
+                        _gameResults.Where(g => g.DivisionId == divId).Select(g => g.Result).ToList())
+                    {
+                        DivisionId = divId,
+                        DivisionName = $"Division {divId}"
+                    };
+                })
+                .ToList();
+
+            return result;
+        }
+
+        private void AddTeamStandings(TeamStandingsDto standing, int divisionId = 1)
+        {
+            _teamStandings.Add((divisionId, standing));
+        }
+
+        private void AddGameResult(ShortGameResultDto result, int divisionId = 1)
+        {
+            _gameResults.Add((divisionId, result));
         }
     }
 }

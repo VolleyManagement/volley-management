@@ -41,7 +41,7 @@
             stringBuilder.Append(obj.IsTechnicalDefeat);
             stringBuilder.Append(obj.Round);
             stringBuilder.Append(obj.SetScores);
-            stringBuilder.Append(obj.SetsScore);
+            stringBuilder.Append(obj.GameScore);
             stringBuilder.Append(obj.TournamentId);
 
             return stringBuilder.ToString().GetHashCode();

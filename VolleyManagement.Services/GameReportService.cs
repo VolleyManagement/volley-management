@@ -52,41 +52,45 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>Standings of the tournament with specified identifier.</returns>
-        public List<List<StandingsEntry>> GetStandings(int tournamentId)
+        public TournamentStandings<StandingsDto> GetStandings(int tournamentId)
         {
+            var result = new TournamentStandings<StandingsDto>();
+
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
             var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
-            var standingsByDivisions = new List<List<StandingsEntry>>();
 
             foreach (var teams in teamsInTournamentByDivisions)
             {
-                var standings = CreateEntriesForTeams(teams);
+                var standings = CreateEntriesForTeams(teams.Value);
 
-                var gameResultsForDivision = GetGamesResultsForDivision(gameResults, teams);
+                var gameResultsForDivision = GetGamesResultsForDivision(gameResults, teams.Value);
 
                 foreach (var gameResult in gameResultsForDivision)
                 {
-                    if (gameResult.AwayTeamId != null)
+                    if (gameResult.HasResult && gameResult.AwayTeamId != null)
                     {
                         StandingsEntry standingsHomeTeamEntry = standings.Single(se => se.TeamId == gameResult.HomeTeamId);
                         StandingsEntry standingsAwayTeamEntry = standings.Single(se => se.TeamId == gameResult.AwayTeamId);
 
                         CalculateGamesStatistics(standingsHomeTeamEntry, standingsAwayTeamEntry, gameResult);
+
                         CalculateSetsStatistics(gameResultsForDivision, standings);
                         CalculateBallsStatistics(gameResultsForDivision, standings);
                     }
                 }
 
-                var orderedStandings = standings.OrderByDescending(s => s.Points)
+                var standingsDto = new StandingsDto();
+                standingsDto.DivisionId = teams.Key;
+                standingsDto.DivisionName = $"Division {teams.Key}";
+                standingsDto.Standings = standings.OrderByDescending(s => s.Points)
                     .ThenByDescending(s => s.GamesWon)
                     .ThenByDescending(s => s.SetsRatio)
                     .ThenByDescending(s => s.BallsRatio)
                     .ToList();
-
-                standingsByDivisions.Add(orderedStandings);
+                result.Divisions.Add(standingsDto);
             }
 
-            return standingsByDivisions;
+            return result;
         }
 
         /// <summary>
@@ -94,18 +98,18 @@
         /// </summary>
         /// <param name="tournamentId">Identifier of the tournament.</param>
         /// <returns>Pivot standings of the tournament with specified identifier.</returns>
-        public List<PivotStandingsDto> GetPivotStandings(int tournamentId)
+        public TournamentStandings<PivotStandingsDto> GetPivotStandings(int tournamentId)
         {
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
             var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
 
             var pivotStandings = new List<PivotStandingsDto>();
 
-            foreach (var teams in teamsInTournamentByDivisions)
+            foreach (var groupedTeams in teamsInTournamentByDivisions)
             {
-                var gameResultsForDivision = GetGamesResultsForDivision(gameResults, teams);
+                var gameResultsForDivision = GetGamesResultsForDivision(gameResults, groupedTeams.Value);
 
-                var teamStandingsInDivision = CreateTeamStandings(teams, gameResultsForDivision);
+                var teamStandingsInDivision = CreateTeamStandings(groupedTeams.Value, gameResultsForDivision);
 
                 var shortGameResults = gameResultsForDivision.Where(g => g.AwayTeamId != null).
                     Select(g => new ShortGameResultDto
@@ -121,7 +125,7 @@
                 pivotStandings.Add(new PivotStandingsDto(teamStandingsInDivision, shortGameResults));
             }
 
-            return pivotStandings;
+            return null;//pivotStandings;
         }
 
         /// <summary>
@@ -141,26 +145,26 @@
 
         #region Private methods
 
-        private static List<StandingsEntry> CreateEntriesForTeams(IEnumerable<Team> tournamentTeams)
+        private static List<StandingsEntry> CreateEntriesForTeams(IEnumerable<TeamTournamentDto> tournamentTeams)
         {
             return tournamentTeams.Select(team => new StandingsEntry
-                {
-                    TeamId = team.Id,
-                    TeamName = team.Name
-                })
+            {
+                TeamId = team.TeamId,
+                TeamName = team.TeamName
+            })
                 .ToList();
         }
 
-        private List<TeamStandingsDto> CreateTeamStandings(List<Team> tournamentTeams, List<GameResultDto> gameResults)
+        private List<TeamStandingsDto> CreateTeamStandings(List<TeamTournamentDto> tournamentTeams, List<GameResultDto> gameResults)
         {
             var teamsStandings = tournamentTeams.Select(
                 t => new TeamStandingsDto
                 {
-                    TeamId = t.Id,
-                    TeamName = t.Name,
+                    TeamId = t.TeamId,
+                    TeamName = t.TeamName,
                     Points = 0,
-                    SetsRatio = CalculateSetsRatio(GetTeamWonSets(t.Id, gameResults), GetTeamLostSets(t.Id, gameResults)),
-                    BallsRatio = CalculateBallsRatio(GetTeamWonBalls(t.Id, gameResults), GetTeamLostBalls(t.Id, gameResults))
+                    SetsRatio = CalculateSetsRatio(GetTeamWonSets(t.TeamId, gameResults), GetTeamLostSets(t.TeamId, gameResults)),
+                    BallsRatio = CalculateBallsRatio(GetTeamWonBalls(t.TeamId, gameResults), GetTeamLostBalls(t.TeamId, gameResults))
                 })
                 .ToList();
 
@@ -273,7 +277,6 @@
             {
                 item.SetsWon = GetTeamWonSets(item.TeamId, gameResults);
                 item.SetsLost = GetTeamLostSets(item.TeamId, gameResults);
-                item.SetsRatio = CalculateSetsRatio(item.SetsWon.Value, item.SetsLost.Value);
             }
         }
 
@@ -283,7 +286,6 @@
             {
                 item.BallsWon = GetTeamWonBalls(item.TeamId, gameResults);
                 item.BallsLost = GetTeamLostBalls(item.TeamId, gameResults);
-                item.BallsRatio = CalculateBallsRatio(item.BallsWon.Value, item.BallsLost.Value);
             }
         }
 
@@ -366,16 +368,16 @@
             return entry.GamesTotal == 0;
         }
 
-        private List<TeamTournamentDto> GetTeamsInTournamentByDivisions(int tournamentId)
+        private Dictionary<int, List<TeamTournamentDto>> GetTeamsInTournamentByDivisions(int tournamentId)
         {
             var teamsByDivisions = _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
 
-            return teamsByDivisions;
+            return teamsByDivisions.GroupBy(t => t.DivisionId).ToDictionary(t => t.Key, t => t.ToList());
         }
 
-        private List<GameResultDto> GetGamesResultsForDivision(List<GameResultDto> gameResults, List<Team> teams)
+        private List<GameResultDto> GetGamesResultsForDivision(List<GameResultDto> gameResults, List<TeamTournamentDto> teams)
         {
-            var teamsIds = teams.Select(t => t.Id).ToList();
+            var teamsIds = teams.Select(t => t.TeamId).ToList();
             return gameResults.Where(gr => teamsIds.Contains(gr.AwayTeamId.GetValueOrDefault()) &&
                                             teamsIds.Contains(gr.HomeTeamId.GetValueOrDefault())).
                                ToList();

@@ -2,8 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using Domain.GameReportsAggregate;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     public class StandingsDtoComparer : IComparer<StandingsDto>
     {
@@ -11,22 +11,20 @@
         {
             if (x.DivisionId != y.DivisionId)
             {
-                return 1;
+                throw new AssertFailedException("Division Ids do not match");
             }
 
             if (string.Compare(x.DivisionName, y.DivisionName, StringComparison.InvariantCulture) != 0)
             {
-                return 1;
+                throw new AssertFailedException("Division Names do not match");
             }
 
             if (x.Standings.Count == y.Standings.Count)
             {
                 var standingsComparer = new StandingsEntryComparer();
-                var xStands = x.Standings.OrderBy(s => s.TeamId).ToList();
-                var yStands = y.Standings.OrderBy(s => s.TeamId).ToList();
-                for (var i = 0; i < xStands.Count; i++)
+                for (var i = 0; i < x.Standings.Count; i++)
                 {
-                    if (!standingsComparer.AreEqual(xStands[i], yStands[i]))
+                    if (standingsComparer.Compare(x.Standings[i], y.Standings[i]) != 0)
                     {
                         return 1;
                     }
@@ -34,7 +32,7 @@
             }
             else
             {
-                return 1;
+                throw new AssertFailedException($"[DivisionId={x.DivisionId}] Number of standing entries does not match.");
             }
 
             return 0;

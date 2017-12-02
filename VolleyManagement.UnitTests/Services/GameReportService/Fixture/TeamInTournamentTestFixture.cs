@@ -41,7 +41,7 @@
             return new TeamTournamentDto()
             {
                 TeamId = teamId,
-                TeamName = teamName,
+                TeamName = $"TeamName{teamName}",
                 DivisionId = divisionId,
                 GroupId = groupId
             };

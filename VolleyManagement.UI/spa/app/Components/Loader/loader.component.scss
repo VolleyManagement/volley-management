@@ -1,4 +1,4 @@
-.app-loader {
+.vm-loader {
   position: relative;
   .loader {
     position: absolute;
@@ -15,7 +15,7 @@
       margin-top: 20%;
       font-size: 24px;
       text-align: center;
-      color: white; //z-index: 11;
+      color: white;
     }
   }
 }

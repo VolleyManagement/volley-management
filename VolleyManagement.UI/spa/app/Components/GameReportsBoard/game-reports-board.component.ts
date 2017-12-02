@@ -6,7 +6,6 @@ import 'rxjs/add/operator/toPromise';
 import { TournamentMetadataJson } from '../../Models/TournamentMetadataJson/TournamentMetadataJson';
 import { TournamentDataService } from '../../Services/tournament-data.service';
 
-
 @Component({
     selector: 'vm-game-reports-board',
     templateUrl: './game-reports-board.component.html',
@@ -14,7 +13,12 @@ import { TournamentDataService } from '../../Services/tournament-data.service';
 })
 export class GameReportsBoardComponent implements OnInit {
 
-    reportsStates = {
+    /*
+        Indicates "ready" state for all nested components
+        Each time nested component emits "ready" event its states here
+        changed to "true"
+    */
+    private _reportsStates = {
         standings: true,
         pivot: true,
         schedule: true
@@ -50,7 +54,7 @@ export class GameReportsBoardComponent implements OnInit {
     }
 
     onReportReady(report: string) {
-        this.reportsStates[report] = true;
+        this._reportsStates[report] = true;
 
         // setTimeout needed to allow browser render changes and return valid height for wrapper
         setTimeout(() => this._updateLoaderState(), 200);
@@ -71,9 +75,9 @@ export class GameReportsBoardComponent implements OnInit {
     }
 
     private _allReportsReady() {
-        return this.reportsStates.standings
-            && this.reportsStates.pivot
-            && this.reportsStates.schedule;
+        return this._reportsStates.standings
+            && this._reportsStates.pivot
+            && this._reportsStates.schedule;
     }
 
     private _updateIds(modes: string[], id: number): void {
@@ -81,15 +85,15 @@ export class GameReportsBoardComponent implements OnInit {
             switch (mode) {
                 case 'pivot':
                     this.pivotId = id;
-                    this.reportsStates.pivot = false;
+                    this._reportsStates.pivot = false;
                     break;
                 case 'standings':
                     this.standingsId = id;
-                    this.reportsStates.standings = false;
+                    this._reportsStates.standings = false;
                     break;
                 case 'schedule':
                     this.scheduleId = id;
-                    this.reportsStates.schedule = false;
+                    this._reportsStates.schedule = false;
                     break;
             }
         });

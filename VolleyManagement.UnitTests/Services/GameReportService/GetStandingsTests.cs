@@ -296,7 +296,7 @@
         }
 
         [TestMethod]
-        public void GetMultipleDivisionStandingsStandings_GameResultsAllPossibleScores_CorrectStats()
+        public void GetMultipleDivisionStandings_GameResultsAllPossibleScores_CorrectStats()
         {
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
@@ -320,7 +320,7 @@
         }
 
         [TestMethod]
-        public void GetMultipleDivisionStandingsStandings_NoGameResults_StandingsAreEmpty()
+        public void GetMultipleDivisionStandings_NoGameResults_StandingsAreEmpty()
         {
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithNoGameResults().Build();
@@ -345,7 +345,7 @@
 
         private static void AssertStandingsAreEqual(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
         {
-            AssertStandingsAreEqual(expected, actual, message, new StandingsDtoComparer());
+            AssertTournamentStandingsAreEqual(expected, actual, message, new StandingsDtoComparer());
         }
     }
 }

@@ -463,33 +463,474 @@
             return this;
         }
 
-        public PivotStandingsTestFixture WithTeamStandingsForOneGameTechnicalDefeat()
+        public PivotStandingsTestFixture WithTeamAPenalty()
         {
-            _teamStandings.Clear();
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
-                Points = 5,
-                SetsRatio = 6.0f / 3,
-                BallsRatio = 234.0f / 214
+                Points = 3,
+                SetsRatio = (float)6 / 3,
+                BallsRatio = (float)234 / 214
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = 4.0f / 3,
-                BallsRatio = 91.0f / 105
+                SetsRatio = (float)4 / 3,
+                BallsRatio = (float)166 / 125
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
                 Points = 1,
-                SetsRatio = 2.0f / 6,
-                BallsRatio = 123.0f / 129
+                SetsRatio = (float)2 / 6,
+                BallsRatio = (float)143 / 204
             });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeGameScore = 0,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithTeamCPenalty()
+        {
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 5,
+                SetsRatio = (float)6 / 3,
+                BallsRatio = (float)234 / 214
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 1,
+                SetsRatio = (float)4 / 3,
+                BallsRatio = (float)166 / 125
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 1,
+                SetsRatio = (float)2 / 6,
+                BallsRatio = (float)143 / 204
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeGameScore = 0,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithTechnicalDefeatInGame()
+        {
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 5,
+                SetsRatio = (float)6 / 3,
+                BallsRatio = (float)234 / 248
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 3,
+                SetsRatio = (float)4 / 3,
+                BallsRatio = (float)91 / 105
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 1,
+                SetsRatio = (float)2 / 6,
+                BallsRatio = (float)157 / 129
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeGameScore = 0,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = true
+            });
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithTechnicalDefeatInSet()
+        {
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 5,
+                SetsRatio = (float)6 / 3,
+                BallsRatio = (float)234 / 248
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 3,
+                SetsRatio = (float)4 / 4,
+                BallsRatio = (float)166 / 135
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 1,
+                SetsRatio = (float)3 / 6,
+                BallsRatio = (float)187 / 204
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeGameScore = 1,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithMultipleDivisionsAllPosibleScores()
+        {
+            AddTeamStandings(// A
+                new TeamStandingsDto
+                {
+                    TeamId = 1,
+                    TeamName = "TeamNameA",
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)363 / 355
+                },
+                divisionId: 1);
+            AddTeamStandings(// E
+                new TeamStandingsDto
+                {
+                    TeamId = 5,
+                    TeamName = "TeamNameE",
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)363 / 355
+                },
+                divisionId: 1);
+            AddTeamStandings(// C
+                new TeamStandingsDto
+                {
+                    TeamId = 3,
+                    TeamName = "TeamNameC",
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)350 / 362
+                },
+                divisionId: 1);
+            AddTeamStandings(// D
+                new TeamStandingsDto
+                {
+                    TeamId = 4,
+                    TeamName = "TeamNameD",
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)350 / 362
+                },
+                divisionId: 1);
+            AddTeamStandings(// B
+                new TeamStandingsDto
+                {
+                    TeamId = 2,
+                    TeamName = "TeamNameB",
+                    Points = 4,
+                    SetsRatio = (float)6 / 10,
+                    BallsRatio = (float)349 / 345
+                },
+                divisionId: 1);
+            AddTeamStandings(// F
+                new TeamStandingsDto
+                {
+                    TeamId = 6,
+                    TeamName = "TeamNameF",
+                    Points = 4,
+                    SetsRatio = (float)6 / 10,
+                    BallsRatio = (float)349 / 345
+                },
+                divisionId: 1);
+            AddTeamStandings(// G
+                new TeamStandingsDto
+                {
+                    TeamId = 7,
+                    TeamName = "TeamNameG",
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)363 / 355
+                },
+                divisionId: 2);
+            AddTeamStandings(// I
+                new TeamStandingsDto
+                {
+                    TeamId = 9,
+                    TeamName = "TeamNameI",
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)350 / 362
+                },
+                divisionId: 2);
+            AddTeamStandings(// H
+                new TeamStandingsDto
+                {
+                    TeamId = 8,
+                    TeamName = "TeamNameH",
+                    Points = 4,
+                    SetsRatio = (float)6 / 10,
+                    BallsRatio = (float)349 / 345
+                },
+                divisionId: 2);
+            AddTeamStandings(// J
+                new TeamStandingsDto
+                {
+                    TeamId = 10,
+                    TeamName = "TeamNameJ",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 2);
+            AddTeamStandings(// K
+                new TeamStandingsDto
+                {
+                    TeamId = 11,
+                    TeamName = "TeamNameK",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 2);
+            AddTeamStandings(// L
+                new TeamStandingsDto
+                {
+                    TeamId = 12,
+                    TeamName = "TeamNameL",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 2);
+
+            AddDivision1Group1Results();
+            AddDivision1Group2Results();
+            AddDivision2Group1Results();
+
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithMultipleDivisionsEmptyStandings()
+        {
+            AddTeamStandings(// A
+                   new TeamStandingsDto
+                   {
+                       TeamId = 1,
+                       TeamName = "TeamNameA",
+                       Points = 0,
+                       SetsRatio = null,
+                       BallsRatio = null
+                   },
+                   divisionId: 1);
+            AddTeamStandings(// B
+                new TeamStandingsDto
+                {
+                    TeamId = 2,
+                    TeamName = "TeamNameB",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 1);
+            AddTeamStandings(// C
+                new TeamStandingsDto
+                {
+                    TeamId = 3,
+                    TeamName = "TeamNameC",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 1);
+            AddTeamStandings(// D
+                new TeamStandingsDto
+                {
+                    TeamId = 4,
+                    TeamName = "TeamNameD",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 1);
+            AddTeamStandings(// E
+                new TeamStandingsDto
+                {
+                    TeamId = 5,
+                    TeamName = "TeamNameE",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 1);
+            AddTeamStandings(// F
+                new TeamStandingsDto
+                {
+                    TeamId = 6,
+                    TeamName = "TeamNameF",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 1);
+            AddTeamStandings(// G
+                new TeamStandingsDto
+                {
+                    TeamId = 7,
+                    TeamName = "TeamNameG",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 2);
+            AddTeamStandings(// H
+                new TeamStandingsDto
+                {
+                    TeamId = 8,
+                    TeamName = "TeamNameH",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 2);
+            AddTeamStandings(// I
+                new TeamStandingsDto
+                {
+                    TeamId = 9,
+                    TeamName = "TeamNameI",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 2);
+            AddTeamStandings(// J
+                new TeamStandingsDto
+                {
+                    TeamId = 10,
+                    TeamName = "TeamNameJ",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 2);
+            AddTeamStandings(// K
+                new TeamStandingsDto
+                {
+                    TeamId = 11,
+                    TeamName = "TeamNameK",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 2);
+            AddTeamStandings(// L
+                new TeamStandingsDto
+                {
+                    TeamId = 12,
+                    TeamName = "TeamNameL",
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                },
+                divisionId: 2);
 
             return this;
         }
@@ -524,6 +965,174 @@
         private void AddGameResult(ShortGameResultDto result, int divisionId = 1)
         {
             _gameResults.Add((divisionId, result));
+        }
+
+        private void AddDivision1Group1Results()
+        {
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 2,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeGameScore = 1,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeGameScore = 0,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+        }
+
+        private void AddDivision1Group2Results()
+        {
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 6,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 4,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 6,
+                AwayTeamId = 4,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 6,
+                HomeGameScore = 2,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 4,
+                HomeGameScore = 1,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 6,
+                AwayTeamId = 4,
+                HomeGameScore = 0,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+        }
+
+        private void AddDivision2Group1Results()
+        {
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 7,
+                    AwayTeamId = 8,
+                    HomeGameScore = 3,
+                    AwayGameScore = 0,
+                    IsTechnicalDefeat = false
+                },
+                divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 7,
+                    AwayTeamId = 9,
+                    HomeGameScore = 3,
+                    AwayGameScore = 1,
+                    IsTechnicalDefeat = false
+                },
+                divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 8,
+                    AwayTeamId = 9,
+                    HomeGameScore = 3,
+                    AwayGameScore = 2,
+                    IsTechnicalDefeat = false
+                },
+                divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 7,
+                    AwayTeamId = 8,
+                    HomeGameScore = 2,
+                    AwayGameScore = 3,
+                    IsTechnicalDefeat = false
+                },
+                divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 7,
+                    AwayTeamId = 9,
+                    HomeGameScore = 1,
+                    AwayGameScore = 3,
+                    IsTechnicalDefeat = false
+                },
+                divisionId: 2);
+            AddGameResult(
+                new ShortGameResultDto
+                {
+                    HomeTeamId = 8,
+                    AwayTeamId = 9,
+                    HomeGameScore = 0,
+                    AwayGameScore = 3,
+                    IsTechnicalDefeat = false
+                },
+                divisionId: 2);
         }
     }
 }

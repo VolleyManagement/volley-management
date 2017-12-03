@@ -202,13 +202,13 @@
         }
 
         [TestMethod]
-        public void GetPivotStandings_OneTeamHasNoGameResults_LastTeamWithNoSetRatio()
+        public void GetPivotStandings_HomeTeamHasPenalty_PenaltyDeductedFromTotalPoints()
         {
             // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithAllPossibleScores().Build();
+            var gameResultsTestData = new GameResultsTestFixture().WithHomeTeamPenalty().Build();
             var teamsTestData = TeamsInSingleDivisionSingleGroup();
 
-            var expected = new PivotStandingsTestFixture().WithStandingsForAllPossibleScores().Build();
+            var expected = new PivotStandingsTestFixture().WithTeamAPenalty().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
@@ -219,18 +219,62 @@
             var actual = sut.GetPivotStandings(TOURNAMENT_ID);
 
             // Assert
-            AssertPivotStandingsAreEqual(expected, actual, "");
+            AssertPivotStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
         }
 
         [TestMethod]
-        public void GetPivotStandings_OneTeamHasTechnicalDefeat_BallDoesntCount()
+        public void GetPivotStandings_AwayTeamHasPenalty_PenaltyDeductedFromTotalPoints()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithAwayTeamPenalty().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            var expected = new PivotStandingsTestFixture().WithTeamCPenalty().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertPivotStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
+        }
+
+        [TestMethod]
+        public void GetPivotStandings_OneTeamHasTechnicalDefeatInGame_BallsDontCount()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithTechnicalDefeatInGame().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            var expected = new PivotStandingsTestFixture().WithTechnicalDefeatInGame().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertPivotStandingsAreEqual(
+                expected,
+                actual,
+                "When team has got technical defeat in game balls from this game should not be accounted in the statistics");
+        }
+
+        [TestMethod]
+        public void GetPivotStandings_OneTeamHasTechnicalDefeatInSet_BallDoesntCount()
         {
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithTechnicalDefeatInSet().Build();
             var teamsTestData = TeamsInSingleDivisionSingleGroup();
 
-            var expected = new PivotStandingsTestFixture().WithTeamStandingsForOneGameTechnicalDefeat()
-                .Build();
+            var expected = new PivotStandingsTestFixture().WithTechnicalDefeatInSet().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
@@ -241,7 +285,55 @@
             var actual = sut.GetPivotStandings(TOURNAMENT_ID);
 
             // Assert
-            AssertPivotStandingsAreEqual(expected, actual, "");
+            AssertPivotStandingsAreEqual(expected, actual, "When team has got technical defeat in set balls from this set should not be accounted in the statistics");
+        }
+
+        [TestMethod]
+        public void GetMultipleDivisionPivotStandings_GameResultsAllPossibleScores_CorrectStats()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var teamsTestData = TeamsInTwoDivisionTwoGroups();
+
+            var expected = new PivotStandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertPivotStandingsAreEqual(
+                expected,
+                actual,
+                "Standings should be properly calclulated for case of several divisions");
+        }
+
+        [TestMethod]
+        public void GetMultipleDivisionPivotStandings_NoGameResults_StandingsAreEmpty()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithNoGameResults().Build();
+            var teamsTestData = TeamsInTwoDivisionTwoGroups();
+
+            var expected = new PivotStandingsTestFixture().WithMultipleDivisionsEmptyStandings().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertPivotStandingsAreEqual(
+                expected,
+                actual,
+                "Standings should be properly calclulated for case of several divisions");
         }
 
         private void AssertPivotStandingsAreEqual(
@@ -249,7 +341,7 @@
             TournamentStandings<PivotStandingsDto> actual,
             string message)
         {
-            AssertStandingsAreEqual(expected, actual, message, new PivotStandingsComparer());
+            AssertTournamentStandingsAreEqual(expected, actual, message, new PivotStandingsComparer());
         }
     }
 }

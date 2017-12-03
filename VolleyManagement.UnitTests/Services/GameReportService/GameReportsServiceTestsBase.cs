@@ -58,7 +58,7 @@
         protected static List<TeamTournamentDto> TeamsInTwoDivisionTwoGroups()
             => new TeamInTournamentTestFixture().WithTeamsInTwoDivisionTwoGroups().Build();
 
-        protected static void AssertStandingsAreEqual<T>(
+        protected static void AssertTournamentStandingsAreEqual<T>(
             TournamentStandings<T> expected,
             TournamentStandings<T> actual,
             string message,

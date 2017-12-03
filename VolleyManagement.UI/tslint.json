@@ -121,7 +121,7 @@
       "camelCase"
     ],
     "component-selector": [
-      false,
+      true,
       "element",
       "",
       "camelCase"

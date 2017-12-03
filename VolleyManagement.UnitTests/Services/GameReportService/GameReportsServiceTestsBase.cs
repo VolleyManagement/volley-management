@@ -1,7 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
     using System.Collections.Generic;
-    using System.Linq;
     using Contracts;
     using Data.Contracts;
     using Data.Queries.GameResult;
@@ -55,5 +54,30 @@
 
         protected static List<TeamTournamentDto> TeamsInSingleDivisionSingleGroup()
             => new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
+
+        protected static List<TeamTournamentDto> TeamsInTwoDivisionTwoGroups()
+            => new TeamInTournamentTestFixture().WithTeamsInTwoDivisionTwoGroups().Build();
+
+        protected static void AssertStandingsAreEqual<T>(
+            TournamentStandings<T> expected,
+            TournamentStandings<T> actual,
+            string message,
+            IComparer<T> comparer)
+        {
+            int compareResult;
+            var errorDetails = string.Empty;
+            try
+            {
+                compareResult = new TournamentStandingsComparer<T>(comparer)
+                    .Compare(expected, actual);
+            }
+            catch (AssertFailedException e)
+            {
+                compareResult = -1;
+                errorDetails = $" Error Details: {e.Message}";
+            }
+
+            Assert.IsTrue(compareResult == 0, $"{message}{errorDetails}");
+        }
     }
 }

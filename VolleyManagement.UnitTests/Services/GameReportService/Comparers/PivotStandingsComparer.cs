@@ -1,21 +1,31 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Domain.GameReportsAggregate;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     internal class PivotStandingsComparer : IComparer<PivotStandingsDto>
     {
         public int Compare(PivotStandingsDto x, PivotStandingsDto y)
         {
+            if (x.DivisionId != y.DivisionId)
+            {
+                throw new AssertFailedException("Division Ids do not match");
+            }
+
+            if (string.Compare(x.DivisionName, y.DivisionName, StringComparison.InvariantCulture) != 0)
+            {
+                throw new AssertFailedException("Division Names do not match");
+            }
+
             if (x.Teams.Count == y.Teams.Count)
             {
                 var teamsComparer = new TeamStandingsDtoComparer();
-                var xTeams = x.Teams.OrderBy(t => t.TeamId).ToList();
-                var yTeams = y.Teams.OrderBy(t => t.TeamId).ToList();
-                for (var i = 0; i < xTeams.Count; i++)
+                for (var i = 0; i < x.Teams.Count; i++)
                 {
-                    if (teamsComparer.Compare(xTeams[i], yTeams[i]) != 0)
+                    if (teamsComparer.Compare(x.Teams[i], y.Teams[i]) != 0)
                     {
                         return 1;
                     }
@@ -23,17 +33,15 @@
             }
             else
             {
-                return 1;
+                throw new AssertFailedException($"[DivisionId={x.DivisionId}] Number of team entries does not match.");
             }
 
             if (x.GameResults.Count == y.GameResults.Count)
             {
                 var gameResultComparer = new ShortGameResultDtoComparer();
-                var xGames = x.GameResults.OrderBy(g => g.HomeTeamId).ThenBy(g => g.AwayTeamId).ToList();
-                var yGames = y.GameResults.OrderBy(g => g.HomeTeamId).ThenBy(g => g.AwayTeamId).ToList();
-                for (var i = 0; i < xGames.Count; i++)
+                for (var i = 0; i < x.GameResults.Count; i++)
                 {
-                    if (gameResultComparer.Compare(xGames[i], yGames[i]) != 0)
+                    if (gameResultComparer.Compare(x.GameResults[i], y.GameResults[i]) != 0)
                     {
                         return 1;
                     }
@@ -41,7 +49,7 @@
             }
             else
             {
-                return 1;
+                throw new AssertFailedException($"[DivisionId={x.DivisionId}] Number of game result entries does not match.");
             }
 
             return 0;

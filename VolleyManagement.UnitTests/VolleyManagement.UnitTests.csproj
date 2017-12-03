@@ -194,6 +194,7 @@
     <Compile Include="Services\GameReportService\Fixture\StandingsTestFixture.cs" />
     <Compile Include="Services\GameReportService\Comparers\TeamStandingsDtoComparer.cs" />
     <Compile Include="Services\GameReportService\Fixture\PivotStandingsTestFixture.cs" />
+    <Compile Include="Services\GameReportService\StandingsEntryTests.cs" />
     <Compile Include="Services\GameService\ExpectedExceptionMessages.cs" />
     <Compile Include="Services\GameService\GameBuilder.cs" />
     <Compile Include="Services\GameService\GameComparer.cs" />

@@ -24,8 +24,8 @@
                 {
                     HomeTeamId = 1,
                     AwayTeamId = 3,
-                    HomeSetsScore = 3,
-                    AwaySetsScore = 2,
+                    HomeGameScore = 3,
+                    AwayGameScore = 2,
                     IsTechnicalDefeat = false
                 });
 
@@ -34,8 +34,8 @@
                 {
                     HomeTeamId = 3,
                     AwayTeamId = 1,
-                    HomeSetsScore = 3,
-                    AwaySetsScore = 0,
+                    HomeGameScore = 3,
+                    AwayGameScore = 0,
                     IsTechnicalDefeat = true
                 });
 
@@ -44,8 +44,8 @@
                 {
                     HomeTeamId = 2,
                     AwayTeamId = 1,
-                    HomeSetsScore = 1,
-                    AwaySetsScore = 3,
+                    HomeGameScore = 1,
+                    AwayGameScore = 3,
                     IsTechnicalDefeat = false
                 });
 
@@ -61,8 +61,8 @@
                 {
                     HomeTeamId = 1,
                     AwayTeamId = 2,
-                    HomeSetsScore = 1,
-                    AwaySetsScore = 3,
+                    HomeGameScore = 1,
+                    AwayGameScore = 3,
                     IsTechnicalDefeat = false
                 });
 
@@ -71,8 +71,8 @@
                 {
                     HomeTeamId = 1,
                     AwayTeamId = 3,
-                    HomeSetsScore = 1,
-                    AwaySetsScore = 3,
+                    HomeGameScore = 1,
+                    AwayGameScore = 3,
                     IsTechnicalDefeat = false
                 });
 

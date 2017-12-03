@@ -81,112 +81,6 @@
         }
 
         [TestMethod]
-        public void GetStandings_OneTeamHasTechnicalDefeatInSet_BallsDontCount()
-        {
-            // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithTechnicalDefeatInSet().Build();
-            var teamsTestData = TeamsInSingleDivisionSingleGroup();
-
-            var expected = new StandingsTestFixture().WithOneSetTechnicalDefeat().Build();
-
-            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetStandings(TOURNAMENT_ID);
-
-            // Assert
-            AssertStandingsAreEqual(
-                expected,
-                actual,
-                "When team has got technical defeat in set balls from this set should not be accounted in the statistics");
-        }
-
-        [TestMethod]
-        public void GetStandings_HomeTeamHasPenalty_PenaltyDeductedFromTotalPoints()
-        {
-            // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithHomeTeamPenalty().Build();
-            var teamsTestData = TeamsInSingleDivisionSingleGroup();
-
-            var expected = new StandingsTestFixture().WithTeamAPenalty().Build();
-
-            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetStandings(TOURNAMENT_ID);
-
-            // Assert
-            AssertStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
-        }
-
-        [TestMethod]
-        public void GetStandings_AwayTeamHasPenalty_PenaltyDeductedFromTotalPoints()
-        {
-            // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithAwayTeamPenalty().Build();
-            var teamsTestData = TeamsInSingleDivisionSingleGroup();
-
-            var expected = new StandingsTestFixture().WithTeamCPenalty().Build();
-
-            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetStandings(TOURNAMENT_ID);
-
-            // Assert
-            AssertStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
-        }
-
-        [TestMethod]
-        public void GetStandings_OneTeamNoLostSets_GetsToTheTopWhenOrderedBySetsRatio()
-        {
-            // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithNoLostSetsForOneTeam().Build();
-            var teamsTestData = TeamsInSingleDivisionSingleGroup();
-            var expected = new StandingsTestFixture().WithMaxSetsRatioForOneTeam().Build();
-
-            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetStandings(TOURNAMENT_ID);
-
-            // Assert
-            AssertStandingsAreEqual(expected, actual, "Team with no lost sets should be considered higher comparing to other teams when ordering by sets ratio");
-        }
-
-        [TestMethod]
-        public void GetStandings_OneTeamNoLostSetsNoLostBalls_GetsToTheTopWhenOrderedByBallsRatio()
-        {
-            // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithNoLostSetsNoLostBallsForOneTeam().Build();
-            var teamsTestData = TeamsInSingleDivisionSingleGroup();
-            var expected = new StandingsTestFixture().WithMaxBallsRatioForOneTeam().Build();
-
-            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
-            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetStandings(TOURNAMENT_ID);
-
-            // Assert
-            AssertStandingsAreEqual(expected, actual, "Team with no lost balls should be considered higher comparing to other teams when ordering by balls ratio");
-        }
-
-        [TestMethod]
         public void GetStandings_GameResultsAllPossibleScores_TeamsOrderedByPoints()
         {
             // Arrange
@@ -271,22 +165,187 @@
             AssertStandingsAreEqual(expected, actual, "Teams should be ordered by balls ratio.");
         }
 
+        [TestMethod]
+        public void GetStandings_OneTeamNoLostSets_GetsToTheTopWhenOrderedBySetsRatio()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithNoLostSetsForOneTeam().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+            var expected = new StandingsTestFixture().WithMaxSetsRatioForOneTeam().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqual(expected, actual, "Team with no lost sets should be considered higher comparing to other teams when ordering by sets ratio");
+        }
+
+        [TestMethod]
+        public void GetStandings_OneTeamNoLostSetsNoLostBalls_GetsToTheTopWhenOrderedByBallsRatio()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithNoLostSetsNoLostBallsForOneTeam().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+            var expected = new StandingsTestFixture().WithMaxBallsRatioForOneTeam().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqual(expected, actual, "Team with no lost balls should be considered higher comparing to other teams when ordering by balls ratio");
+        }
+
+        [TestMethod]
+        public void GetStandings_HomeTeamHasPenalty_PenaltyDeductedFromTotalPoints()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithHomeTeamPenalty().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            var expected = new StandingsTestFixture().WithTeamAPenalty().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
+        }
+
+        [TestMethod]
+        public void GetStandings_AwayTeamHasPenalty_PenaltyDeductedFromTotalPoints()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithAwayTeamPenalty().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            var expected = new StandingsTestFixture().WithTeamCPenalty().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
+        }
+
+        [TestMethod]
+        public void GetStandings_OneTeamHasTechnicalDefeatInGame_BallsDontCount()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithTechnicalDefeatInGame().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            var expected = new StandingsTestFixture().WithTechnicalDefeatInGame().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqual(
+                expected,
+                actual,
+                "When team has got technical defeat in game balls from this game should not be accounted in the statistics");
+        }
+
+        [TestMethod]
+        public void GetStandings_OneTeamHasTechnicalDefeatInSet_BallsDontCount()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithTechnicalDefeatInSet().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            var expected = new StandingsTestFixture().WithOneSetTechnicalDefeat().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqual(
+                expected,
+                actual,
+                "When team has got technical defeat in set balls from this set should not be accounted in the statistics");
+        }
+
+        [TestMethod]
+        public void GetMultipleDivisionStandingsStandings_GameResultsAllPossibleScores_CorrectStats()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var teamsTestData = TeamsInTwoDivisionTwoGroups();
+
+            var expected = new StandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqual(
+                expected,
+                actual,
+                "Standings should be properly calclulated for case of several divisions");
+        }
+
+        [TestMethod]
+        public void GetMultipleDivisionStandingsStandings_NoGameResults_StandingsAreEmpty()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture().WithNoGameResults().Build();
+            var teamsTestData = TeamsInTwoDivisionTwoGroups();
+
+            var expected = new StandingsTestFixture().WithMultipleDivisionsEmptyStandings().Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqual(
+                expected,
+                actual,
+                "Standings should be properly calclulated for case of several divisions");
+        }
+
         private static void AssertStandingsAreEqual(TournamentStandings<StandingsDto> expected, TournamentStandings<StandingsDto> actual, string message)
         {
-            int compareResult;
-            var errorDetails = string.Empty;
-            try
-            {
-                compareResult = new TournamentStandingsComparer<StandingsDto>(new StandingsDtoComparer())
-                    .Compare(expected, actual);
-            }
-            catch (AssertFailedException e)
-            {
-                compareResult = -1;
-                errorDetails = $" Error Details: {e.Message}";
-            }
-
-            Assert.IsTrue(compareResult == 0, $"{message}{errorDetails}");
+            AssertStandingsAreEqual(expected, actual, message, new StandingsDtoComparer());
         }
     }
 }

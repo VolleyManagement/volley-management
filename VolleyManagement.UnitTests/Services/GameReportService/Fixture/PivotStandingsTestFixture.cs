@@ -57,14 +57,34 @@
 
         public PivotStandingsTestFixture WithNoResults()
         {
-            throw new System.NotImplementedException();
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 0,
+                SetsRatio = null,
+                BallsRatio = null
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 0,
+                SetsRatio = null,
+                BallsRatio = null
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 0,
+                SetsRatio = null,
+                BallsRatio = null
+            });
+
+            return this;
         }
 
-        /// <summary>
-        /// Adds team standings that correspond game results with all possible scores
-        /// to collection of <see cref="TeamStandingsDto"/> objects.
-        /// </summary>
-        /// <returns>Instance of <see cref="PivotStandingsTestFixture"/>.</returns>
         public PivotStandingsTestFixture WithStandingsForAllPossibleScores()
         {
             _teamStandings.Clear();
@@ -78,59 +98,371 @@
             });
             AddTeamStandings(new TeamStandingsDto
             {
-                TeamId = 2,
-                TeamName = "TeamNameB",
-                Points = 4,
-                SetsRatio = 6.0f / 10,
-                BallsRatio = 349.0f / 345
-            });
-            AddTeamStandings(new TeamStandingsDto
-            {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 7,
                 SetsRatio = 9.0f / 7,
                 BallsRatio = 350.0f / 362
             });
-
-            return this;
-        }
-
-        public PivotStandingsTestFixture WithTeamStandingsTwoTeamsScoresCompletelyEqual()
-        {
-            _teamStandings.Clear();
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 2,
                 TeamName = "TeamNameB",
+                Points = 4,
+                SetsRatio = 6.0f / 10,
+                BallsRatio = 349.0f / 345
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 2,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeGameScore = 1,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeGameScore = 0,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithUniquePoints()
+        {
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = 3.0f / 1,
-                BallsRatio = 102.0f / 96
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)102 / 96
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 2,
+                SetsRatio = (float)3 / 2,
+                BallsRatio = (float)121 / 122
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 1,
+                SetsRatio = (float)3 / 6,
+                BallsRatio = (float)218 / 223
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 1,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithSamePoints()
+        {
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 4,
+                SetsRatio = (float)6 / 4,
+                BallsRatio = (float)234 / 220
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 4,
+                SetsRatio = (float)5 / 3,
+                BallsRatio = (float)191 / 188
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 4,
+                SetsRatio = (float)7 / 11,
+                BallsRatio = (float)408 / 425
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 2,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 2,
+                AwayGameScore = 3,
+                IsTechnicalDefeat = false
+            });
+
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithSamePointsAndWonGames()
+        {
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 3,
+                SetsRatio = (float)3 / 0,
+                BallsRatio = (float)76 / 72
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 3,
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)98 / 98
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 0,
+                SetsRatio = (float)1 / 6,
+                BallsRatio = (float)170 / 174
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false
+            });
+
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithSamePointsWonGamesAndSetsRatio()
+        {
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 3,
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)101 / 82
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 3,
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)104 / 98
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 0,
+                SetsRatio = (float)2 / 6,
+                BallsRatio = (float)180 / 205
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithMaxSetsRatioForOneTeam()
+        {
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 1,
+                TeamName = "TeamNameA",
+                Points = 3,
+                SetsRatio = (float)3 / 0,
+                BallsRatio = (float)81 / 72
             });
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 3,
                 TeamName = "TeamNameC",
                 Points = 3,
-                SetsRatio = 3.0f / 1,
-                BallsRatio = 102.0f / 96
+                SetsRatio = (float)3 / 1,
+                BallsRatio = (float)102 / 82
             });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 0,
+                SetsRatio = (float)1 / 6,
+                BallsRatio = (float)154 / 183
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 1,
+                IsTechnicalDefeat = false
+            });
+
+            return this;
+        }
+
+        public PivotStandingsTestFixture WithMaxBallsRatioForOneTeam()
+        {
             AddTeamStandings(new TeamStandingsDto
             {
                 TeamId = 1,
                 TeamName = "TeamNameA",
-                Points = 0,
-                SetsRatio = 2.0f / 6,
-                BallsRatio = 192.0f / 204
+                Points = 3,
+                SetsRatio = (float)3 / 0,
+                BallsRatio = (float)75 / 0
             });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 3,
+                TeamName = "TeamNameC",
+                Points = 3,
+                SetsRatio = (float)3 / 0,
+                BallsRatio = (float)81 / 72
+            });
+            AddTeamStandings(new TeamStandingsDto
+            {
+                TeamId = 2,
+                TeamName = "TeamNameB",
+                Points = 0,
+                SetsRatio = (float)0 / 6,
+                BallsRatio = (float)72 / 156
+            });
+
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false
+            });
+            AddGameResult(new ShortGameResultDto
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
+                IsTechnicalDefeat = false
+            });
+
             return this;
         }
 
-        /// <summary>
-        /// Adds team standings that correspond game results with one game with technical defeat
-        /// to collection of <see cref="TeamStandingsDto"/> objects.
-        /// </summary>
-        /// <returns>Instance of <see cref="PivotStandingsTestFixture"/>.</returns>
         public PivotStandingsTestFixture WithTeamStandingsForOneGameTechnicalDefeat()
         {
             _teamStandings.Clear();
@@ -162,10 +494,6 @@
             return this;
         }
 
-        /// <summary>
-        /// Builds instance of <see cref="PivotStandingsTestFixture"/>.
-        /// </summary>
-        /// <returns>Collection of <see cref="TeamStandingsDto"/> objects filled with test data.</returns>
         public TournamentStandings<PivotStandingsDto> Build()
         {
             var result = new TournamentStandings<PivotStandingsDto>();

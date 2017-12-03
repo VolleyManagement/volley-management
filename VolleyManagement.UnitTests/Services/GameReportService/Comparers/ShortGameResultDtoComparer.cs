@@ -2,35 +2,19 @@
 {
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     internal class ShortGameResultDtoComparer : IComparer<ShortGameResultDto>
     {
         public int Compare(ShortGameResultDto x, ShortGameResultDto y)
         {
-            if (x.HomeTeamId != y.HomeTeamId)
-            {
-                return 1;
-            }
+            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, "HomeTeamId do not match");
+            Assert.AreEqual(x.HomeGameScore, y.HomeGameScore, "HomeGameScore do not match");
 
-            if (x.HomeSetsScore != y.HomeSetsScore)
-            {
-                return 1;
-            }
+            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, "AwayTeamId do not match");
+            Assert.AreEqual(x.AwayGameScore, y.AwayGameScore, "AwayGameScore do not match");
 
-            if (x.AwayTeamId != y.AwayTeamId)
-            {
-                return 1;
-            }
-
-            if (x.AwaySetsScore != y.AwaySetsScore)
-            {
-                return 1;
-            }
-
-            if (x.IsTechnicalDefeat != y.IsTechnicalDefeat)
-            {
-                return 1;
-            }
+            Assert.AreEqual(x.IsTechnicalDefeat, y.IsTechnicalDefeat, "IsTechnicalDefeat do not match");
 
             return 0;
         }

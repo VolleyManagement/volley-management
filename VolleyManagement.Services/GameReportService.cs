@@ -103,7 +103,7 @@
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
             var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
 
-            var pivotStandings = new List<PivotStandingsDto>();
+            var pivotStandings = new TournamentStandings<PivotStandingsDto>();
 
             foreach (var groupedTeams in teamsInTournamentByDivisions)
             {
@@ -111,21 +111,25 @@
 
                 var teamStandingsInDivision = CreateTeamStandings(groupedTeams.Value, gameResultsForDivision);
 
-                var shortGameResults = gameResultsForDivision.Where(g => g.AwayTeamId != null).
-                    Select(g => new ShortGameResultDto
+                var shortGameResults = gameResultsForDivision.Where(g => g.HasResult && g.AwayTeamId != null)
+                    .Select(g => new ShortGameResultDto
                     {
                         HomeTeamId = g.HomeTeamId.Value,
                         AwayTeamId = g.AwayTeamId.Value,
-                        HomeSetsScore = g.Result.GameScore.Home,
-                        AwaySetsScore = g.Result.GameScore.Away,
+                        HomeGameScore = g.Result.GameScore.Home,
+                        AwayGameScore = g.Result.GameScore.Away,
                         IsTechnicalDefeat = g.Result.GameScore.IsTechnicalDefeat
-                    }).
-                    ToList();
+                    })
+                    .ToList();
 
-                pivotStandings.Add(new PivotStandingsDto(teamStandingsInDivision, shortGameResults));
+                pivotStandings.Divisions.Add(new PivotStandingsDto(teamStandingsInDivision, shortGameResults)
+                {
+                    DivisionId = groupedTeams.Key,
+                    DivisionName = $"Division {groupedTeams.Key}"
+                });
             }
 
-            return null;//pivotStandings;
+            return pivotStandings;
         }
 
         /// <summary>
@@ -292,16 +296,16 @@
         private int GetTeamWonSets(int teamId, List<GameResultDto> games)
         {
             int result = 0;
-            result += games.Where(g => g.HomeTeamId == teamId).Sum(g => (int)g.Result.GameScore.Home);
-            result += games.Where(g => g.AwayTeamId == teamId).Sum(g => (int)g.Result.GameScore.Away);
+            result += games.Where(g => g.HomeTeamId == teamId).Sum(g => (g.Result?.GameScore?.Home).GetValueOrDefault(0));
+            result += games.Where(g => g.AwayTeamId == teamId).Sum(g => (g.Result?.GameScore?.Away).GetValueOrDefault(0));
             return result;
         }
 
         private int GetTeamLostSets(int teamId, List<GameResultDto> games)
         {
             int result = 0;
-            result += games.Where(g => g.HomeTeamId == teamId).Sum(g => (int)g.Result.GameScore.Away);
-            result += games.Where(g => g.AwayTeamId == teamId).Sum(g => (int)g.Result.GameScore.Home);
+            result += games.Where(g => g.HomeTeamId == teamId).Sum(g => (g.Result?.GameScore?.Away).GetValueOrDefault(0));
+            result += games.Where(g => g.AwayTeamId == teamId).Sum(g => (g.Result?.GameScore?.Home).GetValueOrDefault(0));
             return result;
         }
 
@@ -319,20 +323,28 @@
         private int GetTeamWonBalls(int teamId, List<GameResultDto> games)
         {
             var results = games.Where(g => g.HomeTeamId == teamId).ToList();
-            int wonBalls = results.Where(item => !item.Result.GameScore.IsTechnicalDefeat).Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
+            int wonBalls = results.Where(i => i.HasResult)
+                                  .Where(item => !item.Result.GameScore.IsTechnicalDefeat)
+                                  .Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
 
             results = games.Where(g => g.AwayTeamId == teamId).ToList();
-            wonBalls += results.Where(item => !item.Result.GameScore.IsTechnicalDefeat).Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
+            wonBalls += results.Where(i => i.HasResult)
+                               .Where(item => !item.Result.GameScore.IsTechnicalDefeat)
+                               .Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
             return wonBalls;
         }
 
         private int GetTeamLostBalls(int teamId, List<GameResultDto> games)
         {
             var results = games.Where(g => g.HomeTeamId == teamId).ToList();
-            int lostBalls = results.Where(item => !item.Result.GameScore.IsTechnicalDefeat).Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
+            int lostBalls = results.Where(i => i.HasResult)
+                                   .Where(item => !item.Result.GameScore.IsTechnicalDefeat)
+                                   .Sum(CalculateAwaySetBallsForNonTechnicalDefeatSets);
 
             results = games.Where(g => g.AwayTeamId == teamId).ToList();
-            lostBalls += results.Where(item => !item.Result.GameScore.IsTechnicalDefeat).Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
+            lostBalls += results.Where(i => i.HasResult)
+                                .Where(item => !item.Result.GameScore.IsTechnicalDefeat)
+                                .Sum(CalculateHomeSetBallsForNonTechnicalDefeatSets);
             return lostBalls;
         }
 

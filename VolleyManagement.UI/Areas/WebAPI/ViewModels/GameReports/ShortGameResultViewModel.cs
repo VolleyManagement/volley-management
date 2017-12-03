@@ -35,8 +35,8 @@
         {
             return new ShortGameResultViewModel
             {
-                HomeSetsScore = gameResult.HomeSetsScore,
-                AwaySetsScore = gameResult.AwaySetsScore,
+                HomeSetsScore = gameResult.HomeGameScore,
+                AwaySetsScore = gameResult.AwayGameScore,
                 IsTechnicalDefeat = gameResult.IsTechnicalDefeat
             };
         }

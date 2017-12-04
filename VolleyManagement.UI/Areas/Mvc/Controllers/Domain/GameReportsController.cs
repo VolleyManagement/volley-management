@@ -38,15 +38,14 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 var tournament = _tournamentService.Get(tournamentId);
                 var standings = _gameReportService.GetStandings(tournamentId);
                 var pivots = _gameReportService.GetPivotStandings(tournamentId);
-                var mapedStandings = new List<List<StandingsEntryViewModel>>();
-                var pivotTables = new List<PivotTableViewModel>();
 
-                /*mapedStandings = standings.Select(item => TeamStandingsViewModelBase.
-                                                            SetPositions(item.Select(se => StandingsEntryViewModel.Map(se)).
-                                                                              ToList())).
-                                           ToList();*/
+                var mapedStandings = standings.Divisions
+                    .Select(item => TeamStandingsViewModelBase.SetPositions(
+                        item.Standings.Select(StandingsEntryViewModel.Map).ToList()
+                    ))
+                    .ToList();
 
-                //pivotTables = pivots.Select(item => new PivotTableViewModel(item)).ToList();
+                var pivotTables = pivots.Divisions.Select(item => new PivotTableViewModel(item)).ToList();
 
                 var standingsViewModel = new StandingsViewModel
                 {

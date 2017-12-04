@@ -182,27 +182,10 @@
 
         [TestMethod]
         [Ignore]
-        public void GetStandings_NoStandingsExist_EmptyListReturned()
-        {
-            // Arrange
-            var testData = new StandingsTestFixture().DefaultStandings().Build();
-            MockGetStandings(testData, SPECIFIC_TOURNAMENT_ID);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetTournamentStandings(SPECIFIC_TOURNAMENT_ID);
-
-            // Assert
-            Assert.AreEqual(actual.Count, EMPTY_LIST_COUNT);
-        }
-
-        [TestMethod]
-        [Ignore]
         public void GetPivotStandings_PivotStandingsExist_PivotStandingsReturned()
         {
             // Arrange
-            var testData = new PivotStandingsTestFixture().DefaultStandings().Build();
+            var testData = new PivotStandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
 
             MockGetPivotStandings(testData, SPECIFIC_TOURNAMENT_ID);
 
@@ -218,7 +201,7 @@
             var actual = sut.GetTournamentPivotStandings(SPECIFIC_TOURNAMENT_ID);
 
             // Assert
-            // TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
+            TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
         }
 
         [TestMethod]

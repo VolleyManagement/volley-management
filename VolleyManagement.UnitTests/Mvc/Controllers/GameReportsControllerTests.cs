@@ -40,14 +40,13 @@
         /// Test for Standings() method. Tournament standings are requested. Tournament standings are returned.
         /// </summary>
         [TestMethod]
-        [Ignore]
         public void Standings_StandingsRequested_StandingsReturned()
         {
             // Arrange
-            var testPivotStandings = new PivotStandingsTestFixture().DefaultStandings().Build();
+            var testPivotStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
 
-            var testStandings = new StandingsTestFixture().DefaultStandings().Build();
-            var expected = new StandingsViewModelBuilder().Build();
+            var expected = new StandingsViewModelBuilder().WithMultipleDivisionsAllPossibleScores().Build();
 
             MockTournamentServiceReturnTournament();
             SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
@@ -79,35 +78,6 @@
 
             // Act
             var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_PLAYOFF_ID, TOURNAMENT_NAME));
-
-            // Assert
-            TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
-        }
-
-        /// <summary>
-        /// Test for Standings() method. Tournament standings view model are requested.
-        /// Tournament standings view model with 2 team scores completely equal returned.
-        /// </summary>
-        [TestMethod]
-        [Ignore]
-        public void Standings_StandingsWithTwoTeamsScoresCompletelyEqual_TeamsHaveSamePosition()
-        {
-            // Arrange
-            var testPivotStandings = new PivotStandingsTestFixture().WithStandingsForAllPossibleScores().Build();
-
-            var testStandings = new StandingsTestFixture().WithStandingsForAllPossibleScores().Build();
-
-            var expected = new StandingsViewModelBuilder().WithTwoTeamsScoresCompletelyEqual().Build();
-
-            MockTournamentServiceReturnTournament();
-            SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
-            SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
-            SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
 
             // Assert
             TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());

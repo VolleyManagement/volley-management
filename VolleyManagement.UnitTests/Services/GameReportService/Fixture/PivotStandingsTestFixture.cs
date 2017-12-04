@@ -21,40 +21,6 @@
             return this;
         }
 
-        /// <summary>
-        /// Generates <see cref="TeamStandingsDto"/> objects filled with test data.
-        /// </summary>
-        /// <returns>Instance of <see cref="PivotStandingsTestFixture"/></returns>
-        public PivotStandingsTestFixture DefaultStandings(int divisionId = 1)
-        {
-            AddTeamStandings(new TeamStandingsDto
-            {
-                TeamId = 1,
-                TeamName = "TeamNameA",
-                Points = 5,
-                SetsRatio = 6.0f / 3,
-                BallsRatio = 234.0f / 214
-            });
-            AddTeamStandings(new TeamStandingsDto
-            {
-                TeamId = 3,
-                TeamName = "TeamNameC",
-                Points = 3,
-                SetsRatio = 4.0f / 3,
-                BallsRatio = 166.0f / 105
-            });
-            AddTeamStandings(new TeamStandingsDto
-            {
-                TeamId = 2,
-                TeamName = "TeamNameB",
-                Points = 1,
-                SetsRatio = 2.0f / 6,
-                BallsRatio = 123.0f / 204
-            });
-
-            return this;
-        }
-
         public PivotStandingsTestFixture WithNoResults()
         {
             AddTeamStandings(new TeamStandingsDto

@@ -1,8 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
@@ -11,37 +13,52 @@
     [ExcludeFromCodeCoverage]
     internal class PivotTableEqualityComparer
     {
-        /// <summary>
-        /// Determines whether the specified object instances are considered equal.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if the objects are considered equal; otherwise, false.</returns>
-        public static bool AreResultTablesEquals(PivotTableViewModel x, PivotTableViewModel y)
+        public static bool AreResultTablesEquals(List<PivotGameResultViewModel>[] expected, PivotTableViewModel actual, string messagePrefix = "")
         {
-            int count = x.TeamsStandings.Count;
-            if (x.AllGameResults.Length != y.AllGameResults.Length)
+            if (expected != null || actual != null)
             {
-                return false;
-            }
-
-            for (int i = 0; i < count; i++)
-            {
-                for (int j = 0; j < count; j++)
+                if (expected == null || actual == null)
                 {
-                    if (x[i, j].Count == 0 && y[i, j].Count == 0)
-                    {
-                        continue;
-                    }
+                    Assert.Fail($"{messagePrefix} One of the results table is null");
+                }
 
-                    if (!x[i, j].SequenceEqual(y[i, j], new PivotGameResultsViewModelEqualityComparer()))
+                for (var i = 0; i < expected.Length; i++)
+                {
+                    var pos = GetPosition(i, expected.Length);
+                    var actualCell = actual[pos.Row, pos.Col];
+
+                    if (expected[i] != null || actualCell != null)
                     {
-                        return false;
+                        if (expected[i] == null || actualCell == null)
+                        {
+                            Assert.Fail($"{messagePrefix}Pos:({pos.Row},{pos.Col}) One of the results cell is null");
+                        }
+
+                        Assert.AreEqual(
+                            expected[i].Count,
+                            actualCell.Count,
+                            $"{messagePrefix}Pos:({pos.Row},{pos.Col}) Number of cell results do not match");
+
+                        for (var j = 0; j < expected[i].Count; j++)
+                        {
+                            PivotGameResultsViewModelEqualityComparer.AreEqual(
+                                expected[i][j],
+                                actualCell[j],
+                                $"{messagePrefix}Pos:({pos.Row},{pos.Col})ItemAt:{j}: ");
+                        }
                     }
                 }
+
             }
 
             return true;
+        }
+
+        private static (int Row, int Col) GetPosition(int i, int count)
+        {
+            var size = (int)Math.Sqrt(count);
+
+            return (i / size, i % size);
         }
     }
 }

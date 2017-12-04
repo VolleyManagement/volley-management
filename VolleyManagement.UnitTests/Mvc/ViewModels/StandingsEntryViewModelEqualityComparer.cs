@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Text;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
@@ -20,24 +21,7 @@
         /// If both x and y are null, the method returns true.</returns>
         public bool Equals(StandingsEntryViewModel x, StandingsEntryViewModel y)
         {
-            return x.TeamName == y.TeamName
-                && x.Position == y.Position
-                && x.Points == y.Points
-                && x.GamesTotal == y.GamesTotal
-                && x.GamesWon == y.GamesWon
-                && x.GamesLost == y.GamesLost
-                && x.GamesWithScoreThreeNil == y.GamesWithScoreThreeNil
-                && x.GamesWithScoreThreeOne == y.GamesWithScoreThreeOne
-                && x.GamesWithScoreThreeTwo == y.GamesWithScoreThreeTwo
-                && x.GamesWithScoreTwoThree == y.GamesWithScoreTwoThree
-                && x.GamesWithScoreOneThree == y.GamesWithScoreOneThree
-                && x.GamesWithScoreNilThree == y.GamesWithScoreNilThree
-                && x.SetsWon == y.SetsWon
-                && x.SetsLost == y.SetsLost
-                && x.SetsRatio == y.SetsRatio
-                && x.BallsWon == y.BallsWon
-                && x.BallsLost == y.BallsLost
-                && x.BallsRatio == y.BallsRatio;
+            return AssertAreEqual(x, y);
         }
 
         /// <summary>
@@ -69,6 +53,51 @@
             stringBuilder.Append(obj.BallsRatio);
 
             return stringBuilder.ToString().GetHashCode();
+        }
+
+        public static bool AssertAreEqual(StandingsEntryViewModel expected, StandingsEntryViewModel actual, string messagePrefix = "")
+        {
+            Assert.AreEqual(expected.TeamName, actual.TeamName, $"[{messagePrefix}] TeamName should match");
+
+            Assert.AreEqual(expected.Position, actual.Position, $"[{messagePrefix}Team:{expected.TeamName}] Position should match");
+            Assert.AreEqual(expected.Points, actual.Points, $"[{messagePrefix}Team:{expected.TeamName}] Points should match");
+
+            Assert.AreEqual(expected.GamesTotal, actual.GamesTotal, $"[{messagePrefix}Team:{expected.TeamName}] GamesTotal should match");
+            Assert.AreEqual(expected.GamesWon, actual.GamesWon, $"[{messagePrefix}Team:{expected.TeamName}] GamesWon should match");
+            Assert.AreEqual(expected.GamesLost, actual.GamesLost, $"[{messagePrefix}Team:{expected.TeamName}] GamesLost should match");
+
+            Assert.AreEqual(expected.GamesWithScoreThreeNil, actual.GamesWithScoreThreeNil, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreThreeNil should match");
+            Assert.AreEqual(expected.GamesWithScoreThreeOne, actual.GamesWithScoreThreeOne, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreThreeOne should match");
+            Assert.AreEqual(expected.GamesWithScoreThreeTwo, actual.GamesWithScoreThreeTwo, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreThreeTwo should match");
+            Assert.AreEqual(expected.GamesWithScoreTwoThree, actual.GamesWithScoreTwoThree, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreTwoThree should match");
+            Assert.AreEqual(expected.GamesWithScoreOneThree, actual.GamesWithScoreOneThree, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreOneThree should match");
+            Assert.AreEqual(expected.GamesWithScoreNilThree, actual.GamesWithScoreNilThree, $"[{messagePrefix}Team:{expected.TeamName}] GamesWithScoreNilThree should match");
+
+            Assert.AreEqual(expected.SetsWon, actual.SetsWon, $"[{messagePrefix}Team:{expected.TeamName}] SetsWon should match");
+            Assert.AreEqual(expected.SetsLost, actual.SetsLost, $"[{messagePrefix}Team:{expected.TeamName}] SetsLost should match");
+            AssertFloatNullablesAreEqual(expected.SetsRatio, actual.SetsRatio, $"[{messagePrefix}Team:{expected.TeamName}] SetsRatio should match");
+
+            Assert.AreEqual(expected.BallsWon, actual.BallsWon, $"[{messagePrefix}Team:{expected.TeamName}] BallsWon should match");
+            Assert.AreEqual(expected.BallsLost, actual.BallsLost, $"[{messagePrefix}Team:{expected.TeamName}] BallsLost should match");
+            AssertFloatNullablesAreEqual(expected.BallsRatio, actual.BallsRatio, $"[{messagePrefix}Team:{expected.TeamName}] BallsRatio should match");
+
+            return true;
+        }
+
+        public static bool AssertFloatNullablesAreEqual(float? expected, float? actual, string message)
+        {
+            if (!expected.HasValue && !actual.HasValue)
+            {
+                return true;
+            }
+
+            if (!expected.HasValue || !actual.HasValue)
+            {
+                Assert.Fail($"{message}. Expected: <{expected}>, Actual: <{actual}>");
+            }
+
+            Assert.AreEqual(expected.GetValueOrDefault(), actual.GetValueOrDefault(), 0.001f, message);
+            return true;
         }
     }
 }

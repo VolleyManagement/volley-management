@@ -8,7 +8,7 @@ import { CSS_CLASSES } from '../../Constants/CssClassConstants';
 export class GameResultCellDirective implements OnInit {
 
     // tslint:disable-next-line:no-input-rename
-    @Input('vmGameResultCell')
+    @Input()
     gameResult: ShortGameResult;
 
     constructor(private _renderer: Renderer2, private _el: ElementRef) { }

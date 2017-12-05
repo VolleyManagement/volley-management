@@ -11,10 +11,9 @@ import { TournamentMetadataJson } from '../Models/TournamentMetadataJson/Tournam
 export class JsonService {
     constructor(private http: Http) { }
 
-    getTournamentJson(fileName: string): Observable<TournamentMetadataJson> {
-        const url = environment.jsonBaseUrl.concat(fileName);
+    getJson<T>(url: string): Observable<T> {
         return this.http
             .get(url)
-            .map(response => response.json() as TournamentMetadataJson);
+            .map(response => response.json() as T);
     }
 }

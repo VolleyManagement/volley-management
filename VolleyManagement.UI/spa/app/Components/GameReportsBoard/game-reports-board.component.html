@@ -1,0 +1,18 @@
+<div class="game-reports"
+     #containerEl>
+        <loader *ngIf="isShowLoader"
+                [height]="loaderHeight"
+                [visible]="isLoaderVisible"></loader>
+
+        <standings *ngIf="standingsId"
+                   [standingsId]="standingsId"
+                   (ready)="onReportReady('standings')"></standings>
+
+        <pivottable *ngIf="pivotId"
+                    [pivotId]="pivotId"
+                    (ready)="onReportReady('pivot')"></pivottable>
+
+        <schedule *ngIf="scheduleId"
+                  [scheduleId]="scheduleId"
+                  (ready)="onReportReady('schedule')"></schedule>
+</div>

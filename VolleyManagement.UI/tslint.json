@@ -117,7 +117,7 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "vm",
       "camelCase"
     ],
     "component-selector": [

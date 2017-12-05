@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
     using System.Linq.Expressions;
     using Contracts;
@@ -17,13 +18,18 @@
     public class TeamQueries : IQuery<Team, FindByIdCriteria>,
                                IQuery<List<Team>, GetAllCriteria>,
                                IQuery<Team, FindByCaptainIdCriteria>,
-                               IQuery<List<Team>, FindByTournamentIdCriteria>,
+                               IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>,
+                               IQuery<List<Team>, FindByTournamentIdCriteriaOld>,
                                IQuery<List<Team>, FindTeamsByGroupIdCriteria>,
                                IQuery<List<List<Team>>, FindTeamsInDivisionsByTournamentIdCriteria>
     {
         #region Fields
 
         private readonly VolleyUnitOfWork _unitOfWork;
+        private readonly DbSet<TeamEntity> _dalTeams;
+        private readonly DbSet<TournamentEntity> _dalTournaments;
+        private readonly DbSet<DivisionEntity> _dalDivisions;
+        private readonly DbSet<GroupEntity> _dalGroups;
 
         #endregion
 
@@ -36,6 +42,10 @@
         public TeamQueries(IUnitOfWork unitOfWork)
         {
             _unitOfWork = (VolleyUnitOfWork)unitOfWork;
+            _dalTeams = _unitOfWork.Context.Teams;
+            _dalTournaments = _unitOfWork.Context.Tournaments;
+            _dalDivisions = _unitOfWork.Context.Divisions;
+            _dalGroups = _unitOfWork.Context.Groups;
         }
 
         #endregion
@@ -77,7 +87,7 @@
         /// </summary>
         /// <param name="criteria">Search criteria</param>
         /// <returns>List of <see cref="Team"/>.</returns>
-        public List<Team> Execute(FindByTournamentIdCriteria criteria)
+        public List<Team> Execute(FindByTournamentIdCriteriaOld criteria)
         {
             return _unitOfWork.Context.Tournaments
                                       .Where(t => t.Id == criteria.TournamentId)
@@ -86,6 +96,26 @@
                                       .SelectMany(g => g.Teams)
                                       .Select(GetTeamMapping())
                                       .ToList();
+        }
+
+        public List<TeamTournamentDto> Execute(FindByTournamentIdCriteria criteria)
+        {
+            var result = (from div in _dalDivisions
+                          join grp in _dalGroups on div.Id equals grp.DivisionId
+                          where div.TournamentId == criteria.TournamentId
+                          select grp)
+                 .SelectMany(grp =>
+                             grp.Teams.Select(
+                                 t => new TeamTournamentDto
+                                 {
+                                     DivisionId = grp.DivisionId,
+                                     GroupId = grp.Id,
+                                     TeamId = t.Id,
+                                     TeamName = t.Name
+                                 }))
+                 .ToList();
+
+            return result;
         }
 
         public List<Team> Execute(FindTeamsByGroupIdCriteria criteria)

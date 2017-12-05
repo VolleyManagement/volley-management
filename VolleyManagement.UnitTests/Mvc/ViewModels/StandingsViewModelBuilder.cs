@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Domain.GameReportsAggregate;
-    using Services.GameReportService;
+    using Newtonsoft.Json.Linq;
+    using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
@@ -102,6 +102,810 @@
                     }
                 }
             };
+        }
+
+        public StandingsViewModelBuilder WithMultipleDivisionsAllPossibleScores()
+        {
+            _standingsViewModel = new StandingsViewModel
+            {
+                TournamentId = 1,
+                TournamentName = "Name",
+                Standings = new List<List<StandingsEntryViewModel>>
+                {
+                    new List<StandingsEntryViewModel>(),
+                    new List<StandingsEntryViewModel>()
+                },
+                PivotTable = new List<PivotTableViewModel>
+                {
+                    new PivotTableViewModel(),
+                    new PivotTableViewModel()
+                }
+            };
+
+            AddTeamsForMultipleDivisionsCase();
+
+            AddPivotTeamsForMultipleDivisionsCase();
+
+            AddFirstPivotResultsForMultipleDivisionsCase();
+            AddSecondPivotResultsForMultipleDivisionsCase();
+
+            return this;
+        }
+
+        private void AddTeamsForMultipleDivisionsCase()
+        {
+            _standingsViewModel.Standings[0].Add( // A
+                new StandingsEntryViewModel
+                {
+                    Position = 1,
+                    TeamName = "TeamNameA",
+                    Points = 7,
+                    GamesTotal = 4,
+                    GamesWon = 2,
+                    GamesLost = 2,
+                    GamesWithScoreThreeNil = 1,
+                    GamesWithScoreThreeOne = 1,
+                    GamesWithScoreThreeTwo = 0,
+                    GamesWithScoreTwoThree = 1,
+                    GamesWithScoreOneThree = 1,
+                    GamesWithScoreNilThree = 0,
+                    SetsWon = 9,
+                    SetsLost = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsWon = 363,
+                    BallsLost = 355,
+                    BallsRatio = (float)363 / 355
+                });
+            _standingsViewModel.Standings[0].Add( // E
+                new StandingsEntryViewModel
+                {
+                    Position = 2,
+                    TeamName = "TeamNameE",
+                    Points = 7,
+                    GamesTotal = 4,
+                    GamesWon = 2,
+                    GamesLost = 2,
+                    GamesWithScoreThreeNil = 1,
+                    GamesWithScoreThreeOne = 1,
+                    GamesWithScoreThreeTwo = 0,
+                    GamesWithScoreTwoThree = 1,
+                    GamesWithScoreOneThree = 1,
+                    GamesWithScoreNilThree = 0,
+                    SetsWon = 9,
+                    SetsLost = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsWon = 363,
+                    BallsLost = 355,
+                    BallsRatio = (float)363 / 355
+                });
+            _standingsViewModel.Standings[0].Add( // C
+                new StandingsEntryViewModel
+                {
+                    Position = 3,
+                    TeamName = "TeamNameC",
+                    Points = 7,
+                    GamesTotal = 4,
+                    GamesWon = 2,
+                    GamesLost = 2,
+                    GamesWithScoreThreeNil = 1,
+                    GamesWithScoreThreeOne = 1,
+                    GamesWithScoreThreeTwo = 0,
+                    GamesWithScoreTwoThree = 1,
+                    GamesWithScoreOneThree = 1,
+                    GamesWithScoreNilThree = 0,
+                    SetsWon = 9,
+                    SetsLost = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsWon = 350,
+                    BallsLost = 362,
+                    BallsRatio = (float)350 / 362
+                });
+            _standingsViewModel.Standings[0].Add( // D
+                new StandingsEntryViewModel
+                {
+                    Position = 4,
+                    TeamName = "TeamNameD",
+                    Points = 7,
+                    GamesTotal = 4,
+                    GamesWon = 2,
+                    GamesLost = 2,
+                    GamesWithScoreThreeNil = 1,
+                    GamesWithScoreThreeOne = 1,
+                    GamesWithScoreThreeTwo = 0,
+                    GamesWithScoreTwoThree = 1,
+                    GamesWithScoreOneThree = 1,
+                    GamesWithScoreNilThree = 0,
+                    SetsWon = 9,
+                    SetsLost = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsWon = 350,
+                    BallsLost = 362,
+                    BallsRatio = (float)350 / 362
+                });
+            _standingsViewModel.Standings[0].Add( // B
+                new StandingsEntryViewModel
+                {
+                    Position = 5,
+                    TeamName = "TeamNameB",
+                    Points = 4,
+                    GamesTotal = 4,
+                    GamesWon = 2,
+                    GamesLost = 2,
+                    GamesWithScoreThreeNil = 0,
+                    GamesWithScoreThreeOne = 0,
+                    GamesWithScoreThreeTwo = 2,
+                    GamesWithScoreTwoThree = 0,
+                    GamesWithScoreOneThree = 0,
+                    GamesWithScoreNilThree = 2,
+                    SetsWon = 6,
+                    SetsLost = 10,
+                    SetsRatio = (float)6 / 10,
+                    BallsWon = 349,
+                    BallsLost = 345,
+                    BallsRatio = (float)349 / 345
+                });
+            _standingsViewModel.Standings[0].Add( // F
+                new StandingsEntryViewModel
+                {
+                    Position = 6,
+                    TeamName = "TeamNameF",
+                    Points = 4,
+                    GamesTotal = 4,
+                    GamesWon = 2,
+                    GamesLost = 2,
+                    GamesWithScoreThreeNil = 0,
+                    GamesWithScoreThreeOne = 0,
+                    GamesWithScoreThreeTwo = 2,
+                    GamesWithScoreTwoThree = 0,
+                    GamesWithScoreOneThree = 0,
+                    GamesWithScoreNilThree = 2,
+                    SetsWon = 6,
+                    SetsLost = 10,
+                    SetsRatio = (float)6 / 10,
+                    BallsWon = 349,
+                    BallsLost = 345,
+                    BallsRatio = (float)349 / 345
+                });
+            _standingsViewModel.Standings[1].Add( // G
+                new StandingsEntryViewModel
+                {
+                    Position = 1,
+                    TeamName = "TeamNameG",
+                    Points = 7,
+                    GamesTotal = 4,
+                    GamesWon = 2,
+                    GamesLost = 2,
+                    GamesWithScoreThreeNil = 1,
+                    GamesWithScoreThreeOne = 1,
+                    GamesWithScoreThreeTwo = 0,
+                    GamesWithScoreTwoThree = 1,
+                    GamesWithScoreOneThree = 1,
+                    GamesWithScoreNilThree = 0,
+                    SetsWon = 9,
+                    SetsLost = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsWon = 363,
+                    BallsLost = 355,
+                    BallsRatio = (float)363 / 355
+                });
+            _standingsViewModel.Standings[1].Add( // I
+                new StandingsEntryViewModel
+                {
+                    Position = 2,
+                    TeamName = "TeamNameI",
+                    Points = 7,
+                    GamesTotal = 4,
+                    GamesWon = 2,
+                    GamesLost = 2,
+                    GamesWithScoreThreeNil = 1,
+                    GamesWithScoreThreeOne = 1,
+                    GamesWithScoreThreeTwo = 0,
+                    GamesWithScoreTwoThree = 1,
+                    GamesWithScoreOneThree = 1,
+                    GamesWithScoreNilThree = 0,
+                    SetsWon = 9,
+                    SetsLost = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsWon = 350,
+                    BallsLost = 362,
+                    BallsRatio = (float)350 / 362
+                });
+            _standingsViewModel.Standings[1].Add( // H
+                new StandingsEntryViewModel
+                {
+                    Position = 3,
+                    TeamName = "TeamNameH",
+                    Points = 4,
+                    GamesTotal = 4,
+                    GamesWon = 2,
+                    GamesLost = 2,
+                    GamesWithScoreThreeNil = 0,
+                    GamesWithScoreThreeOne = 0,
+                    GamesWithScoreThreeTwo = 2,
+                    GamesWithScoreTwoThree = 0,
+                    GamesWithScoreOneThree = 0,
+                    GamesWithScoreNilThree = 2,
+                    SetsWon = 6,
+                    SetsLost = 10,
+                    SetsRatio = (float)6 / 10,
+                    BallsWon = 349,
+                    BallsLost = 345,
+                    BallsRatio = (float)349 / 345
+                });
+            _standingsViewModel.Standings[1].Add( // J
+                new StandingsEntryViewModel
+                {
+                    Position = 4,
+                    TeamName = "TeamNameJ",
+                    Points = 0,
+                    GamesTotal = 0,
+                    GamesWon = 0,
+                    GamesLost = 0,
+                    GamesWithScoreThreeNil = 0,
+                    GamesWithScoreThreeOne = 0,
+                    GamesWithScoreThreeTwo = 0,
+                    GamesWithScoreTwoThree = 0,
+                    GamesWithScoreOneThree = 0,
+                    GamesWithScoreNilThree = 0,
+                    SetsWon = 0,
+                    SetsLost = 0,
+                    SetsRatio = null,
+                    BallsWon = 0,
+                    BallsLost = 0,
+                    BallsRatio = null
+                });
+            _standingsViewModel.Standings[1].Add( // K
+                new StandingsEntryViewModel
+                {
+                    Position = 5,
+                    TeamName = "TeamNameK",
+                    Points = 0,
+                    GamesTotal = 0,
+                    GamesWon = 0,
+                    GamesLost = 0,
+                    GamesWithScoreThreeNil = 0,
+                    GamesWithScoreThreeOne = 0,
+                    GamesWithScoreThreeTwo = 0,
+                    GamesWithScoreTwoThree = 0,
+                    GamesWithScoreOneThree = 0,
+                    GamesWithScoreNilThree = 0,
+                    SetsWon = 0,
+                    SetsLost = 0,
+                    SetsRatio = null,
+                    BallsWon = 0,
+                    BallsLost = 0,
+                    BallsRatio = null
+                });
+            _standingsViewModel.Standings[1].Add( // L
+                new StandingsEntryViewModel
+                {
+                    Position = 6,
+                    TeamName = "TeamNameL",
+                    Points = 0,
+                    GamesTotal = 0,
+                    GamesWon = 0,
+                    GamesLost = 0,
+                    GamesWithScoreThreeNil = 0,
+                    GamesWithScoreThreeOne = 0,
+                    GamesWithScoreThreeTwo = 0,
+                    GamesWithScoreTwoThree = 0,
+                    GamesWithScoreOneThree = 0,
+                    GamesWithScoreNilThree = 0,
+                    SetsWon = 0,
+                    SetsLost = 0,
+                    SetsRatio = null,
+                    BallsWon = 0,
+                    BallsLost = 0,
+                    BallsRatio = null
+                });
+        }
+
+        private void AddFirstPivotResultsForMultipleDivisionsCase()
+        {
+            const int teamsCount = 6;
+            var table = new List<PivotGameResultViewModel>[teamsCount * teamsCount];
+            _standingsViewModel.PivotTable[0].AllGameResults = table;
+            for (int i = 0; i < teamsCount; i++)
+            {
+                for (var j = 0; j < teamsCount; j++)
+                {
+                    table[i * teamsCount + j] = new List<PivotGameResultViewModel>();
+                    if (i == j)
+                    {
+                        table[i * teamsCount + j].Add(PivotGameResultViewModel.GetNonPlayableCell());
+                    }
+                }
+            }
+
+            // Group 1
+            table[0 * teamsCount + 4].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeSetsScore = 3,
+                AwaySetsScore = 0,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_0
+            });
+            table[0 * teamsCount + 4].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeSetsScore = 2,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_2_3
+            });
+
+            table[0 * teamsCount + 2].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeSetsScore = 3,
+                AwaySetsScore = 1,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_1
+            });
+            table[0 * teamsCount + 2].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 1,
+                AwayTeamId = 3,
+                HomeSetsScore = 1,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_1_3
+            });
+
+            table[4 * teamsCount + 0].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                HomeSetsScore = 0,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_0_3
+            });
+            table[4 * teamsCount + 0].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 1,
+                HomeSetsScore = 3,
+                AwaySetsScore = 2,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_2
+            });
+
+            table[4 * teamsCount + 2].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeSetsScore = 3,
+                AwaySetsScore = 2,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_2
+            });
+            table[4 * teamsCount + 2].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 2,
+                AwayTeamId = 3,
+                HomeSetsScore = 0,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_0_3
+            });
+
+            table[2 * teamsCount + 0].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 1,
+                HomeSetsScore = 1,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_1_3
+            });
+            table[2 * teamsCount + 0].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 1,
+                HomeSetsScore = 3,
+                AwaySetsScore = 1,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_1
+            });
+
+            table[2 * teamsCount + 4].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeSetsScore = 2,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_2_3
+            });
+            table[2 * teamsCount + 4].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeSetsScore = 3,
+                AwaySetsScore = 0,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_0
+            });
+
+            // Group 2
+            table[3 * teamsCount + 1].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 4,
+                AwayTeamId = 5,
+                HomeSetsScore = 1,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_1_3
+            });
+            table[3 * teamsCount + 1].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 4,
+                AwayTeamId = 5,
+                HomeSetsScore = 3,
+                AwaySetsScore = 1,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_1
+            });
+
+            table[3 * teamsCount + 5].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 4,
+                AwayTeamId = 6,
+                HomeSetsScore = 2,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_2_3
+            });
+            table[3 * teamsCount + 5].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 4,
+                AwayTeamId = 6,
+                HomeSetsScore = 3,
+                AwaySetsScore = 0,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_0
+            });
+
+            table[1 * teamsCount + 3].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 4,
+                HomeSetsScore = 3,
+                AwaySetsScore = 1,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_1
+            });
+            table[1 * teamsCount + 3].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 4,
+                HomeSetsScore = 1,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_1_3
+            });
+
+            table[1 * teamsCount + 5].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 6,
+                HomeSetsScore = 3,
+                AwaySetsScore = 0,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_0
+            });
+            table[1 * teamsCount + 5].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 5,
+                AwayTeamId = 6,
+                HomeSetsScore = 2,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_2_3
+            });
+
+            table[5 * teamsCount + 3].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 6,
+                AwayTeamId = 4,
+                HomeSetsScore = 3,
+                AwaySetsScore = 2,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_2
+            });
+            table[5 * teamsCount + 3].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 6,
+                AwayTeamId = 4,
+                HomeSetsScore = 0,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_0_3
+            });
+
+            table[5 * teamsCount + 1].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 6,
+                AwayTeamId = 5,
+                HomeSetsScore = 0,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_0_3
+            });
+            table[5 * teamsCount + 1].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 6,
+                AwayTeamId = 5,
+                HomeSetsScore = 3,
+                AwaySetsScore = 2,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_2
+            });
+        }
+
+        private void AddSecondPivotResultsForMultipleDivisionsCase()
+        {
+            const int teamsCount = 6;
+            var table = new List<PivotGameResultViewModel>[teamsCount * teamsCount];
+            _standingsViewModel.PivotTable[1].AllGameResults = table;
+            for (int i = 0; i < teamsCount; i++)
+            {
+                for (var j = 0; j < teamsCount; j++)
+                {
+                    table[i * teamsCount + j] = new List<PivotGameResultViewModel>();
+                    if (i == j)
+                    {
+                        table[i * teamsCount + j].Add(PivotGameResultViewModel.GetNonPlayableCell());
+                    }
+                }
+            }
+
+            table[0 * teamsCount + 1].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 7,
+                AwayTeamId = 9,
+                HomeSetsScore = 3,
+                AwaySetsScore = 1,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_1
+            });
+            table[0 * teamsCount + 1].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 7,
+                AwayTeamId = 9,
+                HomeSetsScore = 1,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_1_3
+            });
+
+            table[0 * teamsCount + 2].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 7,
+                AwayTeamId = 8,
+                HomeSetsScore = 3,
+                AwaySetsScore = 0,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_0
+            });
+            table[0 * teamsCount + 2].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 7,
+                AwayTeamId = 8,
+                HomeSetsScore = 2,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_2_3
+            });
+
+            table[1 * teamsCount + 0].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 9,
+                AwayTeamId = 7,
+                HomeSetsScore = 1,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_1_3
+            });
+            table[1 * teamsCount + 0].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 9,
+                AwayTeamId = 7,
+                HomeSetsScore = 3,
+                AwaySetsScore = 1,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_1
+            });
+
+            table[1 * teamsCount + 2].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 9,
+                AwayTeamId = 8,
+                HomeSetsScore = 2,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_2_3
+            });
+            table[1 * teamsCount + 2].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 9,
+                AwayTeamId = 8,
+                HomeSetsScore = 3,
+                AwaySetsScore = 0,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_0
+            });
+
+            table[2 * teamsCount + 0].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 8,
+                AwayTeamId = 7,
+                HomeSetsScore = 0,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_0_3
+            });
+            table[2 * teamsCount + 0].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 8,
+                AwayTeamId = 7,
+                HomeSetsScore = 3,
+                AwaySetsScore = 2,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_2
+            });
+
+            table[2 * teamsCount + 1].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 8,
+                AwayTeamId = 9,
+                HomeSetsScore = 3,
+                AwaySetsScore = 2,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.WIN_3_2
+            });
+            table[2 * teamsCount + 1].Add(new PivotGameResultViewModel
+            {
+                HomeTeamId = 8,
+                AwayTeamId = 9,
+                HomeSetsScore = 0,
+                AwaySetsScore = 3,
+                IsTechnicalDefeat = false,
+                CssClass = CssClassConstants.LOSS_0_3
+            });
+        }
+
+        private void AddPivotTeamsForMultipleDivisionsCase()
+        {
+            _standingsViewModel.PivotTable[0].TeamsStandings = new List<PivotTeamStandingsViewModel>();
+            _standingsViewModel.PivotTable[0].TeamsStandings.Add( // A
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 1,
+                    TeamName = "TeamNameA",
+                    Position = 1,
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)363 / 355
+                });
+            _standingsViewModel.PivotTable[0].TeamsStandings.Add( // E
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 5,
+                    TeamName = "TeamNameE",
+                    Position = 2,
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)363 / 355
+                });
+            _standingsViewModel.PivotTable[0].TeamsStandings.Add( // C
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 3,
+                    TeamName = "TeamNameC",
+                    Position = 3,
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)350 / 362
+                });
+            _standingsViewModel.PivotTable[0].TeamsStandings.Add( // D
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 4,
+                    TeamName = "TeamNameD",
+                    Position = 4,
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)350 / 362
+                });
+            _standingsViewModel.PivotTable[0].TeamsStandings.Add( // B
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 2,
+                    TeamName = "TeamNameB",
+                    Position = 5,
+                    Points = 4,
+                    SetsRatio = (float)6 / 10,
+                    BallsRatio = (float)349 / 345
+                });
+            _standingsViewModel.PivotTable[0].TeamsStandings.Add( // F
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 6,
+                    TeamName = "TeamNameF",
+                    Position = 6,
+                    Points = 4,
+                    SetsRatio = (float)6 / 10,
+                    BallsRatio = (float)349 / 345
+                });
+
+            _standingsViewModel.PivotTable[1].TeamsStandings = new List<PivotTeamStandingsViewModel>();
+            _standingsViewModel.PivotTable[1].TeamsStandings.Add( // G
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 7,
+                    TeamName = "TeamNameG",
+                    Position = 1,
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)363 / 355
+                });
+            _standingsViewModel.PivotTable[1].TeamsStandings.Add( // I
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 9,
+                    TeamName = "TeamNameI",
+                    Position = 2,
+                    Points = 7,
+                    SetsRatio = (float)9 / 7,
+                    BallsRatio = (float)350 / 362
+                });
+            _standingsViewModel.PivotTable[1].TeamsStandings.Add( // H
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 8,
+                    TeamName = "TeamNameH",
+                    Position = 3,
+                    Points = 4,
+                    SetsRatio = (float)6 / 10,
+                    BallsRatio = (float)349 / 345
+                });
+            _standingsViewModel.PivotTable[1].TeamsStandings.Add( // J
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 10,
+                    TeamName = "TeamNameJ",
+                    Position = 4,
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                });
+            _standingsViewModel.PivotTable[1].TeamsStandings.Add( // K
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 11,
+                    TeamName = "TeamNameK",
+                    Position = 5,
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                });
+            _standingsViewModel.PivotTable[1].TeamsStandings.Add( // L
+                new PivotTeamStandingsViewModel
+                {
+                    TeamId = 12,
+                    TeamName = "TeamNameL",
+                    Position = 6,
+                    Points = 0,
+                    SetsRatio = null,
+                    BallsRatio = null
+                });
+
         }
 
         /// <summary>

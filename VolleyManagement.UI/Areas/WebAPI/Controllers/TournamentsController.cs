@@ -69,9 +69,9 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         {
             var result = new List<List<StandingsEntryViewModel>>();
             var entries = _gameReportService.GetStandings(id);
-            foreach (var entry in entries)
+            foreach (var entry in entries.Divisions)
             {
-                var standings = entry.Select(t => StandingsEntryViewModel.Map(t))
+                var standings = entry.Standings.Select(t => StandingsEntryViewModel.Map(t))
                                      .ToList();
                 StandingsEntryViewModel.SetPositions(standings);
                 result.Add(standings);
@@ -89,7 +89,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         public IEnumerable<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
         {
             var pivotData = _gameReportService.GetPivotStandings(id);
-            return pivotData.Select(item => new PivotStandingsViewModel(item));
+            return pivotData.Divisions.Select(item => new PivotStandingsViewModel(item));
         }
 
         /// <summary>

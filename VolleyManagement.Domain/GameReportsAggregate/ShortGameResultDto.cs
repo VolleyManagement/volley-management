@@ -25,12 +25,12 @@
         /// <summary>
         /// Gets or sets the final score of the game for the home team.
         /// </summary>
-        public byte HomeSetsScore { get; set; }
+        public byte HomeGameScore { get; set; }
 
         /// <summary>
         /// Gets or sets the final score of the game for the away team.
         /// </summary>
-        public byte AwaySetsScore { get; set; }
+        public byte AwayGameScore { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the technical defeat has taken place.

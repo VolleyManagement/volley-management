@@ -25,7 +25,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\CodeAnalysisRules\VolleyManagement.General.ruleset</CodeAnalysisRuleSet>
@@ -66,6 +66,8 @@
     <Compile Include="FeedbackAggregate\FeedbackStatusEnum.cs" />
     <Compile Include="FeedbackAggregate\FeedbackValidation.cs" />
     <Compile Include="FeedbackAggregate\IFeedbackRepository.cs" />
+    <Compile Include="GameReportsAggregate\StandingsDto.cs" />
+    <Compile Include="GameReportsAggregate\TournamentStandings.cs" />
     <Compile Include="GameReportsAggregate\StandingsEntry.cs" />
     <Compile Include="GameReportsAggregate\TeamStandingsDto.cs" />
     <Compile Include="GameReportsAggregate\ShortGameResultDto.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="RolesAggregate\IRoleRepository.cs" />
     <Compile Include="RolesAggregate\Role.cs" />
     <Compile Include="TeamsAggregate\ITeamRepository.cs" />
+    <Compile Include="TeamsAggregate\TeamTournamentDto.cs" />
     <Compile Include="TeamsAggregate\TeamValidation.cs" />
     <Compile Include="TournamentRequestAggregate\ITournamentRequestRepository.cs" />
     <Compile Include="TournamentRequestAggregate\TournamentRequest.cs" />

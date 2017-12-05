@@ -74,10 +74,10 @@
             {
                 HomeTeamId = game.HomeTeamId,
                 AwayTeamId = game.AwayTeamId,
-                HomeSetsScore = game.HomeSetsScore,
-                AwaySetsScore = game.AwaySetsScore,
+                HomeSetsScore = game.HomeGameScore,
+                AwaySetsScore = game.AwayGameScore,
                 IsTechnicalDefeat = game.IsTechnicalDefeat,
-                CssClass = GetCssClass(game.HomeSetsScore, game.AwaySetsScore)
+                CssClass = GetCssClass(game.HomeGameScore, game.AwayGameScore)
             };
         }
 

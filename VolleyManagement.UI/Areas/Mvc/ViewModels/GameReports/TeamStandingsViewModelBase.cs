@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
     using System;
     using System.Collections.Generic;
@@ -41,26 +41,10 @@
         {
             for (int i = 0; i < entries.Count; i++)
             {
-                if (i != 0)
-                {
-                    if (AreScoresCompletelyEqual(entries[i], entries[i - 1]))
-                    {
-                        entries[i].Position = entries[i - 1].Position;
-                        continue;
-                    }
-                }
-
                 entries[i].Position = i + 1;
             }
 
             return entries;
-        }
-
-        private static bool AreScoresCompletelyEqual(TeamStandingsViewModelBase entryA, TeamStandingsViewModelBase entryB)
-        {
-            return entryA.Points == entryB.Points
-                && entryA.SetsRatio == entryB.SetsRatio
-                && entryA.BallsRatio == entryB.BallsRatio;
         }
     }
 }

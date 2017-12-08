@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
     using System;
     using System.Collections.Generic;
@@ -17,14 +17,14 @@
         /// <param name="pivotStandings">Instance of a class which implements<see cref="PivotStandingsDto"/></param>
         public PivotStandingsViewModel(PivotStandingsDto pivotStandings)
         {
-            TeamsStandings = pivotStandings.Teams.Select(t => PivotStandingsEntryViewModel.Map(t)).ToList();
-            GamesStandings = pivotStandings.GameResults.Select(g => PivotStandingsGameViewModel.Map(g)).ToList();
+            TeamsStandings = pivotStandings.Teams.Select(PivotStandingsEntryViewModel.Map).ToList();
+            GamesStandings = pivotStandings.GameResults.Select(PivotStandingsGameViewModel.Map).ToList();
 
             foreach (var game in GamesStandings)
             {
                 game.Results = pivotStandings.GameResults
                     .Where(g => g.HomeTeamId == game.HomeTeamId && g.AwayTeamId == game.AwayTeamId)
-                    .Select(g => ShortGameResultViewModel.Map(g)).ToList();
+                    .Select(ShortGameResultViewModel.Map).ToList();
             }
         }
 

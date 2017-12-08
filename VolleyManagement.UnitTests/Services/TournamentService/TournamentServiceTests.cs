@@ -58,7 +58,7 @@
         private Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock;
         private Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock;
-        private Mock<IQuery<List<Team>, FindByTournamentIdCriteria>> _getAllTournamentTeamsQuery;
+        private Mock<IQuery<List<Team>, FindByTournamentIdCriteriaOld>> _getAllTournamentTeamsQuery;
         private Mock<IQuery<List<Division>, TournamentDivisionsCriteria>> _getAllTournamentDivisionsQuery;
         private Mock<IQuery<List<Group>, DivisionGroupsCriteria>> _getAllTournamentGroupsQuery;
         private Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>> _getAllGroupsTeamsQuery;
@@ -82,7 +82,7 @@
             _uniqueTournamentQueryMock = new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
             _getAllQueryMock = new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
-            _getAllTournamentTeamsQuery = new Mock<IQuery<List<Team>, FindByTournamentIdCriteria>>();
+            _getAllTournamentTeamsQuery = new Mock<IQuery<List<Team>, FindByTournamentIdCriteriaOld>>();
             _getAllTournamentDivisionsQuery = new Mock<IQuery<List<Division>, TournamentDivisionsCriteria>>();
             _getAllTournamentGroupsQuery = new Mock<IQuery<List<Group>, DivisionGroupsCriteria>>();
             _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
@@ -1682,7 +1682,7 @@
 
         private void MockGetAllTournamentTeamsQuery(List<Team> testData)
         {
-            _getAllTournamentTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>())).Returns(testData);
+            _getAllTournamentTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteriaOld>())).Returns(testData);
         }
 
         private void MockGetAllTournamentDivisionsQuery(List<Division> testData)
@@ -1702,7 +1702,7 @@
 
         private void MockGetAllTournamentTeamsQueryTwoCalls(List<Team> firstCallTestData, List<Team> secondCallTestData)
         {
-            _getAllTournamentTeamsQuery.SetupSequence(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>()))
+            _getAllTournamentTeamsQuery.SetupSequence(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteriaOld>()))
                 .Returns(firstCallTestData)
                 .Returns(secondCallTestData);
         }

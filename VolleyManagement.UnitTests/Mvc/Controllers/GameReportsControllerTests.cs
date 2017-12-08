@@ -43,12 +43,10 @@
         public void Standings_StandingsRequested_StandingsReturned()
         {
             // Arrange
-            var teams = new TeamStandingsTestFixture().TestTeamStandings().Build();
-            var gameResults = new ShortGameResultDtoTetsFixture().GetShortResults().Build();
-            var testPivotStandings = new List<PivotStandingsDto> { new PivotStandingsDto(teams, gameResults) };
+            var testPivotStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
 
-            var testStandings = new List<List<StandingsEntry>> { new StandingsTestFixture().TestStandings().Build() };
-            var expected = new StandingsViewModelBuilder().Build();
+            var expected = new StandingsViewModelBuilder().WithMultipleDivisionsAllPossibleScores().Build();
 
             MockTournamentServiceReturnTournament();
             SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
@@ -90,13 +88,13 @@
             return new GameReportsController(_gameReportServiceMock.Object, _tournamentServiceMock.Object);
         }
 
-        private void SetupGameReportGetStandings(int tournamentId, List<List<StandingsEntry>> testData)
+        private void SetupGameReportGetStandings(int tournamentId, TournamentStandings<StandingsDto> testData)
         {
             _gameReportServiceMock
                 .Setup(m => m.GetStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);
         }
 
-        private void SetupGameReportGetPivotStandings(int tournamentId, List<PivotStandingsDto> testData)
+        private void SetupGameReportGetPivotStandings(int tournamentId, TournamentStandings<PivotStandingsDto> testData)
         {
             _gameReportServiceMock
                 .Setup(m => m.GetPivotStandings(It.Is<int>(id => id == tournamentId))).Returns(testData);

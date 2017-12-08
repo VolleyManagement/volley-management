@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
@@ -53,21 +54,68 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given <see cref="StandingsViewModel"/> objects are equal.</returns>
-        internal bool AreEqual(StandingsViewModel x, StandingsViewModel y)
+        internal bool AreEqual(StandingsViewModel expected, StandingsViewModel actual)
         {
-            if (y.PivotTable != null && y.Standings != null)
+            Assert.AreEqual(expected.TournamentId, actual.TournamentId, "TournamentId should match");
+            Assert.AreEqual(expected.TournamentName, actual.TournamentName, "TournamentName should match");
+
+            Assert.AreEqual(expected.Message, actual.Message, "Message should match");
+            Assert.AreEqual(expected.LastTimeUpdated, actual.LastTimeUpdated, "LastTimeUpdated should match");
+
+            if (expected.Standings != null || actual.Standings != null)
             {
-                return x.TournamentId == y.TournamentId
-                && x.TournamentName == y.TournamentName
-                && x.Message == y.Message
-                && x.Standings.FirstOrDefault().SequenceEqual(y.Standings.FirstOrDefault(), new StandingsEntryViewModelEqualityComparer())
-                && x.PivotTable.FirstOrDefault().TeamsStandings.SequenceEqual(y.PivotTable.FirstOrDefault().TeamsStandings, new PivotTeamStandingsViewModelEqualityComparer())
-                && PivotTableEqualityComparer.AreResultTablesEquals(x.PivotTable.FirstOrDefault(), y.PivotTable.FirstOrDefault());
+                if (expected.Standings == null || actual.Standings == null)
+                {
+                    Assert.Fail("One of the Standings colection is null");
+                }
+
+                Assert.AreEqual(expected.Standings.Count, actual.Standings.Count, "Number of Standings divisions should match");
+
+                for (var i = 0; i < expected.Standings.Count; i++)
+                {
+                    Assert.AreEqual(expected.Standings[i].Count, actual.Standings[i].Count, $"[Div#{i}] Number of Standings should match");
+                    for (var j = 0; j < expected.Standings[i].Count; j++)
+                    {
+                        Assert.IsTrue(StandingsEntryViewModelEqualityComparer.AssertAreEqual(
+                            expected.Standings[i][j],
+                            actual.Standings[i][j],
+                            $"[Div#{i}][Standings[{j}]] "));
+                    }
+                }
             }
 
-                return x.TournamentId == y.TournamentId
-                && x.TournamentName == y.TournamentName
-                && x.Message == y.Message;
+            if (expected.PivotTable != null || actual.PivotTable != null)
+            {
+                if (expected.PivotTable == null || actual.PivotTable == null)
+                {
+                    Assert.Fail("One of the PivotTable colection is null");
+                }
+
+                Assert.AreEqual(expected.PivotTable.Count, actual.PivotTable.Count, "Number of PivotTable divisions should match");
+
+                for (var i = 0; i < expected.PivotTable.Count; i++)
+                {
+                    var expectedPivot = expected.PivotTable[i];
+                    var actualPivot = actual.PivotTable[i];
+
+                    Assert.AreEqual(expectedPivot.TeamsStandings.Count, actualPivot.TeamsStandings.Count, $"[Div#{i}] Number of teams in pivot table should match");
+
+                    for (var j = 0; j < expectedPivot.TeamsStandings.Count; j++)
+                    {
+                        PivotTeamStandingsViewModelEqualityComparer.AssertAreEqual(
+                            expectedPivot.TeamsStandings[j],
+                            actualPivot.TeamsStandings[j],
+                            $"[Div#{i}]Standings:{j}: ");
+                    }
+
+                    PivotTableEqualityComparer.AreResultTablesEquals(
+                        expectedPivot.AllGameResults,
+                        actualPivot,
+                        $"[Div#{i}]");
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -5,6 +5,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
@@ -21,12 +22,7 @@
         /// <returns>True if the objects are considered equal; otherwise, false.</returns>
         public bool Equals(PivotTeamStandingsViewModel x, PivotTeamStandingsViewModel y)
         {
-            return x.TeamId == y.TeamId
-                && x.TeamName == y.TeamName
-                && x.Points == y.Points
-                && x.SetsRatio == y.SetsRatio
-                && x.Position == y.Position
-                && x.BallsRatio == y.BallsRatio;
+            return AssertAreEqual(x, y);
         }
 
         /// <summary>
@@ -46,6 +42,33 @@
             stringBuilder.Append(obj.BallsRatio);
 
             return stringBuilder.ToString().GetHashCode();
+        }
+
+        public static bool AssertAreEqual(PivotTeamStandingsViewModel expected, PivotTeamStandingsViewModel actual, string messagePrefix = "")
+        {
+            Assert.AreEqual(expected.TeamId, actual.TeamId, $"{messagePrefix} TeamId should match");
+            Assert.AreEqual(expected.TeamName, actual.TeamName, $"{messagePrefix} TeamName should match");
+            Assert.AreEqual(expected.Points, actual.Points, $"{messagePrefix} Points should match");
+            AssertFloatNullablesAreEqual(expected.SetsRatio, actual.SetsRatio, $"{messagePrefix} SetsRatio should match");
+            Assert.AreEqual(expected.Position, actual.Position, $"{messagePrefix} Position should match");
+            AssertFloatNullablesAreEqual(expected.BallsRatio, actual.BallsRatio, $"{messagePrefix} BallsRatio should match");
+            return true;
+        }
+
+        public static bool AssertFloatNullablesAreEqual(float? expected, float? actual, string message)
+        {
+            if (!expected.HasValue && !actual.HasValue)
+            {
+                return true;
+            }
+
+            if (!expected.HasValue || !actual.HasValue)
+            {
+                Assert.Fail($"{message}. Expected: <{expected}>, Actual: <{actual}>");
+            }
+
+            Assert.AreEqual(expected.GetValueOrDefault(), actual.GetValueOrDefault(), 0.001f, message);
+            return true;
         }
     }
 }

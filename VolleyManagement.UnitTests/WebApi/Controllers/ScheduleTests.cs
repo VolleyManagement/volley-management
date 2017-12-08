@@ -54,7 +54,7 @@
             // Arrange
             var testTournament = new TournamentBuilder().Build();
             MockGetTournament(testTournament, TOURNAMENT_ID);
-            var testGames = new GameServiceTestFixture().WithNoLostSetsNoLostBallsForOneTeam().Build();
+            var testGames = new GameServiceTestFixture().WithOneWeekOneDivisionOneGame().Build();
             SetupGetTournamentResults(TOURNAMENT_ID, testGames);
             var expected = new ScheduleViewModelTestFixture().WithOneWeekOneDivisionOneGame().Build();
 

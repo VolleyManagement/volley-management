@@ -16,9 +16,11 @@
     using VolleyManagement.UI.Areas.WebApi.Controllers;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
+    using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
     using VolleyManagement.UnitTests.Services.GameReportService;
     using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
+    using VolleyManagement.UnitTests.WebApi.ViewModels.Schedule;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -237,80 +239,6 @@
 
             // Assert
             Assert.AreEqual(actual.First().TeamsStandings.Count, EMPTY_LIST_COUNT);
-        }
-        #endregion
-
-        #region GetSchedule
-
-        /// <summary>
-        /// Test for GetSchedule method.
-        /// Tournament with games; games list returned
-        /// </summary>
-        [TestMethod]
-        public void GetSchedule_TournamentWithGames_GamesListReturned()
-        {
-            // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
-            var testGames = new GameServiceTestFixture().TestGameResults().Build();
-            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
-            var expected = new ScheduleByRoundViewModelTestFixture().TestGames().Build().ToList();
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetSchedule(TOURNAMENT_ID).ToList();
-
-            // Assert
-            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
-            CollectionAssert.AreEqual(expected, actual, new ScheduleByRoundViewModelComparer());
-        }
-
-        /// <summary>
-        /// Test for GetSchedule method.
-        /// Tournament without games; empty games list returned
-        /// </summary>
-        [TestMethod]
-        public void GetSchedule_TournamentWithoutGames_EmptyGamesListReturned()
-        {
-            // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
-            SetupGetTournamentResults(TOURNAMENT_ID, new List<GameResultDto>());
-            var expected = new List<GameViewModel>();
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetSchedule(TOURNAMENT_ID).ToList();
-
-            // Assert
-            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
-            CollectionAssert.AreEqual(expected, actual, new GameViewModelComparer());
-        }
-
-        /// <summary>
-        /// Test for GetSchedule method.
-        /// Tournament with games; Result does not exist, games list with result null returned
-        /// </summary>
-        [TestMethod]
-        public void GetSchedule_TournamentWithGamesNoResult_GamesListReturned()
-        {
-            // Arrange
-            var testTournament = new TournamentBuilder().Build();
-            MockGetTournament(testTournament, TOURNAMENT_ID);
-            var testGames = new GameServiceTestFixture().TestGamesWithoutResult().Build();
-            SetupGetTournamentResults(TOURNAMENT_ID, testGames);
-            var expected = new ScheduleByRoundViewModelTestFixture().TestGamesWithoutResult().Build().ToList();
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetSchedule(TOURNAMENT_ID).ToList();
-
-            // Assert
-            _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
-            CollectionAssert.AreEqual(expected, actual, new ScheduleByRoundViewModelComparer());
         }
         #endregion
 

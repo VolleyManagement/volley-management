@@ -66,6 +66,7 @@
     <Compile Include="FeedbackAggregate\FeedbackStatusEnum.cs" />
     <Compile Include="FeedbackAggregate\FeedbackValidation.cs" />
     <Compile Include="FeedbackAggregate\IFeedbackRepository.cs" />
+    <Compile Include="GameReportsAggregate\DivisionStandingsDtoBase.cs" />
     <Compile Include="GameReportsAggregate\StandingsDto.cs" />
     <Compile Include="GameReportsAggregate\TournamentStandings.cs" />
     <Compile Include="GameReportsAggregate\StandingsEntry.cs" />

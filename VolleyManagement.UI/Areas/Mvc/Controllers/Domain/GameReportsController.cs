@@ -1,6 +1,5 @@
 namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
     using Contracts;
@@ -12,17 +11,14 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     public class GameReportsController : Controller
     {
         private readonly IGameReportService _gameReportService;
-        private readonly ITournamentService _tournamentService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameReportsController"/> class.
         /// </summary>
         /// <param name="gameReportService">Instance of a class which implements <see cref="IGameReportService"/>.</param>
-        /// <param name="tournamentService">Instance of a class which implements <see cref="ITournamentService"/>.</param>
-        public GameReportsController(IGameReportService gameReportService, ITournamentService tournamentService)
+        public GameReportsController(IGameReportService gameReportService)
         {
             _gameReportService = gameReportService;
-            _tournamentService = tournamentService;
         }
 
         /// <summary>
@@ -35,14 +31,16 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         {
             if (_gameReportService.IsStandingAvailable(tournamentId))
             {
-                var tournament = _tournamentService.Get(tournamentId);
                 var standings = _gameReportService.GetStandings(tournamentId);
                 var pivots = _gameReportService.GetPivotStandings(tournamentId);
 
                 var mapedStandings = standings.Divisions
-                    .Select(item => TeamStandingsViewModelBase.SetPositions(
-                        item.Standings.Select(StandingsEntryViewModel.Map).ToList()
-                    ))
+                    .Select(item =>
+                    {
+                        var standingsTable = DivisionStandingsViewModel.Map(item);  
+                        TeamStandingsViewModelBase.SetPositions(standingsTable.StandingsEntries);
+                        return standingsTable;
+                    })
                     .ToList();
 
                 var pivotTables = pivots.Divisions.Select(item => new PivotTableViewModel(item)).ToList();
@@ -51,9 +49,8 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 {
                     TournamentId = tournamentId,
                     TournamentName = tournamentName,
-                    Standings = mapedStandings,
-                    PivotTable = pivotTables,
-                    LastTimeUpdated = tournament.LastTimeUpdated
+                    StandingsTable = mapedStandings,
+                    PivotTable = pivotTables
                 };
 
                 return View(standingsViewModel);

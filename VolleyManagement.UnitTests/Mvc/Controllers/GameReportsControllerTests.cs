@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -33,7 +34,6 @@
         public void TestInit()
         {
             _gameReportServiceMock = new Mock<IGameReportService>();
-            _tournamentServiceMock = new Mock<ITournamentService>();
         }
 
         /// <summary>
@@ -43,12 +43,38 @@
         public void Standings_StandingsRequested_StandingsReturned()
         {
             // Arrange
-            var testPivotStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var testPivotStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
             var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
 
             var expected = new StandingsViewModelBuilder().WithMultipleDivisionsAllPossibleScores().Build();
 
-            MockTournamentServiceReturnTournament();
+            SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
+            SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
+            SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = TestExtensions.GetModel<StandingsViewModel>(sut.Standings(TOURNAMENT_ID, TOURNAMENT_NAME));
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new StandingsViewModelComparer());
+        }
+
+        [TestMethod]
+        public void Standings_LastUpdateTimeExists_StandingsReturnLastUpdateTime()
+        {
+            // Arrange
+            var LAST_UPDATE_TIME = new DateTime(2017, 4, 5, 12, 4, 23);
+
+            var testPivotStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores()
+                                            .WithLastUpdateTime(LAST_UPDATE_TIME).Build();
+            var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPosibleScores()
+                                            .WithLastUpdateTime(LAST_UPDATE_TIME).Build();
+
+            var expected = new StandingsViewModelBuilder().WithMultipleDivisionsAllPossibleScores()
+                                            .WithLastUpdateTime(LAST_UPDATE_TIME).Build();
+
             SetupIsStandingsAvailableTrue(TOURNAMENT_ID);
             SetupGameReportGetStandings(TOURNAMENT_ID, testStandings);
             SetupGameReportGetPivotStandings(TOURNAMENT_ID, testPivotStandings);
@@ -85,7 +111,7 @@
 
         private GameReportsController BuildSUT()
         {
-            return new GameReportsController(_gameReportServiceMock.Object, _tournamentServiceMock.Object);
+            return new GameReportsController(_gameReportServiceMock.Object);
         }
 
         private void SetupGameReportGetStandings(int tournamentId, TournamentStandings<StandingsDto> testData)
@@ -110,12 +136,6 @@
         {
             _gameReportServiceMock
                 .Setup(m => m.IsStandingAvailable(It.Is<int>(id => id == tournamentId))).Returns(false);
-        }
-
-        private void MockTournamentServiceReturnTournament()
-        {
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
         }
     }
 }

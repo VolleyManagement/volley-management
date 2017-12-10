@@ -1,9 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Mvc.ViewModels
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using Newtonsoft.Json.Linq;
-    using UI.Areas.Mvc.Controllers;
     using UI.Areas.Mvc.ViewModels.GameReports;
 
     /// <summary>
@@ -23,9 +22,11 @@
             {
                 TournamentId = 1,
                 TournamentName = "Name",
-                Standings = new List<List<StandingsEntryViewModel>>()
+                StandingsTable = new List<DivisionStandingsViewModel>()
                 {
-                        new List<StandingsEntryViewModel>()
+                    new DivisionStandingsViewModel
+                    {
+                        StandingsEntries = new List<StandingsEntryViewModel>
                         {
                             new StandingsEntryViewModel
                             {
@@ -91,6 +92,7 @@
                                 BallsRatio = 123.0f / 204
                             }
                         }
+                    }
                 },
 
                 PivotTable = new List<PivotTableViewModel>()
@@ -110,10 +112,10 @@
             {
                 TournamentId = 1,
                 TournamentName = "Name",
-                Standings = new List<List<StandingsEntryViewModel>>
+                StandingsTable = new List<DivisionStandingsViewModel>
                 {
-                    new List<StandingsEntryViewModel>(),
-                    new List<StandingsEntryViewModel>()
+                    new DivisionStandingsViewModel(),
+                    new DivisionStandingsViewModel(),
                 },
                 PivotTable = new List<PivotTableViewModel>
                 {
@@ -134,7 +136,7 @@
 
         private void AddTeamsForMultipleDivisionsCase()
         {
-            _standingsViewModel.Standings[0].Add( // A
+            _standingsViewModel.StandingsTable[0].StandingsEntries.Add( // A
                 new StandingsEntryViewModel
                 {
                     Position = 1,
@@ -156,7 +158,7 @@
                     BallsLost = 355,
                     BallsRatio = (float)363 / 355
                 });
-            _standingsViewModel.Standings[0].Add( // E
+            _standingsViewModel.StandingsTable[0].StandingsEntries.Add( // E
                 new StandingsEntryViewModel
                 {
                     Position = 2,
@@ -178,7 +180,7 @@
                     BallsLost = 355,
                     BallsRatio = (float)363 / 355
                 });
-            _standingsViewModel.Standings[0].Add( // C
+            _standingsViewModel.StandingsTable[0].StandingsEntries.Add( // C
                 new StandingsEntryViewModel
                 {
                     Position = 3,
@@ -200,7 +202,7 @@
                     BallsLost = 362,
                     BallsRatio = (float)350 / 362
                 });
-            _standingsViewModel.Standings[0].Add( // D
+            _standingsViewModel.StandingsTable[0].StandingsEntries.Add( // D
                 new StandingsEntryViewModel
                 {
                     Position = 4,
@@ -222,7 +224,7 @@
                     BallsLost = 362,
                     BallsRatio = (float)350 / 362
                 });
-            _standingsViewModel.Standings[0].Add( // B
+            _standingsViewModel.StandingsTable[0].StandingsEntries.Add( // B
                 new StandingsEntryViewModel
                 {
                     Position = 5,
@@ -244,7 +246,7 @@
                     BallsLost = 345,
                     BallsRatio = (float)349 / 345
                 });
-            _standingsViewModel.Standings[0].Add( // F
+            _standingsViewModel.StandingsTable[0].StandingsEntries.Add( // F
                 new StandingsEntryViewModel
                 {
                     Position = 6,
@@ -266,7 +268,7 @@
                     BallsLost = 345,
                     BallsRatio = (float)349 / 345
                 });
-            _standingsViewModel.Standings[1].Add( // G
+            _standingsViewModel.StandingsTable[1].StandingsEntries.Add( // G
                 new StandingsEntryViewModel
                 {
                     Position = 1,
@@ -288,7 +290,7 @@
                     BallsLost = 355,
                     BallsRatio = (float)363 / 355
                 });
-            _standingsViewModel.Standings[1].Add( // I
+            _standingsViewModel.StandingsTable[1].StandingsEntries.Add( // I
                 new StandingsEntryViewModel
                 {
                     Position = 2,
@@ -310,7 +312,7 @@
                     BallsLost = 362,
                     BallsRatio = (float)350 / 362
                 });
-            _standingsViewModel.Standings[1].Add( // H
+            _standingsViewModel.StandingsTable[1].StandingsEntries.Add( // H
                 new StandingsEntryViewModel
                 {
                     Position = 3,
@@ -332,7 +334,7 @@
                     BallsLost = 345,
                     BallsRatio = (float)349 / 345
                 });
-            _standingsViewModel.Standings[1].Add( // J
+            _standingsViewModel.StandingsTable[1].StandingsEntries.Add( // J
                 new StandingsEntryViewModel
                 {
                     Position = 4,
@@ -354,7 +356,7 @@
                     BallsLost = 0,
                     BallsRatio = null
                 });
-            _standingsViewModel.Standings[1].Add( // K
+            _standingsViewModel.StandingsTable[1].StandingsEntries.Add( // K
                 new StandingsEntryViewModel
                 {
                     Position = 5,
@@ -376,7 +378,7 @@
                     BallsLost = 0,
                     BallsRatio = null
                 });
-            _standingsViewModel.Standings[1].Add( // L
+            _standingsViewModel.StandingsTable[1].StandingsEntries.Add( // L
                 new StandingsEntryViewModel
                 {
                     Position = 6,
@@ -918,9 +920,11 @@
             {
                 TournamentId = 1,
                 TournamentName = "Name",
-                Standings = new List<List<StandingsEntryViewModel>>()
+                StandingsTable = new List<DivisionStandingsViewModel>()
                 {
-                        new List<StandingsEntryViewModel>()
+                    new DivisionStandingsViewModel
+                    {
+                        StandingsEntries = new List<StandingsEntryViewModel>()
                         {
                             new StandingsEntryViewModel
                             {
@@ -986,13 +990,14 @@
                                 BallsRatio = 192.0f / 204
                             }
                         }
+                    }
                 },
                 PivotTable = new List<PivotTableViewModel>()
                 {
                     new PivotTableViewModel
                     {
-                    TeamsStandings = GetPivotTeamsStandingsTwoTeamsScoresCompletelyEqual(),
-                    AllGameResults = GetPivotTableTwoTeamsScoresCompletelyEqual()
+                        TeamsStandings = GetPivotTeamsStandingsTwoTeamsScoresCompletelyEqual(),
+                        AllGameResults = GetPivotTableTwoTeamsScoresCompletelyEqual()
                     }
                 }
             };
@@ -1036,14 +1041,20 @@
             return this;
         }
 
-        /// <summary>
-        /// Sets the standings entries of the view model.
-        /// </summary>
-        /// <param name="entries">Entries of the standings.</param>
-        /// <returns>Instance of <see cref="StandingsViewModelBuilder"/>.</returns>
-        public StandingsViewModelBuilder WithEntries(List<StandingsEntryViewModel> entries)
+        public StandingsViewModelBuilder WithLastUpdateTime(DateTime? lastUpdateTime)
         {
-            _standingsViewModel.Standings = new List<List<StandingsEntryViewModel>>() { entries };
+            // Update standings
+            foreach (var standings in _standingsViewModel.StandingsTable)
+            {
+                standings.LastUpdateTime = lastUpdateTime;
+            }
+
+            // Update pivot
+            foreach (var pivotTable in _standingsViewModel.PivotTable)
+            {
+                pivotTable.LastUpdateTime = lastUpdateTime;
+            }
+
             return this;
         }
 
@@ -1193,6 +1204,7 @@
 
             return table;
         }
+
 
         private List<PivotGameResultViewModel>[] GetPivotTable()
         {

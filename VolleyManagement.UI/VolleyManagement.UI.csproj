@@ -354,6 +354,8 @@
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackMessageViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\FeedbackViewModel\FeedbackViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\CssClassConstants.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\DivisionStandingsBase.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\GameReports\DivisionStandingsViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotGameResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotTableViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\GameReports\PivotTeamStandingsViewModel.cs" />

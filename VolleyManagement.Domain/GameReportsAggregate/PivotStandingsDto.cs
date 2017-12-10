@@ -6,7 +6,7 @@
     /// <summary>
     /// Represents pivot tournament's standings.
     /// </summary>
-    public class PivotStandingsDto
+    public class PivotStandingsDto : DivisionStandingsDtoBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PivotStandingsDto"/> class.
@@ -18,16 +18,6 @@
             Teams = new ReadOnlyCollection<TeamStandingsDto>(teams);
             GameResults = new ReadOnlyCollection<ShortGameResultDto>(gameResults);
         }
-
-        /// <summary>
-        /// Id of the division this standings belongs to
-        /// </summary>
-        public int DivisionId { get; set; }
-
-        /// <summary>
-        /// Name of the division this standings belongs to
-        /// </summary>
-        public string DivisionName { get; set; }
 
         /// <summary>
         /// Gets readonly collection of tournament Teams

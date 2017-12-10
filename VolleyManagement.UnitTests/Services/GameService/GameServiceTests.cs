@@ -1484,6 +1484,39 @@
         }
 
         /// <summary>
+        /// Test for Edit method. Game object contains valid data. Game is edited successfully.
+        /// </summary>
+        [TestMethod]
+        public void Edit_DateChangedExistingGameHasResult_ResultsPersisted()
+        {
+            const string DATE = "2016-04-04 10:00";
+
+            // Arrange
+            MockDefaultTournament();
+            MockGetTournamentByIdQuery();
+
+            var existingGame = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
+
+            var game = new GameBuilder()
+                .WithId(GAME_RESULT_ID)
+                .WithNullResult()
+                .WithStartDate(DateTime.Parse(DATE))
+                .Build();
+
+            _tournamentGameResultsQueryMock
+                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>()))
+                .Returns(new List<GameResultDto> { existingGame });
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Edit(game);
+
+            // Assert
+            VerifyEditGame(game, Times.Once());
+        }
+
+        /// <summary>
         /// Test for Edit method. Game is missing and cannot be edited. Exception is thrown during editing.
         /// </summary>
         [TestMethod]

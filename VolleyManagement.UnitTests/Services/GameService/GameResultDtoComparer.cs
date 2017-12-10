@@ -53,25 +53,20 @@
         /// <returns>True if given <see cref="GameResultDto"/> objects are equal.</returns>
         internal bool AreEqual(GameResultDto x, GameResultDto y)
         {
+            var scoreComparer = new ScoreComparer();
+
             return x.Id == y.Id
                 && x.TournamentId == y.TournamentId
                 && x.HomeTeamId == y.HomeTeamId
                 && x.AwayTeamId == y.AwayTeamId
                 && x.HomeTeamName == y.HomeTeamName
                 && x.AwayTeamName == y.AwayTeamName
-                && x.Result.GameScore.Home == y.Result.GameScore.Home
-                && x.Result.GameScore.Away == y.Result.GameScore.Away
-                && x.Result.GameScore.IsTechnicalDefeat == y.Result.GameScore.IsTechnicalDefeat
-                && x.Result.SetScores[0].Home == y.Result.SetScores[0].Home
-                && x.Result.SetScores[0].Away == y.Result.SetScores[0].Away
-                && x.Result.SetScores[1].Home == y.Result.SetScores[1].Home
-                && x.Result.SetScores[1].Away == y.Result.SetScores[1].Away
-                && x.Result.SetScores[2].Home == y.Result.SetScores[2].Home
-                && x.Result.SetScores[2].Away == y.Result.SetScores[2].Away
-                && x.Result.SetScores[3].Home == y.Result.SetScores[3].Home
-                && x.Result.SetScores[3].Away == y.Result.SetScores[3].Away
-                && x.Result.SetScores[4].Home == y.Result.SetScores[4].Home
-                && x.Result.SetScores[4].Away == y.Result.SetScores[4].Away
+                && scoreComparer.Equals(x.Result.GameScore, y.Result.GameScore)
+                && scoreComparer.Equals(x.Result.SetScores[0], y.Result.SetScores[0])
+                && scoreComparer.Equals(x.Result.SetScores[1], y.Result.SetScores[1])
+                && scoreComparer.Equals(x.Result.SetScores[2], y.Result.SetScores[2])
+                && scoreComparer.Equals(x.Result.SetScores[3], y.Result.SetScores[3])
+                && scoreComparer.Equals(x.Result.SetScores[4], y.Result.SetScores[4])
                 && x.GameDate == y.GameDate
                 && x.Round == y.Round
                 && x.GameNumber == y.GameNumber;

@@ -117,17 +117,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         }
 
         /// <summary>
-        /// Gets a value indicating whether schedule is editable
-        /// </summary>
-        public bool IsScheduleEditable
-        {
-            get
-            {
-                return GameDate > DateTime.Now && GameScore.IsEmpty;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets instance of <see cref="AllowedOperations"/> create object
         /// </summary>
         public AllowedOperations AllowedOperations { get; set; }

@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -12,6 +13,7 @@
     internal class StandingsTestFixture
     {
         private readonly List<(int DivisionId, StandingsEntry Standings)> _standings = new List<(int DivisionId, StandingsEntry Standings)>();
+        private DateTime? _lastUpdateTime;
 
         public StandingsTestFixture DefaultStandings()
         {
@@ -1272,18 +1274,26 @@
             return this;
         }
 
+        public StandingsTestFixture WithLastUpdateTime(DateTime? lastUpdateTime)
+        {
+            _lastUpdateTime = lastUpdateTime;
+
+            return this;
+        }
+
         public TournamentStandings<StandingsDto> Build()
         {
             var result = new TournamentStandings<StandingsDto>();
 
-            var uniqueDivisions = _standings.Select(t => t.DivisionId).Distinct().ToList();
-
-            result.Divisions = uniqueDivisions.Select(divId =>
+            result.Divisions = _standings.Select(t => t.DivisionId)
+                                         .Distinct()
+                                         .Select(divId =>
                 {
                     return new StandingsDto
                     {
                         DivisionId = divId,
                         DivisionName = $"Division {divId}",
+                        LastUpdateTime = _lastUpdateTime,
                         Standings = _standings.Where(t => t.DivisionId == divId).Select(t => t.Standings).ToList()
                     };
                 })

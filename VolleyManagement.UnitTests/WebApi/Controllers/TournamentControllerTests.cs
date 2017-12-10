@@ -185,7 +185,7 @@
         public void GetPivotStandings_PivotStandingsExist_PivotStandingsReturned()
         {
             // Arrange
-            var testData = new PivotStandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var testData = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
 
             MockGetPivotStandings(testData, SPECIFIC_TOURNAMENT_ID);
 

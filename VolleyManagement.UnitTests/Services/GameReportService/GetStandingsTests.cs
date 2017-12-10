@@ -1,7 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
+    using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.GameReportsAggregate;
+    using Domain.TournamentsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     /// <summary>
@@ -56,7 +59,7 @@
             var actual = sut.GetStandings(TOURNAMENT_ID);
 
             // Assert
-            AssertStandingsAreEqual(expected, actual, "When there are games scheduled but no results standing entries should be emoty.");
+            AssertStandingsAreEqual(expected, actual, "When there are games scheduled but no results standing entries should be empty.");
         }
 
         [TestMethod]
@@ -293,6 +296,37 @@
                 expected,
                 actual,
                 "When team has got technical defeat in set balls from this set should not be accounted in the statistics");
+        }
+
+        [TestMethod]
+        public void GetStandings_HasGameResults_LastStandingsUpdateTimeIsReturned()
+        {
+            // Arrange
+            var LAST_UPDATE_TIME = new DateTime(2017, 4, 7, 23, 7, 45);
+
+            var gameResultsTestData = new GameResultsTestFixture().WithAllPossibleScores().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+            var testTour = CreateSingleDivisionTournament(TOURNAMENT_ID, LAST_UPDATE_TIME);
+
+            var expected = new StandingsTestFixture()
+                                    .WithStandingsForAllPossibleScores()
+                                    .WithLastUpdateTime(LAST_UPDATE_TIME)
+                                    .Build();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertStandingsAreEqual(
+                expected,
+                actual,
+                "Standings should be properly calclulated for case of several divisions");
         }
 
         [TestMethod]

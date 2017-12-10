@@ -173,7 +173,7 @@
 
             // Provide persisting results in case of editing dates
             var existingGame = Get(game.Id);
-            var gameHasResults = existingGame == null || existingGame.Result.SetScores.Any(s => !s.IsEmpty);
+            var gameHasResults = existingGame != null && existingGame.Result.SetScores.Any(s => !s.IsEmpty);
 
             if (gameHasResults)
             {
@@ -207,12 +207,6 @@
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
             ValidateGame(game, tournamentScheduleInfo);
-
-            // Add autogeneration
-            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
-            {
-                ScheduleNextGames(game, tournamentScheduleInfo);
-            }
 
             // Add autogeneration
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)

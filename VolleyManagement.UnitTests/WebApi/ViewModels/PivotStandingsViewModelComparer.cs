@@ -1,29 +1,43 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
-    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.WebApi.ViewModels.GameReports;
 
     /// <summary>
     /// Represents an equality comparer for <see cref="PivotStandingsViewModel"/> objects.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class PivotStandingsViewModelComparer : IComparer<PivotStandingsViewModel>, IComparer
+    internal class PivotStandingsViewModelComparer : IComparer<PivotStandingsViewModel>
     {
-        /// <summary>
-        /// Compares two pivot standing entries objects.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>A signed integer that indicates the relative values of entries.</returns>
-        public int Compare(PivotStandingsViewModel x, PivotStandingsViewModel y)
+        public int Compare(PivotStandingsViewModel expected, PivotStandingsViewModel actual)
         {
-            return AreEqual(x, y) ? 0 : 1;
+            if (expected != null || actual != null)
+            {
+                if (expected == null || actual == null)
+                {
+                    Assert.Fail("One of the pivot standings object is null");
+                }
+
+                Assert.AreEqual(expected.TeamsStandings.Count, actual.TeamsStandings.Count, "Number of Team Standings divisions should match");
+                Assert.AreEqual(expected.LastUpdateTime, actual.LastUpdateTime, "LastUpdateTime for division should match");
+
+                for (var i = 0; i < expected.TeamsStandings.Count; i++)
+                {
+                    PivotStandingsEntryViewModelComparer.AssertAreEqual(expected.TeamsStandings[i], actual.TeamsStandings[i], $"[Team#{i}] ");
+                }
+
+                Assert.AreEqual(expected.GamesStandings.Count, actual.GamesStandings.Count, "Number of Games Standings divisions should match");
+                for (var i = 0; i < expected.GamesStandings.Count; i++)
+                {
+                    PivotStandingsGameViewModelComparer.AssertAreEqual(expected.GamesStandings[i], actual.GamesStandings[i], $"[Game#{i}] ");
+                }
+            }
+
+            return 0;
         }
 
         /// <summary>
@@ -34,25 +48,10 @@
         /// <returns>A signed integer that indicates the relative values of entries.</returns>
         public int Compare(object x, object y)
         {
-            PivotStandingsViewModel firstEntry = x as PivotStandingsViewModel;
-            PivotStandingsViewModel secondEntry = y as PivotStandingsViewModel;
+            var expected = x as PivotStandingsViewModel;
+            var actual = y as PivotStandingsViewModel;
 
-            if (firstEntry == null)
-            {
-                return -1;
-            }
-            else if (secondEntry == null)
-            {
-                return 1;
-            }
-
-            return Compare(firstEntry, secondEntry);
-        }
-
-        private bool AreEqual(PivotStandingsViewModel x, PivotStandingsViewModel y)
-        {
-            return x.GamesStandings.SequenceEqual(y.GamesStandings, new PivotStandingsGameViewModelComparer())
-                && x.TeamsStandings.SequenceEqual(y.TeamsStandings, new PivotStandingsEntryViewModelComparer());
+            return Compare(expected, actual);
         }
     }
 }

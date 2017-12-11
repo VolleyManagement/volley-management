@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.0\build\Microsoft.Net.Compilers.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -154,6 +155,8 @@
     <Compile Include="Mvc\ViewModels\ScheduleViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsEntryViewModelEqualityComparer.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelBuilder.cs" />
+    <Compile Include="WebApi\Standings\PivotStandingsViewModelTestFixture.cs" />
+    <Compile Include="WebApi\Standings\DivisionStandingsViewModelTestFixture.cs" />
     <Compile Include="Mvc\ViewModels\StandingsViewModelComparer.cs" />
     <Compile Include="Mvc\ViewModels\TeamMvcViewModelBuilder.cs" />
     <Compile Include="Mvc\ViewModels\TeamNameViewModelBuilder.cs" />
@@ -251,6 +254,8 @@
     <Compile Include="TestExtensions.cs" />
     <Compile Include="TestHelper.cs" />
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
+    <Compile Include="WebApi\Standings\StandingsEntryViewModelEqualityComparer.cs" />
+    <Compile Include="WebApi\Standings\StandingsViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelServiceTestFixture.cs" />
@@ -266,7 +271,6 @@
     <Compile Include="WebApi\ViewModels\PlayerViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\PlayerViewModelServiceTestFixture.cs" />
     <Compile Include="WebApi\ViewModels\ScheduleByRoundViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\ShortGameResultViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\StandingsEntryViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\StandingsEntryViewModelServiceTestFixture.cs" />
     <Compile Include="WebApi\ViewModels\TeamViewModelBuilder.cs" />
@@ -343,6 +347,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

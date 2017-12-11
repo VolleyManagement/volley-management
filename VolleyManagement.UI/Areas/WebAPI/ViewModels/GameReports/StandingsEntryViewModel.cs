@@ -1,7 +1,6 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
     using System.Collections.Generic;
-    using System.Globalization;
     using Domain.GameReportsAggregate;
 
     /// <summary>

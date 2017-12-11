@@ -336,7 +336,7 @@
             var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
             var teamsTestData = TeamsInTwoDivisionTwoGroups();
 
-            var expected = new StandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var expected = new StandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);

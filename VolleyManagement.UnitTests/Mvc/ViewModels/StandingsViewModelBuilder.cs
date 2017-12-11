@@ -1204,8 +1204,7 @@
 
             return table;
         }
-
-
+        
         private List<PivotGameResultViewModel>[] GetPivotTable()
         {
             int rows = 9;

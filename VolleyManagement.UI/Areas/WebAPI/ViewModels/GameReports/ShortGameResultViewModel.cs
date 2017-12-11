@@ -1,9 +1,5 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Domain.GameReportsAggregate;
 
     /// <summary>
@@ -11,6 +7,17 @@
     /// </summary>
     public class ShortGameResultViewModel
     {
+        public ShortGameResultViewModel()
+        {
+
+        }
+
+        public ShortGameResultViewModel(byte homeSetScore, byte awaySetScore, bool isTechnicalDefeat = false)
+        {
+            HomeSetsScore = homeSetScore;
+            AwaySetsScore = awaySetScore;
+            IsTechnicalDefeat = isTechnicalDefeat;
+        }
         /// <summary>
         /// Gets or sets the final score of the game for the home team.
         /// </summary>
@@ -25,20 +32,5 @@
         /// Gets or sets a value indicating whether the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
-
-        /// <summary>
-        /// Maps domain model of <see cref="ShortGameResultDto"/> to view model <see cref="ShortGameResultViewModel"/>.
-        /// </summary>
-        /// <param name="gameResult">Domain model of <see cref="ShortGameResultDto"/>.</param>
-        /// <returns>View model <see cref="ShortGameResultViewModel"/>.</returns>
-        public static ShortGameResultViewModel Map(ShortGameResultDto gameResult)
-        {
-            return new ShortGameResultViewModel
-            {
-                HomeSetsScore = gameResult.HomeGameScore,
-                AwaySetsScore = gameResult.AwayGameScore,
-                IsTechnicalDefeat = gameResult.IsTechnicalDefeat
-            };
-        }
     }
 }

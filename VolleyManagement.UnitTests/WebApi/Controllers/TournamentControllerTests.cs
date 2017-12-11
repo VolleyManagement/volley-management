@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -8,6 +9,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Services.TournamentService;
+    using Standings;
     using UI.Areas.WebApi.ViewModels.Tournaments;
     using VolleyManagement.Crosscutting.Contracts.Extensions;
     using VolleyManagement.Domain.GameReportsAggregate;
@@ -19,6 +21,7 @@
     using VolleyManagement.UnitTests.Services.GameReportService;
     using VolleyManagement.UnitTests.Services.GameService;
     using VolleyManagement.UnitTests.WebApi.ViewModels;
+    using TournamentViewModelComparer = ViewModels.TournamentViewModelComparer;
 
     /// <summary>
     /// Tests for TournamentController class.
@@ -113,6 +116,7 @@
         #endregion
 
         #region GetTournament
+
         [TestMethod]
         public void GetTournament_SpecificTournamentExist_TournamentReturned()
         {
@@ -163,62 +167,6 @@
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
-        [TestMethod]
-        public void GetStandings_StandingsExist_StandingsReturned()
-        {
-            // Arrange
-            var testData = new StandingsTestFixture().DefaultStandings().Build();
-            var expected = new StandingsEntryViewModelServiceTestFixture().TestEntries().Build().ToList();
-            MockGetStandings(testData, SPECIFIC_TOURNAMENT_ID);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetTournamentStandings(SPECIFIC_TOURNAMENT_ID).First().ToList();
-
-            // Assert
-            CollectionAssert.AreEqual(expected, actual, new StandingsEntryViewModelComparer());
-        }
-
-        [TestMethod]
-        [Ignore]
-        public void GetPivotStandings_PivotStandingsExist_PivotStandingsReturned()
-        {
-            // Arrange
-            var testData = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
-
-            MockGetPivotStandings(testData, SPECIFIC_TOURNAMENT_ID);
-
-            var expectedTeams = new PivotStandingsEntryViewModelServiceTestFixture().TestEntries().Build();
-            var expectedGames = new PivotStandingsGameViewModelServiceTestFixture().TestEntries().Build();
-            var expected = new PivotStandingsViewModel();
-            expected.GamesStandings = expectedGames.ToList();
-            expected.TeamsStandings = expectedTeams.ToList();
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetTournamentPivotStandings(SPECIFIC_TOURNAMENT_ID);
-
-            // Assert
-            // TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
-        }
-
-        [TestMethod]
-        public void GetPivotStandings_NoStandingsExist_EmptyListReturned()
-        {
-            // Arrange
-            var testData = new PivotStandingsTestFixture().WithEmptyStandings().Build();
-            MockGetPivotStandings(testData, SPECIFIC_TOURNAMENT_ID);
-
-            var sut = BuildSUT();
-
-            // Act
-            var actual = sut.GetTournamentPivotStandings(SPECIFIC_TOURNAMENT_ID);
-
-            // Assert
-            Assert.AreEqual(actual.Count(), EMPTY_LIST_COUNT);
-        }
         #endregion
 
         #region GetSchedule
@@ -293,6 +241,95 @@
             _gameServiceMock.Verify(ts => ts.GetTournamentResults(TOURNAMENT_ID), Times.Once());
             CollectionAssert.AreEqual(expected, actual, new ScheduleByRoundViewModelComparer());
         }
+
+        #endregion
+
+        #region Standings
+
+        [TestMethod]
+        public void Standings_StandingsRequested_StandingsReturned()
+        {
+            // Arrange
+            var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
+
+            var expected = new DivisionStandingsViewModelTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
+
+            MockGetStandings(TOURNAMENT_ID, testStandings);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentStandings(TOURNAMENT_ID);
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new DivisionStandingsViewModelComparer());
+        }
+
+        [TestMethod]
+        public void Standings_LastUpdateTimeExists_StandingsReturnLastUpdateTime()
+        {
+            // Arrange
+            var LAST_UPDATE_TIME = new DateTime(2017, 4, 5, 12, 4, 23);
+
+            var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPossibleScores()
+                                            .WithLastUpdateTime(LAST_UPDATE_TIME).Build();
+
+            var expected = new DivisionStandingsViewModelTestFixture().WithMultipleDivisionsAllPossibleScores()
+                                            .WithLastUpdateTime(LAST_UPDATE_TIME).Build();
+
+            MockGetStandings(TOURNAMENT_ID, testStandings);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentStandings(TOURNAMENT_ID);
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new DivisionStandingsViewModelComparer());
+        }
+
+        [TestMethod]
+        public void PivotStandings_StandingsRequested_StandingsReturned()
+        {
+            // Arrange
+            var testStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
+
+            var expected = new PivotStandingsViewModelTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
+
+            MockGetPivotStandings(TOURNAMENT_ID, testStandings);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
+        }
+
+        [TestMethod]
+        public void PivotStandings_LastUpdateTimeExists_StandingsReturnLastUpdateTime()
+        {
+            // Arrange
+            var LAST_UPDATE_TIME = new DateTime(2017, 4, 5, 12, 4, 23);
+
+            var testStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores()
+                .WithLastUpdateTime(LAST_UPDATE_TIME).Build();
+
+            var expected = new PivotStandingsViewModelTestFixture().WithMultipleDivisionsAllPossibleScores()
+                .WithLastUpdateTime(LAST_UPDATE_TIME).Build();
+
+            MockGetPivotStandings(TOURNAMENT_ID, testStandings);
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetTournamentPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            TestHelper.AreEqual(expected, actual, new PivotStandingsViewModelComparer());
+        }
+
         #endregion
 
         #region Private
@@ -305,14 +342,14 @@
                 _gameReportServiceMock.Object);
         }
 
-        private void MockGetStandings(TournamentStandings<StandingsDto> testData, int tournamentId)
+        private void MockGetStandings(int tournamentId, TournamentStandings<StandingsDto> testData)
         {
             _gameReportServiceMock.Setup(gr => gr.GetStandings(tournamentId)).Returns(testData);
         }
 
-        private void MockGetPivotStandings(TournamentStandings<PivotStandingsDto> testData, int id)
+        private void MockGetPivotStandings(int tournamentId, TournamentStandings<PivotStandingsDto> testData)
         {
-            _gameReportServiceMock.Setup(gr => gr.GetPivotStandings(id)).Returns(testData);
+            _gameReportServiceMock.Setup(gr => gr.GetPivotStandings(tournamentId)).Returns(testData);
         }
 
         private void MockGetTournaments(List<Tournament> testData)

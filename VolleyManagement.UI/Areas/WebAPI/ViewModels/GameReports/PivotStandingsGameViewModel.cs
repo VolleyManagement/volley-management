@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
     using System;
     using System.Collections.Generic;
@@ -25,19 +25,5 @@
         /// Gets or sets collection of results of two teams
         /// </summary>
         public List<ShortGameResultViewModel> Results { get; set; }
-
-        /// <summary>
-        /// Maps domain model of <see cref="ShortGameResultDto"/> to view model of <see cref="PivotStandingsGameViewModel"/>.
-        /// </summary>
-        /// <param name="gameResult">Domain model of <see cref="ShortGameResultDto"/>.</param>
-        /// <returns>View model of <see cref="PivotStandingsGameViewModel"/>.</returns>
-        public static PivotStandingsGameViewModel Map(ShortGameResultDto gameResult)
-        {
-            return new PivotStandingsGameViewModel
-            {
-                HomeTeamId = gameResult.HomeTeamId,
-                AwayTeamId = gameResult.AwayTeamId,
-            };
-        }
     }
 }

@@ -12,6 +12,7 @@
     using VolleyManagement.UnitTests.Mvc.ViewModels;
     using VolleyManagement.UnitTests.Services.GameReportService;
     using VolleyManagement.UnitTests.Services.TournamentService;
+    using WebApi.Standings;
 
     /// <summary>
     /// Tests for <see cref="GameReportsController"/> class.
@@ -44,7 +45,7 @@
         {
             // Arrange
             var testPivotStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
-            var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
 
             var expected = new StandingsViewModelBuilder().WithMultipleDivisionsAllPossibleScores().Build();
 
@@ -69,7 +70,7 @@
 
             var testPivotStandings = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores()
                                             .WithLastUpdateTime(LAST_UPDATE_TIME).Build();
-            var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPosibleScores()
+            var testStandings = new StandingsTestFixture().WithMultipleDivisionsAllPossibleScores()
                                             .WithLastUpdateTime(LAST_UPDATE_TIME).Build();
 
             var expected = new StandingsViewModelBuilder().WithMultipleDivisionsAllPossibleScores()

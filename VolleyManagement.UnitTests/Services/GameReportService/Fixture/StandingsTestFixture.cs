@@ -780,7 +780,7 @@
             return this;
         }
 
-        public StandingsTestFixture WithMultipleDivisionsAllPosibleScores()
+        public StandingsTestFixture WithMultipleDivisionsAllPossibleScores()
         {
             _standings.Clear();
             AddStandings(// A

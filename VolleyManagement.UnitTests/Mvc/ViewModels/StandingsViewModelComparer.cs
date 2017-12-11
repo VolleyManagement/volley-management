@@ -81,7 +81,7 @@
                     for (var j = 0; j < actualStandings.StandingsEntries.Count; j++)
                     {
                         Assert.IsTrue(StandingsEntryViewModelEqualityComparer.AssertAreEqual(
-                            actualStandings.StandingsEntries[j],
+                            expectedStandings.StandingsEntries[j],
                             actualStandings.StandingsEntries[j],
                             $"[Div#{i}][Standings[{j}]] "));
                     }

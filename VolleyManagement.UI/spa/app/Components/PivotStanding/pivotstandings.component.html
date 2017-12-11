@@ -24,7 +24,8 @@
           <td>{{ teamStandings.Position }}</td>
           <td>{{ teamStandings.TeamName }}</td>
 
-          <td [vmGameResultCell]="pivotTable[k][i][j]?.Results[0]"
+          <td vmGameResultCell
+              [gameResult]="pivotTable[k][i][j]?.Results[0]"
               *ngFor="let teamStandingsColumn of pivotStand?.TeamsStandings; let j = index;">
 
             <div *ngFor="let gameResult of pivotTable[k][i][j]?.Results">

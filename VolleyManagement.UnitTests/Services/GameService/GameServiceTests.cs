@@ -1415,16 +1415,27 @@
         /// Game is edited successfully.
         /// </summary>
         [TestMethod]
-        public void Edit_LastTimeUpdated_GameEdited()
+        public void Edit_GameEdited_LastTimeNotUpdated()
         {
             // Arrange
             MockDefaultTournament();
             var tour = new TournamentBuilder().Build();
+            var expected = tour.LastTimeUpdated;
+
             _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
-            var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
-            var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
+
+            var existingGame = new GameResultDtoBuilder()
+                .WithId(GAME_RESULT_ID)
+                .Build();
+
             _tournamentGameResultsQueryMock
-                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>()))
+                .Returns(new List<GameResultDto> { existingGame });
+
+            var game = new GameBuilder()
+                .WithId(GAME_RESULT_ID)
+                .WithNullResult()
+                .Build();
 
             var sut = BuildSUT();
 
@@ -1432,7 +1443,7 @@
             sut.Edit(game);
 
             // Assert
-            Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
+            Assert.AreEqual(expected, tour.LastTimeUpdated);
         }
 
         /// <summary>
@@ -1440,7 +1451,7 @@
         /// Game result is edited successfully.
         /// </summary>
         [TestMethod]
-        public void Edit_LastTimeUpdated_GameResultEdited()
+        public void Edit_GameResultEdited_LastTimeUpdated()
         {
             // Arrange
             MockDefaultTournament();

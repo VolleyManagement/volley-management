@@ -189,7 +189,6 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
 
-            UpdateTournamentLastTimeUpdated(game);
             _gameRepository.UnitOfWork.Commit();
         }
 

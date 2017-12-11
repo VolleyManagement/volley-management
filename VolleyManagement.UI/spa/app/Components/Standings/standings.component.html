@@ -8,11 +8,11 @@
         <legend></legend>
 
         <table class="standings"
-               *ngFor="let standings of data">
+               *ngFor="let divisionStandings of data">
 
             <thead>
                 <tr class="header-row">
-                    <th colspan="3">N/A</th>
+                    <th colspan="3">На {{ divisionStandings.LastUpdateTime | date:'dd-M-yy H:mm' }}</th>
                     <th colspan="9">Игры</th>
                     <th colspan="3">Сеты</th>
                     <th colspan="3">Мячи</th>
@@ -40,7 +40,7 @@
             </thead>
             <tbody>
                 <tr class="data-row"
-                    *ngFor="let entry of standings">
+                    *ngFor="let entry of divisionStandings.StandingsTable">
                     <td>{{ entry.Position }}</td>
                     <td>{{ entry.TeamName }}</td>
                     <td>{{ entry.Points }}</td>

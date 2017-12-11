@@ -9,7 +9,7 @@
            *ngFor="let pivotStand of pivotStandings;let k = index;">
       <thead>
         <tr class="header-row">
-          <th colspan="2">&nbsp;</th>
+          <th colspan="2">На {{ pivotStand.LastUpdateTime | date:'dd-M-yy H:mm' }}</th>
 
           <th class="vertical-text"
               *ngFor="let team of pivotStand?.TeamsStandings">{{ team.TeamName }}</th>

@@ -11,6 +11,7 @@ import { PivotStandingsEntry } from '../Models/Pivot/PivotStandingsEntry';
 import { PivotStandingsGame } from '../Models/Pivot/PivotStandingsGame';
 import { StandingsEntry } from '../Models/Standings/StandingsEntry';
 import { JsonService } from './json.service';
+import { DivisionStandings } from '../Models/Standings/DivisionStandings';
 
 @Injectable()
 export class StandingsService {
@@ -28,6 +29,7 @@ export class StandingsService {
             .map((data: PivotStandings[]) => {
 
                 return data.map(pivot => ({
+                    LastUpdateTime: pivot.LastUpdateTime,
                     TeamsStandings: pivot.TeamsStandings.map((item, index) => ({
                         ...item,
                         Position: index + 1
@@ -41,9 +43,9 @@ export class StandingsService {
             });
     }
 
-    getStandings(id: number): Observable<StandingsEntry[][]> {
+    getStandings(id: number): Observable<DivisionStandings[]> {
         const url = environment.apiUrl.concat(this.standingsUrl(id));
 
-        return this.jsonService.getJson<StandingsEntry[][]>(url);
+        return this.jsonService.getJson<DivisionStandings[]>(url);
     }
 }

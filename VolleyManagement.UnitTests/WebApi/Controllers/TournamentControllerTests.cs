@@ -16,7 +16,6 @@
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.TournamentsAggregate;
     using VolleyManagement.UI.Areas.WebApi.Controllers;
-    using VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports;
     using VolleyManagement.UI.Areas.WebApi.ViewModels.Games;
     using VolleyManagement.UnitTests.Services.GameReportService;
     using VolleyManagement.UnitTests.Services.GameService;

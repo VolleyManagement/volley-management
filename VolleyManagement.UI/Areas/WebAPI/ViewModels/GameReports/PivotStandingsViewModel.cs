@@ -28,10 +28,27 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
                 {
                     HomeTeamId = grouped.Key.TeamAId,
                     AwayTeamId = grouped.Key.TeamBId,
-                    Results = grouped.Select(r => new ShortGameResultViewModel(
-                        r.HomeGameScore,
-                        r.AwayGameScore,
-                        r.IsTechnicalDefeat)).ToList()
+                    Results = grouped.Select(r => {
+                        ShortGameResultViewModel result;
+                        if (r.HomeTeamId == grouped.Key.TeamAId)
+                        {
+                            result = new ShortGameResultViewModel(
+                             r.HomeGameScore,
+                             r.AwayGameScore,
+                             r.IsTechnicalDefeat);
+                        }
+                        else
+                        {
+                            // during grouping we got teams swapped
+                            // need to revert sides
+                            result = new ShortGameResultViewModel(
+                             r.AwayGameScore,
+                             r.HomeGameScore,
+                             r.IsTechnicalDefeat);
+                        }
+
+                        return result;
+                    }).ToList()
                 }).ToList();
         }
 

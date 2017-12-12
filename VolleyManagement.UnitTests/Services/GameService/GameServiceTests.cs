@@ -147,7 +147,7 @@
         /// Game result is created successfully.
         /// </summary>
         [TestMethod]
-        public void Create_LastTimeUpdated_GameCreated()
+        public void Create_GameHasResult_LastTimeUpdated()
         {
             // Arrange
             MockDefaultTournament();
@@ -162,6 +162,27 @@
 
             // Assert
             Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
+        }
+
+        [TestMethod]
+        public void Create_GameWithNoResult_LastTimeNotUpdated()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var expectedTimeUpdated = new DateTime(2017, 9, 25, 17, 34, 12);
+            var tour = new TournamentBuilder().Build();
+            tour.LastTimeUpdated = expectedTimeUpdated;
+            _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
+
+            var newGame = new GameBuilder().Build();
+            newGame.Result = null;
+            var sut = BuildSUT();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            Assert.AreEqual(expectedTimeUpdated, tour.LastTimeUpdated, "Last Update time should not be changed");
         }
 
         /// <summary>
@@ -1415,16 +1436,27 @@
         /// Game is edited successfully.
         /// </summary>
         [TestMethod]
-        public void Edit_LastTimeUpdated_GameEdited()
+        public void Edit_GameEdited_LastTimeNotUpdated()
         {
             // Arrange
             MockDefaultTournament();
             var tour = new TournamentBuilder().Build();
+            var expected = tour.LastTimeUpdated;
+
             _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
-            var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
-            var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
+
+            var existingGame = new GameResultDtoBuilder()
+                .WithId(GAME_RESULT_ID)
+                .Build();
+
             _tournamentGameResultsQueryMock
-                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>())).Returns(existingGames);
+                .Setup(m => m.Execute(It.IsAny<TournamentGameResultsCriteria>()))
+                .Returns(new List<GameResultDto> { existingGame });
+
+            var game = new GameBuilder()
+                .WithId(GAME_RESULT_ID)
+                .WithNullResult()
+                .Build();
 
             var sut = BuildSUT();
 
@@ -1432,7 +1464,7 @@
             sut.Edit(game);
 
             // Assert
-            Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
+            Assert.AreEqual(expected, tour.LastTimeUpdated);
         }
 
         /// <summary>
@@ -1440,7 +1472,7 @@
         /// Game result is edited successfully.
         /// </summary>
         [TestMethod]
-        public void Edit_LastTimeUpdated_GameResultEdited()
+        public void Edit_GameResultEdited_LastTimeUpdated()
         {
             // Arrange
             MockDefaultTournament();
@@ -1499,7 +1531,6 @@
 
             var game = new GameBuilder()
                 .WithId(GAME_RESULT_ID)
-                .WithNullResult()
                 .WithStartDate(DateTime.Parse(DATE))
                 .Build();
 

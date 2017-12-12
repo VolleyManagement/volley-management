@@ -114,7 +114,15 @@
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
             ValidateGame(game, tournamentScheduleInfo);
-            UpdateTournamentLastTimeUpdated(game);
+            if (game.Result != null)
+            {
+                UpdateTournamentLastTimeUpdated(game);
+            }
+            else
+            {
+                // Set default empty result
+                game.Result = new Result();
+            }
 
             _gameRepository.Add(game);
             _gameRepository.UnitOfWork.Commit();
@@ -313,11 +321,6 @@
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
             ValidateGameInTournament(game, tournamentScheduleInfo);
-            if (game.Result == null)
-            {
-                game.Result = new Result();
-                return;
-            }
         }
 
         private void ValidateResult(Result result)

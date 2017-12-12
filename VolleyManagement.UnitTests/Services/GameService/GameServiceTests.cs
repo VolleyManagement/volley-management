@@ -147,7 +147,7 @@
         /// Game result is created successfully.
         /// </summary>
         [TestMethod]
-        public void Create_LastTimeUpdated_GameCreated()
+        public void Create_GameHasResult_LastTimeUpdated()
         {
             // Arrange
             MockDefaultTournament();
@@ -162,6 +162,27 @@
 
             // Assert
             Assert.AreEqual(TimeProvider.Current.UtcNow, tour.LastTimeUpdated);
+        }
+
+        [TestMethod]
+        public void Create_GameWithNoResult_LastTimeNotUpdated()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var expectedTimeUpdated = new DateTime(2017, 9, 25, 17, 34, 12);
+            var tour = new TournamentBuilder().Build();
+            tour.LastTimeUpdated = expectedTimeUpdated;
+            _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
+
+            var newGame = new GameBuilder().Build();
+            newGame.Result = null;
+            var sut = BuildSUT();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            Assert.AreEqual(expectedTimeUpdated, tour.LastTimeUpdated, "Last Update time should not be changed");
         }
 
         /// <summary>
@@ -1510,7 +1531,6 @@
 
             var game = new GameBuilder()
                 .WithId(GAME_RESULT_ID)
-                .WithNullResult()
                 .WithStartDate(DateTime.Parse(DATE))
                 .Build();
 

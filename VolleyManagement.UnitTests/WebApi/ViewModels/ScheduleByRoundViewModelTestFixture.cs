@@ -3,12 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using Domain.GamesAggregate;
     using UI.Areas.WebApi.ViewModels.Games;
-    using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
+    using UI.Areas.WebAPI.ViewModels.Schedule;
 
     /// <summary>
     /// Class for generating test data

@@ -1,6 +1,5 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
-    using System;
     using System.Collections.Generic;
     using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,15 +8,9 @@
     {
         public int Compare(StandingsDto x, StandingsDto y)
         {
-            if (x.DivisionId != y.DivisionId)
-            {
-                throw new AssertFailedException("Division Ids do not match");
-            }
-
-            if (string.Compare(x.DivisionName, y.DivisionName, StringComparison.InvariantCulture) != 0)
-            {
-                throw new AssertFailedException("Division Names do not match");
-            }
+            Assert.AreEqual(x.DivisionId, y.DivisionId, "Division Ids do not match");
+            Assert.AreEqual(x.DivisionName, y.DivisionName, $"[DivisionId={x.DivisionId}] Division Names do not match");
+            Assert.AreEqual(x.LastUpdateTime, y.LastUpdateTime, $"[DivisionId={x.DivisionId}] Last Update time do not match");
 
             if (x.Standings.Count == y.Standings.Count)
             {
@@ -32,7 +25,7 @@
             }
             else
             {
-                throw new AssertFailedException($"[DivisionId={x.DivisionId}] Number of standing entries does not match.");
+                Assert.Fail($"[DivisionId={x.DivisionId}] Number of standing entries does not match.");
             }
 
             return 0;

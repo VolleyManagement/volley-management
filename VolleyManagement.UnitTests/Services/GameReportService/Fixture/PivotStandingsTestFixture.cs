@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
@@ -14,6 +15,8 @@
         private readonly List<(int DivisionId, TeamStandingsDto Standings)> _teamStandings = new List<(int DivisionId, TeamStandingsDto Standings)>();
 
         private readonly List<(int DivisionId, ShortGameResultDto Result)> _gameResults = new List<(int DivisionId, ShortGameResultDto Result)>();
+
+        private DateTime? _lastUpdateTime;
 
         public PivotStandingsTestFixture WithEmptyStandings()
         {
@@ -645,7 +648,7 @@
             return this;
         }
 
-        public PivotStandingsTestFixture WithMultipleDivisionsAllPosibleScores()
+        public PivotStandingsTestFixture WithMultipleDivisionsAllPossibleScores()
         {
             AddTeamStandings(// A
                 new TeamStandingsDto
@@ -901,6 +904,13 @@
             return this;
         }
 
+        public PivotStandingsTestFixture WithLastUpdateTime(DateTime? lastUpdateTime)
+        {
+            _lastUpdateTime = lastUpdateTime;
+
+            return this;
+        }
+
         public TournamentStandings<PivotStandingsDto> Build()
         {
             var result = new TournamentStandings<PivotStandingsDto>();
@@ -915,7 +925,8 @@
                         _gameResults.Where(g => g.DivisionId == divId).Select(g => g.Result).ToList())
                     {
                         DivisionId = divId,
-                        DivisionName = $"Division {divId}"
+                        DivisionName = $"Division {divId}",
+                        LastUpdateTime = _lastUpdateTime
                     };
                 })
                 .ToList();

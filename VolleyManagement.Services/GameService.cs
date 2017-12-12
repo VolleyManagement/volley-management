@@ -114,7 +114,15 @@
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
             ValidateGame(game, tournamentScheduleInfo);
-            UpdateTournamentLastTimeUpdated(game);
+            if (game.Result != null)
+            {
+                UpdateTournamentLastTimeUpdated(game);
+            }
+            else
+            {
+                // Set default empty result
+                game.Result = new Result();
+            }
 
             _gameRepository.Add(game);
             _gameRepository.UnitOfWork.Commit();
@@ -171,6 +179,15 @@
                 ScheduleNextGames(game, tournamentScheduleInfo);
             }
 
+            // Provide persisting results in case of editing dates
+            var existingGame = Get(game.Id);
+            var gameHasResults = existingGame != null && existingGame.Result.SetScores.Any(s => !s.IsEmpty);
+
+            if (gameHasResults)
+            {
+                game.Result = existingGame.Result;
+            }
+
             try
             {
                 _gameRepository.Update(game);
@@ -180,7 +197,6 @@
                 throw new MissingEntityException(ServiceResources.ExceptionMessages.GameNotFound, ex);
             }
 
-            UpdateTournamentLastTimeUpdated(game);
             _gameRepository.UnitOfWork.Commit();
         }
 
@@ -198,12 +214,6 @@
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = game.TournamentId });
 
             ValidateGame(game, tournamentScheduleInfo);
-
-            // Add autogeneration
-            if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
-            {
-                ScheduleNextGames(game, tournamentScheduleInfo);
-            }
 
             // Add autogeneration
             if (tournamentScheduleInfo.Scheme == TournamentSchemeEnum.PlayOff)
@@ -311,11 +321,6 @@
         {
             ValidateTeams(game.HomeTeamId, game.AwayTeamId);
             ValidateGameInTournament(game, tournamentScheduleInfo);
-            if (game.Result == null)
-            {
-                game.Result = new Result();
-                return;
-            }
         }
 
         private void ValidateResult(Result result)

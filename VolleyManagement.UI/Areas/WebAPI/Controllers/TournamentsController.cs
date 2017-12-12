@@ -7,7 +7,8 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
     using ViewModels.GameReports;
     using ViewModels.Games;
     using ViewModels.Tournaments;
-    using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
+    using WebAPI.ViewModels.Schedule;
+    using WebAPI.ViewModels.GameReports;
 
     /// <summary>
     /// The tournaments controller.
@@ -65,15 +66,18 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         /// <param name="id">Id of tournament</param>
         /// <returns>Standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/Standings")]
-        public List<List<StandingsEntryViewModel>> GetTournamentStandings(int id)
+        public List<DivisionStandingsViewModel> GetTournamentStandings(int id)
         {
-            var result = new List<List<StandingsEntryViewModel>>();
+            var result = new List<DivisionStandingsViewModel>();
             var entries = _gameReportService.GetStandings(id);
             foreach (var entry in entries.Divisions)
             {
-                var standings = entry.Standings.Select(t => StandingsEntryViewModel.Map(t))
-                                     .ToList();
-                StandingsEntryViewModel.SetPositions(standings);
+                var standings = new DivisionStandingsViewModel
+                {
+                    LastUpdateTime = entry.LastUpdateTime,
+                    StandingsTable = entry.Standings.Select(StandingsEntryViewModel.Map).ToList()
+                };
+                StandingsEntryViewModel.SetPositions(standings.StandingsTable);
                 result.Add(standings);
             }
 
@@ -86,10 +90,10 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         /// <param name="id">Id of tournament</param>
         /// <returns>Pivot standings entries of the tournament with specified id</returns>
         [Route("api/v1/Tournaments/{id}/PivotStandings")]
-        public IEnumerable<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
+        public List<PivotStandingsViewModel> GetTournamentPivotStandings(int id)
         {
             var pivotData = _gameReportService.GetPivotStandings(id);
-            return pivotData.Divisions.Select(item => new PivotStandingsViewModel(item));
+            return pivotData.Divisions.Select(item => new PivotStandingsViewModel(item)).ToList();
         }
 
         /// <summary>

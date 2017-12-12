@@ -2,12 +2,11 @@
 {
     using System.Collections.Generic;
 
-    public class StandingsDto
+    /// <summary>
+    /// Represents a regular standings table for single division
+    /// </summary>
+    public class StandingsDto : DivisionStandingsDtoBase
     {
-        public int DivisionId { get; set; }
-
-        public string DivisionName { get; set; }
-
         public List<StandingsEntry> Standings { get; set; } = new List<StandingsEntry>();
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
+    using System;
     using Domain.GameReportsAggregate;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -219,7 +220,7 @@
             var actual = sut.GetPivotStandings(TOURNAMENT_ID);
 
             // Assert
-            AssertPivotStandingsAreEqual(expected, actual, "Total points should be reduced by penalty ammount for penalized team");
+            AssertPivotStandingsAreEqual(expected, actual, "Total points should be reduced by penalty amount for penalized team");
         }
 
         [TestMethod]
@@ -289,13 +290,41 @@
         }
 
         [TestMethod]
+        public void GetPivotStandings_HasGameResults_LastStandingsUpdateTimeIsReturned()
+        {
+            // Arrange
+            var LAST_UPDATE_TIME = new DateTime(2017, 4, 7, 23, 7, 45);
+
+            var gameResultsTestData = new GameResultsTestFixture().WithAllPossibleScores().Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+            var testTour = CreateSingleDivisionTournament(TOURNAMENT_ID, LAST_UPDATE_TIME);
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+            MockTournamentByIdQuery(TOURNAMENT_ID, testTour);
+
+            var expected = new PivotStandingsTestFixture()
+                .WithStandingsForAllPossibleScores()
+                .WithLastUpdateTime(LAST_UPDATE_TIME)
+                .Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertPivotStandingsAreEqual(expected, actual, "Points, games, sets and balls should be calculated properly.");
+        }
+
+        [TestMethod]
         public void GetMultipleDivisionPivotStandings_GameResultsAllPossibleScores_CorrectStats()
         {
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
             var teamsTestData = TeamsInTwoDivisionTwoGroups();
 
-            var expected = new PivotStandingsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var expected = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);

@@ -1,8 +1,10 @@
 ﻿namespace VolleyManagement.UnitTests.Services.GameReportService
 {
+    using System;
     using System.Collections.Generic;
     using Contracts;
     using Data.Contracts;
+    using Data.Queries.Common;
     using Data.Queries.GameResult;
     using Data.Queries.Team;
     using Data.Queries.Tournament;
@@ -22,12 +24,16 @@
         private Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>> _tournamentGameResultsQueryMock;
         private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
         private Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>> _tournamentScheduleDtoByIdQueryMock;
+        private Mock<IQuery<Tournament, FindByIdCriteria>> _tournamentByIdQueryMock;
 
         protected void InitializeTest()
         {
             _tournamentScheduleDtoByIdQueryMock = new Mock<IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria>>();
             _tournamentTeamsQueryMock = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
             _tournamentGameResultsQueryMock = new Mock<IQuery<List<GameResultDto>, TournamentGameResultsCriteria>>();
+            _tournamentByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
+
+            MockTournamentByIdQuery(TOURNAMENT_ID, CreateSingleDivisionTournament(TOURNAMENT_ID));
         }
 
         protected IGameReportService BuildSUT()
@@ -35,7 +41,8 @@
             return new GameReportService(
                 _tournamentGameResultsQueryMock.Object,
                 _tournamentTeamsQueryMock.Object,
-                _tournamentScheduleDtoByIdQueryMock.Object);
+                _tournamentScheduleDtoByIdQueryMock.Object,
+                _tournamentByIdQueryMock.Object);
         }
 
         protected void MockTournamentGameResultsQuery(int tournamentId, List<GameResultDto> testData)
@@ -47,8 +54,15 @@
 
         protected void MockTournamentTeamsQuery(int tournamentId, List<TeamTournamentDto> testData)
         {
-            _tournamentTeamsQueryMock.SetupSequence(m =>
+            _tournamentTeamsQueryMock.Setup(m =>
                     m.Execute(It.Is<FindByTournamentIdCriteria>(c => c.TournamentId == tournamentId)))
+                .Returns(testData);
+        }
+
+        protected void MockTournamentByIdQuery(int tournamentId, Tournament testData)
+        {
+            _tournamentByIdQueryMock.Setup(m =>
+                    m.Execute(It.Is<FindByIdCriteria>(c => c.Id == tournamentId)))
                 .Returns(testData);
         }
 
@@ -78,6 +92,37 @@
             }
 
             Assert.IsTrue(compareResult == 0, $"{message}{errorDetails}");
+        }
+
+        protected static Tournament CreateSingleDivisionTournament(int tournamentId, DateTime? lastStandingsUpdateTime = null)
+        {
+            return new Tournament
+            {
+                Id = tournamentId,
+                Name = $"Tournament #{tournamentId}",
+                Season = 17,
+                Scheme = TournamentSchemeEnum.One,
+                LastTimeUpdated = lastStandingsUpdateTime,
+                Divisions = new List<Division>
+                {
+                    new Division
+                    {
+                        Id = 1,
+                        Name = "Division 1",
+                        TournamentId = tournamentId,
+                        Groups = new List<Group>
+                        {
+                            new Group
+                            {
+                                Id = 1,
+                                Name = "Group 1",
+                                DivisionId = 1,
+                                IsEmpty = false
+                            }
+                        }
+                    }
+                }
+            };
         }
     }
 }

@@ -5,6 +5,7 @@
     using System.Linq;
     using Contracts;
     using Data.Contracts;
+    using Data.Queries.Common;
     using Data.Queries.GameResult;
     using Data.Queries.Team;
     using Data.Queries.Tournament;
@@ -23,6 +24,7 @@
         private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
         private readonly IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
+        private readonly IQuery<Tournament, FindByIdCriteria> _tournamentByIdQuery;
 
         #endregion
 
@@ -37,11 +39,13 @@
         public GameReportService(
             IQuery<List<GameResultDto>, TournamentGameResultsCriteria> tournamentGameResultsQuery,
             IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
-            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> tournamentScheduleDtoByIdQuery)
+            IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> tournamentScheduleDtoByIdQuery,
+            IQuery<Tournament, FindByIdCriteria> tournamentByIdQuery)
         {
             _tournamentGameResultsQuery = tournamentGameResultsQuery;
             _tournamentTeamsQuery = tournamentTeamsQuery;
             _tournamentScheduleDtoByIdQuery = tournamentScheduleDtoByIdQuery;
+            _tournamentByIdQuery = tournamentByIdQuery;
         }
 
         #endregion
@@ -57,6 +61,7 @@
         {
             var result = new TournamentStandings<StandingsDto>();
 
+            var tournament = _tournamentByIdQuery.Execute(new FindByIdCriteria(tournamentId));
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
             var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
 
@@ -68,6 +73,7 @@
                 {
                     DivisionId = groupedTeams.Key,
                     DivisionName = $"Division {groupedTeams.Key}",
+                    LastUpdateTime = tournament.LastTimeUpdated,
                     Standings = standings
                 };
                 result.Divisions.Add(standingsDto);
@@ -83,6 +89,7 @@
         /// <returns>Pivot standings of the tournament with specified identifier.</returns>
         public TournamentStandings<PivotStandingsDto> GetPivotStandings(int tournamentId)
         {
+            var tournament = _tournamentByIdQuery.Execute(new FindByIdCriteria(tournamentId));
             var gameResults = _tournamentGameResultsQuery.Execute(new TournamentGameResultsCriteria { TournamentId = tournamentId });
             var teamsInTournamentByDivisions = GetTeamsInTournamentByDivisions(tournamentId);
 
@@ -103,7 +110,8 @@
                 pivotStandings.Divisions.Add(new PivotStandingsDto(teamStandingsInDivision, shortGameResults)
                 {
                     DivisionId = groupedTeams.Key,
-                    DivisionName = $"Division {groupedTeams.Key}"
+                    DivisionName = $"Division {groupedTeams.Key}",
+                    LastUpdateTime = tournament.LastTimeUpdated
                 });
             }
 

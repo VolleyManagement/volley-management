@@ -106,7 +106,6 @@
         /// <returns>Instance of <see cref="GameBuilder"/>.</returns>
         public GameBuilder WithNullResult()
         {
-            _game.GameDate = DateTime.Parse(DATE);
             _game.Result = null;
             return this;
         }

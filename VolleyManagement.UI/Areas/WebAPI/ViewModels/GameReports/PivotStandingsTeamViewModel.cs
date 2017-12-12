@@ -1,15 +1,11 @@
-﻿namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
+namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
     using Domain.GameReportsAggregate;
 
     /// <summary>
     /// Represents a data transfer object of team with total score and statistics values.
     /// </summary>
-    public class PivotStandingsEntryViewModel
+    public class PivotStandingsTeamViewModel
     {
         /// <summary>
         /// Gets or sets the team's identifier.
@@ -36,9 +32,9 @@
         /// </summary>
         /// <param name="team">Domain model of team standings.</param>
         /// <returns>View model of game result.</returns>
-        internal static PivotStandingsEntryViewModel Map(TeamStandingsDto team)
+        internal static PivotStandingsTeamViewModel Map(TeamStandingsDto team)
         {
-            return new PivotStandingsEntryViewModel
+            return new PivotStandingsTeamViewModel
             {
                 TeamId = team.TeamId,
                 TeamName = team.TeamName,

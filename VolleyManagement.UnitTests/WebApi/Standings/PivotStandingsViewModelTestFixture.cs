@@ -18,8 +18,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 new PivotStandingsViewModel()
                 {
                         TeamsStandings = GetPivotTeamsStandings(),
-                        GamesStandings = GetGameStandings()
-                }
+                        GamesStandings = GetGameStandings(),
+                },
             };
         }
 
@@ -90,8 +90,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 AwayTeamId = 5,
                 Results = new List<ShortGameResultViewModel>
                 {
-                    new ShortGameResultViewModel(3, 1),
-                    new ShortGameResultViewModel(1, 3)
+                    new ShortGameResultViewModel(1, 3),
+                    new ShortGameResultViewModel(3, 1)
                 }
             });
             _pivotStandings[0].GamesStandings.Add(new PivotStandingsGameViewModel
@@ -100,8 +100,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 AwayTeamId = 6,
                 Results = new List<ShortGameResultViewModel>
                 {
-                    new ShortGameResultViewModel(3, 2),
-                    new ShortGameResultViewModel(0, 3)
+                    new ShortGameResultViewModel(2, 3),
+                    new ShortGameResultViewModel(3, 0)
                 }
             });
         }

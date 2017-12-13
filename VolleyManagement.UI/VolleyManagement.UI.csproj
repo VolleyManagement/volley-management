@@ -393,6 +393,7 @@
     <Compile Include="Areas\Mvc\ViewModels\Users\UserEditViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebAPI\Controllers\ContributorsTeamController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\DivisionTitleComparer.cs" />
     <Compile Include="Areas\WebAPI\Controllers\HomeController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\PlayersController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\TeamsController.cs" />

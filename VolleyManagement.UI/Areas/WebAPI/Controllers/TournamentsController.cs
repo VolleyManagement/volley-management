@@ -114,7 +114,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
 
             var rezultGroupedByWeek = gamesViewModel.GroupBy(gr => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
                 gr.Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday))
-                .Select(w => new { weekNumber = w.Key, games = w.ToList() }) // TODO USE TUPLE HERE
+                .Select(w => new Tuple<int,List<GameViewModel>>(w.Key, w.ToList())) // TODO USE TUPLE HERE
                 .ToList();
 
             var result = new ScheduleViewModel()
@@ -122,19 +122,25 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                 Schedule = rezultGroupedByWeek.Select(it =>
                     new Week()
                     {
-                        Days = it.games.GroupBy(item => item.Date).Select(element =>
+                        Days = it.Item2.
+                        GroupBy(item => item.Date.DayOfWeek).
+                        Select(element =>
                             new ScheduleDay()
                             {
-                                Date = element.Key,
+                                Date = element.ToList().Select(d => d.Date).First(),
                                 Divisions = element.ToList().Select(data =>
                                     new DivisionTitle()
                                     {
                                         Id = data.DivisionId,
                                         Name = data.DivisionName,
-                                        Rounds = element.Where(g => g.DivisionId == data.DivisionId).Select(item => item.Round).ToList()
-                                    }).ToList(),
+                                        Rounds = element.Where(g => g.DivisionId == data.DivisionId).Select(item => item.Round).Distinct().ToList()
+                                    }).
+                                    Distinct(new DivisionTitleComparer()).
+                                    ToList(),
                                 Games = element.ToList()
-                            }).ToList()
+                            }).
+                        OrderBy(item => item.Date).
+                        ToList()
                     }
                 ).ToList()
             };

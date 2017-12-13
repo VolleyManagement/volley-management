@@ -187,50 +187,6 @@
                     {
                         new ScheduleDay
                         {
-                            Date = _date_A_For_Round,
-                            Divisions = new List<DivisionTitle>
-                            {
-                                new DivisionTitle
-                                {
-                                    Id = 1,
-                                    Name = "Division Name",
-                                    Rounds = new List<int>
-                                    {
-                                        1
-                                    }
-                                }
-                            },
-                            Games = new List<GameViewModel>
-                            {
-                                new GameViewModel
-                                {
-                                    Id = 1,
-                                    HomeTeamName = "TeamNameA",
-                                    AwayTeamName = "TeamNameB",
-                                    GameDate = DATE_A,
-                                    Result = new GameViewModel.GameResult
-                                    {
-                                        TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 0),
-                                        SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>
-                                        {
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
-                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
-                                        },
-                                        IsTechnicalDefeat = true,
-                                    },
-                                    Round = 1,
-                                    DivisionId = 1,
-                                    DivisionName = "Division Name",
-                                    GroupId = 1,
-                                    Date = _date_A_For_Round
-                                }
-                            }
-                        },
-                        new ScheduleDay
-                        {
                             Date = _date_B_For_Round,
                             Divisions = new List<DivisionTitle>
                             {
@@ -270,6 +226,50 @@
                                     DivisionName = "Division Name1",
                                     GroupId = 2,
                                     Date = _date_B_For_Round
+                                }
+                            }
+                        },
+                          new ScheduleDay
+                        {
+                            Date = _date_A_For_Round,
+                            Divisions = new List<DivisionTitle>
+                            {
+                                new DivisionTitle
+                                {
+                                    Id = 1,
+                                    Name = "Division Name",
+                                    Rounds = new List<int>
+                                    {
+                                        1
+                                    }
+                                }
+                            },
+                            Games = new List<GameViewModel>
+                            {
+                                new GameViewModel
+                                {
+                                    Id = 1,
+                                    HomeTeamName = "TeamNameA",
+                                    AwayTeamName = "TeamNameB",
+                                    GameDate = DATE_A,
+                                    Result = new GameViewModel.GameResult
+                                    {
+                                        TotalScore = new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(3, 0),
+                                        SetScores = new List<UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel>
+                                        {
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(25, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0),
+                                            new UI.Areas.Mvc.ViewModels.GameResults.ScoreViewModel(0, 0)
+                                        },
+                                        IsTechnicalDefeat = true,
+                                    },
+                                    Round = 1,
+                                    DivisionId = 1,
+                                    DivisionName = "Division Name",
+                                    GroupId = 1,
+                                    Date = _date_A_For_Round
                                 }
                             }
                         }

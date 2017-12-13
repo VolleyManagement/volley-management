@@ -16,7 +16,7 @@
 
         public int GetHashCode(DivisionTitle obj)
         {
-            return obj.Id.GetHashCode() + obj.Name.GetHashCode() + obj.Rounds.GetHashCode();
+            return obj.Id.GetHashCode();
         }
 
         /// <summary>

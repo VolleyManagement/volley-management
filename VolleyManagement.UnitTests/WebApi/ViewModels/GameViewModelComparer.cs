@@ -96,21 +96,13 @@
             }
             else
             {
-                Assert.AreEqual(x.SetScores[0].Home, y.SetScores[0].Home, "Score of 1 set for home team do not match");
-                Assert.AreEqual(x.SetScores[1].Home, y.SetScores[1].Home, "Score of 2 set for home team do not match");
-                Assert.AreEqual(x.SetScores[2].Home, y.SetScores[2].Home, "Score of 3 set for home team do not match");
-                Assert.AreEqual(x.SetScores[3].Home, y.SetScores[3].Home, "Score of 4 set for home team do not match");
-                Assert.AreEqual(x.SetScores[4].Home, y.SetScores[4].Home, "Score of 5 set for home team do not match");
-                Assert.AreEqual(x.SetScores[0].Away, y.SetScores[0].Away, "Score of 1 set for away team do not match");
-                Assert.AreEqual(x.SetScores[1].Away, y.SetScores[1].Away, "Score of 2 set for away team do not match");
-                Assert.AreEqual(x.SetScores[2].Away, y.SetScores[2].Away, "Score of 3 set for away team do not match");
-                Assert.AreEqual(x.SetScores[3].Away, y.SetScores[3].Away, "Score of 4 set for away team do not match");
-                Assert.AreEqual(x.SetScores[4].Away, y.SetScores[4].Away, "Score of 5 set for away team do not match");
-                Assert.AreEqual(x.SetScores[0].IsTechnicalDefeat, y.SetScores[0].IsTechnicalDefeat, "Technical defeat in 1 set do not match");
-                Assert.AreEqual(x.SetScores[1].IsTechnicalDefeat, y.SetScores[1].IsTechnicalDefeat, "Technical defeat in 2 set do not match");
-                Assert.AreEqual(x.SetScores[2].IsTechnicalDefeat, y.SetScores[2].IsTechnicalDefeat, "Technical defeat in 3 set do not match");
-                Assert.AreEqual(x.SetScores[3].IsTechnicalDefeat, y.SetScores[3].IsTechnicalDefeat, "Technical defeat in 4 set do not match");
-                Assert.AreEqual(x.SetScores[4].IsTechnicalDefeat, y.SetScores[4].IsTechnicalDefeat, "Technical defeat in 5 set do not match");
+                for (var i = 0; i < x.SetScores.Count; i++)
+                {
+                    Assert.AreEqual(x.SetScores[i].Home, y.SetScores[i].Home, $"Score of {i} set for home team do not match");
+                    Assert.AreEqual(x.SetScores[i].Away, y.SetScores[i].Away, $"Score of {i} set for away team do not match");
+                    Assert.AreEqual(x.SetScores[i].IsTechnicalDefeat, y.SetScores[i].IsTechnicalDefeat, $"Technical defeat in {i} set do not match");
+                }
+
                 Assert.AreEqual(x.TotalScore.Home, y.TotalScore.Home, "Game score for home team do not match");
                 Assert.AreEqual(x.TotalScore.Away, y.TotalScore.Away, "Game score for away team do not match");
                 Assert.AreEqual(x.IsTechnicalDefeat, y.IsTechnicalDefeat, "Technical defeat in game do not match");

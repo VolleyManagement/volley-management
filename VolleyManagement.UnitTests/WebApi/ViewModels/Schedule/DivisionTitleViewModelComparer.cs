@@ -7,16 +7,16 @@
     using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
     [ExcludeFromCodeCoverage]
-    internal class DaysComparer : IEqualityComparer<ScheduleDayViewModel>
+    internal class DivisionTitleViewModelComparer : IEqualityComparer<DivisionTitleViewModel>
     {
-        public bool Equals(ScheduleDayViewModel x, ScheduleDayViewModel y)
+        public bool Equals(DivisionTitleViewModel x, DivisionTitleViewModel y)
         {
             return AreEqual(x, y);
         }
 
-        public int GetHashCode(ScheduleDayViewModel obj)
+        public int GetHashCode(DivisionTitleViewModel obj)
         {
-            return obj.Date.GetHashCode() + obj.Games.GetHashCode();
+            return obj.Id.GetHashCode();
         }
 
         /// <summary>
@@ -25,11 +25,11 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given entries have the same properties.</returns>
-        private bool AreEqual(ScheduleDayViewModel x, ScheduleDayViewModel y)
+        private bool AreEqual(DivisionTitleViewModel x, DivisionTitleViewModel y)
         {
-            Assert.AreEqual(x.Date, y.Date, "Date of game do not match");
-            return x.Divisions.AsQueryable().SequenceEqual(y.Divisions.AsQueryable(), new DivisionsComparer()) &&
-            x.Games.AsQueryable().SequenceEqual(y.Games.AsQueryable(), new GameViewModelComparer());
+            Assert.AreEqual(x.Id, y.Id, "Division id do not match");
+            Assert.AreEqual(x.Name, y.Name, "Division name do not match");
+            return x.Rounds.AsQueryable().SequenceEqual(y.Rounds.AsQueryable());
         }
     }
 }

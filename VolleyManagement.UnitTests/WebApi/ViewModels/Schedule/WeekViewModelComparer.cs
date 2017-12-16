@@ -4,7 +4,7 @@
     using System.Linq;
     using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
-    internal class WeekComparer : IEqualityComparer<WeekViewModel>
+    internal class WeekViewModelComparer : IEqualityComparer<WeekViewModel>
     {
         public bool Equals(WeekViewModel x, WeekViewModel y)
         {
@@ -24,7 +24,7 @@
         /// <returns>True if given entries have the same properties.</returns>
         private bool AreEqual(WeekViewModel x, WeekViewModel y)
         {
-            return x.Days.AsQueryable().SequenceEqual(y.Days.AsQueryable(), new DaysComparer());
+            return x.Days.AsQueryable().SequenceEqual(y.Days.AsQueryable(), new ScheduleDayViewModelComparer());
         }
     }
 }

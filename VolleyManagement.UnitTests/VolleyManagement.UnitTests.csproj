@@ -257,10 +257,10 @@
     <Compile Include="WebApi\Controllers\TournamentControllerTests.cs" />
     <Compile Include="WebApi\Standings\StandingsEntryViewModelEqualityComparer.cs" />
     <Compile Include="WebApi\Standings\StandingsViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\Schedule\DaysComparer.cs" />
-    <Compile Include="WebApi\ViewModels\Schedule\DivisionsComparer.cs" />
+    <Compile Include="WebApi\ViewModels\Schedule\ScheduleDayViewModelComparer.cs" />
+    <Compile Include="WebApi\ViewModels\Schedule\DivisionTitleViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\Schedule\ScheduleViewModelComparer.cs" />
-    <Compile Include="WebApi\ViewModels\Schedule\WeekComparer.cs" />
+    <Compile Include="WebApi\ViewModels\Schedule\WeekViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelBuilder.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelComparer.cs" />
     <Compile Include="WebApi\ViewModels\ContributorTeamViewModelServiceTestFixture.cs" />

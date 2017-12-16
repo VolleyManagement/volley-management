@@ -40,7 +40,7 @@
         /// <returns>True if given entries have the same properties.</returns>
         private bool AreEqual(ScheduleViewModel x, ScheduleViewModel y)
         {
-            return x.Schedule.AsQueryable().SequenceEqual(y.Schedule.AsQueryable(), new WeekComparer());
+            return x.Schedule.AsQueryable().SequenceEqual(y.Schedule.AsQueryable(), new WeekViewModelComparer());
         }
     }
 }

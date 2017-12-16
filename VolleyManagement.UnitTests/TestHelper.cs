@@ -25,5 +25,25 @@
 
             Assert.AreEqual(equalsResult, compareResult);
         }
+
+        public static void AreEqual<T>(List<T> expected, List<T> actual, IComparer<T> comparer)
+        {
+            if (expected != null || actual != null)
+            {
+                if (expected == null || actual == null)
+                {
+                    Assert.Fail("One of the colection is null");
+                }
+
+                Assert.AreEqual(expected.Count, actual.Count, "Number of items in collection should match");
+
+                for (var i = 0; i < expected.Count; i++)
+                {
+                    Assert.IsTrue(
+                        comparer.Compare(expected[i], actual[i]) == 0,
+                        $"[Item#{i}] ");
+                }
+            }
+        }
     }
 }

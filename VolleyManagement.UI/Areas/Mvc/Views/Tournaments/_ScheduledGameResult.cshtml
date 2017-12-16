@@ -111,9 +111,6 @@
         @if (Model.AllowedOperations.IsAllowed(AuthOperations.Games.Edit) &&
                                             Model.AllowedOperations.IsAllowed(AuthOperations.Games.Delete))
         {
-
-            if (Model.IsScheduleEditable)
-            {
             <div class="col-md-2">
                 @Html.ActionLink(Resources.UI.TournamentViews.Edit, "EditScheduledGame", new { gameId = Model.Id })
             </div>
@@ -122,7 +119,7 @@
                 @Html.ActionLink(Resources.UI.GameResultViews.Delete, "Delete", "GameResults", new { id = Model.Id },
                                  new { @class = "deleteGame", @id = Model.Id })
             </div>
-            }
+         
         }
     </div>
 

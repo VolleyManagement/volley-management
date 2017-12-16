@@ -21,7 +21,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
         /// <summary>
         /// Gets or sets the collection of entries in tournament's standings.
         /// </summary>
-        public List<List<StandingsEntryViewModel>> Standings { get; set; }
+        public List<DivisionStandingsViewModel> StandingsTable { get; set; }
 
         /// <summary>
         /// Gets or sets data for pivot table.
@@ -32,10 +32,5 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
         /// Gets or sets the message.
         /// </summary>
         public string Message { get; set; }
-
-        /// <summary>
-        /// Gets or sets last time, when tournament was updated
-        /// </summary>
-        public DateTime? LastTimeUpdated { get; set; }
     }
 }

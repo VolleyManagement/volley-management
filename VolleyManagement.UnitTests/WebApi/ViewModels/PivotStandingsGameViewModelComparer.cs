@@ -1,47 +1,37 @@
 ﻿namespace VolleyManagement.UnitTests.WebApi.ViewModels
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.WebApi.ViewModels.GameReports;
 
-    /// <summary>
-    /// Represents an equality comparer for <see cref="PivotStandingsGameViewModel"/> objects.
-    /// </summary>
     [ExcludeFromCodeCoverage]
-    internal class PivotStandingsGameViewModelComparer : IEqualityComparer<PivotStandingsGameViewModel>
+    internal static class PivotStandingsGameViewModelComparer
     {
-        /// <summary>
-        /// Finds out whether two standings games objects have the same properties.
-        /// </summary>
-        /// <param name="x">The first object to compare.</param>
-        /// <param name="y">The second object to compare.</param>
-        /// <returns>True if given games have the same properties.</returns>
-        public bool Equals(PivotStandingsGameViewModel x, PivotStandingsGameViewModel y)
+        public static void AssertAreEqual(PivotStandingsGameViewModel expected, PivotStandingsGameViewModel actual, string messagePrefix = "")
         {
-            return x.AwayTeamId == y.AwayTeamId
-                && x.HomeTeamId == y.HomeTeamId
-                && x.Results.SequenceEqual(y.Results, new ShortGameResultViewModelComparer());
+            Assert.AreEqual(expected.AwayTeamId, actual.AwayTeamId, $"{messagePrefix} AwayTeamId should match");
+            Assert.AreEqual(expected.HomeTeamId, actual.HomeTeamId, $"{messagePrefix} HomeTeamId should match");
+
+            Assert.AreEqual(expected.Results.Count, actual.Results.Count, $"{messagePrefix} AwayTeamId should match");
+
+            for (var i = 0; i < expected.Results.Count; i++)
+            {
+                var expectedResult = expected.Results[i];
+                var actualResult = actual.Results[i];
+
+                string messagePrefix1 = $"{messagePrefix}[Result#{i}] ";
+                AssertShortGameResultsAreEqual(expectedResult, actualResult, messagePrefix1);
+            }
         }
 
-        /// <summary>
-        /// Get objects hash code
-        /// </summary>
-        /// <param name="obj">object for getting hash code</param>
-        /// <returns>integer hash code</returns>
-        public int GetHashCode(PivotStandingsGameViewModel obj)
+        private static void AssertShortGameResultsAreEqual(
+            ShortGameResultViewModel expectedResult,
+            ShortGameResultViewModel actualResult,
+            string messagePrefix = "")
         {
-            StringBuilder builder = new StringBuilder();
-
-            builder.Append(obj.AwayTeamId);
-            builder.Append(obj.HomeTeamId);
-            builder.Append(obj.Results);
-
-            return builder.ToString().GetHashCode();
+            Assert.AreEqual(expectedResult.HomeSetsScore, actualResult.HomeSetsScore, $"{messagePrefix} HomeSetsScore should match");
+            Assert.AreEqual(expectedResult.AwaySetsScore, actualResult.AwaySetsScore, $"{messagePrefix} AwaySetsScore should match");
+            Assert.AreEqual(expectedResult.IsTechnicalDefeat, actualResult.IsTechnicalDefeat, $"{messagePrefix} IsTechnicalDefeat should match");
         }
     }
 }

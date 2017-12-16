@@ -60,25 +60,29 @@
             Assert.AreEqual(expected.TournamentName, actual.TournamentName, "TournamentName should match");
 
             Assert.AreEqual(expected.Message, actual.Message, "Message should match");
-            Assert.AreEqual(expected.LastTimeUpdated, actual.LastTimeUpdated, "LastTimeUpdated should match");
 
-            if (expected.Standings != null || actual.Standings != null)
+            if (expected.StandingsTable != null || actual.StandingsTable != null)
             {
-                if (expected.Standings == null || actual.Standings == null)
+                if (expected.StandingsTable == null || actual.StandingsTable == null)
                 {
                     Assert.Fail("One of the Standings colection is null");
                 }
 
-                Assert.AreEqual(expected.Standings.Count, actual.Standings.Count, "Number of Standings divisions should match");
+                Assert.AreEqual(expected.StandingsTable.Count, actual.StandingsTable.Count, "Number of Standings divisions should match");
 
-                for (var i = 0; i < expected.Standings.Count; i++)
+                for (var i = 0; i < expected.StandingsTable.Count; i++)
                 {
-                    Assert.AreEqual(expected.Standings[i].Count, actual.Standings[i].Count, $"[Div#{i}] Number of Standings should match");
-                    for (var j = 0; j < expected.Standings[i].Count; j++)
+                    var expectedStandings = expected.StandingsTable[i];
+                    var actualStandings = actual.StandingsTable[i];
+
+                    Assert.AreEqual(expectedStandings.LastUpdateTime, actualStandings.LastUpdateTime, $"[Div#{i}] LastTimeUpdated should match");
+
+                    Assert.AreEqual(actualStandings.StandingsEntries.Count, actualStandings.StandingsEntries.Count, $"[Div#{i}] Number of Standings should match");
+                    for (var j = 0; j < actualStandings.StandingsEntries.Count; j++)
                     {
                         Assert.IsTrue(StandingsEntryViewModelEqualityComparer.AssertAreEqual(
-                            expected.Standings[i][j],
-                            actual.Standings[i][j],
+                            expectedStandings.StandingsEntries[j],
+                            actualStandings.StandingsEntries[j],
                             $"[Div#{i}][Standings[{j}]] "));
                     }
                 }
@@ -97,6 +101,8 @@
                 {
                     var expectedPivot = expected.PivotTable[i];
                     var actualPivot = actual.PivotTable[i];
+
+                    Assert.AreEqual(expectedPivot.LastUpdateTime, actualPivot.LastUpdateTime, $"[Div#{i}] LastTimeUpdated should match");
 
                     Assert.AreEqual(expectedPivot.TeamsStandings.Count, actualPivot.TeamsStandings.Count, $"[Div#{i}] Number of teams in pivot table should match");
 

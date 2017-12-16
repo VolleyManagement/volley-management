@@ -13,7 +13,7 @@
         /// <summary>
         /// Holds collection of entries
         /// </summary>
-        private IList<PivotStandingsEntryViewModel> _entries = new List<PivotStandingsEntryViewModel>();
+        private IList<PivotStandingsTeamViewModel> _entries = new List<PivotStandingsTeamViewModel>();
 
         /// <summary>
         /// Adds entries to collection
@@ -22,7 +22,7 @@
         public PivotStandingsEntryViewModelServiceTestFixture TestEntries()
         {
             _entries.Add(
-                new PivotStandingsEntryViewModel
+                new PivotStandingsTeamViewModel
                 {
                     TeamName = "TeamNameA",
                     TeamId = 1,
@@ -30,7 +30,7 @@
                     SetsRatio = 6.0f / 3
                 });
             _entries.Add(
-                 new PivotStandingsEntryViewModel
+                 new PivotStandingsTeamViewModel
                  {
                      TeamName = "TeamNameC",
                      TeamId = 3,
@@ -38,7 +38,7 @@
                      SetsRatio = 4.0f / 3
                  });
             _entries.Add(
-                new PivotStandingsEntryViewModel
+                new PivotStandingsTeamViewModel
                 {
                     TeamName = "TeamNameB",
                     TeamId = 2,
@@ -52,7 +52,7 @@
         /// Builds test data
         /// </summary>
         /// <returns>Entries collection</returns>
-        public IList<PivotStandingsEntryViewModel> Build()
+        public IList<PivotStandingsTeamViewModel> Build()
         {
             return _entries;
         }

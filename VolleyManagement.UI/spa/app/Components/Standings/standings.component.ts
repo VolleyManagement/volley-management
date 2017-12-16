@@ -4,6 +4,7 @@ import 'rxjs/add/operator/toPromise';
 
 import { StandingsService } from '../../Services/standings.service';
 import { StandingsEntry } from '../../Models/Standings/StandingsEntry';
+import { DivisionStandings } from '../../Models/Standings/DivisionStandings';
 
 @Component({
     selector: 'standings',
@@ -15,7 +16,7 @@ export class StandingsComponent implements OnInit {
     @Input() standingsId: number;
     @Output() ready: EventEmitter<void> = new EventEmitter<void>();
 
-    data: StandingsEntry[][];
+    data: DivisionStandings[];
 
     constructor(private _service: StandingsService) { }
 

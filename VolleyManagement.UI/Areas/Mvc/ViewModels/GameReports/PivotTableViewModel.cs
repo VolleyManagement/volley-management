@@ -1,15 +1,13 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameReports
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using Domain.GameReportsAggregate;
 
     /// <summary>
     /// Represents a view model for <see cref="PivotTableViewModel"/>.
     /// </summary>
-    public class PivotTableViewModel
+    public class PivotTableViewModel : DivisionStandingsBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PivotTableViewModel"/> class
@@ -17,7 +15,11 @@
         /// <param name="pivotStandings">Instance of a class which implements<see cref="PivotStandingsDto"/></param>
         public PivotTableViewModel(PivotStandingsDto pivotStandings)
         {
-            TeamsStandings = TeamStandingsViewModelBase.SetPositions(pivotStandings.Teams.Select(PivotTeamStandingsViewModel.Map).ToList());
+            LastUpdateTime = pivotStandings.LastUpdateTime;
+
+            TeamsStandings = pivotStandings.Teams.Select(PivotTeamStandingsViewModel.Map).ToList();
+            TeamStandingsViewModelBase.SetPositions(TeamsStandings);
+
             GameResults = pivotStandings.GameResults.Select(PivotGameResultViewModel.Map).ToList();
             AllGameResults = new List<PivotGameResultViewModel>[TeamsStandings.Count * TeamsStandings.Count];
         }

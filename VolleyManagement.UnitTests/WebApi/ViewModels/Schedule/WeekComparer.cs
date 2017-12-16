@@ -4,14 +4,14 @@
     using System.Linq;
     using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
-    internal class WeekComparer : IEqualityComparer<Week>
+    internal class WeekComparer : IEqualityComparer<WeekViewModel>
     {
-        public bool Equals(Week x, Week y)
+        public bool Equals(WeekViewModel x, WeekViewModel y)
         {
             return AreEqual(x, y);
         }
 
-        public int GetHashCode(Week obj)
+        public int GetHashCode(WeekViewModel obj)
         {
             return obj.Days.GetHashCode();
         }
@@ -22,7 +22,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given entries have the same properties.</returns>
-        private bool AreEqual(Week x, Week y)
+        private bool AreEqual(WeekViewModel x, WeekViewModel y)
         {
             return x.Days.AsQueryable().SequenceEqual(y.Days.AsQueryable(), new DaysComparer());
         }

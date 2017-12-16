@@ -7,14 +7,14 @@
     using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
     [ExcludeFromCodeCoverage]
-    internal class DaysComparer : IEqualityComparer<ScheduleDay>
+    internal class DaysComparer : IEqualityComparer<ScheduleDayViewModel>
     {
-        public bool Equals(ScheduleDay x, ScheduleDay y)
+        public bool Equals(ScheduleDayViewModel x, ScheduleDayViewModel y)
         {
             return AreEqual(x, y);
         }
 
-        public int GetHashCode(ScheduleDay obj)
+        public int GetHashCode(ScheduleDayViewModel obj)
         {
             return obj.Date.GetHashCode() + obj.Games.GetHashCode();
         }
@@ -25,7 +25,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given entries have the same properties.</returns>
-        private bool AreEqual(ScheduleDay x, ScheduleDay y)
+        private bool AreEqual(ScheduleDayViewModel x, ScheduleDayViewModel y)
         {
             Assert.AreEqual(x.Date, y.Date, "Date of game do not match");
             return x.Divisions.AsQueryable().SequenceEqual(y.Divisions.AsQueryable(), new DivisionsComparer()) &&

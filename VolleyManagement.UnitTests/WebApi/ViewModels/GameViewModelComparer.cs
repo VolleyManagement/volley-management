@@ -85,10 +85,10 @@
             Assert.AreEqual(x.HomeTeamName, y.HomeTeamName, "Home team id do not match");
             Assert.AreEqual(x.Round, y.Round, "Round number do not match");
 
-            return AreEqualResult(x.Result, y.Result);
+            return AreResultsEqual(x.Result, y.Result);
         }
 
-        private bool AreEqualResult(GameViewModel.GameResult x, GameViewModel.GameResult y)
+        private bool AreResultsEqual(GameViewModel.GameResult x, GameViewModel.GameResult y)
         {
             if (x == null && y == null)
             {

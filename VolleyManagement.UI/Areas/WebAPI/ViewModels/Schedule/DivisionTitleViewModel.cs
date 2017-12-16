@@ -5,7 +5,7 @@ namespace VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule
     /// <summary>
     /// Represents info about divisions
     /// </summary>
-    public class DivisionTitle
+    public class DivisionTitleViewModel
     {
         /// <summary>
         /// Gets or sets division id

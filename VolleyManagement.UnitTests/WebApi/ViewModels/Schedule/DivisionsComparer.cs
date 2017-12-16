@@ -7,14 +7,14 @@
     using VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule;
 
     [ExcludeFromCodeCoverage]
-    internal class DivisionsComparer : IEqualityComparer<DivisionTitle>
+    internal class DivisionsComparer : IEqualityComparer<DivisionTitleViewModel>
     {
-        public bool Equals(DivisionTitle x, DivisionTitle y)
+        public bool Equals(DivisionTitleViewModel x, DivisionTitleViewModel y)
         {
             return AreEqual(x, y);
         }
 
-        public int GetHashCode(DivisionTitle obj)
+        public int GetHashCode(DivisionTitleViewModel obj)
         {
             return obj.Id.GetHashCode();
         }
@@ -25,7 +25,7 @@
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
         /// <returns>True if given entries have the same properties.</returns>
-        private bool AreEqual(DivisionTitle x, DivisionTitle y)
+        private bool AreEqual(DivisionTitleViewModel x, DivisionTitleViewModel y)
         {
             Assert.AreEqual(x.Id, y.Id, "Division id do not match");
             Assert.AreEqual(x.Name, y.Name, "Division name do not match");

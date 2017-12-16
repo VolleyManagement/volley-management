@@ -7,7 +7,7 @@ namespace VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule
     /// <summary>
     /// Represents schedule by day
     /// </summary>
-    public class ScheduleDay
+    public class ScheduleDayViewModel
     {
         /// <summary>
         /// Gets or sets <see cref="DateTime"/>containing date
@@ -20,8 +20,8 @@ namespace VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule
         public List<GameViewModel> Games { get; set; }
 
         /// <summary>
-        /// Gets or sets collection of <see cref="DivisionTitle"/>containing divisions played in this day info
+        /// Gets or sets collection of <see cref="DivisionTitleViewModel"/>containing divisions played in this day info
         /// </summary>
-        public List<DivisionTitle> Divisions{ get; set; }
+        public List<DivisionTitleViewModel> Divisions{ get; set; }
     }
 }

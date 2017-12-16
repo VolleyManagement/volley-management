@@ -5,11 +5,11 @@ namespace VolleyManagement.UI.Areas.WebAPI.ViewModels.Schedule
     /// <summary>
     /// Represents schedule grouped by weeks
     /// </summary>
-    public class Week
+    public class WeekViewModel
     {
         /// <summary>
-        /// Gets or sets collection of <see cref="ScheduleDay"/>containing schedule grouped by days
+        /// Gets or sets collection of <see cref="ScheduleDayViewModel"/>containing schedule grouped by days
         /// </summary>
-        public List<ScheduleDay> Days { get; set; }
+        public List<ScheduleDayViewModel> Days { get; set; }
     }
 }

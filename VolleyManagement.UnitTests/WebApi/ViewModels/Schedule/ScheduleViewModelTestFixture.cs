@@ -29,18 +29,18 @@
 
         public ScheduleViewModelTestFixture WithOneWeekOneDivisionOneGame()
         {
-            _schedule.Schedule = new List<Week>
+            _schedule.Schedule = new List<WeekViewModel>
             {
-                new Week
+                new WeekViewModel
                 {
-                    Days = new List<ScheduleDay>
+                    Days = new List<ScheduleDayViewModel>
                     {
-                        new ScheduleDay
+                        new ScheduleDayViewModel
                         {
                             Date = _date_A_For_Round,
-                            Divisions = new List<DivisionTitle>
+                            Divisions = new List<DivisionTitleViewModel>
                             {
-                                new DivisionTitle
+                                new DivisionTitleViewModel
                                 {
                                     Id = 1,
                                     Name = "Division Name",
@@ -87,18 +87,18 @@
 
         public ScheduleViewModelTestFixture WithOneWeekOneGameDayTwoDivisionsTwoGames()
         {
-            _schedule.Schedule = new List<Week>
+            _schedule.Schedule = new List<WeekViewModel>
             {
-                new Week
+                new WeekViewModel
                 {
-                    Days = new List<ScheduleDay>
+                    Days = new List<ScheduleDayViewModel>
                     {
-                        new ScheduleDay
+                        new ScheduleDayViewModel
                         {
                             Date = _date_A_For_Round,
-                            Divisions = new List<DivisionTitle>
+                            Divisions = new List<DivisionTitleViewModel>
                             {
-                                new DivisionTitle
+                                new DivisionTitleViewModel
                                 {
                                     Id = 1,
                                     Name = "Division Name",
@@ -107,7 +107,7 @@
                                         1
                                     }
                                 },
-                                new DivisionTitle
+                                new DivisionTitleViewModel
                                 {
                                     Id = 2,
                                     Name = "Division Name1",
@@ -179,18 +179,18 @@
 
         public ScheduleViewModelTestFixture WithOneWeekTwoGameDaysTwoDivisionsTwoGames()
         {
-            _schedule.Schedule = new List<Week>
+            _schedule.Schedule = new List<WeekViewModel>
             {
-                new Week
+                new WeekViewModel
                 {
-                    Days = new List<ScheduleDay>
+                    Days = new List<ScheduleDayViewModel>
                     {
-                        new ScheduleDay
+                        new ScheduleDayViewModel
                         {
                             Date = _date_B_For_Round,
-                            Divisions = new List<DivisionTitle>
+                            Divisions = new List<DivisionTitleViewModel>
                             {
-                                new DivisionTitle
+                                new DivisionTitleViewModel
                                 {
                                     Id = 2,
                                     Name = "Division Name1",
@@ -229,12 +229,12 @@
                                 }
                             }
                         },
-                          new ScheduleDay
+                          new ScheduleDayViewModel
                         {
                             Date = _date_A_For_Round,
-                            Divisions = new List<DivisionTitle>
+                            Divisions = new List<DivisionTitleViewModel>
                             {
-                                new DivisionTitle
+                                new DivisionTitleViewModel
                                 {
                                     Id = 1,
                                     Name = "Division Name",
@@ -281,18 +281,18 @@
 
         public ScheduleViewModelTestFixture WithTwoWeeksTwoDivisionsTwoGames()
         {
-            _schedule.Schedule = new List<Week>
+            _schedule.Schedule = new List<WeekViewModel>
             {
-                new Week
+                new WeekViewModel
                 {
-                    Days = new List<ScheduleDay>
+                    Days = new List<ScheduleDayViewModel>
                     {
-                        new ScheduleDay
+                        new ScheduleDayViewModel
                         {
                             Date = _date_A_For_Round,
-                            Divisions = new List<DivisionTitle>
+                            Divisions = new List<DivisionTitleViewModel>
                             {
-                                new DivisionTitle
+                                new DivisionTitleViewModel
                                 {
                                     Id = 1,
                                     Name = "Division Name",
@@ -333,16 +333,16 @@
                         }
                     }
                 },
-                new Week
+                new WeekViewModel
                 {
-                    Days = new List<ScheduleDay>
+                    Days = new List<ScheduleDayViewModel>
                     {
-                        new ScheduleDay
+                        new ScheduleDayViewModel
                         {
                             Date = _date_C_For_Round,
-                            Divisions = new List<DivisionTitle>
+                            Divisions = new List<DivisionTitleViewModel>
                             {
-                                new DivisionTitle
+                                new DivisionTitleViewModel
                                 {
                                     Id = 2,
                                     Name = "Division Name1",
@@ -389,7 +389,7 @@
 
         public ScheduleViewModelTestFixture WithEmptyResult()
         {
-            _schedule.Schedule = new List<Week>();
+            _schedule.Schedule = new List<WeekViewModel>();
             return this;
         }
 

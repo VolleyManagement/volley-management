@@ -40,7 +40,7 @@ export class ScheduleComponent implements OnInit {
             (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
     }
 
-    divisionsRoundDateInfo(day: ScheduleDay): string {
+    getdivisionsHeader(day: ScheduleDay): string {
         let info = '';
         day.Divisions.forEach((item, index) => {
             info += item.Name + ' : ' + item.Rounds.join() + ' раунд. ';
@@ -48,9 +48,13 @@ export class ScheduleComponent implements OnInit {
         return info;
     }
 
-    getDivisionBGColor(divisionId: number): string {
+    getDivisionAccentColor(divisionId: number): string {
         let index = this.divisionsIds.indexOf(divisionId);
-        return 'group' + ++index;
+        return 'division' + ++index;
+    }
+
+    isFreeDay(gameResult: GameResult): boolean {
+        return !gameResult.AwayTeamName;
     }
 
     private _getSortedDivisionsIds() {

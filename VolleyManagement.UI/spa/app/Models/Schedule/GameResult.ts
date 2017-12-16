@@ -9,5 +9,4 @@ export interface GameResult {
     Result: Result;
     DivisionId: number;
     GroupId: number;
-    DivisionName: string;
 }

@@ -2,38 +2,38 @@
   /* VARIABLES */
   $schedule-table-text-color: black;
   $header-bg-color: #DDEBF7;
-  $group1-bg-color: #4472C4;
-  $group2-bg-color: #70AD47;
-  $group3-bg-color: #581058;
-  $group4-bg-color: #452570;
-  $group5-bg-color: #1d1d65;
-  $group6-bg-color: #114457;
-  $group7-bg-color: #106138;
-  $group8-bg-color: #448b00;
-  $group9-bg-color: #7d9500;
-  $group10-bg-color: #877a00;
-  $group11-bg-color: #c29800;
-  $group12-bg-color: #a36d00;
-  $group13-bg-color: #a34b00;
-  $group14-bg-color: #bd3800;
-  $group15-bg-color: #bb0005;
-  $group16-bg-color: #9c0037;
-  $group1-date-bg-color: #B4C6E7;
-  $group2-date-bg-color: #C6E0B4;
-  $group3-date-bg-color: #9d5e9d;
-  $group4-date-bg-color: #8268a3;
-  $group5-date-bg-color: #8e8eba;
-  $group6-date-bg-color: #7c9da9;
-  $group7-date-bg-color: #68ab89;
-  $group8-date-bg-color: #afda86;
-  $group9-date-bg-color: #e5f885;
-  $group10-date-bg-color: #fff489;
-  $group11-date-bg-color: #ffde6a;
-  $group12-date-bg-color: #ffcd6a;
-  $group13-date-bg-color: #ffb574;
-  $group14-date-bg-color: #ff9e74;
-  $group15-date-bg-color: #fd7478;
-  $group16-date-bg-color: #ea6b98;
+  $division1-bg-color: #4472C4;
+  $division2-bg-color: #70AD47;
+  $division3-bg-color: #581058;
+  $division4-bg-color: #452570;
+  $division5-bg-color: #1d1d65;
+  $division6-bg-color: #114457;
+  $division7-bg-color: #106138;
+  $division8-bg-color: #448b00;
+  $division9-bg-color: #7d9500;
+  $division10-bg-color: #877a00;
+  $division11-bg-color: #c29800;
+  $division12-bg-color: #a36d00;
+  $division13-bg-color: #a34b00;
+  $division14-bg-color: #bd3800;
+  $division15-bg-color: #bb0005;
+  $division16-bg-color: #9c0037;
+  $division1-date-bg-color: #B4C6E7;
+  $division2-date-bg-color: #C6E0B4;
+  $division3-date-bg-color: #9d5e9d;
+  $division4-date-bg-color: #8268a3;
+  $division5-date-bg-color: #8e8eba;
+  $division6-date-bg-color: #7c9da9;
+  $division7-date-bg-color: #68ab89;
+  $division8-date-bg-color: #afda86;
+  $division9-date-bg-color: #e5f885;
+  $division10-date-bg-color: #fff489;
+  $division11-date-bg-color: #ffde6a;
+  $division12-date-bg-color: #ffcd6a;
+  $division13-date-bg-color: #ffb574;
+  $division14-date-bg-color: #ff9e74;
+  $division15-date-bg-color: #fd7478;
+  $division16-date-bg-color: #ea6b98;
   $game-schedule-border-color: #E8E8E8;
   $game-hover-bg-color: #009933;
   /* STYLES */
@@ -60,19 +60,19 @@
       width: 280px;
     }
 
-    .group-data {
+    .division-data {
       width: 280px;
       float: left;
       font-size: 11pt;
-      .group-date {
+      .division-date {
         margin: 0px;
         text-align: center;
         font-size: 9pt;
-        &.group-date-group2 {
-          background-color: $group2-date-bg-color;
+        &.division-date-division2 {
+          background-color: $division2-date-bg-color;
         }
-        &.group-date-group1 {
-          background-color: $group1-date-bg-color;
+        &.division-date-division1 {
+          background-color: $division1-date-bg-color;
         }
       }
     }
@@ -84,53 +84,53 @@
         table-layout: fixed;
         empty-cells: hide;
         border: 1px solid $game-schedule-border-color;
-        &.group1 {
-          background-color: $group1-bg-color;
+        &.division1 {
+          background-color: $division1-bg-color;
         }
-        &.group2 {
-          background-color: $group2-bg-color;
+        &.division2 {
+          background-color: $division2-bg-color;
         }
-        &.group3 {
-          background-color: $group3-bg-color;
+        &.division3 {
+          background-color: $division3-bg-color;
         }
-        &.group4 {
-          background-color: $group4-bg-color;
+        &.division4 {
+          background-color: $division4-bg-color;
         } 
-        &.group5 {
-          background-color: $group5-bg-color;
+        &.division5 {
+          background-color: $division5-bg-color;
         }
-        &.group6 {
-          background-color: $group6-bg-color;
+        &.division6 {
+          background-color: $division6-bg-color;
         }
-        &.group7 {
-          background-color: $group7-bg-color;
+        &.division7 {
+          background-color: $division7-bg-color;
         }
-        &.group8 {
-          background-color: $group8-bg-color;
+        &.division8 {
+          background-color: $division8-bg-color;
         } 
-        &.group9 {
-          background-color: $group9-bg-color;
+        &.division9 {
+          background-color: $division9-bg-color;
         }
-        &.group10 {
-          background-color: $group10-bg-color;
+        &.division10 {
+          background-color: $division10-bg-color;
         }
-        &.group11 {
-          background-color: $group11-bg-color;
+        &.division11 {
+          background-color: $division11-bg-color;
         }
-        &.group12 {
-          background-color: $group12-bg-color;
+        &.division12 {
+          background-color: $division12-bg-color;
         } 
-        &.group13 {
-          background-color: $group13-bg-color;
+        &.division13 {
+          background-color: $division13-bg-color;
         }
-        &.group14 {
-          background-color: $group14-bg-color;
+        &.division14 {
+          background-color: $division14-bg-color;
         }
-        &.group15 {
-          background-color: $group15-bg-color;
+        &.division15 {
+          background-color: $division15-bg-color;
         }
-        &.group16 {
-          background-color: $group16-bg-color;
+        &.division16 {
+          background-color: $division16-bg-color;
         } 
         &:hover {
           background-color: $game-hover-bg-color;

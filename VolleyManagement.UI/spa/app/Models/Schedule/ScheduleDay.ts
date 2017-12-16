@@ -1,8 +1,8 @@
 import { GameResult } from './GameResult';
-import { DivisionTitle } from './DivisionTitle';
+import { DivsionHeader } from './DivsionHeader';
 
 export interface ScheduleDay {
     Date: string;
     Games: GameResult[];
-    Divisions: DivisionTitle[];
+    Divisions: DivsionHeader[];
 }

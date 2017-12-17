@@ -33,13 +33,13 @@
 
         #region Query objects
 
-        private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getTournamentInstanceByIdQuery;
-        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _tournamentScheduleDtoByIdQuery;
+        private readonly IQuery<Game, GameByNumberCriteria> _gameNumberByTournamentIdQuery;
         private readonly IQuery<List<Game>, TournamentRoundsGameResultsCriteria> _gamesByTournamentIdRoundsNumberQuery;
         private readonly IQuery<List<Game>, GamesByRoundCriteria> _gamesByTournamentIdInRoundsByNumbersQuery;
-        private readonly IQuery<Game, GameByNumberCriteria> _gameNumberByTournamentIdQuery;
+        private readonly IQuery<GameResultDto, FindByIdCriteria> _getByIdQuery;
+        private readonly IQuery<List<GameResultDto>, TournamentGameResultsCriteria> _tournamentGameResultsQuery;
 
         #endregion
 
@@ -84,11 +84,6 @@
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets or sets property of TournamentService
-        /// </summary>
-        public ITournamentService TournamentService { get; set; }
 
         #region Implementation
 

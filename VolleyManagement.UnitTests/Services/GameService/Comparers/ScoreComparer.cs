@@ -20,7 +20,7 @@
         /// If both x and y are null, the method returns true.</returns>
         public bool Equals(Score x, Score y)
         {
-            return x.Home == y.Home && x.Away == y.Away && x.IsTechnicalDefeat == y.IsTechnicalDefeat;
+            return x.Home == y.Home && x.Away == y.Away;
         }
 
         /// <summary>

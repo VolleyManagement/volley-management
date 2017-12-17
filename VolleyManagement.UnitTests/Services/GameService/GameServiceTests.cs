@@ -55,7 +55,6 @@
         private readonly Mock<TimeProvider> _timeMock = new Mock<TimeProvider>();
 
         private Mock<IGameRepository> _gameRepositoryMock;
-        private Mock<IGameService> _gameServiceMock;
         private Mock<IAuthorizationService> _authServiceMock;
         private Mock<ITournamentService> _tournamentServiceMock;
         private Mock<ITournamentRepository> _tournamentRepositoryMock;
@@ -79,7 +78,7 @@
         public void TestInit()
         {
             _gameRepositoryMock = new Mock<IGameRepository>();
-            _gameServiceMock = new Mock<IGameService>();
+            new Mock<IGameService>();
             _authServiceMock = new Mock<IAuthorizationService>();
             _tournamentServiceMock = new Mock<ITournamentService>();
             _tournamentRepositoryMock = new Mock<ITournamentRepository>();
@@ -102,15 +101,11 @@
 
         #region Create
 
-        /// <summary>
-        /// Test for Create method. GameResult object contains valid data. Game result is created successfully.
-        /// </summary>
         [TestMethod]
         public void Create_GameValid_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().Build();
             var expectedGame = new GameBuilder().Build();
             var sut = BuildSUT();
@@ -122,15 +117,11 @@
             VerifyCreateGame(expectedGame, Times.Once());
         }
 
-        /// <summary>
-        /// Test for Create method. GameResult object contains Penalty data. Game result is created successfully.
-        /// </summary>
         [TestMethod]
         public void Create_GameWithPenalty_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().WithAPenalty().Build();
             var expectedGame = new GameBuilder().WithAPenalty().Build();
             var sut = BuildSUT();
@@ -142,10 +133,6 @@
             VerifyCreateGame(expectedGame, Times.Once());
         }
 
-        /// <summary>
-        /// Test for Create method. Tournament last date which was updated is today.
-        /// Game result is created successfully.
-        /// </summary>
         [TestMethod]
         public void Create_GameHasResult_LastTimeUpdated()
         {
@@ -211,9 +198,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME);
         }
 
-        /// <summary>
-        /// Test for Create method. The home team and the away team are the same. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameSameTeams_ExceptionThrown()
         {
@@ -241,10 +225,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SAME_TEAM);
         }
 
-        /// <summary>
-        /// Test for Create method. The final score of the game (sets score) is invalid.
-        /// Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameInvalidSetsScore_ExceptionThrown()
         {
@@ -270,10 +250,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID);
         }
 
-        /// <summary>
-        /// Test for Create method. The final score of the game (sets score) does not match set scores.
-        /// Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameSetsScoreNoMatchSetScores_ExceptionThrown()
         {
@@ -298,9 +274,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES);
         }
 
-        /// <summary>
-        /// Test for Create method. The required set scores are invalid. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameResultInvalidRequiredSetScores_ExceptionThrown()
         {
@@ -325,9 +298,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_25_0);
         }
 
-        /// <summary>
-        /// Test for Create method. The optional set scores are invalid. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameInvalidOptionalSetScores_ExceptionThrown()
         {
@@ -352,9 +322,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_0_0);
         }
 
-        /// <summary>
-        /// Test for Create method. Previous optional set is not played (set score is 0:0). Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GamePreviousOptionalSetUnplayed_ExceptionThrown()
         {
@@ -379,9 +346,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_PREVIOUS_OPTIONAL_SET_UNPLAYED);
         }
 
-        /// <summary>
-        /// Test for Create method. Set scores are not listed in the correct order. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameSetScoresUnordered_ExceptionThrown()
         {
@@ -406,9 +370,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SET_SCORES_NOT_ORDERED);
         }
 
-        /// <summary>
-        /// Test for Create method. Set scores are not listed in the correct order. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameSetScoresUnorderedForAwayTeam_ExceptionThrown()
         {
@@ -433,15 +394,11 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SET_SCORES_NOT_ORDERED);
         }
 
-        /// <summary>
-        /// Test for Create method. Game object contains valid data for technical win of away team. Game is created successfully.
-        /// </summary>
         [TestMethod]
         public void Create_GameHomeTeamTechnicalWinValidData_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
             var expectedGame = new GameBuilder().WithTechnicalDefeatValidSetScoresHomeTeamWin().Build();
             var sut = BuildSUT();
@@ -453,15 +410,11 @@
             VerifyCreateGame(expectedGame, Times.Once());
         }
 
-        /// <summary>
-        /// Test for Create method. Game object contains valid data for technical win of away team. Game is created successfully.
-        /// </summary>
         [TestMethod]
         public void Create_GameAwayTeamTechnicalWinValidData_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
             var newGame = new GameBuilder()
                 .WithTechnicalDefeatValidSetScoresAwayTeamWin()
                 .WithTournamentId(1)
@@ -480,9 +433,6 @@
             VerifyCreateGame(expectedGame, Times.Once());
         }
 
-        /// <summary>
-        /// Test for Create method. Sets score are invalid. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_TechnicalDefeatInvalidSetsScore_ExceptionThrown()
         {
@@ -507,9 +457,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID);
         }
 
-        /// <summary>
-        /// Test for Create method. Set scores are invalid. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameTechnicalDefeatInvalidSetScores_ExceptionThrown()
         {
@@ -534,9 +481,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_25_0);
         }
 
-        /// <summary>
-        /// Test for Create method. Set scores are set to optional. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameTechnicalDefeatOptionalSetScore_ExceptionThrown()
         {
@@ -561,9 +505,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES);
         }
 
-        /// <summary>
-        /// Test for Create method. Set scores are null. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameSetScoresNull_ExceptionThrown()
         {
@@ -588,15 +529,11 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_NOMATCH_SET_SCORES);
         }
 
-        /// <summary>
-        /// Test for Create method. Home team id is null. AwayTeam free-day game is created.
-        /// </summary>
         [TestMethod]
         public void Create_NoHomeTeam_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
             var newGame = new GameBuilder()
                                 .WithHomeTeamId(null)
                                 .WithAwayTeamId(1)
@@ -616,9 +553,6 @@
             VerifyCreateGame(expectedGame, Times.Once());
         }
 
-        /// <summary>
-        /// Test for Create method. Set scores are invalid. Exception is thrown during creation.
-        /// </summary>
         [TestMethod]
         public void Create_GameSetsScoreInvalid_ExceptionThrown()
         {
@@ -643,18 +577,11 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_SETS_SCORE_INVALID);
         }
 
-        /// <summary>
-        /// Test for Create method.
-        /// Game object contains null result data.
-        /// Game object is created successfully.
-        /// Result of this game have to be initialized
-        /// </summary>
         [TestMethod]
         public void Create_GameWithNoResult_GameCreatedWithDefaultResult()
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
 
             var newGame = new GameBuilder()
                 .WithNullResult()
@@ -672,9 +599,6 @@
             VerifyCreateGame(expectedGameToCreate, Times.Once());
         }
 
-        /// <summary>
-        /// Tests creation of the game with invalid date
-        /// </summary>
         [TestMethod]
         public void Create_GameBeforeTournamentStarts_ExceptionThrown()
         {
@@ -705,9 +629,6 @@
             VerifyExceptionThrown(exception, _wrongRoundDate);
         }
 
-        /// <summary>
-        /// Tests creation of the game with invalid date
-        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void Create_GameSetLateDateTime_ExceptionThrown()
@@ -723,8 +644,8 @@
                 .WithStartDate(DateTime.Parse(LATE_TOURNAMENT_DATE))
                 .Build();
 
-            SetupGetTournamentDto(new TournamentScheduleDto());
-            SetupGetTournamentResults(tournament.Id, new GameServiceTestFixture().TestGameResults().Build());
+            MockGetTournamentById(tournament.Id, new TournamentScheduleDto());
+            MockGetTournamentResults(tournament.Id, new GameServiceTestFixture().TestGameResults().Build());
             var sut = BuildSUT();
 
             // Act
@@ -734,9 +655,6 @@
             VerifyCreateGame(game, Times.Never(), Times.Once());
         }
 
-        /// <summary>
-        /// Tests creation of the game with no date
-        /// </summary>
         [TestMethod]
         public void Create_GameDateNull_ExceptionThrown()
         {
@@ -765,9 +683,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_DATE_NOT_SET);
         }
 
-        /// <summary>
-        /// Tests creation of same game in same round
-        /// </summary>
         [TestMethod]
         public void Create_SameGameInRound_ExceptionThrown()
         {
@@ -782,8 +697,8 @@
                 .Build();
 
             List<GameResultDto> gameResults = new GameServiceTestFixture().TestGameResults().Build();
-            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().WithScheme(TournamentSchemeEnum.One).Build());
-            SetupGetTournamentResults(1, gameResults);
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().WithScheme(TournamentSchemeEnum.One).Build());
+            MockGetTournamentResults(1, gameResults);
 
             var sut = BuildSUT();
 
@@ -801,9 +716,6 @@
             Assert.IsTrue(excaptionWasThrown);
         }
 
-        /// <summary>
-        /// Tests creation of the duplicate free day game
-        /// </summary>
         [TestMethod]
         public void Create_SecondFreeDayInRound_ExceptionThrown()
         {
@@ -815,8 +727,8 @@
                 .WithId(0)
                 .Build();
 
-            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
-            SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
+            MockGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
 
             var sut = BuildSUT();
 
@@ -851,8 +763,8 @@
                 .WithHomeTeamId(3)
                 .Build();
 
-            SetupGetTournamentDto(new TournamentScheduleDto());
-            SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDto());
+            MockGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
 
             var sut = BuildSUT();
             sut.Create(gameInOneRound);
@@ -885,7 +797,7 @@
                 .WithRound(2)
                 .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
                 gameInOtherRound.TournamentId,
                 new GameServiceTestFixture().TestGamesForDuplicateSchemeOne().Build());
 
@@ -919,7 +831,7 @@
                 .WithRound(2)
                 .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
                gameInOtherRound.TournamentId,
                new GameServiceTestFixture().TestGamesForDuplicateSchemeOne().Build());
 
@@ -953,7 +865,7 @@
                .WithId(3)
                .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
               duplicate.TournamentId,
               new GameServiceTestFixture().TestGamesForDuplicateSchemeTwo().Build());
 
@@ -978,7 +890,6 @@
         {
             // Arrange
             MockTournamentSchemeTwo();
-            MockGetTournamentByIdQuery();
 
             var duplicate = new GameBuilder()
               .TestRoundGame()
@@ -986,7 +897,7 @@
               .WithId(3)
               .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
              duplicate.TournamentId,
              new GameServiceTestFixture().TestGamesForDuplicateSchemeTwo().Build());
 
@@ -1017,7 +928,7 @@
             List<GameResultDto> gameResults = new GameServiceTestFixture()
                        .TestGamesSameTeamsSwitchedOrderTournamentSchemTwo()
                        .Build();
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
                        duplicate.TournamentId,
                        gameResults);
 
@@ -1055,7 +966,7 @@
                 .TestGamesWithTwoFreeDays()
                 .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
                 freeDayGameDuplicate.TournamentId,
                 gameResults);
 
@@ -1093,7 +1004,7 @@
                 .TestGamesWithFreeDay()
                 .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
                 freeDayGmeInSameRound.TournamentId,
                 gameResults);
 
@@ -1130,7 +1041,7 @@
                 .TestGamesWithFreeDay()
                 .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
                 freeDayGmeInSameRound.TournamentId,
                 gameResults);
 
@@ -1167,7 +1078,7 @@
              .TestGamesForDuplicateSchemeOne()
              .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
              freeDayGmeInSameRound.TournamentId,
              gameResults);
 
@@ -1205,7 +1116,7 @@
                 .TestGamesForDuplicateSchemeOne()
                 .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
                 freeDayGameInSameRound.TournamentId,
                 gameResults);
 
@@ -1243,7 +1154,7 @@
                 .TestGamesForDuplicateSchemeOne()
                 .Build();
 
-            SetupGetTournamentResults(
+            MockGetTournamentResults(
                 freeDayGmeInSameRound.TournamentId,
                 gameResults);
 
@@ -1263,9 +1174,6 @@
             Assert.IsTrue(exceptionThrown);
         }
 
-        /// <summary>
-        /// Tests creation of the game with invalid fifth set score
-        /// </summary>
         [TestMethod]
         public void Create_FifthSetScoreAsUsualSetScore_ExceptionThrown()
         {
@@ -1289,15 +1197,11 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_15_0);
         }
 
-        /// <summary>
-        /// Tests creation of the game with invalid fifth set score
-        /// </summary>
         [TestMethod]
         public void Create_FifthSetScoreMoreThanMaxWithValidDifference_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().WithFifthSetScoreMoreThanMaxWithValidDifference().Build();
             var sut = BuildSUT();
 
@@ -1308,9 +1212,6 @@
             VerifyCreateGame(newGame, Times.Once());
         }
 
-        /// <summary>
-        /// Tests creation of the game with valid fifth set score
-        /// </summary>
         [TestMethod]
         public void Create_FifthSetScoreMoreThanMaxWithInvalidDifference_ExceptionThrown()
         {
@@ -1334,9 +1235,6 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_15_0);
         }
 
-        /// <summary>
-        /// Tests creation of the game with invalid fifth set score
-        /// </summary>
         [TestMethod]
         public void Create_FifthSetScoreLessThanMax_ExceptionThrown()
         {
@@ -1360,15 +1258,11 @@
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.GAME_REQUIRED_SET_SCORES_15_0);
         }
 
-        /// <summary>
-        /// Tests creation of the game with valid fifth set score
-        /// </summary>
         [TestMethod]
-        public void Create_FifthSetValidScore_ExceptionThrown()
+        public void Create_FifthSetValidScore_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
             var newGame = new GameBuilder().WithFifthSetScoreValid().Build();
             var sut = BuildSUT();
 
@@ -1378,6 +1272,7 @@
             // Assert
             VerifyCreateGame(newGame, Times.Once());
         }
+
         #endregion
 
         #region Get
@@ -1391,7 +1286,7 @@
             // Arrange
             var expected = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
 
-            SetupGet(expected);
+            MockGetById(expected);
 
             var sut = BuildSUT();
 
@@ -1414,10 +1309,8 @@
             // Arrange
             var expected = new GameServiceTestFixture().TestGameResults().Build();
 
-            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
-            SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
-
-            SetupGetTournamentResults(TOURNAMENT_ID, expected);
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
+            MockGetTournamentResults(TOURNAMENT_ID, expected);
 
             var sut = BuildSUT();
 
@@ -1500,7 +1393,6 @@
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
             var existingGames = new List<GameResultDto> { new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build() };
             var game = new GameBuilder().WithId(GAME_RESULT_ID).Build();
             _tournamentGameResultsQueryMock
@@ -1560,7 +1452,7 @@
             var game = new GameBuilder().Build();
             var sut = BuildSUT();
 
-            SetupEditMissingEntityException(game);
+            MockEditThrowsMissingEntityException(game);
 
             // Act
             try
@@ -1575,14 +1467,12 @@
             // Assert
             VerifyExceptionThrown(exception, ExpectedExceptionMessages.CONCURRENCY_EXCEPTION);
         }
-        #endregion
 
         [TestMethod]
         public void Edit_AddResultsToGameInPlayoff_NewGameIsScheduled()
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
 
             List<Game> games = new GameTestFixture()
                 .TestEmptyGamePlayoffSchedule()
@@ -1596,7 +1486,7 @@
                 gameInfo,
                 games);
 
-            Game finishedGame = TestGameToEditInPlayoff();
+            Game finishedGame = BuildTestGameToEditInPlayoff();
 
             var sut = BuildSUT();
 
@@ -1622,7 +1512,6 @@
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
 
             List<Game> games = new GameTestFixture()
                 .TestMinimumEvenTeamsPlayOffSchedule()
@@ -1636,7 +1525,7 @@
                 gameInfo,
                 games);
 
-            Game finishedGame = TestGameToEditInPlayoff();
+            Game finishedGame = BuildTestGameToEditInPlayoff();
 
             var sut = BuildSUT();
 
@@ -1662,7 +1551,6 @@
         {
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
 
             List<Game> games = new GameTestFixture()
                 .TestMinimumOddTeamsPlayOffSchedule()
@@ -1676,7 +1564,7 @@
                 gameInfo,
                 games);
 
-            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
 
             Game finishedGame = new GameBuilder()
                 .WithId(2)
@@ -1727,6 +1615,8 @@
                 Times.Once());
         }
 
+        #endregion
+
         #region Delete
 
         /// <summary>
@@ -1741,7 +1631,7 @@
             var game = new GameResultDtoBuilder().WithDate(now.AddDays(ONE_DAY))
                     .WithAwaySetsScore(0).WithHomeSetsScore(0).Build();
 
-            SetupGet(game);
+            MockGetById(game);
 
             var sut = BuildSUT();
 
@@ -1765,7 +1655,7 @@
             var game = new GameResultDtoBuilder().WithId(GAME_RESULT_ID)
                                                  .WithDate(now.AddDays(-ONE_DAY)).Build();
 
-            SetupGet(game);
+            MockGetById(game);
             var sut = BuildSUT();
 
             // Act
@@ -1795,7 +1685,7 @@
                                 .WithAwaySetsScore(TEST_AWAY_SET_SCORS)
                                 .WithHomeSetsScore(TEST_HOME_SET_SCORS).Build();
 
-            SetupGet(game);
+            MockGetById(game);
             var sut = BuildSUT();
 
             // Act
@@ -1895,7 +1785,7 @@
             {
                 foreach (var game in games)
                 {
-                    SetupEditMissingEntityException(game);
+                    MockEditThrowsMissingEntityException(game);
                 }
 
                 sut.SwapRounds(TOURNAMENT_ID, WRONG_ROUND_NUMBER, WRONG_ROUND_NUMBER);
@@ -1959,10 +1849,8 @@
             // Arrange
             var gamesInTournament = new GameServiceTestFixture().TestGameResults().Build();
 
-            SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
-
-            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
-            SetupGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
+            MockGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
 
             var sut = BuildSUT();
 
@@ -1982,8 +1870,8 @@
             // Arrange
             var gamesInTournament = new GameServiceTestFixture().Build();
 
-            SetupGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
-            SetupGetTournamentDto(new TournamentScheduleDtoBuilder().Build());
+            MockGetTournamentResults(TOURNAMENT_ID, gamesInTournament);
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
 
             var sut = BuildSUT();
 
@@ -2123,7 +2011,7 @@
 
         #endregion
 
-        #region Private
+        #region Creation Methods
 
         private GameService BuildSUT()
         {
@@ -2140,13 +2028,7 @@
                 _tournamentRepositoryMock.Object);
         }
 
-        private void MockGetTournamentByIdQuery()
-        {
-            var tour = new TournamentBuilder().Build();
-            _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
-        }
-
-        private Game TestGameToEditInPlayoff()
+        private Game BuildTestGameToEditInPlayoff()
         {
             return new GameBuilder()
                 .WithId(1)
@@ -2160,68 +2042,105 @@
                 .Build();
         }
 
-        private Game TestNewGameForScheduling()
-        {
-            return new GameBuilder()
-                .WithGameNumber(5)
-                .WithRound(2)
-                .WithTournamentId(1)
-                .WithHomeTeamId(1)
-                .Build();
-        }
+        #endregion
 
-        #region Private
-        private bool AreGamesEqual(Game x, Game y)
-        {
-            return new GameComparer().Compare(x, y) == 0;
-        }
-
-        private void SetupGetTournamentDto(TournamentScheduleDto torunamentInfo)
-        {
-            _tournamentScheduleDtoByIdQueryMock.Setup(m => m.Execute(It.IsAny<TournamentScheduleInfoCriteria>()))
-                .Returns(torunamentInfo);
-        }
-
-        private bool AreDatesEqual(DateTime? x, DateTime? y)
-        {
-            return new GameComparer().Compare(x, y) == 0;
-        }
-
-        private void SetupGet(GameResultDto gameResult)
+        #region Mock Helpers
+        private void MockGetById(GameResultDto gameResult)
         {
             _getByIdQueryMock
                 .Setup(m => m.Execute(It.Is<FindByIdCriteria>(c => c.Id == gameResult.Id)))
                 .Returns(gameResult);
         }
 
-        private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> gameResults)
+        private void MockGetTournamentResults(int tournamentId, List<GameResultDto> gameResults)
         {
             _tournamentGameResultsQueryMock.Setup(m =>
-                m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
+                    m.Execute(It.Is<TournamentGameResultsCriteria>(c => c.TournamentId == tournamentId)))
                 .Returns(gameResults);
         }
 
-        private void SetupGetTournamentResults(int tournamentId, List<Game> gameResults)
+        private void MockGetTournamentResults(int tournamentId, List<Game> gameResults)
         {
             _gamesByTournamentIdInRoundsByNumbersQueryMock.Setup(m =>
-                m.Execute(It.Is<GamesByRoundCriteria>(
-                c => c.TournamentId == tournamentId
-                && c.RoundNumbers.Any(n => gameResults.Any(gr => gr.Round == n)))))
+                    m.Execute(It.Is<GamesByRoundCriteria>(
+                        c => c.TournamentId == tournamentId
+                             && c.RoundNumbers.Any(n => gameResults.Any(gr => gr.Round == n)))))
                 .Returns(gameResults);
         }
 
-        private void SetupGetTournamentById(int id, TournamentScheduleDto tournament)
+        private void MockGetTournamentById(int id, TournamentScheduleDto tournament)
         {
             _tournamentScheduleDtoByIdQueryMock.Setup(m =>
-                m.Execute(It.Is<TournamentScheduleInfoCriteria>(c => c.TournamentId == id)))
+                    m.Execute(It.Is<TournamentScheduleInfoCriteria>(c => c.TournamentId == id)))
                 .Returns(tournament);
         }
 
-        private void SetupEditMissingEntityException(Game game)
+        private void MockEditThrowsMissingEntityException(Game game)
         {
             _gameRepositoryMock.Setup(m =>
-                m.Update(It.Is<Game>(grs => AreGamesEqual(grs, game))))
+                    m.Update(It.Is<Game>(grs => AreGamesEqual(grs, game))))
                 .Throws(new ConcurrencyException());
+        }
+
+        private void MockDefaultTournament()
+        {
+            var tournament = new TournamentScheduleDtoBuilder()
+                .TestTournamemtSchedultDto()
+                .WithScheme(TournamentSchemeEnum.One)
+                .Build();
+
+            MockAllTournamentQueries(tournament);
+        }
+
+        private void MockTournamentSchemeTwo()
+        {
+            var tournament = new TournamentScheduleDtoBuilder()
+                .TestTournamemtSchedultDto()
+                .WithScheme(TournamentSchemeEnum.Two)
+                .Build();
+
+            MockAllTournamentQueries(tournament);
+        }
+
+        private void MockAllTournamentQueries(TournamentScheduleDto testData)
+        {
+            var tour = new TournamentBuilder().WithId(testData.Id).Build();
+            _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
+
+            MockGetTournamentById(testData.Id, testData);
+            MockGetTournamentResults(testData.Id, new List<GameResultDto>());
+        }
+
+        private void MockAuthServiceThrowsExeption(AuthOperation operation)
+        {
+            _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
+        }
+
+        private void MockTournamentServiceReturnTournament()
+        {
+            var tour = new TournamentBuilder().Build();
+            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
+        }
+
+        private void MockTournamentSchemePlayoff(List<GameResultDto> allGames, List<Game> games)
+        {
+            var tournament = new TournamentScheduleDtoBuilder()
+                .TestTournamemtSchedultDto()
+                .WithScheme(TournamentSchemeEnum.PlayOff)
+                .Build();
+
+            MockGetTournamentById(tournament.Id, tournament);
+            MockGetTournamentResults(tournament.Id, allGames);
+            MockGetTournamentResults(tournament.Id, games);
+        }
+
+        #endregion
+
+        #region Custom Assertion
+
+        private bool AreGamesEqual(Game x, Game y)
+        {
+            return new GameComparer().Compare(x, y) == 0;
         }
 
         private void VerifyCreateGame(Game game, Times times)
@@ -2255,24 +2174,12 @@
             }
         }
 
-        private void VerifyEditGame(Game game, Times repositoryTimes, Times unitOfWorkTimes)
-        {
-            _gameRepositoryMock.Verify(
-                m => m.Update(It.Is<Game>(grs => AreGamesEqual(grs, game))), repositoryTimes);
-            _unitOfWorkMock.Verify(m => m.Commit(), unitOfWorkTimes);
-        }
-
         private void VerifyDeleteGame(int gameResultId, Times times)
         {
             _gameRepositoryMock.Verify(m => m.Remove(It.Is<int>(id => id == gameResultId)), times);
             _unitOfWorkMock.Verify(m => m.Commit(), times);
         }
 
-        /// <summary>
-        /// Checks if exception was thrown and has appropriate message
-        /// </summary>
-        /// <param name="exception">Exception that has been thrown</param>
-        /// <param name="expectedMessage">Message to compare with</param>
         private void VerifyExceptionThrown(Exception exception, string expectedMessage)
         {
             Assert.IsNotNull(exception);
@@ -2286,56 +2193,10 @@
             Assert.IsNull(game.AwayTeamId, "AwayTeamId should be null");
         }
 
-        private void MockDefaultTournament()
-        {
-            var tournament = new TournamentScheduleDtoBuilder()
-                .TestTournamemtSchedultDto()
-                .WithScheme(TournamentSchemeEnum.One)
-                .Build();
-
-            SetupGetTournamentById(tournament.Id, tournament);
-            SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
-        }
-
-        private void MockTournamentSchemeTwo()
-        {
-            var tournament = new TournamentScheduleDtoBuilder()
-               .TestTournamemtSchedultDto()
-               .WithScheme(TournamentSchemeEnum.Two)
-               .Build();
-
-            SetupGetTournamentById(tournament.Id, tournament);
-            SetupGetTournamentResults(tournament.Id, new List<GameResultDto>());
-        }
-
-        /// <summary>
-        /// Checks if exception was thrown and has appropriate message
-        /// </summary>
-        /// <param name="exception">Exception that has been thrown</param>
-        /// <param name="expected">Expected exception</param>
-        private void VerifyExceptionThrown(Exception exception, Exception expected)
-        {
-            Assert.IsNotNull(exception);
-            Assert.IsTrue(exception.Message.Equals(expected.Message));
-        }
-
         private void VerifyCheckAccess(AuthOperation operation, Times times)
         {
             _authServiceMock.Verify(tr => tr.CheckAccess(operation), times);
         }
-
-        private void MockAuthServiceThrowsExeption(AuthOperation operation)
-        {
-            _authServiceMock.Setup(tr => tr.CheckAccess(operation)).Throws<AuthorizationException>();
-        }
-
-        private void MockTournamentServiceReturnTournament()
-        {
-            var tour = new TournamentBuilder().Build();
-            _tournamentServiceMock.Setup(ts => ts.Get(It.IsAny<int>())).Returns(tour);
-        }
-
-        #endregion
 
         private void VerifyGamesAdded(Times times)
         {
@@ -2347,17 +2208,6 @@
             _gameRepositoryMock.Verify(gr => gr.Remove(It.IsAny<int>()), times);
         }
 
-        private void MockTournamentSchemePlayoff(List<GameResultDto> allGames, List<Game> games)
-        {
-            var tournament = new TournamentScheduleDtoBuilder()
-               .TestTournamemtSchedultDto()
-               .WithScheme(TournamentSchemeEnum.PlayOff)
-               .Build();
-
-            SetupGetTournamentById(tournament.Id, tournament);
-            SetupGetTournamentResults(tournament.Id, allGames);
-            SetupGetTournamentResults(tournament.Id, games);
-        }
         #endregion
     }
 }

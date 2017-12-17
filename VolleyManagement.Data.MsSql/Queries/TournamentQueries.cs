@@ -26,7 +26,7 @@
     {
         #region Fields
 
-    private readonly VolleyUnitOfWork _unitOfWork;
+        private readonly VolleyUnitOfWork _unitOfWork;
 
         #endregion
 
@@ -71,10 +71,10 @@
         public Tournament Execute(TournamentByGroupCriteria criteria)
         {
             var tournament = from g in _unitOfWork.Context.Groups
-                            join d in _unitOfWork.Context.Divisions on g.DivisionId equals d.Id
-                            join t in _unitOfWork.Context.Tournaments on d.TournamentId equals t.Id
-                            where g.Id == criteria.GroupId
-                            select t;
+                             join d in _unitOfWork.Context.Divisions on g.DivisionId equals d.Id
+                             join t in _unitOfWork.Context.Tournaments on d.TournamentId equals t.Id
+                             where g.Id == criteria.GroupId
+                             select t;
 
             return tournament.Select(GetTournamentMapping()).FirstOrDefault();
         }
@@ -155,10 +155,12 @@
                     StartDate = tr.GamesStart,
                     EndDate = tr.GamesEnd,
                     Scheme = (TournamentSchemeEnum)tr.Scheme,
-                    TeamCount = (byte)tr.Divisions
-                                        .SelectMany(d => d.Groups)
-                                        .SelectMany(g => g.Teams)
-                                        .Count()
+                    Divisions = tr.Divisions.Select(d => new DivisionScheduleDto
+                    {
+                        DivisionId = d.Id,
+                        DivisionName = d.Name,
+                        TeamCount = d.Groups.SelectMany(g => g.Teams).Count()
+                    }).ToList()
                 })
                 .SingleOrDefault();
         }

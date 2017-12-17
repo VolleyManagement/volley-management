@@ -18,7 +18,7 @@ export class ScheduleComponent implements OnInit {
     @Input() scheduleId: number;
     @Output() ready: EventEmitter<void> = new EventEmitter<void>();
 
-    data: ScheduleModel;
+    data: ScheduleModel = {} as ScheduleModel;
     divisionsIds: number[] = [];
 
     constructor(private scheduleService: ScheduleService) { }

@@ -13,5 +13,10 @@
         /// Number of teams playing in division
         /// </summary>
         public int TeamCount { get; set; }
+
+        /// <summary>
+        /// Number of rounds in division
+        /// </summary>
+        public byte NumberOfRounds { get; set; }
     }
 }

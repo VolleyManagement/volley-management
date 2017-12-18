@@ -119,13 +119,6 @@
         void DeleteTeamFromTournament(int teamId, int tournamentId);
 
         /// <summary>
-        /// Counts number of rounds for specified tournament
-        /// </summary>
-        /// <param name="tournament">Tournament for which we count rounds</param>
-        /// <returns>Number of rounds</returns>
-        byte GetNumberOfRounds(TournamentScheduleDto tournament);
-
-        /// <summary>
         /// Returns all teams that don't take part in specific tournament
         /// </summary>
         /// <param name="tournamentId">Id of Tournament for getting teams</param>

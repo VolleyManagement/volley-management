@@ -210,8 +210,15 @@
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
         public TournamentScheduleDto GetTournamentScheduleInfo(int tournamentId)
         {
-            return _getTournamentDtoQuery
+            var result= _getTournamentDtoQuery
                 .Execute(new TournamentScheduleInfoCriteria { TournamentId = tournamentId });
+
+            result.Divisions.ForEach(d =>
+            {
+                d.NumberOfRounds = CalculateNumberOfRounds(result.Scheme, d.TeamCount);
+            });
+
+            return result;
         }
 
         /// <summary>
@@ -391,25 +398,20 @@
             _tournamentRepository.UnitOfWork.Commit();
         }
 
-        /// <summary>
-        /// Counts number of rounds for specified tournament
-        /// </summary>
-        /// <param name="tournament">Tournament for which we count rounds</param>
-        /// <returns>Number of rounds</returns>
-        public byte GetNumberOfRounds(TournamentScheduleDto tournament)
+        public byte CalculateNumberOfRounds(TournamentSchemeEnum  scheme, int teamCount)
         {
             byte numberOfRounds = 0;
 
-            switch (tournament.Scheme)
+            switch (scheme)
             {
                 case TournamentSchemeEnum.One:
-                    numberOfRounds = GetNumberOfRoundsByScheme1(tournament.TeamCount);
+                    numberOfRounds = GetNumberOfRoundsByScheme1(teamCount);
                     break;
                 case TournamentSchemeEnum.Two:
-                    numberOfRounds = GetNumberOfRoundsByScheme2(tournament.TeamCount);
+                    numberOfRounds = GetNumberOfRoundsByScheme2(teamCount);
                     break;
                 case TournamentSchemeEnum.PlayOff:
-                    numberOfRounds = GetNumberOfRoundsByPlayOffScheme(tournament.TeamCount);
+                    numberOfRounds = GetNumberOfRoundsByPlayOffScheme(teamCount);
                     break;
             }
 
@@ -717,7 +719,7 @@
             }
         }
 
-        private byte GetNumberOfRoundsByPlayOffScheme(byte teamCount)
+        private byte GetNumberOfRoundsByPlayOffScheme(int teamCount)
         {
             byte rounds = 0;
             for (byte i = 0; i < teamCount; i++)

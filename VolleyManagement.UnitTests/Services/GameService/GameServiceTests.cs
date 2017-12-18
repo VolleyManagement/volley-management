@@ -1417,7 +1417,6 @@
 
             // Arrange
             MockDefaultTournament();
-            MockGetTournamentByIdQuery();
 
             var existingGame = new GameResultDtoBuilder().WithId(GAME_RESULT_ID).Build();
 

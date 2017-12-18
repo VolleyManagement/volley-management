@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.Controllers
+namespace VolleyManagement.UI.Areas.Mvc.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -366,7 +366,12 @@
                 TournamentId = tournament.Id,
                 TournamentName = tournament.Name,
                 TournamentScheme = tournament.Scheme,
-                NumberOfRounds = _tournamentService.GetNumberOfRounds(tournament),
+                Divisions = tournament.Divisions.Select(d => new DivisionScheduleViewModel
+                {
+                    Id = d.DivisionId,
+                    Name = d.DivisionName,
+                    NumberOfRounds = d.NumberOfRounds
+                }).ToList(),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                 .GroupBy(d => d.Round)
                 .ToDictionary(
@@ -672,8 +677,7 @@
             }
 
             var tournamentTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
-            var roundsNumber = _tournamentService.GetNumberOfRounds(tournament);
-            if (roundsNumber <= 0)
+            if (tournament.Divisions.Any(d => d.NumberOfRounds <= 0))
             {
                 ModelState.AddModelError("LoadError", TournamentController.SchedulingError);
                 return null;
@@ -684,7 +688,9 @@
                 TournamentId = tournamentId,
                 TournamentScheme = tournament.Scheme,
                 GameDate = tournament.StartDate,
-                Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, roundsNumber)),
+                DivisionRounds = tournament.Divisions.ToDictionary(
+                    d => d.DivisionId,
+                    d => new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, d.NumberOfRounds))),
                 Teams = new SelectList(tournamentTeams, "Id", "Name")
             };
         }

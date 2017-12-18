@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
 {
     using System;
     using System.Collections.Generic;
@@ -32,9 +32,9 @@
         public IEnumerable<SelectListItem> Teams { get; set; }
 
         /// <summary>
-        /// Gets or sets list of rounds to be selected
+        /// Gets or sets list of rounds to be selected grouped by divisions
         /// </summary>
-        public SelectList Rounds { get; set; }
+        public Dictionary<int, SelectList> DivisionRounds { get; set; }
 
         /// <summary>
         /// Gets or sets round number of the game

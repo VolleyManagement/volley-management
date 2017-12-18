@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
     using System;
     using System.Collections.Generic;
@@ -18,12 +18,10 @@
         public ScheduleViewModel()
         {
             Rounds = new Dictionary<byte, List<GameResultViewModel>>();
+            Divisions = new List<DivisionScheduleViewModel>();
         }
 
-        /// <summary>
-        /// Gets or sets number of rounds in tournament
-        /// </summary>
-        public byte NumberOfRounds { get; set; }
+        public List<DivisionScheduleViewModel> Divisions { get; set; }
 
         /// <summary>
         /// Gets or sets current rounds collection

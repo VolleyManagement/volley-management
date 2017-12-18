@@ -1,14 +1,14 @@
 ﻿namespace VolleyManagement.Data.MsSql.Queries
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
     using Contracts;
     using Data.Queries.Common;
     using Data.Queries.Tournament;
     using Domain.TournamentsAggregate;
     using Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
     using VolleyManagement.Data.Queries.Division;
     using VolleyManagement.Data.Queries.Group;
 
@@ -147,22 +147,40 @@
         /// <returns>The <see cref="TournamentScheduleDto"/></returns>
         public TournamentScheduleDto Execute(TournamentScheduleInfoCriteria criteria)
         {
-            return _unitOfWork.Context.Tournaments.Where(t => t.Id == criteria.TournamentId)
-                .Select(tr => new TournamentScheduleDto()
+            var query = from t in _unitOfWork.Context.Tournaments
+                        where t.Id == criteria.TournamentId
+                        join d in _unitOfWork.Context.Divisions
+                            on t.Id equals d.TournamentId
+                        join g in _unitOfWork.Context.Groups
+                            on d.Id equals g.DivisionId
+                        select new
+                        {
+                            TournamentId = t.Id,
+                            TournamentName = t.Name,
+                            StartDate = t.GamesStart,
+                            EndDate = t.GamesEnd,
+                            Scheme = t.Scheme,
+                            DivisionId = d.Id,
+                            DivisionName = d.Name,
+                            GroupTeamCount = g.Teams.Count
+                        };
+
+            var result = query.ToList();
+
+            return result.Select(p => new TournamentScheduleDto
+            {
+                Id = p.TournamentId,
+                Name = p.TournamentName,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate,
+                Scheme = (TournamentSchemeEnum)p.Scheme,
+                Divisions = result.Select(d => new DivisionScheduleDto
                 {
-                    Id = tr.Id,
-                    Name = tr.Name,
-                    StartDate = tr.GamesStart,
-                    EndDate = tr.GamesEnd,
-                    Scheme = (TournamentSchemeEnum)tr.Scheme,
-                    Divisions = tr.Divisions.Select(d => new DivisionScheduleDto
-                    {
-                        DivisionId = d.Id,
-                        DivisionName = d.Name,
-                        TeamCount = d.Groups.SelectMany(g => g.Teams).Count()
-                    }).ToList()
-                })
-                .SingleOrDefault();
+                    DivisionId = d.DivisionId,
+                    DivisionName = d.DivisionName,
+                    TeamCount = d.GroupTeamCount
+                }).ToList()
+            }).FirstOrDefault();
         }
 
         #endregion

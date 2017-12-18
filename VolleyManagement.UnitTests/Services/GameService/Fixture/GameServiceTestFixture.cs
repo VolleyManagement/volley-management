@@ -487,7 +487,6 @@
                 GameNumber = 0,
                 GroupId = 1,
                 DivisionId = 1,
-                DivisionName = "Division Name"
             });
             _gameResults.Add(new GameResultDto
             {
@@ -544,7 +543,6 @@
                 GameNumber = 0,
                 GroupId = 2,
                 DivisionId = 2,
-                DivisionName = "Division Name1"
             });
 
             return this;
@@ -608,7 +606,6 @@
                 GameNumber = 0,
                 GroupId = 1,
                 DivisionId = 1,
-                DivisionName = "Division Name"
             });
             _gameResults.Add(new GameResultDto
             {
@@ -665,7 +662,6 @@
                 GameNumber = 0,
                 GroupId = 2,
                 DivisionId = 2,
-                DivisionName = "Division Name1"
             });
 
             return this;
@@ -729,7 +725,6 @@
                 GameNumber = 0,
                 GroupId = 1,
                 DivisionId = 1,
-                DivisionName = "Division Name"
             });
             _gameResults.Add(new GameResultDto
             {
@@ -786,7 +781,6 @@
                 GameNumber = 0,
                 GroupId = 2,
                 DivisionId = 2,
-                DivisionName = "Division Name1"
             });
 
             return this;
@@ -1018,7 +1012,6 @@
                 GameNumber = 0,
                 GroupId = 1,
                 DivisionId = 1,
-                DivisionName = "Division Name"
             });
 
             return this;

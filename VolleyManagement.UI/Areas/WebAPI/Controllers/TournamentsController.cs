@@ -118,7 +118,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
 
             var resultGroupedByWeek = gamesViewModel.GroupBy(gr => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
                 gr.Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday))
-                .Select(w => new Tuple<int,List<GameViewModel>>(w.Key, w.ToList()))
+                .Select(w => new Tuple<int, List<GameViewModel>>(w.Key, w.ToList()))
                 .ToList();
 
             var result = new ScheduleViewModel()
@@ -137,7 +137,11 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                                     {
                                         Id = data.DivisionId,
                                         Name = data.DivisionName,
-                                        Rounds = element.Where(g => g.DivisionId == data.DivisionId).Select(item => item.Round).Distinct().ToList()
+                                        Rounds = element.Where(g => g.DivisionId == data.DivisionId).
+                                                            Select(item => item.Round).
+                                                            Distinct().
+                                                            OrderBy(i => i).
+                                                            ToList()
                                     }).
                                     Distinct(new DivisionTitleComparer()).
                                     ToList(),

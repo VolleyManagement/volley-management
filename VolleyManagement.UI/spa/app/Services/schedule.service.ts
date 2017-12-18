@@ -5,8 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { JsonService } from './json.service';
 
-import { ScheduleByRounds } from '../Models/Schedule/ScheduleByRounds';
-import { ScheduleByDate } from '../Models/Schedule/ScheduleByDate';
+import { ScheduleModel } from '../Models/Schedule/Schedule';
 import { GameResult } from '../Models/Schedule/GameResult';
 
 
@@ -16,9 +15,9 @@ export class ScheduleService {
 
     constructor(private _jsonService: JsonService) { }
 
-    getSchedule(id: number): Observable<ScheduleByRounds[]> {
+    getSchedule(id: number): Observable<ScheduleModel> {
         const url = environment.apiUrl.concat(this.scheduleUrl(id));
         return this._jsonService
-            .getJson<ScheduleByRounds[]>(url);
+            .getJson<ScheduleModel>(url);
     }
 }

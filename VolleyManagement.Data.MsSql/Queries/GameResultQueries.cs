@@ -79,10 +79,10 @@
             .Join(_dalGroups, secondJoin => secondJoin.division.Id, group => group.DivisionId, (secondJoin, groups) => new { secondJoin, groups })
             .Where(thirdJoin => (thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.HomeTeamId.Value) &&
             (!thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue || (thirdJoin.secondJoin.firstJoin.results.HomeTeamId.HasValue && thirdJoin.groups.Teams.Select(t => t.Id).Contains(thirdJoin.secondJoin.firstJoin.results.AwayTeamId.Value)))))
-            .Select(r => new { results = r.secondJoin.firstJoin.results, divisionId = r.secondJoin.division.Id, groupId = r.groups.Id })
+            .Select(r => new { results = r.secondJoin.firstJoin.results, divisionName = r.secondJoin.division.Name, divisionId = r.secondJoin.division.Id, groupId = r.groups.Id })
             .ToList();
 
-            List<GameResultDto> list = gameResults.ConvertAll(item => Map(item.results, item.divisionId, item.groupId));
+            List<GameResultDto> list = gameResults.ConvertAll(item => Map(item.results, item.divisionName, item.divisionId, item.groupId));
             return list;
         }
 
@@ -208,9 +208,10 @@
             return result;
         }
 
-        private GameResultDto Map(GameResultEntity gr, int divisionId, int groupId)
+        private GameResultDto Map(GameResultEntity gr, string divisionName, int divisionId, int groupId)
         {
             var result = GetGameResultDtoMap()(gr);
+            result.DivisionName = divisionName;
             result.DivisionId = divisionId;
             result.GroupId = groupId;
             return result;

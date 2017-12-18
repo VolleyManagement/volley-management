@@ -1,124 +1,122 @@
 <div class="schedule-wrapper">
-  <div class="schedule-table"
-       *ngFor="let gameResultByRounds of data">
+  <div class="schedule-table" *ngFor="let weeks of data.Schedule; let weekIndex = index;">
+    <div *ngIf="weeks">
 
-    <p class="headercenter">Тур {{ gameResultByRounds.Round }}</p>
+      <div class="day" *ngFor="let day of weeks.Days; let daysIndex = index;">
+        <p class="headercenter">{{day.Date | date: "dd-MM-yyyy"}}</p>
+        <p class="headercenter">{{getdivisionsHeader(day)}}</p>
+        <div>
+          <div class="games" *ngFor="let gameResult of day.Games;">
+            <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}">
+              <tbody *ngIf="isFreeDay(gameResult)">
+                <tr class="team-sch">
+                  <strong>{{ gameResult.HomeTeamName }}</strong>
+                </tr>
+                <tr class="team-sch">
+                  Выходной
+                </tr>
+              </tbody>
+            </table>
+            <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}" *ngIf="gameResult.AwayTeamName">
 
-    <div class="group-data"
-         *ngFor="let gameResultScheduleByDate of gameResultByRounds.ScheduleByDate; let i = index;">
+              <tbody *ngIf="gameIsPlayed(gameResult)">
 
-      <p *ngIf="i%2===0"
-         class="group-header group1">I группа</p>
+                <tr class="team-sch" [class.win]="gameResult.Result.TotalScore.Home > gameResult.Result.TotalScore.Away">
 
-      <p *ngIf="i%2!==0"
-         class="group-header group2">II группа</p>
+                  <td class="teamname" colspan="5">
+                    {{gameResult.HomeTeamName}}
+                  </td>
 
-      <p class="group-date group-date-group1">{{ gameResultScheduleByDate.GameResults[0].GameDate | date: 'EEEE':'':'ru' }}</p>
-      <p class="group-date group-date-group1">{{ gameResultScheduleByDate.GameResults[0].GameDate | date: 'dd-MM-yyyy' }}</p>
+                  <td class="teamscore">
+                    {{gameResult.Result.TotalScore.Home}}
+                  </td>
 
-      <div class="games"
-           *ngFor="let gameResult of gameResultScheduleByDate.GameResults">
+                </tr>
 
-        <table class="game-sch"
-               *ngIf="!gameResult.AwayTeamName"
-               [class.group1]="gameResult.GroupId == groupOne"
-               [class.group2]="gameResult.GroupId == groupTwo">
+                <tr class="team-sch" [class.win]="gameResult.Result.TotalScore.Home < gameResult.Result.TotalScore.Away">
 
-          <tbody>
-            <tr class="team-sch bold-text">
-              <td>{{ gameResult.HomeTeamName }}</td>
-            </tr>
+                  <td class="teamname" colspan="5">
+                    {{ gameResult.AwayTeamName }}
+                  </td>
 
-            <tr>
-              <td>Выходной</td>
-            </tr>
-          </tbody>
+                  <td class="teamscore">
+                    {{ gameResult.Result.TotalScore.Away }}
+                  </td>
 
-        </table>
+                </tr>
 
-        <table class="game-sch"
-               *ngIf="gameIsPlayed(gameResult)"
-               [class.group1]="gameResult.GroupId == groupOne"
-               [class.group2]="gameResult.GroupId == groupTwo">
+                <tr class="sets" *ngIf="gameResult.Result && gameResult.Result.IsTechnicalDefeat">
 
-          <tbody>
-            <tr [class.win]="gameResult.Result.TotalScore.Home > gameResult.Result.TotalScore.Away">
+                  <td class="set">
+                    <div>
+                      <span>техн.</span>
+                    </div>
+                  </td>
+                  <td class="set">
+                    <div>
+                      <span>техн.</span>
+                    </div>
+                  </td>
+                  <td class="set">
+                    <div>
+                      <span>техн.</span>
+                    </div>
+                  </td>
+                  <td class="set">
+                    <div class="hidden">
+                    </div>
+                  </td>
+                  <td class="set">
+                    <div class="hidden">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="game-time">техн.</div>
+                  </td>
+                </tr>
 
-              <td class="teamname"
-                  colspan="5">
-                {{ gameResult.HomeTeamName }}
-              </td>
+                <tr class="sets" *ngIf="gameResult.Result && !gameResult.Result.TotalScore.IsEmpty">
 
-              <td class="teamscore">{{ gameResult.Result.TotalScore.Home }}</td>
+                  <td class="set" *ngFor="let setScore of gameResult.Result.SetScores">
 
-            </tr>
+                    <div *ngIf="!setScore.IsEmpty; else noSetScore">
 
-            <tr [class.win]="gameResult.Result.TotalScore.Home < gameResult.Result.TotalScore.Away">
+                      {{setScore.Home}} : {{setScore.Away}}
 
-              <td class="teamname"
-                  colspan="5">
-                {{ gameResult.AwayTeamName }}
-              </td>
+                    </div>
 
-              <td class="teamscore">
-                {{ gameResult.Result.TotalScore.Away }}
-              </td>
+                    <ng-template #noSetScore>
+                      <div class="hidden"></div>
+                    </ng-template>
 
-            </tr>
+                  </td>
 
-            <tr class="sets"
-                *ngIf="gameResult.Result && gameResult.Result.IsTechnicalDefeat">
+                  <td>
+                    <div class="game-time"></div>
+                  </td>
+                </tr>
+              </tbody>
 
-              <td>техн.</td>
-              <td>техн.</td>
-              <td>техн.</td>
-              <td></td>
-              <td></td>
-              <td class="game-time">техн.</td>
-            </tr>
-
-            <tr class="sets"
-                *ngIf="gameResult.Result && !gameResult.Result.TotalScore.IsEmpty">
-
-              <td class="set"
-                  *ngFor="let setScore of gameResult.Result.SetScores">
-
-                <div *ngIf="!setScore.IsEmpty">
-                  {{ setScore.Home }} : {{ setScore.Away }}
-                </div>
-
-              </td>
-
-              <td>
-                <div class="game-time"></div>
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
-
-        <table class="game-sch"
-               *ngIf="!gameIsPlayed(gameResult)"
-               [class.group1]="gameResult.GroupId == groupOne"
-               [class.group2]="gameResult.GroupId == groupTwo">
-          <tbody>
-            <tr>
-              <td class="teamname">
-                {{ gameResult.HomeTeamName }}
-              </td>
-            </tr>
-            <tr>
-              <td class="teamname">
-                {{ gameResult.AwayTeamName }}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                {{ gameResult.GameDate | date: 'HH:mm' }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              <tbody *ngIf="!gameResult.Result || (gameResult.Result.TotalScore.IsEmpty && !gameResult.Result.IsTechnicalDefeat)">
+                <tr class="team-sch">
+                  <td class="teamname">
+                    {{gameResult.HomeTeamName}}
+                  </td>
+                </tr>
+                <tr class="team-sch">
+                  <td class="teamname">
+                    {{gameResult.AwayTeamName}}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    {{gameResult.GameDate | date: 'HH:mm'}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>

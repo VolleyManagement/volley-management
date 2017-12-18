@@ -17,6 +17,8 @@
 
         private const string DATE_C = "2016-04-10 10:00";
 
+        private const string DATE_D = "2016-04-02 10:00";
+
         private readonly List<GameResultDto> _gameResults = new List<GameResultDto>();
 
         public GameServiceTestFixture TestGameResults()
@@ -427,6 +429,189 @@
             return this;
         }
 
+        public GameServiceTestFixture TestGamesWithResultInTwoWeeksTwoDivisionsTwoGames()
+        {
+            _gameResults.Clear();
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = new Score(3, 0, true),
+                    SetScores = new List<Score>
+                    {
+                        new Score(25, 0),
+                        new Score(25,0),
+                        new Score(25,0),
+                        new Score(0,0),
+                        new Score(0,0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 0,
+                GroupId = 1,
+                DivisionId = 1,
+                DivisionName = "Division Name"
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameC",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = new Score(1, 3),
+                    SetScores = new List<Score>
+                    {
+                        new Score(25,0),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(0,0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 2,
+                GameNumber = 0,
+                GroupId = 2,
+                DivisionId = 2,
+                DivisionName = "Division Name1"
+            });
+
+            return this;
+        }
+
+        public GameServiceTestFixture TestGamesWithResultInOneWeekTwoGameDaysTwoDivisionsTwoGames()
+        {
+            _gameResults.Clear();
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = new Score(3, 0, true),
+                    SetScores = new List<Score>
+                    {
+                        new Score(25, 0),
+                        new Score(25,0),
+                        new Score(25,0),
+                        new Score(0,0),
+                        new Score(0,0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 0,
+                GroupId = 1,
+                DivisionId = 1,
+                DivisionName = "Division Name"
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameC",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = new Score(1, 3),
+                    SetScores = new List<Score>
+                    {
+                        new Score(25,0),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(0,0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_D),
+                Round = 2,
+                GameNumber = 0,
+                GroupId = 2,
+                DivisionId = 2,
+                DivisionName = "Division Name1"
+            });
+
+            return this;
+        }
+
+        public GameServiceTestFixture TestGamesWithResultInOneWeekOneGameDayTwoDivisionsTwoGames()
+        {
+            _gameResults.Clear();
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = new Score(3, 0, true),
+                    SetScores = new List<Score>
+                    {
+                        new Score(25, 0),
+                        new Score(25,0),
+                        new Score(25,0),
+                        new Score(0,0),
+                        new Score(0,0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 0,
+                GroupId = 1,
+                DivisionId = 1,
+                DivisionName = "Division Name"
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameC",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = new Score(1, 3),
+                    SetScores = new List<Score>
+                    {
+                        new Score(25,0),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(0,0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 2,
+                GameNumber = 0,
+                GroupId = 2,
+                DivisionId = 2,
+                DivisionName = "Division Name1"
+            });
+
+            return this;
+        }
+
         public GameServiceTestFixture TestEmptyGamesInPlayoff()
         {
             _gameResults.Clear();
@@ -593,6 +778,40 @@
         public List<GameResultDto> Build()
         {
             return _gameResults;
+        }
+
+        public GameServiceTestFixture WithOneWeekOneDivisionOneGame()
+        {
+            _gameResults.Clear();
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = new Score(3, 0, true),
+                    SetScores = new List<Score>
+                    {
+                        new Score(25, 0),
+                        new Score(25, 0),
+                        new Score(25, 0),
+                        new Score(0, 0),
+                        new Score(0, 0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 0,
+                GroupId = 1,
+                DivisionId = 1,
+                DivisionName = "Division Name"
+            });
+
+            return this;
         }
     }
 }

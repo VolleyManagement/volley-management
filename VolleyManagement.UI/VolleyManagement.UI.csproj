@@ -396,6 +396,7 @@
     <Compile Include="Areas\Mvc\ViewModels\Users\UserEditViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Users\UserViewModel.cs" />
     <Compile Include="Areas\WebAPI\Controllers\ContributorsTeamController.cs" />
+    <Compile Include="Areas\WebAPI\Controllers\DivisionTitleComparer.cs" />
     <Compile Include="Areas\WebAPI\Controllers\HomeController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\PlayersController.cs" />
     <Compile Include="Areas\WebAPI\Controllers\TeamsController.cs" />
@@ -411,8 +412,10 @@
     <Compile Include="Areas\WebAPI\ViewModels\GameReports\StandingsEntryViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Games\GameViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Players\PlayerViewModel.cs" />
-    <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleByDateInRoundViewModel.cs" />
-    <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleByRoundViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\DivisionTitleViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleDayViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\ScheduleViewModel.cs" />
+    <Compile Include="Areas\WebAPI\ViewModels\Schedule\WeekViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Teams\TeamViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Tournaments\TournamentViewModel.cs" />
     <Compile Include="Areas\WebAPI\ViewModels\Users\UserViewModel.cs" />

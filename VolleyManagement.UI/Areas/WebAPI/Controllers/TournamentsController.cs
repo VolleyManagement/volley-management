@@ -1,6 +1,8 @@
 namespace VolleyManagement.UI.Areas.WebApi.Controllers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Web.Http;
     using Contracts;
@@ -102,7 +104,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
         /// <param name="tournamentId">Id of tournament.</param>
         /// <returns>Information about games with specified tournament id.</returns>
         [Route("api/Tournament/{tournamentId}/Schedule")]
-        public List<ScheduleByRoundViewModel> GetSchedule(int tournamentId)
+        public ScheduleViewModel GetSchedule(int tournamentId)
         {
             List<GameViewModel> gamesViewModel = _gameService.GetTournamentResults(tournamentId)
                                                         .Select(t => GameViewModel.Map(t)).ToList();
@@ -114,21 +116,38 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                 }
             }
 
-            // Group game results by date after that group them by round
-            var result = gamesViewModel
-                                 .GroupBy(gr => new { year = gr.Date.Year, month = gr.Date.Month, day = gr.Date.Day })
-                                 .Select(group => new ScheduleByDateInRoundViewModel
-                                 {
-                                     GameDate = new System.DateTime(group.Key.year, group.Key.month, group.Key.day),
-                                     GameResults = group.ToList()
-                                 })
-                                 .GroupBy(item => item.GameResults.First().Round)
-                                 .Select(item => new ScheduleByRoundViewModel
-                                 {
-                                     Round = item.Key,
-                                     ScheduleByDate = item.ToList()
-                                 }).
-                                 ToList();
+            var resultGroupedByWeek = gamesViewModel.GroupBy(gr => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
+                gr.Date, CalendarWeekRule.FirstDay, DayOfWeek.Monday))
+                .Select(w => new Tuple<int,List<GameViewModel>>(w.Key, w.ToList()))
+                .ToList();
+
+            var result = new ScheduleViewModel()
+            {
+                Schedule = resultGroupedByWeek.Select(it =>
+                    new WeekViewModel()
+                    {
+                        Days = it.Item2.
+                        GroupBy(item => item.Date.DayOfWeek).
+                        Select(element =>
+                            new ScheduleDayViewModel()
+                            {
+                                Date = element.ToList().Select(d => d.Date).First(),
+                                Divisions = element.ToList().Select(data =>
+                                    new DivisionTitleViewModel()
+                                    {
+                                        Id = data.DivisionId,
+                                        Name = data.DivisionName,
+                                        Rounds = element.Where(g => g.DivisionId == data.DivisionId).Select(item => item.Round).Distinct().ToList()
+                                    }).
+                                    Distinct(new DivisionTitleComparer()).
+                                    ToList(),
+                                Games = element.ToList()
+                            }).
+                        OrderBy(item => item.Date).
+                        ToList()
+                    }
+                ).ToList()
+            };
 
             return result;
         }

@@ -131,7 +131,7 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                         Select(element =>
                             new ScheduleDayViewModel()
                             {
-                                Date = element.ToList().Select(d => d.Date).First(),
+                                Date = element.ToList().Select(d => d.Date).First().ToLocalTime(),
                                 Divisions = element.ToList().Select(data =>
                                     new DivisionTitleViewModel()
                                     {

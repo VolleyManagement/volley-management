@@ -42,8 +42,8 @@ export class ScheduleComponent implements OnInit {
 
     getdivisionsHeader(day: ScheduleDay): string {
         let info = '';
-        day.Divisions.forEach((item, index) => {
-            info += item.Name + ' : ' + item.Rounds.join() + ' раунд. ';
+        day.Divisions.forEach((item) => {
+            info += `${item.Name}: ${item.Rounds.join()} тур. `;
         });
         return info;
     }
@@ -58,8 +58,8 @@ export class ScheduleComponent implements OnInit {
     }
 
     private _getSortedDivisionsIds() {
-        this.data.Schedule.forEach((item, index, arr) => {
-            item.Days.forEach((it, ind, ar) => {
+        this.data.Schedule.forEach((item) => {
+            item.Days.forEach((it) => {
                 it.Divisions.forEach(d => {
                     if (this.divisionsIds.indexOf(d.Id) === -1) {
                         this.divisionsIds.push(d.Id);

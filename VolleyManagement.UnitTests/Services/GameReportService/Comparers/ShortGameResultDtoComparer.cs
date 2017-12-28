@@ -16,6 +16,10 @@
 
             Assert.AreEqual(x.IsTechnicalDefeat, y.IsTechnicalDefeat, "IsTechnicalDefeat do not match");
 
+            Assert.AreEqual(x.RoundNumber, y.RoundNumber, "RoundNumber do not match");
+
+            Assert.AreEqual(x.HasResult, y.HasResult, "HasResult do not match");
+
             return 0;
         }
     }

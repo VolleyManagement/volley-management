@@ -103,7 +103,7 @@
                     .Select(MapToTeamStandingsDto())
                     .ToList();
 
-                var shortGameResults = gameResultsForDivision.Where(g => g.HasResult && g.AwayTeamId != null)
+                var shortGameResults = gameResultsForDivision.Where(g => g.AwayTeamId != null)
                     .Select(MapToShortGameResult())
                     .ToList();
 
@@ -327,9 +327,11 @@
             {
                 HomeTeamId = g.HomeTeamId.GetValueOrDefault(),
                 AwayTeamId = g.AwayTeamId.GetValueOrDefault(),
-                HomeGameScore = g.Result.GameScore.Home,
-                AwayGameScore = g.Result.GameScore.Away,
-                IsTechnicalDefeat = g.Result.GameScore.IsTechnicalDefeat
+                HomeGameScore = g.HasResult ? g.Result.GameScore.Home : byte.MinValue,
+                AwayGameScore = g.HasResult ? g.Result.GameScore.Away : byte.MinValue,
+                IsTechnicalDefeat = g.HasResult ? g.Result.GameScore.IsTechnicalDefeat : false,
+                HasResult = g.HasResult,
+                RoundNumber = g.Round
             };
         }
 

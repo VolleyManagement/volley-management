@@ -193,7 +193,7 @@
     <Compile Include="Services\GameReportService\Comparers\StandingsDtoComparer.cs" />
     <Compile Include="Services\GameReportService\Comparers\PivotStandingsComparer.cs" />
     <Compile Include="Services\GameReportService\Comparers\ShortGameResultDtoComparer.cs" />
-    <Compile Include="Services\GameReportService\Fixture\ShortGameResultDtoTetsFixture.cs" />
+    <Compile Include="Services\GameReportService\Fixture\ShortGameResultDtoTestFixture.cs" />
     <Compile Include="Services\GameReportService\Comparers\StandingsEntryComparer.cs" />
     <Compile Include="Services\GameReportService\Fixture\StandingsTestFixture.cs" />
     <Compile Include="Services\GameReportService\Comparers\TeamStandingsDtoComparer.cs" />

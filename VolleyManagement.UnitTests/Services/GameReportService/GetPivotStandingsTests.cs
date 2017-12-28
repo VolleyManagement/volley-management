@@ -44,7 +44,7 @@
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
 
-            var expected = new PivotStandingsTestFixture().WithNoResults().Build();
+            var expected = new PivotStandingsTestFixture().WithEmptyResults().Build();
 
             var sut = BuildSUT();
 
@@ -321,10 +321,15 @@
         public void GetMultipleDivisionPivotStandings_GameResultsAllPossibleScores_CorrectStats()
         {
             // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsAllPosibleScores().Build();
+            var gameResultsTestData = new GameResultsTestFixture()
+                .WithMultipleDivisionsAllPosibleScores()
+                .Build();
+
             var teamsTestData = TeamsInTwoDivisionTwoGroups();
 
-            var expected = new PivotStandingsTestFixture().WithMultipleDivisionsAllPossibleScores().Build();
+            var expected = new PivotStandingsTestFixture()
+                .WithMultipleDivisionsAllPossibleScores()
+                .Build();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
@@ -345,7 +350,7 @@
         public void GetMultipleDivisionPivotStandings_NoGameResults_StandingsAreEmpty()
         {
             // Arrange
-            var gameResultsTestData = new GameResultsTestFixture().WithNoGameResults().Build();
+            var gameResultsTestData = new GameResultsTestFixture().WithMultipleDivisionsEmptyResults().Build();
             var teamsTestData = TeamsInTwoDivisionTwoGroups();
 
             var expected = new PivotStandingsTestFixture().WithMultipleDivisionsEmptyStandings().Build();
@@ -363,6 +368,29 @@
                 expected,
                 actual,
                 "Standings should be properly calclulated for case of several divisions");
+        }
+
+        [TestMethod]
+        public void GetPivotStandings_NotAllGamesPlayed_CorrectStats()
+        {
+            // Arrange
+            var gameResultsTestData = new GameResultsTestFixture()
+                .WithAllPossibleScores()
+                .Build();
+            var teamsTestData = TeamsInSingleDivisionSingleGroup();
+
+            MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
+            MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
+
+            var expected = new PivotStandingsTestFixture().WithStandingsForAllPossibleScores().Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            var actual = sut.GetPivotStandings(TOURNAMENT_ID);
+
+            // Assert
+            AssertPivotStandingsAreEqual(expected, actual, "Points, games, sets and balls should be calculated properly.");
         }
 
         private void AssertPivotStandingsAreEqual(

@@ -1,12 +1,5 @@
 ﻿namespace VolleyManagement.Domain.GameReportsAggregate
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using GamesAggregate;
-
     /// <summary>
     /// Represents a data transfer object of game result with scores and technical defeat value.
     /// </summary>
@@ -36,5 +29,15 @@
         /// Gets or sets a value indicating whether the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
+
+        /// <summary>
+        /// Gets or sets a number of round game scheduled to be played
+        /// </summary>
+        public byte RoundNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets a flag indicating if game has result or planned
+        /// </summary>
+        public bool HasResult { get; set; }
     }
 }

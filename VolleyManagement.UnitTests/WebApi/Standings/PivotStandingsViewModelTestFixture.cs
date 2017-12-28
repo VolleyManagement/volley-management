@@ -47,15 +47,15 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                 {
                     TeamId = 1,
                     TeamName = "TeamNameA",
-                    Points = 6,
-                    SetsRatio = (float)6 / 6,
+                    Points = 3,
+                    SetsRatio = (float)3 / 3,
                 },
                 new PivotStandingsTeamViewModel
                 {
                     TeamId = 2,
                     TeamName = "TeamNameB",
-                    Points = 0,
-                    SetsRatio = (float)0 / 6,
+                    Points = 3,
+                    SetsRatio = (float)3 / 3,
                 },
                 new PivotStandingsTeamViewModel
                 {
@@ -75,7 +75,7 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                     Results = new List<ShortGameResultViewModel>
                     {
                         new ShortGameResultViewModel(1, 3, 0),
-                        new ShortGameResultViewModel(2, 3, 0),
+                        new ShortGameResultViewModel(2, 0, 3),
                     },
                 },
                 new PivotStandingsGameViewModel

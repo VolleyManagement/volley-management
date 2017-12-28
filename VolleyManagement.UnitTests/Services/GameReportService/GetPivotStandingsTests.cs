@@ -371,18 +371,22 @@
         }
 
         [TestMethod]
-        public void GetPivotStandings_NotAllGamesPlayed_CorrectStats()
+        [Ignore]
+        public void GetPivotStandings_PlannedGamesWithoutResults_StandingsContainPlannedGames()
         {
             // Arrange
             var gameResultsTestData = new GameResultsTestFixture()
-                .WithAllPossibleScores()
+                .WithNotAllGamesPlayed()
                 .Build();
+
             var teamsTestData = TeamsInSingleDivisionSingleGroup();
 
             MockTournamentGameResultsQuery(TOURNAMENT_ID, gameResultsTestData);
             MockTournamentTeamsQuery(TOURNAMENT_ID, teamsTestData);
 
-            var expected = new PivotStandingsTestFixture().WithStandingsForAllPossibleScores().Build();
+            var expected = new PivotStandingsTestFixture()
+                .WithNotAllGamesPlayed()
+                .Build();
 
             var sut = BuildSUT();
 

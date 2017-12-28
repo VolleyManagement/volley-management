@@ -257,7 +257,7 @@
         }
 
         [TestMethod]
-        public void PivotStandings_NotAllGamePlayed_RoundNumbersReturned()
+        public void PivotStandings_PlannedGamesWithoutResults_RoundNumbersReturned()
         {
             // Arrange
             var testStandings = new PivotStandingsTestFixture()

@@ -994,9 +994,9 @@
                 {
                     TeamId = 1,
                     TeamName = "TeamNameA",
-                    Points = 6,
-                    SetsRatio = (float)6 / 6,
-                    BallsRatio = (float)150 / 150,
+                    Points = 3,
+                    SetsRatio = (float)3 / 3,
+                    BallsRatio = (float)75 / 150,
                 },
                 divisionId: 1);
             AddTeamStandings(// E
@@ -1004,9 +1004,9 @@
                 {
                     TeamId = 2,
                     TeamName = "TeamNameB",
-                    Points = 0,
-                    SetsRatio = (float)0 / 6,
-                    BallsRatio = (float)0 / 150,
+                    Points = 3,
+                    SetsRatio = (float)3 / 3,
+                    BallsRatio = (float)75 / 150,
                 },
                 divisionId: 1);
             AddTeamStandings(// C
@@ -1035,8 +1035,8 @@
             {
                 HomeTeamId = 2,
                 AwayTeamId = 1,
-                HomeGameScore = 0,
-                AwayGameScore = 3,
+                HomeGameScore = 3,
+                AwayGameScore = 0,
                 IsTechnicalDefeat = false,
                 HasResult = true,
                 RoundNumber = 2,

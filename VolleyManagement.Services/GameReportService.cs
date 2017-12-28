@@ -158,7 +158,7 @@
                 .ToList();
         }
 
-        private static List<StandingsEntry> CreateEntriesForTeams(List<TeamTournamentDto> tournamentTeams)
+        private static List<StandingsEntry> CreateEntriesForTeams(IEnumerable<TeamTournamentDto> tournamentTeams)
         {
             return tournamentTeams.Select(team => new StandingsEntry
             {

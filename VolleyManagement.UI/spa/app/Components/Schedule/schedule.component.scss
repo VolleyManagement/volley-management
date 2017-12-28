@@ -44,7 +44,7 @@
     float: none;
     clear: both;
     white-space: nowrap;
-    overflow-x: auto; 
+    overflow-x: auto;
     .day {
       width: 280px;
       display: inline-block;
@@ -58,8 +58,55 @@
       font-style: normal;
       font-weight: normal;
       width: 280px;
+      &.division1-date {
+        background-color: $division1-date-bg-color;
+      }
+      &.division2-date {
+        background-color: $division2-date-bg-color;
+      }
+      &.division3-date {
+        background-color: $division3-date-bg-color;
+      }
+      &.division4-date {
+        background-color: $division4-date-bg-color;
+      }
+      &.division5-date {
+        background-color: $division5-date-bg-color;
+      }
+      &.division6-date {
+        background-color: $division6-date-bg-color;
+      }
+      &.division7-date {
+        background-color: $division7-date-bg-color;
+      }
+      &.division8-date {
+        background-color: $division8-date-bg-color;
+      }
+      &.division9-date {
+        background-color: $division9-date-bg-color;
+      }
+      &.division10-date {
+        background-color: $division10-date-bg-color;
+      }
+      &.division11-date {
+        background-color: $division11-date-bg-color;
+      }
+      &.division12-date {
+        background-color: $division12-date-bg-color;
+      }
+      &.division13-date {
+        background-color: $division13-date-bg-color;
+      }
+      &.division14-date {
+        background-color: $division14-date-bg-color;
+      }
+      &.division15-date {
+        background-color: $division15-date-bg-color;
+      }
+      &.division16-date {
+        background-color: $division16-date-bg-color;
+      }
     }
-
     .division-data {
       width: 280px;
       float: left;
@@ -95,7 +142,7 @@
         }
         &.division4 {
           background-color: $division4-bg-color;
-        } 
+        }
         &.division5 {
           background-color: $division5-bg-color;
         }
@@ -107,7 +154,7 @@
         }
         &.division8 {
           background-color: $division8-bg-color;
-        } 
+        }
         &.division9 {
           background-color: $division9-bg-color;
         }
@@ -119,7 +166,7 @@
         }
         &.division12 {
           background-color: $division12-bg-color;
-        } 
+        }
         &.division13 {
           background-color: $division13-bg-color;
         }
@@ -131,7 +178,7 @@
         }
         &.division16 {
           background-color: $division16-bg-color;
-        } 
+        }
         &:hover {
           background-color: $game-hover-bg-color;
         }

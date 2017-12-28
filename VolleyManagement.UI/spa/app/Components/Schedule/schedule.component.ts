@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import { ScheduleModel } from '../../Models/Schedule/Schedule';
 import { ScheduleService } from '../../Services/schedule.service';
 import { GameResult } from '../../Models/Schedule/GameResult';
-import { ScheduleDay } from '../../Models/Schedule/ScheduleDay';
+import { DivsionHeader } from '../../Models/Schedule/DivsionHeader';
 
 
 @Component({
@@ -40,17 +40,13 @@ export class ScheduleComponent implements OnInit {
             (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
     }
 
-    getdivisionsHeader(day: ScheduleDay): string {
-        let info = '';
-        day.Divisions.forEach((item) => {
-            info += `${item.Name}: ${item.Rounds.join()} тур. `;
-        });
-        return info;
+    getdivisionsHeader(divisionHeader: DivsionHeader): string {
+        return `${divisionHeader.Name}: ${divisionHeader.Rounds.join()} тур.`;
     }
 
-    getDivisionAccentColor(divisionId: number): string {
+    getDivisionAccentColor(divisionId: number, isDateHeader: boolean): string {
         let index = this.divisionsIds.indexOf(divisionId);
-        return 'division' + ++index;
+        return `division${++index}${isDateHeader ? '-date' : ''}`;
     }
 
     isFreeDay(gameResult: GameResult): boolean {

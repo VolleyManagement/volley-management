@@ -1,4 +1,4 @@
-export interface DivsionHeader {
+export interface DivisionHeader {
     Id: number;
     Name: string;
     Rounds: number[];

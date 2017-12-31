@@ -150,7 +150,8 @@
                 GameDate = gr.StartTime,
                 Round = gr.RoundNumber,
                 GameNumber = gr.GameNumber,
-                Result = MapResult(gr)
+                Result = MapResult(gr),
+                UrlToGameVideo = gr.UrlToGameVideo
             };
         }
 
@@ -167,7 +168,8 @@
                 GameNumber = gr.GameNumber,
                 HomeTeamName = gr.HomeTeam?.Name,
                 AwayTeamName = gr.AwayTeam?.Name,
-                Result = MapResult(gr)
+                Result = MapResult(gr),
+                UrlToGameVideo = gr.UrlToGameVideo
             };
         }
 

@@ -46,5 +46,10 @@
         /// Gets or sets the game number of the game in the tournament.
         /// </summary>
         public byte GameNumber { get; set; }
+
+        /// <summary>
+        /// Gets or sets url to game video
+        /// </summary>
+        public string UrlToGameVideo { get; set; }
     }
 }

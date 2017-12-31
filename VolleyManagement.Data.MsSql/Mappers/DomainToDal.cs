@@ -234,6 +234,7 @@
                 to.PenaltyTeam = 0;
                 to.PenaltyAmount = 0;
             }
+            to.UrlToGameVideo = from.UrlToGameVideo;
         }
 
         /// <summary>

@@ -82,5 +82,10 @@
         /// Gets or sets the name of the division where game result belongs.
         /// </summary>
         public string DivisionName { get; set; }
+
+        /// <summary>
+        /// Gets or sets link to game video.
+        /// </summary>
+        public string UrlToGameVideo { get; set; }
     }
 }

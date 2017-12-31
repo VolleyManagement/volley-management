@@ -44,7 +44,7 @@
     float: none;
     clear: both;
     white-space: nowrap;
-    overflow-x: auto; 
+    overflow-x: auto;
     .day {
       width: 280px;
       display: inline-block;
@@ -59,7 +59,6 @@
       font-weight: normal;
       width: 280px;
     }
-
     .division-data {
       width: 280px;
       float: left;
@@ -95,7 +94,7 @@
         }
         &.division4 {
           background-color: $division4-bg-color;
-        } 
+        }
         &.division5 {
           background-color: $division5-bg-color;
         }
@@ -107,7 +106,7 @@
         }
         &.division8 {
           background-color: $division8-bg-color;
-        } 
+        }
         &.division9 {
           background-color: $division9-bg-color;
         }
@@ -119,7 +118,7 @@
         }
         &.division12 {
           background-color: $division12-bg-color;
-        } 
+        }
         &.division13 {
           background-color: $division13-bg-color;
         }
@@ -131,7 +130,7 @@
         }
         &.division16 {
           background-color: $division16-bg-color;
-        } 
+        }
         &:hover {
           background-color: $game-hover-bg-color;
         }
@@ -158,6 +157,17 @@
           }
         }
       }
+    }
+    .videoIconCell {
+      width: 26px;
+        .videoLinkIcon {
+          width: 16px;
+          height: 16px;
+          margin-left: 8px;
+          position: relative;
+          top: -6px;
+        }
+      
     }
   }
 }

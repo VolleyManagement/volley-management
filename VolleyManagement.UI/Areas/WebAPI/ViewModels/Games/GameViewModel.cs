@@ -63,6 +63,11 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
         public int GroupId { get; set; }
 
         /// <summary>
+        /// Gets or sets a url to game video
+        /// </summary>
+        public string UrlToGameVideo { get; set; }
+
+        /// <summary>
         /// Maps domain model of game result to view model of game.
         /// </summary>
         /// <param name="gameResult">Domain model of game.</param>
@@ -90,7 +95,8 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.Games
                 DivisionId = gameResult.DivisionId,
                 DivisionName = gameResult.DivisionName,
                 GroupId = gameResult.GroupId,
-                Date = gameResult.GameDate.GetValueOrDefault()
+                Date = gameResult.GameDate.GetValueOrDefault(),
+                UrlToGameVideo = gameResult.UrlToGameVideo
             };
         }
 

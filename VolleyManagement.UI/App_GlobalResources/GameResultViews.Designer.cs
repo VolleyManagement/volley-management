@@ -311,5 +311,14 @@ namespace Resources.UI {
                 return ResourceManager.GetString("TournamentResultsTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link to the game video.
+        /// </summary>
+        public static string UrlToGameVideo {
+            get {
+                return ResourceManager.GetString("UrlToGameVideo", resourceCulture);
+            }
+        }
     }
 }

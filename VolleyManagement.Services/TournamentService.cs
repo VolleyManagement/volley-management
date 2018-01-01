@@ -60,7 +60,7 @@
         private readonly IQuery<List<Tournament>, GetAllCriteria> _getAllQuery;
         private readonly IQuery<Tournament, FindByIdCriteria> _getByIdQuery;
         private readonly IQuery<List<Team>, GetAllCriteria> _getAllTeamsQuery;
-        private readonly IQuery<List<Team>, FindByTournamentIdCriteriaOld> _getAllTournamentTeamsQuery;
+        private readonly IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> _tournamentTeamsQuery;
         private readonly IQuery<List<Division>, TournamentDivisionsCriteria> _getAllTournamentDivisionsQuery;
         private readonly IQuery<List<Group>, DivisionGroupsCriteria> _getAllTournamentGroupsQuery;
         private readonly IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> _getTournamentDtoQuery;
@@ -79,7 +79,7 @@
         /// <param name="getAllQuery"> Get All object query. </param>
         /// <param name="getByIdQuery">Get tournament by id query.</param>
         /// <param name="getAllTeamsQuery">Get All Teams query.</param>
-        /// <param name="getAllTournamentTeamsQuery">Get All Tournament Teams query.</param>
+        /// <param name="tournamentTeamsQuery">Get All Tournament Teams query.</param>
         /// <param name="getAllTournamentDivisionsQuery">Get All Tournament Divisions query.</param>
         /// <param name="getAllTournamentGroupsQuery">Get All Tournament Groups query.</param>
         /// <param name="getTournamentDtoQuery">Get tournament data transfer object query.</param>
@@ -93,12 +93,12 @@
             IQuery<List<Tournament>, GetAllCriteria> getAllQuery,
             IQuery<Tournament, FindByIdCriteria> getByIdQuery,
             IQuery<List<Team>, GetAllCriteria> getAllTeamsQuery,
-            IQuery<List<Team>, FindByTournamentIdCriteriaOld> getAllTournamentTeamsQuery,
             IQuery<List<Division>, TournamentDivisionsCriteria> getAllTournamentDivisionsQuery,
             IQuery<List<Group>, DivisionGroupsCriteria> getAllTournamentGroupsQuery,
             IQuery<TournamentScheduleDto, TournamentScheduleInfoCriteria> getTournamentDtoQuery,
             IQuery<Tournament, TournamentByGroupCriteria> getTournamenrByGroupQuery,
-            IQuery<List<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery,
+            IQuery<List<Tournament>, OldTournamentsCriteria> getOldTournamentsQuery, 
+            IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria> tournamentTeamsQuery,
             IAuthorizationService authService,
             IGameService gameService)
         {
@@ -106,8 +106,6 @@
             _uniqueTournamentQuery = uniqueTournamentQuery;
             _getAllQuery = getAllQuery;
             _getByIdQuery = getByIdQuery;
-            _getAllTeamsQuery = getAllTeamsQuery;
-            _getAllTournamentTeamsQuery = getAllTournamentTeamsQuery;
             _getAllTournamentDivisionsQuery = getAllTournamentDivisionsQuery;
             _getAllTournamentGroupsQuery = getAllTournamentGroupsQuery;
             _getTournamentDtoQuery = getTournamentDtoQuery;
@@ -115,6 +113,8 @@
             _getOldTournamentsQuery = getOldTournamentsQuery;
             _authService = authService;
             _gameService = gameService;
+            _getAllTeamsQuery = getAllTeamsQuery;
+            _tournamentTeamsQuery = tournamentTeamsQuery;
         }
 
         #endregion
@@ -166,9 +166,9 @@
         /// </summary>
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
         /// <returns>Tournament teams</returns>
-        public List<Team> GetAllTournamentTeams(int tournamentId)
+        public List<TeamTournamentDto> GetAllTournamentTeams(int tournamentId)
         {
-            return _getAllTournamentTeamsQuery.Execute(new FindByTournamentIdCriteriaOld { TournamentId = tournamentId });
+            return _tournamentTeamsQuery.Execute(new FindByTournamentIdCriteria { TournamentId = tournamentId });
         }
 
         /// <summary>
@@ -200,7 +200,7 @@
         {
             var allTeamsList = _getAllTeamsQuery.Execute(new GetAllCriteria());
             var tournamentTeamsList = GetAllTournamentTeams(tournamentId);
-            return allTeamsList.Where(l2 => tournamentTeamsList.All(l1 => l1.Id != l2.Id));
+            return allTeamsList.Where(l2 => tournamentTeamsList.All(l1 => l1.TeamId != l2.Id));
         }
 
         /// <summary>
@@ -349,7 +349,7 @@
 
             foreach (var item in groupTeam)
             {
-                var tournamentTeam = allTeams.SingleOrDefault(t => t.Id == item.TeamId);
+                var tournamentTeam = allTeams.SingleOrDefault(t => t.TeamId == item.TeamId);
 
                 if (tournamentTeam == null)
                 {
@@ -493,7 +493,7 @@
             _gameService.RemoveAllGamesInTournament(tournamentId);
         }
 
-        private void RemoveAllTeamsFromTournament(List<Team> allTeamsInTournament, int tournamentId)
+        private void RemoveAllTeamsFromTournament(List<TeamTournamentDto> allTeamsInTournament, int tournamentId)
         {
             if (allTeamsInTournament != null)
             {
@@ -501,7 +501,7 @@
                 {
                     try
                     {
-                        _tournamentRepository.RemoveTeamFromTournament(team.Id, tournamentId);
+                        _tournamentRepository.RemoveTeamFromTournament(team.TeamId, tournamentId);
                     }
                     catch (ConcurrencyException ex)
                     {

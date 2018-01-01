@@ -9,6 +9,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
     using Contracts.Exceptions;
     using Crosscutting.Contracts.Providers;
     using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
     using Domain.TournamentRequestAggregate;
     using Domain.TournamentsAggregate;
     using Resources.UI;
@@ -366,12 +367,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 TournamentId = tournament.Id,
                 TournamentName = tournament.Name,
                 TournamentScheme = tournament.Scheme,
-                Divisions = tournament.Divisions.Select(d => new DivisionScheduleViewModel
-                {
-                    Id = d.DivisionId,
-                    Name = d.DivisionName,
-                    NumberOfRounds = d.NumberOfRounds
-                }).ToList(),
+                MaxNumberOfRounds = tournament.Divisions.Max(d => d.NumberOfRounds),
                 Rounds = _gameService.GetTournamentResults(tournamentId)
                 .GroupBy(d => d.Round)
                 .ToDictionary(
@@ -676,23 +672,67 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
                 return null;
             }
 
-            var tournamentTeams = _tournamentService.GetAllTournamentTeams(tournamentId);
+            var tournamentTeams = _tournamentService.GetAllTournamentTeams(tournamentId)
+                .GroupBy(t => t.DivisionId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
             if (tournament.Divisions.Any(d => d.NumberOfRounds <= 0))
             {
                 ModelState.AddModelError("LoadError", TournamentController.SchedulingError);
                 return null;
             }
 
+            var groups = BuildSelectGroupsForDivisions(tournament.Divisions);
+
             return new GameViewModel
             {
                 TournamentId = tournamentId,
                 TournamentScheme = tournament.Scheme,
                 GameDate = tournament.StartDate,
-                DivisionRounds = tournament.Divisions.ToDictionary(
-                    d => d.DivisionId,
-                    d => new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, d.NumberOfRounds))),
-                Teams = new SelectList(tournamentTeams, "Id", "Name")
+                DivisionId = tournament.Divisions.Select(d => d.DivisionId).First(),
+                DivisionList = new SelectList(tournament.Divisions, nameof(DivisionScheduleDto.DivisionId), nameof(DivisionScheduleDto.DivisionName)),
+                RoundList = BuildRoundSelectList(tournament.Divisions, groups),
+                TeamList = BuildTeamSelectList(tournamentTeams, groups)
             };
+        }
+
+        private static List<SelectListItem> BuildTeamSelectList(Dictionary<int, List<TeamTournamentDto>> tournamentTeams, Dictionary<int, SelectListGroup> groups)
+        {
+            var result = tournamentTeams.SelectMany(t => t.Value)
+                .Select(t => new SelectListItem
+                {
+                    Text = t.TeamName,
+                    Value = t.TeamId.ToString(),
+                    Group = groups[t.DivisionId]
+                })
+                .ToList();
+
+            return result;
+        }
+
+        private static List<SelectListItem> BuildRoundSelectList(List<DivisionScheduleDto> divisions, Dictionary<int, SelectListGroup> groups)
+        {
+            var result = divisions.SelectMany(d => Enumerable.Range(MIN_ROUND_NUMBER, d.NumberOfRounds)
+                    .Select(i => (Round: i, DivId: d.DivisionId)))
+                .Select(r => new SelectListItem
+                {
+                    Text = r.Round.ToString(),
+                    Value = r.Round.ToString(),
+                    Group = groups[r.DivId]
+                })
+                .ToList();
+
+            return result;
+        }
+
+        private static Dictionary<int, SelectListGroup> BuildSelectGroupsForDivisions(List<DivisionScheduleDto> divisions)
+        {
+            return divisions.ToDictionary(
+                d => d.DivisionId,
+                d => new SelectListGroup
+                {
+                    Name = d.DivisionName
+                });
         }
 
         /// <summary>
@@ -701,9 +741,9 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
         /// <param name="scheduleViewModel">View model which contains round names</param>
         private void FillRoundNames(ScheduleViewModel scheduleViewModel)
         {
-            var roundNames = new string[scheduleViewModel.NumberOfRounds];
+            var roundNames = new string[scheduleViewModel.MaxNumberOfRounds];
 
-            for (byte i = 1; i <= scheduleViewModel.NumberOfRounds; i++)
+            for (byte i = 1; i <= scheduleViewModel.MaxNumberOfRounds; i++)
             {
                 var roundName = string.Empty;
                 switch (i)
@@ -727,6 +767,7 @@ namespace VolleyManagement.UI.Areas.Mvc.Controllers
 
             scheduleViewModel.RoundNames = roundNames;
         }
+
         #endregion
     }
 }

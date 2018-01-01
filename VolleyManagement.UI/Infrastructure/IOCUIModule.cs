@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Infrastructure
+namespace VolleyManagement.UI.Infrastructure
 {
     using Contracts;
     using Contracts.Authorization;
@@ -20,7 +20,11 @@
                 .Register<IFileService, FileService>(IocLifetimeEnum.Scoped)
                 .Register<ILog, SimpleTraceLog>(IocLifetimeEnum.Singleton);
 
-            if (Is<IISDeployment>.Enabled)
+            if (Is<DebugMode>.Enabled)
+            {
+                container.Register<IMailService, DebugMailService>(IocLifetimeEnum.Scoped);
+            }
+            else if (Is<IISDeployment>.Enabled)
             {
                 container.Register<IMailService, GmailAccountMailService>(IocLifetimeEnum.Scoped);
             }

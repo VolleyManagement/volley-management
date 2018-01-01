@@ -619,6 +619,7 @@
     <Content Include="Scripts\VMScripts\TeamOperations\UploadPhoto.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\AddTeams.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\ApplyForTournament.js" />
+    <Content Include="Scripts\VMScripts\TournamentOperations\ScheduleCreateOrEdit.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\SwapRounds.js" />
     <Content Include="Scripts\VMScripts\VMScripts.js" />
     <Content Include="Web.config">

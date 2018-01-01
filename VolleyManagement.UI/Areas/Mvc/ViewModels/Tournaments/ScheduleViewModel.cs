@@ -18,10 +18,9 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
         public ScheduleViewModel()
         {
             Rounds = new Dictionary<byte, List<GameResultViewModel>>();
-            Divisions = new List<DivisionScheduleViewModel>();
         }
 
-        public List<DivisionScheduleViewModel> Divisions { get; set; }
+        public int MaxNumberOfRounds { get; set; }
 
         /// <summary>
         /// Gets or sets current rounds collection
@@ -60,7 +59,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
         /// <returns>True, if game is the final</returns>
         public bool IsFinal(GameResultViewModel game)
         {
-            return NumberOfRounds != 0 &&
+            return MaxNumberOfRounds != 0 &&
                    game.GameNumber == Rounds.Last().Value.Last().GameNumber;
         }
 
@@ -71,7 +70,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
         /// <returns>True, if game is the bronze match</returns>
         public bool IsBronzeMatch(GameResultViewModel game)
         {
-            return NumberOfRounds != 0 &&
+            return MaxNumberOfRounds != 0 &&
                    game.GameNumber == Rounds.Last().Value.Last().GameNumber - 1;
         }
     }

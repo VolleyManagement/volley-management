@@ -53,7 +53,7 @@
         /// </summary>
         /// <param name="tournamentId">Id of Tournament for getting teams</param>
         /// <returns>Tournament teams</returns>
-        List<Team> GetAllTournamentTeams(int tournamentId);
+        List<TeamTournamentDto> GetAllTournamentTeams(int tournamentId);
 
         /// <summary>
         /// Returns all divisions for specific tournament

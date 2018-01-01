@@ -12,10 +12,13 @@
     using Data.Exceptions;
     using Data.Queries.Common;
     using Data.Queries.GameResult;
+    using Data.Queries.Team;
     using Data.Queries.Tournament;
     using Domain.GamesAggregate;
     using Domain.RolesAggregate;
+    using Domain.TeamsAggregate;
     using Domain.TournamentsAggregate;
+    using GameReportService;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using Mvc.ViewModels;
@@ -65,6 +68,7 @@
         private Mock<IQuery<Tournament, FindByIdCriteria>> _tournamentByIdQueryMock;
         private Mock<IQuery<List<Game>, GamesByRoundCriteria>> _gamesByTournamentIdInRoundsByNumbersQueryMock;
         private Mock<IQuery<Game, GameByNumberCriteria>> _gameNumberByTournamentIdQueryMock;
+        private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _tournamentTeamsQueryMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
 
         #endregion
@@ -78,7 +82,6 @@
         public void TestInit()
         {
             _gameRepositoryMock = new Mock<IGameRepository>();
-            new Mock<IGameService>();
             _authServiceMock = new Mock<IAuthorizationService>();
             _tournamentServiceMock = new Mock<ITournamentService>();
             _tournamentRepositoryMock = new Mock<ITournamentRepository>();
@@ -89,6 +92,7 @@
             _tournamentByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
             _gamesByTournamentIdInRoundsByNumbersQueryMock = new Mock<IQuery<List<Game>, GamesByRoundCriteria>>();
             _gameNumberByTournamentIdQueryMock = new Mock<IQuery<Game, GameByNumberCriteria>>();
+            _tournamentTeamsQueryMock = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
 
             _gameRepositoryMock.Setup(m => m.UnitOfWork).Returns(_unitOfWorkMock.Object);
@@ -530,7 +534,7 @@
         }
 
         [TestMethod]
-        public void Create_NoHomeTeam_GameCreated()
+        public void Create_FreeDayAsHomeTeam_GameCreated()
         {
             // Arrange
             MockDefaultTournament();
@@ -549,8 +553,26 @@
             sut.Create(newGame);
 
             // Assert
-            VerifyFreeDayGame(newGame);
             VerifyCreateGame(expectedGame, Times.Once());
+        }
+
+        [TestMethod]
+        public void Create_FreeDayAsHomeTeam_FreeDaySetToAwayTeam()
+        {
+            // Arrange
+            MockDefaultTournament();
+            var newGame = new GameBuilder()
+                .WithHomeTeamId(null)
+                .WithAwayTeamId(1)
+                .Build();
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Create(newGame);
+
+            // Assert
+            VerifyFreeDaySwapped(newGame);
         }
 
         [TestMethod]
@@ -717,18 +739,129 @@
         }
 
         [TestMethod]
-        public void Create_SecondFreeDayInRound_ExceptionThrown()
+        public void Create_SecondFreeDayInDifferentRoundInDifferentDivision_GameCreated()
+        {
+            // Arrange
+            const int ANOTHER_DIVISION_TEAM_ID = 11;
+
+            var games = new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .Build();
+
+            var anotherRound = (byte)(games.Select(g => g.Round).Max() + 1);
+
+            var duplicateFreeDayGame = new GameBuilder()
+                .TestFreeDayGame()
+                .New()
+                .WithRound(anotherRound)
+                .WithHomeTeamId(ANOTHER_DIVISION_TEAM_ID)
+                .Build();
+
+            MockGetTournamentDomain(TOURNAMENT_ID);
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().WithAnotherDivision().Build());
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+            MockGetTeamsInTournament(TOURNAMENT_ID, new TeamInTournamentTestFixture().WithTeamsInTwoDivisionTwoGroups().Build());
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Create(duplicateFreeDayGame);
+
+            // Assert
+            VerifyCreateGame(duplicateFreeDayGame, Times.Once());
+        }
+
+        [TestMethod]
+        public void Create_SecondFreeDayInDifferentRoundInSameDivision_GameCreated()
+        {
+            // Arrange
+            const int ANOTHER_TEAM_ID = 5;
+
+            var games = new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .Build();
+
+            var anotherRound = (byte)(games.Select(g => g.Round).Max() + 1);
+
+            var duplicateFreeDayGame = new GameBuilder()
+                .TestFreeDayGame()
+                .New()
+                .WithRound(anotherRound)
+                .WithHomeTeamId(ANOTHER_TEAM_ID)
+                .Build();
+
+            MockGetTournamentDomain(TOURNAMENT_ID);
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().WithAnotherDivision().Build());
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+            MockGetTeamsInTournament(TOURNAMENT_ID, new TeamInTournamentTestFixture().WithTeamsInTwoDivisionTwoGroups().Build());
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Create(duplicateFreeDayGame);
+
+            // Assert
+            VerifyCreateGame(duplicateFreeDayGame, Times.Once());
+        }
+
+        [TestMethod]
+        public void Create_SecondFreeDayInRoundInDifferentDivision_GameCreated()
+        {
+            // Arrange
+            const int ANOTHER_DIVISION_TEAM_ID = 11;
+
+            var games = new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
+                .Build();
+
+            var sameRound = games.Select(g => g.Round).Max();
+
+            var duplicateFreeDayGame = new GameBuilder()
+                .TestFreeDayGame()
+                .New()
+                .WithRound(sameRound)
+                .WithHomeTeamId(ANOTHER_DIVISION_TEAM_ID)
+                .Build();
+
+            MockGetTournamentDomain(TOURNAMENT_ID);
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().WithAnotherDivision().Build());
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+            MockGetTeamsInTournament(TOURNAMENT_ID, new TeamInTournamentTestFixture().WithTeamsInTwoDivisionTwoGroups().Build());
+
+            var sut = BuildSUT();
+
+            // Act
+            sut.Create(duplicateFreeDayGame);
+
+            // Assert
+            VerifyCreateGame(duplicateFreeDayGame, Times.Once());
+        }
+
+        [TestMethod]
+        public void Create_SecondFreeDayInSameRoundInSameDivision_ExceptionThrown()
         {
             // Arrange
             bool exception = false;
 
-            var duplicateFreeDayGame = new GameBuilder()
-                .TestFreeDayGame()
-                .WithId(0)
+            const int ANOTHER_TEAM_ID = 5;
+
+            var games = new GameServiceTestFixture()
+                .TestGamesWithFreeDay()
                 .Build();
 
-            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().Build());
-            MockGetTournamentResults(1, new GameServiceTestFixture().TestGameResults().Build());
+            var sameRound = games.Select(g => g.Round).Max();
+
+            var duplicateFreeDayGame = new GameBuilder()
+                .TestFreeDayGame()
+                .New()
+                .WithRound(sameRound)
+                .WithHomeTeamId(ANOTHER_TEAM_ID)
+                .Build();
+
+            MockGetTournamentDomain(TOURNAMENT_ID);
+            MockGetTournamentById(TOURNAMENT_ID, new TournamentScheduleDtoBuilder().WithAnotherDivision().Build());
+            MockGetTournamentResults(TOURNAMENT_ID, games);
+            MockGetTeamsInTournament(TOURNAMENT_ID, new TeamInTournamentTestFixture().WithTeamsInTwoDivisionTwoGroups().Build());
 
             var sut = BuildSUT();
 
@@ -984,81 +1117,6 @@
 
             // Assert
             Assert.IsTrue(exceptionThrown);
-        }
-
-        [TestMethod]
-        public void Create_FreeDayGameWithOtherTeamInSameRound_ExceptionThrown()
-        {
-            // Arrange
-            Exception exception = null;
-
-            MockDefaultTournament();
-
-            var freeDayGmeInSameRound = new GameBuilder()
-                .TestFreeDayGame()
-                .WithId(2)
-                .WithHomeTeamId(3)
-                .Build();
-
-            List<GameResultDto> gameResults = new GameServiceTestFixture()
-                .TestGamesWithFreeDay()
-                .Build();
-
-            MockGetTournamentResults(
-                freeDayGmeInSameRound.TournamentId,
-                gameResults);
-
-            var sut = BuildSUT();
-
-            // Act
-            try
-            {
-                sut.Create(freeDayGmeInSameRound);
-            }
-            catch (ArgumentException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Free day game has already been scheduled in this round");
-        }
-
-        [TestMethod]
-        public void Create_FreeDayGammeWithSameTeamInSameRound_ExceptionThrown()
-        {
-            // Arrange
-            Exception exception = null;
-
-            MockDefaultTournament();
-
-            var freeDayGmeInSameRound = new GameBuilder()
-                .TestFreeDayGame()
-                .WithId(2)
-                .Build();
-
-            List<GameResultDto> gameResults = new GameServiceTestFixture()
-                .TestGamesWithFreeDay()
-                .Build();
-
-            MockGetTournamentResults(
-                freeDayGmeInSameRound.TournamentId,
-                gameResults);
-
-            var sut = BuildSUT();
-
-            // Act
-            try
-            {
-                sut.Create(freeDayGmeInSameRound);
-            }
-            catch (ArgumentException ex)
-            {
-                exception = ex;
-            }
-
-            // Assert
-            VerifyExceptionThrown(exception, "Free day game has already been scheduled in this round");
         }
 
         [TestMethod]
@@ -2024,7 +2082,8 @@
                 _gamesByTournamentIdInRoundsByNumbersQueryMock.Object,
                 _gameNumberByTournamentIdQueryMock.Object,
                 _tournamentByIdQueryMock.Object,
-                _tournamentRepositoryMock.Object);
+                _tournamentRepositoryMock.Object,
+                _tournamentTeamsQueryMock.Object);
         }
 
         private Game BuildTestGameToEditInPlayoff()
@@ -2103,11 +2162,25 @@
 
         private void MockAllTournamentQueries(TournamentScheduleDto testData)
         {
-            var tour = new TournamentBuilder().WithId(testData.Id).Build();
-            _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
+            MockGetTournamentDomain(testData.Id);
 
             MockGetTournamentById(testData.Id, testData);
             MockGetTournamentResults(testData.Id, new List<GameResultDto>());
+
+            MockGetTeamsInTournament(testData.Id, new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build());
+        }
+
+        private void MockGetTournamentDomain(int id)
+        {
+            var tour = new TournamentBuilder().WithId(id).Build();
+            _tournamentByIdQueryMock.Setup(tr => tr.Execute(It.IsAny<FindByIdCriteria>())).Returns(tour);
+        }
+
+        private void MockGetTeamsInTournament(int tournamentId, List<TeamTournamentDto> testData)
+        {
+            _tournamentTeamsQueryMock
+                .Setup(q => q.Execute(It.Is<FindByTournamentIdCriteria>(c => c.TournamentId == tournamentId)))
+                .Returns(testData);
         }
 
         private void MockAuthServiceThrowsExeption(AuthOperation operation)
@@ -2186,7 +2259,7 @@
             Assert.IsTrue(exception.Message.Equals(expectedMessage));
         }
 
-        private void VerifyFreeDayGame(Game game)
+        private void VerifyFreeDaySwapped(Game game)
         {
             Assert.IsNotNull(game.HomeTeamId, "HomeTeamId should not be null");
             Assert.IsNull(game.AwayTeamId, "AwayTeamId should be null");

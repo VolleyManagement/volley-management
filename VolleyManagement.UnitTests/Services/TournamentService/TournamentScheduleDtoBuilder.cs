@@ -30,7 +30,7 @@
                     new DivisionScheduleDto
                     {
                         DivisionId = 1,
-                        DivisionName = "Division 1",
+                        DivisionName = "First division",
                         TeamCount = 3
                     }
                 },
@@ -47,6 +47,17 @@
         public TournamentScheduleDtoBuilder WithId(int id)
         {
             _tournamentScheduleDto.Id = id;
+            return this;
+        }
+
+        public TournamentScheduleDtoBuilder WithAnotherDivision()
+        {
+            _tournamentScheduleDto.Divisions.Add(new DivisionScheduleDto
+            {
+                DivisionId = 2,
+                DivisionName = "Division Two",
+                TeamCount = 5
+            });
             return this;
         }
 

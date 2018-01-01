@@ -12,6 +12,7 @@
     using Crosscutting.Contracts.Providers;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
+    using Services.GameReportService;
     using VolleyManagement.Contracts.Authorization;
     using VolleyManagement.Domain.GamesAggregate;
     using VolleyManagement.Domain.RolesAggregate;
@@ -180,7 +181,6 @@
         {
             // Arrange
             var testData = CreateTestTeams();
-            var testGroupData = CreateTestGroups();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             var expectedTeamsList = new TournamentTeamsListViewModel(testData, TEST_TOURNAMENT_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
@@ -206,7 +206,7 @@
         public void ManageTournamentTeams_NonExistTournamentTeams_EmptyTeamListIsReturned()
         {
             // Arrange
-            var testData = new TeamServiceTestFixture().Build();
+            var testData = new TeamInTournamentTestFixture().Build();
             SetupGetTournamentTeams(testData, TEST_TOURNAMENT_ID);
             SetupRequestRawUrl(MANAGE_TOURNAMENT_TEAMS + TEST_TOURNAMENT_ID);
 
@@ -258,16 +258,10 @@
             // Arrange
             const int TEST_ROUND_COUNT = 3;
 
-            var tournament = new TournamentScheduleDto
-            {
-                Id = TEST_TOURNAMENT_ID,
-                Name = TEST_TOURNAMENT_NAME,
-                Scheme = TournamentSchemeEnum.One
-            };
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
 
             var expected = new ScheduleViewModelBuilder().Build();
 
-            SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, tournament);
             SetupGetTournamentResults(
                 TEST_TOURNAMENT_ID,
@@ -292,14 +286,8 @@
         {
             // Arrange
             const int TEST_ROUND_COUNT = 3;
-            var tournament = new TournamentScheduleDto
-            {
-                Id = TEST_TOURNAMENT_ID,
-                Name = TEST_TOURNAMENT_NAME,
-                Scheme = TournamentSchemeEnum.One
-            };
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
 
-            SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
             SetupGetScheduleInfo(
                 TEST_TOURNAMENT_ID,
                 tournament);
@@ -327,12 +315,8 @@
         {
             // Arrange
             const int TEST_ROUND_COUNT = 5;
-            var tournament = new TournamentScheduleDto
-            {
-                Id = TEST_TOURNAMENT_ID,
-                Name = TEST_TOURNAMENT_NAME,
-                Scheme = TournamentSchemeEnum.PlayOff
-            };
+            var tournament = CreateTournamentData(TEST_ROUND_COUNT);
+            tournament.Scheme = TournamentSchemeEnum.PlayOff;
 
             SetupGetScheduleInfo(
                 TEST_TOURNAMENT_ID,
@@ -341,7 +325,6 @@
                 TEST_TOURNAMENT_ID,
                 new GameServiceTestFixture().TestGameResults().Build());
 
-            SetupGetTournamentNumberOfRounds(tournament, TEST_ROUND_COUNT);
             var expectedRoundNames = new string[] { "Round of 32", "Round of 16", "Quarter final", "Semifinal", "Final" };
             var expected = new ScheduleViewModelBuilder().WithRoundNames(expectedRoundNames).Build();
 
@@ -443,7 +426,7 @@
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
-            SetupGetTournamentTeams(new List<Team>(), TEST_TOURNAMENT_ID);
+            SetupGetTournamentTeams(new List<TeamTournamentDto>(), TEST_TOURNAMENT_ID);
 
             var sut = BuildSUT();
 
@@ -461,21 +444,19 @@
         public void ScheduleGameGetAction_TournamentExists_GameViewModelIsReturned()
         {
             // Arrange
-            const int MIN_ROUND_NUMBER = 1;
             const int TEST_ROUND_COUNT = 3;
 
-            var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
+            var testTournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testTeams = CreateTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
-            SetupGetTournamentNumberOfRounds(testTournament, TEST_ROUND_COUNT);
 
             var expected = new GameViewModel
             {
                 TournamentId = TEST_TOURNAMENT_ID,
                 GameDate = _testDate,
-                Teams = new SelectList(testTeams, "Id", "Name"),
-                Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, TEST_ROUND_COUNT))
+                TeamList = CreateTestTeamsList(),
+                RoundList = CreateTestRoundList(TEST_ROUND_COUNT),
             };
 
             var sut = BuildSUT();
@@ -604,15 +585,15 @@
             };
             SetupGetGame(TEST_ID, testGame);
 
-            var testTournament = new TournamentScheduleDto { Id = TEST_TOURNAMENT_ID, StartDate = _testDate };
+            var testTournament = CreateTournamentData(TEST_ROUND_COUNT);
             var testTeams = CreateTestTeams();
             SetupGetScheduleInfo(TEST_TOURNAMENT_ID, testTournament);
             SetupGetTournamentTeams(testTeams, TEST_TOURNAMENT_ID);
-            SetupGetTournamentNumberOfRounds(testTournament, TEST_ROUND_COUNT);
 
             var expected = GameViewModel.Map(testGame);
-            expected.Teams = new SelectList(testTeams, "Id", "Name");
-            expected.Rounds = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, TEST_ROUND_COUNT));
+            expected.TeamList = CreateTestTeamsList();
+            expected.RoundList = new SelectList(Enumerable.Range(MIN_ROUND_NUMBER, TEST_ROUND_COUNT)).Items.OfType<SelectListItem>().ToList();
+            expected.RoundList = CreateTestRoundList(TEST_ROUND_COUNT);
 
             var sut = BuildSUT();
 
@@ -766,14 +747,14 @@
             VerifyArchiveTournament(TEST_TOURNAMENT_ID, Times.Once());
         }
 
-    #endregion
+        #endregion
 
-    #region Details
+        #region Details
 
-    /// <summary>
-    /// Test for Details method. Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
-    /// </summary>
-    [TestMethod]
+        /// <summary>
+        /// Test for Details method. Tournament with specified identifier does not exist. HttpNotFoundResult is returned.
+        /// </summary>
+        [TestMethod]
         public void Details_NonExistentTournament_HttpNotFoundResultIsReturned()
         {
             // Arrange
@@ -1433,7 +1414,7 @@
             // Arrange
             var testData = MakeTestTournament(TEST_TOURNAMENT_ID);
             SetupGet(TEST_TOURNAMENT_ID, testData);
-            SetupGetNonTournamentTeams(CreateTestTeams(), TEST_TOURNAMENT_ID);
+            SetupGetNonTournamentTeams(new TeamServiceTestFixture().TestTeams().Build(), TEST_TOURNAMENT_ID);
 
             var expected = MakeTestTournamentApplyViewModel();
             var sut = BuildSUT();
@@ -1442,7 +1423,7 @@
             var actual = TestExtensions.GetModel<TournamentApplyViewModel>(sut.ApplyForTournament(TEST_TOURNAMENT_ID));
 
             // Assert
-            TestHelper.AreEqual<TournamentApplyViewModel>(expected, actual, new TournamentApplyViewModelComparer());
+            TestHelper.AreEqual(expected, actual, new TournamentApplyViewModelComparer());
         }
 
         [TestMethod]
@@ -1511,7 +1492,7 @@
             var newTournament = new TournamentBuilder()
                 .Build();
             SetupGet(TEST_TOURNAMENT_ID, newTournament);
-            SetupGetNonTournamentTeams(CreateTestTeams(), TEST_TOURNAMENT_ID);
+            SetupGetNonTournamentTeams(new TeamServiceTestFixture().Build(), TEST_TOURNAMENT_ID);
             var sut = BuildSUT();
 
             // Act
@@ -1582,9 +1563,42 @@
                 .Build();
         }
 
-        private List<Team> CreateTestTeams()
+        private List<TeamTournamentDto> CreateTestTeams()
         {
-            return new TeamServiceTestFixture().TestTeams().Build();
+            return new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
+        }
+
+        private List<SelectListItem> CreateTestTeamsList()
+        {
+            return new List<SelectListItem>
+            {
+                new SelectListItem
+                {
+                    Text="TeamNameA",
+                    Value = "1",
+                },
+                new SelectListItem
+                {
+                    Text="TeamNameB",
+                    Value = "2",
+                },
+                new SelectListItem
+                {
+                    Text="TeamNameC",
+                    Value = "3",
+                },
+            };
+        }
+
+        private List<SelectListItem> CreateTestRoundList(int testRoundCount)
+        {
+            return Enumerable.Range(1, testRoundCount)
+                .Select(r => new SelectListItem
+                {
+                    Text = r.ToString(),
+                    Value = r.ToString()
+                })
+                .ToList();
         }
 
         private List<Group> CreateTestGroups()
@@ -1650,10 +1664,24 @@
                 TeamId = 1,
             };
         }
-
-        private Game MakeTestGame()
+        private static TournamentScheduleDto CreateTournamentData(byte roundCount)
         {
-            return new GameBuilder().Build();
+            return new TournamentScheduleDto
+            {
+                Id = TEST_TOURNAMENT_ID,
+                Name = TEST_TOURNAMENT_NAME,
+                Scheme = TournamentSchemeEnum.One,
+                StartDate = _testDate,
+                Divisions = new List<DivisionScheduleDto>
+                {
+                    new DivisionScheduleDto
+                    {
+                        DivisionId = 1,
+                        DivisionName = "Division 1",
+                        NumberOfRounds = roundCount,
+                    },
+                },
+            };
         }
 
         private TournamentViewModel MakeTestTournamentViewModel(int tournamentId)
@@ -1691,7 +1719,7 @@
             _tournamentServiceMock.Setup(tr => tr.GetArchived()).Returns(GetArchivedTournaments(tournaments));
         }
 
-        private void SetupGetTournamentTeams(List<Team> teams, int tournamentId)
+        private void SetupGetTournamentTeams(List<TeamTournamentDto> teams, int tournamentId)
         {
             _tournamentServiceMock
                 .Setup(tr => tr.GetAllTournamentTeams(tournamentId))
@@ -1719,13 +1747,6 @@
                 .Returns(teams);
         }
 
-        private void SetupGetTournamentNumberOfRounds(TournamentScheduleDto tournament, byte numberOfRounds)
-        {
-            _tournamentServiceMock
-                .Setup(tr => tr.GetNumberOfRounds(tournament))
-                .Returns(numberOfRounds);
-        }
-
         private void SetupGet(int tournamentId, Tournament tournament)
         {
             _tournamentServiceMock.Setup(tr => tr.Get(tournamentId)).Returns(tournament);
@@ -1743,7 +1764,7 @@
 
         private void SetupGetTournamentResults(int tournamentId, List<GameResultDto> expectedGames)
         {
-            _gameServiceMock.Setup(t => t.GetTournamentResults(It.IsAny<int>())).Returns(expectedGames);
+            _gameServiceMock.Setup(t => t.GetTournamentResults(tournamentId)).Returns(expectedGames);
         }
 
         private void SetupCurrentUserServiceReturnsUserId(int id)
@@ -1861,18 +1882,18 @@
             Assert.AreEqual(x.GameNumber, y.GameNumber, "Actual GameNumber doesn't match expected");
 
             Assert.IsTrue(
-                x.Teams != null &&
-                y.Teams != null &&
-                x.Teams.Select(
+                x.TeamList != null &&
+                y.TeamList != null &&
+                x.TeamList.Select(
                     team => new { Text = team.Text, Value = team.Value }).SequenceEqual(
-                    y.Teams.Select(team => new { Text = team.Text, Value = team.Value })),
+                    y.TeamList.Select(team => new { Text = team.Text, Value = team.Value })),
                 "Actual Teams list doesn't match expected");
 
             Assert.IsTrue(
-                          x.Rounds != null &&
-                          y.Rounds != null &&
-                         (x.Rounds.Items as IEnumerable<int>).SequenceEqual(
-                          y.Rounds.Items as IEnumerable<int>),
+                          x.RoundList != null &&
+                          y.RoundList != null &&
+                         x.RoundList.Select(r => r.Value).SequenceEqual(
+                          y.RoundList.Select(r => r.Value)),
                           "Actual Rounds list doesn't match expected");
         }
         #endregion

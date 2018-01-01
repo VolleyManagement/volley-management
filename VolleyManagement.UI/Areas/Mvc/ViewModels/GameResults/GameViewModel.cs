@@ -4,6 +4,7 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Linq;
+    using System.Security.AccessControl;
     using System.Web.Mvc;
     using Domain.GamesAggregate;
     using Domain.TournamentsAggregate;
@@ -25,16 +26,6 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// Gets or sets id of a game
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets list of teams to be selected
-        /// </summary>
-        public IEnumerable<SelectListItem> Teams { get; set; }
-
-        /// <summary>
-        /// Gets or sets list of rounds to be selected grouped by divisions
-        /// </summary>
-        public Dictionary<int, SelectList> DivisionRounds { get; set; }
 
         /// <summary>
         /// Gets or sets round number of the game
@@ -83,6 +74,11 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
         /// </summary>
         public byte GameNumber { get; set; }
 
+        [Display(Name = "Division")]
+        public int DivisionId { get; set; }
+
+        public SelectList DivisionList { get; set; }
+
         /// <summary>
         /// Gets a value indicating whether gets an identifier whether this game is a first round game.
         /// </summary>
@@ -93,6 +89,16 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 return Round == 1;
             }
         }
+
+        /// <summary>
+        /// List of rounds grouped by division for dropdown
+        /// </summary>
+        public List<SelectListItem> RoundList { get; set; }
+
+        /// <summary>
+        /// List of teams grouped by division for dropdown
+        /// </summary>
+        public List<SelectListItem> TeamList { get; set; }
 
         /// <summary>
         /// Mapper from GameResult to GameViewModel
@@ -131,5 +137,18 @@ namespace VolleyManagement.UI.Areas.Mvc.ViewModels.GameResults
                 GameNumber = GameNumber
             };
         }
+    }
+
+    public class DivisionScheduleDataViewModel
+    {
+        /// <summary>
+        /// Gets or sets list of teams to be selected
+        /// </summary>
+        public SelectList Teams { get; set; }
+
+        /// <summary>
+        /// Gets or sets list of rounds to be selected grouped by divisions
+        /// </summary>
+        public SelectList Rounds { get; set; }
     }
 }

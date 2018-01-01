@@ -443,6 +443,67 @@
             return this;
         }
 
+        public GameServiceTestFixture TestGamesWithResultInTwoWeeksTwoDivisionsTwoGames()
+        {
+            _gameResults.Clear();
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 1,
+                TournamentId = 1,
+                HomeTeamId = 1,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameA",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = new Score(3, 0, true),
+                    SetScores = new List<Score>
+                    {
+                        new Score(25, 0),
+                        new Score(25,0),
+                        new Score(25,0),
+                        new Score(0,0),
+                        new Score(0,0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_A),
+                Round = 1,
+                GameNumber = 0,
+                GroupId = 1,
+                DivisionId = 1,
+                DivisionName = "Division Name"
+            });
+            _gameResults.Add(new GameResultDto
+            {
+                Id = 2,
+                TournamentId = 1,
+                HomeTeamId = 3,
+                AwayTeamId = 2,
+                HomeTeamName = "TeamNameC",
+                AwayTeamName = "TeamNameB",
+                Result = new Result
+                {
+                    GameScore = new Score(1, 3),
+                    SetScores = new List<Score>
+                    {
+                        new Score(25,0),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(0,0)
+                    }
+                },
+                GameDate = DateTime.Parse(DATE_B),
+                Round = 2,
+                GameNumber = 0,
+                GroupId = 2,
+                DivisionId = 2,
+                DivisionName = "Division Name1"
+            });
+
+            return this;
+        }
+
         public GameServiceTestFixture TestGamesWithResultInOneWeekTwoGameDaysTwoDivisionsTwoGames()
         {
             _gameResults.Clear();
@@ -456,44 +517,14 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 3,
-                        Away = 0,
-                        IsTechnicalDefeat = true
-                    },
+                    GameScore = new Score(3, 0, true),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        }
+                        new Score(25, 0),
+                        new Score(25,0),
+                        new Score(25,0),
+                        new Score(0,0),
+                        new Score(0,0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -501,6 +532,7 @@
                 GameNumber = 0,
                 GroupId = 1,
                 DivisionId = 1,
+                DivisionName = "Division Name"
             });
             _gameResults.Add(new GameResultDto
             {
@@ -512,44 +544,14 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 1,
-                        Away = 3,
-                        IsTechnicalDefeat = false
-                    },
+                    GameScore = new Score(1, 3),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 5,
-                            Away = 25,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 5,
-                            Away = 25,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 5,
-                            Away = 25,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        }
+                        new Score(25,0),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(0,0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_D),
@@ -557,6 +559,7 @@
                 GameNumber = 0,
                 GroupId = 2,
                 DivisionId = 2,
+                DivisionName = "Division Name1"
             });
 
             return this;
@@ -575,44 +578,14 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 3,
-                        Away = 0,
-                        IsTechnicalDefeat = true
-                    },
+                    GameScore = new Score(3, 0, true),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        }
+                        new Score(25, 0),
+                        new Score(25,0),
+                        new Score(25,0),
+                        new Score(0,0),
+                        new Score(0,0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -620,6 +593,7 @@
                 GameNumber = 0,
                 GroupId = 1,
                 DivisionId = 1,
+                DivisionName = "Division Name"
             });
             _gameResults.Add(new GameResultDto
             {
@@ -631,44 +605,14 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 1,
-                        Away = 3,
-                        IsTechnicalDefeat = false
-                    },
+                    GameScore = new Score(1, 3),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 5,
-                            Away = 25,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 5,
-                            Away = 25,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 5,
-                            Away = 25,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        }
+                        new Score(25,0),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(5,25),
+                        new Score(0,0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -676,6 +620,7 @@
                 GameNumber = 0,
                 GroupId = 2,
                 DivisionId = 2,
+                DivisionName = "Division Name1"
             });
 
             return this;
@@ -862,44 +807,14 @@
                 AwayTeamName = "TeamNameB",
                 Result = new Result
                 {
-                    GameScore = new Score
-                    {
-                        Home = 3,
-                        Away = 0,
-                        IsTechnicalDefeat = true
-                    },
+                    GameScore = new Score(3, 0, true),
                     SetScores = new List<Score>
                     {
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 25,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        },
-                        new Score
-                        {
-                            Home = 0,
-                            Away = 0,
-                            IsTechnicalDefeat = false
-                        }
+                        new Score(25, 0),
+                        new Score(25, 0),
+                        new Score(25, 0),
+                        new Score(0, 0),
+                        new Score(0, 0)
                     }
                 },
                 GameDate = DateTime.Parse(DATE_A),
@@ -907,6 +822,7 @@
                 GameNumber = 0,
                 GroupId = 1,
                 DivisionId = 1,
+                DivisionName = "Division Name"
             });
 
             return this;

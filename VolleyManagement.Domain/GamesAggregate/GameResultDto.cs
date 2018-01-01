@@ -77,5 +77,10 @@
         /// </summary>
         /// <returns>True if score is empty; otherwise, false.</returns>
         public bool HasResult => (!Result?.GameScore?.IsEmpty).GetValueOrDefault();
+
+        /// <summary>
+        /// Gets or sets the name of the division where game result belongs.
+        /// </summary>
+        public string DivisionName { get; set; }
     }
 }

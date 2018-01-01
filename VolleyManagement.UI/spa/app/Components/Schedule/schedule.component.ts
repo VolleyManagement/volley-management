@@ -2,9 +2,12 @@ import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angu
 
 import 'rxjs/add/operator/toPromise';
 
-import { ScheduleByRounds } from '../../Models/Schedule/ScheduleByRounds';
+import { ScheduleModel } from '../../Models/Schedule/Schedule';
 import { ScheduleService } from '../../Services/schedule.service';
 import { GameResult } from '../../Models/Schedule/GameResult';
+import { ScheduleDay } from '../../Models/Schedule/ScheduleDay';
+import { Result } from '../../Models/Schedule/Result';
+
 
 @Component({
     selector: 'schedule',
@@ -16,10 +19,8 @@ export class ScheduleComponent implements OnInit {
     @Input() scheduleId: number;
     @Output() ready: EventEmitter<void> = new EventEmitter<void>();
 
-    data: ScheduleByRounds[];
-
-    groupOne: number;
-    groupTwo: number;
+    data: ScheduleModel = {} as ScheduleModel;
+    divisionsIds: number[] = [];
 
     constructor(private scheduleService: ScheduleService) { }
 
@@ -30,24 +31,51 @@ export class ScheduleComponent implements OnInit {
             .then(data => {
                 this.data = data;
                 this.ready.emit();
-                this._setGroupIds();
+                this._getSortedDivisionsIds();
             });
     }
 
     gameIsPlayed(gameResult: GameResult) {
         return gameResult.AwayTeamName &&
+            gameResult.Result &&
             (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
     }
 
-    private _setGroupIds() {
-        this.groupOne = this.data[0].ScheduleByDate[0].GameResults[0].GroupId;
-
-        this.data[0].ScheduleByDate.forEach((item, index, arr) => {
-            const gameResult = item.GameResults.find(it => it.GroupId !== this.groupOne);
-            if (gameResult) {
-                this.groupTwo = gameResult.GroupId;
-                return;
-            }
+    getdivisionsHeader(day: ScheduleDay): string {
+        let info = '';
+        day.Divisions.forEach((item, index) => {
+            info += item.Name + ' : ' + item.Rounds.join() + ' раунд. ';
         });
+        return info;
+    }
+
+    getDivisionAccentColor(divisionId: number): string {
+        let index = this.divisionsIds.indexOf(divisionId);
+        return 'division' + ++index;
+    }
+
+    isFreeDay(gameResult: GameResult): boolean {
+        return !gameResult.AwayTeamName;
+    }
+
+    getGameTotalBallsScore(gameResult: Result): string {
+        const totalHomeTeamBalls = gameResult.SetScores.map(item => item.Home).reduce((prev, next) => prev + next);
+        const totalAwayTeamBalls = gameResult.SetScores.map(item => item.Away).reduce((prev, next) => prev + next);
+
+        return `${totalHomeTeamBalls}:${totalAwayTeamBalls}`;
+    }
+
+    private _getSortedDivisionsIds() {
+        this.data.Schedule.forEach((item, index, arr) => {
+            item.Days.forEach((it, ind, ar) => {
+                it.Divisions.forEach(d => {
+                    if (this.divisionsIds.indexOf(d.Id) === -1) {
+                        this.divisionsIds.push(d.Id);
+                    }
+                });
+            });
+        });
+
+        this.divisionsIds.sort((a, b) => a - b);
     }
 }

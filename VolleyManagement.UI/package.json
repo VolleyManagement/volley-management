@@ -8,7 +8,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "package-vou": "ng build --prod --vendor-chunk=false --output-hashing=none"
   },
   "private": true,
   "dependencies": {

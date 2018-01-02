@@ -4,10 +4,10 @@
 
       <div class="day" *ngFor="let day of weeks.Days; let daysIndex = index;">
         <p class="headercenter">{{day.Date | date: "dd-MM-yyyy"}}</p>
-        <p class="headercenter {{getDivisionAccentColor(division.Id,true)}}" *ngFor="let division of day.Divisions">{{getdivisionsHeader(division)}}</p>
+        <p class="headercenter {{getDivisionAccentColor(division.Id)}}" *ngFor="let division of day.Divisions">{{getdivisionsHeader(division)}}</p>
         <div>
           <div class="games" *ngFor="let gameResult of day.Games;">
-            <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId,False)}}">
+            <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}">
               <tbody *ngIf="isFreeDay(gameResult)">
                 <tr class="team-sch">
                   <strong>{{ gameResult.HomeTeamName }}</strong>
@@ -17,7 +17,7 @@
                 </tr>
               </tbody>
             </table>
-            <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId,false)}}" *ngIf="gameResult.AwayTeamName">
+            <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}" *ngIf="gameResult.AwayTeamName">
 
               <tbody *ngIf="gameIsPlayed(gameResult)">
 

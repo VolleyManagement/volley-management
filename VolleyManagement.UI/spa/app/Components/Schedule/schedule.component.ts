@@ -44,9 +44,9 @@ export class ScheduleComponent implements OnInit {
         return `${divisionHeader.Name}: ${divisionHeader.Rounds.join()} тур.`;
     }
 
-    getDivisionAccentColor(divisionId: number, isDateHeader: boolean): string {
+    getDivisionAccentColor(divisionId: number): string {
         let index = this.divisionsIds.indexOf(divisionId);
-        return `division${++index}${isDateHeader ? '-date' : ''}`;
+        return `division${++index}`;
     }
 
     isFreeDay(gameResult: GameResult): boolean {

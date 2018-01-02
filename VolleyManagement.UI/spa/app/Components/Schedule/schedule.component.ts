@@ -5,7 +5,8 @@ import 'rxjs/add/operator/toPromise';
 import { ScheduleModel } from '../../Models/Schedule/Schedule';
 import { ScheduleService } from '../../Services/schedule.service';
 import { GameResult } from '../../Models/Schedule/GameResult';
-import { DivsionHeader } from '../../Models/Schedule/DivsionHeader';
+import { DivisionHeader } from '../../Models/Schedule/DivisionHeader';
+import { Result } from '../../Models/Schedule/Result';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class ScheduleComponent implements OnInit {
             (!gameResult.Result.TotalScore.IsEmpty || gameResult.Result.IsTechnicalDefeat);
     }
 
-    getdivisionsHeader(divisionHeader: DivsionHeader): string {
+    getdivisionsHeader(divisionHeader: DivisionHeader): string {
         return `${divisionHeader.Name}: ${divisionHeader.Rounds.join()} тур.`;
     }
 
@@ -51,6 +52,13 @@ export class ScheduleComponent implements OnInit {
 
     isFreeDay(gameResult: GameResult): boolean {
         return !gameResult.AwayTeamName;
+    }
+
+    getGameTotalBallsScore(gameResult: Result): string {
+        const totalHomeTeamBalls = gameResult.SetScores.map(item => item.Home).reduce((prev, next) => prev + next);
+        const totalAwayTeamBalls = gameResult.SetScores.map(item => item.Away).reduce((prev, next) => prev + next);
+
+        return `${totalHomeTeamBalls}:${totalAwayTeamBalls}`;
     }
 
     private _getSortedDivisionsIds() {

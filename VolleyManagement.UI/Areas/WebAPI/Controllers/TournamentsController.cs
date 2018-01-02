@@ -137,11 +137,11 @@ namespace VolleyManagement.UI.Areas.WebApi.Controllers
                                     {
                                         Id = data.DivisionId,
                                         Name = data.DivisionName,
-                                        Rounds = element.Where(g => g.DivisionId == data.DivisionId).
-                                                            Select(item => item.Round).
-                                                            Distinct().
-                                                            OrderBy(i => i).
-                                                            ToList()
+                                        Rounds = element.Where(g => g.DivisionId == data.DivisionId)
+                                                            .Select(item => item.Round)
+                                                            .Distinct()
+                                                            .OrderBy(i => i)
+                                                            .ToList()
                                     }).
                                     Distinct(new DivisionTitleComparer()).
                                     ToList(),

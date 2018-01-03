@@ -58,54 +58,6 @@
       font-style: normal;
       font-weight: normal;
       width: 280px;
-      &.division1{
-        background-color: $division1-date-bg-color;
-      }
-      &.division2 {
-        background-color: $division2-date-bg-color;
-      }
-      &.division3 {
-        background-color: $division3-date-bg-color;
-      }
-      &.division4 {
-        background-color: $division4-date-bg-color;
-      }
-      &.division5 {
-        background-color: $division5-date-bg-color;
-      }
-      &.division6 {
-        background-color: $division6-date-bg-color;
-      }
-      &.division7 {
-        background-color: $division7-date-bg-color;
-      }
-      &.division8 {
-        background-color: $division8-date-bg-color;
-      }
-      &.division9 {
-        background-color: $division9-date-bg-color;
-      }
-      &.division10 {
-        background-color: $division10-date-bg-color;
-      }
-      &.division11 {
-        background-color: $division11-date-bg-color;
-      }
-      &.division12 {
-        background-color: $division12-date-bg-color;
-      }
-      &.division13 {
-        background-color: $division13-date-bg-color;
-      }
-      &.division14 {
-        background-color: $division14-date-bg-color;
-      }
-      &.division15 {
-        background-color: $division15-date-bg-color;
-      }
-      &.division16 {
-        background-color: $division16-date-bg-color;
-      }
     }
     .division-data {
       width: 280px;
@@ -115,12 +67,6 @@
         margin: 0px;
         text-align: center;
         font-size: 9pt;
-        &.division-date-division2 {
-          background-color: $division2-date-bg-color;
-        }
-        &.division-date-division1 {
-          background-color: $division1-date-bg-color;
-        }
       }
     }
     .games {
@@ -131,54 +77,6 @@
         table-layout: fixed;
         empty-cells: hide;
         border: 1px solid $game-schedule-border-color;
-        &.division1 {
-          background-color: $division1-bg-color;
-        }
-        &.division2 {
-          background-color: $division2-bg-color;
-        }
-        &.division3 {
-          background-color: $division3-bg-color;
-        }
-        &.division4 {
-          background-color: $division4-bg-color;
-        }
-        &.division5 {
-          background-color: $division5-bg-color;
-        }
-        &.division6 {
-          background-color: $division6-bg-color;
-        }
-        &.division7 {
-          background-color: $division7-bg-color;
-        }
-        &.division8 {
-          background-color: $division8-bg-color;
-        }
-        &.division9 {
-          background-color: $division9-bg-color;
-        }
-        &.division10 {
-          background-color: $division10-bg-color;
-        }
-        &.division11 {
-          background-color: $division11-bg-color;
-        }
-        &.division12 {
-          background-color: $division12-bg-color;
-        }
-        &.division13 {
-          background-color: $division13-bg-color;
-        }
-        &.division14 {
-          background-color: $division14-bg-color;
-        }
-        &.division15 {
-          background-color: $division15-bg-color;
-        }
-        &.division16 {
-          background-color: $division16-bg-color;
-        }
         &:hover {
           background-color: $game-hover-bg-color;
         }
@@ -204,6 +102,134 @@
             }
           }
         }
+      }
+    }
+    .division1 {
+      &.headercenter {
+        background-color: $division1-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division1-bg-color;
+      }
+    }
+    .division2 {
+      &.headercenter {
+        background-color: $division2-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division2-bg-color;
+      }
+    }
+    .division3 {
+      &.headercenter {
+        background-color: $division3-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division3-bg-color;
+      }
+    }
+    .division4 {
+      &.headercenter {
+        background-color: $division4-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division4-bg-color;
+      }
+    }
+    .division5 {
+      &.headercenter {
+        background-color: $division5-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division5-bg-color;
+      }
+    }
+    .division6 {
+      &.headercenter {
+        background-color: $division6-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division6-bg-color;
+      }
+    }
+    .division7 {
+      &.headercenter {
+        background-color: $division7-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division7-bg-color;
+      }
+    }
+    .division8 {
+      &.headercenter {
+        background-color: $division8-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division8-bg-color;
+      }
+    }
+    .division9 {
+      &.headercenter {
+        background-color: $division9-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division9-bg-color;
+      }
+    }
+    .division10 {
+      &.headercenter {
+        background-color: $division10-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division10-bg-color;
+      }
+    }
+    .division11 {
+      &.headercenter {
+        background-color: $division11-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division11-bg-color;
+      }
+    }
+    .division12 {
+      &.headercenter {
+        background-color: $division12-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division12-bg-color;
+      }
+    }
+    .division13 {
+      &.headercenter {
+        background-color: $division13-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division13-bg-color;
+      }
+    }
+    .division14 {
+      &.headercenter {
+        background-color: $division14-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division14-bg-color;
+      }
+    }
+    .division15 {
+      &.headercenter {
+        background-color: $division15-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division15-bg-color;
+      }
+    }
+    .division16 {
+      &.headercenter {
+        background-color: $division16-date-bg-color;
+      }
+      &.game-sch {
+        background-color: $division16-bg-color;
       }
     }
   }

@@ -31,9 +31,9 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
                     Results = grouped.Select(r =>
                     {
                         ShortGameResultViewModel result;
-                        if(!r.HasResult)
+                        if (!r.WasPlayed)
                         {
-                            result = new ShortGameResultViewModel(r.RoundNumber);
+                            result = ShortGameResultViewModel.CreatePlannedGame(r.RoundNumber);
                         }
                         else if (r.HomeTeamId == grouped.Key.TeamAId)
                         {

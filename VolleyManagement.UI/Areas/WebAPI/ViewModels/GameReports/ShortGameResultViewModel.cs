@@ -9,11 +9,6 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
     {
         public ShortGameResultViewModel() { }
 
-        public ShortGameResultViewModel(byte roundNumber)
-        {
-            RoundNumber = roundNumber;
-        }
-
         public ShortGameResultViewModel(byte roundNumber, byte homeSetScore, byte awaySetScore, bool isTechnicalDefeat = false)
             : this(homeSetScore, awaySetScore, isTechnicalDefeat)
         {
@@ -27,6 +22,7 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
 
             IsTechnicalDefeat = isTechnicalDefeat;
         }
+
         /// <summary>
         /// Gets or sets the final score of the game for the home team.
         /// </summary>
@@ -46,5 +42,13 @@ namespace VolleyManagement.UI.Areas.WebApi.ViewModels.GameReports
         /// Gets or sets a value indicating whether the technical defeat has taken place.
         /// </summary>
         public bool IsTechnicalDefeat { get; set; }
+
+        public static ShortGameResultViewModel CreatePlannedGame(byte roundNumber)
+        {
+            return new ShortGameResultViewModel
+            {
+                RoundNumber = roundNumber
+            };
+        }
     }
 }

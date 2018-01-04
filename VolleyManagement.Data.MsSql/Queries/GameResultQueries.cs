@@ -72,7 +72,7 @@
             // Join GameResult tables with tournaments then with Divisions and then with Groups
             // After that select only groupId and divisionId where Groups navigation property Teams
             // contains reference on teamId
-            var gameResults = _dalGameResults
+            /*var gameResults = _dalGameResults
             .Where(gr => gr.TournamentId == criteria.TournamentId)
             .Join(
                 _dalTournaments, 
@@ -102,7 +102,7 @@
                 groupId = r.groups.Id })
             .ToList();
 
-            /*
+            */
             var query = from gameResults in _dalGameResults.Where(gr => gr.TournamentId == criteria.TournamentId)
                         join tournament in _dalTournaments
                             on gameResults.TournamentId equals tournament.Id
@@ -122,9 +122,10 @@
                             groupId = groups.Id
                         };
 
-            var gameResults = query.ToList();*/
+            List<GameResultDto> list = query
+                .ToList()
+                .ConvertAll(item => Map(item.results, item.divisionName, item.divisionId, item.groupId));
 
-            List<GameResultDto> list = gameResults.ConvertAll(item => Map(item.results, item.divisionName, item.divisionId, item.groupId));
             return list;
         }
 

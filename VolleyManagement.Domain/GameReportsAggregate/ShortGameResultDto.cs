@@ -38,6 +38,6 @@
         /// <summary>
         /// Gets or sets a flag indicating if game has result or planned
         /// </summary>
-        public bool HasResult { get; set; }
+        public bool WasPlayed { get; set; }
     }
 }

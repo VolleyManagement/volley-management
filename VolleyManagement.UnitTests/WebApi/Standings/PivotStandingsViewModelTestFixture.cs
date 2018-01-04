@@ -84,8 +84,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                     AwayTeamId = 3,
                     Results = new List<ShortGameResultViewModel>
                     {
-                        new ShortGameResultViewModel(3),
-                        new ShortGameResultViewModel(4),
+                        ShortGameResultViewModel.CreatePlannedGame(3),
+                        ShortGameResultViewModel.CreatePlannedGame(4),
                     },
                 },
                 new PivotStandingsGameViewModel
@@ -94,8 +94,8 @@ namespace VolleyManagement.UnitTests.WebApi.Standings
                     AwayTeamId = 3,
                     Results = new List<ShortGameResultViewModel>
                     {
-                        new ShortGameResultViewModel(5),
-                        new ShortGameResultViewModel(6),
+                        ShortGameResultViewModel.CreatePlannedGame(5),
+                        ShortGameResultViewModel.CreatePlannedGame(6),
                     },
                 },
             };

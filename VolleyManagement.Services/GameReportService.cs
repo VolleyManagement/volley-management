@@ -330,7 +330,7 @@
                 HomeGameScore = g.HasResult ? g.Result.GameScore.Home : byte.MinValue,
                 AwayGameScore = g.HasResult ? g.Result.GameScore.Away : byte.MinValue,
                 IsTechnicalDefeat = g.HasResult ? g.Result.GameScore.IsTechnicalDefeat : false,
-                HasResult = g.HasResult,
+                WasPlayed = g.HasResult,
                 RoundNumber = g.Round
             };
         }

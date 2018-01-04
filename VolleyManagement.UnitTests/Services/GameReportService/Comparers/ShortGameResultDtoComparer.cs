@@ -18,7 +18,7 @@
 
             Assert.AreEqual(x.RoundNumber, y.RoundNumber, "RoundNumber do not match");
 
-            Assert.AreEqual(x.HasResult, y.HasResult, "HasResult do not match");
+            Assert.AreEqual(x.WasPlayed, y.WasPlayed, "WasPlayed do not match");
 
             return 0;
         }

@@ -371,7 +371,6 @@
         }
 
         [TestMethod]
-        [Ignore]
         public void GetPivotStandings_PlannedGamesWithoutResults_StandingsContainPlannedGames()
         {
             // Arrange

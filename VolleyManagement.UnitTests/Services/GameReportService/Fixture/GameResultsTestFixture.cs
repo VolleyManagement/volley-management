@@ -1061,7 +1061,7 @@
                 Result = new Result
                 {
                     GameScore = (3, 0),
-                    SetScores = new List<Score> { (25, 0), (25, 0), (25, 0), (0, 0), (0, 0) },
+                    SetScores = new List<Score> { (25, 0), (25, 0), (25, 1), (0, 0), (0, 0) },
                 },
                 GameDate = DateTime.Parse(DATE_A),
                 Round = 1,

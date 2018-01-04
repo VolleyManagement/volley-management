@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Teams
 {
     using System;
     using System.Collections.Generic;
@@ -27,7 +27,7 @@
         /// </summary>
         /// <param name="source">All needed teams</param>
         /// <param name="tournamentId">Tournament id</param>
-        public TournamentTeamsListViewModel(List<Team> source, int tournamentId)
+        public TournamentTeamsListViewModel(List<TeamTournamentDto> source, int tournamentId)
         {
             TournamentId = tournamentId;
             TeamsList = source.Select(TeamNameViewModel.Map).ToList();

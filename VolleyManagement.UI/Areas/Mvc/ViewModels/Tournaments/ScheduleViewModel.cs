@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
+namespace VolleyManagement.UI.Areas.Mvc.ViewModels.Tournaments
 {
     using System;
     using System.Collections.Generic;
@@ -20,10 +20,7 @@
             Rounds = new Dictionary<byte, List<GameResultViewModel>>();
         }
 
-        /// <summary>
-        /// Gets or sets number of rounds in tournament
-        /// </summary>
-        public byte NumberOfRounds { get; set; }
+        public int MaxNumberOfRounds { get; set; }
 
         /// <summary>
         /// Gets or sets current rounds collection
@@ -62,7 +59,7 @@
         /// <returns>True, if game is the final</returns>
         public bool IsFinal(GameResultViewModel game)
         {
-            return NumberOfRounds != 0 &&
+            return MaxNumberOfRounds != 0 &&
                    game.GameNumber == Rounds.Last().Value.Last().GameNumber;
         }
 
@@ -73,7 +70,7 @@
         /// <returns>True, if game is the bronze match</returns>
         public bool IsBronzeMatch(GameResultViewModel game)
         {
-            return NumberOfRounds != 0 &&
+            return MaxNumberOfRounds != 0 &&
                    game.GameNumber == Rounds.Last().Value.Last().GameNumber - 1;
         }
     }

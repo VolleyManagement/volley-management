@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using GameReportService;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using VolleyManagement.Contracts;
@@ -58,7 +59,7 @@
         private Mock<IQuery<Tournament, UniqueTournamentCriteria>> _uniqueTournamentQueryMock;
         private Mock<IQuery<List<Tournament>, GetAllCriteria>> _getAllQueryMock;
         private Mock<IQuery<Tournament, FindByIdCriteria>> _getByIdQueryMock;
-        private Mock<IQuery<List<Team>, FindByTournamentIdCriteriaOld>> _getAllTournamentTeamsQuery;
+        private Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>> _getAllTournamentTeamsQuery;
         private Mock<IQuery<List<Division>, TournamentDivisionsCriteria>> _getAllTournamentDivisionsQuery;
         private Mock<IQuery<List<Group>, DivisionGroupsCriteria>> _getAllTournamentGroupsQuery;
         private Mock<IQuery<List<TeamTournamentAssignmentDto>, GetAllCriteria>> _getAllGroupsTeamsQuery;
@@ -82,7 +83,7 @@
             _uniqueTournamentQueryMock = new Mock<IQuery<Tournament, UniqueTournamentCriteria>>();
             _getAllQueryMock = new Mock<IQuery<List<Tournament>, GetAllCriteria>>();
             _getByIdQueryMock = new Mock<IQuery<Tournament, FindByIdCriteria>>();
-            _getAllTournamentTeamsQuery = new Mock<IQuery<List<Team>, FindByTournamentIdCriteriaOld>>();
+            _getAllTournamentTeamsQuery = new Mock<IQuery<List<TeamTournamentDto>, FindByTournamentIdCriteria>>();
             _getAllTournamentDivisionsQuery = new Mock<IQuery<List<Division>, TournamentDivisionsCriteria>>();
             _getAllTournamentGroupsQuery = new Mock<IQuery<List<Group>, DivisionGroupsCriteria>>();
             _getAllTeamsQuery = new Mock<IQuery<List<Team>, GetAllCriteria>>();
@@ -185,16 +186,16 @@
         public void GetAllTournamentTeams_TeamsExist_TeamsReturned()
         {
             // Arrange
-            var testData = new TeamServiceTestFixture().TestTeams().Build();
+            var testData = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
             MockGetAllTournamentTeamsQuery(testData);
             var sut = BuildSUT();
-            var expected = new TeamServiceTestFixture().TestTeams().Build();
+            var expected = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
 
             // Act
             var actual = sut.GetAllTournamentTeams(It.IsAny<int>());
 
             // Assert
-            CollectionAssert.AreEqual(expected, actual, new TeamComparer());
+            CollectionAssert.AreEqual(expected, actual, new TeamInTournamentComparer());
         }
 
         /// <summary>
@@ -206,7 +207,7 @@
         public void GetAllTournamentTeams_TeamsNotExist_EmptyTeamListReturned()
         {
             // Arrange
-            var testData = new TeamServiceTestFixture().Build();
+            var testData = new TeamInTournamentTestFixture().Build();
             MockGetAllTournamentTeamsQuery(testData);
             var sut = BuildSUT();
 
@@ -846,10 +847,12 @@
         {
             // Arrange
             var testData = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
-            MockGetAllTournamentTeamsQuery(new TeamServiceTestFixture().Build());
+            MockGetAllTournamentTeamsQuery(new TeamInTournamentTestFixture().Build());
+
             var tournament = new TournamentBuilder().WithScheme(TournamentSchemeEnum.PlayOff).Build();
             MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
+
             var sut = BuildSUT();
 
             // Act
@@ -927,12 +930,10 @@
                 .WithScheme(TournamentSchemeEnum.PlayOff)
                 .Build();
 
-            var teamsInTournament = new GroupTeamServiceTestFixture().TestGroupsTeams().Build();
-
             MockGetTournamentByGroupId(tournament);
             MockGetByIdQuery(tournament);
-            var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
-            MockGetAllTournamentTeamsQueryTwoCalls(new TeamServiceTestFixture().Build(), testTeamsData);
+            var testTeamsData = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
+            MockGetAllTournamentTeamsQueryTwoCalls(new TeamInTournamentTestFixture().Build(), testTeamsData);
 
             var sut = BuildSUT();
 
@@ -1024,8 +1025,7 @@
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
 
-            var teamsToAddInSecondDivision = new List<Team>();
-            teamsToAddInSecondDivision.Add(new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build());
+            var teamsToAddInSecondDivision = new List<TeamTournamentDto> { new TeamTournamentDto { TeamId = SPECIFIC_TEAM_ID } };
             MockGetAllTournamentTeamsQuery(teamsToAddInSecondDivision);
 
             MockGetTournamentByGroupId(tournament);
@@ -1098,7 +1098,7 @@
             var tournament = new TournamentBuilder().Build();
             MockGetByIdQuery(tournament);
 
-            var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
+            var testTeamsData = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
             MockGetAllTournamentTeamsQuery(testTeamsData);
 
             var sut = BuildSUT();
@@ -1176,7 +1176,7 @@
                 .Build();
 
             MockGetByIdQuery(tournament);
-            var testTeamsData = new TeamServiceTestFixture().TestTeams().Build();
+            var testTeamsData = new TeamInTournamentTestFixture().WithTeamsInSingleDivisionSingleGroup().Build();
             MockGetAllTournamentTeamsQuery(testTeamsData);
 
             var sut = BuildSUT();
@@ -1645,12 +1645,12 @@
                 _getAllQueryMock.Object,
                 _getByIdQueryMock.Object,
                 _getAllTeamsQuery.Object,
-                _getAllTournamentTeamsQuery.Object,
                 _getAllTournamentDivisionsQuery.Object,
                 _getAllTournamentGroupsQuery.Object,
                 _getTorunamentDto.Object,
                 _getTournamentId.Object,
                 _getOldTournamentsQuery.Object,
+                _getAllTournamentTeamsQuery.Object,
                 _authServiceMock.Object,
                 _gameServiceMock.Object);
         }
@@ -1680,9 +1680,9 @@
             _uniqueTournamentQueryMock.Setup(tr => tr.Execute(It.IsAny<UniqueTournamentCriteria>())).Returns(testData);
         }
 
-        private void MockGetAllTournamentTeamsQuery(List<Team> testData)
+        private void MockGetAllTournamentTeamsQuery(List<TeamTournamentDto> testData)
         {
-            _getAllTournamentTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteriaOld>())).Returns(testData);
+            _getAllTournamentTeamsQuery.Setup(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>())).Returns(testData);
         }
 
         private void MockGetAllTournamentDivisionsQuery(List<Division> testData)
@@ -1700,9 +1700,9 @@
             _getAllGroupsTeamsQuery.Setup(gt => gt.Execute(It.IsAny<GetAllCriteria>())).Returns(groupteam);
         }
 
-        private void MockGetAllTournamentTeamsQueryTwoCalls(List<Team> firstCallTestData, List<Team> secondCallTestData)
+        private void MockGetAllTournamentTeamsQueryTwoCalls(List<TeamTournamentDto> firstCallTestData, List<TeamTournamentDto> secondCallTestData)
         {
-            _getAllTournamentTeamsQuery.SetupSequence(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteriaOld>()))
+            _getAllTournamentTeamsQuery.SetupSequence(tr => tr.Execute(It.IsAny<FindByTournamentIdCriteria>()))
                 .Returns(firstCallTestData)
                 .Returns(secondCallTestData);
         }
@@ -1837,26 +1837,14 @@
             return tournaments;
         }
 
-        private List<Team> CreateTeamsInTournament()
+        private List<TeamTournamentDto> CreateTeamsInTournament()
         {
-            var existingTeams = new List<Team>();
-            existingTeams.AddRange(new List<Team>
+            var existingTeams = new List<TeamTournamentDto>
             {
-                new TeamBuilder().WithId(SPECIFIC_TEAM_ID).Build(),
-                new TeamBuilder().WithId(SPECIFIC_TEAM_ID + 1).Build(),
-            });
+                new TeamTournamentDto { TeamId = SPECIFIC_TEAM_ID },
+                new TeamTournamentDto { TeamId = SPECIFIC_TEAM_ID + 1 },
+            };
             return existingTeams;
-        }
-
-        private List<Game> CreateSeveralGameResults()
-        {
-            var existingGameResults = new List<Game>();
-            existingGameResults.AddRange(new List<Game>
-            {
-                new GameBuilder().Build(),
-                new GameBuilder().WithId(SPECIFIC_GAME_ID).Build(),
-            });
-            return existingGameResults;
         }
 
         private void VerifyCreateTournament(Tournament tournament, Times times)

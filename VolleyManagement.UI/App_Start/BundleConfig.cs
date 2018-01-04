@@ -1,4 +1,4 @@
-﻿namespace VolleyManagement.UI
+namespace VolleyManagement.UI
 {
     using System.Web.Optimization;
 
@@ -82,6 +82,8 @@
                 .Include("~/Scripts/VmScripts/TournamentOperations/SwapRounds.js"));
             bundles.Add(new ScriptBundle("~/bundles/tournamentapplyscripts")
                 .Include("~/Scripts/VmScripts/TournamentOperations/ApplyForTournament.js"));
+            bundles.Add(new ScriptBundle("~/bundles/tournamentschedule")
+                .Include("~/Scripts/VmScripts/TournamentOperations/ScheduleCreateOrEdit.js"));
         }
 
         private static void RegisterGameScripts(BundleCollection bundles)

@@ -3,6 +3,9 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using Comparers;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Services.GameService;
     using UI.Areas.Mvc.ViewModels.GameResults;
 
     /// <summary>
@@ -53,31 +56,31 @@
         /// <returns>True if given team have the same properties.</returns>
         public bool AreEqual(GameResultViewModel x, GameResultViewModel y)
         {
-            return x.SetScores[0].Home == y.SetScores[0].Home
-                && x.SetScores[1].Home == y.SetScores[1].Home
-                && x.SetScores[2].Home == y.SetScores[2].Home
-                && x.SetScores[3].Home == y.SetScores[3].Home
-                && x.SetScores[4].Home == y.SetScores[4].Home
-                && x.SetScores[0].Away == y.SetScores[0].Away
-                && x.SetScores[1].Away == y.SetScores[1].Away
-                && x.SetScores[2].Away == y.SetScores[2].Away
-                && x.SetScores[3].Away == y.SetScores[3].Away
-                && x.SetScores[4].Away == y.SetScores[4].Away
-                && x.AwayTeamId == y.AwayTeamId
-                && x.GameScore.Home == y.GameScore.Home
-                && x.GameScore.Away == y.GameScore.Away
-                && x.HomeTeamId == y.HomeTeamId
-                && x.Id == y.Id
-                && x.IsTechnicalDefeat == y.IsTechnicalDefeat
-                && x.TournamentId == y.TournamentId
-                && x.GameDate == y.GameDate
-                && x.Round == y.Round
-                && x.HomeTeamName == y.HomeTeamName
-                && x.AwayTeamName == y.AwayTeamName
-                && x.HasPenalty == y.HasPenalty
-                && x.IsHomeTeamPenalty == y.IsHomeTeamPenalty
-                && x.PenaltyAmount == y.PenaltyAmount
-                && x.PenaltyDescrition == y.PenaltyDescrition;
+            Assert.AreEqual(x.Id, y.Id, "Name should be equal.");
+            Assert.AreEqual(x.TournamentId, y.TournamentId, "Name should be equal.");
+
+            Assert.AreEqual(x.AwayTeamId, y.AwayTeamId, "AwayTeamId should be equal.");
+            Assert.AreEqual(x.HomeTeamId, y.HomeTeamId, "HomeTeamId should be equal.");
+            Assert.AreEqual(x.AwayTeamName, y.AwayTeamName, "AwayTeamName should be equal.");
+            Assert.AreEqual(x.HomeTeamName, y.HomeTeamName, "HomeTeamName should be equal.");
+
+            Assert.AreEqual(x.GameDate, y.GameDate, "GameDate should be equal.");
+            Assert.AreEqual(x.Round, y.Round, "Round should be equal.");
+            Assert.AreEqual(x.IsTechnicalDefeat, y.IsTechnicalDefeat, "IsTechnicalDefeat should be equal.");
+
+            Assert.AreEqual(x.HasPenalty, y.HasPenalty, "HasPenalty should be equal.");
+            Assert.AreEqual(x.IsHomeTeamPenalty, y.IsHomeTeamPenalty, "IsHomeTeamPenalty should be equal.");
+            Assert.AreEqual(x.PenaltyAmount, y.PenaltyAmount, "PenaltyAmount should be equal.");
+            Assert.AreEqual(x.PenaltyDescrition, y.PenaltyDescrition, "PenaltyDescrition should be equal.");
+
+            ScoreViewModelComparer.AssertAreEqual(x.GameScore, y.GameScore);
+
+            for (var i = 0; i < 5; i++)
+            {
+                ScoreViewModelComparer.AssertAreEqual(x.SetScores[i], y.SetScores[i], $"[Set:{i+1}]");
+            }
+
+            return true;
         }
     }
 }

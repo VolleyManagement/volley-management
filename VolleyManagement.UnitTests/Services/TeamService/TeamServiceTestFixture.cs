@@ -1,10 +1,8 @@
 ﻿namespace VolleyManagement.UnitTests.Services.TeamService
 {
-    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using Domain.TeamsAggregate;
-    using PlayerService;
 
     /// <summary>
     /// Class for generating test data
@@ -23,18 +21,11 @@
         private List<List<Team>> _teamsByDivisions = new List<List<Team>>();
 
         /// <summary>
-        /// Holds collection of teams
-        /// </summary>
-        private PlayerBuilder _playerBuilder;
-
-        /// <summary>
         /// Return test collection of teams
         /// </summary>
         /// <returns>Builder object with collection of teams</returns>
         public TeamServiceTestFixture TestTeams()
         {
-            _playerBuilder = new PlayerBuilder();
-
             _teams.Add(new Team()
             {
                 Id = 1,

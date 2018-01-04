@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
     'use strict';
 
     var currNs = VM.addNamespace("tournament.addTeams"),
@@ -43,7 +43,7 @@
         var selectedGroups = $("select[name='groups'] :selected");
 
         if (selectedTeams.length !== selectedGroups.length) {
-            return null;
+            return alert("Cannot save. Data invalid. Try removing empty row.");
         }
 
         for (var i = 0; i < selectedTeams.length; i++) {
@@ -75,7 +75,7 @@
 
         var result = "<td><select name = 'divisions' counter = '" + divisionCounter + "'>" + responseOptions + "</select></td>"
             + "<td class = 'markup' counter = '" + divisionCounter +"'></td>"
-            + "<td><button class='deleteTeamButton' counter = '" + divisionCounter +"'>Delete</button></td>";
+            + "<td></td><td><button class='deleteTeamButton' counter = '" + divisionCounter +"'>Delete</button></td>";
         return result;
     };
 

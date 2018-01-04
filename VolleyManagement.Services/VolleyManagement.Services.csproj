@@ -78,6 +78,7 @@
     <Compile Include="GameReportService.cs" />
     <Compile Include="GameService.cs" />
     <Compile Include="Infrastructure\IocServicesModule.cs" />
+    <Compile Include="Mail\DebugMailService.cs" />
     <Compile Include="Mail\SendGridMailService.cs" />
     <Compile Include="RequestService.cs" />
     <Compile Include="CacheProvider.cs" />

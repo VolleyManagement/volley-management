@@ -4,6 +4,8 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using UI.Areas.Mvc.ViewModels.Tournaments;
 
     /// <summary>
@@ -55,32 +57,22 @@
         private bool AreEqual(TournamentApplyViewModel x, TournamentApplyViewModel y)
         {
             var teamComparer = new TeamNameViewModelComparer();
-            bool result = x.Id == y.Id
-                   && x.TeamId == y.TeamId
-                   && x.TournamentTitle == y.TournamentTitle;
 
-            if (result)
+            Assert.AreEqual(x.Id, y.Id, "Id should be equal");
+            Assert.AreEqual(x.TeamId, y.TeamId, "TeamId should be equal");
+            Assert.AreEqual(x.TournamentTitle, y.TournamentTitle, "TournamentTitle should be equal");
+
+            var xTeams = x.Teams.OrderBy(t => t.Id).ToList();
+            var yTeams = y.Teams.OrderBy(t => t.Id).ToList();
+
+            Assert.AreEqual(xTeams.Count, yTeams.Count, "Number of teams in collection should be equal");
+
+            for (var i = 0; i < xTeams.Count; i++)
             {
-                foreach (var xTeam in x.Teams)
-                {
-                    bool teamFound = false;
-                    foreach (var yTeam in y.Teams)
-                    {
-                        if (teamComparer.AreEqual(xTeam, yTeam))
-                        {
-                            teamFound = true;
-                        }
-                    }
-
-                    if (!teamFound)
-                    {
-                        result = false;
-                        break;
-                    }
-                }
+                Assert.IsTrue(teamComparer.AreEqual(xTeams[i], yTeams[i]), "Team at position #{i} should match.");
             }
 
-            return result;
+            return true;
         }
     }
 }

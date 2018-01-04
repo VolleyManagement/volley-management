@@ -57,7 +57,7 @@
         {
             return x.TournamentId == y.TournamentId &&
                 x.TournamentName == y.TournamentName &&
-                x.NumberOfRounds == y.NumberOfRounds &&
+                x.MaxNumberOfRounds == y.MaxNumberOfRounds &&
                 AreRoundsEqual(x.Rounds, y.Rounds);
         }
 

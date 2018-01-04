@@ -4,7 +4,7 @@
 
       <div class="day" *ngFor="let day of weeks.Days; let daysIndex = index;">
         <p class="headercenter">{{day.Date | date: "dd-MM-yyyy"}}</p>
-        <p class="headercenter">{{getdivisionsHeader(day)}}</p>
+        <p class="headercenter {{getDivisionAccentColor(division.Id)}}" *ngFor="let division of day.Divisions">{{getdivisionsHeader(division)}}</p>
         <div>
           <div class="games" *ngFor="let gameResult of day.Games;">
             <table class="game-sch {{getDivisionAccentColor(gameResult.DivisionId)}}">
@@ -92,7 +92,7 @@
                   </td>
 
                   <td>
-                    <div class="game-time"></div>
+                    <div class="game-time">{{getGameTotalBallsScore(gameResult.Result)}}</div>
                   </td>
                 </tr>
               </tbody>
@@ -110,7 +110,7 @@
                 </tr>
                 <tr>
                   <td>
-                    {{gameResult.GameDate | date: 'HH:mm'}}
+                    {{gameResult.GameDate| localDate | date: 'HH:mm'}}
                   </td>
                 </tr>
               </tbody>

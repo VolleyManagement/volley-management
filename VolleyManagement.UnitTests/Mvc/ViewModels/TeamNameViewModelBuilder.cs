@@ -53,13 +53,18 @@
                 new TeamNameViewModel()
                 {
                     Id = 1,
-                    Name = "TeamNameA"
+                    Name = "TeamNameA",
                 },
                 new TeamNameViewModel()
                 {
                     Id = 2,
-                    Name = "TeamNameB"
-                }
+                    Name = "TeamNameB",
+                },
+                new TeamNameViewModel()
+                {
+                    Id = 3,
+                    Name = "TeamNameC",
+                },
             };
         }
 

@@ -7,7 +7,7 @@ namespace VolleyManagement.Data.MsSql.Context
     /// <summary>
     /// Volley management database context
     /// </summary>
-    internal class VolleyManagementEntities : DbContext
+    public class VolleyManagementEntities : DbContext
     {
         #region Constructor
 

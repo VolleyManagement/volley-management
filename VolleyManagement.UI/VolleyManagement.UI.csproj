@@ -382,6 +382,7 @@
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamOperationResultViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamRefererViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Teams\TeamViewModel.cs" />
+    <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionScheduleViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\DivisionViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\GroupTeamViewModel.cs" />
     <Compile Include="Areas\Mvc\ViewModels\Tournaments\GroupViewModel.cs" />
@@ -621,6 +622,7 @@
     <Content Include="Scripts\VMScripts\TeamOperations\UploadPhoto.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\AddTeams.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\ApplyForTournament.js" />
+    <Content Include="Scripts\VMScripts\TournamentOperations\ScheduleCreateOrEdit.js" />
     <Content Include="Scripts\VMScripts\TournamentOperations\SwapRounds.js" />
     <Content Include="Scripts\VMScripts\VMScripts.js" />
     <Content Include="Web.config">

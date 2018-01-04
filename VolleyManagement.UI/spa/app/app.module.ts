@@ -11,6 +11,8 @@ import { ScheduleService } from './Services/schedule.service';
 import { AppToolsService } from './Services/app-tools.service';
 
 import { InfinityDecimalPipe } from './CustomPipes/InfinityDecimalPipe';
+import { LocalDatePipe } from './CustomPipes/LocalDatePipe';
+
 
 import { PivotStandingsComponent } from './Components/PivotStanding/pivotstandings.component';
 import { StandingsComponent } from './Components/Standings/standings.component';
@@ -30,7 +32,8 @@ import { GameResultCellDirective } from './Components/PivotStanding/game-result-
         ScheduleComponent,
         InfinityDecimalPipe,
         LoaderComponent,
-        GameReportsBoardComponent
+        GameReportsBoardComponent,
+        LocalDatePipe
     ],
     imports: [
         BrowserModule,

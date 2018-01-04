@@ -29,7 +29,7 @@
         public DateTime EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets schaduling inforamtion for all tournament divisions
+        /// Gets or sets scheduling information for all tournament divisions
         /// </summary>
         public List<DivisionScheduleDto> Divisions { get; set; }
 

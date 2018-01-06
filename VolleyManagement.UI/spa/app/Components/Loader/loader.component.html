@@ -1,12 +1,18 @@
 <div class="vm-loader"
      *ngIf="visible">
 
-  <div class="loader"
+  <div class="loader-container"
        [style.height]="height + 'px'"
        *ngIf="isCss3Supported; else css3NotSupportedBlock">
 
-    <ngx-loading [show]="visible"
-                 [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+    <div class='loader'>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+      <div class='loader--dot'></div>
+    </div>
 
   </div>
 

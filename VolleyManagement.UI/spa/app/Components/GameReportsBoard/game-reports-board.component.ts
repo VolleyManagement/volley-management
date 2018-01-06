@@ -48,7 +48,7 @@ export class GameReportsBoardComponent implements OnInit {
             .getTournamentMetadata()
             .toPromise()
             .then(data => {
-                this._updateIds(data.mode, data.id);
+                this._updateIds(data.mode, 1/*data.id*/);
                 this._updateLoaderState();
             });
     }

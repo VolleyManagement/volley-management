@@ -989,6 +989,16 @@
 
         public PivotStandingsTestFixture WithNotAllGamesPlayed()
         {
+            AddTeamStandings(// A
+                   new TeamStandingsDto
+                   {
+                       TeamId = 1,
+                       TeamName = "TeamNameA",
+                       Points = 3,
+                       SetsRatio = (float)3 / 3,
+                       BallsRatio = (float)75 / 76,
+                   },
+                   divisionId: 1);
             AddTeamStandings(// B
                 new TeamStandingsDto
                 {
@@ -998,17 +1008,7 @@
                     SetsRatio = (float)3 / 3,
                     BallsRatio = (float)76 / 75,
                 },
-                divisionId: 1);
-            AddTeamStandings(// A
-                new TeamStandingsDto
-                {
-                    TeamId = 1,
-                    TeamName = "TeamNameA",
-                    Points = 3,
-                    SetsRatio = (float)3 / 3,
-                    BallsRatio = (float)75 / 76,
-                },
-                divisionId: 1);
+                divisionId: 1);            
             AddTeamStandings(// C
                 new TeamStandingsDto
                 {
